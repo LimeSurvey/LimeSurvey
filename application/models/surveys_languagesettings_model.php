@@ -52,5 +52,17 @@ class Surveys_languagesettings_model extends CI_Model {
         $this->db->order_by('active DESC, surveyls_title');
         return $this->db->get();
     }
+	
+	function update($data, $condition=FALSE)
+	{
+	
+		if ($condition != FALSE)
+		{
+			$this->db->where($condition);	
+		}
+		
+		$this->db->update('surveys_languagesettings', $data);
+		
+	}
 
 }

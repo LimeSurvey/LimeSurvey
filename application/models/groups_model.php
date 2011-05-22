@@ -102,5 +102,18 @@ class Groups_model extends CI_Model {
             $position++;
         }
     }
+	
+	function update($data, $condition=FALSE)
+	{
+	
+		if ($condition != FALSE)
+		{
+			$this->db->where($condition);	
+		}
+		
+		$this->db->update('groups', $data);
+		
+	}
+	
 
 }

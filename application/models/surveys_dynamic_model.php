@@ -29,5 +29,12 @@ class Surveys_dynamic_model extends CI_Model {
 		
 		return $data;
 	}
+	
+	function quotaCompletedCount($sid,$querycond)
+	{
+		//Used by get_quotaCompletedCount()
+		$querysel = "SELECT count(id) as count FROM ".db_table_name('survey_'.$sid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate IS NOT NULL";
+        return $this->db->query($querysel);
+	}
     
 }

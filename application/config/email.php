@@ -8,10 +8,9 @@ $config['siteadminemail']     = 'your-email@example.net'; // The default email a
 $config['siteadminbounce']    = 'your-email@example.net'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
 $config['siteadminname']      = 'Your Name';      // The name of the site administrator
 
-$config['emailmethod']        = 'mail';           // The following values can be used:
+$config['protocol']        = 'mail';           // The following values can be used:
 // mail      -  use internal PHP Mailer
 // sendmail  -  use Sendmail Mailer
-// qmail     -  use Qmail MTA
 // smtp      -  use SMTP relaying
 
 $config['emailsmtphost']      = 'localhost';      // Sets the SMTP host. You can also specify a different port than 25 by using
@@ -25,4 +24,4 @@ $config['emailsmtpdebug']     = 0;                // Settings this to 1 activate
 
 $config['maxemails']          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
-$config['emailcharset']       = "utf-8";          // You can change this to change the charset of outgoing emails to some other encoding  - like 'iso-8859-1'
+$config['charset']       = "utf-8";          // You can change this to change the charset of outgoing emails to some other encoding  - like 'iso-8859-1'

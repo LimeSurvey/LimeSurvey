@@ -14,7 +14,7 @@ class Questions_model extends CI_Model {
 		return $data;
 	}
 
-	function getSomeRecords($fields,$condition=FALSE)
+	function getSomeRecords($fields,$condition=FALSE,$order=FALSE)
 	{
 		foreach ($fields as $field)
 		{
@@ -23,6 +23,10 @@ class Questions_model extends CI_Model {
 		if ($condition != FALSE)
 		{
 			$this->db->where($condition);	
+		}
+		if ($order != FALSE)
+		{
+			$this->db->order_by($order);	
 		}
 		
 		$data = $this->db->get('questions');
@@ -84,7 +88,30 @@ class Questions_model extends CI_Model {
     
     function getQuestionType($qid)
     {
-        return $this->db->query('SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid and parent_qid=0 group by type');
+        return $this->db->query('SELECT type FROM '.$this->db->dbprefix('questions').' WHERE qid=$qid and parent_qid=0 group by type');
     }
+	
+	function getSubQuestions($sid,$sLanguage)
+	{
+		//Used by getSubQuestions helper
+		$query = "SELECT sq.*, q.other FROM ".$this->db->dbprefix('questions')." as sq, ".$this->db->dbprefix('questions')." as q"
+	            ." WHERE sq.parent_qid=q.qid AND q.sid=".$sid
+	            ." AND sq.language='".$sLanguage. "' "
+	            ." AND q.language='".$sLanguage. "' "
+	            ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
+		return $this->db->query($query);
+	}
+	
+	function update($data, $condition=FALSE)
+	{
+	
+		if ($condition != FALSE)
+		{
+			$this->db->where($condition);	
+		}
+		
+		$this->db->update('questions', $data);
+		
+	}
 
 }

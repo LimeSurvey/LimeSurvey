@@ -30,4 +30,17 @@ class Quota_model extends CI_Model {
 		return $data;
 	}
 
+	function getQuotaInformation($surveyid,$language,$quotaid)
+	{
+		//Used by getQuotaInformation helper
+        $query = "SELECT * FROM ".$this->db->dbprefix('quota').", ".$this->db->dbprefix('quota_languagesettings')."
+		   	  WHERE ".$this->db->dbprefix('quota').".id = ".$this->db->dbprefix('quota_languagesettings').".quotals_quota_id
+			  AND sid='".$surveyid."'
+              AND quotals_language='".$language."'";
+		if ($quotaid != 'all')
+		{
+			$query .= " AND id=$quotaid";
+		}
+		return $this->db->query($query);
+	}
 }

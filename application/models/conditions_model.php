@@ -2,11 +2,16 @@
 
 class Conditions_model extends CI_Model {
 	
-	function getAllRecords($condition=FALSE)
+	function getAllRecords($condition=FALSE,$order=FALSE)
 	{
 		if ($condition != FALSE)
 		{
 			$this->db->where($condition);	
+		}
+		
+		if ($order != FALSE)
+		{
+			$this->db->order_by($order);	
 		}
 		
 		$data = $this->db->get('conditions');
@@ -76,5 +81,16 @@ class Conditions_model extends CI_Model {
         $data = $this->db->query($aquery);
         return $data;
     }
+	
+	function getScenarios($qid)
+    {
+    	   
+		$scenarioquery = "SELECT DISTINCT scenario FROM ".$this->db->prefix("conditions")
+		." WHERE ".$this->db->prefix("conditions").".qid=".$qid." ORDER BY scenario";
+		
+		return $this->db->query($scenarioquery);
+    }
+	
+	
 
 }
