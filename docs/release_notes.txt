@@ -93,7 +93,7 @@ Changes from 1.91+ (build 10062) to 1.91+ (build 10089)
 -Fixed issue #5169: Excel exports fail if special characters are present in survey title (c_schmitz)
                               
                               
-Changes from 1.91 (build 10060) to 1.91+ (build 10061)
+Changes from 1.91 (build 10060) to 1.91+ (build 10062)
 -Fixed issue #5158: Missing backslash in index.php gives throws a "unexpected T_STRING error" (shnoulle)
 
 
@@ -112,7 +112,7 @@ Changes from 1.91 (build 10030) to 1.91+ (build 10060)
 -Fixed issue #5145: Cross-Site Scripting (XSS) issue (c_schmitz)
 -Fixed issue: Invalid HTML in "Edit text elements" display (tpartner)
 
-Changes from 1.90 (build 9561) to 1.91 (build 10030)
+Changes from 1.90 (build 9642) to 1.91 (build 10030)
 +New feature #4927: added SurveyGroupQuestion identifier {SGQ} as a variable for use in questions - thanks to timbee for the patch (mennodekker)
 +New feature: Added the 'showsgqacode' parameter. When this settings is true/1 (default = false/0) then the printable survey option will show a reference to the "lime_survey_12345" table which stores the survey answers.  This code will be shown in front of each question and in front of each answer option at the printable survey. It can be used as a data analysis code book for querying data from the main response table.
 +New feature: 'All of the above' option automatically kick in if the participant checks all other options (set by the 'Exclusive option' setting). (parajulik)
