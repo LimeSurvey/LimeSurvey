@@ -15,7 +15,7 @@ CKEDITOR.editorConfig = function( config )
     config.toolbar_popup =
     [
         ['Maximize'],
-        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
+        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','LimeReplacementFields'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
         ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
         '/',
@@ -33,7 +33,7 @@ CKEDITOR.editorConfig = function( config )
     config.toolbar_inline =
     [
         ['Maximize'],
-        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
+        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','LimeReplacementFields'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
         ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
         '/',
@@ -60,4 +60,9 @@ CKEDITOR.editorConfig = function( config )
         ['Link','Unlink','Image'],
         ['Source']
     ];*/
+
+
+    CKEDITOR.plugins.addExternal( 'LimeReplacementFields', CKEDITOR.basePath + 'plugins/limereplacementfields/' );
+	config.extraPlugins = "LimeReplacementFields,ajax";
+
 };

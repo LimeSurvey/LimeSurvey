@@ -2,7 +2,11 @@
 
 $(document).ready(function(){
 
-    $('textarea.fulledit').ckeditor(function() { /* callback code */ }, {	toolbar : sHTMLEditorMode,
-                                                                            width: 660,
-                                                                            customConfig : 'limesurvey-config.js' });
+    if (sHTMLEditorMode=='inline') {
+        $('textarea.fulledit').ckeditor(function() { /* callback code */ }, {	toolbar : sHTMLEditorMode,
+                                                                                language : sEditorLanguage,
+                                                                                width: 660,
+                                                                                customConfig : 'limesurvey-config.js' });
+    }
+
 });
