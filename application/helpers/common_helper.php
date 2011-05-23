@@ -5388,7 +5388,7 @@ function convertCsvreturn2return($string)
 function tableExists($tablename)
 {
 	//PORT
-	global $CI;
+	//global $CI;
     //global $connect;
     //static $tablelist;
 
@@ -5406,7 +5406,7 @@ function tableExists($tablename)
         }
     }
     return false;*/
-   
+   $CI =& get_instance();
    return $CI->db->table_exists($tablename);
 }
 
