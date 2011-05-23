@@ -45,8 +45,8 @@ if (!isset($_GET['fieldname']) || !isset($_GET['fieldtext']))
 			LimeSurvey '.$clang->gT("HTML Editor").'
 		</div>
 		<hr />
-		
-		<tr><td align="center"><br /><span style="color:red;"><strong>	
+
+		<tr><td align="center"><br /><span style="color:red;"><strong>
 		</strong></span><br />
 		</table>
 		<form  onsubmit="self.close()">
@@ -69,7 +69,7 @@ else {
     $fieldtype=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['fieldtype']);
     $action=preg_replace("/[^_.a-zA-Z0-9-]/", "",$_GET['action']);
 
-    $toolbarname='LimeSurveyToolbarfullPopup';
+    $toolbarname='popup';
     $htmlformatoption='';
 
     if ( $fieldtype == 'email-inv' ||
@@ -77,7 +77,7 @@ else {
     $fieldtype == 'email-conf' ||
     $fieldtype == 'email-rem' )
     {
-        $htmlformatoption = "oFCKeditor.Config[\"FullPage\"]=true;";
+        $htmlformatoption = ",fullPage:true";
     }
 
     $output = '
@@ -87,7 +87,8 @@ else {
 		<title>'.$clang->gT("Editing").' '.$fieldtext.'</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="robots" content="noindex, nofollow" />
-		<script type="text/javascript" src="'.$sCKEditorURL.'/fckeditor.js"></script>
+        <script type="text/javascript" src="'.$rooturl.'/scripts/jquery/jquery.js"></script>
+		<script type="text/javascript" src="'.$sCKEditorURL.'/ckeditor.js"></script>
 	</head>';
 
 
@@ -111,24 +112,23 @@ else {
 
 
 	var saveChanges = false;
+    $(document).ready(function(){
 
-	var oFCKeditor = new FCKeditor( 'MyTextarea' );
-	oFCKeditor.BasePath	= '".$sCKEditorURL."/';
-	oFCKeditor.Height	= '350';
-	oFCKeditor.Width	= '98%';
-	oFCKeditor.Value      = window.opener.document.getElementsByName(\"".$fieldname."\")[0].value;
-	oFCKeditor.Config[\"CustomConfigurationsPath\"] = \"".$sCKEditorURL."/limesurvey-config.js\";
-	oFCKeditor.Config[\"ToolbarStartExpanded\"] = true;
-	oFCKeditor.Config[\"ToolbarCanCollapse\"] = false;
-	oFCKeditor.ToolbarSet = '".$toolbarname."';
-	oFCKeditor.Config[\"LimeReplacementFieldsSID\"] = \"".$sid."\";
-	oFCKeditor.Config[\"LimeReplacementFieldsGID\"] = \"".$gid."\";
-	oFCKeditor.Config[\"LimeReplacementFieldsQID\"] = \"".$qid."\";
-	oFCKeditor.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";
-	oFCKeditor.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";
-	oFCKeditor.Config[\"SmileyPath\"] = \"".$rooturl."/upload/images/smiley/msn/\";
-	$htmlformatoption
-	oFCKeditor.Create();
+    	var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
+    	                                            width	: '98%',
+    	                                            value   : window.opener.document.getElementsByName(\"".$fieldname."\")[0].value,
+    	                                            customConfig : \"".$sCKEditorURL."/limesurvey-config.js\",
+                                                    toolbarStartupExpanded : true,
+                                                    ToolbarCanCollapse : false,
+                                                    toolbar : '".$toolbarname."',
+                                                    LimeReplacementFieldsSID : \"".$sid."\",
+                                                    LimeReplacementFieldsGID : \"".$gid."\",
+                                                    LimeReplacementFieldsQID : \"".$qid."\",
+                                                    LimeReplacementFieldsType: \"".$fieldtype."\",
+                                                    LimeReplacementFieldsAction: \"".$action."\",
+                                                    smiley_path: \"".$rooturl."/upload/images/smiley/msn/\"
+                                                    {$htmlformatoption} });
+    });
 
 	function FCKeditor_OnComplete( editorInstance )
 	{
@@ -139,7 +139,7 @@ else {
 
 	function html_transfert()
 	{
-		var oEditor = FCKeditorAPI.GetInstance('MyTextarea');\n";
+		var oEditor = CKeditor.instances['MyTextarea'];\n";
 
 	if ($fieldtype == 'editanswer' ||
 	$fieldtype == 'addanswer' ||
@@ -158,33 +158,14 @@ else {
 
 
 	$output .=	"
-                editedtext = fix_FCKeditor_text(editedtext);
+
 		window.opener.document.getElementsByName('".$fieldname."')[0].value = editedtext;
 	}
 
-        function fix_FCKeditor_text(text)
-        {
-            var thestring = new String(text);
-            thestring.replace('<br type=\"_moz\" />','');
-            var myre = new RegExp('^([\s]+|<br />|&nbsp;)$');
-            thestring = thestring.replace(myre, '');
-            return thestring;
-        }
 
 	function close_editor()
 	{
-		if (saveChanges == false)
-		{
-			if (confirm('".$clang->gT("Do you want to save your changes ?", "js")."'))
-			{
-				html_transfert();
-			}	
-		}
-
-		if (saveChanges == true)
-		{
-			html_transfert();
-		}
+        html_transfert();
 
 		window.opener.document.getElementsByName('".$fieldname."')[0].readOnly= false;
 		window.opener.document.getElementsByName('".$fieldname."')[0].className='htmlinput';
@@ -198,7 +179,7 @@ else {
 			</script>
 	</form>";
 
-	//$output .= "<textarea id='MyTextarea' name='MyTextarea'></textarea>";
+	$output .= "<textarea id='MyTextarea' name='MyTextarea'></textarea>";
 	$output .= "
 	</body>
 	</html>";

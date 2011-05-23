@@ -68,7 +68,7 @@ function PrepareEditorScript()
     . "\tdocument.getElementsByName(fieldname)[0].className='readonly';\n"
     . "\tdocument.getElementById(controlidena).style.display='none';\n"
     . "\tdocument.getElementById(controliddis).style.display='';\n"
-    . "\tpopup = window.open('".$homeurl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=600, height=400');\n"
+    . "\tpopup = window.open('".$homeurl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');\n"
     . "\teditorwindowsHash[fieldname] = popup;\n"
     . "}\n"
     . "else\n"
