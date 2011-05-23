@@ -28,22 +28,17 @@ $_CONFIG = array(
     'uploadURL' => "upload",
     'uploadDir' => "",
 
-    'dirPerms' => 0755,
+    'dirPerms' => 0000,
     'filePerms' => 0644,
 
-    'deniedExts' => "exe com msi bat php cgi pl",
+    'deniedExts' => "exe com msi bat php cgi pl php4 php5 sh",
 
     'types' => array(
 
         // CKEditor & FCKEditor types
         'files'   =>  "",
-        'flash'   =>  "swf",
-        'images'  =>  "*img",
-
-        // TinyMCE types
-        'file'    =>  "",
-        'media'   =>  "swf flv avi mpg mpeg qt mov wmv asf rm",
-        'image'   =>  "*img",
+        'flash'   =>  "",
+        'images'  =>  "",
     ),
 
     'mime_magic' => "",

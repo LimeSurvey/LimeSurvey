@@ -63,7 +63,7 @@ class uploader {
             ini_set('session.save_path', $_CONFIG['_sessionDir']);
         if (isset($_CONFIG['_sessionDomain']))
             ini_set('session.cookie_domain', $_CONFIG['_sessionDomain']);
-        session_start();
+        @session_start();
 
         // RELOAD DEFAULT CONFIGURATION
         require "config.php";

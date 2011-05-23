@@ -30,6 +30,53 @@ else
 
 session_set_cookie_params(0,$relativeurl.'/');
 
+if (session_id() == "") @session_start();
+
+$_SESSION['KCFINDER'] = array();
+
+$sAllowedExtensions	= implode(' ',array_map('trim',explode(' ',$allowedresourcesuploads)));
+$_SESSION['KCFINDER']['types']=array('files'=>$sAllowedExtensions,
+                                     'flash'=>$sAllowedExtensions,
+                                     'images'=>$sAllowedExtensions);
+
+if ($demoModeOnly === false &&
+    isset($_SESSION['loginID']) &&
+    isset($_SESSION['FileManagerContext']))
+{
+    // disable upload at survey creation time
+    // because we don't know the sid yet
+    if (preg_match('/^(create|edit):(question|group|answer)/',$_SESSION['FileManagerContext']) != 0 ||
+        preg_match('/^edit:survey/',$_SESSION['FileManagerContext']) !=0 ||
+        preg_match('/^edit:assessments/',$_SESSION['FileManagerContext']) !=0 ||
+        preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
+    {
+        $contextarray=explode(':',$_SESSION['FileManagerContext'],3);
+        $surveyid=$contextarray[2];
+
+
+
+        if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+        {
+            $_SESSION['KCFINDER']['disabled'] = false ;
+            $_SESSION['KCFINDER']['UploadURL'] = "{$relativeurl}/upload/surveys/{$surveyid}/" ;
+            $_SESSION['KCFINDER']['UploadDir'] = $uploaddir.'/surveys/'.$surveyid;
+        }
+
+    }
+    elseif (preg_match('/^edit:label/',$_SESSION['FileManagerContext']) != 0)
+    {
+        $contextarray=explode(':',$_SESSION['FileManagerContext'],3);
+        $labelid=$contextarray[2];
+        // check if the user has label management right and labelid defined
+        if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1 && isset($labelid) && $labelid != '')
+        {
+            $_SESSION['KCFINDER']['disabled'] = false ;
+            $_SESSION['KCFINDER']['UploadURL'] = "{$relativeurl}/upload/labels/{$labelid}/" ;
+            $_SESSION['KCFINDER']['UploadDir'] = "{$uploaddir}/labels/{$labelid}" ;
+        }
+    }
+
+}
 
 
 function __autoload($class) {

@@ -14,8 +14,8 @@ CKEDITOR.editorConfig = function( config )
 
     config.toolbar_popup =
     [
-        ['Maximize'],
-        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','LimeReplacementFields'],
+        ['Maximize','LimeReplacementFields'],
+        ['Cut','Copy','Paste','PasteText','PasteFromWord'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
         ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
         '/',
@@ -32,8 +32,8 @@ CKEDITOR.editorConfig = function( config )
 
     config.toolbar_inline =
     [
-        ['Maximize'],
-        ['Cut','Copy','Paste','PasteText','PasteFromWord','-','LimeReplacementFields'],
+        ['Maximize','LimeReplacementFields'],
+        ['Cut','Copy','Paste','PasteText','PasteFromWord'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
         ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
         '/',
