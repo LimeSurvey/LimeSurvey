@@ -113,10 +113,9 @@ else {
 
 	var saveChanges = false;
     $(document).ready(function(){
-
+        CKEDITOR.on('instanceReady',CKeditor_OnComplete);
     	var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
     	                                            width	: '98%',
-    	                                            value   : window.opener.document.getElementsByName(\"".$fieldname."\")[0].value,
     	                                            customConfig : \"".$sCKEditorURL."/limesurvey-config.js\",
                                                     toolbarStartupExpanded : true,
                                                     ToolbarCanCollapse : false,
@@ -130,29 +129,30 @@ else {
                                                     {$htmlformatoption} });
     });
 
-	function FCKeditor_OnComplete( editorInstance )
+	function CKeditor_OnComplete( evt )
 	{
-		//editorInstance.Events.AttachEvent( 'OnSelectionChange', DoSomething ) ;
-		editorInstance.ToolbarSet.CurrentInstance.Commands.GetCommand('FitWindow').Execute();
+        var editor = evt.editor;
+        editor.setData(window.opener.document.getElementsByName(\"".$fieldname."\")[0].value);
+        editor.execCommand('maximize');
 		window.status='LimeSurvey ".$clang->gT("Editing", "js")." ".javascript_escape($fieldtext,true)."';
 	}
 
 	function html_transfert()
 	{
-		var oEditor = CKeditor.instances['MyTextarea'];\n";
+		var oEditor = CKEDITOR.instances['MyTextarea'];\n";
 
 	if ($fieldtype == 'editanswer' ||
 	$fieldtype == 'addanswer' ||
 	$fieldtype == 'editlabel' ||
 	$fieldtype == 'addlabel')
 	{
-	    $output .= "\t\tvar editedtext = oEditor.GetXHTML().replace(new RegExp( \"\\n\", \"g\" ),'');\n";
-	    $output .= "\t\tvar editedtext = oEditor.GetXHTML().replace(new RegExp( \"\\r\", \"g\" ),'');\n";
+	    $output .= "\t\tvar editedtext = oEditor.getData().replace(new RegExp( \"\\n\", \"g\" ),'');\n";
+	    $output .= "\t\tvar editedtext = oEditor.getData().replace(new RegExp( \"\\r\", \"g\" ),'');\n";
 	}
 	else
 	{
 	    //$output .= "\t\tvar editedtext = oEditor.GetXHTML();\n";
-	    $output .= "\t\tvar editedtext = oEditor.GetXHTML('no strip new line');\n"; // adding a parameter avoids stripping \n
+	    $output .= "\t\tvar editedtext = oEditor.getData('no strip new line');\n"; // adding a parameter avoids stripping \n
 	}
 
 
@@ -176,11 +176,11 @@ else {
 	}
 
 	//-->
-			</script>
-	</form>";
+			</script>";
 
 	$output .= "<textarea id='MyTextarea' name='MyTextarea'></textarea>";
 	$output .= "
+	</form>
 	</body>
 	</html>";
 }

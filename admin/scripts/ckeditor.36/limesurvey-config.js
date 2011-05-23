@@ -14,7 +14,7 @@ CKEDITOR.editorConfig = function( config )
 
     config.toolbar_popup =
     [
-        ['Maximize','LimeReplacementFields'],
+        ['Save','LimeReplacementFields'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
         ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],

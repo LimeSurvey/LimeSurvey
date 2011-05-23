@@ -10,8 +10,8 @@ $(document).ready(function(){
 /**
 * This function loads each FCKeditor only when the tab is clicked and only if it is not already loaded
 */
-function loadHTMLEditor(event, ui) 
-{ 
+function loadHTMLEditor(event, ui)
+{
    if (typeof ui.panel.selector != 'undefined')
    {
        sSelector=ui.panel.selector;
@@ -22,20 +22,20 @@ function loadHTMLEditor(event, ui)
    }
    if ($(sSelector+' iframe').size()==0)
    {
-        sFCKEditorInstanceName='oFCKeditor_'+$(sSelector+' textarea').attr('id').replace(/-/i, "_");
-        eval("if (typeof "+sFCKEditorInstanceName+" != 'undefined')"+sFCKEditorInstanceName+".ReplaceTextarea();");
+        sCKEditorInstanceName='oFCKeditor_'+$(sSelector+' textarea').attr('id').replace(/-/i, "_");
+        eval("if (typeof "+sCKEditorInstanceName+" != 'undefined')"+sCKEditorInstanceName+".ReplaceTextarea();");
    }
 }
 
 function fillin(tofield, fromfield)
 {
-    if (confirm(sReplaceTextConfirmation)) 
+    if (confirm(sReplaceTextConfirmation))
     {
         if (document.getElementById(tofield).readOnly == false)
-        {   
-            $('#'+tofield).val($('#'+fromfield).val());    
+        {
+            $('#'+tofield).val($('#'+fromfield).val());
         }
-        updateFCKeditor(tofield,$('#'+fromfield).val());
+        updateCKeditor(tofield,$('#'+fromfield).val());
 
     }
 }
