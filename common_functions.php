@@ -8268,10 +8268,23 @@ function aArrayInvert($aArr)
  * @param array $aFieldnamesInfoInv - Inverted fieldnamesInfo
  */
 function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
-{
-    if(@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] != 'M')
+{ 
+	if (@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'M' || @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'P' || @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'O')
     {
-        // all answers required
+        // multiple choice and list with comments question types - just one answer is required and comments are not required
+        $bAnsw = false;
+        foreach($aFieldnamesInfoInv[$q] as $sField)
+        {
+            if(!strstr($sField, 'comment') && isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
+            {
+                $bAnsw = true;
+                break;
+            }
+        }
+    }
+    else
+    {
+        // all answers required for all other question types
         $bAnsw = true;
         foreach($aFieldnamesInfoInv[$q] as $sField)
         {
@@ -8281,19 +8294,6 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
                 break;
             }
         }
-    }
-    else
-    {
-        // multiple choice, just one answer is required
-        $bAnsw = false;
-    foreach($aFieldnamesInfoInv[$q] as $sField)
-    {
-            if(isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
-        {
-                $bAnsw = true;
-            break;
-        }
-    }
     }
     return $bAnsw;
 }
