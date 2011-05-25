@@ -157,11 +157,16 @@ while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CON
         }
         else
         {
-            $currentquestion--; // if we reach -1, this means we must go back to first page
-            if ($currentquestion >= 0)
+            if ($currentquestion > 0)
             {
+                $currentquestion--; // if we reach -1, this means we must go back to first page
+                if(isset($_SESSION['fieldarray'][$currentquestion]))
+                {
+                    $ia=$_SESSION['fieldarray'][$currentquestion];
+                }
                 $_SESSION['step']--;
             }
+            else
             {
                 $_SESSION['step']=0;
                 display_first_page();
