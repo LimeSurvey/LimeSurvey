@@ -16,67 +16,6 @@
 //include_once("login_check.php");
 //Security Checked: POST/GET/SESSION/DB/returnglobal
 
-/*****
-function PrepareEditorPopupScript()
-{
-    global $clang,$imageurl,$homeurl;
-
-    $script = "<script type='text/javascript'>\n"
-    . "<!--\n"
-    . "var editorwindowsHash = new Object();\n"
-    . "function find_popup_editor(fieldname)\n"
-    . "\t{\t\n"
-    . "var window = null;\n"
-    . "for (var key in editorwindowsHash)\n"
-    . "{\n"
-    . "\tif (key==fieldname && !editorwindowsHash[key].closed)\n"
-    . "\t{\n"
-    . "window = editorwindowsHash[key];\n"
-    . "return window;\n"
-    . "\t}\n"
-    . "}\n"
-    . "\treturn null;\n"
-    . "\t}\t\n"
-    . "\n"
-    . "function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)\n"
-    . "\t{\t\n"
-    //	. "controlid = fieldname + '_popupctrl';\n"
-    . "controlidena = fieldname + '_popupctrlena';\n"
-    . "controliddis = fieldname + '_popupctrldis';\n"
-    . "numwindows = editorwindowsHash.length;\n"
-    . "activepopup = find_popup_editor(fieldname);\n"
-    . "if (activepopup == null)\n"
-    . "{\n"
-    . "\tdocument.getElementsByName(fieldname)[0].readOnly=true;\n"
-    . "\tdocument.getElementsByName(fieldname)[0].className='readonly';\n"
-    //	. "\tdocument.getElementById(controlid).src='".$imageurl."/edithtmlpopup_disabled.png';\n"
-    . "\tdocument.getElementById(controlidena).style.display='none';\n"
-    . "\tdocument.getElementById(controliddis).style.display='';\n"
-    . "\tpopup = window.open('".$homeurl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=600, height=400');\n"
-    . "\teditorwindowsHash[fieldname] = popup;\n"
-    . "}\n"
-    . "else\n"
-    . "{\n"
-    . "\tactivepopup.focus();\n"
-    . "}\n"
-    . "\t}\n"
-    . "\n"
-    . "function updateFCKeditor(fieldname,value)\n"
-    . "{\t\n"
-    . "\tvar mypopup= editorwindowsHash[fieldname];\n"
-    . "\tif (mypopup)\n"
-    . "\t{\n"
-    . "var oMyEditor = mypopup.FCKeditorAPI.GetInstance('MyTextarea');\n"
-    . "if (oMyEditor) {oMyEditor.SetHTML(value);}\n"
-    . "mypopup.focus();\n"
-    . "\t}\n"
-    . "}\n"
-    . "--></script>\n";
-
-    return $script;
-}
-*******/
-
 function PrepareEditorGeneric()
 {
     global $clang,$imageurl,$homeurl;
@@ -143,84 +82,9 @@ function PrepareEditorGeneric()
     return $script;
 }
 
-/*********
-function PrepareEditorInlineScript()
-{
-    global $homeurl, $sFCKEditorURL;
-    $script ="<script type=\"text/javascript\" src=\"".$sFCKEditorURL."/fckeditor.js\"></script>\n"
-    . "<script type=\"text/javascript\">\n"
-    . "<!--\n"
-    . "function updateFCKeditor(fieldname,value)\n"
-    . "{\n"
-    . "\tvar oMyEditor = FCKeditorAPI.GetInstance(fieldname);\n"
-    . "\toMyEditor.SetHTML(value);\n"
-    . "}\n"
-    . "-->\n"
-    . "</script>\n";
-
-//     $script .= ""
-//     . "<script type='text/javascript'>\n"
-//     . "<!--\n"
-//     ."function FCKeditor_OnComplete( editorInstance )\n"
-//     . "{\n"
-//     . "\teditorInstance.Events.AttachEvent( 'OnBlur'	, FCKeditor_OnBlur ) ;\n"
-//     . "\teditorInstance.Events.AttachEvent( 'OnFocus', FCKeditor_OnFocus ) ;\n"
-//     ."}\n"
-//     . "function FCKeditor_OnBlur( editorInstance )\n"
-//     . "{\n"
-//     . "\teditorInstance.ToolbarSet.Collapse() ;\n"
-//     . "}\n"
-//     . "function FCKeditor_OnFocus( editorInstance )\n"
-//     . "{\n"
-//     ."\teditorInstance.ToolbarSet.Expand() ;\n"
-//     ."}\n"
-//     . "--></script>\n";
-    return $script;
-}
-********/
 
 function PrepareEditorScript($fieldtype=null)
 {
-/***    global $defaulthtmleditormode;
-
-    if (isset($_SESSION['htmleditormode']) &&
-    $_SESSION['htmleditormode'] == 'none')
-    {
-        return "<script type=\"text/javascript\">\n"
-        . "<!--\n"
-        . "function updateFCKeditor(fieldname,value) { return true;}\n"
-        . "-->\n"
-        . "</script>\n";
-    }
-
-    if (!isset($_SESSION['htmleditormode']) ||
-    ($_SESSION['htmleditormode'] != 'inline' &&
-    $_SESSION['htmleditormode'] != 'popup') )
-    {
-        $htmleditormode = $defaulthtmleditormode;
-    }
-    else
-    {
-        $htmleditormode = $_SESSION['htmleditormode'];
-    }
-
-    if ($htmleditormode == 'popup' ||
-    $fieldtype == 'editanswer' ||
-    $fieldtype == 'addanswer' ||
-    $fieldtype == 'editlabel' ||
-    $fieldtype == 'addlabel')
-    {
-        return PrepareEditorPopupScript();
-    }
-    elseif ($htmleditormode == 'inline')
-    {
-        return PrepareEditorInlineScript();
-    }
-    else
-    {
-        return '';
-    }
-****/
     return PrepareEditorGeneric();
 }
 
@@ -337,7 +201,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
          $fieldtype == 'email-rem' )
     {
         $htmlformatoption = "$oFCKeditorVarName.Config[\"FullPage\"]=true;\n"
-        . "$oFCKeditorVarName.Height = \"500\"\n";        
+        . "$oFCKeditorVarName.Height = \"500\"\n";
     }
 
 
@@ -364,7 +228,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
 
     $htmlcode .= ""
     . "$oFCKeditorVarName.ToolbarSet = '".$toolbarname."';\n";
-    
+
     if ( $fieldtype == 'email-inv' ||
      $fieldtype == 'email-reg' ||
      $fieldtype == 'email-conf'||

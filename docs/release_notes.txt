@@ -76,6 +76,15 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+                      
+Changes from 1.91+ (build 10089) to 1.91+ (build 10120)   
+-Fixed issue #5151: Not possible to enter welcome message/end message in additional language (tpartner)
+-Fixed issue #5173: Survey shows "Session expired" after first survey page and with register_globals activated in the PHP configuration (c_schmitz)
+-Fixed issue #5174: Export with no tokens selected throws warning - patch by jamie0725 (c_schmitz)
+-Fixed issue #5177: Upload file question browsing responses cannot preview or download file (c_schmitz)
+-Fixed issue #5180: Errors on upgrade with MSSQL database  (c_schmitz)
+-Fixed issue #5163: Clicking on "<< Previous" in survey navigation jumped back to square one (adevries)
+-Fixed issue: No "Source" button in basic editor (tpartner)                      
                               
 Changes from 1.91+ (build 10062) to 1.91+ (build 10089)                              
 #Updated translation: Norwegian Nynorsk - kindly provided by Guttorm Flatabø (c_schmitz)
