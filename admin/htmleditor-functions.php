@@ -245,11 +245,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
      $fieldtype == 'email-admin-resp'||
      $fieldtype == 'email-rem' )
     { // do nothing
-        $htmlcode.= "CKEDITOR.replace('$fieldname') ;\n";
-    }
-    else
-    {
-        $htmlcode.= "CKEDITOR.replace('$fieldname') ;\n";
+        $htmlcode.= "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname');});\n";
     }
     $htmlcode.= '</script>';
 

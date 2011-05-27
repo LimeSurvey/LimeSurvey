@@ -1,48 +1,74 @@
-﻿CKEDITOR.dialog.add( 'LimeReplacementFieldsDlg', function( editor ) {
-	return {
-	//	title: editor.lang.limereplacementfields.title,
-		title: 'Sometitle',
+﻿/*
+ * Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.html or http://ckeditor.com/license
+ */
 
-		minWidth: 200,
-		minHeight: 80,
+(function()
+{
+	function limereplacementfieldsDialog( editor, isEdit )
+	{
 
+		var lang = editor.lang.limereplacementfields,
+			generalLabel = editor.lang.common.generalTab;
+		return {
+			title : lang.title,
+			minWidth : 300,
+			minHeight : 80,
+			contents :
+			[
+				{
+					id : 'info',
+					label : generalLabel,
+					title : generalLabel,
+					elements :
+					[
+						{
+							id : 'text',
+							type : 'html',
+							label : lang.title,
+						    html : CKEDITOR.ajax.load(editor.basePath + '../../admin.php?sid=' +
+                        		editor.config.LimeReplacementFieldsSID +
+                        		'&gid=' + editor.config.LimeReplacementFieldsGID +
+                        		'&qid=' + editor.config.LimeReplacementFieldsQID +
+                        		'&fieldtype=' + editor.config.LimeReplacementFieldsType +
+                        		'&action=replacementfields' +
+                        		'&editedaction=' + editor.config.LimeReplacementFieldsAction),
+							setup : function( element )
+							{
+								if ( isEdit )
+								    $('#cquestions').val( element.getText().slice( 1, -1 ) );
+							},
+							commit : function( element )
+							{
+								var text = '{' + $('#cquestions').val() + '}';
+								// The limereplacementfields must be recreated.
+								CKEDITOR.plugins.limereplacementfields.createlimereplacementfields( editor, element, text );
+							}
+						}
+					]
+				}
+			],
+			onShow : function()
+			{
+				if ( isEdit )
+					this._element = CKEDITOR.plugins.limereplacementfields.getSelectedPlaceHoder( editor );
 
-		contents : [
-    		{
-    			id : 'tab1',
-    			label : '',
-    			title : '',
-    			elements :
-    			[
-    				{
-    					type : 'html',
-    					html : CKEDITOR.ajax.load(CKEDITOR.basePath + '../../admin.php?sid=' +
-                    		CKEDITOR.config.LimeReplacementFieldsSID +
-                    		'&gid=' + CKEDITOR.config.LimeReplacementFieldsGID +
-                    		'&qid=' + CKEDITOR.config.LimeReplacementFieldsQID +
-                    		'&fieldtype=' + CKEDITOR.config.LimeReplacementFieldsType +
-                    		'&action=replacementfields' +
-                    		'&editedaction=' + CKEDITOR.config.LimeReplacementFieldsAction)
-    				},
-    			]
-    		}
-	    ],
+				this.setupContent( this._element );
+			},
+			onOk : function()
+			{
+				this.commitContent( this._element );
+				delete this._element;
+			}
+		};
+	}
 
-
-		 onOk: function() {
-			var color = this.getContentElement('tab1', 'mycolor').getValue();
-			var numColor;
-			if (color == 'rot') numColor = '#F00';
-			else if (color == 'grün') numColor = '#0F0';
-			else if (color == 'blau') numColor = '#00F';
-
-			var element = CKEDITOR.dom.element.createFromHtml(
-					'<span style="color:' + numColor + ';">' +
-						this.getContentElement('tab1', 'mytext').getValue() +
-					'</span>');
-			editor.insertElement(element);
-		 }
-
-	};
-
-} );
+	CKEDITOR.dialog.add( 'createlimereplacementfields', function( editor )
+		{
+			return limereplacementfieldsDialog( editor );
+		});
+	CKEDITOR.dialog.add( 'editlimereplacementfields', function( editor )
+		{
+			return limereplacementfieldsDialog( editor, 1 );
+		});
+} )();

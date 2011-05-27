@@ -14,7 +14,7 @@ CKEDITOR.editorConfig = function( config )
 
     config.toolbar_popup =
     [
-        ['Save','LimeReplacementFields'],
+        ['Save','Createlimereplacementfields'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
         ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
@@ -32,7 +32,7 @@ CKEDITOR.editorConfig = function( config )
 
     config.toolbar_inline =
     [
-        ['Maximize','LimeReplacementFields'],
+        ['Maximize','Createlimereplacementfields'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord'],
         ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
         ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
@@ -62,7 +62,6 @@ CKEDITOR.editorConfig = function( config )
     ];*/
 
 
-    CKEDITOR.plugins.addExternal( 'LimeReplacementFields', CKEDITOR.basePath + 'plugins/limereplacementfields/' );
-	config.extraPlugins = "LimeReplacementFields,ajax";
+   	config.extraPlugins = "limereplacementfields,ajax";
 
 };

@@ -21,8 +21,8 @@
  * Placeholder English language file.
  */
 
-CKEDITOR.plugins.setLang('limereplacementsfields','en', {
-                                limereplacementsfields: {   title:'LimeSurvey replacement field properties',
+CKEDITOR.plugins.setLang('limereplacementfields','en', {
+                                limereplacementfields: {   title:'LimeSurvey replacement field properties',
                                                             button:'Insert/edit LimeSurvey replacement field'
                                                         }
                             }

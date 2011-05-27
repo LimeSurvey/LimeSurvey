@@ -20,5 +20,10 @@
  *
  * Placholder English language file.
  */
-FCKLang.LimeReplacementFieldsBtn	= 'Einfügen/Bearbeiten eines LimeSurvey Ersetzungsfelds' ;
-FCKLang.LimeReplacementFieldsDlgTitle	= 'LimeSurvey Ersetzungsfeldeigenschaften' ;
+
+CKEDITOR.plugins.setLang('limereplacementfields','de', {
+                                limereplacementfields: {   title:'LimeSurvey Ersetzungsfeldeigenschaften',
+                                                            button:'Einfügen/Bearbeiten eines LimeSurvey Ersetzungsfelds'
+                                                        }
+                            }
+                        );
