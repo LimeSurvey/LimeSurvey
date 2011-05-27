@@ -209,6 +209,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         {
             $assessments = doAssessment($surveyid);
         }
+        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
 
         if($thissurvey['printanswers'] != 'Y')
         {
@@ -714,7 +715,7 @@ if (remove_nulls_from_array($conmandatoryfns))
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-echo "<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n";    
+echo "<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n";
 echo "<input type='hidden' name='token' value='$token' id='token' />\n";
 echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars(strip_tags($groupname),ENT_QUOTES,'UTF-8')."' id='lastgroupname' />\n";
 echo "</form>\n";
