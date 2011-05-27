@@ -1294,9 +1294,9 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
             .$clang->gT("Delete the selected entries")
             ."' alt='"
             .$clang->gT("Delete the selected entries")
-            ."' onclick=\"if (confirm('"
+            ."' onclick=\"if($('#tokenboxeschecked').val()){if (confirm('"
             .$clang->gT("Are you sure you want to delete the selected entries?","js")
-            ."')) {".get2post("{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}")."}\"  />";
+            ."')) {".get2post("{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}")."}}else{alert('".$clang->gT("No tokens selected")."');}\"  />";
 
         }
 
