@@ -2,7 +2,7 @@
 $(document).ready(function(){
     $("#bounceprocessing").change(turnoff);
     turnoff();	
-    $('img[id=bounceprocessing]').bind('click',function(){
+    $('img#bounceprocessing').bind('click',function(){
         $("#dialog-modal").dialog({
                                     title: "Summary",
                                     modal: true,
@@ -10,7 +10,7 @@ $(document).ready(function(){
                                     height: 200,
                                     width: 400,
                                     show: 'blind',
-                                    hide: 'blind',
+                                    hide: 'blind'
 	                                }); 	  
  	    checkbounces(surveyid);
     }); 
@@ -32,11 +32,9 @@ $(document).ready(function(){
 		$("input[type=checkbox]").each(function(index) {
 			if($(this).attr("name") && $(this).attr("checked")) {
 				selecteditems = selecteditems + "|" + $(this).attr("name");
-				/* alert(index + ': '+$(this).attr("name")); */
-				$('#tokenboxeschecked').val(selecteditems);
-				/* alert(selecteditems); */
 			}
 	    });
+		$('#tokenboxeschecked').val(selecteditems);
 		tog=!tog;
 	});
 	$('input[type=checkbox]').click(function() {
@@ -44,11 +42,9 @@ $(document).ready(function(){
 		$("input[type=checkbox]").each(function(index) {
 			if($(this).attr("name") && $(this).attr("checked")) {
 				selecteditems = selecteditems + "|" + $(this).attr("name");
-				/* alert(index + ': '+$(this).attr("name")); */
-				$('#tokenboxeschecked').val(selecteditems);
-				/* alert(selecteditems); */
 			}
-		});	    
+		});
+		$('#tokenboxeschecked').val(selecteditems);	    
 	});
 });
 
