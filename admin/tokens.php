@@ -913,11 +913,11 @@ if($subaction != 'bounceprocessing')
     {
         if($thissurvey['bounceprocessing']=='N')
         {
-            $tokenoutput .="<image src='$imageurl/bounce_disabled.png'  alt='".$clang->gT("You have selected not to use any bounce settings")."'>";
+            $tokenoutput .="<img src='$imageurl/bounce_disabled.png' alt='".$clang->gT("You have selected not to use any bounce settings")."' align='left' />\n";
         }
         else
         {
-            $tokenoutput .="<image src='$imageurl/bounce.png' id='bounceprocessing' alt='".$clang->gT("Bounce processing")."'>";
+            $tokenoutput .="<img src='$imageurl/bounce.png' id='bounceprocessing' alt='".$clang->gT("Bounce processing")."' align='left' />\n";
         }
         $tokenoutput .= "<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
     }
@@ -935,7 +935,7 @@ if($subaction != 'bounceprocessing')
 	."<a href='$scriptname?action=tokens&amp;subaction=browse&amp;sid=$surveyid&amp;start=$end&amp;limit=$limit&amp;order=$order&amp;searchstring=".urlencode($searchstring)."'" .
 	"title='".$clang->gTview("Show last...")."'>".
 	"<img name='DEndButton' align='left'  src='$imageurl/dataend.png' alt='".$clang->gT("Show last...")."' /></a>\n"
-	."<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' align='left' /></form>\n";
+	."<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' align='left' />\n";
 }
 $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?action=tokens'>\n"
 	."<input type='text' name='searchstring' value='".htmlspecialchars($searchstring,ENT_QUOTES,'utf-8')."' />\n"
@@ -978,7 +978,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	$tokenoutput .= "<table class='browsetokens' id='browsetokens' cellpadding='1' cellspacing='1'>\n";
 	//COLUMN HEADINGS
 	$tokenoutput .= "\t<tr>\n"
-	."<th><input type='checkbox' id='tokencheckboxtoggle'></th>\n"   //Checkbox
+	."<th><input type='checkbox' id='tokencheckboxtoggle' /></th>\n"   //Checkbox
 
 	."<th align='left' >"
 	."<a href='$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=browse&amp;order=tid&amp;start=$start&amp;limit=$limit&amp;searchstring=".urlencode($searchstring)."'>"
@@ -1164,7 +1164,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	    if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
 	    $tokenoutput .= "\t<tr class='$bgc'>\n";
 
-	    $tokenoutput .= "<td><input type='checkbox' name='".$brow['tid']."'></td>\n";
+	    $tokenoutput .= "<td><input type='checkbox' name='".$brow['tid']."' /></td>\n";
 
 	    foreach ($tokenfieldorder as $tokenfieldname)
 	    {
@@ -1304,7 +1304,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
         }
 	    $tokenoutput .= "</td>\n"
 	    . "</tr>\n";
-	    $tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)'>\n";
+	    $tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)' />\n";
 	}
 	//End multiple item actions
 
