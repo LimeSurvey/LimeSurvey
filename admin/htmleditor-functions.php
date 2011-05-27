@@ -16,13 +16,30 @@
 //include_once("login_check.php");
 //Security Checked: POST/GET/SESSION/DB/returnglobal
 
-function PrepareEditorGeneric()
-{
-    global $clang,$imageurl,$homeurl;
-    global $sFCKEditorURL;
 
-    $script ="<script type=\"text/javascript\" src=\"".$sFCKEditorURL."/fckeditor.js\"></script>\n";
-    $script .= "<script type='text/javascript'>\n"
+function sTranslateLangCode2CK($sLanguageCode){
+
+    $aTranslationTable=array('de-informal'=>'de',
+                             'nl-formal'=>'nl');
+    if (isset($aTranslationTable[$sLanguageCode])) {
+        $sResultCode=$aTranslationTable[$sLanguageCode];
+    }
+    else
+    {
+        $sResultCode=$sLanguageCode;
+    }
+    return $sResultCode;
+
+}
+
+
+function PrepareEditorScript()
+{
+    global $clang, $imageurl, $homeurl, $js_admin_includes;
+    global $sCKEditorURL;
+
+    $js_admin_includes[]=$sCKEditorURL.'/ckeditor.js';
+    $script = "<script type='text/javascript'>\n"
     . "<!--\n"
     . "var editorwindowsHash = new Object();\n"
     . "function find_popup_editor(fieldname)\n"
@@ -41,7 +58,6 @@ function PrepareEditorGeneric()
     . "\n"
     . "function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)\n"
     . "\t{\t\n"
-    //	. "controlid = fieldname + '_popupctrl';\n"
     . "controlidena = fieldname + '_popupctrlena';\n"
     . "controliddis = fieldname + '_popupctrldis';\n"
     . "numwindows = editorwindowsHash.length;\n"
@@ -50,10 +66,9 @@ function PrepareEditorGeneric()
     . "{\n"
     . "\tdocument.getElementsByName(fieldname)[0].readOnly=true;\n"
     . "\tdocument.getElementsByName(fieldname)[0].className='readonly';\n"
-    //	. "\tdocument.getElementById(controlid).src='".$imageurl."/edithtmlpopup_disabled.png';\n"
     . "\tdocument.getElementById(controlidena).style.display='none';\n"
     . "\tdocument.getElementById(controliddis).style.display='';\n"
-    . "\tpopup = window.open('".$homeurl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=600, height=400');\n"
+    . "\tpopup = window.open('".$homeurl."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');\n"
     . "\teditorwindowsHash[fieldname] = popup;\n"
     . "}\n"
     . "else\n"
@@ -62,30 +77,24 @@ function PrepareEditorGeneric()
     . "}\n"
     . "\t}\n"
     . "\n"
-    . "function updateFCKeditor(fieldname,value)\n"
+    . "function updateCKeditor(fieldname,value)\n"
     . "{\t\n"
     . "\tvar mypopup= editorwindowsHash[fieldname];\n"
     . "\tif (mypopup)\n"
     . "\t{\n"
-    . "\t\tvar oMyEditor = mypopup.FCKeditorAPI.GetInstance('MyTextarea');\n"
-    . "\t\tif (oMyEditor) {oMyEditor.SetHTML(value);}\n"
+    . "\t\tvar oMyEditor = mypopup.CKEDITOR.instances['MyTextarea'];\n"
+    . "\t\tif (oMyEditor) {oMyEditor.setData(value);}\n"
     . "\t\tmypopup.focus();\n"
     . "\t}\n"
     . "\telse\n"
     . "\t{\n"
-    . "\t\tvar oMyEditor = FCKeditorAPI.GetInstance(fieldname);\n"
-    . "\t\toMyEditor.SetHTML(value);\n"
+    . "\t\tvar oMyEditor = CKEDITOR.instances[fieldname];\n"
+    . "\t\toMyEditor.setData(value);\n"
     . "\t}\n"
     . "}\n"
     . "--></script>\n";
 
     return $script;
-}
-
-
-function PrepareEditorScript($fieldtype=null)
-{
-    return PrepareEditorGeneric();
 }
 
 function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
@@ -156,7 +165,7 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 
     $htmlcode .= ""
     . "<a href=\"javascript:start_popup_editor('".$fieldname."','".$fieldtext."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' title=\"".$clang->gTview("Start HTML Editor in a Popup Window")."\" class='editorLink'>\n"
-	. "\t<img alt=\"".$clang->gT("Start HTML Editor in a Popup Window")."\" id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imageurl."/edithtmlpopup.png'  $imgopts class='btneditanswerena' />\n"
+	. "\t<img alt=\"".$clang->gT("Start HTML Editor in a Popup Window")."\" id='".$fieldname."_popupctrlena' name='".$fieldname."_popupctrlena' border='0' src='".$imageurl."/edithtmlpopup.png'  $imgopts align='top' class='btneditanswerena' />\n"
 	. "\t<img alt=\"".$clang->gT("Give focus to the HTML Editor Popup Window")."\" id='".$fieldname."_popupctrldis' name='".$fieldname."_popupctrldis' border='0' src='".$imageurl."/edithtmlpopup_disabled.png' style='display: none'  $imgopts align='top' class='btneditanswerdis' />\n"
 	. "</a>\n";
 
@@ -165,31 +174,30 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    global $clang, $imageurl, $homeurl, $rooturl, $sFCKEditorURL, $fckeditexpandtoolbar, $uploadurl;
+    global $clang, $imageurl, $homeurl, $rooturl, $sCKEditorURL, $ckeditexpandtoolbar, $uploadurl;
 
     $htmlcode = '';
     $imgopts = '';
-    $toolbarname = 'Basic';
+    $toolbarname = 'inline';
     $toolbaroption="";
     $htmlformatoption="";
-    $oFCKeditorVarName = "oFCKeditor_".str_replace("-","_",$fieldname);
+    $oCKeditorVarName = "oCKeditor_".str_replace("-","_",$fieldname);
 
     if ( ($fieldtype == 'editanswer' ||
     $fieldtype == 'addanswer' ||
     $fieldtype == 'editlabel' ||
     $fieldtype == 'addlabel') && (preg_match("/^translate/",$action) == 0) )
     {
-        $toolbarname = 'LimeSurveyToolbarfull';
-        $toolbaroption="$oFCKeditorVarName.Config[\"ToolbarLocation\"]=\"Out:xToolbar\";\n"
-        . "$oFCKeditorVarName.Config[\"ToolbarStartExpanded\"]=true;\n"
-        . "$oFCKeditorVarName.Config[\"ToolbarCanCollapse\"]=false;\n"
-        . "$oFCKeditorVarName.Height = \"50\"\n";
+        $toolbaroption= ",toolbarStartupExpanded:true\n"
+                       .",toolbar:'popup'\n"
+                       .",toolbarCanCollapse:false\n";
     }
     else
     {
-        if (!isset($fckeditexpandtoolbar) || $fckeditexpandtoolbar == true)
+        if (!isset($ckeditexpandtoolbar) || $ckeditexpandtoolbar == true)
         {
-            $toolbaroption .= "$oFCKeditorVarName.Config[\"ToolbarStartExpanded\"]=true;\n";
+            $toolbaroption = ",toolbarStartupExpanded:true\n"
+                            .",toolbar:'inline'\n";
         }
     }
 
@@ -200,34 +208,35 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
          $fieldtype == 'email-admin-resp'||
          $fieldtype == 'email-rem' )
     {
-        $htmlformatoption = "$oFCKeditorVarName.Config[\"FullPage\"]=true;\n"
-        . "$oFCKeditorVarName.Height = \"500\"\n";
+        $htmlformatoption = ",fullPage:true\n";
     }
 
 
     $htmlcode .= ""
     . "<script type=\"text/javascript\">\n"
-    . "var $oFCKeditorVarName = new FCKeditor('$fieldname');\n"
-    . "$oFCKeditorVarName.BasePath     = '".$sFCKEditorURL."/';\n"
-    . "$oFCKeditorVarName.Config[\"CustomConfigurationsPath\"] = \"".$sFCKEditorURL."/limesurvey-config.js\";\n"
-    . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
-    . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsSID\"] = \"".$surveyID."\";\n"
-    . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsGID\"] = \"".$gID."\";\n"
-    . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsQID\"] = \"".$qID."\";\n"
-    . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsType\"] = \"".$fieldtype."\";\n"
-    . "$oFCKeditorVarName.Config[\"LimeReplacementFieldsAction\"] = \"".$action."\";\n"
-    . "$oFCKeditorVarName.Config[\"SmileyPath\"] = \"".$uploadurl."/images/smiley/msn/\";\n"
-    . $htmlformatoption
-    . $toolbaroption;
+    . "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
+                                                                 customConfig : \"".$sCKEditorURL."/limesurvey-config.js\"
+                                                                ,LimeReplacementFieldsType : \"".$fieldtype."\"
+                                                                ,LimeReplacementFieldsSID : \"".$surveyID."\"
+                                                                ,LimeReplacementFieldsGID : \"".$gID."\"
+                                                                ,LimeReplacementFieldsQID : \"".$qID."\"
+                                                                ,LimeReplacementFieldsType : \"".$fieldtype."\"
+                                                                ,LimeReplacementFieldsAction : \"".$action."\"
+                                                                ,width:'660'
+                                                                ,language:'".sTranslateLangCode2CK($_SESSION['adminlang'])."'
+                                                                ,smiley_path : \"".$uploadurl."/images/smiley/msn/\"\n"
+                                                                . $htmlformatoption
+                                                                . $toolbaroption
+    ."});});";
 
-    if ($fieldtype == 'answer' || $fieldtype == 'label')
+  /*  if ($fieldtype == 'answer' || $fieldtype == 'label')
     {
         $htmlcode .= ""
-        . "$oFCKeditorVarName.Config[ 'ToolbarLocation' ] = 'Out:xToolbar' ;\n";
+        . "$oCKeditorVarName.Config[ 'ToolbarLocation' ] = 'Out:xToolbar' ;\n";
     }
 
     $htmlcode .= ""
-    . "$oFCKeditorVarName.ToolbarSet = '".$toolbarname."';\n";
+    . "$oCKeditorVarName.ToolbarSet = '".$toolbarname."';\n";*/
 
     if ( $fieldtype == 'email-inv' ||
      $fieldtype == 'email-reg' ||
@@ -236,11 +245,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
      $fieldtype == 'email-admin-resp'||
      $fieldtype == 'email-rem' )
     { // do nothing
-        $htmlcode.= "$oFCKeditorVarName.ReplaceTextarea() ;\n";
-    }
-    else
-    {
-        $htmlcode.= "$oFCKeditorVarName.ReplaceTextarea() ;\n";
+        $htmlcode.= "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname');});\n";
     }
     $htmlcode.= '</script>';
 

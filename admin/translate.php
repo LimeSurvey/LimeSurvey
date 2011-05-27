@@ -179,7 +179,7 @@ END;
 
       // Create tab names and heading
       $translateoutput .= "\t<div id='tab-".$type."'>\n";
-      $translateoutput .= PrepareEditorScript("noneedforvalue");
+      $translateoutput .= PrepareEditorScript();
       // Setup form
         // start a counter in order to number the input fields for each record
         $i = 0;
