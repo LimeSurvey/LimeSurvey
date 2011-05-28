@@ -1390,10 +1390,6 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
 
     elseif ($subaction == "update"  && bHasSurveyPermission($surveyid,'responses','update'))
     {
-        if ($_SESSION['USER_RIGHT_SUPERADMIN'] != 1  && $surveyinfo['owner_id'] != $_SESSION['loginID'])
-        {
-            safe_die('You are not allowed to update an existing response.');
-        }
 
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         $dataentryoutput .= $surveyoptions."<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";

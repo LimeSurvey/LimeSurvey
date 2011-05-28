@@ -32,22 +32,9 @@ $InsertansUnsupportedtypes=Array(); // Currently all question types are supporte
 $replFields=Array();
 $isInstertansEnabled=false;
 
-$limereplacementoutput="<html>\n"
-. "\t<head>\n"
-. "\t\t<title>LimeReplacementFields</title>\n"
-. "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">\n"
-. "\t\t<meta content=\"noindex, nofollow\" name=\"robots\">\n"
-. "\t\t<script src=\"$sFCKEditorURL/editor/dialog/common/fck_dialog_common.js\" type=\"text/javascript\"></script>\n"
-. "\t\t<script src=\"$rooturl/scripts/jquery/jquery.js\" type=\"text/javascript\"></script>\n"
-. "\t\t<script language=\"javascript\">\n"
-. "\t\t\tvar mydialog = window.parent ;\n"
-. "\t\t\tvar oEditor = mydialog.InnerDialogLoaded() ;\n"
-. "\t\t\tvar dialog = oEditor.FCK ;\n"
-. "\t\t\tvar FCKLang = oEditor.FCKLang ;\n"
-. "\t\t\tvar FCKLimeReplacementFieldss = oEditor.FCKLimeReplacementFieldss ;\n"
+$limereplacementoutput="\t\t<script language=\"javascript\">\n"
 . "\t\t\$(document).ready(function ()\n"
 . "\t\t\t{\n"
-. "\t\t\t\toEditor.FCKLanguageManager.TranslatePage( document ) ;\n"
 . "\t\t\t\tLoadSelected() ;\n"
 . "\t\t\t\tmydialog.SetOkButton( true ) ;\n"
 . "\n"
@@ -338,7 +325,6 @@ if ($isInstertansEnabled===true)
     // Now I´ll add a hack to add the questions before as option
     // if they are date type
 
-    //$limereplacementoutput .="\t<div style='overflow-x:scroll; width:100%; overflow: -moz-scrollbars-horizontal; overflow-y:scroll; height: 100px;'>\n"
 }
 
 if (count($replFields) > 0 || isset($cquestions) )
@@ -421,10 +407,8 @@ if (isset($surveyformat))
     }
 }
 
-$limereplacementoutput .= "</table>\n"
-. "\t</body>\n"
-. "</html>";
 
+$limereplacementoutput .= "</table>\n";
 echo $limereplacementoutput;
 exit;
 ?>

@@ -372,7 +372,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         {
             if ($sumcount6 > 0) {
                 $surveysummary .= "<li><a href=\"#\" onclick=\"".get2post("{$scriptname}?action=resetsurveylogic&amp;sid=$surveyid")."\">"
-                . "<img src='{$imageurl}/resetsurveylogic_30.png' name='ResetSurveyLogic'> ".$clang->gT("Reset conditions")."</a></li>\n";
+                . "<img src='{$imageurl}/resetsurveylogic_30.png' name='ResetSurveyLogic' /> ".$clang->gT("Reset conditions")."</a></li>\n";
             }
             else
             {

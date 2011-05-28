@@ -22,8 +22,8 @@ function loadHTMLEditor(event, ui)
    }
    if ($(sSelector+' iframe').size()==0)
    {
-        sFCKEditorInstanceName='oFCKeditor_'+$(sSelector+' textarea').attr('id');
-        eval("if (typeof "+sFCKEditorInstanceName+" != 'undefined')"+sFCKEditorInstanceName+".ReplaceTextarea();");
+        sCKEditorInstanceName='oFCKeditor_'+$(sSelector+' textarea').attr('id').replace(/-/i, "_");
+        eval("if (typeof "+sCKEditorInstanceName+" != 'undefined')"+sCKEditorInstanceName+".ReplaceTextarea();");
    }
 }
 
@@ -35,7 +35,7 @@ function fillin(tofield, fromfield)
         {   
             $('#'+tofield).val($('#'+fromfield).val());    
         }
-        updateFCKeditor(tofield,$('#'+fromfield).val());
+        updateCKeditor(tofield,$('#'+fromfield).val());
 
     }
 }

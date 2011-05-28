@@ -1017,7 +1017,7 @@
             . "<input type='hidden' name='action' value='importsurveyresources' />\n"
             . "<ul>\n"
             . "<li><label>&nbsp;</label>\n"
-            . "<input type='button' onclick='window.open(\"$sFCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></li>\n"
+            . "<input type='button' onclick='window.open(\"$sCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\" $disabledIfNoResources /></li>\n"
             . "<li><label>&nbsp;</label>\n"
             . "<input type='button' onclick='window.open(\"$scriptname?action=exportsurvresources&amp;sid={$surveyid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\" $disabledIfNoResources /></li>\n"
             . "<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"

@@ -24,8 +24,9 @@ if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $
     Header("Content-Disposition: attachment; filename=$file_name");
     Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     echo $export;
+    exit; // needs to be inside the condition so the updater still can include this file
 }
-    exit;
+
 
 /**
  * Creates a full dump of the current LimeSurvey database

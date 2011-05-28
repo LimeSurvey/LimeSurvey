@@ -204,6 +204,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         {
             $assessments = doAssessment($surveyid);
         }
+        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
 
         if($thissurvey['printanswers'] != 'Y')
         {

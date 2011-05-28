@@ -103,7 +103,7 @@
     }
 
     // Print Key Control JavaScript
-    $vasummary .= PrepareEditorScript("editanswer");
+    $vasummary .= PrepareEditorScript();
 
     $query = "SELECT question_order FROM ".db_table_name('questions')." WHERE parent_qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY question_order desc";
     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked

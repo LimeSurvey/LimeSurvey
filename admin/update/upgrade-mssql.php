@@ -564,8 +564,8 @@ function upgrade_token_tables145()
     $surveyidresult = db_execute_num($surveyidquery);
     $tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
     foreach ($tokentables as $sv) {
-            modify_database("","ALTER TABLE ".$sv[0]." ADD [usesleft] int NOT NULL DEFAULT '1'"); echo $modifyoutput; flush();ob_flush();
-            modify_database("","UPDATE ".$sv[0]." SET usesleft=0 WHERE completed<>'N'"); echo $modifyoutput; flush();ob_flush();
+            modify_database("","ALTER TABLE ".$sv." ADD [usesleft] int NOT NULL DEFAULT '1'"); echo $modifyoutput; flush();ob_flush();
+            modify_database("","UPDATE ".$sv." SET usesleft=0 WHERE completed<>'N'"); echo $modifyoutput; flush();ob_flush();
     }
 }
 

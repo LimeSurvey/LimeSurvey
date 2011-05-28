@@ -565,10 +565,8 @@ $uploaddir               = "$rootdir".DIRECTORY_SEPARATOR."upload";
 $standardtemplaterootdir = "$rootdir".DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $usertemplaterootdir     = "$uploaddir".DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates           
 
-// Note: For OS/2 the $tempdir may need to be defined as an actual directory
-// example: "x:/limesurvey/tmp". We don't know why.
-$sFCKEditorURL   =   "$homeurl/scripts/fckeditor.266";
-$fckeditexpandtoolbar   =   true; // defines if the FCKeditor toolbar should be opened by default
+$sCKEditorURL   =   "$homeurl/scripts/ckeditor.36";
+$ckeditexpandtoolbar   =   true; // defines if the CKeditor toolbar should be opened by default
 $pdfexportdir   = "$homedir/classes/tcpdf";  //Directory with the tcpdf.php extensiontcpdf.php
 $pdffonts       = $pdfexportdir.'/fonts';  //Directory for the TCPDF fonts
 
