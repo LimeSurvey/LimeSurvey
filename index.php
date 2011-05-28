@@ -390,6 +390,7 @@ if (!$surveyid)
 			  ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
 			  WHERE surveyls_survey_id=a.sid
 			  AND surveyls_language=a.language
+              AND surveyls_language='$baselang'
 			  AND a.active='Y'
 			  AND a.listpublic='Y'
 			  AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
@@ -401,12 +402,6 @@ if (!$surveyid)
     {
         while($rows = $result->FetchRow())
         {
-            $result2 = db_execute_assoc("Select surveyls_title from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$rows['sid']} and surveyls_language='$baselang'");
-            if ($result2->RecordCount())
-            {
-                $languagedetails=$result2->FetchRow();
-                $rows['surveyls_title']=$languagedetails['surveyls_title'];
-            }
             $link = "<li><a href='$rooturl/index.php?sid=".$rows['sid'];
             if (isset($_GET['lang']))
             {
