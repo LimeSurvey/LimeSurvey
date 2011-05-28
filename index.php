@@ -2859,7 +2859,15 @@ function buildsurveysession()
         $_SESSION['ls_initialquerystr']=$_SERVER['QUERY_STRING'];
     }
     // END NEW
-    return $totalquestions;
+
+    // Fix totalquestions by substracting Test Display questions
+    $sNoOfTextDisplayQuestions=(int) $connect->GetOne("SELECT count(*)\n"
+        ." FROM ".db_table_name('questions')
+        ." WHERE type='X'\n"
+        ." AND sid={$surveyid}"
+        ." AND language='".$_SESSION['s_lang']."'"
+        ." AND parent_qid=0");
+    return $totalquestions-$sNoOfTextDisplayQuestions;
 
 }
 
