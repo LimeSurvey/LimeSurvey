@@ -76,7 +76,7 @@ else
     session_name("LimeSurveyRuntime-$surveyid");
 }
 session_set_cookie_params(0,$relativeurl.'/');
-if (!isset($_SESSION))
+if (!isset($_SESSION) || empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
 	@session_start();
 
 
@@ -388,6 +388,7 @@ if (!$surveyid)
 			  ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) 
 			  WHERE surveyls_survey_id=a.sid 
 			  AND surveyls_language=a.language 
+              AND surveyls_language='$baselang'
 			  AND a.active='Y'
 			  AND a.listpublic='Y'
 			  AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
@@ -399,12 +400,6 @@ if (!$surveyid)
     {
         while($rows = $result->FetchRow())
         {
-            $result2 = db_execute_assoc("Select surveyls_title from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$rows['sid']} and surveyls_language='$baselang'");
-            if ($result2->RecordCount())
-            {
-                $languagedetails=$result2->FetchRow();
-                $rows['surveyls_title']=$languagedetails['surveyls_title'];
-            }
             $link = "<li><a href='$rooturl/index.php?sid=".$rows['sid'];
             if (isset($_GET['lang']))
             {
@@ -2874,7 +2869,15 @@ function buildsurveysession()
         $_SESSION['ls_initialquerystr']=$_SERVER['QUERY_STRING'];
     }
     // END NEW
-    return $totalquestions;
+
+    // Fix totalquestions by substracting Test Display questions
+    $sNoOfTextDisplayQuestions=(int) $connect->GetOne("SELECT count(*)\n"
+        ." FROM ".db_table_name('questions')
+        ." WHERE type='X'\n"
+        ." AND sid={$surveyid}"
+        ." AND language='".$_SESSION['s_lang']."'"
+        ." AND parent_qid=0");
+    return $totalquestions-$sNoOfTextDisplayQuestions;
 
 }
 
