@@ -71,7 +71,7 @@
             $editsurvey .= "</script>\n";
 
             // header
-            $editsurvey .= "<div class='header ui-widget-header'>" . $clang->gT("Create, import or copy survey") . "</div>\n";
+            $editsurvey .= "<div class='header ui-widget-header'>" . $clang->gT("Create, import, or copy survey") . "</div>\n";
         } elseif ($action == "editsurveysettings") {
             //Fetch survey info
         $esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -92,8 +92,8 @@
             <li><a href='#publication'>".$clang->gT("Publication & access control")."</a></li>
             <li><a href='#notification'>".$clang->gT("Notification & data management")."</a></li>
             <li><a href='#tokens'>".$clang->gT("Tokens")."</a></li>
-            <li><a href='#import'>".$clang->gT("Import survey")."</a></li>
-            <li><a href='#copy'>".$clang->gT("Copy survey")."</a></li>
+            <li><a href='#import'>".$clang->gT("Import")."</a></li>
+            <li><a href='#copy'>".$clang->gT("Copy")."</a></li>
             </ul>
             \n";
             $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
@@ -102,7 +102,7 @@
             $editsurvey .= "<div id='general'>\n";
 
             // Survey Language
-            $editsurvey .= "<ul><li><label for='language' title='" . $clang->gT("This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey.") . "'><span class='annotationasterisk'>*</span>" . $clang->gT("Base Language:") . "</label>\n"
+            $editsurvey .= "<ul><li><label for='language' title='" . $clang->gT("This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey.") . "'><span class='annotationasterisk'>*</span>" . $clang->gT("Base language:") . "</label>\n"
                     . "<select id='language' name='language'>\n";
 
             foreach (getLanguageData () as $langkey2 => $langname) {
@@ -123,7 +123,12 @@
                 $owner['full_name'] = $siteadminname;
             if (empty($owner['email']))
                 $owner['email'] = $siteadminemail;
-
+            //Bounce setting by default to global if it set globally
+            if (getGlobalSetting('bounceaccounttype')!='off'){
+                $owner['bounce_email']         = getGlobalSetting('siteadminbounce');
+            } else {
+                $owner['bounce_email']        = $owner['email'];
+            }
             $editsurvey .= "<span class='annotation'> " . $clang->gT("*This setting cannot be changed later!") . "</span></li>\n";
 
             $editsurvey .= ""
@@ -166,8 +171,8 @@
                     . "<li><label for='adminemail'>" . $clang->gT("Admin Email:") . "</label>\n"
                     . "<input type='text' size='50' id='adminemail' name='adminemail' value='" . $owner['email'] . "' /></li>\n"
                     . "<li><label for='bounce_email'>" . $clang->gT("Bounce Email:") . "</label>\n"
-                    . "<input type='text' size='50' id='bounce_email' name='bounce_email' value='" . $owner['email'] . "' /></li>\n"
-                    . "<li><label for='faxto'>" . $clang->gT("Fax To:") . "</label>\n"
+                    . "<input type='text' size='50' id='bounce_email' name='bounce_email' value='" . $owner['bounce_email'] . "' /></li>\n"
+                    . "<li><label for='faxto'>" . $clang->gT("Fax to:") . "</label>\n"
                     . "<input type='text' size='50' id='faxto' name='faxto' /></li>\n";
 
             $editsurvey.= "</ul>";
@@ -190,8 +195,8 @@
             // General & Contact TAB
             $editsurvey .= "<div id='general'>\n";
 
-            // Base Language
-            $editsurvey .= "<ul><li><label>" . $clang->gT("Base Language:") . "</label>\n"
+            // Base language
+            $editsurvey .= "<ul><li><label>" . $clang->gT("Base language:") . "</label>\n"
             .GetLanguageNameFromCode($esrow['language'])
             . "</li>\n"
 
@@ -237,7 +242,7 @@
             . "<input type='text' size='50' id='adminemail' name='adminemail' value=\"{$esrow['adminemail']}\" /></li>\n"
             . "<li><label for='bounce_email'>".$clang->gT("Bounce Email:")."</label>\n"
             . "<input type='text' size='50' id='bounce_email' name='bounce_email' value=\"{$esrow['bounce_email']}\" /></li>\n"
-            . "<li><label for='faxto'>".$clang->gT("Fax To:")."</label>\n"
+            . "<li><label for='faxto'>".$clang->gT("Fax to:")."</label>\n"
                     . "<input type='text' size='50' id='faxto' name='faxto' value=\"{$esrow['faxto']}\" /></li></ul>\n";
 
             // End General TAB
@@ -461,7 +466,7 @@
 	    };
 
             // Show {GROUPNAME} and/or {GROUPDESCRIPTION} block
-	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showgroupinfo\">".$clang->gT('Show Group Name and/or Group Description')."</label>\n\t\t".'<input type="hidden" name="showgroupinfo" id="showgroupinfo" value="';
+	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showgroupinfo\">".$clang->gT('Show group name and/or group description')."</label>\n\t\t".'<input type="hidden" name="showgroupinfo" id="showgroupinfo" value="';
             $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="';
         switch ($showgroupinfo) {
 		case 'both':
@@ -486,7 +491,7 @@
                 if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X'])) {
 		    	$sel_showgri['C'] = ' selected="selected"';
 		    };
-		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showgroupinfo\">".$clang->gT('Show Group Name and/or Group Description')."</label>\n\t\t"
+		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showgroupinfo\">".$clang->gT('Show group name and/or group description')."</label>\n\t\t"
 		    . "<select id=\"showgroupinfo\" name=\"showgroupinfo\">\n\t\t\t"
 		    . '<option value="B"'.$sel_showgri['B'].'>'.$clang->gT('Show both')."</option>\n\t\t\t"
 		    . '<option value="N"'.$sel_showgri['N'].'>'.$clang->gT('Show group name only')."</option>\n\t\t\t"
@@ -498,7 +503,7 @@
 	    };
 
             // Show {QUESTION_CODE} and/or {QUESTION_NUMBER} block
-	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showqnumcode\">".$clang->gT('Show Question Number and/or Question Code')."</label>\n\t\t".'<input type="hidden" name="showqnumcode" id="showqnumcode" value="';
+	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_showqnumcode\">".$clang->gT('Show question number and/or code')."</label>\n\t\t".'<input type="hidden" name="showqnumcode" id="showqnumcode" value="';
             $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="';
         switch ($showqnumcode) {
 		case 'none':
@@ -523,7 +528,7 @@
                 if (empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X'])) {
 		    	$sel_showqnc['X'] = ' selected="selected"';
 		    };
-		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showqnumcode\">".$clang->gT('Show Question Number and/or Question Code')."</label>\n\t\t"
+		    $editsurvey .= "\n\t<li>\n\t\t<label for=\"showqnumcode\">".$clang->gT('Show question number and/or code')."</label>\n\t\t"
 		    . "<select id=\"showqnumcode\" name=\"showqnumcode\">\n\t\t\t"
 		    . '<option value="B"'.$sel_showqnc['B'].'>'.$clang->gT('Show both')."</option>\n\t\t\t"
 		    . '<option value="N"'.$sel_showqnc['N'].'>'.$clang->gT('Show question number only')."</option>\n\t\t\t"
@@ -536,7 +541,7 @@
 
             // Show "No Answer" block
 	    $shownoanswer = isset($shownoanswer)?$shownoanswer:'Y';
-	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_shownoanswer\">".$clang->gT('Show no answer')."</label>\n\t\t".'<input type="hidden" name="shownoanswer" id="shownoanswer" value="';
+	    $show_dis_pre = "\n\t<li>\n\t\t<label for=\"dis_shownoanswer\">".$clang->gT('Show "No answer"')."</label>\n\t\t".'<input type="hidden" name="shownoanswer" id="shownoanswer" value="';
             $show_dis_mid = "\" />\n\t\t".'<input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="';
         switch ($shownoanswer) {
 	    	case 0:
@@ -551,7 +556,7 @@
                 if (empty($sel_showno)) {
 		    	$sel_showno['Y'] = ' selected="selected"';
 		    };
-	    	    $editsurvey .= "\n\t<li>\n\t\t<label for=\"shownoanswer\">".$clang->gT('Show No Answer')."</label>\n\t\t"
+	    	    $editsurvey .= "\n\t<li>\n\t\t<label for=\"shownoanswer\">".$clang->gT('Show "No answer"')."</label>\n\t\t"
 		    . "<select id=\"shownoanswer\" name=\"shownoanswer\">\n\t\t\t"
 		    . '<option value="Y"'.$sel_showno['Y'].'>'.$clang->gT('Yes')."</option>\n\t\t\t"
 		    . '<option value="N"'.$sel_showno['N'].'>'.$clang->gT('No')."</option>\n\t\t"
@@ -823,7 +828,7 @@
             $editsurvey .= "</li>\n";
 
             // begin REF URL Block
-            $editsurvey .= "<li><label for=''>".$clang->gT("Save Referring URL?")."</label>\n";
+            $editsurvey .= "<li><label for=''>".$clang->gT("Save referrer URL?")."</label>\n";
 
         if ($esrow['active'] == "Y") {
                 $editsurvey .= "\n";
@@ -924,7 +929,7 @@
         $editsurvey .= "<div id='tokens'><ul>\n";
         // Token answers persistence
         $editsurvey .= "<li><label for=''>".$clang->gT("Enable token-based response persistence?")."</label>\n"
-        . "<select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('anonymized').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymized responses are used","js")."'); this.value='N';}\">\n"
+        . "<select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('anonymized').value == 'Y') {alert('".$clang->gT("This option can't be set if the `Anonymized responses` option is active.","js")."'); this.value='N';}\">\n"
         . "<option value='Y'";
         if ($esrow['tokenanswerspersistence'] == "Y") {
             $editsurvey .= " selected='selected'";
@@ -961,7 +966,7 @@
             // Import TAB
             $editsurvey .= "<div id='import'>\n";
 
-            // Import Survey
+            // Import survey
             $editsurvey .= "<form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"" . $clang->gT('Please select a file to import!', 'js') . "\");'>\n"
                     . "<ul>\n"
                     . "<li><label for='the_file'>" . $clang->gT("Select survey structure file (*.lss, *.csv):") . "</label>\n"
@@ -1035,17 +1040,17 @@
 
             // The external button to submit Survey edit changes
         if ($action == "newsurvey") {
-            $cond = "if (isEmpty(document.getElementById(\"surveyls_title\"), \"" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "\"))";
-            $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
+            $cond = "if (isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "'))";
+            $editsurvey .= "<p><button onclick=\"$cond {document.getElementById('addnewsurvey').submit();}\" class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
         } elseif ($action == "editsurveysettings") {
-            $cond = "if (UpdateLanguageIDs(mylangs,\"" . $clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js") . "\"))";
+            $cond = "if (UpdateLanguageIDs(mylangs,'" . $clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js") . "'))";
             if (bHasSurveyPermission($surveyid,'surveysettings','update'))
             {
-                $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
+                $editsurvey .= "<p><button onclick=\"$cond {document.getElementById('addnewsurvey').submit();}\" class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
             }
             if (bHasSurveyPermission($surveyid,'surveylocale','read'))
             {
-                $editsurvey .= "<p><button onclick='$cond {document.getElementById(\"surveysettingsaction\").value = \"updatesurveysettingsandeditlocalesettings\"; document.getElementById(\"addnewsurvey\").submit();}' class='standardbtn' >" . $clang->gT("Save & edit survey text elements") . " >></button></p>\n";
+                $editsurvey .= "<p><button onclick=\"$cond {document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; document.getElementById('addnewsurvey').submit();}\" class='standardbtn' >" . $clang->gT("Save & edit survey text elements") . " >></button></p>\n";
             }
         }
     }
