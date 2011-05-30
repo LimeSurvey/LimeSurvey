@@ -1,5 +1,5 @@
 /* The following styles are for all versions of IE 7 */
-.choice-5-pt-radio ul {
+.yes-no .answer ul, .gender .answer ul .choice-5-pt-radio .answer ul {
   margin-left: 2.5em;
 }
 

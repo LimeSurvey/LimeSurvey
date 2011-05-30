@@ -1,10 +1,6 @@
 /* The following styles are for versions of IE 6 and older */
-.choice-5-pt-radio ul {
+.yes-no .answer ul, .gender .answer ul .choice-5-pt-radio .answer ul {
   margin-left: 2.5em;
-}
-
-.yes-no ul,.gender ul {
-  margin-left: 1em;
 }
 
 .multiple-short-txt ul.numbers-only li span {
