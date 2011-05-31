@@ -512,6 +512,7 @@ for ($i=0; $i<$fieldcount; $i++)
             if ($exportstyle == "headcodes")
             {
                 $fquest=$fielddata['title'];
+                if (!empty($fielddata['aid'])) $fquest .= ' [' . $fielddata['aid'] . ']';
             }
             else
             {
