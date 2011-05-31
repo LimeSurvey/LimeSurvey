@@ -283,6 +283,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                 if ($SelectedCode == $TypeCode) {$qtypeselecter .= " selected='selected'";}
                 $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
             }
+            $qtypeselecter .= '</optgroup>';
         }
 
         return $qtypeselecter;

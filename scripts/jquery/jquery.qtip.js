@@ -131,7 +131,7 @@
             $.fn.qtip.interfaces[id] = obj;
 
       // Check if element already has qTip data assigned
-            if ($(this).data('qtip') !== null) // code used to read if( typeof $(this).data('qtip') == 'object' )
+            if(typeof $(this).data('qtip') === 'object' && $(this).data('qtip'))
             {
                // Set new current interface id
                if(typeof $(this).attr('qtip') === 'undefined')

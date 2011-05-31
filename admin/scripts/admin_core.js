@@ -217,14 +217,17 @@ $(document).ready(function(){
        var oldThis = this;
        var ownername_edit_id = $(this).attr('id');
        var survey_id = ownername_edit_id.slice(15);
+       var translate_to = $(this).attr('translate_to');
+       var initial_text = $(this).html();
        $.getJSON('admin.php', {
                     action: 'ajaxgetusers'
                 },function(oData)
                 {
                     old_owner =  $($(oldThis).parent()).html();
-                    old_owner = (old_owner.split(" "))[0];
+		    
+                    old_owner = (old_owner.split("("))[0];
                     $($(oldThis).parent()).html('<select class="ownername_select" id="ownername_select_'+survey_id+'"></select>'
-                    + '<input class="ownername_button" id="ownername_button_'+survey_id+'" type="button" value="Update">');
+                    + '<input class="ownername_button" id="ownername_button_'+survey_id+'" type="button" initial_text="'+initial_text+'" value="'+translate_to+'">');
                     $(oData).each(function(key,value){
                         $('#ownername_select_'+survey_id).
                           append($("<option id='opt_"+value[1]+"'></option>").
@@ -237,34 +240,44 @@ $(document).ready(function(){
 
     $(".ownername_button").live('click',function(){
        var oldThis = this;
+       var initial_text = $(this).attr('initial_text');
        var ownername_select_id = $(this).attr('id');
        var survey_id = ownername_select_id.slice(17);
        var newowner = $("#ownername_select_"+survey_id).val();
+       var translate_to = $(this).attr('value');
 
        $.getJSON('admin.php',{
             action: 'ajaxowneredit',
             newowner: newowner,
             survey_id : survey_id
        }, function (data){
+	
            var objToUpdate = $($(oldThis).parent());
+	    
            if (data.record_count>0)
                $(objToUpdate).html(data.newowner);
            else
                $(objToUpdate).html(old_owner);
 
-           $(objToUpdate).html($(objToUpdate).html() + '(<a id="ownername_edit_69173" class="ownername_edit" href="#">Edit</a>)' );
+	    $(objToUpdate).html($(objToUpdate).html() + '(<a id="ownername_edit_69173" translate_to='+translate_to+' class="ownername_edit" href="#">'+initial_text+'</a>)' );
        });
     });
 
-    if ($("#question_type.full").length > 0){
-        $("#question_type").msDropDown({style:'max-height:20em;'});
+    if ($("#question_type").length > 0 && $("#question_type").attr('type')!='hidden'){
+        $("#question_type").msDropDown({onInit:qTypeDropdownInit});
 
         $("#question_type").change(function(event){
            var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
            OtherSelection(selected_value);
 	});
+    }
+    
+    
+    
+});
 
-        $.getScript('../scripts/jquery/jquery-qtip.js', function() {
+function qTypeDropdownInit()
+{
             $("#question_type_child a").each(function(index,element){
 
                 $(element).qtip({
@@ -289,13 +302,10 @@ $(document).ready(function(){
                 });
 
             });
-        });
-
     }
     
     
     
-});
 
 var aToolTipData = {
 
