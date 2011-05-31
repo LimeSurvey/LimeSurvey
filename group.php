@@ -155,7 +155,7 @@ else
             {
                 $assessments = doAssessment($surveyid);
             }
-
+            $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
             if($thissurvey['printanswers'] != 'Y')
             {
                 killSession();
