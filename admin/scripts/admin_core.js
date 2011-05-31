@@ -245,45 +245,48 @@ $(document).ready(function(){
     });
 
     if ($("#question_type").length > 0 && $("#question_type").attr('type')!='hidden'){
-        $("#question_type").msDropDown();
+        $("#question_type").msDropDown({onInit:qTypeDropdownInit});
 
         $("#question_type").change(function(event){
            var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
            OtherSelection(selected_value);
-	});
-
-        $.getScript('../scripts/jquery/jquery-qtip.js', function() {
-            $("#question_type_child a").each(function(index,element){
-
-                $(element).qtip({
-                       style: {
-                                    'margin' : '15px',
-                                    'width': '450px',
-                                    'height':'auto',
-                                    'border':{
-                                            width: 4,
-                                            radius: 2
-                                    }
-                            },
-                       content: getToolTip($(element).text()),
-                       position: {
-                                    corner:{
-                                            target: 'leftMiddle',
-                                            tooltip:'rightMiddle'
-                                    }
-                            },
-                       show: 'mouseover',
-                       hide: 'mouseout'
-                });
-
-            });
-        });
-
+	    });
     }
     
     
     
 });
+
+function qTypeDropdownInit()
+{
+    $("#question_type_child a").each(function(index,element){
+
+        $(element).qtip({
+               style: {
+                            'margin' : '15px',
+                            'width': '450px',
+                            'height':'auto',
+                            'border':{
+                                    width: 4,
+                                    radius: 2
+                            }
+                    },
+               content: getToolTip($(element).text()),
+               position: {
+                            corner:{
+                                    target: 'leftMiddle',
+                                    tooltip:'rightMiddle'
+                            }
+                    },
+               show: 'mouseover',
+               hide: 'mouseout'
+        });
+
+    });       
+}
+
+
+
 
 var aToolTipData = {
 

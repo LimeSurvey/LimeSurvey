@@ -130,8 +130,8 @@
             // Add API references
             $.fn.qtip.interfaces[id] = obj;
 
-      // Check if element already has qTip data assigned
-            if ($(this).data('qtip') !== null) // code used to read if( typeof $(this).data('qtip') == 'object' )
+            // Check if element already has qTip data assigned
+            if(typeof $(this).data('qtip') === 'object' && $(this).data('qtip'))
             {
                // Set new current interface id
                if(typeof $(this).attr('qtip') === 'undefined')
@@ -139,7 +139,7 @@
 
                // Push new API interface onto interfaces array
                $(this).data('qtip').interfaces.push(obj);
-            } 
+            }
 
             // No qTip data is present, create now
             else $(this).data('qtip', { current: 0, interfaces: [obj] });
