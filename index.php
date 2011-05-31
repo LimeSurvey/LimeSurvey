@@ -2928,7 +2928,7 @@ function surveymover()
             . $clang->gT("Previous")." ' name='move2' id='moveprevbtn' $disabled />\n";
         }
     }
-    }
+    
     if (isset($_SESSION['step']) && $_SESSION['step'] && (!$_SESSION['totalsteps'] || ($_SESSION['step'] < $_SESSION['totalsteps'])))
     {
         $surveymover .=  "\t<input class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" value=' "
