@@ -117,11 +117,13 @@ $clienttoken != $_SESSION['token'])
     doHeader();
 
 	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
-    echo "<center><br />\n"
-    ."\t<font color='ORANGE'><strong>".$clang->gT("Token mismatch")."</strong></font><br />\n"
+    echo "\t<div id='wrapper'>\n"
+    ."\t<p id='tokenmessage'>\n"
+    ."\t<span class='error'>".$clang->gT("Token mismatch")."</span><br /><br />\n"
     ."\t".$clang->gT("The token you provided doesn't match the one in your session.")."<br /><br />\n"
     ."\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
-    ."</center><br />\n";
+    ."\t</p>\n"
+    ."\t</div>\n";
 
 	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
     doFooter();
@@ -141,11 +143,13 @@ if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
     doHeader();
 
 	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
-    echo "<center><br />\n"
-    ."\t<font color='ORANGE'><strong>".$clang->gT("Previous session is set to be finished.")."</strong></font><br />\n"
+    echo "\t<div id='wrapper'>\n"
+    ."\t<p id='tokenmessage'>\n"
+    ."\t<span class='error'>".$clang->gT("Previous session is set to be finished.")."</span><br /><br />\n"
     ."\t".$clang->gT("Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.")."<br /><br />\n"
     ."\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
-    ."</center><br />\n";
+    ."\t</p>\n"
+    ."\t</div>\n";
 
 	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
     doFooter();
@@ -284,11 +288,13 @@ $surveyPreview_require_Auth == true) &&  $previewgrp == false)
         doHeader();
 
 		echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
-        echo "<center><br />\n"
-        ."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
+        echo "\t<div id='wrapper'>\n"
+        ."\t<p id='tokenmessage'>\n"
+        ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
         ."\t".$clang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n"
-        ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail))."\n"
-        ."</center><br />\n";
+        ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail))."<br /><br />\n"
+        ."\t</p>\n"
+        ."\t</div>\n";
 
 		echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
         doFooter();
@@ -315,11 +321,14 @@ if (!isset($_SESSION['s_lang'])  && (isset($move)) )
     doHeader();
 
 	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"));
-    echo "<center><br />\n"
-    ."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
-    ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
-    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
-    ."</center><br />\n";
+    echo "\t<div id='wrapper'>\n"
+    ."\t<p id='tokenmessage'>\n"
+    ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
+    ."\t".$clang->gT("We are sorry but your session has expired.")."<br /><br />\n"
+    ."\t".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br /><br />\n"
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."<br /><br />\n"
+    ."\t</p>\n"
+    ."\t</div>\n";
 
 	echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"));
     doFooter();
@@ -497,10 +506,12 @@ if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s",
     doHeader();
 
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-    echo "<center><br />\n"
+    echo "\t<div id='wrapper'>\n"
+    ."\t<p id='tokenmessage'>\n"
     ."\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
-    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
-    ."<br /><br /></center>\n";
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".<br /><br />\n"
+	."\t</p>\n"
+    ."\t</div>\n";
 
 	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
@@ -514,10 +525,12 @@ if ($thissurvey['startdate']!='' and  date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i
     doHeader();
 
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-    echo "<center><br />\n"
+    echo "\t<div id='wrapper'>\n"
+    ."\t<p id='tokenmessage'>\n"
     ."\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
-    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".\n"
-    ."<br /><br /></center>\n";
+    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".<br /><br />\n"
+    ."\t</p>\n"
+    ."\t</div>\n";
 
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
@@ -533,11 +546,13 @@ if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $this
     doHeader();
 
 	echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-    echo "<center><br />\n"
-    ."\t<font color='RED'><strong>".$clang->gT("Error")."</strong></font><br />\n"
+    echo "\t<div id='wrapper'>\n"
+    ."\t<p id='tokenmessage'>\n"
+    ."\t<span class='error'>".$clang->gT("Error")."</span><br /><br />\n"
     ."\t".$clang->gT("You have already completed this survey.")."<br /><br />\n"
     ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])."\n"
-    ."<br /><br /></center>\n";
+    ."\t</p>\n"
+    ."\t</div>\n";
 
 	echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
     doFooter();
@@ -662,16 +677,21 @@ if ($tokensexist == 1 && isset($token) && $token &&
         sendcacheheaders();
         doHeader();
         //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
+		
         echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
         echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
-        echo "\t<center><br />\n"
-        ."\t".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."<br /><br />\n"
+        echo "\t<div id='wrapper'>\n"
+        ."\t<p id='tokenmessage'>\n"
+        ."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
         ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."\n"
-        ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
+        ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-        ."{$thissurvey['adminemail']}</a>)<br /><br />&nbsp;\n";
+        ."{$thissurvey['adminemail']}</a>)")."\n"
+        ."\t</p>\n"
+        ."\t</div>\n";
+		
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
-	killSession();
+	    killSession();
         doFooter();
         exit;
 }
@@ -693,17 +713,22 @@ if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'t
         sendcacheheaders();
         doHeader();
         //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
+		
         echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
         echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
-        echo "\t<center><br />\n"
-        ."\t<span>".$clang->gT("We are sorry but you are not allowed to enter this survey.")."</span><br /><br />\n"
+        echo "\t<div id='wrapper'>\n"
+        ."\t<p id='tokenmessage'>\n"
+        ."\t".$clang->gT("We are sorry but you are not allowed to enter this survey.")."<br /><br />\n"
         ."\t".$clang->gT("Your token seems to be valid but can be used only during a certain time period.")."<br />\n"
         ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-        ."{$thissurvey['adminemail']}</a>)")."<br /><br />&nbsp;\n";
+        ."{$thissurvey['adminemail']}</a>)")."\n"
+        ."\t</p>\n"
+        ."\t</div>\n";
+		
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
         doFooter();
-	killSession();
+	    killSession();
         exit;
     }
 }
@@ -2491,14 +2516,16 @@ function buildsurveysession()
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
                 echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-
                 echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
-                echo "\t<center><br />\n"
+                echo "\t<div id='wrapper'>\n"
+                ."\t<p id='tokenmessage'>\n"
                 ."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
                 ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br/>\n"
                 ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
                 ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-                ."{$thissurvey['adminemail']}</a>)<br /><br />\n";
+                ."{$thissurvey['adminemail']}</a>)\n"
+                ."\t</p>\n"
+                ."\t</div>\n";
 
                 echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
                 doFooter();
@@ -2677,13 +2704,18 @@ function buildsurveysession()
     {
         sendcacheheaders();
         doHeader();
+		
         echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
         echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
-        echo "\t<center><br />\n"
+        echo "\t<div id='wrapper'>\n"
+        ."\t<p id='tokenmessage'>\n"
         ."\t".$clang->gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
         ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
         ." (<a href='mailto:{$thissurvey['adminemail']}'>"
-        ."{$thissurvey['adminemail']}</a>)<br /><br />\n";
+        ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
+		."\t</p>\n"
+        ."\t</div>\n";
+		
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
         doFooter();
         exit;
@@ -3464,7 +3496,7 @@ function GetReferringUrl()
     echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
     if ($thissurvey['active'] != "Y")
     {
-        echo "<center><font color='red' size='2'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</font></center>\n";
+        echo "<p style='text-align:center' class='error'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";
     }
     echo "\n<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
     if (isset($token) && !empty($token)) {

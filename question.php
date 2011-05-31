@@ -610,7 +610,7 @@ echo "\n";
 
 if ($thissurvey['active'] != "Y")
 {
-    echo "<center><font color='red' size='2'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</font></center>\n";
+    echo "<p style='text-align:center' class='error'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";
 }
 
 echo "\n";
