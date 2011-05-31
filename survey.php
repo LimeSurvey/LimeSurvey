@@ -1009,7 +1009,7 @@ echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"));
 echo "\n";
 
-if ($thissurvey['active'] != "Y") {echo "<center><font color='red' size='2'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</font></center>\n";}
+if ($thissurvey['active'] != "Y") {echo "<p style='text-align:center' class='error'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";}
 
 
 if (is_array($conditions) && count($conditions) != 0 )
