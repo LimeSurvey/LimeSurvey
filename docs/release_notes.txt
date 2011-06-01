@@ -76,6 +76,37 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+     
+Changes from 1.91+ (build 10120) to 1.91+ (build 10168)                    
+#Updated translation: French (b00z00)
+#Updated translation: Czech by Vladimír Braun (c_schmitz)
+#Updated translation: French by Frederic Villerot (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Icelandic by Jóhann Friðriksson (c_schmitz)
+#Updated translation: Polish (elisa-ls)
++New feature: Updated FCKeditor to CKEditor (c_schmitz)
++New feature: Updated phpExcel to 1.7.6 (c_schmitz)
+-Fixed #5148: Export : array subquestions data are labelled as "array_name" only instead of "array_name [subquestion_code]" (mennodekker)
+-Fixed issue #05181: List With Comment - Comment Required (tpartner)
+-Fixed issue #05202: PHP Error when looking at Question Page in template editor (tpartner)
+-Fixed issue #05203: </form> whithout preceding <form ...> In display tokens admin page (tpartner)
+-Fixed issue #05204: Action on selected tokens doesn't process (tpartner)
+-Fixed issue #05207: IE 7 does not allow "yes" selection in a yes/no Question type (tpartner)
+-Fixed issue #05210: Not the same presentation for all errors about token (tpartner)
+-Fixed issue #5179: Error appears in End URL with an INSERTANS entry and the survey is inactive (c_schmitz)
+-Fixed issue #5184: Unnecessary duplicate query when listing surveys - patch by TMSWhite (c_schmitz)
+-Fixed issue #5185: Text display is counted as question in welcome screen (c_schmitz)
+-Fixed issue #5188: SQL failure in printable survey when using MSSQL server (c_schmitz)
+-Fixed issue #5194: Impossible to create a new survey when interface language is set to Catalan - patch provided by jpasquier (c_schmitz)
+-Fixed issue #5196: Only owners/superadmins can edit a response (c_schmitz)
+-Fixed issue #5199: Comfortupdate fails at step 3 (c_schmitz)
+-Fixed issue #5214: Missing translations for some words in conditions editor (c_schmitz)
+-Fixed issue #5219: error - show statistic as pdf (c_schmitz)
+-Fixed issue #5222: Back-button in token overview not working properly (c_schmitz)
+-Fixed issue: Submit function firing twice (tpartner)
+-Fixed issue: Weird behaving tooltips when editing a question (c_schmitz)
+
                       
 Changes from 1.91+ (build 10089) to 1.91+ (build 10120)   
 -Fixed issue #5151: Not possible to enter welcome message/end message in additional language (tpartner)
