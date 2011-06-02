@@ -229,24 +229,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
                                                                 . $toolbaroption
     ."});});";
 
-  /*  if ($fieldtype == 'answer' || $fieldtype == 'label')
-    {
-        $htmlcode .= ""
-        . "$oCKeditorVarName.Config[ 'ToolbarLocation' ] = 'Out:xToolbar' ;\n";
-    }
 
-    $htmlcode .= ""
-    . "$oCKeditorVarName.ToolbarSet = '".$toolbarname."';\n";*/
-
-    if ( $fieldtype == 'email-inv' ||
-     $fieldtype == 'email-reg' ||
-     $fieldtype == 'email-conf'||
-     $fieldtype == 'email-admin-conf'||
-     $fieldtype == 'email-admin-resp'||
-     $fieldtype == 'email-rem' )
-    { // do nothing
-        $htmlcode.= "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname');});\n";
-    }
     $htmlcode.= '</script>';
 
     return $htmlcode;
