@@ -96,7 +96,7 @@ function upgrade_survey_table145()
                               email_admin_responses={$aDefaultTexts['admin_detailed_notification']},
                               email_admin_notification_subj={$aDefaultTexts['admin_notification_subject']}, 
                               email_admin_notification={$aDefaultTexts['admin_notification']}
-                              where sid=".$aSurveyRow['surveyls_survey_id'];   
+                              where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'];   
         $connect->execute($sSurveyUpdateQuery);                                     
     }
 
