@@ -12,31 +12,30 @@
  *
  * $Id: updater.php 8987 2010-07-27 12:59:34Z c_schmitz $
  */
-$updaterversion=explode(' ','$Rev$');  // this is updated by subversion so don't change this string
-$updaterversion=$updaterversion[1];
+list(,$updaterversion)=explode(' ','$Rev$');  // this is updated by subversion so don't change this string
 
 if (isset($_REQUEST['update'])) die();
 
-if ($action=='update'){
-    if ($subaction=='step4')
-    {
-        $adminoutput=UpdateStep4();
-    }
-    elseif ($subaction=='step3')
-    {
-        $adminoutput=UpdateStep3();
-    }
-    elseif ($subaction=='step2')
-    {
-        $adminoutput=UpdateStep2();
-    }
-    else 
-    {
-        $adminoutput=RunUpdaterUpdate();
-        $adminoutput=UpdateStep1();    
-}
+if ($action!=='update') return;
+
+ob_start();
+switch ($subaction)
+{
+    case 'step2':
+    case 'step3':
+    case 'step4':
+        $updatefunction = 'Update'.ucfirst($subaction);
+        break;
+    default:
+        $updatefunction = 'UpdateStep1';
+        RunUpdaterUpdate();
 }
 
+$buffer = $updatefunction();
+if ($buffer) echo $buffer;
+$adminoutput = ob_get_clean();
+
+return;
 
 function RunUpdaterUpdate()
 {
@@ -86,12 +85,12 @@ function RunUpdaterUpdate()
     
     if (!is_writable($tempdir))
     {
-        $output.= "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
+        echo  "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
         $error=true;
     }
     if (!is_writable($homedir.DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'updater.php'))
     {
-        $output.= "<li class='errortitle'>".sprintf($clang->gT("Updater file is not writable (%s). Please set according file permissions."),$homedir.DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'updater.php')."</li>";
+        echo  "<li class='errortitle'>".sprintf($clang->gT("Updater file is not writable (%s). Please set according file permissions."),$homedir.DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'updater.php')."</li>";
         $error=true;
     }
  
@@ -168,33 +167,33 @@ function UpdateStep1()
         setGlobalSetting('updatekey',sanitize_paranoid_string($_POST['updatekey']));
     }
     $error=false;
-    $output='<div class="header ui-widget-header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><div class="updater-background"><br />';
-    $output.=$clang->gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br />';
-    $output.=$clang->gT('The following steps will be done by this update:').'<br /><ul>';
-    $output.='<li>'.$clang->gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>';
-    $output.='<li>'.$clang->gT('Your DB and any changed files will be backed up.').'</li>';
-    $output.='<li>'.$clang->gT('New files will be downloaded and installed.').'</li>';
-    $output.='<li>'.$clang->gT('If necessary the database will be updated.').'</li></ul>';
-    $output.='<h3>'.$clang->gT('Checking basic requirements...').'</h3>';
+    echo '<div class="header ui-widget-header">'.$clang->gT('Welcome to the ComfortUpdate').'</div><div class="updater-background"><br />';
+    echo $clang->gT('The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey.').'<br />';
+    echo $clang->gT('The following steps will be done by this update:').'<br /><ul>';
+    echo '<li>'.$clang->gT('Your LimeSurvey installation is checked if the update can be run successfully.').'</li>';
+    echo '<li>'.$clang->gT('Your DB and any changed files will be backed up.').'</li>';
+    echo '<li>'.$clang->gT('New files will be downloaded and installed.').'</li>';
+    echo '<li>'.$clang->gT('If necessary the database will be updated.').'</li></ul>';
+    echo '<h3>'.$clang->gT('Checking basic requirements...').'</h3>';
     if ($updatekey==''){
-        $output.=$clang->gT('You need an update key to run the comfort update. During the beta test of this update feature the key "LIMESURVEYUPDATE" can be used.');
-        $output.="<br /><form id='keyupdate' method='post' action='$scriptname?action=update&amp;subaction=keyupdate'><label for='updatekey'>".$clang->gT('Please enter a valid update-key:').'</label>';
-        $output.='<input id="updatekey" name="updatekey" type="text" value="LIMESURVEYUPDATE" /> <input type="submit" value="'.$clang->gT('Save update key').'" /></form>';
+        echo $clang->gT('You need an update key to run the comfort update. During the beta test of this update feature the key "LIMESURVEYUPDATE" can be used.');
+        echo "<br /><form id='keyupdate' method='post' action='$scriptname?action=update&amp;subaction=keyupdate'><label for='updatekey'>".$clang->gT('Please enter a valid update-key:').'</label>';
+        echo '<input id="updatekey" name="updatekey" type="text" value="LIMESURVEYUPDATE" /> <input type="submit" value="'.$clang->gT('Save update key').'" /></form>';
     }
     else {
-        $output.="<ul><li class='successtitle'>".$clang->gT('Update key: Valid')."</li>";
+        echo "<ul><li class='successtitle'>".$clang->gT('Update key: Valid')."</li>";
          
         if (!is_writable($tempdir))
         {
-            $output.= "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
+            echo  "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
             $error=true;
         }
         if (!is_writable($rootdir.DIRECTORY_SEPARATOR.'version.php'))
         {
-            $output.= "<li class='errortitle'>".sprintf($clang->gT("Version file is not writable (%s). Please set according file permissions."),$rootdir.DIRECTORY_SEPARATOR.'version.php')."</li>";
+            echo  "<li class='errortitle'>".sprintf($clang->gT("Version file is not writable (%s). Please set according file permissions."),$rootdir.DIRECTORY_SEPARATOR.'version.php')."</li>";
             $error=true;
         }
-        $output.='</ul><h3>'.$clang->gT('Change log').'</h3>';
+        echo '</ul><h3>'.$clang->gT('Change log').'</h3>';
         require_once($homedir."/classes/http/http.php");
         $updatekey=getGlobalSetting('updatekey');
 
@@ -218,7 +217,7 @@ function UpdateStep1()
                 $full_body .= $body;
             }
             $changelog=json_decode($full_body,true);
-            $output.='<textarea class="updater-changelog" readonly="readonly">'.htmlspecialchars($changelog['changelog']).'</textarea>';
+            echo '<textarea class="updater-changelog" readonly="readonly">'.htmlspecialchars($changelog['changelog']).'</textarea>';
         }
         else
         {
@@ -229,19 +228,18 @@ function UpdateStep1()
 
     if ($error)
     {
-        $output.='<br /><br />'.$clang->gT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
-        $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step1', '_top')\"";
-        $output.=">".$clang->gT('Check again')."</button></p>";
+        echo '<br /><br />'.$clang->gT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
+        echo "<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step1', '_top')\"";
+        echo ">".$clang->gT('Check again')."</button></p>";
     }
     else
     {
-        $output.='<br /><br />'.$clang->gT('Everything looks alright. Please proceed to the next step.');
-        $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
-        if ($updatekey==''){    $output.="disabled='disabled'"; }
-        $output.=">".sprintf($clang->gT('Proceed to step %s'),'2')."</button></p>";
+        echo '<br /><br />'.$clang->gT('Everything looks alright. Please proceed to the next step.');
+        echo "<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
+        if ($updatekey==''){    echo "disabled='disabled'"; }
+        echo ">".sprintf($clang->gT('Proceed to step %s'),'2')."</button></p>";
     }
-    $output.='</div>';
-    return $output;
+    echo '</div>';
 }
 
 
@@ -254,7 +252,7 @@ function UpdateStep2()
     require_once($homedir."/classes/http/http.php");
     $updatekey=getGlobalSetting('updatekey');
 
-    $output='<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'2').'</div><div class="updater-background"><br />';
+    echo '<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'2').'</div><div class="updater-background"><br />';
 
     $http=new http_class;
     /* Connection timeout */
@@ -285,15 +283,15 @@ function UpdateStep2()
 
     if (isset($updateinfo['error']))
     {
-        $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
+        echo $clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
 
         if ($updateinfo['error']==1)
         {
             setGlobalSetting('updatekey','');
-            $output.=$clang->gT('Your update key is invalid and was removed. ').'<br />';
+            echo $clang->gT('Your update key is invalid and was removed. ').'<br />';
         }
         else
-        $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
+        echo $clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
     }
     // okay, updateinfo now contains all necessary updateinformation
     // Now check if the existing files have the mentioned checksum
@@ -302,7 +300,7 @@ function UpdateStep2()
     $readonlyfiles=array();
     if (!isset($updateinfo['files']))
     {
-        $output.="<div class='messagebox ui-corner-all'>
+        echo "<div class='messagebox ui-corner-all'>
             <div class='warningheader'>".$clang->gT('Update server busy')."</div>
             <p>".$clang->gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.')."<br /><br />
                ".$clang->gT('Please be patient and try again in about 10 minutes.')."</p></div>
@@ -349,63 +347,62 @@ function UpdateStep2()
             }
         }
          
-        $output.='<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>';
+        echo '<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>';
         if (count($readonlyfiles)>0)
         {
-            $output.='<span class="warningtitle">'.$clang->gT('Warning: The following files/directories need to be updated but their permissions are set to read-only.').'<br />';
-            $output.=$clang->gT('You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice.').'<br />';
-            $output.='</span><ul>';
+            echo '<span class="warningtitle">'.$clang->gT('Warning: The following files/directories need to be updated but their permissions are set to read-only.').'<br />';
+            echo $clang->gT('You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice.').'<br />';
+            echo '</span><ul>';
             $readonlyfiles=array_unique($readonlyfiles);
             sort($readonlyfiles);
             foreach ($readonlyfiles as $readonlyfile)
             {
-                $output.='<li>'.htmlspecialchars($readonlyfile).'</li>';
+                echo '<li>'.htmlspecialchars($readonlyfile).'</li>';
             }
-            $output.='</ul>';
+            echo '</ul>';
         }
         if (count($existingfiles)>0)
         {
-            $output.=$clang->gT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.').'<br />';
-            $output.=$clang->gT('We recommend that these files should be replaced by the update procedure.').'<br />';
-            $output.='<ul>';
+            echo $clang->gT('The following files would be added by the update but already exist. This is very unusual and may be co-incidental.').'<br />';
+            echo $clang->gT('We recommend that these files should be replaced by the update procedure.').'<br />';
+            echo '<ul>';
             sort($existingfiles);
             foreach ($existingfiles as $existingfile)
             {
-                $output.='<li>'.htmlspecialchars($existingfile['file']).'</li>';
+                echo '<li>'.htmlspecialchars($existingfile['file']).'</li>';
             }
-            $output.='</ul>';
+            echo '</ul>';
         }
          
         if (count($modifiedfiles)>0)
         {
-            $output.=$clang->gT('The following files will be modified or deleted but were already modified by someone else.').'<br />';
-            $output.=$clang->gT('We recommend that these files should be replaced by the update procedure.').'<br />';
-            $output.='<ul>';
+            echo $clang->gT('The following files will be modified or deleted but were already modified by someone else.').'<br />';
+            echo $clang->gT('We recommend that these files should be replaced by the update procedure.').'<br />';
+            echo '<ul>';
             sort($modifiedfiles);
             foreach ($modifiedfiles as $modifiedfile)
             {
-                $output.='<li>'.htmlspecialchars($modifiedfile['file']).'</li>';
+                echo '<li>'.htmlspecialchars($modifiedfile['file']).'</li>';
             }
-            $output.='</ul>';
+            echo '</ul>';
         }
 
         if (count($readonlyfiles)>0)
         {
-            $output.='<br />'.$clang->gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
-            $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
-            $output.=">".$clang->gT('Check again')."</button></p>";
+            echo '<br />'.$clang->gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
+            echo "<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step2', '_top')\"";
+            echo ">".$clang->gT('Check again')."</button></p>";
         }
         else
         {
-            $output.=$clang->gT('Please check any problems above and then proceed to the next step.').'<br />';
-            $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step3', '_top')\" ";
-            $output.=">".sprintf($clang->gT('Proceed to step %s'),'3')."</button></p>";
+            echo $clang->gT('Please check any problems above and then proceed to the next step.').'<br />';
+            echo "<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step3', '_top')\" ";
+            echo ">".sprintf($clang->gT('Proceed to step %s'),'3')."</button></p>";
 
         }
     }
     $_SESSION['updateinfo']=$updateinfo;
     $_SESSION['updatesession']=$site_cookies;
-    return $output;
 }
 
 
@@ -413,19 +410,19 @@ function UpdateStep3()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
 
-    $output='<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'3').'</div><div class="updater-background">';
-    $output.='<h3>'.$clang->gT('Creating DB & file backup').'</h3>';
+    echo '<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'3').'</div><div class="updater-background">';
+    echo '<h3>'.$clang->gT('Creating DB & file backup').'</h3>';
     if (!isset( $_SESSION['updateinfo']))
     {
-        $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
+        echo $clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
 
         if ($updateinfo['error']==1)
         {
             setGlobalSetting('updatekey','');
-            $output.=$clang->gT('Your update key is invalid and was removed. ').'<br />';
+            echo $clang->gT('Your update key is invalid and was removed. ').'<br />';
         }
         else
-        $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
+        echo $clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
     }
     else
     {
@@ -457,14 +454,14 @@ function UpdateStep3()
 
     $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
 
-    $output.=$clang->gT('Creating file backup... ').'<br />';
+    echo $clang->gT('Creating file backup... ').'<br />';
 
     if ($v_list == 0) {
         die("Error : ".$archive->errorInfo(true));
     }
     else
     {
-        $output.="<span class='successtitle'>".$clang->gT('File backup created:').' '.htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'files-'.$basefilename.'.zip').'</span><br /><br />';
+        echo "<span class='successtitle'>".$clang->gT('File backup created:').' '.htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'files-'.$basefilename.'.zip').'</span><br /><br />';
 
     }
 
@@ -472,23 +469,22 @@ function UpdateStep3()
 
     if ($databasetype=='mysql' || $databasetype=='mysqli')
     {
-        $output.=$clang->gT('Creating database backup... ').'<br />';
+        echo $clang->gT('Creating database backup... ').'<br />';
         $byteswritten=file_put_contents($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql',completedump());
         if ($byteswritten>5000)
         {
-            $output.="<span class='successtitle'>".$clang->gT('DB backup created:')." ".htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql').'</span><br /><br />';
+            echo "<span class='successtitle'>".$clang->gT('DB backup created:')." ".htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql').'</span><br /><br />';
         }
     }
     else
     {
-        $output.="<span class='warningtitle'>".$clang->gT('No DB backup created:').'<br />'.$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!').'</span><br /><br />';
+        echo "<span class='warningtitle'>".$clang->gT('No DB backup created:').'<br />'.$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!').'</span><br /><br />';
     }
 
-    $output.=$clang->gT('Please check any problems above and then proceed to the final step.');
-    $output.="<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" ";
-    $output.=">".sprintf($clang->gT('Proceed to step %s'),'4')."</button></p>";
-    $output.='</div>';
-    return $output;
+    echo $clang->gT('Please check any problems above and then proceed to the final step.');
+    echo "<p><button onclick=\"window.open('$scriptname?action=update&amp;subaction=step4', '_top')\" ";
+    echo ">".sprintf($clang->gT('Proceed to step %s'),'4')."</button></p>";
+    echo '</div>';
 }
 
 
@@ -496,18 +492,18 @@ function UpdateStep4()
 {
     global $clang, $scriptname, $homedir, $buildnumber, $updatebuild, $debug, $rootdir, $publicdir, $tempdir, $database_exists, $databasetype, $action, $demoModeOnly;
 
-    $output='<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'4').'</div><div class="updater-background"><br />';
+    echo '<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'4').'</div><div class="updater-background"><br />';
     if (!isset( $_SESSION['updateinfo']))
     {
-        $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
+        echo $clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
 
         if ($updateinfo['error']==1)
         {
             setGlobalSetting('updatekey','');
-            $output.=$clang->gT('Your update key is invalid and was removed. ').'<br />';
+            echo $clang->gT('Your update key is invalid and was removed. ').'<br />';
         }
         else
-        $output.=$clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
+        echo $clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
     }
     else
     {
@@ -569,7 +565,7 @@ function UpdateStep4()
             else{
                 rmdirr($rootdir.$afile['file']);
             }
-            $output.=sprintf($clang->gT('File deleted: %s'),$afile['file']).'<br />';
+            echo sprintf($clang->gT('File deleted: %s'),$afile['file']).'<br />';
         }
     }
 
@@ -581,13 +577,13 @@ function UpdateStep4()
         }
         else
         {
-            $output.=$clang->gT('New files were successfully installed.').'<br />';
+            echo $clang->gT('New files were successfully installed.').'<br />';
             unlink($tempdir.'/update.zip');
         }
     }
     else
     {
-        $output.=$clang->gT('There was a problem downloading the update file. Please try to restart the update process.').'<br />';
+        echo $clang->gT('There was a problem downloading the update file. Please try to restart the update process.').'<br />';
         $downloaderror=true;
     }
     //  PclTraceDisplay();
@@ -607,16 +603,15 @@ function UpdateStep4()
             fwrite($handle,$line);
         }
         fclose($handle);
-        $output.=sprintf($clang->gT('Buildnumber was successfully updated to %s.'),$_SESSION['updateinfo']['toversion']).'<br />';
-        $output.=$clang->gT('Please check any problems above - update was done.').'<br />';
+        echo sprintf($clang->gT('Buildnumber was successfully updated to %s.'),$_SESSION['updateinfo']['toversion']).'<br />';
+        echo $clang->gT('Please check any problems above - update was done.').'<br />';
     }
 
 
-    $output.="<p><button onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" >".$clang->gT('Back to main menu')."</button></p>";
-    $output.='</div>';
+    echo "<p><button onclick=\"window.open('$scriptname?action=globalsettings&amp;subaction=updatecheck', '_top')\" >".$clang->gT('Back to main menu')."</button></p>";
+    echo '</div>';
     setGlobalSetting('updatelastcheck','1980-01-01 00:00');
     setGlobalSetting('updateavailable','0');
-    return $output;
 }
 
 /**
@@ -644,7 +639,7 @@ function CheckForDBUpgrades()
             echo "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
         }
         else {
-            return ShowDBUpgradeNotice();
+            ShowDBUpgradeNotice();
         }
     }
 }
@@ -652,18 +647,17 @@ function CheckForDBUpgrades()
 function ShowDBUpgradeNotice() {
     global $databasetype, $dbprefix, $databasename, $sitename, $rooturl,$clang;
     $error=false;
-    $output="<div class='header'>".$clang->gT('Database upgrade').'</div><p>';
-    $output.=$clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>';
-    $output.="<li><b>" .$clang->gT('Database type') . ":</b> " . $databasetype . "</li>"; 
-    $output.="<li><b>" .$clang->gT('Database name') . ":</b> " . $databasename . "</li>"; 
-    $output.="<li><b>" .$clang->gT('Table prefix') . ":</b> " . $dbprefix . "</li>";   
-    $output.="<li><b>" .$clang->gT('Site name') . ":</b> " . $sitename . "</li>";   
-    $output.="<li><b>" .$clang->gT('Root URL') . ":</b> " . $rooturl . "</li>"; 
-    $output.='</ul>';
-    $output.="<br />";
-    $output.="<a href='{$rooturl}/admin/admin.php?continue=1'>" . $clang->gT('Click here to continue') . "</a>";  
-    $output.="<br />";
-    return $output;     
+    echo "<div class='header'>".$clang->gT('Database upgrade').'</div><p>';
+    echo $clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>';
+    echo "<li><b>" .$clang->gT('Database type') . ":</b> " . $databasetype . "</li>"; 
+    echo "<li><b>" .$clang->gT('Database name') . ":</b> " . $databasename . "</li>"; 
+    echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . $dbprefix . "</li>";   
+    echo "<li><b>" .$clang->gT('Site name') . ":</b> " . $sitename . "</li>";   
+    echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . $rooturl . "</li>"; 
+    echo '</ul>';
+    echo "<br />";
+    echo "<a href='{$rooturl}/admin/admin.php?continue=1'>" . $clang->gT('Click here to continue') . "</a>";  
+    echo "<br />";
 }
 
 ?>
