@@ -28,17 +28,22 @@ class Limesurvey_lang {
     var $gettextclass;
     var $langcode;
 
-    function limesurvey_lang($langcode){
-        $CI =& get_instance();
+    function limesurvey_lang($params = array()){
+    	
+		if(!isset($params['langcode']))
+			trigger_error('langcode param is undefined ', E_USER_WARNING);
+		$langcode=$params['langcode'];	
+		
+		$CI =& get_instance();
         $CI->load->helper('sanitize');
         
-        $langcode[0]=sanitize_languagecode($langcode[0]);
+        $langcode[0]=sanitize_languagecode($langcode);
         
-        $streamer = new FileReader(getcwd().'/locale/'.$langcode[0].'/LC_MESSAGES/'.$langcode[0].'.mo');
-        
+        $streamer = new FileReader(getcwd().'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
+
         $this->gettextclass = new gettext_reader($streamer);
         
-        $this->langcode = $langcode[0];
+        $this->langcode = $langcode;
     }
 
     function getlangcode()

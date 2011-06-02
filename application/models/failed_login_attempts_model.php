@@ -29,6 +29,28 @@ class Failed_login_attempts_model extends CI_Model {
 		
 		return $data;
 	}
-
+	
+	function deleteAttempts($ip) {
+		
+		$this->db->where('ip', $ip);
+		return $this->db->delete('failed_login_attempts'); 
+	}
+	
+	function addAttempt($la,$sIp)
+	{
+	    $timestamp = date("Y-m-d H:m:s");    
+	    if ($la)
+		{
+	        //$query = "UPDATE ".db_table_name('failed_login_attempts')
+	        //         ." SET number_attempts=number_attempts+1, last_attempt = '$timestamp' WHERE ip='$sIp'";
+			$query = $this->db->query("UPDATE ".$this->db->dbprefix('failed_login_attempts')
+	                ." SET number_attempts=number_attempts+1, last_attempt = '".$timestamp."' WHERE ip='".$sIp."'");
+		}		 
+	    else
+	        $query = $this->db->query("INSERT INTO ".$this->db->dbprefix('failed_login_attempts') . "(ip, number_attempts,last_attempt)"
+	                 ." VALUES('".$sIp."',1,'".$timestamp."')");
+	
+	    return $query;
+	}
 	
 }

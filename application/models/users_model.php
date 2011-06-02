@@ -46,5 +46,23 @@ class Users_model extends CI_Model {
 		$this->db->where('users_name',$user);
 		$this->db->update('users',$data);
 	}
+	
+	function updateLang($uid,$postloginlang)
+	{
+		$data = array(
+				'lang' => $postloginlang
+				);
+		$this->db->where(array("uid"=>$uid));
+		$this->db->update('users',$data);
+	}
+	
+	function updatePassword($uid,$password)
+	{
+		$data = array(
+				'password' => $password
+				);
+		$this->db->where(array("uid"=>$uid));
+		$this->db->update('users',$data);
+	}
 
 }

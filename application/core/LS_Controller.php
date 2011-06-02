@@ -22,6 +22,8 @@ class LS_Controller extends CI_Controller {
 	
 	function _init()
 	{
+		
+		$this->load->helper("common");
 				
 		// Check for most necessary requirements
 		// Now check for PHP & db version
@@ -97,10 +99,26 @@ class LS_Controller extends CI_Controller {
 		//$updatelastcheck='';
 		//$updatekey='';
 		//$updatekeyvaliduntil='';
-			
-		//echo "CI";
-		
+					
 		//GlobalSettings Helper
+		$this->load->helper("globalsettings");
+		
+		SSL_mode();// This really should be at the top but for it to utilise getGlobalSetting() it has to be here
+		
+		//$showXquestions = getGlobalSetting('showXquestions');
+		//$showgroupinfo = getGlobalSetting('showgroupinfo');
+		//$showqnumcode = getGlobalSetting('showqnumcode');
+		
+		//SET LOCAL TIME
+		//if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
+		//if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
+		//{
+		//    $timeadjust=$timeadjust.' hours';
+		//}
+		
+		// SITE STYLES
+		//$setfont = "<font size='2' face='verdana'>";
+		//$singleborderstyle = "style='border: 1px solid #111111'";
 		
 	}
 

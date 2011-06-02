@@ -301,7 +301,7 @@ function getLanguageDetails($codetosearch)
 }
 
 function getLanguageData($orderbynative=false) {
-    global $clang;
+	$clang = &get_instance()->limesurvey_lang;
     static $supportedLanguages;
     static $result = array();
 

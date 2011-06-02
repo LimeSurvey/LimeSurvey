@@ -1515,7 +1515,7 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 */
 function returnglobal($stringname)
 {
-    global $CI;
+    $CI = & get_instance();
     $CI->load->config('lsconfig');
     $useWebserverAuth = $CI->config->item('useWebserverAuth');
     if ((isset($useWebserverAuth) && $useWebserverAuth === true) || $stringname=='sid') // don't read SID from a Cookie
@@ -4791,7 +4791,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 	$CI->email->attach($attachment);
     //$mail->AddAttachment($attachment);
 
-	if (trim($subject)!='') {$this->email->subject($subject);/*$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";*/}
+	if (trim($subject)!='') {$CI->email->subject($subject);/*$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";*/}
     if ($emailsmtpdebug>0) {
         ob_start();
     }
@@ -5897,9 +5897,10 @@ function strip_javascript($content){
  */
 function cleanTempDirectory()
 {
-    global $CI; //tempdir;
+    //global $CI; //tempdir;
+    $CI =& get_instance();
     $dir =  $CI->config->item('tempdir').'/';
-    $dp = opendir($dir) or die ('Could not open temporary directory');
+    $dp = opendir($dir) or show_error('Could not open temporary directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
             @unlink($dir.$file);
@@ -6234,11 +6235,11 @@ function SSL_redirect($ssl_mode)
 function SSL_mode()
 {
 	//base_url(), 
-	global $CI;
     //global $rooturl , $homeurl , $publicurl , $tempurl , $imageurl , $uploadurl;
     //global $usertemplaterooturl , $standardtemplaterooturl;
     //global $parsedurl , $relativeurl , $fckeditordir , $ssl_emergency_override;
-
+	$CI =& get_instance();
+	
     $https = isset($_SERVER['HTTPS'])?$_SERVER['HTTPS']:'';
     if($CI->config->item('ssl_emergency_override') !== true )
     {

@@ -1,0 +1,61 @@
+.dynamic-tab-pane-control.tab-pane {
+  position: relative;
+  width: 100%;
+}
+
+.dynamic-tab-pane-control .tab-row .tab {
+  font: Menu;
+  cursor: Default;
+  display: inline;
+  margin: 1px -1px 1px 2px;
+  float: left;
+  padding: 2px 5px 3px 5px;
+  background: ActiveBorder;
+  border: 0; /* 1px solid; */
+  border-color: ThreeDHighlight ThreeDDarkShadow ThreeDDarkShadow
+    ThreeDHighlight;
+  border-bottom: 0;
+  z-index: 1;
+  white-space: nowrap;
+  position: relative;
+  top: 0;
+}
+
+.dynamic-tab-pane-control .tab-row .tab.selected {
+  background: ThreeDHighlight !important;
+  border: 1px solid ThreeDDarkShadow;
+  border-bottom: 0;
+  z-index: 3;
+  padding: 2px 6px 4px 6px;
+  margin: 1px -3px -3px 0px;
+  top: -2px;
+}
+
+.dynamic-tab-pane-control .tab-row .tab a {
+  font: Menu;
+  color: WindowText;
+  text-decoration: none;
+  cursor: default;
+}
+
+.dynamic-tab-pane-control .tab-row .tab.hover {
+  background: Highlight;
+}
+
+.dynamic-tab-pane-control .tab-page {
+  clear: both;
+  border: 1px solid ThreeDDarkShadow;
+  background: ThreeDHighlight;
+  z-index: 2;
+  position: relative;
+  top: -2px;
+  color: WindowText;
+  font: Message-Box;
+  padding: 10px;
+  height: 200px;
+}
+
+.dynamic-tab-pane-control .tab-row {
+  z-index: 1;
+  white-space: nowrap;
+}

@@ -1,0 +1,440 @@
+body {
+  font-family: verdana, arial, sans-serif;
+  text-align: right;
+  background-color: #5670A1;
+  margin: 0;
+}
+
+form {
+  margin: 0;
+  padding: 0;
+}
+
+ul,ol {
+  text-align: right;
+  font-size: 10pt;
+  color: #000;
+}
+
+img {
+  border: 0;
+}
+
+a:hover {
+  font-size: 10pt;
+  color: #819D26;
+  text-decoration: underline;
+}
+
+th,p,div {
+  font-size: 10pt;
+}
+
+table.statisticstable {
+  margin: 2px auto;
+}
+
+.statisticstable td {
+  vertical-align: top;
+}
+
+/* Here starts the CSS for a menubar */
+div.menubar {
+  background-color: #EEF6FF;
+  width: 99.2%;
+  margin-top: 3px;
+  margin-right: 3px;
+}
+
+.menubar-main {
+  background-color: #EEF6FF;
+  width: 100%;
+  float: right;
+  border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.menubar img {
+  vertical-align: middle;
+  max-height: 40px;
+  border: 0;
+  margin-right: -2px;
+}
+
+.menubar-title {
+  background-color: #EEF6FF;
+  float: right;
+  width: 100%;
+  font-size: 11px;
+  text-align: right;
+  border-color: #D2E0F2 #8195BA #D2E0F2 #D2E0F2;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.menubar-left {
+  background-color: #EEF6FF;
+  text-align: right;
+  float: right;
+  clear: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menubar-right {
+  background-color: #EEF6FF;
+  float: left;
+  line-height: 1em;
+}
+
+/* END menubar CSS */
+.outlinetable {
+  border: 1px solid #111;
+}
+
+.outlinetable td {
+  font-size: 10pt;
+  border: 1px solid #483D8B;
+  background: #EEF6FF;
+}
+
+.outlinetable th {
+  font-size: 10pt;
+  color: #1D2D45;
+  background: #CCE6FF;
+}
+
+td {
+  font-size: 10pt;
+  color: #1D2D45;
+}
+
+.btstyle {
+  font-size: 11px;
+}
+
+.disabledbtn {
+  height: 20px;
+  color: #999;
+  font-size: 11px;
+}
+
+input,select {
+  color: navy;
+  font: 10px verdana, arial, sans-serif;
+}
+
+input[disabled],textarea[disabled],select[disabled] {
+  color: #999;
+  background: #EEE;
+  font: 10px verdana, arial, sans-serif;
+}
+
+textarea {
+  font-size: 10px;
+  color: navy;
+  font-family: verdana, arial, sans-serif;
+}
+
+.subtitle {
+  font-size: 10px;
+  color: #FFF;
+}
+
+.listboxtemplates {
+  margin-top: 10px;
+  height: 20px;
+  color: #333;
+  width: 180px;
+}
+
+.boxcaption {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 40px;
+}
+
+.saveOrderbtn {
+  border: thin solid #00CED1;
+  text-decoration: none;
+  font-weight: 700;
+  color: #B5B0DD;
+  background: #483D8B;
+  border-top: 1px solid #00BFFF;
+  border-right: 1px solid #00BFFF;
+  margin: 5px;
+}
+
+.settingentryhighlight {
+  color: navy;
+  font-weight: 700;
+}
+
+.statusentryhighlight {
+  font-size: 10px;
+  color: #E00;
+}
+
+.errortitle {
+  font-weight: 700;
+  color: #FF0F0F;
+}
+
+.warningtitle {
+  font-weight: 700;
+  color: #FFA07A;
+}
+
+.successtitle {
+  font-weight: 700;
+  color: #16B700;
+}
+
+font.settingcaption {
+  vertical-align: top;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1D2D45;
+}
+
+span.settingcaption {
+  float: right;
+  width: 350px;
+  text-align: left;
+  font-weight: 700;
+  clear: right;
+  margin-bottom: 10px;
+  background-color: #F8F8FF;
+  color: #1D2D45;
+}
+
+.settingentry {
+  float: right;
+  width: 600px;
+  padding-right: 5px;
+  font-size: 13px;
+  text-align: right;
+  clear: left;
+  margin-bottom: 10px;
+  background-color: #F8F8FF;
+}
+
+.settingrow {
+  width: 1000px;
+  clear: right;
+  margin-bottom: 20px;
+  background-color: #F8F8FF;
+}
+
+#dhtmlgoodies_tooltip {
+  border: 1px solid #000;
+  position: absolute;
+  display: none;
+  z-index: 20000;
+  -moz-border-radius: 5px;
+  background: #FDFDF5;
+  font: 0.8em "Verdana", "Lucida Sans Unicode", Arial, sans-serif;
+  padding: 2px;
+}
+
+#dhtmlgoodies_tooltipShadow {
+  position: absolute;
+  display: none;
+  z-index: 10000;
+  opacity: 0.7px;
+  filter: alpha(opacity =           70);
+  -khtml-opacity: 0.7px;
+  -moz-opacity: 0.7px;
+  -moz-border-radius: 5px;
+  background: #555;
+}
+
+.movableList {
+  padding-right: 0;
+  margin-right: 0;
+  margin-top: 0;
+  padding-top: 0;
+  width: 60em;
+}
+
+.movableNode {
+  list-style-type: none;
+  border: 1px solid #999;
+  width: 60em;
+  text-align: right;
+  margin-top: 2px;
+  background: #EEEFFF;
+  padding: 0.5em;
+}
+
+.langpopup2 {
+  position: absolute;
+  width: 100px;
+  height: 110px;
+  top: 151px;
+  right: 80px;
+  z-index: 10000;
+  opacity: 0.7px;
+  visibility: hidden;
+  filter: alpha(opacity =           95);
+  -khtml-opacity: 0.95px;
+  -moz-opacity: 0.95px;
+  -moz-border-radius: 6px;
+  background: #FDFDF5;
+  font: 11px arial, verdana, sans-serif;
+  border-color: #000;
+  border-style: solid;
+  border-width: 1px;
+  padding: 8px;
+}
+
+.langpopup1 {
+  position: absolute;
+  width: 100px;
+  height: 110px;
+  top: 100px;
+  right: 80px;
+  z-index: 10000;
+  opacity: 0.7px;
+  visibility: hidden;
+  filter: alpha(opacity =           95);
+  -khtml-opacity: 0.95px;
+  -moz-opacity: 0.95px;
+  -moz-border-radius: 6px;
+  background: #FDFDF5;
+  font: 11px arial, verdana, sans-serif;
+  border-color: #000;
+  border-style: solid;
+  border-width: 1px;
+  padding: 8px;
+}
+
+.previewpopup {
+  position: absolute;
+  width: 110px;
+  height: 125px;
+  top: 287px;
+  right: 473px;
+  z-index: 10000;
+  opacity: 0.7px;
+  visibility: hidden;
+  filter: alpha(opacity =           95);
+  -khtml-opacity: 0.95px;
+  -moz-opacity: 0.95px;
+  -moz-border-radius: 6px;
+  background: #FDFDF5;
+  font: 11px arial, verdana, sans-serif;
+  border-color: #000;
+  border-style: solid;
+  border-width: 1px;
+  padding: 8px;
+}
+
+.oddrow {
+  background-color: #EBF2FA;
+}
+
+.choicelist {
+  width: 200px;
+  font-size: 10pt;
+}
+
+.ranklist {
+  width: 200px;
+  margin-top: 3px;
+}
+
+span.invalidemail {
+  font-weight: 700;
+  color: red;
+}
+
+th.admincell {
+  background-color: #F8BDB5;
+}
+
+p {
+  clear: right;
+}
+
+form.token label {
+  margin-top: 1em;
+  width: 40%;
+  float: right;
+  text-align: left;
+  margin-left: 0.5em;
+}
+
+.submit {
+  float: none !important;
+  margin: 0 auto;
+}
+
+th,.header,.headertwo,.settingcaption {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  background-color: #D2E0F2;
+  color: #1D2D45;
+}
+
+a:link,a:visited {
+  font-size: 10pt;
+  color: #819D26;
+  text-decoration: none;
+}
+
+.statisticstable select,.statisticstable textarea {
+  width: 170px;
+}
+
+.alertbox tr:first-child,.evenrow {
+  background-color: #EEF6FF;
+}
+
+.checkboxbtn,.radiobtn {
+  background-color: transparent;
+}
+
+.langpopup2td,.langpopup1td {
+  background: #FDFDF5;
+}
+
+.langpopup2td:first-child,.langpopup1td:first-child {
+  color: #000;
+  font-size: 10pt;
+}
+
+form.token select,form.token input {
+  margin-top: 1.5em;
+  float: right;
+}
+
+table.alertbox {
+  width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid;
+  border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+  text-align: left;
+}
+
+.menubar tr {
+  text-align: right;
+}
+
+div.menubar input {
+  margin-right: -5px;
+  vertical-align: top;
+}
+
+#surveydetails td:first-child,#groupdetails td:first-child,#questiondetails td:first-child
+  {
+  text-align: left;
+}
+
+#surveydetails td+td,#groupdetails td+td,#questiondetails td+td {
+  text-align: right;
+}

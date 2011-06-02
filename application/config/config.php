@@ -357,5 +357,16 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 
+/*
+|--------------------------------------------------------------------------
+|  Auto-load Super Controllers
+|--------------------------------------------------------------------------
+*/
+function __autoload($class) {
+	if(strpos($class, 'CI_') !== 0) {
+		@include_once (APPPATH . 'core/' . $class . EXT);
+	}
+}
+
 /* End of file config.php */
 /* Location: ./application/config/config.php */
