@@ -45,7 +45,14 @@ CKEDITOR.editorConfig = function( config )
         '/',
         ['Styles','Format','Font','FontSize'],
         ['TextColor','BGColor'],
-        [ 'ShowBlocks','Templates']
+        [ 'ShowBlocks','Templates'],
+        '/',
+        ['Maximize','Createlimereplacementfields'],
+        ['Bold','Italic','Underline'],
+        ['NumberedList','BulletedList','-','Outdent','Indent'],
+        ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+        ['Link','Unlink','Image'],
+        ['Source']
     ];
 
 
@@ -53,7 +60,7 @@ CKEDITOR.editorConfig = function( config )
 
    config.toolbar_inline =
     [
-        ['Maximize'],
+        ['Maximize,'Createlimereplacementfields'],
         ['Bold','Italic','Underline'],
         ['NumberedList','BulletedList','-','Outdent','Indent'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
