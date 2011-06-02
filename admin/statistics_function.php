@@ -1828,7 +1828,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         }
 
                         //handling for "other" field for list radio or list drowpdown
-                        if ((($qtype == "L" || $qtype == "!") && $qother == "Y") || $qtype == "L")
+                        if ((($qtype == "L" || $qtype == "!") && $qother == "Y"))
                         {
                             //add "other"
                             $alist[]=array($statlang->gT("Other"),$statlang->gT("Other"),$fielddata['fieldname'].'other');
