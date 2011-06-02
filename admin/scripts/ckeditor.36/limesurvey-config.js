@@ -14,9 +14,9 @@ CKEDITOR.editorConfig = function( config )
 
     config.toolbar_popup =
     [
-        ['Save','Createlimereplacementfields'],
+        ['Save','Createlimereplacementfields','Source'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord'],
-        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
+        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
         ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
         '/',
         ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
@@ -32,9 +32,9 @@ CKEDITOR.editorConfig = function( config )
 
     config.toolbar_inline =
     [
-        ['Maximize','Createlimereplacementfields'],
+        ['Maximize','Createlimereplacementfields','Source'],
         ['Cut','Copy','Paste','PasteText','PasteFromWord'],
-        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat','Source'],
+        ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
         ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
         '/',
         ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
@@ -47,12 +47,11 @@ CKEDITOR.editorConfig = function( config )
         ['TextColor','BGColor'],
         [ 'ShowBlocks','Templates'],
         '/',
-        ['Maximize','Createlimereplacementfields'],
+        ['Maximize','Createlimereplacementfields','Source'],
         ['Bold','Italic','Underline'],
         ['NumberedList','BulletedList','-','Outdent','Indent'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-        ['Link','Unlink','Image'],
-        ['Source']
+        ['Link','Unlink','Image']
     ];
 
 
@@ -60,12 +59,11 @@ CKEDITOR.editorConfig = function( config )
 
    config.toolbar_inline =
     [
-        ['Maximize,'Createlimereplacementfields'],
+        ['Maximize','Createlimereplacementfields','Source'],
         ['Bold','Italic','Underline'],
         ['NumberedList','BulletedList','-','Outdent','Indent'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-        ['Link','Unlink','Image'],
-        ['Source']
+        ['Link','Unlink','Image']
     ];*/
 
 
