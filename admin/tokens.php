@@ -1629,9 +1629,12 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
             if ($ctcount > $emcount)
             {
                 $i = 0;
+                if (isset($tokenids))
+                {
                 while($i < $maxemails)
                 { array_shift($tokenids); $i++; }
                 $tids = '|'.implode('|',$tokenids);
+                }
                 $lefttosend = $ctcount-$maxemails;
                 $tokenoutput .= "</ul>\n"
                 ."<div class='warningheader'>".$clang->gT("Warning")."</div><br />\n"
@@ -1644,8 +1647,11 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
                 ."<input type='hidden' name='subaction' value=\"email\" />\n"
                 ."<input type='hidden' name='action' value=\"tokens\" />\n"
                 ."<input type='hidden' name='bypassbademails' value=\"".$_POST['bypassbademails']."\" />\n"
-                ."<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
-                ."<input type='hidden' name='tids' value=\"{$tids}\" />\n";
+                ."<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
+                if (isset($tokenids)) 
+                {
+                    $tokenoutput .= "<input type='hidden' name='tids' value=\"{$tids}\" />\n";        
+                }
                 foreach ($surveylangs as $language)
                 {
                     $message = html_escape($_POST['message_'.$language]);
@@ -1692,7 +1698,7 @@ if ($subaction == "remind" && bHasSurveyPermission($surveyid, 'tokens','update')
         {
             //GET SURVEY DETAILS
             $thissurvey=getSurveyInfo($surveyid,$language);
-            if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$bplang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"));}
+            if (!$thissurvey['email_remind']) {$thissurvey['email_remind']=str_replace("\n", "\r\n", $clang->gT("Dear {FIRSTNAME},\n\nRecently we invited you to participate in a survey.\n\nWe note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n\nThe survey is titled:\n\"{SURVEYNAME}\"\n\n\"{SURVEYDESCRIPTION}\"\n\nTo participate, please click on the link below.\n\nSincerely,\n\n{ADMINNAME} ({ADMINEMAIL})\n\n----------------------------------------------\nClick here to do the survey:\n{SURVEYURL}")."\n\n".$clang->gT("If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n{OPTOUTURL}"));}
             $tokenoutput .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false);
             if ($language==$baselang)
             {

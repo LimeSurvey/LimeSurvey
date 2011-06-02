@@ -77,6 +77,62 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.91+ (build 10120) to 1.91+ (build 10168)                    
+#Updated translation: French (b00z00)
+#Updated translation: Czech by Vladim√≠r Braun (c_schmitz)
+#Updated translation: French by Frederic Villerot (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Icelandic by J√≥hann Fri√∞riksson (c_schmitz)
+#Updated translation: Polish (elisa-ls)
++New feature: Updated FCKeditor to CKEditor (c_schmitz)
++New feature: Updated phpExcel to 1.7.6 (c_schmitz)
+-Fixed issue #5148: Export : array subquestions data are labelled as "array_name" only instead of "array_name [subquestion_code]" (mennodekker)
+-Fixed issue #5181: List With Comment - Comment Required (tpartner)
+-Fixed issue #5202: PHP Error when looking at Question Page in template editor (tpartner)
+-Fixed issue #5203: </form> whithout preceding <form ...> In display tokens admin page (tpartner)
+-Fixed issue #5204: Action on selected tokens doesn't process (tpartner)
+-Fixed issue #5207: IE 7 does not allow "yes" selection in a yes/no Question type (tpartner)
+-Fixed issue #5210: Not the same presentation for all errors about token (tpartner)
+-Fixed issue #5179: Error appears in End URL with an INSERTANS entry and the survey is inactive (c_schmitz)
+-Fixed issue #5184: Unnecessary duplicate query when listing surveys - patch by TMSWhite (c_schmitz)
+-Fixed issue #5185: Text display is counted as question in welcome screen (c_schmitz)
+-Fixed issue #5188: SQL failure in printable survey when using MSSQL server (c_schmitz)
+-Fixed issue #5194: Impossible to create a new survey when interface language is set to Catalan - patch provided by jpasquier (c_schmitz)
+-Fixed issue #5196: Only owners/superadmins can edit a response (c_schmitz)
+-Fixed issue #5199: Comfortupdate fails at step 3 (c_schmitz)
+-Fixed issue #5214: Missing translations for some words in conditions editor (c_schmitz)
+-Fixed issue #5219: error - show statistic as pdf (c_schmitz)
+-Fixed issue #5222: Back-button in token overview not working properly (c_schmitz)
+-Fixed issue: Submit function firing twice (tpartner)
+-Fixed issue: Weird behaving tooltips when editing a question (c_schmitz)
+
+                      
+Changes from 1.91+ (build 10089) to 1.91+ (build 10120)   
+-Fixed issue #5151: Not possible to enter welcome message/end message in additional language (tpartner)
+-Fixed issue #5173: Survey shows "Session expired" after first survey page and with register_globals activated in the PHP configuration (c_schmitz)
+-Fixed issue #5174: Export with no tokens selected throws warning - patch by jamie0725 (c_schmitz)
+-Fixed issue #5177: Upload file question browsing responses cannot preview or download file (c_schmitz)
+-Fixed issue #5180: Errors on upgrade with MSSQL database  (c_schmitz)
+-Fixed issue #5163: Clicking on "<< Previous" in survey navigation jumped back to square one (adevries)
+-Fixed issue: No "Source" button in basic editor (tpartner)                      
+                              
+Changes from 1.91+ (build 10062) to 1.91+ (build 10089)                              
+#Updated translation: Norwegian Nynorsk - kindly provided by Guttorm Flatab¯ (c_schmitz)
+#Updated translation : French (b00z00)
+#Updated translation: Czech - kindly provided by Vladimir Braun (c_schmitz)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Hungarian - kindly provided by Bal·zs Zolt·n (c_schmitz)
+#Updated translation: Norwegian Bokmal - kindly provided by PÂl Monstad (c_schmitz)
+-Fixed issue #4851: Translate button doesn't work in IE (tpartner)
+-Fixed issue #5150: Preview question; default answer not shown (c_schmitz)
+-Fixed issue #5157: Limit on 5 character in multiple answers with comments (c_schmitz)
+-Fixed issue #5159: code printing when using showprintablesurvey with radio button - patch kindly provided by mot (c_schmitz)
+-Fixed issue #5165: Export to excel exports no results but query when choosing only to export incomplete or only complete responses (c_schmitz)
+-Fixed issue #5169: Excel exports fail if special characters are present in survey title (c_schmitz)
+                              
+                              
 Changes from 1.91 (build 10060) to 1.91+ (build 10062)
 -Fixed issue #5158: Missing backslash in index.php gives throws a "unexpected T_STRING error" (shnoulle)
 
@@ -286,7 +342,7 @@ Changes from  1.87+ (build 6406) to 1.87+ (build 8429) - Legend: # updated featu
 #Updated language: Croatian (idobraca)
 #Updated language: French (b00z00)
 #Updated language: Italian (thanks to Cristina Fiorentini ) (gandalfar)
-#Updated language: Portuguese, thanks to Rui Gouveia and Marco Mendon√É¬ßa (gandalfar)
+#Updated language: Portuguese, thanks to Rui Gouveia and Marco Mendon√ßa (gandalfar)
 #Updated language: Spanish (es) (kadejo)
 #Updated translation: German (c_schmitz)
 #Updated translation: German Informal (c_schmitz)
@@ -475,8 +531,8 @@ Changes from 1.87RC4 (build 8002) [29-11-2009] to 1.87RC5 (build 8151) - Legend:
 +New feature: Start/Expiry is now date and time (previously only date) (c_schmitz)
 #Updated feature: SPSS export now configurable for SPSS version - patch by Menno Dekker (c_schmitz)
 #Updated translation: Croatian (idobraca)
-#Updated translation: Norwegian Bokm√É¬•l (reidarok)
-#Updated translation: Czech by Vladim√É¬≠r Braun (c_schmitz)
+#Updated translation: Norwegian Bokm√•l (reidarok)
+#Updated translation: Czech by Vladim√≠r Braun (c_schmitz)
 #Updated translation: Dutch by Fred Dekkers & Han Velthuis (c_schmitz)
 #Updated translation: Dutch by Fred Dekkers (c_schmitz)
 #Updated translation: Dutch Informal by Han Velthuis (c_schmitz)
@@ -555,7 +611,7 @@ Changes from 1.87RC2 (build 7886) to 1.87RC3 (build 7996) [27-11-2009] - Legend:
 #Updated translation: Finnish by Tapio Nurminen <tapio dot nurminen at tietokannat dot fi> 
 #Updated translation: German (c_schmitz)
 #Updated translation: German Informal (c_schmitz)
-#Updated translation: Norwegian Bokm√É¬•l. By Reidar √ÉÀúksnevad <reidar dot oksnevad at freecode dot no> 
+#Updated translation: Norwegian Bokm√•l. By Reidar √òksnevad <reidar dot oksnevad at freecode dot no> 
 #Updated translation: Portuguese Brazilian by Yoshitake <yoshitake at pucsp dot br> 
 #Updated translation: Slovakian by Pavel Cerny  <pcerny at gmail dot com>
 #Updated translation: Spanish (kadejo)
@@ -836,7 +892,7 @@ Changes from 1.85+ (build 7337) to 1.85+ (build 7393) [03-08-2009] - Legend: + n
 #Updated translation: Italian. (idobraca)
 #Updated translation: French. (b00z00)
 #Updated translation: Polish(elisa-ls)
-#Updated translation: Slovak by Marek Hall√É¬©r. (jaycburton)
+#Updated translation: Slovak by Marek Hall√©r. (jaycburton)
 #Updated translation: Spanish (es) (kadejo)
 +New feature: CSS class for cells within array (flexible label) question type. This way cells within the table can have a background color assigned using CSS. (maziminke)
 -Fixed bug #03459: Using a "lower than" > character as code within label set leads to a save error in the end user survey form (jcleeland)
@@ -1033,7 +1089,7 @@ Changes from 1.81 to 1.82 (build 6757) [2009/04/29] - Legend: + new feature, # u
 +New feature in group order - detects faulty group_order numbering and fixes before displaying groups (jcleeland)
 +New language translation: Sinhalese translation by Janaka Padukka (c_schmitz)
 #Updated Language: Czech (macduy)
-#Updated Language: Hungarian - kindly provided by Mikl√≥s Kriv√°n (c_schmitz)
+#Updated Language: Hungarian - kindly provided by MiklÛs Kriv·n (c_schmitz)
 #Updated Language: Polish - kindly provided by Ela Lesinska (elisa) (c_schmitz)
 #Updated language: German & German (informal) (c_schmitz)
 #Updated language: German translation (c_schmitz)
@@ -1231,10 +1287,10 @@ Updated translations:
     Updated Language: Galician language updated. By Carlos Neira Cortizas. (kadejo)
     Updated Language: Greek language updated. By Yiannos Katsirintakis. (kadejo)
     Updated Language: Italian. By Giovanni Chiozza. (kadejo)
-    Updated Language: Norwegian Bokm√•l. By Reidar √òksnevad. (kadejo)
+    Updated Language: Norwegian BokmÂl. By Reidar ÿksnevad. (kadejo)
     Updated Language: Polish (xqleg)
-    Updated Language: Portuguese Brazilian by Andr√©a Sim√µes (c_schmitz)
-    Updated Language: Portuguese Brazilian by Fl√°vio Veras (c_schmitz)
+    Updated Language: Portuguese Brazilian by AndrÈa Simıes (c_schmitz)
+    Updated Language: Portuguese Brazilian by Fl·vio Veras (c_schmitz)
     Updated Language: Russian. By Pavel Tokarev. (kadejo)
     Updated Language: Serbian language updated. By Miroslav Jovanovic. (first in Cyrillic alphabet). (kadejo)
     Updated Language: Slovenian language update (gasper_koren)
@@ -1455,7 +1511,7 @@ Feature Changes:
 -Applied changes to originals texts for better i18n compatibility by Hooman Mesgary (c_schmitz)
 
 Languages:
--Added Icelandic translation kindly provided by J√≥hann Fri√∞riksson ( johannfr -i-t- arskoli -d-i-t- is )
+-Added Icelandic translation kindly provided by JÛhann Fririksson ( johannfr -i-t- arskoli -d-i-t- is )
 -Updated Albanian Language file by Eniel Ninka (e -d-o-t- ninka -a-t- univpm -d-o-t- it )
 -Updated Basque Translation by inforbek13 --i-t-- eps -d-a-t- mondragon -d-a-t- edu
 -Updated Bulgarian translation by Alexander Simidchiev <simid -a-t- mail -d-i-t- bg
@@ -1465,7 +1521,7 @@ Languages:
 -Updated Dutch translation by Hans Delva, Gerton Poot
 -Updated Estonian Translation by Villem Vannas (villem -dot- vannas(a) mail (dot) ee)
 -Renamed Farsi to Persian (c_schmitz)
--Updated Finnish Translation by Juuso Heinisuo, P√§ivi Tyni  (c_schmitz)
+-Updated Finnish Translation by Juuso Heinisuo, P‰ivi Tyni  (c_schmitz)
 -Updated French translation (b00z00 and el Almoman walmoman -a-t- hemisa -d-o-z- com)
 -Updated German translations (c_schmitz)
 -Updated Greek translation by Christos Rodosthenous and Yiannos Katsirintakis
@@ -1821,7 +1877,7 @@ New Features / Feature Changes - Release Date: 2008/02/25
 [Survey Design] Adding new questions to very large surveys, and question sorts (jasebo)
 [Survey Design] Question Attribute "display_columns" for Gender Question--Type (jasebo)
 [Survey Design] Implemented dropdown layout for Dual Scale Question Type (lemeur)
-[Language] Added Slovak translation provided by Juraj Zub√°n aka D4v1dZ ( d4v1dz -a-t- gmail -d-o-t- com)
+[Language] Added Slovak translation provided by Juraj Zub·n aka D4v1dZ ( d4v1dz -a-t- gmail -d-o-t- com)
 
 
 
@@ -1834,7 +1890,7 @@ Features
 -Lots of security fixes regarding internal security - upgrade is highly recommended. (c_schmitz)
 -Hint is now shown if database exist (c_schmitz)
 -Added a warning message when the user did not change the 'password' Password (c_schmitz)
--Updated and now complete SPanish Translation by Luis M. Mart√≠nez
+-Updated and now complete SPanish Translation by Luis M. MartÌnez
 -Updated and now complete Polish Translation by Damian Kubiak
 
 
@@ -1846,7 +1902,7 @@ Fixes:
 -Fixed problem with mandatory questions in all-in-one mode (leochaton)	
 -Fixed "Load unfinished survey" and "Save survey and return" buttons active even when the survey is not active (leochaton)	
 -Fixed question marks being shown instead if Cyrillic/chinese/greek/... characters when installing LImeSurvey into a non-UTF8 database (c_schmitz)
--Fixed $accesscontrol isn¬¥t working correctly - removed this obsolete setting (leochaton, c_schmitz)	
+-Fixed $accesscontrol isn¥t working correctly - removed this obsolete setting (leochaton, c_schmitz)	
 -Fixed error clicking Browse button to view text box responses (leochaton)
 -Fixed Locale nl point to wrong images-directory (el-matador-69)
 -Fixed The saved control records were not deleted when the survey was deactivated. (leochaton)
@@ -1899,14 +1955,14 @@ New General Features
 
 New Languages
 
-    * Brazilian Portuguese by Anderson La‚Äöcio Galindo Trindade
+    * Brazilian Portuguese by Anderson LaÇcio Galindo Trindade
     * Chinese Traditional (Area Hong Kong) by Mark Yeung
     * Finnish by Matti Lassila
     * Galician translation by Carlos Neira Cortizas
     * Japanese translation by Hiroki Yoshino
     * Polish by Maciej Zawado
     * Serbian by Ivan Recevic
-    * Spanish by Carlos Juan Mart√≠n P√©rez
+    * Spanish by Carlos Juan MartÌn PÈrez
     * Vietnamese by Vinh Ngo 
 
 
