@@ -1207,7 +1207,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	            }
 	            else
 	            {
-	                $tokenoutput .= "<td>$brow[$tokenfieldname]</td>\n";
+	                $tokenoutput .= '<td>'.htmlspecialchars($brow[$tokenfieldname])."</td>\n";
 	            }
 	        }
 	        if ($tokenfieldname=='tid')
@@ -1226,7 +1226,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	                }
 	                else
 	                {
-	                    $tokenoutput .= "<img src='{$imageurl}/blank.gif' height='16' width='16'/>";
+	                    $tokenoutput .= "<img src='{$imageurl}/blank.gif' height='16' alt='' width='16'/>";
 	                }
 	                $tokenoutput .="<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_edit.png' title='"
 	                .$clang->gT("Edit token entry")
@@ -1253,7 +1253,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 	                // UPDATE button to the tokens display in the MPID Actions column
 	                if  ($id)
 	                {
-	                    $tokenoutput .= "<input type='image' src='{$imageurl}/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" type='submit'  title='"
+	                    $tokenoutput .= "<input type='image' src='{$imageurl}/token_viewanswer.png' style='height: 16; width: 16px;' onclick=\"window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')\" title='"
 	                    .$clang->gT("View/Update last response")
 	                    ."' alt='"
 	                    .$clang->gT("View/Update last response")
@@ -1289,7 +1289,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 
         if (bHasSurveyPermission($surveyid, 'tokens','delete'))
         {
-            $tokenoutput .= "<img src='{$imageurl}/blank.gif' height='16' width='16'/>"
+            $tokenoutput .= "<img src='{$imageurl}/blank.gif' height='16' width='16' alt='' />"
             . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_delete.png' title='"
             .$clang->gT("Delete the selected entries")
             ."' alt='"
@@ -1300,7 +1300,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
 
         }
 
-        if (bHasSurveyPermission($surveyid, 'tokens','delete'))
+        if (bHasSurveyPermission($surveyid, 'tokens','update'))
         {
             $tokenoutput .= "&nbsp;"
             . "<input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_invite.png' title='"
@@ -1315,9 +1315,9 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
             .$clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)")
             ."' onclick=\"window.open('{$scriptname}?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')\" />";
         }
+        $tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onchange='alert(this.value)' />\n";
 	    $tokenoutput .= "</td>\n"
 	    . "</tr>\n";
-	    $tokenoutput .= "<input type='hidden' id='tokenboxeschecked' value='' onChange='alert(this.value)' />\n";
 	}
 	//End multiple item actions
 
