@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-01 21:16+0100\n"
-"PO-Revision-Date: 2011-06-01 21:25+0100\n"
+"POT-Creation-Date: 2011-06-02 23:32+0100\n"
+"PO-Revision-Date: 2011-06-04 23:03+0100\n"
 "Last-Translator: Elżbieta Lesińska <elales@gazeta.pl>\n"
 "Language-Team: LimeSurvey Team\n"
 "MIME-Version: 1.0\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-Country: POLAND\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: C:\\limesurvey\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT\n"
 "X-Poedit-SearchPath-0: C:\\LimeSurvey\n"
 
 # C:\limesurvey/common.php:270
@@ -3024,6 +3024,13 @@ msgstr "Wybierz jedną z następujących odpowiedzi"
 msgid "Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item."
 msgstr "Kliknij element po lewej, zaczynając od ocenianego najwyżej, poprzez kolejne, aż do ocenianego najniżej."
 
+# C:\limesurvey/qanda.php:287
+#: C:\LimeSurvey/qanda.php:632
+#: C:\LimeSurvey/qanda.php:633
+#, php-format
+msgid "Check at least %d item"
+msgstr "Wybierz co najmniej %d odpowiedź"
+
 # C:\limesurvey/qanda.php:282
 # C:\limesurvey/qanda.php:296
 # C:\limesurvey/qanda.php:313
@@ -3051,6 +3058,13 @@ msgstr "Wybierz od %d do %d odpowiedzi"
 #, php-format
 msgid "Check at most %d answers"
 msgstr "Wybierz co najwyżej %d odpowiedzi"
+
+# C:\limesurvey/qanda.php:287
+#: C:\LimeSurvey/qanda.php:664
+#: C:\LimeSurvey/qanda.php:665
+#, php-format
+msgid "Check at least %d answer"
+msgstr "Wybierz co najmniej %d odpowiedź"
 
 # C:\limesurvey/qanda.php:305
 #: C:\LimeSurvey/qanda.php:676
@@ -3374,6 +3388,12 @@ msgstr "Twój ranking"
 #: C:\LimeSurvey/qanda.php:2875
 msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Aby cofnąć wybór, kliknij na ikonę nożyczek, znajdującą się obok wybranego elementu z prawej strony"
+
+#: C:\LimeSurvey/qanda.php:2886
+#: C:\LimeSurvey/qanda.php:2901
+#, php-format
+msgid "Please rank at least %d item for question \"%s\""
+msgstr "Proszę porangować co najmniej %d odpowiedź w pytaniu \"%s\""
 
 #: C:\LimeSurvey/qanda.php:3324
 #: C:\LimeSurvey/qanda.php:3640
@@ -12395,7 +12415,7 @@ msgstr "Wczytaj plik:"
 # C:\limesurvey/admin/templates.php:569
 # C:\limesurvey/admin/tokens.php:1554
 #: C:\LimeSurvey/admin/templates.php:1009
-#: C:\LimeSurvey/admin/tokens.php:3179
+#: C:\LimeSurvey/admin/tokens.php:3185
 msgid "Upload"
 msgstr "Wczytaj"
 
@@ -12685,17 +12705,17 @@ msgstr "Informacje o tokenach"
 # C:\limesurvey/admin/tokens.php:1246
 # C:\limesurvey/admin/tokens.php:1272
 #: C:\LimeSurvey/admin/tokens.php:593
-#: C:\LimeSurvey/admin/tokens.php:2500
-#: C:\LimeSurvey/admin/tokens.php:2559
-#: C:\LimeSurvey/admin/tokens.php:2566
-#: C:\LimeSurvey/admin/tokens.php:2641
+#: C:\LimeSurvey/admin/tokens.php:2506
+#: C:\LimeSurvey/admin/tokens.php:2565
+#: C:\LimeSurvey/admin/tokens.php:2572
+#: C:\LimeSurvey/admin/tokens.php:2647
 msgid "Display tokens"
 msgstr "Pokaż tokeny"
 
 # C:\limesurvey/admin/tokens.php:325
 # C:\limesurvey/admin/tokens.php:1273
 #: C:\LimeSurvey/admin/tokens.php:598
-#: C:\LimeSurvey/admin/tokens.php:2567
+#: C:\LimeSurvey/admin/tokens.php:2573
 msgid "Add new token entry"
 msgstr "Dodaj nowy wpis token"
 
@@ -12703,8 +12723,8 @@ msgstr "Dodaj nowy wpis token"
 # C:\limesurvey/admin/tokens.php:1246
 # C:\limesurvey/admin/tokens.php:1272
 #: C:\LimeSurvey/admin/tokens.php:602
-#: C:\LimeSurvey/admin/tokens.php:2438
-#: C:\LimeSurvey/admin/tokens.php:2593
+#: C:\LimeSurvey/admin/tokens.php:2444
+#: C:\LimeSurvey/admin/tokens.php:2599
 msgid "Add dummy tokens"
 msgstr "Dodaj fikcyjne tokeny"
 
@@ -12735,7 +12755,7 @@ msgstr "Wyślij zaproszenie"
 
 # C:\limesurvey/admin/tokens.php:343
 #: C:\LimeSurvey/admin/tokens.php:638
-#: C:\LimeSurvey/admin/tokens.php:1690
+#: C:\LimeSurvey/admin/tokens.php:1696
 msgid "Send email reminder"
 msgstr "Wyślij przypomnienie"
 
@@ -13031,7 +13051,7 @@ msgstr "Status emaila"
 #: C:\LimeSurvey/admin/tokens.php:1070
 #: C:\LimeSurvey/admin/tokens.php:1073
 #: C:\LimeSurvey/admin/tokens.php:1074
-#: C:\LimeSurvey/admin/tokens.php:2300
+#: C:\LimeSurvey/admin/tokens.php:2306
 msgid "Invitation sent?"
 msgstr "Wysłano zaproszenia?"
 
@@ -13039,7 +13059,7 @@ msgstr "Wysłano zaproszenia?"
 #: C:\LimeSurvey/admin/tokens.php:1080
 #: C:\LimeSurvey/admin/tokens.php:1083
 #: C:\LimeSurvey/admin/tokens.php:1084
-#: C:\LimeSurvey/admin/tokens.php:2305
+#: C:\LimeSurvey/admin/tokens.php:2311
 msgid "Reminder sent?"
 msgstr "Przypomnienie wysłane?"
 
@@ -13055,7 +13075,7 @@ msgstr "Liczba przypomnień"
 #: C:\LimeSurvey/admin/tokens.php:1100
 #: C:\LimeSurvey/admin/tokens.php:1103
 #: C:\LimeSurvey/admin/tokens.php:1104
-#: C:\LimeSurvey/admin/tokens.php:2318
+#: C:\LimeSurvey/admin/tokens.php:2324
 msgid "Completed?"
 msgstr "Zakończone?"
 
@@ -13071,13 +13091,13 @@ msgstr "Zakończone?"
 #: C:\LimeSurvey/admin/tokens.php:1113
 #: C:\LimeSurvey/admin/tokens.php:1114
 msgid "Uses left"
-msgstr "Używa lewego"
+msgstr "Pozostało do wykorzystania"
 
 #: C:\LimeSurvey/admin/tokens.php:1120
 #: C:\LimeSurvey/admin/tokens.php:1123
 #: C:\LimeSurvey/admin/tokens.php:1124
-#: C:\LimeSurvey/admin/tokens.php:2328
-#: C:\LimeSurvey/admin/tokens.php:2411
+#: C:\LimeSurvey/admin/tokens.php:2334
+#: C:\LimeSurvey/admin/tokens.php:2417
 msgid "Valid from"
 msgstr "Ważne od"
 
@@ -13113,8 +13133,8 @@ msgstr "Wypełnij ankietę"
 # C:\limesurvey/admin/tokens.php:617
 #: C:\LimeSurvey/admin/tokens.php:1232
 #: C:\LimeSurvey/admin/tokens.php:1234
-#: C:\LimeSurvey/admin/tokens.php:2249
-#: C:\LimeSurvey/admin/tokens.php:2446
+#: C:\LimeSurvey/admin/tokens.php:2255
+#: C:\LimeSurvey/admin/tokens.php:2452
 msgid "Edit token entry"
 msgstr "Edytuj token"
 
@@ -13222,7 +13242,7 @@ msgstr "Wyślij zaproszenia"
 # C:\limesurvey/admin/tokens.php:1006
 # C:\limesurvey/admin/tokens.php:1026
 #: C:\LimeSurvey/admin/tokens.php:1391
-#: C:\LimeSurvey/admin/tokens.php:1695
+#: C:\LimeSurvey/admin/tokens.php:1701
 msgid "Warning!"
 msgstr "Ostrzeżenie!"
 
@@ -13232,20 +13252,20 @@ msgstr "Ostrzeżenie!"
 # C:\limesurvey/question.php:530
 # C:\limesurvey/survey.php:491
 #: C:\LimeSurvey/admin/tokens.php:1391
-#: C:\LimeSurvey/admin/tokens.php:1695
+#: C:\LimeSurvey/admin/tokens.php:1701
 msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
 msgstr "Ta ankieta nie jest aktywna, więc użytkownicy nie będą mogli jej wypełnić."
 
 # C:\limesurvey/admin/tokens.php:753
 # C:\limesurvey/admin/tokens.php:888
 #: C:\LimeSurvey/admin/tokens.php:1457
-#: C:\LimeSurvey/admin/tokens.php:1718
+#: C:\LimeSurvey/admin/tokens.php:1724
 msgid "Subject"
 msgstr "Temat"
 
 # C:\limesurvey/admin/tokens.php:1408
 #: C:\LimeSurvey/admin/tokens.php:1490
-#: C:\LimeSurvey/admin/tokens.php:1765
+#: C:\LimeSurvey/admin/tokens.php:1771
 msgid "Bypass token with failing email addresses"
 msgstr "Pomiń tokeny z nieprawidłowym adresem email"
 
@@ -13263,7 +13283,7 @@ msgstr "Wysyłanie zaproszeń..."
 # C:\limesurvey/admin/tokens.php:904
 # C:\limesurvey/admin/tokens.php:944
 #: C:\LimeSurvey/admin/tokens.php:1509
-#: C:\LimeSurvey/admin/tokens.php:1806
+#: C:\LimeSurvey/admin/tokens.php:1812
 msgid "Sending to Token ID"
 msgstr "Wysyłanie dla tokena:"
 
@@ -13271,19 +13291,19 @@ msgstr "Wysyłanie dla tokena:"
 # C:\limesurvey/admin/tokens.php:904
 # C:\limesurvey/admin/tokens.php:944
 #: C:\LimeSurvey/admin/tokens.php:1510
-#: C:\LimeSurvey/admin/tokens.php:1807
+#: C:\LimeSurvey/admin/tokens.php:1813
 msgid "Sending to Token IDs"
 msgstr "Wysyłanie dla numerów tokenów:"
 
 # C:\limesurvey/admin/tokens.php:833
 #: C:\LimeSurvey/admin/tokens.php:1613
-#: C:\LimeSurvey/admin/tokens.php:1939
+#: C:\LimeSurvey/admin/tokens.php:1945
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
 msgstr "Wysyłanie emaila do {FIRSTNAME} {LASTNAME} ({EMAIL}) odłożone: Token nie jest jeszcze ważny."
 
 # C:\limesurvey/admin/tokens.php:833
 #: C:\LimeSurvey/admin/tokens.php:1617
-#: C:\LimeSurvey/admin/tokens.php:1943
+#: C:\LimeSurvey/admin/tokens.php:1949
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
 msgstr "Wysyłanie emaila do {FIRSTNAME} {LASTNAME} ({EMAIL}) pominięte: Token nie jest już ważny."
 
@@ -13294,27 +13314,27 @@ msgstr "Wysłano zaproszenie do:"
 
 # C:\limesurvey/admin/tokens.php:833
 #: C:\LimeSurvey/admin/tokens.php:1635
-#: C:\LimeSurvey/admin/tokens.php:1959
+#: C:\LimeSurvey/admin/tokens.php:1965
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
 msgstr "Wysyłanie do {FIRSTNAME} {LASTNAME} ({EMAIL}) nieudane"
 
 # C:\limesurvey/admin/tokens.php:845
 # C:\limesurvey/admin/tokens.php:1007
-#: C:\LimeSurvey/admin/tokens.php:1652
-#: C:\LimeSurvey/admin/tokens.php:1976
+#: C:\LimeSurvey/admin/tokens.php:1655
+#: C:\LimeSurvey/admin/tokens.php:1982
 msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
 msgstr "Jest więcej oczekujących emaili niż może być wysłane na raz. Kliknij poniżej, aby kontynuować wysyłanie emaili."
 
 # C:\limesurvey/admin/tokens.php:846
 # C:\limesurvey/admin/tokens.php:1008
-#: C:\LimeSurvey/admin/tokens.php:1653
-#: C:\LimeSurvey/admin/tokens.php:1977
+#: C:\LimeSurvey/admin/tokens.php:1656
+#: C:\LimeSurvey/admin/tokens.php:1983
 msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "Liczba emaili do wysłania: {EMAILCOUNT}"
 
 # C:\limesurvey/admin/tokens.php:1027
-#: C:\LimeSurvey/admin/tokens.php:1675
-#: C:\LimeSurvey/admin/tokens.php:2016
+#: C:\LimeSurvey/admin/tokens.php:1681
+#: C:\LimeSurvey/admin/tokens.php:2022
 msgid "There were no eligible emails to send. This will be because none satisfied the criteria of:"
 msgstr "Nie było prawidłowych emaili do wysłania. Żaden nie spełniał kryteriów:"
 
@@ -13322,130 +13342,130 @@ msgstr "Nie było prawidłowych emaili do wysłania. Żaden nie spełniał kryte
 # C:\limesurvey/admin/exportresults.php:468
 # C:\limesurvey/admin/exportresults.php:469
 # C:\limesurvey/admin/saved.php:108
-#: C:\LimeSurvey/admin/tokens.php:1676
-#: C:\LimeSurvey/admin/tokens.php:2017
+#: C:\LimeSurvey/admin/tokens.php:1682
+#: C:\LimeSurvey/admin/tokens.php:2023
 msgid "having a valid email address"
 msgstr "mające prawidłowe adresy email"
 
-#: C:\LimeSurvey/admin/tokens.php:1677
-#: C:\LimeSurvey/admin/tokens.php:2018
+#: C:\LimeSurvey/admin/tokens.php:1683
+#: C:\LimeSurvey/admin/tokens.php:2024
 msgid "not having been sent an invitation already"
 msgstr "jeszcze nie wysłano zaproszenia"
 
 # C:\limesurvey/index.php:196
-#: C:\LimeSurvey/admin/tokens.php:1678
+#: C:\LimeSurvey/admin/tokens.php:1684
 msgid "having already completed the survey"
 msgstr "już wypełniono ankiety"
 
-#: C:\LimeSurvey/admin/tokens.php:1679
+#: C:\LimeSurvey/admin/tokens.php:1685
 msgid "having a token"
 msgstr "mające token"
 
 # C:\limesurvey/admin/html.php:1850
 # C:\limesurvey/admin/html.php:2389
-#: C:\LimeSurvey/admin/tokens.php:1739
+#: C:\LimeSurvey/admin/tokens.php:1745
 msgid "Reminder Email:"
 msgstr "Email przypomnienia:"
 
 # C:\limesurvey/admin/tokens.php:778
 # C:\limesurvey/admin/tokens.php:904
 # C:\limesurvey/admin/tokens.php:944
-#: C:\LimeSurvey/admin/tokens.php:1748
-#: C:\LimeSurvey/admin/tokens.php:1761
+#: C:\LimeSurvey/admin/tokens.php:1754
+#: C:\LimeSurvey/admin/tokens.php:1767
 msgid "Send reminder to token ID(s):"
 msgstr "Wyślij przypomnienie do tokenów z numerami ID:"
 
 # C:\limesurvey/admin/tokens.php:778
 # C:\limesurvey/admin/tokens.php:904
 # C:\limesurvey/admin/tokens.php:944
-#: C:\LimeSurvey/admin/tokens.php:1752
+#: C:\LimeSurvey/admin/tokens.php:1758
 msgid "Sending to:"
 msgstr "Wysyłanie do:"
 
 # C:\limesurvey/admin/tokens.php:404
-#: C:\LimeSurvey/admin/tokens.php:1753
+#: C:\LimeSurvey/admin/tokens.php:1759
 msgid "All token entries to whom a reminder email would apply"
 msgstr "Wszystkie wpisy tokenów, do których kwalifikuje się email przypominający"
 
 # C:\limesurvey/admin/tokens.php:896
-#: C:\LimeSurvey/admin/tokens.php:1756
+#: C:\LimeSurvey/admin/tokens.php:1762
 msgid "Start at Token ID:"
 msgstr "Zacznij od tokena o ID:"
 
-#: C:\LimeSurvey/admin/tokens.php:1771
+#: C:\LimeSurvey/admin/tokens.php:1777
 msgid "Min days between reminders"
 msgstr "Minimalnie dni między przypomnieniami"
 
 # C:\limesurvey/admin/tokens.php:874
-#: C:\LimeSurvey/admin/tokens.php:1775
+#: C:\LimeSurvey/admin/tokens.php:1781
 msgid "Max reminders"
 msgstr "Maksymalnie przypomnień"
 
 # C:\limesurvey/admin/tokens.php:927
-#: C:\LimeSurvey/admin/tokens.php:1778
+#: C:\LimeSurvey/admin/tokens.php:1784
 msgid "Send Reminders"
 msgstr "Wyślij przypomnienia"
 
 # C:\limesurvey/admin/tokens.php:939
-#: C:\LimeSurvey/admin/tokens.php:1791
+#: C:\LimeSurvey/admin/tokens.php:1797
 msgid "Sending Reminders"
 msgstr "Wysyłanie przypomnień"
 
 # C:\limesurvey/admin/browse.php:168
 # C:\limesurvey/admin/browse.php:356
 # C:\limesurvey/admin/dataentry.php:442
-#: C:\LimeSurvey/admin/tokens.php:1805
+#: C:\LimeSurvey/admin/tokens.php:1811
 msgid "From Token ID"
 msgstr "Od ID tokena"
 
 # C:\limesurvey/admin/tokens.php:991
-#: C:\LimeSurvey/admin/tokens.php:1955
+#: C:\LimeSurvey/admin/tokens.php:1961
 msgid "Reminder sent to:"
 msgstr "Przypomnienie wysłane do:"
 
 # C:\limesurvey/index.php:196
-#: C:\LimeSurvey/admin/tokens.php:2019
+#: C:\LimeSurvey/admin/tokens.php:2025
 msgid "but not having already completed the survey"
 msgstr "ale przed wypełnieniem ankiety"
 
 # C:\limesurvey/admin/tokens.php:1039
-#: C:\LimeSurvey/admin/tokens.php:2028
+#: C:\LimeSurvey/admin/tokens.php:2034
 msgid "Create tokens"
 msgstr "Utwórz tokeny"
 
 # C:\limesurvey/admin/tokens.php:1043
-#: C:\LimeSurvey/admin/tokens.php:2032
+#: C:\LimeSurvey/admin/tokens.php:2038
 msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
 msgstr "Kliknięcie TAK spowoduje wygenerowanie tokenów dla wszystkich pozycji z listy, które ich nie mają. Kontynuować?"
 
 # C:\limesurvey/admin/tokens.php:1069
-#: C:\LimeSurvey/admin/tokens.php:2081
+#: C:\LimeSurvey/admin/tokens.php:2087
 msgid "{TOKENCOUNT} tokens have been created"
 msgstr "Liczba utworzonych tokenów: {TOKENCOUNT}"
 
 # C:\limesurvey/admin/tokens.php:1083
-#: C:\LimeSurvey/admin/tokens.php:2098
+#: C:\LimeSurvey/admin/tokens.php:2104
 msgid "Marked tokens have been deleted."
 msgstr "Zaznaczone tokeny zostały usunięte."
 
-#: C:\LimeSurvey/admin/tokens.php:2100
+#: C:\LimeSurvey/admin/tokens.php:2106
 msgid "No tokens were selected for deletion"
 msgstr "Nie wybrano żadnych tokenów do usunięcia"
 
 # C:\limesurvey/admin/tokens.php:1083
-#: C:\LimeSurvey/admin/tokens.php:2105
+#: C:\LimeSurvey/admin/tokens.php:2111
 msgid "Token has been deleted."
 msgstr "Token został usunięty."
 
 # C:\limesurvey/admin/tokens.php:1084
 # C:\limesurvey/admin/usercontrol.php:128
-#: C:\LimeSurvey/admin/tokens.php:2107
+#: C:\LimeSurvey/admin/tokens.php:2113
 msgid "Reloading Screen. Please wait."
 msgstr "Odświeżanie ekranu. Proszę czekać."
 
 # C:\limesurvey/admin/html.php:1950
 # C:\limesurvey/admin/html.php:2484
-#: C:\LimeSurvey/admin/tokens.php:2113
+#: C:\LimeSurvey/admin/tokens.php:2119
 msgid "Manage token attribute fields"
 msgstr "Zarządzaj polami atrybutów tokena"
 
@@ -13457,114 +13477,114 @@ msgstr "Zarządzaj polami atrybutów tokena"
 # C:\limesurvey/admin/spss.php:79
 # C:\limesurvey/admin/tokens.php:301
 # C:\limesurvey/admin/tokens.php:591
-#: C:\LimeSurvey/admin/tokens.php:2117
+#: C:\LimeSurvey/admin/tokens.php:2123
 msgid "Attribute field"
 msgstr "Pole atrybutu"
 
 # C:\limesurvey/admin/html.php:2200
 # C:\limesurvey/admin/html.php:2527
-#: C:\LimeSurvey/admin/tokens.php:2117
+#: C:\LimeSurvey/admin/tokens.php:2123
 msgid "Field description"
 msgstr "Opis pola"
 
 # C:\limesurvey/admin/exportresults.php:196
-#: C:\LimeSurvey/admin/tokens.php:2117
+#: C:\LimeSurvey/admin/tokens.php:2123
 msgid "Example data"
 msgstr "Przykładowe dane"
 
 # C:\limesurvey/admin/usercontrol.php:65
 # C:\limesurvey/admin/usercontrol.php:194
-#: C:\LimeSurvey/admin/tokens.php:2134
+#: C:\LimeSurvey/admin/tokens.php:2140
 msgid "<no data>"
 msgstr "<brak danych>"
 
 # C:\limesurvey/admin/html.php:1950
 # C:\limesurvey/admin/html.php:2484
-#: C:\LimeSurvey/admin/tokens.php:2145
+#: C:\LimeSurvey/admin/tokens.php:2151
 msgid "Add token attributes"
 msgstr "Dodaj atrybuty tokenów"
 
 # C:\limesurvey/admin/tokens.php:366
-#: C:\LimeSurvey/admin/tokens.php:2147
+#: C:\LimeSurvey/admin/tokens.php:2153
 #, php-format
 msgid "There are %s user attribute fields in this token table"
 msgstr "W tej tabeli tokenów jest %s pól atrybutów"
 
-#: C:\LimeSurvey/admin/tokens.php:2150
+#: C:\LimeSurvey/admin/tokens.php:2156
 msgid "Number of attribute fields to add:"
 msgstr "Liczba pól atrybutów do dodania:"
 
 # C:\limesurvey/admin/templates.php:521
-#: C:\LimeSurvey/admin/tokens.php:2154
+#: C:\LimeSurvey/admin/tokens.php:2160
 msgid "Add fields"
 msgstr "Dodaj pola"
 
 # C:\limesurvey/admin/html.php:2200
 # C:\limesurvey/admin/html.php:2527
-#: C:\LimeSurvey/admin/tokens.php:2175
+#: C:\LimeSurvey/admin/tokens.php:2181
 msgid "Update token attribute descriptions"
 msgstr "Aktualizuj opisy atrybutów tokenów"
 
-#: C:\LimeSurvey/admin/tokens.php:2179
+#: C:\LimeSurvey/admin/tokens.php:2185
 msgid "Updating token attribute descriptions failed:"
 msgstr "Aktualizacja opisów atrybutów tokenów nie powiodła się:"
 
-#: C:\LimeSurvey/admin/tokens.php:2180
-#: C:\LimeSurvey/admin/tokens.php:2185
-#: C:\LimeSurvey/admin/tokens.php:2214
-#: C:\LimeSurvey/admin/tokens.php:2219
+#: C:\LimeSurvey/admin/tokens.php:2186
+#: C:\LimeSurvey/admin/tokens.php:2191
+#: C:\LimeSurvey/admin/tokens.php:2220
+#: C:\LimeSurvey/admin/tokens.php:2225
 msgid "Back to attribute field management."
 msgstr "Powrót do zarządzania polami atrybutów."
 
 # C:\limesurvey/admin/conditions.php:55
-#: C:\LimeSurvey/admin/tokens.php:2184
+#: C:\LimeSurvey/admin/tokens.php:2190
 msgid "Token attribute descriptions were successfully updated."
 msgstr "Zaktualizowano opisy atrybutów tokenów."
 
 # C:\limesurvey/admin/html.php:1950
 # C:\limesurvey/admin/html.php:2484
-#: C:\LimeSurvey/admin/tokens.php:2209
+#: C:\LimeSurvey/admin/tokens.php:2215
 msgid "Update token attributes"
 msgstr "Aktualizuj atrybuty tokenów"
 
 # C:\limesurvey/admin/templates.php:521
-#: C:\LimeSurvey/admin/tokens.php:2213
+#: C:\LimeSurvey/admin/tokens.php:2219
 msgid "Adding attribute fields failed:"
 msgstr "Dodanie pól atrybutów nie powiodło się:"
 
 # C:\limesurvey/admin/userrighthandling.php:605
-#: C:\LimeSurvey/admin/tokens.php:2218
+#: C:\LimeSurvey/admin/tokens.php:2224
 #, php-format
 msgid "%s field(s) were successfully added."
 msgstr "Pomyślnie dodano %s pól."
 
 # C:\limesurvey/admin/tokens.php:325
 # C:\limesurvey/admin/tokens.php:1273
-#: C:\LimeSurvey/admin/tokens.php:2253
-#: C:\LimeSurvey/admin/tokens.php:2363
-#: C:\LimeSurvey/admin/tokens.php:2531
+#: C:\LimeSurvey/admin/tokens.php:2259
+#: C:\LimeSurvey/admin/tokens.php:2369
+#: C:\LimeSurvey/admin/tokens.php:2537
 msgid "Add token entry"
 msgstr "Dodaj token"
 
 # C:\limesurvey/admin/tokens.php:1505
-#: C:\LimeSurvey/admin/tokens.php:2261
-#: C:\LimeSurvey/admin/tokens.php:2393
+#: C:\LimeSurvey/admin/tokens.php:2267
+#: C:\LimeSurvey/admin/tokens.php:2399
 msgid "Auto"
 msgstr "Automatyczny"
 
 # C:\limesurvey/admin/html.php:53
 # C:\limesurvey/admin/html.php:783
-#: C:\LimeSurvey/admin/tokens.php:2275
+#: C:\LimeSurvey/admin/tokens.php:2281
 msgid "Email Status"
 msgstr "Status emaila"
 
 # C:\limesurvey/admin/tokens.php:1145
-#: C:\LimeSurvey/admin/tokens.php:2290
+#: C:\LimeSurvey/admin/tokens.php:2296
 msgid "You can leave this blank, and automatically generate tokens using 'Generate Tokens'"
 msgstr "Możesz to pole zostawić pustym i automatycznie wygenerować tokeny poleceniem 'Generuj tokeny'"
 
 # C:\limesurvey/admin/tokens.php:991
-#: C:\LimeSurvey/admin/tokens.php:2312
+#: C:\LimeSurvey/admin/tokens.php:2318
 msgid "Reminder count:"
 msgstr "Liczba przypomnień:"
 
@@ -13576,286 +13596,286 @@ msgstr "Liczba przypomnień:"
 # C:\limesurvey/admin/html.php:2188
 # C:\limesurvey/admin/html.php:2193
 # C:\limesurvey/admin/html.php:2198
-#: C:\LimeSurvey/admin/tokens.php:2323
-#: C:\LimeSurvey/admin/tokens.php:2409
+#: C:\LimeSurvey/admin/tokens.php:2329
+#: C:\LimeSurvey/admin/tokens.php:2415
 msgid "Uses left:"
 msgstr "Wykorzystuje lewy:"
 
 # C:\limesurvey/admin/statistics.php:1378
 # C:\limesurvey/admin/statistics.php:1494
-#: C:\LimeSurvey/admin/tokens.php:2334
-#: C:\LimeSurvey/admin/tokens.php:2417
+#: C:\LimeSurvey/admin/tokens.php:2340
+#: C:\LimeSurvey/admin/tokens.php:2423
 msgid "until"
 msgstr "do"
 
-#: C:\LimeSurvey/admin/tokens.php:2340
-#: C:\LimeSurvey/admin/tokens.php:2423
+#: C:\LimeSurvey/admin/tokens.php:2346
+#: C:\LimeSurvey/admin/tokens.php:2429
 msgid "hh:mm"
 msgstr "gg:mm"
 
 # C:\limesurvey/admin/tokens.php:617
-#: C:\LimeSurvey/admin/tokens.php:2358
+#: C:\LimeSurvey/admin/tokens.php:2364
 msgid "Update token entry"
 msgstr "Aktualizuj token"
 
 # C:\limesurvey/admin/tokens.php:1039
-#: C:\LimeSurvey/admin/tokens.php:2388
+#: C:\LimeSurvey/admin/tokens.php:2394
 msgid "Create dummy tokens"
 msgstr "Utwórz fikcyjne tokeny"
 
-#: C:\LimeSurvey/admin/tokens.php:2395
+#: C:\LimeSurvey/admin/tokens.php:2401
 msgid "Number of tokens"
 msgstr "Liczba tokenów"
 
 # C:\limesurvey/admin/tokens.php:619
-#: C:\LimeSurvey/admin/tokens.php:2397
+#: C:\LimeSurvey/admin/tokens.php:2403
 msgid "Token length"
 msgstr "Długość tokena"
 
 # C:\limesurvey/admin/usercontrol.php:121
-#: C:\LimeSurvey/admin/tokens.php:2499
+#: C:\LimeSurvey/admin/tokens.php:2505
 msgid "The token entry was successfully updated."
 msgstr "Zaktualizowano wpis tokena."
 
 # C:\limesurvey/admin/tokens.php:1402
-#: C:\LimeSurvey/admin/tokens.php:2504
-#: C:\LimeSurvey/admin/tokens.php:2564
-#: C:\LimeSurvey/admin/tokens.php:3100
+#: C:\LimeSurvey/admin/tokens.php:2510
+#: C:\LimeSurvey/admin/tokens.php:2570
+#: C:\LimeSurvey/admin/tokens.php:3106
 msgid "Failed"
 msgstr "Nieudane"
 
-#: C:\LimeSurvey/admin/tokens.php:2505
-#: C:\LimeSurvey/admin/tokens.php:2565
+#: C:\LimeSurvey/admin/tokens.php:2511
+#: C:\LimeSurvey/admin/tokens.php:2571
 msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
 msgstr "Istnieje już wpis z takim tokenem. Nie można wprowadzić dwóch rekordów z takimi samymi tokenami."
 
 # C:\limesurvey/admin/tokens.php:325
 # C:\limesurvey/admin/tokens.php:1273
-#: C:\LimeSurvey/admin/tokens.php:2506
+#: C:\LimeSurvey/admin/tokens.php:2512
 msgid "Show this token entry"
 msgstr "Pokaż wpis tokena"
 
-#: C:\LimeSurvey/admin/tokens.php:2558
+#: C:\LimeSurvey/admin/tokens.php:2564
 msgid "New token was added."
 msgstr "Dodano nowy token."
 
 # C:\limesurvey/admin/tokens.php:325
 # C:\limesurvey/admin/tokens.php:1273
-#: C:\LimeSurvey/admin/tokens.php:2560
+#: C:\LimeSurvey/admin/tokens.php:2566
 msgid "Add another token entry"
 msgstr "Dodaj nowy token"
 
-#: C:\LimeSurvey/admin/tokens.php:2640
+#: C:\LimeSurvey/admin/tokens.php:2646
 msgid "New dummy tokens were added."
 msgstr "Dodano nowe fikcyjne tokeny."
 
 # C:\limesurvey/admin/tokens.php:1281
 # C:\limesurvey/admin/tokens.php:1316
-#: C:\LimeSurvey/admin/tokens.php:2647
+#: C:\LimeSurvey/admin/tokens.php:2653
 msgid "Upload CSV File"
 msgstr "Wczytaj plik CSV"
 
-#: C:\LimeSurvey/admin/tokens.php:2650
+#: C:\LimeSurvey/admin/tokens.php:2656
 msgid "CSV input format"
 msgstr "Format wejściowy CSV"
 
 # C:\limesurvey/admin/tokens.php:1288
-#: C:\LimeSurvey/admin/tokens.php:2651
+#: C:\LimeSurvey/admin/tokens.php:2657
 msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
 msgstr "Plik powinien być zapisany w standardzie CSV (rozdzielany przecinkami) z wartościami w cudzysłowie (domyślnie dla openoffice i excel). Pierwszy wiersz powinien zawierać nazwy pól. Pola mogą mieć dowolny porządek."
 
 # C:\limesurvey/admin/questionhandling.php:102
 # C:\limesurvey/admin/questionhandling.php:250
 # C:\limesurvey/admin/questionhandling.php:459
-#: C:\LimeSurvey/admin/tokens.php:2651
+#: C:\LimeSurvey/admin/tokens.php:2657
 msgid "Mandatory fields:"
 msgstr "Pola obowiązkowe:"
 
 # C:\limesurvey/admin/html.php:1152
-#: C:\LimeSurvey/admin/tokens.php:2652
+#: C:\LimeSurvey/admin/tokens.php:2658
 msgid "Optional fields:"
 msgstr "Pola opcjonalne:"
 
 # C:\limesurvey/admin/tokens.php:1299
-#: C:\LimeSurvey/admin/tokens.php:2658
+#: C:\LimeSurvey/admin/tokens.php:2664
 msgid "Upload LDAP entries"
 msgstr "Wczytaj wpisy LDAP"
 
 # C:\limesurvey/admin/tokens.php:1287
 # C:\limesurvey/admin/tokens.php:1305
-#: C:\LimeSurvey/admin/tokens.php:2661
+#: C:\LimeSurvey/admin/tokens.php:2667
 msgid "Note:"
 msgstr "Informacja:"
 
 # C:\limesurvey/admin/tokens.php:1306
-#: C:\LimeSurvey/admin/tokens.php:2662
+#: C:\LimeSurvey/admin/tokens.php:2668
 msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "Kwerendy LDAP są definiowane przez administratora w pliku config-ldap.php"
 
-#: C:\LimeSurvey/admin/tokens.php:2672
+#: C:\LimeSurvey/admin/tokens.php:2678
 msgid "Token file upload"
 msgstr "Ładowanie pliku tokenów"
 
 # C:\limesurvey/admin/usercontrol.php:121
-#: C:\LimeSurvey/admin/tokens.php:2692
+#: C:\LimeSurvey/admin/tokens.php:2698
 msgid "Uploaded CSV file successfully"
 msgstr "Pomyślnie załadowano plik CSV"
 
 # C:\limesurvey/admin/labels.php:618
-#: C:\LimeSurvey/admin/tokens.php:2701
+#: C:\LimeSurvey/admin/tokens.php:2707
 msgid "Failed to open the uploaded file!"
 msgstr "Nie można otworzyć przesłanego pliku!"
 
-#: C:\LimeSurvey/admin/tokens.php:2748
+#: C:\LimeSurvey/admin/tokens.php:2754
 msgid "Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'"
 msgstr "Błąd: We wczytanym pliku brakuje jednej lub więcej obowiązkowych kolumn: 'imię', 'nazwisko' lub 'email'"
 
 # C:\limesurvey/admin/tokens.php:455
-#: C:\LimeSurvey/admin/tokens.php:2849
+#: C:\LimeSurvey/admin/tokens.php:2855
 msgid "Successfully created token entries"
 msgstr "Pomyślnie utworzono wpisy tokenów"
 
 # C:\limesurvey/admin/tokens.php:455
-#: C:\LimeSurvey/admin/tokens.php:2851
+#: C:\LimeSurvey/admin/tokens.php:2857
 msgid "Failed to create token entries"
 msgstr "Nie powiodło się utworzenie wpisów tokenów"
 
 # C:\limesurvey/admin/tokens.php:1404
-#: C:\LimeSurvey/admin/tokens.php:2853
+#: C:\LimeSurvey/admin/tokens.php:2859
 #, php-format
 msgid "%s records in CSV"
 msgstr "%s rekordów w CSV"
 
 # C:\limesurvey/admin/tokens.php:1405
-#: C:\LimeSurvey/admin/tokens.php:2854
+#: C:\LimeSurvey/admin/tokens.php:2860
 #, php-format
 msgid "%s records met minumum requirements"
 msgstr "%s rekordów spełnia minimalne wymagania"
 
 # C:\limesurvey/admin/tokens.php:1406
-#: C:\LimeSurvey/admin/tokens.php:2855
+#: C:\LimeSurvey/admin/tokens.php:2861
 #, php-format
 msgid "%s records imported"
 msgstr "%s zaimportowanych rekordów"
 
 # C:\limesurvey/admin/tokens.php:1407
-#: C:\LimeSurvey/admin/tokens.php:2864
+#: C:\LimeSurvey/admin/tokens.php:2870
 #, php-format
 msgid "%s duplicate records removed"
 msgstr "%s powtórzonych rekordów usunięto"
 
-#: C:\LimeSurvey/admin/tokens.php:2865
-#: C:\LimeSurvey/admin/tokens.php:2877
-#: C:\LimeSurvey/admin/tokens.php:2887
-#: C:\LimeSurvey/admin/tokens.php:3106
-#: C:\LimeSurvey/admin/tokens.php:3114
+#: C:\LimeSurvey/admin/tokens.php:2871
+#: C:\LimeSurvey/admin/tokens.php:2883
+#: C:\LimeSurvey/admin/tokens.php:2893
+#: C:\LimeSurvey/admin/tokens.php:3112
+#: C:\LimeSurvey/admin/tokens.php:3120
 msgid "List"
 msgstr "Lista"
 
-#: C:\LimeSurvey/admin/tokens.php:2876
+#: C:\LimeSurvey/admin/tokens.php:2882
 #, php-format
 msgid "%s lines had a mismatching number of fields."
 msgstr "%s linii ma rozbieżną liczbę pól."
 
 # C:\limesurvey/admin/tokens.php:1408
-#: C:\LimeSurvey/admin/tokens.php:2886
-#: C:\LimeSurvey/admin/tokens.php:3113
+#: C:\LimeSurvey/admin/tokens.php:2892
+#: C:\LimeSurvey/admin/tokens.php:3119
 #, php-format
 msgid "%s records with invalid email address removed"
 msgstr "Usunięto %s rekordów z nieprawidłowym adresem email"
 
 # C:\limesurvey/admin/tokens.php:1417
-#: C:\LimeSurvey/admin/tokens.php:2908
+#: C:\LimeSurvey/admin/tokens.php:2914
 msgid "Uploading LDAP Query"
 msgstr "Wczytywanie kwerendy LDAP"
 
 # C:\limesurvey/admin/tokens.php:330
-#: C:\LimeSurvey/admin/tokens.php:3102
+#: C:\LimeSurvey/admin/tokens.php:3108
 msgid "Results from LDAP Query"
 msgstr "Importuj z kwerendy LDAP"
 
 # C:\limesurvey/admin/tokens.php:1405
-#: C:\LimeSurvey/admin/tokens.php:3103
+#: C:\LimeSurvey/admin/tokens.php:3109
 msgid "Records met minumum requirements"
 msgstr "Rekordy spełniają minimalne wymagania"
 
 # C:\limesurvey/admin/tokens.php:1406
-#: C:\LimeSurvey/admin/tokens.php:3104
+#: C:\LimeSurvey/admin/tokens.php:3110
 msgid "Records imported"
 msgstr "Rekordy zaimportowane"
 
 # C:\limesurvey/admin/tokens.php:1407
-#: C:\LimeSurvey/admin/tokens.php:3105
+#: C:\LimeSurvey/admin/tokens.php:3111
 msgid "Duplicate records removed"
 msgstr "Usunięto powielone rekordy"
 
 # C:\limesurvey/admin/tokens.php:1479
-#: C:\LimeSurvey/admin/tokens.php:3124
+#: C:\LimeSurvey/admin/tokens.php:3130
 msgid "Can't bind to the LDAP directory"
 msgstr "Nie można się przyłączyć do katalogu LDAP"
 
 # C:\limesurvey/admin/tokens.php:1485
-#: C:\LimeSurvey/admin/tokens.php:3130
+#: C:\LimeSurvey/admin/tokens.php:3136
 msgid "Can't connect to the LDAP directory"
 msgstr "Nie można się połączyć z katalogiem LDAP"
 
 # C:\limesurvey/admin/tokens.php:1505
-#: C:\LimeSurvey/admin/tokens.php:3151
+#: C:\LimeSurvey/admin/tokens.php:3157
 msgid "Auto detect"
 msgstr "Auto wykrywanie"
 
 # C:\limesurvey/common.php:1677
 # C:\limesurvey/admin/dataentry.php:1730
-#: C:\LimeSurvey/admin/tokens.php:3153
+#: C:\LimeSurvey/admin/tokens.php:3159
 msgid "Comma"
 msgstr "Przecinek"
 
-#: C:\LimeSurvey/admin/tokens.php:3155
+#: C:\LimeSurvey/admin/tokens.php:3161
 msgid "Semicolon"
 msgstr "Średnik"
 
 # C:\limesurvey/admin/tokens.php:1551
-#: C:\LimeSurvey/admin/tokens.php:3157
+#: C:\LimeSurvey/admin/tokens.php:3163
 msgid "Choose the CSV file to upload:"
 msgstr "Wybierz plik CSV do wczytania:"
 
 # C:\limesurvey/admin/tokens.php:1553
-#: C:\LimeSurvey/admin/tokens.php:3158
+#: C:\LimeSurvey/admin/tokens.php:3164
 msgid "Character set of the file:"
 msgstr "Kodowanie znaków w pliku:"
 
-#: C:\LimeSurvey/admin/tokens.php:3159
+#: C:\LimeSurvey/admin/tokens.php:3165
 msgid "Separator used:"
 msgstr "Użyty separator:"
 
-#: C:\LimeSurvey/admin/tokens.php:3162
-#: C:\LimeSurvey/admin/tokens.php:3213
+#: C:\LimeSurvey/admin/tokens.php:3168
+#: C:\LimeSurvey/admin/tokens.php:3219
 msgid "Filter blank email addresses:"
 msgstr "Filtruj puste pola adresów email:"
 
 # C:\limesurvey/admin/tokens.php:1407
-#: C:\LimeSurvey/admin/tokens.php:3163
-#: C:\LimeSurvey/admin/tokens.php:3214
+#: C:\LimeSurvey/admin/tokens.php:3169
+#: C:\LimeSurvey/admin/tokens.php:3220
 msgid "Filter duplicate records:"
 msgstr "Filtruj powielone rekordy"
 
 # C:\limesurvey/admin/tokens.php:1407
-#: C:\LimeSurvey/admin/tokens.php:3164
+#: C:\LimeSurvey/admin/tokens.php:3170
 msgid "Duplicates are determined by:"
 msgstr "Powtórzenia są określone przez:"
 
 # C:\limesurvey/admin/tokens.php:1567
-#: C:\LimeSurvey/admin/tokens.php:3194
+#: C:\LimeSurvey/admin/tokens.php:3200
 msgid "Sorry, but the LDAP module is missing in your PHP configuration."
 msgstr "Brakuje modułu LDAP w twojej konfiguracji PHP."
 
 # C:\limesurvey/admin/tokens.php:1573
-#: C:\LimeSurvey/admin/tokens.php:3200
+#: C:\LimeSurvey/admin/tokens.php:3206
 msgid "LDAP is disabled or no LDAP query defined."
 msgstr "LDAP jest wyłączony albo kwerenda LDAP nie jest zdefiniowana."
 
 # C:\limesurvey/admin/tokens.php:1578
-#: C:\LimeSurvey/admin/tokens.php:3206
+#: C:\LimeSurvey/admin/tokens.php:3212
 msgid "Select the LDAP query you want to run:"
 msgstr "Wybierz kwerendę LDAP, którą chcesz uruchomić:"
 
@@ -14710,73 +14730,73 @@ msgstr "To jest Twój osobisty arkusz statystyk w badaniu #%s"
 msgid "Statistics Survey #%s"
 msgstr "Statystyki badania #%s"
 
-#: C:\LimeSurvey/admin/update/updater.php:89
-#: C:\LimeSurvey/admin/update/updater.php:189
+#: C:\LimeSurvey/admin/update/updater.php:88
+#: C:\LimeSurvey/admin/update/updater.php:188
 #, php-format
 msgid "Tempdir %s is not writable"
 msgstr "Katalog tymczasowy %s nie jest zapisywalny"
 
-#: C:\LimeSurvey/admin/update/updater.php:94
+#: C:\LimeSurvey/admin/update/updater.php:93
 #, php-format
 msgid "Updater file is not writable (%s). Please set according file permissions."
 msgstr "Plik aktualizatora jest niezapisywalny (%s). Proszę ustawić odpowiednie uprawnienia do pliku."
 
-#: C:\LimeSurvey/admin/update/updater.php:154
+#: C:\LimeSurvey/admin/update/updater.php:153
 msgid "There was a problem downloading the updater file. Please try to restart the update process."
 msgstr "Wystąpił problem przy ściąganiu pliku aktualizatora. Proszę spróbować ponowić proces aktualizacji."
 
-#: C:\LimeSurvey/admin/update/updater.php:171
+#: C:\LimeSurvey/admin/update/updater.php:170
 msgid "Welcome to the ComfortUpdate"
 msgstr "Witamy: Szybka Aktualizacja"
 
-#: C:\LimeSurvey/admin/update/updater.php:172
+#: C:\LimeSurvey/admin/update/updater.php:171
 msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey."
 msgstr "Szybka Aktualizacja LimeSurvey to łatwa procedura aktualizacji do najnowszej wersji LimeSurvey."
 
 # C:\limesurvey/admin/integritycheck.php:184
-#: C:\LimeSurvey/admin/update/updater.php:173
+#: C:\LimeSurvey/admin/update/updater.php:172
 msgid "The following steps will be done by this update:"
 msgstr "Przy tej aktualizacji zostaną wykonane następujące kroki:"
 
-#: C:\LimeSurvey/admin/update/updater.php:174
+#: C:\LimeSurvey/admin/update/updater.php:173
 msgid "Your LimeSurvey installation is checked if the update can be run successfully."
 msgstr "Sprawdzian Twojej instalacji LimeSurvey pod kątem możliwości wykonania aktualizacji."
 
-#: C:\LimeSurvey/admin/update/updater.php:175
+#: C:\LimeSurvey/admin/update/updater.php:174
 msgid "Your DB and any changed files will be backed up."
 msgstr "Zostanie wykonana kopia zapasowa twojej bazy danych i wszystkich zmienionych plików."
 
-#: C:\LimeSurvey/admin/update/updater.php:176
+#: C:\LimeSurvey/admin/update/updater.php:175
 msgid "New files will be downloaded and installed."
 msgstr "Zostaną ściągnięte i zainstalowane nowe pliki."
 
-#: C:\LimeSurvey/admin/update/updater.php:177
+#: C:\LimeSurvey/admin/update/updater.php:176
 msgid "If necessary the database will be updated."
 msgstr "Jeśli będzie potrzeba, zostanie zaktualizowana baza danych."
 
-#: C:\LimeSurvey/admin/update/updater.php:178
+#: C:\LimeSurvey/admin/update/updater.php:177
 msgid "Checking basic requirements..."
 msgstr "Sprawdzanie podstawowych wymagań..."
 
-#: C:\LimeSurvey/admin/update/updater.php:180
+#: C:\LimeSurvey/admin/update/updater.php:179
 msgid "You need an update key to run the comfort update. During the beta test of this update feature the key \"LIMESURVEYUPDATE\" can be used."
 msgstr "Potrzebujesz klucza aktualizacji, aby wykonać szybką aktualizację. W czasie beta testów tej funkcji aktualizacji można użyć klucza \"LIMESURVEYUPDATE\"."
 
 # C:\limesurvey/admin/printablesurvey.php:275
-#: C:\LimeSurvey/admin/update/updater.php:181
+#: C:\LimeSurvey/admin/update/updater.php:180
 msgid "Please enter a valid update-key:"
 msgstr "Proszę wprowadzić ważny klucz aktualizacji:"
 
-#: C:\LimeSurvey/admin/update/updater.php:182
+#: C:\LimeSurvey/admin/update/updater.php:181
 msgid "Save update key"
 msgstr "Zapisz klucz aktualizacji"
 
 # C:\limesurvey/admin/userrighthandling.php:514
-#: C:\LimeSurvey/admin/update/updater.php:185
+#: C:\LimeSurvey/admin/update/updater.php:184
 msgid "Update key: Valid"
 msgstr "Klucz aktualizacji: prawidłowy"
 
-#: C:\LimeSurvey/admin/update/updater.php:194
+#: C:\LimeSurvey/admin/update/updater.php:193
 #, php-format
 msgid "Version file is not writable (%s). Please set according file permissions."
 msgstr "Plik wersji jest niezapisywalny (%s). Proszę sprawdzić uprawnienia do pliku."
@@ -14787,207 +14807,207 @@ msgstr "Plik wersji jest niezapisywalny (%s). Proszę sprawdzić uprawnienia do 
 # C:\limesurvey/admin/html.php:1107
 # C:\limesurvey/admin/html.php:2593
 # C:\limesurvey/admin/tokens.php:699
-#: C:\LimeSurvey/admin/update/updater.php:197
+#: C:\LimeSurvey/admin/update/updater.php:196
 msgid "Change log"
 msgstr "Log zmian"
 
-#: C:\LimeSurvey/admin/update/updater.php:232
+#: C:\LimeSurvey/admin/update/updater.php:231
 msgid "When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed."
 msgstr "W czasie sprawdzania instalacji pojawił się problem lub problemy. Proszę sprawdzić komunikaty błędów i naprawić je przed kontynuacją."
 
 # C:\limesurvey/admin/login_check.php:58
-#: C:\LimeSurvey/admin/update/updater.php:234
-#: C:\LimeSurvey/admin/update/updater.php:396
+#: C:\LimeSurvey/admin/update/updater.php:233
+#: C:\LimeSurvey/admin/update/updater.php:394
 msgid "Check again"
 msgstr "Sprawdź ponownie"
 
-#: C:\LimeSurvey/admin/update/updater.php:238
+#: C:\LimeSurvey/admin/update/updater.php:237
 msgid "Everything looks alright. Please proceed to the next step."
 msgstr "Wszystko wygląda w porządku. Proszę przejść do następnego kroku."
 
-#: C:\LimeSurvey/admin/update/updater.php:241
-#: C:\LimeSurvey/admin/update/updater.php:402
-#: C:\LimeSurvey/admin/update/updater.php:489
+#: C:\LimeSurvey/admin/update/updater.php:240
+#: C:\LimeSurvey/admin/update/updater.php:400
+#: C:\LimeSurvey/admin/update/updater.php:486
 #, php-format
 msgid "Proceed to step %s"
 msgstr "Przejdź do kroku %s"
 
-#: C:\LimeSurvey/admin/update/updater.php:257
-#: C:\LimeSurvey/admin/update/updater.php:416
-#: C:\LimeSurvey/admin/update/updater.php:499
+#: C:\LimeSurvey/admin/update/updater.php:255
+#: C:\LimeSurvey/admin/update/updater.php:413
+#: C:\LimeSurvey/admin/update/updater.php:495
 #, php-format
 msgid "ComfortUpdate step %s"
 msgstr "Krok %s Szybkiej Aktualizacji"
 
-#: C:\LimeSurvey/admin/update/updater.php:288
-#: C:\LimeSurvey/admin/update/updater.php:296
-#: C:\LimeSurvey/admin/update/updater.php:420
-#: C:\LimeSurvey/admin/update/updater.php:428
-#: C:\LimeSurvey/admin/update/updater.php:502
-#: C:\LimeSurvey/admin/update/updater.php:510
+#: C:\LimeSurvey/admin/update/updater.php:286
+#: C:\LimeSurvey/admin/update/updater.php:294
+#: C:\LimeSurvey/admin/update/updater.php:417
+#: C:\LimeSurvey/admin/update/updater.php:425
+#: C:\LimeSurvey/admin/update/updater.php:498
+#: C:\LimeSurvey/admin/update/updater.php:506
 msgid "On requesting the update information from limesurvey.org there has been an error:"
 msgstr "Wystąpił błąd podczas żądania informacji aktualizacyjnej z limesurvey.org:"
 
 # C:\limesurvey/admin/tokens.php:1408
-#: C:\LimeSurvey/admin/update/updater.php:293
-#: C:\LimeSurvey/admin/update/updater.php:425
-#: C:\LimeSurvey/admin/update/updater.php:507
+#: C:\LimeSurvey/admin/update/updater.php:291
+#: C:\LimeSurvey/admin/update/updater.php:422
+#: C:\LimeSurvey/admin/update/updater.php:503
 msgid "Your update key is invalid and was removed. "
 msgstr "Twój klucz aktualizacji jest nieprawidłowy i został usunięty."
 
 # C:\limesurvey/admin/userrighthandling.php:514
-#: C:\LimeSurvey/admin/update/updater.php:306
+#: C:\LimeSurvey/admin/update/updater.php:304
 msgid "Update server busy"
 msgstr "Serwer aktualizacji zajęty"
 
-#: C:\LimeSurvey/admin/update/updater.php:307
+#: C:\LimeSurvey/admin/update/updater.php:305
 msgid "The update server is currently busy. This usually happens when the update files for a new version are being prepared."
 msgstr "Serwer aktualizacji jest teraz zajęty. Zdarza się to najczęściej, kiedy przygotowywane są niezbędne pliki do nowej wersji."
 
-#: C:\LimeSurvey/admin/update/updater.php:308
+#: C:\LimeSurvey/admin/update/updater.php:306
 msgid "Please be patient and try again in about 10 minutes."
 msgstr "Prosimy o cierpliwość i spróbowanie ponownie za około 10 minut."
 
 # C:\limesurvey/common.php:270
 # C:\limesurvey/common.php:272
-#: C:\LimeSurvey/admin/update/updater.php:309
+#: C:\LimeSurvey/admin/update/updater.php:307
 msgid "Back to global settings"
 msgstr "Powrót do ustawień globalnych"
 
-#: C:\LimeSurvey/admin/update/updater.php:352
+#: C:\LimeSurvey/admin/update/updater.php:350
 msgid "Checking existing LimeSurvey files..."
 msgstr "Sprawdzanie istniejących plików LimeSurvey..."
 
-#: C:\LimeSurvey/admin/update/updater.php:355
+#: C:\LimeSurvey/admin/update/updater.php:353
 msgid "Warning: The following files/directories need to be updated but their permissions are set to read-only."
 msgstr "Ostrzeżenie: Następujące pliki/katalogi wymagają aktualizacji, ale mają uprawnienia tylko do odczytu."
 
-#: C:\LimeSurvey/admin/update/updater.php:356
+#: C:\LimeSurvey/admin/update/updater.php:354
 msgid "You must set according write permissions on these filese before you can proceed. If you are unsure what to do please contact your system administrator for advice."
 msgstr "Musisz ustawić uprawnienia zapisu dla tych plików, aby kontynuować. Jeśli nie wiesz, co zrobić, skontaktuj się z administratorem systemu."
 
-#: C:\LimeSurvey/admin/update/updater.php:368
+#: C:\LimeSurvey/admin/update/updater.php:366
 msgid "The following files would be added by the update but already exist. This is very unusual and may be co-incidental."
 msgstr "Następujące pliki byłyby dodane w trakcie aktualizacji, ale już istnieją. To bardzo rzadkie i może być przypadkowe."
 
-#: C:\LimeSurvey/admin/update/updater.php:369
-#: C:\LimeSurvey/admin/update/updater.php:382
+#: C:\LimeSurvey/admin/update/updater.php:367
+#: C:\LimeSurvey/admin/update/updater.php:380
 msgid "We recommend that these files should be replaced by the update procedure."
 msgstr "Zaleca się zastąpienie tych plików przez procedurę aktualizacji."
 
-#: C:\LimeSurvey/admin/update/updater.php:381
+#: C:\LimeSurvey/admin/update/updater.php:379
 msgid "The following files will be modified or deleted but were already modified by someone else."
 msgstr "Następujące pliki zostaną zmienione lub usunięte, ale były już modyfikowane przez kogoś innego."
 
-#: C:\LimeSurvey/admin/update/updater.php:394
+#: C:\LimeSurvey/admin/update/updater.php:392
 msgid "When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed."
 msgstr "W czasie sprawdzania uprawnień do plików pojawił się problem lub problemy. Proszę sprawdzić komunikaty błędów i naprawić je przed kontynuacją."
 
-#: C:\LimeSurvey/admin/update/updater.php:400
+#: C:\LimeSurvey/admin/update/updater.php:398
 msgid "Please check any problems above and then proceed to the next step."
 msgstr "Sprawdź powyżej, czy wystąpiły jakieś problemy, a następnie przejdź do następnego kroku."
 
-#: C:\LimeSurvey/admin/update/updater.php:417
+#: C:\LimeSurvey/admin/update/updater.php:414
 msgid "Creating DB & file backup"
 msgstr "Tworzenie kopii zapasowej bazy danych i plików"
 
 # C:\limesurvey/admin/importgroup.php:63
-#: C:\LimeSurvey/admin/update/updater.php:460
+#: C:\LimeSurvey/admin/update/updater.php:457
 msgid "Creating file backup... "
 msgstr "Tworzenie kopii zapasowej pliku..."
 
-#: C:\LimeSurvey/admin/update/updater.php:467
+#: C:\LimeSurvey/admin/update/updater.php:464
 msgid "File backup created:"
 msgstr "Utworzono kopię zapasową plików:"
 
 # C:\limesurvey/admin/createdb.php:47
 # C:\limesurvey/admin/install/createdb.php:47
 # C:\limesurvey/admin/install/index.php:57
-#: C:\LimeSurvey/admin/update/updater.php:475
+#: C:\LimeSurvey/admin/update/updater.php:472
 msgid "Creating database backup... "
 msgstr "Tworzenie kopii zapasowej bazy danych..."
 
 # C:\limesurvey/common.php:302
 # C:\limesurvey/common.php:303
-#: C:\LimeSurvey/admin/update/updater.php:479
+#: C:\LimeSurvey/admin/update/updater.php:476
 msgid "DB backup created:"
 msgstr "Utworzono kopię bazy danych:"
 
 # C:\limesurvey/common.php:302
 # C:\limesurvey/common.php:303
-#: C:\LimeSurvey/admin/update/updater.php:484
+#: C:\LimeSurvey/admin/update/updater.php:481
 msgid "No DB backup created:"
 msgstr "Nie utworzono kopii bazy danych:"
 
-#: C:\LimeSurvey/admin/update/updater.php:484
+#: C:\LimeSurvey/admin/update/updater.php:481
 msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
 msgstr "Dla tego typu bazy danych nie jest dostępna funkcjonalność tworzenia kopii zapasowej. Przed kontynuowaniem zrób kopię bazy danych przy pomocy odpowiedniego narzędzia!"
 
-#: C:\LimeSurvey/admin/update/updater.php:487
+#: C:\LimeSurvey/admin/update/updater.php:484
 msgid "Please check any problems above and then proceed to the final step."
 msgstr "Sprawdź powyżej, czy wystąpiły jakieś problemy, a następnie przejdź do ostatniego kroku."
 
 # C:\limesurvey/admin/database.php:768
-#: C:\LimeSurvey/admin/update/updater.php:572
+#: C:\LimeSurvey/admin/update/updater.php:568
 #, php-format
 msgid "File deleted: %s"
 msgstr "Usunięte pliki: %s"
 
 # C:\limesurvey/admin/userrighthandling.php:605
-#: C:\LimeSurvey/admin/update/updater.php:584
+#: C:\LimeSurvey/admin/update/updater.php:580
 msgid "New files were successfully installed."
 msgstr "Pomyślnie zainstalowano nowe pliki."
 
-#: C:\LimeSurvey/admin/update/updater.php:590
+#: C:\LimeSurvey/admin/update/updater.php:586
 msgid "There was a problem downloading the update file. Please try to restart the update process."
 msgstr "Wystąpił problem przy ściąganiu pliku aktualizacji. Proszę spróbować ponowić proces aktualizacji."
 
 # C:\limesurvey/admin/usercontrol.php:121
-#: C:\LimeSurvey/admin/update/updater.php:610
+#: C:\LimeSurvey/admin/update/updater.php:606
 #, php-format
 msgid "Buildnumber was successfully updated to %s."
 msgstr "Pomyślnie zaktualizowano do wersji %s."
 
-#: C:\LimeSurvey/admin/update/updater.php:611
+#: C:\LimeSurvey/admin/update/updater.php:607
 msgid "Please check any problems above - update was done."
 msgstr "Sprawdź powyżej, czy wystąpiły jakieś problemy - aktualizacja zakończona."
 
 # C:\limesurvey/admin/install/index.php:103
-#: C:\LimeSurvey/admin/update/updater.php:644
+#: C:\LimeSurvey/admin/update/updater.php:639
 #, php-format
 msgid "Database has been successfully upgraded to version %s"
 msgstr "Baza danych została pomyślnie zaktualizowana do wersji %s"
 
 # C:\limesurvey/admin/html.php:208
-#: C:\LimeSurvey/admin/update/updater.php:655
+#: C:\LimeSurvey/admin/update/updater.php:650
 msgid "Database upgrade"
 msgstr "Upgrade bazy danych"
 
-#: C:\LimeSurvey/admin/update/updater.php:656
+#: C:\LimeSurvey/admin/update/updater.php:651
 msgid "Please verify the following information before continuing with the database upgrade:"
 msgstr "Proszę sprawdzić te informacje przed dalszą aktualizacją bazy danych;"
 
 # C:\limesurvey/admin/html.php:208
-#: C:\LimeSurvey/admin/update/updater.php:657
+#: C:\LimeSurvey/admin/update/updater.php:652
 msgid "Database type"
 msgstr "Typ bazy danych"
 
 # C:\limesurvey/common.php:1558
-#: C:\LimeSurvey/admin/update/updater.php:659
+#: C:\LimeSurvey/admin/update/updater.php:654
 msgid "Table prefix"
 msgstr "Prefiks tabeli"
 
 # C:\limesurvey/common.php:2049
-#: C:\LimeSurvey/admin/update/updater.php:660
+#: C:\LimeSurvey/admin/update/updater.php:655
 msgid "Site name"
 msgstr "Nazwa strony"
 
-#: C:\LimeSurvey/admin/update/updater.php:661
+#: C:\LimeSurvey/admin/update/updater.php:656
 msgid "Root URL"
 msgstr "Źródłowy URL"
 
 # C:\limesurvey/admin/printablesurvey.php:496
-#: C:\LimeSurvey/admin/update/updater.php:664
+#: C:\LimeSurvey/admin/update/updater.php:659
 msgid "Click here to continue"
 msgstr "Kliknij, aby kontynuować"
 
