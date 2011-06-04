@@ -84,7 +84,7 @@ else {
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
 	<html>
 	<head>
-		<title>'.$clang->gT("Editing").' '.$fieldtext.'</title>
+		<title>'.sprintf($clang->gT("Editing %s"), $fieldtext).'</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="robots" content="noindex, nofollow" />
         <script type="text/javascript" src="'.$rooturl.'/scripts/jquery/jquery.js"></script>

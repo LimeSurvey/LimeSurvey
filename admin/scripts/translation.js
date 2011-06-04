@@ -28,10 +28,10 @@ $(document).ready(function(){
                 sTargetInnerText = strip($("textarea[name="+sId+"]").val());
 
 
-                var oMyEditor = FCKeditorAPI.GetInstance(sId);
+                var oMyEditor = CKEDITOR.instances[sId];
                 if (oMyEditor)
                 {
-                    sTargetInnerText = strip(oMyEditor.GetHTML());
+                    sTargetInnerText = strip(oMyEditor.getData());
                 }
 
 
@@ -48,7 +48,8 @@ $(document).ready(function(){
             }
 
             if (!bIgnore){
-                 setTimeout('fDoTranslateAjax("'+sBaseLang+'","'+sToLang+'","'+sToConvert+'","'+sId+'");',index*intThrottlingRate)
+                sToConvert = sToConvert.replace( new RegExp( "\\n", "g" ),'\\n');
+                setTimeout('fDoTranslateAjax("'+sBaseLang+'","'+sToLang+'","'+sToConvert+'","'+sId+'");',index*intThrottlingRate)
             }
             
         });
@@ -85,10 +86,11 @@ function fDoTranslateAjax(sBaseLang,sToLang,sToConvert,sId)
                 {
                     $("[name="+sId+"]").html(aData.converted);
 
-                    var oMyEditor = FCKeditorAPI.GetInstance(sId);
+                    var oMyEditor = CKEDITOR.instances[sId];
+                    
                     if (oMyEditor)
                     {
-                        oMyEditor.SetData(aData.converted);
+                        oMyEditor.setData(aData.converted);
                     }
 
                 }
