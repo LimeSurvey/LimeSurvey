@@ -340,13 +340,18 @@ function isStandardTemplate($sTemplateName)
  */
 function getsurveylist($returnarray=false,$returnwithouturl=false)
 {
-    global $surveyid, $clang, $timeadjust,$CI;
+   //global $surveyid, $clang, $timeadjust,$CI;
     static $cached = null;
+	$CI = &get_instance();
     
     $CI->load->config('lsconfig');
+	$surveyid = $CI->config->item("surveyid");
+	$timeadjust = $CI->config->item("timeadjust");
+	$clang = $CI->limesurvey_lang;
+	
     if(is_null($cached)) {
-        $CI->load->model('surveys_languagesettings');
-        $surveyidresult = $CI->surveys_languagesettings->getAllSurveys(!bHasGlobalPermission('USER_RIGHT_SUPERADMIN'));
+        $CI->load->model('surveys_languagesettings_model');
+        $surveyidresult = $CI->surveys_languagesettings_model->getAllSurveys(!bHasGlobalPermission('USER_RIGHT_SUPERADMIN'));
         
         if (!$surveyidresult) {return "Database Error";}
         $surveynames = $surveyidresult->result_array();
@@ -409,7 +414,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
             } else
             {
                 $activesurveys .= "<option ";
-                if($this->session->userdata("loginID") == $sv['owner_id'])
+                if($CI->session->userdata("loginID") == $sv['owner_id'])
                 {
                     $activesurveys .= " style=\"font-weight: bold;\"";
                 }
@@ -419,7 +424,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $activesurveys .=" value='".$this->config->item('scriptname')."?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
+                    $activesurveys .=" value='".$CI->config->item('scriptname')."?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -457,6 +462,83 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
         }
     }
     return $surveyselecter;
+}
+
+/**
+ * Returns true if a user has permissions in the particular survey
+ *
+ * @param $iSID The survey ID
+ * @param $sPermission
+ * @param $sCRUD
+ * @param $iUID User ID - if not given the one of the current user is used
+ * @return bool
+ */
+function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
+{
+	$CI =&get_instance();
+	
+    if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
+    $sCRUD=$sCRUD.'_p';
+    $iSID = (int)$iSID;
+    $aSurveyPermissionCache = $CI->config->item("aSurveyPermissionCache");
+    
+    if (is_null($iUID))
+    {
+      if ($CI->session->userdata('loginID')) $iUID = $this->session->userdata('loginID'); 
+       else return false;
+      if ($CI->session->userdata('USER_RIGHT_SUPERADMIN')==1) return true; //Superadmin has access to all
+    }
+
+    if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
+    {
+    	$CI->load->model("survey_permissions_model");
+		$query = $CI->survey_permissions_model->getSomeRecords(array($sCRUD),array("sid"=>$iSID,"uid"=>$iUID,"permission"=>$sPermission));
+        //$sSQL = "SELECT {$sCRUD} FROM " . db_table_name('survey_permissions') . " 
+        //        WHERE sid={$iSID} AND uid = {$iUID}
+        //        and permission=".db_quoteall($sPermission); //Getting rights for this survey
+        $bPermission = $query->row_array(); //$connect->GetOne($sSQL);
+        if ($bPermission==0 || is_null($bPermission)) $bPermission=false;
+        if ($bPermission==1) $bPermission=true;
+        $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]=$bPermission;
+    }
+	    $CI->config->set_item("aSurveyPermissionCache", $aSurveyPermissionCache);
+    return $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD];
+}
+
+/**
+ * Returns true if a user has global permission for a certain action. Available permissions are
+ * 
+ * USER_RIGHT_CREATE_SURVEY
+ * USER_RIGHT_CONFIGURATOR
+ * USER_RIGHT_CREATE_USER
+ * USER_RIGHT_DELETE_USER
+ * USER_RIGHT_SUPERADMIN
+ * USER_RIGHT_MANAGE_TEMPLATE
+ * USER_RIGHT_MANAGE_LABEL
+ *
+ * @param $sPermission
+ * @return bool
+ */
+function bHasGlobalPermission($sPermission)
+{
+    //global $dbprefix, $connect;
+    //global $aSurveyGlobalPermissionCache;
+
+    $CI=& get_instance();
+    //$aSurveyPermissionCache = $CI->config->item("aSurveyPermissionCache");
+		
+    if ($CI->session->userdata('loginID')) $iUID = $CI->session->userdata('loginID'); 
+        else return false;
+    if ($CI->session->userdata('USER_RIGHT_SUPERADMIN')==1) return true; //Superadmin has access to all
+    if ($CI->session->userdata($sPermission)==1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+
 }
 
 /**

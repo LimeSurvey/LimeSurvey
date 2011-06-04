@@ -9,7 +9,16 @@ class Index extends AdminController {
 
 	function index()
 	{
-		$clang=$this->limesurvey_lang;
-		self::_showMessageBox($clang->gT("Logged in"), "Placeholder page. <a href='".site_url("admin/authentication/logout")."'>Logout</a>");
+		
+		self::_getAdminHeader();
+		self::_showadminmenu();
+		
+		if(count(getsurveylist(true))==0) 
+		{
+			$data['clang']=$this->limesurvey_lang;
+			$this->load->view("admin/firststeps",$data);
+		}
+		
+		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 	}
 }

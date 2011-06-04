@@ -373,7 +373,37 @@ class AdminController extends LS_Controller {
 		$data['message']=$message;
 		
 		self::_getAdminHeader();
+		self::_showadminmenu();
 		$this->load->view('admin/messagebox', $data);
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));		
+	}
+	
+	/**
+	 * _showadminmenu() function returns html text for the administration button bar
+	 *
+	 * @global string $homedir
+	 * @global string $scriptname
+	 * @global string $surveyid
+	 * @global string $setfont
+	 * @global string $imageurl
+	 * @return string $adminmenu
+	 */
+	function _showadminmenu()
+	{
+	    global $homedir, $scriptname, $surveyid, $setfont, $imageurl, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck, $databasetype;
+
+		$clang=$this->limesurvey_lang;
+		$data['clang']=$this->limesurvey_lang;
+		
+	    if  ($this->session->userdata('pw_notify') && $this->config->item("debug")<2)  {
+			$this->session->set_userdata('flashmessage',$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again."));
+		}
+		
+		$data['showupdate'] = ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 && $this->config->item("updatelastcheck")>0 && $this->config->item("updateavailable")==1);
+		$data['updateversion'] = $this->config->item("updateversion");
+		$data['updatebuild'] = $this->config->item("updatebuild");
+		
+	    $this->load->view("admin/adminmenu",$data);
+
 	}
 }
