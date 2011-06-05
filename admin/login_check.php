@@ -226,92 +226,17 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
                                                                             <input name='password' id='password' type='password' size='40' maxlength='40' /></li>
                                         <li><label for='loginlang'>".$clang->gT("Language")."</label>
                                         <select id='loginlang' name='loginlang' style='width:216px;'>\n";
-            $loginsummary .='<option value="default">'.$clang->gT('Default').'</option>';
+            $loginsummary .='<option value="default" selected="selected">'.$clang->gT('Default').'</option>';
             $lan=array();
             foreach (getlanguagedata(true) as $langkey=>$languagekind)
             {
 				array_push($lan,$langkey);
 			}
-			//The loop above stores all the language codes supported by LimeSurvey in a numeric array $lan.
-			$x=0;
-			while ($x<count($lan))
-			{
-				if ($lan[$x]=="zh-Hans")
-				{
-					$lan[$x]="zh";
-				}
-				elseif ($lan[$x]=="zh-Hant-HK")
-				{
-					$lan[$x]="zh-hk";
-				}
-				elseif ($lan[$x]=="zh-Hant-TW")
-				{
-					$lan[$x]="zh-tw";
-				}
-				elseif ($lan[$x]=="de-informal")
-				{
-					$lan[$x]="de";
-				}
-				elseif ($lan[$x]=="it-formal")
-				{
-					$lan[$x]="it";
-				}
-				elseif ($lan[$x]=="nl-informal")
-				{
-					$lan[$x]="nl";
-				}
-				else
-				{
-					$lan[$x]=strtolower($lan[$x]);
-				}
-				$x++;
-			}
-			//The above loop changes certain elements of $lan to the language codes which are supported by the browsers.
-			$browlang="";
-			if ( isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) )
-			{
-				$browlang=strtolower( $_SERVER["HTTP_ACCEPT_LANGUAGE"] );
-				$browlang=str_replace(' ', '', $browlang);
-				$browlang=explode( ",", $browlang);
-				$browlang=$browlang[0];
-				$browlang=explode( ";", $browlang);
-				$browlang=$browlang[0];
-				$check=0;
-				$value=26;
-				if ($browlang!="zh-hk" && $browlang!="zh-tw" && $browlang!="es-mx" && $browlang!="pt-br")
-				{
-					$browlang=explode( "-",$browlang);
-					$browlang=$browlang[0];
-				}
-				//This if statement converts all the browser codes to Internet Explorer codes if the user is using Internet Explorer.
-			}
-			$x=0;
-			$count=-1;
-			while ($x<count($lan))
-			{
-				if ($browlang==$lan[$x])
-				{
-					$count=$x;
-				}
-				$x++;
-			}
-			if ($check==1)
-			{
-				$count=$value;
-			}
-			$x=0;
+   	
 			foreach (getlanguagedata(true) as $langkey=>$languagekind)
             {	
 				//The following conditional statements select the browser language in the language drop down box and echoes the other options.
-				if ($x==$count)
-				{
-					$loginsummary .= "\t\t\t\t<option value='$langkey' selected='yes'>".$languagekind['nativedescription']." - ".$languagekind['description']."</option>\n";
-				}
-				else
-				{
                 $loginsummary .= "\t\t\t\t<option value='$langkey'>".$languagekind['nativedescription']." - ".$languagekind['description']."</option>\n";
-            }
-				$x++;
             }
             $loginsummary .= "\t\t\t</select>\n"
             . "</li>

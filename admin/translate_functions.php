@@ -815,7 +815,7 @@ function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
       if ($amTypeOptions["HTMLeditorDisplay"]=="Popup")
       {
         $translateoutput .= ""
-          .getPopupEditor("edit".$type , $type."_newvalue_".$i, htmlspecialchars($textto), $surveyid, $gid, $qid, "translate".$amTypeOptions["HTMLeditorType"]);
+          .getPopupEditor("edit".$type , $type."_newvalue_".$i, urlencode($amTypeOptions['description']), $surveyid, $gid, $qid, "translate".$amTypeOptions["HTMLeditorType"]);
       }
       $translateoutput .= "\n</td>\n"
   . "</tr>\n";
