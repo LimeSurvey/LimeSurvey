@@ -303,12 +303,11 @@ class AdminController extends LS_Controller {
 	
 		$data['imageurl']= $this->config->item("imageurl");
 		$data['url']=$url;
-	
-	    /*$js_admin_includes = array_unique($js_admin_includes);
-	    foreach ($js_admin_includes as $jsinclude)
+			   
+	    if($this->config->item("js_admin_includes"))
 	    {
-	        $strHTMLFooter .= "<script type=\"text/javascript\" src=\"".$jsinclude."\"></script>\n";
-	    }*/
+	    	$data['js_admin_includes'] = array_unique($this->config->item("js_admin_includes"));
+	    }
 	    
 		$this->load->view("admin/footer",$data);
 	}
@@ -405,5 +404,12 @@ class AdminController extends LS_Controller {
 		
 	    $this->load->view("admin/adminmenu",$data);
 
+	}
+	
+	function _js_admin_includes($include)
+	{
+		$js_admin_includes = $this->config->item("js_admin_includes");
+		$js_admin_includes[] = $include;
+		$this->config->set_item("js_admin_includes", $js_admin_includes);
 	}
 }

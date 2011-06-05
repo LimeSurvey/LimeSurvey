@@ -1,0 +1,20 @@
+<table id='savetable'>
+	<tr>
+		<td class="save-heading">
+			<h3>{SAVEHEADING}</h3>
+</td>
+</tr>
+	<tr>
+		<td align="center">
+			<br />
+			<p class="save-error">{SAVEERROR}</p>
+			<p class="save-message">{SAVEMESSAGE}</p>
+			<span class="warning">{SAVEALERT}</span></p>
+			<br />
+			<div class="save-form">{SAVEFORM}</div>
+			<br />
+			<span class="return-to-survey">{RETURNTOSURVEY}</span>
+			<br /><br />
+		</td>
+	</tr>
+</table>

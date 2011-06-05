@@ -541,6 +541,42 @@ function bHasGlobalPermission($sPermission)
 
 }
 
+function gettemplatelist()
+{
+    //global $usertemplaterootdir, $standardtemplates,$standardtemplaterootdir;
+    $CI= &get_instance();
+	$usertemplaterootdir=$CI->config->item("usertemplaterootdir");
+	$standardtemplaterootdir=$CI->config->item("standardtemplaterootdir");
+
+    if (!$usertemplaterootdir) {die("gettemplatelist() no template directory");}
+    if ($handle = opendir($standardtemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            if (!is_file("$standardtemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn" && isStandardTemplate($file))
+            {
+                $list_of_files[$file] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$file;
+            }
+        }
+        closedir($handle);
+    }
+
+    if ($handle = opendir($usertemplaterootdir))
+    {
+        while (false !== ($file = readdir($handle)))
+        {
+            if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn")
+            {
+                $list_of_files[$file] = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
+            }
+        }
+        closedir($handle);
+    }
+    ksort($list_of_files);
+    return $list_of_files;
+}
+
+
 /**
  * getQuestions() queries the database for an list of all questions matching the current survey and group id
  *
@@ -6009,10 +6045,10 @@ function use_firebug()
  */
 function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 {
-	global $CI;
+	$CI =& get_instance();
 	//$datetimeobj = new Date_Time_Converter($value , $fromdateformat);
 	$CI->load->library('Date_Time_Converter',array($value, $fromdateformat));
-    return $CI->Date_Time_Converter->convert($todateformat);
+    return $CI->date_time_converter->convert($todateformat);
 }
 
 /**
