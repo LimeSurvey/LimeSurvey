@@ -1289,7 +1289,7 @@ function checkconfield($value)
                 $query = "SELECT ".db_table_name('conditions').".*, ".db_table_name('questions').".type "
                 . "FROM ".db_table_name('conditions').", ".db_table_name('questions')." "
                 . "WHERE ".db_table_name('conditions').".cqid=".db_table_name('questions').".qid "
-                . "AND ".db_table_name('conditions').".qid=$sfa[0] "
+                . "AND ".db_table_name('conditions').".qid=$value_qid "
                 . "AND ".db_table_name('conditions').".scenario=$scenario "
                 . "AND ".db_table_name('conditions').".cfieldname NOT LIKE '{%' "
                 . "ORDER BY ".db_table_name('conditions').".qid,".db_table_name('conditions').".cfieldname";
@@ -1299,7 +1299,7 @@ function checkconfield($value)
                 $querytoken = "SELECT ".db_table_name('conditions').".*, '' as type "
                 . "FROM ".db_table_name('conditions')." "
                 . "WHERE "
-                . " ".db_table_name('conditions').".qid=$sfa[0] "
+                . " ".db_table_name('conditions').".qid=$value_qid "
                 . "AND ".db_table_name('conditions').".scenario=$scenario "
                 . "AND ".db_table_name('conditions').".cfieldname LIKE '{%' "
                 . "ORDER BY ".db_table_name('conditions').".qid,".db_table_name('conditions').".cfieldname";
