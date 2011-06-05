@@ -18,7 +18,11 @@
  *
  * == END LICENSE ==
  *
- * Placholder English language file.
+ * Placeholder French language file.
  */
-FCKLang.LimeReplacementFieldsBtn	= 'Insèrer ou éditer un champ de remplacement LimeSurvey' ;
-FCKLang.LimeReplacementFieldsDlgTitle	= 'Propriétés du champ de remplacement LimeSurvey' ;
+CKEDITOR.plugins.setLang('limereplacementfields','en', {
+                                limereplacementfields: {   title:'Propriétés du champ de remplacement LimeSurvey',
+                                                           button:'Insèrer ou éditer un champ de remplacement LimeSurvey'
+                                                        }
+                            }
+                        );
