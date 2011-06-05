@@ -474,7 +474,9 @@ function createinsertquery()
                 //Only create column name and data entry if there is actually data!
                 $colnames[]=$value;
                 //If deletenonvalues is ON, delete any values that shouldn't exist
-                if ($deletenonvalues==1 && !checkconfield($value))
+                // we only do this at stubmit time so that we don't delete default values
+                // morover, doing this only once reduces the perfomance impact
+                if ($move == "movesubmit" && $deletenonvalues==1 && !checkconfield($value))
                 {
                     $values[]='NULL';
                     $colnames_hidden[]=$value;
