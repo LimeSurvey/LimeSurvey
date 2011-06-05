@@ -151,7 +151,7 @@ while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CON
                     $gid=$gl[0];
                     $groupname=$gl[1];
                     $groupdescription=$gl[2];
-                    if (auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && $groupdescription) {$newgroup = "Y";} else {$newgroup == "N";}
+                    if (auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && trim($groupdescription)!='') {$newgroup = "Y";} else {$newgroup == "N";}
                 }
             }
         }
@@ -355,7 +355,7 @@ list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
 //Check if current page is for group description only
 $bIsGroupDescrPage = false;
-if ($newgroup == "Y" && $groupdescription &&
+if ($newgroup == "Y" && trim($groupdescription)!='' &&
     (isset($move) && $move != "moveprev" && !is_int($move)) &&
     $_SESSION['maxstep'] == $_SESSION['step'])
 {
@@ -735,7 +735,7 @@ function checkIfNewGroup($ia)
             $gid=$gl[0];
             $groupname=$gl[1];
             $groupdescription=$gl[2];
-            if (isset($_POST['lastgroupname']) && auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && $groupdescription)
+            if (isset($_POST['lastgroupname']) && auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && trim($groupdescription)!='')
             {
                 $newgroup = "Y";
             }
