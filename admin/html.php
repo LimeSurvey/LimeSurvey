@@ -51,14 +51,19 @@ if ($action == "personalsettings")
     . "<form action='{$scriptname}' id='personalsettings' method='post'>"
     . "<ul>\n";
 
+    $sSavedLanguage=$connect->GetOne("select lang from ".db_table_name('users')." where uid={$_SESSION['loginID']}");
+
     // Current language
     $cssummary .=  "<li>\n"
     . "<label for='lang'>".$clang->gT("Interface language").":</label>\n"
     . "<select id='lang' name='lang'>\n";
+    $cssummary .= "<option value='auto'";
+    if ($sSavedLanguage == 'auto') {$cssummary .= " selected='selected'";}
+    $cssummary .= ">".$clang->gT("(Autodetect)")."</option>\n";
     foreach (getlanguagedata(true) as $langkey=>$languagekind)
     {
         $cssummary .= "<option value='$langkey'";
-        if ($langkey == $_SESSION['adminlang']) {$cssummary .= " selected='selected'";}
+        if ($langkey == $sSavedLanguage) {$cssummary .= " selected='selected'";}
         $cssummary .= ">".$languagekind['nativedescription']." - ".$languagekind['description']."</option>\n";
     }
     $cssummary .= "</select>\n"

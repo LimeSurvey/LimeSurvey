@@ -190,7 +190,28 @@ if (!isset($_SESSION['loginID']))
                         }
                         else
                         {
-                            $_SESSION['adminlang'] = $fields['lang'];
+                            
+                            if ( $fields['lang']=='auto' && isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) )
+                            {
+                                $browlang=strtolower( $_SERVER["HTTP_ACCEPT_LANGUAGE"] );
+                                $browlang=str_replace(' ', '', $browlang);
+                                $browlang=explode( ",", $browlang);
+                                $browlang=$browlang[0];
+                                $browlang=explode( ";", $browlang);
+                                $browlang=$browlang[0];
+                                $check=0;
+                                $value=26;
+                                if ($browlang!="zh-hk" && $browlang!="zh-tw" && $browlang!="es-mx" && $browlang!="pt-br")
+                                {
+                                    $browlang=explode( "-",$browlang);
+                                    $browlang=$browlang[0];
+                                }
+                                $_SESSION['adminlang']=$browlang;
+                            }
+                            else
+                            {
+                                $_SESSION['adminlang'] = $fields['lang'];
+                            }                            
                             $clang = new limesurvey_lang($_SESSION['adminlang']);
                         }
                         $login = true;
@@ -409,7 +430,8 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
     elseif($valid_email)
     {
         $new_pass = createPassword();
-        $uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) VALUES ('".db_quote($new_user)."', '".SHA256::hashing($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, '{$defaultlang}', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
+        $uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) 
+                   VALUES ('".db_quote($new_user)."', '".SHA256::hashing($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, 'auto', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
         $uresult = $connect->Execute($uquery); //Checked
 
         if($uresult)
