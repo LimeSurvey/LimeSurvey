@@ -77,6 +77,30 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
      
+Changes from 1.91+ (build 10168) to 1.91+ (build 10202)                    
+#Updated translation : French (b00z00)
+#Updated translation: Chinese Simplified (c_schmitz)
+#Updated translation: Polish (elisa-ls)
+#Updated translation: German (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+-Fixed issue #5230: problem translation in french (c_schmitz)
+-Fixed issue #5162: default values do not display once the survey is live if the question has conditions. Now we NULL the hidden questions answer only when the full response is submitted (lemeur)
+-Fixed issue #5224: drastic performances improvement for surveys using conditionnal multiple choices questions having several answers when deletenonvalue is turned on (lemeur)
+-Fixed issue #5091: Auto-translate not working consistently (c_schmitz)
+-Fixed issue #5109: group description page is showed even though description field is blank (c_schmitz)
+-Fixed issue #5119: Automatic translation of survey questions to/from norwegian fails ("unsupported languages") (c_schmitz)
+-Fixed issue #5198: array_shift warnings during invitation processing (c_schmitz)
+-Fixed issue #5200: Error when trying to send reminder email in a multilingual survey (c_schmitz)
+-Fixed issue #5201: On upgrade from 1.90 or earlier there are no basic admin notification & detailed admin templates set (c_schmitz)
+-Fixed issue #5217: Update function output logic - patch by mot (c_schmitz)
+-Fixed issue #5220: 'Other' button shown in statistics with List(Radio) questions even when 'Other' option is not activated (c_schmitz)
+-Fixed issue #5235: Actions on selected tokens don't process on IE7 (c_schmitz)
+-Fixed issue #5236: Error when listing tokens and attribute name contains a single quote (c_schmitz)
+-Fixed issue: HTML editor and tabs not working in email templates (c_schmitz)
+-Fixed issue: On login always the browser language is used as admin language (c_schmitz)
+-Fixed issue: Reduce number of toolbar items for minimized editor (tpartner)
+    
+     
 Changes from 1.91+ (build 10120) to 1.91+ (build 10168)                    
 #Updated translation: French (b00z00)
 #Updated translation: Czech by Vladimír Braun (c_schmitz)
