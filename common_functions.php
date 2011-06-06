@@ -3022,6 +3022,9 @@ function templatereplace($line, $replacements=array())
         $line=str_replace("{TOKEN}",urlencode($token), $line);          // to activate the TOKEN in the END URL
         $line=str_replace("{SID}", $surveyid, $line);       // to activate the SID in the RND URL
     }
+    
+    $line=str_replace("{LANG}", $clang->getlangcode(), $line); // to activate the LANG in the END URL
+    
     if (strpos($line, "{PRIVACY}") !== false)
     {
         $line=str_replace("{PRIVACY}", $privacy, $line);
@@ -8279,5 +8282,5 @@ function sStripDBPrefix($sTableName)
     global $dbprefix;
     return substr($sTableName,strlen($dbprefix));
 }
-
+                       
 // Closing PHP tag intentionally omitted - yes, it is okay
