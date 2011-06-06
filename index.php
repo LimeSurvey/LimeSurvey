@@ -462,8 +462,9 @@ if (!isset($token))
 $totalBoilerplatequestions =0;
 $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
 
-if (isset($_GET['newtest']) && $_GET['newtest'] = "Y")
+if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
 {
+	//Removes any existing timer cookies so timers will start again
     setcookie ("limesurvey_timers", "", time() - 3600);
 }
 
@@ -677,9 +678,9 @@ if ($tokensexist == 1 && isset($token) && $token &&
     if ($tkresult->RecordCount()==0 || $areTokensUsed)
     {
         sendcacheheaders();
-        doHeader();		
+        doHeader();
         //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-		
+
         echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
         echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
         echo "\t<div id='wrapper'>\n"
@@ -691,7 +692,7 @@ if ($tokensexist == 1 && isset($token) && $token &&
         ."{$thissurvey['adminemail']}</a>)")."\n"
         ."\t</p>\n"
         ."\t</div>\n";
-		
+
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 	    killSession();
         doFooter();
@@ -713,9 +714,9 @@ if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'t
     (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
     {
         sendcacheheaders();
-        doHeader();		
+        doHeader();
         //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-		
+
         echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
         echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
         echo "\t<div id='wrapper'>\n"
@@ -727,7 +728,7 @@ if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'t
         ."{$thissurvey['adminemail']}</a>)")."\n"
         ."\t</p>\n"
         ."\t</div>\n";
-		
+
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
         doFooter();
 	    killSession();
@@ -2402,7 +2403,7 @@ function buildsurveysession()
 
             echo "<input type='hidden' name='sid' value='".$surveyid."' id='sid' />
 				<input type='hidden' name='lang' value='".$templang."' id='lang' />";
-            if (isset($_GET['newtest']) && $_GET['newtest'] = "Y")
+            if (isset($_GET['newtest']) && $_GET['newtest'] == "Y")
             {
                   echo "  <input type='hidden' name='newtest' value='Y' id='newtest' />";
 
@@ -2693,7 +2694,7 @@ function buildsurveysession()
     {
         sendcacheheaders();
         doHeader();
-		
+
         echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
         echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
         echo "\t<div id='wrapper'>\n"
@@ -2704,7 +2705,7 @@ function buildsurveysession()
         ."{$thissurvey['adminemail']}</a>)<br /><br />\n"
 		."\t</p>\n"
         ."\t</div>\n";
-		
+
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
         doFooter();
         exit;
