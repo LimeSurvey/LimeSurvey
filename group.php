@@ -283,9 +283,6 @@ else
             {
                 //Automatically redirect the page to the "url" setting for the survey
 
-
-            if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
-            {
                 $url = $thissurvey['surveyls_url'];
                 $url = dTexts::run($thissurvey['surveyls_url']);
                 $url = passthruReplace($url, $thissurvey);

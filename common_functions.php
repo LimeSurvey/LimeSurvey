@@ -3023,8 +3023,10 @@ function templatereplace($line, $replacements=array())
         $line=str_replace("{SID}", $surveyid, $line);       // to activate the SID in the RND URL
     }
     
-    $line=str_replace("{LANG}", $clang->getlangcode(), $line); // to activate the LANG in the END URL
-    
+    if (strpos($line, "{LANG}") !== false)
+    {
+        $line=str_replace("{LANG}", $clang->getlangcode(), $line); 
+    }
     if (strpos($line, "{PRIVACY}") !== false)
     {
         $line=str_replace("{PRIVACY}", $privacy, $line);
