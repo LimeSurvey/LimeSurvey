@@ -28,7 +28,7 @@ $_CONFIG = array(
     'uploadURL' => "upload",
     'uploadDir' => "",
 
-    'dirPerms' => 0000,
+    'dirPerms' => 0755,
     'filePerms' => 0644,
 
     'deniedExts' => "exe com msi bat php cgi pl php4 php5 sh",
