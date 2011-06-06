@@ -273,6 +273,8 @@ switch ( $_POST["type"] ) {
     case "xls":
         header("Content-Disposition: attachment; filename=results-survey".$surveyid.".xls");
         header("Content-type: application/vnd.ms-excel");
+        $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_discISAM;
+        PHPExcel_Settings::setCacheStorageMethod($cacheMethod);     
         $workbook = new PHPExcel();
         // Creating the first worksheet
 
@@ -1096,6 +1098,7 @@ if ($type=='xls')
     $objWriter->save($sFileName);
     readfile($sFileName);
     unlink($sFileName);
+    // echo memory_get_peak_usage(true); die();
 }
 else if($type=='pdf')
 {
