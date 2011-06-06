@@ -121,7 +121,7 @@ if ($subaction == "id")
     $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
 
     //SHOW HEADER
-    if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens script
+    if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens/statistics script
     //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
 
     $fncount = 0;
@@ -743,31 +743,22 @@ elseif ($subaction == "all")
         else
         {
             if ($surveytable['anonymized'] == "N" && db_tables_exist($tokentable))
-                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
+                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token WHERE 1=1 ";
             else
-                $dtquery = "SELECT * FROM $surveytable ";
+                $dtquery = "SELECT * FROM $surveytable WHERE 1=1 ";
             $selectedgroup = returnglobal('selectgroup');
             if (incompleteAnsFilterstate() == "inc")
             {
-                $dtquery .= "submitdate IS NULL ";
+                $dtquery .= " AND submitdate IS NULL ";
 
-                if (stripcslashes($_POST['sql']) !== "")
-                {
-                    $dtquery .= " AND ";
-                }
             }
             elseif (incompleteAnsFilterstate() == "filter")
             {
-                $dtquery .= " submitdate IS NOT NULL ";
-
-                if (stripcslashes($_POST['sql']) !== "")
-                {
-                    $dtquery .= " AND ";
-                }
+                $dtquery .= " AND submitdate IS NOT NULL ";
             }
             if (stripcslashes($_POST['sql']) !== "")
             {
-                $dtquery .= stripcslashes($_POST['sql'])." ";
+                $dtquery .= ' AND '.stripcslashes($_POST['sql'])." ";
             }
             $dtquery .= " ORDER BY {$surveytable}.id";
         }
