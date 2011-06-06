@@ -283,6 +283,7 @@ function db_upgrade($oldversion) {
                    
         modify_database("","ALTER TABLE prefix_conditions ALTER COLUMN method TYPE CHAR(5)"); echo $modifyoutput; flush();ob_flush();
         
+        modify_database("","UPDATE prefix_surveys set private='N' where private is NULL;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE prefix_surveys RENAME COLUMN private TO anonymized;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized TYPE char(1);"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized SET DEFAULT 'N';"); echo $modifyoutput; flush();ob_flush();

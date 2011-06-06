@@ -443,6 +443,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `notification`"); echo $modifyoutput; flush();ob_flush();
                    
         modify_database("","ALTER TABLE `prefix_conditions` CHANGE `method` `method` CHAR( 5 ) NOT NULL default '';"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","UPDATE `prefix_surveys` set `private`='N' where `private` is NULL;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_surveys` CHANGE `private` `anonymized` char(1) collate utf8_unicode_ci NOT NULL default 'N';"); echo $modifyoutput; flush();ob_flush();
         
         
