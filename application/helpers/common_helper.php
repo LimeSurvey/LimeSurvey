@@ -7271,4 +7271,146 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
     } // end while qentry
 }
 
+/**
+ * This function is a replacement of access_denied.php which return appropriate error message which is then displayed.
+ * 
+ * @params string $action - action for which acces denied error message is to be returned
+ * @params string sid - survey id
+ * @return $accesssummary - proper access denied error message
+ */
+function access_denied($action,$sid)
+{
+    global $CI,$clang;
+    if ($this->session->userdata('loginID'))
+    {
+        $ugid = $CI->config->item('ugid');
+        $accesssummary = "<p><strong>".$clang->gT("Access denied!")."</strong><br />\n";
+        $scriptname = $CI->config->item('scriptname');
+        //$action=returnglobal('action');
+        if  (  $action == "dumpdb"  )
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed dump the database!")."<br />";
+            $accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "dumplabel")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed export a label set!")."<br />";
+            $accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }   
+        elseif($action == "edituser")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to change user data!");
+            $accesssummary .= "<br /><br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "newsurvey")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to create new surveys!")."<br />";
+            $accesssummary .= "<a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "deletesurvey")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to delete this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "addquestion")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to add new questions for this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "activate")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to activate this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "deactivate")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to deactivate this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "addgroup")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to add a group to this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "ordergroups")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to order groups in this survey!")."<br />";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "editsurvey")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to edit this survey!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "editgroup")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to edit groups in this survey!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "browse_response" || $action == "listcolumn" || $action == "vvexport" || $action == "vvimport")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to browse responses!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "assessment")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to set assessment rules!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "delusergroup")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to delete this group!")."</p>";
+            $accesssummary .= "<a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "importsurvey")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to import a survey!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+    
+        elseif($action == "importgroup")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to import a group!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "importquestion")
+        {
+            $accesssummary .= "<p>".$clang->gT("You are not allowed to to import a question!")."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "CSRFwarn") //won't be used.
+        {
+            $sURLID='';
+            if (isset($sid)) {
+                $sURLID="?sid={$sid}";
+            }
+            $accesssummary .= "<p><span color='errortitle'>".$clang->gT("Security alert")."</span>: ".$clang->gT("Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.").'<br>'.$clang->gT('Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time.')."</p>";
+            $accesssummary .= "<a href='{$scriptname}{$sURLID}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        elseif($action == "FakeGET")
+        {
+            $accesssummary .= "<p><span class='errortitle'>".$clang->gT("Security alert")."</span>: ".$clang->gT("Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator.").'<br>'.$clang->gT('Also this problem can occur when you are working/editing in LimeSurvey in several browser windows/tabs at the same time.')."</p>";
+            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        }
+        else
+        {
+            $accesssummary .= "<br />".$clang->gT("You are not allowed to perform this operation!")."<br />\n";
+            if(!empty($sid))
+            {
+                $accesssummary .= "<br /><br /><a href='$scriptname?sid=$sid>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            }
+            elseif(!empty($ugid))
+            {
+                $accesssummary .= "<br /><br /><a href='$scriptname?action=editusergroups&ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            }
+            else
+            {
+                $accesssummary .= "<br /><br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            }
+        }
+        return $accesssummary;
+    }
+    
+}
+
 // Closing PHP tag intentionally omitted - yes, it is okay
