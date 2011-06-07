@@ -39,7 +39,7 @@ class dTexts
 	 */
 	public static function loadFunction($name)
 	{
-		$name=ucwords($name);
+        $name=ucfirst(strtolower($name));    
 		$fileName='./classes/dTexts/dFunctions/dFunction'.$name.'.php';
 		if(!file_exists($fileName))
 		{
