@@ -99,6 +99,7 @@ class LS_Controller extends CI_Controller {
 		//$updatelastcheck='';
 		//$updatekey='';
 		//$updatekeyvaliduntil='';
+		$this->config->set_item("updateavailable", 0);
 					
 		//GlobalSettings Helper
 		$this->load->helper("globalsettings");
@@ -108,12 +109,16 @@ class LS_Controller extends CI_Controller {
 		//$showXquestions = getGlobalSetting('showXquestions');
 		//$showgroupinfo = getGlobalSetting('showgroupinfo');
 		//$showqnumcode = getGlobalSetting('showqnumcode');
+		$this->config->set_item("showXquestions", getGlobalSetting('showXquestions'));
+		$this->config->set_item("showgroupinfo", getGlobalSetting('showgroupinfo'));
+		$this->config->set_item("showqnumcode", getGlobalSetting('showqnumcode'));
+		
 		
 		//SET LOCAL TIME
 		//if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
 		//if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
 		//{
-		//    $timeadjust=$timeadjust.' hours';
+		//    $this->config->set_item("timeadjust",$timeadjust.' hours');
 		//}
 		
 		// SITE STYLES

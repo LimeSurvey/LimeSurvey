@@ -16,7 +16,7 @@ class Index extends AdminController {
 		if(count(getsurveylist(true))==0) 
 		{
 			$data['clang']=$this->limesurvey_lang;
-			$this->load->view("admin/firststeps",$data);
+			$this->load->view("admin/Super/firststeps",$data);
 		}
 		
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));

@@ -133,10 +133,7 @@ class AdminController extends LS_Controller {
 	function _sessioncontrol() 
 	{
 		//Session is initialized by CodeIgniter
-		
-		//$this->login = "d";
-		//var_dump($this->login);
-		
+			
 		//LANGUAGE ISSUES
 		// if changelang is called from the login page, then there is no userId
 		//  ==> thus we just change the login form lang: no user profile update
