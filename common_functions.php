@@ -8285,4 +8285,22 @@ function sStripDBPrefix($sTableName)
     return substr($sTableName,strlen($dbprefix));
 }
                        
+/*
+ * Emit the standard (last) onsubmit handler for the survey.
+ *
+ * This code in injected in the three questionnaire modes right after the <form> element,
+ * before the individual questions emit their own onsubmit replacement code.
+ */
+function sDefaultSubmitHandler()
+{
+    return <<<EOS
+    <script type='text/javascript'>
+    <!--
+        // register the standard (last) onsubmit handler *first*
+        document.limesurvey.onsubmit = std_onsubmit_handler;
+    -->
+    </script>
+EOS;
+}
+
 // Closing PHP tag intentionally omitted - yes, it is okay

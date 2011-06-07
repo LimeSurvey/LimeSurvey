@@ -459,6 +459,7 @@ if ($_SESSION['step'] != $_SESSION['prevstep'] ||
 }
 
 echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+echo sDefaultSubmitHandler();
 
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 echo "\n\n<!-- INPUT NAMES -->\n";

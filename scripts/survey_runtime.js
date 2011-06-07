@@ -95,11 +95,6 @@ $(document).ready(function()
                 });
             }
         }
-        // disable double-posts in all forms
-	    $('form').submit(function()
-        {
-            $('input[type=button], input[type=submit]', this).attr('disabled', 'disabled');
-        });
 });
 
 gmaps = new Object;
@@ -488,6 +483,13 @@ function navigator_countdown(n)
 
 		navigator_countdown_int();
 	});
+}
+
+function std_onsubmit_handler()
+{
+    // disable double-posts in all forms
+    $('#moveprevbtn, #movenextbtn, #movesubmitbtn').attr('disabled', 'disabled');
+    return true;
 }
 
 // ==========================================================

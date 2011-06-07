@@ -333,6 +333,7 @@ echo "\n<!-- INPUT NAMES -->\n"
 ."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"
 .implode("|", $inputnames)
 ."' />\n";
+echo sDefaultSubmitHandler();
 
 // <-- END FEATURE - SAVE
 

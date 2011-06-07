@@ -519,6 +519,7 @@ else
     echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>
       <!-- INPUT NAMES -->
       <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
+echo sDefaultSubmitHandler();
 
 // <-- END FEATURE - SAVE
 
