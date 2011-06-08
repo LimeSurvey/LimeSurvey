@@ -20,7 +20,7 @@
 function db_upgrade($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
-    global $modifyoutput, $dbprefix;
+    global $modifyoutput, $dbprefix, $clang;
     if ($oldversion < 111) {
 
         // Language upgrades from version 110 to 111 since the language names did change
@@ -472,7 +472,7 @@ function db_upgrade($oldversion) {
 
     }
 
-    echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
+    echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
 }
 

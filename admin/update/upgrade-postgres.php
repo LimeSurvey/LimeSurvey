@@ -18,7 +18,7 @@
 // For this there will be a settings table which holds the last time the database was upgraded
 
 function db_upgrade($oldversion) {
-    global $modifyoutput, $databasename, $databasetabletype;
+    global $modifyoutput, $databasename, $databasetabletype, $clang;
 
 
     if ($oldversion < 127) {
@@ -300,7 +300,7 @@ function db_upgrade($oldversion) {
     }
     
 
-    echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
+    echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
 }
 
