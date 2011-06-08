@@ -20,7 +20,7 @@
  *
  * Placeholder French language file.
  */
-CKEDITOR.plugins.setLang('limereplacementfields','en', {
+CKEDITOR.plugins.setLang('limereplacementfields','fr', {
                                 limereplacementfields: {   title:'Propriétés du champ de remplacement LimeSurvey',
                                                            button:'Insèrer ou éditer un champ de remplacement LimeSurvey'
                                                         }
