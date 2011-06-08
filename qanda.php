@@ -1997,7 +1997,7 @@ function do_date($ia)
     {
         if ($clang->langcode !== 'en')
         {
-            $js_header_includes[] = '/scripts/jquery/locale/ui.datepicker-'.$clang->langcode.'.js';
+            $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js';
         }
         $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
 
