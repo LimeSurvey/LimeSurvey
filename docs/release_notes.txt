@@ -77,6 +77,21 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
      
+Changes from 1.91+ (build 10202) to 1.91+ (build 10232)                    
+-Fixed #5255: Missing strings in translation (c_schmitz)
+-Fixed Issue #05226 : partially fixed the issue for security breach (aniesshsethh)
+-Fixed bug - line 461 evaluation for resetting when newtest is "Y" was using a single = rather than a double =, thus setting the value rather than evaluating it. Fixed similar issue on line 2387. Corrected. (jcleeland)
+-Fixed issue #05124: Can't proceed to next page because of disable_navigator(); function. (wavexx)
+-Fixed issue #05250: CKEditor minor CSS issues (tpartner)
+-Fixed issue #5179: Error appears in End URL with an INSERTANS entry (c_schmitz)
+-Fixed issue #5193: PHPExcel engine running out of memory - memory usage is cut by half now. (c_schmitz)
+-Fixed issue #5238: Browse responses in statistics gives SQL error (c_schmitz)
+-Fixed issue #5243: Filter statistics by number does not work (c_schmitz)
+-Fixed issue #5245: {LANG} tag not working in End-URL (c_schmitz)
+-Fixed issue #5247: Issues with uploading from the new CK editor (c_schmitz)
+-Fixed issue #5252: Importing a question (.lsq) fails to import the answers under certain circumstances (c_schmitz)
+-Fixed issue #5257: Notices when editing subquestions and survey is active (c_schmitz)
+     
 Changes from 1.91+ (build 10168) to 1.91+ (build 10202)                    
 #Updated translation : French (b00z00)
 #Updated translation: Chinese Simplified (c_schmitz)
