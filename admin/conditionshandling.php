@@ -1800,7 +1800,8 @@ $subaction == "editthiscondition" || $subaction == "delete")
     ."<select name='method' id='method' style='font-family:verdana; font-size:10' >\n";
     foreach ($method as $methodCode => $methodTxt)
     {
-        $conditionsoutput_main_content .= "\t<option value='".$methodCode."'>".$methodTxt."</option>\n";
+    	$selected=$methodCode=="==" ? " selected='selected'" : "";
+        $conditionsoutput_main_content .= "\t<option value='".$methodCode."'$selected>".$methodTxt."</option>\n";
     }
 /**
     ."\t<option value='<'>".$clang->gT("Less than")."</option>\n"
