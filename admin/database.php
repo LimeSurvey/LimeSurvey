@@ -987,7 +987,7 @@ if(isset($surveyid))
                         $query='Update '.db_table_name('questions').' set question_order='.($position+1).', title='.db_quoteall($codes[$scale_id][$position]).', question='.db_quoteall($subquestionvalue).', scale_id='.$scale_id.' where qid='.db_quoteall($subquestionkey).' AND language='.db_quoteall($language);
                         $connect->execute($query);
 
-                        if($codes[$scale_id][$position] !== $oldcodes[$scale_id][$position]) {
+                        if(isset($oldcodes[$scale_id][$position]) && $codes[$scale_id][$position] !== $oldcodes[$scale_id][$position]) {
                             $query='UPDATE '.db_table_name('conditions').' SET cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.db_quote($codes[$scale_id][$position]).'" WHERE cqid='.$qid.' AND cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.db_quote($oldcodes[$scale_id][$position]).'"';
                             $connect->execute($query);
                             $query='UPDATE '.db_table_name('conditions').' SET value="'.db_quote($codes[$scale_id][$position]).'" WHERE cqid='.$qid.' AND cfieldname="'.$surveyid.'X'.$gid.'X'.$qid.'" AND value="'.$oldcodes[$scale_id][$position].'"';
