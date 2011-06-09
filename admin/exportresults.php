@@ -17,8 +17,7 @@
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
 
-
-if (!isset($imagefiles)) {$imagefiles="./images";}
+if (!isset($imageurl)) {$imageurl="./images";}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($exportstyle)) {$exportstyle=returnglobal('exportstyle');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
@@ -27,12 +26,11 @@ if (!isset($convertyto1)) {$convertyto1=returnglobal('convertyto1');}
 if (!isset($convertnto2)) {$convertnto2=returnglobal('convertnto2');}
 if (!isset($convertspacetous)) {$convertspacetous=returnglobal('convertspacetous');}
 
-if (!bHasRight($surveyid, 'export'))
+if (!bHasSurveyPermission($surveyid, 'responses','export'))
 {
     exit;
 }
 
-include_once("login_check.php");
 include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
 include_once(dirname(__FILE__)."/classes/tcpdf/extensiontcpdf.php");
 
@@ -56,8 +54,8 @@ if (!$exportstyle)
 
 
     $afieldcount = count($excesscols);
-    $exportoutput .= browsemenubar($clang->gT("Export Results"));
-    $exportoutput .= "<div class='header'>".$clang->gT("Export results").'</div>'
+    $exportoutput .= browsemenubar($clang->gT("Export results"));
+    $exportoutput .= "<div class='header ui-widget-header'>".$clang->gT("Export results").'</div>'
     ."<div class='wrap2columns'>\n"
     ."<form id='resultexport' action='$scriptname?action=exportresults' method='post'><div class='left'>\n";
 
@@ -190,13 +188,13 @@ if (!$exportstyle)
 
     if ($afieldcount > 255)
     {
-        $exportoutput .= "\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
+        $exportoutput .= "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
         .$clang->gT("Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below.","js")
         ."\")' />";
     }
     else
     {
-        $exportoutput .= "\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
+        $exportoutput .= "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
         .$clang->gT("Choose the columns you wish to export.","js")
         ."\")' />";
     }
@@ -223,9 +221,9 @@ if (!$exportstyle)
     $exportoutput .= "<br />&nbsp;</fieldset>\n";
         //OPTIONAL EXTRAS (FROM TOKENS TABLE)
     // Find out if survey results are anonymous
-    if ($thissurvey['private'] == "N" && tableExists("tokens_$surveyid"))
+    if ($thissurvey['anonymized'] == "N" && tableExists("tokens_$surveyid"))
         {
-        $exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
+            $exportoutput .= "<fieldset><legend>".$clang->gT("Token control")."</legend>\n"
             .$clang->gT("Choose token fields").":"
             ."<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
             .$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
@@ -266,7 +264,7 @@ if ($tokenTableExists)
     $attributeFields=array_keys($attributeFieldAndNames);
 }
 
-switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c)
+switch ( $_POST["type"] ) {
     case "doc":
         header("Content-Disposition: attachment; filename=results-survey".$surveyid.".doc");
         header("Content-type: application/vnd.ms-word");
@@ -426,18 +424,18 @@ for ($i=0; $i<$fieldcount; $i++)
 
     if ($fieldinfo == "lastname")
     {
-        if ($type == "csv") {$firstline .= "\"".$elang->gT("Last Name")."\"$separator";}
-        else {$firstline .= $elang->gT("Last Name")."$separator";}
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("Last name")."\"$separator";}
+        else {$firstline .= $elang->gT("Last name")."$separator";}
     }
     elseif ($fieldinfo == "firstname")
     {
-        if ($type == "csv") {$firstline .= "\"".$elang->gT("First Name")."\"$separator";}
-        else {$firstline .= $elang->gT("First Name")."$separator";}
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("First name")."\"$separator";}
+        else {$firstline .= $elang->gT("First name")."$separator";}
     }
     elseif ($fieldinfo == "email")
     {
-        if ($type == "csv") {$firstline .= "\"".$elang->gT("Email Address")."\"$separator";}
-        else {$firstline .= $elang->gT("Email Address")."$separator";}
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("Email address")."\"$separator";}
+        else {$firstline .= $elang->gT("Email address")."$separator";}
     }
     elseif ($fieldinfo == "token")
     {
@@ -471,13 +469,13 @@ for ($i=0; $i<$fieldcount; $i++)
     }
     elseif ($fieldinfo == "ipaddr")
     {
-        if ($type == "csv") {$firstline .= "\"".$elang->gT("IP-Address")."\"$separator";}
-        else {$firstline .= $elang->gT("IP-Address")."$separator";}
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("IP address")."\"$separator";}
+        else {$firstline .= $elang->gT("IP address")."$separator";}
     }
     elseif ($fieldinfo == "refurl")
     {
-        if ($type == "csv") {$firstline .= "\"".$elang->gT("Referring URL")."\"$separator";}
-        else {$firstline .= $elang->gT("Referring URL")."$separator";}
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("Referrer URL")."\"$separator";}
+        else {$firstline .= $elang->gT("Referrer URL")."$separator";}
     }
     elseif ($fieldinfo == "lastpage")
     {
@@ -754,19 +752,19 @@ elseif ($answers == "long")        //chose complete answers
                             $ftitle=$elang->gT("Date Started").":";
                             break;
                         case "ipaddr":
-                            $ftitle=$elang->gT("IP Address").":";
+                            $ftitle=$elang->gT("IP address").":";
                             break;
                         case "completed":
                             $ftitle=$elang->gT("Completed").":";
                             break;
                         case "refurl":
-                            $ftitle=$elang->gT("Referring URL").":";
+                            $ftitle=$elang->gT("Referrer URL").":";
                             break;
                         case "firstname":
-                            $ftitle=$elang->gT("First Name").":";
+                            $ftitle=$elang->gT("First name").":";
                             break;
                         case "lastname":
-                            $ftitle=$elang->gT("Last Name").":";
+                            $ftitle=$elang->gT("Last name").":";
                             break;
                         case "email":
                             $ftitle=$elang->gT("Email").":";
@@ -798,7 +796,7 @@ elseif ($answers == "long")        //chose complete answers
             }
             if ($fqid == 0)
             {
-                $ftype = "-";  //   This is set if it not a normal answer field, but something like tokenID, First Name etc
+                $ftype = "-";  //   This is set if it not a normal answer field, but something like tokenID, First name etc
             }
             if ($type == "csv") {$exportoutput .= "\"";}
             if ($type == "doc") {$exportoutput .= "<td>$ftitle</td><td>";}
@@ -1099,8 +1097,8 @@ elseif ($answers == "long")        //chose complete answers
 }
 if ($type=='xls')
 {
+//    echo memory_get_peak_usage(true); die();
     $workbook->close();
-    // echo memory_get_peak_usage(true); die();
 }
 else if($type=='pdf')
 {
