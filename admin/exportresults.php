@@ -17,7 +17,8 @@
 //Ensure script is not run directly, avoid path disclosure
 include_once("login_check.php");
 
-if (!isset($imageurl)) {$imageurl="./images";}
+
+if (!isset($imagefiles)) {$imagefiles="./images";}
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($exportstyle)) {$exportstyle=returnglobal('exportstyle');}
 if (!isset($answers)) {$answers=returnglobal('answers');}
@@ -26,12 +27,13 @@ if (!isset($convertyto1)) {$convertyto1=returnglobal('convertyto1');}
 if (!isset($convertnto2)) {$convertnto2=returnglobal('convertnto2');}
 if (!isset($convertspacetous)) {$convertspacetous=returnglobal('convertspacetous');}
 
-if (!bHasSurveyPermission($surveyid, 'responses','export'))
+if (!bHasRight($surveyid, 'export'))
 {
     exit;
 }
 
-include_once(dirname(__FILE__)."/classes/phpexcel/PHPExcel.php");
+include_once("login_check.php");
+include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
 include_once(dirname(__FILE__)."/classes/tcpdf/extensiontcpdf.php");
 
 $surveybaselang=GetBaseLanguageFromSurveyID($surveyid);
@@ -54,8 +56,8 @@ if (!$exportstyle)
 
 
     $afieldcount = count($excesscols);
-    $exportoutput .= browsemenubar($clang->gT("Export results"));
-    $exportoutput .= "<div class='header ui-widget-header'>".$clang->gT("Export results").'</div>'
+    $exportoutput .= browsemenubar($clang->gT("Export Results"));
+    $exportoutput .= "<div class='header'>".$clang->gT("Export results").'</div>'
     ."<div class='wrap2columns'>\n"
     ."<form id='resultexport' action='$scriptname?action=exportresults' method='post'><div class='left'>\n";
 
@@ -188,13 +190,13 @@ if (!$exportstyle)
 
     if ($afieldcount > 255)
     {
-        $exportoutput .= "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
+        $exportoutput .= "\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
         .$clang->gT("Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below.","js")
         ."\")' />";
     }
     else
     {
-        $exportoutput .= "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
+        $exportoutput .= "\t<img src='$imagefiles/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
         .$clang->gT("Choose the columns you wish to export.","js")
         ."\")' />";
     }
@@ -221,9 +223,9 @@ if (!$exportstyle)
     $exportoutput .= "<br />&nbsp;</fieldset>\n";
         //OPTIONAL EXTRAS (FROM TOKENS TABLE)
     // Find out if survey results are anonymous
-    if ($thissurvey['anonymized'] == "N" && tableExists("tokens_$surveyid"))
+    if ($thissurvey['private'] == "N" && tableExists("tokens_$surveyid"))
         {
-            $exportoutput .= "<fieldset><legend>".$clang->gT("Token control")."</legend>\n"
+        $exportoutput .= "<fieldset><legend>".$clang->gT("Token Control")."</legend>\n"
             .$clang->gT("Choose token fields").":"
             ."<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
             .$clang->gT("Your survey can export associated token data with each response. Select any additional fields you would like to export.","js")
@@ -264,27 +266,31 @@ if ($tokenTableExists)
     $attributeFields=array_keys($attributeFieldAndNames);
 }
 
-switch ( $_POST["type"] ) {
+switch ( $_POST["type"] ) {     // this is a step to register_globals = false ;c)
     case "doc":
         header("Content-Disposition: attachment; filename=results-survey".$surveyid.".doc");
         header("Content-type: application/vnd.ms-word");
         $separator="\t";
         break;
     case "xls":
-        header("Content-Disposition: attachment; filename=results-survey".$surveyid.".xls");
-        header("Content-type: application/vnd.ms-excel");
-        $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_discISAM;
-        PHPExcel_Settings::setCacheStorageMethod($cacheMethod);     
-        $workbook = new PHPExcel();
+
+        $workbook = new Spreadsheet_Excel_Writer();
+        $workbook->setVersion(8);
+        // Inform the module that our data will arrive as UTF-8.
+        // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+        if (!empty($tempdir)) {
+            $workbook->setTempDir($tempdir);
+        }
+        $workbook->send('results-survey'.$surveyid.'.xls');
         // Creating the first worksheet
 
         $query="SELECT * FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=".$surveyid;
         $result=db_execute_assoc($query) or safe_die("Couldn't get privacy data<br />$query<br />".$connect->ErrorMsg());
         $row = $result->FetchRow();
 
-        $sheet = $workbook->getActiveSheet();
-        $row['surveyls_title']=str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$row['surveyls_title']); // Remove invalid characters
-        $sheet->setTitle(substr($row['surveyls_title'],0,31));
+        $row['surveyls_title']=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$row['surveyls_title']),0,31); // Remove invalid characters
+        $sheet =& $workbook->addWorksheet($row['surveyls_title']); // do not translate/change this - the library does not support any special chars in sheet name
+        $sheet->setInputEncoding('utf-8');
         $separator="~|";
         break;
     case "csv":
@@ -420,18 +426,18 @@ for ($i=0; $i<$fieldcount; $i++)
 
     if ($fieldinfo == "lastname")
     {
-        if ($type == "csv") {$firstline .= "\"".$elang->gT("Last name")."\"$separator";}
-        else {$firstline .= $elang->gT("Last name")."$separator";}
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("Last Name")."\"$separator";}
+        else {$firstline .= $elang->gT("Last Name")."$separator";}
     }
     elseif ($fieldinfo == "firstname")
     {
-        if ($type == "csv") {$firstline .= "\"".$elang->gT("First name")."\"$separator";}
-        else {$firstline .= $elang->gT("First name")."$separator";}
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("First Name")."\"$separator";}
+        else {$firstline .= $elang->gT("First Name")."$separator";}
     }
     elseif ($fieldinfo == "email")
     {
-        if ($type == "csv") {$firstline .= "\"".$elang->gT("Email address")."\"$separator";}
-        else {$firstline .= $elang->gT("Email address")."$separator";}
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("Email Address")."\"$separator";}
+        else {$firstline .= $elang->gT("Email Address")."$separator";}
     }
     elseif ($fieldinfo == "token")
     {
@@ -465,13 +471,13 @@ for ($i=0; $i<$fieldcount; $i++)
     }
     elseif ($fieldinfo == "ipaddr")
     {
-        if ($type == "csv") {$firstline .= "\"".$elang->gT("IP address")."\"$separator";}
-        else {$firstline .= $elang->gT("IP address")."$separator";}
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("IP-Address")."\"$separator";}
+        else {$firstline .= $elang->gT("IP-Address")."$separator";}
     }
     elseif ($fieldinfo == "refurl")
     {
-        if ($type == "csv") {$firstline .= "\"".$elang->gT("Referrer URL")."\"$separator";}
-        else {$firstline .= $elang->gT("Referrer URL")."$separator";}
+        if ($type == "csv") {$firstline .= "\"".$elang->gT("Referring URL")."\"$separator";}
+        else {$firstline .= $elang->gT("Referring URL")."$separator";}
     }
     elseif ($fieldinfo == "lastpage")
     {
@@ -567,7 +573,7 @@ if ($type == "xls")
     $fli=0;
     foreach ($flarray as $fl)
     {
-        $sheet->setCellValueByColumnAndRow($fli,1,$fl);
+        $sheet->write(0,$fli,$fl);
         $fli++;
     }
     //print_r($fieldmap);
@@ -667,7 +673,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
                 {
                     $rowfield = "\"".$rowfield."\"";
                 }
-                $sheet->setCellValueByColumnAndRow($colcounter,$rowcounter+1,$rowfield);
+                $sheet->write($rowcounter,$colcounter,$rowfield);
                 $colcounter++;
             }
         }
@@ -748,19 +754,19 @@ elseif ($answers == "long")        //chose complete answers
                             $ftitle=$elang->gT("Date Started").":";
                             break;
                         case "ipaddr":
-                            $ftitle=$elang->gT("IP address").":";
+                            $ftitle=$elang->gT("IP Address").":";
                             break;
                         case "completed":
                             $ftitle=$elang->gT("Completed").":";
                             break;
                         case "refurl":
-                            $ftitle=$elang->gT("Referrer URL").":";
+                            $ftitle=$elang->gT("Referring URL").":";
                             break;
                         case "firstname":
-                            $ftitle=$elang->gT("First name").":";
+                            $ftitle=$elang->gT("First Name").":";
                             break;
                         case "lastname":
-                            $ftitle=$elang->gT("Last name").":";
+                            $ftitle=$elang->gT("Last Name").":";
                             break;
                         case "email":
                             $ftitle=$elang->gT("Email").":";
@@ -792,7 +798,7 @@ elseif ($answers == "long")        //chose complete answers
             }
             if ($fqid == 0)
             {
-                $ftype = "-";  //   This is set if it not a normal answer field, but something like tokenID, First name etc
+                $ftype = "-";  //   This is set if it not a normal answer field, but something like tokenID, First Name etc
             }
             if ($type == "csv") {$exportoutput .= "\"";}
             if ($type == "doc") {$exportoutput .= "<td>$ftitle</td><td>";}
@@ -1083,7 +1089,7 @@ elseif ($answers == "long")        //chose complete answers
                 {
                     $row = "\"".$row."\"";
                 }
-                $sheet->setCellValueByColumnAndRow($fli,$rowcounter+1,$row);
+                $sheet->write($rowcounter,$fli,$row);
                 $fli++;
             }
             $exportoutput='';
@@ -1093,11 +1099,7 @@ elseif ($answers == "long")        //chose complete answers
 }
 if ($type=='xls')
 {
-    $objWriter = new PHPExcel_Writer_Excel5($workbook);
-    $sFileName=$tempdir.DIRECTORY_SEPARATOR.'xls_'.sRandomChars(40);
-    $objWriter->save($sFileName);
-    readfile($sFileName);
-    unlink($sFileName);
+    $workbook->close();
     // echo memory_get_peak_usage(true); die();
 }
 else if($type=='pdf')
