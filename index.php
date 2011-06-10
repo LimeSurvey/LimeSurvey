@@ -1256,7 +1256,8 @@ function checkconfield($value)
     }
     $value_qid=0;
     $value_type='';
-
+    $value_isconditionnal='N';
+    
     //$value is the fieldname for the field we are checking for conditions
     foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
     {
@@ -1270,216 +1271,216 @@ function checkconfield($value)
         }
     }
 
-        // check if this question is conditionnal ($sfa[7]): if yes eval conditions
-        if ($value_isconditionnal  == "Y" && isset($_SESSION[$value]) ) //Do this if there is a condition based on this answer
+    // check if this question is conditionnal ($sfa[7]): if yes eval conditions
+    if ($value_isconditionnal  == "Y" && isset($_SESSION[$value]) ) //Do this if there is a condition based on this answer
+    {
+
+        $scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
+        ." WHERE ".db_table_name("conditions").".qid=$sfa[0] ORDER BY scenario";
+        $scenarioresult=db_execute_assoc($scenarioquery);
+        $matchfound=0;
+        //$scenario=1;
+        //while ($scenario > 0)
+        $evalNextScenario = true;
+        while ($evalNextScenario === true && $scenariorow=$scenarioresult->FetchRow())
         {
+            $aAllCondrows=Array();
+            $cqval=Array();
+            $container=Array();
 
-            $scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
-            ." WHERE ".db_table_name("conditions").".qid=$sfa[0] ORDER BY scenario";
-            $scenarioresult=db_execute_assoc($scenarioquery);
-            $matchfound=0;
-            //$scenario=1;
-            //while ($scenario > 0)
-            $evalNextScenario = true;
-            while ($evalNextScenario === true && $scenariorow=$scenarioresult->FetchRow())
+            $scenario = $scenariorow['scenario'];
+            $currentcfield="";
+            $query = "SELECT ".db_table_name('conditions').".*, ".db_table_name('questions').".type "
+            . "FROM ".db_table_name('conditions').", ".db_table_name('questions')." "
+            . "WHERE ".db_table_name('conditions').".cqid=".db_table_name('questions').".qid "
+            . "AND ".db_table_name('conditions').".qid=$value_qid "
+            . "AND ".db_table_name('conditions').".scenario=$scenario "
+            . "AND ".db_table_name('conditions').".cfieldname NOT LIKE '{%' "
+            . "ORDER BY ".db_table_name('conditions').".qid,".db_table_name('conditions').".cfieldname";
+            $result=db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());         //Checked
+            $conditionsfound = $result->RecordCount();
+
+            $querytoken = "SELECT ".db_table_name('conditions').".*, '' as type "
+            . "FROM ".db_table_name('conditions')." "
+            . "WHERE "
+            . " ".db_table_name('conditions').".qid=$value_qid "
+            . "AND ".db_table_name('conditions').".scenario=$scenario "
+            . "AND ".db_table_name('conditions').".cfieldname LIKE '{%' "
+            . "ORDER BY ".db_table_name('conditions').".qid,".db_table_name('conditions').".cfieldname";
+            $resulttoken=db_execute_assoc($querytoken) or safe_die($querytoken."<br />".$connect->ErrorMsg());         //Checked
+            $conditionsfoundtoken = $resulttoken->RecordCount();
+            $conditionsfound = $conditionsfound + $conditionsfoundtoken;
+
+            while ($Condrow = $resulttoken->FetchRow())
             {
-                $aAllCondrows=Array();
-                $cqval=Array();
-                $container=Array();
+                $aAllCondrows[] = $Condrow;
+            }
+            while ($Condrow = $result->FetchRow())
+            {
+                $aAllCondrows[] = $Condrow;
+            }
 
-                $scenario = $scenariorow['scenario'];
-                $currentcfield="";
-                $query = "SELECT ".db_table_name('conditions').".*, ".db_table_name('questions').".type "
-                . "FROM ".db_table_name('conditions').", ".db_table_name('questions')." "
-                . "WHERE ".db_table_name('conditions').".cqid=".db_table_name('questions').".qid "
-                . "AND ".db_table_name('conditions').".qid=$value_qid "
-                . "AND ".db_table_name('conditions').".scenario=$scenario "
-                . "AND ".db_table_name('conditions').".cfieldname NOT LIKE '{%' "
-                . "ORDER BY ".db_table_name('conditions').".qid,".db_table_name('conditions').".cfieldname";
-                $result=db_execute_assoc($query) or safe_die($query."<br />".$connect->ErrorMsg());         //Checked
-                $conditionsfound = $result->RecordCount();
 
-                $querytoken = "SELECT ".db_table_name('conditions').".*, '' as type "
-                . "FROM ".db_table_name('conditions')." "
-                . "WHERE "
-                . " ".db_table_name('conditions').".qid=$value_qid "
-                . "AND ".db_table_name('conditions').".scenario=$scenario "
-                . "AND ".db_table_name('conditions').".cfieldname LIKE '{%' "
-                . "ORDER BY ".db_table_name('conditions').".qid,".db_table_name('conditions').".cfieldname";
-                $resulttoken=db_execute_assoc($querytoken) or safe_die($querytoken."<br />".$connect->ErrorMsg());         //Checked
-                $conditionsfoundtoken = $resulttoken->RecordCount();
-                $conditionsfound = $conditionsfound + $conditionsfoundtoken;
-
-                while ($Condrow = $resulttoken->FetchRow())
-                {
-                    $aAllCondrows[] = $Condrow;
-                }
-                while ($Condrow = $result->FetchRow())
-                {
-                    $aAllCondrows[] = $Condrow;
+            foreach ($aAllCondrows as $rows)
+            {
+                if (preg_match("/^\+(.*)$/",$rows['cfieldname'],$cfieldnamematch))
+                { // this condition uses a single checkbox as source
+                    $rows['type'] = "+".$rows['type'];
+                    $rows['cfieldname'] = $cfieldnamematch[1];
                 }
 
-
-                foreach ($aAllCondrows as $rows)
+                if($rows['type'] == "M" || $rows['type'] == "P")
                 {
-                    if (preg_match("/^\+(.*)$/",$rows['cfieldname'],$cfieldnamematch))
-                    { // this condition uses a single checkbox as source
-                        $rows['type'] = "+".$rows['type'];
-                        $rows['cfieldname'] = $cfieldnamematch[1];
-                    }
-
-                    if($rows['type'] == "M" || $rows['type'] == "P")
-                    {
-                        $matchfield=$rows['cfieldname'].$rows['value'];
-                        $matchmethod=$rows['method'];
-                        $matchvalue="Y";
-                    }
-                    else
-                    {
-                        $matchfield=$rows['cfieldname'];
-                        $matchmethod=$rows['method'];
-                        $matchvalue=$rows['value'];
-                    }
-                    $cqval[]=array("cfieldname"=>$rows['cfieldname'],
-                            "value"=>$rows['value'],
-                            "type"=>$rows['type'],
-                            "matchfield"=>$matchfield,
-                            "matchvalue"=>$matchvalue,
-                            "matchmethod"=>$matchmethod
-                    );
-                    if ($rows['cfieldname'] != $currentcfield)
-                    {
-                        $container[]=$rows['cfieldname'];
-                    }
-                    $currentcfield=$rows['cfieldname'];
+                    $matchfield=$rows['cfieldname'].$rows['value'];
+                    $matchmethod=$rows['method'];
+                    $matchvalue="Y";
                 }
-                if ($conditionsfound > 0)
+                else
                 {
-                    //At least one match must be found for each "$container"
-                    $total=0;
-                    foreach($container as $con)
-                    {
-                        $conditionCanBeEvaluated=true;
-                        $addon=0;
-                        foreach($cqval as $cqv)
-                        {//Go through each condition
-                            // Replace @SGQA@ condition values
-                            // By corresponding value
-                            if (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@/',$cqv["matchvalue"], $targetconditionfieldname))
+                    $matchfield=$rows['cfieldname'];
+                    $matchmethod=$rows['method'];
+                    $matchvalue=$rows['value'];
+                }
+                $cqval[]=array("cfieldname"=>$rows['cfieldname'],
+                        "value"=>$rows['value'],
+                        "type"=>$rows['type'],
+                        "matchfield"=>$matchfield,
+                        "matchvalue"=>$matchvalue,
+                        "matchmethod"=>$matchmethod
+                );
+                if ($rows['cfieldname'] != $currentcfield)
+                {
+                    $container[]=$rows['cfieldname'];
+                }
+                $currentcfield=$rows['cfieldname'];
+            }
+            if ($conditionsfound > 0)
+            {
+                //At least one match must be found for each "$container"
+                $total=0;
+                foreach($container as $con)
+                {
+                    $conditionCanBeEvaluated=true;
+                    $addon=0;
+                    foreach($cqval as $cqv)
+                    {//Go through each condition
+                        // Replace @SGQA@ condition values
+                        // By corresponding value
+                        if (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@/',$cqv["matchvalue"], $targetconditionfieldname))
+                        {
+                            if (isset($_SESSION[$targetconditionfieldname[1]]))
                             {
-                                if (isset($_SESSION[$targetconditionfieldname[1]]))
+                                $cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
+                            }
+                            else
+                            {
+                                $conditionCanBeEvaluated=false;
+                            }
+                        }
+                        // Replace {TOKEN:XXX} condition values
+                        // By corresponding value
+                        if ($local_thissurvey['anonymized'] == 'N' &&
+                        preg_match('/^{TOKEN:([^}]*)}$/',$cqv["matchvalue"], $targetconditiontokenattr))
+                        {
+                            if (isset($_SESSION['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+                            {
+                                $cqv["matchvalue"] = GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
+                            }
+                            else
+                            {
+                                $conditionCanBeEvaluated=false;
+                            }
+                        }
+                        // Use == as default operator
+                        if (trim($cqv['matchmethod'])=='')
+                        {
+                            $cqv['matchmethod']='==';
+                        }
+                        if($cqv['cfieldname'] == $con && $conditionCanBeEvaluated === true)
+                        {
+                            if (!preg_match("/^{/",$cqv['cfieldname']))
+                            {
+                                if (isset($_SESSION[$cqv['matchfield']]))
                                 {
-                                    $cqv["matchvalue"] = $_SESSION[$targetconditionfieldname[1]];
+                                    $comparisonLeftOperand =  $_SESSION[$cqv['matchfield']];
                                 }
                                 else
                                 {
-                                    $conditionCanBeEvaluated=false;
+                                    $comparisonLeftOperand = null;
                                 }
                             }
-                            // Replace {TOKEN:XXX} condition values
-                            // By corresponding value
-                            if ($local_thissurvey['anonymized'] == 'N' &&
-                            preg_match('/^{TOKEN:([^}]*)}$/',$cqv["matchvalue"], $targetconditiontokenattr))
+                            elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$cqv['cfieldname'],$sourceconditiontokenattr))
                             {
-                                if (isset($_SESSION['token']) && in_array(strtolower($targetconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+                                if ( isset($_SESSION['token']) &&
+                                in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
                                 {
-                                    $cqv["matchvalue"] = GetAttributeValue($surveyid,strtolower($targetconditiontokenattr[1]),$_SESSION['token']);
-                                }
-                                else
-                                {
-                                    $conditionCanBeEvaluated=false;
-                                }
-                            }
-                            // Use == as default operator
-                            if (trim($cqv['matchmethod'])=='')
-                            {
-                                $cqv['matchmethod']='==';
-                            }
-                            if($cqv['cfieldname'] == $con && $conditionCanBeEvaluated === true)
-                            {
-                                if (!preg_match("/^{/",$cqv['cfieldname']))
-                                {
-                                    if (isset($_SESSION[$cqv['matchfield']]))
-                                    {
-                                        $comparisonLeftOperand =  $_SESSION[$cqv['matchfield']];
-                                    }
-                                    else
-                                    {
-                                        $comparisonLeftOperand = null;
-                                    }
-                                }
-                                elseif ($local_thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/',$cqv['cfieldname'],$sourceconditiontokenattr))
-                                {
-                                    if ( isset($_SESSION['token']) &&
-                                    in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-                                    {
-                                        $comparisonLeftOperand = GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
-                                    }
-                                    else
-                                    {
-                                        $comparisonLeftOperand = null;
-                                    }
-
+                                    $comparisonLeftOperand = GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
                                 }
                                 else
                                 {
                                     $comparisonLeftOperand = null;
                                 }
 
-                                if ($cqv['matchmethod'] != "RX")
+                            }
+                            else
+                            {
+                                $comparisonLeftOperand = null;
+                            }
+
+                            if ($cqv['matchmethod'] != "RX")
+                            {
+                                if (preg_match("/^a(.*)b$/",$cqv['matchmethod'],$matchmethods))
                                 {
-                                    if (preg_match("/^a(.*)b$/",$cqv['matchmethod'],$matchmethods))
-                                    {
-                                        // strings comparizon operator in PHP are the same as numerical operators
-                                        $matchOperator = $matchmethods[1];
-                                    }
-                                    else
-                                    {
-                                        $matchOperator = $cqv['matchmethod'];
-                                    }
-                                    if (isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && eval('if (trim($comparisonLeftOperand) '.$matchOperator.' trim($cqv["matchvalue"]) ) {return true;} else {return false;}'))
-                                    {//plug successful matches into appropriate container
-                                        $addon=1;
-                                    }
+                                    // strings comparizon operator in PHP are the same as numerical operators
+                                    $matchOperator = $matchmethods[1];
                                 }
-                                elseif ( isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && preg_match('/'.$cqv["matchvalue"].'/',$comparisonLeftOperand))
+                                else
                                 {
+                                    $matchOperator = $cqv['matchmethod'];
+                                }
+                                if (isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && eval('if (trim($comparisonLeftOperand) '.$matchOperator.' trim($cqv["matchvalue"]) ) {return true;} else {return false;}'))
+                                {//plug successful matches into appropriate container
                                     $addon=1;
                                 }
                             }
-                        }
-                        if($addon==1)
-                        {
-                            $total++;
+                            elseif ( isset($comparisonLeftOperand) && !is_null($comparisonLeftOperand) && preg_match('/'.$cqv["matchvalue"].'/',$comparisonLeftOperand))
+                            {
+                                $addon=1;
+                            }
                         }
                     }
-                    if($total==count($container))
+                    if($addon==1)
                     {
-                        $matchfound=1;
-                        $evalNextScenario=false; // Don't look for other scenario's.
+                        $total++;
                     }
-                    unset($cqval);
-                    unset($container);
-                } else
-                {
-                    //Curious there is no condition for this question in this scenario
-                    // this is not a normal behaviour, but I propose to defaults to a
-                    // condition-matched state in this case
-                    $matchfound=1;
-                    $evalNextScenario=false;
                 }
-            } // while ($scenario)
-            if($matchfound==0)
+                if($total==count($container))
+                {
+                    $matchfound=1;
+                    $evalNextScenario=false; // Don't look for other scenario's.
+                }
+                unset($cqval);
+                unset($container);
+            } else
             {
-                //If this is not a "moveprev" then
-                // Reset the value in SESSION
-                //if(isset($move) && $move != "moveprev")
-                //{
-                $_SESSION[$value]="";
-                $fieldisdisplayed=false;
-                //}
+                //Curious there is no condition for this question in this scenario
+                // this is not a normal behaviour, but I propose to defaults to a
+                // condition-matched state in this case
+                $matchfound=1;
+                $evalNextScenario=false;
             }
+        } // while ($scenario)
+        if($matchfound==0)
+        {
+            //If this is not a "moveprev" then
+            // Reset the value in SESSION
+            //if(isset($move) && $move != "moveprev")
+            //{
+            $_SESSION[$value]="";
+            $fieldisdisplayed=false;
+            //}
         }
+    }
 
     if ($value_qid != 0)
     { // not token masterFieldname
