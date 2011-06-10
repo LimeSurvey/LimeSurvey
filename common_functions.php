@@ -7502,13 +7502,13 @@ function checkquestionfordisplay($qid, $gid=null)
                     }
                     if (eval('if (trim($cfieldname)'. $matchOperator.' trim($cvalue)) return true; else return false;'))
                     {
-                        error_log("TIBO1 oper=$matchOperator");
+                        //error_log("TIBO1 oper=$matchOperator");
                         $conditionMatches=true;
                         //This condition is met
                     }
                     else
                     {
-                        error_log("TIBO2 oper=$matchOperator");
+                        //error_log("TIBO2 oper=$matchOperator");
                         $conditionMatches=false;
                     }
                 }
