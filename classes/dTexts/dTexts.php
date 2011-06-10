@@ -18,6 +18,7 @@ class dTexts
 		{
 			$data=explode(':',$str);
 			$funcName=array_shift($data);
+            $data = array(implode(':',$data));
 			try
 			{
 				$func = dTexts::loadFunction($funcName);
@@ -31,7 +32,7 @@ class dTexts
 		}
 		return $text;
 	}
-	
+
 	/**
 	 * Loader for the adequate "worker" class
 	 * @param $name Worker name
@@ -58,5 +59,5 @@ class dTexts
 		}
 		return $class;
 	}
-	
+
 }

@@ -21,8 +21,9 @@ and open the template in the editor.
     <body>
         <?php
             include 'ExpressionManager.php';
-            include 'ExpressionManagerFunctions.php';
-            ExpressionManager::UnitTestEvaluator($exprmgr_functions,$exprmgr_extraVars,$exprmgr_extraTests);
+//            include 'ExpressionManagerFunctions.php';
+//            ExpressionManager::UnitTestEvaluator($exprmgr_functions,$exprmgr_extraVars,$exprmgr_extraTests);
+            ExpressionManager::UnitTestEvaluator();
         ?>
     </body>
 </html>

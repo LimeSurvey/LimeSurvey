@@ -148,6 +148,85 @@ class ExpressionManager {
             'is_numeric'	=>array('is_numeric','Finds whether a variable is a number or a numeric string',1),
             'is_scalar'		=>array('is_scalar','Finds whether a variable is a scalar',1),
             'is_string'		=>array('is_string','Find whether the type of a variable is string',1),
+
+            'addcslashes'	=>array('addcslashes','Quote string with slashes in a C style',2),
+            'addslashes'	=>array('addslashes','Quote string with slashes',1),
+            'bin2hex'		=>array('bin2hex','Convert binary data into hexadecimal representation',1),
+            'chr'			=>array('chr','Return a specific character',1),
+            'chunk_split'	=>array('chunk_split','Split a string into smaller chunks',1,2,3),
+            'convert_uudecode'			=>array('convert_uudecode','Decode a uuencoded string',1),
+            'convert_uuencode'			=>array('convert_uuencode','Uuencode a string',1),
+            'count_chars'	=>array('count_chars','Return information about characters used in a string',1,2),
+            'crc32'			=>array('crc32','Calculates the crc32 polynomial of a string',1),
+            'crypt'			=>array('crypt','One-way string hashing',1,2),
+            'hebrev'		=>array('hebrev','Convert logical Hebrew text to visual text',1,2),
+            'hebrevc'		=>array('hebrevc','Convert logical Hebrew text to visual text with newline conversion',1,2),
+            'html_entity_decode'        =>array('html_entity_decode','Convert all HTML entities to their applicable characters',1,2,3),
+            'htmlentities'	=>array('htmlentities','Convert all applicable characters to HTML entities',1,2,3),
+            'htmlspecialchars_decode'	=>array('htmlspecialchars_decode','Convert special HTML entities back to characters',1,2),
+            'htmlspecialchars'			=>array('htmlspecialchars','Convert special characters to HTML entities',1,2,3,4),
+            'implode'		=>array('implode','Join array elements with a string',-1),
+            'lcfirst'		=>array('lcfirst','Make a string\'s first character lowercase',1),
+            'levenshtein'	=>array('levenshtein','Calculate Levenshtein distance between two strings',2,5),
+            'ltrim'			=>array('ltrim','Strip whitespace (or other characters) from the beginning of a string',1,2),
+            'md5'			=>array('md5','Calculate the md5 hash of a string',1),
+            'metaphone'		=>array('metaphone','Calculate the metaphone key of a string',1,2),
+            'money_format'	=>array('money_format','Formats a number as a currency string',1,2),
+            'nl2br'			=>array('nl2br','Inserts HTML line breaks before all newlines in a string',1,2),
+            'number_format'	=>array('number_format','Format a number with grouped thousands',1,2,4),
+            'ord'			=>array('ord','Return ASCII value of character',1),
+            'quoted_printable_decode'			=>array('quoted_printable_decode','Convert a quoted-printable string to an 8 bit string',1),
+            'quoted_printable_encode'			=>array('quoted_printable_encode','Convert a 8 bit string to a quoted-printable string',1),
+            'quotemeta'		=>array('quotemeta','Quote meta characters',1),
+            'rtrim'			=>array('rtrim','Strip whitespace (or other characters) from the end of a string',1,2),
+            'sha1'			=>array('sha1','Calculate the sha1 hash of a string',1),
+            'similar_text'	=>array('similar_text','Calculate the similarity between two strings',1,2),
+            'soundex'		=>array('soundex','Calculate the soundex key of a string',1),
+            'sprintf'		=>array('sprintf','Return a formatted string',-1),
+            'str_ireplace'  =>array('str_ireplace','Case-insensitive version of str_replace',3),
+            'str_pad'		=>array('str_pad','Pad a string to a certain length with another string',2,3,4),
+            'str_repeat'	=>array('str_repeat','Repeat a string',2),
+            'str_replace'	=>array('str_replace','Replace all occurrences of the search string with the replacement string',3),
+            'str_rot13'		=>array('str_rot13','Perform the rot13 transform on a string',1),
+            'str_shuffle'	=>array('str_shuffle','Randomly shuffles a string',1),
+            'str_word_count'	=>array('str_word_count','Return information about words used in a string',1),
+            'strcasecmp'	=>array('strcasecmp','Binary safe case-insensitive string comparison',2),
+            'strcmp'		=>array('strcmp','Binary safe string comparison',2),
+            'strcoll'		=>array('strcoll','Locale based string comparison',2),
+            'strcspn'		=>array('strcspn','Find length of initial segment not matching mask',2,3,4),
+            'strip_tags'	=>array('strip_tags','Strip HTML and PHP tags from a string',1,2),
+            'stripcslashes'	=>array('stripcslashes','Un-quote string quoted with addcslashes',1),
+            'stripos'		=>array('stripos','Find position of first occurrence of a case-insensitive string',2,3),
+            'stripslashes'	=>array('stripslashes','Un-quotes a quoted string',1),
+            'stristr'		=>array('stristr','Case-insensitive strstr',2,3),
+            'strlen'		=>array('strlen','Get string length',1),
+            'strnatcasecmp'	=>array('strnatcasecmp','Case insensitive string comparisons using a "natural order" algorithm',2),
+            'strnatcmp'		=>array('strnatcmp','String comparisons using a "natural order" algorithm',2),
+            'strncasecmp'	=>array('strncasecmp','Binary safe case-insensitive string comparison of the first n characters',3),
+            'strncmp'		=>array('strncmp','Binary safe string comparison of the first n characters',3),
+            'strpbrk'		=>array('strpbrk','Search a string for any of a set of characters',2),
+            'strpos'		=>array('strpos','Find position of first occurrence of a string',2,3),
+            'strrchr'		=>array('strrchr','Find the last occurrence of a character in a string',2),
+            'strrev'		=>array('strrev','Reverse a string',1),
+            'strripos'		=>array('strripos','Find position of last occurrence of a case-insensitive string in a string',2,3),
+            'strrpos'		=>array('strrpos','Find the position of the last occurrence of a substring in a string',2,3),
+            'strspn'        =>array('Finds the length of the initial segment of a string consisting entirely of characters contained within a given mask.',2,3,4),
+            'strstr'		=>array('strstr','Find first occurrence of a string',2,3),
+            'strtolower'	=>array('strtolower','Make a string lowercase',1),
+            'strtoupper'	=>array('strtoupper','Make a string uppercase',1),
+            'strtr'			=>array('strtr','Translate characters or replace substrings',3),
+            'substr_compare'=>array('substr_compare','Binary safe comparison of two strings from an offset, up to length characters',3,4,5),
+            'substr_count'	=>array('substr_count','Count the number of substring occurrences',2,3,4),
+            'substr_replace'=>array('substr_replace','Replace text within a portion of a string',3,4),
+            'substr'		=>array('substr','Return part of a string',2,3),
+            'ucfirst'		=>array('ucfirst','Make a string\'s first character uppercase',1),
+            'ucwords'		=>array('ucwords','Uppercase the first character of each word in a string',1),
+
+            'stddev'        =>array('stats_standard_deviation','Returns the standard deviation',-1),
+
+            // Locally declared functions
+            'if'            => array('exprmgr_if','Excel-style if(test,result_if_true,result_if_false)',3),
+            'list'          => array('exprmgr_list','Return comma-separated list of values',-1),
         );
 
         $this->amVars = array();
@@ -1169,6 +1248,12 @@ class ExpressionManager {
                 {
                     if ($this->asTokenType[$i] !== 'SPACE') {
                         $tokens0[$j][2] = $this->asTokenType[$i];
+                        if ($this->asTokenType[$i] == 'STRING')
+                        {
+                            // remove outside quotes
+                            $unquotedToken = stripslashes(substr($token,1,-1));
+                            $tokens0[$j][0] = $unquotedToken;
+                        }
                         $tokens[] = $tokens0[$j];   // get first matching non-SPACE token type and push onto $tokens array
                     }
                     break;  // only get first matching token type
@@ -1232,6 +1317,8 @@ EOD;
             'eight'     =>8,
             'nine'      =>9,
             'ten'       =>10,
+            'eleven'  => 11,
+            'twelve'   => 12,       
             'half'      =>.5,
             'hi'        =>'there',
             'hello' 	=>"Tom",
@@ -1318,6 +1405,13 @@ NULL:c=a
 NULL:c*=five
 NULL:c/=three
 NULL:c-=six
+11:eleven
+144:twelve * twelve
+4:if(5 > 7,2,4)
+there:if((one > two),'hi','there')
+64:if((one < two),pow(2,6),pow(6,2))
+1,2,3,4,5:list(one,two,three,min(four,five,six),max(three,four,five))
+11,12:list(eleven,twelve)
 EOD;
         
         $em = new ExpressionManager();
@@ -1384,5 +1478,28 @@ EOD;
         print '</table>';
     }
 }
+
+/*
+ * Extra Functions can  go here.  TODO:  Find good way to inlcude these extra functions externally.
+ * Tried via ExpressionManagerFunctions, but they weren't properly included in dFunctionEval.php
+ */
+
+function exprmgr_if($test,$ok,$error)
+{
+    if ($test)
+    {
+        return $ok;
+    }
+    else
+    {
+        return $error;
+    }
+}
+
+function exprmgr_list($args)
+{
+    return implode(",",$args);
+}
+
 
 ?>
