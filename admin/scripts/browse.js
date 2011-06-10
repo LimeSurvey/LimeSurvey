@@ -109,12 +109,24 @@ $(document).ready(function(){
 		hide: { 
 			fixed: true, 
 			delay: 500 
+		},
+		position: {
+			corner: {
+				target: 'leftMiddle',
+				tooltip: 'topRight'
+			}
 		}
     });
     $('.browsetable th strong.content').qtip({
 		hide: { 
 			fixed: true, 
 			delay: 500 
+		},
+		position: {
+			corner: {
+				target: 'leftMiddle',
+				tooltip: 'topRight'
+			}
 		}
     });
 });
