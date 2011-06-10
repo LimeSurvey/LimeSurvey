@@ -105,6 +105,16 @@ $(document).ready(function(){
     	}
    });
    
-   $('.browsetable td span.content').qtip();
-   $('.browsetable th strong.content').qtip();
+   $('.browsetable td span.content').qtip({
+		hide: { 
+			fixed: true, 
+			delay: 500 
+		}
+    });
+    $('.browsetable th strong.content').qtip({
+		hide: { 
+			fixed: true, 
+			delay: 500 
+		}
+    });
 });
