@@ -36,10 +36,11 @@ class ExpressionManager {
         $regex_lparen = '\(';
         $regex_rparen = '\)';
         $regex_comma = ',';
-        $regex_unary = '\+\+|--|!';
+        $regex_not = '!';
+        $regex_inc_dec = '\+\+|--';
         $regex_binary = '[+*/-]';
         $regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
-        $regex_assign = '=|\+=|-=|\*=';
+        $regex_assign = '=|\+=|-=|\*=|/=';
         $regex_word = '[A-Z][A-Z0-9_]*';
         $regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $regex_andor = '\band\b|\bor\b|&&|\|\|';
@@ -56,8 +57,9 @@ class ExpressionManager {
             $regex_compare,
             $regex_word,
             $regex_number,
-//            $regex_unary,
-//            $regex_assign,
+            $regex_not,
+            $regex_inc_dec,
+            $regex_assign,
             $regex_binary,
             );
 
@@ -72,8 +74,9 @@ class ExpressionManager {
             'COMPARE',
             'WORD',
             'NUMBER',
-//            'UNARYOP',
-//            'ASSIGN',
+            'NOT',
+            'OTHER',
+            'ASSIGN',
             'BINARYOP',
            );
 
@@ -549,7 +552,7 @@ class ExpressionManager {
         {
             $token1 = $this->tokens[++$this->pos];
             $token2 = $this->tokens[++$this->pos];
-            if ($this->isValidVariable($token1[0]) and $token2[0] == '=')
+            if ($this->isValidVariable($token1[0]) and $token2[2] == 'ASSIGN')
             {
                 $evalStatus = $this->EvaluateLogicalOrExpression();
                 if ($evalStatus)
@@ -557,8 +560,10 @@ class ExpressionManager {
                     $result = $this->StackPop();
                     if (!is_null($result))
                     {
-                        $this->setVariableValue($token1[0], $result[1]);
-                        $this->StackPush($result);  // push result  back on stack
+                        $newResult = $token2;
+                        $newResult[2] = 'NUMBER';
+                        $newResult[0] = $this->setVariableValue($token2[0], $token1[0], $result[0]);
+                        $this->StackPush($newResult);
                     }
                     else
                     {
@@ -593,7 +598,7 @@ class ExpressionManager {
             return false;
         }
 
-        while (++$this->pos < $this->count) {   // TODO - would this be clearer as ($this->pos + 1)?
+        while (++$this->pos < $this->count) {  
             $token = $this->tokens[$this->pos];
             if ($token[2] == 'RP')
             {
@@ -623,7 +628,7 @@ class ExpressionManager {
         }
         while (++$this->pos < $this->count)
         {
-            $token = $this->tokens[$this->pos]; // TODO - would this be clearer as ($this->pos + 1)?
+            $token = $this->tokens[$this->pos];
             $this->AddError("Extra token found after Expressions",$token);
             $evalStatus = false;
         }
@@ -694,7 +699,6 @@ class ExpressionManager {
                 }
                 else
                 {
-                    // TODO - what type of syntax error goes here?  Or assume proper message will be thrown?
                     return false;
                 }
             }
@@ -836,15 +840,7 @@ class ExpressionManager {
             {
                 return false;
             }
-            /*
-            if ($this->pos+1 >= $this->count)
-            {
-                $token = $this->tokens[$this->pos];
-                $this->AddError("Expected ')'",$token);
-                return false;
-            }
-             */
-            $token = $this->tokens[$this->pos];     // TODO - would this be clearer as ++$this->pos
+            $token = $this->tokens[$this->pos];
             if ($token[2] == 'RP')
             {
                 return true;
@@ -1075,13 +1071,32 @@ class ExpressionManager {
 
     /**
      * Set the value of a registered variable
+     * @param $op - the operator (=,*=,/=,+=,-=)
      * @param <type> $name
      * @param <type> $value
      */
-    private function setVariableValue($name,$value)
+    private function setVariableValue($op,$name,$value)
     {
         // TODO - set this externally
-        $this->amVars[$name] = $value;
+        switch($op)
+        {
+            case '=':
+                $this->amVars[$name] = $value;
+                break;
+            case '*=':
+                $this->amVars[$name] *= $value;
+                break;
+            case '/=':
+                $this->amVars[$name] /= $value;
+                break;
+            case '+=':
+                $this->amVars[$name] += $value;
+                break;
+            case '-=':
+                $this->amVars[$name] -= $value;
+                break;
+        }
+        return $this->amVars[$name];
     }
 
     /**
@@ -1277,10 +1292,10 @@ class ExpressionManager {
         Numbers:  42 72.35 -15 +37 42A .5 0.7
         And_Or: (this and that or the other);  Sandles, sorting; (a && b || c)
         Words:  hi there, my name is C3PO!
-        UnaryOps: ++a, --b
+        UnaryOps: ++a, --b !b
         BinaryOps:  (a + b * c / d)
         Comparators:  > >= < <= == != gt ge lt le eq ne (target large gents built agile less equal)
-        Assign:  = += -= *=
+        Assign:  = += -= *= /=
         Errors: Apt # 10C; (2 > 0) ? 'hi' : 'there'; array[30]; >>> <<< /* this is not a comment */ // neither is this
 EOD;
 
@@ -1332,6 +1347,12 @@ EOD;
         // expectedResult:expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
+3:a=three
+3:c=a
+12:c*=four
+15:c+=a
+5:c/=a
+-1:c-=six
 2:max(one,two)
 5:max(one,two,three,four,five)
 1024:max(one,(two*three),pow(four,five),six)
@@ -1398,13 +1419,8 @@ there:hi
 NULL:hi(there);
 NULL:(one * two + (three - four)
 NULL:(one * two + (three - four)))
-NULL:a=five
 NULL:++a
 NULL:--b
-NULL:c=a
-NULL:c*=five
-NULL:c/=three
-NULL:c-=six
 11:eleven
 144:twelve * twelve
 4:if(5 > 7,2,4)
