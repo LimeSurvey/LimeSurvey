@@ -3022,7 +3022,7 @@ function do_multiplechoice($ia)
         $maxanswscript = "\t<script type='text/javascript'>\n"
         . "\t<!--\n"
         . "function limitmaxansw_{$ia[0]}(me)\n"
-        . "\t{\n"
+        . "{\n"
         . "\tmax=$maxansw\n"
         . "\tcount=0;\n"
         . "\tif (max == 0) { return count; }\n";
@@ -3174,7 +3174,6 @@ function do_multiplechoice($ia)
         .  $ansrow['question']
         .  "</label>\n";
 
-        // --> END NEW FEATURE - SAVE
 
         if ($maxansw > 0) {$maxanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
         if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
@@ -3250,45 +3249,24 @@ function do_multiplechoice($ia)
         {
             $answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
         }
-        $answer .= " onkeyup='$checkconditionFunction(this.value, this.name, this.type);'";
-        $answer .= " onkeypress='if ($.trim($(\"#answer{$myfname}\").val())!=\"\") {document.getElementById(\"answer{$myfname}cbox\").checked=true;}$numbersonly' ".$callmaxanswscriptother.' />
-		<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
+        $answer .= " onkeyup='$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#answer{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) {\$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\");} $numbersonly ".$callmaxanswscriptcheckbox."' />";
+        $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         if ($maxansw > 0)
         {
-            //
             // For multiplechoice question there is no DB field for the other Checkbox
-            // so in fact I need to assume that other_comment_mandatory is set to true
             // I've added a javascript which will warn a user if no other comment is given while the other checkbox is checked
             // For the maxanswer script, I will alert the participant
             // if the limit is reached when he checks the other cbox
             // even if the -other- input field is still empty
-            // This will be differetn for the minansw script
-            // ==> hence the 1==2
-            if (1==2 || $qidattributes['other_comment_mandatory']==1)
-            {
-                $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
-            }
-            else
-            {
-                $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' || document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
-            }
+            $maxanswscript .= "\tif (document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
         }
         if ($minansw > 0)
         {
             //
             // For multiplechoice question there is no DB field for the other Checkbox
-            // so in fact I need to assume that other_comment_mandatory is set to true
             // We only count the -other- as valid if both the cbox and the other text is filled
-            // ==> hence the 1==1
-            if (1==1 || $qidattributes['other_comment_mandatory']==1)
-            {
-                $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
-            }
-            else
-            {
-                $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' || document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
-            }
+            $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname."cbox').checked ) { count += 1; }\n";
         }
 
 
@@ -3319,21 +3297,22 @@ function do_multiplechoice($ia)
     $answer .= $wrapper['whole-end'];
     if ( $maxansw > 0 )
     {
-        $maxanswscript .= "\tif (count > max)\n"
-        . "{\n"
-        . "alert('".sprintf($clang->gT("Please choose at most %d answer(s) for question \"%s\"","js"), $maxansw, trim(javascript_escape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');\n"
-        . "if (me.type == 'checkbox') {me.checked = false;}\n"
-        . "if (me.type == 'text') {\n"
-        . "\tme.value = '';\n"
-        . "\tif (document.getElementById(me.name + 'cbox') ){\n"
-        . " document.getElementById(me.name + 'cbox').checked = false;\n"
-        . "\t}\n"
-        . "}"
-        . "return max;\n"
-        . "}\n"
-        . "\t}\n"
-        . "\t//-->\n"
-        . "\t</script>\n";
+        $maxanswscript .= "
+        if (count > max)
+        {
+            alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
+            if (me.type == 'checkbox') {me.checked = false;}
+            if (me.type == 'text') {
+                me.value = '';
+                if (document.getElementById('answer'+me.name + 'cbox') ){
+                    document.getElementById('answer'+me.name + 'cbox').checked = false;
+                }
+            }
+            return max;
+        }
+}
+//-->
+</script>\n";
         $answer = $maxanswscript . $answer;
     }
 
@@ -3391,14 +3370,14 @@ function do_multiplechoice($ia)
     if (count($excludeallothers)>0)
     {
         $excludeallotherscript .= "
-		if (document.getElementById(value).checked)
-		{
-		$excludeallotherscripton
-		}
-		else
-		{
-		$excludeallotherscriptoff
-		}
+		    if (document.getElementById(value).checked)
+		    {
+		        $excludeallotherscripton
+		    }
+		    else
+		    {
+		        $excludeallotherscriptoff
+		    }
 		}
 		//-->
 		</script>";
@@ -3568,7 +3547,7 @@ function do_multiplechoice_withcomments($ia)
         ."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
         if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
-        $answer_main .= "'  onclick='cancelBubbleThis(event);' onkeypress='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
+        $answer_main .= "'  onclick='cancelBubbleThis(event);' onkeypress='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { if document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
 
         . "\t</li>\n";
         // --> END NEW FEATURE - SAVE
@@ -3637,7 +3616,7 @@ function do_multiplechoice_withcomments($ia)
     {
         $maxanswscript .= "\tif (count > max)\n"
         . "{\n"
-        . "alert('".sprintf($clang->gT("Please choose at most %d answer(s) for question \"%s\"","js"), $maxansw, trim(javascript_escape($ia[3],true,true)))."');\n"
+        . "alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape($ia[3],true,true)))."');\n"
         . "var commentname='answer'+me.name+'comment';\n"
         . "if (me.type == 'checkbox') {\n"
         . "\tme.checked = false;\n"

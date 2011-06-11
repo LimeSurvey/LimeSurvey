@@ -3022,10 +3022,10 @@ function templatereplace($line, $replacements=array())
         $line=str_replace("{TOKEN}",urlencode($token), $line);          // to activate the TOKEN in the END URL
         $line=str_replace("{SID}", $surveyid, $line);       // to activate the SID in the RND URL
     }
-    
+
     if (strpos($line, "{LANG}") !== false)
     {
-        $line=str_replace("{LANG}", $clang->getlangcode(), $line); 
+        $line=str_replace("{LANG}", $clang->getlangcode(), $line);
     }
     if (strpos($line, "{PRIVACY}") !== false)
     {
@@ -4169,7 +4169,7 @@ function questionAttributes($returnByName=false)
 	"caption"=>$clang->gT("Text inputs"));
 
     $qattributes["other_comment_mandatory"]=array(
-    "types"=>"MPLW!Z",
+    "types"=>"PLW!Z",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -4654,8 +4654,8 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
     {
         $str=strip_tags($str);
     }
-    return str_replace(array('\'','"', "\n"),
-    array("\\'",'\u0022', "\\n"),
+    return str_replace(array('\'','"', "\n", "\r"),
+    array("\\'",'\u0022', "\\n",'\r'),
     $str);
 }
 
@@ -8228,7 +8228,7 @@ function aArrayInvert($aArr)
  * @param array $aFieldnamesInfoInv - Inverted fieldnamesInfo
  */
 function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
-{ 
+{
 	if (@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'X')
     {
         // boilerplate have no answers
@@ -8289,7 +8289,7 @@ function sStripDBPrefix($sTableName)
     global $dbprefix;
     return substr($sTableName,strlen($dbprefix));
 }
-                       
+
 /*
  * Emit the standard (last) onsubmit handler for the survey.
  *
