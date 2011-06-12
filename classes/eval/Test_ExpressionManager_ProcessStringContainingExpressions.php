@@ -11,8 +11,7 @@ and open the template in the editor.
     <body>
         <?php
             include 'ExpressionManager.php';
-            ExpressionManager::UnitTestTokenizer();
-            ExpressionManager::UnitTestStringSplitter();
+            ExpressionManager::UnitTestProcessStringContainingExpressions();
         ?>
     </body>
 </html>

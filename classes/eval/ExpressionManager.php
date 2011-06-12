@@ -1,7 +1,16 @@
 <?php
 /**
  * Description of ExpressionManager
- * Class which does safe evaluation of PHP expressions.  Only registered functions and variables are allowed
+ * (1) Does safe evaluation of PHP expressions.  Only registered Functions, Variables, and ReservedWords are allowed.
+ *   (a) Functions include any math, string processing, conditional, formatting, etc. functions
+ *   (b) Variables are typically the question name (question.title)
+ *   (c) ReservedWords are any LimeReplacementField or Token, including all INSERTANS:SGQA codes
+ * (2) This class can replace LimeSurvey's current process of resolving strings that contain LimeReplacementFields
+ *   (a) String is split by expressions (by curly braces, but safely supporting strings and escaped curly braces)
+ *   (b) Expressions (things surrounded by curly braces) are evaluated - thereby doing LimeReplacementField substitution and/or more complex calculations
+ *   (c) Non-expressions are left intact
+ *   (d) The array of stringParts are re-joined to create the desired final string.
+ *
  * At present, all variables are read-only, but this could be extended to support creation  of temporary variables and/or read-write access to registered variables
  *
  * @author Thomas M. White
@@ -9,11 +18,13 @@
 
 class ExpressionManager {
     // These three variables are effectively static once constructed
+    private $sExpressionRegex;
     private $asTokenType;
     private $sTokenizerRegex;
     private $asCategorizeTokensRegex;
     private $amValidFunctions; // names and # params of valid functions
-    private $amVars;    // names and optional values of valid variables
+    private $amVars;    // names and values of valid variables
+    private $amReservedWords;   // names and values of valid reserved words
 
     // Thes variables are used while  processing the equation
     private $expr;  // the source expression
@@ -26,12 +37,17 @@ class ExpressionManager {
     private $result;    // final result of evaluating the expression;
     private $evalStatus;    // true if $result is a valid result, and  there are no serious errors
     private $varsUsed;  // list of variables referenced in the equation
+    private $reservedWordsUsed;  // list of reserved words used in the equation
+
+    // These  variables are only used by sProcessStringContainingExpressions
+    private $allVarsUsed;   // full list of variables used within the string, even if contains multiple expressions
+    private $allReservedWordsUsed;  // full list of reserved words used in the string, even if  contains multiple expresions
 
     function __construct()
     {
         // List of token-matching regular expressions
-        $regex_dq_string = '".*?(?<!\\\\)"';
-        $regex_sq_string = '\'.*?(?<!\\\\)\'';
+        $regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
+        $regex_sq_string = '(?<!\\\\)\'.*?(?<!\\\\)\'';
         $regex_whitespace = '\s+';
         $regex_lparen = '\(';
         $regex_rparen = '\)';
@@ -41,9 +57,12 @@ class ExpressionManager {
         $regex_binary = '[+*/-]';
         $regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
         $regex_assign = '=|\+=|-=|\*=|/=';
-        $regex_word = '[A-Z][A-Z0-9_]*';
+        $regex_sgqa = '[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*';
+        $regex_word = '[A-Z][A-Z0-9_]*:?[A-Z0-9_]*';
         $regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $regex_andor = '\band\b|\bor\b|&&|\|\|';
+
+        $this->sExpressionRegex = '#((?<!\\\\){(' . $regex_dq_string . '|' . $regex_sq_string . '|.*?)*(?<!\\\\)})#';
 
         // asTokenRegex and t_tokey_type must be kept in sync  (same number and order)
         $asTokenRegex = array(
@@ -55,6 +74,7 @@ class ExpressionManager {
             $regex_comma,
             $regex_andor,
             $regex_compare,
+            $regex_sgqa,
             $regex_word,
             $regex_number,
             $regex_not,
@@ -72,6 +92,7 @@ class ExpressionManager {
             'COMMA',
             'AND_OR',
             'COMPARE',
+            'SGQA',
             'WORD',
             'NUMBER',
             'NOT',
@@ -233,6 +254,7 @@ class ExpressionManager {
         );
 
         $this->amVars = array();
+        $this->amReservedWords = array();
 
     }
 
@@ -377,6 +399,7 @@ class ExpressionManager {
         $this->evalStatus = false;
         $this->result = NULL;
         $this->varsUsed = array();
+        $this->reservedWordsUsed = array();
 
         if ($this->HasSyntaxErrors()) {
             return false;
@@ -471,6 +494,7 @@ class ExpressionManager {
                 return true;
                 break;
             case 'WORD':
+            case 'SGQA':
                 if (($this->pos + 1) < $this->count and $this->tokens[($this->pos + 1)][2] == 'LP')
                 {
                     return $this->EvaluateFunction();
@@ -484,9 +508,16 @@ class ExpressionManager {
                         $this->StackPush($result);
                         return true;
                     }
+                    else if ($this->isValidReservedWord($token[0]))
+                    {
+                        $this->reservedWordsUsed[] = $token[0];
+                        $result = array($this->amReservedWords[$token[0]],$token[1],'NUMBER');
+                        $this->StackPush($result);
+                        return true;
+                    }
                     else
                     {
-                        $this->AddError("Undefined Variable", $token);
+                        $this->AddError("Undefined variable or reserved word", $token);
                         return false;
                     }
                 }
@@ -933,6 +964,25 @@ class ExpressionManager {
     }
 
     /**
+     * Returns array of all reserved words used when parsing a string via sProcessStringContainingExpressions
+     * @return <type>
+     */
+    
+    public function GetAllReservedWordsUsed()
+    {
+        return array_unique($this->allReservedWordsUsed);
+    }
+
+    /**
+     * Returns array of all variables used when parsing a string via sProcessStringContainingExpressions
+     * @return <type>
+     */
+    public function GetAllVarsUsed()
+    {
+        return array_unique($this->allVarsUsed);
+    }
+
+    /**
      * Return the result of evaluating the equation - NULL if  error
      * @return mixed
      */
@@ -970,6 +1020,16 @@ class ExpressionManager {
             $errs[] = $toshow;
         }
         return $errs;
+    }
+    
+    /**
+     * Return array of list of reserved words used in the equation
+     * @return <type> 
+     */
+
+    public function GetReservedWordsUsed()
+    {
+        return array_unique($this->reservedWordsUsed);
     }
 
     /**
@@ -1019,6 +1079,7 @@ class ExpressionManager {
                     }
                     break;
                 case 'WORD':
+                case 'SGQA':
                     if ($i+1 < $this->count and $this->tokens[$i+1][2] == 'LP')
                     {
                         if (!$this->isValidFunction($token[0]))
@@ -1028,9 +1089,9 @@ class ExpressionManager {
                     }
                     else
                     {
-                        if (!$this->isValidVariable($token[0]))
+                        if (!($this->isValidVariable($token[0]) or $this->isValidReservedWord($token[0])))
                         {
-                            $this->AddError("Undefined variable", $token);
+                            $this->AddError("Undefined variable or reserved word", $token);
                         }
                     }
                     break;
@@ -1060,6 +1121,16 @@ class ExpressionManager {
     }
 
     /**
+     * Return true if the reserved word name is registered
+     * @param <type> $name
+     * @return boolean
+     */
+    private function isValidReservedWord($name)
+    {
+        return array_key_exists($name,$this->amReservedWords);
+    }
+
+    /**
      * Return true if the variable name is registered
      * @param <type> $name
      * @return boolean
@@ -1068,35 +1139,42 @@ class ExpressionManager {
     {
         return array_key_exists($name,$this->amVars);
     }
-
+    
     /**
-     * Set the value of a registered variable
-     * @param $op - the operator (=,*=,/=,+=,-=)
-     * @param <type> $name
-     * @param <type> $value
+     * Process a full string, containing multiple expressions delimited by {}, return a consolidated string
+     * @param <type> $src 
      */
-    private function setVariableValue($op,$name,$value)
+
+    public function sProcessStringContainingExpressions($src)
     {
-        // TODO - set this externally
-        switch($op)
+        // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
+        $stringParts = $this->asSplitStringOnExpressions($src);
+
+        $resolvedParts = array();
+        $this->allVarsUsed = array();
+        $this->allReservedWordsUsed = array();
+
+        foreach ($stringParts as $stringPart)
         {
-            case '=':
-                $this->amVars[$name] = $value;
-                break;
-            case '*=':
-                $this->amVars[$name] *= $value;
-                break;
-            case '/=':
-                $this->amVars[$name] /= $value;
-                break;
-            case '+=':
-                $this->amVars[$name] += $value;
-                break;
-            case '-=':
-                $this->amVars[$name] -= $value;
-                break;
+            if ($stringPart[2] == 'STRING') {
+                $resolvedParts[] =  $stringPart[0];
+            }
+            else {
+                if ($this->Evaluate(substr($stringPart[0],1,-1)))
+                {
+                    $resolvedParts[] = $this->GetResult();
+                    $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
+                    $this->allReservedWordsUsed = array_merge($this->allReservedWordsUsed, $this->GetReservedWordsUsed());
+                }
+                else 
+                {
+                    // show original and errors in-line?
+                    $resolvedParts[] = '[' . $stringPart[0] . ':' . implode(';',$this->GetReadableErrors()) . ']';
+                }
+            }
         }
-        return $this->amVars[$name];
+        $result = implode('',$resolvedParts);
+        return $result;
     }
 
     /**
@@ -1181,6 +1259,20 @@ class ExpressionManager {
     }
 
     /**
+     * Add list of allowable ReservedWord names within the equation
+     * $varnames is an array of key to value mappings like this:
+     * 'myvar' => value
+     * where value is optional (e.g. can be blank), and can be any scalar type (e.g. string, number, but not array)
+     * the system will use the values as  fast lookup when doing calculations, but if it needs to set values, it will call
+     * the interface function to set the values by name
+     *
+     * @param array $varnames
+     */
+    public function RegisterReservedWords(array $varnames) {
+        $this->amReservedWords = array_merge($this->amReservedWords, $varnames);
+    }
+
+    /**
      * Add list of allowable variable names within the equation
      * $varnames is an array of key to value mappings like this:
      * 'myvar' => value
@@ -1192,6 +1284,59 @@ class ExpressionManager {
      */
     public function RegisterVarnames(array $varnames) {
         $this->amVars = array_merge($this->amVars, $varnames);
+    }
+
+    /**
+     * Set the value of a registered variable
+     * @param $op - the operator (=,*=,/=,+=,-=)
+     * @param <type> $name
+     * @param <type> $value
+     */
+    private function setVariableValue($op,$name,$value)
+    {
+        // TODO - set this externally
+        switch($op)
+        {
+            case '=':
+                $this->amVars[$name] = $value;
+                break;
+            case '*=':
+                $this->amVars[$name] *= $value;
+                break;
+            case '/=':
+                $this->amVars[$name] /= $value;
+                break;
+            case '+=':
+                $this->amVars[$name] += $value;
+                break;
+            case '-=':
+                $this->amVars[$name] -= $value;
+                break;
+        }
+        return $this->amVars[$name];
+    }
+
+    public function asSplitStringOnExpressions($src)
+    {
+        // tokenize string by the {} pattern, propertly dealing with strings in quotations, and escaped curly brace values
+        $tokens0 = preg_split($this->sExpressionRegex,$src,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+
+        $tokens = array();
+        // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
+        for ($j=0;$j<count($tokens0);++$j)
+        {
+            $token = $tokens0[$j];
+            if (preg_match($this->sExpressionRegex,$token[0]))
+            {
+                $token[2] = 'EXPRESSION';
+            }
+            else
+            {
+                $token[2] = 'STRING';
+            }
+            $tokens[] = $token;
+        }
+        return $tokens;
     }
 
     /**
@@ -1279,6 +1424,34 @@ class ExpressionManager {
     }
 
     /**
+     * Unit test the asSplitStringOnExpressions() function to ensure that accurately parses out all expressions
+     * surrounded by curly braces, allowing for strings and escaped curly braces.
+     */
+
+    static function UnitTestStringSplitter()
+    {
+       $tests = <<<EOD
+"this is a string that contains {something in curly braces)"
+This example has escaped curly braces like \{this is not an equation\}
+Should the parser check for unmatched { opening curly braces?
+What about for unmatched } closing curly braces?
+{ANS:name}, you said that you are {ANS:age} years old, and that you have {ANS:numKids} {EVAL:if((numKids==1),'child','children')} and {ANS:numPets} {EVAL:if((numPets==1),'pet','pets')} running around the house. So, you have {EVAL:numKids + numPets} wild {EVAL:if((numKids + numPets ==1),'beast','beasts')} to chase around every day.
+Since you have more {EVAL:if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'children','pets')} than you do {EVAL:if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')}, do you feel that the {EVAL:if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')} are at a disadvantage?
+EOD;
+
+        $em = new ExpressionManager();
+
+        foreach(explode("\n",$tests) as $test)
+        {
+            $tokens = $em->asSplitStringOnExpressions($test);
+            print '<b>' . $test . '</b><hr/>';
+            print '<code>';
+            print implode("<br/>\n",explode("\n",print_r($tokens,TRUE)));
+            print '</code><hr/>';
+        }
+    }
+
+    /**
      * Unit test the Tokenizer - Tokenize and generate a HTML-compatible print-out of a comprehensive set of test cases
      */
 
@@ -1296,6 +1469,7 @@ class ExpressionManager {
         BinaryOps:  (a + b * c / d)
         Comparators:  > >= < <= == != gt ge lt le eq ne (target large gents built agile less equal)
         Assign:  = += -= *= /=
+        SGQA:  1X6X12 1X6X12ber1 1X6X12ber1_lab1 3583X84X249
         Errors: Apt # 10C; (2 > 0) ? 'hi' : 'there'; array[30]; >>> <<< /* this is not a comment */ // neither is this
 EOD;
 
@@ -1318,7 +1492,7 @@ EOD;
      * @param <type> $extraTests
      */
     
-    static function UnitTestEvaluator(array $extraFunctions=array(), array $extraVars=array(), $extraTests='1:1')
+    static function UnitTestEvaluator(array $extraFunctions=array(), array $extraVars=array(), $extraTests='1~1')
     {
         // Some test cases for Evaluator
         $vars = array(
@@ -1341,97 +1515,210 @@ EOD;
             'b'         =>0,
             'c'         =>0,
             'd'         =>0,
+            '12X34X56'  =>5,
+            '12X3X5lab1_ber'    =>10,
         );
 
-        // Syntax for $tests is:
-        // expectedResult:expression
+        $reservedWord = array(
+            'ADMINEMAIL'					=>'{ADMINEMAIL}',
+            'ADMINNAME'						=>'{ADMINNAME}',
+            'AID'							=>'{AID}',
+            'ANSWERSCLEARED'				=>'{ANSWERSCLEARED}',
+            'ANSWER'						=>'{ANSWER}',
+            'ASSESSMENTS'					=>'{ASSESSMENTS}',
+            'ASSESSMENT_CURRENT_TOTAL'		=>'{ASSESSMENT_CURRENT_TOTAL}',
+            'ASSESSMENT_HEADING'			=>'{ASSESSMENT_HEADING}',
+            'CHECKJAVASCRIPT'				=>'{CHECKJAVASCRIPT}',
+            'CLEARALL'						=>'{CLEARALL}',
+            'CLOSEWINDOW'					=>'{CLOSEWINDOW}',
+            'COMPLETED'						=>'{COMPLETED}',
+            'DATESTAMP'						=>'{DATESTAMP}',
+            'EMAILCOUNT'					=>'{EMAILCOUNT}',
+            'EMAIL'							=>'{EMAIL}',
+            'EXPIRY'						=>'{EXPIRY}',
+            'FIRSTNAME'						=>'{FIRSTNAME}',
+            'GID'							=>'{GID}',
+            'GROUPDESCRIPTION'				=>'{GROUPDESCRIPTION}',
+            'GROUPNAME'						=>'{GROUPNAME}',
+            'INSERTANS:123X45X67'			=>'{INSERTANS:123X45X67}',
+            'INSERTANS:123X45X67ber'		=>'{INSERTANS:123X45X67ber}',
+            'INSERTANS:123X45X67ber_01a'	=>'{INSERTANS:123X45X67ber_01a}',
+            'LANGUAGECHANGER'				=>'{LANGUAGECHANGER}',
+            'LANGUAGE'						=>'{LANGUAGE}',
+            'LANG'							=>'{LANG}',
+            'LASTNAME'						=>'{LASTNAME}',
+            'LOADERROR'						=>'{LOADERROR}',
+            'LOADFORM'						=>'{LOADFORM}',
+            'LOADHEADING'					=>'{LOADHEADING}',
+            'LOADMESSAGE'					=>'{LOADMESSAGE}',
+            'NAME'							=>'{NAME}',
+            'NAVIGATOR'						=>'{NAVIGATOR}',
+            'NOSURVEYID'					=>'{NOSURVEYID}',
+            'NOTEMPTY'						=>'{NOTEMPTY}',
+            'NULL'							=>'{NULL}',
+            'NUMBEROFQUESTIONS'				=>'{NUMBEROFQUESTIONS}',
+            'OPTOUTURL'						=>'{OPTOUTURL}',
+            'PASSTHRULABEL'					=>'{PASSTHRULABEL}',
+            'PASSTHRUVALUE'					=>'{PASSTHRUVALUE}',
+            'PERCENTCOMPLETE'				=>'{PERCENTCOMPLETE}',
+            'PERC'							=>'{PERC}',
+            'PRIVACYMESSAGE'				=>'{PRIVACYMESSAGE}',
+            'PRIVACY'						=>'{PRIVACY}',
+            'QID'							=>'{QID}',
+            'QUESTIONHELPPLAINTEXT'			=>'{QUESTIONHELPPLAINTEXT}',
+            'QUESTIONHELP'					=>'{QUESTIONHELP}',
+            'QUESTION_CLASS'				=>'{QUESTION_CLASS}',
+            'QUESTION_CODE'					=>'{QUESTION_CODE}',
+            'QUESTION_ESSENTIALS'			=>'{QUESTION_ESSENTIALS}',
+            'QUESTION_FILE_VALID_MESSAGE'	=>'{QUESTION_FILE_VALID_MESSAGE}',
+            'QUESTION_HELP'					=>'{QUESTION_HELP}',
+            'QUESTION_INPUT_ERROR_CLASS'	=>'{QUESTION_INPUT_ERROR_CLASS}',
+            'QUESTION_MANDATORY'			=>'{QUESTION_MANDATORY}',
+            'QUESTION_MAN_CLASS'			=>'{QUESTION_MAN_CLASS}',
+            'QUESTION_MAN_MESSAGE'			=>'{QUESTION_MAN_MESSAGE}',
+            'QUESTION_NUMBER'				=>'{QUESTION_NUMBER}',
+            'QUESTION_TEXT'					=>'{QUESTION_TEXT}',
+            'QUESTION_VALID_MESSAGE'		=>'{QUESTION_VALID_MESSAGE}',
+            'QUESTION'						=>'{QUESTION}',
+            'REGISTERERROR'					=>'{REGISTERERROR}',
+            'REGISTERFORM'					=>'{REGISTERFORM}',
+            'REGISTERMESSAGE1'				=>'{REGISTERMESSAGE1}',
+            'REGISTERMESSAGE2'				=>'{REGISTERMESSAGE2}',
+            'RESTART'						=>'{RESTART}',
+            'RETURNTOSURVEY'				=>'{RETURNTOSURVEY}',
+            'SAVEALERT'						=>'{SAVEALERT}',
+            'SAVEDID'						=>'{SAVEDID}',
+            'SAVEERROR'						=>'{SAVEERROR}',
+            'SAVEFORM'						=>'{SAVEFORM}',
+            'SAVEHEADING'					=>'{SAVEHEADING}',
+            'SAVEMESSAGE'					=>'{SAVEMESSAGE}',
+            'SAVE'							=>'{SAVE}',
+            'SGQ'							=>'{SGQ}',
+            'SID'							=>'{SID}',
+            'SITENAME'						=>'{SITENAME}',
+            'SUBMITBUTTON'					=>'{SUBMITBUTTON}',
+            'SUBMITCOMPLETE'				=>'{SUBMITCOMPLETE}',
+            'SUBMITREVIEW'					=>'{SUBMITREVIEW}',
+            'SURVEYCONTACT'					=>'{SURVEYCONTACT}',
+            'SURVEYDESCRIPTION'				=>'{SURVEYDESCRIPTION}',
+            'SURVEYFORMAT'					=>'{SURVEYFORMAT}',
+            'SURVEYLANGAGE'					=>'{SURVEYLANGAGE}',
+            'SURVEYLISTHEADING'				=>'{SURVEYLISTHEADING}',
+            'SURVEYLIST'					=>'{SURVEYLIST}',
+            'SURVEYNAME'					=>'{SURVEYNAME}',
+            'SURVEYURL'						=>'{SURVEYURL}',
+            'TEMPLATECSS'					=>'{TEMPLATECSS}',
+            'TEMPLATEURL'					=>'{TEMPLATEURL}',
+            'TEXT'							=>'{TEXT}',
+            'THEREAREXQUESTIONS'			=>'{THEREAREXQUESTIONS}',
+            'TIME'							=>'{TIME}',
+            'TOKEN:EMAIL'					=>'{TOKEN:EMAIL}',
+            'TOKEN:FIRSTNAME'				=>'{TOKEN:FIRSTNAME}',
+            'TOKEN:LASTNAME'				=>'{TOKEN:LASTNAME}',
+            'TOKEN:XXX'						=>'{TOKEN:XXX}',
+            'TOKENCOUNT'					=>'{TOKENCOUNT}',
+            'TOKEN_COUNTER'					=>'{TOKEN_COUNTER}',
+            'TOKEN'							=>'{TOKEN}',
+            'URL'							=>'{URL}',
+            'WELCOME'						=>'{WELCOME}',
+        );
+
+        // Syntax for $tests is~
+        // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
-3:a=three
-3:c=a
-12:c*=four
-15:c+=a
-5:c/=a
--1:c-=six
-2:max(one,two)
-5:max(one,two,three,four,five)
-1024:max(one,(two*three),pow(four,five),six)
-1:min(one,two,three,four,five)
-27:pow(3,3)
-5:hypot(three,four)
-0:0
-24:one * two * three * four
--4:five - four - three - two
-0:two * three - two - two - two
-4:two * three - two
-3.1415926535898:pi()
-1:pi() == pi() * 2 - pi()
-1:sin(pi()/2)
-1:sin(0.5 * pi())
-1:sin(pi()/2) == sin(.5 * pi())
-105:5 + 1, 7 * 15
-7:7
-15:10 + 5
-24:12 * 2
-10:13 - 3
-3.5:14 / 4
-5:3 + 1 * 2
-1:one
-there:hi
-6.25:one * two - three / four + five
-1:one + hi
-1:two > one
-1:two gt one
-1:three >= two
-1:three ge  two
-0:four < three
-0:four lt three
-0:four <= three
-0:four le three
-0:four == three
-0:four eq three
-1:four != three
-0:four ne four
-0:one * hi
-5:abs(-five)
-0:acos(pi()/2)
-0:asin(pi()/2)
-10:ceil(9.1)
-9:floor(9.9)
-32767:getrandmax()
-0:rand()
-15:sum(one,two,three,four,five)
-5:intval(5.7)
-1:is_float('5.5')
-0:is_float('5')
-1:is_numeric(five)
-0:is_numeric(hi)
-1:is_string(hi)
-2.4:(one  * two) + (three * four) / (five * six)
-1:(one * (two + (three - four) + five) / six)
-0:one && 0
-0:two and 0
-1:five && 6
-1:seven && eight
-1:one or 0
-1:one || 0
-1:(one and 0) || (two and three)
-NULL:hi(there);
-NULL:(one * two + (three - four)
-NULL:(one * two + (three - four)))
-NULL:++a
-NULL:--b
-11:eleven
-144:twelve * twelve
-4:if(5 > 7,2,4)
-there:if((one > two),'hi','there')
-64:if((one < two),pow(2,6),pow(6,2))
-1,2,3,4,5:list(one,two,three,min(four,five,six),max(three,four,five))
-11,12:list(eleven,twelve)
+50~12X34X56 * 12X3X5lab1_ber
+3~a=three
+3~c=a
+12~c*=four
+15~c+=a
+5~c/=a
+-1~c-=six
+2~max(one,two)
+5~max(one,two,three,four,five)
+1024~max(one,(two*three),pow(four,five),six)
+1~min(one,two,three,four,five)
+27~pow(3,3)
+5~hypot(three,four)
+0~0
+24~one * two * three * four
+-4~five - four - three - two
+0~two * three - two - two - two
+4~two * three - two
+3.1415926535898~pi()
+1~pi() == pi() * 2 - pi()
+1~sin(pi()/2)
+1~sin(0.5 * pi())
+1~sin(pi()/2) == sin(.5 * pi())
+105~5 + 1, 7 * 15
+7~7
+15~10 + 5
+24~12 * 2
+10~13 - 3
+3.5~14 / 4
+5~3 + 1 * 2
+1~one
+there~hi
+6.25~one * two - three / four + five
+1~one + hi
+1~two > one
+1~two gt one
+1~three >= two
+1~three ge  two
+0~four < three
+0~four lt three
+0~four <= three
+0~four le three
+0~four == three
+0~four eq three
+1~four != three
+0~four ne four
+0~one * hi
+5~abs(-five)
+0~acos(pi()/2)
+0~asin(pi()/2)
+10~ceil(9.1)
+9~floor(9.9)
+32767~getrandmax()
+0~rand()
+15~sum(one,two,three,four,five)
+5~intval(5.7)
+1~is_float('5.5')
+0~is_float('5')
+1~is_numeric(five)
+0~is_numeric(hi)
+1~is_string(hi)
+2.4~(one  * two) + (three * four) / (five * six)
+1~(one * (two + (three - four) + five) / six)
+0~one && 0
+0~two and 0
+1~five && 6
+1~seven && eight
+1~one or 0
+1~one || 0
+1~(one and 0) || (two and three)
+NULL~hi(there);
+NULL~(one * two + (three - four)
+NULL~(one * two + (three - four)))
+NULL~++a
+NULL~--b
+11~eleven
+144~twelve * twelve
+4~if(5 > 7,2,4)
+there~if((one > two),'hi','there')
+64~if((one < two),pow(2,6),pow(6,2))
+1,2,3,4,5~list(one,two,three,min(four,five,six),max(three,four,five))
+11,12~list(eleven,twelve)
+{INSERTANS:123X45X67}~INSERTANS:123X45X67
+{QID}~QID
+{ASSESSMENT_HEADING}~ASSESSMENT_HEADING
+{TOKEN:FIRSTNAME}~TOKEN:FIRSTNAME
+{THEREAREXQUESTIONS}~THEREAREXQUESTIONS
 EOD;
         
         $em = new ExpressionManager();
         $em->RegisterVarnames($vars);
+        $em->RegisterReservedWords($reservedWord);
 
         if (is_array($extraVars) and count($extraVars) > 0)
         {
@@ -1446,12 +1733,12 @@ EOD;
             $tests .= "\n" . $extraTests;
         }
 
-        print '<table border="1"><tr><th>Expression</th><th>Result</th><th>Expected</th><th>VarsUsed</th><th>Errors</th></tr>';
+        print '<table border="1"><tr><th>Expression</th><th>Result</th><th>Expected</th><th>VarsUsed</th><th>ReservedWordsUsed</th><th>Errors</th></tr>';
         foreach(explode("\n",$tests)as $test)
         {
-            $values = explode(":",$test);
+            $values = explode("~",$test);
             $expectedResult = array_shift($values);
-            $expr = implode(":",$values);
+            $expr = implode("~",$values);
             $resultStatus = 'ok';
             print '<tr><td>' . $expr . "</td>\n";
             $status = $em->Evaluate($expr);
@@ -1473,6 +1760,13 @@ EOD;
             else {
                 print "<td>&nbsp;</td>\n";
             }
+            $reservedWordsUsed = $em->GetReservedWordsUsed();
+            if (is_array($reservedWordsUsed) and count($reservedWordsUsed) > 0) {
+                print '<td>' . implode(', ', $reservedWordsUsed) . "</td>\n";
+            }
+            else {
+                print "<td>&nbsp;</td>\n";
+            }
             $errs = $em->GetReadableErrors();
             $errStatus = 'ok';
             if (is_array($errs) and count($errs) > 0) {
@@ -1490,6 +1784,56 @@ EOD;
                 print "<td class='" . $errStatus . "'>&nbsp;</td>\n";
             }
             print '</tr>';
+        }
+        print '</table>';
+    }
+
+    static function UnitTestProcessStringContainingExpressions()
+    {
+        $vars = array(
+            'name'      => 'Sergei',
+            'age'       => 45,
+            'numKids'   => 2,
+            'numPets'   => 1,
+        );
+        $reservedWords = array(
+            'INSERTANS:61764X1X1'   => 'Peter',
+            'INSERTANS:61764X1X2'   => 27,
+            'INSERTANS:61764X1X3'   => 1,
+            'INSERTANS:61764X1X4'   => 8
+        );
+
+        $tests = <<<EOD
+{name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.
+Since you have more {if((numKids > numPets),'children','pets')} than you do {if((numKids > numPets),'pets','children')}, do you feel that the {if((numKids > numPets),'pets','children')} are at a disadvantage?
+{INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
+Since you have more {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'children','pets')} than you do {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')}, do you feel that the {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')} are at a disadvantage?
+EOD;
+
+        $em = new ExpressionManager();
+        $em->RegisterVarnames($vars);
+        $em->RegisterReservedWords($reservedWords);
+
+        print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarsUsed</th><th>ReservedWordsUsed</th></tr>';
+        foreach(explode("\n",$tests) as $test)
+        {
+            print "<tr><td>" . $test . "</td>\n";
+            print "<td>" . $em->sProcessStringContainingExpressions($test) . "</td>\n";
+            $allVarsUsed = $em->getAllVarsUsed();
+            if (is_array($allVarsUsed) and count($allVarsUsed) > 0) {
+                print "<td>" . implode(', ', $allVarsUsed) . "</td>\n";
+            }
+            else {
+                print "<td>&nbsp;</td>\n";
+            }
+            $allReservedWordsUsed = $em->getAllReservedWordsUsed();
+            if (is_array($allReservedWordsUsed) and count($allReservedWordsUsed) > 0) {
+                print "<td>" . implode(', ', $allReservedWordsUsed) . "</td>\n";
+            }
+            else {
+                print "<td>&nbsp;</td>\n";
+            }
+            print "</tr>\n";
         }
         print '</table>';
     }
