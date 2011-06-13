@@ -1257,7 +1257,7 @@ function checkconfield($value)
     $value_qid=0;
     $value_type='';
     $value_isconditionnal='N';
-    
+
     //$value is the fieldname for the field we are checking for conditions
     foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
     {
@@ -2995,7 +2995,7 @@ function doAssessment($surveyid, $returndataonly=false)
     }
     $query = "SELECT * FROM ".db_table_name('assessments')."
 			  WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
-			  ORDER BY scope";
+			  ORDER BY scope,id";
     if ($result = db_execute_assoc($query))   //Checked
 
     {
