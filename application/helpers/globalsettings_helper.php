@@ -68,7 +68,7 @@ function getGlobalSetting($settingname)
 		$query = $CI->settings_global_model->getSomeRecords(array("stg_value"),array("stg_name" => $settingname));
         //$dbvalue=$connect->GetOne($usquery);
         $dbvalue = $query->row_array();
-		$dbvalue = $dbvalue['stg_value'];
+		//$dbvalue = $dbvalue['stg_value'];
 		//var_dump($dbvalue);
         if (is_null($dbvalue))
         {

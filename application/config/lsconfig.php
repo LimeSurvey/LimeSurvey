@@ -521,6 +521,10 @@ $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upl
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $config['usertemplaterootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates    
 
+
+$config['adminscripts']            = $config['rootdir'].DIRECTORY_SEPARATOR."application".DIRECTORY_SEPARATOR."scripts".DIRECTORY_SEPARATOR;
+$config['generalscripts']          = $config['rootdir'].DIRECTORY_SEPARATOR."scripts".DIRECTORY_SEPARATOR;
+$config['styleurl']                = base_url()."styles".DIRECTORY_SEPARATOR;
 // Computing relative url
 // $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.
 // Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}.

@@ -388,7 +388,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $inactivesurveys .=" value='".$this->config->item('scriptname')."?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
+                    $inactivesurveys .=" value='".$CI->config->item('scriptname')."?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -406,7 +406,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $expiredsurveys .=" value='".$this->config->item('scriptname')."?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
+                    $expiredsurveys .=" value='".$CI->config->item('scriptname')."?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -455,7 +455,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
     {
         if ($returnwithouturl===false)
         {
-            $surveyselecter = "<option value='".$this->config->item('scriptname')."?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;
+            $surveyselecter = "<option value='".$CI->config->item('scriptname')."?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;
         } else
         {
             $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
@@ -484,7 +484,7 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
     
     if (is_null($iUID))
     {
-      if ($CI->session->userdata('loginID')) $iUID = $this->session->userdata('loginID'); 
+      if ($CI->session->userdata('loginID')) $iUID = $CI->session->userdata('loginID'); 
        else return false;
       if ($CI->session->userdata('USER_RIGHT_SUPERADMIN')==1) return true; //Superadmin has access to all
     }
@@ -599,7 +599,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
     foreach ($qrows as $qrow)
     {
         $qrow['title'] = strip_tags($qrow['title']);
-        $questionselecter .= "<option value='".$this->config->item('scriptname')."?sid=$surveyid&amp;gid=$gid&amp;qid={$qrow['qid']}'";
+        $questionselecter .= "<option value='".$CI->config->item('scriptname')."?sid=$surveyid&amp;gid=$gid&amp;qid={$qrow['qid']}'";
         if ($selectedqid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
         $questionselecter .=">{$qrow['title']}:";
         $questionselecter .= " ";
@@ -1421,9 +1421,9 @@ function getuserlist($outputformat='fullinfoarray')
  * @param string $languagecode The language code - if not given the base language of the particular survey is used
  * @return array Returns array with survey info or false, if survey does not exist
  */
-/**function getSurveyInfo($surveyid, $languagecode='')
+function getSurveyInfo($surveyid, $languagecode='')
 {
-    global $dbprefix, $siteadminname, $siteadminemail, $connect, $languagechanger;
+    global $CI, $siteadminname, $siteadminemail, $languagechanger;
     $surveyid=sanitize_int($surveyid);
     $languagecode=sanitize_languagecode($languagecode);
     $thissurvey=false;
@@ -1432,9 +1432,12 @@ function getuserlist($outputformat='fullinfoarray')
     {
         $languagecode=GetBaseLanguageFromSurveyID($surveyid);;
     }
-    $query="SELECT * FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
-    $result=db_execute_assoc($query) or safe_die ("Couldn't access survey settings<br />$query<br />".$connect->ErrorMsg());   //Checked
-    while ($row=$result->FetchRow())
+    
+    //$query="SELECT * FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
+    $CI->load->model('surveys_languagesettings_model');
+    
+    $result=$CI->surveys_languagesettings_model->getAllData($surveyid,$languagecode) or safe_die ("Couldn't access survey settings<br />");   //Checked
+    foreach ($result->result_array() as $row)
     {
         $thissurvey=$row;
         // now create some stupid array translations - needed for backward compatibility
@@ -1460,8 +1463,8 @@ function getuserlist($outputformat='fullinfoarray')
         if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
         if (!isset($thissurvey['urldescrip']) ||
         $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
-        $thissurvey['passthrulabel']=isset($_SESSION['passthrulabel']) ? $_SESSION['passthrulabel'] : "";
-        $thissurvey['passthruvalue']=isset($_SESSION['passthruvalue']) ? $_SESSION['passthruvalue'] : "";
+        $thissurvey['passthrulabel']=$CI->session->userdata('passthrulabel') ? $CI->session->userdata('passthrulabel') : "";
+        $thissurvey['passthruvalue']=$CI->session->userdata('passthruvalue') ? $CI->session->userdata('passthruvalue') : "";
     }
 
     //not sure this should be here... ToDo: Find a better place
@@ -1469,7 +1472,7 @@ function getuserlist($outputformat='fullinfoarray')
     return $thissurvey;
 }
 
-
+/**
 function getlabelsets($languages=null)
 // Returns a list with label sets
 // if the $languages paramter is provided then only labelset containing all of the languages in the paramter are provided
@@ -2225,10 +2228,10 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     //$pquery = "SELECT anonymized, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-    $CI->load->model('surveys');
+    $CI->load->model('surveys_model');
     $fieldtoselect = array('anonymized', 'datestamp', 'ipaddr', 'refurl');
     $conditiontoselect = "WHERE sid=$surveyid";
-    $presult=$CI->surveys->getSomeRecords($fieldtoselect,$conditiontoselect); //Checked)
+    $presult=$CI->surveys_model->getSomeRecords($fieldtoselect,$conditiontoselect); //Checked)
     foreach ($presult->result_array() as $prow)
     {
         if ($prow['anonymized'] == "N")
@@ -3499,9 +3502,9 @@ function GetBaseLanguageFromSurveyID($surveyid)
     $surveyid=(int)($surveyid);
     if (!isset($cache[$surveyid])) {
         $fields = array('language');
-        $condition = " WHERE sid=$surveyid";
-        $CI->load->model('surveys');
-	    $query = $CI->surveys->getSomeRecords($fields,$condition);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
+        $condition = array('sid' => $surveyid);//"sid=$surveyid";
+        $CI->load->model('surveys_model');
+	    $query = $CI->surveys_model->getSomeRecords($fields,$condition);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
 	    $surveylanguage = $query->row_array(); //Checked)
 	    if (is_null($surveylanguage))
 	    {
@@ -3523,8 +3526,8 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
     if (!isset($cache[$surveyid])) {
         $fields = array('additional_languages');
         $condition = " WHERE sid=$surveyid";
-        $CI->load->model('surveys');
-	    $result = $CI->surveys->getSomeRecords($fields,$condition);
+        $CI->load->model('surveys_model');
+	    $result = $CI->surveys_model->getSomeRecords($fields,$condition);
         //$query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	    $additional_languages = $result->row_array();
         if (trim($additional_languages)=='')
@@ -3558,10 +3561,10 @@ function SetSurveyLanguage($surveyid, $language)
         // see if language actually is present in survey
         $fields = array('language', 'additional_languages');
         $condition = " WHERE sid=$surveyid";
-        $CI->load->model('surveys');
+        $CI->load->model('surveys_model');
         
         //$query = "SELECT  language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-        $result = $CI->surveys->getSomeRecords($fields,$condition); //Checked
+        $result = $CI->surveys_model->getSomeRecords($fields,$condition); //Checked
         foreach ($result->result_array() as $row) {//while ($result && ($row=$result->FetchRow())) {)
             $additional_languages = $row['additional_languages'];
             $default_language = $row['language'];
@@ -5606,7 +5609,7 @@ function hasTemplateManageRights($userid, $templatefolder) {
 	
     //$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Safe
 
-	$this->load->model('Templates_rights_model');
+	$CI->load->model('Templates_rights_model');
 	$query=$this->Templates_rights_model->getSomeRecords("use","uid=".$userid." AND folder LIKE '".$templatefolder."'");
 
     //if ($result->RecordCount() == 0)  return false;
@@ -5720,7 +5723,7 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
 function hasResources($id,$type='survey')
 {
     global $CI;
-    $dirname = $this->config->item("uploaddir");
+    $dirname = $CI->config->item("uploaddir");
 
     if ($type == 'survey')
     {
@@ -6183,25 +6186,25 @@ function sGetTemplatePath($sTemplateName)
     global $CI; //$standardtemplaterootdir, $usertemplaterootdir, $defaulttemplate;
     if (isStandardTemplate($sTemplateName))
     {
-        return $this->config->item("standardtemplaterootdir").'/'.$sTemplateName;
+        return $CI->config->item("standardtemplaterootdir").'/'.$sTemplateName;
     }
     else
     {
-        if (file_exists($this->config->item("usertemplaterootdir").'/'.$sTemplateName))
+        if (file_exists($CI->config->item("usertemplaterootdir").'/'.$sTemplateName))
         {
-            return $this->config->item("usertemplaterootdir").'/'.$sTemplateName;
+            return $CI->config->item("usertemplaterootdir").'/'.$sTemplateName;
         }
-        elseif (file_exists($this->config->item("usertemplaterootdir").'/'.$defaulttemplate))
+        elseif (file_exists($CI->config->item("usertemplaterootdir").'/'.$defaulttemplate))
         {
-            return $this->config->item("usertemplaterootdir").'/'.$defaulttemplate;
+            return $CI->config->item("usertemplaterootdir").'/'.$defaulttemplate;
         }
-        elseif (file_exists($this->config->item("standardtemplaterootdir").'/'.$defaulttemplate))
+        elseif (file_exists($CI->config->item("standardtemplaterootdir").'/'.$defaulttemplate))
         {
-            return $this->config->item("standardtemplaterootdir").'/'.$defaulttemplate;
+            return $CI->config->item("standardtemplaterootdir").'/'.$defaulttemplate;
         }
         else
         {
-            return $$this->config->item("standardtemplaterootdir").'/default';
+            return $$CI->config->item("standardtemplaterootdir").'/default';
         }
     }
 }
@@ -6216,25 +6219,25 @@ function sGetTemplateURL($sTemplateName)
     global $CI; //$standardtemplaterooturl, $standardtemplaterootdir, $usertemplaterooturl, $usertemplaterootdir, $defaulttemplate;
     if (isStandardTemplate($sTemplateName))
     {
-        return $this->config->item("standardtemplaterooturl").'/'.$sTemplateName;
+        return $CI->config->item("standardtemplaterooturl").'/'.$sTemplateName;
     }
     else
     {
-        if (file_exists($this->config->item("usertemplaterootdir").'/'.$sTemplateName))
+        if (file_exists($CI->config->item("usertemplaterootdir").'/'.$sTemplateName))
         {
-            return $this->config->item("usertemplaterooturl").'/'.$sTemplateName;
+            return $CI->config->item("usertemplaterooturl").'/'.$sTemplateName;
         }
-        elseif (file_exists($this->config->item("usertemplaterootdir").'/'.$defaulttemplate))
+        elseif (file_exists($CI->config->item("usertemplaterootdir").'/'.$defaulttemplate))
         {
-            return $this->config->item("usertemplaterooturl").'/'.$defaulttemplate;
+            return $CI->config->item("usertemplaterooturl").'/'.$defaulttemplate;
         }
-        elseif (file_exists($this->config->item("standardtemplaterootdir").'/'.$defaulttemplate))
+        elseif (file_exists($CI->config->item("standardtemplaterootdir").'/'.$defaulttemplate))
         {
-            return $this->config->item("standardtemplaterooturl").'/'.$defaulttemplate;
+            return $CI->config->item("standardtemplaterooturl").'/'.$defaulttemplate;
         }
         else
         {
-            return $this->config->item("standardtemplaterooturl").'/default';
+            return $CI->config->item("standardtemplaterooturl").'/default';
         }
     }
 }
@@ -7278,7 +7281,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
  * @params string sid - survey id
  * @return $accesssummary - proper access denied error message
  */
-function access_denied($action,$sid)
+function access_denied($action,$sid='')
 {
     global $CI,$clang;
     if ($this->session->userdata('loginID'))

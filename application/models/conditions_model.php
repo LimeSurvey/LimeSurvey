@@ -91,6 +91,10 @@ class Conditions_model extends CI_Model {
 		return $this->db->query($scenarioquery);
     }
 	
-	
+	function getCountOfConditions($surveyid)
+    {
+        return $this->db->query('SELECT count(*) FROM '.$this->db->prefix('conditions').' as c, '.$this->db->prefix('questions').' as q WHERE c.qid = q.qid AND q.sid='.$surveyid);
+        
+    }
 
 }

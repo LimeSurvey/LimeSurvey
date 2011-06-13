@@ -30,4 +30,12 @@ class Surveys_model extends CI_Model {
 		return $data;
 	}
     
+    function getDataOnSurvey($surveyid)
+    {
+        $sql = "SELECT * FROM ".$this->db->prefix('surveys')." inner join ".$this->db->prefix('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=".$surveyid;
+        $this->load->helper('database');
+        return db_select_limit_assoc($sql, 1);
+        
+    }
+    
 }
