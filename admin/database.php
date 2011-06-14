@@ -1411,7 +1411,7 @@ elseif ($action == "insertsurvey" && $_SESSION['USER_RIGHT_CREATE_SURVEY'])
         );
         $dbtablename=db_table_name_nq('surveys');
         $isquery = $connect->GetInsertSQL($dbtablename, $insertarray);
-        $isresult = $connect->Execute($isquery) or safe_die ($isrquery."<br />".$connect->ErrorMsg()); // Checked
+        $isresult = $connect->Execute($isquery) or safe_die ($isquery."<br />".$connect->ErrorMsg()); // Checked
 
 
 
@@ -1479,7 +1479,7 @@ elseif ($action == "savepersonalsettings")
     $_POST  = array_map('db_quote', $_POST);
     $uquery = "UPDATE {$dbprefix}users SET lang='{$_POST['lang']}', dateformat='{$_POST['dateformat']}', htmleditormode= '{$_POST['htmleditormode']}'
                WHERE uid={$_SESSION['loginID']}";
-    $uresult = $connect->Execute($uquery)  or safe_die ($isrquery."<br />".$connect->ErrorMsg());  // Checked
+    $uresult = $connect->Execute($uquery)  or safe_die ($uquery."<br />".$connect->ErrorMsg());  // Checked
     $_SESSION['adminlang']=$_POST['lang'];
     $_SESSION['htmleditormode']=$_POST['htmleditormode'];
     $_SESSION['dateformat']= $_POST['dateformat'];
