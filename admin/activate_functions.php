@@ -264,7 +264,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
  */
 function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
 {
-    global $dbprefix, $connect, $clang, $databasetype,$databasetabletype;
+    global $dbprefix, $connect, $clang, $databasetype,$databasetabletype, $uploaddir;
 
      $createsurvey='';
      $activateoutput='';
@@ -448,9 +448,20 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
 
         // create the survey directory where the uploaded files can be saved
         if ($createsurveydirectory)
-            if (!file_exists("../upload/surveys/" . $postsid . "/files") && !(mkdir("../upload/surveys/" . $postsid . "/files", 0777, true)))
+            if (!file_exists($uploaddir."/surveys/" . $postsid . "/files"))
+            {
+               if (!(mkdir($uploaddir."/surveys/" . $postsid . "/files", 0777, true)))
+               {
                 $activateoutput .= "<div class='warningheader'>".
                     $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory.") . "</div>";
+
+               }
+               else
+               {
+                   file_put_contents($uploaddir."/surveys/" . $postsid . "/files/index.html",'<html><head></head><body></body></html>');
+               }
+            }
+        file_put_contents($uploaddir."/surveys/" . $postsid . "/index.html",'<html><head></head><body></body></html>');
 
         $acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".$surveyid;
         $acresult = $connect->Execute($acquery);

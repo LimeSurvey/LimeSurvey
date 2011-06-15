@@ -436,7 +436,7 @@ elseif ($subaction == "all")
                 }
             }
             // Now, zip all the files in the filelist
-            $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
+            $tmpdir = $uploaddir. "/surveys/" . $surveyid . "/files/";
 
             $zip = new ZipArchive();
             $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
@@ -513,7 +513,7 @@ elseif ($subaction == "all")
         }
 
         // Now, zip all the files in the filelist
-        $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
+        $tmpdir = $uploaddir. "/surveys/" . $surveyid . "/files/";
 
         $zip = new ZipArchive();
         $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
@@ -560,9 +560,7 @@ elseif ($subaction == "all")
         {
             if ($phparray[$i]->name == $downloadindividualfile)
             {
-                $dir = dirname(getcwd());
-                $file = $dir."/upload/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
-
+                $file = $uploaddir. "/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
                 if (file_exists($file)) {
                     header('Content-Description: File Transfer');
                     header('Content-Type: application/octet-stream');

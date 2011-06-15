@@ -6930,8 +6930,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
  */
 function hasResources($id,$type='survey')
 {
-    global $publicdir;
-    $dirname = "$publicdir/upload";
+    global $publicdir,$uploaddir;
+    $dirname = $uploaddir;
 
     if ($type == 'survey')
     {
