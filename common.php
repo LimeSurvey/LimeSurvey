@@ -272,17 +272,19 @@ If (!$dbexistsbutempty && $sourcefrom=='admin')
         $clang = new limesurvey_lang($defaultlang);
         include_once($homedir.'/update/updater.php');
         if(isset($_GET['continue']) && $_GET['continue']==1) 
-        {   
-            echo CheckForDBUpgrades();
+        {
+            echo getAdminHeader();
+            CheckForDBUpgrades();
             echo "<br /><a href='$homeurl'>".$clang->gT("Back to main menu")."</a></div>";
-            updatecheck();                     
-        }        
+            updatecheck();
+            echo getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));                         
+        }
         else
         {   
-            $dbupgradeoutput='<div class="messagebox">';
-            $dbupgradeoutput.= CheckForDBUpgrades();                    
-            $dbupgradeoutput.='</div>';
-            echo getAdminHeader() . $dbupgradeoutput . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));            
+            echo getAdminHeader(),
+                 '<div class="messagebox">',CheckForDBUpgrades(),'</div>', 
+                 getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"))
+                 ;
         }        
         die;
     }
