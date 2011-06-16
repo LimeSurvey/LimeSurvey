@@ -10,8 +10,8 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-            include 'ExpressionManager.php';
-            ExpressionManager::UnitTestProcessStringContainingExpressions();
+            include 'LimeExpressionManager.php';
+            LimeExpressionManager::UnitTestProcessStringContainingExpressions();
         ?>
     </body>
 </html>

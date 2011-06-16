@@ -57,8 +57,8 @@ class ExpressionManager {
         $regex_binary = '[+*/-]';
         $regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
         $regex_assign = '=|\+=|-=|\*=|/=';
-        $regex_sgqa = '[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*';
-        $regex_word = '[A-Z][A-Z0-9_]*:?[A-Z0-9_]*';
+        $regex_sgqa = '[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[12]?';
+        $regex_word = '[A-Z][A-Z0-9_]*:?[A-Z0-9_]*\.?[A-Z0-9_]*\.?[A-Z0-9_]*\.?[A-Z0-9_]*';
         $regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $regex_andor = '\band\b|\bor\b|&&|\|\|';
 
@@ -1268,8 +1268,12 @@ class ExpressionManager {
      *
      * @param array $varnames
      */
-    public function RegisterReservedWords(array $varnames) {
+    public function RegisterReservedWordsUsingMerge(array $varnames) {
         $this->amReservedWords = array_merge($this->amReservedWords, $varnames);
+    }
+
+    public function RegisterReservedWordsUsingReplace(array $varnames) {
+        $this->amReservedWords = array_merge(array(), $varnames);
     }
 
     /**
@@ -1282,8 +1286,12 @@ class ExpressionManager {
      *
      * @param array $varnames
      */
-    public function RegisterVarnames(array $varnames) {
+    public function RegisterVarnamesUsingMerge(array $varnames) {
         $this->amVars = array_merge($this->amVars, $varnames);
+    }
+
+    public function RegisterVarnamesUsingReplace(array $varnames) {
+        $this->amVars = array_merge(array(), $varnames);
     }
 
     /**
@@ -1517,6 +1525,11 @@ EOD;
             'd'         =>0,
             '12X34X56'  =>5,
             '12X3X5lab1_ber'    =>10,
+            'q5pointChoice.code'    =>5,
+            'q5pointChoice.value'   => 'Father',
+            'qArrayNumbers.ls1.min.code'    => 7,
+            'qArrayNumbers.ls1.min.value' => 'I love LimeSurvey',
+            '12X3X5lab1_ber#2'  => 15,
         );
 
         $reservedWord = array(
@@ -1714,15 +1727,20 @@ there~if((one > two),'hi','there')
 {ASSESSMENT_HEADING}~ASSESSMENT_HEADING
 {TOKEN:FIRSTNAME}~TOKEN:FIRSTNAME
 {THEREAREXQUESTIONS}~THEREAREXQUESTIONS
+5~q5pointChoice.code
+Father~q5pointChoice.value
+7~qArrayNumbers.ls1.min.code
+I love LimeSurvey~qArrayNumbers.ls1.min.value
+15~12X3X5lab1_ber#2
 EOD;
         
         $em = new ExpressionManager();
-        $em->RegisterVarnames($vars);
-        $em->RegisterReservedWords($reservedWord);
+        $em->RegisterVarnamesUsingMerge($vars);
+        $em->RegisterReservedWordsUsingMerge($reservedWord);
 
         if (is_array($extraVars) and count($extraVars) > 0)
         {
-            $em->RegisterVarnames($extraVars);
+            $em->RegisterVarnamesUsingMerge($extraVars);
         }
         if (is_array($extraFunctions) and count($extraFunctions) > 0)
         {
@@ -1811,8 +1829,8 @@ Since you have more {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'children','
 EOD;
 
         $em = new ExpressionManager();
-        $em->RegisterVarnames($vars);
-        $em->RegisterReservedWords($reservedWords);
+        $em->RegisterVarnamesUsingMerge($vars);
+        $em->RegisterReservedWordsUsingMerge($reservedWords);
 
         print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarsUsed</th><th>ReservedWordsUsed</th></tr>';
         foreach(explode("\n",$tests) as $test)

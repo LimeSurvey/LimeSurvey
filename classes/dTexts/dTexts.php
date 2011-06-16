@@ -12,6 +12,7 @@ class dTexts
 	 */
 	public static function run($text)
 	{
+        return $text;   // disable this function
 		include_once('dFunctions/dFunctionInterface.php');
 		preg_match_all('|\{([^{}]+)\}|i',$text,$functions);
 		foreach($functions[1] as $id=>$str)

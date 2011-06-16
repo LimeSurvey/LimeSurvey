@@ -14,6 +14,7 @@
  *	Files Purpose: lots of common functions
  */
 
+include_once('/classes/eval/LimeExpressionManager.php');
 
 
 /**
@@ -3145,7 +3146,7 @@ function templatereplace($line, $replacements=array())
         if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
     }
 
-    $line=insertansReplace($line);
+//    $line=insertansReplace($line);
 
 	if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $questiondetails['sid'], $line);
 	if (strpos($line, "{GID}") !== false) $line=str_replace("{GID}", $questiondetails['gid'], $line);
@@ -3164,7 +3165,8 @@ function templatereplace($line, $replacements=array())
         $line=str_replace("{SUBMITREVIEW}", $strreview, $line);
     }
 
-    $line=tokenReplace($line);
+//    $line=tokenReplace($line);
+    $line = LimeExpressionManager::ProcessString($line, $surveyid);
 
     if (strpos($line, "{ANSWERSCLEARED}") !== false) $line=str_replace("{ANSWERSCLEARED}", $clang->gT("Answers Cleared"), $line);
     if (strpos($line, "{RESTART}") !== false)
