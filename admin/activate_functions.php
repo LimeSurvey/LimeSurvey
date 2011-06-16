@@ -461,7 +461,6 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
                    file_put_contents($uploaddir."/surveys/" . $postsid . "/files/index.html",'<html><head></head><body></body></html>');
                }
             }
-        file_put_contents($uploaddir."/surveys/" . $postsid . "/index.html",'<html><head></head><body></body></html>');
 
         $acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".$surveyid;
         $acresult = $connect->Execute($acquery);
