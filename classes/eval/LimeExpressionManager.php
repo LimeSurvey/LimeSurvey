@@ -1,6 +1,8 @@
 <?php
 /**
  * Description of LimeExpressionManager
+ * This is a wrapper class around ExpressionManager that implements a Singleton and eases
+ * passing of LimeSurvey variable values into ExpressionManager
  *
  * @author Thomas M. White
  */
@@ -39,7 +41,7 @@ class LimeExpressionManager {
 
     /**
      * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
-     * Note, the goals is to have this called one time per rendered page (TODO - make that work properly)
+     * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
      *
      * @param <type> $sid
      * @param <type> $forceRefresh
@@ -48,15 +50,21 @@ class LimeExpressionManager {
 
     public function setVariableAndTokenMappingsForExpressionManager($sid,$forceRefresh=false)
     {
+        global $globalfieldmap, $clang;
+
+        //checks to see if fieldmap has already been built for this page.
+        if (isset($globalfieldmap[$sid]['full'][$clang->langcode])) {
+            if (isset($this->fieldmap) && !$forceRefresh) {
+                return false;   // means the mappings have already been set and don't need to be re-created
+            }
+        }
+
         $fieldmap=createFieldMap($sid,$style='full');
+        $this->fieldmap = $fieldmap;
         if (!isset($fieldmap)) {
             return false;
         }
-        if ($fieldmap === $this->fieldmap and !$forceRefresh)
-        {
-            // then this fieldmap is identical to prior one, so don't need to re-create the mappings?
-            return false;
-        }
+
         $knownVars = array();   // mapping of VarName to Value
         $knownSGQAs = array();  // mapping of SGQA to Value
         foreach($fieldmap as $fielddata)
