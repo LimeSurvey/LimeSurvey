@@ -13,7 +13,16 @@ $(function() {
         var show_comment = getQueryVariable('show_comment', this.href);
         var pos          = getQueryVariable('pos', this.href);
         var fieldname    = getQueryVariable('fieldname', this.href);
-
+        var buttonsOpts = {};
+        buttonsOpts[translt.returnTxt] = function() {
+                        // Fix for the IE bug 04965
+                        var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); } 
+                        if (pass) {
+                            $(this).dialog('destroy');
+                            $('iframe#uploader').remove();
+                        }
+                    };
+        
         var horizontalPadding = 30;
         var verticalPadding = 20;
         $('#uploader').dialog('destroy'); // destroy the old modal dialog
@@ -22,7 +31,7 @@ $(function() {
         {
 
             $('iframe#uploader', parent.document).dialog({
-                title: 'Upload your files',
+                title: translt.title,
                 autoOpen: true,
                 width: 984,
                 height: 440,
@@ -47,22 +56,13 @@ $(function() {
                     opacity: 0.85,
                     background: 'black'
                 },
-                buttons: {
-                    'Return to Survey': function() {
-                        // Fix for the IE bug 04965
-                        var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); } 
-                        if (pass) {
-                            $(this).dialog('destroy');
-                            $('iframe#uploader').remove();
-                        }
-                    }
-                }
+                buttons: buttonsOpts
             }).width(984 - horizontalPadding).height(440 - verticalPadding);
         }
         else
         {
             $('<iframe id=\"uploader\" name=\"uploader\" class=\"externalSite\" src=\"' + this.href + '\" />').dialog({
-                title: 'Upload your files',
+                title: translt.title,
                 autoOpen: true,
                 width: 984,
                 height: 440,
@@ -79,15 +79,7 @@ $(function() {
                     opacity: 0.85,
                     background: 'black'
                 },
-                buttons: {
-                    'Return to Survey': function() {
-                        var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); } 
-                        if (pass) {
-                            $(this).dialog('destroy');
-                            $('iframe#uploader').remove();
-                        }
-                    }
-                }
+                buttons: buttonsOpts
             }).width(984 - horizontalPadding).height(440 - verticalPadding);
         }
     });

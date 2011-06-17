@@ -42,6 +42,8 @@ else
 }
 session_set_cookie_params(0,$relativeurl.'/admin/');
 @session_start();
+$baselang = GetBaseLanguageFromSurveyID($surveyid);
+$clang = new limesurvey_lang($baselang);
 
 if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 {
@@ -58,7 +60,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
     if (unlink($filename))
     {
-        echo 'File '.rawurldecode($name).' deleted';
+        echo sprintf($clang->gT('File %s deleted'), rawurldecode($name));
         for ($i = $file_index; $i < $_SESSION[$fieldname]['filecount']; $i++)
         {
             $_SESSION[$fieldname]['files'][$i]['name'] = $_SESSION[$fieldname]['files'][$i + 1]['name'];
@@ -70,6 +72,6 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
         $_SESSION[$fieldname]['filecount'] -= 1;
     }
     else
-        echo 'Oops, There was an error deleting the file';
+        echo $clang->gT('Oops, There was an error deleting the file');
 
 ?>

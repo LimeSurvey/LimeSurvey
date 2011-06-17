@@ -28,11 +28,11 @@ $(document).ready(function(){
 
             previewblock += "</td>";
             if ($('#'+fieldname+'_show_title').val() == 1 && $('#'+fieldname+'_show_comment').val() == 1)
-                previewblock += "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td><td align='center'><input type='text' value='"+json[i-1].title+"' id='"+fieldname+"_title_"+i+"' /><br /><br /><input type='text' value='"+json[i-1].comment+"' id='"+fieldname+"_comment_"+i+"' /></td>";
+                previewblock += "<td align='center'><label>"+translt.titleFld+"</label><br /><br /><label>"+translt.commentFld+"</label></td><td align='center'><input type='text' value='"+json[i-1].title+"' id='"+fieldname+"_title_"+i+"' /><br /><br /><input type='text' value='"+json[i-1].comment+"' id='"+fieldname+"_comment_"+i+"' /></td>";
             else if ($('#'+fieldname+'_show_title').val() == 1)
-                previewblock += "<td align='center'><label>Title</label></td><td align='center'><input type='text' value='"+json[i-1].title+"' id='"+fieldname+"_title_"+i+"' /></td>";
+                previewblock += "<td align='center'><label>"+translt.titleFld+"</label></td><td align='center'><input type='text' value='"+json[i-1].title+"' id='"+fieldname+"_title_"+i+"' /></td>";
             else if ($('#'+fieldname+'_show_comment').val() == 1)
-                previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='"+json[i-1].comment+"' id='"+fieldname+"_comment_"+i+"' /></td>";
+                previewblock += "<td align='center'><label>"+translt.commentFld+"</label></td><td align='center'><input type='text' value='"+json[i-1].comment+"' id='"+fieldname+"_comment_"+i+"' /></td>";
 
             previewblock += "<td align='center' width='20%' ><img style='cursor:pointer' src='images/delete.png' onclick='deletefile(\""+fieldname+"\", "+i+")' /></td></tr></table>"+
                     "<input type='hidden' id='"+fieldname+"_size_"    +i+"' value="+json[i-1].size+" />"+
@@ -70,7 +70,7 @@ $(document).ready(function(){
              * do not upload the file and display an error message ! */
             if (filecount >= maxfiles)
             {
-                $('#notice').html('<p class="error">Sorry, No more files can be uploaded !</p>');
+                $('#notice').html('<p class="error">'+translt.errorNoMoreFiles+'</p>');
                 return false;
             }
 
@@ -89,12 +89,12 @@ $(document).ready(function(){
             }
             if (allowSubmit == false)
             {
-                $('#notice').html('<p class="error">Sorry, Only "'+ $('#'+fieldname+'_allowed_filetypes').val()+'" files can be uploaded for this question !</p>');
+                $('#notice').html('<p class="error">'+translt.errorOnyAllowed.replace('%s',$('#'+fieldname+'_allowed_filetypes').val())+'</p>');
                 return false;
             }
 
             // change button text, when user selects file
-            button.text('Uploading');
+            button.text(translt.uploading);
 
             // If you want to allow uploading only 1 file at time,
             // you can disable upload button
@@ -106,12 +106,12 @@ $(document).ready(function(){
                 if (text.length < 13){
                     button.text(text + '.');
                 } else {
-                    button.text('Uploading');
+                    button.text(translt.uploading);
                 }
             }, 400);
         },
         onComplete: function(file, response){
-            button.text('Select file');
+            button.text(translt.selectfile);
             window.clearInterval(interval);
             // enable upload button
             this.enable();
@@ -141,11 +141,11 @@ $(document).ready(function(){
 
                 previewblock += "<br />"+decodeURIComponent(metadata.name)+"</td>";
                 if ($("#"+fieldname+"_show_title").val() == 1 && $("#"+fieldname+"_show_comment").val() == 1)
-                    previewblock += "<td align='center'><label>Title</label><br /><br /><label>Comments</label></td><td align='center'><input type='text' value='' id='"+fieldname+"_title_"+count+"' /><br /><br /><input type='text' value='' id='"+fieldname+"_comment_"+count+"' /></td>";
+                    previewblock += "<td align='center'><label>"+translt.titleFld+"</label><br /><br /><label>"+translt.commentFld+"</label></td><td align='center'><input type='text' value='' id='"+fieldname+"_title_"+count+"' /><br /><br /><input type='text' value='' id='"+fieldname+"_comment_"+count+"' /></td>";
                 else if ($("#"+fieldname+"_show_title").val() == 1)
-                    previewblock += "<td align='center'><label>Title</label></td><td align='center'><input type='text' value='' id='"+fieldname+"_title_"+count+"' /></td>";
+                    previewblock += "<td align='center'><label>"+translt.titleFld+"</label></td><td align='center'><input type='text' value='' id='"+fieldname+"_title_"+count+"' /></td>";
                 else if ($("#"+fieldname+"_show_comment").val() == 1)
-                    previewblock += "<td align='center'><label>Comment</label></td><td align='center'><input type='text' value='' id='"+fieldname+"_comment_"+count+"' /></td>";
+                    previewblock += "<td align='center'><label>"+translt.commentFld+"</label></td><td align='center'><input type='text' value='' id='"+fieldname+"_comment_"+count+"' /></td>";
 
                 previewblock += "<td  align='center' width='20%'><img style='cursor:pointer' src='images/delete.png' onclick='deletefile(\""+fieldname+"\", "+count+")'/></td>"+
                                         "</tr></table>"+
@@ -165,14 +165,14 @@ $(document).ready(function(){
                 $('#'+fieldname+'_filecount').val(filecount);
                 
                 if (filecount < minfiles)
-                    $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
+                    $('#uploadstatus').html(translt.errorNeedMore.replace('%s',(minfiles - filecount)));
                 else if (filecount < maxfiles)
-                    $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may return back to survey');
+                    $('#uploadstatus').html(translt.errorMoreAllowed.replace('%s',(minfiles - filecount)));
                 else
-                    $('#uploadstatus').html('The maximum number of files have been uploaded. You may return back to survey');
+                    $('#uploadstatus').html(translt.errorMaxReached);
 
                 if (filecount >= maxfiles)
-                    $('#notice').html('<p class="success">Maximum number of files have been uploaded. You may return back to survey !</p>');
+                    $('#notice').html('<p class="success">'+translt.errorTooMuch+'</p>');
             }
         }
     });
@@ -232,7 +232,7 @@ function saveAndExit(fieldname, show_title, show_comment, pos) {
 
     if (minfiles != 0 && filecount < minfiles)
     {
-        var confirmans = confirm("You need to upload " + (minfiles - filecount) + " more files for this question.\n\Are you sure you want to exit ?")
+        var confirmans = confirm(translt.errorNeedMore.replace('%s', (minfiles - filecount)))
         if (confirmans)
         {
             passJSON(fieldname, show_title, show_comment, pos);
@@ -289,9 +289,9 @@ function deletefile(fieldname, count) {
             var maxfiles = $('#'+fieldname+'_maxfiles').val();
 
             if (filecount < minfiles)
-                $('#uploadstatus').html('Please upload '+ (minfiles - filecount) + ' more files.');
+                $('#uploadstatus').html(translt.errorNeedMore.replace('%s',(minfiles - filecount)));
             else
-                $('#uploadstatus').html('If you wish, you may upload '+ (maxfiles - filecount) + ' more files; else you may return back to survey');
+                $('#uploadstatus').html(translt.errorMoreAllowed.raplce('%s',(maxfiles - filecount)));
         }
     }
     file_index = $("#"+fieldname+"_file_index_"+count).val();

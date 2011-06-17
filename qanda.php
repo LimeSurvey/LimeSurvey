@@ -3770,12 +3770,18 @@ function do_file_upload($ia)
 
     $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='$scriptloc?sid=$surveyid&fieldname=".$ia[1]."&qid=".$ia[0]."&preview="
     .$questgrppreview."&show_title=".$qidattributes['show_title']."&show_comment="
-    .$qidattributes['show_comment']."&pos=".($pos?1:0)."'>Upload files</a></h2><br /><br />";
-
+    .$qidattributes['show_comment']."&pos=".($pos?1:0)."'>" . $clang->gT('Upload files') . "</a></h2><br /><br />";
+    
+    $answer = "<script type='text/javascript'>
+        var translt = {
+             title: '" . $clang->gT('Upload your files') . "',
+             returnTxt: '" . $clang->gT('Return to Survey') . "'
+            };
+    </script>\n";
     if ($pos)
-        $answer = "<script type='text/javascript' src='../scripts/modaldialog.js'></script>";
+        $answer .= "<script type='text/javascript' src='../scripts/modaldialog.js'></script>";
     else
-        $answer = "<script type='text/javascript' src='scripts/modaldialog.js'></script>";
+        $answer .= "<script type='text/javascript' src='scripts/modaldialog.js'></script>";
 
     // Modal dialog
     $answer .= $uploadbutton;
