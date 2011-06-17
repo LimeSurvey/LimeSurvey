@@ -135,7 +135,7 @@ class LimeExpressionManager {
         if (isset($_SESSION['token']) && $_SESSION['token'] != '')
         {
             //Gather survey data for tokenised surveys, for use in presenting questions
-            $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
+            $_SESSION['thistoken']=getTokenData($sid, $_SESSION['token']);
         }
         if (isset($_SESSION['thistoken']))
         {
@@ -162,7 +162,7 @@ class LimeExpressionManager {
         global $surveyid;
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
-        if ($lem->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh))
+        if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh))
         {
             // means that some values changed, so need to update what was registered to ExpressionManager
             $em->RegisterVarnamesUsingReplace($lem->varMap);

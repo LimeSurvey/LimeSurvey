@@ -1191,10 +1191,13 @@ class ExpressionManager {
      * @param <type> $src 
      */
 
-    public function sProcessStringContainingExpressions($src)
+    public function sProcessStringContainingExpressions($src, $recurseDepth=0)
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $stringParts = $this->asSplitStringOnExpressions($src);
+        if (count($stringParts) <= 1 or $recurseDepth >= 5) {
+            return $src;
+        }
 
         $resolvedParts = array();
         $this->allVarsUsed = array();
@@ -1219,9 +1222,28 @@ class ExpressionManager {
                 }
             }
         }
-        $result = implode('',$resolvedParts);
-        return $result;
+        $result = implode('',$this->flatten_array($resolvedParts));
+        return $result;    // recurse in case there are nested ones, avoiding infinite loops?
     }
+
+    /**
+     * Flatten out an array, keeping it in the proper order
+     * @param array $a
+     * @return array
+     */
+
+    private function flatten_array(array $a) {
+        $i = 0;
+        while ($i < count($a)) {
+            if (is_array($a[$i])) {
+                array_splice($a, $i, 1, $a[$i]);
+            } else {
+                $i++;
+            }
+        }
+        return $a;
+    }
+
 
     /**
      * Run a registered function
@@ -1913,9 +1935,15 @@ function exprmgr_if($test,$ok,$error)
 
 function exprmgr_list($args)
 {
-    return implode(",",$args);
+    return implode(", ",$args);
 }
 
+/**
+ * Used by usort() to order Error tokens by their position within the string
+ * @param <type> $a
+ * @param <type> $b
+ * @return <type>
+ */
 function cmpErrorTokens($a, $b)
 {
     if (is_null($a[1])) {
