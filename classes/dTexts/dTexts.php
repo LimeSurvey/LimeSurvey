@@ -12,28 +12,27 @@ class dTexts
 	 */
 	public static function run($text)
 	{
-        return $text;   // disable this function
-		include_once('dFunctions/dFunctionInterface.php');
-		preg_match_all('|\{([^{}]+)\}|i',$text,$functions);
-		foreach($functions[1] as $id=>$str)
-		{
-			$data=explode(':',$str);
-			$funcName=array_shift($data);
-            $data = array(implode(':',$data));
-			try
-			{
-				$func = dTexts::loadFunction($funcName);
-				$newStr = $func->run($data);
-				$text = str_replace($functions[0][$id],$newStr,$text);
-			}
-			catch(Exception $e)
-			{
-				//TODO: logging
-			}
-		}
-		return $text;
+//		include_once('dFunctions/dFunctionInterface.php');
+//		preg_match_all('|\{([^{}]+)\}|i',$text,$functions);
+//		foreach($functions[1] as $id=>$str)
+//		{
+//			$data=explode(':',$str);
+//			$funcName=array_shift($data);
+//			try
+//			{
+//				$func = dTexts::loadFunction($funcName);
+//				$newStr = $func->run($data);
+//				$text = str_replace($functions[0][$id],$newStr,$text);
+//			}
+//			catch(Exception $e)
+//			{
+//				//TODO: logging
+//			}
+//		}
+//		return $text;
+        return LimeExpressionManager::ProcessString($text);
 	}
-
+	
 	/**
 	 * Loader for the adequate "worker" class
 	 * @param $name Worker name
@@ -41,7 +40,7 @@ class dTexts
 	 */
 	public static function loadFunction($name)
 	{
-		$name=ucwords($name);
+        $name=ucfirst(strtolower($name));    
 		$fileName='./classes/dTexts/dFunctions/dFunction'.$name.'.php';
 		if(!file_exists($fileName))
 		{
@@ -60,5 +59,5 @@ class dTexts
 		}
 		return $class;
 	}
-
+	
 }

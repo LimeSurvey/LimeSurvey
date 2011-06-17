@@ -70,51 +70,52 @@ class LimeExpressionManager {
         foreach($fieldmap as $fielddata)
         {
             $code = $fielddata['fieldname'];
-            if (preg_match('#^\d+X\d+X#',$code))
+            if (!preg_match('#^\d+X\d+X\d+#',$code))
             {
-                switch($fielddata['type'])
-                {
-                    case '!': //List - dropdown
-                    case '5': //5 POINT CHOICE radio-buttons
-                    case 'D': //DATE
-                    case 'G': //GENDER drop-down list
-                    case 'I': //Language Question
-                    case 'L': //LIST drop-down/radio-button list
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    case 'S': //SHORT FREE TEXT
-                    case 'T': //LONG FREE TEXT
-                    case 'U': //HUGE FREE TEXT
-                    case 'X': //BOILERPLATE QUESTION
-                    case 'Y': //YES/NO radio-buttons
-                    case '|': //File Upload
-                        $varName = $fielddata['title'];
-                        $question = $fielddata['question'];
-                        break;
-                    case '1': //Array (Flexible Labels) dual scale
-                        $varName = $fielddata['title'] . '.' . $fielddata['aid'] . '.' . $fielddata['scale_id'];
-                        $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . ': ' . $fielddata['scale'];
-                        break;
-                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                    case 'F': //ARRAY (Flexible) - Row Format
-                    case 'H': //ARRAY (Flexible) - Column Format
-                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                    case 'M': //Multiple choice checkbox
-                    case 'P': //Multiple choice with comments checkbox + text
-                    case 'Q': //MULTIPLE SHORT TEXT
-                    case 'R': //RANKING STYLE
-                        $varName = $fielddata['title'] . '.' . $fielddata['aid'];
-                        $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                        break;
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                    case ';': //ARRAY (Multi Flexi) Text
-                        $varName = $fielddata['title'] . '.' . $fielddata['aid'];
-                        $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . ': ' . $fielddata['subquestion2'];
-                        break;
-                }
+                continue;
+            }
+            switch($fielddata['type'])
+            {
+                case '!': //List - dropdown
+                case '5': //5 POINT CHOICE radio-buttons
+                case 'D': //DATE
+                case 'G': //GENDER drop-down list
+                case 'I': //Language Question
+                case 'L': //LIST drop-down/radio-button list
+                case 'N': //NUMERICAL QUESTION TYPE
+                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                case 'S': //SHORT FREE TEXT
+                case 'T': //LONG FREE TEXT
+                case 'U': //HUGE FREE TEXT
+                case 'X': //BOILERPLATE QUESTION
+                case 'Y': //YES/NO radio-buttons
+                case '|': //File Upload
+                    $varName = $fielddata['title'];
+                    $question = $fielddata['question'];
+                    break;
+                case '1': //Array (Flexible Labels) dual scale
+                    $varName = $fielddata['title'] . '.' . $fielddata['aid'] . '.' . $fielddata['scale_id'];
+                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . ': ' . $fielddata['scale'];
+                    break;
+                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                case 'F': //ARRAY (Flexible) - Row Format
+                case 'H': //ARRAY (Flexible) - Column Format
+                case 'K': //MULTIPLE NUMERICAL QUESTION
+                case 'M': //Multiple choice checkbox
+                case 'P': //Multiple choice with comments checkbox + text
+                case 'Q': //MULTIPLE SHORT TEXT
+                case 'R': //RANKING STYLE
+                    $varName = $fielddata['title'] . '.' . $fielddata['aid'];
+                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
+                    break;
+                case ':': //ARRAY (Multi Flexi) 1 to 10
+                case ';': //ARRAY (Multi Flexi) Text
+                    $varName = $fielddata['title'] . '.' . $fielddata['aid'];
+                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . ': ' . $fielddata['subquestion2'];
+                    break;
             }
             if (isset($_SESSION[$code]))
             {
@@ -152,21 +153,25 @@ class LimeExpressionManager {
     /**
      * Translate all Expressions, Macros, registered variables, etc. in $string
      * @param <type> $string
-     * @param <type> $sid
      * @param boolean $forceRefresh - if true, reset $fieldMap and the derived arrays of registered variables and values
      * @return string - the original $string with all replacements done.
      */
 
-    static function ProcessString($string,$sid,$forceRefresh=false)
+    static function ProcessString($string,array $replacementFields=array(), $forceRefresh=false)
     {
+        global $surveyid;
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
-        if ($lem->setVariableAndTokenMappingsForExpressionManager($sid,$forceRefresh))
+        if ($lem->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh))
         {
             // means that some values changed, so need to update what was registered to ExpressionManager
             $em->RegisterVarnamesUsingReplace($lem->varMap);
             $em->RegisterReservedWordsUsingReplace($lem->sgqaMap);
             $em->RegisterReservedWordsUsingMerge($lem->tokenMap);
+        }
+        if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
+        {
+            $em->RegisterReservedWordsUsingMerge($replacementFields);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
         }
         return $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string));
     }
