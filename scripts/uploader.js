@@ -89,7 +89,7 @@ $(document).ready(function(){
             }
             if (allowSubmit == false)
             {
-                $('#notice').html('<p class="error">'+translt.errorOnyAllowed.replace('%s',$('#'+fieldname+'_allowed_filetypes').val())+'</p>');
+                $('#notice').html('<p class="error">'+translt.errorOnlyAllowed.replace('%s',$('#'+fieldname+'_allowed_filetypes').val())+'</p>');
                 return false;
             }
 

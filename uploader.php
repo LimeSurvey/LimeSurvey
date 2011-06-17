@@ -85,7 +85,7 @@ echo "<script type='text/javascript'>
              errorOnlyAllowed: '" . $clang->gT('Sorry, Only %s files can be uploaded for this question !') . "',
              uploading: '" . $clang->gT('Uploading') . "',
              selectfile: '" . $clang->gT('Select file') . "',
-             errorNeedMore: 'Please upload %s more files.',
+             errorNeedMore: '" . $clang->gT('Please upload %s more files.') . "',
              errorMoreAllowed: '" . $clang->gT('If you wish, you may upload %s more files; else you may return back to survey') . "',
              errorMaxReached: '" . $clang->gT('The maximum number of files have been uploaded. You may return back to survey') . "',
              errorTooMuch: '" . $clang->gT('The maximum number of files have been uploaded. You may return back to survey') . "',
