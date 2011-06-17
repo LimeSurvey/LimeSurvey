@@ -408,7 +408,7 @@ class ExpressionManager {
         {
             if ($this->pos < $this->count)
             {
-                $this->AddError("Extra tokens found starting at", $this->tokens[$this->pos]);
+                $this->AddError("Extra tokens found", $this->tokens[$this->pos]);
                 return false;
             }
             $this->result = $this->StackPop();
@@ -682,7 +682,7 @@ class ExpressionManager {
         $token2 = $this->tokens[++$this->pos];
         if ($token2[2] != 'LP')
         {
-            $this->AddError("Expected '(' after function name", $token);
+            $this->AddError("Expected left parentheses after function name", $token);
         }
         $params = array();  // will just store array of values, not tokens
         while ($this->pos + 1 < $this->count)
@@ -878,7 +878,7 @@ class ExpressionManager {
             }
             else
             {
-                $this->AddError("Expected ')'", $token);
+                $this->AddError("Expected right parentheses", $token);
                 return false;
             }
         }
@@ -1006,20 +1006,66 @@ class ExpressionManager {
      */
     public function GetReadableErrors()
     {
-        $errs = array();
+        // Try to color code the equation
+        // Surround whole message with a span, so can add ToolTip of generic error messages
+        // Surround each identifiable error with a span so can color code it and attach its own ToolTip (e.g. unknown function or variable name)
+        if (count($this->errs) == 0) {
+            return '';
+        }
+        usort($this->errs,"cmpErrorTokens");    // sort errors in order of occurence in string
+        $parts = array();
+        $curpos = 0;
+        $generalErrs = array();
         foreach ($this->errs as $err)
         {
-            $msg = $err[0];
             $token = $err[1];
-            $toshow = 'ERR';
-            if (!is_null($token))
-            {
-                $toshow .= '[' . $token[0] . ' @pos=' . $token[1] . ']';
+            if (is_null($token)) {
+                if (strlen($err[0]) > 0) {
+                    $generalErrs[] = $err[0];
+                }
+                continue;
             }
-            $toshow .= ':  ' . $msg;
-            $errs[] = $toshow;
+            $pos = $token[1];
+            $tok =$token[0];
+            if (!is_numeric($pos)) {
+                if (strlen($err[0]) > 0) {
+                    $generalErrs[] = $err[0];
+                }
+                continue;
+            }
+            $parts[]= array(
+                'OkString' => substr($this->expr,$curpos,($pos-$curpos)),
+                'BadString' => $tok,
+                'msg' => $err[0]
+                );
+            $curpos = $pos + strlen($tok);
         }
-        return $errs;
+        if ($curpos < strlen($this->expr)) {
+            $parts[] = array(
+                'OkString' => substr($this->expr, $curpos, strlen($this->expr) - $curpos),
+                'BadString' => '',
+                'msg' => ''
+            );
+        }
+        $msg = '';
+        $errSpecificStyle= "style='border-style: solid; border-width: 2px; border-color: red;'";
+        $errGeneralStyle = "style='background-color: yellow;'";
+        foreach ($parts as $part)
+        {
+            $msg .= $part['OkString'];
+            if (isset($part['BadString']) && strlen($part['BadString']) > 0)
+            {
+                if (strlen($part['msg']) > 0) {
+                    $msg .= "<span title='" . $part['msg'] . "' " . $errSpecificStyle . ">" . $part['BadString'] . "</span>";
+                }
+                else {
+                    $msg .= "<span " . $errSpecificStyle . ">" . $part['BadString'] . "</span>";
+                }
+            }
+        }
+        $extraErrs = implode("; ", $generalErrs);
+        $msg = "<span title='" . $extraErrs . "' " . $errGeneralStyle . ">" . $msg . "</span>";
+        return $msg;
     }
     
     /**
@@ -1075,7 +1121,7 @@ class ExpressionManager {
                     --$nesting;
                     if ($nesting < 0)
                     {
-                        $this->AddError("Extra ')' detected", $token);
+                        $this->AddError("Extra right parentheses detected", $token);
                     }
                     break;
                 case 'WORD':
@@ -1168,8 +1214,8 @@ class ExpressionManager {
                 }
                 else 
                 {
-                    // show original and errors in-line?
-                    $resolvedParts[] = '[' . $stringPart[0] . ':' . implode(';',$this->GetReadableErrors()) . ']';
+                    // show original and errors in-line
+                    $resolvedParts[] = $this->GetReadableErrors();
                 }
             }
         }
@@ -1467,7 +1513,7 @@ EOD;
     {
         // Comprehensive test cases for tokenizing
         $tests = <<<EOD
-        String:  "Can strings contain embedded \"quoted passages\" (and parenthesis + other characters?)?"
+        String:  "Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"
         String:  "can single quoted strings" . 'contain nested \'quoted sections\'?';
         Parens:  upcase('hello');
         Numbers:  42 72.35 -15 +37 42A .5 0.7
@@ -1785,21 +1831,12 @@ EOD;
             else {
                 print "<td>&nbsp;</td>\n";
             }
-            $errs = $em->GetReadableErrors();
-            $errStatus = 'ok';
-            if (is_array($errs) and count($errs) > 0) {
-                if ($expectedResult != "NULL")
-                {
-                    $errStatus = 'error'; // should have been error free
-                }
-                print "<td class='" . $errStatus . "'>" . implode("<br/>\n", $errs) . "</td>\n";
+            $errString = $em->GetReadableErrors();
+            if (strlen($errString) > 0) {
+                print "<td>" . $errString . "</td>\n";
             }
             else {
-                if ($expectedResult == "NULL")
-                {
-                    $errStatus = 'error'; // should have had errors
-                }
-                print "<td class='" . $errStatus . "'>&nbsp;</td>\n";
+                print "<td>&nbsp;</td>\n";
             }
             print '</tr>';
         }
@@ -1879,5 +1916,21 @@ function exprmgr_list($args)
     return implode(",",$args);
 }
 
+function cmpErrorTokens($a, $b)
+{
+    if (is_null($a[1])) {
+        if (is_null($b[1])) {
+            return 0;
+        }
+        return 1;
+    }
+    if (is_null($b[1])) {
+        return -1;
+    }
+    if ($a[1][1] == $b[1][1]) {
+        return 0;
+    }
+    return ($a[1][1] < $b[1][1]) ? -1 : 1;
+}
 
 ?>
