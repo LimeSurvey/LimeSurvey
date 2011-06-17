@@ -1191,13 +1191,10 @@ class ExpressionManager {
      * @param <type> $src 
      */
 
-    public function sProcessStringContainingExpressions($src, $recurseDepth=0)
+    public function sProcessStringContainingExpressions($src)
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $stringParts = $this->asSplitStringOnExpressions($src);
-        if (count($stringParts) <= 1 or $recurseDepth >= 5) {
-            return $src;
-        }
 
         $resolvedParts = array();
         $this->allVarsUsed = array();

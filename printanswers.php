@@ -227,8 +227,8 @@ foreach ($aFullResponseTable as $sFieldname=>$fname)
             $pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
             $pdf->ln(2);
         }
-            else
-            {
+        else
+        {
             $printoutput .= "\t<tr class='printanswersquestion'><td>{$fname[0]} {$fname[1]}</td><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
         }
     }
@@ -258,7 +258,7 @@ if(isset($_POST['printableexport']))
          
         header("Content-Disposition: Attachment; filename=\"". $sExportFileName ."-".$surveyid.".pdf\"");
          
-			$pdf->Output($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
+		$pdf->Output($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
 		header("Content-Length: ". filesize($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf"));
 		readfile($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf");
 		unlink($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf");
@@ -278,7 +278,7 @@ if(!isset($_POST['printableexport']))
     doHeader();
 
     echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/startpage.pstpl'));
-    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput));
+    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>templatereplace($printoutput)));
     echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/endpage.pstpl'));
     echo "</body></html>";
 }
