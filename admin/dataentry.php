@@ -997,7 +997,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                         break;
                     case "|": //FILE UPLOAD
                         $dataentryoutput .= "<table>\n";
-                        if ($fname['aid']!=='filecount')
+                        if ($fname['aid']!=='filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0))
                         {//file metadata
                             $metadata = json_decode($idrow[$fname['fieldname']], true);
                             $qAttributes = getQuestionAttributes($fname['qid']);
