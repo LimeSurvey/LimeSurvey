@@ -500,7 +500,7 @@ function createinsertquery()
                     // if the files have not been saved already,
                     // move the files from tmp to the files folder
                     
-                    if (file_exists("tmp/upload/".$phparray[0]->filename))
+                    if (!is_null($phparray) && count($phparray) > 0 && file_exists("tmp/upload/".$phparray[0]->filename))
                     {
                         // move files from temp to files directory
                         $tmp = "tmp/upload/";
