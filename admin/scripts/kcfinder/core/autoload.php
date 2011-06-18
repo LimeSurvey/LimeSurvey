@@ -34,7 +34,7 @@ if (session_id() == "") @session_start();
 
 $_SESSION['KCFINDER'] = array();
 
-$sAllowedExtensions	= implode(' ',array_map('trim',explode(' ',$allowedresourcesuploads)));
+$sAllowedExtensions	= implode(' ',array_map('trim',explode(',',$allowedresourcesuploads)));
 $_SESSION['KCFINDER']['types']=array('files'=>$sAllowedExtensions,
                                      'flash'=>$sAllowedExtensions,
                                      'images'=>$sAllowedExtensions);
@@ -58,8 +58,8 @@ if ($demoModeOnly === false &&
         if(bHasSurveyPermission($surveyid,'surveycontent','update'))
         {
             $_SESSION['KCFINDER']['disabled'] = false ;
-            $_SESSION['KCFINDER']['UploadURL'] = "{$relativeurl}/upload/surveys/{$surveyid}/" ;
-            $_SESSION['KCFINDER']['UploadDir'] = $uploaddir.'/surveys/'.$surveyid;
+            $_SESSION['KCFINDER']['uploadURL'] = "{$relativeurl}/upload/surveys/{$surveyid}/" ;
+            $_SESSION['KCFINDER']['uploadDir'] = $uploaddir.'/surveys/'.$surveyid;
         }
 
     }
@@ -71,8 +71,8 @@ if ($demoModeOnly === false &&
         if ($_SESSION['USER_RIGHT_MANAGE_LABEL']==1 && isset($labelid) && $labelid != '')
         {
             $_SESSION['KCFINDER']['disabled'] = false ;
-            $_SESSION['KCFINDER']['UploadURL'] = "{$relativeurl}/upload/labels/{$labelid}/" ;
-            $_SESSION['KCFINDER']['UploadDir'] = "{$uploaddir}/labels/{$labelid}" ;
+            $_SESSION['KCFINDER']['uploadURL'] = "{$relativeurl}/upload/labels/{$labelid}/" ;
+            $_SESSION['KCFINDER']['uploadDir'] = "{$uploaddir}/labels/{$labelid}" ;
         }
     }
 

@@ -31,7 +31,7 @@ class dTexts
 //		}
 //		return $text;
         return LimeExpressionManager::ProcessString($text);
-	}
+			}
 	
 	/**
 	 * Loader for the adequate "worker" class

@@ -103,7 +103,7 @@ $search_for = '{INSERTANS';
 if(strpos($question['text'],$search_for)!==false){
     $pattern_text = '/{([A-Z])*:([0-9])*X([0-9])*X([0-9])*}/';
     $replacement_text = $clang->gT('[Dependency on another question (ID $4)]');
-    $text = preg_replace($pattern_text,$replacement_text,$question['text']);    
+    $text = preg_replace($pattern_text,$replacement_text,$question['text']);
     $question['text']=$text;
 }
 
@@ -117,19 +117,19 @@ else
 };
 
 $content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
-$content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">'; 
+$content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">';
 $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 
 $question_template = file_get_contents("$thistpl/question.pstpl");
 if(substr_count($question_template , '{QUESTION_ESSENTIALS}') > 0 ) // the following has been added for backwards compatiblity.
 {// LS 1.87 and newer templates
-$content .= "\n".templatereplace($question_template)."\n";
+    $content .= "\n".templatereplace($question_template)."\n";
 }
 else
 {// LS 1.86 and older templates
-$content .= '<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
-$content .= "\n".templatereplace($question_template)."\n";
-$content .= "\n\t</div>\n";
+    $content .= '<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
+    $content .= "\n".templatereplace($question_template)."\n";
+    $content .= "\n\t</div>\n";
 };
 
 $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;

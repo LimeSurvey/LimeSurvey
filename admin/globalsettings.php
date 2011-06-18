@@ -264,6 +264,7 @@ function globalsettingsdisplay()
 
                     ;
 
+
             // End General TAB
 
             $editsurvey .= "\t</ul></div>\n";

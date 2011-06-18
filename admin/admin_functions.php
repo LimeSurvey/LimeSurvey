@@ -106,8 +106,8 @@ function bHasFileUploadQuestion($surveyid) {
 
     foreach ($fieldmap as $field) {
         if (isset($field['type']) &&  $field['type'] === '|') return true;
-        }
     }
+}
 
 /**
  * Returns true if a user has global permission for a certain action. Available permissions are
@@ -324,7 +324,7 @@ function getAdminHeader($meta=false)
     if (!isset($_SESSION['adminlang']) || $_SESSION['adminlang']=='') {$_SESSION['adminlang']=$defaultlang;}
     $strAdminHeader="<?xml version=\"1.0\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
     ."<html ";
-
+	
     if (getLanguageRTL($_SESSION['adminlang']))
     {
         $strAdminHeader.=" dir=\"rtl\" ";
@@ -378,7 +378,6 @@ function getAdminHeader($meta=false)
                                var userlanguage='".$_SESSION['adminlang']."';
                            </script>";
     }
-
     // Prepare flashmessage
     if (isset($_SESSION['flashmessage']) && $_SESSION['flashmessage']!='')
     {
@@ -406,4 +405,3 @@ function getAdminHeader($meta=false)
     $strAdminHeader .="<div class='maintitle'>{$sitename}</div>\n";
     return $strAdminHeader;
 }
-

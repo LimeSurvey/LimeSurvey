@@ -125,7 +125,7 @@ if (!isset($_SESSION['loginID']))
                     $result = $connect->query($query) or safe_die ($query."<br />".$connect->ErrorMsg());
 
                 }
-                
+
             }
             if(!$bCannotLogin){
                 $query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
@@ -176,8 +176,6 @@ if (!isset($_SESSION['loginID']))
                         $_SESSION['user'] = $fields['users_name'];
                         $_SESSION['full_name'] = $fields['full_name'];
                         $_SESSION['htmleditormode'] = $fields['htmleditormode'];
-                        $_SESSION['templateeditormode'] = $fields['templateeditormode'];
-                        $_SESSION['questionselectormode'] = $fields['questionselectormode'];
                         $_SESSION['dateformat'] = $fields['dateformat'];
                         // Compute a checksession random number to test POSTs
                         $_SESSION['checksessionpost'] = sRandomChars(10);
@@ -250,7 +248,7 @@ if (!isset($_SESSION['loginID']))
                                 $loginsummary .= sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($timeOutTime/60))."<br />";
                             $loginsummary .= "<br /><a href='$scriptname'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                         }
-                    
+
                     }
                 }
 
@@ -288,7 +286,7 @@ if (!isset($_SESSION['loginID']))
         }
 
         include("database.php");
-        $query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode,questionselectormode, templateeditormode,  dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
+        $query = "SELECT uid, users_name, password, parent_id, email, lang, htmleditormode, dateformat FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($mappeduser);
         $ADODB_FETCH_MODE = ADODB_FETCH_ASSOC; //Checked
         $result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
         if ($result->RecordCount() < 1)
@@ -383,8 +381,6 @@ if (!isset($_SESSION['loginID']))
             $_SESSION['user'] = $fields['users_name'];
             $_SESSION['adminlang'] = $fields['lang'];
             $_SESSION['htmleditormode'] = $fields['htmleditormode'];
-            $_SESSION['questionselectormode'] = $fields['questionselectormode'];
-            $_SESSION['templateeditormode'] = $fields['templateeditormode'];
             $_SESSION['dateformat'] = $fields['dateformat'];
             $_SESSION['checksessionpost'] = sRandomChars(10);
             $_SESSION['pw_notify']=false;
@@ -471,7 +467,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
                 }
                 else
                 {
-                    $body .= $clang->gT("Password") . ": " . $clang->gT("Please ask your password to your LimeSurvey administrator") . "<br />\n";
+                    $body .= $clang->gT("Password") . ": " . $clang->gT("Please ask your LimeSurvey administrator for your password.") . "<br />\n";
                 }
             }
 
@@ -543,7 +539,7 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
 
                 $current_user = $_SESSION['loginID'];
                 if($result->RecordCount() == 2) {
-                    
+
                     $action = "finaldeluser";
                     while($rows = $result->FetchRow()){
                             $intUid = $rows['uid'];
@@ -619,9 +615,9 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
                     $addsummary .= "</select><input type='hidden' name='uid' value='$postuserid'>";
                     $addsummary .= "<input type='hidden' name='user' value='$postuser'>";
                     $addsummary .= "<input type='hidden' name='action' value='finaldeluser'><br /><br />";
-                    $addsummary .= "<input type='submit' value='".$clang->gT("Delete User")."'></form>"; 
+                    $addsummary .= "<input type='submit' value='".$clang->gT("Delete User")."'></form>";
                 }
-                
+
             }
             else
             {
@@ -770,7 +766,7 @@ elseif ($action == "userrights")
                 $adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
                 $adminresult = db_select_limit_assoc($adminquery, 1);
                 $row=$adminresult->FetchRow();
-                 
+
                 if($row['uid'] == $_SESSION['loginID'])	// it's the original superadmin !!!
                 {
                     $rights['superadmin']=1;
@@ -863,7 +859,7 @@ function getInitialAdmin_uid()
 
 function fGetLoginAttemptUpdateQry($la,$sIp)
 {
-    $timestamp = date("Y-m-d H:m:s");    
+    $timestamp = date("Y-m-d H:m:s");
     if ($la)
         $query = "UPDATE ".db_table_name('failed_login_attempts')
                  ." SET number_attempts=number_attempts+1, last_attempt = '$timestamp' WHERE ip='$sIp'";
@@ -880,7 +876,7 @@ function getUserNameFromUid($uid){
 
     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
 
-    
+
     if($result->RecordCount() > 0) {
         while($rows = $result->FetchRow()){
             return $rows['users_name'];

@@ -4442,7 +4442,7 @@ msgstr "Acest sondaj a fost şters."
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:164
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:196
 #, fuzzy
-msgid "Firstname from token"
+msgid "First name from token"
 msgstr "Prenumele din jetoane"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:123

@@ -2011,7 +2011,7 @@ msgstr "Exportar um arquivo de questionário VV"
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:43
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:60
 msgid "Iterate survey"
-msgstr "Repetir questionário"
+msgstr "Repetir questionário "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:63
 msgid "The defined LimeSurvey database does not exist"
@@ -4506,7 +4506,7 @@ msgstr "O questionário foi apagado."
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:147
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:164
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:196
-msgid "Firstname from token"
+msgid "First name from token"
 msgstr "Primeiro nome do código de acesso"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:123

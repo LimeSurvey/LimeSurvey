@@ -1078,6 +1078,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 {
     global $connect, $dbprefix, $clang, $timeadjust;
 
+    $results['error']=false;
     if ($sXMLdata == NULL)
     {
         $xml = simplexml_load_file($sFullFilepath);
@@ -1090,6 +1091,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     {
         $results['error'] = $clang->gT("This is not a valid LimeSurvey survey structure XML file.");
         return $results;
+    }
+    else 
+    {
+        //$results['error'] = $clang->gT("This is VALID LimeSurvey survey structure XML file.");
+        //echo $clang->gT("This is VALID LimeSurvey survey structure XML file.");
+        //return $results;
     }
     $dbversion = (int) $xml->DBVersion;
     $aQIDReplacements=array();

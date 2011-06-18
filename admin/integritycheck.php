@@ -17,7 +17,7 @@
 include_once("login_check.php");
 if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
 {
-    // THIS FILE CHECKS THE CONSISTENCY OF THE DATABASE, IT LOOKS FOR
+    // THIS FILE CHECKS THE CONSISTENCY OF THE DATABASE, IT "LOOKS FOR
     // STRAY QUESTIONS, ANSWERS, CONDITIONS OR GROUPS AND DELETES THEM
     $ok=returnglobal('ok');
 
@@ -451,12 +451,12 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                     $jq="SELECT * FROM ".$tablename;
                     $jqresult=$connect->execute($jq) or safe_die($query." failed");
                     $jqcount=$jqresult->RecordCount();
-                    if($jqcount == 0) 
-                    {
+                    if($jqcount == 0) {
                         $oldsoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s"), $sid, $date);
-                    } else 
-                    {
+                        //				     $oldsoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
+                    } else {
                         $oldsmultidelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s)"), $sid, $date, $jqcount);
+                        //				     $oldsmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
                     }
                 }
             }
@@ -519,9 +519,11 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                     $jqresult=$connect->execute($jq) or safe_die($query." failed");
                     $jqcount=$jqresult->RecordCount();
                     if($jqcount == 0) {
+                        //				     $oldtoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
                         $oldtoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s"), $sid, $date);
                     } else {
                         $oldtmultidelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s)"), $sid, $date, $jqcount);
+                        //				     $oldtmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
                     }
                 }
             }

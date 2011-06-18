@@ -14,7 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	CKEDITOR.plugins.add( 'limereplacementfields',
 	{
 		requires : [ 'dialog' ],
-		lang : [ 'en'],
+		lang : [ 'en','de','fr'],
 		init : function( editor )
 		{
 			var lang = editor.lang.limereplacementfields;

@@ -33,8 +33,8 @@ if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep+1;}
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 $notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys($move));
 
-//CHECK INPUT
-$notvalidated=aCheckInput($move);
+//CHECK PREGS
+$notvalidated=checkpregs($move);
 
 //CHECK UPLOADED FILES
 $filenotvalidated = checkUploadedFileValidity($move);
@@ -162,7 +162,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
             submittokens();
         }
 
-        //Send notification to survey administrator 
+        //Send notification to survey administrator
         SendSubmitNotifications();
 
         $_SESSION['finished']=true;
@@ -333,6 +333,7 @@ echo "\n<!-- INPUT NAMES -->\n"
 ."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"
 .implode("|", $inputnames)
 ."' />\n";
+echo sDefaultSubmitHandler();
 
 // <-- END FEATURE - SAVE
 
@@ -382,7 +383,7 @@ print <<<END
 
 	function checkconditions(value, name, type)
 	{
-    
+
 END;
 
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
@@ -706,22 +707,23 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
         $qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
         if ($attralist['type'] == "M" || $attralist['type'] == "P")
         {
-            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
-            $tqresult = db_execute_assoc($tqquery); //Checked   
+            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+            $tqresult = db_execute_assoc($tqquery); //Checked
             $OrigQuestion = $tqresult->FetchRow();
-            
+
             if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
             {
-                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
             } else {
-                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid != 0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
             }
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
+
             while ($fansrows = $qresult->FetchRow())
             {
                 if($fansrows['other']=="Y") $other="Y";
-                if(strpos($array_filter_types, $fansrows['type']) === false) {} else
+                if(strpos($array_filter_types, $OrigQuestion['type']) === false) {} else
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
                     $tbody = "javatbd".$qbase.$fansrows['title'];
@@ -789,22 +791,22 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
         $qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
         if ($attralist['type'] == "M" || $attralist['type'] == "P")
         {
-            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
-            $tqresult = db_execute_assoc($tqquery); //Checked   
+            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+            $tqresult = db_execute_assoc($tqquery); //Checked
             $OrigQuestion = $tqresult->FetchRow();
-            
+
             if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
             {
-                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
             } else {
-                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
-            } 
+                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
+            }
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
             while ($fansrows = $qresult->FetchRow())
             {
                 if($fansrows['other']== "Y") $other="Y";
-                if(strpos($array_filter_exclude_types, $fansrows['type']) === false) {} else
+                if(strpos($array_filter_exclude_types, $OrigQuestion['type']) === false) {} else
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
                     $tbody = "javatbd".$qbase.$fansrows['title'];

@@ -388,8 +388,6 @@ CREATE TABLE [prefix_users] (
   [manage_template] TINYINT NOT NULL default '0',
   [manage_label] TINYINT NOT NULL default '0',
   [htmleditormode] char(7) default 'default',
-  [templateeditormode] char(7) default 'default',
-  [questionselectormode] char(7) default 'default',
   [one_time_pw] TEXT NULL,
   [dateformat] INT NOT NULL DEFAULT 1
 );
@@ -447,7 +445,7 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '146');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '145');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 

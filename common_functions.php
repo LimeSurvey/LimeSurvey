@@ -2817,7 +2817,7 @@ function templatereplace($line, $replacements=array())
     if (stripos($line, "</head>"))
     {
         $line = str_ireplace("</head>",
-                        "<script type=\"text/javascript\" src=\"$rooturl/scripts/survey_runtime.js\"></script>\n"
+            "<script type=\"text/javascript\" src=\"$rooturl/scripts/survey_runtime.js\"></script>\n"
                         . use_firebug()
                         . "\t</head>", $line);
     }
@@ -2853,11 +2853,11 @@ function templatereplace($line, $replacements=array())
     }
 
     if (
-            $showgroupinfo == 'both' ||
-            $showgroupinfo == 'name' ||
-            ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
-            ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-            ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
+        $showgroupinfo == 'both' ||
+	    $showgroupinfo == 'name' ||
+	    ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
+	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
+	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
     )
     {
         $groupname_replacement = $groupname;
@@ -2867,11 +2867,11 @@ function templatereplace($line, $replacements=array())
         $groupname_replacement = '';
     };
     if (
-            $showgroupinfo == 'both' ||
-            $showgroupinfo == 'description' ||
-            ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
-            ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-            ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
+        $showgroupinfo == 'both' ||
+	    $showgroupinfo == 'description' ||
+	    ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
+	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
+	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
     )
     {
         $groupdescription_replacement = $groupdescription;
@@ -2895,9 +2895,9 @@ function templatereplace($line, $replacements=array())
         $question_class = $question['class'];
         $question_man_class = $question['man_class'];
         $question_input_error_class = $question['input_error_class'];
-    }
-    else
-    {
+        }
+        else
+        {
         $question_replacement = $question;
         $question_text = '';
         $question_help = '';
@@ -2913,11 +2913,11 @@ function templatereplace($line, $replacements=array())
     };
 
     if (
-            $showqnumcode == 'both' ||
-            $showqnumcode == 'number' ||
-            ($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
-            ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
-            ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'N')
+        $showqnumcode == 'both' ||
+	    $showqnumcode == 'number' ||
+	    ($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
+	    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
+	    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'N')
     )
     {
         $question_number = $question['number'];
@@ -2927,11 +2927,11 @@ function templatereplace($line, $replacements=array())
         $question_number = '';
     };
     if (
-            $showqnumcode == 'both' ||
-            $showqnumcode == 'code' ||
-            ($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
-            ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
-            ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'C')
+        $showqnumcode == 'both' ||
+	    $showqnumcode == 'code' ||
+	    ($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
+	    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
+	    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'C')
     )
     {
         $question_code = $question['code'];
@@ -2943,9 +2943,9 @@ function templatereplace($line, $replacements=array())
 
     $totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
     if (
-            $showXquestions == 'show' ||
-            ($showXquestions == 'choose' && !isset($thissurvey['showXquestions'])) ||
-            ($showXquestions == 'choose' && $thissurvey['showXquestions'] == 'Y')
+      $showXquestions == 'show' ||
+      ($showXquestions == 'choose' && !isset($thissurvey['showXquestions'])) ||
+      ($showXquestions == 'choose' && $thissurvey['showXquestions'] == 'Y')
     )
     {
         if ($totalquestionsAsked < 1)
@@ -2959,7 +2959,7 @@ function templatereplace($line, $replacements=array())
         else
         {
             $therearexquestions = $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey.");    //Note this line MUST be before {NUMBEROFQUESTIONS}
-        };
+	};
     }
     else
     {
@@ -2969,16 +2969,16 @@ function templatereplace($line, $replacements=array())
     // Hack - just replace {THEREAREXQUESTIONS}.  ExpressionManager replaces too much otherwise; but sure can specify which subsets to replace if several passes needed
     if (strpos($line,'{THEREAREXQUESTIONS}')) {
         $line = str_replace('{THEREAREXQUESTIONS}', $therearexquestions, $line);
-    }
+        }
 
     if (isset($token))
     {
         $token_replacement = $token;
-    }
+        }
     elseif (isset($clienttoken))
     {
         $token_replacement = htmlentities($clienttoken, ENT_QUOTES, 'UTF-8');
-    }
+        }
     else
     {
         $token_replacement = '';
@@ -2995,11 +2995,11 @@ function templatereplace($line, $replacements=array())
     {
         $datetimeobj = new Date_Time_Converter($thissurvey['expiry'], "Y-m-d");
         $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
-    }
+            }
     else
     {
         $dateoutput = '-';
-    }
+            }
     $submitbutton = "<input class='submit' type='submit' value=' " . $clang->gT("Submit") . " ' name='move2' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" />";
     if (isset($thissurvey['surveyls_url']) and $thissurvey['surveyls_url'] != "")
     {
@@ -3010,7 +3010,7 @@ function templatereplace($line, $replacements=array())
         else
         {
             $linkreplace = "<a href='{$thissurvey['surveyls_url']}'>{$thissurvey['surveyls_url']}</a>";
-        }
+    }
     }
     else
     {
@@ -3037,11 +3037,11 @@ function templatereplace($line, $replacements=array())
 
     $clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
             . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {window.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=" . $s_lang_replacement;
-    if (returnglobal('token'))
-    {
+        if (returnglobal('token'))
+        {
         $clearall .= "&amp;token=" . urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
-    }
-    $clearall .= "', '_top')}\" />";
+        }
+        $clearall .= "', '_top')}\" />";
 
     if (isset($_SESSION['datestamp']))
     {
@@ -3050,76 +3050,76 @@ function templatereplace($line, $replacements=array())
     else
     {
         $datestamp_replacement = '-';
-    }
-    //Set up save/load feature
+        }
+        //Set up save/load feature
     if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
-    {
-        // Find out if the user has any saved data
+        {
+            // Find out if the user has any saved data
 
         if ($thissurvey['format'] == 'A')
-        {
-            if ($thissurvey['tokenanswerspersistence'] != 'Y')
             {
+            if ($thissurvey['tokenanswerspersistence'] != 'Y')
+                {
                 $saveall = "\t\t\t<input type='submit' name='loadall' value='" . $clang->gT("Load Unfinished Survey") . "' class='saveall' " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>"
                         . "\n\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume Later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
-            }
-            else
-            {
+                }
+                else
+                {
                 $saveall = "\t\t\t<input type='button' name='saveallbtn' value='" . $clang->gT("Resume Later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
-            };
-        }
+        	};
+            }
         elseif (!isset($_SESSION['step']) || !$_SESSION['step'])
         {  //First page, show LOAD
             if ($thissurvey['tokenanswerspersistence'] != 'Y')
             {
                 $saveall = "\t\t\t<input type='submit' name='loadall' value='" . $clang->gT("Load Unfinished Survey") . "' class='saveall' " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";
+                }
+		else
+		{
+                    $saveall = '';
+		};
             }
-            else
-            {
-                $saveall = '';
-            };
-        }
         elseif (isset($_SESSION['scid']) && (isset($move) && $move == "movelast"))
         {  //Already saved and on Submit Page, dont show Save So Far button
             $saveall = '';
-        }
-        else
-        {
-            $saveall = "<input type='button' name='saveallbtn' value='" . $clang->gT("Resume Later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
-        }
-    }
-    else
-    {
-        $saveall = "";
-    }
-
-    $templatecss = "<link rel='stylesheet' type='text/css' href='{$templateurl}template.css' />\n";
-    if (getLanguageRTL($clang->langcode))
-    {
-        $templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}template-rtl.css' />\n";
-    }
-
-    if (FlattenText($help, true) != '')
-    {
-        If (!isset($helpicon))
-        {
-            if (file_exists($templatedir . '/help.gif'))
-            {
-
-                $helpicon = $templateurl . 'help.gif';
-            }
-            elseif (file_exists($templatedir . '/help.png'))
-            {
-
-                $helpicon = $templateurl . 'help.png';
             }
             else
             {
-                $helpicon = $imageurl . "/help.gif";
+            $saveall = "<input type='button' name='saveallbtn' value='" . $clang->gT("Resume Later") . "' class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" " . (($thissurvey['active'] != "Y") ? "disabled='disabled'" : "") . "/>";  // Show Save So Far button
             }
         }
+        else
+        {
+        $saveall = "";
+        }
+
+    $templatecss = "<link rel='stylesheet' type='text/css' href='{$templateurl}template.css' />\n";
+        if (getLanguageRTL($clang->langcode))
+        {
+            $templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}template-rtl.css' />\n";
+        }
+
+    if (FlattenText($help, true) != '')
+        {
+            If (!isset($helpicon))
+            {
+            if (file_exists($templatedir . '/help.gif'))
+                {
+
+                $helpicon = $templateurl . 'help.gif';
+                }
+            elseif (file_exists($templatedir . '/help.png'))
+                {
+
+                $helpicon = $templateurl . 'help.png';
+                }
+                else
+                {
+                $helpicon = $imageurl . "/help.gif";
+                }
+            }
         $questionhelp = '';
-    }
+        }
     else
     {
         $questionhelp = $help;
@@ -3127,12 +3127,12 @@ function templatereplace($line, $replacements=array())
 
     if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N")
     {
-        $strreview = "";
-    }
+            $strreview = "";
+        }
     else
     {
         $strreview = $clang->gT("If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses.");
-    }
+        }
 
     if (isset($thissurvey['active']) and $thissurvey['active'] == "N")
     {
@@ -3141,9 +3141,9 @@ function templatereplace($line, $replacements=array())
             $replacetext.="&amp;lang=" . $s_lang;
         $replacetext.="'>" . $clang->gT("Restart this Survey") . "</a>";
     } else
-    {
-        $restart_extra = "";
-        $restart_token = returnglobal('token');
+        {
+            $restart_extra = "";
+            $restart_token = returnglobal('token');
         if (!empty($restart_token))
             $restart_extra .= "&amp;token=" . urlencode($restart_token);
         else
@@ -3151,21 +3151,21 @@ function templatereplace($line, $replacements=array())
         if (!empty($_GET['lang']))
             $restart_extra .= "&amp;lang=" . returnglobal('lang');
         $replacetext = "<a href='{$publicurl}/index.php?sid=$surveyid" . $restart_extra . "'>" . $clang->gT("Restart this Survey") . "</a>";
-    }
+        }
     if (isset($thissurvey['anonymized']) && $thissurvey['anonymized'] == 'Y')
     {
         $savealert = $clang->gT("To remain anonymous please use a pseudonym as your username, also an email address is not required.");
-    }
-    else
-    {
+        }
+        else
+        {
         $savealert = "";
-    }
+        }
 
-    $savereturn = "<a href='$relativeurl/index.php?sid=$surveyid";
-    if (returnglobal('token'))
-    {
+        $savereturn = "<a href='$relativeurl/index.php?sid=$surveyid";
+        if (returnglobal('token'))
+        {
         $savereturn.= "&amp;token=" . urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
-    }
+        }
     $savereturn .= "'>" . $clang->gT("Return To Survey") . "</a>";
 
     $saveform = "<table><tr><td align='right'>" . $clang->gT("Name") . ":</td><td><input type='text' name='savename' value='";
@@ -3173,115 +3173,115 @@ function templatereplace($line, $replacements=array())
     {
         $saveform .= html_escape(auto_unescape($_POST['savename']));
     }
-    $saveform .= "' /></td></tr>\n"
+        $saveform .= "' /></td></tr>\n"
             . "<tr><td align='right'>" . $clang->gT("Password") . ":</td><td><input type='password' name='savepass' value='";
     if (isset($_POST['savepass']))
     {
         $saveform .= html_escape(auto_unescape($_POST['savepass']));
     }
-    $saveform .= "' /></td></tr>\n"
+        $saveform .= "' /></td></tr>\n"
             . "<tr><td align='right'>" . $clang->gT("Repeat Password") . ":</td><td><input type='password' name='savepass2' value='";
     if (isset($_POST['savepass2']))
     {
         $saveform .= html_escape(auto_unescape($_POST['savepass2']));
     }
-    $saveform .= "' /></td></tr>\n"
+        $saveform .= "' /></td></tr>\n"
             . "<tr><td align='right'>" . $clang->gT("Your Email") . ":</td><td><input type='text' name='saveemail' value='";
     if (isset($_POST['saveemail']))
     {
         $saveform .= html_escape(auto_unescape($_POST['saveemail']));
     }
-    $saveform .= "' /></td></tr>\n";
+        $saveform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('saveandloadscreen', $thissurvey['usecaptcha']))
-    {
+        {
         $saveform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php?sid=$surveyid' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
-    }
-    $saveform .= "<tr><td align='right'></td><td></td></tr>\n"
+        }
+        $saveform .= "<tr><td align='right'></td><td></td></tr>\n"
             . "<tr><td></td><td><input type='submit'  id='savebutton' name='savesubmit' value='" . $clang->gT("Save Now") . "' /></td></tr>\n"
-            . "</table>";
+        . "</table>";
 
     $loadform = "<table><tr><td align='right'>" . $clang->gT("Saved name") . ":</td><td><input type='text' name='loadname' value='";
     if ($loadname)
     {
         $loadform .= html_escape(auto_unescape($loadname));
     }
-    $loadform .= "' /></td></tr>\n"
+        $loadform .= "' /></td></tr>\n"
             . "<tr><td align='right'>" . $clang->gT("Password") . ":</td><td><input type='password' name='loadpass' value='";
     if (isset($loadpass))
     {
         $loadform .= html_escape(auto_unescape($loadpass));
     }
-    $loadform .= "' /></td></tr>\n";
+        $loadform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('saveandloadscreen', $thissurvey['usecaptcha']))
-    {
+        {
         $loadform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php?sid=$surveyid' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
-    }
+        }
 
-    $loadform .="<tr><td align='right'></td><td></td></tr>\n"
+        $loadform .="<tr><td align='right'></td><td></td></tr>\n"
             . "<tr><td></td><td><input type='submit' id='loadbutton' value='" . $clang->gT("Load Now") . "' /></td></tr></table>\n";
 
     $registerform = "<form method='post' action='{$publicurl}/register.php'>\n";
-    if (!isset($_REQUEST['lang']))
-    {
-        $reglang = GetBaseLanguageFromSurveyID($surveyid);
-    }
-    else
-    {
-        $reglang = returnglobal('lang');
-    }
+        if (!isset($_REQUEST['lang']))
+        {
+            $reglang = GetBaseLanguageFromSurveyID($surveyid);
+        }
+        else
+        {
+            $reglang = returnglobal('lang');
+        }
     $registerform .= "<input type='hidden' name='lang' value='" . $reglang . "' />\n";
-    $registerform .= "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+        $registerform .= "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 
-    $registerform.="<table class='register' summary='Registrationform'>\n"
+        $registerform.="<table class='register' summary='Registrationform'>\n"
             . "<tr><td align='right'>"
             . $clang->gT("First name") . ":</td>"
             . "<td align='left'><input class='text' type='text' name='register_firstname'";
-    if (isset($_POST['register_firstname']))
-    {
+        if (isset($_POST['register_firstname']))
+        {
         $registerform .= " value='" . htmlentities(returnglobal('register_firstname'), ENT_QUOTES, 'UTF-8') . "'";
-    }
-    $registerform .= " /></td></tr>"
+        }
+        $registerform .= " /></td></tr>"
             . "<tr><td align='right'>" . $clang->gT("Last name") . ":</td>\n"
             . "<td align='left'><input class='text' type='text' name='register_lastname'";
-    if (isset($_POST['register_lastname']))
-    {
+        if (isset($_POST['register_lastname']))
+        {
         $registerform .= " value='" . htmlentities(returnglobal('register_lastname'), ENT_QUOTES, 'UTF-8') . "'";
-    }
-    $registerform .= " /></td></tr>\n"
+        }
+        $registerform .= " /></td></tr>\n"
             . "<tr><td align='right'>" . $clang->gT("Email address") . ":</td>\n"
             . "<td align='left'><input class='text' type='text' name='register_email'";
-    if (isset($_POST['register_email']))
-    {
+        if (isset($_POST['register_email']))
+        {
         $registerform .= " value='" . htmlentities(returnglobal('register_email'), ENT_QUOTES, 'UTF-8') . "'";
-    }
-    $registerform .= " /></td></tr>\n";
+        }
+        $registerform .= " /></td></tr>\n";
 
 
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('registrationscreen', $thissurvey['usecaptcha']))
-    {
+        {
         $registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php?sid=$surveyid' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
-    }
+        }
 
 
-    /*      if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
-      {
-      $registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
-      ."<td align='left'><input class='text' type='text' name='register_attribute1'";
-      if (isset($_POST['register_attribute1']))
-      {
-      $registerform .= " value='".htmlentities(returnglobal('register_attribute1'),ENT_QUOTES,'UTF-8')."'";
-      }
-      $registerform .= " /></td></tr>\n";
-      }
-      if(isset($thissurvey['attribute2']) && $thissurvey['attribute2'])
-      {
-      $registerform .= "<tr><td align='right'>".$thissurvey['attribute2'].":</td>\n"
-      ."<td align='left'><input class='text' type='text' name='register_attribute2'";
-      if (isset($_POST['register_attribute2']))
-      {
-      $registerform .= " value='".htmlentities(returnglobal('register_attribute2'),ENT_QUOTES,'UTF-8')."'";
-      }
-      $registerform .= " /></td></tr>\n";
+        /*      if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
+         {
+         $registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
+         ."<td align='left'><input class='text' type='text' name='register_attribute1'";
+         if (isset($_POST['register_attribute1']))
+         {
+         $registerform .= " value='".htmlentities(returnglobal('register_attribute1'),ENT_QUOTES,'UTF-8')."'";
+         }
+         $registerform .= " /></td></tr>\n";
+         }
+         if(isset($thissurvey['attribute2']) && $thissurvey['attribute2'])
+         {
+         $registerform .= "<tr><td align='right'>".$thissurvey['attribute2'].":</td>\n"
+         ."<td align='left'><input class='text' type='text' name='register_attribute2'";
+         if (isset($_POST['register_attribute2']))
+         {
+         $registerform .= " value='".htmlentities(returnglobal('register_attribute2'),ENT_QUOTES,'UTF-8')."'";
+         }
+         $registerform .= " /></td></tr>\n";
       } */
     $registerform .= "<tr><td></td><td><input id='registercontinue' class='submit' type='submit' value='" . $clang->gT("Continue") . "' />"
             . "</td></tr>\n"
@@ -3405,7 +3405,7 @@ function insertansReplace($line)
 //        $line=str_replace($answreplace, $answreplace3, $line);
 //    }
 //    return $line;
-}
+    }
 
 /**
  * tokenReplace() takes a string and looks for any {TOKEN:xxxx} variables
@@ -3457,7 +3457,7 @@ function tokenReplace($line)
 //        $line=str_replace($templine, $replacestr, $line);
 //    }
 //    return $line;
-}
+    }
 
 /**
  * passthruReplace() takes a string and looks for {PASSTHRULABEL}, {PASSTHRUVALUE} and {PASSTHRU:myarg} variables
@@ -4882,7 +4882,7 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 {
     // TODO - call this each time, or just return $text and process this globally at another location?
     return LimeExpressionManager::ProcessString($text, $fieldsarray);
-    
+
 //    foreach ( $fieldsarray as $key => $value )
 //    {
 //        $text=str_replace($key, $value, $text);
@@ -4893,7 +4893,7 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 //        $text = insertansReplace($text);
 //    }
 //    return $text;
-}
+    }
 
 
 /**

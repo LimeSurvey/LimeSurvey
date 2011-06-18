@@ -152,7 +152,7 @@ if ($action == "listsurveys")
             $listsurveys.="<td align='center'><a href='".$scriptname."?sid=".$rows['sid']."'>{$rows['sid']}</a></td>";
             $listsurveys.="<td align='left'><a href='".$scriptname."?sid=".$rows['sid']."'>{$rows['surveyls_title']}</a></td>".
 					    "<td>".$datecreated."</td>".
-					    "<td>".$ownername." (<a href='#' class='ownername_edit' id='ownername_edit_{$rows['sid']}'>Edit</a>)</td>".
+					    "<td>".$ownername." (<a href='#' class='ownername_edit' translate_to='".$clang->gT("Update")."' id='ownername_edit_{$rows['sid']}'>".$clang->gT("Edit")."</a>)</td>".
 					    "<td>".$visibility."</td>" .
 					    "<td>".$privacy."</td>";
 

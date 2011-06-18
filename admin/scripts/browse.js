@@ -90,14 +90,14 @@ $(document).ready(function(){
                when: {
                    event:'unfocus'
                }}
-});
-        
+    });
+    
     // Fix the heigh of the cell
     $('.browsetable td').each(function(){
     	if ($(this).text().length> 30){
     		$(this).html("<span class=\"content\" title=\""+$(this).text()+"\">"+$(this).html()+"</span>");
     	}
-});
+    });
     $('.browsetable th strong').each(function(){
     	if ($(this).text().length> 30){
     		$(this).addClass("content");
@@ -105,6 +105,28 @@ $(document).ready(function(){
     	}
    });
    
-   $('.browsetable td span.content').qtip();
-   $('.browsetable th strong.content').qtip();
+    $('.browsetable td span.content').qtip({
+		hide: { 
+			fixed: true, 
+			delay: 500 
+		},
+		position: {
+			corner: {
+				target: 'leftMiddle',
+				tooltip: 'topRight'
+			}
+		}
+    });
+    $('.browsetable th strong.content').qtip({
+		hide: { 
+			fixed: true, 
+			delay: 500 
+		},
+		position: {
+			corner: {
+				target: 'leftMiddle',
+				tooltip: 'topRight'
+			}
+		}
+    });
 });

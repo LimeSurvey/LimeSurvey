@@ -79,7 +79,7 @@ if ($subaction != "upload")
         $vvoutput = browsemenubar($clang->gT("Import VV file")).
 		"<div class='header ui-widget-header'>".$clang->gT("Import a VV survey file")."</div>
 		<form id='vvexport' enctype='multipart/form-data' method='post' action='admin.php?sid=$surveyid'>
-		<ul>		
+		<ul>
 		<li><label for='the_file'>".$clang->gT("File:")."</label><input type='file' size=50 id='the_file' name='the_file' /></li>
 		<li><label for='sid'>".$clang->gT("Survey ID:")."</label><input type='text' size=10 id='sid' name='sid' value='$surveyid' readonly='readonly' /></li>
 		<li><label for='noid'>".$clang->gT("Exclude record IDs?")."</label><input type='checkbox' id='noid' name='noid' value='noid' checked=checked onchange='form.insertmethod.disabled=this.checked;' /></li>
@@ -100,36 +100,33 @@ if ($subaction != "upload")
     }
     else
     {
-        $vvoutput .= "<br /><table class='outlinetable' align='center'>
-		<tr><th colspan=2>Import a VV survey file</th></tr>
-		<tr><td colspan='2' align='center'>
-		<strong>".$clang->gT("Cannot import the VVExport file.")."</strong><br /><br />
+        $vvoutput .= "<br /><div class='messagebox'>
+		<div class='header'>".$clang->gT("Import a VV response data file")."</div>
+		<div class='warningheader'>".$clang->gT("Cannot import the VVExport file.")."</div>
 		".("This survey is not active. You must activate the survey before attempting to import a VVexport file.")."<br /><br />
 		[<a href='$scriptname?sid=4'>".$clang->gT("Return to survey administration")."</a>]
-		</td></tr>
-		</table>";		
+		</div>";
     }
 
 
 }
 else
 {
-    $vvoutput = "<br /><table class='outlinetable' align='center'>
-		<tr><th>Upload</th></tr>
-		<tr><td align='center'>";
+    $vvoutput = "<br /><div class='messagebox'>
+        <div class='header'>".$clang->gT("Import a VV response data file")."</div>";
     $the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
 
     if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
     {
-        $vvoutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+        $vvoutput .= "<div class='warningheader'>".$clang->gT("Error")."</div>\n";
         $vvoutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir)."<br /><br />\n";
         $vvoutput .= "<input type='submit' value='".$clang->gT("Back to Response Import")."' onclick=\"window.open('$scriptname?action=vvimport&sid=$surveyid', '_top')\">\n";
-        $vvoutput .= "</font></td></tr></table><br />&nbsp;\n";
+        $vvoutput .= "</div><br />&nbsp;\n";
         return;
     }
     // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
 
-    $vvoutput .= "<strong><font class='successtitle'>".$clang->gT("Success")."</font></strong><br />\n";
+    $vvoutput .= "<div class='successtitle'>".$clang->gT("Success")."</div>\n";
     $vvoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
     $vvoutput .= $clang->gT("Reading file..")."<br />\n";
     $handle = fopen($the_full_file_path, "r");
@@ -237,8 +234,8 @@ else
             }
             // make this safe for DB (*after* we undo first excel's
             // and then our escaping).
-            $fieldvalues=array_map('db_quote',$fieldvalues);
-
+            $fieldvalues=array_map('db_quoteall',$fieldvalues);
+            $fieldvalues=str_replace(db_quoteall('{question_not_shown}'),'NULL',$fieldvalues);
             $fielddata=($fieldnames===array() && $fieldvalues===array() ? array() : array_combine($fieldnames, $fieldvalues));
 
             foreach ($datefields as $datefield)
@@ -291,7 +288,7 @@ else
             $insert = "INSERT INTO $surveytable\n";
             $insert .= "(".implode(", ", array_keys($fielddata)).")\n";
             $insert .= "VALUES\n";
-            $insert .= "('".implode("', '", array_values($fielddata))."')\n";
+            $insert .= "(".implode(", ", array_values($fielddata)).")";
             $result = $connect->Execute($insert);
 
             if (isset($fielddata['id']))
@@ -302,9 +299,9 @@ else
 
             if (!$result)
             {
-                $vvoutput .= "<table align='center' class='outlintable'>\n$insert"
-                ."<tr><td>".sprintf($clang->gT("Import Failed on Record %d because [%s]"), $recordcount, htmlspecialchars(utf8_encode($connect->ErrorMsg())))
-                ."</td>\n</tr></table>\n";
+                $vvoutput .= "<div class='warningheader'>\n$insert"
+                ."<br />".sprintf($clang->gT("Import Failed on Record %d because [%s]"), $recordcount, htmlspecialchars(utf8_encode($connect->ErrorMsg())))
+                ."</div>\n";
             }
             else
             {
@@ -321,6 +318,6 @@ else
     }
     $vvoutput .= $clang->gT("Total records imported:")." ".$importcount."<br /><br />";
     $vvoutput .= "[<a href='admin.php?action=browse&amp;sid=$surveyid'>".$clang->gT("Browse Responses")."</a>]";
-    $vvoutput .= "</td></tr></table><br />&nbsp;";
+    $vvoutput .= "</div><br />&nbsp;";
 }
 ?>

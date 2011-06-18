@@ -399,6 +399,11 @@ span.settingcaption {
     clear: right;
     margin-bottom: 10px;
     background-color: #F8F8FF;
+	outline: 0 none;
+}
+
+.settingentry span {
+	outline: 0 none;
 }
 
 .settingrow {
@@ -498,10 +503,11 @@ th.admincell {
 .header_statistics img {
     cursor:pointer;   
 }
-    
+
 img.handle {
     cursor:move;   
 }
+
 
 .header_small {
     margin-top:2px;

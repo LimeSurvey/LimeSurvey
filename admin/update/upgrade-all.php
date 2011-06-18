@@ -21,12 +21,12 @@ function db_upgrade_all($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput, $dbprefix, $usertemplaterootdir, $standardtemplaterootdir, $clang;
-    echo str_pad($clang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).". Please be patient...<br /><br />\n";
+    echo str_pad($clang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".". $clang->gT('Please be patient...')."<br /><br />\n";
     
     if ($oldversion < 143) 
     {
         // Move all user templates to the new user template directory
-        echo "Moving user templates to new location at {$usertemplaterootdir}...<br />";
+        echo sprintf($clang->gT("Moving user templates to new location at %s..."),$usertemplaterootdir)."<br />";
         $myDirectory = opendir($standardtemplaterootdir);
         $aFailedTemplates=array();
         // get each entry

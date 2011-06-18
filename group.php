@@ -39,9 +39,9 @@ else
         if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
             //If explicitply set, hide the welcome screen
             $_SESSION['step'] = 1;
-        } 
+        }
     }
-    
+
     if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
     if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
     if (!isset($gl)) {$gl=array('null');}
@@ -93,17 +93,17 @@ else
     $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 
     //CHECK INPUT
-    $notvalidated=aCheckInput($move,$backok);
+    $notvalidated=checkpregs($move,$backok);
 
     // CHECK UPLOADED FILES
     $filenotvalidated = checkUploadedFileValidity($move, $backok);
 
     //SEE IF THIS GROUP SHOULD DISPLAY
     $show_empty_group = false;
-    
+
     if ($_SESSION['step']==0)
 		$show_empty_group = true;
-		
+
     if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
     {
         while(isset($_SESSION['grouplist'][$_SESSION['step']-1]) && checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
@@ -123,7 +123,7 @@ else
                 // or create an empty page giving the user the explicit option to submit.
                 if (isset($show_empty_group_if_the_last_group_is_hidden) && $show_empty_group_if_the_last_group_is_hidden == true)
                 {
-                	
+
                     $show_empty_group = true;
                     break;
                 } else
@@ -155,7 +155,7 @@ else
             {
                 $assessments = doAssessment($surveyid);
             }
-
+            $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
             if($thissurvey['printanswers'] != 'Y')
             {
                 killSession();
@@ -286,13 +286,11 @@ else
                 $url = $thissurvey['surveyls_url'];
                 $url = dTexts::run($thissurvey['surveyls_url']);
                 $url = passthruReplace($url, $thissurvey);
-                $url=str_replace("{SAVEDID}",$saved_id, $url);			   // to activate the SAVEDID in the END URL
-                $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
-                $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
-                $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
-
+                $url = str_replace("{SAVEDID}",$saved_id, $url);               // to activate the SAVEDID in the END URL
+                $url = str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
+                $url = str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
+                $url = str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
                 header("Location: {$url}");
-
             }
 
 
@@ -402,7 +400,7 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
         if(IsSet($hideQuestion[$ia[0]]) && $hideQuestion[$ia[0]]==true){
         	continue;
         }
-    	
+
         $qidattributes=getQuestionAttributes($ia[0]);
         if ($qidattributes===false || $qidattributes['hidden']==1) {
             // Should we really skip the question here, maybe the result won't be stored if we do that
@@ -521,6 +519,7 @@ else
     echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>
       <!-- INPUT NAMES -->
       <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
+echo sDefaultSubmitHandler();
 
 // <-- END FEATURE - SAVE
 
@@ -554,7 +553,7 @@ print <<<END
 
 	function checkconditions(value, name, type)
 	{
-    
+
 END;
 
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
@@ -724,8 +723,8 @@ END;
                         }
                     }
                 }
-                 
-                 
+
+
             }
             else
             { // Can't evaluate ==> False
@@ -1004,28 +1003,30 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
     $array_filter_exclude_types=$qattributes['array_filter_exclude']['types'];
     unset($qattributes);
     if (!isset($appendj)) {$appendj="";}
+
     foreach ($array_filterqs as $attralist)
     {
-        $qbase = $surveyid."X".$gid."X".$attralist['qid'];
+		$qbase = $surveyid."X".$gid."X".$attralist['qid'];
         $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
         if ($attralist['type'] == "M" || $attralist['type'] == "P")
         {
-            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
-            $tqresult = db_execute_assoc($tqquery); //Checked   
+            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+            $tqresult = db_execute_assoc($tqquery); //Checked
             $OrigQuestion = $tqresult->FetchRow();
-            
+
             if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
             {
-                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
             } else {
                 $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
-            } 
+            }
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
+
             while ($fansrows = $qresult->FetchRow())
             {
-                if($fansrows['other']== "Y") $other="Y";
-                if(strpos($array_filter_types, $fansrows['type']) === false) {} else
+			    if($fansrows['other']== "Y") $other="Y";
+				if(strpos($array_filter_types, $OrigQuestion['type']) === false) {} else
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
                     $tbody = "javatbd".$qbase.$fansrows['title'];
@@ -1093,22 +1094,22 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
         $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
         if ($attralist['type'] == "M" || $attralist['type'] == "P")
         {
-            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
-            $tqresult = db_execute_assoc($tqquery); //Checked   
+            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+            $tqresult = db_execute_assoc($tqquery); //Checked
             $OrigQuestion = $tqresult->FetchRow();
-            
+
             if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
             {
-                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
             } else {
                 $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
-            } 
+            }
             $qresult = db_execute_assoc($qquery); //Checked
             $other=null;
             while ($fansrows = $qresult->FetchRow())
             {
                 if($fansrows['other']== "Y") $other="Y";
-                if(strpos($array_filter_exclude_types, $fansrows['type']) === false) {} else
+                if(strpos($array_filter_exclude_types, $OrigQuestion['type']) === false) {} else
                 {
                     $fquestans = "java".$qfbase.$fansrows['title'];
                     $tbody = "javatbd".$qbase.$fansrows['title'];
@@ -1141,6 +1142,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                     $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
 					$appendj .= "\t\tdocument.getElementById('$dtbody').value = 'off';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('off')" - the hash in dual scale breaks the javascript
 					if($OrigQuestion['type'] == "1") {
+                        //for a dual scale array question type we have to massage the system
 						$appendj .= "\t\tdocument.getElementById('$dtbody2').value = 'off';\n"; //Note - do not use jquery format here (ie: "$('#$dtbody').val('off')" - the hash in dual scale breaks the javascript
 					}
                     // This line resets the text fields in the hidden row
@@ -1225,7 +1227,7 @@ if (isset($qanda) && is_array($qanda))
     {
 		$lastgrouparray = explode("X",$qa[7]);
 		$lastgroup = $lastgrouparray[0]."X".$lastgrouparray[1]; // id of the last group, derived from question id
-		
+
         $q_class = question_class($qa[8]); // render question class (see common.php)
 
         if ($qa[9] == 'Y')
@@ -1280,7 +1282,7 @@ if (isset($qanda) && is_array($qanda))
         };
     }
 	echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
-    
+
 
 }
 echo "\n\n<!-- END THE GROUP -->\n";
@@ -1408,4 +1410,4 @@ echo "\n";
 
 doFooter();
 
-// Closing PHP tag intentionally left out - yes, it is okay       
+// Closing PHP tag intentionally left out - yes, it is okay

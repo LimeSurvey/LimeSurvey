@@ -62,6 +62,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
 $meta = '<script type="text/javascript">
     var surveyid = "'.$surveyid.'";
+    var fieldname = "'.$_GET['fieldname'].'";
     var questgrppreview  = '.$_GET['preview'].';
 </script>';
 
@@ -76,29 +77,49 @@ $header = getHeader($meta);
 
 echo $header;
 
+echo "<script type='text/javascript'>
+        var translt = {
+             titleFld: '" . $clang->gT('Title') . "',
+             commentFld: '" . $clang->gT('Comment') . "',
+             errorNoMoreFiles: '" . $clang->gT('Sorry, No more files can be uploaded !') . "',
+             errorOnlyAllowed: '" . $clang->gT('Sorry, Only %s files can be uploaded for this question !') . "',
+             uploading: '" . $clang->gT('Uploading') . "',
+             selectfile: '" . $clang->gT('Select file') . "',
+             errorNeedMore: '" . $clang->gT('Please upload %s more files.') . "',
+             errorMoreAllowed: '" . $clang->gT('If you wish, you may upload %s more files; else you may return back to survey') . "',
+             errorMaxReached: '" . $clang->gT('The maximum number of files have been uploaded. You may return back to survey') . "',
+             errorTooMuch: '" . $clang->gT('The maximum number of files have been uploaded. You may return back to survey') . "',
+             errorNeedMoreConfirm: '" . $clang->gT("You need to upload %s more files for this question.\nAre you sure you want to exit ?") . "'
+            };
+    </script>\n";
+
+$fn = $_GET['fieldname'];
+$qid = $_GET['qid'];
+$qidattributes=getQuestionAttributes($qid);
+
 $body = '
         <div id="notice"></div>
-        <input type="hidden" id="ia"                value="'.$_SESSION['fieldname'].'" />
-        <input type="hidden" id="minfiles"          value="'.$_SESSION['minfiles'].'" />
-        <input type="hidden" id="maxfiles"          value="'.$_SESSION['maxfiles'].'" />
-        <input type="hidden" id="maxfilesize"       value="'.$_SESSION['maxfilesize'].'" />
-        <input type="hidden" id="allowed_filetypes" value="'.$_SESSION['allowed_filetypes'].'" />
-        <input type="hidden" id="preview"           value="'.$_SESSION['preview'].'" />
-        <input type="hidden" id="show_comment"      value="'.$_SESSION['show_comment'].'" />
-        <input type="hidden" id="show_title"        value="'.$_SESSION['show_title'].'" />
-        <input type="hidden" id="licount"           value="0" />
-        <input type="hidden" id="filecount"         value="0" />
+        <input type="hidden" id="ia"                value="'.$fn.'" />
+        <input type="hidden" id="'.$fn.'_minfiles"          value="'.$qidattributes['min_num_of_files'].'" />
+        <input type="hidden" id="'.$fn.'_maxfiles"          value="'.$qidattributes['max_num_of_files'].'" />
+        <input type="hidden" id="'.$fn.'_maxfilesize"       value="'.$qidattributes['max_filesize'].'" />
+        <input type="hidden" id="'.$fn.'_allowed_filetypes" value="'.$qidattributes['allowed_filetypes'].'" />
+        <input type="hidden" id="preview"                   value="'.$_SESSION['preview'].'" />
+        <input type="hidden" id="'.$fn.'_show_comment"      value="'.$qidattributes['show_comment'].'" />
+        <input type="hidden" id="'.$fn.'_show_title"        value="'.$qidattributes['show_title'].'" />
+        <input type="hidden" id="'.$fn.'_licount"           value="0" />
+        <input type="hidden" id="'.$fn.'_filecount"         value="0" />
 
         <!-- The upload button -->
         <div align="center" class="upload-div">
             <button id="button1" class="upload-button" type="button" >'.$clang->gT("Select file").'</button>
         </div>
-        
-        <p class="uploadmsg">'.$clang->gT("You can upload ").$qidattributes['allowed_filetypes'].$clang->gT(" under ").$qidattributes['max_filesize'].$clang->gT(" KB each").'</p>
+
+        <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each."),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
         <div class="uploadstatus" id="uploadstatus"></div>
 
         <!-- The list of uploaded files -->
-        <ul id="listfiles"></ul>
+        <ul id="'.$fn.'_listfiles"></ul>
 
     </body>
 </html>';

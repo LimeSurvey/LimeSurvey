@@ -29,12 +29,12 @@
             //New survey, set the defaults
             $esrow = array();
             $esrow['active']                   = 'N';
-            $esrow['allowjumps']               = 'N';   
+            $esrow['allowjumps']               = 'N';
             $esrow['format']                   = 'G'; //Group-by-group mode
             $esrow['template']                 = $defaulttemplate;
             $esrow['allowsave']                = 'Y';
             $esrow['allowprev']                = 'N';
-            $esrow['nokeyboard']               = 'N';   
+            $esrow['nokeyboard']               = 'N';
             $esrow['printanswers']             = 'N';
             $esrow['publicstatistics']         = 'N';
             $esrow['publicgraphs']             = 'N';
@@ -311,7 +311,7 @@
                 . "</select></li>\n";
 
         //Navigation Delay
-        if (!isset($esrow['navigationdelay'])) 
+        if (!isset($esrow['navigationdelay']))
         {
             $esrow['navigationdelay']=0;
         }
@@ -872,7 +872,7 @@
         $editsurvey .= ">".$clang->gT("No")."</option>\n"
         . "</select></li>\n";
 
-            // Allow editing answers after completion 
+            // Allow editing answers after completion
             $editsurvey .= "<li><label for=''>".$clang->gT("Allow editing answers after completion?")."</label>\n"
             . "<select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymous answers are used","js")."'); this.value='N';}\">\n"
             . "<option value='Y'";

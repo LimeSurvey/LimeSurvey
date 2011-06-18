@@ -106,7 +106,7 @@ switch ($fieldtype)
     case 'editdescription': // for translation
     case 'editwelcome': // for translation
     case 'editend': // for translation
-        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
+        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
         $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
@@ -132,7 +132,7 @@ switch ($fieldtype)
         $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
         $replFields[]=array('OPTOUTURL',$clang->gT("URL for a respondent to opt-out this survey"));
     case 'email-reg':
-        $replFields[]=array('FIRSTNAME',$clang->gT("Firstname from token"));
+        $replFields[]=array('FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
         $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
         $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
@@ -149,7 +149,7 @@ switch ($fieldtype)
 
     case 'email-conf':
         $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
-        $replFields[]=array('FIRSTNAME',$clang->gT("Firstname from token"));
+        $replFields[]=array('FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
         $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
         $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
@@ -181,13 +181,9 @@ switch ($fieldtype)
     case 'editgroup_desc': // for translation
     case 'editquestion': // for translation
     case 'editquestion_help': // for translation
-        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
+        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
         $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
-		$replFields[]=array('SID', $clang->gT("This question's Survey ID number"));
-		$replFields[]=array('GID', $clang->gT("This question's Group ID number"));
-		$replFields[]=array('QID', $clang->gT("This question's Question ID number"));
-		$replFields[]=array('SGQ', $clang->gT("This question's SGQA code"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
         foreach ($attributes as $attributefield=>$attributedescription)
         {

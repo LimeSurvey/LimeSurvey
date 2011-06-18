@@ -32,7 +32,7 @@ if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 if (!isset($qid)) {$qid=returnglobal('qid');}
 if (!isset($gid)) {$gid=returnglobal('gid');}
 if (!isset($p_scenario)) {$p_scenario=returnglobal('scenario');}
-if (!isset($p_cqid)) 
+if (!isset($p_cqid))
 {
     $p_cqid=returnglobal('cqid');
     if ($p_cqid == '') $p_cqid=0; // we are not using another question as source of condition
@@ -59,7 +59,7 @@ if (!isset($p_canswers))
 // to explain wich conditions is used to evaluate the question
 if (isset($stringcomparizonoperators) && $stringcomparizonoperators == 1)
 {
-    $method = array(            
+    $method = array(
             "<"  => $clang->gT("Less than"),
             "<=" => $clang->gT("Less than or equal to"),
             "==" => $clang->gT("equals"),
@@ -75,7 +75,7 @@ if (isset($stringcomparizonoperators) && $stringcomparizonoperators == 1)
 }
 else
 {
-    $method = array(            
+    $method = array(
             "<"  => $clang->gT("Less than"),
             "<=" => $clang->gT("Less than or equal to"),
             "==" => $clang->gT("equals"),
@@ -419,8 +419,8 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
             $CopyConditionsMessage = "<div class='warningheader'>(".$clang->gT("No conditions could be copied (due to duplicates)").")</div>";
         }
     }
-    
-        }
+
+}
 //END PROCESS ACTIONS
 
 
@@ -709,27 +709,27 @@ if ($questionscount > 0)
             ." AND q.qid={$rows['qid']}
                AND sq.scale_id=0
                ORDER BY sq.question_order";
-            
+
             $y_axis_db = db_execute_assoc($fquery);
-            
-             // Get the X-Axis   
+
+             // Get the X-Axis
              $aquery = "SELECT sq.*
-                         FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq 
-                         WHERE q.sid=$surveyid 
+                         FROM ".db_table_name('questions')." q, ".db_table_name('questions')." sq
+                         WHERE q.sid=$surveyid
                          AND sq.parent_qid=q.qid
                          AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
                          AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
                          AND q.qid=".$rows['qid']."
                          AND sq.scale_id=1
                          ORDER BY sq.question_order";
-              
+
             $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
 
             while ($frow=$x_axis_db->FetchRow())
             {
                 $x_axis[$frow['title']]=$frow['question'];
             }
-            
+
             while ($arows = $y_axis_db->FetchRow())
             {
                 foreach($x_axis as $key=>$val)
@@ -878,8 +878,8 @@ if ($questionscount > 0)
                 $shortanswer .= "[".$clang->gT("Single checkbox")."]";
                 $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
                 $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
-                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', 'checked');
-                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', 'not checked');
+                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', $clang->gT("checked"));
+                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', $clang->gT("not checked"));
             }
         }
         elseif($rows['type'] == "X") //Boilerplate question
@@ -1800,7 +1800,8 @@ $subaction == "editthiscondition" || $subaction == "delete")
     ."<select name='method' id='method' style='font-family:verdana; font-size:10' >\n";
     foreach ($method as $methodCode => $methodTxt)
     {
-        $conditionsoutput_main_content .= "\t<option value='".$methodCode."'>".$methodTxt."</option>\n";
+    	$selected=$methodCode=="==" ? " selected='selected'" : "";
+        $conditionsoutput_main_content .= "\t<option value='".$methodCode."'$selected>".$methodTxt."</option>\n";
     }
 /**
     ."\t<option value='<'>".$clang->gT("Less than")."</option>\n"

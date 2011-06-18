@@ -875,7 +875,7 @@ msgstr "Du har inte FreeType-biblioteket installerat. För att visa diagram mås
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:257
 msgid "Data selection"
-msgstr "Data urval"
+msgstr "Dataurval"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:258
 msgid "Include:"
@@ -2395,7 +2395,7 @@ msgstr "PDF"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:169
 msgid "Column control"
-msgstr "Kolumn kontroll"
+msgstr "Kolumnkontroll"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:185
 msgid "Choose Columns"
@@ -4002,7 +4002,7 @@ msgstr "Välj en enkät att kopiera:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3499
 msgid "New survey title:"
-msgstr "Ny enkät titel:"
+msgstr "Ny enkättitel:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3504
 msgid "Exclude quotas?"
@@ -5924,7 +5924,7 @@ msgstr "Föregående"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:425
 msgid "This is some help text."
-msgstr "Det här är en hjälp text."
+msgstr "Det här är en hjälptext."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:428
 #: /var/lib/limesurvey-svn/subversion1x/group.php:190
@@ -6179,7 +6179,7 @@ msgstr "Denna fråga är av typ delfrågor men har inga konfigurerade delfrågor
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:114
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:205
 msgid "This question is a multiple answer type question but has no answers."
-msgstr "Denna fråga är av flersvars typ men har inga svar."
+msgstr "Denna fråga är av flersvarstyp men har inga svar."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:124
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:215
@@ -6276,7 +6276,7 @@ msgstr "Enkäten kunde inte aktiveras."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:381
 msgid "Database error:"
-msgstr "Databas fel:"
+msgstr "Databasfel:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:415
 msgid "Survey has been activated. Results table has been successfully created."
@@ -6693,7 +6693,7 @@ msgstr "Inte inbjuden"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:573
 msgid "Reminder status:"
-msgstr "Påminnelse status:"
+msgstr "Påminnelsestatus:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:575
 msgid "Reminder(s) sent"
@@ -7364,7 +7364,7 @@ msgstr "Ladda upp fil med behörighetskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2310
 msgid "Upload file not found. Check your permissions and path for the upload directory"
-msgstr "Filen hittades inte. Kontrollera dina rättigheter och sökväg till uppladdnings mappen"
+msgstr "Filen hittades inte. Kontrollera dina rättigheter och sökväg till uppladdningsmappen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2315
 msgid "Uploaded CSV file successfully"
@@ -8019,7 +8019,7 @@ msgstr "Raderar ensamma språkinställningar."
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:871
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:881
 msgid "Deleting old survey result tables"
-msgstr "Raderar gamla enkäters resultat tabeller"
+msgstr "Raderar gamla enkäters resultattabeller"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:753
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:763
@@ -8154,7 +8154,7 @@ msgstr "Exportera resultat till R"
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:103
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:119
 msgid "Data selection:"
-msgstr "Data urval:"
+msgstr "Dataurval:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:111
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:133
@@ -9051,7 +9051,7 @@ msgstr "Standardmall:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:196
 msgid "Default HTML editor mode:"
-msgstr "Standard läge för HTML-redigerare:"
+msgstr "Standardläge för HTML-redigerare:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:200
 msgid "Default HTML editor mode"
@@ -9063,7 +9063,7 @@ msgstr "Tidsskillnad (i timmar):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:215
 msgid "Server time:"
-msgstr "Server tid:"
+msgstr "Servertid:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:215
 msgid "Corrected time :"
@@ -10692,7 +10692,7 @@ msgstr "Minsta värdet för frågan av typ samling (flera flexibla etiketter)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3711
 msgid "Minimum value"
-msgstr "Min värde"
+msgstr "Minvärde"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3718
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3719
@@ -11013,7 +11013,7 @@ msgstr "Hur länge 1:a varningen för tidsbegränsning skall visas"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4047
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
-msgstr "Meddelandet som skall visas som varning för tidsbegränsning (en standard varning kommer att visas om detta lämnas blankt)"
+msgstr "Meddelandet som skall visas som varning för tidsbegränsning (en standardvarning kommer att visas om detta lämnas blankt)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4048
 msgid "1st Time limit warning message"
@@ -11045,7 +11045,7 @@ msgstr "Hur länge 2:a varningen för tidsbegränsning skall visas"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4079
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
-msgstr "Det andra meddelandet att visa som varning för tidsbegränsning (ett standard meddelande kommer att visas om detta lämnas blankt)"
+msgstr "Det andra meddelandet att visa som varning för tidsbegränsning (ett standardmeddelande kommer att visas om detta lämnas blankt)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4080
 msgid "2nd Time limit warning message"

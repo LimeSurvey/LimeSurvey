@@ -20,7 +20,7 @@ if ($action!=='update') return;
 
 ob_start();
 switch ($subaction)
-    {
+{
     case 'step2':
     case 'step3':
     case 'step4':
@@ -29,7 +29,7 @@ switch ($subaction)
     default:
         $updatefunction = 'UpdateStep1';
         RunUpdaterUpdate();
-    }
+}
 
 $buffer = $updatefunction();
 if ($buffer) echo $buffer;

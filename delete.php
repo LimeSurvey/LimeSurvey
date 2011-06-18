@@ -42,33 +42,36 @@ else
 }
 session_set_cookie_params(0,$relativeurl.'/admin/');
 @session_start();
+$baselang = GetBaseLanguageFromSurveyID($surveyid);
+$clang = new limesurvey_lang($baselang);
 
 if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 {
     die("You don't have a valid session !");
 }
 
-    $file_index = $_GET['file_index'];
+    $file_index = (int)$_GET['file_index'];
+    $fieldname = $_GET['fieldname'];
+    $filename = "tmp/upload/".$_SESSION[$fieldname]['files'][$file_index]['filename'];
+    $name = $_SESSION[$fieldname]['files'][$file_index]['name'];
 
-    $filename = "tmp/upload/".$_SESSION['files'][$file_index]['filename'];
-    $name = $_SESSION['files'][$file_index]['name'];
     $fh = fopen($filename, 'w') or die("can't open file");
     fclose($fh);
 
     if (unlink($filename))
     {
-        echo 'File '.rawurldecode($name).' deleted';
-        for ($i = $file_index; $i < $_SESSION['filecount']; $i++)
+        echo sprintf($clang->gT('File %s deleted'), rawurldecode($name));
+        for ($i = $file_index; $i < $_SESSION[$fieldname]['filecount']; $i++)
         {
-            $_SESSION['files'][$i]['name'] = $_SESSION['files'][$i + 1]['name'];
-            $_SESSION['files'][$i]['size'] = $_SESSION['files'][$i + 1]['size'];
-            $_SESSION['files'][$i]['ext']  = $_SESSION['files'][$i + 1]['ext'];
-            $_SESSION['files'][$i]['id']   = $_SESSION['files'][$i + 1]['id'];
+            $_SESSION[$fieldname]['files'][$i]['name'] = $_SESSION[$fieldname]['files'][$i + 1]['name'];
+            $_SESSION[$fieldname]['files'][$i]['size'] = $_SESSION[$fieldname]['files'][$i + 1]['size'];
+            $_SESSION[$fieldname]['files'][$i]['ext']  = $_SESSION[$fieldname]['files'][$i + 1]['ext'];
+            $_SESSION[$fieldname]['files'][$i]['filename']   = $_SESSION[$fieldname]['files'][$i + 1]['filename'];
         }
-        $_SESSION['files'][$_SESSION['filecount']] = NULL;
-        $_SESSION['filecount'] -= 1;
+        $_SESSION[$fieldname]['files'][$_SESSION[$fieldname]['filecount']] = NULL;
+        $_SESSION[$fieldname]['filecount'] -= 1;
     }
     else
-        echo 'Oops, There was an error deleting the file';
+        echo $clang->gT('Oops, There was an error deleting the file');
 
 ?>

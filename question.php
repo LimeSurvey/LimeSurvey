@@ -61,7 +61,7 @@ else
 $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 
 //CHECK INPUT
-$notvalidated=aCheckInput($move,$backok);
+$notvalidated=checkpregs($move,$backok);
 
 // CHECK UPLOADED FILES
 $filenotvalidated = checkUploadedFileValidity($move, $backok);
@@ -151,17 +151,22 @@ while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CON
                     $gid=$gl[0];
                     $groupname=$gl[1];
                     $groupdescription=$gl[2];
-                    if (auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && $groupdescription) {$newgroup = "Y";} else {$newgroup == "N";}
+                    if (auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && trim($groupdescription)!='') {$newgroup = "Y";} else {$newgroup == "N";}
                 }
             }
         }
         else
         {
-            $currentquestion--; // if we reach -1, this means we must go back to first page
-            if ($currentquestion >= 0)
+            if ($currentquestion > 0)
             {
+                $currentquestion--; // if we reach -1, this means we must go back to first page
+                if(isset($_SESSION['fieldarray'][$currentquestion]))
+                {
+                    $ia=$_SESSION['fieldarray'][$currentquestion];
+                }
                 $_SESSION['step']--;
             }
+            else
             {
                 $_SESSION['step']=0;
                 display_first_page();
@@ -350,7 +355,7 @@ list($newgroup, $gid, $groupname, $groupdescription, $gl)=checkIfNewGroup($ia);
 
 //Check if current page is for group description only
 $bIsGroupDescrPage = false;
-if ($newgroup == "Y" && $groupdescription &&
+if ($newgroup == "Y" && trim($groupdescription)!='' &&
     (isset($move) && $move != "moveprev" && !is_int($move)) &&
     $_SESSION['maxstep'] == $_SESSION['step'])
 {
@@ -454,6 +459,7 @@ if ($_SESSION['step'] != $_SESSION['prevstep'] ||
 }
 
 echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+echo sDefaultSubmitHandler();
 
 //PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 echo "\n\n<!-- INPUT NAMES -->\n";
@@ -710,7 +716,7 @@ if (remove_nulls_from_array($conmandatoryfns))
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-echo "<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n";    
+echo "<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n";
 echo "<input type='hidden' name='token' value='$token' id='token' />\n";
 echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars(strip_tags($groupname),ENT_QUOTES,'UTF-8')."' id='lastgroupname' />\n";
 echo "</form>\n";
@@ -730,7 +736,7 @@ function checkIfNewGroup($ia)
             $gid=$gl[0];
             $groupname=$gl[1];
             $groupdescription=$gl[2];
-            if (isset($_POST['lastgroupname']) && auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && $groupdescription)
+            if (isset($_POST['lastgroupname']) && auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && trim($groupdescription)!='')
             {
                 $newgroup = "Y";
             }

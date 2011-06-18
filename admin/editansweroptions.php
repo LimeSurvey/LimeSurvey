@@ -124,7 +124,7 @@
     {
         $vasummary .= "<div class='tab-page' id='tabpage_$anslang'>"
         ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
-        if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
+        if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base language").')';}
 
         $vasummary .= "</h2>";
 
@@ -227,13 +227,9 @@
             {
                 $vasummary .=  "<input type='hidden' id='answercount_{$scale_id}' name='answercount_{$scale_id}' value='$anscount' />\n";
             }
-            $vasummary .= "<button id='btnlsbrowser_{$scale_id}' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
-            $vasummary .= "<button id='btnquickadd_{$scale_id}' class='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
+            $vasummary .= "<button id='btnlsbrowser_{$anslang}_{$scale_id}' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
+            $vasummary .= "<button id='btnquickadd_{$anslang}_{$scale_id}' class='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
 
-            if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1){
-                $vasummary .= "<button class='bthsaveaslabel' id='bthsaveaslabel_{$scale_id}' type='button'>".$clang->gT('Save as label set')."</button>";
-                
-                }
         }
 
         $position=sprintf("%05d", $position);
@@ -253,7 +249,7 @@
                    <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";
     $vasummary .= "<div id='quickadd' style='display:none;'><div style='float:left;'>
                       <label for='quickadd'>".$clang->gT('Enter your answers:')."</label>
-                      <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.')."' rows='30' style='width:570px;'></textarea>
+                      <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon/tab.')."' rows='30' style='width:570px;'></textarea>
                       <br /><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
                       <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
                       <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>

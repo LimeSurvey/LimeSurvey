@@ -104,7 +104,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
 {
      global $dbprefix, $connect, $clang;
 
-    
+
      //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
     //	# "L" -> LIST
@@ -262,12 +262,10 @@ function checkQuestions($postsid, $surveyid, $qtypes)
  * @param int $surveyid
  * @return string
  */
-
-
-function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = false)
+function activateSurvey($postsid,$surveyid, $scriptname='admin.php')
 {
-    global $dbprefix, $connect, $clang, $databasetype,$databasetabletype;
-    
+    global $dbprefix, $connect, $clang, $databasetype,$databasetabletype, $uploaddir;
+
      $createsurvey='';
      $activateoutput='';
      $createsurveytimings='';
@@ -291,12 +289,10 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
 
     //Get list of questions for the base language
     $fieldmap=createFieldMap($surveyid);
-    foreach ($fieldmap as $j=>$arow) //With each question, create the appropriate field(s)
+    foreach ($fieldmap as $arow) //With each question, create the appropriate field(s)
     {
-            if ($createsurvey!='') {$createsurvey .= ",\n";}
+        if ($createsurvey!='') {$createsurvey .= ",\n";}
         $createsurvey .= ' `'.$arow['fieldname'].'`';
-        $createsurveybkup = $createsurvey;
-        $createsurvey = '';
         switch($arow['type'])
         {
             case 'startlanguage':
@@ -348,7 +344,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 $createsurvey .= " X";
                 break;
             case "D":  //DATE
-                $createsurvey .= " T";
+                $createsurvey .= " D";
                 break;
             case "5":  //5 Point Choice
             case "G":  //Gender
@@ -383,28 +379,10 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
             default:
                 $createsurvey .= " C(5)";
         }
-
-        if ($simulate){
-            $tempTrim = trim($createsurvey);
-            $brackets = strpos($tempTrim,"(");
-            if ($brackets === false){
-                $type = substr($tempTrim,0,2);
-                $arrSim[] = array($type);
-            }
+    }
     $timingsfieldmap = createTimingsFieldMap($surveyid);
     $createsurveytimings .= '`'.implode("` F DEFAULT '0',\n`",array_keys($timingsfieldmap)) . "` F DEFAULT '0'";
 
-        }
-
-        $createsurvey = $createsurveybkup. $createsurvey;
-
-
-    }
-
-    if ($simulate){
-        return array('dbengine'=>$databasetabletype, 'dbtype'=>$databasetype, 'fields'=>$arrSim);
-    }
-    
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     $createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
@@ -414,13 +392,13 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                          'mysqli'=> 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
     $dict = NewDataDictionary($connect);
     $sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
-    
+
     if (isset($savetimings) && $savetimings=="TRUE")
     {
         $tabnametimings = $tabname .'_timings';
-        $sqlarraytimings = $dict->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);    
+        $sqlarraytimings = $dict->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);
     }
-    
+
     $execresult=$dict->ExecuteSQLArray($sqlarray,1);
     if ($execresult==0 || $execresult==1)
     {
@@ -443,18 +421,18 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 if ($row['autonumber_start'] > 0)
                 {
                     if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $databasetype=='mssqlnative') {
-                        mssql_drop_primary_index('survey_'.$postsid);                        
+                        mssql_drop_primary_index('survey_'.$postsid);
                         mssql_drop_constraint('id','survey_'.$postsid);
-                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} drop column id "; 
-                        $connect->Execute($autonumberquery);  
-                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} add [id] int identity({$row['autonumber_start']},1)"; 
-                        $connect->Execute($autonumberquery);  
+                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} drop column id ";
+                        $connect->Execute($autonumberquery);
+                        $autonumberquery = "alter table {$dbprefix}survey_{$postsid} add [id] int identity({$row['autonumber_start']},1)";
+                        $connect->Execute($autonumberquery);
                     }
                     else
                     {
                         $autonumberquery = "ALTER TABLE {$dbprefix}survey_{$postsid} AUTO_INCREMENT = ".$row['autonumber_start'];
-                        $result = @$connect->Execute($autonumberquery);  
-                         
+                        $result = @$connect->Execute($autonumberquery);
+
                     }
                 }
             }
@@ -470,9 +448,19 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
 
         // create the survey directory where the uploaded files can be saved
         if ($createsurveydirectory)
-            if (!file_exists("../upload/surveys/" . $postsid . "/files") && !(mkdir("../upload/surveys/" . $postsid . "/files", 0777, true)))
+            if (!file_exists($uploaddir."/surveys/" . $postsid . "/files"))
+            {
+               if (!(mkdir($uploaddir."/surveys/" . $postsid . "/files", 0777, true)))
+               {
                 $activateoutput .= "<div class='warningheader'>".
                     $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory.") . "</div>";
+
+               }
+               else
+               {
+                   file_put_contents($uploaddir."/surveys/" . $postsid . "/files/index.html",'<html><head></head><body></body></html>');
+               }
+            }
 
         $acquery = "UPDATE {$dbprefix}surveys SET active='Y' WHERE sid=".$surveyid;
         $acresult = $connect->Execute($acquery);

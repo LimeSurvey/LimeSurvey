@@ -104,7 +104,7 @@ if (isset($argv[1]) && $argv[1]=='install')
                 $command = str_replace('$siteadminname', $siteadminname, $command);
                 $command = str_replace('$siteadminemail', $siteadminemail, $command); // variables By Moses
                 $command = str_replace('$defaultlang', $defaultlang, $command); // variables By Moses
-                $command = str_replace('$sessionname', 'ls'.getRandomID().getRandomID().getRandomID().getRandomID(), $command); // variables By Moses
+                $command = str_replace('$sessionname', 'ls'.sRandomChars(20,'123456789'), $command);
                 $command = str_replace('$databasetabletype', $databasetabletype, $command);
 
 
