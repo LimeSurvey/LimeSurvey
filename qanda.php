@@ -3790,9 +3790,20 @@ function do_file_upload($ia)
     $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value=";
 
     if (array_key_exists($ia[1]."_filecount", $_SESSION))
-        $answer .= $_SESSION[$ia[1]."_filecount"]." />";
-    else
+    {
+        $tempval = $_SESSION[$ia[1]."_filecount"];
+        if (is_numeric($tempval))
+        {
+            $answer .= $tempval . " />";
+        }
+        else
+        {
+            $answer .= "0 />";
+        }
+    }
+    else {
         $answer .= "0 />";
+    }
 
     $answer .= "<div id='".$ia[1]."_uploadedfiles'></div>";
 
