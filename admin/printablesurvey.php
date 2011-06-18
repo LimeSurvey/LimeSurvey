@@ -356,6 +356,7 @@ function star_replace($input)
 
 $total_questions = 0;
 $mapquestionsNumbers=Array();
+$answertext = '';   // otherwise can throw an error on line 1617
 
 // =========================================================
 // START doin the business:
