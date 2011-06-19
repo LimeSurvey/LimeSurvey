@@ -675,7 +675,7 @@ if ($tokensexist == 1 && isset($token) && $token &&
     }
     $tkresult = db_execute_num($tkquery); //Checked
     $tokendata = $tkresult->FetchRow();
-    if ($tkresult->RecordCount()==0 || $areTokensUsed)
+    if ($tkresult->RecordCount()==0 || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y'))
     {
         sendcacheheaders();
         doHeader();
@@ -2456,7 +2456,7 @@ function buildsurveysession()
 
         $tkresult = db_execute_num($tkquery);    //Checked
         list($tkexist) = $tkresult->FetchRow();
-        if (!$tkexist || $areTokensUsed)
+        if (!$tkexist || ($areTokensUsed && $thissurvey['alloweditaftercompletion'] != 'Y'))
         {
             //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
