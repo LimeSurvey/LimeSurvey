@@ -16,6 +16,7 @@
  * @author Thomas M. White
  */
 
+
 class ExpressionManager {
     // These three variables are effectively static once constructed
     private $sExpressionRegex;
@@ -63,6 +64,7 @@ class ExpressionManager {
         $regex_andor = '\band\b|\bor\b|&&|\|\|';
 
         $this->sExpressionRegex = '#((?<!\\\\){(' . $regex_dq_string . '|' . $regex_sq_string . '|.*?)*(?<!\\\\)})#';
+
 
         // asTokenRegex and t_tokey_type must be kept in sync  (same number and order)
         $asTokenRegex = array(
@@ -113,144 +115,144 @@ class ExpressionManager {
         // Each allowed function is a mapping from local name to external name + number of arguments
         // Functions can have -1 (meaning unlimited), or a list of serveral allowable #s of arguments.
         $this->amValidFunctions = array(
-            'abs'			=>array('abs','Absolute value',1),
-            'acos'			=>array('acos','Arc cosine',1),
-            'acosh'			=>array('acosh','Inverse hyperbolic cosine',1),
-            'asin'			=>array('asin','Arc sine',1),
-            'asinh'			=>array('asinh','Inverse hyperbolic sine',1),
-            'atan2'			=>array('atan2','Arc tangent of two variables',2),
-            'atan'			=>array('atan','Arc tangent',1),
-            'atanh'			=>array('atanh','Inverse hyperbolic tangent',1),
-            'base_convert'	=>array('base_convert','Convert a number between arbitrary bases',3),
-            'bindec'		=>array('bindec','Binary to decimal',1),
-            'ceil'			=>array('ceil','Round fractions up',1),
-            'cos'			=>array('cos','Cosine',1),
-            'cosh'			=>array('cosh','Hyperbolic cosine',1),
-            'decbin'		=>array('decbin','Decimal to binary',1),
-            'dechex'		=>array('dechex','Decimal to hexadecimal',1),
-            'decoct'		=>array('decoct','Decimal to octal',1),
-            'deg2rad'		=>array('deg2rad','Converts the number in degrees to the radian equivalent',1),
-            'exp'			=>array('exp','Calculates the exponent of e',1),
-            'expm1'			=>array('expm1','Returns exp(number) - 1, computed in a way that is accurate even when the value of number is close to zero',1),
-            'floor'			=>array('floor','Round fractions down',1),
-            'fmod'			=>array('fmod','Returns the floating point remainder (modulo) of the division of the arguments',2),
-            'getrandmax'	=>array('getrandmax','Show largest possible random value',0),
-            'hexdec'		=>array('hexdec','Hexadecimal to decimal',1),
-            'hypot'			=>array('hypot','Calculate the length of the hypotenuse of a right-angle triangle',2),
-            'is_finite'		=>array('is_finite','Finds whether a value is a legal finite number',1),
-            'is_infinite'	=>array('is_infinite','Finds whether a value is infinite',1),
-            'is_nan'		=>array('is_nan','Finds whether a value is not a number',1),
-            'lcg_value'		=>array('lcg_value','Combined linear congruential generator',0),
-            'log10'			=>array('log10','Base-10 logarithm',1),
-            'log1p'			=>array('log1p','Returns log(1 + number), computed in a way that is accurate even when the value of number is close to zero',1),
-            'log'			=>array('log','Natural logarithm',1,2),
-            'max'			=>array('max','Find highest value',-1),
-            'min'			=>array('min','Find lowest value',-1),
-            'mt_getrandmax'	=>array('mt_getrandmax','Show largest possible random value',0),
-            'mt_rand'		=>array('mt_rand','Generate a better random value',0,2),
-            'mt_srand'		=>array('mt_srand','Seed the better random number generator',0,1),
-            'octdec'		=>array('octdec','Octal to decimal',1),
-            'pi'			=>array('pi','Get value of pi',0),
-            'pow'			=>array('pow','Exponential expression',2),
-            'rad2deg'		=>array('rad2deg','Converts the radian number to the equivalent number in degrees',1),
-            'rand'			=>array('rand','Generate a random integer',0,2),
-            'round'			=>array('round','Rounds a float',1,2,3),
-            'sin'			=>array('sin','Sine',1),
-            'sinh'			=>array('sinh','Hyperbolic sine',1),
-            'sqrt'			=>array('sqrt','Square root',1),
-            'srand'			=>array('srand','Seed the random number generator',0,1),
-            'sum'           =>array('array_sum','Calculate the sum of values in an array',-1),
-            'tan'			=>array('tan','Tangent',1),
-            'tanh'			=>array('tanh','Hyperbolic tangent',1),
+            'abs'			=>array('abs','Math.abs','Absolute value',1),
+            'acos'			=>array('acos','Math.acos','Arc cosine',1),
+            'acosh'			=>array('acosh','NA','Inverse hyperbolic cosine',1),
+            'asin'			=>array('asin','Math.asin','Arc sine',1),
+            'asinh'			=>array('asinh','NA','Inverse hyperbolic sine',1),
+            'atan2'			=>array('atan2','Math.atan2','Arc tangent of two variables',2),
+            'atan'			=>array('atan','Math.atan','Arc tangent',1),
+            'atanh'			=>array('atanh','NA','Inverse hyperbolic tangent',1),
+            'base_convert'	=>array('base_convert','NA','Convert a number between arbitrary bases',3),
+            'bindec'		=>array('bindec','NA','Binary to decimal',1),
+            'ceil'			=>array('ceil','Math.ceil','Round fractions up',1),
+            'cos'			=>array('cos','Math.cos','Cosine',1),
+            'cosh'			=>array('cosh','NA','Hyperbolic cosine',1),
+            'decbin'		=>array('decbin','NA','Decimal to binary',1),
+            'dechex'		=>array('dechex','NA','Decimal to hexadecimal',1),
+            'decoct'		=>array('decoct','NA','Decimal to octal',1),
+            'deg2rad'		=>array('deg2rad','NA','Converts the number in degrees to the radian equivalent',1),
+            'exp'			=>array('exp','Math.exp','Calculates the exponent of e',1),
+            'expm1'			=>array('expm1','NA','Returns exp(number) - 1, computed in a way that is accurate even when the value of number is close to zero',1),
+            'floor'			=>array('floor','Math.floor','Round fractions down',1),
+            'fmod'			=>array('fmod','NA','Returns the floating point remainder (modulo) of the division of the arguments',2),
+            'getrandmax'	=>array('getrandmax','NA','Show largest possible random value',0),
+            'hexdec'		=>array('hexdec','NA','Hexadecimal to decimal',1),
+            'hypot'			=>array('hypot','NA','Calculate the length of the hypotenuse of a right-angle triangle',2),
+            'is_finite'		=>array('is_finite','NA','Finds whether a value is a legal finite number',1),
+            'is_infinite'	=>array('is_infinite','NA','Finds whether a value is infinite',1),
+            'is_nan'		=>array('is_nan','NA','Finds whether a value is not a number',1),
+            'lcg_value'		=>array('lcg_value','NA','Combined linear congruential generator',0),
+            'log10'			=>array('log10','NA','Base-10 logarithm',1),
+            'log1p'			=>array('log1p','NA','Returns log(1 + number), computed in a way that is accurate even when the value of number is close to zero',1),
+            'log'			=>array('log','Math.log','Natural logarithm',1,2),
+            'max'			=>array('max','Math.max','Find highest value',-1),
+            'min'			=>array('min','Math.min','Find lowest value',-1),
+            'mt_getrandmax'	=>array('mt_getrandmax','NA','Show largest possible random value',0),
+            'mt_rand'		=>array('mt_rand','NA','Generate a better random value',0,2),
+            'mt_srand'		=>array('mt_srand','NA','Seed the better random number generator',0,1),
+            'octdec'		=>array('octdec','NA','Octal to decimal',1),
+            'pi'			=>array('pi','NA','Get value of pi',0),
+            'pow'			=>array('pow','Math.pow','Exponential expression',2),
+            'rad2deg'		=>array('rad2deg','NA','Converts the radian number to the equivalent number in degrees',1),
+            'rand'			=>array('rand','Math.random','Generate a random integer',0,2),
+            'round'			=>array('round','Math.round','Rounds a float',1,2,3),
+            'sin'			=>array('sin','Math.sin','Sine',1),
+            'sinh'			=>array('sinh','NA','Hyperbolic sine',1),
+            'sqrt'			=>array('sqrt','Math.sqrt','Square root',1),
+            'srand'			=>array('srand','NA','Seed the random number generator',0,1),
+            'sum'           =>array('array_sum','NA','Calculate the sum of values in an array',-1),
+            'tan'			=>array('tan','Math.tan','Tangent',1),
+            'tanh'			=>array('tanh','NA','Hyperbolic tangent',1),
 
-            'empty'			=>array('empty','Determine whether a variable is empty',1),
-            'intval'		=>array('intval','Get the integer value of a variable',1,2),
-            'is_bool'		=>array('is_bool','Finds out whether a variable is a boolean',1),
-            'is_float'		=>array('is_float','Finds whether the type of a variable is float',1),
-            'is_int'		=>array('is_int','Find whether the type of a variable is integer',1),
-            'is_null'		=>array('is_null','Finds whether a variable is NULL',1),
-            'is_numeric'	=>array('is_numeric','Finds whether a variable is a number or a numeric string',1),
-            'is_scalar'		=>array('is_scalar','Finds whether a variable is a scalar',1),
-            'is_string'		=>array('is_string','Find whether the type of a variable is string',1),
+            'empty'			=>array('empty','NA','Determine whether a variable is empty',1),
+            'intval'		=>array('intval','NA','Get the integer value of a variable',1,2),
+            'is_bool'		=>array('is_bool','NA','Finds out whether a variable is a boolean',1),
+            'is_float'		=>array('is_float','NA','Finds whether the type of a variable is float',1),
+            'is_int'		=>array('is_int','NA','Find whether the type of a variable is integer',1),
+            'is_null'		=>array('is_null','NA','Finds whether a variable is NULL',1),
+            'is_numeric'	=>array('is_numeric','NA','Finds whether a variable is a number or a numeric string',1),
+            'is_scalar'		=>array('is_scalar','NA','Finds whether a variable is a scalar',1),
+            'is_string'		=>array('is_string','NA','Find whether the type of a variable is string',1),
 
-            'addcslashes'	=>array('addcslashes','Quote string with slashes in a C style',2),
-            'addslashes'	=>array('addslashes','Quote string with slashes',1),
-            'bin2hex'		=>array('bin2hex','Convert binary data into hexadecimal representation',1),
-            'chr'			=>array('chr','Return a specific character',1),
-            'chunk_split'	=>array('chunk_split','Split a string into smaller chunks',1,2,3),
-            'convert_uudecode'			=>array('convert_uudecode','Decode a uuencoded string',1),
-            'convert_uuencode'			=>array('convert_uuencode','Uuencode a string',1),
-            'count_chars'	=>array('count_chars','Return information about characters used in a string',1,2),
-            'crc32'			=>array('crc32','Calculates the crc32 polynomial of a string',1),
-            'crypt'			=>array('crypt','One-way string hashing',1,2),
-            'hebrev'		=>array('hebrev','Convert logical Hebrew text to visual text',1,2),
-            'hebrevc'		=>array('hebrevc','Convert logical Hebrew text to visual text with newline conversion',1,2),
-            'html_entity_decode'        =>array('html_entity_decode','Convert all HTML entities to their applicable characters',1,2,3),
-            'htmlentities'	=>array('htmlentities','Convert all applicable characters to HTML entities',1,2,3),
-            'htmlspecialchars_decode'	=>array('htmlspecialchars_decode','Convert special HTML entities back to characters',1,2),
-            'htmlspecialchars'			=>array('htmlspecialchars','Convert special characters to HTML entities',1,2,3,4),
-            'implode'		=>array('implode','Join array elements with a string',-1),
-            'lcfirst'		=>array('lcfirst','Make a string\'s first character lowercase',1),
-            'levenshtein'	=>array('levenshtein','Calculate Levenshtein distance between two strings',2,5),
-            'ltrim'			=>array('ltrim','Strip whitespace (or other characters) from the beginning of a string',1,2),
-            'md5'			=>array('md5','Calculate the md5 hash of a string',1),
-            'metaphone'		=>array('metaphone','Calculate the metaphone key of a string',1,2),
-            'money_format'	=>array('money_format','Formats a number as a currency string',1,2),
-            'nl2br'			=>array('nl2br','Inserts HTML line breaks before all newlines in a string',1,2),
-            'number_format'	=>array('number_format','Format a number with grouped thousands',1,2,4),
-            'ord'			=>array('ord','Return ASCII value of character',1),
-            'quoted_printable_decode'			=>array('quoted_printable_decode','Convert a quoted-printable string to an 8 bit string',1),
-            'quoted_printable_encode'			=>array('quoted_printable_encode','Convert a 8 bit string to a quoted-printable string',1),
-            'quotemeta'		=>array('quotemeta','Quote meta characters',1),
-            'rtrim'			=>array('rtrim','Strip whitespace (or other characters) from the end of a string',1,2),
-            'sha1'			=>array('sha1','Calculate the sha1 hash of a string',1),
-            'similar_text'	=>array('similar_text','Calculate the similarity between two strings',1,2),
-            'soundex'		=>array('soundex','Calculate the soundex key of a string',1),
-            'sprintf'		=>array('sprintf','Return a formatted string',-1),
-            'str_ireplace'  =>array('str_ireplace','Case-insensitive version of str_replace',3),
-            'str_pad'		=>array('str_pad','Pad a string to a certain length with another string',2,3,4),
-            'str_repeat'	=>array('str_repeat','Repeat a string',2),
-            'str_replace'	=>array('str_replace','Replace all occurrences of the search string with the replacement string',3),
-            'str_rot13'		=>array('str_rot13','Perform the rot13 transform on a string',1),
-            'str_shuffle'	=>array('str_shuffle','Randomly shuffles a string',1),
-            'str_word_count'	=>array('str_word_count','Return information about words used in a string',1),
-            'strcasecmp'	=>array('strcasecmp','Binary safe case-insensitive string comparison',2),
-            'strcmp'		=>array('strcmp','Binary safe string comparison',2),
-            'strcoll'		=>array('strcoll','Locale based string comparison',2),
-            'strcspn'		=>array('strcspn','Find length of initial segment not matching mask',2,3,4),
-            'strip_tags'	=>array('strip_tags','Strip HTML and PHP tags from a string',1,2),
-            'stripcslashes'	=>array('stripcslashes','Un-quote string quoted with addcslashes',1),
-            'stripos'		=>array('stripos','Find position of first occurrence of a case-insensitive string',2,3),
-            'stripslashes'	=>array('stripslashes','Un-quotes a quoted string',1),
-            'stristr'		=>array('stristr','Case-insensitive strstr',2,3),
-            'strlen'		=>array('strlen','Get string length',1),
-            'strnatcasecmp'	=>array('strnatcasecmp','Case insensitive string comparisons using a "natural order" algorithm',2),
-            'strnatcmp'		=>array('strnatcmp','String comparisons using a "natural order" algorithm',2),
-            'strncasecmp'	=>array('strncasecmp','Binary safe case-insensitive string comparison of the first n characters',3),
-            'strncmp'		=>array('strncmp','Binary safe string comparison of the first n characters',3),
-            'strpbrk'		=>array('strpbrk','Search a string for any of a set of characters',2),
-            'strpos'		=>array('strpos','Find position of first occurrence of a string',2,3),
-            'strrchr'		=>array('strrchr','Find the last occurrence of a character in a string',2),
-            'strrev'		=>array('strrev','Reverse a string',1),
-            'strripos'		=>array('strripos','Find position of last occurrence of a case-insensitive string in a string',2,3),
-            'strrpos'		=>array('strrpos','Find the position of the last occurrence of a substring in a string',2,3),
-            'strspn'        =>array('Finds the length of the initial segment of a string consisting entirely of characters contained within a given mask.',2,3,4),
-            'strstr'		=>array('strstr','Find first occurrence of a string',2,3),
-            'strtolower'	=>array('strtolower','Make a string lowercase',1),
-            'strtoupper'	=>array('strtoupper','Make a string uppercase',1),
-            'strtr'			=>array('strtr','Translate characters or replace substrings',3),
-            'substr_compare'=>array('substr_compare','Binary safe comparison of two strings from an offset, up to length characters',3,4,5),
-            'substr_count'	=>array('substr_count','Count the number of substring occurrences',2,3,4),
-            'substr_replace'=>array('substr_replace','Replace text within a portion of a string',3,4),
-            'substr'		=>array('substr','Return part of a string',2,3),
-            'ucfirst'		=>array('ucfirst','Make a string\'s first character uppercase',1),
-            'ucwords'		=>array('ucwords','Uppercase the first character of each word in a string',1),
+            'addcslashes'	=>array('addcslashes','NA','Quote string with slashes in a C style',2),
+            'addslashes'	=>array('addslashes','NA','Quote string with slashes',1),
+            'bin2hex'		=>array('bin2hex','NA','Convert binary data into hexadecimal representation',1),
+            'chr'			=>array('chr','NA','Return a specific character',1),
+            'chunk_split'	=>array('chunk_split','NA','Split a string into smaller chunks',1,2,3),
+            'convert_uudecode'			=>array('convert_uudecode','NA','Decode a uuencoded string',1),
+            'convert_uuencode'			=>array('convert_uuencode','NA','Uuencode a string',1),
+            'count_chars'	=>array('count_chars','NA','Return information about characters used in a string',1,2),
+            'crc32'			=>array('crc32','NA','Calculates the crc32 polynomial of a string',1),
+            'crypt'			=>array('crypt','NA','One-way string hashing',1,2),
+            'hebrev'		=>array('hebrev','NA','Convert logical Hebrew text to visual text',1,2),
+            'hebrevc'		=>array('hebrevc','NA','Convert logical Hebrew text to visual text with newline conversion',1,2),
+            'html_entity_decode'        =>array('html_entity_decode','NA','Convert all HTML entities to their applicable characters',1,2,3),
+            'htmlentities'	=>array('htmlentities','NA','Convert all applicable characters to HTML entities',1,2,3),
+            'htmlspecialchars_decode'	=>array('htmlspecialchars_decode','NA','Convert special HTML entities back to characters',1,2),
+            'htmlspecialchars'			=>array('htmlspecialchars','NA','Convert special characters to HTML entities',1,2,3,4),
+            'implode'		=>array('implode','NA','Join array elements with a string',-1),
+            'lcfirst'		=>array('lcfirst','NA','Make a string\'s first character lowercase',1),
+            'levenshtein'	=>array('levenshtein','NA','Calculate Levenshtein distance between two strings',2,5),
+            'ltrim'			=>array('ltrim','NA','Strip whitespace (or other characters) from the beginning of a string',1,2),
+            'md5'			=>array('md5','NA','Calculate the md5 hash of a string',1),
+            'metaphone'		=>array('metaphone','NA','Calculate the metaphone key of a string',1,2),
+            'money_format'	=>array('money_format','NA','Formats a number as a currency string',1,2),
+            'nl2br'			=>array('nl2br','NA','Inserts HTML line breaks before all newlines in a string',1,2),
+            'number_format'	=>array('number_format','NA','Format a number with grouped thousands',1,2,4),
+            'ord'			=>array('ord','NA','Return ASCII value of character',1),
+            'quoted_printable_decode'			=>array('quoted_printable_decode','NA','Convert a quoted-printable string to an 8 bit string',1),
+            'quoted_printable_encode'			=>array('quoted_printable_encode','NA','Convert a 8 bit string to a quoted-printable string',1),
+            'quotemeta'		=>array('quotemeta','NA','Quote meta characters',1),
+            'rtrim'			=>array('rtrim','NA','Strip whitespace (or other characters) from the end of a string',1,2),
+            'sha1'			=>array('sha1','NA','Calculate the sha1 hash of a string',1),
+            'similar_text'	=>array('similar_text','NA','Calculate the similarity between two strings',1,2),
+            'soundex'		=>array('soundex','NA','Calculate the soundex key of a string',1),
+            'sprintf'		=>array('sprintf','NA','Return a formatted string',-1),
+            'str_ireplace'  =>array('str_ireplace','NA','Case-insensitive version of str_replace',3),
+            'str_pad'		=>array('str_pad','NA','Pad a string to a certain length with another string',2,3,4),
+            'str_repeat'	=>array('str_repeat','NA','Repeat a string',2),
+            'str_replace'	=>array('str_replace','NA','Replace all occurrences of the search string with the replacement string',3),
+            'str_rot13'		=>array('str_rot13','NA','Perform the rot13 transform on a string',1),
+            'str_shuffle'	=>array('str_shuffle','NA','Randomly shuffles a string',1),
+            'str_word_count'	=>array('str_word_count','NA','Return information about words used in a string',1),
+            'strcasecmp'	=>array('strcasecmp','NA','Binary safe case-insensitive string comparison',2),
+            'strcmp'		=>array('strcmp','NA','Binary safe string comparison',2),
+            'strcoll'		=>array('strcoll','NA','Locale based string comparison',2),
+            'strcspn'		=>array('strcspn','NA','Find length of initial segment not matching mask',2,3,4),
+            'strip_tags'	=>array('strip_tags','NA','Strip HTML and PHP tags from a string',1,2),
+            'stripcslashes'	=>array('stripcslashes','NA','Un-quote string quoted with addcslashes',1),
+            'stripos'		=>array('stripos','NA','Find position of first occurrence of a case-insensitive string',2,3),
+            'stripslashes'	=>array('stripslashes','NA','Un-quotes a quoted string',1),
+            'stristr'		=>array('stristr','NA','Case-insensitive strstr',2,3),
+            'strlen'		=>array('strlen','NA','Get string length',1),
+            'strnatcasecmp'	=>array('strnatcasecmp','NA','Case insensitive string comparisons using a "natural order" algorithm',2),
+            'strnatcmp'		=>array('strnatcmp','NA','String comparisons using a "natural order" algorithm',2),
+            'strncasecmp'	=>array('strncasecmp','NA','Binary safe case-insensitive string comparison of the first n characters',3),
+            'strncmp'		=>array('strncmp','NA','Binary safe string comparison of the first n characters',3),
+            'strpbrk'		=>array('strpbrk','NA','Search a string for any of a set of characters',2),
+            'strpos'		=>array('strpos','NA','Find position of first occurrence of a string',2,3),
+            'strrchr'		=>array('strrchr','NA','Find the last occurrence of a character in a string',2),
+            'strrev'		=>array('strrev','NA','Reverse a string',1),
+            'strripos'		=>array('strripos','NA','Find position of last occurrence of a case-insensitive string in a string',2,3),
+            'strrpos'		=>array('strrpos','NA','Find the position of the last occurrence of a substring in a string',2,3),
+            'strspn'        =>array('strspn','NA','Finds the length of the initial segment of a string consisting entirely of characters contained within a given mask.',2,3,4),
+            'strstr'		=>array('strstr','NA','Find first occurrence of a string',2,3),
+            'strtolower'	=>array('strtolower','toLowerCase','Make a string lowercase',1),
+            'strtoupper'	=>array('strtoupper','toUpperCase','Make a string uppercase',1),
+            'strtr'			=>array('strtr','NA','Translate characters or replace substrings',3),
+            'substr_compare'=>array('substr_compare','NA','Binary safe comparison of two strings from an offset, up to length characters',3,4,5),
+            'substr_count'	=>array('substr_count','NA','Count the number of substring occurrences',2,3,4),
+            'substr_replace'=>array('substr_replace','NA','Replace text within a portion of a string',3,4),
+            'substr'		=>array('substr','NA','Return part of a string',2,3),
+            'ucfirst'		=>array('ucfirst','NA','Make a string\'s first character uppercase',1),
+            'ucwords'		=>array('ucwords','NA','Uppercase the first character of each word in a string',1),
 
-            'stddev'        =>array('stats_standard_deviation','Returns the standard deviation',-1),
+            'stddev'        =>array('stats_standard_deviation','NA','Returns the standard deviation',-1),
 
             // Locally declared functions
-            'if'            => array('exprmgr_if','Excel-style if(test,result_if_true,result_if_false)',3),
-            'list'          => array('exprmgr_list','Return comma-separated list of values',-1),
+            'if'            => array('exprmgr_if','NA','Excel-style if(test,result_if_true,result_if_false)',3),
+            'list'          => array('exprmgr_list','NA','Return comma-separated list of values',-1),
         );
 
         $this->amVars = array();
@@ -372,7 +374,7 @@ class ExpressionManager {
                 $result = array((-$arg1[0]),$token[1],'NUMBER');
                 break;
             case '!';
-                $result = array((!$arg[0]),$token[1],'NUMBER');
+                $result = array((!$arg1[0]),$token[1],'NUMBER');
                 break;
         }
         $this->StackPush($result);
@@ -648,7 +650,10 @@ class ExpressionManager {
                     $this->StackPush($secondResult);
                     $evalStatus = true;
                 }
-
+                else
+                {
+                    return false;   // an error must have occurred
+                }
             }
             else
             {
@@ -761,6 +766,10 @@ class ExpressionManager {
                             return false;
                         }
                         // else continue
+                    }
+                    else
+                    {
+                        return false;   // an error must have occurred
                     }
                     break;
                 default:
@@ -1260,7 +1269,7 @@ class ExpressionManager {
         $numArgs = count($params);
 
         if (function_exists($funcName)) {
-            $numArgsAllowed = array_slice($func, 2);
+            $numArgsAllowed = array_slice($func, 3);
             $argsPassed = is_array($params) ? count($params) : 0;
 
             // for unlimited #  parameters
@@ -1289,12 +1298,13 @@ class ExpressionManager {
                         $result = $funcName($params[0], $params[1], $params[2], $params[3]);
                         break;
                     default:
-                        $this->AddError("Error: Unsupported arg count: $funcName(".implode(", ",$params),$funcNameToken);
+                        $this->AddError("Unsupported number of arguments: " . $argsPassed, $funNameToken);
                         return false;
                     }
 
                 } else {
-                    $this->AddError("Error: Incorrect arg count: " . $funcName ."(".implode(", ",$params).")",$funcNameToken);
+                    $this->AddError("Function does not support that number of arguments:  " . $argsPassed .
+                            ".  Function supports this many arguments, where -1=unlimited: " . implode(',', $numArgsAllowed), $funcNameToken);
                     return false;
                 }
             }
@@ -1785,8 +1795,8 @@ NULL~--b
 4~if(5 > 7,2,4)
 there~if((one > two),'hi','there')
 64~if((one < two),pow(2,6),pow(6,2))
-1,2,3,4,5~list(one,two,three,min(four,five,six),max(three,four,five))
-11,12~list(eleven,twelve)
+1, 2, 3, 4, 5~list(one,two,three,min(four,five,six),max(three,four,five))
+11, 12~list(eleven,twelve)
 {INSERTANS:123X45X67}~INSERTANS:123X45X67
 {QID}~QID
 {ASSESSMENT_HEADING}~ASSESSMENT_HEADING
@@ -1797,6 +1807,39 @@ Father~q5pointChoice.value
 7~qArrayNumbers.ls1.min.code
 I love LimeSurvey~qArrayNumbers.ls1.min.value
 15~12X3X5lab1_ber#2
+NULL~*
+NULL~three +
+NULL~four * / seven
+NULL~(five - three
+NULL~five + three)
+NULL~seven + = four
+NULL~if(seven,three,four))
+NULL~if(seven)
+NULL~if(seven,three)
+NULL~if(seven,three,four,five)
+NULL~if(seven,three,)
+NULL~>
+NULL~five > > three
+NULL~seven > = four
+NULL~seven >=
+NULL~three &&
+NULL~three ||
+NULL~three +
+NULL~three >=
+NULL~three +=
+NULL~three !
+0~!three
+NULL~three *
+NULL~five ! three
+8~five + + three
+2~five + - three
+NULL~(5 + 7) = 8
+NULL~&& four
+NULL~min(
+NULL~max three, four, five)
+NULL~three four
+NULL~max(three,four,five) six
+NULL~max()
 EOD;
         
         $em = new ExpressionManager();
