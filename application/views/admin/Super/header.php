@@ -3,16 +3,16 @@
 <head>
 <?php echo $meta;?>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<script type="text/javascript" src="<?php echo $baseurl;?>application/scripts/tabpane/js/tabpane.js"></script>
-<script type="text/javascript" src="<?php echo $baseurl;?>scripts/jquery/jquery.js"></script>
-<script type="text/javascript" src="<?php echo $baseurl;?>scripts/jquery/jquery-ui.js"></script>
-<script type="text/javascript" src="<?php echo $baseurl;?>scripts/jquery/jquery.qtip.js"></script>
-<script type="text/javascript" src="<?php echo $baseurl;?>scripts/jquery/jquery.notify.js"></script>
-<script type="text/javascript" src="<?php echo $baseurl;?>application/scripts/admin_core.js"></script>
+<script type="text/javascript" src="<?php echo $this->config->item('adminscripts');?>tabpane/js/tabpane.js"></script>
+<script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery.js"></script>
+<script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery-ui.js"></script>
+<script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery.qtip.js"></script>
+<script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery.notify.js"></script>
+<script type="text/javascript" src="<?php echo $this->config->item('adminscripts');?>admin_core.js"></script>
 <?php echo $datepickerlang;?>
 <title><?php echo $sitename;?></title>
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/tab.webfx.css" />
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $baseurl;?>scripts/jquery/css/start/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->config->item('generalscripts');?>jquery/css/start/jquery-ui.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/printablestyle.css" media="print" />
 <link rel="stylesheet" type="text/css" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/adminstyle.css" />
 <link rel="shortcut icon" href="<?php echo $baseurl;?>styles/admin/favicon.ico" type="image/x-icon" />
