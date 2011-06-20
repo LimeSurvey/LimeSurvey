@@ -81,15 +81,15 @@ echo "<script type='text/javascript'>
         var translt = {
              titleFld: '" . $clang->gT('Title') . "',
              commentFld: '" . $clang->gT('Comment') . "',
-             errorNoMoreFiles: '" . $clang->gT('Sorry, No more files can be uploaded !') . "',
-             errorOnlyAllowed: '" . $clang->gT('Sorry, Only %s files can be uploaded for this question !') . "',
+             errorNoMoreFiles: '" . $clang->gT('Sorry, no more files can be uploaded!') . "',
+             errorOnlyAllowed: '" . $clang->gT('Sorry, only %s files can be uploaded for this question!') . "',
              uploading: '" . $clang->gT('Uploading') . "',
              selectfile: '" . $clang->gT('Select file') . "',
-             errorNeedMore: '" . $clang->gT('Please upload %s more files.') . "',
-             errorMoreAllowed: '" . $clang->gT('If you wish, you may upload %s more files; else you may return back to survey') . "',
-             errorMaxReached: '" . $clang->gT('The maximum number of files have been uploaded. You may return back to survey') . "',
-             errorTooMuch: '" . $clang->gT('The maximum number of files have been uploaded. You may return back to survey') . "',
-             errorNeedMoreConfirm: '" . $clang->gT("You need to upload %s more files for this question.\nAre you sure you want to exit ?") . "'
+             errorNeedMore: '" . $clang->gT('Please upload %s more file(s).') . "',
+             errorMoreAllowed: '" . $clang->gT('If you wish, you may upload %s more file(s); else you may return back to survey.') . "',
+             errorMaxReached: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.') . "',
+             errorTooMuch: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.') . "',
+             errorNeedMoreConfirm: '" . $clang->gT("You need to upload %s more files for this question.\nAre you sure you want to exit?") . "'
             };
     </script>\n";
 
