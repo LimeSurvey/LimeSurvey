@@ -1707,7 +1707,7 @@ function checkconditionalmandatorys($move, $backok=null)
 
 function checkUploadedFileValidity($move, $backok=null)
 {
-    global $connect, $thisstep;
+    global $connect, $thisstep, $clang;
     if (!isset($backok) || $backok != "Y")
     {
         global $dbprefix;
@@ -1756,7 +1756,7 @@ function checkUploadedFileValidity($move, $backok=null)
                                 if ($file['size'] > $validation['max_filesize'] * 1000)
                                 {
                                     $filenotvalidated = array();
-                                    $filenotvalidated[$field."_file_".$i] = "Sorry, the uploaded file (".$file['size'].") is larger than the allowed filesize of ".$validation['max_filesize']." KB.";
+                                    $filenotvalidated[$field."_file_".$i] = sprintf($clang->gT("Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."), $file['size'], $validation['max_filesize']);
                                     $append = true;
                                 }
 
@@ -1769,13 +1769,13 @@ function checkUploadedFileValidity($move, $backok=null)
                                 {
                                     if (isset($append) && $append)
                                     {
-                                        $filenotvalidated[$field."_file_".$i] .= "Sorry, only ".$validation['allowed_filetypes']." extensions are allowed ! ";
+                                        $filenotvalidated[$field."_file_".$i] .= sprintf($clang->gT("Sorry, only %s extensions are allowed !"),$validation['allowed_filetypes']);
                                         unset($append);
                                     }
                                     else
                                     {
                                         $filenotvalidated = array();
-                                        $filenotvalidated[$field."_file_".$i] = "Sorry, only ".$validation['allowed_filetypes']." extensions are allowed ! ";
+                                        $filenotvalidated[$field."_file_".$i] .= sprintf($clang->gT("Sorry, only %s extensions are allowed !"),$validation['allowed_filetypes']);
                                     }
                                 }
                             }
@@ -1787,7 +1787,7 @@ function checkUploadedFileValidity($move, $backok=null)
                     if ($filecount < $validation['min_num_of_files'])
                     {
                         $filenotvalidated = array();
-                        $filenotvalidated[$field] = "The minimum number of files have not been uploaded";
+                        $filenotvalidated[$field] = $clang->gT("The minimum number of files have not been uploaded");
                     }
                 }
             }

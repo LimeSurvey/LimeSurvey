@@ -1,23 +1,9 @@
 /**
  * AJAX Upload ( http://valums.com/ajax-upload/ ) 
- * Copyright (c) Andris Valums
- * Licensed under the MIT license ( http://valums.com/mit-license/ )
- * Thanks to Gary Haran, David Mark, Corey Burns and others for contributions 
+ * Copyright (c) Andrew Valums
+ * Licensed under the MIT license 
  */
 (function () {
-    /* global window */
-    /* jslint browser: true, devel: true, undef: true, nomen: true, bitwise: true, regexp: true, newcap: true, immed: true */
-    
-    /**
-     * Wrapper for FireBug's console.log
-     */
-    function log(){
-        if (typeof(console) != 'undefined' && typeof(console.log) == 'function'){            
-            Array.prototype.unshift.call(arguments, '[Ajax Upload]');
-            console.log( Array.prototype.join.call(arguments, ' '));
-        }
-    } 
-
     /**
      * Attaches event to a dom element.
      * @param {Element} el
@@ -236,6 +222,8 @@
             action: 'upload.php',
             // File upload name
             name: 'userfile',
+            // Select & upload multiple files at once FF3.6+, Chrome 4+
+            multiple: false,
             // Additional data to send
             data: {},
             // Submit file as soon as it's selected
@@ -247,6 +235,8 @@
             responseType: false,
             // Class applied to button when mouse is hovered
             hoverClass: 'hover',
+            // Class applied to button when button is focused
+            focusClass: 'focus',
             // Class applied to button when AU is disabled
             disabledClass: 'disabled',            
             // When user selects a file, useful with autoSubmit disabled
@@ -328,10 +318,12 @@
             
             // hide input
             if (this._input){
-                // We use visibility instead of display to fix problem with Safari 4
-                // The problem is that the value of input doesn't change if it 
-                // has display none when user selects a file           
-                this._input.parentNode.style.visibility = 'hidden';
+                if (this._input.parentNode) {
+                    // We use visibility instead of display to fix problem with Safari 4
+                    // The problem is that the value of input doesn't change if it 
+                    // has display none when user selects a file
+                    this._input.parentNode.style.visibility = 'hidden';
+                }
             }
         },
         enable: function(){
@@ -351,6 +343,7 @@
             var input = document.createElement("input");
             input.setAttribute('type', 'file');
             input.setAttribute('name', this._settings.name);
+            if(this._settings.multiple) input.setAttribute('multiple', 'multiple');
             
             addStyles(input, {
                 'position' : 'absolute',
@@ -360,7 +353,10 @@
                 'right' : 0,
                 'margin' : 0,
                 'padding' : 0,
-                'fontSize' : '480px',                
+                'fontSize' : '480px',
+                // in Firefox if font-family is set to
+                // 'inherit' the input doesn't work
+                'fontFamily' : 'sans-serif',
                 'cursor' : 'pointer'
             });            
 
@@ -415,14 +411,24 @@
             
             addEvent(input, 'mouseout', function(){
                 removeClass(self._button, self._settings.hoverClass);
+                removeClass(self._button, self._settings.focusClass);
                 
-                // We use visibility instead of display to fix problem with Safari 4
-                // The problem is that the value of input doesn't change if it 
-                // has display none when user selects a file           
-                input.parentNode.style.visibility = 'hidden';
-
+                if (input.parentNode) {
+                    // We use visibility instead of display to fix problem with Safari 4
+                    // The problem is that the value of input doesn't change if it 
+                    // has display none when user selects a file
+                    input.parentNode.style.visibility = 'hidden';
+                }
             });   
                         
+            addEvent(input, 'focus', function(){
+                addClass(self._button, self._settings.focusClass);
+            });
+            
+            addEvent(input, 'blur', function(){
+                removeClass(self._button, self._settings.focusClass);
+            });
+            
 	        div.appendChild(input);
             document.body.appendChild(div);
               
@@ -439,6 +445,7 @@
             this._createInput();
             
             removeClass(this._button, this._settings.hoverClass);
+            removeClass(this._button, this._settings.focusClass);
         },
         /**
          * Function makes sure that when user clicks upload button,
@@ -603,6 +610,7 @@
                         // nodeValue property to retrieve the unmangled content.
                         // Note that IE6 only understands text/html
                         if (doc.body.firstChild && doc.body.firstChild.nodeName.toUpperCase() == 'PRE') {
+                            doc.normalize();
                             response = doc.body.firstChild.firstChild.nodeValue;
                         }
                         
@@ -654,6 +662,7 @@
             // div -> input type='file'
             removeNode(this._input.parentNode);            
             removeClass(self._button, self._settings.hoverClass);
+            removeClass(self._button, self._settings.focusClass);
                         
             form.appendChild(this._input);
                         
@@ -661,7 +670,7 @@
 
             // request set, clean up                
             removeNode(form); form = null;                          
-            removeNode(this._input); this._input = null;
+            removeNode(this._input); this._input = null;            
             
             // Get response from iframe and fire onComplete event when ready
             this._getResponse(iframe, file);            

@@ -22,7 +22,7 @@ $(document).ready(function(){
                        "<td  align='center' width='50%' padding='20px' >";
 
             if (isValueInArray(image_extensions, json[i-1].ext))
-                previewblock += "<img src='uploader.php?filegetcontents="+json[i-1].filename+"' height='60px' />"+decodeURIComponent(json[i].name);
+                previewblock += "<img src='uploader.php?filegetcontents="+json[i-1].filename+"' height='60px' />"+decodeURIComponent(json[i-1].name);
             else
                 previewblock += "<img src='images/placeholder.png' height='60px' /><br />"+decodeURIComponent(json[i-1].name);
 
@@ -167,7 +167,7 @@ $(document).ready(function(){
                 if (filecount < minfiles)
                     $('#uploadstatus').html(translt.errorNeedMore.replace('%s',(minfiles - filecount)));
                 else if (filecount < maxfiles)
-                    $('#uploadstatus').html(translt.errorMoreAllowed.replace('%s',(minfiles - filecount)));
+                    $('#uploadstatus').html(translt.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
                 else
                     $('#uploadstatus').html(translt.errorMaxReached);
 
@@ -291,7 +291,7 @@ function deletefile(fieldname, count) {
             if (filecount < minfiles)
                 $('#uploadstatus').html(translt.errorNeedMore.replace('%s',(minfiles - filecount)));
             else
-                $('#uploadstatus').html(translt.errorMoreAllowed.raplce('%s',(maxfiles - filecount)));
+                $('#uploadstatus').html(translt.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
         }
     }
     file_index = $("#"+fieldname+"_file_index_"+count).val();
