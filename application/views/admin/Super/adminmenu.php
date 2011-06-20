@@ -94,7 +94,7 @@
 	    if($this->session->userdata('USER_RIGHT_CREATE_SURVEY') == 1)
 		{ ?>	    
 
-	    <a href="#" onclick="window.open('<?php echo site_url("admin/newsurvey");?>', '_top')" title="<?php echo $clang->gTview("Create, import, or copy a survey");?>" >
+	    <a href="#" onclick="window.open('<?php echo site_url("admin/survey/newsurvey");?>', '_top')" title="<?php echo $clang->gTview("Create, import, or copy a survey");?>" >
 	    <img src='<?php echo $this->config->item('imageurl');?>/add.png' name='AddSurvey'' alt='<?php echo $clang->gT("Create, import, or copy a survey");?>' /></a>   
 	    <?php } ?>
 	    

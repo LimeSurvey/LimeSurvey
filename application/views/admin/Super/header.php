@@ -3,12 +3,12 @@
 <head>
 <?php echo $meta;?>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<script type="text/javascript" src="<?php echo $baseurl;?>application/scripts/admin/tabpane/js/tabpane.js"></script>
+<script type="text/javascript" src="<?php echo $baseurl;?>application/scripts/tabpane/js/tabpane.js"></script>
 <script type="text/javascript" src="<?php echo $baseurl;?>scripts/jquery/jquery.js"></script>
 <script type="text/javascript" src="<?php echo $baseurl;?>scripts/jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo $baseurl;?>scripts/jquery/jquery.qtip.js"></script>
 <script type="text/javascript" src="<?php echo $baseurl;?>scripts/jquery/jquery.notify.js"></script>
-<script type="text/javascript" src="<?php echo $baseurl;?>application/scripts/admin/admin_core.js"></script>
+<script type="text/javascript" src="<?php echo $baseurl;?>application/scripts/admin_core.js"></script>
 <?php echo $datepickerlang;?>
 <title><?php echo $sitename;?></title>
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/tab.webfx.css" />
