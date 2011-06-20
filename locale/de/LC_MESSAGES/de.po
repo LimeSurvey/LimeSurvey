@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-20 15:46+0100\n"
-"PO-Revision-Date: 2011-06-20 15:49+0100\n"
+"POT-Creation-Date: 2011-06-20 17:00+0100\n"
+"PO-Revision-Date: 2011-06-20 17:03+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1758,6 +1758,17 @@ msgstr "Schieberegler Minimalwert"
 msgid "Slider starts at the middle position"
 msgstr "Schieberegler startet in der Mittelposition"
 
+#: d:\web\xampp\htdocs\limesurvey/index.php:1772
+#: d:\web\xampp\htdocs\limesurvey/index.php:1778
+#, php-format
+msgid "Sorry, only %s extensions are allowed!"
+msgstr "Leider sind nur die Erweiterungen %s erlaubt!"
+
+#: d:\web\xampp\htdocs\limesurvey/index.php:1759
+#, php-format
+msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
+msgstr "Leider ist die hochgeladene Datei (%s) größer als die erlaubte Größe von %s KB."
+
 #: d:\web\xampp\htdocs\limesurvey/group.php:322
 #: d:\web\xampp\htdocs\limesurvey/question.php:77
 msgid "Sorry. There is no matching survey."
@@ -1902,6 +1913,10 @@ msgstr "Die als 'Zeitlimitwarnung' anzuzeigende Nachricht (Wenn leer, wird eine 
 #: d:\web\xampp\htdocs\limesurvey/common_functions.php:4440
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr "Die anzuzeigende Nachricht, wenn das Zeitlimit abgelaufen ist (eine Standardnachricht wird gezeigt, wenn diese Einstellung leer gelassen wird)"
+
+#: d:\web\xampp\htdocs\limesurvey/index.php:1790
+msgid "The minimum number of files has not been uploaded."
+msgstr "Die Minimalanzahlen an Dateien wurde noch nicht hochgeladen."
 
 #: d:\web\xampp\htdocs\limesurvey/common_functions.php:4544
 msgid "The participant cannot upload a single file larger than this size"
@@ -12517,13 +12532,6 @@ msgstr "Walisisch"
 
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Der von ihnen angegebene Zugangsschlüssel ist ungültig."
-
-#~ msgid ""
-#~ "The uploaded file is bigger than the upload_max_filesize directive in php."
-#~ "ini"
-#~ msgstr ""
-#~ "Die hochgeladene Datei ist grösser als die upload_max_filesize Directive "
-#~ "in der php.ini"
 
 #~ msgid ""
 #~ "There was a duplicate labelset, so this set was not imported. The "
