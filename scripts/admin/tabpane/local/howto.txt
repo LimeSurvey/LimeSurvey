@@ -1,0 +1,3 @@
+Creata a sub folder in the zip directory and copy all these files to that dir.
+Replace the include statements of webfxlayout.js and webfxapi.js to point at local/webfxlayout.js and
+local/webfxapi.js
