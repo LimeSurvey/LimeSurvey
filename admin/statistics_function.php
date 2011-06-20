@@ -275,17 +275,25 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         /**
          * Initiate the Spreadsheet_Excel_Writer
          */
-        include_once(dirname(__FILE__)."/classes/phpexcel/PHPExcel.php");
-        if ($pdfOutput!='F')
-        {
-            header("Content-Disposition: attachment; filename=results-survey".$surveyid.".xls");
-            header("Content-type: application/vnd.ms-excel");
+        include_once(dirname(__FILE__)."/classes/pear/Spreadsheet/Excel/Writer.php");
+        if($pdfOutput=='F')
+        $workbook = new Spreadsheet_Excel_Writer($tempdir.'/statistic-survey'.$surveyid.'.xls');
+        else
+        $workbook = new Spreadsheet_Excel_Writer();
+
+        $workbook->setVersion(8);
+        // Inform the module that our data will arrive as UTF-8.
+        // Set the temporary directory to avoid PHP error messages due to open_basedir restrictions and calls to tempnam("", ...)
+        if (!empty($tempdir)) {
+            $workbook->setTempDir($tempdir);
         }
-        $workbook = new PHPExcel();
+        if ($pdfOutput!='F')
+        $workbook->send('statistic-survey'.$surveyid.'.xls');
 
         // Creating the first worksheet
-        $sheet = $workbook->getActiveSheet();
-        $sheet->setTitle(substr('results-survey'.$surveyid,0,31));
+        $sheet =& $workbook->addWorksheet(utf8_decode('results-survey'.$surveyid));
+        $sheet->setInputEncoding('utf-8');
+        $sheet->setColumn(0,20,20);
         $separator="~|";
     }
     /**
@@ -549,18 +557,18 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     switch($outputType)
     {
         case "xls":
-            $xlsRow = 1;
-            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Number of records in this query:"));
-            $sheet->setCellValueByColumnAndRow(1,$xlsRow,$results);
+            $xlsRow = 0;
+            $sheet->write($xlsRow,0,$statlang->gT("Number of records in this query:"));
+            $sheet->write($xlsRow,1,$results);
             ++$xlsRow;
-            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Total records in survey:"));
-            $sheet->setCellValueByColumnAndRow(1,$xlsRow,$total);
+            $sheet->write($xlsRow,0,$statlang->gT("Total records in survey:"));
+            $sheet->write($xlsRow,1,$total);
 
             if($total)
             {
                 ++$xlsRow;
-                $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Percentage of total:"));
-                $sheet->setCellValueByColumnAndRow(1,$xlsRow,$percent."%");
+                $sheet->write($xlsRow,0,$statlang->gT("Percentage of total:"));
+                $sheet->write($xlsRow,1,$percent."%");
             }
 
             break;
@@ -1065,14 +1073,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             ++$xlsRow;
 
                             ++$xlsRow;
-                            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$xlsTitle);
+                            $sheet->write($xlsRow, 0,$xlsTitle);
                             ++$xlsRow;
-                            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$xlsDesc);
+                            $sheet->write($xlsRow, 0,$xlsDesc);
 
                             $headXLS[] = array($statlang->gT("Calculation"),$statlang->gT("Result"));
                             ++$xlsRow;
-                            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Calculation"));
-                            $sheet->setCellValueByColumnAndRow(1,$xlsRow,$statlang->gT("Result"));
+                            $sheet->write($xlsRow, 0,$statlang->gT("Calculation"));
+                            $sheet->write($xlsRow, 1,$statlang->gT("Result"));
 
                             break;
                         case 'pdf':
@@ -1361,8 +1369,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 case 'xls':
 
                                     ++$xlsRow;
-                                    $sheet->setCellValueByColumnAndRow(0, $xlsRow, html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'));
-                                    $sheet->setCellValueByColumnAndRow(1, $xlsRow, html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
+                                    $sheet->write($xlsRow, 0,html_entity_decode($shw[0],ENT_QUOTES,'UTF-8'));
+                                    $sheet->write($xlsRow, 1,html_entity_decode($shw[1],ENT_QUOTES,'UTF-8'));
 
 
                                     $tableXLS[] = array($shw[0],$shw[1]);
@@ -1392,9 +1400,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             case 'xls':
 
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Null values are ignored in calculations"));
+                                $sheet->write($xlsRow, 0,$statlang->gT("Null values are ignored in calculations"));
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow,sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
+                                $sheet->write($xlsRow, 0,sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
 
                                 $footXLS[] = array($statlang->gT("Null values are ignored in calculations"));
                                 $footXLS[] = array(sprintf($statlang->gT("Q1 and Q3 calculated using %s"), $statlang->gT("minitab method")));
@@ -1447,7 +1455,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $tableXLS[] = array($statlang->gT("Not enough values for calculation"));
 
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow, $statlang->gT("Not enough values for calculation"));
+                                $sheet->write($xlsRow, 0, $statlang->gT("Not enough values for calculation"));
 
 
 
@@ -1872,9 +1880,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         ++$xlsRow;
 
                         ++$xlsRow;
-                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$xlsTitle);
+                        $sheet->write($xlsRow, 0,$xlsTitle);
                         ++$xlsRow;
-                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$xlsDesc);
+                        $sheet->write($xlsRow, 0,$xlsDesc);
 
                         $tableXLS = array();
                         $footXLS = array();
@@ -2111,10 +2119,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                             $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"),$statlang->gT("Sum"));
 
                                             ++$xlsRow;
-                                            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Answer"));
-                                            $sheet->setCellValueByColumnAndRow(1,$xlsRow,$statlang->gT("Count"));
-                                            $sheet->setCellValueByColumnAndRow(2,$xlsRow,$statlang->gT("Percentage"));
-                                            $sheet->setCellValueByColumnAndRow(3,$xlsRow,$statlang->gT("Sum"));
+                                            $sheet->write($xlsRow,0,$statlang->gT("Answer"));
+                                            $sheet->write($xlsRow,1,$statlang->gT("Count"));
+                                            $sheet->write($xlsRow,2,$statlang->gT("Percentage"));
+                                            $sheet->write($xlsRow,3,$statlang->gT("Sum"));
 
                                             break;
                                         case 'pdf':
@@ -2153,9 +2161,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                             $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
 
                                             ++$xlsRow;
-                                            $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Answer"));
-                                            $sheet->setCellValueByColumnAndRow(1,$xlsRow,$statlang->gT("Count"));
-                                            $sheet->setCellValueByColumnAndRow(2,$xlsRow,$statlang->gT("Percentage"));
+                                            $sheet->write($xlsRow,0,$statlang->gT("Answer"));
+                                            $sheet->write($xlsRow,1,$statlang->gT("Count"));
+                                            $sheet->write($xlsRow,2,$statlang->gT("Percentage"));
 
                                             break;
 
@@ -2254,9 +2262,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                         $headXLS[] = array($statlang->gT("Answer"),$statlang->gT("Count"),$statlang->gT("Percentage"));
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Answer"));
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$statlang->gT("Count"));
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,$statlang->gT("Percentage"));
+                                        $sheet->write($xlsRow,0,$statlang->gT("Answer"));
+                                        $sheet->write($xlsRow,1,$statlang->gT("Count"));
+                                        $sheet->write($xlsRow,2,$statlang->gT("Percentage"));
 
                                         break;
                                     case 'pdf':
@@ -2456,9 +2464,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i]). "%");
 
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $gdata[$i]). "%");
+                                $sheet->write($xlsRow,0,$label[$i]);
+                                $sheet->write($xlsRow,1,$grawdata[$i]);
+                                $sheet->write($xlsRow,2,sprintf("%01.2f", $gdata[$i]). "%");
 
                                 break;
                             case 'pdf':
@@ -2554,9 +2562,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                         $tableXLS[]= array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%");
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
 
                                         break;
                                     case 'pdf':
@@ -2616,10 +2624,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                         $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $percentage)."%");
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $percentage)."%");
-                                        $sheet->setCellValueByColumnAndRow(3,$xlsRow,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,3,sprintf("%01.2f", $percentage)."%");
 
                                         break;
                                     case 'pdf':
@@ -2686,10 +2694,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                         $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $percentage)."%");
-                                        $sheet->setCellValueByColumnAndRow(3,$xlsRow,sprintf("%01.2f", $aggregatedgdata)."%");
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         break;
                                     case 'pdf':
@@ -2751,10 +2759,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                         $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $percentage)."%",sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $percentage)."%");
-                                        $sheet->setCellValueByColumnAndRow(3,$xlsRow,sprintf("%01.2f", $aggregatedgdata)."%");
+                                        $sheet->write($xlsRow,0,$label[$i]);
+                                        $sheet->write($xlsRow,1,$grawdata[$i]);
+                                        $sheet->write($xlsRow,2,sprintf("%01.2f", $percentage)."%");
+                                        $sheet->write($xlsRow,3,sprintf("%01.2f", $aggregatedgdata)."%");
 
                                         break;
                                     case 'pdf':
@@ -2813,15 +2821,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                         $footXLS[] = array($statlang->gT("Number of cases"),$TotalCompleted,$casepercentage."%","");
 
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Sum")." (".$statlang->gT("Answers").")");
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$sumitems);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,$sumpercentage."%");
-                                        $sheet->setCellValueByColumnAndRow(3,$xlsRow,$sumpercentage."%");
+                                        $sheet->write($xlsRow,0,$statlang->gT("Sum")." (".$statlang->gT("Answers").")");
+                                        $sheet->write($xlsRow,1,$sumitems);
+                                        $sheet->write($xlsRow,2,$sumpercentage."%");
+                                        $sheet->write($xlsRow,3,$sumpercentage."%");
                                         ++$xlsRow;
-                                        $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Number of cases"));
-                                        $sheet->setCellValueByColumnAndRow(1,$xlsRow,$TotalCompleted);
-                                        $sheet->setCellValueByColumnAndRow(2,$xlsRow,$casepercentage."%");
-                                        //$sheet->setCellValueByColumnAndRow($xlsRow,3,$sumpercentage."%");
+                                        $sheet->write($xlsRow,0,$statlang->gT("Number of cases"));
+                                        $sheet->write($xlsRow,1,$TotalCompleted);
+                                        $sheet->write($xlsRow,2,$casepercentage."%");
 
                                         break;
                                     case 'pdf':
@@ -2864,10 +2871,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                     $tableXLS[] = array($label[$i],$grawdata[$i],sprintf("%01.2f", $gdata[$i])."%", "");
 
                                     ++$xlsRow;
-                                    $sheet->setCellValueByColumnAndRow(0,$xlsRow,$label[$i]);
-                                    $sheet->setCellValueByColumnAndRow(1,$xlsRow,$grawdata[$i]);
-                                    $sheet->setCellValueByColumnAndRow(2,$xlsRow,sprintf("%01.2f", $gdata[$i])."%");
-                                    //$sheet->setCellValueByColumnAndRow($xlsRow,3,$sumpercentage."%");
+                                    $sheet->write($xlsRow,0,$label[$i]);
+                                    $sheet->write($xlsRow,1,$grawdata[$i]);
+                                    $sheet->write($xlsRow,2,sprintf("%01.2f", $gdata[$i])."%");
+                                    //$sheet->write($xlsRow,3,$sumpercentage."%");
 
                                     break;
                                 case 'pdf':
@@ -2991,12 +2998,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $tableXLS[] = array($statlang->gT("Standard deviation"),$stddev,'','');
 
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Arithmetic mean"));
-                                $sheet->setCellValueByColumnAndRow(1,$xlsRow,$am);
+                                $sheet->write($xlsRow,0,$statlang->gT("Arithmetic mean"));
+                                $sheet->write($xlsRow,1,$am);
 
                                 ++$xlsRow;
-                                $sheet->setCellValueByColumnAndRow(0,$xlsRow,$statlang->gT("Standard deviation"));
-                                $sheet->setCellValueByColumnAndRow(1,$xlsRow,$stddev);
+                                $sheet->write($xlsRow,0,$statlang->gT("Standard deviation"));
+                                $sheet->write($xlsRow,1,$stddev);
 
                                 break;
                             case 'pdf':
@@ -3287,21 +3294,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     switch($outputType)
     {
         case 'xls':
-            $objWriter = new PHPExcel_Writer_Excel5($workbook);
-            if($pdfOutput=='F')
-            {
-                $sFileName=$tempdir.DIRECTORY_SEPARATOR.'statistic-survey'.$surveyid.'.xls';
-            }
-            else
-            {
-                $sFileName=$tempdir.DIRECTORY_SEPARATOR.'xls_'.sRandomChars(40);
-            }
-            $objWriter->save($sFileName);
-            if($pdfOutput!='F')
-            {
-                readfile($sFileName);
-                unlink($sFileName);
-            }
+
+            //$workbook->
+            $workbook->close();
             if($pdfOutput=='F')
             {
                 return $sFileName;
