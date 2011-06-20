@@ -48,7 +48,7 @@ class GlobalSettings extends AdminController {
 
 		$clang = $this->limesurvey_lang;
 		
-		self::_js_admin_includes(base_url()."application/scripts/globalsettings.js");
+		self::_js_admin_includes(base_url()."scripts/admin/globalsettings.js");
 			
 		$data['title']="hi";
 		$data['message']="message";

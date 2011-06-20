@@ -18,19 +18,24 @@
     function __construct()
 	{
 		parent::__construct();
-        self::_js_admin_includes("");
+        //self::_js_admin_includes("");
 	}
     
     function index($action)
     {
         global $surveyid;
+        
+        self::_js_admin_includes(base_url().'application/scripts/surveysettings.js');
+        self::_getAdminHeader();
+		self::_showadminmenu();
+        
         if(!bHasSurveyPermission($surveyid,'surveysettings','read') && !bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
         {
             //include("access_denied.php");
         }
         $this->load->helper('surveytranslator');
         $clang = $this->limesurvey_lang;
-        self::_js_admin_includes(base_url().'application/scripts/surveysettings.js');
+        
         $esrow = array();
         $editsurvey = '';
         if ($action == "newsurvey") {
@@ -64,6 +69,7 @@
         
         if ($action == "newsurvey") {
             $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='insertsurvey' />\n";
+            $this->session->set_userdata(array('action' => 'insertsurvey'));
         } elseif ($action == "editsurveysettings") {
             $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />\n"
             . "<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
@@ -97,9 +103,7 @@
                 $editsurvey .= "<p><button onclick=\"$cond {document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; document.getElementById('addnewsurvey').submit();}\" class='standardbtn' >" . $clang->gT("Save & edit survey text elements") . " >></button></p>\n";
             }
         }
-       	self::_js_admin_includes("");
-        self::_getAdminHeader();
-		self::_showadminmenu();
+       	
         //echo $editsurvey;
         $data['display'] = $editsurvey;
         $this->load->view('survey_view',$data);
@@ -164,7 +168,7 @@
         global $siteadminname,$siteadminemail;
         $clang = $this->limesurvey_lang;
         
-        $editsurvey = "<div id='tabs'><ul>
+        /** $editsurvey = "<div id='tabs'><ul>
         <li><a href='#general'>".$clang->gT("General")."</a></li>
         <li><a href='#presentation'>".$clang->gT("Presentation & navigation")."</a></li>
         <li><a href='#publication'>".$clang->gT("Publication & access control")."</a></li>
@@ -174,7 +178,7 @@
         <li><a href='#copy'>".$clang->gT("Copy")."</a></li>
         </ul>
         \n";
-        $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='admin/index' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
+        $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='../database/index/insertsurvey' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
 
         // General & Contact TAB
         $editsurvey .= "<div id='general'>\n";
@@ -191,7 +195,7 @@
             $editsurvey .= ">" . $langname['description'] . "</option>\n";
         }
         $editsurvey .= "</select>\n";
-            
+        */    
         $condition = array('users_name' => $this->session->userdata('user'));
         $fieldstoselect = array('full_name', 'email');
         $this->load->model('users_model');
@@ -211,6 +215,8 @@
         } else {
             $owner['bounce_email']        = $owner['email'];
         }
+        
+        /**
         $editsurvey .= "<span class='annotation'> " . $clang->gT("*This setting cannot be changed later!") . "</span></li>\n";
         $action = "newsurvey";
         $editsurvey .= ""
@@ -263,13 +269,17 @@
             // End General TAB
             $editsurvey .= "</div>\n";
             return $editsurvey;
+            */
+            $data['clang'] = $clang;
+            $data['owner'] = $owner;
+            $this->load->view('admin/survey/superview/SuperGeneralNewSurvey_view',$data);
     }
         
     function _generalTabEditSurvey($surveyid,$esrow)
     {
         global $siteadminname,$siteadminemail;
         $clang = $this->limesurvey_lang;
-            
+        /**    
         $editsurvey = "<div id='tabs'><ul>
         <li><a href='#general'>".$clang->gT("General")."</a></li>
         <li><a href='#presentation'>".$clang->gT("Presentation & navigation")."</a></li>
@@ -279,7 +289,7 @@
         <li><a href='#resources'>".$clang->gT("Resources")."</a></li>
         </ul>
         \n";
-        $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='admin/index' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
+        $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='../database/index/insertsurvey' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
 
         // General & Contact TAB
         $editsurvey .= "<div id='general'>\n";
@@ -336,7 +346,12 @@
 
         // End General TAB
         $editsurvey .= "</div>\n";
+        */
         
+        $data['clang'] = $clang;
+        $data['esrow'] = $esrow;
+        $data['surveyid'] = $surveyid;
+        $this->load->view('admin/survey/superview/SuperGeneralEditSurey_view',$data); 
         
     }
     
@@ -345,6 +360,7 @@
         $clang = $this->limesurvey_lang;
         global $showXquestions,$showgroupinfo,$showqnumcode;
         
+        /**
         // Presentation and navigation TAB
         $editsurvey = "<div id='presentation'><ul>\n";
 
@@ -665,7 +681,21 @@
 
             // End Presention and navigation TAB
             $editsurvey .= "</ul></div>\n";
-        return $editsurvey;
+            
+        */    
+        if (!isset($esrow['navigationdelay'])) 
+        {
+            $esrow['navigationdelay']=0;
+        }
+        
+        $shownoanswer = isset($shownoanswer)?$shownoanswer:'Y';
+        
+        $data['clang'] = $clang;
+        $data['esrow'] = $esrow;
+        //$data['surveyid'] = $surveyid;
+        $data['shownoanswer'] = $shownoanswer;
+        $this->load->view('admin/survey/superview/SuperPresentation_view',$data); 
+        
     }
     
     function _tabPublicationAccess($esrow)
@@ -1073,7 +1103,7 @@
         $editsurvey = "<div id='import'>\n";
 
         // Import survey
-        $editsurvey .= "<form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='admin/index' method='post' onsubmit='return validatefilename(this,\"" . $clang->gT('Please select a file to import!', 'js') . "\");'>\n"
+        $editsurvey .= "<form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='../database/index/insertsurvey' method='post' onsubmit='return validatefilename(this,\"" . $clang->gT('Please select a file to import!', 'js') . "\");'>\n"
                     . "<ul>\n"
                     . "<li><label for='the_file'>" . $clang->gT("Select survey structure file (*.lss, *.csv):") . "</label>\n"
                     . "<input id='the_file' name=\"the_file\" type=\"file\" size=\"50\" /></li>\n"
@@ -1095,7 +1125,7 @@
         $editsurvey = "<div id='copy'>\n";
 
         // Copy survey
-        $editsurvey .= "<form class='form30' action='admin/index' id='copysurveyform' method='post'>\n"
+        $editsurvey .= "<form class='form30' action='../database/index/insertsurvey' id='copysurveyform' method='post'>\n"
                     . "<ul>\n"
                     . "<li><label for='copysurveylist'><span class='annotationasterisk'>*</span>" . $clang->gT("Select survey to copy:") . "</label>\n"
                     . "<select id='copysurveylist' name='copysurveylist'>\n"
@@ -1136,7 +1166,7 @@
         }
         // functionality not ported 
         $editsurvey = "<div id='resources'>\n"
-            . "<form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='admin/index' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+            . "<form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='../database/index/insertsurvey' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
             . "<input type='hidden' name='sid' value='$surveyid' />\n"
             . "<input type='hidden' name='action' value='importsurveyresources' />\n"
             . "<ul>\n"

@@ -260,7 +260,8 @@ class Authentication extends AdminController {
 
 	function _doLogin($sIp,$bLoginAttempted)
 	{
-		$clang = $this->limesurvey_lang;
+		
+        $clang = $this->limesurvey_lang;
 		$postuser = sanitize_user($this->input->post("user"));
 		//$query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
 		$this->load->model("Users_model");
@@ -363,7 +364,10 @@ class Authentication extends AdminController {
                     $loginsummary = "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
                 }
                 self::_GetSessionUserRights($this->session->userdata('loginID'));
-				self::_showMessageBox($clang->gT("Logged in"), $loginsummary);
+				// self::_showMessageBox($clang->gT("Logged in"), $loginsummary);
+                $this->session->set_userdata("just_logged_in",true);
+                $this->session->set_userdata('loginsummary',$loginsummary);
+                redirect(site_url('/admin'));
             }
             else
             {

@@ -19,7 +19,7 @@ class fck_LimeReplacementFields extends AdminController {
 		parent::__construct();
 	}
 	
-		function index($fieldtype, $action)
+	function index($fieldtype, $action)
 	{
 		
 		if(!$this->session->userdata('loginID'))

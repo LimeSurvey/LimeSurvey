@@ -44,5 +44,8 @@ $route['404_override'] = '';
 //Admin Routes
 $route['admin'] = "admin/index";
 
+//survey
+$route['admin/survey/newsurvey'] = "admin/survey/index/newsurvey";
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
