@@ -438,7 +438,7 @@ elseif ($subaction == "all")
             // Now, zip all the files in the filelist
             $tmpdir = $uploaddir. "/surveys/" . $surveyid . "/files/";
 
-            $zip = new ZipArchive();
+            $zip = getZipArchive();
             $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
             if (file_exists($tmpdir."/".$zipfilename))
                 unlink($tmpdir."/".$zipfilename);
@@ -515,7 +515,7 @@ elseif ($subaction == "all")
         // Now, zip all the files in the filelist
         $tmpdir = $uploaddir. "/surveys/" . $surveyid . "/files/";
 
-        $zip = new ZipArchive();
+        $zip = getZipArchive();
         $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
         if (file_exists($tmpdir ."/". $zipfilename))
             unlink($tmpdir . "/" . $zipfilename);

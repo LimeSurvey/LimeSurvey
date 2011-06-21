@@ -405,3 +405,19 @@ function getAdminHeader($meta=false)
     $strAdminHeader .="<div class='maintitle'>{$sitename}</div>\n";
     return $strAdminHeader;
 }
+
+/**
+ * Creates a new ZipArchive, and throws an error when no zip support installed
+ * 
+ * @global type $clang
+ * @return ZipArchive 
+ */
+function getZipArchive() {
+    global $clang;
+    
+    if (class_exists($class_name)) {
+        return new ZipArchive();
+    } else {
+        safe_die($clang->gT('No zip-support installed, please read http://www.php.net/manual/en/zip.installation.php to enable zip support.'));
+    }
+}
