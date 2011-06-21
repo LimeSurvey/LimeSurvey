@@ -5,6 +5,7 @@ class Authentication extends AdminController {
 	function __construct()
 	{
 		parent::__construct();
+        
 	}
 
 	function index()
@@ -73,8 +74,12 @@ class Authentication extends AdminController {
 	
 	function logout()
 	{
-		killSession();
-		self::_showLoginForm('<p>'.$this->limesurvey_lang->gT("Logout successful."));
+        killSession();
+        // making dummy session variable check to destroy session completely!
+        if($this->session->userdata('loginID'))
+        $this->session->unset_userdata('loginID');
+		//redirect(site_url('admin/Authentication/login'));
+        self::_showLoginForm('<p>'.$this->limesurvey_lang->gT("Logout successful."));
 	}
 	
 	function forgotpassword()
