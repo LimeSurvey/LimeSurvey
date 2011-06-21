@@ -1,18 +1,51 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/*
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ * 
+ * @package	LimeSurvey
+ * 
+ * $Id$
+ * 
+ */
 
+/*
+ * Authentication Controller
+ *
+ * This controller performs authentication
+ *
+ * @package		LimeSurvey
+ * @subpackage	Backend
+ */
 class Authentication extends AdminController {
 
+	/*
+	 * Constructor
+	 */
 	function __construct()
 	{
 		parent::__construct();
         
 	}
 
+	/*
+	 * Default Controller Action
+	 */
 	function index()
 	{
 		redirect('/admin', 'refresh');
 	}
 	
+	/*
+	 * Show login screen and parse login data
+	 */
 	function login()
 	{
 		if(!$this->session->userdata("loginID"))
@@ -72,16 +105,19 @@ class Authentication extends AdminController {
 		}
 	}
 	
+	/**
+	 * Logout user
+	 */
 	function logout()
 	{
         killSession();
-        // making dummy session variable check to destroy session completely!
-        if($this->session->userdata('loginID'))
-        $this->session->unset_userdata('loginID');
-		//redirect(site_url('admin/Authentication/login'));
+
         self::_showLoginForm('<p>'.$this->limesurvey_lang->gT("Logout successful."));
 	}
 	
+	/**
+	 * Forgot Password screen
+	 */
 	function forgotpassword()
 	{
 		$clang = $this->limesurvey_lang;
@@ -159,6 +195,10 @@ class Authentication extends AdminController {
 		
 	}
 	
+	/**
+	 * Show login screen
+	 * @param optional message
+	 */
 	function _showLoginForm($logoutsummary="")
 	{
 		
@@ -263,6 +303,11 @@ class Authentication extends AdminController {
 		
 	}
 
+	/**
+	 * Parse login data
+	 * @param user ip
+	 * @param login attempts
+	 */
 	function _doLogin($sIp,$bLoginAttempted)
 	{
 		

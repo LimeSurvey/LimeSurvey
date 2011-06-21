@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- *	$Id: common_functions.php 10063 2011-05-13 15:31:20Z c_schmitz $
+ *	$Id$
  *	Files Purpose: lots of common functions
  */
 $CI =& get_instance(); 
@@ -5298,11 +5298,18 @@ function getArrayFiltersExcludesOutGroup($qid)
    return false;
 }
 
-// unsets all Session variables to kill session
+/**
+ * Unsets all Session variables to kill session
+ */
 function killSession()  //added by Dennis
 {
 	global $CI;
 	$CI->session->sess_destroy();
+	
+    // making dummy session variable check to destroy session completely!
+    if($this->session->userdata('loginID'))
+    $this->session->unset_userdata('loginID');
+		
    /* // Delete the Session Cookie
     $CookieInfo = session_get_cookie_params();
     if ( (empty($CookieInfo['domain'])) && (empty($CookieInfo['secure'])) ) {

@@ -36,7 +36,7 @@
             if (isset($updateavailable) && $updateavailable==1)
             { ?>
                 <span style="font-weight: bold;"><?php echo sprintf($clang->gT('There is a LimeSurvey update available: Version %s'),$updateversion."($updatebuild)");?></span><br />
-                <?php echo sprintf($clang->gT('You can update %smanually%s or use the %s'),"<a href='http://docs.limesurvey.org/tiki-index.php?page=Upgrading+from+a+previous+version'>","</a>","<a href='".site_url('admin/update')."'>");?>>gT('3-Click ComfortUpdate').'</a>');?><br />
+                <?php echo sprintf($clang->gT('You can update %smanually%s or use the %s'),"<a href='http://docs.limesurvey.org/tiki-index.php?page=Upgrading+from+a+previous+version'>","</a>","<a href='".site_url('admin/update')."'>".$clang->gT('3-Click ComfortUpdate').'</a>');?><br />
             <?php }
             elseif (isset($updateinfo['errorcode']))
             { echo sprintf($clang->gT('There was an error on update check (%s)'),$updateinfo['errorcode']);?><br />

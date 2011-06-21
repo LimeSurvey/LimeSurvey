@@ -5,8 +5,8 @@
  * Configuration file
  * ----------------------------------------------------------
  * @author Jonathon Hill http://jonathonhill.net
- * @version 1.0
  * @package tcpdf_ci
+ * @version 1.0
  ***********************************************************/
 
 
