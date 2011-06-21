@@ -378,7 +378,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
             if($sv['active']!='Y')
             {
                 $inactivesurveys .= "<option ";
-                if($this->session->userdata("loginID") == $sv['owner_id'])
+                if($CI->session->userdata("loginID") == $sv['owner_id'])
                 {
                     $inactivesurveys .= " style=\"font-weight: bold;\"";
                 }
@@ -396,7 +396,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
             } elseif($sv['expires']!='' && $sv['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
             {
                 $expiredsurveys .="<option ";
-                if ($this->session->userdata("loginID") == $sv['owner_id'])
+                if ($CI->session->userdata("loginID") == $sv['owner_id'])
                 {
                     $expiredsurveys .= " style=\"font-weight: bold;\"";
                 }
@@ -3574,13 +3574,13 @@ function SetSurveyLanguage($surveyid, $language)
         or (isset($default_language) && $default_language == $language)
         ) {
             // Language not supported, or default language for survey, fall back to survey's default language
-            $this->session->set_userdata('s_lang',$default_language);
+            $CI->session->set_userdata('s_lang',$default_language);
             //echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
         } else {
-            $this->session->set_userdata('s_lang',$language);
+            $CI->session->set_userdata('s_lang',$language);
             //echo "Language will be set to ".$_SESSION['s_lang']."<br />";
         }
-        $lang = array($this->session->userdata('s_lang'));
+        $lang = array($CI->session->userdata('s_lang'));
         $CI->load->library('Limesurvey_lang',$lang);
         $clang = $CI->limesurvey_lang;
         //$clang = new limesurvey_lang($_SESSION['s_lang']);
@@ -3592,8 +3592,8 @@ function SetSurveyLanguage($surveyid, $language)
         //$clang = new limesurvey_lang($defaultlang);
     }
 
-    $thissurvey=getSurveyInfo($surveyid, $this->session->userdata('s_lang'));
-    $this->session->userdata('dateformats',getDateFormatData($thissurvey['surveyls_dateformat']));
+    $thissurvey=getSurveyInfo($surveyid, $CI->session->userdata('s_lang'));
+    $CI->session->userdata('dateformats',getDateFormatData($thissurvey['surveyls_dateformat']));
     return $clang;
 }
 
@@ -5610,7 +5610,7 @@ function hasTemplateManageRights($userid, $templatefolder) {
     //$result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());  //Safe
 
 	$CI->load->model('Templates_rights_model');
-	$query=$this->Templates_rights_model->getSomeRecords("use","uid=".$userid." AND folder LIKE '".$templatefolder."'");
+	$query=$CI->Templates_rights_model->getSomeRecords("use","uid=".$userid." AND folder LIKE '".$templatefolder."'");
 
     //if ($result->RecordCount() == 0)  return false;
 	if ($query->num_rows() == 0)  return false;
@@ -7284,7 +7284,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 function access_denied($action,$sid='')
 {
     global $CI,$clang;
-    if ($this->session->userdata('loginID'))
+    if ($CI->session->userdata('loginID'))
     {
         $ugid = $CI->config->item('ugid');
         $accesssummary = "<p><strong>".$clang->gT("Access denied!")."</strong><br />\n";
