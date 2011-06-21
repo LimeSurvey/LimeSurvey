@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-20 17:03+0100\n"
-"PO-Revision-Date: 2011-06-20 17:04+0100\n"
+"POT-Creation-Date: 2011-06-21 13:44+0100\n"
+"PO-Revision-Date: 2011-06-21 13:44+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2926,6 +2926,10 @@ msgstr "Keine SID angegeben"
 #: d:\web\xampp\htdocs\limesurvey/admin/activate_functions.php:476
 msgid "No invitation code is needed to complete the survey."
 msgstr "Es wird kein Zugangsschlüssel für die Teilnahme an der Umfrage benötigt."
+
+#: d:\web\xampp\htdocs\limesurvey/admin/admin_functions.php:421
+msgid "No zip-support installed, please read http://www.php.net/manual/en/zip.installation.php to enable zip support."
+msgstr "Keine ZIP-Unterstützung installiert, bitte lese http://www.php.net/manual/de/zip.installation.php wie man ZIP-Unterstützung aktiviert."
 
 #: d:\web\xampp\htdocs\limesurvey/admin/activate_functions.php:478
 msgid "No, thanks."
@@ -8120,17 +8124,17 @@ msgstr "%s Datensätze erfüllen die Grundanforderungen"
 msgid "%s records with invalid email address removed"
 msgstr "%s Datensätze mit ungültiger E-Mail-Adresse entfernt"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1263
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1273
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1271
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1281
 msgid "1st quartile (Q1)"
 msgstr "1ter Viertelwert (Q1 unteres Quartil)"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1297
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1305
 msgid "2nd quartile (Median)"
 msgstr "2ter Viertelwert (Mittleres Quartil)"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1338
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1348
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1346
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1356
 msgid "3rd quartile (Q3)"
 msgstr "3ter Viertelwert (Q3 Oberes Quartil)"
 
@@ -8334,10 +8338,10 @@ msgstr "Bist Du sicher, dass Du diese Datei löschen willst?"
 msgid "Are you sure you want to delete this template?"
 msgstr "Bist Du sicher, dass Du diese Vorlage löschen willst?"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2990
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2994
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:3004
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:3010
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2997
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:3001
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:3011
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:3017
 msgid "Arithmetic mean"
 msgstr "Arithmetisches Mittel"
 
@@ -8379,19 +8383,19 @@ msgstr "Weiterleitungs-URL:"
 msgid "Automatic"
 msgstr "Automatisch"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1179
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1187
 msgid "Average"
 msgstr "Durchschnitt"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:908
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:916
 msgid "Average file size"
 msgstr "Mittlere Dateigröße"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:883
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:891
 msgid "Average no. of files per respondent"
 msgstr "Durchschnittliche Anzahl von Dateien pro Teilnehmer"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:909
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:917
 msgid "Average size per respondent"
 msgstr "Mittlere Größe pro Teilnehmer"
 
@@ -8422,9 +8426,9 @@ msgstr "Einstellungen für Rückläufer wurden gespeichert."
 msgid "Bounce settings to be used"
 msgstr "Welche Einstellungen genutzt werden sollen"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:627
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2061
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2082
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:635
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2069
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2090
 msgid "Browse"
 msgstr "Ansehen"
 
@@ -8445,14 +8449,14 @@ msgstr "CSS & Javascript Dateien:"
 msgid "CSV input format"
 msgstr "CSV Eingabeformat"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:943
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:945
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:958
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:969
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1072
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1074
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1087
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1097
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:951
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:953
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:966
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:977
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1080
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1082
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1095
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1105
 msgid "Calculation"
 msgstr "Berechnung"
 
@@ -8500,8 +8504,8 @@ msgstr "Geschlossen"
 msgid "Comma"
 msgstr "Komma"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1839
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2053
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1847
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2061
 msgid "Comments"
 msgstr "Kommentar"
 
@@ -8543,21 +8547,21 @@ msgstr "Konnte Benutzergruppe nicht löschen. Es wurde keine Gruppe ausgewählt.
 msgid "Could not modify user data."
 msgstr "Benutzerdaten konnten nicht geändert werden."
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1226
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2075
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2092
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2111
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2115
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1234
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2083
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2100
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2119
 #: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2123
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2130
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2153
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2157
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2131
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2138
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2161
 #: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2165
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2172
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2254
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2258
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2265
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2272
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2173
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2180
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2262
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2266
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2273
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2280
 msgid "Count"
 msgstr "Anzahl"
 
@@ -8922,15 +8926,15 @@ msgstr "Fehler beim Aktualisieren der Daten!"
 msgid "Field description"
 msgstr "Feldbeschreibung"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:933
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:955
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:965
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1062
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1084
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1093
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1868
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1886
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1902
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:941
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:963
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:973
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1070
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1092
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1101
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1876
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1894
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1910
 #, php-format
 msgid "Field summary for %s"
 msgstr "Feld-Zusammenfassung für %s"
@@ -9220,7 +9224,7 @@ msgstr "Maximale Erinnerungen"
 msgid "Maybe you don't have permission."
 msgstr "Eventuell hast Du keine Berechtigung."
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1308
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1316
 msgid "Median value"
 msgstr "Medianwert"
 
@@ -9285,20 +9289,20 @@ msgstr "Es wurden keine Zugangsschlüssel zum Löschen ausgewählt"
 msgid "Not Active"
 msgstr "Nicht aktiv"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2375
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2407
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2383
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2415
 msgid "Not completed or Not displayed"
 msgstr "Nicht beendet oder nicht gezeigt"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2379
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2411
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2387
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2419
 msgid "Not displayed"
 msgstr "Nicht gezeigt"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1447
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1450
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1455
 #: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1458
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1470
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1466
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1478
 msgid "Not enough values for calculation"
 msgstr "Nicht genug Werte für Berechnung"
 
@@ -9335,10 +9339,10 @@ msgstr "Anmerkung: Dies ist eine Standardvorlage. Wenn Du diese verändern möch
 msgid "Nothing to translate on this page"
 msgstr "Es gibt nichts zu übersetzen auf dieser Seite."
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1395
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1399
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1405
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1421
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1403
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1407
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1413
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1429
 msgid "Null values are ignored in calculations"
 msgstr "*Null-Werte werden in Berechnungen ausgelassen"
 
@@ -9356,10 +9360,10 @@ msgstr "Werte kleiner als"
 msgid "Number of attribute fields to add:"
 msgstr "Bitte gebe die Anzahl der Benutzer-Attributfelder ein, die Du hinzufügen willst:"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2813
 #: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2821
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2830
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2841
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2829
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2837
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2848
 msgid "Number of cases"
 msgstr "Anzahl Fälle"
 
@@ -9371,9 +9375,9 @@ msgstr "Anzahl Dateien größer als"
 msgid "Number of files less than"
 msgstr "Anzahl Dateien weniger als"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:553
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:572
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:591
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:561
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:580
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:599
 msgid "Number of records in this query:"
 msgstr "Anzahl der Datensätze in dieser Abfrage:"
 
@@ -9405,26 +9409,26 @@ msgstr "Eigentümer"
 msgid "Page"
 msgstr "Seite"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2075
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2094
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2111
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2116
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2123
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2132
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2153
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2158
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2165
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2174
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2254
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2259
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2265
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2274
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2083
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2102
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2119
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2124
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2131
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2140
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2161
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2166
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2173
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2182
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2262
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2267
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2273
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2282
 msgid "Percentage"
 msgstr "Prozent"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:562
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:576
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:600
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:570
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:584
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:608
 msgid "Percentage of total:"
 msgstr "Anteil in Prozent:"
 
@@ -9484,10 +9488,10 @@ msgstr "Seite Antworten ausdrucken"
 msgid "Printable survey page"
 msgstr "Seite Druckbare Version der Umfrage"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1397
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1400
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1406
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1422
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1405
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1408
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1414
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1430
 #, php-format
 msgid "Q1 and Q3 calculated using %s"
 msgstr "Q1 and Q1 werden berechnet durch die %s"
@@ -9648,20 +9652,20 @@ msgstr "Wiederherstellen"
 msgid "Restore options"
 msgstr "Wiederherstellungsoptionen"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:943
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:946
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:958
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:971
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1072
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1075
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1087
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1099
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:951
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:954
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:966
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:979
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1080
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1083
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1095
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1107
 msgid "Result"
 msgstr "Ergebnis"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:580
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:581
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:590
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:588
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:589
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:598
 msgid "Results"
 msgstr "Ergebnisse"
 
@@ -9910,11 +9914,11 @@ msgstr "Sortieren nach: "
 msgid "Standard Files:"
 msgstr "Standard-Dateien:"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1178
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2991
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1186
 #: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2998
 #: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:3005
 #: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:3012
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:3019
 msgid "Standard deviation"
 msgstr "Standard Abweichung"
 
@@ -9956,15 +9960,15 @@ msgstr "Einzelsummen basieren auf dem Teilnehmer gezeigte Fragen"
 msgid "Successfully created token entries"
 msgstr "Zugangsschlüssel-Einträge erfolgreich erstellt"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1177
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2111
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2117
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2123
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2134
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2812
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2816
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2829
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2835
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1185
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2119
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2125
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2131
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2142
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2820
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2824
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2836
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:2842
 msgid "Sum"
 msgstr "Summe"
 
@@ -10189,7 +10193,7 @@ msgstr "Die Zugangsschlüssel wurden für diese Umfrage noch nicht initialisiert
 msgid "Total invitations sent"
 msgstr "Anzahl versandte Einladungen"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:882
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:890
 msgid "Total number of files"
 msgstr "Gesamtanzahl Dateien"
 
@@ -10197,9 +10201,9 @@ msgstr "Gesamtanzahl Dateien"
 msgid "Total opted out"
 msgstr "Gesamt Opt-out"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:556
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:573
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:593
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:564
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:581
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:601
 msgid "Total records in survey:"
 msgstr "Gesamtzahl der Datensätze dieser Umfrage:"
 
@@ -10207,7 +10211,7 @@ msgstr "Gesamtzahl der Datensätze dieser Umfrage:"
 msgid "Total records in this token table"
 msgstr "Anzahl Zugangsschlüssel"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:907
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:915
 msgid "Total size of files"
 msgstr "Gesamtgröße der Dateien"
 
@@ -10533,10 +10537,10 @@ msgstr "haben schon an der Umfrage teilgenommen"
 msgid "hh:mm"
 msgstr "hh:mm"
 
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1397
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1400
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1406
-#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1422
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1405
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1408
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1414
+#: d:\web\xampp\htdocs\limesurvey/admin/statistics_function.php:1430
 msgid "minitab method"
 msgstr "minitab-Methode"
 
