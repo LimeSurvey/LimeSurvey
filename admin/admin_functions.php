@@ -415,7 +415,7 @@ function getAdminHeader($meta=false)
 function getZipArchive() {
     global $clang;
     
-    if (class_exists($class_name)) {
+    if (class_exists('ZipArchive')) {
         return new ZipArchive();
     } else {
         safe_die($clang->gT('No zip-support installed, please read http://www.php.net/manual/en/zip.installation.php to enable zip support.'));
