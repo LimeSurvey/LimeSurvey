@@ -272,7 +272,7 @@
             */
             $data['clang'] = $clang;
             $data['owner'] = $owner;
-            $this->load->view('admin/survey/superview/SuperGeneralNewSurvey_view',$data);
+            return $this->load->view('admin/survey/superview/SuperGeneralNewSurvey_view',$data, true);
     }
         
     function _generalTabEditSurvey($surveyid,$esrow)
@@ -351,7 +351,7 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
         $data['surveyid'] = $surveyid;
-        $this->load->view('admin/survey/superview/SuperGeneralEditSurey_view',$data); 
+        return $this->load->view('admin/survey/superview/SuperGeneralEditSurey_view',$data, true); 
         
     }
     
@@ -694,7 +694,7 @@
         $data['esrow'] = $esrow;
         //$data['surveyid'] = $surveyid;
         $data['shownoanswer'] = $shownoanswer;
-        $this->load->view('admin/survey/superview/SuperPresentation_view',$data); 
+        return $this->load->view('admin/survey/superview/SuperPresentation_view',$data, true); 
         
     }
     
