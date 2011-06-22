@@ -62,6 +62,7 @@ class AdminController extends LS_Controller {
 		        die ("<p style='text-align: center; margin-left: auto; margin-right: auto; width: 500px; margin-top: 50px;'><img src='../images/limecursor-handle.png' /><strong>Congratulations</strong><br /><br />Your installation is now complete. The final step is to remove or rename the LimeSurvey installation directory (admin/install) on your server since it may be a security risk.<br /><br />Once this directory has been removed or renamed you will be able to log in to your new LimeSurvey Installation.<br /><br /><a href='admin.php'>Try again</a></p>");
 		       }  
 		}*/
+        $updatelastcheck = '';
         
 		//Admin menus and standards
 		//IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
@@ -78,12 +79,13 @@ class AdminController extends LS_Controller {
 	        $langdir=$this->config->item("publicurl")."/locale/en/help"; //default to english if there is no matching language dir
 	    }
 
-		/*	
-		if ($sourcefrom == "admin" && $buildnumber != "" && $updatecheckperiod>0 && $updatelastcheck<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-".$updatecheckperiod." days"))
+			
+		if ($this->config->item('buildnumber') != "" && $this->config->item('updatecheckperiod')>0 && $updatelastcheck<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-".$this->config->item('updatecheckperiod')." days"))
 		{
-		    updatecheck();
+		    
+            updatecheck();
 		}
-		*/
+		
 		
 		//require_once('htmleditor-functions.php');
 		//@ini_set('session.gc_maxlifetime', $sessionlifetime);     Might cause problems in client??

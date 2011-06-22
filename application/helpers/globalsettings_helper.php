@@ -99,7 +99,8 @@ function setGlobalSetting($settingname, $settingvalue)
 	
     $registry = $CI->settingsstorage->getInstance();
     $registry->set($settingname,$settingvalue);
-    if (isset($CI->config->config[$settingname])) $CI->config->set_item($settingname, $settingvalue);
+    //if (!isset($CI->config->item('{$settingname}'))) 
+    $CI->config->set_item($settingname, $settingvalue);
 }
 
 ?>

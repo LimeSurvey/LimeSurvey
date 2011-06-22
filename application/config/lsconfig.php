@@ -43,7 +43,7 @@ $config['defaultuser']        =   'admin';          // This is the default usern
 $config['defaultpass']        =   'password';       // This is the default password for the default user when LimeSurvey is installed
 
 // If the user enters password incorrectly
-$config['maxLoginAttempt']    =   3;                // Lock them out after 3 attempts
+$config['maxLoginAttempt']    =   30;                // Lock them out after 3 attempts
 $config['timeOutTime']        =   60 * 30;          // Lock them out for 30 minutes.
 
 // Site Settings

@@ -6081,9 +6081,9 @@ function removeBOM($str=""){
  */
 function GetUpdateInfo()
 {
-    global $CI; //$homedir, $debug, $buildnumber, $versionnumber;
+    //global $CI; //$homedir, $debug, $buildnumber, $versionnumber;
     //require_once($homedir."/classes/http/http.php");
-
+    $CI =& get_instance();
 	$CI->load->library('admin/http/http','http');
 
     /* Connection timeout */
@@ -6129,7 +6129,8 @@ function GetUpdateInfo()
  */
 function updatecheck()
 {
-    global $CI;
+    //global $CI;
+    $CI =& get_instance();
     $updateinfo=GetUpdateInfo();
     if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)$CI->config->item('versionnumber') && trim($CI->config->item('versionnumber'))!='')
     {
