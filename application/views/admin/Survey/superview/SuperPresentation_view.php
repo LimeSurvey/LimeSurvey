@@ -211,23 +211,19 @@
         </select>
 </li>
 
-<!-- $show_dis_pre = \n\t<li>\n\t\t<label for="dis_showXquestions"><?php echo $clang->gT('Show "There are X questions in this survey"'); ?></label>\n\t\t <input type="hidden" name="showXquestions" id="" value="
-	    $show_dis_mid = " />\n\t\t <input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="
-	    $show_dis_post = " size="70" />\n\t</li>\n -->
+<!-- $show_dis_pre =<li><label for="dis_showXquestions"><?php echo $clang->gT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showXquestions" id="" value="
+	    $show_dis_mid = " /> <input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="
+	    $show_dis_post = " size="70" /></li> -->
         <?php switch ($showXquestions) {
 		case 'show': ?>
-		    \n\t<li>\n\t\t<label for="dis_showXquestions"><?php echo $clang->gT('Show "There are X questions in this survey"'); ?></label>\n\t\t <input type="hidden" name="showXquestions" id="" value="
-            Y
-            " />\n\t\t <input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="
+		   <li><label for="dis_showXquestions"><?php echo $clang->gT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showXquestions" id="" value="Y" /> <input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="
             <?php echo $clang->gT('Yes (Forced by the system administrator)'); ?>
-            " size="70" />\n\t</li>\n
+            " size="70" /></li>
 		 <?php   break;
 		case 'hide': ?>
-		    \n\t<li>\n\t\t<label for="dis_showXquestions"><?php echo $clang->gT('Show "There are X questions in this survey"'); ?></label>\n\t\t <input type="hidden" name="showXquestions" id="" value="
-            N
-            " />\n\t\t <input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="
+		   <li><label for="dis_showXquestions"><?php echo $clang->gT('Show "There are X questions in this survey"'); ?></label> <input type="hidden" name="showXquestions" id="" value="N" /> <input type="text" name="dis_showXquestions" id="dis_showXquestions" disabled="disabled" value="
             <?php echo $clang->gT('No (Forced by the system administrator)'); ?>
-            " size="70" />\n\t</li>\n
+            " size="70" /></li>
 		  <?php  break;
 	    	case 'choose': 
 		default: 
@@ -240,9 +236,9 @@
 		    	$sel_showxq['Y'] = ' selected="selected"';
 		    }; ?>
 <li><label for="showXquestions"><?php echo $clang->gT('Show "There are X questions in this survey"'); ?></label>
-		    <select id="showXquestions" name="showXquestions">\n\t\t\t
-		    <option value="Y" <?php echo $sel_showxq['Y'].'>'.$clang->gT('Yes'); ?></option>\n\t\t\t
-		    <option value="N" <?php echo $sel_showxq['N'].'>'.$clang->gT('No'); ?></option>\n\t\t
+		    <select id="showXquestions" name="showXquestions">\t
+		    <option value="Y" <?php echo $sel_showxq['Y'].'>'.$clang->gT('Yes'); ?></option>\t
+		    <option value="N" <?php echo $sel_showxq['N'].'>'.$clang->gT('No'); ?></option>
 		    </select>
 </li>
 		    <?php unset($sel_showxq,$set_showxq);
@@ -250,40 +246,32 @@
 	    }; ?>
 
 <!--            // Show {GROUPNAME} and/or {GROUPDESCRIPTION} block
-	    $show_dis_pre = \n\t<li>\n\t\t<label for="dis_showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label>\n\t\t <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="
-            $show_dis_mid = " />\n\t\t <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value=" -->
+	    $show_dis_pre =<li><label for="dis_showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="
+            $show_dis_mid = " /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value=" -->
         <?php switch ($showgroupinfo) {
 		case 'both': ?>
-		    \n\t<li>\n\t\t<label for="dis_showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label>\n\t\t <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="
-            B
-            " />\n\t\t <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+		   <li><label for="dis_showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="B" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
             <?php echo $clang->gT('Show both (Forced by the system administrator)'); ?>
             
-            " size="70" />\n\t</li>\n
+            " size="70" /></li>
 		<?php    break;
 		case 'name': ?>
-		    \n\t<li>\n\t\t<label for="dis_showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label>\n\t\t <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="
-            N
-            " />\n\t\t <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+		   <li><label for="dis_showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="N" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
             <?php echo $clang->gT('Show group name only (Forced by the system administrator)'); ?>
             
-            " size="70" />\n\t</li>\n
+            " size="70" /></li>
 		<?php     break;
 		case 'description': ?>
-		    \n\t<li>\n\t\t<label for="dis_showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label>\n\t\t <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="
-            D
-            " />\n\t\t <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+		   <li><label for="dis_showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="D" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
             <?php echo $clang->gT('Show group description only (Forced by the system administrator)'); ?>
             
-            " size="70" />\n\t</li>\n
+            " size="70" /></li>
 		<?php    break;
 		case 'none': ?>
-		    \n\t<li>\n\t\t<label for="dis_showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label>\n\t\t <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="
-            X
-            " />\n\t\t <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
+		   <li><label for="dis_showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label> <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="X" /> <input type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="
             <?php echo $clang->gT('Hide both (Forced by the system administrator)'); ?>
             
-            " size="70" />\n\t</li>\n
+            " size="70" /></li>
 		    break;
 	    <?php	case 'choose':
 		default:
@@ -295,48 +283,40 @@
                 if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X'])) {
 		    	$sel_showgri['C'] = ' selected="selected"';
 		    }; ?>
-		    \n\t<li>\n\t\t<label for="showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label>\n\t\t
-		    <select id="showgroupinfo" name="showgroupinfo">\n\t\t\t
-		    <option value="B"<?php echo $sel_showgri['B'].'>'.$clang->gT('Show both'); ?></option>\n\t\t\t
-		    <option value="N"<?php echo $sel_showgri['N'].'>'.$clang->gT('Show group name only'); ?></option>\n\t\t\t
-		    <option value="D"<?php echo $sel_showgri['D'].'>'.$clang->gT('Show group description only'); ?></option>\n\t\t\t
-		    <option value="X"<?php echo $sel_showgri['X'].'>'.$clang->gT('Hide both'); ?></option>\n\t\t
-		    </select>\n\t</li>
+		   <li><label for="showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label>
+		    <select id="showgroupinfo" name="showgroupinfo">\t
+		    <option value="B"<?php echo $sel_showgri['B'].'>'.$clang->gT('Show both'); ?></option>\t
+		    <option value="N"<?php echo $sel_showgri['N'].'>'.$clang->gT('Show group name only'); ?></option>\t
+		    <option value="D"<?php echo $sel_showgri['D'].'>'.$clang->gT('Show group description only'); ?></option>\t
+		    <option value="X"<?php echo $sel_showgri['X'].'>'.$clang->gT('Hide both'); ?></option>
+		    </select></li>
 		    <?php unset($sel_showgri,$set_showgri);
 		    break;
 	    }; ?>
 
             
-	    <!--$show_dis_pre = \n\t<li>\n\t\t<label for="dis_showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label>\n\t\t <input type="hidden" name="showqnumcode" id="showqnumcode" value="
-            $show_dis_mid = " />\n\t\t <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value=" -->
+	    <!--$show_dis_pre =<li><label for="dis_showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="
+            $show_dis_mid = " /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value=" -->
         <?php switch ($showqnumcode) {
 		case 'none': ?>
-            \n\t<li>\n\t\t<label for="dis_showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label>\n\t\t <input type="hidden" name="showqnumcode" id="showqnumcode" value="
-            X
-            " />\n\t\t <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+           <li><label for="dis_showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="X" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
             <?php echo $clang->gT('Hide both (Forced by the system administrator)'); ?>
-            " size="70" />\n\t</li>\n
+            " size="70" /></li>
 		<?php    break;
 		case 'number': ?>
-		    \n\t<li>\n\t\t<label for="dis_showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label>\n\t\t <input type="hidden" name="showqnumcode" id="showqnumcode" value="
-            N
-            " />\n\t\t <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+		   <li><label for="dis_showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="N" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
             <?php echo $clang->gT('Show question number only (Forced by the system administrator)') ; ?>
-            " size="70" />\n\t</li>\n
+            " size="70" /></li>
 		<?php    break;
 		case 'code': ?>
-		    \n\t<li>\n\t\t<label for="dis_showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label>\n\t\t <input type="hidden" name="showqnumcode" id="showqnumcode" value="
-            C
-            " />\n\t\t <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+		   <li><label for="dis_showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="C" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
             <?php echo $clang->gT('Show question code only (Forced by the system administrator)'); ?>
-            " size="70" />\n\t</li>\n
+            " size="70" /></li>
 		<?php    break;
 		case 'both': ?>
-		    \n\t<li>\n\t\t<label for="dis_showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label>\n\t\t <input type="hidden" name="showqnumcode" id="showqnumcode" value="
-            B
-            " />\n\t\t <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
+		   <li><label for="dis_showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label> <input type="hidden" name="showqnumcode" id="showqnumcode" value="B" /> <input type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="
             <?php echo $clang->gT('Show both (Forced by the system administrator)'); ?>
-            " size="70" />\n\t</li>\n
+            " size="70" /></li>
 		<?php    break;
 	    	case 'choose':
 		default:
@@ -361,15 +341,12 @@
 
 
 	    
-	<!--    $show_dis_pre = \n\t<li>\n\t\t<label for="dis_shownoanswer"><?php echo $clang->gT('Show "No answer"'); ?></label>\n\t\t <input type="hidden" name="shownoanswer" id="shownoanswer" value="
-            $show_dis_mid = " />\n\t\t <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value=" -->
+	<!--    $show_dis_pre =<li><label for="dis_shownoanswer"><?php echo $clang->gT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="
+            $show_dis_mid = " /> <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value=" -->
         <?php switch ($shownoanswer) {
 	    	case 0: ?>
-		          \n\t<li>\n\t\t<label for="dis_shownoanswer"><?php echo $clang->gT('Show "No answer"'); ?></label>\n\t\t <input type="hidden" name="shownoanswer" id="shownoanswer" value="
-                  N
-                  " />\n\t\t <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="
-                  <?php $clang->gT('Off (Forced by the system administrator)'); ?>
-                  " size="70" />\n\t</li>\n
+		         <li><label for="dis_shownoanswer"><?php echo $clang->gT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="N" /> <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php echo $clang->gT('Off (Forced by the system administrator)'); ?>
+                  " size="70" /></li>
 		  <?php  break;
 	        case 2:
 		    $sel_showno = array( 'Y' => '' , 'N' => '' );
@@ -380,18 +357,16 @@
                 if (empty($sel_showno)) {
 		    	$sel_showno['Y'] = ' selected="selected"';
 		    }; ?>
-	    	    \n\t<li>\n\t\t<label for="shownoanswer"><?php echo $clang->gT('Show "No answer"'); ?></label>\n\t\t
-		    <select id="shownoanswer" name="shownoanswer">\n\t\t\t
-		    <option value="Y"<?php echo $sel_showno['Y'].'>'.$clang->gT('Yes'); ?></option>\n\t\t\t
-		    <option value="N"<?php echo $sel_showno['N'].'>'.$clang->gT('No'); ?></option>\n\t\t
-		    </select>\n\t</li>
+	    	   <li><label for="shownoanswer"><?php echo $clang->gT('Show "No answer"'); ?></label>
+		    <select id="shownoanswer" name="shownoanswer">
+		    <option value="Y"<?php echo $sel_showno['Y'].'>'.$clang->gT('Yes'); ?></option>
+		    <option value="N"<?php echo $sel_showno['N'].'>'.$clang->gT('No'); ?></option>
+		    </select></li>
 		  <?php  break;
 		default: ?>
-		    \n\t<li>\n\t\t<label for="dis_shownoanswer"><?php echo $clang->gT('Show "No answer"'); ?></label>\n\t\t <input type="hidden" name="shownoanswer" id="shownoanswer" value="
-            Y
-            " />\n\t\t <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="
-            <?php echo $clang->gT('On (Forced by the system administrator)'); ?>
-            " size="70" />\n\t</li>\n
+		   <li><label for="dis_shownoanswer"><?php echo $clang->gT('Show "No answer"'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" 
+           value="Y" /> <input type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php echo $clang->gT('On (Forced by the system administrator)'); ?>
+            " size="70" /></li>
 		<?php    break;
 	    }; ?>
 

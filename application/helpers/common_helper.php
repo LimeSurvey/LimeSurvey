@@ -27,7 +27,10 @@ $CI->load->helper('sanitize');
 
 function aGetBaseSurveyPermissions()
 {
-    global $clang;
+    //global $clang;
+    $CI =& get_instance();
+    $clang = $CI->limesurvey_lang;
+    
     $aPermissions=array(                                                
                     'assessments'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Assessments"),'description'=>$clang->gT("Permission to create/view/update/delete assessments rules for a survey"),'img'=>'assessments'),  // Checked
                     'quotas'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>false,'export'=>false,'title'=>$clang->gT("Quotas"),'description'=>$clang->gT("Permission to create/view/update/delete quota rules for a survey"),'img'=>'quota'), // Checked
@@ -42,6 +45,7 @@ function aGetBaseSurveyPermissions()
                     'tokens'=>array('create'=>true,'read'=>true,'update'=>true,'delete'=>true,'import'=>true,'export'=>true,'title'=>$clang->gT("Tokens"),'description'=>$clang->gT("Permission to create/update/delete/import/export token entries"),'img'=>'tokens'), 
                     'translations'=>array('create'=>false,'read'=>true,'update'=>true,'delete'=>false,'import'=>false,'export'=>false,'title'=>$clang->gT("Quick translation"),'description'=>$clang->gT("Permission to view & update the translations using the quick-translation feature"),'img'=>'translate')
                     );
+
    uasort($aPermissions,"aComparePermission");    
    return $aPermissions;                 
 }

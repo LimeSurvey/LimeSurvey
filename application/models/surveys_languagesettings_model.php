@@ -73,7 +73,7 @@ class Surveys_languagesettings_model extends CI_Model {
     
     function insertNewSurvey($data)
     {
-        $this->db->insert('surveys', $data); 
+        $this->db->insert('surveys_languagesettings', $data); 
     }
 
 }

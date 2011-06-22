@@ -29,5 +29,15 @@ class Survey_permissions_model extends CI_Model {
 		
 		return $data;
 	}
+    
+    function deleteSomeRecords($condition)
+    {
+        $this->db->delete('survey_permissions', $condition); 
+    }
+    
+    function insertSomeRecords($data)
+    {
+        $this->db->insert('survey_permissions', $data); 
+    }
 
 }

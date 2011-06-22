@@ -688,12 +688,17 @@
             $esrow['navigationdelay']=0;
         }
         
-        $shownoanswer = isset($shownoanswer)?$shownoanswer:'Y';
+        $this->load->helper('globalsettings');
+        
+        $shownoanswer = getGlobalSetting('shownoanswer')?getGlobalSetting('shownoanswer'):'Y';
         
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
         //$data['surveyid'] = $surveyid;
         $data['shownoanswer'] = $shownoanswer;
+        $data['showXquestions'] = $showXquestions;
+        $data['showgroupinfo'] = $showgroupinfo;
+        $data['showqnumcode'] = $showqnumcode;
         return $this->load->view('admin/survey/superview/SuperPresentation_view',$data, true); 
         
     }

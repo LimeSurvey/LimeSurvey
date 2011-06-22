@@ -8,7 +8,7 @@
         <li><a href='#import'><?php echo $clang->gT("Import"); ?></a></li>
         <li><a href='#copy'><?php echo $clang->gT("Copy"); ?></a></li>
     </ul>
-    <form class='form30' name='addnewsurvey' id='addnewsurvey' action='../index' method='post' onsubmit="alert('hi');return isEmpty(document.getElementById('surveyls_title'), '<?php echo $clang->gT("Error: You have to enter a title for this survey.", 'js'); ?> ');" >
+    <form class='form30' name='addnewsurvey' id='addnewsurvey' action='<?php echo site_url("admin/database/index/insertsurvey"); ?>' method='post' onsubmit="alert('hi');return isEmpty(document.getElementById('surveyls_title'), '<?php echo $clang->gT("Error: You have to enter a title for this survey.", 'js'); ?> ');" >
     <div id='general'>
     <ul><li>
     
