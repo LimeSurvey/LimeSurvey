@@ -5307,8 +5307,8 @@ function killSession()  //added by Dennis
 	$CI->session->sess_destroy();
 	
     // making dummy session variable check to destroy session completely!
-    if($this->session->userdata('loginID'))
-    $this->session->unset_userdata('loginID');
+    if($CI->session->userdata('loginID'))
+    $CI->session->unset_userdata('loginID');
 		
    /* // Delete the Session Cookie
     $CookieInfo = session_get_cookie_params();

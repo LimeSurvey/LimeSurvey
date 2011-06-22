@@ -10,13 +10,11 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  * 
- * @package	LimeSurvey
- * 
  * $Id$
  * 
  */
 
-/*
+/**
  * Authentication Controller
  *
  * This controller performs authentication
@@ -26,7 +24,7 @@
  */
 class Authentication extends AdminController {
 
-	/*
+	/**
 	 * Constructor
 	 */
 	function __construct()
@@ -35,7 +33,7 @@ class Authentication extends AdminController {
         
 	}
 
-	/*
+	/**
 	 * Default Controller Action
 	 */
 	function index()
@@ -43,7 +41,7 @@ class Authentication extends AdminController {
 		redirect('/admin', 'refresh');
 	}
 	
-	/*
+	/**
 	 * Show login screen and parse login data
 	 */
 	function login()

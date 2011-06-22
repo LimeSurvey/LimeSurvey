@@ -348,13 +348,13 @@
                 if (empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X'])) {
 		    	$sel_showqnc['X'] = ' selected="selected"';
 		    }; ?>
-		    \n\t<li>\n\t\t<label for="showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label>\n\t\t
-		    <select id=\"showqnumcode\" name=\"showqnumcode\">\n\t\t\t
-		    <option value="B"<?php echo $sel_showqnc['B'].'>'.$clang->gT('Show both'); ?></option>\n\t\t\t
-		    <option value="N"<?php echo $sel_showqnc['N'].'>'.$clang->gT('Show question number only'); ?></option>\n\t\t\t
-		    <option value="C"<?php echo $sel_showqnc['C'].'>'.$clang->gT('Show question code only'); ?></option>\n\t\t\t
-		    <option value="X"<?php echo $sel_showqnc['X'].'>'.$clang->gT('Hide both'); ?></option>\n\t\t
-		    </select>\n\t</li>
+		    <li><label for="showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label>
+		    <select id="showqnumcode" name="showqnumcode">
+		    <option value="B"<?php echo $sel_showqnc['B'].'>'.$clang->gT('Show both'); ?></option>
+		    <option value="N"<?php echo $sel_showqnc['N'].'>'.$clang->gT('Show question number only'); ?></option>
+		    <option value="C"<?php echo $sel_showqnc['C'].'>'.$clang->gT('Show question code only'); ?></option>
+		    <option value="X"<?php echo $sel_showqnc['X'].'>'.$clang->gT('Hide both'); ?></option>
+		    </select></li>
 		    <?php unset($sel_showqnc,$set_showqnc);
 		    break;
 	    }; ?>
