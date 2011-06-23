@@ -288,9 +288,9 @@
 	    $$this_opt = ' selected="selected"';
 	    ?><li><label for="force_ssl"><?php echo $clang->gT('Force HTTPS:');?></label>
 	    <select name="force_ssl" id="force_ssl">
-            <option value="on" <?php echo $opt_force_ssl_on;?>'><?php echo $clang->gT('On');?></option>
-            <option value="off" <?php echo $opt_force_ssl_off;?>'><?php echo $clang->gT('Off');?></option>
-            .<option value="neither" '.$opt_force_ssl_neither.'><?php echo $clang->gT('Don\'t force on or off');?></option>
+            <option value="on" <?php echo $opt_force_ssl_on;?>><?php echo $clang->gT('On');?></option>
+            <option value="off" <?php echo $opt_force_ssl_off;?>><?php echo $clang->gT('Off');?></option>
+            <option value="neither" <?php echo $opt_force_ssl_neither;?>><?php echo $clang->gT('Don\'t force on or off');?></option>
 	    </select></li>
 	    <li><span style='font-size:0.7em;'><?php echo $warning_force_ssl;?></span></li>
 	    <?php unset($thisforce_ssl,$opt_force_ssl_on,$opt_force_ssl_off,$opt_force_ssl_neither,$warning_force_ssl,$this_opt); ?>
