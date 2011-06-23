@@ -5003,7 +5003,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
 
 /**
- *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
+ *  This functions removes all HTML tags, Javascript, CRs, linefeeds  and other strange chars from a given text. CRs, linefeeds are not removed for .csv files
  *
  * @param string $sTextToFlatten  Text you want to clean
  * @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
@@ -5011,11 +5011,14 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
  *
  * @return string  Cleaned text
  */
-function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8')
+function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8',$is_csv=false)
 {
     $sNicetext = strip_javascript($sTextToFlatten);
     $sNicetext = strip_tags($sNicetext);
-    $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
+    if($is_csv==true)
+	$sNicetext = str_replace(array("\r\n","\r","\n"),array(PHP_EOL,PHP_EOL,PHP_EOL), $sNicetext);
+    else
+      $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
     if ($bDecodeHTMLEntities==true)
     {
         $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not properly convert &nbsp; to spaces
@@ -5024,7 +5027,6 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
     $sNicetext = trim($sNicetext);
     return  $sNicetext;
 }
-
 
 /**
  * getArrayFiltersForGroup() queries the database and produces a list of array_filter questions and targets with in the same group
