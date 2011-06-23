@@ -12,7 +12,6 @@
  *
  * $Id: index.php 4729 2008-05-31 21:32:02Z nijaba $
  */
-$cmd_install=true;
 if (isset($argv[1]) && ($argv[1]=='install'|| $argv[1]=='upgrade') && isset($argv[2]) && isset($argv[3]))
 {
     require_once($argv[2]);
@@ -21,6 +20,7 @@ if (isset($argv[1]) && ($argv[1]=='install'|| $argv[1]=='upgrade') && isset($arg
 else
 {
     require_once(dirname(__FILE__).'/../../config-defaults.php');
+    $cmd_install=true;
     require_once(dirname(__FILE__).'/../../common.php');
 }
 // SET THE LANGUAGE???? -> DEFAULT SET TO EN FOR NOW
@@ -108,14 +108,14 @@ if (isset($argv[1]) && $argv[1]=='install')
                 $command = str_replace('$databasetabletype', $databasetabletype, $command);
 
 
-                 
-                 
+
+
                 if(!$connect->Execute($command,false))
                 {
                     print ("\n".$clang->gT("Executing").".....".$command."...".$clang->gT('Failed! Reason:')."\n".$connect->ErrorMsg()."\n\n");
                     $success=1;
                 }
-                 
+
 
 
                 $command = '';
@@ -157,7 +157,7 @@ elseif (isset($argv[1]) && $argv[1]=='upgrade')
 
     $upgradedbtype=$databasetype;
     if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';
-    if ($upgradedbtype=='mssqnlative') $upgradedbtype='mssqlnative';   
+    if ($upgradedbtype=='mssqnlative') $upgradedbtype='mssqlnative';
     include ('upgrade-all.php');
     include ('upgrade-'.$upgradedbtype.'.php');
 
