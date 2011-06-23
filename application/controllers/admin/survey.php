@@ -272,7 +272,7 @@
             */
             $data['clang'] = $clang;
             $data['owner'] = $owner;
-            return $this->load->view('admin/survey/superview/SuperGeneralNewSurvey_view',$data, true);
+            return $this->load->view('admin/survey/superview/superGeneralNewSurvey_view',$data, true);
     }
         
     function _generalTabEditSurvey($surveyid,$esrow)
@@ -351,7 +351,7 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
         $data['surveyid'] = $surveyid;
-        return $this->load->view('admin/survey/superview/SuperGeneralEditSurey_view',$data, true); 
+        return $this->load->view('admin/survey/superview/superGeneralEditSurey_view',$data, true); 
         
     }
     
@@ -699,13 +699,14 @@
         $data['showXquestions'] = $showXquestions;
         $data['showgroupinfo'] = $showgroupinfo;
         $data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/superview/SuperPresentation_view',$data, true); 
+        return $this->load->view('admin/survey/superview/superPresentation_view',$data, true); 
         
     }
     
     function _tabPublicationAccess($esrow)
     {
         $clang = $this->limesurvey_lang;
+        /**
         $editsurvey = "<div id='publication'><ul>\n";
 
              //Public Surveys
@@ -738,7 +739,7 @@
         }
             $editsurvey .= ">".$clang->gT("No")."</option>\n"
             . "</select></li>\n";
-
+            */
             // Start date
             $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
             $startdate='';
@@ -748,10 +749,10 @@
                 $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
                 $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
             }
-
+            /**
             $editsurvey .= "<li><label for='startdate'>".$clang->gT("Start date/time:")."</label>\n"
             . "<input type='text' class='popupdatetime' id='startdate' size='20' name='startdate' value=\"{$startdate}\" /></li>\n";
-
+            */
             // Expiration date
             $expires='';
         if (trim($esrow['expires']) != '') {
@@ -760,6 +761,7 @@
                 $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
                 $expires=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
             }
+            /**
             $editsurvey .="<li><label for='expires'>".$clang->gT("Expiry date/time:")."</label>\n"
             . "<input type='text' class='popupdatetime' id='expires' size='20' name='expires' value=\"{$expires}\" /></li>\n";
 
@@ -849,11 +851,23 @@
             $editsurvey .= "</ul></div>\n";
         return $editsurvey;
         
+        */
+        $data['clang'] = $clang;
+        $data['esrow'] = $esrow;
+        //$data['surveyid'] = $surveyid;
+        $data['startdate'] = $startdate;
+        $data['expires'] = $expires;
+        //$data['showgroupinfo'] = $showgroupinfo;
+        //$data['showqnumcode'] = $showqnumcode;
+        return $this->load->view('admin/survey/superview/superPublication_view',$data, true); 
+        
     }
     
     function _tabNotificationDataManagement($esrow)
     {
         $clang = $this->limesurvey_lang;
+        
+        /**
         // Notification and Data management TAB
             $editsurvey = "<div id='notification'><ul>\n";
 
@@ -1068,13 +1082,20 @@
 
         // End Notification and Data management TAB
         $editsurvey .= "</ul></div>\n";
-        return $editsurvey;
+        return $editsurvey; */
+        $data['clang'] = $clang;
+        $data['esrow'] = $esrow;
+        
+        //$data['showqnumcode'] = $showqnumcode;
+        return $this->load->view('admin/survey/superview/superNotification_view',$data, true); 
+        
     }
     
     function _tabTokens($esrow)
     {
         $clang = $this->limesurvey_lang;
         // Tokens TAB
+        /**
         $editsurvey = "<div id='tokens'><ul>\n";
         // Token answers persistence
         $editsurvey .= "<li><label for=''>".$clang->gT("Enable token-based response persistence?")."</label>\n"
@@ -1098,12 +1119,18 @@
 
         // End Tokens TAB
         $editsurvey .= "</ul></div>\n";
-        return $editsurvey;
+        return $editsurvey; */
+        $data['clang'] = $clang;
+        $data['esrow'] = $esrow;
+        
+        //$data['showqnumcode'] = $showqnumcode;
+        return $this->load->view('admin/survey/superview/superTokens_view',$data, true); 
     }
     
     function _tabImport()
     {
         $clang = $this->limesurvey_lang;
+        /**
         // Import TAB
         $editsurvey = "<div id='import'>\n";
 
@@ -1119,16 +1146,21 @@
 
         // End Import TAB
         $editsurvey .= "</div>\n";
-        return $editsurvey;
+        return $editsurvey; */
+        $data['clang'] = $clang;
+        //$data['esrow'] = $esrow;
+        
+        //$data['showqnumcode'] = $showqnumcode;
+        return $this->load->view('admin/survey/superview/superImport_view',$data, true); 
     }
     
     function _tabCopy()
     {
         $clang = $this->limesurvey_lang;
-        
+        /**
         // Copy survey TAB
         $editsurvey = "<div id='copy'>\n";
-
+        
         // Copy survey
         $editsurvey .= "<form class='form30' action='../database/index/insertsurvey' id='copysurveyform' method='post'>\n"
                     . "<ul>\n"
@@ -1153,7 +1185,15 @@
         $editsurvey .= "</div>\n";
                
         return $editsurvey;
+        */
+        
+        $data['clang'] = $clang;
+        //$data['esrow'] = $esrow;
+        
+        //$data['showqnumcode'] = $showqnumcode;
+        return $this->load->view('admin/survey/superview/superCopy_view',$data, true); 
     }
+    
     
     function _tabResourceManagement($surveyid)
     {
@@ -1169,6 +1209,7 @@
         if (hasResources($surveyid, 'survey') === false) {
             $disabledIfNoResources = " disabled='disabled'";
         }
+        /**
         // functionality not ported 
         $editsurvey = "<div id='resources'>\n"
             . "<form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='../database/index/insertsurvey' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
@@ -1187,7 +1228,14 @@
 
         // End TAB Uploaded Resources Management
         $editsurvey .= "</div>\n";
-        return $editsurvey;
+        return $editsurvey; */
+        $data['clang'] = $clang;
+        //$data['esrow'] = $esrow;
+        $data['ZIPimportAction'] = $ZIPimportAction;
+        $data['disabledIfNoResources'] = $disabledIfNoResources;
+        $dqata['sCKEditorURL'] = $sCKEditorURL;
+        //$data['showqnumcode'] = $showqnumcode;
+        return $this->load->view('admin/survey/superview/superResourceManagement_view',$data, true); 
         
     }
     
