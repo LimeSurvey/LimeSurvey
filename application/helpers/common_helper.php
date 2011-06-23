@@ -1645,16 +1645,16 @@ function returnglobal($stringname)
     $useWebserverAuth = $CI->config->item('useWebserverAuth');
     if ((isset($useWebserverAuth) && $useWebserverAuth === true) || $stringname=='sid') // don't read SID from a Cookie
     {
-        if ($CI->input->get_post('stringname')) $urlParam = $CI->input->get_post('stringname');
+        if ($CI->input->get_post($stringname)) $urlParam = $CI->input->get_post('stringname');
         //if ($this->input->cookie('stringname')) $urlParam = $this->input->cookie('stringname');
     }
-    elseif ($CI->input->get_post('stringname') )
+    elseif ($CI->input->get_post($stringname) )
     {
-        $urlParam = $CI->input->get_post('stringname'); 
+        $urlParam = $CI->input->get_post($stringname);
     }
-    elseif ($CI->input->cookie('stringname'))
+    elseif ($CI->input->cookie($stringname))
     {
-        $urlParam = $CI->input->cookie('stringname');
+        $urlParam = $CI->input->cookie($stringname);
     }
 
     if (isset($urlParam))
