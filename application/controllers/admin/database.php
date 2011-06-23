@@ -214,7 +214,7 @@ class Database extends AdminController {
                 
                 // Update survey permissions
                 self::_GiveAllSurveyPermissions($this->session->userdata('loginID'),$surveyid);
-                echo "hi";
+                
                 $surveyselect = getsurveylist();
                 
                 // Create initial Survey table
