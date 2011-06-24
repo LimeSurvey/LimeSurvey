@@ -4,7 +4,7 @@
             <input type='hidden' name='action' value='importsurveyresources' />
             <ul>
             <li><label>&nbsp;</label>
-            <input type='button' onclick='window.open("<?php echo $sCKEditorURL; ?>/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php", "_blank")' value="<?php echo $clang->gT("Browse Uploaded Resources"); ?>" <?php echo $disabledIfNoResources; ?> /></li>
+            <input type='button' onclick='window.open("<?php echo $this->config->item('sCKEditorURL'); ?>/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php", "_blank")' value="<?php echo $clang->gT("Browse Uploaded Resources"); ?>" <?php echo $disabledIfNoResources; ?> /></li>)
             <li><label>&nbsp;</label>
             <input type='button' onclick='window.open("<?php echo $scriptname; ?>?action=exportsurvresources&amp;sid=<?php echo $surveyid; ?>", "_blank")' value="<?php echo $clang->gT("Export Resources As ZIP Archive"); ?>" <?php echo $disabledIfNoResources; ?> /></li>
             <li><label for='the_file'><?php echo $clang->gT("Select ZIP File:"); ?></label>

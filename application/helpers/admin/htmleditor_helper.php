@@ -36,14 +36,15 @@ function sTranslateLangCode2CK($sLanguageCode){
 function PrepareEditorScript()
 {
     //global $clang; //, $imageurl, $homeurl, $js_admin_includes;
-    global $sCKEditorURL;
+    //global $this->config->item['sCKEditorURL'];
     $CI =& get_instance();
     $js_admin_includes = $CI->config->item("js_admin_includes");
     $clang = $CI->limesurvey_lang;
-
-    $js_admin_includes[]=$sCKEditorURL.'/ckeditor.js';
+    
+    $js_admin_includes[]=$CI->config->item('sCKEditorURL').'/ckeditor.js';
     $CI->config->set_item("js_admin_includes", $js_admin_includes);
-    $script = "<script type='text/javascript'>\n"
+    $script  = "<script type=\"text/javascript\" src =\"".$CI->config->item('sCKEditorURL')."/ckeditor.js\" >"
+    . "<script type='text/javascript'>\n"
     . "<!--\n"
     . "var editorwindowsHash = new Object();\n"
     . "function find_popup_editor(fieldname)\n"
@@ -179,7 +180,7 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    global $clang, $sCKEditorURL, $ckeditexpandtoolbar;//, $uploadurl;
+    //global $clang, $this->config->item['sCKEditorURL'], $ckeditexpandtoolbar;//, $uploadurl;
     $CI =& get_instance(); 
     $htmlcode = '';
     $imgopts = '';
@@ -199,7 +200,8 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
     }
     else
     {
-        if (!isset($ckeditexpandtoolbar) || $ckeditexpandtoolbar == true)
+        $ckeditexpandtoolbar = $CI->config->item('ckeditexpandtoolbar');
+        if (!isset($ckeditexpandtoolbar) ||  $ckeditexpandtoolbar == true)
         {
             $toolbaroption = ",toolbarStartupExpanded:true\n"
                             .",toolbar:'inline'\n";
@@ -220,7 +222,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
     $htmlcode .= ""
     . "<script type=\"text/javascript\">\n"
     . "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
-                                                                 customConfig : \"".$sCKEditorURL."/limesurvey-config.js\"
+                                                                 customConfig : \"".$CI->config->item('sCKEditorURL')."/limesurvey-config.js\"
                                                                 ,LimeReplacementFieldsType : \"".$fieldtype."\"
                                                                 ,LimeReplacementFieldsSID : \"".$surveyID."\"
                                                                 ,LimeReplacementFieldsGID : \"".$gID."\"

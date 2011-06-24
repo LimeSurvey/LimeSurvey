@@ -521,6 +521,8 @@ $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upl
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $config['usertemplaterootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates    
 
+$config['sCKEditorURL']            = base_url()."/scripts/admin/ckeditor.36";
+$config['ckeditexpandtoolbar']     = true; // defines if the CKeditor toolbar should be opened by default
 
 $config['adminscripts']            = base_url()."scripts/admin/";
 $config['generalscripts']          = base_url()."scripts/";

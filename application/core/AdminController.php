@@ -413,4 +413,22 @@ class AdminController extends LS_Controller {
 		$this->config->set_item("js_admin_includes", $js_admin_includes);
 	}
     
+    function _loadEndScripts()
+    {
+        if (!$this->session->userdata('metaHeader')) {
+            $this->session->set_userdata('metaHeader','');
+        } 
+        //$adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
+        $this->session->unset_userdata('metaHeader');
+        //$adminoutput.= "</div>\n";
+        if(!$this->session->userdata('checksessionpost'))
+        {
+            $this->session->set_userdata('checksessionpost','');
+            //$_SESSION['checksessionpost'] = '';
+        }
+        $data['checksessionpost'] = $this->session->userdata('checksessionpost');
+        return $this->load->view('admin/endScripts_view',$data, true);
+        
+    }
+    
 }

@@ -4,15 +4,15 @@
 </li>
 <li><label for='description'><?php echo $clang->gT("Description:"); ?> </label>
 <textarea cols='80' rows='10' id='description' name='description'></textarea>
-<!-- getEditor("survey-desc", "description", "[ $clang->gT("Description:", "js") ]", '', '', '', $action) -->
+<?php echo getEditor("survey-desc", "description", "[" . $clang->gT("Description:", "js") . "]", '', '', '', $action); ?>
 </li>
 <li><label for='welcome'><?php echo $clang->gT("Welcome message:"); ?> </label>
 <textarea cols='80' rows='10' id='welcome' name='welcome'></textarea>
-<!--getEditor("survey-welc", "welcome", "[ $clang->gT("Welcome message:", "js") ]", '', '', '', $action) -->
+<?php echo getEditor("survey-welc", "welcome", "[" . $clang->gT("Welcome message:", "js") . "]", '', '', '', $action) ?>
 </li>
 <li><label for='endtext'><?php echo $clang->gT("End message:") ;?> </label>
 <textarea cols='80' id='endtext' rows='10' name='endtext'></textarea>
-<!-- getEditor("survey-endtext", "endtext", "[ $clang->gT("End message:", "js") ]", '', '', '', $action) -->
+<?php echo getEditor("survey-endtext", "endtext", "[" . $clang->gT("End message:", "js") . "]", '', '', '', $action) ?>
 </li>
 
 <li><label for='url'><?php echo $clang->gT("End URL:"); ?></label>

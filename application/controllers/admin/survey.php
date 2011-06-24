@@ -103,7 +103,7 @@
                 $editsurvey .= "<p><button onclick=\"$cond {document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; document.getElementById('addnewsurvey').submit();}\" class='standardbtn' >" . $clang->gT("Save & edit survey text elements") . " >></button></p>\n";
             }
         }
-       	
+       	$editsurvey .= self::_loadEndScripts();
         //echo $editsurvey;
         $data['display'] = $editsurvey;
         $this->load->view('survey_view',$data);
@@ -270,6 +270,7 @@
             $editsurvey .= "</div>\n";
             return $editsurvey;
             */
+            $data['action'] = "newsurvey";
             $data['clang'] = $clang;
             $data['owner'] = $owner;
             return $this->load->view('admin/survey/superview/superGeneralNewSurvey_view',$data, true);
