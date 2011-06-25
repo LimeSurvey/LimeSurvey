@@ -23,4 +23,109 @@
         	<?php if (trim($surveyinfo['surveyls_description'])!='') {echo " {$surveyinfo['surveyls_description']}";} ;?>
         </td>
 	</tr>
-<?php echo $details; ?>
+	<tr>
+		<td align='right' valign='top'>
+			<strong><?php echo $clang->gT("Welcome:");?></strong>
+		</td>
+        <td align='left'>
+        	<?php echo $surveyinfo['surveyls_welcometext'];?>
+        </td>
+	</tr>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("Administrator:");?></strong>
+    	</td>
+        <td align='left'>
+        	<?php echo "{$surveyinfo['admin']} ({$surveyinfo['adminemail']})";?>
+        </td>
+	</tr>
+	<?php if (trim($surveyinfo['faxto'])!='') { ?>
+	    <tr>
+	    	<td align='right' valign='top'>
+	    		<strong><?php echo $clang->gT("Fax to:");?></strong>
+	    	</td>
+	    	<td align='left'>
+	    		<?php echo$surveyinfo['faxto'];?>
+	    	</td>
+	    </tr>
+    <?php } ?>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("Start date/time:");?></strong>
+    	</td>
+        <td align='left'>
+        	<?php echo $startdate;?>
+        </td>
+    </tr>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("Expiry date/time:");?></strong>
+    	</td>
+    	<td align='left'>
+    		<?php echo $expdate;?>
+    	</td>
+    </tr>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("Template:");?></strong>
+    	</td>
+    	<td align='left'>
+    		<?php echo $surveyinfo['template'];?>
+    	</td>
+    </tr>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("Base language:");?></strong>
+    	</td>
+    	<td align='left'>
+    		<?php echo $language;?>
+    	</td>
+    </tr>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("Additional Languages");?></strong>
+    	</td>
+    		<?php echo $additionnalLanguages;?>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("End URL");?>:</strong>
+    	</td>
+    	<td align='left'>
+    		<?php echo $endurl;?>
+    	</td>
+    </tr>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("Number of questions/groups");?>:</strong>
+    	</td>
+    	<td align='left'>
+    		<?php echo $sumcount3."/".$sumcount2;?>
+    	</td>
+    </tr>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("Survey currently active");?>:</strong>
+    	</td>
+    	<td align='left'>
+    		<?php echo $activatedlang;?>
+    	</td>
+    </tr>
+    <?php if($activated=="Y") { ?>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("Survey table name");?>:</strong>
+    	</td>
+    	<td align='left'>
+    		<?php echo $surveydb;?>
+    	</td>
+    </tr>
+    <?php } ?>
+    <tr>
+    	<td align='right' valign='top'>
+    		<strong><?php echo $clang->gT("Hints");?>:</strong>
+    	</td>
+    	<td align='left'>
+    		<?php echo $warnings.$hints;?>
+    	</td>
+    </tr>
+</table>

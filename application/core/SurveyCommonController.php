@@ -290,7 +290,6 @@
         //SURVEY SUMMARY
 
         $aAdditionalLanguages = GetAdditionalLanguagesFromSurveyID($surveyid);
-        $surveysummary = "";
         $surveysummary2 = "";
         if ($surveyinfo['anonymized'] != "N") {$surveysummary2 .= $clang->gT("Answers to this survey are anonymized.")."<br />\n";}
         else {$surveysummary2 .= $clang->gT("This survey is NOT anonymous.")."<br />\n";}
@@ -348,66 +347,42 @@
         }
         */
         
-        $surveysummary .= "<tr >\n<td align='right' valign='top'><strong>"
-        . $clang->gT("Welcome:")."</strong></td>\n"
-        . "<td align='left'> {$surveyinfo['surveyls_welcometext']}</td></tr>\n"
-        . "<tr ><td align='right' valign='top'><strong>"
-        . $clang->gT("Administrator:")."</strong></td>\n"
-        . "<td align='left'> {$surveyinfo['admin']} ({$surveyinfo['adminemail']})</td></tr>\n";
-        if (trim($surveyinfo['faxto'])!='')
-        {
-            $surveysummary .="<tr><td align='right' valign='top'><strong>"
-            . $clang->gT("Fax to:")."</strong></td>\n<td align='left'>{$surveyinfo['faxto']}";
-            $surveysummary .= "</td></tr>\n";
-        }
-        $surveysummary .= "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Start date/time:")."</strong></td>\n";
         $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
         if (trim($surveyinfo['startdate'])!= '')
         {
             $constructoritems = array($surveyinfo['startdate'] , "Y-m-d H:i:s");
             $this->load->library('Date_Time_Converter',$items);
             $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($surveyinfo['startdate'] , "Y-m-d H:i:s");
-            $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+            $data['startdate']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
         else
         {
-            $startdate="-";
+            $data['startdate']="-";
         }
-        $surveysummary .= "<td align='left'>$startdate</td></tr>\n"
-        . "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Expiry date/time:")."</strong></td>\n";
+
         if (trim($surveyinfo['expires'])!= '')
         {
             $constructoritems = array($surveyinfo['expires'] , "Y-m-d H:i:s");
             $this->load->library('Date_Time_Converter',$items);
             $datetimeobj = $this->date_time_converter; 
             //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
-            $expdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+            $data['expdate']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
         else
         {
-            $expdate="-";
+            $data['expdate']="-";
         }
-        $surveysummary .= "<td align='left'>$expdate</td></tr>\n"
-        . "<tr ><td align='right' valign='top'><strong>"
-        . $clang->gT("Template:")."</strong></td>\n"
-        . "<td align='left'> {$surveyinfo['template']}</td></tr>\n"
 
-        . "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Base language:")."</strong></td>\n";
-        if (!$surveyinfo['language']) {$language=getLanguageNameFromCode($currentadminlang,false);} else {$language=getLanguageNameFromCode($surveyinfo['language'],false);}
-        $surveysummary .= "<td align='left'>$language</td></tr>\n";
+        if (!$surveyinfo['language']) {$data['language']=getLanguageNameFromCode($currentadminlang,false);} else {$data['language']=getLanguageNameFromCode($surveyinfo['language'],false);}
 
         // get the rowspan of the Additionnal languages row
         // is at least 1 even if no additionnal language is present
         $additionnalLanguagesCount = count($aAdditionalLanguages);
-        $surveysummary .= "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Additional Languages").":</strong></td>\n";
         $first=true;
+		$data['additionnalLanguages']="";
         if ($additionnalLanguagesCount == 0)
         {
-                    $surveysummary .= "<td align='left'>-</td>\n";
+                    $data['additionnalLanguages'] .= "<td align='left'>-</td>\n";
         }
         else
         {
@@ -415,67 +390,60 @@
             {
                 if ($langname)
                 {
-                    if (!$first) {$surveysummary .= "<tr><td>&nbsp;</td>";}
+                    if (!$first) {$data['additionnalLanguages'].= "<tr><td>&nbsp;</td>";}
                     $first=false;
-                    $surveysummary .= "<td align='left'>".getLanguageNameFromCode($langname,false)."</td></tr>\n";
+                    $data['additionnalLanguages'] .= "<td align='left'>".getLanguageNameFromCode($langname,false)."</td></tr>\n";
                 }
             }
         }
-        if ($first) $surveysummary .= "</tr>";
+        if ($first) $data['additionnalLanguages'] .= "</tr>";
 
         if ($surveyinfo['surveyls_urldescription']==""){$surveyinfo['surveyls_urldescription']=htmlspecialchars($surveyinfo['surveyls_url']);}
-        $surveysummary .= "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("End URL").":</strong></td>\n"
-        . "<td align='left'>";                                             
+                                          
         if ($surveyinfo['surveyls_url']!="") 
         {
-            $surveysummary .=" <a target='_blank' href=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\" title=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\">{$surveyinfo['surveyls_urldescription']}</a>";
+            $data['endurl'] = " <a target='_blank' href=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\" title=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\">{$surveyinfo['surveyls_urldescription']}</a>";
         }
         else
         {
-            $surveysummary .="-";
+            $data['endurl'] ="-";
         }
-        $surveysummary .="</td></tr>\n";
-        $surveysummary .= "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Number of questions/groups").":</strong></td><td>$sumcount3/$sumcount2</td></tr>\n";
-        $surveysummary .= "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Survey currently active").":</strong></td><td>";
+
+		$data['sumcount3']=$sumcount3;
+		$data['sumcount2']=$sumcount2;
+
         if ($activated == "N")
         {
-            $surveysummary .= $clang->gT("No");
+            $data['activatedlang'] = $clang->gT("No");
         }
         else
         {
-            $surveysummary .= $clang->gT("Yes");
+            $data['activatedlang'] = $clang->gT("Yes");
         }
-        $surveysummary .="</td></tr>\n";
 
+		$data['activated']=$activated;
         if ($activated == "Y")
         {
-            $surveysummary .= "<tr><td align='right' valign='top'><strong>"
-            . $clang->gT("Survey table name").":</strong></td><td>".$this->db->dbprefix."survey_$surveyid</td></tr>\n";
+            $data['surveydb']=$this->db->dbprefix."survey_".$surveyid;
         }
-        $surveysummary .= "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Hints").":</strong></td><td>\n";
-
+ 		$data['warnings']="";
         if ($activated == "N" && $sumcount3 == 0)
         {
-            $surveysummary .= $clang->gT("Survey cannot be activated yet.")."<br />\n";
+            $data['warnings']= $clang->gT("Survey cannot be activated yet.")."<br />\n";
             if ($sumcount2 == 0 && bHasSurveyPermission($surveyid,'surveycontent','create'))
             {
-                $surveysummary .= "<span class='statusentryhighlight'>[".$clang->gT("You need to add question groups")."]</span><br />";
+                $data['warnings'] .= "<span class='statusentryhighlight'>[".$clang->gT("You need to add question groups")."]</span><br />";
             }
             if ($sumcount3 == 0 && bHasSurveyPermission($surveyid,'surveycontent','create'))
             {
-                $surveysummary .= "<span class='statusentryhighlight'>[".$clang->gT("You need to add questions")."]</span><br />";
+               $data['warnings'] .= "<span class='statusentryhighlight'>[".$clang->gT("You need to add questions")."]</span><br />";
             }
         }
-        $surveysummary .=  $surveysummary2;
+        $data['hints']=$surveysummary2;
 
         //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
-        
-        $tableusage = false; //get_dbtableusage($surveyid);
-        $surveysummary .="<tr><td align='right' valign='top'><strong>PORT</strong></td><td>get_dbtableusage ".__LINE__."</td></tr>";
+        /*
+        $tableusage = get_dbtableusage($surveyid);
         if ($tableusage != false){
 
             if ($tableusage['dbtype']=='mysql'){
@@ -492,9 +460,7 @@
             }
             
         }
-        
-        $surveysummary .= "</table>\n";
-        $data['details']=$surveysummary;
+        */
 		$this->load->view("admin/survey/surveysummary",$data);
     }
 }
