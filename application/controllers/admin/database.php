@@ -234,7 +234,7 @@ class Database extends AdminController {
         }
         else
         {
-            redirect(site_url('admin/index/'.$surveyid));
+            redirect(site_url('admin/survey/view/'.$surveyid));
         }
         
         
