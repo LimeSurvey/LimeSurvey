@@ -250,13 +250,12 @@ class AdminController extends LS_Controller {
 		$data['sitename'] = $this->config->item("sitename");
 		$data['admintheme'] = $this->config->item("admintheme");
 	
-		/*$css_admin_includes = array_unique($css_admin_includes);
-	
-	    foreach ($css_admin_includes as $cssinclude)
+		
+		if($this->config->item("css_admin_includes"))
 	    {
-	        $strAdminHeader .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"$cssinclude\" />\n";
+	    	$data['css_admin_includes'] = array_unique($this->config->item("css_admin_includes"));
 	    }
-		*/
+		
 		$data['firebug'] = use_firebug();
 		
 	    if ($this->session->userdata('dateformat'))

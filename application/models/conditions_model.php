@@ -62,11 +62,11 @@ class Conditions_model extends CI_Model {
     {
         
         $aquery = "SELECT *, "
-        ." (SELECT count(1) FROM ".$this->db->prefix('conditions')." c\n"
+        ." (SELECT count(1) FROM ".$this->db->dbprefix('conditions')." c\n"
         ." WHERE questions.qid = c.qid) AS hasconditions,\n"
-        ." (SELECT count(1) FROM ".$this->db->prefix('conditions')." c\n"
+        ." (SELECT count(1) FROM ".$this->db->dbprefix('conditions')." c\n"
         ." WHERE questions.qid = c.cqid) AS usedinconditions\n"
-        ." FROM ".$this->db->prefix('questions')." as questions, ".$this->db->prefix('groups')." as groups"
+        ." FROM ".$this->db->dbprefix('questions')." as questions, ".$this->db->dbprefix('groups')." as groups"
         ." WHERE questions.gid=groups.gid AND "
         ." questions.sid=$surveyid AND "
         ." questions.language='{$language}' AND "
@@ -85,15 +85,15 @@ class Conditions_model extends CI_Model {
 	function getScenarios($qid)
     {
     	   
-		$scenarioquery = "SELECT DISTINCT scenario FROM ".$this->db->prefix("conditions")
-		." WHERE ".$this->db->prefix("conditions").".qid=".$qid." ORDER BY scenario";
+		$scenarioquery = "SELECT DISTINCT scenario FROM ".$this->db->dbprefix("conditions")
+		." WHERE ".$this->db->dbprefix("conditions").".qid=".$qid." ORDER BY scenario";
 		
 		return $this->db->query($scenarioquery);
     }
 	
 	function getCountOfConditions($surveyid)
     {
-        return $this->db->query('SELECT count(*) FROM '.$this->db->prefix('conditions').' as c, '.$this->db->prefix('questions').' as q WHERE c.qid = q.qid AND q.sid='.$surveyid);
+        return $this->db->query('SELECT count(*) FROM '.$this->db->dbprefix('conditions').' as c, '.$this->db->dbprefix('questions').' as q WHERE c.qid = q.qid AND q.sid='.$surveyid);
         
     }
 

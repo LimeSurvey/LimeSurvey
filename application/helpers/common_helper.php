@@ -392,7 +392,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $inactivesurveys .=" value='".$CI->config->item('scriptname')."?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
+                    $inactivesurveys .=" value='".site_url("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -410,7 +410,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $expiredsurveys .=" value='".$CI->config->item('scriptname')."?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
+                    $expiredsurveys .=" value='".site_url("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -428,7 +428,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
                 }
                 if ($returnwithouturl===false)
                 {
-                    $activesurveys .=" value='".$CI->config->item('scriptname')."?sid={$sv['sid']}'>{$surveylstitle}</option>\n";
+                    $activesurveys .=" value='".site_url("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -459,7 +459,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false)
     {
         if ($returnwithouturl===false)
         {
-            $surveyselecter = "<option value='".$CI->config->item('scriptname')."?sid='>".$clang->gT("None")."</option>\n".$surveyselecter;
+            $surveyselecter = "<option value='".site_url("admin")."'>".$clang->gT("None")."</option>\n".$surveyselecter;
         } else
         {
             $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
@@ -640,9 +640,9 @@ function getGidPrevious($surveyid, $gid)
 
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups');
+    $CI->load->model('groups_model');
     //$gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
-    $qresult = $CI->groups->getGroupID($surveyid,$s_lang); //checked
+    $qresult = $CI->groups_model->getGroupID($surveyid,$s_lang); //checked
     $qrows = $qresult->result_array();
 
     $i = 0;
@@ -707,9 +707,9 @@ function getGidNext($surveyid, $gid)
 
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups');
+    $CI->load->model('groups_model');
     //$gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
-    $qresult = $CI->groups->getGroupID($surveyid,$s_lang); //checked
+    $qresult = $CI->groups_model->getGroupID($surveyid,$s_lang); //checked
     $qrows = $qresult->result_array();
 
     $GidNext="";
@@ -761,7 +761,28 @@ function getQidNext($surveyid, $gid, $qid)
     return $QidNext;
 }
 
+function get2post($url)
+{
+	$CI= &get_instance();
+    $url = preg_replace('/&amp;/i','&',$url);
+    list($calledscript,$query) = explode('?',$url);
+    $aqueryitems = explode('&',$query);
+    $arrayParam = Array();
+    $arrayVal = Array();
 
+    foreach ($aqueryitems as $queryitem)
+    {
+        list($paramname, $value) = explode ('=', $queryitem);
+        $arrayParam[] = "'".$paramname."'";
+        $arrayVal[] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
+    }
+    //	$Paramlist = "[" . implode(",",$arrayParam) . "]";
+    //	$Valuelist = "[" . implode(",",$arrayVal) . "]";
+    $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
+    $Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
+    $callscript = "sendPost('$calledscript','".$CI->session->userdata('checksessionpost')."',$Paramlist,$Valuelist);";
+    return $callscript;
+}
 
 /**
  * Gets number of groups inside a particular survey
@@ -771,11 +792,11 @@ function getQidNext($surveyid, $gid, $qid)
  */
 function getGroupSum($surveyid, $lang)
 {
-    global $surveyid,$CI ;
-    $CI->load->model('groups');
-    $condn = "WHERE sid=$surveyid AND language='".$lang."'"; //Getting a count of questions for this survey
-
-    $sumresult3 = $CI->groups->getAllRecords($condn); //Checked)
+	$CI= &get_instance();
+    $CI->load->model('groups_model');
+    //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
+	$condn = array('sid'=>$surveyid,'language'=>$lang);
+    $sumresult3 = $CI->groups_model->getAllRecords($condn); //Checked)
     $groupscount = $sumresult3->num_rows();
 
     return $groupscount ;
@@ -811,9 +832,9 @@ function getMaxgrouporder($surveyid)
 {
     global $surveyid, $CI ;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups');
+    $CI->load->model('groups_model');
     //$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
-    $query = $CI->groups->getMaximumGroupOrder($surveyid,$s_lang);
+    $query = $CI->groups_model->getMaximumGroupOrder($surveyid,$s_lang);
     $query = $query->row_array();
     $current_max = $query['max'];
     
@@ -835,11 +856,11 @@ function getMaxgrouporder($surveyid)
 function getGroupOrder($surveyid,$gid)
 {
     global $CI;
-    $CI->load->model('groups');
+    $CI->load->model('groups_model');
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     
     //$grporder_sql = "SELECT group_order FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}' AND gid=$gid" ;
-    $grporder_result =$CI->groups->getOrderOfGroup($surveyid,$gid,$s_lang); //Checked
+    $grporder_result =$CI->groups_model->getOrderOfGroup($surveyid,$gid,$s_lang); //Checked
     $grporder_row = $grporder_result->row_array() ;
     $group_order = $grporder_row['group_order'];
     if($group_order=="")
@@ -1220,9 +1241,9 @@ function getgrouplist($gid)
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->config('lsconfig');
-    $CI->load->model('groups');
+    $CI->load->model('groups_model');
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND  language='{$s_lang}'  ORDER BY group_order";
-    $gidresult = $CI->groups->getGroupAndID($surveyid,$s_lang) or safe_die("Couldn't get group list in common_helper.php<br />"); //Checked
+    $gidresult = $CI->groups_model->getGroupAndID($surveyid,$s_lang) or safe_die("Couldn't get group list in common_helper.php<br />"); //Checked
     foreach ($gidresult->result_array() as $gv)
     {
         $groupselecter .= "<option";
@@ -1244,9 +1265,9 @@ function getgrouplist2($gid)
     $groupselecter = "";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups');
+    $CI->load->model('groups_model');
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
-    $gidresult = $CI->groups->getGroupAndID($surveyid,$s_lang) or safe_die("Plain old did not work!");   //Checked
+    $gidresult = $CI->groups_model->getGroupAndID($surveyid,$s_lang) or safe_die("Plain old did not work!");   //Checked
 
     foreach ($gidresult->result_array() as $gv)
     {
@@ -1269,12 +1290,12 @@ function getgrouplist3($gid)
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $groupselecter = "";
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups');
+    $CI->load->model('groups_model');
     
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
 
-    $gidresult = $CI->groups->getGroupAndID($surveyid,$s_lang) or safe_die("Plain old did not work!");      //Checked
+    $gidresult = $CI->groups_model->getGroupAndID($surveyid,$s_lang) or safe_die("Plain old did not work!");      //Checked
     foreach ($gidresult->result_array() as $gv)
     {
         $groupselecter .= "<option";
@@ -1295,9 +1316,9 @@ function getgroupname($gid)
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     //$gidquery = "SELECT group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' and gid=$gid";
-    $CI->load->model('groups');
+    $CI->load->model('groups_model');
     
-    $gidresult = $CI->groups->getGroupName($surveyid,$gid,$s_lang) or safe_die("Group name could not be fetched (getgroupname).");      //Checked
+    $gidresult = $CI->groups_model->getGroupName($surveyid,$gid,$s_lang) or safe_die("Group name could not be fetched (getgroupname).");      //Checked
     $gv = $gidresult->row_array();
     
     $groupname = htmlspecialchars($gv['group_name']);
@@ -1315,11 +1336,11 @@ function getgrouplistlang($gid, $language)
 {
     global $surveyid, $CI, $clang;
     $CI->load->config('lsconfig');
-    $CI->load->model('groups');
+    $CI->load->model('groups_model');
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     //$gidquery = "SELECT gid, group_name FROM ".$CI->db->prefix('groups')." WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-    $gidresult = $CI->groups->getGroupAndID($surveyid,$language) or safe_die("Couldn't get group list in common_helper.php<br />");   //Checked)
+    $gidresult = $CI->groups_model->getGroupAndID($surveyid,$language) or safe_die("Couldn't get group list in common_helper.php<br />");   //Checked)
     foreach ($gidresult->result_array() as $gv)
     {
         $groupselecter .= "<option";
@@ -1609,8 +1630,8 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
 {
     global $CI;
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups');
-    $CI->groups->updateGroupOrder($surveyid,$baselang);
+    $CI->load->model('groups_model');
+    $CI->groups_model->updateGroupOrder($surveyid,$baselang);
     //$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND language='{$baselang}' ORDER BY group_order, group_name");
     //$position=0;
     //while ($cdrow=$cdresult->FetchRow())
@@ -3499,6 +3520,11 @@ function getSavedCount($surveyid)
     return $count;
 }
 
+/**
+ * Returns the base language from a survey id
+ *
+ * @param int survey id
+ */
 function GetBaseLanguageFromSurveyID($surveyid)
 {
     static $cache = array();
@@ -3510,6 +3536,7 @@ function GetBaseLanguageFromSurveyID($surveyid)
         $CI->load->model('surveys_model');
 	    $query = $CI->surveys_model->getSomeRecords($fields,$condition);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
 	    $surveylanguage = $query->row_array(); //Checked)
+	    $surveylanguage = $surveylanguage['language'];
 	    if (is_null($surveylanguage))
 	    {
 	        $surveylanguage='en';
@@ -3529,11 +3556,12 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
     $surveyid=sanitize_int($surveyid);
     if (!isset($cache[$surveyid])) {
         $fields = array('additional_languages');
-        $condition = " WHERE sid=$surveyid";
+        $condition = array("sid"=>$surveyid);
         $CI->load->model('surveys_model');
 	    $result = $CI->surveys_model->getSomeRecords($fields,$condition);
         //$query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
 	    $additional_languages = $result->row_array();
+		$additional_languages = $additional_languages['additional_languages'];
         if (trim($additional_languages)=='')
 	    {
 	        $additional_languages = array();
@@ -6351,9 +6379,9 @@ function SSL_redirect($ssl_mode)
     $url = 'http'.$ssl_mode.'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     if (!headers_sent())
     {	// If headers not sent yet... then do php redirect
-        ob_clean();
+        //ob_clean();
 	    header('Location: '.$url);
-	    ob_flush();
+	    //ob_flush();
 	    exit;
     };
 };
@@ -7152,12 +7180,12 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
         } // Enf if modified
     } // end while qentry
     
-    $CI->load->model('groups');
+    $CI->load->model('groups_model');
     
     # translate 'description' INSERTANS tags in groups
     //$sql = "SELECT gid, language, group_name, description from {$dbprefix}groups WHERE sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'";
     //$res = db_execute_assoc($sql) or safe_die("Can't read groups table in transInsertAns ".$connect->ErrorMsg());     // Checked
-	$result=$CI->groups->getSomeRecords("gid, language, group_name, description","sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'");
+	$result=$CI->groups_model->getSomeRecords("gid, language, group_name, description","sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'");
 
     //while ($qentry = $res->FetchRow())
 	foreach ($result->result_array() as $qentry)
@@ -7192,7 +7220,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 				'language' => $language
 			);
 			
-			$CI->groups->update($data,$where);
+			$CI->groups_model->update($data,$where);
   
         } // Enf if modified
     } // end while qentry

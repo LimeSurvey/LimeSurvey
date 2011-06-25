@@ -13,12 +13,29 @@
  * $Id$
  */
  
- class survey extends AdminController {
+ class survey extends SurveyCommonController {
     
     function __construct()
 	{
 		parent::__construct();
-        //self::_js_admin_includes("");
+	}
+	
+	/**
+	 * Shows survey details
+	 */
+	function view($surveyid)
+	{
+	    if(bHasSurveyPermission($surveyid,'survey','read'))
+	    {
+            $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+			$this->config->set_item("css_admin_includes", $css_admin_includes);
+		
+			self::_getAdminHeader();
+			self::_showadminmenu();
+			self::_surveybar($surveyid);
+			self::_surveysummary($surveyid);
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		}
 	}
     
     function index($action)

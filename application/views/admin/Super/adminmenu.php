@@ -70,6 +70,9 @@
 	        $adminmenu.="<img src='{$imageurl}/seperator.gif' alt=''  border='0' hspace='0' />\n";
 	    }
 		*/
+		?>
+		<img src='<?php echo $this->config->item('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
+		<?php
 		}
 	    if($this->session->userdata('USER_RIGHT_MANAGE_LABEL') == 1)
 		{ 
