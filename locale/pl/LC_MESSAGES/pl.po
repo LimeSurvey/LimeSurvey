@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-26 18:41+0100\n"
-"PO-Revision-Date: 2011-06-26 18:54+0100\n"
+"POT-Creation-Date: 2011-06-27 20:51+0100\n"
+"PO-Revision-Date: 2011-06-27 20:53+0100\n"
 "Last-Translator: Elżbieta Lesińska <elales@gazeta.pl>\n"
 "Language-Team: LimeSurvey Team\n"
 "MIME-Version: 1.0\n"
@@ -4221,7 +4221,7 @@ msgstr "Nie, dziękuję."
 # C:\limesurvey/admin/printablesurvey.php:690
 #: C:\LimeSurvey/admin/admin_functions.php:263
 msgid "Response submission for survey {SURVEYNAME} with results"
-msgstr "Wysyłanie odpowiedzi w badaniu {SURVEYNAME} z wynikami"
+msgstr "Zapis odpowiedzi w badaniu {SURVEYNAME}"
 
 #: C:\LimeSurvey/admin/admin_functions.php:264
 msgid ""
@@ -4268,7 +4268,7 @@ msgstr ""
 # C:\limesurvey/admin/printablesurvey.php:690
 #: C:\LimeSurvey/admin/admin_functions.php:301
 msgid "Response submission for survey {SURVEYNAME}"
-msgstr "Wysyłanie odpowiedzi w badaniu {SURVEYNAME}"
+msgstr "Zapis odpowiedzi w badaniu {SURVEYNAME}"
 
 #: C:\LimeSurvey/admin/admin_functions.php:302
 msgid ""
@@ -13383,7 +13383,7 @@ msgstr "Wysyłanie zaproszeń..."
 #: C:\LimeSurvey/admin/tokens.php:1509
 #: C:\LimeSurvey/admin/tokens.php:1812
 msgid "Sending to Token ID"
-msgstr "Wysyłanie dla tokena:"
+msgstr "Wysyłanie dla tokena"
 
 # C:\limesurvey/admin/tokens.php:778
 # C:\limesurvey/admin/tokens.php:904
@@ -13391,7 +13391,7 @@ msgstr "Wysyłanie dla tokena:"
 #: C:\LimeSurvey/admin/tokens.php:1510
 #: C:\LimeSurvey/admin/tokens.php:1813
 msgid "Sending to Token IDs"
-msgstr "Wysyłanie dla numerów tokenów:"
+msgstr "Wysyłanie dla numerów tokenów"
 
 # C:\limesurvey/admin/tokens.php:833
 #: C:\LimeSurvey/admin/tokens.php:1613
