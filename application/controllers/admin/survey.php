@@ -38,6 +38,169 @@
 		}
 	}
     
+    function copy()
+    {
+        
+        if ( $this->input->post('copysurveytranslinksfields') == "on"  || $this->input->post('translinksfields') == "on")
+        {
+            $sTransLinks = true;    
+        }
+        
+        //$importsurvey = "<div class='header ui-widget-header'>".$clang->gT("Copy survey")."</div>\n";
+        $copyfunction= true;
+        //$importsurvey .= "<div class='messagebox ui-corner-all'>\n";
+        $importerror=false; // Put a var for continue
+        $surveyid = sanitize_int($this->input->post('copysurveylist'));
+
+        $exclude = array();
+        if (get_magic_quotes_gpc()) {$sNewSurveyName = stripslashes($this->input->post('copysurveyname'));}
+        else{
+            $sNewSurveyName=$this->input->post('copysurveyname');
+        }
+    
+        /*require_once("../classes/inputfilter/class.inputfilter_clean.php");
+        $myFilter = new InputFilter('','',1,1,1);
+        if ($filterxsshtml)
+        {
+            $sNewSurveyName = $myFilter->process($sNewSurveyName);
+        } else {
+            $sNewSurveyName = html_entity_decode($sNewSurveyName, ENT_QUOTES, "UTF-8");
+        } */
+        if ($this->input->post('copysurveyexcludequotas') == "on")
+        {
+            $exclude['quotas'] = true;
+        }
+        if ($this->input->post('copysurveyexcludeanswers') == "on")
+        {
+            $exclude['answers'] = true;
+        }
+        if ($this->input->post('copysurveyresetconditions') == "on")
+        {
+            $exclude['conditions'] = true;
+        }
+        echo "hi";
+        //include("export_structure_xml.php");
+        $this->load->helper('admin/export_structure_xml');
+
+        if (!isset($surveyid))
+        {
+            $surveyid=returnglobal('sid');
+        }
+        
+        $clang = $this->limesurvey_lang;
+        if (!$surveyid)
+        {
+            
+            self::_getAdminHeader();
+			self::_showadminmenu();
+            $data['clang'] = $clang;
+            $this->load->view('admin/Survey/exportSurveyError_view',$data);
+            
+            exit;
+        }
+        
+        if (!isset($copyfunction))
+        {
+            $fn = "limesurvey_survey_$surveyid.lss";      
+            header("Content-Type: text/xml");
+            header("Content-Disposition: attachment; filename=$fn");
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+            header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Pragma: public");                          // HTTP/1.0
+            echo getXMLData('',$surveyid);
+            exit;
+        }
+        
+        $copysurveydata = getXMLData($exclude,$surveyid);
+        // $this->load->helper('import');
+        //require_once('import_functions.php');
+        if (!$importerror)
+        {
+            $aImportResults=XMLImportSurvey('',$copysurveydata,$sNewSurveyName);
+        }
+        else
+        {
+            $importerror=true;
+        }
+        
+        /**
+        if (isset($aImportResults['error']) && $aImportResults['error']!=false)
+        {
+            $importsurvey .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+            $importsurvey .= $aImportResults['error']."<br /><br />\n";
+            $importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+            $importerror = true;
+        }
+        
+        if (!$importerror)
+        {
+            $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
+            
+            $importsurvey .= "<strong>".$clang->gT("Survey import summary")."</strong><br />\n";        
+            
+            
+            $importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": {$aImportResults['surveys']}</li>\n";
+            $importsurvey .= "\t<li>".$clang->gT("Languages").": {$aImportResults['languages']}</li>\n";
+            $importsurvey .= "\t<li>".$clang->gT("Question groups").": {$aImportResults['groups']}</li>\n";
+            $importsurvey .= "\t<li>".$clang->gT("Questions").": {$aImportResults['questions']}</li>\n";
+            $importsurvey .= "\t<li>".$clang->gT("Answers").": {$aImportResults['answers']}</li>\n";
+            if (isset($aImportResults['subquestions']))
+            {
+                $importsurvey .= "\t<li>".$clang->gT("Subquestions").": {$aImportResults['subquestions']}</li>\n";     
+            }
+            if (isset($aImportResults['defaultvalues']))
+            {
+                $importsurvey .= "\t<li>".$clang->gT("Default answers").": {$aImportResults['defaultvalues']}</li>\n";     
+            }
+            if (isset($aImportResults['conditions']))
+            {
+                $importsurvey .= "\t<li>".$clang->gT("Conditions").": {$aImportResults['conditions']}</li>\n";     
+            }
+            if (isset($aImportResults['labelsets']))
+            {
+                $importsurvey .= "\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
+            }
+            if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls']>0)
+            {
+                $importsurvey .= "\t<li>".$clang->gT("Not imported label sets").": {$aImportResults['deniedcountls']} ".$clang->gT("(Label sets were not imported since you do not have the permission to create new label sets.)")."</li>\n";
+            }
+            $importsurvey .= "\t<li>".$clang->gT("Question attributes").": {$aImportResults['question_attributes']}</li>\n";
+            $importsurvey .= "\t<li>".$clang->gT("Assessments").": {$aImportResults['assessments']}</li>\n";
+            $importsurvey .= "\t<li>".$clang->gT("Quotas").": {$aImportResults['quota']} ({$aImportResults['quotamembers']} ".$clang->gT("quota members")." ".$clang->gT("and")." {$aImportResults['quotals']} ".$clang->gT("quota language settings").")</li>\n</ul><br />\n";
+            
+            if (count($aImportResults['importwarnings'])>0) 
+            {
+                $importsurvey .= "<div class='warningheader'>".$clang->gT("Warnings").":</div><ul style=\"text-align:left;\">";
+                foreach ($aImportResults['importwarnings'] as $warning)
+                {
+                    $importsurvey .='<li>'.$warning.'</li>';
+                }
+                $importsurvey .= "</ul><br />\n";
+            }
+            
+            $importsurvey .= "<strong>".$clang->gT("Copy of survey is completed.")."</strong><br />\n"
+                . "<a href='$scriptname?sid={$aImportResults['newsid']}'>".$clang->gT("Go to survey")."</a><br />\n"; 
+              
+        
+            
+            
+        }
+            // end of traitment an close message box
+            $importsurvey .= "</div><br />\n"; */
+            
+            $data['clang'] = $clang;
+            $data['aImportResults'] = $aImportResults;
+            $data['importerror'] = $importerror;
+            self::_getAdminHeader();
+			self::_showadminmenu();
+			self::_surveybar($surveyid);
+			//self::_surveysummary($surveyid);
+			$this->load->view('admin/Survey/copySurvey_view',$data);
+            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        
+    }
+    
     function index($action)
     {
         global $surveyid;

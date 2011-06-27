@@ -35,7 +35,7 @@ class Groups_model extends CI_Model {
         $this->db->select('gid');
         $this->db->where('sid',$sid);
         $this->db->where('language',$language);
-        $this->db->where('parent_qid',0);
+        //$this->db->where('parent_qid',0);
         $this->db->order_by("group_order","asc");
         $data = $this->db->get('groups');
 		

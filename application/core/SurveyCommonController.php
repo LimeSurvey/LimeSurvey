@@ -40,7 +40,7 @@
     {
     	//$this->load->helper('surveytranslator');
     	$clang = $this->limesurvey_lang;
-		
+		echo $this->config->item('gid');
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         $condition = array('sid' => $surveyid, 'language' => $baselang);
         $this->load->model('surveys_model');
@@ -144,7 +144,33 @@
         $data['responsesread'] = bHasSurveyPermission($surveyid,'responses','read');
         // TOKEN MANAGEMENT BUTTON
 		$data['tokenmanagement'] = bHasSurveyPermission($surveyid,'surveysettings','update') || bHasSurveyPermission($surveyid,'tokens','read');
-
+        
+        $data['gid'] = $gid = $this->config->item('gid');
+        
+        if (bHasSurveyPermission($surveyid,'surveycontent','read'))
+        {
+            $data['permission']= true;
+        }
+        else
+        {
+            $data['gid'] = $gid =null;
+            $qid=null;
+        } 
+        
+        if (getgrouplistlang($gid, $baselang))
+        {
+            $data['groups']= getgrouplistlang($gid, $baselang);
+        }
+        else
+        {
+            $data['groups']= "<option>".$clang->gT("None")."</option>";
+        }
+        
+        $data['GidPrev'] = $GidPrev = getGidPrevious($surveyid, $gid);
+        
+        $data['GidNext'] = $GidNext = getGidNext($surveyid, $gid);
+        $data['activated'] = $activated;
+        
         $this->load->view("admin/survey/surveybar",$data);
 		
         
@@ -252,8 +278,12 @@
             $surveysummary .= "<img src='".$this->config->item('imageurl')."/blank.gif' width='18' alt='' />\n";
         }
 
-
+        $surveysummary .= "</div>\n"
+        . "</div>\n"
+        . "</div>\n";
         */
+        
+        
     }
     
 	/**

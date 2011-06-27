@@ -43,4 +43,6 @@ class Surveys_model extends CI_Model {
         $this->db->insert('surveys', $data); 
     }
     
+    
+    
 }

@@ -636,25 +636,30 @@ function getQuestions($surveyid,$gid,$selectedqid)
  */
 function getGidPrevious($surveyid, $gid)
 {
-    global $CI, $clang;
-
+    //global $CI, $clang;
+    $CI =& get_instance();
+    $clang =  $CI->limesurvey_lang;
+    
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('groups_model');
     //$gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
     $qresult = $CI->groups_model->getGroupID($surveyid,$s_lang); //checked
     $qrows = $qresult->result_array();
-
+    
     $i = 0;
     $iPrev = -1;
-    if ($qrows->num_rows() > 0)
+    
+    if ($qresult->num_rows() > 0)
     {
+        
         foreach ($qrows as $qrow)
         {
             if ($gid == $qrow['gid']) {$iPrev = $i - 1;}
             $i += 1;
         }
     }
+    
     if ($iPrev >= 0) {$GidPrev = $qrows[$iPrev]['gid'];}
     else {$GidPrev = "";}
     return $GidPrev;
@@ -671,7 +676,9 @@ function getGidPrevious($surveyid, $gid)
  */
 function getQidPrevious($surveyid, $gid, $qid)
 {
-    global $CI, $clang;
+    //global $CI, $clang;
+    $CI =& get_instance();
+    $clang =  $CI->limesurvey_lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('questions');
     //$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
@@ -680,7 +687,7 @@ function getQidPrevious($surveyid, $gid, $qid)
 
     $i = 0;
     $iPrev = -1;
-    if ($qrows->num_rows() > 0)
+    if ($qresult->num_rows() > 0)
     {
         foreach ($qrows as $qrow)
         {
@@ -703,8 +710,9 @@ function getQidPrevious($surveyid, $gid, $qid)
  */
 function getGidNext($surveyid, $gid)
 {
-    global $CI, $clang;
-
+    //global $CI, $clang;
+    $CI =& get_instance();
+    $clang =  $CI->limesurvey_lang;
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('groups_model');
@@ -715,7 +723,7 @@ function getGidNext($surveyid, $gid)
     $GidNext="";
     $i = 0;
     $iNext = 1;
-    if ($qrows->num_rows() > 0)
+    if ($qresult->num_rows() > 0)
     {
         foreach ($qrows as $qrow)
         {
@@ -1334,11 +1342,14 @@ function getgroupname($gid)
  */
 function getgrouplistlang($gid, $language)
 {
-    global $surveyid, $CI, $clang;
-    $CI->load->config('lsconfig');
+    global $surveyid;
+    $CI =& get_instance();
+    $clang = $CI->limesurvey_lang;
+    
     $CI->load->model('groups_model');
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
+    
     //$gidquery = "SELECT gid, group_name FROM ".$CI->db->prefix('groups')." WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
     $gidresult = $CI->groups_model->getGroupAndID($surveyid,$language) or safe_die("Couldn't get group list in common_helper.php<br />");   //Checked)
     foreach ($gidresult->result_array() as $gv)

@@ -113,5 +113,24 @@ class Questions_model extends CI_Model {
 		$this->db->update('questions', $data);
 		
 	}
+    
+    function valueLabel($field,$language)
+    {
+       if (isset($field['scale_id']))
+       {
+            $query = "SELECT answers.code, answers.answer, questions.type FROM answers, questions WHERE";
+            $query .= " answers.scale_id = ? AND";
+            $query .= " answers.qid = ? AND questions.language = ? AND  answers.language = ? AND questions.qid = ? ORDER BY sortorder ASC";
+            return $this->db->query($query, array((int) $field['scale_id'], $field["qid"], $language, $language, $field['qid']));
+       } else
+       {
+            $query = "SELECT answers.code, answers.answer, questions.type FROM answers, questions WHERE";
+            
+            $query .= " answers.qid = ? AND questions.language = ? AND  answers.language = ? AND questions.qid = ? ORDER BY sortorder ASC";
+            return $this->db->query($query, array($field["qid"], $language, $language, $field['qid']));
+       }
+        
+       
+    }
 
 }
