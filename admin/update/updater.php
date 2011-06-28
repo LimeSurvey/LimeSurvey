@@ -82,7 +82,7 @@ function RunUpdaterUpdate()
     {
         return true;
     }
-    
+
     if (!is_writable($tempdir))
     {
         echo  "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
@@ -93,7 +93,7 @@ function RunUpdaterUpdate()
         echo  "<li class='errortitle'>".sprintf($clang->gT("Updater file is not writable (%s). Please set according file permissions."),$homedir.DIRECTORY_SEPARATOR.'update'.DIRECTORY_SEPARATOR.'updater.php')."</li>";
         $error=true;
     }
- 
+
     //  Download the zip file, unpack it and replace the updater file accordingly
     // Create DB and file backups now
     require_once("classes/pclzip/pclzip.lib.php");
@@ -153,8 +153,8 @@ function RunUpdaterUpdate()
         echo $clang->gT('There was a problem downloading the updater file. Please try to restart the update process.').'<br />';
         $error=true;
     }
- 
- 
+
+
 }
 
 function UpdateStep1()
@@ -182,7 +182,7 @@ function UpdateStep1()
     }
     else {
         echo "<ul><li class='successtitle'>".$clang->gT('Update key: Valid')."</li>";
-         
+
         if (!is_writable($tempdir))
         {
             echo  "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
@@ -305,7 +305,7 @@ function UpdateStep2()
             <p>".$clang->gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.')."<br /><br />
                ".$clang->gT('Please be patient and try again in about 10 minutes.')."</p></div>
             <p><button onclick=\"window.open('$scriptname?action=globalsettings', '_top')\">".sprintf($clang->gT('Back to global settings'),'4')."</button></p>";
-         
+
     }
     else
     {
@@ -346,7 +346,7 @@ function UpdateStep2()
                 $modifiedfiles[]=$afile;
             }
         }
-         
+
         echo '<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>';
         if (count($readonlyfiles)>0)
         {
@@ -373,7 +373,7 @@ function UpdateStep2()
             }
             echo '</ul>';
         }
-         
+
         if (count($modifiedfiles)>0)
         {
             echo $clang->gT('The following files will be modified or deleted but were already modified by someone else.').'<br />';
@@ -540,13 +540,14 @@ function UpdateStep4()
         @unlink($tempdir.'/update.zip');
     }
     elseif($error=='') {
-        $body=''; $full_body='';
+        $body='';
+        $pFile = fopen($tempdir.'/update.zip', 'w');
         for(;;){
             $error = $http->ReadReplyBody($body,100000);
             if($error != "" || strlen($body)==0) break;
-            $full_body .= $body;
+            fwrite($fp, $body);
         }
-        file_put_contents($tempdir.'/update.zip',$full_body);
+        fclose($pFile);
     }
     else
     {
@@ -624,7 +625,7 @@ function CheckForDBUpgrades()
     $currentDBVersion=GetGlobalSetting('DBVersion');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
-        if(isset($_GET['continue']) && $_GET['continue']==1) 
+        if(isset($_GET['continue']) && $_GET['continue']==1)
         {
             echo getAdminHeader()."<div style='width:90%; padding:1% 10%;background-color:#eee;'>";
             $upgradedbtype=$databasetype;
@@ -649,14 +650,14 @@ function ShowDBUpgradeNotice() {
     $error=false;
     echo "<div class='header'>".$clang->gT('Database upgrade').'</div><p>';
     echo $clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>';
-    echo "<li><b>" .$clang->gT('Database type') . ":</b> " . $databasetype . "</li>"; 
-    echo "<li><b>" .$clang->gT('Database name') . ":</b> " . $databasename . "</li>"; 
-    echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . $dbprefix . "</li>";   
-    echo "<li><b>" .$clang->gT('Site name') . ":</b> " . $sitename . "</li>";   
-    echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . $rooturl . "</li>"; 
+    echo "<li><b>" .$clang->gT('Database type') . ":</b> " . $databasetype . "</li>";
+    echo "<li><b>" .$clang->gT('Database name') . ":</b> " . $databasename . "</li>";
+    echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . $dbprefix . "</li>";
+    echo "<li><b>" .$clang->gT('Site name') . ":</b> " . $sitename . "</li>";
+    echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . $rooturl . "</li>";
     echo '</ul>';
     echo "<br />";
-    echo "<a href='{$rooturl}/admin/admin.php?continue=1'>" . $clang->gT('Click here to continue') . "</a>";  
+    echo "<a href='{$rooturl}/admin/admin.php?continue=1'>" . $clang->gT('Click here to continue') . "</a>";
     echo "<br />";
 }
 
