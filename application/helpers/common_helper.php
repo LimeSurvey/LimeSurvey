@@ -592,7 +592,9 @@ function gettemplatelist()
  */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
-    global $clang,$CI;
+    //global $clang,$CI;
+    $CI =& get_instance();
+    $clang = $CI->limesurvey_lang;
     $CI->load->config('lsconfig');
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('questions');
@@ -1212,7 +1214,9 @@ function longest_string( $new_string , $longest_length )
  */
 function getNotificationlist($notificationcode)
 {
-    global $clang;
+    //global $clang;
+    $CI =& get_instance();
+    $clang = $CI->limesurvey_lang;
     $ntypes = array(
     "0"=>$clang->gT("No email notification"),
     "1"=>$clang->gT("Basic email notification"),
@@ -3764,7 +3768,9 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName)
  */
 function questionAttributes($returnByName=false)
 {
-    global $clang,$CI;
+    //global $clang,$CI;
+    $CI =& get_instance();
+    $clang = $CI->limesurvey_lang;
     //For each question attribute include a key:
     // name - the display name
     // types - a string with one character representing each question typy to which the attribute applies
@@ -7393,8 +7399,9 @@ function access_denied($action,$sid='')
         }
         elseif($action == "editsurvey")
         {
+            $link = site_url("admin/survey/view/$sid");
             $accesssummary .= "<p>".$clang->gT("You are not allowed to edit this survey!")."</p>";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "editgroup")
         {

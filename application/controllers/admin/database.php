@@ -18,6 +18,8 @@ class Database extends AdminController {
         $postqid=returnglobal('qid');
         $postqaid=returnglobal('qaid');
         $databaseoutput = '';
+        $surveyid = $this->input->post("sid");
+
         if ($action == "insertsurvey" && $this->session->userdata('USER_RIGHT_CREATE_SURVEY'))
         {
             
@@ -226,6 +228,90 @@ class Database extends AdminController {
                 //    safe_die ("Initial survey table could not be created, please report this as a bug."."<br />".$creationResult);
                 //}
             }
+            if ($databaseoutput != '')
+            {
+                echo $databaseoutput;
+            }
+            else
+            {
+                redirect(site_url('admin/survey/view/'.$surveyid));
+            }
+        }
+        
+                
+        if (($action == "updatesurveylocalesettings") && bHasSurveyPermission($surveyid,'surveylocale','update'))
+        {
+            $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
+            $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
+            /**require_once("../classes/inputfilter/class.inputfilter_clean.php");
+            $myFilter = new InputFilter('','',1,1,1);
+            */
+            foreach ($languagelist as $langname)
+            {
+                if ($langname)
+                {
+                    $url = $this->input->post('url_'.$langname);
+                    if ($url == 'http://') {$url="";}
+    
+                    // Clean XSS attacks
+                    /**if ($filterxsshtml) //not required. As we are using input class, XSS filetring is done automatically!
+                    {
+                        $_POST['short_title_'.$langname]=$myFilter->process($_POST['short_title_'.$langname]);
+                        $_POST['description_'.$langname]=$myFilter->process($_POST['description_'.$langname]);
+                        $_POST['welcome_'.$langname]=$myFilter->process($_POST['welcome_'.$langname]);
+                        $_POST['endtext_'.$langname]=$myFilter->process($_POST['endtext_'.$langname]);
+                        $_POST['urldescrip_'.$langname]=$myFilter->process($_POST['urldescrip_'.$langname]);
+                        $_POST['url_'.$langname]=$myFilter->process($_POST['url_'.$langname]);
+                    } 
+                    else
+                    {
+                        $_POST['short_title_'.$langname] = html_entity_decode($_POST['short_title_'.$langname], ENT_QUOTES, "UTF-8");
+                        $_POST['description_'.$langname] = html_entity_decode($_POST['description_'.$langname], ENT_QUOTES, "UTF-8");
+                        $_POST['welcome_'.$langname] = html_entity_decode($_POST['welcome_'.$langname], ENT_QUOTES, "UTF-8");
+                        $_POST['endtext_'.$langname] = html_entity_decode($_POST['endtext_'.$langname], ENT_QUOTES, "UTF-8");
+                        $_POST['urldescrip_'.$langname] = html_entity_decode($_POST['urldescrip_'.$langname], ENT_QUOTES, "UTF-8");
+                        $_POST['url_'.$langname] = html_entity_decode($_POST['url_'.$langname], ENT_QUOTES, "UTF-8");
+                    } */
+    
+                    // Fix bug with FCKEditor saving strange BR types
+                    $short_title = $this->input->post('short_title_'.$langname);
+                    $description = $this->input->post('description_'.$langname);
+                    $welcome = $this->input->post('welcome_'.$langname);
+                    $endtext = $this->input->post('endtext_'.$langname);
+                    
+                    $short_title=fix_FCKeditor_text($short_title);
+                    $description=fix_FCKeditor_text($description);
+                    $welcome=fix_FCKeditor_text($welcome);
+                    $endtext=fix_FCKeditor_text($endtext);
+                    
+                    $data = array(
+                    'surveyls_title' => $short_title,
+                    'surveyls_description' => $description,
+                    'surveyls_welcometext' => $welcome,
+                    'surveyls_endtext' => $endtext,
+                    'surveyls_url' => $url,
+                    'surveyls_urldescription' => $this->input->post('urldescrip_'.$langname),
+                    'surveyls_dateformat' => $this->input->post('dateformat_'.$langname),
+                    'surveyls_numberformat' => $this->input->post('numberformat_'.$langname)
+                    );
+                    //In 'surveyls_survey_id' => $surveyid, it was initially $postsid. returnglobal not working properly!
+                    $condition = array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $langname);
+                    /**
+                    $usquery = "UPDATE ".db_table_name('surveys_languagesettings')." \n"
+                    . "SET surveyls_title='".db_quote($short_title)."', surveyls_description='".db_quote($description)."',\n"
+                    . "surveyls_welcometext='".db_quote($welcome)."',\n"
+                    . "surveyls_endtext='".db_quote($endtext)."',\n"
+                    . "surveyls_url='".db_quote($url)."',\n"
+                    . "surveyls_urldescription='".db_quote($_POST['urldescrip_'.$langname])."',\n"
+                    . "surveyls_dateformat='".db_quote($_POST['dateformat_'.$langname])."',\n"
+                    . "surveyls_numberformat='".db_quote($_POST['numberformat_'.$langname])."'\n"
+                    . "WHERE surveyls_survey_id=".$postsid." and surveyls_language='".$langname."'"; */
+                    $this->load->model('surveys_languagesettings_model');
+                    
+                    $usresult = $this->surveys_languagesettings_model->update($data,$condition);// or safe_die("Error updating local settings");   // Checked
+                }
+            }
+            $this->session->set_userdata('flashmessage',$clang->gT("Survey text elements successfully saved."));
         }
         
         if ($databaseoutput != '')

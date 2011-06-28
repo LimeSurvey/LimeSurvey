@@ -65,7 +65,8 @@ function getDateFormatData($format=0)
 
 function getRadixPointData($format=-1)
 {
-    global $clang;      
+    $CI =& get_instance();
+    $clang = $CI->limesurvey_lang;     
     $aRadixFormats = array (
             0=>array('seperator'=> '.', 'desc'=> $clang->gT('Dot (.)')),
             1=>array('seperator'=> ',', 'desc'=> $clang->gT('Comma (,)'))

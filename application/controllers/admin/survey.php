@@ -38,6 +38,140 @@
 		}
 	}
     
+    function editlocalsettings($surveyid)
+    {
+        $clang = $this->limesurvey_lang;
+       
+        self::_js_admin_includes(base_url().'application/scripts/surveysettings.js');
+        self::_getAdminHeader();
+  		self::_showadminmenu();
+
+        if(bHasSurveyPermission($surveyid,'surveylocale','read'))
+        {
+    
+            $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            array_unshift($grplangs,$baselang);
+    
+            $editsurvey = PrepareEditorScript();
+    
+    
+            $editsurvey .="<div class='header ui-widget-header'>".$clang->gT("Edit survey text elements")."</div>\n";
+            $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='".site_url("admin/database/index/updatesurveylocalesettings")."' method='post'>\n"
+            . '<div id="tabs">';
+            $i = 0;
+            foreach ($grplangs as $grouplang)
+            {
+                // this one is created to get the right default texts fo each language
+                $this->load->library('Limesurvey_lang',array($grouplang));
+                $this->load->helper('database');
+                $this->load->helper('surveytranslator');
+                $bplang = $this->limesurvey_lang;//new limesurvey_lang($grouplang);
+                $esquery = "SELECT * FROM ".$this->db->dbprefix."surveys_languagesettings WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
+                $esresult = db_execute_assoc($esquery); //Checked
+                $esrow = $esresult->row_array();
+    
+                $tab_title[$i] = getLanguageNameFromCode($esrow['surveyls_language'],false);
+    
+                if ($esrow['surveyls_language']==GetBaseLanguageFromSurveyID($surveyid))
+                    $tab_title[$i]  .= '('.$clang->gT("Base Language").')';
+    
+                $esrow = array_map('htmlspecialchars', $esrow);
+                $data['clang'] = $clang;
+                $data['esrow'] = $esrow;
+                $data['surveyid'] = $surveyid;
+                $data['action'] = "editsurveylocalesettings";
+                
+                $tab_content[$i] = $this->load->view('admin/Survey/editLocalSettings_view',$data,true);
+                
+                /**
+                $tab_content[$i] = "<ul>\n"
+                . "<li><label for=''>".$clang->gT("Survey title").":</label>\n"
+                . "<input type='text' size='80' name='short_title_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_title']}\" /></li>\n"
+                . "<li><label for=''>".$clang->gT("Description:")."</label>\n"
+                . "<textarea cols='80' rows='15' name='description_".$esrow['surveyls_language']."'>{$esrow['surveyls_description']}</textarea>\n"
+                . getEditor("survey-desc","description_".$esrow['surveyls_language'], "[".$clang->gT("Description:", "js")."](".$esrow['surveyls_language'].")",$surveyid,'','',$action)
+                . "</li>\n"
+                . "<li><label for=''>".$clang->gT("Welcome message:")."</label>\n"
+                . "<textarea cols='80' rows='15' name='welcome_".$esrow['surveyls_language']."'>{$esrow['surveyls_welcometext']}</textarea>\n"
+                . getEditor("survey-welc","welcome_".$esrow['surveyls_language'], "[".$clang->gT("Welcome:", "js")."](".$esrow['surveyls_language'].")",$surveyid,'','',$action)
+                . "</li>\n"
+                . "<li><label for=''>".$clang->gT("End message:")."</label>\n"
+                . "<textarea cols='80' rows='15' name='endtext_".$esrow['surveyls_language']."'>{$esrow['surveyls_endtext']}</textarea>\n"
+                . getEditor("survey-endtext","endtext_".$esrow['surveyls_language'], "[".$clang->gT("End message:", "js")."](".$esrow['surveyls_language'].")",$surveyid,'','',$action)
+                . "</li>\n"
+                . "<li><label for=''>".$clang->gT("End URL:")."</label>\n"
+                . "<input type='text' size='80' name='url_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_url']}\" />\n"
+                . "</li>"
+                . "<li><label for=''>".$clang->gT("URL description:")."</label>\n"
+                . "<input type='text' size='80' name='urldescrip_".$esrow['surveyls_language']."' value=\"{$esrow['surveyls_urldescription']}\" />\n"
+                . "</li>"
+                . "<li><label for=''>".$clang->gT("Date format:")."</label>\n"
+                . "<select size='1' name='dateformat_".$esrow['surveyls_language']."'>\n";
+                foreach (getDateFormatData() as $index=>$dateformatdata)
+                {
+                    $tab_content[$i].= "<option value='{$index}'";
+                    if ($esrow['surveyls_dateformat']==$index) {
+                       $tab_content[$i].=" selected='selected'";
+                    }
+                    $tab_content[$i].= ">".$dateformatdata['dateformat'].'</option>';
+                }
+                $tab_content[$i].= "</select></li>"
+                . "<li><label for=''>".$clang->gT("Decimal Point Format:")."</label>\n";
+                $tab_content[$i].="<select size='1' name='numberformat_".$esrow['surveyls_language']."'>\n";
+                foreach (getRadixPointData() as $index=>$radixptdata)
+                {
+                    $tab_content[$i].= "<option value='{$index}'";
+                    if ($esrow['surveyls_numberformat']==$index) {
+                       $tab_content[$i].=" selected='selected'";
+                    }
+                    $tab_content[$i].= ">".$radixptdata['desc'].'</option>';
+                }
+                $tab_content[$i].= "</select></li></ul>"; */
+                $i++;
+            }
+    
+            $editsurvey .= "<ul>";
+            foreach($tab_title as $i=>$eachtitle){
+                $editsurvey .= "<li style='clear:none'><a href='#edittxtele$i'>$eachtitle</a></li>";
+            }
+            $editsurvey .= "</ul>";
+            foreach ($tab_content as $i=>$eachcontent){
+                $editsurvey .= "<div id='edittxtele$i'>$eachcontent</div>";
+            }
+            $editsurvey .= "</div>";
+            if(bHasSurveyPermission($surveyid,'surveylocale','update'))
+            {
+                $editsurvey .= "<p><input type='submit' class='standardbtn' value='".$clang->gT("Save")."' />\n"
+                . "<input type='hidden' name='action' value='updatesurveylocalesettings' />\n"
+                . "<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
+                . "<input type='hidden' name='language' value=\"{$esrow['surveyls_language']}\" />\n"
+                . "</p>\n"
+                . "</form>\n";
+            }
+            
+            
+            
+            
+            $editsurvey .= self::_loadEndScripts();
+            
+            //echo $editsurvey;
+            $finaldata['display'] = $editsurvey;
+            $this->load->view('survey_view',$finaldata);
+            //self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    
+        }
+        else
+        {
+            //include("access_denied.php");
+            $finaldata['display'] = access_denied("editsurvey",$surveyid);
+            $this->load->view('survey_view',$finaldata);
+            
+        }
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+
+    }
+    
     function copy()
     {
         
@@ -78,7 +212,7 @@
         {
             $exclude['conditions'] = true;
         }
-        echo "hi";
+        
         //include("export_structure_xml.php");
         $this->load->helper('admin/export_structure_xml');
 

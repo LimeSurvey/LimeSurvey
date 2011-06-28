@@ -54,7 +54,7 @@
         	<li><a href='#'>
             <img src='<?php echo $imageurl;?>/edit.png' name='EditSurveyProperties' alt='<?php echo $clang->gT("Survey properties");?>' /></a><ul>
             	<?php if($surveylocale) { ?>
-		            <li><a href='<?php echo site_url("admin/editsurveylocalesettings/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/survey/editlocalsettings/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/edit_30.png' name='EditTextElements' /> <?php echo $clang->gT("Edit text elements");?></a></li>
 		   		<?php } ?>
             	<?php if($surveysettings) { ?>
@@ -93,7 +93,7 @@
             	<li><a href="#">
                 <img src='<?php echo $imageurl;?>/tools.png' name='SorveyTools' alt='<?php echo $clang->gT("Tools");?>' /></a><ul>
                 <?php if ($surveydelete) { ?>
-                	<li><a href="#" onclick="<?php echo get2post(base_url()."?action=deletesurvey&amp;sid={$surveyid}");?>">
+                	<li><a href="#" onclick="<?php echo get2post(site_url("admin/database/index/deletesurvey")."?action=deletesurvey&amp;sid={$surveyid}");?>">
                 	<img src='<?php echo $imageurl;?>/delete_30.png' name='DeleteSurvey' /> <?php echo $clang->gT("Delete survey");?></a></li>
 		   		<?php } ?>
 		   		<?php if ($surveytranslate) {
