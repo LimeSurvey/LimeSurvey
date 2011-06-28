@@ -67,8 +67,8 @@ class Surveys_languagesettings_model extends CI_Model {
     
     function getAllData($sid,$lcode)
     {
-        $this->db->query('SELECT * FROM '. $this->db->prefix('surveys') .' , '. $this->db->prefix('surveys_languagesettings') .' WHERE sid='.$sid.' AND surveyls_survey_id='.$sid.' AND surveyls_language='.$lcode);
-        return $this->db->get();
+    	$query = 'SELECT * FROM '. $this->db->dbprefix('surveys') .', '. $this->db->dbprefix('surveys_languagesettings') .' WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
+        return $this->db->query($query, array($sid, $sid, $lcode));
     }
     
     function insertNewSurvey($data)

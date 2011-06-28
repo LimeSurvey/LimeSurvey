@@ -8,7 +8,7 @@
 			<?php if(!$activated) { ?>
 				<img src='<?php echo $imageurl;?>/inactive.png' alt='<?php echo $clang->gT("This survey is currently not active");?>' />
 				<?php if($canactivate) { ?>
-					<a href="#" onclick="window.open('<?php echo site_url("admin/activate/index/$surveyid");?>', '_top') 
+					<a href="#" onclick="window.open('<?php echo site_url("admin/activate/index/$surveyid");?>', '_top')"
 						title="<?php echo $clang->gTview("Activate this Survey");?>" >
                     <img src='<?php echo $imageurl;?>/activate.png' name='ActivateSurvey' alt='<?php echo $clang->gT("Activate this Survey");?>'/></a>
 				<?php } else { ?>
@@ -178,7 +178,7 @@
 				} ?>
 				</ul></li>
 				<?php if($tokenmanagement) { ?>
-		            <li><a href="#" onclick="window.open('<?php echo site_url("admin/tokens/index/$surveyid");?>', '_top') 
+		            <li><a href="#" onclick="window.open('<?php echo site_url("admin/tokens/index/$surveyid");?>', '_top')"
 						title="<?php echo $clang->gTview("Token management");?>" >
                     <img src='<?php echo $imageurl;?>/tokens.png' name='TokensControl' alt='<?php echo $clang->gT("Token management");?>'/></a></li>
 		   		<?php } ?>
