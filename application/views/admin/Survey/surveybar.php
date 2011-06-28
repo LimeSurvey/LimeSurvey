@@ -1,25 +1,25 @@
 <div class='menubar surveybar'>
 	<div class='menubar-title ui-widget-header'>
-		<strong><?php echo $clang->gT("Survey");?></strong>
+		<strong><?php echo $clang->gT("Survey"); ?></strong>
 		<span class='basic'><?php echo $surveyinfo['surveyls_title']."(".$clang->gT("ID").":".$surveyid.")"; ?></span>
 	</div>
 	<div class='menubar-main'>
 		<div class='menubar-left'>
-			<?php if(!$activated) { ?>
-				<img src='<?php echo $imageurl;?>/inactive.png' alt='<?php echo $clang->gT("This survey is currently not active");?>' />
+			<?php if($activated == "N") { ?>
+				<img src='<?php echo $imageurl;?>/inactive.png' alt='<?php echo $clang->gT("This survey is currently not active"); ?>' />
 				<?php if($canactivate) { ?>
 					<a href="#" onclick="window.open('<?php echo site_url("admin/activate/index/$surveyid");?>', '_top')"
-						title="<?php echo $clang->gTview("Activate this Survey");?>" >
-                    <img src='<?php echo $imageurl;?>/activate.png' name='ActivateSurvey' alt='<?php echo $clang->gT("Activate this Survey");?>'/></a>
+						title="<?php echo $clang->gTview("Activate this Survey"); ?>" >
+                    <img src='<?php echo $imageurl; ?>/activate.png' name='ActivateSurvey' alt='<?php echo $clang->gT("Activate this Survey"); ?>'/></a>
 				<?php } else { ?>
-					<img src='<?php echo $imageurl;?>/activate_disabled.png'
-						alt='<?php echo $clang->gT("Survey cannot be activated. Either you have no permission or there are no questions.");?>' />
+					<img src='<?php echo $imageurl; ?>/activate_disabled.png'
+						alt='<?php echo $clang->gT("Survey cannot be activated. Either you have no permission or there are no questions."); ?>' />
 				<?php } ?>
 			<?php } else { ?>
 				<?php if($expired) { ?>
-					<img src='<?php echo $imageurl;?>/expired.png' alt='<?php echo $clang->gT("This survey is active but expired.");?>' />
+					<img src='<?php echo $imageurl;?>/expired.png' alt='<?php echo $clang->gT("This survey is active but expired."); ?>' />
 				<?php } elseif($notstarted) { ?>
-					<img src='<?php echo $imageurl;?>/notyetstarted.png' alt='<?php echo $clang->gT("This survey is active but has a start date.");?>' />
+					<img src='<?php echo $imageurl;?>/notyetstarted.png' alt='<?php echo $clang->gT("This survey is active but has a start date."); ?>' />
                 <?php } else { ?>
                 	<img src='<?php echo $imageurl;?>/active.png' title='' alt='<?php echo $clang->gT("This survey is currently active.");?>' />
  				<?php } 
