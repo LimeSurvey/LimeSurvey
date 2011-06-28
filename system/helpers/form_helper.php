@@ -49,7 +49,14 @@ if ( ! function_exists('form_open'))
 			$attributes = 'method="post"';
 		}
 
-		$action = ( strpos($action, '://') === FALSE) ? $CI->config->site_url($action) : $action;
+		// If an action is not a full URL then turn it into one
+		if ($action && strpos($action, '://') === FALSE)
+		{
+			$action = $CI->config->site_url($action);
+		}
+
+		// If no action is provided then set to the current url
+		$action OR $action = $CI->config->site_url($CI->uri->uri_string());
 
 		$form = '<form action="'.$action.'"';
 
@@ -60,7 +67,7 @@ if ( ! function_exists('form_open'))
 		// CSRF
 		if ($CI->config->item('csrf_protection') === TRUE)
 		{
-			$hidden[$CI->security->csrf_token_name] = $CI->security->csrf_hash;
+			$hidden[$CI->security->get_csrf_token_name()] = $CI->security->get_csrf_hash();
 		}
 
 		if (is_array($hidden) AND count($hidden) > 0)

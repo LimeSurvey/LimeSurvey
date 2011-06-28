@@ -258,7 +258,16 @@ if ( ! function_exists('doctype'))
 
 		if ( ! is_array($_doctypes))
 		{
-			if ( ! require_once(APPPATH.'config/doctypes.php'))
+			if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/doctypes'.EXT))
+			{
+				include(APPPATH.'config/'.ENVIRONMENT.'/doctypes'.EXT);
+			}
+			elseif (is_file(APPPATH.'config/doctypes'.EXT))
+			{
+				include(APPPATH.'config/doctypes'.EXT);
+			}
+
+			if ( ! is_array($_doctypes))
 			{
 				return FALSE;
 			}
