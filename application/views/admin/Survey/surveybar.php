@@ -93,7 +93,7 @@
             	<li><a href="#">
                 <img src='<?php echo $imageurl;?>/tools.png' name='SorveyTools' alt='<?php echo $clang->gT("Tools");?>' /></a><ul>
                 <?php if ($surveydelete) { ?>
-                	<li><a href="#" onclick="<?php echo get2post(site_url("admin/database/index/deletesurvey")."?action=deletesurvey&amp;sid={$surveyid}");?>">
+                	<li><a href="#" onclick="<?php echo get2post(site_url("admin/survey/delete")."?action=deletesurvey&amp;sid={$surveyid}");?>">
                 	<img src='<?php echo $imageurl;?>/delete_30.png' name='DeleteSurvey' /> <?php echo $clang->gT("Delete survey");?></a></li>
 		   		<?php } ?>
 		   		<?php if ($surveytranslate) {

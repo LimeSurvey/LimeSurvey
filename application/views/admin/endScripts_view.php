@@ -10,7 +10,7 @@
         document.forms[i].appendChild(el);
         }
         
-        function addHiddenElement(theform,thename,thevalue)"
+        function addHiddenElement(theform,thename,thevalue)
         {
         var myel = document.createElement('input');
         myel.type = 'hidden';

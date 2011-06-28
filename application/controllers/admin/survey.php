@@ -34,9 +34,123 @@
 			self::_showadminmenu();
 			self::_surveybar($surveyid);
 			self::_surveysummary($surveyid);
+            $editsurvey = self::_loadEndScripts();
+            
+            //echo $editsurvey;
+            $finaldata['display'] = $editsurvey;
+            $this->load->view('survey_view',$finaldata);
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
 	}
+    
+    function delete()
+    {
+        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        self::_getAdminHeader();
+        self::_showadminmenu();
+        self::_surveybar($this->input->post('sid')); 
+        $data['surveyid'] = $surveyid = $this->input->post('sid');      
+        if(bHasSurveyPermission($surveyid,'survey','delete'))
+        {
+            $data['deleteok'] = $deleteok = $this->input->post('deleteok');
+            $data['clang'] = $this->limesurvey_lang;
+            
+            $data['link'] = site_url("admin/survey/delete");
+            if (!(!isset($deleteok) || !$deleteok))
+            {
+                $this->load->dbforge();
+                if (tableExists("survey_$surveyid"))  //delete the survey_$surveyid table
+                {
+                    //$dsquery = $dict->DropTableSQL("{$dbprefix}survey_$surveyid");
+                    //$dict->ExecuteSQLArray($sqlarray); $dict->ExecuteSQLArray($dsquery)
+                    $dsresult = $this->dbforge->drop_table('survey_'.$surveyid) or safe_die ("Couldn't drop table survey_".$surveyid." in survey.php");
+                }
+            
+            	if (tableExists("survey_{$surveyid}_timings"))  //delete the survey_$surveyid_timings table
+                {    	
+                    //$dsquery = $dict->DropTableSQL("{$dbprefix}survey_{$surveyid}_timings");
+                    //$dict->ExecuteSQLArray($sqlarraytimings);
+                    $dsresult = $this->dbforge->drop_table('survey_'.$surveyid.'_timings') or safe_die ("Couldn't drop table survey_".$surveyid."_timings in survey.php");
+                }
+            
+                if (tableExists("tokens_$surveyid")) //delete the tokens_$surveyid table
+                {
+                    //$dsquery = $dict->DropTableSQL("{$dbprefix}tokens_$surveyid");
+                    $dsresult = $this->dbforge->drop_table('tokens_'.$surveyid) or safe_die ("Couldn't drop table token_".$surveyid." in survey.php");
+                }
+                
+                $dsquery = "SELECT qid FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid";
+                $dsresult = db_execute_assoc($dsquery) or safe_die ("Couldn't find matching survey to delete<br />$dsquery<br />");
+                while ($dsrow = $dsresult->result_array())
+                {
+                    //$asdel = "DELETE FROM {$dbprefix}answers WHERE qid={$dsrow['qid']}";
+                    //$asres = $connect->Execute($asdel);
+                    $this->db->delete('answers', array('qid' => $dsrow['qid'])); 
+                    $this->db->delete('conditions', array('qid' => $dsrow['qid']));
+                    $this->db->delete('question_attributes', array('qid' => $dsrow['qid']));
+                    /**
+                    $cddel = "DELETE FROM {$dbprefix}conditions WHERE qid={$dsrow['qid']}";
+                    $cdres = $connect->Execute($cddel) or safe_die ("Delete conditions failed<br />$cddel<br />".$connect->ErrorMsg());
+                    $qadel = "DELETE FROM {$dbprefix}question_attributes WHERE qid={$dsrow['qid']}";
+                    $qares = $connect->Execute($qadel); */
+                }
+            
+                //$qdel = "DELETE FROM {$dbprefix}questions WHERE sid=$surveyid";
+                //$qres = $connect->Execute($qdel);
+                $this->db->delete('questions', array('sid' => $surveyid));
+                
+                //$scdel = "DELETE FROM {$dbprefix}assessments WHERE sid=$surveyid";
+                //$scres = $connect->Execute($scdel);
+                $this->db->delete('assessments', array('sid' => $surveyid));
+                
+                //$gdel = "DELETE FROM {$dbprefix}groups WHERE sid=$surveyid";
+                //$gres = $connect->Execute($gdel);
+                $this->db->delete('groups', array('sid' => $surveyid));
+                
+                //$slsdel = "DELETE FROM {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=$surveyid";
+                //$slsres = $connect->Execute($slsdel);
+                $this->db->delete('surveys_languagesettings', array('surveyls_survey_id' => $surveyid));
+                
+                //$srdel = "DELETE FROM {$dbprefix}survey_permissions WHERE sid=$surveyid";
+                //$srres = $connect->Execute($srdel);
+                $this->db->delete('survey_permissions', array('sid' => $surveyid));
+                
+                //$srdel = "DELETE FROM {$dbprefix}saved_control WHERE sid=$surveyid";
+                //$srres = $connect->Execute($srdel);
+                $this->db->delete('saved_control', array('sid' => $surveyid));
+                
+                //$sdel = "DELETE FROM {$dbprefix}surveys WHERE sid=$surveyid";
+                //$sres = $connect->Execute($sdel);
+                $this->db->delete('surveys', array('sid' => $surveyid));
+                
+                $sdel = "DELETE ".$this->db->dbprefix."quota_languagesettings FROM ".$this->db->dbprefix."quota_languagesettings, ".$this->db->dbprefix."quota WHERE ".$this->db->dbprefix."quota_languagesettings.quotals_quota_id=".$this->db->dbprefix."quota.id and sid=$surveyid";
+                $sres = db_execute_assoc($sdel);
+                //$sres = $connect->Execute($sdel);
+                //$this->db->delete('assessments', array('sid' => $surveyid));
+                
+                //$sdel = "DELETE FROM {$dbprefix}quota WHERE sid=$surveyid";
+                //$sres = $connect->Execute($sdel);
+                $this->db->delete('quota', array('sid' => $surveyid));
+                
+                //$sdel = "DELETE FROM {$dbprefix}quota_members WHERE sid=$surveyid;";
+                //$sres = $connect->Execute($sdel);
+                $this->db->delete('quota_members', array('sid' => $surveyid));
+            }
+            $this->load->view('admin/Survey/deleteSurvey_view',$data);
+        }
+        else { 
+            //include('access_denied.php');
+            $finaldata['display'] = access_denied("editsurvey",$surveyid);
+            $this->load->view('survey_view',$finaldata);
+        }
+        $editsurvey = self::_loadEndScripts();
+            
+        //echo $editsurvey;
+        $finaldata['display'] = $editsurvey;
+        $this->load->view('survey_view',$finaldata);
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    }
     
     function editlocalsettings($surveyid)
     {
@@ -168,6 +282,11 @@
             $this->load->view('survey_view',$finaldata);
             
         }
+        $editsurvey = self::_loadEndScripts();
+            
+        //echo $editsurvey;
+        $finaldata['display'] = $editsurvey;
+        $this->load->view('survey_view',$finaldata);
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
     }
