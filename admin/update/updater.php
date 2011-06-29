@@ -545,7 +545,7 @@ function UpdateStep4()
         for(;;){
             $error = $http->ReadReplyBody($body,100000);
             if($error != "" || strlen($body)==0) break;
-            fwrite($fp, $body);
+            fwrite($pFile, $body);
         }
         fclose($pFile);
     }
