@@ -77,6 +77,19 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.91+ (build 10315) to 1.91+ (build 10377)                    
+#Updated translation: French (b00z00)
+#Updated translation: Polish (elisa-ls)
+-Fixed issue #5299: Answers designed by table - first element not displayed (tpartner)
+-Fixed issue #5126: CSV Export - no new lines (innodev)
+-Fixed issue #5296: Command line installation not working (c_schmitz)
+-Fixed issue #5301: Deleting selected tokens doesn't work (in french language) (c_schmitz)
+-Fixed issue: Clean up question code/number display (tpartner)
+-Fixed issue: HTML Formattings in header of Browse toolbar (c_schmitz)
+-Fixed issue: On editing with CKeditor the contents is wrapped in <p> (c_schmitz)
+-Fixed issue: Updater using too much memory when downloading the update package (c_schmitz)
+
 Changes from 1.91+ (build 10267) to 1.91+ (build 10315)                    
 #Updated translation: German  (c_schmitz)
 #Updated translation: German Informal (c_schmitz)
