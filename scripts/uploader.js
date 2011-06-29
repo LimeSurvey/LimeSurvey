@@ -22,7 +22,7 @@ $(document).ready(function(){
                        "<td  align='center' width='50%' padding='20px' >";
 
             if (isValueInArray(image_extensions, json[i-1].ext))
-                previewblock += "<img src='uploader.php?filegetcontents="+json[i-1].filename+"' height='60px' />"+decodeURIComponent(json[i].name);
+                previewblock += "<img src='uploader.php?filegetcontents="+json[i-1].filename+"' height='60px' />"+decodeURIComponent(json[i-1].name);
             else
                 previewblock += "<img src='images/placeholder.png' height='60px' /><br />"+decodeURIComponent(json[i-1].name);
 
@@ -62,8 +62,8 @@ $(document).ready(function(){
         },
         onSubmit : function(file, ext){
 
-            var maxfiles = $('#'+fieldname+'_maxfiles').val();
-            var filecount = $('#'+fieldname+'_filecount').val();
+            var maxfiles = parseInt($('#'+fieldname+'_maxfiles').val());
+            var filecount = parseInt($('#'+fieldname+'_filecount').val());
             var allowed_filetypes = $('#'+fieldname+'_allowed_filetypes').val().split(",");
 
             /* If maximum number of allowed filetypes have already been uploaded,
@@ -158,19 +158,19 @@ $(document).ready(function(){
 
                 // add file to the list
                 $('#'+fieldname+'_listfiles').prepend(previewblock);
-                var filecount = $('#'+fieldname+'_filecount').val();
-                var minfiles = $('#'+fieldname+'_minfiles').val();
+                var filecount = parseInt($('#'+fieldname+'_filecount').val());
+                var minfiles = parseInt($('#'+fieldname+'_minfiles').val());
                 filecount++;
-                var maxfiles = $('#'+fieldname+'_maxfiles').val();
+                var maxfiles = parseInt($('#'+fieldname+'_maxfiles').val());
                 $('#'+fieldname+'_filecount').val(filecount);
                 
                 if (filecount < minfiles)
                     $('#uploadstatus').html(translt.errorNeedMore.replace('%s',(minfiles - filecount)));
                 else if (filecount < maxfiles)
-                    $('#uploadstatus').html(translt.errorMoreAllowed.replace('%s',(minfiles - filecount)));
+                    $('#uploadstatus').html(translt.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
                 else
                     $('#uploadstatus').html(translt.errorMaxReached);
-
+                
                 if (filecount >= maxfiles)
                     $('#notice').html('<p class="success">'+translt.errorTooMuch+'</p>');
             }
@@ -194,7 +194,7 @@ function isValueInArray(arr, val) {
 function passJSON(fieldname, show_title, show_comment, pos) {
     var json = "[";
     var filecount = 0;
-    var licount   =  $('#'+fieldname+'_licount').val();
+    var licount   = parseInt($('#'+fieldname+'_licount').val());
     var i = 0;
 
     while (i <= licount)
@@ -227,8 +227,8 @@ function passJSON(fieldname, show_title, show_comment, pos) {
     window.parent.window.copyJSON(json, filecount, fieldname, show_title, show_comment, pos);
 }
 function saveAndExit(fieldname, show_title, show_comment, pos) {
-    var filecount = $('#'+fieldname+'_filecount').val();
-    var minfiles  = $('#'+fieldname+'_minfiles').val();
+    var filecount = parseInt($('#'+fieldname+'_filecount').val());
+    var minfiles  = parseInt($('#'+fieldname+'_minfiles').val());
 
     if (minfiles != 0 && filecount < minfiles)
     {
@@ -257,8 +257,8 @@ function deletefile(fieldname, count) {
     else
         xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
     
-    var filecount = $('#'+fieldname+'_filecount').val();
-    var licount   =  $('#'+fieldname+'_licount').val();
+    var filecount = parseInt($('#'+fieldname+'_filecount').val());
+    var licount   = parseInt($('#'+fieldname+'_licount').val());
 
     xmlhttp.onreadystatechange=function()
     {
@@ -285,13 +285,13 @@ function deletefile(fieldname, count) {
                     file_index++;
                 }
             }
-            var minfiles = $('#'+fieldname+'_minfiles').val();
-            var maxfiles = $('#'+fieldname+'_maxfiles').val();
+            var minfiles = parseInt($('#'+fieldname+'_minfiles').val());
+            var maxfiles = parseInt($('#'+fieldname+'_maxfiles').val());
 
             if (filecount < minfiles)
                 $('#uploadstatus').html(translt.errorNeedMore.replace('%s',(minfiles - filecount)));
             else
-                $('#uploadstatus').html(translt.errorMoreAllowed.raplce('%s',(maxfiles - filecount)));
+                $('#uploadstatus').html(translt.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
         }
     }
     file_index = $("#"+fieldname+"_file_index_"+count).val();

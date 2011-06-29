@@ -232,12 +232,12 @@ if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mss
 
 
 //check if database exist and access is not via install script
-if (!$database_exists && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
+if (!$database_exists && !$cmd_install && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
     die ("<br/>The LimeSurvey database does not exist. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary database.");
 }
  
- // Check if the DB is up to date
-if ($dbexistsbutempty && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
+ // Check if the DB is up to date and access is not via install script
+if ($dbexistsbutempty && !$cmd_install && (strcasecmp($slashlesspath,str_replace(array("\\", "/"), "", $homedir."install")) != 0)) {
     die ("<br />The LimeSurvey database does exist but it seems to be empty. Please run the <a href='$homeurl/install/index.php'>install script</a> to create the necessary tables.");
 }
 

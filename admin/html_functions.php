@@ -20,7 +20,7 @@ function browsemenubar($title='')
     //BROWSE MENU BAR
     $browsemenubar = "<div class='menubar'>\n"
     . "<div class='menubar-title ui-widget-header'>\n"
-    . "<strong>$title</strong>: ({$thissurvey['name']})"
+    . "<strong>{$title}</strong>: ".FlattenText($thissurvey['name'])
     . "</div>"
     . "<div class='menubar-main'>\n"
     . "<div class='menubar-left'>\n"
@@ -63,7 +63,7 @@ function browsemenubar($title='')
         $browsemenubar .= "<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=all&amp;limit=50&amp;order=desc'" .
                         " title=\"".$clang->gTview("Display Last 50 Responses")."\" >" .
                         "<img name='ViewLast' src='$imageurl/viewlast.png' alt='".$clang->gT("Display Last 50 Responses")."' /></a>\n";
-                    
+
     }
     // Data entry
     if (bHasSurveyPermission($surveyid,'responses','create'))
@@ -84,52 +84,52 @@ function browsemenubar($title='')
             $browsemenubar .= "<a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=time' "
             ."title=\"".$clang->gTview("Get time statistics from these responses")."\" >"
             ."<img name='timeStatistics' src='$imageurl/timeStatistics.png' alt='".$clang->gT("Get time statistics from these responses")."' /></a>\n";
-        }    
+        }
     }
     $browsemenubar .= "<img src='$imageurl/seperator.gif' alt='' />\n";
 
-    if (bHasSurveyPermission($surveyid,'responses','export'))         
+    if (bHasSurveyPermission($surveyid,'responses','export'))
     {
         // Export to application
         $browsemenubar .= "<a href='$scriptname?action=exportresults&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to application")."\" >"
         . "<img name='Export' src='$imageurl/export.png' "
         . "alt='".$clang->gT("Export results to application")."' /></a>\n"
-        
+
         // Export to SPSS
         . "<a href='$scriptname?action=exportspss&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to a SPSS/PASW command file")."\" >"
         . "<img src='$imageurl/exportspss.png' "
         . "alt='". $clang->gT("Export results to a SPSS/PASW command file")."' /></a>\n"
-        
+
         // Export to R
         . "<a href='$scriptname?action=exportr&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to a R data file")."\" >"
         . "<img src='$imageurl/exportr.png' "
         . "alt='". $clang->gT("Export results to a R data file")."' /></a>\n";
     }
     //Import old response table
-    if (bHasSurveyPermission($surveyid,'responses','create'))  
+    if (bHasSurveyPermission($surveyid,'responses','create'))
     {
         $browsemenubar .= "<a href='$scriptname?action=importoldresponses&amp;sid=$surveyid' title=\"".$clang->gTview("Import responses from a deactivated survey table")."\" >"
         . "<img name='ImportOldResponses' src='$imageurl/importold.png' alt='".$clang->gT("Import responses from a deactivated survey table")."' /></a>\n";
-    }       
+    }
 
     $browsemenubar .= "<img src='$imageurl/seperator.gif' alt='' />\n";
 
     //browse saved responses
-    if (bHasSurveyPermission($surveyid,'responses','read'))  
+    if (bHasSurveyPermission($surveyid,'responses','read'))
     {
         $browsemenubar .= "<a href='$scriptname?action=saved&amp;sid=$surveyid' title=\"".$clang->gTview("View Saved but not submitted Responses")."\" >"
         . "<img src='$imageurl/saved.png' title='' alt='".$clang->gT("View Saved but not submitted Responses")."' name='BrowseSaved' /></a>\n";
     }
 
     //Import VV
-    if (bHasSurveyPermission($surveyid,'responses','import'))  
-    {    
+    if (bHasSurveyPermission($surveyid,'responses','import'))
+    {
         $browsemenubar .= "<a href='$scriptname?action=vvimport&amp;sid=$surveyid' title=\"".$clang->gTview("Import a VV survey file")."\" >"
         . "<img src='$imageurl/importvv.png' alt='".$clang->gT("Import a VV survey file")."' /></a>\n";
     }
 
     //Export VV
-    if (bHasSurveyPermission($surveyid,'responses','export'))   
+    if (bHasSurveyPermission($surveyid,'responses','export'))
     {
         $browsemenubar .= "<a href='$scriptname?action=vvexport&amp;sid=$surveyid' title=\"".$clang->gTview("Export a VV survey file")."\" >"
         ."<img src='$imageurl/exportvv.png' title='' alt='".$clang->gT("Export a VV survey file")."' /></a>\n";

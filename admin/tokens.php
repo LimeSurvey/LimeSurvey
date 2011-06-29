@@ -39,7 +39,7 @@ if(isset($tokenids)) {
     foreach($tokenidsarray as $tokenitem) {
         if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
     }
-}    
+}
 
 include_once("login_check.php");
 include_once("database.php");
@@ -1296,7 +1296,7 @@ $tokenoutput .="\t<form id='tokensearch' method='post' action='$scriptname?actio
             .$clang->gT("Delete the selected entries")
             ."' onclick=\"if($('#tokenboxeschecked').val()){if (confirm('"
             .$clang->gT("Are you sure you want to delete the selected entries?","js")
-            ."')) {".get2post("{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}")."}}else{alert('".$clang->gT("No tokens selected")."');}\"  />";
+            ."')) {".get2post("{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}")."}}else{alert('".$clang->gT("No tokens selected",'js')."');}\"  />";
 
         }
 
@@ -1661,9 +1661,9 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
                 ."<input type='hidden' name='action' value=\"tokens\" />\n"
                 ."<input type='hidden' name='bypassbademails' value=\"".$_POST['bypassbademails']."\" />\n"
                 ."<input type='hidden' name='sid' value=\"{$surveyid}\" />\n";
-                if (isset($tokenids)) 
+                if (isset($tokenids))
                 {
-                    $tokenoutput .= "<input type='hidden' name='tids' value=\"{$tids}\" />\n";        
+                    $tokenoutput .= "<input type='hidden' name='tids' value=\"{$tids}\" />\n";
                 }
                 foreach ($surveylangs as $language)
                 {

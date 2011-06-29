@@ -278,7 +278,7 @@ if(!isset($_POST['printableexport']))
     doHeader();
 
     echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/startpage.pstpl'));
-    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>templatereplace($printoutput)));
+    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput));
     echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/endpage.pstpl'));
     echo "</body></html>";
 }

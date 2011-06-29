@@ -76,6 +76,22 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 11. Done.
 
 Thank you to everyone who helped with this new release!
+
+Changes from 1.91+ (build 10267) to 1.91+ (build 10315)                    
+#Updated translation: German  (c_schmitz)
+#Updated translation: German Informal (c_schmitz)
+#Updated translation: Dutch (mennodekker)
+-Fixed issue #5089: file upload is not localised during survey taking (mennodekker)
+-Fixed issue #5240: Better handling of missing zip support (mennodekker)
+-Fixed issue #5281: Multiple choice with comments - JavaScript Error (tpartner)
+-Fixed issue #5282: save.php error when trying to save a fileUpload field, but no file was uploaded (tmswhite)
+-Fixed issue #5283: data entry screen throws error when no files have been uploaded (tmswhite)
+-Fixed issue #5285: undefined variable answertext in printablesurvey.php (tmswhite)
+-Fixed issue #5286: cannot save survey because no files were uploaded (tmswhite)
+-Fixed issue #5217: Update function output logic - patch by mot (c_schmitz)
+-Fixed issue #5256: "no answer" is mixed up with "not shown" when using exporting and importing using VVExport/VVImport (c_schmitz)
+-Fixed issue #5275: Response timing statistics error when using MSSQL and a huge survey (c_schmitz)
+-Fixed issue #5280: Impossible to edit answers after completion (c_schmitz)
      
 Changes from 1.91+ (build 10232) to 1.91+ (build 10267)                    
 #Updated language : French (b00z00)

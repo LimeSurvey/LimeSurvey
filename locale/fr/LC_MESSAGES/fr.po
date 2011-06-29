@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-15 01:22+0100\n"
-"PO-Revision-Date: 2011-06-15 01:23+0100\n"
+"POT-Creation-Date: 2011-06-25 14:06+0100\n"
+"PO-Revision-Date: 2011-06-25 14:17+0100\n"
 "Last-Translator: b00z00 <b00z00@b00z00.org>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "Language: \n"
@@ -17,11 +17,57 @@ msgstr ""
 "X-Poedit-KeywordsList: gT;ngT\n"
 "X-Poedit-SearchPath-0: /home/b00z00/__SVN/limesurvey/limesurvey\n"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:99
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:82
+msgid "Title"
+msgstr "Titre"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:83
+msgid "Comment"
+msgstr "Commentaire"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:84
+msgid "Sorry, no more files can be uploaded!"
+msgstr "Désolé, plus aucun fichier ne peut être envoyé !"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:85
+#, php-format
+msgid "Sorry, only %s files can be uploaded for this question!"
+msgstr "Désolé, seuls %s fichiers peuvent être envoyés pour cette question !"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:86
+msgid "Uploading"
+msgstr "Envoi"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:87
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:115
 msgid "Select file"
 msgstr "Sélectionner un fichier"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:102
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:88
+#, php-format
+msgid "Please upload %s more file(s)."
+msgstr "SVP, veuillez envoyer encore %s fichier(s)."
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:89
+#, php-format
+msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
+msgstr "Si vous le souhaitez, vous pouvez envoyer encore %s fichier(s) ; sinon vous pouvez retourner au questionnaire."
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:90
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:91
+msgid "The maximum number of files has been uploaded. You may return back to survey."
+msgstr "Le nombre maximum de fichiers a été envoyé. Vous devriez retourner au questionnaire."
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:92
+#, php-format
+msgid ""
+"You need to upload %s more files for this question.\n"
+"Are you sure you want to exit?"
+msgstr ""
+"Vous devez envoyer encore %s fichier(s) pour cette question.\n"
+"Êtes-vous sûr de vouloir quitter ?"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/uploader.php:118
 #, php-format
 msgid "You can upload %s under %s KB each."
 msgstr "Vous pouvez envoyer %s avec un maximum de %s KB pour chacun."
@@ -384,6 +430,21 @@ msgstr "Il n'y a pas de questionnaire sauvegardé qui corresponde"
 msgid "You have completed %s%% of this survey"
 msgstr "Vous avez complété %s%% de ce questionnaire."
 
+#: /home/b00z00/__SVN/limesurvey/limesurvey/index.php:1759
+#, php-format
+msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
+msgstr "Désolé, le fichier envoyé (%s) est plus grand que la taille de fichier autorisée définie à %s KB."
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/index.php:1772
+#: /home/b00z00/__SVN/limesurvey/limesurvey/index.php:1778
+#, php-format
+msgid "Sorry, only %s extensions are allowed!"
+msgstr "Désolé, seules les extensions %s sont autorisées !"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/index.php:1790
+msgid "The minimum number of files has not been uploaded."
+msgstr "Le nombre minimum de fichiers n'a pas été envoyé."
+
 #: /home/b00z00/__SVN/limesurvey/limesurvey/index.php:2248
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Une erreur non prévue s'est produite et vos réponses n'ont pas pu être sauvées."
@@ -469,11 +530,12 @@ msgstr "Précédent"
 msgid "Next"
 msgstr "Suivant"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common.php:277
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common.php:278
 msgid "Back to main menu"
 msgstr "Retour au menu principal"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common.php:285
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common.php:280
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common.php:286
 msgid "LimeSurvey online manual"
 msgstr "Manuel en ligne de LimeSurvey"
 
@@ -773,14 +835,14 @@ msgstr "Inactivé"
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1272
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1297
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1372
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5614
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5663
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5699
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5735
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5616
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5665
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5701
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5737
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:1991
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:2143
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7473
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7527
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7490
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7544
 msgid "Please choose..."
 msgstr "Veuillez choisir ..."
 
@@ -789,8 +851,8 @@ msgstr "Veuillez choisir ..."
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1273
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1298
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1373
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5664
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5700
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5666
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5702
 msgid "None"
 msgstr "Aucun"
 
@@ -858,9 +920,9 @@ msgstr "Autre"
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:4407
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:4521
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:4532
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5032
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5502
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5541
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5049
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5519
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5558
 msgid "Yes"
 msgstr "Oui"
 
@@ -896,76 +958,76 @@ msgstr "Oui"
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:4406
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:4520
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:4531
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5041
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5504
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5559
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5058
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5521
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5576
 msgid "No"
 msgstr "Non"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1863
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1871
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:6574
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:6579
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:6576
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:6581
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:1667
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:2161
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:2462
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:2592
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:2655
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5052
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5120
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5216
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5280
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5375
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5423
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5507
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5579
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5669
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5748
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5855
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5877
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5950
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6083
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6819
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6820
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7111
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7186
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7291
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7493
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7547
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5069
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5137
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5233
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5297
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5392
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5440
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5524
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5596
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5686
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5765
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5872
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5894
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5967
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6100
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6836
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6837
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7128
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7203
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7308
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7510
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7564
 msgid "No answer"
 msgstr "Sans réponse"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1869
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5096
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5113
 msgid "Male"
 msgstr "Masculin"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1870
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5088
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5105
 msgid "Female"
 msgstr "Féminin"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1879
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5503
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5549
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5520
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5566
 msgid "Uncertain"
 msgstr "Incertain"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1885
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5664
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5707
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5681
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5724
 msgid "Increase"
 msgstr "Augmenter"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1886
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5666
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5730
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5683
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5747
 msgid "Decrease"
 msgstr "Diminuer"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1887
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5665
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5718
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5682
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5735
 msgid "Same"
 msgstr "Sans changement"
 
@@ -1002,11 +1064,6 @@ msgstr "Adresse IP"
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:2314
 msgid "Referrer URL"
 msgstr "URL référente"
-
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:2451
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:2646
-msgid "Comment"
-msgstr "Commentaire"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:2518
 msgid "Scale 1"
@@ -1191,17 +1248,17 @@ msgid "Enter your details below, and an email containing the link to participate
 msgstr "Entrez vos informations ci-dessous et un courriel contenant un lien pour participer à ce questionnaire vous sera envoyé immédiatement."
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:3274
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7636
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7638
 msgid "First name"
 msgstr "Prénom"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:3281
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7637
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7639
 msgid "Last name"
 msgstr "Nom"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:3288
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7638
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7640
 msgid "Email address"
 msgstr "Adresse de courriel"
 
@@ -2164,32 +2221,32 @@ msgstr "Le courriel n'a pas été envoyé car le mode démo est activé."
 msgid "SMTP debug output:"
 msgstr "Sortie du debug SMTP :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5514
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5516
 #, php-format
 msgid "SQL command failed: %s Reason: %s"
 msgstr "Commande SQL en échec : %s Raison : %s"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7639
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7641
 msgid "Token code"
 msgstr "Code d'invitation"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7640
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7642
 msgid "Language code"
 msgstr "Code de langue"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7641
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7643
 msgid "Invitation sent date"
 msgstr "Date d'envoi de l'invitation"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7642
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7644
 msgid "Last Reminder sent date"
 msgstr "Date du dernier rappel envoyé"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7643
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7645
 msgid "Total numbers of sent reminders"
 msgstr "Total des rappels envoyés"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7663
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7665
 #, php-format
 msgid "Attribute %s"
 msgstr "Attribut %s"
@@ -2406,9 +2463,9 @@ msgid "Year"
 msgstr "Année"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:1909
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4616
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4906
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4986
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4633
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4923
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5003
 msgid "Answer"
 msgstr "Réponse"
 
@@ -2480,23 +2537,35 @@ msgstr "Vous avez choisi la réponse \"autre\" pour la question %s. Veuillez aus
 msgid "Make a comment on your choice here:"
 msgstr "Faites le commentaire de votre choix ici :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:3940
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4254
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5514
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7343
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:3773
+msgid "Upload files"
+msgstr "Envoyer des fichiers"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:3777
+msgid "Upload your files"
+msgstr "Envoyer vos fichiers"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:3778
+msgid "Return to Survey"
+msgstr "Retour au questionnaire"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:3957
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4271
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5531
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7360
 msgid "Error: This question has no answers."
 msgstr "Erreur : cette question n'a pas de réponse."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4397
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4414
 msgid "Only numbers may be entered in these fields"
 msgstr "Seuls des nombres peuvent être entrés dans ce champ"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4401
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4418
 #, php-format
 msgid "Total of all entries must not exceed %d"
 msgstr "Le total des entrées ne doit pas dépasser %d"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4405
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4422
 #, php-format
 msgid "Total of all entries must equal %d"
 msgstr "Le total des entrées doit être égal à %d"
@@ -2504,60 +2573,60 @@ msgstr "Le total des entrées doit être égal à %d"
 # What means entries here ?
 # input, choice, questions, answer or wathever?
 # I used a litteraly translation, but it isn't good enough
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4409
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4426
 #, php-format
 msgid "Total of all entries must be at least %s"
 msgstr "Le total des entrées doit être d'au moins %s"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4417
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4434
 msgid "Remaining: "
 msgstr "Restant :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4419
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4436
 msgid "Total: "
 msgstr "Total :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4465
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4471
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4507
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4518
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4482
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4488
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4524
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4535
 msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Réponse invalide. Le total des entrées ne doit pas dépasser "
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4484
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4492
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4501
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4509
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
 msgstr "Réponse invalide. Le total des entrées doit être au moins égal à %s."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4620
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4637
 msgid "Only numbers may be entered in this field"
 msgstr "Seuls des nombres peuvent être entrés dans ce champ"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4806
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4807
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4823
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4824
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "Glisser/Déplacer la punaise à la position désirée. Vous povez égaliser Cliquer-droit sur la carte pour déplacer le punaise."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6063
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6080
 msgid "Please choose"
 msgstr "Veuillez choisir"
 
 # D:\www\limesurvey/qanda.php:728
 # D:\www\limesurvey/qanda.php:952
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6107
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6443
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6780
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6932
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7573
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6124
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6460
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6797
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6949
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7590
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Erreur : il n'y a pas d'options de réponse pour cette question et/ou elles n'existent pas dans cette langue."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6698
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6715
 msgid "..."
 msgstr "..."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6926
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6943
 msgid "Error: There are no answers defined for this question."
 msgstr "Erreur : il n'y a pas de réponse définie pour cette question."
 
@@ -2587,6 +2656,18 @@ msgstr "Génération des résumés en cours ..."
 #: /home/b00z00/__SVN/limesurvey/limesurvey/statistics_user.php:453
 msgid "Completed"
 msgstr "Complété"
+
+# E:\www\limesurvey/admin/usercontrol.php:153
+# E:\www\limesurvey/admin/usercontrol.php:157
+# E:\www\limesurvey/admin/usercontrol.php:171
+#: /home/b00z00/__SVN/limesurvey/limesurvey/delete.php:63
+#, php-format
+msgid "File %s deleted"
+msgstr "Fichier %s suprimé"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/delete.php:75
+msgid "Oops, There was an error deleting the file"
+msgstr "Désolé, une erreur est survenue lors de la suppression du fichier"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/question.php:540
 msgid "One or more uploaded files do not satisfy the criteria"
@@ -3133,15 +3214,6 @@ msgstr "Importer un groupe de questions"
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/questiongrouphandling.php:51
 msgid "Error: You have to enter a group title for each language."
 msgstr "Erreur : Vous devez donner un titre à ce groupe pour chaque langue."
-
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/questiongrouphandling.php:58
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/questiongrouphandling.php:140
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/questiongrouphandling.php:154
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/labels.php:323
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/html.php:615
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/html.php:1009
-msgid "Title"
-msgstr "Titre"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/questiongrouphandling.php:59
 msgid "Required"
@@ -3781,8 +3853,8 @@ msgstr "Impossible de mettre à jour les étiquettes car vous utilisez un code e
 msgid "Failed to delete label"
 msgstr "Échec de la suppression de l'étiquette"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/export_data_functions.php:233
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/export_data_functions.php:237
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/export_data_functions.php:261
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/export_data_functions.php:265
 msgid "Not Selected"
 msgstr "Non sélectionné"
 
@@ -5999,42 +6071,42 @@ msgstr "Erreur de la base de données :"
 msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Le questionnaire a été activé. La table des réponses a été créée avec succès."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:453
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:456
 msgid "The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory."
 msgstr "Le dossier requis pour la sauvegarde des fichiers envoyés ne peut pas être créé. Veuillez vérifier les permissions du dossier limesurvey/upload/surveys."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:460
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:470
 msgid "This survey allows public registration. A token table must also be created."
 msgstr "Ce questionnaire permet les inscriptions publiques. Une table d'invitations doit aussi être créée."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:461
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:471
 msgid "Initialise tokens"
 msgstr "Initialiser les invitations"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:465
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:475
 msgid "This survey is now active, and responses can be recorded."
 msgstr "Ce questionnaire est maintenant activé, et les réponses peuvent être enregistrées."
 
 # D:\www\limesurvey/admin/activate.php:506
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:466
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:476
 msgid "Open-access mode"
 msgstr "Mode Accès public"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:466
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:476
 msgid "No invitation code is needed to complete the survey."
 msgstr "Aucune invitation n'est requise pour compléter le questionnaire."
 
 # D:\www\limesurvey/admin/activate.php:506
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:466
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:476
 msgid "You can switch to the closed-access mode by initialising a token table with the button below."
 msgstr "Vous pouvez basculer ce questionnaire en accès restreint en initialisant une table des invitations grâce au bouton ci-dessous."
 
 # D:\www\limesurvey/admin/activate.php:507
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:467
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:477
 msgid "Switch to closed-access mode"
 msgstr "Basculer en mode Accès restreint"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:468
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/activate_functions.php:478
 msgid "No, thanks."
 msgstr "Non merci."
 
@@ -7697,139 +7769,139 @@ msgstr "Page"
 msgid "Quick statistics"
 msgstr "Statistiques rapides"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:553
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:572
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:591
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:561
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:580
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:599
 msgid "Number of records in this query:"
 msgstr "Nombre d'enregistrement(s) pour cette requête :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:556
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:573
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:593
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:564
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:581
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:601
 msgid "Total records in survey:"
 msgstr "Nombre total d'enregistrements pour ce questionnaire :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:562
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:576
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:600
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:570
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:584
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:608
 msgid "Percentage of total:"
 msgstr "Pourcentage du total :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:580
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:581
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:590
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:588
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:589
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:598
 msgid "Results"
 msgstr "Résultats"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:627
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2061
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2082
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:635
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2069
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2090
 msgid "Browse"
 msgstr "Parcourir"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:882
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:890
 msgid "Total number of files"
 msgstr "Nombre total de fichiers"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:883
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:891
 msgid "Average no. of files per respondent"
 msgstr "Nombre moyen de fichiers par répondant"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:907
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:915
 msgid "Total size of files"
 msgstr "Taille totale des fichiers"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:908
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:916
 msgid "Average file size"
 msgstr "Taille moyenne du fichier"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:909
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:917
 msgid "Average size per respondent"
 msgstr "Taille moyenne "
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:933
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:955
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:965
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1062
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1084
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1093
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1868
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1886
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1902
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:941
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:963
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:973
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1070
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1092
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1101
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1876
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1894
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1910
 #, php-format
 msgid "Field summary for %s"
 msgstr "Résumé du champ pour %s"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:943
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:945
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:958
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:969
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1072
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1074
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1087
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1097
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:951
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:953
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:966
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:977
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1080
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1082
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1095
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1105
 msgid "Calculation"
 msgstr "Calcul"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:943
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:946
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:958
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:971
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1072
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1075
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1087
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1099
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:951
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:954
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:966
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:979
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1080
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1083
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1095
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1107
 msgid "Result"
 msgstr "Résultat"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1177
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2111
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2117
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2123
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2134
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2812
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2816
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2829
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2835
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1185
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2119
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2125
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2131
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2142
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2820
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2824
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2836
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2842
 msgid "Sum"
 msgstr "Somme"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1178
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2991
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1186
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2998
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:3005
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:3012
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:3019
 msgid "Standard deviation"
 msgstr "Écart type"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1179
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1187
 msgid "Average"
 msgstr "Moyenne"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1226
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2075
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2092
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2111
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2115
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1234
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2083
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2100
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2119
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2123
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2130
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2153
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2157
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2131
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2138
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2161
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2165
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2172
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2254
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2258
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2265
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2272
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2173
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2180
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2262
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2266
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2273
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2280
 msgid "Count"
 msgstr "Décompte"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1263
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1273
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1271
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1281
 msgid "1st quartile (Q1)"
 msgstr "1er Quartile (Q1)"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1297
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1305
 msgid "2nd quartile (Median)"
 msgstr "2ème Quartile (Médiane)"
 
@@ -7839,89 +7911,89 @@ msgstr "2ème Quartile (Médiane)"
 # E:\www\limesurvey/admin/navigator.php:939
 # E:\www\limesurvey/admin/navigator.php:962
 # E:\www\limesurvey/admin/statistics.php:1057
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1308
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1316
 msgid "Median value"
 msgstr "Valeur médiane"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1338
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1348
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1346
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1356
 msgid "3rd quartile (Q3)"
 msgstr "3ème Quartile (Q3)"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1395
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1399
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1405
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1421
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1403
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1407
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1413
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1429
 msgid "Null values are ignored in calculations"
 msgstr "Les valeurs nulles sont ignorées dans les calculs"
 
 # D:\www\limesurvey/admin/statistics.php:1173
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1397
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1400
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1406
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1422
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1405
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1408
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1414
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1430
 #, php-format
 msgid "Q1 and Q3 calculated using %s"
 msgstr "Q1 et Q3 sont calculés en utilisant %s"
 
 # D:\www\limesurvey/admin/statistics.php:1173
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1397
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1400
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1406
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1422
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1405
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1408
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1414
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1430
 msgid "minitab method"
 msgstr "méthode minitab"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1447
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1450
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1455
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1458
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1470
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1466
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1478
 msgid "Not enough values for calculation"
 msgstr "Pas assez de valeurs pour le calcul"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1839
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2053
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:1847
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2061
 msgid "Comments"
 msgstr "Commentaires"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2075
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2094
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2111
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2116
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2123
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2132
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2153
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2158
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2165
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2174
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2254
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2259
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2265
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2274
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2083
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2102
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2119
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2124
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2131
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2140
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2161
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2166
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2173
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2182
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2262
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2267
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2273
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2282
 msgid "Percentage"
 msgstr "Pourcentage"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2375
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2407
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2383
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2415
 msgid "Not completed or Not displayed"
 msgstr "Non complété ou Non affiché"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2379
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2411
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2387
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2419
 msgid "Not displayed"
 msgstr "Non affiché"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2813
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2821
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2830
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2841
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2829
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2837
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2848
 msgid "Number of cases"
 msgstr "Nombre de cas"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2990
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2994
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:3004
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:3010
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:2997
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:3001
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:3011
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/statistics_function.php:3017
 msgid "Arithmetic mean"
 msgstr "Moyenne arithmétique"
 
@@ -9584,7 +9656,7 @@ msgid "There is no matching survey."
 msgstr "Il n'y a pas de questionnaire correspondant."
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:135
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:589
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:443
 msgid "Token ID"
 msgstr "ID du code"
 
@@ -9618,12 +9690,12 @@ msgid "Export this Response"
 msgstr "Exporter cette réponse"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:316
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:955
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:809
 msgid "Do you really want to delete this response?"
 msgstr "Êtes-vous sûr de vouloir supprimer cette réponse ?"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:317
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:956
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:810
 msgid "Do you really want to delete all marked responses?"
 msgstr "Êtes-vous sûr de vouloir supprimer toutes les réponses sélectionnées ?"
 
@@ -9640,66 +9712,66 @@ msgstr "Veuillez sélectionner ua moins un fichier à télécharger"
 msgid "Showing Filtered Results"
 msgstr "Affichage des résultats filtrés en cours"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:675
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1014
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:529
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:868
 msgid "Delete marked responses"
 msgstr "Supprimer les réponses sélectionnées"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:678
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:532
 msgid "Download marked files"
 msgstr "Télécharger les fichiers sélectionnés"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:819
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1067
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:673
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:921
 msgid "Show previous.."
 msgstr "Montrer le précédent..."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:824
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1072
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:678
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:926
 msgid "Show next.."
 msgstr "Montrer le suivant..."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:827
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1075
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:681
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:929
 msgid "Show last.."
 msgstr "Montrer le dernier..."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:843
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:697
 msgid "Display:"
 msgstr "Affichage :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:875
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1116
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:729
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:970
 msgid "View response details"
 msgstr "Voir le détail de la réponse"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:879
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1117
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:733
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:971
 msgid "Edit this response"
 msgstr "Éditer cette réponse"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:884
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:738
 msgid "Download all files in this response as a zip file"
 msgstr "Télécharger tous les fichiers de cette réponse dans un fichier zip"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:888
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1118
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:742
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:972
 msgid "Delete this response"
 msgstr "Supprimer cette réponse"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:898
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:752
 msgid "Edit this token"
 msgstr "Éditer cette invitation"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:951
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:805
 msgid "Time statistics"
 msgstr "Statistiques de durée"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1145
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:999
 msgid "Interview time"
 msgstr "Durée d'interview"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1159
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1013
 msgid "Average interview time: "
 msgstr "Temps moyen d'interview : "
 
@@ -9709,27 +9781,27 @@ msgstr "Temps moyen d'interview : "
 # E:\www\limesurvey/admin/navigator.php:939
 # E:\www\limesurvey/admin/navigator.php:962
 # E:\www\limesurvey/admin/statistics.php:1057
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1187
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1041
 msgid "Median: "
 msgstr "Médiane :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1194
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1048
 msgid "Timings"
 msgstr "Chronométrages"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1209
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1063
 msgid "Response summary"
 msgstr "Résumé des réponses"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1211
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1065
 msgid "Total responses:"
 msgstr "Réponses totales :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1213
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1067
 msgid "Full responses:"
 msgstr "Réponses complètes :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1214
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/browse.php:1068
 msgid "Incomplete responses:"
 msgstr "Réponses incomplètes :"
 
@@ -9978,190 +10050,190 @@ msgid "table"
 msgstr "Table"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:149
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1916
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1917
 msgid "Submit Your Survey."
 msgstr "Envoyer votre questionnaire."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:461
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:489
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:462
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:490
 msgid "Answer was"
 msgstr "La réponse était"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:465
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:466
 msgid "Answer was NOT"
 msgstr "La réponse n'était PAS"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:469
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:470
 msgid "Answer was less than"
 msgstr "La réponse était inférieure à"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:473
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:474
 msgid "Answer was less than or equal to"
 msgstr "La réponse était inférieure ou égale à"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:477
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:478
 msgid "Answer was greater than or equal to"
 msgstr "La réponse était supérieure ou égale à"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:481
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:482
 msgid "Answer was greater than"
 msgstr "La réponse était supérieure à"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:485
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:486
 msgid "Answer matched (regexp)"
 msgstr "La réponse est de la forme (regexp)"
 
 # D:\www\limesurvey/admin/html.php:760
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:498
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:526
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:499
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:527
 msgid "is"
 msgstr "est"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:502
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:503
 msgid "is NOT"
 msgstr "n'est PAS"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:506
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:507
 msgid "is less than"
 msgstr "est Inférieur à"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:510
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:511
 msgid "is less than or equal to"
 msgstr "est inférieur ou égal à"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:514
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:515
 msgid "is greater than or equal to"
 msgstr "est supérieur ou égal à"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:518
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:519
 msgid "is greater than"
 msgstr "est supérieur à"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:522
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:523
 msgid "is matched (regexp)"
 msgstr "est valide (regexp)"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:718
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:719
 msgid "RANK"
 msgstr "CLASSEMENT"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:737
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:738
 msgid "at question"
 msgstr "à la question"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:749
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:750
 msgid "Only answer this question if the following conditions are met:"
 msgstr "Répondre à cette question seulement si les conditions suivantes sont réunies :"
 
 # D:\www\limesurvey/admin/exportresults.php:788
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:769
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:770
 msgid "ID:"
 msgstr "ID : "
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:770
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:771
 msgid "Question code:"
 msgstr "Code de la question :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:844
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:846
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:845
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:847
 msgid "Please enter a date:"
 msgstr "Veuillez entrer une date :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:975
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:976
 msgid "Please number each box in order of preference from 1 to"
 msgstr "Numérotez chaque case dans l'ordre de vos préférences de 1 à"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:976
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:977
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Numérotez chaque case dans l'ordre de vos préférences de 1 à"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:998
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:999
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1000
 msgid "Please choose *all* that apply:"
 msgstr "Choisissez *toutes* les réponses qui conviennent :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1004
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1005
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1006
 #, php-format
 msgid "Please choose *at most* %s answers:"
 msgstr "Veuillez choisir *au plus* %s réponses :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1056
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1057
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1058
 msgid "Please choose all that apply and provide a comment:"
 msgstr "Veuillez choisir toutes les réponses qui conviennent et laissez un commentaire :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1062
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1063
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1064
 msgid "Please choose *at most* "
 msgstr "Veuillez choisir *au plus*"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1062
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1063
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1064
 msgid "answers and provide a comment:"
 msgstr "réponses et laissez un commentaire :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1102
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1120
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1103
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1121
 msgid "Please write your answer(s) here:"
 msgstr "Veuillez écrire votre(vos) réponse(s) ici :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1142
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1144
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1151
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1154
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1164
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1167
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1177
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1180
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1143
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1145
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1152
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1155
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1165
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1168
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1178
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1181
 msgid "Please write your answer here:"
 msgstr "Veuillez écrire votre réponse ici :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1201
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1219
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1266
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1275
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1302
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1317
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1343
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1358
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1567
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1577
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1671
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1674
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1778
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1202
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1220
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1267
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1276
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1303
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1318
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1344
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1359
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1568
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1578
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1672
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1675
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1779
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1780
 msgid "Please choose the appropriate response for each item:"
 msgstr "Choisissez la réponse appropriée pour chaque élément :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1420
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1421
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1422
 #, php-format
 msgid "Please write a multiple of %d between %d and %d for each item:"
 msgstr "Veuillez saisir un multiple de %d compris entre %d et %d pour chaque élément :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1424
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1425
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1426
 #, php-format
 msgid "Please enter a number between %d and %d for each item:"
 msgstr "Veuillez saisir une nombre compris entre %d et %d pour chaque élément :"
 
 # E:\www\limesurvey/common.php:1528
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1833
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1834
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Il y a {NUMBEROFQUESTIONS} questions dans ce questionnaire"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1914
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1915
 #, php-format
 msgid "Please fax your completed survey to: %s"
 msgstr "Veuillez faxer ce questionnaire rempli à : %s"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1933
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1934
 #, php-format
 msgid "Only answer this question for the items you selected in question %d ('%s')"
 msgstr "Répondre à cette question seulement pour les éléments choisis à la question %d ('%s')"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1942
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/printablesurvey.php:1943
 #, php-format
 msgid "Only answer this question for the items you did not select in question %d ('%s')"
 msgstr "Répondre à cette question seulement pour les éléments non choisis à la question %d ('%s')"
@@ -10327,35 +10399,40 @@ msgstr "Remplacer l'enregistrement existant."
 msgid "Import as not finalized answers?"
 msgstr "Importer comme réponse non finalisée ?"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:106
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:104
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:116
+msgid "Import a VV response data file"
+msgstr "Importer un fichier de réponse VV"
+
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:105
 msgid "Cannot import the VVExport file."
 msgstr "Impossible d'importer le fichier VV."
 
 # D:\www\limesurvey/admin/vvimport.php:98
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:126
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:123
 msgid "Back to Response Import"
 msgstr "Retour à l'importation de réponse"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:271
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:268
 #, php-format
 msgid "Record ID %d was skipped because of duplicate ID."
 msgstr "L'enregistrement d'identifiant (ID) %d a été sauté car il y existe un doublon de cet ID."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:306
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:303
 #, php-format
 msgid "Import Failed on Record %d because [%s]"
 msgstr "Échec de l'import de l'enregistrement %d car [%s]"
 
 # D:\www\limesurvey/admin/vvimport.php:235
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:320
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:317
 msgid "Important Note:"
 msgstr "Remarque importante :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:320
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:317
 msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
 msgstr "Ne pas ACTUALISER cette page sous peine d'importer de nouveau le fichier et de créer des doublons"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:322
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/vvimport.php:319
 msgid "Total records imported:"
 msgstr "Nombre total d'enregistrement(s) importé(s) :"
 
