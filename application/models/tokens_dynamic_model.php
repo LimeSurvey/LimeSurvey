@@ -120,4 +120,10 @@ class Tokens_dynamic_model extends CI_Model {
 	{
 		return $this->db->insert("tokens_".$surveyid, $data); 
 	}
+	
+	function getOldTableList ($surveyid)
+	{
+		$this->load->helper("database");
+		return $this->db->query(db_select_tables_like($this->db->dbprefix("old\_tokens\_".$surveyid."\_%")));
+	}
 }

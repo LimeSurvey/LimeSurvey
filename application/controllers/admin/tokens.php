@@ -80,22 +80,23 @@ class tokens extends SurveyCommonController {
 		$tokenexists=tableExists('tokens_'.$surveyid);
 		if (!$tokenexists) //If no tokens table exists
 		{
-			//_newtokentable($surveyid);
-			show_error("No token table! TODO: Implement new token table function.");
+			self::_newtokentable($surveyid);
 		}
-		
-		$data['clang']=$clang;
-		$data['thissurvey']=$thissurvey;
-		$data['imageurl'] = $this->config->item('imageurl');
-		$data['surveyid']=$surveyid;
-
-		$this->load->model("tokens_dynamic_model");
-		$data['queries']=$this->tokens_dynamic_model->tokensSummary($surveyid);
-		
-		self::_getAdminHeader();
-		$this->load->view("admin/token/tokenbar",$data);
-		$this->load->view("admin/token/tokensummary",$data);
-		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
+		else
+		{
+			$data['clang']=$clang;
+			$data['thissurvey']=$thissurvey;
+			$data['imageurl'] = $this->config->item('imageurl');
+			$data['surveyid']=$surveyid;
+	
+			$this->load->model("tokens_dynamic_model");
+			$data['queries']=$this->tokens_dynamic_model->tokensSummary($surveyid);
+			
+			self::_getAdminHeader();
+			$this->load->view("admin/token/tokenbar",$data);
+			$this->load->view("admin/token/tokensummary",$data);
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
+		}
 	}
 
 	/**
@@ -879,17 +880,62 @@ class tokens extends SurveyCommonController {
 	
 	}
 
+	/**
+	 * Show dialogs and create a new tokens table
+	 */
 	function _newtokentable($surveyid)
 	{
-		/*
-		//if (isset($_POST['createtable']) && $_POST['createtable']=="Y" && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
+		$clang=$this->limesurvey_lang;
 		if($this->input->post("createtable")=="Y" && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
-	    {
-	 		//Tokens Dynamic
+     	{
+			$this->load->dbforge();
+			$this->dbforge->add_field("tid int(11) NOT NULL AUTO_INCREMENT");
+			$fields = array(
+	                        'firstname' => array('type' => 'VARCHAR', 'constraint' => 40),
+	                        'lastname' => array('type' => 'VARCHAR', 'constraint' => 40),
+	                        'email' => array('type' => 'TEXT'),
+	                        'emailstatus' => array('type' => 'TEXT'),
+	                        'token' => array('type' => 'VARCHAR', 'constraint' => 36),
+	                        'language' => array('type' => 'VARCHAR', 'constraint' => 25),
+	                        'sent' => array('type' => 'VARCHAR', 'constraint' => 17, 'default' => 'N'),
+	                        'remindersent' => array('type' => 'VARCHAR', 'constraint' => 17, 'default' => 'N'),
+	                        'remindercount' => array('type' => 'INT', 'constraint' => 11, 'default' => 0),
+	                        'completed' => array('type' => 'VARCHAR', 'constraint' => 17, 'default' => 'N'),
+	                        'usesleft' => array('type' => 'INT', 'constraint' => 11, 'default' => 1),
+	                        'validfrom' => array('type' => 'DATETIME'),
+	                        'validuntil' => array('type' => 'DATETIME'),
+	                        'mpid' => array('type' => 'INT', 'constraint' => 11)
+	                );
+			$this->dbforge->add_field($fields);
 	
-			if ($execresult==0 || $execresult==1)
+			//$tabname = "{$dbprefix}tokens_{$surveyid}"; # not using db_table_name as it quotes the table name (as does CreateTableSQL)
+			/*$taboptarray = array('mysql' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
+	                             'mysqli' => 'ENGINE='.$databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
+			$dict = NewDataDictionary($connect);
+			$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
+			$execresult=$dict->ExecuteSQLArray($sqlarray, false);
+			
+			   $createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
+			    $dict->ExecuteSQLArray($createtokentableindex, false) or safe_die ("Failed to create token table index<br />$createtokentableindex<br /><br />".$connect->ErrorMsg());
+			    if ($connect->databaseType == 'mysql' || $connect->databaseType == 'mysqli')
+			    {
+			        $query = 'CREATE INDEX idx_'.$tabname.'_efl ON '.$tabname.' ( email(120), firstname, lastname )';
+			        $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
+			    }*/
+		
+			$this->dbforge->add_key('tid', TRUE);
+			$this->dbforge->add_key("token");
+			//$this->dbforge->add_key(array('email (120)', 'firstname', 'lastname'));
+			$this->dbforge->create_table("tokens_{$surveyid}");
+
+			self::_getAdminHeader();
+			self::_showMessageBox($clang->gT("Token control"),
+					$clang->gT("A token table has been created for this survey.")." (\"".$this->db->dbprefix("tokens_$surveyid")."\")<br /><br />\n"
+		    		."<input type='submit' value='"
+		    		.$clang->gT("Continue")."' onclick=\"window.open('".site_url("admin/tokens/index/$surveyid")."', '_top')\" />\n");
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+			/*if ($execresult==0 || $execresult==1)
 			{
-	
 			    $tokenoutput .= "\t</div><div class='messagebox ui-corner-all'>\n"
 			    ."<font size='1'><strong><center>".$clang->gT("Token table could not be created.")."</center></strong></font>\n"
 			    .$clang->gT("Error").": \n<font color='red'>" . $connect->ErrorMsg() . "</font>\n"
@@ -901,97 +947,65 @@ class tokens extends SurveyCommonController {
 			    ."</div>\n";
 	
 			} else {
-			    $createtokentableindex = $dict->CreateIndexSQL("{$tabname}_idx", $tabname, array('token'));
-			    $dict->ExecuteSQLArray($createtokentableindex, false) or safe_die ("Failed to create token table index<br />$createtokentableindex<br /><br />".$connect->ErrorMsg());
-			    if ($connect->databaseType == 'mysql' || $connect->databaseType == 'mysqli')
-			    {
-			        $query = 'CREATE INDEX idx_'.$tabname.'_efl ON '.$tabname.' ( email(120), firstname, lastname )';
-			        $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
-			    }
+	
 	
 	
 			    $tokenoutput .= "\t</div><p>\n"
 			    .$clang->gT("A token table has been created for this survey.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
 			    ."<input type='submit' value='"
 			    .$clang->gT("Continue")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n";
-			}
+			}*/
 			return;
 	    }
-	    elseif (returnglobal('restoretable') == "Y" && returnglobal('oldtable') && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
+	    elseif (returnglobal('restoretable') == "Y" && $this->input->post("oldtable") && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
 	    {
-	        $query = db_rename_table(returnglobal('oldtable') , db_table_name_nq("tokens_$surveyid"));
-	        $result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
+	        //$query = db_rename_table($this->input->post("oldtable") , $this->db->dbprefix("tokens_$surveyid"));
+	        //$result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
+			$this->dbforge->rename_table($this->input->post("oldtable") , $this->db->dbprefix("tokens_$surveyid"));
+
+			self::_getAdminHeader();
+			self::_showMessageBox($clang->gT("Import old tokens"),
+					$clang->gT("A token table has been created for this survey and the old tokens were imported.")." (\"".$this->db->dbprefix("tokens_$surveyid")."\")<br /><br />\n"
+		    		."<input type='submit' value='"
+		    		.$clang->gT("Continue")."' onclick=\"window.open('".site_url("admin/tokens/index/$surveyid")."', '_top')\" />\n");
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 			
-	        $tokenoutput .= "\t</div><div class='messagebox ui-corner-all'>\n"
+			/*$tokenoutput .= "\t</div><div class='messagebox ui-corner-all'>\n"
 	        ."<div class='header ui-widget-header'>".$clang->gT("Import old tokens")."</div>"
 	        ."<br />".$clang->gT("A token table has been created for this survey and the old tokens were imported.")." (\"".$dbprefix."tokens_$surveyid\")<br /><br />\n"
 	        ."<input type='submit' value='"
 	        .$clang->gT("Continue")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid', '_top')\" />\n"
-	        ."</div>\n";
+	        ."</div>\n";*/
 	        return;
 	    }
 	    else
 	    {
-	        $query=db_select_tables_like("{$dbprefix}old\_tokens\_".$surveyid."\_%");
-	        $result=db_execute_num($query) or safe_die("Couldn't get old table list<br />".$query."<br />".$connect->ErrorMsg());
-	        $tcount=$result->RecordCount();
+	        $this->load->model("tokens_dynamic_model");
+			$result=$this->tokens_dynamic_model->getOldTableList($surveyid);
+	        $tcount=$result->num_rows();
 	        if ($tcount > 0)
 	        {
-	            while($rows=$result->FetchRow())
-	            {
-	                $oldlist[]=$rows[0];
-	            }
+				foreach ($result->result_array() as $rows)
+				{
+				   $oldlist[]=$rows[0];
+				}
+			$data['oldlist'] = $oldlist;
 	        }
-	        $tokenoutput .= "\t</div><div class='messagebox ui-corner-all'>\n"
-	        ."<div class='warningheader'>".$clang->gT("Warning")."</div>\n"
-	        ."<br /><strong>".$clang->gT("Tokens have not been initialised for this survey.")."</strong><br /><br />\n";
-	        if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
-	        {
-	            $tokenoutput .= $clang->gT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL.")
-	            ."<br /><br />\n";
+
+	       	$data['clang']=$clang;
+			$thissurvey=getSurveyInfo($surveyid);
+			$data['thissurvey']=$thissurvey;
+			$data['imageurl'] = $this->config->item('imageurl');
+			$data['surveyid']=$surveyid;
+			$data['tcount']=$tcount;
+			$this->load->config("database");
+			$data['databasetype']=$this->config->item("dbdriver");
 	
-	            $thissurvey=getSurveyInfo($surveyid);
-	
-	            if ($thissurvey['anonymized'] == 'Y')
-	            {
-	                $tokenoutput .= "".$clang->gT("Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.")
-	                ."<br /><br />\n";
-	            }
-	
-	            $tokenoutput .= $clang->gT("Do you want to create a token table for this survey?");
-	            $tokenoutput .= "<br /><br />\n";
-	            $tokenoutput .= "<input type='submit' value='"
-	            .$clang->gT("Initialise tokens")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid=$surveyid&amp;createtable=Y")."\" />\n";
-	            $tokenoutput .= "<input type='submit' value='"
-	            .$clang->gT("No, thanks.")."' onclick=\"window.open('{$scriptname}?sid=$surveyid', '_top')\" /></div>\n";
-	        }
-	        else
-	        {
-	            $tokenoutput .= $clang->gT("You don't have the permission to activate tokens.");
-	            $tokenoutput .= "<input type='submit' value='"
-	            .$clang->gT("Back to main menu")."' onclick=\"window.open('{$scriptname}?sid=$surveyid', '_top')\" /></div>\n";
-	
-	        }
-	        // Do not offer old postgres token tables for restore since these are having an issue with missing index
-	        if ($tcount>0 && $databasetype!='postgres' && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
-	        {
-	            $tokenoutput .= "<br /><div class='header ui-widget-header'>".$clang->gT("Restore options")."</div>\n"
-	            ."<div class='messagebox ui-corner-all'>\n"
-	            ."<form method='post' action='$scriptname?action=tokens'>\n"
-	            .$clang->gT("The following old token tables could be restored:")."<br /><br />\n"
-	            ."<select size='4' name='oldtable' style='width:250px;'>\n";
-	            foreach($oldlist as $ol)
-	            {
-	                $tokenoutput .= "<option>".$ol."</option>\n";
-	            }
-	            $tokenoutput .= "</select><br /><br />\n"
-	            ."<input type='submit' value='".$clang->gT("Restore")."' />\n"
-	            ."<input type='hidden' name='restoretable' value='Y' />\n"
-	            ."<input type='hidden' name='sid' value='$surveyid' />\n"
-	            ."</form></div>\n";
-	        }
-	
+			self::_getAdminHeader();
+			$this->load->view("admin/token/tokenwarning",$data);
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+			
 	        return;
-	    }*/
+	    }
 	}
 }

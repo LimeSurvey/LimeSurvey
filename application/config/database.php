@@ -59,5 +59,7 @@ $db['default']['stricton'] = FALSE;
 $db['default']['port'] = 'default';
 $db['default']['databasetabletype'] = 'myISAM';
 
+$config['dbdriver'] = $db['default']['dbdriver'];
+
 /* End of file database.php */
 /* Location: ./application/config/database.php */
