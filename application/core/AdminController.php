@@ -426,7 +426,7 @@ class AdminController extends LS_Controller {
             //$_SESSION['checksessionpost'] = '';
         }
         $data['checksessionpost'] = $this->session->userdata('checksessionpost');
-        return $this->load->view('admin/endScripts_view',$data, true);
+        return $this->load->view('admin/endScripts_view',$data);
         
     }
     

@@ -34,11 +34,9 @@
 			self::_showadminmenu();
 			self::_surveybar($surveyid);
 			self::_surveysummary($surveyid);
-            $editsurvey = self::_loadEndScripts();
+            self::_loadEndScripts();
             
-            //echo $editsurvey;
-            $finaldata['display'] = $editsurvey;
-            $this->load->view('survey_view',$finaldata);
+            
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
 	}
@@ -297,11 +295,11 @@
             $listsurveys ="<p><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
             //$this->load->view('survey_view',$displaydata);
         }
-        $listsurveys .= self::_loadEndScripts();
+        
         $displaydata['display'] = $listsurveys;
         //$data['display'] = $editsurvey;
         $this->load->view('survey_view',$displaydata);
-        
+        self::_loadEndScripts();
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
         
         
@@ -408,11 +406,8 @@
             $finaldata['display'] = access_denied("editsurvey",$surveyid);
             $this->load->view('survey_view',$finaldata);
         }
-        $editsurvey = self::_loadEndScripts();
-            
-        //echo $editsurvey;
-        $finaldata['display'] = $editsurvey;
-        $this->load->view('survey_view',$finaldata);
+        self::_loadEndScripts();
+        
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
@@ -533,7 +528,7 @@
             
             
             
-            $editsurvey .= self::_loadEndScripts();
+            
             
             //echo $editsurvey;
             $finaldata['display'] = $editsurvey;
@@ -548,11 +543,9 @@
             $this->load->view('survey_view',$finaldata);
             
         }
-        $editsurvey = self::_loadEndScripts();
+        self::_loadEndScripts();
             
-        //echo $editsurvey;
-        $finaldata['display'] = $editsurvey;
-        $this->load->view('survey_view',$finaldata);
+        
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
     }
@@ -810,7 +803,7 @@
         //echo $editsurvey;
         $data['display'] = $editsurvey;
         $this->load->view('survey_view',$data);
-        $editsurvey .= self::_loadEndScripts();
+        self::_loadEndScripts();
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
         
     }
