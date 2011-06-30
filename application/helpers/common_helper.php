@@ -3611,6 +3611,7 @@ function GetBaseLanguageFromSurveyID($surveyid)
         $CI->load->model('surveys_model');
 	    $query = $CI->surveys_model->getSomeRecords($fields,$condition);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
 	    $surveylanguage = $query->row_array(); //Checked)
+        
 	    $surveylanguage = $surveylanguage['language'];
 	    if (is_null($surveylanguage))
 	    {
@@ -7534,6 +7535,268 @@ function access_denied($action,$sid='')
         return $accesssummary;
     }
     
+}
+
+/**
+ * CleanLanguagesFromSurvey() removes any languages from survey tables that are not in the passed list
+ * @param string $sid - the currently selected survey
+ * @param string $availlangs - space seperated list of additional languages in survey
+ * @return bool - always returns true
+ */
+function CleanLanguagesFromSurvey($sid, $availlangs)
+{
+    //global $connect;
+    $CI =& get_instance();
+    $CI->load->helper('database');
+    //$clang = $CI->limesurvey_lang;
+    $sid=sanitize_int($sid);
+    $baselang = GetBaseLanguageFromSurveyID($sid);
+
+    if (!empty($availlangs) && $availlangs != " ")
+    {
+        $availlangs=sanitize_languagecodeS($availlangs);
+        $langs = explode(" ",$availlangs);
+        if($langs[count($langs)-1] == "") array_pop($langs);
+    }
+    
+    $sqllang = "language <> '".$baselang."' ";
+
+    if (!empty($availlangs) && $availlangs != " ")
+    {
+        foreach ($langs as $lang)
+        {
+            $sqllang .= "AND language <> '".$lang."' ";
+        }
+    }
+    
+    // Remove From Answers Table
+    $query = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid='{$sid}' AND $sqllang";
+    
+    $qidresult = db_execute_assoc($query);    //Checked
+    
+    while ($qrow =  $qidresult->result_array())
+    {
+        
+        $myqid = $qrow['qid'];
+        $query = "DELETE FROM ".$CI->db->dbprefix."answers WHERE qid='$myqid' AND $sqllang";
+        db_execute_assoc($query) ; //$connect->Execute($query) or safe_die($connect->ErrorMsg());    //Checked
+    }
+    
+    // Remove From Questions Table
+    $query = "DELETE FROM ".$CI->db->dbprefix."questions WHERE sid='{$sid}' AND $sqllang";
+    db_execute_assoc($query) ;
+    //$connect->Execute($query) or safe_die($connect->ErrorMsg());   //Checked
+
+    // Remove From Groups Table
+    $query = "DELETE FROM ".$CI->db->dbprefix."groups WHERE sid='{$sid}' AND $sqllang";
+    //$connect->Execute($query) or safe_die($connect->ErrorMsg());   //Checked
+    db_execute_assoc($query) ;
+    
+    return true;
+}
+
+/**
+ * FixLanguageConsistency() fixes missing groups,questions,answers & assessments for languages on a survey
+ * @param string $sid - the currently selected survey
+ * @param string $availlangs - space seperated list of additional languages in survey - if empty all additional languages of a survey are checked against the base language
+ * @return bool - always returns true
+ */
+function FixLanguageConsistency($sid, $availlangs='')
+{
+    //global $connect, $databasetype;
+    $CI =& get_instance();
+    $CI->load->helper('database');
+    $clang = $CI->limesurvey_lang;
+    if (trim($availlangs)!='')
+    {
+        $availlangs=sanitize_languagecodeS($availlangs);
+        $langs = explode(" ",$availlangs);
+        if($langs[count($langs)-1] == "") array_pop($langs);
+    } else {
+       $langs=GetAdditionalLanguagesFromSurveyID($sid);
+    }
+
+    $baselang = GetBaseLanguageFromSurveyID($sid);
+    $sid=sanitize_int($sid);
+    $query = "SELECT * FROM ".$CI->db->dbprefix."groups WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
+    $result = db_execute_assoc($query); //or safe_die($connect->ErrorMsg());  //Checked
+    if ($result->num_rows() > 0)
+    {
+        $CI->load->model('groups_model');
+        while($group = $result->result_array())
+        {
+            foreach ($langs as $lang)
+            {   
+                
+                $query = "SELECT gid FROM ".$CI->db->dbprefix."groups WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
+                $gresult = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
+                if ($gresult->num_rows() < 1)
+                {
+                    db_switchIDInsert('groups',true);
+                    $data = array(
+                        'gid' => $group['gid'],
+                        'sid' => $group['sid'],
+                        'group_name' => $group['group_name'],
+                        'group_order' => $group['group_order'],
+                        'description' => $group['description'],
+                        'language' => $lang
+                    
+                    );
+                    $CI->groups_model->insertRecords($data);
+                    //$query = "INSERT INTO ".$CI->db->dbprefix."groups (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'{$lang}')";
+                    //db_execute_assoc($query); //$connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
+                    db_switchIDInsert('groups',false);
+                }
+            }
+            reset($langs);
+        }
+    }
+
+    $quests = array();
+    $query = "SELECT * FROM ".$CI->db->dbprefix."questions WHERE sid='{$sid}' AND language='{$baselang}' ORDER BY question_order";
+    $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());  //Checked
+    if ($result->num_rows() > 0)
+    {
+        $CI->load->model('questions_model');
+        while($question = $result->result_array())
+        {
+            array_push($quests,$question['qid']);
+            foreach ($langs as $lang)
+            {
+                $query = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}'";
+                $gresult = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());   //Checked
+                if ($gresult->num_rows() < 1)
+                {
+                    db_switchIDInsert('questions',true);
+                    $data = array(
+                        'qid' => $question['qid'],
+                        'sid' => $question['sid'],
+                        'gid' => $question['gid'],
+                        'type' => $question['type'],
+                        'question' => $question['question'],
+                        'preg' => $question['preg'],
+                        'help' => $question['help'],
+                        'other' => $question['other'],
+                        'mandatory' => $question['mandatory'],
+                        'question_order' => $question['question_order'],
+                        'language' => $lang,
+                        'scale_id' => $question['scale_id'],
+                        'parent_qid' => $question['parent_qid']
+                    
+                    );
+                    //$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,question_order,language, scale_id,parent_qid) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['question_order']}','{$lang}',{$question['scale_id']},{$question['parent_qid']})";
+                    $CI->questions_model->insertRecords($data); //$connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());   //Checked)
+                    db_switchIDInsert('questions',false);
+                }
+            }
+            reset($langs);
+        }
+
+        $sqlans = "";
+        foreach ($quests as $quest)
+        {
+            $sqlans .= " OR qid = '".$quest."' ";
+        }
+
+        $query = "SELECT * FROM ".$CI->db->dbprefix."answers WHERE language='{$baselang}' and (".trim($sqlans,' OR').") ORDER BY qid, code";
+        $result = db_execute_assoc($query) ;//or safe_die($connect->ErrorMsg()); //Checked
+        if ($result->num_rows() > 0)
+        {
+            $CI->load->model('answers_model');
+            while($answer = $result->result_array())
+            {
+                foreach ($langs as $lang)
+                {
+                    $query = "SELECT qid FROM ".$CI->db->dbprefix."answers WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}'";
+                    $gresult = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());  //Checked
+                    if ($gresult->num_rows() < 1)
+                    {
+                        db_switchIDInsert('answers',true);
+                        $data = array(
+                            'qid' => $answer['qid'],
+                            'code' => $answer['code'],
+                            'answer' => $answer['answer'],
+                            'scale_id' => $answer['scale_id'],
+                            'sortorder' => $answer['sortorder'],
+                            'language' => $lang,
+                            'assessment_value' =>  $answer['assessment_value']                         
+                            
+                            
+                        );
+                        //$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,scale_id,sortorder,language,assessment_value) VALUES('{$answer['qid']}',".db_quoteall($answer['code']).",".db_quoteall($answer['answer']).",{$answer['scale_id']},'{$answer['sortorder']}','{$lang}',{$answer['assessment_value']})";
+                        $CI->answers_model->insertRecords($data);//$connect->Execute($query) or safe_die($connect->ErrorMsg()); //Checked
+                        db_switchIDInsert('answers',false);
+                    }
+                }
+                reset($langs);
+            }
+        }
+    }
+
+
+    $query = "SELECT * FROM ".$CI->db->dbprefix."assessments WHERE sid='{$sid}' AND language='{$baselang}'";
+    $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());  //Checked
+    if ($result->num_rows() > 0)
+    {
+        $CI->load->model('assessments_model');
+        while($assessment = $result->result_array())
+        {
+            foreach ($langs as $lang)
+            {
+                $query = "SELECT id FROM ".$CI->db->dbprefix."assessments WHERE sid='{$sid}' AND id='{$assessment['id']}' AND language='{$lang}'";
+                $gresult = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
+                if ($gresult->RecordCount() < 1)
+                {
+                    db_switchIDInsert('assessments',true);
+                    $data = array(
+                        'id' => $assessment['id'],
+                        'sid' => $assessment['sid'],
+                        'scope' => $assessment['scope'],
+                        'gid' => $assessment['gid'],
+                        'name' => $assessment['name'],
+                        'minimum' => $assessment['minimum'],
+                        'maximum' => $assessment['maximum'],
+                        'message' => $assessment['message'],
+                        'language' => $lang
+                    );
+                    //$query = "INSERT INTO ".db_table_name('assessments')." (id,sid,scope,gid,name,minimum,maximum,message,language) "
+                    //."VALUES('{$assessment['id']}','{$assessment['sid']}',".db_quoteall($assessment['scope']).",".db_quoteall($assessment['gid']).",".db_quoteall($assessment['name']).",".db_quoteall($assessment['minimum']).",".db_quoteall($assessment['maximum']).",".db_quoteall($assessment['message']).",'{$lang}')";
+                    $CI->assessments_model->insertRecords($data); //$connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
+                    db_switchIDInsert('assessments',false);
+                }
+            }
+            reset($langs);
+        }
+    }
+
+
+
+    return true;
+}
+
+/**
+* This function switches identity insert on/off for the MSSQL database
+*
+* @param string $table table name (without prefix)
+* @param mixed $state  Set to true to activate ID insert, or false to deactivate
+*/
+function db_switchIDInsert($table,$state)
+{
+    //global $databasetype, $connect;
+    $CI =& get_instance();
+    if ($CI->db->dbdriver =='odbc_mssql' || $CI->db->dbdriver =='odbtp' || $CI->db->dbdriver =='mssql_n' || $CI->db->dbdriver =='mssqlnative')
+    {
+        if ($state==true)
+        {
+            //$connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' ON');
+            db_execute_assoc('SET IDENTITY_INSERT '.$CI->db->dbprefix.$table.' ON');
+        }
+        else
+        {
+            //$connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' OFF');
+            db_execute_assoc('SET IDENTITY_INSERT '.$CI->db->dbprefix.$table.' OFF');
+        }
+    }
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

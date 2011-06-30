@@ -155,11 +155,13 @@
     function editlocalsettings($surveyid)
     {
         $clang = $this->limesurvey_lang;
-       
+        
+        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_js_admin_includes(base_url().'application/scripts/surveysettings.js');
         self::_getAdminHeader();
   		self::_showadminmenu();
-
+        self::_surveybar($surveyid);
         if(bHasSurveyPermission($surveyid,'surveylocale','read'))
         {
     
@@ -454,13 +456,17 @@
         
     }
     
-    function index($action)
+    function index($action,$surveyid=null)
     {
-        global $surveyid;
+        //global $surveyid;
         
         self::_js_admin_includes(base_url().'application/scripts/surveysettings.js');
+        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_getAdminHeader();
 		self::_showadminmenu();
+        if (!is_null($surveyid))
+        self::_surveybar($surveyid);
         
         if(!bHasSurveyPermission($surveyid,'surveysettings','read') && !bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
         {
@@ -485,14 +491,14 @@
         // header
         $editsurvey .= "<div class='header ui-widget-header'>" . $clang->gT("Create, import, or copy survey") . "</div>\n";
         } elseif ($action == "editsurveysettings") {
-            $esrow = self::_fetchSurveyInfo('editsurvey');
+            $esrow = self::_fetchSurveyInfo('editsurvey',$surveyid);
             // header
-            $editsurvey = "<div class='header ui-widget-header'>".$clang->gT("Edit survey settings")."</div>\n";
+            $editsurvey .= "<div class='header ui-widget-header'>".$clang->gT("Edit survey settings")."</div>\n";
         }
         if ($action == "newsurvey") {
             $editsurvey .= self::_generalTabNewSurvey();
         } elseif ($action == "editsurveysettings") {
-            $editsurvey = self::_generalTabEditSurvey($surveyid,$esrow);
+            $editsurvey .= self::_generalTabEditSurvey($surveyid,$esrow);
         }
         
         $editsurvey .= self::_tabPresentationNavigation($esrow);
@@ -502,7 +508,7 @@
         
         if ($action == "newsurvey") {
             $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='insertsurvey' />\n";
-            $this->session->set_userdata(array('action' => 'insertsurvey'));
+            //$this->session->set_userdata(array('action' => 'insertsurvey'));
         } elseif ($action == "editsurveysettings") {
             $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />\n"
             . "<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
@@ -536,16 +542,17 @@
                 $editsurvey .= "<p><button onclick=\"$cond {document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; document.getElementById('addnewsurvey').submit();}\" class='standardbtn' >" . $clang->gT("Save & edit survey text elements") . " >></button></p>\n";
             }
         }
-       	$editsurvey .= self::_loadEndScripts();
+       	
         //echo $editsurvey;
         $data['display'] = $editsurvey;
         $this->load->view('survey_view',$data);
+        $editsurvey .= self::_loadEndScripts();
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
         
     }
     
     
-    function _fetchSurveyInfo($action)
+    function _fetchSurveyInfo($action,$surveyid=null)
     {
         if ($action == 'newsurvey')
         {
@@ -781,11 +788,11 @@
         // End General TAB
         $editsurvey .= "</div>\n";
         */
-        
+        $data['action'] = "editsurveysettings";
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
         $data['surveyid'] = $surveyid;
-        return $this->load->view('admin/survey/superview/superGeneralEditSurey_view',$data, true); 
+        return $this->load->view('admin/survey/superview/superGeneralEditSurvey_view',$data, true); 
         
     }
     

@@ -312,16 +312,240 @@ class Database extends AdminController {
                 }
             }
             $this->session->set_userdata('flashmessage',$clang->gT("Survey text elements successfully saved."));
+            if ($databaseoutput != '')
+            {
+                echo $databaseoutput;
+            }
+            else
+            {
+                redirect(site_url('admin/survey/view/'.$surveyid));
+            }
         }
         
-        if ($databaseoutput != '')
+        if (($action == "updatesurveysettingsandeditlocalesettings" || $action == "updatesurveysettings") && bHasSurveyPermission($surveyid,'surveysettings','update'))
         {
-            echo $databaseoutput;
+            $this->load->helper('surveytranslator');
+            $this->load->helper('database');
+            $formatdata=getDateFormatData($this->session->userdata('dateformat'));
+            
+            $expires = $this->input->post('expires');
+            if (trim($expires)=="")
+            {
+                $expires=null;
+            }
+            else
+            {
+                $this->load->library('Date_Time_Converter',array($expires, $formatdata['phpdate'].' H:i'));
+                $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
+                $expires=$datetimeobj->convert("Y-m-d H:i:s");
+            }
+            $startdate = $this->input->post('startdate');
+            if (trim($startdate)=="")
+            {
+                $startdate=null;
+            }
+            else
+            {
+                $this->load->library('Date_Time_Converter',array($startdate,$formatdata['phpdate'].' H:i'));
+                $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
+                $startdate=$datetimeobj->convert("Y-m-d H:i:s");
+            }
+            
+            //make sure only numbers are passed within the $_POST variable
+            $tokenlength = (int) $this->input->post('tokenlength');
+            //$_POST['tokenlength'] = (int) $_POST['tokenlength'];
+    
+            //token length has to be at least 5, otherwise set it to default (15)
+            if($tokenlength < 5)
+            {
+                $tokenlength = 15;
+            }
+            
+            
+            CleanLanguagesFromSurvey($surveyid,$this->input->post('languageids'));
+            
+            FixLanguageConsistency($surveyid,$this->input->post('languageids'));
+            $template = $this->input->post('template');
+            
+            if($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1 && $this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') != 1 && !hasTemplateManageRights($this->session->userdata('loginID'), $template)) $template = "default";
+            
+            //$sql = "SELECT * FROM ".$this->db->dbprefix."surveys WHERE sid={$postsid}";  // We are using $dbrepfix here instead of db_table_name on purpose because GetUpdateSQL doesn't work correclty on Postfres with a quoted table name
+            //$rs = db_execute_assoc($sql); // Checked
+            $updatearray= array('admin'=> $this->input->post('admin'),
+                                'expires'=>$expires,
+                                'adminemail'=> $this->input->post('adminemail'),
+                                'startdate'=>$startdate,
+                                'bounce_email'=> $this->input->post('bounce_email'),
+                                'anonymized'=> $this->input->post('anonymized'),
+                                'faxto'=> $this->input->post('faxto'),
+                                'format'=> $this->input->post('format'),
+                                'savetimings'=> $this->input->post('savetimings'),
+                                'template'=>$template,
+                                'assessments'=> $this->input->post('assessments'),
+                                'language'=> $this->input->post('language'),
+                                'additional_languages'=> $this->input->post('languageids'),
+                                'datestamp'=> $this->input->post('datestamp'),
+                                'ipaddr'=> $this->input->post('ipaddr'),
+                                'refurl'=> $this->input->post('refurl'),
+                                'publicgraphs'=> $this->input->post('publicgraphs'),
+                                'usecookie'=> $this->input->post('usecookie'),
+                                'allowregister'=> $this->input->post('allowregister'),
+                                'allowsave'=> $this->input->post('allowsave'),
+                                'navigationdelay'=> $this->input->post('navigationdelay'),
+                                'printanswers'=> $this->input->post('printanswers'),
+                                'publicstatistics'=> $this->input->post('publicstatistics'),
+                                'autoredirect'=> $this->input->post('autoredirect'),
+                                'showXquestions'=> $this->input->post('showXquestions'),
+                                'showgroupinfo'=> $this->input->post('showgroupinfo'),
+                                'showqnumcode'=> $this->input->post('showqnumcode'),
+                                'shownoanswer'=> $this->input->post('shownoanswer'),
+                                'showwelcome'=> $this->input->post('showwelcome'),
+                                'allowprev'=> $this->input->post('allowprev'),
+                                'allowjumps'=> $this->input->post('allowjumps'),
+                                'nokeyboard'=> $this->input->post('nokeyboard'),
+                                'showprogress'=> $this->input->post('showprogress'),
+                                'listpublic'=> $this->input->post('public'),
+                                'htmlemail'=> $this->input->post('htmlemail'),
+                                'tokenanswerspersistence'=> $this->input->post('tokenanswerspersistence'),
+                                'alloweditaftercompletion'=> $this->input->post('alloweditaftercompletion'),
+                                'usecaptcha'=> $this->input->post('usecaptcha'),
+                                'emailresponseto'=>trim($this->input->post('emailresponseto')),
+                                'emailnotificationto'=>trim($this->input->post('emailnotificationto')),
+                                'tokenlength'=>$tokenlength
+            );
+            
+    
+            /**$usquery=$connect->GetUpdateSQL($rs, $updatearray, false, get_magic_quotes_gpc());
+            if ($usquery) {
+                $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());  // Checked
+            }
+            */
+            $condition = array('sid' =>  $surveyid);
+            $this->load->model('surveys_model');
+            $this->surveys_model->updateSurvey($updatearray,$condition);
+            $sqlstring ='';
+            
+            foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+            {
+                if ($langname)
+                {
+                    $sqlstring .= "AND surveyls_language <> '".$langname."' ";
+                }
+            }
+            
+            // Add base language too
+            $sqlstring .= "AND surveyls_language <> '".GetBaseLanguageFromSurveyID($surveyid)."' ";
+            
+            $usquery = "DELETE FROM ".$this->db->dbprefix."surveys_languagesettings WHERE surveyls_survey_id={$surveyid} ".$sqlstring;
+            
+            $usresult = db_execute_assoc($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>"); // Checked
+            
+            foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname)
+            {
+                if ($langname)
+                {
+                    $usquery = "select * from ".$this->db->dbprefix."surveys_languagesettings where surveyls_survey_id={$surveyid} and surveyls_language='".$langname."'";
+                    $usresult = db_execute_assoc($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br /><strong>"); // Checked
+                    if ($usresult->num_rows()==0)
+                    {
+                        $this->load->library('Limesurvey_lang',array($langname));
+                        $bplang = $this->limesurvey_lang;//new limesurvey_lang($langname);
+                        $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');                         
+                        if (getEmailFormat($surveyid) == "html")
+                        {
+                            $ishtml=true;
+                            $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
+                        }
+                        else
+                        {
+                            $ishtml=false;
+                        }
+                        $languagedetails=getLanguageDetails($langname);
+                        
+                        $insertdata = array(
+                            'surveyls_survey_id' => $surveyid,
+                            'surveyls_language' => $langname,
+                            'surveyls_title' => '',
+                            'surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
+                            'surveyls_email_invite' => $aDefaultTexts['invitation'],
+                            'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
+                            'surveyls_email_remind' => $aDefaultTexts['reminder'],
+                            'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
+                            'surveyls_email_confirm' => $aDefaultTexts['confirmation'],
+                            'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
+                            'surveyls_email_register' => $aDefaultTexts['registration'],
+                            'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
+                            'email_admin_notification' => $aDefaultTexts['admin_notification'],
+                            'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
+                            'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
+                            'surveyls_dateformat' => $languagedetails['dateformat']
+                           );
+                        /**$usquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
+                        ." (surveyls_survey_id, surveyls_language, surveyls_title, "
+                        ." surveyls_email_invite_subj, surveyls_email_invite, "
+                        ." surveyls_email_remind_subj, surveyls_email_remind, "
+                        ." surveyls_email_confirm_subj, surveyls_email_confirm, "
+                        ." surveyls_email_register_subj, surveyls_email_register, "
+                        ." email_admin_notification_subj, email_admin_notification, "
+                        ." email_admin_responses_subj, email_admin_responses, "
+                        ." surveyls_dateformat) "
+                        ." VALUES ({$postsid}, '".$langname."', '',"
+                        .db_quoteall($aDefaultTexts['invitation_subject']).","
+                        .db_quoteall($aDefaultTexts['invitation']).","
+                        .db_quoteall($aDefaultTexts['reminder_subject']).","
+                        .db_quoteall($aDefaultTexts['reminder']).","
+                        .db_quoteall($aDefaultTexts['confirmation_subject']).","
+                        .db_quoteall($aDefaultTexts['confirmation']).","
+                        .db_quoteall($aDefaultTexts['registration_subject']).","
+                        .db_quoteall($aDefaultTexts['registration']).","
+                        .db_quoteall($aDefaultTexts['admin_notification_subject']).","
+                        .db_quoteall($aDefaultTexts['admin_notification']).","
+                        .db_quoteall($aDefaultTexts['admin_detailed_notification_subject']).","
+                        .db_quoteall($aDefaultTexts['admin_detailed_notification']).","
+                        .$languagedetails['dateformat'].")"; */
+                        $this->load->model('surveys_languagesettings_model');
+                    
+                        $usresult = $this->surveys_languagesettings_model->insertNewSurvey($insertdata);
+                        unset($bplang);
+                        //$usresult = $connect->Execute($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br />".$connect->ErrorMsg()); // Checked
+                    }
+                }
+            }
+    
+    
+            
+            if ($usresult)
+            {
+                $surveyselect = getsurveylist();
+                $this->session->set_userdata('flashmessage', $clang->gT("Survey settings were successfully saved."));                    
+                
+            }
+            else
+            {
+                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be updated","js")."\n\")\n //-->\n</script>\n";
+            }
+            
+            if ($databaseoutput != '')
+            {
+                echo $databaseoutput;
+            }
+            else
+            {
+                //redirect(site_url('admin/survey/view/'.$surveyid));
+                
+                if ($this->input->post('action') == "updatesurveysettingsandeditlocalesettings")
+                {
+                   redirect(site_url('admin/survey/editlocalsettings/'.$surveyid)); 
+                }
+                else
+                {
+                    redirect(site_url('admin/survey/view/'.$surveyid));                    
+                } 
+                
+            }
         }
-        else
-        {
-            redirect(site_url('admin/survey/view/'.$surveyid));
-        }
+        
+        
         
         
     }

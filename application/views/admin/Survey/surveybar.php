@@ -17,18 +17,18 @@
 				<?php } ?>
 			<?php } else { ?>
 				<?php if($expired) { ?>
-					<img src='<?php echo $imageurl;?>/expired.png' alt='<?php echo $clang->gT("This survey is active but expired."); ?>' />
+					<img src='<?php echo $imageurl; ?>/expired.png' alt='<?php echo $clang->gT("This survey is active but expired."); ?>' />
 				<?php } elseif($notstarted) { ?>
-					<img src='<?php echo $imageurl;?>/notyetstarted.png' alt='<?php echo $clang->gT("This survey is active but has a start date."); ?>' />
+					<img src='<?php echo $imageurl; ?>/notyetstarted.png' alt='<?php echo $clang->gT("This survey is active but has a start date."); ?>' />
                 <?php } else { ?>
-                	<img src='<?php echo $imageurl;?>/active.png' title='' alt='<?php echo $clang->gT("This survey is currently active.");?>' />
+                	<img src='<?php echo $imageurl; ?>/active.png' title='' alt='<?php echo $clang->gT("This survey is currently active."); ?>' />
  				<?php } 
 				if($canactivate) { ?>
-                    <a href="#" onclick="window.open('<?php echo site_url("admin/deactivate/index/$surveyid");?>', '_top')"
-                    	title="<?php echo $clang->gTview("Deactivate this Survey");?>" >
-                    <img src='<?php echo $imageurl;?>/deactivate.png' alt='<?php echo $clang->gT("Deactivate this Survey");?>' /></a>
+                    <a href="#" onclick="window.open('<?php echo site_url("admin/deactivate/index/$surveyid"); ?>', '_top')"
+                    	title="<?php echo $clang->gTview("Deactivate this Survey"); ?>" >
+                    <img src='<?php echo $imageurl;?>/deactivate.png' alt='<?php echo $clang->gT("Deactivate this Survey"); ?>' /></a>
                 <?php } else { ?>
-                    <img src='<?php echo $imageurl;?>/blank.gif' alt='' width='14' />
+                    <img src='<?php echo $imageurl; ?>/blank.gif' alt='' width='14' />
                 <?php } ?>
 			<?php } ?>
 			<img src='<?php echo $imageurl;?>/seperator.gif' alt=''  />
@@ -58,7 +58,7 @@
 		            <img src='<?php echo $imageurl;?>/edit_30.png' name='EditTextElements' /> <?php echo $clang->gT("Edit text elements");?></a></li>
 		   		<?php } ?>
             	<?php if($surveysettings) { ?>
-		            <li><a href='<?php echo site_url("admin/editsurveysettings/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/survey/editsurveysettings/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/token_manage_30.png' name='EditGeneralSettings' /> <?php echo $clang->gT("General settings");?></a></li>
 		   		<?php } ?>
             	<?php if($surveysecurity) { ?>

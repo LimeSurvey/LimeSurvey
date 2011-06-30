@@ -29,5 +29,11 @@ class Assessments_model extends CI_Model {
 		
 		return $data;
 	}
+    
+    function insertRecords($data)
+    {
+        
+        return $this->db->insert('groups',$data);
+    }
 
 }

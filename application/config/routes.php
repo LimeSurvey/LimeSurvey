@@ -46,6 +46,7 @@ $route['admin'] = "admin/index";
 
 //survey
 $route['admin/survey/newsurvey'] = "admin/survey/index/newsurvey";
+$route['admin/survey/editsurveysettings/(:num)'] = "admin/survey/index/editsurveysettings/$1";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

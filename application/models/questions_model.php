@@ -132,5 +132,12 @@ class Questions_model extends CI_Model {
         
        
     }
-
+    
+    function insertRecords($data)
+    {
+        
+        return $this->db->insert('groups',$data);
+    }
+    
+   
 }

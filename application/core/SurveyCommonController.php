@@ -381,7 +381,7 @@
         if (trim($surveyinfo['startdate'])!= '')
         {
             $constructoritems = array($surveyinfo['startdate'] , "Y-m-d H:i:s");
-            $this->load->library('Date_Time_Converter',$items);
+            $this->load->library('Date_Time_Converter',$constructoritems);
             $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($surveyinfo['startdate'] , "Y-m-d H:i:s");
             $data['startdate']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
@@ -393,7 +393,7 @@
         if (trim($surveyinfo['expires'])!= '')
         {
             $constructoritems = array($surveyinfo['expires'] , "Y-m-d H:i:s");
-            $this->load->library('Date_Time_Converter',$items);
+            $this->load->library('Date_Time_Converter',$constructoritems);
             $datetimeobj = $this->date_time_converter; 
             //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
             $data['expdate']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');

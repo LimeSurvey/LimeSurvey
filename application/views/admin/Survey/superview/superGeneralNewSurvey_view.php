@@ -1,5 +1,6 @@
 <?php 
 $data['clang'] = $clang;
+$data['action'] = $action;
 $this->load->view('admin/survey/subview/tab_view',$data); ?>
 <label for='language' title='<?php echo $clang->gT("This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey."); ?>'><span class='annotationasterisk'>*</span><?php echo $clang->gT("Base language:"); ?></label>
 <select id='language' name='language'>

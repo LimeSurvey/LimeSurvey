@@ -43,6 +43,12 @@ class Surveys_model extends CI_Model {
         $this->db->insert('surveys', $data); 
     }
     
+    function updateSurvey($data,$condition)
+    {
+        $this->db->where($condition);
+        $this->db->update('surveys', $data); 
+    }
+    
     
     
 }

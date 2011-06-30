@@ -1,5 +1,5 @@
 <label><?php echo $clang->gT("Base language:") ; ?></label>
-<?php GetLanguageNameFromCode($esrow['language']) ?>
+<?php echo GetLanguageNameFromCode($esrow['language']) ?>
 </li>
 <li><label for='additional_languages'><?php echo $clang->gT("Additional Languages"); ?>:</label>
         <table><tr><td align='left'><select style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>
@@ -7,12 +7,12 @@
         $jsRemLang ="<script type=\"text/javascript\">
                     var mylangs = new Array();
                     standardtemplaterooturl='".$this->config->item('standardtemplaterooturl')."';
-                    templaterooturl='".$this->config->item('usertemplaterooturl')."'; ";
+                    templaterooturl='".$this->config->item('usertemplaterooturl')."';\n";
 
         foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname) {
             if ($langname && $langname != $esrow['language']) { 
-            $jsRemLang .="mylangs[$jsX] = \"$langname\""; ?>
-            <option id='<?php echo $langname; ?>' value='<?php echo $langname; ?>'><?php getLanguageNameFromCode($langname,false); ?>
+            $jsRemLang .=" mylangs[$jsX] = \"$langname\"\n"; ?>
+            <option id='<?php echo $langname; ?>' value='<?php echo $langname; ?>'><?php echo getLanguageNameFromCode($langname,false); ?>
             </option>
             <?php $jsX++; ?>
            <?php } 
@@ -21,7 +21,7 @@
         echo $jsRemLang; ?>
         
         </select></td>
-        <td align='left'><input type="button" value="<< <?php echo $clang->gT("Add"); ?>" onclick="<?php DoAdd(); ?>" id="AddBtn" /><br /> <input type="button" value="<?php echo $clang->gT("Remove"); ?> >>" onclick="<?php DoRemove(0,''); ?>" id="RemoveBtn"  /></td>
+        <td align='left'><input type="button" value="<< <?php echo $clang->gT("Add"); ?>" onclick="DoAdd()" id="AddBtn" /><br /> <input type="button" value="<?php echo $clang->gT("Remove"); ?> >>" onclick="DoRemove(0,'')" id="RemoveBtn"  /></td>
 
         
         <td align='left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>

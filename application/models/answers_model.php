@@ -87,5 +87,13 @@ class Answers_model extends CI_Model {
 		$this->db->update('answers', $data);
 		
 	}
+    
+    function insertRecords($data)
+    {
+        
+        return $this->db->insert('groups',$data);
+    }
+    
 
+    
 }

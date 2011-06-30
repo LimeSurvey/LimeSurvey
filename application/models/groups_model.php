@@ -114,6 +114,12 @@ class Groups_model extends CI_Model {
 		$this->db->update('groups', $data);
 		
 	}
-	
-
+    
+    function insertRecords($data)
+    {
+        
+        return $this->db->insert('groups',$data);
+    }
+    
+   
 }

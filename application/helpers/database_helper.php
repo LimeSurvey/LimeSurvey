@@ -34,6 +34,7 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
     else
     {
         $dataset=$CI->db->query($sql);
+        
     }
     
     if (!$silent && !$dataset)  {safe_die('Error executing query in db_execute_assoc:'.$sql);}
