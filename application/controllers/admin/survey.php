@@ -43,6 +43,270 @@
 		}
 	}
     
+    
+    function listsurveys()
+    {
+        $clang = $this->limesurvey_lang;
+        $this->load->helper('database');
+        $this->load->helper('surveytranslator');
+        
+        //self::_js_admin_includes(base_url().'scripts/admin/surveysettings.js');
+        
+        self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
+        self::_js_admin_includes(base_url().'scripts/admin/listsurvey.js');
+        
+        self::_getAdminHeader();
+        self::_showadminmenu();
+        
+        
+        $query = " SELECT a.*, c.*, u.users_name FROM ".$this->db->dbprefix."surveys as a "
+        ." INNER JOIN ".$this->db->dbprefix."surveys_languagesettings as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid AND surveyls_language=a.language "
+        ." INNER JOIN ".$this->db->dbprefix."users as u ON (u.uid=a.owner_id) ";
+    
+        if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
+        {
+            $query .= "WHERE a.sid in (select sid from ".$this->db->dbprefix."survey_permissions WHERE uid=".$this->session->userdata('loginID')." AND permission='survey' AND read_p=1) ";
+        }
+    
+        $query .= " ORDER BY surveyls_title";
+        $this->load->helper('database');
+        $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
+    
+        if($result->num_rows() > 0) {
+            
+           /**$listsurveys= "<br /><table class='listsurveys'><thead>
+                      <tr>
+                        <th colspan='7'>&nbsp;</th>
+                        <th colspan='3'>".$clang->gT("Responses")."</th>
+                        <th colspan='2'>&nbsp;</th>
+                      </tr>
+    				  <tr>
+    				    <th>".$clang->gT("Status")."</th>
+                        <th>".$clang->gT("SID")."</th>
+    				    <th>".$clang->gT("Survey")."</th>
+    				    <th>".$clang->gT("Date created")."</th>
+    				    <th>".$clang->gT("Owner") ."</th>
+    				    <th>".$clang->gT("Access")."</th>
+    				    <th>".$clang->gT("Anonymized responses")."</th>
+    				    <th>".$clang->gT("Full")."</th>
+                        <th>".$clang->gT("Partial")."</th>
+                        <th>".$clang->gT("Total")."</th>
+                        <th>".$clang->gT("Tokens available")."</th>
+                        <th>".$clang->gT("Response rate")."</th>
+    				  </tr></thead>
+    				  <tfoot><tr class='header ui-widget-header'>
+    		<td colspan=\"12\">&nbsp;</td>".
+    		"</tr></tfoot>
+    		<tbody>"; */
+            $gbc = "evenrow";
+            $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
+            $listsurveys = "";
+            $first_time = true;
+            foreach ($result->result_array() as $rows)
+            {
+                
+                if($rows['anonymized']=="Y")
+                {
+                    $privacy=$clang->gT("Yes") ;
+                }
+                else
+                {
+                    $privacy =$clang->gT("No") ;   
+                }
+    
+    
+                if (tableExists('tokens_'.$rows['sid']))
+                {
+                    $visibility = $clang->gT("Closed");
+                }
+                else
+                {
+                    $visibility = $clang->gT("Open");
+                }
+                
+                if($rows['active']=="Y")
+                {
+                    
+                    if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')))
+                    {
+                        $status=$clang->gT("Expired") ;
+                    }
+                    elseif ($rows['startdate']!='' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')))
+                    {
+                        $status=$clang->gT("Not yet active") ;
+                    }
+                    else {
+                        $status=$clang->gT("Active") ;
+                    }
+                    
+                    // Complete Survey Responses - added by DLR
+                    $gnquery = "SELECT COUNT(id) AS countofid FROM ".$this->db->dbprefix."survey_".$rows['sid']." WHERE submitdate IS NULL";
+                    $gnresult = db_execute_assoc($gnquery); //Checked)
+                    
+                    foreach ($gnresult->result_array() as $gnrow)
+                    {
+                        $partial_responses=$gnrow['countofid'];
+                    }
+                    $gnquery = "SELECT COUNT(id) AS countofid FROM ".$this->db->dbprefix."survey_".$rows['sid'];
+                    $gnresult = db_execute_assoc($gnquery); //Checked
+                    foreach ($gnresult->result_array() as $gnrow)
+                    {
+                        $responses=$gnrow['countofid'];
+                    } 
+    
+                }
+                else $status = $clang->gT("Inactive") ;
+                
+                if ($first_time) // can't use same instance of Date_Time_Converter library every time!
+                {
+                    $this->load->library('Date_Time_Converter',array($rows['datecreated'], "Y-m-d H:i:s"));
+                    $datetimeobj = $this->date_time_converter ; // new Date_Time_Converter($rows['datecreated'] , "Y-m-d H:i:s");
+                    $first_time = false;
+                    
+                }
+                else
+                {
+                    // no need to load the library again, just make a new instance!
+                    $datetimeobj = new Date_Time_Converter(array($rows['datecreated'], "Y-m-d H:i:s"));
+                    
+                }
+                
+                
+                $datecreated=$datetimeobj->convert($dateformatdetails['phpdate']);
+
+                if (in_array($rows['owner_id'],getuserlist('onlyuidarray')))
+                {
+                    $ownername=$rows['users_name'] ;
+                }
+                else
+                {
+                    $ownername="---";
+                }
+    
+                $questionsCount = 0;
+                $questionsCountQuery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid={$rows['sid']} AND language='".$rows['language']."'"; //Getting a count of questions for this survey
+                $questionsCountResult = db_execute_assoc($questionsCountQuery); //($connect->Execute($questionsCountQuery); //Checked)
+                $questionsCount = $questionsCountResult->num_rows();
+    
+                $listsurveys.="<tr>";
+                
+                if ($rows['active']=="Y")
+                {
+                    if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')))
+                    {
+                        $listsurveys .= "<td><img src='".$this->config->item('imageurl')."/expired.png' "
+                        . "alt='".$clang->gT("This survey is active but expired.")."' /></td>";
+                    }
+                    else
+                    {
+                        if (bHasSurveyPermission($rows['sid'],'surveyactivation','update'))
+                        {
+                            $listsurveys .= "<td><a href=\"#\" onclick=\"window.open('".$this->config->item('scriptname')."?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
+                            . " title=\"".$clang->gTview("This survey is active - click here to deactivate this survey.")."\" >"
+                            . "<img src='".$this->config->item('imageurl')."/active.png' alt='".$clang->gT("This survey is active - click here to deactivate this survey.")."' /></a></td>\n";
+                        } else
+                        {
+                            $listsurveys .= "<td><img src='".$this->config->item('imageurl')."/active.png' "
+                            . "alt='".$clang->gT("This survey is currently active.")."' /></td>\n";
+                        }
+                    }
+                } else {
+                    if ( $questionsCount > 0 && bHasSurveyPermission($rows['sid'],'surveyactivation','update') )
+                    {
+                        $listsurveys .= "<td><a href=\"#\" onclick=\"window.open('".$this->config->item('scriptname')."?action=activate&amp;sid={$rows['sid']}', '_top')\""
+                        . " title=\"".$clang->gTview("This survey is currently not active - click here to activate this survey.")."\" >"
+                        . "<img src='".$this->config->item('imageurl')."/inactive.png' title='' alt='".$clang->gT("This survey is currently not active - click here to activate this survey.")."' /></a></td>\n" ;
+                    } else
+                    {
+                        $listsurveys .= "<td><img src='".$this->config->item('imageurl')."/inactive.png'"
+                        . " title='".$clang->gT("This survey is currently not active.")."' alt='".$clang->gT("This survey is currently not active.")."' />"
+                        . "</td>\n";
+                    }
+                } 
+                $link = site_url("admin/survey/view/".$rows['sid']);
+                $listsurveys.="<td align='center'><a href='".$link."'>{$rows['sid']}</a></td>";
+                $listsurveys.="<td align='left'><a href='".$link."'>{$rows['surveyls_title']}</a></td>".
+    					    "<td>".$datecreated."</td>".
+    					    "<td>".$ownername." (<a href='#' class='ownername_edit' id='ownername_edit_{$rows['sid']}'>Edit</a>)</td>".
+    					    "<td>".$visibility."</td>" .
+    					    "<td>".$privacy."</td>"; 
+    
+                if ($rows['active']=="Y")
+                {
+                    $complete = $responses - $partial_responses;
+                    $listsurveys .= "<td>".$complete."</td>";
+                    $listsurveys .= "<td>".$partial_responses."</td>";
+                    $listsurveys .= "<td>".$responses."</td>";
+                }else{
+                    $listsurveys .= "<td>&nbsp;</td>";
+                    $listsurveys .= "<td>&nbsp;</td>";
+                    $listsurveys .= "<td>&nbsp;</td>";
+                } 
+    
+                if ($rows['active']=="Y" && tableExists("tokens_".$rows['sid']))
+    		    {
+    		    	//get the number of tokens for each survey
+    		    	$tokencountquery = "SELECT COUNT(tid) AS countoftid FROM ".$this->db->dbprefix."tokens_".$rows['sid'];
+                                $tokencountresult = db_execute_assoc($tokencountquery); //Checked)
+                                foreach ($tokencountresult->result_array() as $tokenrow)
+                                {
+                                    $tokencount = $tokenrow['countoftid'];
+                                }
+    
+    		    	//get the number of COMLETED tokens for each survey
+    		    	$tokencompletedquery = "SELECT COUNT(tid) AS countoftid FROM ".$this->db->dbprefix."tokens_".$rows['sid']." WHERE completed!='N'";
+                                $tokencompletedresult = db_execute_assoc($tokencompletedquery); //Checked
+                                foreach ($tokencompletedresult->result_array() as $tokencompletedrow)
+                                {
+                                    $tokencompleted = $tokencompletedrow['countoftid'];
+                                }
+    
+                                //calculate percentage
+    
+                                //prevent division by zero problems
+                                if($tokencompleted != 0 && $tokencount != 0)
+                                {
+                                $tokenpercentage = round(($tokencompleted / $tokencount) * 100, 1);
+                                }
+                                else
+                                {
+                                $tokenpercentage = 0;
+                                }
+    
+                                $listsurveys .= "<td>".$tokencount."</td>";
+                                $listsurveys .= "<td>".$tokenpercentage."%</td>";
+    		    }
+    		    else
+    		    {
+    				$listsurveys .= "<td>&nbsp;</td";
+    				$listsurveys .= "<td>&nbsp;</td";
+    		    }
+    
+    		    $listsurveys .= "</tr>" ;
+            }
+    
+    		$listsurveys.="</tbody>";
+    		$listsurveys.="</table><br />" ;
+            $data['clang'] = $clang;
+            $this->load->view('admin/Survey/listSurveys_view',$data);
+            
+            
+        }
+        else 
+        {
+            $listsurveys ="<p><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
+            //$this->load->view('survey_view',$displaydata);
+        }
+        $listsurveys .= self::_loadEndScripts();
+        $displaydata['display'] = $listsurveys;
+        //$data['display'] = $editsurvey;
+        $this->load->view('survey_view',$displaydata);
+        
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        
+        
+    }
+    
     function delete()
     {
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
@@ -158,7 +422,7 @@
         
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
-        self::_js_admin_includes(base_url().'application/scripts/surveysettings.js');
+        self::_js_admin_includes(base_url().'scripts/admin/surveysettings.js');
         self::_getAdminHeader();
   		self::_showadminmenu();
         self::_surveybar($surveyid);
@@ -460,7 +724,7 @@
     {
         //global $surveyid;
         
-        self::_js_admin_includes(base_url().'application/scripts/surveysettings.js');
+        self::_js_admin_includes(base_url().'scripts/admin/surveysettings.js');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_getAdminHeader();

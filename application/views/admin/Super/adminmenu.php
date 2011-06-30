@@ -44,7 +44,7 @@
 	    <img src='<?php echo $this->config->item('imageurl');?>/checkdb.png' name='CheckDataIntegrity' alt='<?php echo $clang->gT("Check Data Integrity");?>' /></a>
 		<?php } ?>
 		
-	    <a href="#" onclick="window.open('<?php echo site_url("admin/listsurveys");?>', '_top')" title="<?php echo $clang->gTview("List Surveys");?>" >
+	    <a href="#" onclick="window.open('<?php echo site_url("admin/survey/listsurveys");?>', '_top')" title="<?php echo $clang->gTview("List Surveys");?>" >
 	    <img src='<?php echo $this->config->item('imageurl');?>/surveylist.png' name='ListSurveys' alt='<?php echo $clang->gT("List Surveys");?>' />
 	    </a>
 	    

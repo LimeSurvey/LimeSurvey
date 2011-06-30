@@ -1377,11 +1377,12 @@ function getgrouplistlang($gid, $language)
     return $groupselecter;
 }
 
-/**
+
 function getuserlist($outputformat='fullinfoarray')
 {
-    global $CI;
-    $CI->load->config('lsconfig');
+    $CI =& get_instance();
+    $clang = $CI->limesurvey_lang;
+    $CI->load->helper("database");
     if ($CI->session->userdata('loginID'))
     {
         $myuid=sanitize_int($CI->session->userdata('loginID'));
@@ -1395,9 +1396,9 @@ function getuserlist($outputformat='fullinfoarray')
             // List users from same group as me + all my childs
             // a subselect is used here because MSSQL does not like to group by text
             // also Postgres does like this one better
-            $uquery = " SELECT * FROM ".db_table_name('users')." where uid in
-                        (SELECT u.uid FROM ".db_table_name('users')." AS u,
-                        ".db_table_name('user_in_groups')." AS ga ,".db_table_name('user_in_groups')." AS gb
+            $uquery = " SELECT * FROM ".$CI->db->dbprefix."users where uid in
+                        (SELECT u.uid FROM ".$CI->db->dbprefix."users AS u,
+                        ".$CI->db->dbprefix."user_in_groups AS ga ,".$CI->db->dbprefix."'user_in_groups AS gb
                         WHERE u.uid=$myuid
                         OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) )
                         GROUP BY u.uid)";
@@ -1410,25 +1411,26 @@ function getuserlist($outputformat='fullinfoarray')
     }
     else
     {
-        $uquery = "SELECT * FROM ".db_table_name('users')." ORDER BY uid";
+        $uquery = "SELECT * FROM ".$CI->db->dbprefix."users ORDER BY uid";
     }
 
     $uresult = db_execute_assoc($uquery); //Checked
 
-    if ($uresult->RecordCount()==0)
+    if ($uresult->num_rows()==0)
     //user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
     {
-        $uquery = "SELECT u.* FROM ".db_table_name('users')." AS u WHERE u.uid=".$myuid;
+        $uquery = "SELECT u.* FROM ".$CI->db->dbprefix."'users AS u WHERE u.uid=".$myuid;
         $uresult = db_execute_assoc($uquery);//Checked
     }
 
     $userlist = array();
     $userlist[0] = "Reserved for logged in user";
-    while ($srow = $uresult->FetchRow())
+    //while ($srow = $uresult->result_array())
+    foreach ($uresult->result_array() as $srow)
     {
         if ($outputformat != 'onlyuidarray')
         {
-            if ($srow['uid'] != $_SESSION['loginID'])
+            if ($srow['uid'] != $CI->session->userdata('loginID'))
             {
                 $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);           //added by Dennis modified by Moses
             }
@@ -1439,7 +1441,7 @@ function getuserlist($outputformat='fullinfoarray')
         }
         else
         {
-            if ($srow['uid'] != $_SESSION['loginID'])
+            if ($srow['uid'] != $CI->session->userdata('loginID'))
             {
                 $userlist[] = $srow['uid'];
             }
@@ -1452,7 +1454,7 @@ function getuserlist($outputformat='fullinfoarray')
     }
     return $userlist;
 }
-*/
+
 
 /**
  * Gets all survey infos in one big array including the language specific settings
