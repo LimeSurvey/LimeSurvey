@@ -278,8 +278,8 @@
     		    }
     		    else
     		    {
-    				$listsurveys .= "<td>&nbsp;</td";
-    				$listsurveys .= "<td>&nbsp;</td";
+    				$listsurveys .= "<td>&nbsp;</td>";
+    				$listsurveys .= "<td>&nbsp;</td>";
     		    }
     
     		    $listsurveys .= "</tr>" ;
