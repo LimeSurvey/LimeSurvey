@@ -534,7 +534,7 @@ switch($screenname) {
 		 ,'file_valid_message' => ''
 		 ,'essentials' => 'id="question2"'
 		 ,'class' => 'text-long'
-		 ,'man_class' => 'mandatory'
+		 ,'man_class' => ' mandatory'
 		 ,'input_error_class' => ''
 		 ,'number' => '2'
 		 );
