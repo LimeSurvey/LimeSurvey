@@ -518,7 +518,7 @@ switch($screenname) {
 		         ,'number' => '1'
 		         );
 
-		$answer="<ul><li><input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
+		$answer="<ul><li><input type='radio' class='radio' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radio' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
         $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/question.pstpl"));
 
 	    //	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:");
