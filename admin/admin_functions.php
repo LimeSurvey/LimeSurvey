@@ -336,26 +336,26 @@ function getAdminHeader($meta=false)
         $strAdminHeader.=$meta;
     }
     $strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n";
-    $strAdminHeader.= "<script type=\"text/javascript\" src=\"scripts/tabpane/js/tabpane.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery-ui.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.qtip.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"".$rooturl."/scripts/jquery/jquery.notify.js\"></script>\n"
-    . "<script type=\"text/javascript\" src=\"scripts/admin_core.js\"></script>\n";
+    $strAdminHeader.= "<script type=\"text/javascript\" src=\"{$homeurl}/scripts/tabpane/js/tabpane.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery-ui.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery.qtip.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery.notify.js\"></script>\n"
+    . "<script type=\"text/javascript\" src=\"{$homeurl}/scripts/admin_core.js\"></script>\n";
 
     if ($_SESSION['adminlang']!='en')
     {
-        $strAdminHeader.= "<script type=\"text/javascript\" src=\"../scripts/jquery/locale/jquery.ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
+        $strAdminHeader.= "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/locale/jquery.ui.datepicker-{$_SESSION['adminlang']}.js\"></script>\n";
     }
 
     $strAdminHeader.= "<title>$sitename</title>\n";
 
-    $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"styles/$admintheme/tab.webfx.css \" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"../scripts/jquery/css/start/jquery-ui.css\" />\n"
-    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/$admintheme/printablestyle.css\" media=\"print\" />\n"
+    $strAdminHeader.= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"{$homeurl}//styles/$admintheme/tab.webfx.css \" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"{$rooturl}/scripts/jquery/css/start/jquery-ui.css\" />\n"
+    . "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$homeurl}/styles/$admintheme/printablestyle.css\" media=\"print\" />\n"
     . "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$homeurl}/styles/$admintheme/adminstyle.css\" />\n"
-    . '<link rel="shortcut icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'."\n"
-    . '<link rel="icon" href="'.$homeurl.'/favicon.ico" type="image/x-icon" />'."\n";
+    . "<link rel=\"shortcut icon\" href=\"{$homeurl}/favicon.ico\" type=\"image/x-icon\" />\n"
+    . "<link rel=\"icon\" href=\"{$homeurl}/favicon.ico\" type=\"image/x-icon\" />\n";
 
     if (getLanguageRTL($_SESSION['adminlang']))
     {
