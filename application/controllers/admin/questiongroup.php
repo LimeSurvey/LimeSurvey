@@ -128,6 +128,57 @@
         
     }
     
+    function delete()
+    {
+        $action = $this->input->post("action");
+        $surveyid = $this->input->post("sid");
+        $gid = $this->input->post("gid");
+        $clang = $this->limesurvey_lang;
+        if ($action == "delgroup" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
+        {
+            $this->load->helper('database');
+            if (!isset($gid)) $gid=returnglobal('gid');
+            $query = "SELECT qid FROM ".$this->db->dbprefix."groups g, ".$this->db->dbprefix."questions q WHERE g.gid=q.gid AND g.gid=$gid AND q.parent_qid=0 group by qid";
+            if ($result = db_execute_assoc($query)) // Checked
+            {
+                foreach ($result->result_array() as $row)
+                {
+                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."conditions WHERE qid={$row['qid']}");    // Checked
+                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."question_attributes WHERE qid={$row['qid']}"); // Checked
+                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."answers WHERE qid={$row['qid']}"); // Checked
+                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."questions WHERE qid={$row['qid']} or parent_qid={$row['qid']}"); // Checked
+                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."defaultvalues WHERE qid={$row['qid']}"); // Checked
+                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."quota_members WHERE qid={$qid}");
+                }
+            }
+            $query = "DELETE FROM ".$this->db->dbprefix."assessments WHERE sid=$surveyid AND gid=$gid";
+            $result = db_execute_assoc($query) ; //or safe_die($connect->ErrorMsg());  // Checked
+    
+            $query = "DELETE FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid";
+            $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());  // Checked
+            if ($result)
+            {
+                $gid = "";
+                $groupselect = getgrouplist($gid,$surveyid);
+                fixSortOrderGroups($surveyid);
+                $this->session->set_userdata('flashmessage', $clang->gT("The question group was deleted."));               
+            }
+            else
+            {
+                $databaseoutput = "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\")\n //-->\n</script>\n";
+            }
+            
+            if ($databaseoutput != '')
+            {
+                echo $databaseoutput;
+            }
+            else
+            {
+                redirect(site_url('admin/survey/view/'.$surveyid));
+            }
+        }
+    }
+    
     
     
     

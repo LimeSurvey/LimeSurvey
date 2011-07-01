@@ -1252,9 +1252,12 @@ function getNotificationlist($notificationcode)
  *
  * @return This string is returned containing <option></option> formatted list of groups to current survey
  */
-function getgrouplist($gid)
+function getgrouplist($gid,$surveyid)
 {
-    global $surveyid, $CI, $clang;
+    //global $surveyid, $CI, $clang;
+    $CI =& get_instance();
+    $clang = $CI->limesurvey_lang;
+    $surveyid = $CI->config->item('sid');
     $groupselecter="";
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);

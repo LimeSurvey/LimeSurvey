@@ -310,7 +310,7 @@
 	 * Shows admin menu for surveys
 	 * @param int Survey id
 	 */
-    function _surveybar($surveyid,$gid=null)
+    function _surveybar($surveyid)
     {
     	//$this->load->helper('surveytranslator');
     	$clang = $this->limesurvey_lang;
