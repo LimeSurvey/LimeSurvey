@@ -310,7 +310,7 @@
 	 * Shows admin menu for surveys
 	 * @param int Survey id
 	 */
-    function _surveybar($surveyid)
+    function _surveybar($surveyid,$gid=null)
     {
     	//$this->load->helper('surveytranslator');
     	$clang = $this->limesurvey_lang;
@@ -563,8 +563,9 @@
 	/**
 	 * Show survey summary
 	 * @param int Survey id
+     * @param int Group id
 	 */
-    function _surveysummary($surveyid)
+    function _surveysummary($surveyid,$gid=null)
     {
         $clang = $this->limesurvey_lang;
 		
@@ -765,6 +766,18 @@
             
         }
         */
+        
+        /**if ($gid || $qid || $action=="deactivate"|| $action=="activate" || $action=="surveysecurity"
+        || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity"
+        || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
+        || $action=="editsurveysettings"|| $action=="editsurveylocalesettings" || $action=="updatesurveysettingsandeditlocalesettings" || $action=="addgroup" || $action=="importgroup"
+        || $action=="ordergroups" || $action=="deletesurvey" || $action=="resetsurveylogic"
+        || $action=="importsurveyresources" || $action=="translate"  || $action=="emailtemplates" 
+        || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey") {$showstyle="style='display: none'";}
+        if (!isset($showstyle)) {$showstyle="";} */
+        if ($gid) {$showstyle="style='display: none'";}
+        if (!isset($showstyle)) {$showstyle="";}
+        $data['showstyle'] = $showstyle;
 		$this->load->view("admin/survey/surveysummary",$data);
     }
 }

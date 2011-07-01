@@ -1,4 +1,4 @@
-<table id='surveydetails'>
+<table <?php echo $showstyle; ?> id='surveydetails'>
 	<tr>
 		<td align='right' valign='top' width='15%'>
 			<strong><?php echo $clang->gT("Title");?>:</strong>

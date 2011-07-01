@@ -50,7 +50,7 @@
    			self::_getAdminHeader();
    			self::_showadminmenu();
    			self::_surveybar($surveyid);
-            
+            self::_surveysummary($surveyid,$gid);
    			self::_questiongroupbar($surveyid,$gid,"insertquestiongroup");
             
             self::_loadEndScripts();
@@ -758,8 +758,9 @@
         if ($action == "newsurvey") {
             $esrow = self::_fetchSurveyInfo('newsurvey');
             $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
-        
+            $this->load->helper('admin/htmleditor');
             $editsurvey = PrepareEditorScript();
+            
             $editsurvey .= "";
             $editsurvey .="<script type=\"text/javascript\">
                         standardtemplaterooturl='".$this->config->item('standardtemplaterooturl')."';
