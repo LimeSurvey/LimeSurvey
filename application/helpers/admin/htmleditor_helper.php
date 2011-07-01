@@ -46,11 +46,12 @@ function PrepareEditorScript($load=false)
     
     if ($load == false)
     {
-        return $this->load->view('admin/prepareEditorScript_view',$data,true);
+        
+        return $CI->load->view('admin/Survey/prepareEditorScript_view',$data,true);
     }
     else
     {
-        $this->load->view('admin/prepareEditorScript_view',$data);
+        $CI->load->view('admin/Survey/prepareEditorScript_view',$data);
     }
 }
 
