@@ -22,7 +22,7 @@
             <?php if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
                  <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt=''  />
-                <a href="#" onclick="window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid','_top')"
+                <a href="#" onclick="window.open('<?php echo site_url('admin/questiongroup/edit/'.$surveyid.'/'.$gid); ?>','_top')"
                  title="<?php echo $clang->gTview("Edit current question group"); ?>">
                 <img src='<?php echo $this->config->item('imageurl'); ?>/edit.png' alt='<?php echo $clang->gT("Edit current question group"); ?>' name='EditGroup' /></a>
             <?php } ?>

@@ -19,7 +19,7 @@ class Database extends AdminController {
         $postqaid=returnglobal('qaid');
         $databaseoutput = '';
         $surveyid = $this->input->post("sid");
-        
+        $gid = $this->input->post("gid");
         if (!$action)
         {
             $action = $this->input->post("action");           
@@ -126,6 +126,77 @@ class Database extends AdminController {
                 redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid));
             }
             
+        }
+        
+        
+        if ($action == "updategroup" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
+        {
+            $this->load->helper('surveytranslator');
+            $this->load->helper('database');
+            
+            $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            array_push($grplangs,$baselang);
+            //require_once("../classes/inputfilter/class.inputfilter_clean.php");
+            //$myFilter = new InputFilter('','',1,1,1);
+            foreach ($grplangs as $grplang)
+            {
+                if (isset($grplang) && $grplang != "")
+                {
+                    /**if ($filterxsshtml)
+                    {
+                        $_POST['group_name_'.$grplang]=$myFilter->process($_POST['group_name_'.$grplang]);
+                        $_POST['description_'.$grplang]=$myFilter->process($_POST['description_'.$grplang]);
+                    }
+                    else
+                    {
+                        $_POST['group_name_'.$grplang] = html_entity_decode($_POST['group_name_'.$grplang], ENT_QUOTES, "UTF-8");
+                        $_POST['description_'.$grplang] = html_entity_decode($_POST['description_'.$grplang], ENT_QUOTES, "UTF-8");
+                    } */
+    
+                    // Fix bug with FCKEditor saving strange BR types
+                    $group_name = $this->input->post('group_name_'.$grplang);       
+                    $group_description = $this->input->post('description_'.$grplang); 
+                    
+                    $group_name=fix_FCKeditor_text($group_name);
+                    $group_description=fix_FCKeditor_text($group_description);
+    
+                    // don't use array_map db_quote on POST
+                    // since this is iterated for each language
+                    //$_POST  = array_map('db_quote', $_POST);
+                    $data = array (
+                            'group_name' => $group_name,
+                            'description' => $group_description
+                        );
+                    $condition = array (
+                        'gid' => $gid,
+                        'sid' => $surveyid,
+                        'language' => $grplang
+                    );
+                    $this->load->model('groups_model');
+                    //$ugquery = "UPDATE ".db_table_name('groups')." SET group_name='".db_quote($group_name)."', description='".db_quote($group_description)."' WHERE sid=".db_quote($surveyid)." AND gid=".db_quote($gid)." AND language='{$grplang}'";
+                    $ugresult = $this->groups_model->update($data,$condition); //$connect->Execute($ugquery);  // Checked
+                    if ($ugresult)
+                    {
+                        $groupsummary = getgrouplist($gid,$surveyid);
+                    }
+                    else
+                    {
+                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be updated","js")."\")\n //-->\n</script>\n";
+                        
+                    }
+                }
+            }
+            $this->session->set_userdata('flashmessage', $clang->gT("Question group successfully saved."));
+            
+            if ($databaseoutput != '')
+            {
+                echo $databaseoutput;
+            }
+            else
+            {
+                redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid));
+            }
         } 
         
         if ($action == "insertsurvey" && $this->session->userdata('USER_RIGHT_CREATE_SURVEY'))
