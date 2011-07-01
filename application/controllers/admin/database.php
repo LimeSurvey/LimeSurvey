@@ -8,7 +8,7 @@ class Database extends AdminController {
 		parent::__construct();
 	}
     
-    function index($action)
+    function index($action=null)
     {
         
         //global $clang;
@@ -19,7 +19,115 @@ class Database extends AdminController {
         $postqaid=returnglobal('qaid');
         $databaseoutput = '';
         $surveyid = $this->input->post("sid");
-
+        
+        if (!$action)
+        {
+            $action = $this->input->post("action");           
+        }
+        
+        if ($action == "insertquestiongroup" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
+        {
+            
+            $this->load->helper('surveytranslator');
+            $this->load->helper('database');
+            $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $grplangs[] = $baselang;
+            $errorstring = '';
+            foreach ($grplangs as $grouplang)
+            {
+                if (!$this->input->post('group_name_'.$grouplang)) { $errorstring.= GetLanguageNameFromCode($grouplang,false)."\\n";}
+            }
+            if ($errorstring!='')
+            {
+                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be added.\\n\\nIt is missing the group name for the following languages","js").":\\n".$errorstring."\")\n //-->\n</script>\n";
+            }
+    
+            else
+            {
+                $first=true;
+                /**require_once("../classes/inputfilter/class.inputfilter_clean.php");
+                $myFilter = new InputFilter('','',1,1,1);
+                */
+                foreach ($grplangs as $grouplang)
+                {
+                    //Clean XSS
+                    /**if ($filterxsshtml)
+                    {
+                        $_POST['group_name_'.$grouplang]=$myFilter->process($_POST['group_name_'.$grouplang]);
+                        $_POST['description_'.$grouplang]=$myFilter->process($_POST['description_'.$grouplang]);
+                    }
+                    else
+                    {
+                        $_POST['group_name_'.$grouplang] = html_entity_decode($_POST['group_name_'.$grouplang], ENT_QUOTES, "UTF-8");
+                        $_POST['description_'.$grouplang] = html_entity_decode($_POST['description_'.$grouplang], ENT_QUOTES, "UTF-8");
+                    } */
+                    
+                    $group_name = $this->input->post('group_name_'.$grouplang);       
+                    $group_description = $this->input->post('description_'.$grouplang);             
+                    
+                    // Fix bug with FCKEditor saving strange BR types
+                    $group_name=fix_FCKeditor_text($group_name);
+                    $group_description=fix_FCKeditor_text($group_description);
+    
+    
+                    if ($first)
+                    {
+                        $data = array (
+                            'sid' => $surveyid,
+                            'group_name' => $group_name,
+                            'description' => $group_description,
+                            'group_order' => getMaxgrouporder($surveyid),
+                            'language' => $grouplang
+                        
+                        );
+                        $this->load->model('groups_model');
+                        
+                        //$query = "INSERT INTO ".db_table_name('groups')." (sid, group_name, description,group_order,language) VALUES ('".db_quote($postsid)."', '".db_quote($group_name)."', '".db_quote($group_description)."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
+                        $result = $this->groups_model->insertRecords($data); //$connect->Execute($query); // Checked)
+                        $groupid=$this->db->insert_id(); //$connect->Insert_Id(db_table_name_nq('groups'),"gid");
+                        $first=false;
+                        
+                    }
+                    else{
+                        db_switchIDInsert('groups',true);
+                        $data = array (
+                            'gid' => $groupid,
+                            'sid' => $surveyid,
+                            'group_name' => $group_name,
+                            'description' => $group_description,
+                            'group_order' => getMaxgrouporder($surveyid),
+                            'language' => $grouplang
+                        
+                        );
+                        //$query = "INSERT INTO ".db_table_name('groups')." (gid, sid, group_name, description,group_order,language) VALUES ('{$groupid}','".db_quote($postsid)."', '".db_quote($group_name)."', '".db_quote($group_description)."',".getMaxgrouporder(returnglobal('sid')).",'{$grouplang}')";
+                        $result = $this->groups_model->insertRecords($data); //$connect->Execute($query) or safe_die("Error<br />".$query."<br />".$connect->ErrorMsg());   // Checked
+                        db_switchIDInsert('groups',false);
+                    }
+                    if (!$result)
+                    {
+                        $databaseoutput .= $clang->gT("Error: The database reported an error while executing INSERT query in addgroup action in database.php:")."<br />\n";
+                        
+                        $databaseoutput .= "</body>\n</html>";
+                        //exit;
+                    }
+                }
+                // This line sets the newly inserted group as the new group
+                if (isset($groupid)){$gid=$groupid;}
+                $this->session->set_userdata('flashmessage', $clang->gT("New question group was saved."));
+    
+            }
+            if ($databaseoutput != '')
+            {
+                echo $databaseoutput;
+            }
+            else
+            {
+                redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid));
+            }
+            
+        } 
+        
         if ($action == "insertsurvey" && $this->session->userdata('USER_RIGHT_CREATE_SURVEY'))
         {
             

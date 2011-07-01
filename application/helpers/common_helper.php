@@ -597,8 +597,8 @@ function getQuestions($surveyid,$gid,$selectedqid)
     $clang = $CI->limesurvey_lang;
     $CI->load->config('lsconfig');
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('questions');
-    $qresult = $CI->questions->getQuestions($surveyid,$gid,$s_lang);
+    $CI->load->model('questions_model');
+    $qresult = $CI->questions_model->getQuestions($surveyid,$gid,$s_lang);
     $qrows = $qresult->result_array();
 
     if (!isset($questionselecter)) {$questionselecter="";}
@@ -682,9 +682,9 @@ function getQidPrevious($surveyid, $gid, $qid)
     $CI =& get_instance();
     $clang =  $CI->limesurvey_lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('questions');
+    $CI->load->model('questions_model');
     //$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
-    $qresult = $CI->questions->getQuestions($surveyid,$gid,$s_lang); //checked
+    $qresult = $CI->questions_model->getQuestions($surveyid,$gid,$s_lang); //checked
     $qrows = $qresult->result_array();
 
     $i = 0;
@@ -749,16 +749,18 @@ function getGidNext($surveyid, $gid)
  */
 function getQidNext($surveyid, $gid, $qid)
 {
-    global $CI, $clang;
+    //global $CI, $clang;
+    $CI= &get_instance();
+    $clang = $CI->limesurvey_lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('questions');
+    $CI->load->model('questions_model');
     //$qquery = 'SELECT qid FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
-    $qresult = $CI->questions->getQuestionID($surveyid,$gid,$s_lang); //checked)
+    $qresult = $CI->questions_model->getQuestionID($surveyid,$gid,$s_lang); //checked)
     $qrows = $qresult->result_array();
-
+    
     $i = 0;
     $iNext = 1;
-    if ($qrows->num_rows() > 0)
+    if ($qresult->num_rows() > 0)
     {
         foreach ($qrows as $qrow)
         {
@@ -821,12 +823,18 @@ function getGroupSum($surveyid, $lang)
  */
 function getQuestionSum($surveyid, $groupid)
 {
-    global $surveyid,$CI ;
+    //global $surveyid,$CI ;
+    $CI= &get_instance();
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('questions');
-    $condn = "WHERE gid=$groupid and sid=$surveyid AND language='{$s_lang}'"; //Getting a count of questions for this survey
+    $CI->load->model('questions_model');
+    //$condn = "WHERE gid=$groupid and sid=$surveyid AND language='{$s_lang}'"; //Getting a count of questions for this survey
+    $condn = array(
+        'gid' => $groupid,
+        'sid' => $surveyid,
+        'language' => $s_lang
     
-    $sumresult3 = $CI->questions->getAllRecords($condn); //Checked
+    );
+    $sumresult3 = $CI->questions_model->getAllRecords($condn); //Checked
     $questionscount = $sumresult3->num_rows();
     return $questionscount ;
 }
@@ -840,7 +848,7 @@ function getQuestionSum($surveyid, $groupid)
  */
 function getMaxgrouporder($surveyid)
 {
-    global $surveyid, $CI ;
+    global $CI ; //$surveyid, 
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('groups_model');
     //$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
@@ -890,10 +898,10 @@ function getMaxquestionorder($gid)
     global $surveyid ,$CI;
     $gid=sanitize_int($gid);
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('questions');
+    $CI->load->model('questions_model');
     //$max_sql = "SELECT max( question_order ) AS max FROM ".db_table_name('questions')." WHERE gid='$gid' AND language='$s_lang'";
 
-    $max_result =$CI->questions->getMaximumQuestionOrder($gid,$s_lang); ; //Checked
+    $max_result =$CI->questions_model->getMaximumQuestionOrder($gid,$s_lang); ; //Checked
     $maxrow = $max_result->row_array() ;
     $current_max = $maxrow['max'];
     if($current_max=="")
@@ -1344,9 +1352,9 @@ function getgroupname($gid)
  * @param mixed $gid
  * @param mixed $language
  */
-function getgrouplistlang($gid, $language)
+function getgrouplistlang($gid, $language,$surveyid)
 {
-    global $surveyid;
+    //global $surveyid;
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
     
@@ -1360,7 +1368,8 @@ function getgrouplistlang($gid, $language)
     {
         $groupselecter .= "<option";
         if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-        $groupselecter .= " value='".$CI->config->item('scriptname')."?sid=$surveyid&amp;gid=".$gv['gid']."'>";
+        $link = site_url("admin/survey/view/".$surveyid."/".$gv['gid']);
+        $groupselecter .= " value='{$link}'>";
         if (strip_tags($gv['group_name']))
         {
             $groupselecter .= htmlspecialchars(strip_tags($gv['group_name']));
@@ -1643,8 +1652,8 @@ function fixsortorderAnswers($qid) //Function rewrites the sortorder for a group
     $qid=sanitize_int($qid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     
-    $CI->load->model('answers');
-    $CI->answers->updateSortOrder($qid,$baselang);
+    $CI->load->model('answers_model');
+    $CI->answers_model->updateSortOrder($qid,$baselang);
     //$cdresult = db_execute_num("SELECT qid, code, sortorder FROM ".db_table_name('answers')." WHERE qid={$qid} and language='{$baselang}' ORDER BY sortorder"); //Checked
     //$position=0;
     //while ($cdrow=$cdresult->FetchRow())
@@ -1668,8 +1677,8 @@ function fixsortorderQuestions($groupid, $surveyid) //Function rewrites the sort
     $surveyid = sanitize_int($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     
-    $CI->load->model('questions');
-    $CI->questions->updateQuestionOrder($gid,$baselang);
+    $CI->load->model('questions_model');
+    $CI->questions_model->updateQuestionOrder($gid,$baselang);
     //$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' and language='{$baselang}' ORDER BY question_order, title ASC");      //Checked
     //$position=0;
     //while ($cdrow=$cdresult->FetchRow())
@@ -1690,8 +1699,8 @@ function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortor
 
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     
-    $CI->load->model('questions');
-    $CI->questions->updateQuestionOrder($gid,$baselang,$shiftvalue);
+    $CI->load->model('questions_model');
+    $CI->questions_model->updateQuestionOrder($gid,$baselang,$shiftvalue);
     
     //$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' and language='{$baselang}' ORDER BY question_order, title ASC"); //Checked
     //$position=$shiftvalue;
@@ -1725,8 +1734,8 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
     $qid=sanitize_int($qid);
     $oldgid=sanitize_int($oldgid);
     $newgid=sanitize_int($newgid);
-    $CI->load->model('conditions');
-    $CI->conditions->updateCFieldName($surveyid,$qid,$oldgid,$newgid);
+    $CI->load->model('conditions_model');
+    $CI->conditions_model->updateCFieldName($surveyid,$qid,$oldgid,$newgid);
    
 }
 
@@ -1840,8 +1849,8 @@ function getsidgidqidaidtype($fieldcode)
         $s_lang = GetBaseLanguageFromSurveyID($fsid);
         $fieldtoselect = array('type');
         $condition = "WHERE qid=".$fqid." AND language='".$s_lang."'";
-        $CI->load->model('questions');
-        $result = $CI->questions->getSomeRecords($fieldtoselect,$condition);
+        $CI->load->model('questions_model');
+        $result = $CI->questions_model->getSomeRecords($fieldtoselect,$condition);
         //$result = db_execute_assoc($query) or safe_die ("Couldn't get question type - getsidgidqidaidtype() in common.php<br />".$connect->ErrorMsg()); //Checked
         if ( $result->num_rows() == 0 )
         { // question doesn't exist
@@ -3758,9 +3767,9 @@ function getQuestionAttributes($qid, $type='')
     }
     if ($type=='')  // If type is not given find it out
     {
-        $CI->load->model('questions');
+        $CI->load->model('questions_model');
         //$query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid and parent_qid=0 group by type";
-        $result = $CI->questions->getQuestionType($qid) or safe_die("Error finding question attributes");  //Checked
+        $result = $CI->questions_model->getQuestionType($qid) or safe_die("Error finding question attributes");  //Checked
         $row=$result->row_array();
         if ($row===false) // Question was deleted while running the survey
         {
@@ -6384,8 +6393,8 @@ function getSubQuestions($sid, $qid, $sLanguage) {
 	            ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
 	    $result=db_execute_assoc($query) or safe_die ("Couldn't get perform answers query<br />$query<br />".$connect->ErrorMsg());    //Checked
         */
-        $CI->load->model('questions');
-    	$query = $CI->questions->getSubQuestions($sid,$sLanguage);
+        $CI->load->model('questions_model');
+    	$query = $CI->questions_model->getSubQuestions($sid,$sLanguage);
         $resultset=array();
 	    //while ($row=$result->FetchRow())
 		foreach ($query->result_array() as $row)
@@ -6734,10 +6743,10 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
 
     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());    //Checked
 	 */
-	$CI->load->model('questions');
-	$CI->load->model('quota');
-	$CI->load->model('quota_members');
-    $result = $CI->quota->getQuotaInformation($surveyid,$language,$quotaid);
+	$CI->load->model('questions_model');
+	$CI->load->model('quota_model');
+	$CI->load->model('quota_members_model');
+    $result = $CI->quota_model->getQuotaInformation($surveyid,$language,$quotaid);
     $quota_info = array();
     $x=0;
 
@@ -6765,7 +6774,7 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
                                          'AutoloadUrl' => $survey_quotas['autoload_url']));
             //$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
             //$result_qe = db_execute_assoc($query) or safe_die($connect->ErrorMsg());      //Checked
-            $result_qe = $CI->quota_members->getAllRecords(array('quota_id'=>$survey_quotas['id']));
+            $result_qe = $CI->quota_members_model->getAllRecords(array('quota_id'=>$survey_quotas['id']));
             $quota_info[$x]['members'] = array();
 			if ($result_qe->num_rows() > 0)
             //if ($result_qe->RecordCount() > 0)
@@ -6776,7 +6785,7 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
                     //$query = "SELECT type, title,gid FROM ".db_table_name('questions')." WHERE qid='{$quota_entry['qid']}' AND language='{$baselang}'";
                     //$result_quest = db_execute_assoc($query) or safe_die($connect->ErrorMsg());     //Checked
                     //$qtype = $result_quest->FetchRow();
-                    $result_quest=$CI->questions->getSomeRecords("type, title, gid",array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
+                    $result_quest=$CI->questions_model->getSomeRecords("type, title, gid",array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
                     $qtype=$result_quest->row_array();
                     
                     $fieldnames = "0";
@@ -6846,9 +6855,9 @@ function checkquestionfordisplay($qid, $gid=null)
     /*$scenarioquery = "SELECT DISTINCT scenario FROM ".db_table_name("conditions")
     ." WHERE ".db_table_name("conditions").".qid=$qid ORDER BY scenario";
     $scenarioresult=db_execute_assoc($scenarioquery);*/
-	$CI->load->model('conditions');
-	$CI->load->model('questions');
-    $query = $CI->conditions->getScenarios($qid);
+	$CI->load->model('conditions_model');
+	$CI->load->model('questions_model');
+    $query = $CI->conditions_model->getScenarios($qid);
 
     //if ($scenarioresult->RecordCount() == 0)
     if($query->num_rows() == 0)
@@ -6865,7 +6874,7 @@ function checkquestionfordisplay($qid, $gid=null)
         ."WHERE qid=$qid AND scenario=$scenario ORDER BY cqid,cfieldname";
         $result = db_execute_assoc($query) or safe_die("Couldn't check conditions<br />$query<br />".$connect->ErrorMsg());   //Checked
 		 */
-		$subquery = $CI->conditions->getAllRecords(array('qid'=>$qid,'scenario'=>$scenario),"cqid,cfieldname");
+		$subquery = $CI->conditions_model->getAllRecords(array('qid'=>$qid,'scenario'=>$scenario),"cqid,cfieldname");
 
         $conditionsfoundforthisscenario=0;
 		foreach ($subquery->result_array() as $row)
@@ -7308,11 +7317,11 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
     } // end while qentry
 
 
-    $CI->load->model('questions');
+    $CI->load->model('questions_model');
     # translate 'question' and 'help' INSERTANS tags in questions
     //$sql = "SELECT qid, language, question, help from {$dbprefix}questions WHERE sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')";
     //$res = db_execute_assoc($sql) or safe_die("Can't read question table in transInsertAns ".$connect->ErrorMsg());     // Checked
-	$result=$CI->questions->getSomeRecords("qid, language, question, help","sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')");
+	$result=$CI->questions_model->getSomeRecords("qid, language, question, help","sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')");
 
     //while ($qentry = $res->FetchRow())
 	foreach ($result->result_array() as $qentry)
@@ -7576,7 +7585,7 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
     
     $qidresult = db_execute_assoc($query);    //Checked
     
-    while ($qrow =  $qidresult->result_array())
+    foreach ($qidresult->result_array() as $qrow)
     {
         
         $myqid = $qrow['qid'];
@@ -7625,7 +7634,7 @@ function FixLanguageConsistency($sid, $availlangs='')
     if ($result->num_rows() > 0)
     {
         $CI->load->model('groups_model');
-        while($group = $result->result_array())
+        foreach($result->result_array() as $group)
         {
             foreach ($langs as $lang)
             {   
@@ -7660,7 +7669,7 @@ function FixLanguageConsistency($sid, $availlangs='')
     if ($result->num_rows() > 0)
     {
         $CI->load->model('questions_model');
-        while($question = $result->result_array())
+        foreach($result->result_array() as $question)
         {
             array_push($quests,$question['qid']);
             foreach ($langs as $lang)
@@ -7705,7 +7714,7 @@ function FixLanguageConsistency($sid, $availlangs='')
         if ($result->num_rows() > 0)
         {
             $CI->load->model('answers_model');
-            while($answer = $result->result_array())
+            foreach($result->result_array() as $answer)
             {
                 foreach ($langs as $lang)
                 {
@@ -7741,7 +7750,7 @@ function FixLanguageConsistency($sid, $availlangs='')
     if ($result->num_rows() > 0)
     {
         $CI->load->model('assessments_model');
-        while($assessment = $result->result_array())
+        foreach($result->result_array() as $assessment)
         {
             foreach ($langs as $lang)
             {
@@ -7786,6 +7795,7 @@ function db_switchIDInsert($table,$state)
 {
     //global $databasetype, $connect;
     $CI =& get_instance();
+    $CI->load->helper('database');
     if ($CI->db->dbdriver =='odbc_mssql' || $CI->db->dbdriver =='odbtp' || $CI->db->dbdriver =='mssql_n' || $CI->db->dbdriver =='mssqlnative')
     {
         if ($state==true)
@@ -7799,6 +7809,127 @@ function db_switchIDInsert($table,$state)
             db_execute_assoc('SET IDENTITY_INSERT '.$CI->db->dbprefix.$table.' OFF');
         }
     }
+}
+
+/**
+ * GetGroupDepsForConditions() get Dependencies between groups caused by conditions
+ * @param string $sid - the currently selected survey
+ * @param string $depgid - (optionnal) get only the dependencies applying to the group with gid depgid
+ * @param string $targgid - (optionnal) get only the dependencies for groups dependents on group targgid
+ * @param string $index-by - (optionnal) "by-depgid" for result indexed with $res[$depgid][$targgid]
+ *                   "by-targgid" for result indexed with $res[$targgid][$depgid]
+ * @return array - returns an array describing the conditions or NULL if no dependecy is found
+ *
+ * Example outupt assumin $index-by="by-depgid":
+ *Array
+ *(
+ *    [125] => Array             // Group Id 125 is dependent on
+ *        (
+ *            [123] => Array         // Group Id 123
+ *                (
+ *                    [depgpname] => G3      // GID-125 has name G3
+ *                    [targetgpname] => G1   // GID-123 has name G1
+ *                    [conditions] => Array
+ *                        (
+ *                            [189] => Array // Because Question Id 189
+ *                                (
+ *                                    [0] => 9   // Have condition 9 set
+ *                                    [1] => 10  // and condition 10 set
+ *                                    [2] => 14  // and condition 14 set
+ *                                )
+ *
+ *                        )
+ *
+ *                )
+ *
+ *            [124] => Array         // GID 125 is also dependent on GID 124
+ *                (
+ *                    [depgpname] => G3
+ *                    [targetgpname] => G2
+ *                    [conditions] => Array
+ *                        (
+ *                            [189] => Array // Because Question Id 189 have conditions set
+ *                                (
+ *                                    [0] => 11
+ *                                )
+ *
+ *                            [215] => Array // And because Question Id 215 have conditions set
+ *                                (
+ *                                    [0] => 12
+ *                                )
+ *
+ *                        )
+ *
+ *                )
+ *
+ *        )
+ *
+ *)
+ *
+ * Usage example:
+ *   * Get all group dependencies for SID $sid indexed by depgid:
+ *       $result=GetGroupDepsForConditions($sid);
+ *   * Get all group dependencies for GID $gid in survey $sid indexed by depgid:
+ *       $result=GetGroupDepsForConditions($sid,$gid);
+ *   * Get all group dependents on group $gid in survey $sid indexed by targgid:
+ *       $result=GetGroupDepsForConditions($sid,"all",$gid,"by-targgid");
+ */
+function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="by-depgid")
+{
+    //global $connect, $clang;
+    $CI =& get_instance();
+    $CI->load->helper('database');
+    $sid=sanitize_int($sid);
+    $condarray = Array();
+    $CI->load->helper('database');
+    $sqldepgid="";
+    $sqltarggid="";
+    if ($depgid != "all") { $depgid = sanitize_int($depgid); $sqldepgid="AND tq.gid=$depgid";}
+    if ($targgid != "all") {$targgid = sanitize_int($targgid); $sqltarggid="AND tq2.gid=$targgid";}
+
+    $baselang = GetBaseLanguageFromSurveyID($sid);
+    $condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
+    . "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
+    . $CI->db->dbprefix."conditions AS tc, "
+    . $CI->db->dbprefix."questions AS tq, "
+    . $CI->db->dbprefix."questions AS tq2, "
+    . $CI->db->dbprefix."groups AS tg ,"
+    . $CI->db->dbprefix."groups AS tg2 "
+    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
+    . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
+    . "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
+    $condresult=db_execute_assoc($condquery);// or safe_die($connect->ErrorMsg());   //Checked
+
+    if ($condresult->num_rows() > 0) {
+        foreach ($condresult->result_array() as $condrow)
+        {
+
+            switch ($indexby)
+            {
+                case "by-depgid":
+                    $depgid=$condrow['depgid'];
+                    $targetgid=$condrow['targgid'];
+                    $depqid=$condrow['depqid'];
+                    $cid=$condrow['cid'];
+                    $condarray[$depgid][$targetgid]['depgpname'] = $condrow['depgpname'];
+                    $condarray[$depgid][$targetgid]['targetgpname'] = $condrow['targgpname'];
+                    $condarray[$depgid][$targetgid]['conditions'][$depqid][]=$cid;
+                    break;
+
+                case "by-targgid":
+                    $depgid=$condrow['depgid'];
+                    $targetgid=$condrow['targgid'];
+                    $depqid=$condrow['depqid'];
+                    $cid=$condrow['cid'];
+                    $condarray[$targetgid][$depgid]['depgpname'] = $condrow['depgpname'];
+                    $condarray[$targetgid][$depgid]['targetgpname'] = $condrow['targgpname'];
+                    $condarray[$targetgid][$depgid]['conditions'][$depqid][] = $cid;
+                    break;
+            }
+        }
+        return $condarray;
+    }
+    return null;
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

@@ -197,7 +197,7 @@
         <span class='arrow-wrapper'> 
         <?php if ($GidPrev != "")
         { ?>
-            <a href='<?php echo site_url("admin/index/index/$surveyid/$GidPrev"); ?>'>
+            <a href='<?php echo site_url("admin/survey/view/$surveyid/$GidPrev"); ?>'>
             <img src='<?php echo $this->config->item('imageurl'); ?>/previous_20.png' title='' alt='<?php echo $clang->gT("Previous question group"); ?>'
             name='questiongroupprevious' <?php echo $clang->gT("Previous question group"); ?>/> </a>
         <?php }
@@ -213,7 +213,7 @@
         { ?>
           
            
-            <a href='<?php echo site_url("admin/index/index/$surveyid/$GidNext"); ?>'>
+            <a href='<?php echo site_url("admin/survey/view/$surveyid/$GidNext"); ?>'>
             <img src='<?php echo $this->config->item('imageurl'); ?>/next_20.png' title='' alt='<?php echo $clang->gT("Next question group"); ?>'
             name='questiongroupnext' /> </a>
         <?php }
@@ -239,7 +239,7 @@
             else
             { ?>
                 
-                 <a href="#" onclick="window.open('<?php echo site_url("admin/addgroup/index/$surveyid"); ?>', '_top')"
+                 <a href="#" onclick="window.open('<?php echo site_url("admin/questiongroup/add/$surveyid"); ?>', '_top')"
                  title="<?php echo $clang->gTview("Add new group to survey"); ?>">
                  <img src='<?php echo $this->config->item('imageurl'); ?>/add.png' alt='<?php echo $clang->gT("Add new group to survey"); ?>' name='AddNewGroup' /></a>
             <?php }

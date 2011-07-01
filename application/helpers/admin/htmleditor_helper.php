@@ -33,73 +33,25 @@ function sTranslateLangCode2CK($sLanguageCode){
 }
 
 
-function PrepareEditorScript()
+function PrepareEditorScript($load=false)
 {
     //global $clang; //, $imageurl, $homeurl, $js_admin_includes;
     //global $this->config->item['sCKEditorURL'];
     $CI =& get_instance();
     $js_admin_includes = $CI->config->item("js_admin_includes");
     $clang = $CI->limesurvey_lang;
-    
+    $data['clang'] = $clang;
     $js_admin_includes[]=$CI->config->item('sCKEditorURL').'/ckeditor.js';
     $CI->config->set_item("js_admin_includes", $js_admin_includes);
-    $script  = "<script type=\"text/javascript\" src =\"".$CI->config->item('sCKEditorURL')."/ckeditor.js\" >"
-    . "<script type='text/javascript'>\n"
-    . "<!--\n"
-    . "var editorwindowsHash = new Object();\n"
-    . "function find_popup_editor(fieldname)\n"
-    . "\t{\t\n"
-    . "var window = null;\n"
-    . "for (var key in editorwindowsHash)\n"
-    . "{\n"
-    . "\tif (key==fieldname && !editorwindowsHash[key].closed)\n"
-    . "\t{\n"
-    . "window = editorwindowsHash[key];\n"
-    . "return window;\n"
-    . "\t}\n"
-    . "}\n"
-    . "\treturn null;\n"
-    . "\t}\t\n"
-    . "\n"
-    . "function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)\n"
-    . "\t{\t\n"
-    . "controlidena = fieldname + '_popupctrlena';\n"
-    . "controliddis = fieldname + '_popupctrldis';\n"
-    . "numwindows = editorwindowsHash.length;\n"
-    . "activepopup = find_popup_editor(fieldname);\n"
-    . "if (activepopup == null)\n"
-    . "{\n"
-    . "\tdocument.getElementsByName(fieldname)[0].readOnly=true;\n"
-    . "\tdocument.getElementsByName(fieldname)[0].className='readonly';\n"
-    . "\tdocument.getElementById(controlidena).style.display='none';\n"
-    . "\tdocument.getElementById(controliddis).style.display='';\n"
-    . "\tpopup = window.open('".$CI->config->item('homeurl')."/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang=".$clang->getlangcode()."','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');\n"
-    . "\teditorwindowsHash[fieldname] = popup;\n"
-    . "}\n"
-    . "else\n"
-    . "{\n"
-    . "\tactivepopup.focus();\n"
-    . "}\n"
-    . "\t}\n"
-    . "\n"
-    . "function updateCKeditor(fieldname,value)\n"
-    . "{\t\n"
-    . "\tvar mypopup= editorwindowsHash[fieldname];\n"
-    . "\tif (mypopup)\n"
-    . "\t{\n"
-    . "\t\tvar oMyEditor = mypopup.CKEDITOR.instances['MyTextarea'];\n"
-    . "\t\tif (oMyEditor) {oMyEditor.setData(value);}\n"
-    . "\t\tmypopup.focus();\n"
-    . "\t}\n"
-    . "\telse\n"
-    . "\t{\n"
-    . "\t\tvar oMyEditor = CKEDITOR.instances[fieldname];\n"
-    . "\t\toMyEditor.setData(value);\n"
-    . "\t}\n"
-    . "}\n"
-    . "--></script>\n";
-
-    return $script;
+    
+    if ($load == false)
+    {
+        return $this->load->view('admin/prepareEditorScript_view',$data,true);
+    }
+    else
+    {
+        $this->load->view('admin/prepareEditorScript_view',$data);
+    }
 }
 
 function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)

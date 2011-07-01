@@ -31,6 +31,280 @@
 	{
 		parent::__construct();
 	}
+    
+    /**
+	 * Shows admin menu for question groups
+	 * @param int Survey id
+     * @param int Group id
+	 */
+    function _questiongroupbar($surveyid,$gid,$action)
+    {
+        $clang = $this->limesurvey_lang;
+        $this->load->helper('database');
+        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        
+        // TODO: check that surveyid and thus baselang are always set here
+        $sumquery4 = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND
+    	gid=$gid AND language='".$baselang."'"; //Getting a count of questions for this survey
+        $sumresult4 = db_execute_assoc($sumquery4); //Checked
+        $sumcount4 = $sumresult4->num_rows();
+        $grpquery ="SELECT * FROM ".$this->db->dbprefix."groups WHERE gid=$gid AND
+    	language='".$baselang."' ORDER BY ".$this->db->dbprefix."groups.group_order";
+        $grpresult = db_execute_assoc($grpquery); //Checked
+        
+        // Check if other questions/groups are dependent upon this group
+        $condarray=GetGroupDepsForConditions($surveyid,"all",$gid,"by-targgid");
+    
+        $groupsummary = "<div class='menubar'>\n"
+        . "<div class='menubar-title ui-widget-header'>\n";
+        
+        foreach ($grpresult->result_array() as $grow)
+        {
+            $grow = array_map('FlattenText', $grow);
+            $data = array();
+            
+            /**$groupsummary .= '<strong>'.$clang->gT("Question group").'</strong>&nbsp;'
+            . "<span class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</span>\n"
+            . "</div>\n"
+            . "<div class='menubar-main'>\n"
+            . "<div class='menubar-left'>\n";
+    
+    
+    //        // CREATE BLANK SPACE FOR IMAGINARY BUTTONS
+    //
+    //
+            $groupsummary .= ""
+            . "<img src='$imageurl/blank.gif' alt='' width='54' height='20'  />\n";
+    
+            if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+            {
+                $groupsummary .=  "<img src='$imageurl/seperator.gif' alt=''  />\n"
+                . "<a href=\"#\" onclick=\"window.open('$scriptname?action=previewgroup&amp;sid=$surveyid&amp;gid=$gid','_blank')\""
+                . " title=\"".$clang->gTview("Preview current question group")."\">"
+                . "<img src='$imageurl/preview.png' alt='".$clang->gT("Preview current question group")."' name='PreviewGroup' /></a>\n" ;
+            }
+            else{
+                $groupsummary .=  "<img src='$imageurl/seperator.gif' alt=''  />\n";
+            }
+    
+    
+    
+            // EDIT CURRENT QUESTION GROUP BUTTON
+    
+            if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+            {
+                $groupsummary .=  "<img src='$imageurl/seperator.gif' alt=''  />\n"
+                . "<a href=\"#\" onclick=\"window.open('$scriptname?action=editgroup&amp;sid=$surveyid&amp;gid=$gid','_top')\""
+                . " title=\"".$clang->gTview("Edit current question group")."\">"
+                . "<img src='$imageurl/edit.png' alt='".$clang->gT("Edit current question group")."' name='EditGroup' /></a>\n" ;
+            }
+    
+    
+            // DELETE CURRENT QUESTION GROUP BUTTON
+    
+            if (bHasSurveyPermission($surveyid,'surveycontent','delete'))
+            {
+                if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y"))
+                {
+                    if (is_null($condarray))
+                    {
+                        //				$groupsummary .= "<a href='$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid' onclick=\"return confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")."')\""
+                        $groupsummary .= "<a href='#' onclick=\"if (confirm('".$clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid")."}\""
+                        . " title=\"".$clang->gTview("Delete current question group")."\">"
+                        . "<img src='$imageurl/delete.png' alt='".$clang->gT("Delete current question group")."' name='DeleteWholeGroup' title=''  /></a>\n";
+                        //get2post("$scriptname?action=delgroup&amp;sid=$surveyid&amp;gid=$gid");
+                    }
+                    else
+                    {
+                        $groupsummary .= "<a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick=\"alert('".$clang->gT("Impossible to delete this group because there is at least one question having a condition on its content","js")."')\""
+                        . " title=\"".$clang->gTview("Delete current question group")."\">"
+                        . "<img src='$imageurl/delete_disabled.png' alt='".$clang->gT("Delete current question group")."' name='DeleteWholeGroup' /></a>\n";
+                    }
+                }
+                else
+                {
+                    $groupsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
+                }
+            }
+    
+    
+            // EXPORT QUESTION GROUP BUTTON
+    
+            if(bHasSurveyPermission($surveyid,'surveycontent','export'))
+            {
+    
+                $groupsummary .="<a href='$scriptname?action=exportstructureGroup&amp;sid=$surveyid&amp;gid=$gid' title=\"".$clang->gTview("Export this question group")."\" >"
+                . "<img src='$imageurl/dumpgroup.png' title='' alt='".$clang->gT("Export this question group")."' name='ExportGroup'  /></a>\n";
+            }
+    
+    
+            // CHANGE QUESTION ORDER BUTTON
+    
+            if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+            {
+                $groupsummary .= "<img src='$imageurl/seperator.gif' alt='' />\n";
+                if($activated!="Y" && getQuestionSum($surveyid, $gid)>1)
+                {
+    //                $groupsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
+    //                $groupsummary .= "<img src='$imageurl/seperator.gif' alt='' />\n";
+                    $groupsummary .= "<a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' title=\"".$clang->gTview("Change Question Order")."\" >"
+                    . "<img src='$imageurl/reorder.png' alt='".$clang->gT("Change Question Order")."' name='updatequestionorder' /></a>\n" ;
+                }
+                else
+                {
+                    $groupsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
+                }
+            }
+    
+            $groupsummary.= "</div>\n"
+            . "<div class='menubar-right'>\n"
+            . "<span class=\"boxcaption\">".$clang->gT("Questions").":</span><select class=\"listboxquestions\" name='qid' "
+            . "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">"
+            . getQuestions($surveyid,$gid,$qid)
+            . "</select>\n";
+    
+            
+            */
+                    // QUICK NAVIGATION TO PREVIOUS AND NEXT QUESTION
+            // TODO: Fix functionality to previos and next question  buttons (Andrie)
+            $data['qid'] = $qid = $this->config->item('qid');
+            $data['QidPrev'] = $QidPrev = getQidPrevious($surveyid, $gid, $qid);
+            
+            /**$groupsummary .= "<span class='arrow-wrapper'>";
+            if ($QidPrev != "")
+            {
+              $groupsummary .= ""
+                . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$gid&amp;qid=$QidPrev'>"
+                . "<img src='{$imageurl}/previous_20.png' title='' alt='".$clang->gT("Previous question")."' "
+                ."name='questiongroupprevious'/></a>";
+            }
+            else
+            {
+              $groupsummary .= ""
+                . "<img src='{$imageurl}/previous_disabled_20.png' title='' alt='".$clang->gT("No previous question")."' "
+                ."name='noquestionprevious' />";
+            }
+    
+            */
+            
+            $data['QidNext'] = $QidNext = getQidNext($surveyid, $gid, $qid);
+            
+            /**
+            if ($QidNext != "")
+            {
+              $groupsummary .= ""
+                . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$gid&amp;qid=$QidNext'>"
+                . "<img src='{$imageurl}/next_20.png' title='' alt='".$clang->gT("Next question")."' "
+                ."name='questiongroupnext' ".$clang->gT("Next question")."/> </a>";
+            }
+            else
+            {
+              $groupsummary .= ""
+                . "<img src='{$imageurl}/next_disabled_20.png' title='' alt='".$clang->gT("No next question")."' "
+                ."name='noquestionnext' />";
+            }
+            $groupsummary .= "</span>";
+    
+    
+    
+            // ADD NEW QUESTION TO GROUP BUTTON
+    
+            if ($activated == "Y")
+            {
+                $groupsummary .= "<a href='#'"
+                ."<img src='$imageurl/add_disabled.png' title='' alt='".$clang->gT("Disabled").' - '.$clang->gT("This survey is currently active.")."' " .
+                " name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
+            }
+            elseif(bHasSurveyPermission($surveyid,'surveycontent','create'))
+            {
+                $groupsummary .= "<a href='$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid'"
+                ." title=\"".$clang->gTview("Add New Question to Group")."\" >"
+                ."<img src='$imageurl/add.png' title='' alt='".$clang->gT("Add New Question to Group")."' " .
+                " name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
+            }
+    
+    
+            // Separator
+    
+            $groupsummary .= "<img src='$imageurl/seperator.gif' alt=''  />";
+    
+            $groupsummary.= "<img src='$imageurl/blank.gif' width='18' alt='' />"
+            . "<input id='MinimizeGroupWindow' type='image' src='$imageurl/minus.gif' title='"
+            . $clang->gT("Hide Details of this Group")."' alt='". $clang->gT("Hide Details of this Group")."' name='MinimizeGroupWindow' />\n";
+            $groupsummary .= "<input type='image' id='MaximizeGroupWindow' src='$imageurl/plus.gif' title='"
+            . $clang->gT("Show Details of this Group")."' alt='". $clang->gT("Show Details of this Group")."' name='MaximizeGroupWindow' />\n";
+            if (!$qid)
+            {
+                $groupsummary .= "<input type='image' src='$imageurl/close.gif' title='"
+                . $clang->gT("Close this Group")."' alt='". $clang->gT("Close this Group")."'  name='CloseSurveyWindow' "
+                . "onclick=\"window.open('$scriptname?sid=$surveyid', '_top')\" />\n";
+            }
+            else
+            {
+                $groupsummary .= "<img src='$imageurl/blank.gif' alt='' width='18' />\n";
+            }
+            $groupsummary .="</div></div>\n"
+            . "</div>\n"; */
+            //  $groupsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
+            
+            if ($qid || $action=='editgroup'|| $action=='addquestion') 
+            {
+                $gshowstyle="style='display: none'";
+            }
+            else
+            {
+                $gshowstyle="";
+            }
+            $data['gshowstyle'] = $gshowstyle; 
+            
+            /**
+            $groupsummary .= "<table id='groupdetails' $gshowstyle ><tr ><td width='20%' align='right'><strong>"
+            . $clang->gT("Title").":</strong></td>\n"
+            . "<td align='left'>"
+            . "{$grow['group_name']} ({$grow['gid']})</td></tr>\n"
+            . "<tr><td valign='top' align='right'><strong>"
+            . $clang->gT("Description:")."</strong></td>\n<td align='left'>";
+            if (trim($grow['description'])!='') {$groupsummary .=$grow['description'];}
+            $groupsummary .= "</td></tr>\n";
+    
+            if (!is_null($condarray))
+            {
+                $groupsummary .= "<tr><td align='right'><strong>"
+                . $clang->gT("Questions with conditions to this group").":</strong></td>\n"
+                . "<td valign='bottom' align='left'>";
+                foreach ($condarray[$gid] as $depgid => $deprow)
+                {
+                    foreach ($deprow['conditions'] as $depqid => $depcid)
+                    {
+                        //$groupsummary .= "[QID: ".$depqid."]";
+                        $listcid=implode("-",$depcid);
+                        $groupsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$depgid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">[QID: ".$depqid."]</a>";
+                    }
+                }
+                $groupsummary .= "</td></tr>";
+            } */
+            $this->load->model('surveys_model');
+            //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
+            $sumresult1 = $this->surveys_model->getDataOnSurvey($surveyid); //$sumquery1, 1) ; //Checked
+            if ($sumresult1->num_rows()==0){die('Invalid survey id');} //  if surveyid is invalid then die to prevent errors at a later time
+            $surveyinfo = $sumresult1->row_array();
+            $surveyinfo = array_map('FlattenText', $surveyinfo);
+            //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
+            $data['activated'] = $activated = $surveyinfo['active'];
+            $data['surveyid'] = $surveyid;
+            $data['gid'] = $gid;
+            $data['grow'] = $grow;
+            $data['clang'] = $clang;
+            $data['condarray'] = $condarray;
+            $data['sumcount4'] = $sumcount4;
+            $groupsummary .= $this->load->view('admin/Survey/QuestionGroups/questiongroupbar_view',$data,true);
+        }
+        $groupsummary .= "\n</table>\n";
+        
+        $finaldata['display'] = $groupsummary;
+        $this->load->view('survey_view',$finaldata);
+        
+    } 
 
     /**
 	 * Shows admin menu for surveys
@@ -40,7 +314,7 @@
     {
     	//$this->load->helper('surveytranslator');
     	$clang = $this->limesurvey_lang;
-		echo $this->config->item('gid');
+		//echo $this->config->item('gid');
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         $condition = array('sid' => $surveyid, 'language' => $baselang);
         $this->load->model('surveys_model');
@@ -157,9 +431,9 @@
             $qid=null;
         } 
         
-        if (getgrouplistlang($gid, $baselang))
+        if (getgrouplistlang($gid, $baselang,$surveyid))
         {
-            $data['groups']= getgrouplistlang($gid, $baselang);
+            $data['groups']= getgrouplistlang($gid, $baselang,$surveyid);
         }
         else
         {
