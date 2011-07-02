@@ -396,9 +396,8 @@ if (!$surveyid)
     $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
 	          FROM ".db_table_name('surveys')." AS a
 			  INNER JOIN ".db_table_name('surveys_languagesettings')." AS b
-			  ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
+			  ON ( surveyls_survey_id = a.sid )
 			  WHERE surveyls_survey_id=a.sid
-			  AND surveyls_language=a.language
               AND surveyls_language='$baselang'
 			  AND a.active='Y'
 			  AND a.listpublic='Y'
