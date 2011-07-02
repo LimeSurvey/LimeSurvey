@@ -192,17 +192,49 @@ class LimeExpressionManager {
             'INSERTANS:61764X1X1'   => 'Peter',
             'INSERTANS:61764X1X2'   => 27,
             'INSERTANS:61764X1X3'   => 1,
-            'INSERTANS:61764X1X4'   => 8
+            'INSERTANS:61764X1X4'   => 8,
+            'TOKEN:ATTRIBUTE_1'     => 'worker',
         );
 
         $tests = <<<EOD
+{name}
+{age}
+{numKids}
+{numPets}
+{INSERTANS:61764X1X1}
+{INSERTANS:61764X1X2}
+{INSERTANS:61764X1X3}
+{INSERTANS:61764X1X4}
+{TOKEN:ATTRIBUTE_1}
 {name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.
 Since you have more {if((numKids > numPets),'children','pets')} than you do {if((numKids > numPets),'pets','children')}, do you feel that the {if((numKids > numPets),'pets','children')} are at a disadvantage?
 {INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
 Since you have more {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'children','pets')} than you do {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')}, do you feel that the {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')} are at a disadvantage?
 {name2}, you said that you are {age + 5)} years old, and that you have {abs(numKids) -} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.
 {INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children','kiddies')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
+This line should throw errors since the curly-brace enclosed functions do not have linefeeds after them (and before the closing curly brace): var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') { document.write('BOSSES') } else { document.write('WORKERS') }
+This line has a &lt;script&gt; section, but if you look at the source, you will see that it has errors: <script type="text/javascript" language="Javascript">var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') { document.write('BOSSES') } else { document.write('WORKERS') } </script>.
 EOD;
+        $alltests = explode("\n",$tests);
+
+        $javascript1 = <<<EOST
+                    var job='{TOKEN:ATTRIBUTE_1}';
+                    if (job=='worker') {
+                    document.write('BOSSES')
+                    } else {
+                    document.write('WORKERS')
+                    }
+EOST;
+        $javascript2 = <<<EOST
+var job='{TOKEN:ATTRIBUTE_1}';
+    if (job=='worker') {
+       document.write('BOSSES')
+    } else { document.write('WORKERS')  }
+EOST;
+        $alltests[] = 'This line should have no errors - the Javascript has curly braces followed by line feeds:' . $javascript1;
+        $alltests[] = 'This line should also be OK: ' . $javascript2;
+        $alltests[] = 'This line has a hidden &lt;script&gt;: <script type="text/javascript" language="Javascript">' . $javascript1 . '</script>';
+        $alltests[] = 'This line has a hidden &lt;script&gt;: <script type="text/javascript" language="Javascript">' . $javascript2 . '</script>';
 
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
@@ -211,7 +243,7 @@ EOD;
         $em->RegisterReservedWordsUsingMerge($reservedWords);
 
         print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarsUsed</th><th>ReservedWordsUsed</th></tr>';
-        foreach(explode("\n",$tests) as $test)
+        foreach($alltests as $test)
         {
             print "<tr><td>" . $test . "</td>\n";
             print "<td>" . $em->sProcessStringContainingExpressions($test) . "</td>\n";
