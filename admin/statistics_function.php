@@ -250,7 +250,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
         // set default header data
         // the path looks awkward - did not find a better solution to set the image path?
-        $pdf->SetHeaderData("../../../../images/statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".html_entity_decode($surveyInfo['surveyls_title'],ENT_QUOTES,'UTF-8')."'");
+        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".FlattenText($surveyInfo['surveyls_title'],true,'UTF-8')."'");
 
 
         // set default monospaced font
