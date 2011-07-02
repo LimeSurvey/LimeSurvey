@@ -430,7 +430,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
     if (isset($surveyrowdata['private'])){
         $surveyrowdata['anonymized']=$surveyrowdata['private'];
         unset($surveyrowdata['private']);
-    }                            
+    }
     if (isset($surveyrowdata['startdate'])) {unset($surveyrowdata['startdate']);}
     $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
     if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='' || $surveyrowdata['datecreated']=='null') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust));}
@@ -1092,7 +1092,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $results['error'] = $clang->gT("This is not a valid LimeSurvey survey structure XML file.");
         return $results;
     }
-    else 
+    else
     {
         //$results['error'] = $clang->gT("This is VALID LimeSurvey survey structure XML file.");
         //echo $clang->gT("This is VALID LimeSurvey survey structure XML file.");
@@ -1150,6 +1150,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         else
         {
             $newsid=GetNewSurveyID($oldsid);
+        }
+        if ($dbversion<=143)
+        {
+            $insertdata['anonymized']=$insertdata['private'];
+            unset($insertdata['private']);
+            unset($insertdata['notification']);
         }
         //Now insert the new SID and change some values
         $insertdata['sid']=$newsid;
@@ -1319,7 +1325,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             else
             {
                db_switchIDInsert('questions',false);
-            }            
+            }
             $results['subquestions']++;
         }
     }
@@ -1425,7 +1431,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 if (!isset($aGIDReplacements[$oldcgid]))
                     continue;
             }
-            
+
             unset($insertdata["cid"]);
 
             // recreate the cfieldname with the new IDs
