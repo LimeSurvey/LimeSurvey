@@ -66,11 +66,11 @@
 		            <img src='<?php echo $imageurl;?>/survey_security_30.png' name='SurveySecurity' /> <?php echo $clang->gT("Survey permissions");?></a></li>
 		   		<?php } ?>
             	<?php if ($surveycontent) {
-					if($activated) { ?>
+					if($activated == "Y") { ?>
 		                <li><a href="#" onclick="alert('<?php echo $clang->gT("You can't reorder question groups if the survey is active.", "js");?>');" >
 		                <img src='<?php echo $imageurl;?>/reorder_disabled_30.png' name='translate'/> <?php echo $clang->gT("Reorder question groups");?></a></li>
 			        <?php } elseif ($groupsum) { ?>
-		                <li><a href='<?php echo site_url("admin/ordergroups/index/$surveyid");?>'>
+		                <li><a href='<?php echo site_url("admin/questiongroup/order/$surveyid");?>'>
 		                <img src='<?php echo $imageurl;?>/reorder_30.png' /> <?php echo $clang->gT("Reorder question groups");?></a></li>
 			        <?php } else { ?>
 			            <li><a href="#" onclick="alert('<?php echo $clang->gT("You can't reorder question groups if there is only one group.", "js");?>');" >

@@ -7471,8 +7471,9 @@ function access_denied($action,$sid='')
         }
         elseif($action == "ordergroups")
         {
+            $link = site_url("admin/survey/view/$sid");
             $accesssummary .= "<p>".$clang->gT("You are not allowed to order groups in this survey!")."<br />";
-            $accesssummary .= "<a href='$scriptname?sid={$sid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+            $accesssummary .= "<a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "editsurvey")
         {
