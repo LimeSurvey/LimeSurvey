@@ -2,24 +2,36 @@
 
 class Tokens_dynamic_model extends CI_Model {
 	
-	function getAllRecords($sid,$condition=FALSE,$limit=FALSE)
+	function getAllRecords($sid,$condition=FALSE,$limit=FALSE,$start=FALSE,$order=FALSE,$like_or=FALSE)
 	{
 		if ($condition != FALSE)
 		{
 			$this->db->where($condition);	
 		}
 		
-		if ($limit != FALSE)
+		if ($limit !== FALSE && $start !== FALSE)
 		{
-			$this->db->limit($limit);	
+			$this->db->limit($limit,$start);	
 		}
 		
+		if ($order != FALSE)
+		{
+			$this->db->order_by($order);	
+		}
+		
+		if ($like_or != FALSE)
+		{
+			$this->db->or_like($like_or);	
+		}
+		
+		//var_dump($this->db->_compile_select());
+		//die();
 		$data = $this->db->get('tokens_'.$sid);
 		
 		return $data;
 	}
 
-	function getSomeRecords($fields,$sid,$condition=FALSE)
+	function getSomeRecords($fields,$sid,$condition=FALSE,$group_by=FALSE)
 	{
 		foreach ($fields as $field)
 		{
@@ -29,13 +41,16 @@ class Tokens_dynamic_model extends CI_Model {
 		{
 			$this->db->where($condition);	
 		}
-		
+		if ($group_by != FALSE)
+		{
+			$this->db->group_by($group_by); 
+		}	
 		$data = $this->db->get('tokens_'.$sid);
 		
 		return $data;
 	}
     
-	function newTokensTable()
+	/*function newTokensTable()
 	{
 	    $createtokentable=
 		"tid int I NOTNULL AUTO PRIMARY,\n "
@@ -71,7 +86,7 @@ class Tokens_dynamic_model extends CI_Model {
 		$dict = NewDataDictionary($connect);
 		$sqlarray = $dict->CreateTableSQL($tabname, $createtokentable, $taboptarray);
 		$execresult=$dict->ExecuteSQLArray($sqlarray, false);
-	}
+	}*/
 
 	function totalTokens($surveyid)
 	{
@@ -125,5 +140,35 @@ class Tokens_dynamic_model extends CI_Model {
 	{
 		$this->load->helper("database");
 		return $this->db->query(db_select_tables_like($this->db->dbprefix("old\_tokens\_".$surveyid."\_%")));
+	}
+	
+	function ctquery($surveyid,$SQLemailstatuscondition,$tokenid=false,$tokenids=false)
+	{
+		$ctquery = "SELECT * FROM ".$this->db->dbprefix("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+
+        if ($tokenid) {$ctquery .= " AND tid='{$tokenid}'";}
+        if ($tokenids) {$ctquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
+		
+		return $this->db->query($ctquery);
+	}
+	
+	function emquery($surveyid,$SQLemailstatuscondition,$maxemails,$tokenid=false,$tokenids=false)
+	{
+        $emquery = "SELECT * FROM ".$this->db->dbprefix("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+
+        if ($tokenid) {$emquery .= " and tid='{$tokenid}'";}
+        if ($tokenids) {$emquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
+		$this->load->helper("database");
+		return db_select_limit_assoc($emquery,$maxemails);
+	}
+	
+	function selectEmptyTokens($surveyid)
+	{
+		return $this->db->query("SELECT tid FROM ".$this->db->dbprefix("tokens_$surveyid")." WHERE token IS NULL OR token=''");
+	}
+	
+	function updateToken($surveyid,$tid,$newtoken)
+	{
+		return $this->db->query("UPDATE ".$this->db->dbprefix("tokens_$surveyid")." SET token='$newtoken' WHERE tid=$tid");
 	}
 }

@@ -32,7 +32,7 @@
         { ?>
             <br /><div class='header ui-widget-header'><?php echo $clang->gT("Restore options");?></div>
             <div class='messagebox ui-corner-all'>
-            <form method='post' action='$scriptname?action=tokens'>
+            <form method='post' action='<?php echo site_url("admin/tokens/index/$surveyid");?>'>
             <?php echo $clang->gT("The following old token tables could be restored:");?><br /><br />
             <select size='4' name='oldtable' style='width:250px;'>
             <?php foreach($oldlist as $ol)

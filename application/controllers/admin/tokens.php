@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  * 
- * $Id:  $
+ * $Id$
  * 
  */
 
@@ -102,17 +102,17 @@ class tokens extends SurveyCommonController {
 	/**
 	 * Browse Tokens
 	 */
-	function browse($surveyid)
+	function browse($surveyid,$limit=50,$start=0,$order=false,$searchstring=false)
 	{
 		$clang=$this->limesurvey_lang;
 		$this->load->model("tokens_dynamic_model");
 		$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
 		
-		if (!isset($limit)) {$limit=(int)returnglobal('limit');}
-		if ($limit==0) $limit=50;
-		if (!isset($start)) {$start=(int)returnglobal('start');}
-		if (!isset($limit)) {$limit = 100;}
-    	if (!isset($start)) {$start = 0;}	    if ($limit > $tkcount) {$limit=$tkcount;}
+		//if (!isset($limit)) {$limit=(int)returnglobal('limit');}
+		//if ($limit==0) $limit=50;
+		//if (!isset($start)) {$start=(int)returnglobal('start');}
+		//if (!isset($limit)) {$limit = 100;}
+    	//if (!isset($start)) {$start = 0;}	    if ($limit > $tkcount) {$limit=$tkcount;}
 	    $next=$start+$limit;
 	    $last=$start-$limit;
 	    $end=$tkcount-$limit;
@@ -121,20 +121,62 @@ class tokens extends SurveyCommonController {
 	    if ($next >= $tkcount) {$next=$tkcount-$limit;}
 	    if ($end < 0) {$end=0;}
 	    $baselanguage = GetBaseLanguageFromSurveyID($surveyid);
-		
+		$data['next']=$next;
+	    $data['last']=$last;
+	    $data['end']=$end;
+		if(!$order) $order=$this->input->post("order");		
+		$order=preg_replace('/[^_ a-z0-9-]/i', '',$order);
+		if ($order=="") {$order = "tid";}
+		if($this->input->post("limit")) $limit = $this->input->post("limit");
+		if($this->input->post("start")) $start = $this->input->post("start");		
+		//if (!isset($order)) {$order=preg_replace('/[^_ a-z0-9-]/i', '', returnglobal('order'));}
+		//if (!isset($limit)) {$limit=(int)returnglobal('limit');}
 		
     	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN		$thissurvey=getSurveyInfo($surveyid);
 
+		if(!$searchstring) $searchstring=$this->input->post("searchstring");
+		/*$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
+		if ($searchstring)
+		{
+	        $sSearch=db_quote($searchstring);
+		    $bquery .= " WHERE firstname LIKE '%{$sSearch}%' "
+		    . "OR lastname LIKE '%{$sSearch}%' "
+		    . "OR email LIKE '%{$sSearch}%' "
+		    . "OR emailstatus LIKE '%{$sSearch}%' "
+		    . "OR token LIKE '%{$sSearch}%'";
+		}
+		if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
+		else {$bquery .= " ORDER BY $order"; }
+	
+		$bresult = db_select_limit_assoc($bquery, $limit, $start) or safe_die ($clang->gT("Error").": $bquery<br />".$connect->ErrorMsg());*/
+		if($searchstring)
+		{
+			$idata = array("firstname"=>$searchstring,
+							"lastname"=>$searchstring,
+							"email"=>$searchstring,
+							"emailstatus"=>$searchstring,
+							"token"=>$searchstring);
+		}
+		else
+		{
+			$idata = false;
+		}
+		
+		$data['bresult'] = $this->tokens_dynamic_model->getAllRecords($surveyid,false,$limit,$start,$order,$idata);
 		$data['clang']=$clang;
 		$data['thissurvey']=$thissurvey;
-		$data['searchstring']="";
+		$data['searchstring']=$searchstring;
 		$data['imageurl'] = $this->config->item('imageurl');
 		$data['surveyid']=$surveyid;
-
+		$data['bgc']="";
+		$data['limit']=$limit;
+		$data['start']=$start;
+		$data['order']=$order;
+		
 		self::_getAdminHeader();
 		$this->load->view("admin/token/tokenbar",$data);
 		$this->load->view("admin/token/browse",$data);
-		//self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 	
 	}
 
@@ -227,6 +269,112 @@ class tokens extends SurveyCommonController {
 	}
 
 	/**
+	 * Edit Tokens
+	 */
+	function edit($surveyid,$tokenid)
+	{
+	   	
+		if(!bHasSurveyPermission($surveyid, 'tokens','update'))    
+		{
+			show_error("no permissions"); // TODO Replace
+		}
+		
+		if ($this->input->post("subaction"))
+		{
+			$clang=$this->limesurvey_lang;
+			$this->load->model("tokens_dynamic_model");
+			$_POST=$this->input->post();
+			
+		    if (trim($_POST['validfrom'])=='') {
+		        $_POST['validfrom']=null;
+		    }
+		    else
+		    {
+		        $datetimeobj = new Date_Time_Converter(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i');
+		        $_POST['validfrom'] =$datetimeobj->convert('Y-m-d H:i:s');
+		    }
+		    if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;}
+		    else
+		    {
+		        $datetimeobj = new Date_Time_Converter(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i');
+		        $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');
+		    }
+		    $data = array();
+		    $data[] = $_POST['firstname'];
+		    $data[] = $_POST['lastname'];
+		    $data[] = sanitize_email($_POST['email']);
+		    $data[] = $_POST['emailstatus'];
+		    $santitizedtoken=sanitize_token($_POST['token']);
+		    $data[] = $santitizedtoken;
+		    $data[] = sanitize_languagecode($_POST['language']);
+		    $data[] = $_POST['sent'];
+		    $data[] = $_POST['completed'];
+		    $data[] = $_POST['usesleft'];
+		    //    $db->DBTimeStamp("$year-$month-$day $hr:$min:$secs");
+		    $data[] = $_POST['validfrom'];
+		    $data[] = $_POST['validuntil'];
+		    $data[] = $_POST['remindersent'];
+		    $data[] = intval($_POST['remindercount']);
+		
+		    //$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid<>{$tokenid} and token<>'' and token='{$santitizedtoken}'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
+			$udresult = $this->tokens_dynamic_model->getAllRecords($surveyid,array("tid !="=>$tokenid, "token !="=>"", "token"=>$santitizedtoken));
+		    if ($udresult->num_rows()==0)
+		    {
+		        //$udresult = $connect->Execute("Select * from ".db_table_name("tokens_$surveyid")." where tid={$tokenid} and email='".sanitize_email($_POST['email'])."'") or safe_die ("Update record {$tokenid} failed:<br />\n$udquery<br />\n".$connect->ErrorMsg());
+		
+		
+		        // Using adodb Execute with blinding method so auto-dbquote is done
+		        $udquery = "UPDATE ".$this->db->dbprefix("tokens_$surveyid")." SET firstname=?, "
+		        . "lastname=?, email=?, emailstatus=?, "
+		        . "token=?, language=?, sent=?, completed=?, usesleft=?, validfrom=?, validuntil=?, remindersent=?, remindercount=?";
+		        $attrfieldnames=GetAttributeFieldnames($surveyid);
+		        foreach ($attrfieldnames as $attr_name)
+		        {
+		            $udquery.= ", $attr_name=?";
+		            $data[].=$_POST[$attr_name];
+		        }
+		
+		        $udquery .= " WHERE tid={$tokenid}";
+				//$this->load->helper("database");
+		        //$udresult = db_execute_assoc($udquery);
+				$this->db->query($udquery,$data);
+	
+				$clang=$this->limesurvey_lang;
+				$data['clang']=$this->limesurvey_lang;
+				$data['thissurvey']=getSurveyInfo($surveyid);
+				$data['imageurl'] = $this->config->item('imageurl');
+				$data['surveyid']=$surveyid;
+				self::_getAdminHeader();
+				$this->load->view("admin/token/tokenbar",$data);
+				self::_showMessageBox($clang->gT("Success"),
+				$clang->gT("The token entry was successfully updated.")."<br /><br />\n"
+		        ."\t\t<input type='button' value='".$clang->gT("Display tokens")."' onclick=\"window.open('".site_url("admin/tokens/browse/$surveyid/")."', '_top')\" />\n");
+				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+
+		    }
+		    else
+		    {
+				$clang=$this->limesurvey_lang;
+				$data['clang']=$this->limesurvey_lang;
+				$data['thissurvey']=getSurveyInfo($surveyid);
+				$data['imageurl'] = $this->config->item('imageurl');
+				$data['surveyid']=$surveyid;
+				self::_getAdminHeader();
+				$this->load->view("admin/token/tokenbar",$data);
+				self::_showMessageBox($clang->gT("Failed"),
+						$clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.")."<br /><br />\n"
+		        ."\t\t<input type='button' value='".$clang->gT("Show this token entry")."' onclick=\"window.open('".site_url("admin/tokens/edit/$surveyid/$tokenid")."', '_top')\" />\n");
+				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		    }
+		}
+		else
+		{
+			self::_handletokenform($surveyid,"edit",$tokenid);
+		}
+			
+	}
+
+	/**
 	 * Add dummy tokens form
 	 */
 	function adddummys($surveyid)
@@ -236,35 +384,111 @@ class tokens extends SurveyCommonController {
 		{
 			show_error("no permissions"); // TODO Replace
 		}
-
-		$this->load->model("tokens_dynamic_model");
-		$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
-		$this->load->helper("surveytranslator");
-	    //get token length from survey settings
-		$this->load->model("surveys_model");
-		$query = $this->surveys_model->getSomeRecords(array("tokenlength"),array("sid"=>$surveyid));
-		$row = $query->row_array();
-		$tokenlength = $row['tokenlength'];
 		
-	    //if tokenlength is not set or there are other problems use the default value (15)
-	    if(!isset($tokenlength) || $tokenlength == '')
-	    {
-	        $tokenlength = 15;
-	    }
-	    
-		$data['clang']=$clang;
-		$thissurvey=getSurveyInfo($surveyid);
-		$data['thissurvey']=$thissurvey;
-		$data['imageurl'] = $this->config->item('imageurl');
-		$data['surveyid']=$surveyid;
-		$data['tokenlength']=$tokenlength;
-		$data['dateformatdetails']=getDateFormatData($this->session->userdata('dateformat'));
-				
-		self::_getAdminHeader();
-		$this->load->view("admin/token/tokenbar",$data);
-		$this->load->view("admin/token/dummytokenform",$data);
-		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		if ($this->input->post("subaction"))
+		{
+			$this->load->model("tokens_dynamic_model");
+			$_POST=$this->input->post();	
+		    //Fix up dates and match to database format
+		    if (trim($_POST['validfrom'])=='') {
+		        $_POST['validfrom']=null;
+		    }
+		    
+		    else
+		    {
+		        $datetimeobj = new Date_Time_Converter(trim($_POST['validfrom']), $dateformatdetails['phpdate'].' H:i');
+		        $_POST['validfrom'] =$datetimeobj->convert('Y-m-d H:i:s');
+		    }
+		    if (trim($_POST['validuntil'])=='') {$_POST['validuntil']=null;}
+		    else
+		    {
+		        $datetimeobj = new Date_Time_Converter(trim($_POST['validuntil']), $dateformatdetails['phpdate'].' H:i');
+		        $_POST['validuntil'] =$datetimeobj->convert('Y-m-d H:i:s');
+		    }
+		
+		    $santitizedtoken='';
+		    
+		    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Add dummy tokens")."</div>\n"
+		    ."\t<div class='messagebox ui-corner-all'>\n";
+		    $data = array('firstname' => $_POST['firstname'],
+			'lastname' => $_POST['lastname'],
+			'email' => sanitize_email($_POST['email']),
+			'emailstatus' => 'OK',
+			'token' => $santitizedtoken,
+			'language' => sanitize_languagecode($_POST['language']),
+		        'sent' => 'N',
+			'remindersent' => 'N',
+			'completed' => 'N',
+			'usesleft' => $_POST['usesleft'],
+			'validfrom' => $_POST['validfrom'],
+			'validuntil' => $_POST['validuntil']);
+		    
+		    // add attributes
+		    $attrfieldnames=GetAttributeFieldnames($surveyid);
+		    foreach ($attrfieldnames as $attr_name)
+		    {
+		        $data[$attr_name]=$_POST[$attr_name];
+		    }
+		    //$tblInsert=db_table_name('tokens_'.$surveyid);
+		    $amount = sanitize_int($_POST['amount']);
+		    $tokenlength = sanitize_int($_POST['tokenlen']);
+		        
+		    for ($i=0; $i<$amount;$i++){
+		    	$dataToInsert = $data;
+		        $dataToInsert['firstname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['firstname']);
+		        $dataToInsert['lastname'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['lastname']);
+		        $dataToInsert['email'] = str_replace('{TOKEN_COUNTER}',"$i",$dataToInsert['email']);
+		        
+		        $isvalidtoken = false;
+		        while ($isvalidtoken == false)
+		        {
+		            $newtoken = sRandomChars($tokenlength);
+		            if (!isset($existingtokens[$newtoken])) {
+		                $isvalidtoken = true;
+		                $existingtokens[$newtoken]=null;
+		            }
+		        }
+		        $dataToInsert['token'] = $newtoken;
+		        //$tblInsert=db_table_name('tokens_'.$surveyid);
+		        //$inresult = $connect->AutoExecute($tblInsert, $dataToInsert, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
+				$inresult = $this->tokens_dynamic_model->insertTokens($surveyid,$dataToInsert);
+		    }
+	
+			self::_getAdminHeader();
+			self::_showMessageBox($clang->gT("Success"),
+					$clang->gT("New dummy tokens were added.")."<br /><br />\n<input type='button' value='"
+					.$clang->gT("Display tokens")."' onclick=\"window.open('".site_url("admin/tokens/browse/$surveyid")."', '_top')\" />\n");
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+	
+		} else {
+			$this->load->model("tokens_dynamic_model");
+			$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
+			$this->load->helper("surveytranslator");
+		    //get token length from survey settings
+			$this->load->model("surveys_model");
+			$query = $this->surveys_model->getSomeRecords(array("tokenlength"),array("sid"=>$surveyid));
+			$row = $query->row_array();
+			$tokenlength = $row['tokenlength'];
 			
+		    //if tokenlength is not set or there are other problems use the default value (15)
+		    if(!isset($tokenlength) || $tokenlength == '')
+		    {
+		        $tokenlength = 15;
+		    }
+		    
+			$data['clang']=$clang;
+			$thissurvey=getSurveyInfo($surveyid);
+			$data['thissurvey']=$thissurvey;
+			$data['imageurl'] = $this->config->item('imageurl');
+			$data['surveyid']=$surveyid;
+			$data['tokenlength']=$tokenlength;
+			$data['dateformatdetails']=getDateFormatData($this->session->userdata('dateformat'));
+					
+			self::_getAdminHeader();
+			$this->load->view("admin/token/tokenbar",$data);
+			$this->load->view("admin/token/dummytokenform",$data);
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		}	
 	}
 
 	/**
@@ -302,6 +526,80 @@ class tokens extends SurveyCommonController {
 		$this->load->view("admin/token/tokenbar",$data);
 		$this->load->view("admin/token/managetokenattributes",$data);
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
+	}
+
+	/**
+	 * Update token attributes
+	 */
+	function updatetokenattributes($surveyid)
+	{
+		if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
+		{
+			$_POST=$this->input->post();
+		    $number2add=sanitize_int($_POST['addnumber'],1,100);
+		    // find out the existing token attribute fieldnames
+
+		    $tokenfieldnames = array_values($this->db->list_fields("tokens_$surveyid"));
+		    $tokenattributefieldnames=array_filter($tokenfieldnames,'filterforattributes');
+		    $i=1;
+		    for ($b=0;$b<$number2add;$b++)
+		    {
+		        while (in_array('attribute_'.$i,$tokenattributefieldnames)!==false) {
+		            $i++;
+		        }
+		        $tokenattributefieldnames[]='attribute_'.$i;
+		        $fields['attribute_'.$i]=array('type' => 'VARCHAR','constraint' => '255');
+		    }
+		    //$dict = NewDataDictionary($connect);
+		    //$sqlarray = $dict->ChangeTableSQL("{$dbprefix}tokens_$surveyid", $fields);
+		    //$execresult=$dict->ExecuteSQLArray($sqlarray, false);
+		    $this->load->dbforge();
+			$this->dbforge->add_column("tokens_$surveyid", $fields);
+			
+			$clang=$this->limesurvey_lang;
+			$data['clang']=$this->limesurvey_lang;
+			$data['thissurvey']=getSurveyInfo($surveyid);
+			$data['imageurl'] = $this->config->item('imageurl');
+			$data['surveyid']=$surveyid;
+			self::_getAdminHeader();
+			$this->load->view("admin/token/tokenbar",$data);
+			self::_showMessageBox(sprintf($clang->gT("%s field(s) were successfully added."),$number2add),
+					"<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('".site_url("admin/tokens/managetokenattributes/$surveyid")."', '_top')\" />");
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		}
+	}
+
+	/**
+	 * updatetokenattributedescriptions action
+	 */
+	function updatetokenattributedescriptions($surveyid)
+	{
+		if (bHasSurveyPermission($surveyid, 'tokens', 'update'))  
+		{
+		    // find out the existing token attribute fieldnames
+		    $tokenattributefieldnames=GetAttributeFieldNames($surveyid);
+		    $fieldcontents='';
+			$_POST=$this->input->post();
+		    foreach ($tokenattributefieldnames as $fieldname)
+		    {
+		        $fieldcontents.=$fieldname.'='.strip_tags($_POST['description_'.$fieldname])."\n";
+		    }
+		    //$updatequery = "update ".db_table_name('surveys').' set attributedescriptions='.db_quoteall($fieldcontents,true)." where sid=$surveyid";
+		    //$execresult=db_execute_assoc($updatequery);
+			$this->load->model("surveys_model");
+			$this->surveys_model->updateSurvey(array("attributedescriptions"=>$fieldcontents),array("sid"=>$surveyid));
+		
+			$clang=$this->limesurvey_lang;
+			$data['clang']=$this->limesurvey_lang;
+			$data['thissurvey']=getSurveyInfo($surveyid);
+			$data['imageurl'] = $this->config->item('imageurl');
+			$data['surveyid']=$surveyid;
+			self::_getAdminHeader();
+			$this->load->view("admin/token/tokenbar",$data);
+			self::_showMessageBox($clang->gT("Token attribute descriptions were successfully updated."),
+					"<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('".site_url("admin/tokens/managetokenattributes/$surveyid")."', '_top')\" />");
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		}
 	}
 
 	/**
@@ -364,13 +662,13 @@ class tokens extends SurveyCommonController {
 	    }
     	else
     	{
-	        /*$tokenoutput .= "<div class='messagebox ui-corner-all'>\n"
-	        ."\t<div class='header ui-widget-header'>\n";
-	        $tokenoutput .= $clang->gT("Sending invitations...");
-	        $tokenoutput .= "\n\t</div>\n";
-	        if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
-	        if (isset($tokenids)) {$tokenoutput .= " (".$clang->gT("Sending to Token IDs").":&nbsp;".implode(", ", $tokenids).")";}
-	        $tokenoutput .= "<br />\n";
+    		$_POST=$this->input->post();
+			$tokenid=$this->input->post("tokenid");
+			$tokenids=$this->input->post("tokenids");
+			$maxemails=$this->config->item("maxemails");
+
+			$data['tokenid']=$tokenid;
+			$data['tokenids']=$tokenids;
 	
 	        if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
 	        {
@@ -381,40 +679,30 @@ class tokens extends SurveyCommonController {
 	            $SQLemailstatuscondition = " AND emailstatus <> 'OptOut'";
 	        }
 	
-	        $ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+	        //$ctfieldcount = $ctresult->FieldCount();
+			$ctresult=$this->tokens_dynamic_model->ctquery($surveyid,$SQLemailstatuscondition,$tokenid,$tokenids);
+			$ctcount = $ctresult->num_rows();
 	
-	        if (isset($tokenid)) {$ctquery .= " AND tid='{$tokenid}'";}
-	        if (isset($tokenids)) {$ctquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
-	        $tokenoutput .= "<!-- ctquery: $ctquery -->\n";
-	        $ctresult = $connect->Execute($ctquery) or safe_die("Database error!<br />\n" . $connect->ErrorMsg());
-	        $ctcount = $ctresult->RecordCount();
-	        $ctfieldcount = $ctresult->FieldCount();
-	
-	        $emquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
-	
-	        if (isset($tokenid)) {$emquery .= " and tid='{$tokenid}'";}
-	        if (isset($tokenids)) {$emquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
-	        $tokenoutput .= "\n\n<!-- emquery: $emquery -->\n\n";
-	        $emresult = db_select_limit_assoc($emquery,$maxemails) or safe_die ("Couldn't do query.<br />\n$emquery<br />\n".$connect->ErrorMsg());
-	        $emcount = $emresult->RecordCount();
+	        $emresult = $this->tokens_dynamic_model->emquery($surveyid,$SQLemailstatuscondition,$maxemails,$tokenid,$tokenids);
+	        $emcount = $emresult->num_rows();
 	
 	        $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	        $baselanguage = GetBaseLanguageFromSurveyID($surveyid);
 	        array_unshift($surveylangs,$baselanguage);
 	
+			$this->load->config("email");
 	        foreach ($surveylangs as $language)
 	        {
 	            $_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
 	            $_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
-	            if ($ishtml) $_POST['message_'.$language] = html_entity_decode($_POST['message_'.$language], ENT_QUOTES, $emailcharset);
+	            if ($ishtml) $_POST['message_'.$language] = html_entity_decode($_POST['message_'.$language], ENT_QUOTES, $this->config->item("emailcharset"));
 	        }
-	
-	
+
 	        $attributes=GetTokenFieldsAndNames($surveyid);
+			$tokenoutput="";
 	        if ($emcount > 0)
 	        {
-	        	$tokenoutput .= "<ul>\n";
-	            while ($emrow = $emresult->FetchRow())
+	            foreach ($emresult->result_array() as $emrow)
 	            {
 	                unset($fieldsarray);
 	                $to = $emrow['email'];
@@ -436,7 +724,7 @@ class tokens extends SurveyCommonController {
 	
 	                $from = $_POST['from_'.$emrow['language']];
 	
-	
+					$publicurl=base_url();
 	                if ($ishtml === false)
 	                {
 	                    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
@@ -478,7 +766,7 @@ class tokens extends SurveyCommonController {
 	                {
 	                    $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.")."<br />", $fieldsarray);
 	                }
-	                elseif (SendEmailMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid),null,$customheaders))
+	                elseif (SendEmailMessage($modmessage, $modsubject, $to , $from, $this->config->item("sitename"), $ishtml, getBounceEmail($surveyid),null,$customheaders))
 	                {
 	                    // Put date into sent
 	                    $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -537,18 +825,38 @@ class tokens extends SurveyCommonController {
 	                }
 	                $tokenoutput .="</form>\n";
 	            }
+				$data['clang']=$this->limesurvey_lang;
+				$data['thissurvey']=getSurveyInfo($surveyid);
+				$data['imageurl'] = $this->config->item('imageurl');
+				$data['surveyid']=$surveyid;
+				$data['tokenoutput']=$tokenoutput;
+				self::_getAdminHeader();
+				$this->load->view("admin/token/tokenbar",$data);
+				$this->load->view("admin/token/emailpost",$data);
+				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 	        }
 	        else
 	        {
-	            $tokenoutput .= "<div class='warningheader'>".$clang->gT("Warning")."</div>\n".$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
+				$data['clang']=$this->limesurvey_lang;
+				$data['thissurvey']=getSurveyInfo($surveyid);
+				$data['imageurl'] = $this->config->item('imageurl');
+				$data['surveyid']=$surveyid;
+				self::_getAdminHeader();
+				$this->load->view("admin/token/tokenbar",$data);
+				self::_showMessageBox($clang->gT("Warning"),
+						$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
 	            ."<br/>&nbsp;<ul><li>".$clang->gT("having a valid email address")."</li>"
 	            ."<li>".$clang->gT("not having been sent an invitation already")."</li>"
 	            ."<li>".$clang->gT("having already completed the survey")."</li>"
-	            ."<li>".$clang->gT("having a token")."</li></ul>";
-	        }*/
+	            ."<li>".$clang->gT("having a token")."</li></ul>");
+				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+	        }
 	    }
 	}
 
+	/**
+	 * Remind Action
+	 */
 	function remind($surveyid) 
 	{
 		$clang=$this->limesurvey_lang;
@@ -601,10 +909,7 @@ class tokens extends SurveyCommonController {
 	    else
 	    {
 	
-	        /*$tokenoutput .= "<div class='messagebox ui-corner-all'>\n"
-	        . "<div class='header ui-widget-header'>";
-	        $tokenoutput .= $clang->gT("Sending Reminders")
-	        ."</div><br />\n";
+	        //$tokenoutput .= $clang->gT("Sending Reminders")
 	
 	        $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	        $baselanguage = GetBaseLanguageFromSurveyID($surveyid);
@@ -835,11 +1140,162 @@ class tokens extends SurveyCommonController {
 	            ."</ul><br />\n";
 	        }
 	        //$tokenoutput .= "</div>\n";
-		*/
+		
 		}
 	}
 
+	/**
+	 * Generate Tokens
+	 */
+	function tokenify($surveyid)
+	{
+		$clang = $this->limesurvey_lang;
+		$data['clang']=$this->limesurvey_lang;
+		$data['thissurvey']=getSurveyInfo($surveyid);
+		$data['imageurl'] = $this->config->item('imageurl');
+		$data['surveyid']=$surveyid;
+		
+		if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
+		{
+		    //$tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Create tokens")."</div>\n";
+		    if (!$this->input->post('ok'))
+		    {
+				
+				self::_getAdminHeader();
+				$this->load->view("admin/token/tokenbar",$data);
+				self::_showMessageBox($clang->gT("Create tokens"),
+						$clang->gT("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?")."<br /><br />\n"
+		        ."<input type='submit' value='"
+		        //		.$clang->gT("Yes")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify&amp;ok=Y', '_top')\" />\n"
+		        .$clang->gT("Yes")."' onclick=\"".get2post(site_url("admin/tokens/tokenify/$surveyid")."?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify&amp;ok=Y")."\" />\n"
+		        ."<input type='submit' value='"
+		        .$clang->gT("No")."' onclick=\"window.open('".site_url("admin/tokens/index/$surveyid")."', '_top')\" />\n"
+		        ."<br />\n");
+				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+				
+		    }
+		    else
+		    {
+		        //get token length from survey settings
+		        //$tlquery = "SELECT tokenlength FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
+		        //$tlresult = db_execute_assoc($tlquery);
+				$this->load->model("surveys_model");
+				$tlresult = $this->surveys_model->getSomeRecords(array("tokenlength"),array("sid"=>$surveyid));
+		        $tlrow = $tlresult->row_array();
+		        $tokenlength = $tlrow['tokenlength'];
+		        		
+		        //if tokenlength is not set or there are other problems use the default value (15)
+		        if(!isset($tokenlength) || $tokenlength == '')
+		        {
+		            $tokenlength = 15;
+		        }
+		
+		        // select all existing tokens
+		        //$ntquery = "SELECT token FROM ".db_table_name("tokens_$surveyid")." group by token";
+				$this->load->model("tokens_dynamic_model");
+				$ntresult = $this->tokens_dynamic_model->getSomeRecords(array("token"),$surveyid,FALSE,"token");
+		        //$ntresult = db_execute_assoc($ntquery);
+		        foreach ($ntresult->result_array() as $tkrow)
+		        {
+		            $existingtokens[$tkrow['token']]=null;
+		        }
+		        $newtokencount = 0;
+		        //$tkquery = "SELECT tid FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
+		        //$tkresult = db_execute_assoc($tkquery) or safe_die ("Mucked up!<br />$tkquery<br />".$connect->ErrorMsg());
+				$tkresult = $this->tokens_dynamic_model->selectEmptyTokens($surveyid);
+		        foreach ($tkresult->result_array() as $tkrow)
+		        {
+		            $isvalidtoken = false;
+		            while ($isvalidtoken == false)
+		            {
+		                $newtoken = sRandomChars($tokenlength);
+		                if (!isset($existingtokens[$newtoken])) {
+		                    $isvalidtoken = true;
+		                    $existingtokens[$newtoken]=null;
+		                }
+		            }
+		            //$itquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET token='$newtoken' WHERE tid={$tkrow['tid']}";
+		            //$itresult = $connect->Execute($itquery);
+					$itresult = $this->tokens_dynamic_model->updateToken($surveyid,$tkrow['tid'],$newtoken);
+		            $newtokencount++;
+		        }
+		        $message=str_replace("{TOKENCOUNT}", $newtokencount, $clang->gT("{TOKENCOUNT} tokens have been created"));
+		        //$tokenoutput .= "<div class='successheader'>$message</div>\n";
+				self::_getAdminHeader();
+				$this->load->view("admin/token/tokenbar",$data);
+				self::_showMessageBox($clang->gT("Create tokens"),$message);
+				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		    }
+		}
+	}
 
+	/**
+	 * Remove Token Database
+	 */
+	function kill($surveyid)
+	{
+		$clang = $this->limesurvey_lang;
+		$data['clang']=$this->limesurvey_lang;
+		$data['thissurvey']=getSurveyInfo($surveyid);
+		$data['imageurl'] = $this->config->item('imageurl');
+		$data['surveyid']=$surveyid;
+		
+		if (bHasSurveyPermission($surveyid, 'surveyactivation', 'update'))
+		{
+			$_POST = $this->input->post();
+		    $date = date('YmdHis');
+		    //$tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Delete Tokens Table")."</div>\n"
+		    //."<div class='messagebox ui-corner-all'>\n";
+		    // ToDo: Just delete it if there is no token in the table
+		    if (!isset($_POST['ok']) || !$_POST['ok'])
+		    {
+				self::_getAdminHeader();
+				$this->load->view("admin/token/tokenbar",$data);
+				self::_showMessageBox($clang->gT("Delete Tokens Table"),$clang->gT("If you delete this table tokens will no longer be required to access this survey.")."<br />".$clang->gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.")."<br />\n"
+		        ."( \"old_tokens_{$surveyid}_$date\" )<br /><br />\n"
+		        ."<input type='submit' value='"
+		        .$clang->gT("Delete Tokens")."' onclick=\"".get2post(site_url("admin/tokens/kill/$surveyid")."?action=tokens&amp;sid=$surveyid&amp;subaction=kill&amp;ok=surething")."\" />\n"
+		        ."<input type='submit' value='"
+		        .$clang->gT("Cancel")."' onclick=\"window.open('".site_url("admin/tokens/index/$surveyid")."', '_top')\" />\n");
+				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		    }
+		    elseif (isset($_POST['ok']) && $_POST['ok'] == "surething")
+		    {
+		        $oldtable = "tokens_$surveyid";
+		        $newtable = "old_tokens_{$surveyid}_$date";
+		        //$deactivatequery = db_rename_table( db_table_name_nq($oldtable), db_table_name_nq($newtable));
+		        $this->load->dbforge();
+				$this->dbforge->rename_table($this->db->dbprefix($oldtable) , $this->db->dbprefix($newtable));
+		
+				//CodeIgniter should handle this correctly
+		        /*if ($databasetype=='postgres')
+		        {
+		            // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
+		            $oldTableJur = db_table_name_nq($oldtable);
+		            $deactivatequery = db_rename_table(db_table_name_nq($oldtable),db_table_name_nq($newtable).'_tid_seq');
+		            $deactivateresult = $connect->Execute($deactivatequery) or die ("oldtable : ".$oldtable. " / oldtableJur : ". $oldTableJur . " / ".htmlspecialchars($deactivatequery)." / Could not rename the old sequence for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+		            $setsequence="ALTER TABLE ".db_table_name_nq($newtable)."_tid_seq ALTER COLUMN tid SET DEFAULT nextval('".db_table_name_nq($newtable)."_tid_seq'::regclass);";
+		            $deactivateresult = $connect->Execute($setsequence) or die (htmlspecialchars($setsequence)." Could not alter the field tid to point to the new sequence name for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+		            $setidx="ALTER INDEX ".db_table_name_nq($oldtable)."_idx RENAME TO ".db_table_name_nq($newtable)."_idx;";
+		            $deactivateresult = $connect->Execute($setidx) or die (htmlspecialchars($setidx)." Could not alter the index for this token table. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was not deactivated either.<br /><br /><a href='$scriptname?sid={$_GET['sid']}'>".$clang->gT("Main Admin Screen")."</a>");
+		        } else {
+		            $deactivateresult = $connect->Execute($deactivatequery) or die ("Couldn't deactivate because:<br />\n".htmlspecialchars($connect->ErrorMsg())." - Query: ".htmlspecialchars($deactivatequery)." <br /><br />\n<a href='$scriptname?sid=$surveyid'>Admin</a>\n");
+		        }*/
+		 	
+				self::_getAdminHeader();
+				$this->load->view("admin/token/tokenbar",$data);
+				self::_showMessageBox($clang->gT("Delete Tokens Table"),'<br />'.$clang->gT("The tokens table has now been removed and tokens are no longer required to access this survey.")."<br /> ".$clang->gT("A backup of this table has been made and can be accessed by your system administrator.")."<br />\n"
+		        ."(\"old_tokens_{$surveyid}_$date\")"."<br /><br />\n"
+		        ."<input type='submit' value='"
+		        .$clang->gT("Main Admin Screen")."' onclick=\"window.open('".base_url("admin/")."', '_top')\" />");
+				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		    }
+		}
+	}
+
+	/**
+	 * Handle token form for addnew/edit actions
+	 */
 	function _handletokenform($surveyid,$subaction,$tokenid="")
 	{
 		$clang=$this->limesurvey_lang;
@@ -849,14 +1305,15 @@ class tokens extends SurveyCommonController {
 		
 		if ($subaction == "edit")
 	    {
-	        /*$edquery = "SELECT * FROM ".db_table_name("tokens_$surveyid")." WHERE tid={$tokenid}";
+	        $edquery = "SELECT * FROM ".$this->db->dbprefix("tokens_$surveyid")." WHERE tid={$tokenid}";
+			$this->load->helper("database");
 	        $edresult = db_execute_assoc($edquery);
-	        $edfieldcount = $edresult->FieldCount();
-	        while($edrow = $edresult->FetchRow())
-	        {
-	            //Create variables with the same names as the database column names and fill in the value
-	            foreach ($edrow as $Key=>$Value) {$$Key = $Value;}
-	        }*/
+	        //$edfieldcount = $edresult->FieldCount();
+	        $edrow=$edresult->row_array();
+	        //Create variables with the same names as the database column names and fill in the value
+	        foreach ($edrow as $Key=>$Value) {$data['tokendata'][$Key] = $Value;}
+			$data['tokenid']=$tokenid;
+	        
 	    }
 	    /*if ($subaction != "edit")
 	    {
@@ -961,6 +1418,7 @@ class tokens extends SurveyCommonController {
 	    {
 	        //$query = db_rename_table($this->input->post("oldtable") , $this->db->dbprefix("tokens_$surveyid"));
 	        //$result=$connect->Execute($query) or safe_die("Failed Rename!<br />".$query."<br />".$connect->ErrorMsg());
+	        $this->load->dbforge();
 			$this->dbforge->rename_table($this->input->post("oldtable") , $this->db->dbprefix("tokens_$surveyid"));
 
 			self::_getAdminHeader();
@@ -987,7 +1445,7 @@ class tokens extends SurveyCommonController {
 	        {
 				foreach ($result->result_array() as $rows)
 				{
-				   $oldlist[]=$rows[0];
+				   $oldlist[]=reset($rows);
 				}
 			$data['oldlist'] = $oldlist;
 	        }

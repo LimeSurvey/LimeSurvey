@@ -1,6 +1,6 @@
     <div class='header ui-widget-header'><?php echo $clang->gT("Manage token attribute fields");?></div>
  
-    <form action="<?php echo site_url("admin/tokens/managetokenattributes/$surveyid");?>" method="post">'
+    <form action="<?php echo site_url("admin/tokens/updatetokenattributedescriptions/$surveyid");?>" method="post">'
     <table class='listsurveys'><tr><th><?php echo $clang->gT("Attribute field");?></th><th><?php echo $clang->gT("Field description");?></th><th><?php echo $clang->gT("Example data");?></th></tr>
 
 
@@ -30,7 +30,7 @@
     <div class='header ui-widget-header'><?php echo $clang->gT("Add token attributes");?></div><p>
 
     <?php echo sprintf($clang->gT('There are %s user attribute fields in this token table'),$nrofattributes);?></p>
-    <form id="addattribute" action="<?php echo site_url("admin/tokens/managetokenattributes/$surveyid");?>" method="post">
+    <form id="addattribute" action="<?php echo site_url("admin/tokens/updatetokenattributes/$surveyid");?>" method="post">
     <p>
     <label for="addnumber"><?php echo $clang->gT('Number of attribute fields to add:');?></label>
     <input type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />

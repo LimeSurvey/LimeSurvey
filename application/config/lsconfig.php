@@ -75,6 +75,8 @@ $config['memorylimit']        =  '32M';   // This sets how much memory LimeSurve
 $config['showpopups']         =   1;                // Show popup messages if mandatory or conditional questions have not been answered correctly.
 // 1=Show popup message, 0=Show message on page instead.
 
+$config['maxemails']          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
+
 
 // Session options
 

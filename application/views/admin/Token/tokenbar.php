@@ -70,7 +70,7 @@
 		        	<img name='RemindButton' src='<?php echo $imageurl;?>/remind.png' alt='<?php echo $clang->gT("Send email reminder");?>' />
 		        </a>
 		        <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-		        <a href="#" onclick="<?php echo get2post(base_url()."?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify");?>"
+		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/tokenify/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Generate tokens");?>'>
 		        	<img name='TokenifyButton' src='<?php echo $imageurl;?>/tokenify.png' alt='<?php echo $clang->gT("Generate tokens");?>' />
 		        </a>
@@ -78,7 +78,7 @@
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
 		    { ?>
-		        <a href="#" onclick="<?php echo get2post(base_url()."?action=tokens&amp;sid=$surveyid&amp;subaction=kill");?>" 
+		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/kill/$surveyid");?>', '_top')" 
 		        	title='<?php echo $clang->gTview("Drop tokens table");?>' >
 		        	<img name='DeleteTokensButton' src='<?php echo $imageurl;?>/delete.png' alt='<?php echo $clang->gT("Drop tokens table");?>' />
 		        </a>
@@ -97,3 +97,40 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+<!--
+	for(i=0; i<document.forms.length; i++)
+	{
+var el = document.createElement('input');
+el.type = 'hidden';
+el.name = 'checksessionbypost';
+el.value = 'kb9e2u4s55';
+document.forms[i].appendChild(el);
+	}
+
+	function addHiddenElement(theform,thename,thevalue)
+	{
+var myel = document.createElement('input');
+myel.type = 'hidden';
+myel.name = thename;
+theform.appendChild(myel);
+myel.value = thevalue;
+return myel;
+	}
+
+	function sendPost(myaction,checkcode,arrayparam,arrayval)
+	{
+var myform = document.createElement('form');
+document.body.appendChild(myform);
+myform.action =myaction;
+myform.method = 'POST';
+for (i=0;i<arrayparam.length;i++)
+{
+	addHiddenElement(myform,arrayparam[i],arrayval[i])
+}
+addHiddenElement(myform,'checksessionbypost',checkcode)
+myform.submit();
+	}
+
+//-->
+</script>

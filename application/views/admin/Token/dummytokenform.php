@@ -1,7 +1,7 @@
 	    <div class='header ui-widget-header'>
 	    <?php echo $clang->gT("Create dummy tokens"); ?>
 	    </div>
-	    <form id='edittoken' class='form30' method='post' action='$scriptname?action=tokens'>
+	    <form id='edittoken' class='form30' method='post' action='<?php echo site_url("admin/tokens/adddummys/$surveyid");?>'>
 	    <ul>
 	    <li><label>ID:</label>
 	    <?php echo $clang->gT("Auto");?>

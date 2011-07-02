@@ -14,7 +14,7 @@ class Surveys_dynamic_model extends CI_Model {
 		return $data;
 	}
 
-	function getSomeRecords($fields,$sid,$condition=FALSE)
+	function getSomeRecords($fields,$sid,$condition=FALSE,$order=FALSE)
 	{
 		foreach ($fields as $field)
 		{
@@ -24,7 +24,10 @@ class Surveys_dynamic_model extends CI_Model {
 		{
 			$this->db->where($condition);	
 		}
-		
+		if ($order != FALSE)
+		{
+			$this->db->order_by($order);	
+		}
 		$data = $this->db->get('survey_'.$sid);
 		
 		return $data;

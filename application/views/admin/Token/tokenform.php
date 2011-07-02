@@ -2,14 +2,16 @@
 	   <?php if ($subaction == "edit")
 	    {
 	        echo $clang->gT("Edit token entry");
+			foreach ($tokendata as $Key=>$Value) {$$Key = $Value;}
 	    }
 	    else
 	    {
 	        echo $clang->gT("Add token entry");
+			$tokenid="";
 	    }
 	?>
 	    </div>
-	    <form id='edittoken' class='form30' method='post' action='<?php echo site_url("admin/tokens/$subaction/$surveyid");?>'>
+	    <form id='edittoken' class='form30' method='post' action='<?php echo site_url("admin/tokens/$subaction/$surveyid/$tokenid");?>'>
 	    <ul>
 	    <li><label>ID:</label>
 	    <?php if ($subaction == "edit")
