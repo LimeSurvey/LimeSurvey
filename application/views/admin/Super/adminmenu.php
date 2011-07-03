@@ -90,7 +90,7 @@
 	</div>
 	<div class='menubar-right'><span class="boxcaption"><?php echo $clang->gT("Surveys");?>:</span>
 	    <select onchange="window.open(this.options[this.selectedIndex].value,'_top')">
-	    <?php echo getsurveylist(); ?>
+	    <?php echo getsurveylist(false, false, $surveyid); ?>
 	    </select>
 	    
 	    <?php

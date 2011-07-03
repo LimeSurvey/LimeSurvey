@@ -386,9 +386,9 @@ class AdminController extends LS_Controller {
 	 * @global string $imageurl
 	 * @return string $adminmenu
 	 */
-	function _showadminmenu()
+	function _showadminmenu($surveyid=false)
 	{
-	    global $homedir, $scriptname, $surveyid, $setfont, $imageurl, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck, $databasetype;
+	    global $homedir, $scriptname, $setfont, $imageurl, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck, $databasetype;
 
 		$clang=$this->limesurvey_lang;
 		$data['clang']=$this->limesurvey_lang;
@@ -400,6 +400,7 @@ class AdminController extends LS_Controller {
 		$data['showupdate'] = ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 && $this->config->item("updatelastcheck")>0 && $this->config->item("updateavailable")==1);
 		$data['updateversion'] = $this->config->item("updateversion");
 		$data['updatebuild'] = $this->config->item("updatebuild");
+		$data['surveyid'] = $surveyid;
 		
 	    $this->load->view("admin/Super/adminmenu",$data);
 

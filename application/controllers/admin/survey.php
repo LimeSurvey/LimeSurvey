@@ -33,7 +33,7 @@
     			$this->config->set_item("css_admin_includes", $css_admin_includes);
     		
     			self::_getAdminHeader();
-    			self::_showadminmenu();
+    			self::_showadminmenu($surveyid);;
     			self::_surveybar($surveyid);
     			self::_surveysummary($surveyid);
                 self::_loadEndScripts();
@@ -48,7 +48,7 @@
    			$this->config->set_item("css_admin_includes", $css_admin_includes);
     		
    			self::_getAdminHeader();
-   			self::_showadminmenu();
+   			self::_showadminmenu($surveyid);;
    			self::_surveybar($surveyid);
             self::_surveysummary($surveyid,$gid);
    			self::_questiongroupbar($surveyid,$gid,"insertquestiongroup");
@@ -75,7 +75,7 @@
         self::_js_admin_includes(base_url().'scripts/admin/listsurvey.js');
         
         self::_getAdminHeader();
-        self::_showadminmenu();
+        self::_showadminmenu($surveyid);;
         
         
         $query = " SELECT a.*, c.*, u.users_name FROM ".$this->db->dbprefix."surveys as a "
@@ -331,9 +331,10 @@
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_getAdminHeader();
-        self::_showadminmenu();
+        $data['surveyid'] = $surveyid = $this->input->post('sid');
+        self::_showadminmenu($surveyid);
         self::_surveybar($this->input->post('sid')); 
-        $data['surveyid'] = $surveyid = $this->input->post('sid');      
+        
         if(bHasSurveyPermission($surveyid,'survey','delete'))
         {
             $data['deleteok'] = $deleteok = $this->input->post('deleteok');
@@ -440,7 +441,7 @@
         $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_js_admin_includes(base_url().'scripts/admin/surveysettings.js');
         self::_getAdminHeader();
-  		self::_showadminmenu();
+  		self::_showadminmenu($surveyid);;
         self::_surveybar($surveyid);
         if(bHasSurveyPermission($surveyid,'surveylocale','read'))
         {
@@ -625,7 +626,7 @@
         {
             
             self::_getAdminHeader();
-			self::_showadminmenu();
+			self::_showadminmenu($surveyid);;
             $data['clang'] = $clang;
             $this->load->view('admin/Survey/exportSurveyError_view',$data);
             
@@ -726,7 +727,7 @@
             $data['aImportResults'] = $aImportResults;
             $data['importerror'] = $importerror;
             self::_getAdminHeader();
-			self::_showadminmenu();
+			self::_showadminmenu($surveyid);;
 			self::_surveybar($surveyid);
 			//self::_surveysummary($surveyid);
 			$this->load->view('admin/Survey/copySurvey_view',$data);
@@ -742,7 +743,7 @@
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_getAdminHeader();
-		self::_showadminmenu();
+		self::_showadminmenu($surveyid);;
         if (!is_null($surveyid))
         self::_surveybar($surveyid);
         

@@ -342,14 +342,14 @@ function isStandardTemplate($sTemplateName)
  * @return string This string is returned containing <option></option> formatted list of existing surveys
  *
  */
-function getsurveylist($returnarray=false,$returnwithouturl=false)
+function getsurveylist($returnarray=false,$returnwithouturl=false, $surveyid=false)
 {
    //global $surveyid, $clang, $timeadjust,$CI;
     static $cached = null;
 	$CI = &get_instance();
     
     $CI->load->config('lsconfig');
-	$surveyid = $CI->config->item("surveyid");
+	//$surveyid = $CI->config->item("surveyid");
 	$timeadjust = $CI->config->item("timeadjust");
 	$clang = $CI->limesurvey_lang;
 	
