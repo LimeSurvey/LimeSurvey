@@ -310,7 +310,7 @@
 	 * Shows admin menu for surveys
 	 * @param int Survey id
 	 */
-    function _surveybar($surveyid)
+    function _surveybar($surveyid,$gid=null)
     {
     	//$this->load->helper('surveytranslator');
     	$clang = $this->limesurvey_lang;
@@ -419,7 +419,7 @@
         // TOKEN MANAGEMENT BUTTON
 		$data['tokenmanagement'] = bHasSurveyPermission($surveyid,'surveysettings','update') || bHasSurveyPermission($surveyid,'tokens','read');
         
-        $data['gid'] = $gid = $this->config->item('gid');
+        $data['gid'] = $gid ;// = $this->input->post('gid');
         
         if (bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
@@ -563,9 +563,9 @@
 	/**
 	 * Show survey summary
 	 * @param int Survey id
-     * @param int Group id
+     * @param string Action to be performed
 	 */
-    function _surveysummary($surveyid,$gid=null)
+    function _surveysummary($surveyid,$action=null)
     {
         $clang = $this->limesurvey_lang;
 		
@@ -766,17 +766,17 @@
             
         }
         */
-        
-        /**if ($gid || $qid || $action=="deactivate"|| $action=="activate" || $action=="surveysecurity"
+        //$gid || $qid || 
+        if ($action=="deactivate"|| $action=="activate" || $action=="surveysecurity"
         || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity"
         || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
         || $action=="editsurveysettings"|| $action=="editsurveylocalesettings" || $action=="updatesurveysettingsandeditlocalesettings" || $action=="addgroup" || $action=="importgroup"
         || $action=="ordergroups" || $action=="deletesurvey" || $action=="resetsurveylogic"
         || $action=="importsurveyresources" || $action=="translate"  || $action=="emailtemplates" 
-        || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey") {$showstyle="style='display: none'";}
+        || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey" || $action=="viewgroup") {$showstyle="style='display: none'";}
+        if (!isset($showstyle)) {$showstyle="";} 
+        /**if ($gid) {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";} */
-        if ($gid) {$showstyle="style='display: none'";}
-        if (!isset($showstyle)) {$showstyle="";}
         $data['showstyle'] = $showstyle;
 		$this->load->view("admin/survey/surveysummary",$data);
     }

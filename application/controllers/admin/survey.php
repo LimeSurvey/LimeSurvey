@@ -49,8 +49,8 @@
     		
    			self::_getAdminHeader();
    			self::_showadminmenu($surveyid);;
-   			self::_surveybar($surveyid);
-            self::_surveysummary($surveyid,$gid);
+   			self::_surveybar($surveyid,$gid);
+            self::_surveysummary($surveyid,"viewgroup");
    			self::_questiongroupbar($surveyid,$gid,"insertquestiongroup");
             
             self::_loadEndScripts();

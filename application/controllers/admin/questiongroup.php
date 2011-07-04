@@ -33,7 +33,7 @@
             self::_getAdminHeader();
             self::_showadminmenu();
             self::_surveybar($surveyid); 
-            
+            self::_surveysummary($surveyid,"addgroup");
             if ($action == "addgroup")
             {
                 $this->load->helper('admin/htmleditor');      
@@ -196,7 +196,7 @@
             $this->config->set_item("css_admin_includes", $css_admin_includes);
             self::_getAdminHeader();
             self::_showadminmenu();
-            self::_surveybar($surveyid); 
+            self::_surveybar($surveyid,$gid); 
             
             if ($action == "editgroup")
             {
