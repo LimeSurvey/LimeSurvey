@@ -14,7 +14,7 @@
  *	Files Purpose: lots of common functions
  */
 
-
+require_once('replacements.php');
 
 /**
 * This function gives back an array that defines which survey permissions and what part of the CRUD+Import+Export subpermissions is available.
@@ -2769,56 +2769,6 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     return $output;
 }
 
-
-/**
- * passthruReplace() takes a string and looks for {PASSTHRULABEL}, {PASSTHRUVALUE} and {PASSTHRU:myarg} variables
- *  which it then substitutes for passthru data sent in the initiasl URL and stored
- *  in the session array containing responses
- *
- * @param mixed $line   string - the string to iterate, and then return
- * @param mixed $thissurvey     string - the string containing the surveyinformation
- * @return string This string is returned containing the substituted responses
- *
- */
-function PassthruReplace($line, $thissurvey)
-{
-    $line=str_replace("{PASSTHRULABEL}", $thissurvey['passthrulabel'], $line);
-    $line=str_replace("{PASSTHRUVALUE}", $thissurvey['passthruvalue'], $line);
-
-    //  Replacement for variable passthru argument like {PASSTHRU:myarg}
-    while (strpos($line,"{PASSTHRU:") !== false)
-    {
-        $p1 = strpos($line,"{PASSTHRU:"); // startposition
-        $p2 = $p1 + 10; // position of the first arg char
-        $p3 = strpos($line,"}",10); // position of the last arg char
-
-        $cmd=substr($line,$p1,$p3-$p1+1); // extract the complete passthru like "{PASSTHRU:myarg}"
-        $arg=substr($line,$p2,$p3-$p2); // extract the arg to passthru (like "myarg")
-
-        // lookup for the fitting arg
-        $qstring = $_SESSION['ls_initialquerystr']; // get initial query_string
-
-        parse_str($qstring, $keyvalue); // split into key and value
-        $match = 0; // prevent an endless loop if there is no arg in url
-        foreach ($keyvalue as $key=>$value) // lookup loop
-        {
-            if ($key == $arg) // if match
-            {
-                $line=str_replace($cmd, $arg . "=" . $value, $line); // replace
-                $match = 1;
-                break;
-            }
-
-        }
-
-        if ($match == 0)
-        {
-            $line=str_replace($cmd, $arg . "=", $line); // clears "{PASSTHRU:myarg} to "myarg=" if there was no myarg in calling url
-        }
-    }
-
-    return $line;
-}
 
 /**
  * This function returns a count of the number of saved responses to a survey
