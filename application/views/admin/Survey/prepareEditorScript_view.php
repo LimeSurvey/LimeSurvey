@@ -1,4 +1,4 @@
-<script type="text/javascript" src ="<?php echo $this->config->item('sCKEditorURL'); ?>/ckeditor.js" >
+<script type="text/javascript" src="<?php echo $this->config->item('sCKEditorURL'); ?>/ckeditor.js"></script>
 <script type='text/javascript'>
     <!--
     var editorwindowsHash = new Object();
@@ -52,5 +52,6 @@
     oMyEditor.setData(value);
     }
     }
+    
     -->
 </script>

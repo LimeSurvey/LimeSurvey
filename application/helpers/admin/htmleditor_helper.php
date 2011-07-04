@@ -182,6 +182,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
                                                                 ,LimeReplacementFieldsQID : \"".$qID."\"
                                                                 ,LimeReplacementFieldsType : \"".$fieldtype."\"
                                                                 ,LimeReplacementFieldsAction : \"".$action."\"
+                                                                ,LimeReplacementFieldsPath : \"".site_url("admin/fck_LimeReplacementFields/index/")."\"
                                                                 ,width:'660'
                                                                 ,language:'".sTranslateLangCode2CK($CI->session->userdata('adminlang'))."'
                                                                 ,smiley_path : \"".$CI->config->item('uploadurl')."/images/smiley/msn/\"\n"

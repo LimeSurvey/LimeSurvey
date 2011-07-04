@@ -7,7 +7,6 @@
 {
 	function limereplacementfieldsDialog( editor, isEdit )
 	{
-
 		var lang = editor.lang.limereplacementfields,
 			generalLabel = editor.lang.common.generalTab;
 		return {
@@ -26,13 +25,19 @@
 							id : 'text',
 							type : 'html',
 							label : lang.title,
-						    html : CKEDITOR.ajax.load(editor.basePath + '../../admin.php?sid=' +
+						    html : CKEDITOR.ajax.load(editor.config.LimeReplacementFieldsPath + '/' +
+						    	editor.config.LimeReplacementFieldsType + '/' +
+						    	editor.config.LimeReplacementFieldsAction + '/' +
+						    	editor.config.LimeReplacementFieldsSID + '/' +
+						    	editor.config.LimeReplacementFieldsGID + '/' +
+						    	editor.config.LimeReplacementFieldsQID + '/'
+						    	 /*+ '../../admin.php?sid=' +
                         		editor.config.LimeReplacementFieldsSID +
                         		'&gid=' + editor.config.LimeReplacementFieldsGID +
                         		'&qid=' + editor.config.LimeReplacementFieldsQID +
                         		'&fieldtype=' + editor.config.LimeReplacementFieldsType +
                         		'&action=replacementfields' +
-                        		'&editedaction=' + editor.config.LimeReplacementFieldsAction),
+                        		'&editedaction=' + editor.config.LimeReplacementFieldsAction*/),
 							setup : function( element )
 							{
 								if ( isEdit )

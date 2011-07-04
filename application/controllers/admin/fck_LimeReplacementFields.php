@@ -19,17 +19,17 @@ class fck_LimeReplacementFields extends AdminController {
 		parent::__construct();
 	}
 	
-	function index($fieldtype, $action)
+	function index($fieldtype, $action, $surveyid=false, $gid=false, $qid=false)
 	{
-		
+		$clang=$this->limesurvey_lang;
 		if(!$this->session->userdata('loginID'))
 		{
 		    die ("Unauthenticated Access Forbiden");
 		}
 		
-		$surveyid=returnglobal('sid');
-		if (!isset($gid)) {$gid=returnglobal('gid');}
-		if (!isset($qid)) {$qid=returnglobal('qid');}
+		//$surveyid=returnglobal('sid');
+		//if (!isset($gid)) {$gid=returnglobal('gid');}
+		//if (!isset($qid)) {$qid=returnglobal('qid');}
 
 		//$InsertansUnsupportedtypes=Array('TEST-A','TEST-B','TEST-C','TEST-D');
 		$InsertansUnsupportedtypes=Array(); // Currently all question types are supported
@@ -336,6 +336,8 @@ class fck_LimeReplacementFields extends AdminController {
 		}
 		
 		$data['countfields'] = count($replFields);
+		$data['replFields'] = $replFields;
+		$data['clang'] = $clang;
 		if(isset($cquestions)) { $data['cquestions'] = $cquestions; };
 		if(isset($surveyformat)) { $data['surveyformat'] = $surveyformat; };
 		
