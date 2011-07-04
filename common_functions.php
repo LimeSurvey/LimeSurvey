@@ -390,7 +390,7 @@ function &db_select_column($sql)
 function db_quote_id($id)
 {
     global $databasetype;
-    // WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
+    // WE DONT HAVE nor USE other thing that alphanumeric characters in the field names
     //  $quote = $connect->nameQuote;
     //  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
 

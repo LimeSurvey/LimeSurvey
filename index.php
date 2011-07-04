@@ -397,8 +397,7 @@ if (!$surveyid)
 	          FROM ".db_table_name('surveys')." AS a
 			  INNER JOIN ".db_table_name('surveys_languagesettings')." AS b
 			  ON ( surveyls_survey_id = a.sid )
-			  WHERE surveyls_survey_id=a.sid
-              AND surveyls_language='$baselang'
+			  WHERE surveyls_language='$baselang'
 			  AND a.active='Y'
 			  AND a.listpublic='Y'
 			  AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))

@@ -350,11 +350,11 @@ function templatereplace($line, $replacements=array())
                 $helpicon = $imageurl . "/help.gif";
                 }
             }
-        $_questionhelp = '';
+        $_questionhelp =  "<img src='{$helpicon}' alt='Help' align='left' />".$help;
         }
     else
     {
-        $_questionhelp = $help;
+        $_questionhelp = '';
     }
 
     if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N")
@@ -615,7 +615,7 @@ function templatereplace($line, $replacements=array())
     {
         $line=str_replace('{' . $key . '}', $value, $line);
     }
-    
+
     return $line;
 }
 
