@@ -13,6 +13,7 @@ class LimeExpressionManager {
     private $fieldmap;
     private $varMap;
     private $sgqaMap;
+    private $namedConstantMap;
     private $tokenMap;
 
     private $em;    // Expression Manager
@@ -67,6 +68,7 @@ class LimeExpressionManager {
 
         $knownVars = array();   // mapping of VarName to Value
         $knownSGQAs = array();  // mapping of SGQA to Value
+        $knownNamedConstants = array(); // mapping of read-only values to Value
         foreach($fieldmap as $fielddata)
         {
             $code = $fielddata['fieldname'];
@@ -74,6 +76,7 @@ class LimeExpressionManager {
             {
                 continue;
             }
+            // TODO:  Which of these question types are read-write variables vs. named constants?
             switch($fielddata['type'])
             {
                 case '!': //List - dropdown
@@ -122,13 +125,14 @@ class LimeExpressionManager {
                 $codeValue = $_SESSION[$code];
                 $displayValue= retrieve_Answer($code, $_SESSION['dateformats']['phpdate']);
                 $knownVars[$varName] = $codeValue;
-                $knownVars[$varName . '.shown'] = $displayValue;
-                $knownVars[$varName . '.question']= $question;
+                $knownNamedConstants[$varName . '.shown'] = $displayValue;
+                $knownNamedConstants[$varName . '.question']= $question;
                 $knownSGQAs['INSERTANS:' . $code] = $displayValue;
             }
         }
         $this->varMap = $knownVars;
         $this->sgqaMap = $knownSGQAs;
+        $this->namedConstantMap = $knownNamedConstants;
 
         // Now set tokens
         $tokens = array();      // mapping of TOKENS to values - how often does this need to be set?
@@ -166,12 +170,13 @@ class LimeExpressionManager {
         {
             // means that some values changed, so need to update what was registered to ExpressionManager
             $em->RegisterVarnamesUsingReplace($lem->varMap);
-            $em->RegisterReservedWordsUsingReplace($lem->sgqaMap);
-            $em->RegisterReservedWordsUsingMerge($lem->tokenMap);
+            $em->RegisterNamedConstantsUsingReplace($lem->sgqaMap);
+            $em->RegisterNamedConstantsUsingMerge($lem->namedConstantMap);
+            $em->RegisterNamedConstantsUsingMerge($lem->tokenMap);
         }
         if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
         {
-            $em->RegisterReservedWordsUsingMerge($replacementFields);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
+            $em->RegisterNamedConstantsUsingMerge($replacementFields);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
         }
         return $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string));
     }
@@ -188,7 +193,7 @@ class LimeExpressionManager {
             'numKids'   => 2,
             'numPets'   => 1,
         );
-        $reservedWords = array(
+        $namedConstants = array(
             'INSERTANS:61764X1X1'   => 'Peter',
             'INSERTANS:61764X1X2'   => 27,
             'INSERTANS:61764X1X3'   => 1,
@@ -240,9 +245,9 @@ EOST;
         $em = $lem->em;
 
         $em->RegisterVarnamesUsingMerge($vars);
-        $em->RegisterReservedWordsUsingMerge($reservedWords);
+        $em->RegisterNamedConstantsUsingMerge($namedConstants);
 
-        print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarsUsed</th><th>ReservedWordsUsed</th></tr>';
+        print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarsUsed</th><th>NamedConstantsUsed</th></tr>';
         foreach($alltests as $test)
         {
             print "<tr><td>" . $test . "</td>\n";
@@ -254,9 +259,9 @@ EOST;
             else {
                 print "<td>&nbsp;</td>\n";
             }
-            $allReservedWordsUsed = $em->getAllReservedWordsUsed();
-            if (is_array($allReservedWordsUsed) and count($allReservedWordsUsed) > 0) {
-                print "<td>" . implode(', ', $allReservedWordsUsed) . "</td>\n";
+            $allNamedConstantsUsed = $em->getAllNamedConstantsUsed();
+            if (is_array($allNamedConstantsUsed) and count($allNamedConstantsUsed) > 0) {
+                print "<td>" . implode(', ', $allNamedConstantsUsed) . "</td>\n";
             }
             else {
                 print "<td>&nbsp;</td>\n";

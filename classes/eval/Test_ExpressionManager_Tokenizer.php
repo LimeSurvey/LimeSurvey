@@ -6,13 +6,12 @@ and open the template in the editor.
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
+        <title>ExpressionManager:  Unit Test Tokenizer</title>
     </head>
     <body>
         <?php
             include 'ExpressionManager.php';
             ExpressionManager::UnitTestTokenizer();
-            ExpressionManager::UnitTestStringSplitter();
         ?>
     </body>
 </html>

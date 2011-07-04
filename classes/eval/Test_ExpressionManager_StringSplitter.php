@@ -6,22 +6,12 @@ and open the template in the editor.
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <style type="text/css">
-            <!--
-.error {
-    background-color: #ff0000;
-}
-.ok {
-    background-color: #00ff00
-}
-            -->
-        </style>
-        <title>ExpressionManager:  Unit Test Core Evaluator</title>
+        <title>ExpressionManager:  Unit Test String Splitter</title>
     </head>
     <body>
         <?php
             include 'ExpressionManager.php';
-            ExpressionManager::UnitTestEvaluator();
+            ExpressionManager::UnitTestStringSplitter();
         ?>
     </body>
 </html>
