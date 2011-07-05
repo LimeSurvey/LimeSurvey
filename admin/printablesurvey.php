@@ -489,8 +489,9 @@ while ($degrow = $degresult->FetchRow())
                         {
                             $explanation .= $clang->gT("Answer was")." ";
                         }
+                    	$explanation .= " ".$distinctrow['value'];
                     }
-                    if(!$distinctrow['cqid']){ // cqid == 0  ==> token attribute match
+                    if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
                         $tokenData = GetTokenFieldsAndNames($surveyid);
                         preg_match('/^{TOKEN:([^}]*)}$/',$distinctrow['cfieldname'],$extractedTokenAttr);
                         $explanation .= "Your ".$tokenData[strtolower($extractedTokenAttr[1])]." ";
