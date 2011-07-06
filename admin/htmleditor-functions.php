@@ -204,7 +204,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
     if ( $fieldtype == 'email-inv' ||
          $fieldtype == 'email-reg' ||
          $fieldtype == 'email-conf'||
-         $fieldtype == 'email-admin-conf'||
+         $fieldtype == 'email-admin-notification'||
          $fieldtype == 'email-admin-resp'||
          $fieldtype == 'email-rem' )
     {

@@ -7,11 +7,12 @@
  * NOTE - Don't do any embedded replacements in this function.  Create the array of replacement values and
  * they will be done in batch at the end
  *
- * @param mixed $line Text to search in
- * @param mixed $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
+ * @param string $line Text to search in
+ * @param array $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
+ * @param boolean $anonymized Determines if token data is being used or just replaced with blanks
  * @return string  Text with replaced strings
  */
-function templatereplace($line, $replacements=array())
+function templatereplace($line, $replacements=array(), $anonymized=false)
 {
     global $surveylist, $sitename, $clienttoken, $rooturl;
     global $thissurvey, $imageurl, $defaulttemplate;
@@ -350,7 +351,7 @@ function templatereplace($line, $replacements=array())
                 $helpicon = $imageurl . "/help.gif";
                 }
             }
-        $_questionhelp =  "<img src='{$helpicon}' alt='Help' align='left' />".$help;
+            $_questionhelp =  "<img src='{$helpicon}' alt='Help' align='left' />".$help;
         }
     else
     {
@@ -602,7 +603,7 @@ function templatereplace($line, $replacements=array())
 	$coreReplacements['TEMPLATECSS'] = $_templatecss;
 	$coreReplacements['TEMPLATEURL'] = $_templateurl;
 	$coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
-	$coreReplacements['TOKEN'] = $_token;
+	if (!anonymized) $coreReplacements['TOKEN'] = $_token;
 	$coreReplacements['URL'] = $_linkreplace;
 	$coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
 
@@ -610,7 +611,7 @@ function templatereplace($line, $replacements=array())
 
     // Now do all of the replacements
     $line = insertansReplace($line);
-    $line = tokenReplace($line);
+    $line = tokenReplace($line, $anonymized);
     foreach ($doTheseReplacements as $key => $value )
     {
         $line=str_replace('{' . $key . '}', $value, $line);
@@ -655,12 +656,13 @@ function insertansReplace($line)
  *  but have been moved to a function of their own to make it available
  *  to other areas of the script.
  *
- * @param mixed $line   string - the string to iterate, and then return
+ * @param string $line  the string to iterate, and then return
+ * @param boolean $anynomized  Sets if the underlying token data should be not used
  *
  * @return string This string is returned containing the substituted responses
  *
  */
-function tokenReplace($line)
+function tokenReplace($line, $anonymized=false)
 {
     global $surveyid;
 
@@ -670,8 +672,10 @@ function tokenReplace($line)
         $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
     }
 
-    if (isset($_SESSION['thistoken']))
+    if (isset($_SESSION['thistoken']) && !$anonymized)
     {
+        if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
+        if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
         if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
         if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
         if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
@@ -689,7 +693,10 @@ function tokenReplace($line)
         $templine=substr($templine,0,strpos($templine, "}")+1);
         $attr_no=(int)substr($templine,17,strpos($templine, "}")-17);
         $replacestr='';
-        if (isset($_SESSION['thistoken']['attribute_'.$attr_no])) $replacestr=$_SESSION['thistoken']['attribute_'.$attr_no];
+        if (isset($_SESSION['thistoken']['attribute_'.$attr_no]) && !$anonymized)
+        {
+            $replacestr=$_SESSION['thistoken']['attribute_'.$attr_no];
+        }
         $line=str_replace($templine, $replacestr, $line);
     }
     return $line;

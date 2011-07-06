@@ -2202,8 +2202,8 @@ function SendSubmitNotifications()
     $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
     if (count($aEmailNotificationTo)>0)
     {
-        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars);
-        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars);
+        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,($thissurvey['anonymized'] == "Y"));
+        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,($thissurvey['anonymized'] == "Y"));
         foreach ($aEmailNotificationTo as $sRecipient)
         {
             if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))

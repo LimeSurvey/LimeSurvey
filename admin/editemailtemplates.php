@@ -77,7 +77,7 @@
         . "\t</li>\n";
         $sHTMLOutput .= "<li><label for='email_admin_notification_{$grouplang}'>".$clang->gT("Admin confirmation email body:")."</label>\n"
         . "<textarea cols='80' rows='20' name='email_admin_notification_{$grouplang}' id='email_admin_notification_{$grouplang}'>".htmlspecialchars($esrow['email_admin_notification'])."</textarea>\n"
-        . getEditor("email-admin-conf","email_admin_notification_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
+        . getEditor("email-admin-notification","email_admin_notification_{$grouplang}", "[".$clang->gT("Admin notification email:", "js")."](".$grouplang.")",$surveyid,'','',$action)
         . "<input type='hidden' name='email_admin_notification_default_{$grouplang}' id='email_admin_notification_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($aDefaultTexts['admin_notification'],$ishtml),ENT_QUOTES)."' />\n"
         . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_notification_{$grouplang}\",\"email_admin_notification_default_{$grouplang}\")' />\n"
         . "\t</li>\n";

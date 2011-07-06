@@ -5,96 +5,98 @@ $(document).ready(function()
 	if (typeof checkconditions!='undefined') checkconditions();
 	if (typeof template_onload!='undefined') template_onload();
 	prepareCellAdapters();
-    if (typeof(focus_element) != 'undefined') 
+    if (typeof(focus_element) != 'undefined')
     {
         $(focus_element).focus();
     }
     $(".question").find("select").each(function () {
         hookEvent($(this).attr('id'),'mousewheel',noScroll);
     });
-        var kp = $("input.num-keypad");
-        if(kp.length) kp.keypad({showAnim: 'fadeIn', keypadOnly: false});
-        kp = $("input.text-keypad");
-        if(kp.length)
-        {
-                var spacer = $.keypad.HALF_SPACE;
-                for(var i = 0; i != 8; ++i) spacer += $.keypad.SPACE;
-		kp.keypad({
-			showAnim: 'fadeIn',
-			keypadOnly: false,
-			layout: [
-                                spacer + $.keypad.CLEAR + $.keypad.CLOSE, $.keypad.SPACE,
-			        '!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
-			        $.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
-			        'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
-			        $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
-			        $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
-			        $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER]});
+
+    // Keypad functions
+    var kp = $("input.num-keypad");
+    if(kp.length) kp.keypad({showAnim: 'fadeIn', keypadOnly: false});
+    kp = $("input.text-keypad");
+    if(kp.length)
+    {
+        var spacer = $.keypad.HALF_SPACE;
+        for(var i = 0; i != 8; ++i) spacer += $.keypad.SPACE;
+	    kp.keypad({
+		    showAnim: 'fadeIn',
+		    keypadOnly: false,
+		    layout: [
+                spacer + $.keypad.CLEAR + $.keypad.CLOSE, $.keypad.SPACE,
+			    '!@#$%^&*()_=' + $.keypad.HALF_SPACE + $.keypad.BACK,
+			    $.keypad.HALF_SPACE + '`~[]{}<>\\|/' + $.keypad.SPACE + $.keypad.SPACE + '789',
+			    'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
+			    $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
+			    $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
+			    $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER]});
+    }
+
+    $(".location").each(function(index,element){
+        var question = $(element).attr('name');
+        var coordinates = $(element).val();
+        var latLng = coordinates.split(" ");
+        var question_id = question.substr(0,question.length-2);
+        if ($("#mapservice_"+question_id).val()==1){
+            // Google Maps
+			if (gmaps[''+question]==undefined)
+				gmaps[''+question] = GMapsInitialize(question,latLng[0],latLng[1]);
+		}
+        else if ($("#mapservice_"+question_id).val()==2){
+            // Open Street Map
+			if (osmaps[''+question]==undefined)
+				osmaps[''+question] = OSMapInitialize(question,latLng[0],latLng[1]);
         }
-        
-        $(".location").each(function(index,element){
-            var question = $(element).attr('name');
-            var coordinates = $(element).val();
-            var latLng = coordinates.split(" ");
-            var question_id = question.substr(0,question.length-2);
-            if ($("#mapservice_"+question_id).val()==1){
-                // Google Maps
-				if (gmaps[''+question]==undefined)
-					gmaps[''+question] = GMapsInitialize(question,latLng[0],latLng[1]);
-					}
-            else if ($("#mapservice_"+question_id).val()==2){
-                // Open Street Map
-				if (osmaps[''+question]==undefined)
-					osmaps[''+question] = OSMapInitialize(question,latLng[0],latLng[1]);
-            }
+    });
+    $(".location").live('focusout',function(event){
+        var question = $(event.target).attr('name');
+        var name = question.substr(0,question.length - 2);
+        var coordinates = $(event.target).attr('value');
+        var xy = coordinates.split(" ");
+        var currentMap = gmaps[question];
+        var marker = gmaps["marker__"+question];
+        var markerLatLng = new GLatLng(xy[0],xy[1]);
+        marker.setLatLng(markerLatLng);
+        var geocoder = new GClientGeocoder();
+        geocoder.getLocations(markerLatLng,function(response){
+
+            parseGeocodeAddress(response,name);
         });
-        $(".location").live('focusout',function(event){
-            var question = $(event.target).attr('name');
-            var name = question.substr(0,question.length - 2);
-            var coordinates = $(event.target).attr('value');
-            var xy = coordinates.split(" ");
-            var currentMap = gmaps[question];
-            var marker = gmaps["marker__"+question];
-            var markerLatLng = new GLatLng(xy[0],xy[1]);
-        	marker.setLatLng(markerLatLng);
-        	var geocoder = new GClientGeocoder();
-            geocoder.getLocations(markerLatLng,function(response){
-            	
-                parseGeocodeAddress(response,name);
-            });
-            currentMap.panTo(markerLatLng);
-        });
-        if ((typeof(autoArray) != "undefined")){
-            if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
-                var aListOfQuestions = autoArray.list;
+        currentMap.panTo(markerLatLng);
+    });
+    if ((typeof(autoArray) != "undefined")){
+        if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
+            var aListOfQuestions = autoArray.list;
 
-                $(aListOfQuestions).each(function(index,element){
+            $(aListOfQuestions).each(function(index,element){
 
-                    var elementInfo = autoArray[element];
-                    var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
+                var elementInfo = autoArray[element];
+                var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
 
-                    var aJSelectors = strJSelector.split(", ");
-                    var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
+                var aJSelectors = strJSelector.split(", ");
+                var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
 
-                    $(strJSelector).live('change',function(event){
+                $(strJSelector).live('change',function(event){
 
-                        if ($(strCheckedSelector).length == $(strJSelector).length){
+                    if ($(strCheckedSelector).length == $(strJSelector).length){
 
-                            $("#answer"+elementInfo.focus).trigger('click');
+                        $("#answer"+elementInfo.focus).trigger('click');
 
-                            eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
+                        eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
 
-                            checkconditions($("#answer"+elementInfo.focus).val(),
-                                            $("#answer"+elementInfo.focus).attr("name"),
-                                            $("#answer"+elementInfo.focus).attr('type')
-                                        );
+                        checkconditions($("#answer"+elementInfo.focus).val(),
+                                        $("#answer"+elementInfo.focus).attr("name"),
+                                        $("#answer"+elementInfo.focus).attr('type')
+                                    );
 
-                        }
-                    });
-
+                    }
                 });
-            }
+
+            });
         }
+    }
 });
 
 gmaps = new Object;
@@ -103,7 +105,7 @@ zoom = [];
 
 // OSMap functions
 function OSMapInitialize(question,lat,lng){
-	 
+
     map = new OpenLayers.Map("gmap_canvas_" + question);
     map.addLayer(new OpenLayers.Layer.OSM());
     var lonLat = new OpenLayers.LonLat(lat,lng)
@@ -117,7 +119,7 @@ function OSMapInitialize(question,lat,lng){
     markers.addMarker(new OpenLayers.Marker(lonLat));
     map.setCenter (lonLat, zoom);
     return map;
-    
+
 }
 
 // Google Maps Functions
@@ -135,11 +137,11 @@ function GMapsInitialize(question,lat,lng) {
         	marker.setLatLng(markerLatLng);
         	var geocoder = new GClientGeocoder();
             geocoder.getLocations(markerLatLng,function(response){
-            	
+
                 parseGeocodeAddress(response,name);
             });
             $("#answer"+question).val(Math.round(markerLatLng.lat()*10000)/10000 + " " + Math.round(markerLatLng.lng()*10000)/10000);
-         
+
         });
         gmaps['marker__'+question] = marker;
         GEvent.addListener(marker, "dragend", function() {
@@ -160,37 +162,37 @@ function parseGeocodeAddress(response, name){
 	var state = '';
 	var country = '';
 	var postal = '';
-	
+
   if (!(!response || response.Status.code != 200)) {
         place = response.Placemark[0];
         point = new GLatLng(place.Point.coordinates[1],
                             place.Point.coordinates[0]);
         var lat = place.Point.coordinates[1];
         var lng = place.Point.coordinates[0];
-		
-		
-		
+
+
+
 		try{
 			city = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.LocalityName;
 		}
 		catch(e){
 			city  = '';
 		}
-		
+
 		try{
 			state = place.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
 		}
 		catch(e){
 			state  = '';
 		}
-		
+
 		try{
 			country = place.AddressDetails.Country.CountryNameCode;
 		}
 		catch(e){
 			country  = '';
 		}
-		
+
         try{
         	postal = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.PostalCode.PostalCodeNumber;
         }
@@ -201,8 +203,8 @@ function parseGeocodeAddress(response, name){
     }
 	  else{
 		  var latlong = (response.name).split(",");
-		  
-		  
+
+
 		  getInfoToStore(name,latlong[0],latlong[1],city,state,country,postal);
 	  }
 }
@@ -221,15 +223,15 @@ function getInfoToStore(name, lat,lng,city,state,country,postal){
         country = '';
     if (boycott.indexOf("5")!=-1)
         postal = '';
-    
+
     $("#answer"+name).val(lat + ';' + lng + ';' + city + ';' + state + ';' + country + ';' + postal);
-    
+
 }
 
 Array.prototype.push = function()
 {
 	var n = this.length >>> 0;
-	for (var i = 0; i < arguments.length; i++) 
+	for (var i = 0; i < arguments.length; i++)
 	{
 		this[n] = arguments[i];
 		n = n + 1 >>> 0;
@@ -254,13 +256,13 @@ function inArray(needle, haystack)
 {
 	for (h in haystack)
 	{
-		if (haystack[h] == needle) 
+		if (haystack[h] == needle)
 		{
 			return true;
 		}
 	}
 	return false;
-} 
+}
 
 //defined in group.php & survey.php, but a static function
 function match_regex(testedstring,str_regexp)
@@ -288,7 +290,7 @@ function cellAdapter(evt,src)
 				//A cell with multiple radio buttons -- unhandled
 				return;
 			}
-            
+
 		}
 	}
 	else eChild = eChildren[0];
@@ -326,14 +328,14 @@ function prepareCellAdapters()
 				if(ptr.nodeName == 'TD')
 		{
 					foundTD = true;
-					ptr.onclick = 
+					ptr.onclick =
 						function(evt){
 							return cellAdapter(evt,this);
 						};
 					continue;
 				}
-				ptr = ptr.parentNode;	
-			}	
+				ptr = ptr.parentNode;
+			}
 		}
 	}
 }
@@ -342,7 +344,7 @@ function addHiddenField(theform,thename,thevalue)
 {
 	var myel = document.createElement('input');
 	myel.type = 'hidden';
-	myel.name = thename;	
+	myel.name = thename;
 	theform.appendChild(myel);
 	myel.value = thevalue;
 }
@@ -378,7 +380,7 @@ function hookEvent(element, eventName, callback)
   if(element.addEventListener)
   {
     if(eventName == 'mousewheel')
-      element.addEventListener('DOMMouseScroll', callback, false); 
+      element.addEventListener('DOMMouseScroll', callback, false);
     element.addEventListener(eventName, callback, false);
   }
   else if(element.attachEvent)
@@ -424,7 +426,7 @@ function goodchars(e, goods)
 function show_hide_group(group_id)
 {
 	var questionCount;
-	
+
 	// First let's show the group description, otherwise, all its childs would have the hidden status
 	$("#group-" + group_id).show();
 	// If all questions in this group are conditionnal
@@ -514,7 +516,7 @@ function multi_set(ids)
 		var _grand = 0;
 		//multi array holder
 		var _bits = new Array();
-		
+
 		//var _obj = document.getElementById(id);
 		//grab the tr's
 		var _obj = document.getElementById(id);//.getElementsByTagName('table');
@@ -524,7 +526,7 @@ function multi_set(ids)
 		//counter used in top level of _bits array
 		var _counter = 0;
 		//generic for vars
-		var _i = 0; 
+		var _i = 0;
 		var _l = _tr.length;
 		for(_i=0; _i<_l; _i++)
 		{
@@ -593,7 +595,7 @@ function multi_set(ids)
 										//set up horo
 										horo_set_up(_counter);
 									};
-									
+
 								};
 								if(vert && _grand == 0)
 								{
@@ -601,12 +603,12 @@ function multi_set(ids)
 									_tdin.onkeydown = dummy;
 									_tdin.onkeyup = dummy;
 									vert_set_up(_tcounter);
-								
+
 								};
 								_tcounter++;
 							};
 						};
-						
+
 					};
 					//check we got some thing that time
 					if(_bits[_counter].length == 0)
@@ -623,7 +625,7 @@ function multi_set(ids)
 					//remove blanks
 					_bits.pop();
 				}
-				
+
 			};
 		};
 		//returns the first text input or false
@@ -645,7 +647,7 @@ function multi_set(ids)
 		{
 			//make all in the row update the final
 			//alert('set horo called for row ' + id);
-			
+
 			var i=0;
 			var l=_bits[id].length;
 			var qt=0;
@@ -665,9 +667,9 @@ function multi_set(ids)
 //				else
 //				{
 //					_bits[id][i].value = '0';
-				};	
+				};
 			};
-			
+
 		}
 		//sets up the vertical calc
 		function vert_set_up(id)
@@ -774,14 +776,14 @@ function multi_set(ids)
 					{
 						qt += (_bits[i][vid].value * 1);
 					}
-					
+
 //				}
 //				else
 //				{
 //					_bits[i][vid].value = '0';
 				};
 			};
-			
+
 		};
 		//run horo calc on row[hid]
 		function calc_horo(hid)
@@ -821,7 +823,7 @@ function multi_set(ids)
 //				else
 //				{
 //					_bits[hid][i].value = '0';
-				};	
+				};
 			};
 		};
 		//clear key input
@@ -889,7 +891,7 @@ function multi_set(ids)
 	var ll=ids.length;
 	//object place holder
 	var _collection=new Array();
-	
+
 	for(ii=0; ii<ll; ii++)
 	{
 		//run main function per id
