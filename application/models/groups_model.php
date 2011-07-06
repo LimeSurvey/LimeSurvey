@@ -121,5 +121,18 @@ class Groups_model extends CI_Model {
         return $this->db->insert('groups',$data);
     }
     
-   
+	function getGroups($surveyid) {
+	    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+	    $query = "SELECT gid, group_name
+				  FROM ".$this->db->dbprefix('groups')."
+				  WHERE sid=? and language=?
+				  ORDER BY group_order";
+	    $result=$this->db->query($query,array($surveyid,$this->config->item("baselang")));
+	    $output=array();
+	    foreach($result->result_array() as $row) {
+	        $output[$row['gid']]=$row;
+	    }
+	    return $output;
+	}
+	
 }
