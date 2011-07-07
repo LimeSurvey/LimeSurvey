@@ -23,26 +23,10 @@
 	/**
 	 * Shows survey details
 	 */
-	function view($surveyid,$gid=null)
+	function view($surveyid,$gid=null,$qid=null)
 	{
-	    if (is_null($gid))
-        {
-            if(bHasSurveyPermission($surveyid,'survey','read'))
-    	    {
-                $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-    			$this->config->set_item("css_admin_includes", $css_admin_includes);
-    		
-    			self::_getAdminHeader();
-    			self::_showadminmenu($surveyid);;
-    			self::_surveybar($surveyid);
-    			self::_surveysummary($surveyid);
-                self::_loadEndScripts();
-                
-                
-    			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-    		}
-        }
-        elseif (!is_null($gid))
+	    
+        if (!is_null($qid))
         {
             $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
    			$this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -53,12 +37,56 @@
             self::_surveysummary($surveyid,"viewgroup");
    			self::_questiongroupbar($surveyid,$gid,"insertquestiongroup");
             
+            self::_questionbar($surveyid,$gid,$qid,"viewquestion");
             self::_loadEndScripts();
                 
                 
    			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
             
         }
+        else
+        {
+            if (!is_null($gid))
+            {
+                $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+       			$this->config->set_item("css_admin_includes", $css_admin_includes);
+        		
+       			self::_getAdminHeader();
+       			self::_showadminmenu($surveyid);;
+       			self::_surveybar($surveyid,$gid);
+                self::_surveysummary($surveyid,"viewgroup");
+       			self::_questiongroupbar($surveyid,$gid,"insertquestiongroup");
+                
+                self::_loadEndScripts();
+                    
+                    
+       			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                
+            }
+            else
+            {
+                if(bHasSurveyPermission($surveyid,'survey','read'))
+        	    {
+                    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+        			$this->config->set_item("css_admin_includes", $css_admin_includes);
+        		
+        			self::_getAdminHeader();
+        			self::_showadminmenu($surveyid);;
+        			self::_surveybar($surveyid);
+        			self::_surveysummary($surveyid);
+                    self::_loadEndScripts();
+                    
+                    
+        			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        		}
+                
+            }
+            
+            
+        }
+        
+        
+        
         
 	}
     

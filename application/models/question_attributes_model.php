@@ -29,5 +29,11 @@ class Question_attributes_model extends CI_Model {
 		
 		return $data;
 	}
+    
+    function insertRecords($data)
+    {
+        
+        return $this->db->insert('question_attributes',$data);
+    }
 
 }

@@ -96,7 +96,7 @@
             <?php if ($QidPrev != "")
             { ?>
               
-                <a href='{$scriptname}?sid=$surveyid&amp;gid=$gid&amp;qid=$QidPrev'>
+                <a href='<?php site_url("admin/survey/view/".$surveyid."/".$gid."/".$QidPrev); ?>'>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/previous_20.png' title='' alt='<?php echo $clang->gT("Previous question"); ?>'
                 name='questiongroupprevious'/></a>
             <?php }
@@ -112,7 +112,7 @@
             <?php if ($QidNext != "")
             { ?>
               
-                <a href='{$scriptname}?sid=$surveyid&amp;gid=$gid&amp;qid=$QidNext'>
+                <a href='<?php site_url("admin/survey/view/".$surveyid."/".$gid."/".$QidNext); ?>'>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/next_20.png' title='' alt='<?php echo $clang->gT("Next question"); ?>'
                 name='questiongroupnext'<?php echo $clang->gT("Next question"); ?>/> </a>
             <?php }
@@ -136,7 +136,7 @@
             <?php }
             elseif(bHasSurveyPermission($surveyid,'surveycontent','create'))
             { ?>
-                <a href='$scriptname?action=addquestion&amp;sid=$surveyid&amp;gid=$gid'
+                <a href='<?php echo site_url("admin/question/newquestion/".$surveyid."/".$gid); ?>'
                 title="<?php echo $clang->gTview("Add New Question to Group"); ?>" >
                 <img src='<?php echo $this->config->item('imageurl'); ?>/add.png' title='' alt='<?php echo $clang->gT("Add New Question to Group"); ?>'
                 name='AddNewQuestion' onclick="window.open('', '_top')" /></a>

@@ -20,9 +20,440 @@ class Database extends AdminController {
         $databaseoutput = '';
         $surveyid = $this->input->post("sid");
         $gid = $this->input->post("gid");
+        $qid = $this->input->post("qid");
+        
         if (!$action)
         {
             $action = $this->input->post("action");           
+        }
+        
+        
+        
+        if ($action == "insertquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
+        {
+            $_POST = $this->input->post();
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            if (strlen($_POST['title']) < 1)
+            {
+                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n "
+                ."alert(\"".$clang->gT("The question could not be added. You must enter at least enter a question code.","js")."\")\n "
+                ."//-->\n</script>\n";
+            }
+            else
+            {
+                $this->load->helper('database');
+                
+                if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
+                if (!isset($_POST['lid1']) || $_POST['lid1'] == '') {$_POST['lid1']="0";}
+                if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
+                {
+                    //Bug Fix: remove +1 ->  $question_order=(sanitize_int($_POST['questionposition'])+1);
+                    $question_order=(sanitize_int($_POST['questionposition']));
+                    //Need to renumber all questions on or after this
+                    $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=question_order+1 WHERE gid=".$gid." AND question_order >= ".$question_order;
+                    $cdresult=db_execute_assoc($cdquery) or safe_die($connect->ErrorMsg());  // Checked)
+                } else {
+                    $question_order=(getMaxquestionorder($surveyid,$gid));
+                    $question_order++;
+                }
+    
+                /**if ($filterxsshtml)
+                {
+                    require_once("../classes/inputfilter/class.inputfilter_clean.php");
+                    $myFilter = new InputFilter('','',1,1,1);
+                    $_POST['title']=$myFilter->process($_POST['title']);
+                    $_POST['question_'.$baselang]=$myFilter->process($_POST['question_'.$baselang]);
+                    $_POST['help_'.$baselang]=$myFilter->process($_POST['help_'.$baselang]);
+                }
+                else
+                {
+                    $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                    $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
+                    $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
+                } */
+    
+                // Fix bug with FCKEditor saving strange BR types
+                $_POST['title']=fix_FCKeditor_text($_POST['title']);
+                $_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
+                $_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
+                
+                //$_POST  = array_map('db_quote', $_POST);
+                
+                $data = array();
+                $data = array(
+                        'sid' => $surveyid,
+                        'gid' => $gid,
+                        'type' => $_POST['type'],
+                        'title' => $_POST['title'],
+                        'question' => $_POST['question_'.$baselang],
+                        'preg' => $_POST['preg'],
+                        'help' => $_POST['help_'.$baselang],
+                        'other' => $_POST['other'],
+                        'mandatory' => $_POST['mandatory'],
+                        'question_order' => $question_order,
+                        'language' => $baselang
+                        
+                
+                
+                );
+                
+                $this->load->model("questions_model");
+                $result = $this->questions_model->insertRecords($data);
+                /**
+                $query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
+                ." VALUES ('{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
+                ." '{$_POST['question_'.$baselang]}', '{$_POST['preg']}', '{$_POST['help_'.$baselang]}', '{$_POST['other']}', '{$_POST['mandatory']}', $question_order,'{$baselang}')";
+                */
+                //$result = $connect->Execute($query);  // Checked
+                // Get the last inserted questionid for other languages
+                $qid=$this->db->insert_id(); //$connect->Insert_ID(db_table_name_nq('questions'),"qid");
+    
+                // Add other languages
+                if ($result)
+                {
+                    $addlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+                    foreach ($addlangs as $alang)
+                    {
+                        if ($alang != "")
+                        {
+                            db_switchIDInsert('questions',true);
+                            
+                            $data = array(
+                                    'qid' => $qid,
+                                    'sid' => $surveyid,
+                                    'gid' => $gid,
+                                    'type' => $_POST['type'],
+                                    'title' => $_POST['title'],
+                                    'question' => $_POST['question_'.$alang],
+                                    'preg' => $_POST['preg'],
+                                    'help' => $_POST['help_'.$alang],
+                                    'other' => $_POST['other'],
+                                    'mandatory' => $_POST['mandatory'],
+                                    'question_order' => $question_order,
+                                    'language' => $alang
+                        
+                
+                
+                                    );
+                                    
+                            $this->load->model("questions_model");
+                            $result2 = $this->questions_model->insertRecords($data);
+                            /**
+                            $query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
+                            ." VALUES ('$qid','{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
+                            ." '{$_POST['question_'.$alang]}', '{$_POST['preg']}', '{$_POST['help_'.$alang]}', '{$_POST['other']}', '{$_POST['mandatory']}', $question_order,'{$alang}')";
+                            $result2 = $connect->Execute($query);  // Checked */
+                            if (!$result2)
+                            {
+                                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".sprintf($clang->gT("Question in language %s could not be created.","js"),$alang)."\\n\")\n //-->\n</script>\n";
+    
+                            }
+                            db_switchIDInsert('questions',false);
+                    }
+                    }
+                }
+    
+    
+                if (!$result)
+                {
+                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be created.","js")."\\n\")\n //-->\n</script>\n";
+    
+                }
+    
+                $qattributes=questionAttributes();
+                $validAttributes=$qattributes[$_POST['type']];
+                foreach ($validAttributes as $validAttribute)
+                {
+                    if (isset($_POST[$validAttribute['name']]))
+                    {
+                        $data = array();
+                        $data = array(
+                                'qid' => $qid,
+                                'value' => $_POST[$validAttribute['name']],
+                                'attribute' => $validAttribute['name']
+                        
+                        );
+                        
+                                
+                        $this->load->model("question_attributes_model");
+                        $result = $this->question_attributes_model->insertRecords($data);
+                        /**$query = "INSERT into ".db_table_name('question_attributes')."
+                                  (qid, value, attribute) values ($qid,'".db_quote($_POST[$validAttribute['name']])."','{$validAttribute['name']}')";
+                        $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg()); // Checked */
+    
+                    }
+                }
+    
+                fixsortorderQuestions($postgid, $surveyid);
+                $this->session->set_userdata('flashmessage', $clang->gT("Question was successfully added."));
+                
+                //include("surveytable_functions.php");
+                //surveyFixColumns($surveyid);
+            }
+            
+            if ($databaseoutput != '')
+            {
+                echo $databaseoutput;
+            }
+            else
+            {
+                redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid));
+            }
+        }
+        
+        if ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
+        {
+            $_POST = $this->input->post();
+            $this->load->helper('database');
+            
+            
+            $cqquery = "SELECT type, gid FROM ".$this->db->dbprefix."questions WHERE qid={$qid}";
+            $cqresult=db_execute_assoc($cqquery); // or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg()); // Checked
+            $cqr=$cqresult->row_array();
+            $oldtype=$cqr['type'];
+            $oldgid=$cqr['gid'];
+    
+            // Remove invalid question attributes on saving
+            $qattributes=questionAttributes();
+            $attsql="delete from ".$this->db->dbprefix."question_attributes where qid='{$qid}' and ";
+            if (isset($qattributes[$_POST['type']])){
+                $validAttributes=$qattributes[$_POST['type']];
+                foreach ($validAttributes as  $validAttribute)
+                {
+                    //$attsql.='attribute<>'.db_quoteall($validAttribute['name'])." and ";
+                    $attsql.='attribute<>\''.$validAttribute['name']."' and ";
+                }
+            }
+            $attsql.='1=1';
+            db_execute_assoc($attsql); // or safe_die ("Couldn't delete obsolete question attributes<br />".$attsql."<br />".$connect->ErrorMsg()); // Checked
+    
+    
+            //now save all valid attributes
+            $validAttributes=$qattributes[$_POST['type']];
+            foreach ($validAttributes as $validAttribute)
+            {
+                if (isset($_POST[$validAttribute['name']]))
+                {
+                    $query = "select qaid from ".$this->db->dbprefix."question_attributes
+                              WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                    $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                    if ($result->Recordcount()>0)
+                    {
+                        $query = "UPDATE ".$this->db->dbprefix."question_attributes
+                                  SET value='".$_POST[$validAttribute['name']]."' WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                        $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                    }
+                    else
+                    {
+                        $query = "INSERT into ".$this->db->dbprefix."question_attributes
+                                  (qid, value, attribute) values ($qid,'".$_POST[$validAttribute['name']]."','{$validAttribute['name']}')";
+                        $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                    }
+                }
+            }
+    
+            
+            $qtypes=getqtypelist('','array');
+            // These are the questions types that have no answers and therefore we delete the answer in that case
+            $iAnswerScales = $qtypes[$_POST['type']]['answerscales'];
+            $iSubquestionScales = $qtypes[$_POST['type']]['subquestions'];
+    
+            // These are the questions types that have the other option therefore we set everything else to 'No Other'
+            if (($_POST['type']!= "L") && ($_POST['type']!= "!") && ($_POST['type']!= "P") && ($_POST['type']!="M"))
+            {
+                $_POST['other']='N';
+            }
+    
+            // These are the questions types that have no validation - so zap it accordingly
+    
+            if ($_POST['type']== "!" || $_POST['type']== "L" || $_POST['type']== "M" || $_POST['type']== "P" ||
+            $_POST['type']== "F" || $_POST['type']== "H" || $_POST['type']== ":" || $_POST['type']== ";" ||
+            $_POST['type']== "X" || $_POST['type']== "")
+            {
+                $_POST['preg']='';
+            }
+    
+            // These are the questions types that have no mandatory property - so zap it accordingly
+            if ($_POST['type']== "X" || $_POST['type']== "|")
+            {
+                $_POST['mandatory']='N';
+            }
+    
+            
+            if ($oldtype != $_POST['type'])
+            {
+                //Make sure there are no conditions based on this question, since we are changing the type
+                $ccquery = "SELECT * FROM ".$this->db->dbprefix."conditions WHERE cqid={$postqid}";
+                $ccresult = db_execute_assoc($ccquery); // or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg()); // Checked
+                $cccount=$ccresult->num_rows();
+                foreach ($ccresult->result_array() as $ccr) {$qidarray[]=$ccr['qid'];}
+                if (isset($qidarray) && $qidarray) {$qidlist=implode(", ", $qidarray);}
+            }
+            if (isset($cccount) && $cccount)
+            {
+                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question.","js")." ($qidlist)\")\n //-->\n</script>\n";
+            }
+            else
+            {
+                if (isset($gid) && $gid != "")
+                {
+    
+                    
+                    $array_result=checkMovequestionConstraintsForConditions(sanitize_int($surveyid),sanitize_int($qid), sanitize_int($gid));
+                    // If there is no blocking conditions that could prevent this move
+
+                    if (is_null($array_result['notAbove']) && is_null($array_result['notBelow']))
+                    {
+    
+                        $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+                        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                        array_push($questlangs,$baselang);
+                        /**
+                        if ($filterxsshtml)
+                        {
+                            require_once("../classes/inputfilter/class.inputfilter_clean.php");
+                            $myFilter = new InputFilter('','',1,1,1);
+                            $_POST['title']=$myFilter->process($_POST['title']);
+                        }
+                        else
+                        {
+                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                        }
+                        */
+                        // Fix bug with FCKEditor saving strange BR types
+                        $_POST['title']=fix_FCKeditor_text($_POST['title']);
+                        
+                        foreach ($questlangs as $qlang)
+                        {
+                            /**if ($filterxsshtml)
+                            {
+                                $_POST['question_'.$qlang]=$myFilter->process($_POST['question_'.$qlang]);
+                                $_POST['help_'.$qlang]=$myFilter->process($_POST['help_'.$qlang]);
+                            }
+                            else
+                            {
+                                $_POST['question_'.$qlang] = html_entity_decode($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8");
+                                $_POST['help_'.$qlang] = html_entity_decode($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8");
+                            }
+                            */
+                            // Fix bug with FCKEditor saving strange BR types
+                            $_POST['question_'.$qlang]=fix_FCKeditor_text($_POST['question_'.$qlang]);
+                            $_POST['help_'.$qlang]=fix_FCKeditor_text($_POST['help_'.$qlang]);
+    
+                            if (isset($qlang) && $qlang != "")
+                            { // ToDo: Sanitize the POST variables !
+                            
+                                
+                                
+                                $uqquery = "UPDATE ".$this->db->dbprefix."questions SET type='".$_POST['type']."', title='".$_POST['title']."', "
+                                . "question='".$_POST['question_'.$qlang]."', preg='".$_POST['preg']."', help='".$_POST['help_'.$qlang]."', "
+                                . "gid='".$gid."', other='".$_POST['other']."', "
+                                . "mandatory='".$_POST['mandatory']."'";
+                                
+                                if ($oldgid!=$gid)
+                                {
+                                    
+                                    if ( getGroupOrder($surveyid,$oldgid) > getGroupOrder($surveyid,$gid) )
+                                    {
+                                        // Moving question to a 'upper' group
+                                        // insert question at the end of the destination group
+                                        // this prevent breaking conditions if the target qid is in the dest group
+                                        $insertorder = getMaxquestionorder($gid) + 1;
+                                        $uqquery .=', question_order='.$insertorder.' ';
+                                    }
+                                    else
+                                    {
+                                        // Moving question to a 'lower' group
+                                        // insert question at the beginning of the destination group
+                                        shiftorderQuestions($surveyid,$gid,1); // makes 1 spare room for new question at top of dest group
+                                        $uqquery .=', question_order=0 ';
+                                    }
+                                }
+                                $uqquery.= "WHERE sid='".$surveyid."' AND qid='".$qid."' AND language='{$qlang}'";
+                                $uqresult = db_execute_assoc($uqquery); // or safe_die ("Error Update Question: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
+                                if (!$uqresult)
+                                {
+                                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+                                }
+                                
+    
+                            }
+                        }
+                        
+                        
+                        // Update the group ID on subquestions, too
+                        if ($oldgid!=$gid)
+                        {
+                            $sQuery="UPDATE ".$this->db->dbprefix."questions set gid={$gid} where gid={$oldgid} and parent_qid>0"; 
+                            $oResult = db_execute_assoc($sQuery); // or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
+                        }
+                        // if the group has changed then fix the sortorder of old and new group
+                        if ($oldgid!=$postgid)
+                        {
+                            fixsortorderQuestions($oldgid, $surveyid);
+                            fixsortorderQuestions($gid, $surveyid);
+                            // If some questions have conditions set on this question's answers
+                            // then change the cfieldname accordingly
+                            fixmovedquestionConditions($qid, $oldgid, $gid);
+                        }
+    
+                        $query = "DELETE FROM ".$this->db->dbprefix."answers WHERE qid= {$qid} and scale_id>={$iAnswerScales}";
+                            $result = db_execute_assoc($query); // or safe_die("Error: ".$connect->ErrorMsg()); // Checked
+    
+                        // Remove old subquestion scales
+                        $query = "DELETE FROM ".$this->db->dbprefix."questions WHERE parent_qid={$qid} and scale_id>={$iSubquestionScales}";
+                            $result = db_execute_assoc($query) ; //or safe_die("Error: ".$connect->ErrorMsg()); // Checked
+                        $this->session->set_userdata('flashmessage',$clang->gT("Question was successfully saved."));                    
+    
+    
+                    }
+                    else
+                    {
+                        
+                        // There are conditions constraints: alert the user
+                        $errormsg="";
+                        if (!is_null($array_result['notAbove']))
+                        {
+                            $errormsg.=$clang->gT("This question relies on other question's answers and can't be moved above groupId:","js")
+                            . " " . $array_result['notAbove'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notAbove'][0][1]."\\n"
+                            . $clang->gT("See conditions:")."\\n";
+    
+                            foreach ($array_result['notAbove'] as $notAboveCond)
+                            {
+                                $errormsg.="- cid:". $notAboveCond[3]."\\n";
+                            }
+    
+                        }
+                        if (!is_null($array_result['notBelow']))
+                        {
+                            $errormsg.=$clang->gT("Some questions rely on this question's answers. You can't move this question below groupId:","js")
+                            . " " . $array_result['notBelow'][0][0] . " " . $clang->gT("in position","js")." ".$array_result['notBelow'][0][1]."\\n"
+                            . $clang->gT("See conditions:")."\\n";
+    
+                            foreach ($array_result['notBelow'] as $notBelowCond)
+                            {
+                                $errormsg.="- cid:". $notBelowCond[3]."\\n";
+                            }
+                        }
+    
+                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"$errormsg\")\n //-->\n</script>\n";
+                        $gid= $oldgid; // group move impossible ==> keep display on oldgid
+                    }
+                }
+                else
+                {
+                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\")\n //-->\n</script>\n";
+                }
+            }
+            
+            if ($databaseoutput != '')
+            {
+                echo $databaseoutput;
+            }
+            else
+            {
+                redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid));
+            }
         }
         
         if ($action == "insertquestiongroup" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
@@ -724,7 +1155,10 @@ class Database extends AdminController {
             }
         }
         
-        
+        if (!$action)
+        {
+            redirect("/admin","refresh");
+        }
         
         
     }
