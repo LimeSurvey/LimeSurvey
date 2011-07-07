@@ -108,6 +108,8 @@ class tokens extends SurveyCommonController {
 		$this->load->model("tokens_dynamic_model");
 		$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
 		
+		self::_js_admin_includes(base_url()."scripts/admin/tokens.js");
+		
 		//if (!isset($limit)) {$limit=(int)returnglobal('limit');}
 		//if ($limit==0) $limit=50;
 		//if (!isset($start)) {$start=(int)returnglobal('start');}
@@ -372,6 +374,47 @@ class tokens extends SurveyCommonController {
 			self::_handletokenform($surveyid,"edit",$tokenid);
 		}
 			
+	}
+
+	/**
+	 * Delete tokens
+	 */
+	function delete($surveyid, $tokenid=null,$limit=50,$start=0,$order=false,$searchstring=false)
+	{
+
+		if(bHasSurveyPermission($surveyid, 'tokens','delete')) {
+			$clang=$this->limesurvey_lang;
+			$this->load->model("tokens_dynamic_model");
+			$this->session->set_userdata('metaHeader', "<meta http-equiv=\"refresh\" content=\"1;URL=".site_url("/admin/tokens/browse/$surveyid")."\" />");
+	
+			if($this->input->post("tokenids")) {
+				    $tokenidsarray=explode("|", substr($this->input->post("tokenids"), 1)); //Make the tokenids string into an array, and exclude the first character
+				    foreach($tokenidsarray as $tokenitem) {
+				        if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
+				    }
+			}
+		    if(isset($tokenids) && count($tokenids)>0) {
+		        if(implode(", ", $tokenids) != "") {
+					$this->tokens_dynamic_model->deleteTokens($surveyid,$tokenids);
+		            $tokenoutput = $clang->gT("Marked tokens have been deleted.");
+		        } else {
+		            $tokenoutput = $clang->gT("No tokens were selected for deletion");
+		        }
+		    } elseif (isset($tokenid)) {
+				$this->tokens_dynamic_model->deleteToken($surveyid,$tokenid);
+		       	$tokenoutput = $clang->gT("Token has been deleted.");
+		    }
+			$data['clang']=$this->limesurvey_lang;
+			$data['thissurvey']=getSurveyInfo($surveyid);
+			$data['imageurl'] = $this->config->item('imageurl');
+			$data['surveyid']=$surveyid;
+			self::_getAdminHeader($this->session->userdata('metaHeader'));
+			$this->load->view("admin/token/tokenbar",$data);
+			self::_showMessageBox($clang->gT("Delete"),
+					$tokenoutput . "</strong><font size='1'><i>".$clang->gT("Reloading Screen. Please wait.")."</i></font></p>");
+			self::_loadEndScripts();
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		}
 	}
 
 	/**
@@ -725,6 +768,7 @@ class tokens extends SurveyCommonController {
 	                $from = $_POST['from_'.$emrow['language']];
 	
 					$publicurl=base_url();
+					$modrewrite=$this->config->item("modrewrite");
 	                if ($ishtml === false)
 	                {
 	                    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
@@ -782,11 +826,11 @@ class tokens extends SurveyCommonController {
 	                }
 	                else
 	                {
-	                    $tokenoutput .= '<li>'.ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray).'</li>';
-	                    if ($debug>0)
+	                    $tokenoutput .= '<li>'.ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." "./*$maildebug.*/"<br />", $fieldsarray).'</li>';
+	                    /*if ($debug>0)
 	                    {
 	                        $tokenoutput .= "<pre>Subject : $modsubject<br /><br />".htmlspecialchars($maildebugbody)."</pre>";
-	                    }
+	                    }*/
 	                }
 	            }
 	            if ($ctcount > $emcount)
@@ -908,7 +952,10 @@ class tokens extends SurveyCommonController {
 	    }
 	    else
 	    {
-	
+	    	//Views don't work properly when sending emails: The user will only receive feedback after the script is executed.
+	    	$tokenoutput="";
+			$_POST=$this->input->post();
+			$this->load->helper("database");
 	        //$tokenoutput .= $clang->gT("Sending Reminders")
 	
 	        $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -965,23 +1012,23 @@ class tokens extends SurveyCommonController {
 	            $SQLreminderdelaycondition = "";
 	        }
 	
-	        $ctquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
+	        $ctquery = "SELECT * FROM ".$this->db->dbprefix("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
 	
 	        if (isset($starttokenid)) {$ctquery .= " AND tid > '{$starttokenid}'";}
 	        if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
 	        if (isset($tokenids)) {$ctquery .= " AND tid IN (".implode(", ", $tokenids).")";}
 	        $tokenoutput .= "<!-- ctquery: $ctquery -->\n";
-	        $ctresult = $connect->Execute($ctquery) or safe_die ("Database error!<br />\n" . $connect->ErrorMsg());
-	        $ctcount = $ctresult->RecordCount();
-	        $ctfieldcount = $ctresult->FieldCount();
-	        $emquery = "SELECT * FROM ".db_table_name("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
+	        $ctresult = db_execute_assoc($ctquery) or safe_die ("Database error!<br />\n" . $connect->ErrorMsg());
+	        $ctcount = $ctresult->num_rows();
+	        //$ctfieldcount = $ctresult->FieldCount();
+	        $emquery = "SELECT * FROM ".$this->db->dbprefix("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
 	
 	        if (isset($starttokenid)) {$emquery .= " AND tid > '{$starttokenid}'";}
 	        if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
 	        if (isset($tokenids)) {$emquery .= " AND tid IN (".implode(", ", $tokenids).")";}
 	        $emquery .= " ORDER BY tid ";
-	        $emresult = db_select_limit_assoc($emquery, $maxemails) or safe_die ("Couldn't do query.<br />$emquery<br />".$connect->ErrorMsg());
-	        $emcount = $emresult->RecordCount();
+	        $emresult = db_select_limit_assoc($emquery, $this->config->item("maxemails")) or safe_die ("Couldn't do query.<br />$emquery<br />".$connect->ErrorMsg());
+	        $emcount = $emresult->num_rows();
 	
 	
 	        $attributes=GetTokenFieldsAndNames($surveyid);
@@ -1051,8 +1098,8 @@ class tokens extends SurveyCommonController {
 	
 	                $msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 	                $sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
-	$customheaders = array( '1' => "X-surveyid: ".$surveyid,
-						'2' => "X-tokenid: ".$tokenid);
+						$customheaders = array( '1' => "X-surveyid: ".$surveyid,
+												'2' => "X-tokenid: ".$tokenid);
 	
 	                if (trim($emrow['validfrom'])!='' && convertDateTimeFormat($emrow['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1)
 	                {
@@ -1140,7 +1187,7 @@ class tokens extends SurveyCommonController {
 	            ."</ul><br />\n";
 	        }
 	        //$tokenoutput .= "</div>\n";
-		
+		echo $tokenoutput;
 		}
 	}
 

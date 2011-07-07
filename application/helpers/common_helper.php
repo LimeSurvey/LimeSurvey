@@ -5037,15 +5037,15 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     //$mail->AddAttachment($attachment);
 
 	if (trim($subject)!='') {$CI->email->subject($subject);/*$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";*/}
-    if ($emailsmtpdebug>0) {
-        ob_start();
-    }
+    //if ($emailsmtpdebug>0) {
+    //    ob_start();
+    //}
     $sent=$CI->email->send();//$mail->Send();
     //$maildebug=$mail->ErrorInfo;
-    if ($emailsmtpdebug>0) {
-        $maildebug .= '<li>'.$clang->gT('SMTP debug output:').'</li><pre>'.strip_tags(ob_get_contents()).'</pre>';
-        ob_end_clean();
-    }
+    //if ($emailsmtpdebug>0) {
+    //    $maildebug .= '<li>'.$clang->gT('SMTP debug output:').'</li><pre>'.strip_tags(ob_get_contents()).'</pre>';
+    //    ob_end_clean();
+    //}
     //$maildebugbody=$mail->Body;
 	return $sent;
 }
