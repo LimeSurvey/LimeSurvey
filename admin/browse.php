@@ -1001,8 +1001,8 @@ else
 	//interview Time statistics
 	$count=false;
 	//$survstats=substr($surveytableNq);
-	$queryAvg="SELECT AVG(timings.interviewTime) AS avg, COUNT(timings.id) AS count FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL";
-	$queryAll="SELECT timings.interviewTime FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL ORDER BY timings.interviewTime";
+	$queryAvg="SELECT AVG(timings.interviewtime) AS avg, COUNT(timings.id) AS count FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL";
+	$queryAll="SELECT timings.interviewtime FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL ORDER BY timings.interviewtime";
 	$browseoutput .= '<table class="statisticssummary">';
 	if($result=db_execute_assoc($queryAvg)){
 
@@ -1021,7 +1021,7 @@ else
 			while($row=$result->FetchRow()){
 
 				if($i==$middleval){
-					$median=$row['interviewTime'];
+					$median=$row['interviewtime'];
 					break;
 				}
 				$i++;
@@ -1030,7 +1030,7 @@ else
 			while($row=$result->FetchRow()){
 				if($i==$middleval){
 					$nextrow=$result->FetchRow();
-					$median=($row['interviewTime']+$nextrow['interviewTime'])/2;
+					$median=($row['interviewtime']+$nextrow['interviewtime'])/2;
 					break;
 				}
 				$i++;
