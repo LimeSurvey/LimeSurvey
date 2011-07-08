@@ -28,6 +28,10 @@ and open the template in the editor.
                 <td>Integration tests showing how Expression Manager can process strings containing one or more variable, token, or expression replacements surrounded by curly braces.</td>
             </tr>
             <tr>
+                <td><a href="LimeExpressionManagerLog.php">Running Log</a></td>
+                <td>Shows log of mapping of variable names to SGQA and JavaScript names, plus question, and current values.</td>
+            </tr>
+            <tr>
                 <td>Ad Hoc Unit Tests</td>
                 <td>Paste own tests into form to see results.  Syntax is Answer~Expression, with one test performing.</td>
             </tr>

@@ -49,7 +49,7 @@ class LimeExpressionManager {
      * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
      */
 
-    public function setVariableAndTokenMappingsForExpressionManager($sid,$forceRefresh=false)
+    public function setVariableAndTokenMappingsForExpressionManager($sid,$forceRefresh=false,$anonymized=false)
     {
         global $globalfieldmap, $clang;
 
@@ -69,6 +69,7 @@ class LimeExpressionManager {
         $knownVars = array();   // mapping of VarName to Value
         $knownSGQAs = array();  // mapping of SGQA to Value
         $knownNamedConstants = array(); // mapping of read-only values to Value
+        $debugLog = array();    // array of mappings among values to confirm their accuracy
         foreach($fieldmap as $fielddata)
         {
             $code = $fielddata['fieldname'];
@@ -94,10 +95,12 @@ class LimeExpressionManager {
                 case 'Y': //YES/NO radio-buttons
                 case '|': //File Upload
                     $varName = $fielddata['title'];
+                    $jsVarName = 'java' . $code;
                     $question = $fielddata['question'];
                     break;
                 case '1': //Array (Flexible Labels) dual scale
                     $varName = $fielddata['title'] . '.' . $fielddata['aid'] . '.' . $fielddata['scale_id'];
+                    $jsVarName = 'java' . $code;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . ': ' . $fielddata['scale'];
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -112,11 +115,13 @@ class LimeExpressionManager {
                 case 'Q': //MULTIPLE SHORT TEXT
                 case 'R': //RANKING STYLE
                     $varName = $fielddata['title'] . '.' . $fielddata['aid'];
+                    $jsVarName = 'java' . $code;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                     break;
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
                     $varName = $fielddata['title'] . '.' . $fielddata['aid'];
+                    $jsVarName = 'java' . $code;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . ': ' . $fielddata['subquestion2'];
                     break;
             }
@@ -124,11 +129,31 @@ class LimeExpressionManager {
             {
                 $codeValue = $_SESSION[$code];
                 $displayValue= retrieve_Answer($code, $_SESSION['dateformats']['phpdate']);
-                $knownVars[$varName] = $codeValue;
+                $knownVars[$varName] = array(
+                    'codeValue'=>$codeValue,
+                    'jsName'=>$jsVarName,
+                    'displayValue'=>$displayValue,
+                    'question'=>$question,
+                    );
                 $knownNamedConstants[$varName . '.shown'] = $displayValue;
                 $knownNamedConstants[$varName . '.question']= $question;
                 $knownSGQAs['INSERTANS:' . $code] = $displayValue;
             }
+            else
+            {
+                unset($codeValue);
+                unset($displayValue);
+            }
+            $debugLog[] = array(
+                'code' => $code,
+                'type' => $fielddata['type'],
+                'varname' => $varName,
+                'jsName' => $jsVarName,
+                'question' => $question,
+                'codeValue' => isset($codeValue) ? $codeValue : '&nbsp;',
+                'displayValue' => isset($displayValue) ? $displayValue : '&nbsp;',
+                );
+
         }
         $this->varMap = $knownVars;
         $this->sgqaMap = $knownSGQAs;
@@ -146,10 +171,43 @@ class LimeExpressionManager {
             // TODO - need to explicitly set TOKEN:FIRSTNAME, and related to blank if not using tokens?
             foreach (array_keys($_SESSION['thistoken']) as $tokenkey)
             {
-                $tokens["TOKEN:" . strtoupper($tokenkey)] = $_SESSION['thistoken'][$tokenkey];
+                if ($anonymized)
+                {
+                    $val = "";
+                }
+                else
+                {
+                    $val = $_SESSION['thistoken'][$tokenkey];
+                }
+                $key = "TOKEN:" . strtoupper($tokenkey);
+                $tokens[$key] = $val;
+                $debugLog[] = array(
+                    'code' => $key,
+                    'type' => '&nbsp;',
+                    'varname' => '&nbsp;',
+                    'jsName' => '&nbsp;',
+                    'question' => '&nbsp;',
+                    'codeValue' => '&nbsp;',
+                    'displayValue' => $val,
+                );
             }
         }
         $this->tokenMap = $tokens;
+
+        $debugLog_html = "<table border='1'>";
+        $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>JSname</th><th>Question</th><th>CodeVal</th><th>DisplayVal</th></tr>";
+        foreach ($debugLog as $t) {
+            $debugLog_html .= "<tr><td>" . $t['code']
+                . "</td><td>" . $t['type']
+                . "</td><td>" . $t['varname']
+                . "</td><td>" . $t['jsName']
+                . "</td><td>" . $t['question']
+                . "</td><td>" . $t['codeValue']
+                . "</td><td>" . $t['displayValue']
+                . "</td></tr>";
+        }
+        $debugLog_html .= "</table>";
+        file_put_contents('/tmp/LimeExpressionManager-page.html',$debugLog_html);
 
         return true;
     }
@@ -161,12 +219,12 @@ class LimeExpressionManager {
      * @return string - the original $string with all replacements done.
      */
 
-    static function ProcessString($string,array $replacementFields=array(), $forceRefresh=false)
+    static function ProcessString($string,array $replacementFields=array(), $forceRefresh=false, $anonymized=false)
     {
         global $surveyid;
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
-        if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh))
+        if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized))
         {
             // means that some values changed, so need to update what was registered to ExpressionManager
             $em->RegisterVarnamesUsingReplace($lem->varMap);
@@ -188,16 +246,16 @@ class LimeExpressionManager {
     static function UnitTestProcessStringContainingExpressions()
     {
         $vars = array(
-            'name'      => 'Sergei',
-            'age'       => 45,
-            'numKids'   => 2,
-            'numPets'   => 1,
+'name' => array('codeValue'=>'Sergei', 'jsName'=>'java61764X1X1'),
+'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2'),
+'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3'),
+'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4'),
         );
         $namedConstants = array(
-            'INSERTANS:61764X1X1'   => 'Peter',
-            'INSERTANS:61764X1X2'   => 27,
-            'INSERTANS:61764X1X3'   => 1,
-            'INSERTANS:61764X1X4'   => 8,
+            'INSERTANS:61764X1X1'   => 'Sergei',
+            'INSERTANS:61764X1X2'   => 45,
+            'INSERTANS:61764X1X3'   => 2,
+            'INSERTANS:61764X1X4'   => 1,
             'TOKEN:ATTRIBUTE_1'     => 'worker',
         );
 
@@ -247,7 +305,7 @@ EOST;
         $em->RegisterVarnamesUsingMerge($vars);
         $em->RegisterNamedConstantsUsingMerge($namedConstants);
 
-        print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarsUsed</th><th>NamedConstantsUsed</th></tr>';
+        print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarNames Used</th><th>Javascript VarNames</th><th>Named Constants Used</th></tr>';
         foreach($alltests as $test)
         {
             print "<tr><td>" . $test . "</td>\n";
@@ -259,6 +317,13 @@ EOST;
             else {
                 print "<td>&nbsp;</td>\n";
             }
+            $allJsVarsUsed = $em->getAllJsVarsUsed();
+            if (is_array($allJsVarsUsed) and count($allJsVarsUsed) > 0) {
+                print "<td>" . implode(', ', $allJsVarsUsed) . "</td>\n";
+            }
+            else {
+                print "<td>&nbsp;</td>\n";
+            }            
             $allNamedConstantsUsed = $em->getAllNamedConstantsUsed();
             if (is_array($allNamedConstantsUsed) and count($allNamedConstantsUsed) > 0) {
                 print "<td>" . implode(', ', $allNamedConstantsUsed) . "</td>\n";

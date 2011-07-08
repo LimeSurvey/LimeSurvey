@@ -389,7 +389,7 @@ function &db_select_column($sql)
 function db_quote_id($id)
 {
     global $databasetype;
-    // WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
+    // WE DONT HAVE nor USE other thing that alphanumeric characters in the field names
     //  $quote = $connect->nameQuote;
     //  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
 
@@ -1466,10 +1466,12 @@ function getSurveyInfo($surveyid, $languagecode='')
     $surveyid=sanitize_int($surveyid);
     $languagecode=sanitize_languagecode($languagecode);
     $thissurvey=false;
+    /** TMW added - still needed?
     if (is_null($surveyid))
     {
         return false;
     }
+     */
     // if no language code is set then get the base language one
     if (!isset($languagecode) || $languagecode=='')
     {
@@ -1746,10 +1748,12 @@ function getsidgidqidaidtype($fieldcode)
 {
     // use simple parsing to get {sid}, {gid}
     // and what may be {qid} or {qid}{aid} combination
+    /** TMW added - still needed?
     if (!preg_match('#^\d+X\d+X\d+#',$fieldcode))
     {
         return array();
     }
+     */
     list($fsid, $fgid, $fqid) = explode('X', $fieldcode);
     $fsid=sanitize_int($fsid);
     $fgid=sanitize_int($fgid);
@@ -2722,7 +2726,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     //do something
     $fields = createFieldMap($surveyid, $style, $force_refresh, $questionid, $sQuestionLanguage);
-    $fieldmap['interviewTime']=array('fieldname'=>'interviewTime','type'=>'interview_time','sid'=>$surveyid, 'gid'=>'', 'qid'=>'', 'aid'=>'', 'question'=>$clang->gT('Total time'), 'title'=>'interviewTime');
+    $fieldmap['interviewtime']=array('fieldname'=>'interviewtime','type'=>'interview_time','sid'=>$surveyid, 'gid'=>'', 'qid'=>'', 'aid'=>'', 'question'=>$clang->gT('Total time'), 'title'=>'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
@@ -3262,7 +3266,7 @@ function questionAttributes($returnByName=false)
     // End Map Options
 
     $qattributes["hide_tip"]=array(
-    "types"=>"!KLMNOPRWZ",
+    "types"=>"!KLMNOPRSWZ",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -4143,19 +4147,19 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 {
     // TODO - call this each time, or just return $text and process this globally at another location?
     return LimeExpressionManager::ProcessString($text, $fieldsarray);
-
-//    foreach ( $fieldsarray as $key => $value )
-//    {
-//        $text=str_replace($key, $value, $text);
-//    }
-//
-//    if ($bReplaceInsertans)
-//    {
-//        $text = insertansReplace($text);
-//    }
-//    return $text;
+/*
+    foreach ( $fieldsarray as $key => $value )
+    {
+        $text=str_replace($key, $value, $text);
     }
 
+    if ($bReplaceInsertans)
+    {
+        $text = insertansReplace($text);
+    }
+    return $text;
+ */
+}
 
 
 /**
@@ -4314,7 +4318,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
 
 /**
- *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
+ *  This functions removes all HTML tags, Javascript, CRs, linefeeds  and other strange chars from a given text. CRs, linefeeds are not removed for .csv files
  *
  * @param string $sTextToFlatten  Text you want to clean
  * @param boolan $bDecodeHTMLEntities If set to true then all HTML entities will be decoded to the specified charset. Default: false
@@ -4322,11 +4326,14 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
  *
  * @return string  Cleaned text
  */
-function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8')
+function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8',$is_csv=false)
 {
     $sNicetext = strip_javascript($sTextToFlatten);
     $sNicetext = strip_tags($sNicetext);
-    $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
+    if($is_csv==true)
+	$sNicetext = str_replace(array("\r\n","\r","\n"),array(PHP_EOL,PHP_EOL,PHP_EOL), $sNicetext);
+    else
+      $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
     if ($bDecodeHTMLEntities==true)
     {
         $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not properly convert &nbsp; to spaces
@@ -5846,9 +5853,11 @@ function retrieve_Answer($code, $phpdateformat=null)
     if (isset($_SESSION[$code]))
     {
         $questiondetails=getsidgidqidaidtype($code);
+        /** TMW added - still needed?
         if (count($questiondetails) == 0) {
             continue;
         }
+         */
         //the getsidgidqidaidtype function is in common.php and returns
         //a SurveyID, GroupID, QuestionID and an Answer code
         //extracted from a "fieldname" - ie: 1X2X3a
@@ -6149,6 +6158,33 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
             $updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in surveys_languagesettings<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
         } // Enf if modified
     } // end while qentry
+
+    # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
+    $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from {$dbprefix}quota_languagesettings qls,{$dbprefix}quota q WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{INSERTANS:".$oldsid."X%' OR quotals_url LIKE '%{INSERTANS:".$oldsid."X%')";
+    $res = db_execute_assoc($sql) or safe_die("Can't read quota table in transInsertAns ".$connect->ErrorMsg());     // Checked
+
+    while ($qentry = $res->FetchRow())
+    {
+        $urldescription = $qentry['quotals_urldescrip'];
+        $endurl  = $qentry['quotals_url'];
+
+        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
+        {
+            $pattern = "{INSERTANS:".$sOldFieldname."}";
+            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $urldescription=preg_replace('/'.$pattern.'/', $replacement, $urldescription);
+            $endurl=preg_replace('/'.$pattern.'/', $replacement, $endurl);
+        }
+
+        if (strcmp($urldescription,$qentry['quotals_urldescrip']) !=0  ||
+        (strcmp($endurl,$qentry['quotals_url']) !=0))
+        {
+            // Update Field
+            $sqlupdate = "UPDATE {$dbprefix}quota_languagesettings SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE id={$qentry['quotals_id']}";
+            $updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
+        } // Enf if modified
+    } // end while qentry
+
 
     # translate 'description' INSERTANS tags in groups
     $sql = "SELECT gid, language, group_name, description from {$dbprefix}groups WHERE sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'";

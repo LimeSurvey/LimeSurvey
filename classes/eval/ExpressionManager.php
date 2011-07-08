@@ -509,7 +509,7 @@ class ExpressionManager {
                     if ($this->isValidVariable($token[0]))
                     {
                         $this->varsUsed[] = $token[0];  // add this variable to list of those used in this equation
-                        $result = array($this->amVars[$token[0]],$token[1],'NUMBER');
+                        $result = array($this->amVars[$token[0]]['codeValue'],$token[1],'NUMBER');
                         $this->StackPush($result);
                         return true;
                     }
@@ -986,6 +986,27 @@ class ExpressionManager {
     }
 
     /**
+     * Returns array of all JavaScript-equivalent variable names used when parsing a string via sProcessStringContainingExpressions
+     * @return <type>
+     */
+    public function GetAllJsVarsUsed()
+    {
+        $names = array_unique($this->allVarsUsed);
+        if (is_null($names)) {
+            return null;
+        }
+        $jsNames = array();
+        foreach ($names as $name)
+        {
+            if (isset($this->amVars[$name]['jsName']))
+            {
+                $jsNames[] = $this->amVars[$name]['jsName'];
+            }
+        }
+        return array_unique($jsNames);
+    }
+
+    /**
      * Returns array of all named constants used when parsing a string via sProcessStringContainingExpressions
      * @return <type>
      */
@@ -1095,6 +1116,23 @@ class ExpressionManager {
         $extraErrs = implode("; ", $generalErrs);
         $msg = "<span title='" . $extraErrs . "' " . $errGeneralStyle . ">" . $msg . "</span>";
         return $msg;
+    }
+
+    public function GetJsVarsUsed()
+    {
+        $names = array_unique($this->varsUsed);
+        if (is_null($names)) {
+            return null;
+        }
+        $jsNames = array();
+        foreach ($names as $name)
+        {
+            if (isset($this->amVars[$name]['jsName']))
+            {
+                $jsNames[] = $this->amVars[$name]['jsName'];
+            }
+        }
+        return array_unique($jsNames);
     }
     
     /**
@@ -1406,22 +1444,22 @@ class ExpressionManager {
         switch($op)
         {
             case '=':
-                $this->amVars[$name] = $value;
+                $this->amVars[$name]['codeValue'] = $value;
                 break;
             case '*=':
-                $this->amVars[$name] *= $value;
+                $this->amVars[$name]['codeValue'] *= $value;
                 break;
             case '/=':
-                $this->amVars[$name] /= $value;
+                $this->amVars[$name]['codeValue'] /= $value;
                 break;
             case '+=':
-                $this->amVars[$name] += $value;
+                $this->amVars[$name]['codeValue'] += $value;
                 break;
             case '-=':
-                $this->amVars[$name] -= $value;
+                $this->amVars[$name]['codeValue'] -= $value;
                 break;
         }
-        return $this->amVars[$name];
+        return $this->amVars[$name]['codeValue'];
     }
 
     public function asSplitStringOnExpressions($src)
@@ -1604,25 +1642,25 @@ EOD;
     {
         // Some test cases for Evaluator
         $vars = array(
-            'one'		=>1,
-            'two'		=>2,
-            'three'		=>3,
-            'four'		=>4,
-            'five'		=>5,
-            'six'		=>6,
-            'seven'     =>7,
-            'eight'     =>8,
-            'nine'      =>9,
-            'ten'       =>10,
-            'eleven'  => 11,
-            'twelve'   => 12,       
-            'half'      =>.5,
-            'hi'        =>'there',
-            'hello' 	=>"Tom",
-            'a'         =>0,
-            'b'         =>0,
-            'c'         =>0,
-            'd'         =>0,
+'one' => array('codeValue'=>1, 'jsName'=>'java_one'),
+'two' => array('codeValue'=>2, 'jsName'=>'java_two'),
+'three' => array('codeValue'=>3, 'jsName'=>'java_three'),
+'four' => array('codeValue'=>4, 'jsName'=>'java_four'),
+'five' => array('codeValue'=>5, 'jsName'=>'java_five'),
+'six' => array('codeValue'=>6, 'jsName'=>'java_six'),
+'seven' => array('codeValue'=>7, 'jsName'=>'java_seven'),
+'eight' => array('codeValue'=>8, 'jsName'=>'java_eight'),
+'nine' => array('codeValue'=>9, 'jsName'=>'java_nine'),
+'ten' => array('codeValue'=>10, 'jsName'=>'java_ten'),
+'eleven' => array('codeValue'=>11, 'jsName'=>'java_eleven'),
+'twelve' => array('codeValue'=>12, 'jsName'=>'java_twelve'),
+'half' => array('codeValue'=>.5, 'jsName'=>'java_half'),
+'hi' => array('codeValue'=>'there', 'jsName'=>'java_hi'),
+'hello' => array('codeValue'=>"Tom", 'jsName'=>'java_hello'),
+'a' => array('codeValue'=>0, 'jsName'=>'java_a'),
+'b' => array('codeValue'=>0, 'jsName'=>'java_b'),
+'c' => array('codeValue'=>0, 'jsName'=>'java_c'),
+'d' => array('codeValue'=>0, 'jsName'=>'java_d'),
         );
 
         $namedConstant = array(
@@ -1893,7 +1931,7 @@ EOD;
             $tests .= "\n" . $extraTests;
         }
 
-        print '<table border="1"><tr><th>Expression</th><th>Result</th><th>Expected</th><th>VarsUsed</th><th>NamedConstantsUsed</th><th>Errors</th></tr>';
+        print '<table border="1"><tr><th>Expression</th><th>Result</th><th>Expected</th><th>VarNames Used</th><th>Javascript VarNames</th><th>Named Constants Used</th><th>Errors</th></tr>';
         foreach(explode("\n",$tests)as $test)
         {
             $values = explode("~",$test);
@@ -1916,6 +1954,13 @@ EOD;
             $varsUsed = $em->GetVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
                 print '<td>' . implode(', ', $varsUsed) . "</td>\n";
+            }
+            else {
+                print "<td>&nbsp;</td>\n";
+            }
+            $jsVarsUsed = $em->GetJsVarsUsed();
+            if (is_array($jsVarsUsed) and count($jsVarsUsed) > 0) {
+                print '<td>' . implode(', ', $jsVarsUsed) . "</td>\n";
             }
             else {
                 print "<td>&nbsp;</td>\n";

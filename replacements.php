@@ -9,11 +9,12 @@ include_once('/classes/eval/LimeExpressionManager.php');
  * NOTE - Don't do any embedded replacements in this function.  Create the array of replacement values and
  * they will be done in batch at the end
  *
- * @param mixed $line Text to search in
- * @param mixed $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
+ * @param string $line Text to search in
+ * @param array $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
+ * @param boolean $anonymized Determines if token data is being used or just replaced with blanks
  * @return string  Text with replaced strings
  */
-function templatereplace($line, $replacements=array())
+function templatereplace($line, $replacements=array(), $anonymized=false)
 {
     global $surveylist, $sitename, $clienttoken, $rooturl;
     global $thissurvey, $imageurl, $defaulttemplate;
@@ -352,11 +353,11 @@ function templatereplace($line, $replacements=array())
                 $helpicon = $imageurl . "/help.gif";
                 }
             }
-        $_questionhelp = '';
+            $_questionhelp =  "<img src='{$helpicon}' alt='Help' align='left' />".$help;
         }
     else
     {
-        $_questionhelp = $help;
+        $_questionhelp = '';
     }
 
     if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N")
@@ -604,24 +605,14 @@ function templatereplace($line, $replacements=array())
 	$coreReplacements['TEMPLATECSS'] = $_templatecss;
 	$coreReplacements['TEMPLATEURL'] = $_templateurl;
 	$coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
-	$coreReplacements['TOKEN'] = $_token;
+	if (!$anonymized) $coreReplacements['TOKEN'] = $_token;
 	$coreReplacements['URL'] = $_linkreplace;
 	$coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
 
     $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
 
     // Now do all of the replacements
-    return LimeExpressionManager::ProcessString($line, $doTheseReplacements);
-/*
-    $line = insertansReplace($line);
-    $line = tokenReplace($line);
-    foreach ($doTheseReplacements as $key => $value )
-    {
-        $line=str_replace('{' . $key . '}', $value, $line);
-    }
-
-    return $line;
- */
+    return LimeExpressionManager::ProcessString($line, $doTheseReplacements, false, $anonymized);
 }
 
 /**
@@ -652,15 +643,16 @@ function insertansReplace($line)
  *  but have been moved to a function of their own to make it available
  *  to other areas of the script.
  *
- * @param mixed $line   string - the string to iterate, and then return
+ * @param string $line  the string to iterate, and then return
+ * @param boolean $anynomized  Sets if the underlying token data should be not used
  *
  * @return string This string is returned containing the substituted responses
  *
  */
-function tokenReplace($line)
+function tokenReplace($line, $anonymized=false)
 {
-    return LimeExpressionManager::ProcessString($line);
-}
+    return LimeExpressionManager::ProcessString($line,false,$anonymized);
+    }
 
 /**
  * passthruReplace() takes a string and looks for {PASSTHRULABEL}, {PASSTHRUVALUE} and {PASSTHRU:myarg} variables
