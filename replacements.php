@@ -603,7 +603,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
 	$coreReplacements['TEMPLATECSS'] = $_templatecss;
 	$coreReplacements['TEMPLATEURL'] = $_templateurl;
 	$coreReplacements['THEREAREXQUESTIONS'] = $_therearexquestions;
-	if (!anonymized) $coreReplacements['TOKEN'] = $_token;
+	if (!$anonymized) $coreReplacements['TOKEN'] = $_token;
 	$coreReplacements['URL'] = $_linkreplace;
 	$coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
 
