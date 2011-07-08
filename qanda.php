@@ -64,46 +64,21 @@ function retrieveConditionInfo($ia)
 
     if ($ia[7] == "Y")
     {	//DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
-        $cquery =	"SELECT {$dbprefix}conditions.qid, "
-        ."{$dbprefix}conditions.scenario, "
-        ."{$dbprefix}conditions.cqid, "
-        ."{$dbprefix}conditions.cfieldname, "
-        ."{$dbprefix}conditions.value, "
-        ."{$dbprefix}questions.type, "
-        ."{$dbprefix}questions.sid, "
-        ."{$dbprefix}questions.gid, "
-        ."{$dbprefix}conditions.method, "
-        ."questionssrc.gid as srcgid "
-        ."FROM {$dbprefix}conditions, "
-        ."{$dbprefix}questions ,"
-        ."{$dbprefix}questions as questionssrc "
-        ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
-        ."AND {$dbprefix}conditions.qid=questionssrc.qid "
-        ."AND {$dbprefix}conditions.qid=$ia[0] "
-        ."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
-        ."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' "
-        ."ORDER BY {$dbprefix}conditions.scenario, "
-        ."{$dbprefix}conditions.cqid, "
-        ."{$dbprefix}conditions.cfieldname";
+        $cquery =	"SELECT c.qid, c.scenario, c.cqid, c.cfieldname, c.value, q.type, q.sid, q.gid, c.method, q.gid as srcgid "
+        ."FROM {$dbprefix}conditions c, {$dbprefix}questions q,"
+        ."WHERE c.cqid=q.qid "
+        ."AND c.qid=$ia[0] "
+        ."AND c.language='".$_SESSION['s_lang']."' "
+        ."AND c.cfieldname NOT LIKE '{%' "
+        ."ORDER BY c.scenario, c.cqid, c.cfieldname";
         $cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />".$connect->ErrorMsg());     //Checked
 
-        $cquerytoken =	"SELECT {$dbprefix}conditions.qid, "
-        ."{$dbprefix}conditions.scenario, "
-        ."{$dbprefix}conditions.cqid, "
-        ."{$dbprefix}conditions.cfieldname, "
-        ."{$dbprefix}conditions.value, "
-        ."'' as type, "
-        ."0 as sid, "
-        ."0 as gid, "
-        ."{$dbprefix}conditions.method,"
-        ."questionssrc.gid as srcgid "
-        ."FROM {$dbprefix}conditions, {$dbprefix}questions as questionssrc "
-        ."WHERE {$dbprefix}conditions.qid=questionssrc.qid "
-        ."AND {$dbprefix}conditions.qid=$ia[0] "
-        ."AND {$dbprefix}conditions.cfieldname LIKE '{%' "
-        ."ORDER BY {$dbprefix}conditions.scenario, "
-        ."{$dbprefix}conditions.cqid, "
-        ."{$dbprefix}conditions.cfieldname";
+        $cquerytoken =	"SELECT c.qid, c.scenario, c.cqid, c.cfieldname, c.value, '' as type, 0 as sid, 0 as gid, c.method, q.gid as srcgid "
+        ."FROM {$dbprefix}conditions c, {$dbprefix}questions q "
+        ."WHERE c.qid=q.qid "
+        ."AND c.qid=$ia[0] "
+        ."AND c.cfieldname LIKE '{%' "
+        ."ORDER BY c.scenario, c.cqid, c.cfieldname";
 
         $cresulttoken = db_execute_assoc($cquerytoken) or safe_die ("OOPS<br />$cquerytoken<br />".$connect->ErrorMsg());     //Checked
 
@@ -3771,7 +3746,7 @@ function do_file_upload($ia)
     $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='$scriptloc?sid=$surveyid&fieldname=".$ia[1]."&qid=".$ia[0]."&preview="
     .$questgrppreview."&show_title=".$qidattributes['show_title']."&show_comment="
     .$qidattributes['show_comment']."&pos=".($pos?1:0)."'>" . $clang->gT('Upload files') . "</a></h2><br /><br />";
-    
+
     $answer = "<script type='text/javascript'>
         var translt = {
              title: '" . $clang->gT('Upload your files') . "',
