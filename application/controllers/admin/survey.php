@@ -34,8 +34,8 @@
    			self::_getAdminHeader();
    			self::_showadminmenu($surveyid);;
    			self::_surveybar($surveyid,$gid);
-            self::_surveysummary($surveyid,"viewgroup");
-   			self::_questiongroupbar($surveyid,$gid,"insertquestiongroup");
+            self::_surveysummary($surveyid,"viewquestion");
+   			self::_questiongroupbar($surveyid,$gid,$qid,"viewquestion");
             
             self::_questionbar($surveyid,$gid,$qid,"viewquestion");
             self::_loadEndScripts();
@@ -55,7 +55,7 @@
        			self::_showadminmenu($surveyid);;
        			self::_surveybar($surveyid,$gid);
                 self::_surveysummary($surveyid,"viewgroup");
-       			self::_questiongroupbar($surveyid,$gid,"insertquestiongroup");
+       			self::_questiongroupbar($surveyid,$gid,$qid,"viewgroup");
                 
                 self::_loadEndScripts();
                     

@@ -116,6 +116,7 @@
                 <li>
                 <label for='gid'><?php echo $clang->gT("Question group:"); ?></label>
                 <select name='gid' id='gid'>
+                
                 <?php echo getgrouplist3($eqrow['gid'],$surveyid); ?>
                 </select></li>
             <?php }
@@ -183,7 +184,7 @@
                     <option value='0'><?php echo $clang->gT("At beginning"); ?></option>
                     <?php foreach ($oqresult->result_array() as $oq)
                     { ?>
-                        <?php $oq['question_order']+1; ?>
+                        <?php $question_order_plus_one = $oq['question_order']+1; ?>
                         <option value='<?php echo $question_order_plus_one; ?>'><?php echo $clang->gT("After"); ?>: <?php echo $oq['title']; ?></option>
                     <?php } ?> 
                     </select>

@@ -371,8 +371,9 @@
 	 * @param int Survey id
      * @param int Group id
 	 */
-    function _questiongroupbar($surveyid,$gid,$action)
+    function _questiongroupbar($surveyid,$gid,$qid=null,$action)
     {
+        
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -510,7 +511,8 @@
             */
                     // QUICK NAVIGATION TO PREVIOUS AND NEXT QUESTION
             // TODO: Fix functionality to previos and next question  buttons (Andrie)
-            $data['qid'] = $qid = $this->config->item('qid');
+            $data['qid'] = $qid;
+            //$data['qid'] = $qid = $this->config->item('qid');
             $data['QidPrev'] = $QidPrev = getQidPrevious($surveyid, $gid, $qid);
             
             /**$groupsummary .= "<span class='arrow-wrapper'>";
@@ -590,7 +592,7 @@
             . "</div>\n"; */
             //  $groupsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
             
-            if ($action=='editgroup'|| $action=='addquestion' || $action = 'viewquestion') 
+            if ($action=='editgroup'|| $action=='addquestion' || $action == 'viewquestion') 
             {
                 $gshowstyle="style='display: none'";
             }
@@ -1109,7 +1111,7 @@
         || $action=="editsurveysettings"|| $action=="editsurveylocalesettings" || $action=="updatesurveysettingsandeditlocalesettings" || $action=="addgroup" || $action=="importgroup"
         || $action=="ordergroups" || $action=="deletesurvey" || $action=="resetsurveylogic"
         || $action=="importsurveyresources" || $action=="translate"  || $action=="emailtemplates" 
-        || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey" || $action=="viewgroup") {$showstyle="style='display: none'";}
+        || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey" || $action=="viewgroup" || $action = "viewquestion") {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";} 
         /**if ($gid) {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";} */

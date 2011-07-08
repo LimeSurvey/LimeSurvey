@@ -86,6 +86,7 @@
             <div class='menubar-right'>
             <span class="boxcaption"><?php echo $clang->gT("Questions"); ?>:</span><select class="listboxquestions" name='qid' 
             onchange="window.open(this.options[this.selectedIndex].value, '_top')">
+            
             <?php echo getQuestions($surveyid,$gid,$qid); ?>
             </select>
     
@@ -96,7 +97,7 @@
             <?php if ($QidPrev != "")
             { ?>
               
-                <a href='<?php site_url("admin/survey/view/".$surveyid."/".$gid."/".$QidPrev); ?>'>
+                <a href='<?php echo site_url("admin/survey/view/".$surveyid."/".$gid."/".$QidPrev); ?>'>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/previous_20.png' title='' alt='<?php echo $clang->gT("Previous question"); ?>'
                 name='questiongroupprevious'/></a>
             <?php }
@@ -112,7 +113,7 @@
             <?php if ($QidNext != "")
             { ?>
               
-                <a href='<?php site_url("admin/survey/view/".$surveyid."/".$gid."/".$QidNext); ?>'>
+                <a href='<?php echo site_url("admin/survey/view/".$surveyid."/".$gid."/".$QidNext); ?>'>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/next_20.png' title='' alt='<?php echo $clang->gT("Next question"); ?>'
                 name='questiongroupnext'<?php echo $clang->gT("Next question"); ?>/> </a>
             <?php }

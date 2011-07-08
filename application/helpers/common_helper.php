@@ -684,7 +684,7 @@ function getQidPrevious($surveyid, $gid, $qid)
 {
     //global $CI, $clang;
     $CI =& get_instance();
-    $clang =  $CI->limesurvey_lang;
+    //$clang =  $CI->limesurvey_lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('questions_model');
     //$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
@@ -703,6 +703,8 @@ function getQidPrevious($surveyid, $gid, $qid)
     }
     if ($iPrev >= 0) {$QidPrev = $qrows[$iPrev]['qid'];}
     else {$QidPrev = "";}
+    
+
     return $QidPrev;
 }
 
@@ -1266,6 +1268,8 @@ function getgrouplist($gid,$surveyid)
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
     if (!$surveyid) {$surveyid=returnglobal('sid');}
+    echo $surveyid;
+
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->config('lsconfig');
     $CI->load->model('groups_model');
@@ -1290,7 +1294,7 @@ function getgrouplist2($gid,$surveyid)
 {
     //global $surveyid;
     $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    //$clang = $CI->limesurvey_lang;
     $groupselecter = "";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
@@ -1316,7 +1320,7 @@ function getgrouplist2($gid,$surveyid)
 function getgrouplist3($gid,$surveyid)
 {
     $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    //$clang = $CI->limesurvey_lang;
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
 
@@ -1329,13 +1333,16 @@ function getgrouplist3($gid,$surveyid)
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
 
-    $gidresult = $CI->groups_model->getGroupAndID($surveyid,$s_lang) or safe_die("Plain old did not work!");      //Checked
+    $gidresult = $CI->groups_model->getGroupAndID($surveyid,$s_lang); // or safe_die("Plain old did not work!");      //Checked
+    
     foreach ($gidresult->result_array() as $gv)
     {
         $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
+        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; }
         $groupselecter .= " value='".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
     }
+    
+    
     return $groupselecter;
 }
 

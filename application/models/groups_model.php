@@ -71,7 +71,7 @@ class Groups_model extends CI_Model {
         
         $this->db->order_by("group_order","asc");
         $data = $this->db->get('groups');
-		
+		//echo $data->num_rows();
 		return $data;
     }
     

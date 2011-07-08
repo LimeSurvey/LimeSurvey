@@ -34,7 +34,7 @@
         self::_showadminmenu($surveyid);;
         self::_surveybar($surveyid,$gid);
         self::_surveysummary($surveyid,"viewgroup");
-        self::_questiongroupbar($surveyid,$gid,"addquestion");
+        self::_questiongroupbar($surveyid,$gid,$qid,"addquestion");
         
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
