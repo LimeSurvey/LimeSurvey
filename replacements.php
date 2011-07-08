@@ -716,7 +716,8 @@ function PassthruReplace($line, $thissurvey)
 {
     $line=str_replace("{PASSTHRULABEL}", $thissurvey['passthrulabel'], $line);
     $line=str_replace("{PASSTHRUVALUE}", $thissurvey['passthruvalue'], $line);
-
+    
+    if (!isset($_SESSION['ls_initialquerystr'])) return $line;
     //  Replacement for variable passthru argument like {PASSTHRU:myarg}
     while (strpos($line,"{PASSTHRU:") !== false)
     {

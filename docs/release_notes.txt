@@ -93,7 +93,7 @@ Changes from 1.91+ (build 10377) to 1.91+ (build 10435)
 -Fixed issue: 404 error on install (shnoulle)
 -Fixed issue: Import problems with .lss files from earlier versions than 1.91 (c_schmitz)
 -Fixed issue: Updater using too much memory when downloading the update package (c_schmitz)
--Updated translation: Polish (elisa-ls)
+#Updated translation: Polish (elisa-ls)
 
 Changes from 1.91+ (build 10315) to 1.91+ (build 10377)                    
 #Updated translation: French (b00z00)

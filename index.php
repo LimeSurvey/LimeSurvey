@@ -2885,7 +2885,7 @@ function buildsurveysession()
 
     }
     // New: If no passthru variable is explicitely set, save the whole query_string - above method is obsolete and the new way should only be used
-    else
+    elseif (isset($_SERVER['QUERY_STRING']))
     {
         $_SESSION['ls_initialquerystr']=$_SERVER['QUERY_STRING'];
     }
