@@ -1922,7 +1922,7 @@ $subaction == "editthiscondition" || $subaction == "delete")
 
     // Regexp Tab
     $conditionsoutput_main_content .= "\t<div id='REGEXP' style='display:'>\n"
-    ."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'></textarea>\n"
+    ."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'>$EDITConditionRegexp</textarea>\n"
     ."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
     ."\t</div>\n";
 
