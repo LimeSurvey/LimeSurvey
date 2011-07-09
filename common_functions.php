@@ -6942,7 +6942,7 @@ function GetAttributeFieldNames($surveyid)
 function GetTokenConditionsFieldNames($surveyid)
 {
     $extra_attrs=GetAttributeFieldNames($surveyid);
-    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
+    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount','usesleft');
     return array_merge($basic_attrs,$extra_attrs);
 }
 
@@ -6961,7 +6961,7 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
         return Array();
     }
     $extra_attrs=GetAttributeFieldNames($surveyid);
-    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
+    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount','usesleft');
     $basic_attrs_names=Array(
     $clang->gT('First name'),
     $clang->gT('Last name'),
@@ -7227,7 +7227,9 @@ function getTokenData($surveyid, $token)
         $thistoken=array("firstname"=>$row['firstname'],
         "lastname"=>$row['lastname'],
         "email"=>$row['email'],
-        "language" =>$row['language']);
+        "language" =>$row['language'],
+        "usesleft" =>$row['usesleft'],
+        );
         $attrfieldnames=GetAttributeFieldnames($surveyid);
         foreach ($attrfieldnames as $attr_name)
         {

@@ -109,6 +109,7 @@ switch ($fieldtype)
         $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
         $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
+        $replFields[]=array('TOKEN:USESLEFT',$clang->gT("Uses left"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
         foreach ($attributes as $attributefield=>$attributedescription)
         {
@@ -125,6 +126,7 @@ switch ($fieldtype)
         $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
         $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
+        $replFields[]=array('TOKEN:USESLEFT',$clang->gT("Uses left"));
         $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
         $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
@@ -144,6 +146,7 @@ switch ($fieldtype)
         $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
         $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
+        $replFields[]=array('TOKEN:USESLEFT',$clang->gT("Uses left"));
         $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
         $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
@@ -160,6 +163,7 @@ switch ($fieldtype)
         // but not email-reg for the moment
         $replFields[]=array('EMAIL',$clang->gT("Email from the token"));
         $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
+        $replFields[]=array('USESLEFT',$clang->gT("Uses left"));
         $replFields[]=array('OPTOUTURL',$clang->gT("URL for a respondent to opt-out this survey"));
     case 'email-reg':
         $replFields[]=array('FIRSTNAME',$clang->gT("First name from token"));
@@ -214,6 +218,7 @@ switch ($fieldtype)
         $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
         $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
         $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
+        $replFields[]=array('TOKEN:USESLEFT',$clang->gT("Uses left"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
         foreach ($attributes as $attributefield=>$attributedescription)
         {

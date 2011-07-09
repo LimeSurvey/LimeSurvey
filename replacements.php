@@ -8,7 +8,7 @@
  * they will be done in batch at the end
  *
  * @param string $line Text to search in
- * @param array $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
+ * @param array $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>, where <stringtosearch> is NOT surrounded with curly braces
  * @param boolean $anonymized Determines if token data is being used or just replaced with blanks
  * @return string  Text with replaced strings
  */
@@ -21,7 +21,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
     global $question;
     global $showXquestions, $showgroupinfo, $showqnumcode;
     global $answer, $navigator;
-    global $help, $totalquestions, $surveyformat;
+    global $help, $surveyformat;
     global $completed, $register_errormsg;
     global $privacy, $surveyid;
     global $publicurl, $templatedir, $token;
@@ -174,7 +174,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
         $_question_code = '';
     }
 
-    $_totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
+    $_totalquestionsAsked = $_SESSION['therearexquestions'] - $totalBoilerplatequestions;
     if (
       $showXquestions == 'show' ||
       ($showXquestions == 'choose' && !isset($thissurvey['showXquestions'])) ||
@@ -198,11 +198,6 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
     {
         $_therearexquestions = '';
     };
-
-    // Hack - just replace {THEREAREXQUESTIONS}.  ExpressionManager replaces too much otherwise; but sure can specify which subsets to replace if several passes needed
-    if (strpos($line,'{THEREAREXQUESTIONS}')) {
-        $line = str_replace('{THEREAREXQUESTIONS}', $_therearexquestions, $line);
-        }
 
     if (isset($token))
     {
@@ -607,11 +602,25 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
 	$coreReplacements['URL'] = $_linkreplace;
 	$coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
 
-    $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
+    $tokenAndAnswerMap = getAnswerAndTokenMappings(false,$anonymized);
+    $doTheseReplacements = array_merge($coreReplacements, $tokenAndAnswerMap, $replacements);   // so $replacements overrides core values
 
-    // Now do all of the replacements
-    $line = insertansReplace($line);
-    $line = tokenReplace($line, $anonymized);
+    $line = doReplacements($line,$doTheseReplacements);
+    // Do replacements twice since some reference others
+    $line = doReplacements($line,$doTheseReplacements);
+
+    return $line;
+}
+
+/**
+ * Takes array mappings of key=>value and replaces all occurances of {key} with value in $line
+ * @param <type> $line
+ * @param <type> $doTheseReplacements
+ * @return <type> 
+ */
+
+function doReplacements($line, $doTheseReplacements)
+{
     foreach ($doTheseReplacements as $key => $value )
     {
         $line=str_replace('{' . $key . '}', $value, $line);
@@ -636,15 +645,8 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
  */
 function insertansReplace($line)
 {
-    if (!isset($_SESSION['dateformats']['phpdate'])) $_SESSION['dateformats']['phpdate']='';
-    while (strpos($line, "{INSERTANS:") !== false)
-    {
-        $answreplace=substr($line, strpos($line, "{INSERTANS:"), strpos($line, "}", strpos($line, "{INSERTANS:"))-strpos($line, "{INSERTANS:")+1);
-        $answreplace2=substr($answreplace, 11, strpos($answreplace, "}", strpos($answreplace, "{INSERTANS:"))-11);
-        $answreplace3=strip_tags(retrieve_Answer($answreplace2, $_SESSION['dateformats']['phpdate']));
-        $line=str_replace($answreplace, $answreplace3, $line);
-    }
-    return $line;
+    $doTheseReplacements = getAnswerAndTokenMappings();
+    return doReplacements($line,$doTheseReplacements);
 }
 
 /**
@@ -664,42 +666,8 @@ function insertansReplace($line)
  */
 function tokenReplace($line, $anonymized=false)
 {
-    global $surveyid;
-
-    if (isset($_SESSION['token']) && $_SESSION['token'] != '')
-    {
-        //Gather survey data for tokenised surveys, for use in presenting questions
-        $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
-    }
-
-    if (isset($_SESSION['thistoken']) && !$anonymized)
-    {
-        if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
-        if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
-        if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", $_SESSION['thistoken']['firstname'], $line);
-        if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", $_SESSION['thistoken']['lastname'], $line);
-        if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", $_SESSION['thistoken']['email'], $line);
-    }
-    else
-    {
-        if (strpos($line, "{TOKEN:FIRSTNAME}") !== false) $line=str_replace("{TOKEN:FIRSTNAME}", "", $line);
-        if (strpos($line, "{TOKEN:LASTNAME}") !== false) $line=str_replace("{TOKEN:LASTNAME}", "", $line);
-        if (strpos($line, "{TOKEN:EMAIL}") !== false) $line=str_replace("{TOKEN:EMAIL}", "", $line);
-    }
-
-    while (strpos($line, "{TOKEN:ATTRIBUTE_")!== false)
-    {
-        $templine=substr($line,strpos($line, "{TOKEN:ATTRIBUTE_"));
-        $templine=substr($templine,0,strpos($templine, "}")+1);
-        $attr_no=(int)substr($templine,17,strpos($templine, "}")-17);
-        $replacestr='';
-        if (isset($_SESSION['thistoken']['attribute_'.$attr_no]) && !$anonymized)
-        {
-            $replacestr=$_SESSION['thistoken']['attribute_'.$attr_no];
-        }
-        $line=str_replace($templine, $replacestr, $line);
-    }
-    return $line;
+    $doTheseReplacements = getAnswerAndTokenMappings(false,$anonymized);
+    return doReplacements($line,$doTheseReplacements);
 }
 
 /**
@@ -753,4 +721,88 @@ function PassthruReplace($line, $thissurvey)
     return $line;
 }
 
+/**
+ * Create the arrays of answer and token replacement fields
+ * This function should only be called once per page display (e.g. only if $fieldMap changes)
+ *
+ * @param <type> $forceRefresh
+ * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
+ */
+
+function getAnswerAndTokenMappings($forceRefresh=false,$anonymized=false)
+{
+    global $globalfieldmap, $clang, $surveyid;
+
+    //checks to see if fieldmap has already been built for this page.
+    if (isset($globalfieldmap[$surveyid]['full'][$clang->langcode])) {
+        if (isset($globalfieldmap[$surveyid]['full-VarMap'][$clang->langcode]) && !$forceRefresh) {
+            return $globalfieldmap[$surveyid]['full-VarMap'][$clang->langcode];   // means the mappings have already been set and don't need to be re-created
+        }
+    }
+
+    $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
+    if (!isset($fieldmap)) {
+        return array(); // implies an error occurred
+    }
+
+    $sgqaMap = array();  // mapping of SGQA to Value
+    foreach($fieldmap as $fielddata)
+    {
+        $code = $fielddata['fieldname'];
+        if (!preg_match('#^\d+X\d+X\d+#',$code))
+        {
+            continue;   // not an SGQA value
+        }
+        if (isset($_SESSION[$code]))
+        {
+            $displayValue= retrieve_Answer($code, $_SESSION['dateformats']['phpdate']);
+            $sgqaMap['INSERTANS:' . $code] = $displayValue;
+        }
+        else
+        {
+            $sgqaMap['INSERTANS:' . $code] = ""; // so if know value has been set, replace with blank - is that the desired behavior?
+        }
+    }
+
+    // Now set tokens
+    $tokenMap = array();      // mapping of TOKENS to values
+    if (isset($_SESSION['token']) && $_SESSION['token'] != '')
+    {
+        //Gather survey data for tokenised surveys, for use in presenting questions
+        $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
+    }
+    if (isset($_SESSION['thistoken']))
+    {
+        foreach (array_keys($_SESSION['thistoken']) as $tokenkey)
+        {
+            if ($anonymized)
+            {
+                $val = "";
+            }
+            else
+            {
+                $val = $_SESSION['thistoken'][$tokenkey];
+            }
+            $key = "TOKEN:" . strtoupper($tokenkey);
+            $tokenMap[$key] = $val;
+        }
+    }
+    else
+    {
+        // Explicitly set all tokens to blank
+        $tokenMap['TOKEN:FIRSTNAME'] = "";
+        $tokenMap['TOKEN:LASTNAME'] = "";
+        $tokenMap['TOKEN:EMAIL'] = "";
+        $tokenMap['TOKEN:USESLEFT'] = "";
+        for ($i=1;$i<=100;++$i) // TODO - is there a way to know  how many attributes are set?  Looks like max is 100
+        {
+            $tokenMap['TOKEN:ATTRIBUTE_' . $i] = "";
+        }
+
+    }
+    $fullMap = array_merge($sgqaMap, $tokenMap);
+
+    $globalfieldmap[$surveyid]['full-VarMap'][$clang->langcode] = $fullMap;
+    return $fullMap;
+}
 ?>

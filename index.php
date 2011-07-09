@@ -2898,8 +2898,10 @@ function buildsurveysession()
         ." AND sid={$surveyid}"
         ." AND language='".$_SESSION['s_lang']."'"
         ." AND parent_qid=0");
-    return $totalquestions-$sNoOfTextDisplayQuestions;
 
+    $_SESSION['therearexquestions'] = $totalquestions - $sNoOfTextDisplayQuestions; // must be global for THEREAREXQUESTIONS replacement field to work
+
+    return $totalquestions-$sNoOfTextDisplayQuestions;
 }
 
 function surveymover()
