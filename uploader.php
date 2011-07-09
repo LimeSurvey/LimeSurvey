@@ -79,17 +79,17 @@ echo $header;
 
 echo "<script type='text/javascript'>
         var translt = {
-             titleFld: '" . $clang->gT('Title') . "',
-             commentFld: '" . $clang->gT('Comment') . "',
-             errorNoMoreFiles: '" . $clang->gT('Sorry, no more files can be uploaded!') . "',
-             errorOnlyAllowed: '" . $clang->gT('Sorry, only %s files can be uploaded for this question!') . "',
-             uploading: '" . $clang->gT('Uploading') . "',
-             selectfile: '" . $clang->gT('Select file') . "',
-             errorNeedMore: '" . $clang->gT('Please upload %s more file(s).') . "',
-             errorMoreAllowed: '" . $clang->gT('If you wish, you may upload %s more file(s); else you may return back to survey.') . "',
-             errorMaxReached: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.') . "',
-             errorTooMuch: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.') . "',
-             errorNeedMoreConfirm: '" . $clang->gT("You need to upload %s more files for this question.\nAre you sure you want to exit?") . "'
+             titleFld: '" . $clang->gT('Title','js') . "',
+             commentFld: '" . $clang->gT('Comment','js') . "',
+             errorNoMoreFiles: '" . $clang->gT('Sorry, no more files can be uploaded!','js') . "',
+             errorOnlyAllowed: '" . $clang->gT('Sorry, only %s files can be uploaded for this question!','js') . "',
+             uploading: '" . $clang->gT('Uploading','js') . "',
+             selectfile: '" . $clang->gT('Select file','js') . "',
+             errorNeedMore: '" . $clang->gT('Please upload %s more file(s).','js') . "',
+             errorMoreAllowed: '" . $clang->gT('If you wish, you may upload %s more file(s); else you may return back to survey.','js') . "',
+             errorMaxReached: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
+             errorTooMuch: '" . $clang->gT('The maximum number of files has been uploaded. You may return back to survey.','js') . "',
+             errorNeedMoreConfirm: '" . $clang->gT("You need to upload %s more files for this question.\nAre you sure you want to exit?",'js') . "'
             };
     </script>\n";
 
@@ -115,7 +115,7 @@ $body = '
             <button id="button1" class="upload-button" type="button" >'.$clang->gT("Select file").'</button>
         </div>
 
-        <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each."),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
+        <p class="uploadmsg">'.sprintf($clang->gT("You can upload %s under %s KB each.",'js'),$qidattributes['allowed_filetypes'],$qidattributes['max_filesize']).'</p>
         <div class="uploadstatus" id="uploadstatus"></div>
 
         <!-- The list of uploaded files -->

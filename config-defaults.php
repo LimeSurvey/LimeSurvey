@@ -525,15 +525,24 @@ $force_ssl = ''; // DO not turn on unless you are sure your server supports SSL/
 $ssl_emergency_override = false;
 
 
-// Get your IP Info DB key from http://ipinfodb.com/
-// If you have the API key, you can use it to get the approximate location of the user initially.
-
+/**
+*  @var $ipInfoDbAPIKey Get your IP Info DB key from http://ipinfodb.com/
+*  If you have the API key, you can use it to get the initial approximate location of the participant.
+*/
 $ipInfoDbAPIKey = '';
 
 // Google Maps API key. http://code.google.com/apis/maps/signup.html
 // To have questions that require google Maps!
 
 $googleMapsAPIKey = '';
+
+/**
+* This variable defines the total space available to the file upload question across all surveys. If set to 0 then no limit applies.
+*
+* @var $iFileUploadTotalSpaceMB  Integer number to determine the available space in MB - Default: 0
+*
+*/
+$iFileUploadTotalSpaceMB=0;
 
 //DO NOT EVER CHANGE THE FOLLOWING 5 LINES ---------------
 require_once(dirname(__FILE__).'/config.php');

@@ -362,9 +362,13 @@ function setman_multiflex($ia)
 
     $mandatorys=array();
     $mandatoryfns=array();
-    $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order, title";
+    $ansquery = "SELECT * FROM {$dbprefix}questions
+                 WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0
+                 ORDER BY question_order, title";
     $ansresult = db_execute_assoc($ansquery);
-    $ans2query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order, title";
+    $ans2query = "SELECT * FROM {$dbprefix}questions
+                  WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=1
+                  ORDER BY question_order, title";
     $ans2result = db_execute_assoc($ans2query);
 
     while ($ans2row=$ans2result->FetchRow())
@@ -3450,13 +3454,18 @@ function do_multiplechoice_withcomments($ia)
         ;
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
+    $qquery = "SELECT other FROM {$dbprefix}questions
+               WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}questions
+                     WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."'
+                     ORDER BY ".db_random();
     } else {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {$dbprefix}questions
+                     WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."'
+                     ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);  //Checked
     $anscount = $ansresult->RecordCount()*2;

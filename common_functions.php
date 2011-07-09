@@ -361,7 +361,6 @@ function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$die
     return $dataset;
 }
 
-
 /**
  * Returns the first row of values of the $sql query result
  * as a 1-dimensional array
@@ -813,7 +812,36 @@ function getQidNext($surveyid, $gid, $qid)
     return $QidNext;
 }
 
+/**
+* This function calculates how much space is actually used by all files uploaded
+* using the File Upload question type
+*
+* @returns integer Actual space used in MB
+*/
+function fCalculateTotalFileUploadUsage(){
+    global $uploaddir;
+    $sQuery="select sid from ".db_table_name('surveys');
+    $oResult = db_execute_assoc($sQuery); //checked
+    $aRows = $oResult->GetRows();
+    $iTotalSize=0.0;
+    foreach ($aRows as $aRow)
+    {
+       $sFilesPath=$uploaddir.'/surveys/'.$aRow['sid'].'/files';
+       if (file_exists($sFilesPath))
+       {
+           $iTotalSize+=(float)iGetDirectorySize($sFilesPath);
+       }
+    }
+    return (float)$iTotalSize/1024/1024;
+}
 
+function iGetDirectorySize($directory) {
+    $size = 0;
+    foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file){
+        $size+=$file->getSize();
+    }
+    return $size;
+}
 
 /**
  * Gets number of groups inside a particular survey

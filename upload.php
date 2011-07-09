@@ -60,8 +60,8 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
     $clang = new limesurvey_lang($baselang);
 
     $randfilename = sRandomChars(15);
-    $uploaddir = 'tmp/upload/';
-    $randfileloc = $uploaddir . $randfilename;
+    $sTempUploadDir = 'tmp/upload/';
+    $randfileloc = $sTempUploadDir . $randfilename;
     $filename = $_FILES['uploadfile']['name'];
     $size = 0.001 * $_FILES['uploadfile']['size'];
     $valid_extensions = strtolower($_POST['valid_extensions']);
@@ -135,12 +135,19 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
         {
             $return = array(
                 "success" => false,
-                 "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files upto %s KB are allowed."), $maxfilesize)
+                 "msg" => sprintf($clang->gT("Sorry, this file is too large. Only files up to %s KB are allowed.",'unescaped'), $maxfilesize)
             );
             echo json_encode($return);
         }
-
-        if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
+        elseif ($iFileUploadTotalSpaceMB>0 && ((fCalculateTotalFileUploadUsage()+($size/1024/1024))>$iFileUploadTotalSpaceMB))
+        {
+            $return = array(
+                "success" => false,
+                 "msg" => $clang->gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.",'unescaped')
+            );
+            echo json_encode($return);
+        }
+        elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
         {
             if (!isset($_SESSION[$fieldname]['filecount']))
                 $_SESSION[$fieldname]['filecount'] = 0;
