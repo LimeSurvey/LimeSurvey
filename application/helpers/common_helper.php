@@ -684,19 +684,23 @@ function getQidPrevious($surveyid, $gid, $qid)
 {
     //global $CI, $clang;
     $CI =& get_instance();
+    $CI->load->helper("database");
     //$clang =  $CI->limesurvey_lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('questions_model');
-    //$qquery = 'SELECT * FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
-    $qresult = $CI->questions_model->getQuestions($surveyid,$gid,$s_lang); //checked
+    //$qquery = "SELECT * FROM ".$CI->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
+    //$qresult = db_execute_assoc($qquery);
+    $qresult = $CI->questions_model->getQuestions($surveyid,$gid,$s_lang); //checked)
     $qrows = $qresult->result_array();
 
     $i = 0;
     $iPrev = -1;
     if ($qresult->num_rows() > 0)
     {
+        
         foreach ($qrows as $qrow)
         {
+            
             if ($qid == $qrow['qid']) {$iPrev = $i - 1;}
             $i += 1;
         }
@@ -757,10 +761,12 @@ function getQidNext($surveyid, $gid, $qid)
 {
     //global $CI, $clang;
     $CI= &get_instance();
+    $CI->load->helper("database");
     $clang = $CI->limesurvey_lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('questions_model');
-    //$qquery = 'SELECT qid FROM '.db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
+    //$CI->load->model('questions_model');
+    $qquery = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
+    //$qresult = db_execute_assoc($qquery) ;
     $qresult = $CI->questions_model->getQuestionID($surveyid,$gid,$s_lang); //checked)
     $qrows = $qresult->result_array();
     

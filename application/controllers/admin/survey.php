@@ -78,6 +78,7 @@
                     
                     
         			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+
         		}
                 
             }
@@ -103,7 +104,7 @@
         self::_js_admin_includes(base_url().'scripts/admin/listsurvey.js');
         
         self::_getAdminHeader();
-        self::_showadminmenu($surveyid);;
+        self::_showadminmenu(false);;
         
         
         $query = " SELECT a.*, c.*, u.users_name FROM ".$this->db->dbprefix."surveys as a "

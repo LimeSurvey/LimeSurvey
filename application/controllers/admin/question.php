@@ -506,7 +506,244 @@
         */
         
         $this->load->view('admin/Survey/Question/questionJavascript_view',array('type' => $type));
-    }    
+    }
+    
+    
+    function order($surveyid,$gid)
+    {
+        
+        $clang = $this->limesurvey_lang;
+        $_POST = $this->input->post();
+        if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
+        /**
+        $action = $this->input->post('action');
+        $surveyid = $this->input->post('sid');
+        $gid = $this->input->post('gid');
+        $qid = $this->input->post('qid'); */
+        $this->load->helper("database");
+        
+        if(bHasSurveyPermission($surveyid,'surveycontent','read'))
+        {
+            
+            $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+ 			$this->config->set_item("css_admin_includes", $css_admin_includes);
+        		
+ 			self::_getAdminHeader();
+ 			self::_showadminmenu($surveyid);;
+ 			self::_surveybar($surveyid,$gid);
+            self::_surveysummary($surveyid,"viewgroup");
+            
+            self::_questiongroupbar($surveyid,$gid,null,"viewgroup");
+                
+            
+            if (isset($_POST['questionordermethod']))
+            {
+                switch($_POST['questionordermethod'])
+                {
+                    // Pressing the Up button
+                    case 'up':
+                        $newsortorder=$postsortorder-1;
+                        $oldsortorder=$postsortorder;
+                        $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
+                        $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                        $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=$newsortorder WHERE gid=$gid AND question_order=$oldsortorder";
+                        $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                        $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order='$oldsortorder' WHERE gid=$gid AND question_order=-1";
+                        $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                        break;
+        
+                        // Pressing the Down button
+                    case 'down':
+                        $newsortorder=$postsortorder+1;
+                        $oldsortorder=$postsortorder;
+                        $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=-1 WHERE gid=$gid AND question_order=$newsortorder";
+                        $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                        $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order='$newsortorder' WHERE gid=$gid AND question_order=$oldsortorder";
+                        $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                        $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=$oldsortorder WHERE gid=$gid AND question_order=-1";
+                        $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                        break;
+                }
+            }
+            if ((!empty($_POST['questionmovefrom']) || (isset($_POST['questionmovefrom']) && $_POST['questionmovefrom'] == '0')) && (!empty($_POST['questionmoveto']) || (isset($_POST['questionmoveto']) && $_POST['questionmoveto'] == '0')))
+            {
+                $newpos=(int)$_POST['questionmoveto'];
+                $oldpos=(int)$_POST['questionmovefrom'];
+                if($newpos > $oldpos)
+                {
+                    //Move the question we're changing out of the way
+                    $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=-1 WHERE gid=$gid AND question_order=$oldpos";
+                    $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                    //Move all question_orders that are less than the newpos down one
+                    $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=question_order-1 WHERE gid=$gid AND question_order > $oldpos AND question_order <= $newpos";
+                    $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                    //Renumber the question we're changing
+                    $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=$newpos WHERE gid=$gid AND question_order=-1";
+                    $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                }
+                if(($newpos+1) < $oldpos)
+                {
+                    //echo "Newpos $newpos, Oldpos $oldpos";
+                    //Move the question we're changing out of the way
+                    $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=-1 WHERE gid=$gid AND question_order=$oldpos";
+                    $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                    //Move all question_orders that are later than the newpos up one
+                    $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=question_order+1 WHERE gid=$gid AND question_order > $newpos AND question_order <= $oldpos";
+                    $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                    //Renumber the question we're changing
+                    $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=".($newpos+1)." WHERE gid=$gid AND question_order=-1";
+                    $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
+                }
+            }
+        
+            //Get the questions for this group
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $oqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' and parent_qid=0 order by question_order" ;
+            $oqresult = db_execute_assoc($oqquery);
+        
+            $orderquestions = "<div class='header ui-widget-header'>".$clang->gT("Change Question Order")."</div>";
+        
+            $questioncount = $oqresult->num_rows();
+            $oqarray = array(); //$oqresult->GetArray();
+            
+            foreach ($oqresult->result_array() as $row)
+            {
+                $oqarray[] = $row;
+            }
+            $minioqarray=$oqarray;
+        
+            // Get the condition dependecy array for all questions in this array and group
+            $questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
+            if (!is_null($questdepsarray))
+            {
+                $orderquestions .= "<br/><div class='movableNode' style='margin:0 auto;'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current group is using conditional questions")."</strong><br /><br /><i>".$clang->gT("Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("See the conditions marked on the following questions").":<ul>\n";
+                foreach ($questdepsarray as $depqid => $depquestrow)
+                {
+                    foreach ($depquestrow as $targqid => $targcid)
+                    {
+                        $listcid=implode("-",$targcid);
+                        $question=arraySearchByKey($depqid, $oqarray, "qid", 1);
+        
+                        $orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">".$question['title'].": ".FlattenText($question['question']). " [QID: ".$depqid."] </a> ";
+                    }
+                    $orderquestions .= "</li>\n";
+                }
+                $orderquestions .= "</ul></div>";
+            }
+        
+            $orderquestions	.= "<form method='post' action=''><ul class='movableList'>";
+        
+            for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start with 0
+            {
+                $downdisabled = "";
+                $updisabled = "";
+                //Check if question is relied on as a condition dependency by the next question, and if so, don't allow moving down
+                if ( !is_null($questdepsarray) && $i < $questioncount-1 &&
+                array_key_exists($oqarray[$i+1]['qid'],$questdepsarray) &&
+                array_key_exists($oqarray[$i]['qid'],$questdepsarray[$oqarray[$i+1]['qid']]) )
+                {
+                    $downdisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
+                }
+                //Check if question has a condition dependency on the preceding question, and if so, don't allow moving up
+                if ( !is_null($questdepsarray) && $i !=0  &&
+                array_key_exists($oqarray[$i]['qid'],$questdepsarray) &&
+                array_key_exists($oqarray[$i-1]['qid'],$questdepsarray[$oqarray[$i]['qid']]) )
+                {
+                    $updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
+                }
+        
+                //Move to location
+                $orderquestions.="<li class='movableNode'>\n" ;
+                $orderquestions.="\t<select style='float:right; margin-left: 5px;";
+                $orderquestions.="' name='questionmovetomethod$i' onchange=\"this.form.questionmovefrom.value='".$oqarray[$i]['question_order']."';this.form.questionmoveto.value=this.value;submit()\">\n";
+                $orderquestions.="<option value=''>".$clang->gT("Place after..")."</option>\n";
+                //Display the "position at beginning" item
+                if(empty($questdepsarray) || (!is_null($questdepsarray)  && $i != 0 &&
+                !array_key_exists($oqarray[$i]['qid'], $questdepsarray)))
+                {
+                    $orderquestions.="<option value='-1'>".$clang->gT("At beginning")."</option>\n";
+                }
+                //Find out if there are any dependencies
+                $max_start_order=0;
+                if ( !is_null($questdepsarray) && $i!=0 &&
+                array_key_exists($oqarray[$i]['qid'], $questdepsarray)) //This should find out if there are any dependencies
+                {
+                    foreach($questdepsarray[$oqarray[$i]['qid']] as $key=>$val) {
+                        //qet the question_order value for each of the dependencies
+                        foreach($minioqarray as $mo) {
+                            if($mo['qid'] == $key && $mo['question_order'] > $max_start_order) //If there is a matching condition, and the question order for that condition is higher than the one already set:
+                            {
+                                $max_start_order = $mo['question_order']; //Set the maximum question condition to this
+                            }
+                        }
+                    }
+                }
+                //Find out if any questions use this as a dependency
+                $max_end_order=$questioncount+1;
+                if ( !is_null($questdepsarray))
+                {
+                    //There doesn't seem to be any choice but to go through the questdepsarray one at a time
+                    //to find which question has a dependence on this one
+                    foreach($questdepsarray as $qdarray)
+                    {
+                        if (array_key_exists($oqarray[$i]['qid'], $qdarray))
+                        {
+                            $cqidquery = "SELECT question_order
+        				          FROM ".$this->db->dbprefix."conditions, ".$this->db->dbprefix."questions  
+        						  WHERE ".$this->db->dbprefix."conditions.qid=".$this->db->dbprefix."questions.qid
+        						  AND cid=".$qdarray[$oqarray[$i]['qid']][0];
+                            $cqidresult = db_execute_assoc($cqidquery);
+                            $cqidrow = $cqidresult->row_array();
+                            $max_end_order=$cqidrow['question_order'];
+                        }
+                    }
+                }
+                $minipos=$minioqarray[0]['question_order']; //Start at the very first question_order
+                foreach($minioqarray as $mo)
+                {
+                    if($minipos >= $max_start_order && $minipos < $max_end_order)
+                    {
+                        $orderquestions.="<option value='".$mo['question_order']."'>".$mo['title']."</option>\n";
+                    }
+                    $minipos++;
+                }
+                $orderquestions.="</select>\n";
+        
+                $orderquestions.= "\t<input style='float:right;";
+                if ($i == 0) {$orderquestions.="visibility:hidden;";}
+                $orderquestions.="' type='image' src='".$this->config->item('imageurl')."/up.png' name='btnup_$i' onclick=\"$('#sortorder').val('{$oqarray[$i]['question_order']}');$('#questionordermethod').val('up');\" ".$updisabled."/>\n";
+                if ($i < $questioncount-1)
+                {
+                    // Fill the sortorder hiddenfield so we know what field is moved down
+                    $orderquestions.= "\t<input type='image' src='".$this->config->item('imageurl')."/down.png' style='float:right;' name='btndown_$i' onclick=\"$('#sortorder').val('{$oqarray[$i]['question_order']}');$('#questionordermethod').val('down')\" ".$downdisabled."/>\n";
+                }
+                $orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ".FlattenText($oqarray[$i]['question']);
+                $orderquestions.= "</li>\n" ;
+            }
+        
+            $orderquestions.="</ul>\n"
+            . "<input type='hidden' name='questionmovefrom' />\n"
+            . "<input type='hidden' name='questionordermethod' id='questionordermethod' />\n"
+            . "<input type='hidden' name='questionmoveto' />\n"
+            . "\t<input type='hidden' id='sortorder' name='sortorder' />"
+            . "\t<input type='hidden' name='action' value='orderquestions' />"
+            . "</form>" ;
+            $orderquestions .="<br />" ;
+            
+            
+            $finaldata['display'] = $orderquestions;
+            $this->load->view('survey_view',$finaldata);
+            
+            self::_loadEndScripts();
+            
+            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        }
+        
+        
+    }
+    
+    
+        
     
     function delete()
     {

@@ -62,7 +62,7 @@
     
                 <a href='$scriptname?action=exportstructureGroup&amp;sid=$surveyid&amp;gid=$gid' title="<?php echo $clang->gTview("Export this question group"); ?>" >
                 <img src='<?php echo $this->config->item('imageurl'); ?>/dumpgroup.png' title='' alt='<?php echo $clang->gT("Export this question group"); ?>' name='ExportGroup'  /></a>
-            <?php }
+            <?php } 
     
     
             
@@ -70,10 +70,10 @@
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt='' />
-                <?php if($activated!="Y" && getQuestionSum($surveyid, $gid)>1)
+                <?php if($activated != "Y" && getQuestionSum($surveyid, $gid) > 1)
                 { ?>
-    
-                      <a href='$scriptname?action=orderquestions&amp;sid=$surveyid&amp;gid=$gid' title="<?php echo $clang->gTview("Change Question Order"); ?>" >
+                        
+                      <a href='<?php echo site_url("admin/question/order/".$surveyid."/".$gid); ?>' title="<?php echo $clang->gTview("Change Question Order"); ?>" >
                       <img src='<?php echo $this->config->item('imageurl'); ?>/reorder.png' alt='<?php echo $clang->gT("Change Question Order"); ?>' name='updatequestionorder' /></a>
                 <?php }
                 else

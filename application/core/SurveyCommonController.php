@@ -511,6 +511,9 @@
             */
                     // QUICK NAVIGATION TO PREVIOUS AND NEXT QUESTION
             // TODO: Fix functionality to previos and next question  buttons (Andrie)
+            
+            
+            
             $data['qid'] = $qid;
             //$data['qid'] = $qid = $this->config->item('qid');
             $data['QidPrev'] = $QidPrev = getQidPrevious($surveyid, $gid, $qid);
@@ -1105,13 +1108,15 @@
         }
         */
         //$gid || $qid || 
+       
+        
         if ($action=="deactivate"|| $action=="activate" || $action=="surveysecurity"
         || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity"
         || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
         || $action=="editsurveysettings"|| $action=="editsurveylocalesettings" || $action=="updatesurveysettingsandeditlocalesettings" || $action=="addgroup" || $action=="importgroup"
         || $action=="ordergroups" || $action=="deletesurvey" || $action=="resetsurveylogic"
         || $action=="importsurveyresources" || $action=="translate"  || $action=="emailtemplates" 
-        || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey" || $action=="viewgroup" || $action = "viewquestion") {$showstyle="style='display: none'";}
+        || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey" || $action=="viewgroup" || $action == "viewquestion") {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";} 
         /**if ($gid) {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";} */

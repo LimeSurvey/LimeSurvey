@@ -36,6 +36,7 @@ class Questions_model extends CI_Model {
     
     function getQuestions($sid,$gid,$language)
     {
+        
         $this->db->where('sid',$sid);
         $this->db->where('gid',$gid);
         $this->db->where('language',$language);
