@@ -6998,7 +6998,9 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
     $clang->gT('Language code'),
     $clang->gT('Invitation sent date'),
     $clang->gT('Last Reminder sent date'),
-    $clang->gT('Total numbers of sent reminders'));
+    $clang->gT('Total numbers of sent reminders'),
+    $clang->gT('Uses left')
+    );
 
     $thissurvey=getSurveyInfo($surveyid);
     $attdescriptiondata=!empty($thissurvey['attributedescriptions']) ? $thissurvey['attributedescriptions'] : "";
