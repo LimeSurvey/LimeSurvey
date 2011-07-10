@@ -174,7 +174,13 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
         $_question_code = '';
     }
 
-    $_totalquestionsAsked = $_SESSION['therearexquestions'] - $totalBoilerplatequestions;
+    if (isset($_SESSION['therearexquestions']))
+    {
+        $_totalquestionsAsked = $_SESSION['therearexquestions'] - $totalBoilerplatequestions;
+    }
+    else {
+        $_totalquestionsAsked = 0;
+    }
     if (
       $showXquestions == 'show' ||
       ($showXquestions == 'choose' && !isset($thissurvey['showXquestions'])) ||
@@ -740,6 +746,10 @@ function getAnswerAndTokenMappings($forceRefresh=false,$anonymized=false)
         }
     }
 
+    if (!isset($surveyid))
+    {
+        return array(); // will happen on public root view
+    }
     $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
     if (!isset($fieldmap)) {
         return array(); // implies an error occurred
