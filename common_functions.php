@@ -812,7 +812,36 @@ function getQidNext($surveyid, $gid, $qid)
     return $QidNext;
 }
 
+/**
+* This function calculates how much space is actually used by all files uploaded
+* using the File Upload question type
+*
+* @returns integer Actual space used in MB
+*/
+function fCalculateTotalFileUploadUsage(){
+    global $uploaddir;
+    $sQuery="select sid from ".db_table_name('surveys');
+    $oResult = db_execute_assoc($sQuery); //checked
+    $aRows = $oResult->GetRows();
+    $iTotalSize=0.0;
+    foreach ($aRows as $aRow)
+    {
+       $sFilesPath=$uploaddir.'/surveys/'.$aRow['sid'].'/files';
+       if (file_exists($sFilesPath))
+       {
+           $iTotalSize+=(float)iGetDirectorySize($sFilesPath);
+       }
+    }
+    return (float)$iTotalSize/1024/1024;
+}
 
+function iGetDirectorySize($directory) {
+    $size = 0;
+    foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file){
+        $size+=$file->getSize();
+    }
+    return $size;
+}
 
 /**
  * Gets number of groups inside a particular survey
@@ -1466,12 +1495,6 @@ function getSurveyInfo($surveyid, $languagecode='')
     $surveyid=sanitize_int($surveyid);
     $languagecode=sanitize_languagecode($languagecode);
     $thissurvey=false;
-    /** TMW added - still needed?
-    if (is_null($surveyid))
-    {
-        return false;
-    }
-     */
     // if no language code is set then get the base language one
     if (!isset($languagecode) || $languagecode=='')
     {
@@ -1748,12 +1771,6 @@ function getsidgidqidaidtype($fieldcode)
 {
     // use simple parsing to get {sid}, {gid}
     // and what may be {qid} or {qid}{aid} combination
-    /** TMW added - still needed?
-    if (!preg_match('#^\d+X\d+X\d+#',$fieldcode))
-    {
-        return array();
-    }
-     */
     list($fsid, $fgid, $fqid) = explode('X', $fieldcode);
     $fsid=sanitize_int($fsid);
     $fgid=sanitize_int($fgid);
@@ -4145,9 +4162,7 @@ function doFooter()
 // (e.g. for email and template functions)
 function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 {
-    // TODO - call this each time, or just return $text and process this globally at another location?
-    return LimeExpressionManager::ProcessString($text, $fieldsarray);
-/*
+    // TMW TODO - should this just return $text, or does it really need to replace text here?
     foreach ( $fieldsarray as $key => $value )
     {
         $text=str_replace($key, $value, $text);
@@ -4158,7 +4173,6 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
         $text = insertansReplace($text);
     }
     return $text;
- */
 }
 
 
@@ -5853,11 +5867,6 @@ function retrieve_Answer($code, $phpdateformat=null)
     if (isset($_SESSION[$code]))
     {
         $questiondetails=getsidgidqidaidtype($code);
-        /** TMW added - still needed?
-        if (count($questiondetails) == 0) {
-            continue;
-        }
-         */
         //the getsidgidqidaidtype function is in common.php and returns
         //a SurveyID, GroupID, QuestionID and an Answer code
         //extracted from a "fieldname" - ie: 1X2X3a
@@ -6961,7 +6970,7 @@ function GetAttributeFieldNames($surveyid)
 function GetTokenConditionsFieldNames($surveyid)
 {
     $extra_attrs=GetAttributeFieldNames($surveyid);
-    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
+    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount','usesleft');
     return array_merge($basic_attrs,$extra_attrs);
 }
 
@@ -6980,7 +6989,7 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
         return Array();
     }
     $extra_attrs=GetAttributeFieldNames($surveyid);
-    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
+    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount','usesleft');
     $basic_attrs_names=Array(
     $clang->gT('First name'),
     $clang->gT('Last name'),
@@ -6989,7 +6998,9 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
     $clang->gT('Language code'),
     $clang->gT('Invitation sent date'),
     $clang->gT('Last Reminder sent date'),
-    $clang->gT('Total numbers of sent reminders'));
+    $clang->gT('Total numbers of sent reminders'),
+    $clang->gT('Uses left')
+    );
 
     $thissurvey=getSurveyInfo($surveyid);
     $attdescriptiondata=!empty($thissurvey['attributedescriptions']) ? $thissurvey['attributedescriptions'] : "";
@@ -7246,7 +7257,9 @@ function getTokenData($surveyid, $token)
         $thistoken=array("firstname"=>$row['firstname'],
         "lastname"=>$row['lastname'],
         "email"=>$row['email'],
-        "language" =>$row['language']);
+        "language" =>$row['language'],
+        "usesleft" =>$row['usesleft'],
+        );
         $attrfieldnames=GetAttributeFieldnames($surveyid);
         foreach ($attrfieldnames as $attr_name)
         {

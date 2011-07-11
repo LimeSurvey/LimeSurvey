@@ -63,9 +63,9 @@ class ExpressionManager {
         $regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $regex_andor = '\band\b|\bor\b|&&|\|\|';
 
-        $this->sExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n)' .
+        $this->sExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n|\s+)' .
                 '(' . $regex_dq_string . '|' . $regex_sq_string . '|.*?)*' .
-                '(?<!\\\\)(?<!\n|\r|\r\n)' . '}' . ')#';
+                '(?<!\\\\)(?<!\n|\r|\r\n|\s)' . '}' . ')#';
 
 
         // asTokenRegex and t_tokey_type must be kept in sync  (same number and order)
@@ -1282,7 +1282,7 @@ class ExpressionManager {
                 else 
                 {
                     // show original and errors in-line
-                    $resolvedParts[] = '{' . $this->GetReadableErrors() . '}';
+                    $resolvedParts[] = $this->GetReadableErrors();
                 }
             }
         }

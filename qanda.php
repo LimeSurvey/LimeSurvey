@@ -1163,7 +1163,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 					answer.value=' ';
 				}
 				answer.blur();
-				answer.onfocus=function() {answer.blur();};
+				answer.onfocus=function() { answer.blur();};
 			}
 		};
 	//-->
@@ -1172,11 +1172,11 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
     <script type='text/javascript'>
 	<!--\n
 		function countdown(questionid,timer,action,warning,warning2,warninghide,warning2hide,disable){
-		    if(!timeleft) {var timeleft=timer;}
-			if(!warning) {var warning=0;}
-			if(!warning2) {var warning2=0;}
-			if(!warninghide) {var warninghide=0;}
-			if(!warning2hide) {var warning2hide=0;}";
+		    if(!timeleft) { var timeleft=timer;}
+			if(!warning) { var warning=0;}
+			if(!warning2) { var warning2=0;}
+			if(!warninghide) { var warninghide=0;}
+			if(!warning2hide) { var warning2hide=0;}";
 
         if($thissurvey['format'] == "G")
         {
@@ -1332,7 +1332,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
-						this.onsubmit=function() {subcookiejar.crumble('limesurvey_timers', timersessionname);};
+						this.onsubmit=function() { subcookiejar.crumble('limesurvey_timers', timersessionname);};
 						break;
 					default: //Warn and move on
 						document.getElementById(expireddisplay).style.display='';
@@ -2838,7 +2838,7 @@ function do_ranking($ia)
     $maxselectlength=0;
     $choicelist = "<select size=\"$anscount\" name=\"CHOICES_{$ia[0]}\" ";
     if (isset($choicewidth)) {$choicelist.=$choicewidth;}
-    $choicelist .= " id=\"CHOICES_{$ia[0]}\" onclick=\"if (this.options.length>0 && this.selectedIndex<0) {this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
+    $choicelist .= " id=\"CHOICES_{$ia[0]}\" onclick=\"if (this.options.length>0 && this.selectedIndex<0) { this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
 
         foreach ($answers as $ans)
         {
@@ -3301,7 +3301,7 @@ function do_multiplechoice($ia)
         if (count > max)
         {
             alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
-            if (me.type == 'checkbox') {me.checked = false;}
+            if (me.type == 'checkbox') { me.checked = false;}
             if (me.type == 'text') {
                 me.value = '';
                 if (document.getElementById('answer'+me.name + 'cbox') ){
@@ -3836,7 +3836,7 @@ function do_file_upload($ia)
                                 jsonstring += ", ";
 
                             if ($("#answer'.$ia[1].'_"+i).val() != "")
-                                jsonstring += "{';
+                                jsonstring += "{ ';
 
     if ($qidattributes['show_title'])
         $answer .= '\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",';
@@ -6043,7 +6043,7 @@ function do_array($ia)
        {
            $myfname = $ia[1].$ansrow['title'];
            $trbc = alternation($trbc , 'row');
-           $answertext=answer_replace($ansrow['question']);
+           $answertext=$ansrow['question'];
             $answertextsave=$answertext;
            if (strpos($answertext,'|'))
            {
@@ -7592,22 +7592,5 @@ function do_array_dual($ia)
     }
     return array($answer, $inputnames);
 }
-
-
-
-
-// ---------------------------------------------------------------
-function answer_replace($text)
-{
-    while (strpos($text, "{INSERTANS:") !== false)
-    {
-        $replace=substr($text, strpos($text, "{INSERTANS:"), strpos($text, "}", strpos($text, "{INSERTANS:"))-strpos($text, "{INSERTANS:")+1);
-        $replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
-        $replace3=retrieve_Answer($replace2, $_SESSION['dateformats']['phpdate']);
-        $text=str_replace($replace, $replace3, $text);
-    } //while
-    return $text;
-}
-
 
 // Closing PHP tag intentionally left out - yes, it is okay

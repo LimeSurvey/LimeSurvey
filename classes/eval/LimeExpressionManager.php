@@ -10,12 +10,6 @@ include_once('ExpressionManager.php');
 
 class LimeExpressionManager {
     private static $instance;
-    private $fieldmap;
-    private $varMap;
-    private $sgqaMap;
-    private $namedConstantMap;
-    private $tokenMap;
-
     private $em;    // Expression Manager
     
     // A private constructor; prevents direct creation of object
@@ -51,23 +45,20 @@ class LimeExpressionManager {
 
     public function setVariableAndTokenMappingsForExpressionManager($sid,$forceRefresh=false,$anonymized=false)
     {
-        global $globalfieldmap, $clang;
+        global $globalfieldmap, $clang, $surveyid;
 
         //checks to see if fieldmap has already been built for this page.
-        if (isset($globalfieldmap[$sid]['full'][$clang->langcode])) {
-            if (isset($this->fieldmap) && !$forceRefresh) {
-                return false;   // means the mappings have already been set and don't need to be re-created
-            }
+        if (isset($globalfieldmap[$surveyid]['expMgr_sgqaMap'][$clang->langcode])&& !$forceRefresh) {
+            return false;   // means the mappings have already been set and don't need to be re-created
         }
 
-        $fieldmap=createFieldMap($sid,$style='full');
-        $this->fieldmap = $fieldmap;
+        $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
         if (!isset($fieldmap)) {
-            return false;
+            return false; // implies an error occurred
         }
 
+        $sgqaMap = array();  // mapping of SGQA to Value
         $knownVars = array();   // mapping of VarName to Value
-        $knownSGQAs = array();  // mapping of SGQA to Value
         $knownNamedConstants = array(); // mapping of read-only values to Value
         $debugLog = array();    // array of mappings among values to confirm their accuracy
         foreach($fieldmap as $fielddata)
@@ -75,9 +66,9 @@ class LimeExpressionManager {
             $code = $fielddata['fieldname'];
             if (!preg_match('#^\d+X\d+X\d+#',$code))
             {
-                continue;
+                continue;   // not an SGQA value
             }
-            // TODO:  Which of these question types are read-write variables vs. named constants?
+               // TODO:  Which of these question types are read-write variables vs. named constants?
             switch($fielddata['type'])
             {
                 case '!': //List - dropdown
@@ -137,12 +128,13 @@ class LimeExpressionManager {
                     );
                 $knownNamedConstants[$varName . '.shown'] = $displayValue;
                 $knownNamedConstants[$varName . '.question']= $question;
-                $knownSGQAs['INSERTANS:' . $code] = $displayValue;
+                $sgqaMap['INSERTANS:' . $code] = $displayValue;
             }
             else
             {
                 unset($codeValue);
                 unset($displayValue);
+                $sgqaMap['INSERTANS:' . $code] = ""; // so if know value has been set, replace with blank - is that the desired behavior?
             }
             $debugLog[] = array(
                 'code' => $code,
@@ -155,20 +147,16 @@ class LimeExpressionManager {
                 );
 
         }
-        $this->varMap = $knownVars;
-        $this->sgqaMap = $knownSGQAs;
-        $this->namedConstantMap = $knownNamedConstants;
 
         // Now set tokens
-        $tokens = array();      // mapping of TOKENS to values - how often does this need to be set?
+        $tokenMap = array();      // mapping of TOKENS to values
         if (isset($_SESSION['token']) && $_SESSION['token'] != '')
         {
             //Gather survey data for tokenised surveys, for use in presenting questions
-            $_SESSION['thistoken']=getTokenData($sid, $_SESSION['token']);
+            $_SESSION['thistoken']=getTokenData($surveyid, $_SESSION['token']);
         }
         if (isset($_SESSION['thistoken']))
         {
-            // TODO - need to explicitly set TOKEN:FIRSTNAME, and related to blank if not using tokens?
             foreach (array_keys($_SESSION['thistoken']) as $tokenkey)
             {
                 if ($anonymized)
@@ -180,7 +168,7 @@ class LimeExpressionManager {
                     $val = $_SESSION['thistoken'][$tokenkey];
                 }
                 $key = "TOKEN:" . strtoupper($tokenkey);
-                $tokens[$key] = $val;
+                $tokenMap[$key] = $val;
                 $debugLog[] = array(
                     'code' => $key,
                     'type' => '&nbsp;',
@@ -192,11 +180,23 @@ class LimeExpressionManager {
                 );
             }
         }
-        $this->tokenMap = $tokens;
+        else
+        {
+            // Explicitly set all tokens to blank
+            $tokenMap['TOKEN:FIRSTNAME'] = "";
+            $tokenMap['TOKEN:LASTNAME'] = "";
+            $tokenMap['TOKEN:EMAIL'] = "";
+            $tokenMap['TOKEN:USESLEFT'] = "";
+            for ($i=1;$i<=100;++$i) // TODO - is there a way to know  how many attributes are set?  Looks like max is 100
+            {
+                $tokenMap['TOKEN:ATTRIBUTE_' . $i] = "";
+            }
+        }
 
         $debugLog_html = "<table border='1'>";
         $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>JSname</th><th>Question</th><th>CodeVal</th><th>DisplayVal</th></tr>";
-        foreach ($debugLog as $t) {
+        foreach ($debugLog as $t)
+        {
             $debugLog_html .= "<tr><td>" . $t['code']
                 . "</td><td>" . $t['type']
                 . "</td><td>" . $t['varname']
@@ -208,6 +208,11 @@ class LimeExpressionManager {
         }
         $debugLog_html .= "</table>";
         file_put_contents('/tmp/LimeExpressionManager-page.html',$debugLog_html);
+        
+        $globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode] = $knownVars;
+        $globalfieldmap[$surveyid]['expMgr_sgqaMap'][$clang->langcode] = $sgqaMap;
+        $globalfieldmap[$surveyid]['expMgr_constants'][$clang->langcode] = $knownNamedConstants;
+        $globalfieldmap[$surveyid]['expMgr_tokens'][$clang->langcode] = $tokenMap;
 
         return true;
     }
@@ -221,16 +226,17 @@ class LimeExpressionManager {
 
     static function ProcessString($string,array $replacementFields=array(), $forceRefresh=false, $anonymized=false)
     {
-        global $surveyid;
+        global $surveyid, $clang, $globalfieldmap;
+
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
         if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized))
         {
             // means that some values changed, so need to update what was registered to ExpressionManager
-            $em->RegisterVarnamesUsingReplace($lem->varMap);
-            $em->RegisterNamedConstantsUsingReplace($lem->sgqaMap);
-            $em->RegisterNamedConstantsUsingMerge($lem->namedConstantMap);
-            $em->RegisterNamedConstantsUsingMerge($lem->tokenMap);
+            $em->RegisterVarnamesUsingReplace($globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode]);
+            $em->RegisterNamedConstantsUsingReplace($globalfieldmap[$surveyid]['expMgr_sgqaMap'][$clang->langcode]);
+            $em->RegisterNamedConstantsUsingMerge($globalfieldmap[$surveyid]['expMgr_constants'][$clang->langcode]);
+            $em->RegisterNamedConstantsUsingMerge($globalfieldmap[$surveyid]['expMgr_tokens'][$clang->langcode]);
         }
         if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
         {
@@ -277,6 +283,7 @@ Since you have more {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'children','
 {INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children','kiddies')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
 This line should throw errors since the curly-brace enclosed functions do not have linefeeds after them (and before the closing curly brace): var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') { document.write('BOSSES') } else { document.write('WORKERS') }
 This line has a &lt;script&gt; section, but if you look at the source, you will see that it has errors: <script type="text/javascript" language="Javascript">var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') { document.write('BOSSES') } else { document.write('WORKERS') } </script>.
+Substitions that begin or end with a space should be ignored: { name} {age }
 EOD;
         $alltests = explode("\n",$tests);
 

@@ -10,7 +10,7 @@ include_once('/classes/eval/LimeExpressionManager.php');
  * they will be done in batch at the end
  *
  * @param string $line Text to search in
- * @param array $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
+ * @param array $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>, where <stringtosearch> is NOT surrounded with curly braces
  * @param boolean $anonymized Determines if token data is being used or just replaced with blanks
  * @return string  Text with replaced strings
  */
@@ -23,7 +23,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
     global $question;
     global $showXquestions, $showgroupinfo, $showqnumcode;
     global $answer, $navigator;
-    global $help, $totalquestions, $surveyformat;
+    global $help, $surveyformat;
     global $completed, $register_errormsg;
     global $privacy, $surveyid;
     global $publicurl, $templatedir, $token;
@@ -176,7 +176,13 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
         $_question_code = '';
     }
 
-    $_totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
+    if (isset($_SESSION['therearexquestions']))
+    {
+        $_totalquestionsAsked = $_SESSION['therearexquestions'] - $totalBoilerplatequestions;
+    }
+    else {
+        $_totalquestionsAsked = 0;
+    }
     if (
       $showXquestions == 'show' ||
       ($showXquestions == 'choose' && !isset($thissurvey['showXquestions'])) ||
@@ -200,11 +206,6 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
     {
         $_therearexquestions = '';
     };
-
-    // Hack - just replace {THEREAREXQUESTIONS}.  ExpressionManager replaces too much otherwise; but sure can specify which subsets to replace if several passes needed
-    if (strpos($line,'{THEREAREXQUESTIONS}')) {
-        $line = str_replace('{THEREAREXQUESTIONS}', $_therearexquestions, $line);
-        }
 
     if (isset($token))
     {
@@ -271,7 +272,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
     }
 
     $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
-            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {window.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=" . $_s_lang;
+            . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {\nwindow.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=" . $_s_lang;
         if (returnglobal('token'))
         {
         $_clearall .= "&amp;token=" . urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
@@ -611,7 +612,8 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
 
     $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
 
-    // Now do all of the replacements
+    // Now do all of the replacements - either call it twice or do recursion within LimeExpressionManager
+    $line = LimeExpressionManager::ProcessString($line, $doTheseReplacements, false, $anonymized);
     return LimeExpressionManager::ProcessString($line, $doTheseReplacements, false, $anonymized);
 }
 
@@ -631,7 +633,8 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
  */
 function insertansReplace($line)
 {
-    return LimeExpressionManager::ProcessString($line);
+    return $line;
+//    return LimeExpressionManager::ProcessString($line);
 }
 
 /**
@@ -651,8 +654,9 @@ function insertansReplace($line)
  */
 function tokenReplace($line, $anonymized=false)
 {
-    return LimeExpressionManager::ProcessString($line,false,$anonymized);
-    }
+    return $line;
+//    return LimeExpressionManager::ProcessString($line,array(),false,$anonymized);
+}
 
 /**
  * passthruReplace() takes a string and looks for {PASSTHRULABEL}, {PASSTHRUVALUE} and {PASSTHRU:myarg} variables
@@ -669,6 +673,7 @@ function PassthruReplace($line, $thissurvey)
     $line=str_replace("{PASSTHRULABEL}", $thissurvey['passthrulabel'], $line);
     $line=str_replace("{PASSTHRUVALUE}", $thissurvey['passthruvalue'], $line);
 
+    if (!isset($_SESSION['ls_initialquerystr'])) return $line;
     //  Replacement for variable passthru argument like {PASSTHRU:myarg}
     while (strpos($line,"{PASSTHRU:") !== false)
     {

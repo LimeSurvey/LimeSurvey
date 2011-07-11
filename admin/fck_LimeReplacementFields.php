@@ -107,8 +107,9 @@ switch ($fieldtype)
     case 'editwelcome': // for translation
     case 'editend': // for translation
         $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
-        $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
+        $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
         $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
+        $replFields[]=array('TOKEN:USESLEFT',$clang->gT("Uses left"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
         foreach ($attributes as $attributefield=>$attributedescription)
         {
@@ -117,23 +118,56 @@ switch ($fieldtype)
         $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
         break;
 
-    case 'email-admin-conf':
+    case 'email-admin-notification':
+        $replFields[]=array('RELOADURL',$clang->gT("Reload URL"));
+        $replFields[]=array('VIEWRESPONSEURL',$clang->gT("View response URL"));
+        $replFields[]=array('EDITRESPONSEURL',$clang->gT("Edit response URL"));
+        $replFields[]=array('STATISTICSURL',$clang->gT("Statistics URL"));
+        $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
+        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
+        $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
+        $replFields[]=array('TOKEN:USESLEFT',$clang->gT("Uses left"));
+        $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
+        $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
+        $attributes=GetTokenFieldsAndNames($surveyid,true);
+        foreach ($attributes as $attributefield=>$attributedescription)
+        {
+            $replFields[]=array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
+        }
+        $replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
+        $replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
+        break;
     case 'email-admin-resp':
         $replFields[]=array('RELOADURL',$clang->gT("Reload URL"));
         $replFields[]=array('VIEWRESPONSEURL',$clang->gT("View response URL"));
         $replFields[]=array('EDITRESPONSEURL',$clang->gT("Edit response URL"));
         $replFields[]=array('STATISTICSURL',$clang->gT("Statistics URL"));
         $replFields[]=array('ANSWERTABLE',$clang->gT("Answers from this response"));
+        $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
+        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
+        $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
+        $replFields[]=array('TOKEN:USESLEFT',$clang->gT("Uses left"));
+        $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
+        $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
+        $attributes=GetTokenFieldsAndNames($surveyid,true);
+        foreach ($attributes as $attributefield=>$attributedescription)
+        {
+            $replFields[]=array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
+        }
+        $replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
+        $replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
+        break;
     case 'email-inv':
     case 'email-rem':
         // these 2 fields are supported by email-inv and email-rem
         // but not email-reg for the moment
         $replFields[]=array('EMAIL',$clang->gT("Email from the token"));
         $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
+        $replFields[]=array('USESLEFT',$clang->gT("Uses left"));
         $replFields[]=array('OPTOUTURL',$clang->gT("URL for a respondent to opt-out this survey"));
     case 'email-reg':
         $replFields[]=array('FIRSTNAME',$clang->gT("First name from token"));
-        $replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
+        $replFields[]=array('LASTNAME',$clang->gT("Last name from token"));
         $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
         $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
@@ -150,7 +184,7 @@ switch ($fieldtype)
     case 'email-conf':
         $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
         $replFields[]=array('FIRSTNAME',$clang->gT("First name from token"));
-        $replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
+        $replFields[]=array('LASTNAME',$clang->gT("Last name from token"));
         $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
         $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
@@ -182,8 +216,9 @@ switch ($fieldtype)
     case 'editquestion': // for translation
     case 'editquestion_help': // for translation
         $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
-        $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
+        $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
         $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
+        $replFields[]=array('TOKEN:USESLEFT',$clang->gT("Uses left"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
         foreach ($attributes as $attributefield=>$attributedescription)
         {
@@ -211,7 +246,7 @@ if ($isInstertansEnabled===true)
     $previouspagequestion = true;
     //Go through each question until we reach the current one
     //error_log(print_r($qrows,true));
-    $questionlist=array();      
+    $questionlist=array();
     foreach ($fieldmap as $field)
     {
         if (empty($field['qid'])) continue;

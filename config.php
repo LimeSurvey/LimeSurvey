@@ -35,13 +35,13 @@ $databasetype       =   'mysql';       // ADOdb database driver - valid values a
 
 $databaselocation   =   'localhost';   // Network location of your Database - for odbc_mssql or mssqlnative use the mssql servername, not localhost or IP
 $databasename       =   'limesurvey_dev';  // The name of the database that we will create
-$databaseuser       =   'root';        // The name of a user with rights to create db (or if db already exists, then rights within that db)
-$databasepass       =   '';            // Password of db user
+$databaseuser       =   'limesurvey_dev';        // The name of a user with rights to create db (or if db already exists, then rights within that db)
+$databasepass       =   'BJvNFDvLHc2DQpS8';            // Password of db user
 $dbprefix           =   'lime_';       // A global prefix that can be added to all LimeSurvey tables. Use this if you are sharing
 // a database with other applications. Suggested prefix is 'lime_'
 
 // File Locations
-$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey_dev"; // The root web url for your limesurvey installation (without a trailing slash).
+$rooturl            =   "http://{$_SERVER['HTTP_HOST']}/limesurvey_dev_tms"; // The root web url for your limesurvey installation (without a trailing slash).
 // The double quotes (") are important.
 
 $rootdir            =   dirname(__FILE__); // This is the physical disk location for your limesurvey installation. Normally you don't have to touch this

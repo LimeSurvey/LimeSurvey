@@ -396,10 +396,8 @@ if (!$surveyid)
     $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
 	          FROM ".db_table_name('surveys')." AS a
 			  INNER JOIN ".db_table_name('surveys_languagesettings')." AS b
-			  ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
-			  WHERE surveyls_survey_id=a.sid
-			  AND surveyls_language=a.language
-              AND surveyls_language='$baselang'
+			  ON ( surveyls_survey_id = a.sid )
+			  WHERE surveyls_language='$baselang'
 			  AND a.active='Y'
 			  AND a.listpublic='Y'
 			  AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
@@ -2204,8 +2202,8 @@ function SendSubmitNotifications()
     $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
     if (count($aEmailNotificationTo)>0)
     {
-        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars);
-        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars);
+        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,($thissurvey['anonymized'] == "Y"));
+        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,($thissurvey['anonymized'] == "Y"));
         foreach ($aEmailNotificationTo as $sRecipient)
         {
             if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
@@ -2887,7 +2885,7 @@ function buildsurveysession()
 
     }
     // New: If no passthru variable is explicitely set, save the whole query_string - above method is obsolete and the new way should only be used
-    else
+    elseif (isset($_SERVER['QUERY_STRING']))
     {
         $_SESSION['ls_initialquerystr']=$_SERVER['QUERY_STRING'];
     }
@@ -2900,8 +2898,10 @@ function buildsurveysession()
         ." AND sid={$surveyid}"
         ." AND language='".$_SESSION['s_lang']."'"
         ." AND parent_qid=0");
-    return $totalquestions-$sNoOfTextDisplayQuestions;
 
+    $_SESSION['therearexquestions'] = $totalquestions - $sNoOfTextDisplayQuestions; // must be global for THEREAREXQUESTIONS replacement field to work
+
+    return $totalquestions-$sNoOfTextDisplayQuestions;
 }
 
 function surveymover()
