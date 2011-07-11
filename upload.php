@@ -60,7 +60,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
     $clang = new limesurvey_lang($baselang);
 
     $randfilename = sRandomChars(15);
-    $sTempUploadDir = 'tmp/upload/';
+    $sTempUploadDir = $tempdir.'/upload/';
     $randfileloc = $sTempUploadDir . $randfilename;
     $filename = $_FILES['uploadfile']['name'];
     $size = 0.001 * $_FILES['uploadfile']['size'];
