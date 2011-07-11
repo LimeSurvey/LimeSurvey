@@ -72,7 +72,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
         {
             array_remval($postedfieldnames[$x],$postedfieldnames);
         }
-         
+
     }
     $_POST['fieldnames']=implode("|",$postedfieldnames);
 
@@ -115,13 +115,13 @@ else
 // SAVE if on page with questions or on submit page
 if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
 {
-    if ($thissurvey['active'] == "Y") 
+    if ($thissurvey['active'] == "Y")
     {
         $bQuotaMatched=false;
         $aQuotas=check_quota('return',$surveyid);
         if ($aQuotas !== false)
         {
-        if ($aQuotas!=false)  
+        if ($aQuotas!=false)
         {
             foreach ($aQuotas as $aQuota)
             {
@@ -129,9 +129,9 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
             }
         }
         }
-            if ($bQuotaMatched) $bFinalizeThisAnswer=false;        
-        }  
-    
+            if ($bQuotaMatched) $bFinalizeThisAnswer=false;
+        }
+
     if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
     {
         // SAVE DATA TO SURVEY_X RECORD
@@ -156,9 +156,9 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
                 echo submitfailed($connect->ErrorMsg());
             }
         }
-        if ($bQuotaMatched) 
+        if ($bQuotaMatched)
         {
-            check_quota('enforce',$surveyid);                    
+            check_quota('enforce',$surveyid);
     }
     }
     elseif (isset($move))
@@ -462,7 +462,7 @@ function createinsertquery()
     if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
     {
         $inserts=array_unique($_SESSION['insertarray']);
-        
+
         $colnames_hidden=Array();
         foreach ($inserts as $value)
         {
@@ -492,20 +492,19 @@ function createinsertquery()
                 else if ($fieldexists['type']=='|' && strpos($fieldexists['fieldname'], "_filecount") === false)
                 {
                     $fieldname = $fieldexists['fieldname'];
-                    $target = "upload/surveys/". $thissurvey['sid'] ."/files/";
+                    $target = "{$uploaddir}/surveys/{$thissurvey['sid']}/files/";
 
                     $json = $_SESSION[$value];
                     $phparray = json_decode(stripslashes($json));
 
                     // if the files have not been saved already,
                     // move the files from tmp to the files folder
-                    
+
                     if (!is_null($phparray) && count($phparray) > 0 && file_exists("tmp/upload/".$phparray[0]->filename))
                     {
                         // move files from temp to files directory
                         $tmp = "tmp/upload/";
-                        $target = "upload/surveys/". $thissurvey['sid'] . "/files/";
-    
+
                         for ($i = 0; $i < count($phparray); $i++)
                         {
                             if (!rename($tmp . $phparray[$i]->filename, $target . $phparray[$i]->filename))
@@ -523,15 +522,15 @@ function createinsertquery()
                 else
                 {
                     // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
-                    if ($fieldexists['type']=='!' && $fieldmap[$value]['aid']=='other' && isset($_POST[substr($value,0,strlen($value)-5)]) && $_POST[substr($value,0,strlen($value)-5)]!='-oth-') 
+                    if ($fieldexists['type']=='!' && $fieldmap[$value]['aid']=='other' && isset($_POST[substr($value,0,strlen($value)-5)]) && $_POST[substr($value,0,strlen($value)-5)]!='-oth-')
                     {
-                         $_SESSION[$value]='';                               
+                         $_SESSION[$value]='';
                     }
-                    
+
                     elseif ($fieldexists['type']=='N' || $fieldexists['type']=='K') //sanitize numerical fields
                     {
                         $_SESSION[$value]=sanitize_float($_SESSION[$value]);
-                        
+
                     }
                     elseif ($fieldexists['type']=='D' && is_array($postedfieldnames) && in_array($value,$postedfieldnames))
                     {
@@ -545,7 +544,7 @@ function createinsertquery()
                 }
             }
         }
-                
+
         if ($thissurvey['datestamp'] == "Y")
         {
             $_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
@@ -816,7 +815,7 @@ function set_answer_time()
 	if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
 		if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
 			$query = "INSERT INTO ".db_quote_id($thissurvey['tablename']."_timings") ." ("
-				 ."id, interviewtime)"			 
+				 ."id, interviewtime)"
 				 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime .")";
 		}else{	// UPDATE
 			$query = "UPDATE {$thissurvey['tablename']}_timings SET "
@@ -826,17 +825,17 @@ function set_answer_time()
 		$connect->execute($query);
 		return;
 	}
-	
+
 	$setField .= "time";
 	//saving the times
 	if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
 		$query = "INSERT INTO ".db_quote_id($thissurvey['tablename']."_timings") ." ("
-			 ."id, interviewtime, " .db_quote_id($setField) .")"			 
+			 ."id, interviewtime, " .db_quote_id($setField) .")"
 			 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime ."," .$passedTime.")";
 	}else{	// UPDATE
 		$query = "UPDATE {$thissurvey['tablename']}_timings SET "
 			."interviewtime = interviewtime" ." + " .$passedTime .","
-			.db_quote_id($setField) ." = " .db_quote_id($setField) ." + " .$passedTime 
+			.db_quote_id($setField) ." = " .db_quote_id($setField) ." + " .$passedTime
 			." WHERE id = " .$_SESSION['srid'];
 	}
 	$connect->execute($query);

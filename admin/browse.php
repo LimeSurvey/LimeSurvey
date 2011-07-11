@@ -362,7 +362,7 @@ elseif ($subaction == "all")
                     $phparray = json_decode($json[$fieldname]);
                     foreach($phparray as $metadata)
                     {
-                        $path = dirname(getcwd())."/upload/surveys/".$surveyid."/files/";
+                        $path = "{$uploaddir}/surveys/{$surveyid}/files/";
                         unlink($path.$metadata->filename); // delete the file
                     }
                 }
