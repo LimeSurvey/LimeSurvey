@@ -49,7 +49,7 @@ if ($action == "importsurveyresources" && $surveyid) {
     // If dangerous content is unzipped
     // then no one will know the path
     $extractdir=tempdir($tempdir);
-    $basedestdir = $publicdir."/upload/surveys";
+    $basedestdir = $uploaddir."/surveys";
     $destdir=$basedestdir."/$surveyid/";
 
     if (!is_writeable($basedestdir))

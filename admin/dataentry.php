@@ -250,7 +250,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                             {
                                 if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
                                 {
-                                    $target = $uploaddir. "/upload/surveys/". $thissurvey['sid'] ."/files/".sRandomChars(20);
+                                    $target = $uploaddir. "/surveys/". $thissurvey['sid'] ."/files/".sRandomChars(20);
                                     $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
                                     $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
 
