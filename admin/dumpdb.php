@@ -23,6 +23,7 @@ if ($database_exists && ($databasetype=='mysql' || $databasetype=='mysqli') && $
     Header("Content-type: application/octet-stream");
     Header("Content-Disposition: attachment; filename=$file_name");
     Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    Header("Pragma: Public");
     echo $export;
     exit; // needs to be inside the condition so the updater still can include this file
 }
