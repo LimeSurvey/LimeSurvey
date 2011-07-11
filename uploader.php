@@ -7,8 +7,8 @@ require_once(dirname(__FILE__).'/classes/core/language.php');
 
 if (isset($_GET['filegetcontents']))
 {
-    $handle = file_get_contents("tmp/upload/".$_GET['filegetcontents']);
-    echo $handle;
+    $sFileName=sanitize_filename($_GET['filegetcontents'],true,true);
+    readfile($tempdir."/upload/".$_GET['filegetcontents']);
     exit();
 }
 
