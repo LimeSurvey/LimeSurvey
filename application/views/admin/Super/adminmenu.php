@@ -28,7 +28,7 @@
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/editusers");?>', '_top')" title="<?php echo $clang->gTview("Create/Edit Users");?>" >
 	    <img src='<?php echo $this->config->item('imageurl');?>/security.png' name='AdminSecurity' alt='<?php echo $clang->gT("Create/Edit Users");?>' /></a>
 	
-	    <a href="#" onclick="window.open('<?php echo site_url("admin/editusergroups");?>', '_top')" title="<?php echo $clang->gTview("Create/Edit Groups");?>" >
+	    <a href="#" onclick="window.open('<?php echo site_url("admin/usergroups/view");?>', '_top')" title="<?php echo $clang->gTview("Create/Edit Groups");?>" >
 	    <img src='<?php echo $this->config->item('imageurl');?>/usergroup.png' alt='<?php echo $clang->gT("Create/Edit Groups");?>' /></a>
 		
 		<?php

@@ -7442,7 +7442,9 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
  */
 function access_denied($action,$sid='')
 {
-    global $CI,$clang;
+    $CI =& get_instance();
+    
+    $clang = $CI->limesurvey_lang;
     if ($CI->session->userdata('loginID'))
     {
         $ugid = $CI->config->item('ugid');
@@ -8168,6 +8170,84 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
         }
     }
     return $resarray;
+}
+
+function getusergrouplist($ugid,$outputformat='optionlist')
+{
+    //global $dbprefix, $scriptname, $connect, $clang;
+    $CI =& get_instance();
+    $CI->load->helper('database');
+    $clang = $CI->limesurvey_lang;
+    //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {$_SESSION['loginID']} ORDER BY name";
+    $squery = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM ".$CI->db->dbprefix."user_groups AS a LEFT JOIN ".$CI->db->dbprefix."user_in_groups AS b ON a.ugid = b.ugid WHERE uid = ".$CI->session->userdata('loginID')." ORDER BY name";
+
+    $sresult = db_execute_assoc($squery); //Checked
+    if (!$sresult) {return "Database Error";}
+    $selecter = "";
+    foreach ($sresult->result_array() as $row)
+    {
+        $groupnames[] = $row;
+    }
+    
+    
+    //$groupnames = $sresult->GetRows();
+    $simplegidarray=array();
+    if ($groupnames)
+    {
+        foreach($groupnames as $gn)
+        {
+            $selecter .= "<option ";
+            if($CI->session->userdata('loginID') == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
+            //if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
+            
+            if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}
+            $link = site_url("admin/usergroups/view/".$gn['ugid']);
+            $selecter .=" value='{$link}'>{$gn['name']}</option>\n";
+            $simplegidarray[] = $gn['ugid'];
+        }
+    }
+    
+    if (!isset($svexist)) {$selecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$selecter;}
+    //else {$selecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$selecter;}
+
+    if ($outputformat == 'simplegidarray')
+    {
+        return $simplegidarray;
+    }
+    else
+    {
+        return $selecter;
+    }
+}
+
+function getgroupuserlist($ugid)
+{
+    //global , $dbprefix, $scriptname, $connect, $clang;
+    $CI =& get_instance();
+    $CI->load->helper('database');
+    $clang = $CI->limesurvey_lang;
+    
+    $ugid=sanitize_int($ugid);
+    $surveyidquery = "SELECT a.uid, a.users_name FROM ".$CI->db->dbprefix."users AS a LEFT JOIN (SELECT uid AS id FROM ".$CI->db->dbprefix."user_in_groups WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
+
+    $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
+    if (!$surveyidresult) {return "Database Error";}
+    $surveyselecter = "";
+    foreach ($surveyidresult->result_array() as $row)
+    {
+        $surveynames[] = $row;
+    }
+    //$surveynames = $surveyidresult->GetRows();
+    if (isset($surveynames))
+    {
+        foreach($surveynames as $sv)
+        {
+            $surveyselecter .= "<option";
+            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']}</option>\n";
+        }
+    }
+    $surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
+    return $surveyselecter;
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

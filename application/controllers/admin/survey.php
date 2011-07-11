@@ -32,7 +32,7 @@
    			$this->config->set_item("css_admin_includes", $css_admin_includes);
     		
    			self::_getAdminHeader();
-   			self::_showadminmenu($surveyid);;
+   			self::_showadminmenu($surveyid);
    			self::_surveybar($surveyid,$gid);
             self::_surveysummary($surveyid,"viewquestion");
    			self::_questiongroupbar($surveyid,$gid,$qid,"viewquestion");
@@ -52,7 +52,7 @@
        			$this->config->set_item("css_admin_includes", $css_admin_includes);
         		
        			self::_getAdminHeader();
-       			self::_showadminmenu($surveyid);;
+       			self::_showadminmenu($surveyid);
        			self::_surveybar($surveyid,$gid);
                 self::_surveysummary($surveyid,"viewgroup");
        			self::_questiongroupbar($surveyid,$gid,$qid,"viewgroup");
@@ -71,7 +71,7 @@
         			$this->config->set_item("css_admin_includes", $css_admin_includes);
         		
         			self::_getAdminHeader();
-        			self::_showadminmenu($surveyid);;
+        			self::_showadminmenu($surveyid);
         			self::_surveybar($surveyid);
         			self::_surveysummary($surveyid);
                     self::_loadEndScripts();
