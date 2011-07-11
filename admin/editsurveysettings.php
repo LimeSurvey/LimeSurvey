@@ -96,7 +96,7 @@
             <li><a href='#copy'>".$clang->gT("Copy")."</a></li>
             </ul>
             \n";
-            $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
+            $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' >\n";
 
             // General & Contact TAB
             $editsurvey .= "<div id='general'>\n";
@@ -190,7 +190,7 @@
             <li><a href='#resources'>".$clang->gT("Resources")."</a></li>
             </ul>
             \n";
-            $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
+            $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='$scriptname' method='post' >\n";
 
             // General & Contact TAB
             $editsurvey .= "<div id='general'>\n";
@@ -690,22 +690,6 @@
             $editsurvey .= ">------------- / ------------ / ---------</option>\n"
             . "</select>\n</li>\n";
 
-            // Email format
-            $editsurvey .= "<li><label for=''>".$clang->gT("Use HTML format for token emails?")."</label>\n"
-            . "<select name='htmlemail' onchange=\"alert('".$clang->gT("If you switch email mode, you'll have to review your email templates to fit the new format","js")."');\">\n"
-            . "<option value='Y'";
-        if ($esrow['htmlemail'] == "Y") {
-            $editsurvey .= " selected='selected'";
-        }
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-        if ($esrow['htmlemail'] == "N") {
-            $editsurvey .= " selected='selected'";
-        }
-
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>\n";
-
             // End Publication and access control TAB
             $editsurvey .= "</ul></div>\n";
 
@@ -724,50 +708,6 @@
             . "<input size='70' type='text' value=\"{$esrow['emailresponseto']}\" id='emailresponseto' name='emailresponseto' />\n"
             . "</li>\n";
 
-            //ANONYMOUS
-            $editsurvey .= "<li><label for=''>".$clang->gT("Anonymized responses?")."\n";
-            // warning message if anonymous + tokens used
-            $editsurvey .= "\n"
-            . "<script type=\"text/javascript\"><!-- \n"
-            . "function alertPrivacy()\n"
-            . "{\n"
-            . "if (document.getElementById('tokenanswerspersistence').value == 'Y')\n"
-            . "{\n"
-            . "alert('".$clang->gT("You can't use Anonymized responses when Token-based answers persistence is enabled.","js")."');\n"
-            . "document.getElementById('anonymized').value = 'N';\n"
-            . "}\n"
-            . "else if (document.getElementById('anonymized').value == 'Y')\n"
-            . "{\n"
-            . "alert('".$clang->gT("Warning").": ".$clang->gT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."');\n"
-            . "}\n"
-            . "}"
-            . "//--></script></label>\n";
-
-        if ($esrow['active'] == "Y") {
-                $editsurvey .= "\n";
-            if ($esrow['anonymized'] == "N") {
-                $editsurvey .= " " . $clang->gT("This survey is NOT anonymous.");
-            } else {
-                $editsurvey .= $clang->gT("Answers to this survey are anonymized.");
-            }
-                $editsurvey .= "<font size='1' color='red'>&nbsp;(".$clang->gT("Cannot be changed").")\n"
-                . "</font>\n";
-                $editsurvey .= "<input type='hidden' name='anonymized' value=\"{$esrow['anonymized']}\" />\n";
-        } else {
-                $editsurvey .= "<select id='anonymized' name='anonymized' onchange='alertPrivacy();'>\n"
-                . "<option value='Y'";
-            if ($esrow['anonymized'] == "Y") {
-                $editsurvey .= " selected='selected'";
-            }
-                $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-                . "<option value='N'";
-            if ($esrow['anonymized'] != "Y") {
-                $editsurvey .= " selected='selected'";
-            }
-                $editsurvey .= ">".$clang->gT("No")."</option>\n"
-                . "</select>\n";
-            }
-            $editsurvey .= "</li>\n";
 
             // date stamp
             $editsurvey .= "<li><label for='datestamp'>".$clang->gT("Date Stamp?")."</label>\n";
@@ -872,17 +812,6 @@
         $editsurvey .= ">".$clang->gT("No")."</option>\n"
         . "</select></li>\n";
 
-            // Allow editing answers after completion
-            $editsurvey .= "<li><label for=''>".$clang->gT("Allow editing answers after completion?")."</label>\n"
-            . "<select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymous answers are used","js")."'); this.value='N';}\">\n"
-            . "<option value='Y'";
-            if ($esrow['alloweditaftercompletion'] == "Y") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-            if ($esrow['alloweditaftercompletion'] == "N") {$editsurvey .= " selected='selected'";}
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>\n";
-
         // Save timings
         $editsurvey .= "<li><label for='savetimings'>".$clang->gT("Save timings?")."</label>\n";
         if ($esrow['active']=="Y")
@@ -927,7 +856,64 @@
 
         // Tokens TAB
         $editsurvey .= "<div id='tokens'><ul>\n";
-        // Token answers persistence
+
+        // Anonymized responses
+        $editsurvey .= "<li><label for=''>".$clang->gT("Anonymized responses?")."\n";
+        // warning message if anonymous + tokens used
+        $editsurvey .= "\n"
+        . "<script type=\"text/javascript\"><!-- \n"
+        . "function alertPrivacy()\n"
+        . "{\n"
+        . "if (document.getElementById('tokenanswerspersistence').value == 'Y')\n"
+        . "{\n"
+        . "alert('".$clang->gT("You can't use Anonymized responses when Token-based answers persistence is enabled.","js")."');\n"
+        . "document.getElementById('anonymized').value = 'N';\n"
+        . "}\n"
+        . "else if (document.getElementById('anonymized').value == 'Y')\n"
+        . "{\n"
+        . "alert('".$clang->gT("Warning").": ".$clang->gT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js")."');\n"
+        . "}\n"
+        . "}"
+        . "//--></script></label>\n";
+
+        if ($esrow['active'] == "Y") {
+                $editsurvey .= "\n";
+            if ($esrow['anonymized'] == "N") {
+                $editsurvey .= " " . $clang->gT("This survey is NOT anonymous.");
+            } else {
+                $editsurvey .= $clang->gT("Answers to this survey are anonymized.");
+            }
+                $editsurvey .= "<font size='1' color='red'>&nbsp;(".$clang->gT("Cannot be changed").")\n"
+                . "</font>\n";
+                $editsurvey .= "<input type='hidden' name='anonymized' value=\"{$esrow['anonymized']}\" />\n";
+        } else {
+                $editsurvey .= "<select id='anonymized' name='anonymized' onchange='alertPrivacy();'>\n"
+                . "<option value='Y'";
+            if ($esrow['anonymized'] == "Y") {
+                $editsurvey .= " selected='selected'";
+            }
+                $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+                . "<option value='N'";
+            if ($esrow['anonymized'] != "Y") {
+                $editsurvey .= " selected='selected'";
+            }
+                $editsurvey .= ">".$clang->gT("No")."</option>\n"
+                . "</select>\n";
+            }
+            $editsurvey .= "</li>\n";
+
+        // Allow editing answers after completion
+        $editsurvey .= "<li><label for=''>".$clang->gT("Allow editing answers after completion?")."</label>\n"
+        . "<select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange=\"javascript: if (document.getElementById('private').value == 'Y') {alert('".$clang->gT("This option can't be set if Anonymous answers are used","js")."'); this.value='N';}\">\n"
+        . "<option value='Y'";
+        if ($esrow['alloweditaftercompletion'] == "Y") {$editsurvey .= " selected='selected'";}
+        $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+        . "<option value='N'";
+        if ($esrow['alloweditaftercompletion'] == "N") {$editsurvey .= " selected='selected'";}
+        $editsurvey .= ">".$clang->gT("No")."</option>\n"
+        . "</select></li>\n";
+
+        // Token response persistence
         $editsurvey .= "<li><label for=''>".$clang->gT("Enable token-based response persistence?")."</label>\n"
         . "<select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange=\"javascript: if (document.getElementById('anonymized').value == 'Y') {alert('".$clang->gT("This option can't be set if the `Anonymized responses` option is active.","js")."'); this.value='N';}\">\n"
         . "<option value='Y'";
@@ -939,6 +925,22 @@
         if ($esrow['tokenanswerspersistence'] == "N") {
             $editsurvey .= " selected='selected'";
         }
+        $editsurvey .= ">".$clang->gT("No")."</option>\n"
+        . "</select></li>\n";
+
+        // Email format
+        $editsurvey .= "<li><label for=''>".$clang->gT("Use HTML format for token emails?")."</label>\n"
+        . "<select name='htmlemail' onchange=\"alert('".$clang->gT("If you switch email mode, you'll have to review your email templates to fit the new format","js")."');\">\n"
+        . "<option value='Y'";
+        if ($esrow['htmlemail'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "<option value='N'";
+        if ($esrow['htmlemail'] == "N") {
+            $editsurvey .= " selected='selected'";
+        }
+
         $editsurvey .= ">".$clang->gT("No")."</option>\n"
         . "</select></li>\n";
 
@@ -983,7 +985,7 @@
             $editsurvey .= "<div id='copy'>\n";
 
             // Copy survey
-            $editsurvey .= "<form class='form30' action='$scriptname' id='copysurveyform' method='post'>\n"
+            $editsurvey .= "<form class='form30' action='$scriptname' id='copysurveyform' method='post' onsubmit=\"return (isEmpty(document.getElementById('copysurveylist'), '" . $clang->gT("Error: You have to select an existing survey.", 'js') . "') || isEmpty(document.getElementById('copysurveyname'), '" . $clang->gT("Error: You enter a name for the survey copy.", 'js') . "'));\">\n"
                     . "<ul>\n"
                     . "<li><label for='copysurveylist'><span class='annotationasterisk'>*</span>" . $clang->gT("Select survey to copy:") . "</label>\n"
                     . "<select id='copysurveylist' name='copysurveylist'>\n"
