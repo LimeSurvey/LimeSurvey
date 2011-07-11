@@ -58,10 +58,6 @@ $rootdir            =   dirname(__FILE__); // This is the physical disk location
 // Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/limesurvey"!
 // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!
 
-$rootsymlinked      =   0;  // if your root document dir is symlinked LimeSurvey might have problems to find out the dir
-// If you notice that labels are not being translated like "_ADMINISTRATION_" instead of "Administration"
-// then try setting this to 1 .
-
 // Site Info
 $sitename           =   'LimeSurvey';     // The official name of the site (appears in the Window title)
 $scriptname         =   'admin.php';      // The name of the admin script
@@ -71,7 +67,7 @@ $defaultpass        =   'password';       // This is the default password for th
 
 // If the user enters password incorrectly
 $maxLoginAttempt    =   3;                // Lock them out after 3 attempts
-$timeOutTime        =   60 * 30;          // Lock them out for 30 minutes.
+$timeOutTime        =   60 * 10;          // Lock them out for 10 minutes.
 
 // Site Settings
 $lwcdropdowns       =   'R';              // SHOW LISTS WITH COMMENT in Public Survey as Radio Buttons (R) or Dropdown List (L)
