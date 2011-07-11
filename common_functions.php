@@ -7099,6 +7099,13 @@ function cleanTempDirectory()
             @unlink($dir.$file);
         }
     }
+    $dir=  $tempdir.'/upload/';
+    $dp = opendir($dir) or die ('Could not open temporary directory');
+    while ($file = readdir($dp)) {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+            @unlink($dir.$file);
+        }
+    }
     closedir($dp);
 }
 

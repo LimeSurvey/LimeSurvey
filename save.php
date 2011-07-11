@@ -451,7 +451,7 @@ function createinsertquery()
 {
 
     global $thissurvey, $timeadjust, $move, $thisstep;
-    global $deletenonvalues, $thistpl;
+    global $deletenonvalues, $thistpl, $tempdir, $uploaddir;
     global $surveyid, $connect, $clang, $postedfieldnames,$bFinalizeThisAnswer;
 
     require_once("classes/inputfilter/class.inputfilter_clean.php");
@@ -500,10 +500,10 @@ function createinsertquery()
                     // if the files have not been saved already,
                     // move the files from tmp to the files folder
 
-                    if (!is_null($phparray) && count($phparray) > 0 && file_exists("tmp/upload/".$phparray[0]->filename))
+                    $tmp = $tempdir.'/upload/';
+                    if (!is_null($phparray) && count($phparray) > 0 && file_exists($tmp.$phparray[0]->filename))
                     {
                         // move files from temp to files directory
-                        $tmp = "tmp/upload/";
 
                         for ($i = 0; $i < count($phparray); $i++)
                         {
