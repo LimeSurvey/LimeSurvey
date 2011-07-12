@@ -64,10 +64,11 @@ function retrieveConditionInfo($ia)
 
     if ($ia[7] == "Y")
     {	//DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
-        $cquery =	"SELECT c.qid, c.scenario, c.cqid, c.cfieldname, c.value, q.type, q.sid, q.gid, c.method, q.gid as srcgid "
-        ."FROM {$dbprefix}conditions c, {$dbprefix}questions q "
+        $cquery =	"SELECT c.qid, c.scenario, c.cqid, c.cfieldname, c.value, q.type, q.sid, q.gid, c.method, qsrc.gid as srcgid "
+        ."FROM {$dbprefix}conditions c, {$dbprefix}questions q, {$dbprefix}questions qsrc "
         ."WHERE c.cqid=q.qid "
         ."AND c.qid=$ia[0] "
+        ."AND c.qid=qsrc.qid "
         ."AND q.language='".$_SESSION['s_lang']."' "
         ."AND c.cfieldname NOT LIKE '{%' "
         ."ORDER BY c.scenario, c.cqid, c.cfieldname";
