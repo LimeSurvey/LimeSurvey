@@ -51,9 +51,9 @@ class Database extends AdminController {
                     $question_order=(sanitize_int($_POST['questionposition']));
                     //Need to renumber all questions on or after this
                     $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=question_order+1 WHERE gid=".$gid." AND question_order >= ".$question_order;
-                    $cdresult=db_execute_assoc($cdquery) or safe_die($connect->ErrorMsg());  // Checked)
+                    $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());  // Checked)
                 } else {
-                    $question_order=(getMaxquestionorder($surveyid,$gid));
+                    $question_order=(getMaxquestionorder($gid,$surveyid));
                     $question_order++;
                 }
     
@@ -184,7 +184,7 @@ class Database extends AdminController {
                     }
                 }
     
-                fixsortorderQuestions($postgid, $surveyid);
+                fixsortorderQuestions($gid, $surveyid);
                 $this->session->set_userdata('flashmessage', $clang->gT("Question was successfully added."));
                 
                 //include("surveytable_functions.php");
@@ -283,7 +283,7 @@ class Database extends AdminController {
             if ($oldtype != $_POST['type'])
             {
                 //Make sure there are no conditions based on this question, since we are changing the type
-                $ccquery = "SELECT * FROM ".$this->db->dbprefix."conditions WHERE cqid={$postqid}";
+                $ccquery = "SELECT * FROM ".$this->db->dbprefix."conditions WHERE cqid={$qid}";
                 $ccresult = db_execute_assoc($ccquery); // or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg()); // Checked
                 $cccount=$ccresult->num_rows();
                 foreach ($ccresult->result_array() as $ccr) {$qidarray[]=$ccr['qid'];}
@@ -388,7 +388,7 @@ class Database extends AdminController {
                             $oResult = db_execute_assoc($sQuery); // or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
                         }
                         // if the group has changed then fix the sortorder of old and new group
-                        if ($oldgid!=$postgid)
+                        if ($oldgid!=$gid)
                         {
                             fixsortorderQuestions($oldgid, $surveyid);
                             fixsortorderQuestions($gid, $surveyid);
