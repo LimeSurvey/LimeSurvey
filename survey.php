@@ -260,7 +260,7 @@ foreach ($_SESSION['grouplist'] as $gl)
         if ($ia[5] == $gid)
         {
             $qidattributes=getQuestionAttributes($ia[0]);
-            if ($qidattributes===false || $qidattributes['hidden']==1) {
+            if ($ia[4] != '*' && ($qidattributes===false || $qidattributes['hidden']==1)) {
                 continue;
             }
             $qtypesarray[$ia[1]] = $ia[4];

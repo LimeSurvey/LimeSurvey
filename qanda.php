@@ -226,6 +226,7 @@ function retrieveJSidname($cd,$currentgid=null)
     $cd[4] == "T" ||
     $cd[4] == "U" ||
     $cd[4] == "Q" ||
+    $cd[4] == "*" ||
     $cd[4] == "K" )
     {
         if (!isset($currentgid) || $questiongid == $currentgid)
@@ -278,6 +279,7 @@ function create_mandatorylist($ia)
                 $thismandatory = setman_questionandcode_multiscale($ia);
                 break;
             case 'X':
+            case '*':
                 //Do nothing - boilerplate questions CANNOT be mandatory
                 break;
             default:
@@ -772,6 +774,9 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             break;
         case '1': //Array (Flexible Labels) dual scale
             $values=do_array_dual($ia);
+            break;
+        case '*': // Equation
+            $values=do_equation($ia);
             break;
     } //End Switch
 
@@ -1622,10 +1627,27 @@ function do_boilerplate($ia)
         $answer .= return_timer_script($qidattributes, $ia);
     }
 
-    $answer .= '<input type="hidden" name="$ia[1]" id="answer'.$ia[1].'" value="" />';
+    $answer .= '<input type="hidden" name="'.$ia[1].'" id="answer'.$ia[1].'" value="" />';
     $inputnames[]=$ia[1];
 
     return array($answer, $inputnames);
+}
+
+
+function do_equation($ia)
+{
+    global $js_header_includes;
+    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
+    $answer='<input type="hidden" name="'.$ia[1].'" id="answer'.$ia[1].'" value="';
+    // Initallly just process values through LimeExpressionManager (e.g. templatereplace())
+    // Later, output a JavaScript function that will compute these on the fly
+    $result = templatereplace($ia[3]);
+    $answer .= htmlspecialchars($result, ENT_QUOTES);   // answer should store Equation value
+    $answer .= '" />';
+    $inputnames[]=$ia[1];
+    $mandatory=null;
+
+    return array($answer, $inputnames, $mandatory);
 }
 
 

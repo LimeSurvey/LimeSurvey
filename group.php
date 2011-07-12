@@ -402,8 +402,9 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
         }
 
         $qidattributes=getQuestionAttributes($ia[0]);
-        if ($qidattributes===false || $qidattributes['hidden']==1) {
+        if ($ia[4] != '*' && ($qidattributes===false || $qidattributes['hidden']==1)) {
             // Should we really skip the question here, maybe the result won't be stored if we do that
+            // don't want to skip Equation type, otherwise mandatory hidden will prevent result from being available and stored.
             continue;
         }
         // Following line DISABLED BY lemeur
@@ -1246,6 +1247,14 @@ if (isset($qanda) && is_array($qanda))
         }
 
         if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
+        // Hide Equations of attribute set to always hide them, yet unlike other questions, do include the answer fields.
+        if ($qa[8] == '*')
+        {
+            $eqnAttributes = getQuestionAttributes($qa[4], '*');
+            if ($eqnAttributes['hidden']==1) {
+                $n_q_display = ' style="display: none;"';
+            }
+        }
 
         $question= $qa[0];
         //===================================================================

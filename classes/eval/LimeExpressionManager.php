@@ -85,6 +85,7 @@ class LimeExpressionManager {
                 case 'X': //BOILERPLATE QUESTION
                 case 'Y': //YES/NO radio-buttons
                 case '|': //File Upload
+                case '*': //Equation
                     $varName = $fielddata['title'];
                     $jsVarName = 'java' . $code;
                     $question = $fielddata['question'];

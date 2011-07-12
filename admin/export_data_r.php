@@ -68,6 +68,7 @@ $typeMap = array(
 'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
 ':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
 ';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
+'*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
 );
 
 if (!isset($surveyid)) {$surveyid=returnglobal('sid');}

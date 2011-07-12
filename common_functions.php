@@ -265,6 +265,12 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
+    "*"=>array('description'=>$clang->gT("Equation"),
+               'group'=>$group['MaskQuestions'],
+               'subquestions'=>0,
+               'hasdefaultvalues'=>0,
+               'assessable'=>0,
+               'answerscales'=>0),
     );
     asort($qtypes);
     if ($ReturnType == "array") {return $qtypes;}
@@ -984,6 +990,7 @@ function question_class($input)
         case ':': return 'array-multi-flexi';   //  ARRAY (Multi Flexi) 1 to 10
         case ";": return 'array-multi-flexi-text';
         case "1": return 'array-flexible-duel-scale'; //    Array dual scale
+        case "*": return 'equation';    // Equation
         default:  return 'generic_question';    //  Should have a default fallback
     };
 };
@@ -2399,7 +2406,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         // If S or A don't exist then set it to 0
         // Implicit (subqestion intermal to a question type ) or explicit qubquestions/answer count starts at 1
 
-        // Types "L", "!" , "O", "D", "G", "N", "X", "Y", "5","S","T","U"
+        // Types "L", "!" , "O", "D", "G", "N", "X", "Y", "5","S","T","U","*"
 
         if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != "R" && $arow['type'] != "|")
         {
@@ -3294,7 +3301,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Hide tip'));
 
     $qattributes['hidden']=array(
-    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|',
+    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Display'),
     'sortorder'=>101,
     'inputtype'=>'singleselect',
@@ -3528,7 +3535,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT("Label for 'Other:' option"));
 
     $qattributes["page_break"]=array(
-    "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|",
+    "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -3547,7 +3554,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Answer prefix'));
 
     $qattributes["public_statistics"]=array(
-    "types"=>"15ABCEFGHKLMNOPRWYZ!:",
+    "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>80,
     'inputtype'=>'singleselect',
@@ -3684,7 +3691,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Use dropdown boxes'));
 
     $qattributes["scale_export"]=array(
-    "types"=>"CEFGHLMOPWYZ1!:",
+    "types"=>"CEFGHLMOPWYZ1!:*",
     'category'=>$clang->gT('Other'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',

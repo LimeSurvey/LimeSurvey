@@ -2894,7 +2894,7 @@ function buildsurveysession()
     // Fix totalquestions by substracting Test Display questions
     $sNoOfTextDisplayQuestions=(int) $connect->GetOne("SELECT count(*)\n"
         ." FROM ".db_table_name('questions')
-        ." WHERE type='X'\n"
+        ." WHERE type in ('X','*')\n"
         ." AND sid={$surveyid}"
         ." AND language='".$_SESSION['s_lang']."'"
         ." AND parent_qid=0");
