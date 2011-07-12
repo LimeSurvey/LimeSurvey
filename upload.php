@@ -65,14 +65,15 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
     $filename = $_FILES['uploadfile']['name'];
     $size = 0.001 * $_FILES['uploadfile']['size'];
     $valid_extensions = strtolower($_POST['valid_extensions']);
-    $maxfilesize = $_POST['max_filesize'];
+    $maxfilesize = (int) $_POST['max_filesize'];
     $preview = $_POST['preview'];
     $fieldname = $_POST['fieldname'];
+    $aFieldMap=createFieldMap($surveyid);
+    if (!isset($aFieldMap[$fieldname])) die();
+    $aAttributes=getQuestionAttributes($aFieldMap[$fieldname]['qid'],$aFieldMap[$fieldname]['type']);
 
-    $valid_extensions_array = explode(",", $valid_extensions);
-
-    for ($i = 0; $i < count($valid_extensions_array); $i++)
-        $valid_extensions_array[$i] = trim($valid_extensions_array[$i]);
+    $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
+    $valid_extensions_array = array_map('trim',$valid_extensions_array);
 
     $pathinfo = pathinfo($_FILES['uploadfile']['name']);
     $ext = $pathinfo['extension'];

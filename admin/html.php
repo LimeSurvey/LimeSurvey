@@ -2069,7 +2069,7 @@ function showadminmenu()
     if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     {
         $adminmenu .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\">".
-                      "<img src='{$imageurl}/checkdb.png' name='CheckDataIntegrity' alt='".$clang->gT("Check Data Integrity")."' /></a>\n";
+                      "<img src='{$imageurl}/checkdb.png' name='CheckDataIntegrity' width='40' height='40' alt='".$clang->gT("Check Data Integrity")."' /></a>\n";
     }
 
     // list surveys
