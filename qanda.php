@@ -65,10 +65,10 @@ function retrieveConditionInfo($ia)
     if ($ia[7] == "Y")
     {	//DEVELOP CONDITIONS ARRAY FOR THIS QUESTION
         $cquery =	"SELECT c.qid, c.scenario, c.cqid, c.cfieldname, c.value, q.type, q.sid, q.gid, c.method, q.gid as srcgid "
-        ."FROM {$dbprefix}conditions c, {$dbprefix}questions q,"
+        ."FROM {$dbprefix}conditions c, {$dbprefix}questions q "
         ."WHERE c.cqid=q.qid "
         ."AND c.qid=$ia[0] "
-        ."AND c.language='".$_SESSION['s_lang']."' "
+        ."AND q.language='".$_SESSION['s_lang']."' "
         ."AND c.cfieldname NOT LIKE '{%' "
         ."ORDER BY c.scenario, c.cqid, c.cfieldname";
         $cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />".$connect->ErrorMsg());     //Checked
