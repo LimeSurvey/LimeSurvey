@@ -6189,7 +6189,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
         (strcmp($endurl,$qentry['quotals_url']) !=0))
         {
             // Update Field
-            $sqlupdate = "UPDATE {$dbprefix}quota_languagesettings SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE id={$qentry['quotals_id']}";
+            $sqlupdate = "UPDATE {$dbprefix}quota_languagesettings SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE quotals_id={$qentry['quotals_id']}";
             $updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
         } // Enf if modified
     } // end while qentry

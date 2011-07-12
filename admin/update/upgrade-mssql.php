@@ -471,6 +471,12 @@ function db_upgrade($oldversion) {
 
 
     }
+    if ($oldversion < 146) //Modify surveys table
+    {
+        upgrade_timing_tables146();
+        modify_database("", "UPDATE [prefix_settings_global] SET stg_value='146' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
+
 
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
@@ -797,4 +803,13 @@ function upgrade_tables143()
         closedir($handle);
     }
 
+}
+
+function upgrade_timing_tables146()
+{
+    global $modifyoutput,$dbprefix, $connect;
+    $aTimingTables=$connect->MetaTables('TABLES',false, "%timings");
+    foreach ($aTimingTables as $sTable) {
+        modify_database("","EXEC sp_rename '{$sTable}.interviewTime','interviewtime'"); echo $modifyoutput; flush(); ob_flush();
+    }
 }
