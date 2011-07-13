@@ -371,7 +371,7 @@ else
 }
 
 $dquery = "SELECT $selectfields";
-if ($tokenTableExists && $thissurvey['anonymized']=='N' && is_array($_POST['attribute_select']))
+if ($tokenTableExists && $thissurvey['anonymized']=='N' && isset($_POST['attribute_select']) && is_array($_POST['attribute_select']))
 {
     if (in_array('first_name',$_POST['attribute_select']))
     {
