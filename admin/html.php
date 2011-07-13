@@ -966,8 +966,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
 
         if ($activated == "Y")
         {
-            $groupsummary .= "<a href='#'"
-            ."<img src='$imageurl/add_disabled.png' title='' alt='".$clang->gT("Disabled").' - '.$clang->gT("This survey is currently active.")."' " .
+            $groupsummary .= "<img src='$imageurl/add_disabled.png' title='' alt='".$clang->gT("Disabled").' - '.$clang->gT("This survey is currently active.")."' " .
             " name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
         }
         elseif(bHasSurveyPermission($surveyid,'surveycontent','create'))
