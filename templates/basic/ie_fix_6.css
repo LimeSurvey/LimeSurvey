@@ -1,5 +1,5 @@
 /* The following styles are for versions of IE 6 and older */
-.yes-no .answer ul, .gender .answer ul .choice-5-pt-radio .answer ul {
+.yes-no .answer ul, .gender .answer ul, .choice-5-pt-radio .answer ul {
   margin-left: 2.5em;
 }
 
