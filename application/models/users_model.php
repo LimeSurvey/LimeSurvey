@@ -47,6 +47,21 @@ class Users_model extends CI_Model {
 		$this->db->update('users',$data);
 	}
 	
+	function insert($new_user, $new_pass,$new_full_name,$parent_user,$new_email)
+	{
+		$this->load->library('admin/sha256','sha256');
+		$data=array($new_user, $this->sha256->hashing($new_pass),$new_full_name,$parent_user,$new_email);
+		$uquery = "INSERT INTO ".$this->db->dbprefix("users")." (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) 
+	                   VALUES (?, ?, ?, ?, 'auto', ?,0,0,0,0,0,0,0)";
+		return $this->db->query($uquery,$data);
+	}
+	
+	function update($uid,$data)
+	{
+		$this->db->where(array("uid"=>$uid));
+		return $this->db->update('users',$data);
+	}
+	
 	function updateLang($uid,$postloginlang)
 	{
 		$data = array(

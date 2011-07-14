@@ -365,10 +365,11 @@ class AdminController extends LS_Controller {
 	    }
 	}
 
-	function _showMessageBox($title,$message)
+	function _showMessageBox($title,$message,$class="header ui-widget-header")
 	{
 		$data['title']=$title;
 		$data['message']=$message;
+		$data['class']=$class;
 		
 		//self::_getAdminHeader();
 		//self::_showadminmenu();

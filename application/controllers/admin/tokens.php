@@ -61,7 +61,7 @@ class tokens extends SurveyCommonController {
 		//include_once("login_check.php");
 		//include_once("database.php");
 		
-		$js_admin_includes[]='scripts/tokens.js';
+		//$js_admin_includes[]='scripts/tokens.js';
 		self::_js_admin_includes(base_url()."scripts/admin/tokens.js");
 		
 		$this->load->helper("surveytranslator");

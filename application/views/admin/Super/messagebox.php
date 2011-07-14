@@ -1,5 +1,5 @@
 <div class='messagebox ui-corner-all'>
-	<div class='header ui-widget-header'>
+	<div class='<?php echo $class;?>'>
 		<?php echo $title;?>	
 	</div>
 	<?php echo $message;?>

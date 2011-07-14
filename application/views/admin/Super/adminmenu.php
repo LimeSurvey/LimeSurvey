@@ -6,7 +6,7 @@
 			if($this->session->userdata('loginID'))
 	    	{ ?>
 	 			 --  <?php echo $clang->gT("Logged in as:");?><strong>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/personalsettings");?>', '_top')" title="<?php echo $clang->gTview("Edit your personal preferences");?>">
+		        <a href="#" onclick="window.open('<?php echo site_url("admin/user/personalsettings");?>', '_top')" title="<?php echo $clang->gTview("Edit your personal preferences");?>">
 		        <?php echo $this->session->userdata('user');?> <img src='<?php echo $this->config->item('imageurl');?>/profile_edit.png' name='ProfileEdit' alt='<?php echo $clang->gT("Edit your personal preferences");?>' /></a>
 		        </strong>
 	        <?php } ?>
@@ -25,7 +25,7 @@
 	    <img src='<?php echo $this->config->item('imageurl');?>/blank.gif' alt='' width='11' />
 	    <img src='<?php echo $this->config->item('imageurl');?>/seperator.gif' alt='' />
 	
-	    <a href="#" onclick="window.open('<?php echo site_url("admin/editusers");?>', '_top')" title="<?php echo $clang->gTview("Create/Edit Users");?>" >
+	    <a href="#" onclick="window.open('<?php echo site_url("admin/user/editusers");?>', '_top')" title="<?php echo $clang->gTview("Create/Edit Users");?>" >
 	    <img src='<?php echo $this->config->item('imageurl');?>/security.png' name='AdminSecurity' alt='<?php echo $clang->gT("Create/Edit Users");?>' /></a>
 	
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/usergroups/view");?>', '_top')" title="<?php echo $clang->gTview("Create/Edit Groups");?>" >

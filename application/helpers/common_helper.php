@@ -3569,6 +3569,28 @@ function tokenReplace($line)
 }
 
 /**
+ * set the rights of a user and his children
+ * 
+ * @param int $uid the user id
+ * @param mixed $rights rights array
+ */
+function setuserrights($uid, $rights)
+{
+    $CI =& get_instance();
+    $uid=sanitize_int($uid);
+	$CI->load->helper("database");
+    $updates = "create_survey=".$rights['create_survey']
+    . ", create_user=".$rights['create_user']
+    . ", delete_user=".$rights['delete_user']
+    . ", superadmin=".$rights['superadmin']
+    . ", configurator=".$rights['configurator']
+    . ", manage_template=".$rights['manage_template']
+    . ", manage_label=".$rights['manage_label'];
+    $uquery = "UPDATE ".$CI->db->dbprefix('users')." SET ".$updates." WHERE uid = ".$uid;
+    return db_select_limit_assoc($uquery);     //Checked
+}
+
+/**
  * passthruReplace() takes a string and looks for {PASSTHRULABEL}, {PASSTHRUVALUE} and {PASSTHRU:myarg} variables
  *  which it then substitutes for passthru data sent in the initial URL and stored
  *  in the session array containing responses
