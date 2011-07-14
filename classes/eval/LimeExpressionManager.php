@@ -248,6 +248,23 @@ class LimeExpressionManager {
 
 
     /**
+     * Compute Relevance, processing $string to get a boolean value.  If there are syntax errors, currently returns true.  My change to returning null so can look for errors?
+     * @param <type> $string
+     * @return <type>
+     */
+    static function ProcessRelevance($string)
+    {
+        if (!isset($string) || trim($string=='') || trim($string)=='1')
+        {
+            return true;
+        }
+        $lem = LimeExpressionManager::singleton();
+        $em = $lem->em;
+        return $em->ProcessBooleanExpression(htmlspecialchars_decode($string));
+    }
+
+
+    /**
      * Unit test
      */
     static function UnitTestProcessStringContainingExpressions()

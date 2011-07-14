@@ -478,6 +478,9 @@ function createinsertquery()
                 // we only do this at stubmit time so that we don't delete default values
                 // morover, doing this only once reduces the perfomance impact
                 // Never blank out result for Equation question type, even though it is hidden
+
+                // TODO (TMW)  Do Relevance processing here?
+                // TODO (TMW)  Store Relevance result in $_SESSION so don't have to compute it in multiple places?
                 if ($move == "movesubmit" && $deletenonvalues==1 && $fieldexists['type']!='*' && !checkconfield($value))
                 {
                     $values[]='NULL';

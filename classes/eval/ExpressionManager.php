@@ -1254,6 +1254,24 @@ class ExpressionManager {
     }
     
     /**
+     * Process an expression and return its boolean value
+     * @param <type> $expr
+     * @return <type>
+     */
+    public function ProcessBooleanExpression($expr)
+    {
+        $status = $this->Evaluate($expr);
+        if (!$status) {
+            return true;    // if there are errors in the expression, show it instead of hiding it?
+        }
+        $result = $this->GetResult();
+        if (is_null($result)) {
+            return true;    // if there are errors in the expression, show it instead of hiding it?
+        }
+        return (boolean) $result;
+    }
+    
+    /**
      * Process a full string, containing multiple expressions delimited by {}, return a consolidated string
      * @param <type> $src 
      */
@@ -1986,7 +2004,8 @@ EOD;
 }
 
 /*
- * Extra Functions can  go here.  TODO:  Find good way to inlcude these extra functions externally.
+ * Extra Functions can  go here.
+ * TODO  Find good way to inlcude these extra functions externally.
  * Tried via ExpressionManagerFunctions, but they weren't properly included
  */
 

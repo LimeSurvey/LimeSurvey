@@ -1178,6 +1178,7 @@ function checkgroupfordisplay($gid)
     global $dbprefix, $connect;
     $countQuestionsInThisGroup=0;
     $countConditionalQuestionsInThisGroup=0;
+    $countQuestionsWithRelevanceIntThisGroup=0;
     foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
 
     {
@@ -1186,7 +1187,7 @@ function checkgroupfordisplay($gid)
         {
             // Check if this question is hidden
             $qidattributes=getQuestionAttributes($ia[0]);
-            if ($qidattributes!==false && $qidattributes['hidden']==0)
+            if ($qidattributes!==false && ($qidattributes['hidden']==0 || $ia[4]=='*'))
             {
                 $countQuestionsInThisGroup++;
                 if ($ia[7] == "Y") //This question is conditional
@@ -1195,14 +1196,20 @@ function checkgroupfordisplay($gid)
                     $countConditionalQuestionsInThisGroup++;
                     $QuestionsWithConditions[]=$ia; //Create an array containing all the conditional questions
                 }
+                if (isset($qidattributes['relevance']) && ($qidattributes['relevance'] != 1))
+                {
+                    $countQuestionsWithRelevanceIntThisGroup++;
+                    $QuestionsWithRelevance[]=$qidattributes['relevance'];  // Create an array containing all of the questions whose Relevance Equaation must be processed.
             }
         }
+    }
     }
     if ($countQuestionsInThisGroup===0)
     {
         return false;
     }
-    elseif ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($QuestionsWithConditions) )
+    elseif (($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($QuestionsWithConditions))
+            && ($countQuestionsInThisGroup != $countQuestionsWithRelevanceIntThisGroup || !isset($QuestionsWithRelevance)))
     {
         //One of the questions in this group is NOT conditional, therefore
         //the group MUST be displayed
@@ -1219,6 +1226,16 @@ function checkgroupfordisplay($gid)
             if (checkquestionfordisplay($cc[0], $gid) === true)
             {
                 return true;
+            }
+        }
+        foreach ($QuestionsWithRelevance as $relevance)
+        {
+            if  ($relevance != '' && $relevance != '1')
+            {
+                if (!LimeExpressionManager::ProcessRelevance($relevance))
+                {
+                    return true;
+                }
             }
         }
         //Since we made it this far, there mustn't have been any conditions met.

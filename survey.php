@@ -263,6 +263,7 @@ foreach ($_SESSION['grouplist'] as $gl)
             if ($ia[4] != '*' && ($qidattributes===false || $qidattributes['hidden']==1)) {
                 continue;
             }
+            // TODO (TMW) Do I need to add relevance processing here?
             $qtypesarray[$ia[1]] = $ia[4];
             list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
             if ($plus_qanda)
