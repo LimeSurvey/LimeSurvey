@@ -1179,6 +1179,10 @@ function checkgroupfordisplay($gid)
     $countQuestionsInThisGroup=0;
     $countConditionalQuestionsInThisGroup=0;
     $countQuestionsWithRelevanceIntThisGroup=0;
+
+    // Initialize LimeExpressionManager for this group
+    LimeExpressionManager::ProcessString("",array(),true);  // forces a refresh of Token and Answer values into the replacement engine
+
     foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
 
     {
@@ -1221,18 +1225,19 @@ function checkgroupfordisplay($gid)
         //check every question, to see if the condition for each has been met.
         //If 1 or more have their conditions met, then the group should
         //be displayed.
-        foreach ($QuestionsWithConditions as $cc)
-        {
-            if (checkquestionfordisplay($cc[0], $gid) === true)
+        if (isset($QuestionsWithConditions)) {
+            foreach ($QuestionsWithConditions as $cc)
             {
-                return true;
+                if (checkquestionfordisplay($cc[0], $gid) === true)
+                {
+                    return true;
+                }
             }
         }
-        foreach ($QuestionsWithRelevance as $relevance)
-        {
-            if  ($relevance != '' && $relevance != '1')
+        if (isset($QuestionsWithRelevance)) {
+            foreach ($QuestionsWithRelevance as $relevance)
             {
-                if (!LimeExpressionManager::ProcessRelevance($relevance))
+                if (LimeExpressionManager::ProcessRelevance($relevance))
                 {
                     return true;
                 }
