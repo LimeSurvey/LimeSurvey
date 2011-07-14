@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey Polish language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-27 20:51+0100\n"
-"PO-Revision-Date: 2011-06-27 20:53+0100\n"
+"POT-Creation-Date: 2011-06-30 18:45+0100\n"
+"PO-Revision-Date: 2011-06-30 18:47+0100\n"
 "Last-Translator: Elżbieta Lesińska <elales@gazeta.pl>\n"
 "Language-Team: LimeSurvey Team\n"
 "MIME-Version: 1.0\n"
@@ -4856,7 +4856,7 @@ msgstr "Pokaż następne..."
 #: C:\LimeSurvey/admin/browse.php:680
 #: C:\LimeSurvey/admin/browse.php:928
 msgid "Show last..."
-msgstr "Ostatnia strona..."
+msgstr "Pokaż ostatnie..."
 
 # C:\limesurvey/admin/browse.php:548
 # C:\limesurvey/admin/tokens.php:501
@@ -12724,7 +12724,7 @@ msgstr "Przeskanowano %s wiadomości, żadna nie została oznaczona przez system
 
 #: C:\LimeSurvey/admin/tokens.php:353
 msgid "Your inbox is empty."
-msgstr "Twoj skrzynka wiadomości przychodzących jest pusta."
+msgstr "Twoja skrzynka wiadomości przychodzących jest pusta."
 
 # C:\limesurvey/qanda.php:443
 #: C:\LimeSurvey/admin/tokens.php:362
@@ -12815,7 +12815,7 @@ msgstr "Pokaż tokeny"
 #: C:\LimeSurvey/admin/tokens.php:598
 #: C:\LimeSurvey/admin/tokens.php:2573
 msgid "Add new token entry"
-msgstr "Dodaj nowy wpis token"
+msgstr "Dodaj nowy token"
 
 # C:\limesurvey/admin/tokens.php:318
 # C:\limesurvey/admin/tokens.php:1246
@@ -15053,66 +15053,66 @@ msgid "Please check any problems above and then proceed to the final step."
 msgstr "Sprawdź powyżej, czy wystąpiły jakieś problemy, a następnie przejdź do ostatniego kroku."
 
 # C:\limesurvey/admin/database.php:768
-#: C:\LimeSurvey/admin/update/updater.php:568
+#: C:\LimeSurvey/admin/update/updater.php:569
 #, php-format
 msgid "File deleted: %s"
 msgstr "Usunięte pliki: %s"
 
 # C:\limesurvey/admin/userrighthandling.php:605
-#: C:\LimeSurvey/admin/update/updater.php:580
+#: C:\LimeSurvey/admin/update/updater.php:581
 msgid "New files were successfully installed."
 msgstr "Pomyślnie zainstalowano nowe pliki."
 
-#: C:\LimeSurvey/admin/update/updater.php:586
+#: C:\LimeSurvey/admin/update/updater.php:587
 msgid "There was a problem downloading the update file. Please try to restart the update process."
 msgstr "Wystąpił problem przy ściąganiu pliku aktualizacji. Proszę spróbować ponowić proces aktualizacji."
 
 # C:\limesurvey/admin/usercontrol.php:121
-#: C:\LimeSurvey/admin/update/updater.php:606
+#: C:\LimeSurvey/admin/update/updater.php:607
 #, php-format
 msgid "Buildnumber was successfully updated to %s."
 msgstr "Pomyślnie zaktualizowano do wersji %s."
 
-#: C:\LimeSurvey/admin/update/updater.php:607
+#: C:\LimeSurvey/admin/update/updater.php:608
 msgid "Please check any problems above - update was done."
 msgstr "Sprawdź powyżej, czy wystąpiły jakieś problemy - aktualizacja zakończona."
 
 # C:\limesurvey/admin/install/index.php:103
-#: C:\LimeSurvey/admin/update/updater.php:639
+#: C:\LimeSurvey/admin/update/updater.php:640
 #, php-format
 msgid "Database has been successfully upgraded to version %s"
 msgstr "Baza danych została pomyślnie zaktualizowana do wersji %s"
 
 # C:\limesurvey/admin/html.php:208
-#: C:\LimeSurvey/admin/update/updater.php:650
+#: C:\LimeSurvey/admin/update/updater.php:651
 msgid "Database upgrade"
 msgstr "Upgrade bazy danych"
 
-#: C:\LimeSurvey/admin/update/updater.php:651
+#: C:\LimeSurvey/admin/update/updater.php:652
 msgid "Please verify the following information before continuing with the database upgrade:"
 msgstr "Proszę sprawdzić te informacje przed dalszą aktualizacją bazy danych;"
 
 # C:\limesurvey/admin/html.php:208
-#: C:\LimeSurvey/admin/update/updater.php:652
+#: C:\LimeSurvey/admin/update/updater.php:653
 msgid "Database type"
 msgstr "Typ bazy danych"
 
 # C:\limesurvey/common.php:1558
-#: C:\LimeSurvey/admin/update/updater.php:654
+#: C:\LimeSurvey/admin/update/updater.php:655
 msgid "Table prefix"
 msgstr "Prefiks tabeli"
 
 # C:\limesurvey/common.php:2049
-#: C:\LimeSurvey/admin/update/updater.php:655
+#: C:\LimeSurvey/admin/update/updater.php:656
 msgid "Site name"
 msgstr "Nazwa strony"
 
-#: C:\LimeSurvey/admin/update/updater.php:656
+#: C:\LimeSurvey/admin/update/updater.php:657
 msgid "Root URL"
 msgstr "Źródłowy URL"
 
 # C:\limesurvey/admin/printablesurvey.php:496
-#: C:\LimeSurvey/admin/update/updater.php:659
+#: C:\LimeSurvey/admin/update/updater.php:660
 msgid "Click here to continue"
 msgstr "Kliknij, aby kontynuować"
 

@@ -358,7 +358,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
         }
     else
     {
-        $_questionhelp = '';
+        $_questionhelp = $help;
     }
 
     if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N")

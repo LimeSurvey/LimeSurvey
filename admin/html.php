@@ -966,8 +966,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
 
         if ($activated == "Y")
         {
-            $groupsummary .= "<a href='#'"
-            ."<img src='$imageurl/add_disabled.png' title='' alt='".$clang->gT("Disabled").' - '.$clang->gT("This survey is currently active.")."' " .
+            $groupsummary .= "<img src='$imageurl/add_disabled.png' title='' alt='".$clang->gT("Disabled").' - '.$clang->gT("This survey is currently active.")."' " .
             " name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
         }
         elseif(bHasSurveyPermission($surveyid,'surveycontent','create'))
@@ -2069,7 +2068,7 @@ function showadminmenu()
     if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     {
         $adminmenu .= "<a href=\"#\" onclick=\"window.open('{$scriptname}?action=checkintegrity', '_top')\" title=\"".$clang->gTview("Check Data Integrity")."\">".
-                      "<img src='{$imageurl}/checkdb.png' name='CheckDataIntegrity' alt='".$clang->gT("Check Data Integrity")."' /></a>\n";
+                      "<img src='{$imageurl}/checkdb.png' name='CheckDataIntegrity' width='40' height='40' alt='".$clang->gT("Check Data Integrity")."' /></a>\n";
     }
 
     // list surveys

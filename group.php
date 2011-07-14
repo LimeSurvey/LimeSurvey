@@ -513,11 +513,11 @@ if ($_SESSION['step'] != $_SESSION['prevstep'] ||
 $hiddenfieldnames=implode("|", $inputnames);
 
 if (isset($upload_file) && $upload_file)
-    echo "<form enctype=\"multipart/form-data\" method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>
+    echo "<form enctype=\"multipart/form-data\" method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>
       <!-- INPUT NAMES -->
       <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 else
-    echo "<form method='post' action='{$_SERVER['PHP_SELF']}' id='limesurvey' name='limesurvey' autocomplete='off'>
+    echo "<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>
       <!-- INPUT NAMES -->
       <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 echo sDefaultSubmitHandler();
@@ -526,7 +526,7 @@ echo sDefaultSubmitHandler();
 
 // <-- START THE SURVEY -->
 
-echo templatereplace(file_get_contents("$thistpl/survey.pstpl"));
+echo templatereplace(file_get_contents("{$thistpl}/survey.pstpl"));
 
 // the runonce element has been changed from a hidden to a text/display:none one
 // in order to workaround an not-reproduced issue #4453 (lemeur)

@@ -119,16 +119,16 @@ $(document).ready(function(){
             // Once the file has been uploaded via AJAX,
             // the preview is appended to the list of files
             var metadata = eval('(' + response + ')');
-            
-            $('#notice').html('<p class="success">'+metadata.msg+'</p>');
+
             var count = parseInt($('#'+fieldname+'_licount').val());
             count++;
             $('#'+fieldname+'_licount').val(count);
 
             var image_extensions = new Array("gif", "jpeg", "jpg", "png", "swf", "psd", "bmp", "tiff", "jp2", "iff", "bmp", "xbm", "ico");
-            
+
             if (metadata.success)
             {
+                $('#notice').html('<p class="success">'+metadata.msg+'</p>');
                 var previewblock =  "<li id='"+fieldname+"_li_"+count+"' class='previewblock'><div>"+
                                         "<table align='center'><tr>"+
                                             "<td  align='center' width='50%'>";
@@ -163,16 +163,20 @@ $(document).ready(function(){
                 filecount++;
                 var maxfiles = parseInt($('#'+fieldname+'_maxfiles').val());
                 $('#'+fieldname+'_filecount').val(filecount);
-                
+
                 if (filecount < minfiles)
                     $('#uploadstatus').html(translt.errorNeedMore.replace('%s',(minfiles - filecount)));
                 else if (filecount < maxfiles)
                     $('#uploadstatus').html(translt.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
                 else
                     $('#uploadstatus').html(translt.errorMaxReached);
-                
+
                 if (filecount >= maxfiles)
                     $('#notice').html('<p class="success">'+translt.errorTooMuch+'</p>');
+            }
+            else
+            {
+                $('#notice').html('<p class="error">'+metadata.msg+'</p>');
             }
         }
     });
@@ -256,7 +260,7 @@ function deletefile(fieldname, count) {
         xmlhttp=new XMLHttpRequest();
     else
         xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    
+
     var filecount = parseInt($('#'+fieldname+'_filecount').val());
     var licount   = parseInt($('#'+fieldname+'_licount').val());
 

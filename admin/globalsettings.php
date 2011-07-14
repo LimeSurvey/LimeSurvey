@@ -68,7 +68,7 @@ function globalsettingssave()
       	    setGlobalSetting('bounceaccounttype',strip_tags(returnglobal('bounceaccounttype')));
             setGlobalSetting('bounceencryption',strip_tags(returnglobal('bounceencryption')));
             setGlobalSetting('bounceaccountuser',strip_tags(returnglobal('bounceaccountuser')));
-       
+
 	    if (returnglobal('bounceaccountpass')!='enteredpassword')
             {
                 setGlobalSetting('bounceaccountpass',strip_tags(returnglobal('bounceaccountpass')));
@@ -103,7 +103,7 @@ function globalsettingssave()
             setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($_POST['usercontrolSameGroupPolicy']));
 
             $_SESSION['flashmessage'] = $clang->gT("Global settings were saved.");
-            
+
         }
     }
 }
@@ -274,7 +274,7 @@ function globalsettingsdisplay()
 			 //Format
             $editsurvey.= "\t<li><label for='siteadminemail'>".$clang->gT("Default site admin email:")."</label>\n"
             . "\t\t<input type='text' size='50' id='siteadminemail' name='siteadminemail' value=\"".htmlspecialchars(getGlobalSetting('siteadminemail'))."\" /></li>\n"
- 
+
             . "\t<li><label for='siteadminname'>".$clang->gT("Administrator name:")."</label>\n"
             . "\t\t<input type='text' size='50' id='siteadminname' name='siteadminname' value=\"".htmlspecialchars(getGlobalSetting('siteadminname'))."\" /><br /><br /></li>\n"
             . "\t<li><label for='emailmethod'>".$clang->gT("Email method:")."</label>\n"
@@ -415,7 +415,7 @@ function globalsettingsdisplay()
 	    switch($thisforce_ssl)
 	    {
 	    	case 'on':
-		    $warning_force_ssl = '&nbsp;';                            
+		    $warning_force_ssl = '&nbsp;';
 		    break;
 		case 'off':
 		case 'neither':
@@ -582,7 +582,7 @@ function setGlobalSetting($settingname,$settingvalue)
 
 function checksettings()
 {
-    global $connect, $dbprefix, $clang, $databasename, $scriptname;
+    global $connect, $dbprefix, $clang, $databasename, $scriptname, $iFileUploadTotalSpaceMB;
     //GET NUMBER OF SURVEYS
     $query = "SELECT count(sid) FROM ".db_table_name('surveys');
     $surveycount=$connect->GetOne($query);   //Checked
@@ -628,7 +628,7 @@ function checksettings()
     . "<tr>\n"
     . "<th align='right'>".$clang->gT("Surveys").":</th><td>$surveycount</td>\n"
     . "</tr>\n"
-    . "<tr>\n"                                               
+    . "<tr>\n"
     . "<th align='right'>".$clang->gT("Active surveys").":</th><td>$activesurveycount</td>\n"
     . "</tr>\n"
     . "<tr>\n"
@@ -639,8 +639,16 @@ function checksettings()
     . "</tr>\n"
     . "<tr>\n"
     . "<th align='right'>".$clang->gT("Deactivated token tables").":</th><td>$deactivatedtokens</td>\n"
-    . "</tr>\n"
-    . "</table>\n";
+    . "</tr>\n";
+
+    if ($iFileUploadTotalSpaceMB>0)
+    {
+        $fUsed=fCalculateTotalFileUploadUsage();
+        $cssummary .= "<tr>\n"
+        . "<th align='right'>".$clang->gT("Used/free space for file uploads").":</th><td>".sprintf('%01.2F',$fUsed)." MB / ".sprintf('%01.2F',$iFileUploadTotalSpaceMB-$fUsed)." MB</td>\n"
+        . "</tr>\n";
+    }
+    $cssummary .= "</table>\n";
 
     if ($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
     {

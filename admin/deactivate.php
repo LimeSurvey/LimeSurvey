@@ -121,7 +121,7 @@ else
     }
     $deactivateoutput .= "\t<p>".$clang->gT("Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details")."</p>";
     $deactivateoutput .= "</div><br/>&nbsp;\n";
-    
+
     $pquery = "SELECT savetimings FROM {$dbprefix}surveys WHERE sid={$postsid}";
     $presult=db_execute_assoc($pquery);
     $prow=$presult->FetchRow(); //fetch savetimings value
@@ -133,7 +133,7 @@ else
 		$deactivatequery = db_rename_table($oldtable,$newtable);
 		$deactivateresult2 = $connect->Execute($deactivatequery) or die ("Couldn't make backup of the survey timings table. Please try again. The database reported the following error:<br />".htmlspecialchars($connect->ErrorMsg())."<br /><br />Survey was deactivated.<br /><br /><a href='$scriptname?sid={$postsid}'>".$clang->gT("Main Admin Screen")."</a>");
 		$deactivateresult=($deactivateresult && $deactivateresult2);
-}
+    }
 }
 
 ?>

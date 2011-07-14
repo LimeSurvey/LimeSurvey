@@ -771,7 +771,7 @@ if (isset($_GET['move']) && $_GET['move'] == "clearall")
 
                     foreach ($phparray as $metadata)
                     {
-                        $target = "upload/surveys/".$surveyid."/files/";
+                        $target = "{$uploaddir}/surveys/{$surveyid}/files/";
                         // delete those files
                         unlink($target.$metadata->filename);
                     }

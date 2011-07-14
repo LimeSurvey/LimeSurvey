@@ -366,7 +366,6 @@ function &db_select_limit_assoc($sql,$numrows=-1,$offset=-1,$inputarr=false,$die
     return $dataset;
 }
 
-
 /**
  * Returns the first row of values of the $sql query result
  * as a 1-dimensional array
@@ -3876,7 +3875,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Other'),
     'sortorder'=>128,
     "inputtype"=>"integer",
-    'default'=>10240,
+    'default'=>1024,
 	"help"=>$clang->gT("The participant cannot upload a single file larger than this size"),
 	"caption"=>$clang->gT("Maximum file size allowed (in KB)"));
 
@@ -3902,7 +3901,7 @@ function questionAttributes($returnByName=false)
 	"types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>134,
-    "inputtype"=>"textarea",
+    'inputtype'=>'text',
     'default'=>"png, gif, doc, odt",
 	"help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
 	"caption"=>$clang->gT("Allowed file types"));
@@ -4169,7 +4168,6 @@ function doFooter()
 // (e.g. for email and template functions)
 function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 {
-    // TMW TODO - should this just return $text, or does it really need to replace text here?
     foreach ( $fieldsarray as $key => $value )
     {
         $text=str_replace($key, $value, $text);
@@ -6196,7 +6194,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
         (strcmp($endurl,$qentry['quotals_url']) !=0))
         {
             // Update Field
-            $sqlupdate = "UPDATE {$dbprefix}quota_languagesettings SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE id={$qentry['quotals_id']}";
+            $sqlupdate = "UPDATE {$dbprefix}quota_languagesettings SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE quotals_id={$qentry['quotals_id']}";
             $updateres=$connect->Execute($sqlupdate) or safe_die ("Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
         } // Enf if modified
     } // end while qentry
@@ -7100,6 +7098,13 @@ function cleanTempDirectory()
 {
     global $tempdir;
     $dir=  $tempdir.'/';
+    $dp = opendir($dir) or die ('Could not open temporary directory');
+    while ($file = readdir($dp)) {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+            @unlink($dir.$file);
+        }
+    }
+    $dir=  $tempdir.'/upload/';
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {

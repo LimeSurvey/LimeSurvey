@@ -87,23 +87,12 @@ function retrieveConditionInfo($ia)
         ."{$dbprefix}conditions.cfieldname";
         $cresult = db_execute_assoc($cquery) or safe_die ("OOPS<br />$cquery<br />".$connect->ErrorMsg());     //Checked
 
-        $cquerytoken =	"SELECT {$dbprefix}conditions.qid, "
-        ."{$dbprefix}conditions.scenario, "
-        ."{$dbprefix}conditions.cqid, "
-        ."{$dbprefix}conditions.cfieldname, "
-        ."{$dbprefix}conditions.value, "
-        ."'' as type, "
-        ."0 as sid, "
-        ."0 as gid, "
-        ."{$dbprefix}conditions.method,"
-        ."questionssrc.gid as srcgid "
-        ."FROM {$dbprefix}conditions, {$dbprefix}questions as questionssrc "
-        ."WHERE {$dbprefix}conditions.qid=questionssrc.qid "
-        ."AND {$dbprefix}conditions.qid=$ia[0] "
-        ."AND {$dbprefix}conditions.cfieldname LIKE '{%' "
-        ."ORDER BY {$dbprefix}conditions.scenario, "
-        ."{$dbprefix}conditions.cqid, "
-        ."{$dbprefix}conditions.cfieldname";
+        $cquerytoken =	"SELECT c.qid, c.scenario, c.cqid, c.cfieldname, c.value, '' as type, 0 as sid, 0 as gid, c.method, q.gid as srcgid "
+        ."FROM {$dbprefix}conditions c, {$dbprefix}questions q "
+        ."WHERE c.qid=q.qid "
+        ."AND c.qid=$ia[0] "
+        ."AND c.cfieldname LIKE '{%' "
+        ."ORDER BY c.scenario, c.cqid, c.cfieldname";
 
         $cresulttoken = db_execute_assoc($cquerytoken) or safe_die ("OOPS<br />$cquerytoken<br />".$connect->ErrorMsg());     //Checked
 
@@ -389,9 +378,13 @@ function setman_multiflex($ia)
 
     $mandatorys=array();
     $mandatoryfns=array();
-    $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order, title";
+    $ansquery = "SELECT * FROM {$dbprefix}questions
+                 WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0
+                 ORDER BY question_order, title";
     $ansresult = db_execute_assoc($ansquery);
-    $ans2query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order, title";
+    $ans2query = "SELECT * FROM {$dbprefix}questions
+                  WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=1
+                  ORDER BY question_order, title";
     $ans2result = db_execute_assoc($ans2query);
 
     while ($ans2row=$ans2result->FetchRow())
@@ -3323,7 +3316,7 @@ function do_multiplechoice($ia)
         if (count > max)
         {
             alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
-            if (me.type == 'checkbox') { me.checked = false;}
+            if (me.type == 'checkbox') {me.checked = false;}
             if (me.type == 'text') {
                 me.value = '';
                 if (document.getElementById('answer'+me.name + 'cbox') ){
@@ -3497,13 +3490,18 @@ function do_multiplechoice_withcomments($ia)
         ;
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
+    $qquery = "SELECT other FROM {$dbprefix}questions
+               WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     while ($qrow = $qresult->FetchRow()) {$other = $qrow['other'];}
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}questions
+                     WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."'
+                     ORDER BY ".db_random();
     } else {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {$dbprefix}questions
+                     WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."'
+                     ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);  //Checked
     $anscount = $ansresult->RecordCount()*2;
@@ -3793,7 +3791,7 @@ function do_file_upload($ia)
     $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='$scriptloc?sid=$surveyid&fieldname=".$ia[1]."&qid=".$ia[0]."&preview="
     .$questgrppreview."&show_title=".$qidattributes['show_title']."&show_comment="
     .$qidattributes['show_comment']."&pos=".($pos?1:0)."'>" . $clang->gT('Upload files') . "</a></h2><br /><br />";
-    
+
     $answer = "<script type='text/javascript'>
         var translt = {
              title: '" . $clang->gT('Upload your files') . "',

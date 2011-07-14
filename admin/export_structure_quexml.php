@@ -121,10 +121,22 @@ function skipto($qid,$value,$cfieldname = "")
 	global $surveyid ;
 	global $clang ;
 
-	$Query = "SELECT q.*,CONCAT(LPAD(g.gid,10,'0'),LPAD(q.question_order,10,'0')) as globalorder FROM {$dbprefix}questions as q, {$dbprefix}questions as q2, {$dbprefix}groups as g, {$dbprefix}groups as g2 WHERE q.parent_qid = 0 AND q2.parent_qid = 0 AND q.sid=$surveyid AND q2.sid=$surveyid AND q2.qid = $qid AND g2.gid =q2.gid AND g.gid = q.gid AND CONCAT(LPAD(g.gid,10,'0'),LPAD(q.question_order,10,'0')) > CONCAT(LPAD(g2.gid,10,'0'),LPAD(q2.question_order,10,'0'))  ORDER BY globalorder";
+	$zeros = $connect->qstr("0000000000");
+
+	$Query = "SELECT q.*," . $connect->concat("RIGHT(" . $connect->concat($zeros,'g.gid') . ",10)","RIGHT(". $connect->concat($zeros,'q.question_order') .",10)") ." as globalorder
+                  FROM {$dbprefix}questions as q, {$dbprefix}questions as q2, {$dbprefix}groups as g, {$dbprefix}groups as g2
+                  WHERE q.parent_qid = 0 
+                  AND q2.parent_qid = 0
+                  AND q.sid=$surveyid
+                  AND q2.sid=$surveyid
+                  AND q2.qid = $qid       
+                  AND g2.gid =q2.gid                      
+                  AND g.gid = q.gid
+                  AND " . $connect->concat("RIGHT(" . $connect->concat($zeros,'g.gid') . ",10)","RIGHT(". $connect->concat($zeros,'q.question_order') .",10)") ." > " . $connect->concat("RIGHT(" . $connect->concat($zeros,'g2.gid') . ",10)","RIGHT(". $connect->concat($zeros,'q2.question_order') .",10)") ."
+                  ORDER BY globalorder";
+
 	$QueryResult = db_execute_assoc($Query);
-
-
+	
 	$nextqid="";
 	$nextorder="";
 
@@ -144,9 +156,9 @@ function skipto($qid,$value,$cfieldname = "")
 		LEFT JOIN {$dbprefix}conditions as c ON (c.cqid = '$qid' AND c.qid = q.qid AND c.method LIKE '==' AND c.value NOT LIKE '$value' $cfieldname)
 		WHERE q.sid = $surveyid
 		AND q.parent_qid = 0
-		AND CONCAT(LPAD(g.gid,10,'0'),LPAD(q.question_order,10,'0')) >= $nextorder
+		AND " . $connect->concat("RIGHT(" . $connect->concat($zeros,'g.gid') . ",10)","RIGHT(". $connect->concat($zeros,'q.question_order') .",10)") ." >= $nextorder
 		AND c.cqid IS NULL
-		ORDER BY CONCAT(LPAD(g.gid,10,'0'),LPAD(q.question_order,10,'0'))";
+		ORDER BY  " . $connect->concat("RIGHT(" . $connect->concat($zeros,'g.gid') . ",10)","RIGHT(". $connect->concat($zeros,'q.question_order') .",10)"); 
 
 
 	$QueryResult = db_execute_assoc($Query);

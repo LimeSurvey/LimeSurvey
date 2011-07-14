@@ -221,7 +221,7 @@ if ($subaction == "export" && ( bHasSurveyPermission($surveyid, 'tokens', 'expor
 // Bouceprocessing
 if($subaction=='bounceprocessing')
 {
-	if ($thissurvey['bounceprocessing']!='N' && !($thissurvey['bounceprocessing']=='G' && getGlobalSetting('bounceaccounttype')=='off') && bHasSurveyPermission($surveyid, 'tokens','update'))
+	if($thissurvey['bounceprocessing'] != 'N' && bHasSurveyPermission($surveyid,'tokens','update'))
 	{
 		$bouncetotal=0;
 		$checktotal=0;
@@ -296,7 +296,7 @@ if($subaction=='bounceprocessing')
 			$flags.="/tls/novalidate-cert";
 			break;
 		}
-		if($mbox=imap_open('{'.$hostname.$flags.'}INBOX',$username,$pass))
+		if(@$mbox=imap_open('{'.$hostname.$flags.'}INBOX',$username,$pass))
 		{
             imap_errors();
             $count=imap_num_msg($mbox);
@@ -320,8 +320,9 @@ if($subaction=='bounceprocessing')
 						$tokenBounce=explode(": ",$item);
 						if($surveyid == $surveyidBounce[1])
 						{
-							$bouncequery = "UPDATE ".db_table_name("tokens_$surveyid")." SET emailstatus='bounced' WHERE token='$tokenBounce[1]';";
-							$anish=$connect->Execute($bouncequery);
+                                                        $santsurveyid = sanitize_int($surveyid);
+                                                        $bouncequery = "UPDATE ".db_table_name("tokens_$santsurveyid")." SET emailstatus='bounced' WHERE token=".db_quoteall($tokenBounce[1]);
+							$bmark=$connect->Execute($bouncequery);
 							$readbounce=imap_body($mbox,$count); // Put read
 							if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
 							{

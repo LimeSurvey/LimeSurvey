@@ -17,6 +17,7 @@
 include_once("login_check.php");
 $deleteok = returnglobal('deleteok');
 
+$surveyid = (int) $surveyid;
 $deletesurveyoutput = "<br />\n";
 $deletesurveyoutput .= "<div class='messagebox ui-corner-all'>\n";
 $deletesurveyoutput .= "<div class='header ui-widget-header'>".$clang->gT("Delete survey")."</div>\n";
@@ -36,11 +37,12 @@ if (!isset($deleteok) || !$deleteok)
     $deletesurveyoutput .= "\t<div class='warningheader'>\n".$clang->gT("Warning")."</div><br />\n";
     $deletesurveyoutput .= "\t<strong>".$clang->gT("You are about to delete this survey")." ($surveyid)</strong><br /><br />\n";
     $deletesurveyoutput .= "\t".$clang->gT("This process will delete this survey, and all related groups, questions answers and conditions.")."<br /><br />\n";
+    $deletesurveyoutput .= "\t".$clang->gT("It will also delete any resources/files that have been uploaded for this survey.")."<br /><br />\n";
     $deletesurveyoutput .= "\t".$clang->gT("We recommend that before you delete this survey you export the entire survey from the main administration screen.")."\n";
 
     if (tableExists("survey_$surveyid"))
     {
-        $deletesurveyoutput .= "\t<br /><br />\n".$clang->gT("This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey.")."<br /><br />\n";
+        $deletesurveyoutput .= "\t<br /><br />\n".$clang->gT("This survey is active and a responses table exists. If you delete this survey, these responses (including any uploaded files) will be deleted. We recommend that you export the responses (and files) before deleting this survey.")."<br /><br />\n";
     }
 
     if (tableExists("tokens_$surveyid"))
@@ -66,7 +68,7 @@ else //delete the survey
     }
 
 	if (tableExists("survey_{$surveyid}_timings"))  //delete the survey_$surveyid_timings table
-    {    	
+    {
         $dsquery = $dict->DropTableSQL("{$dbprefix}survey_{$surveyid}_timings");
         //$dict->ExecuteSQLArray($sqlarraytimings);
         $dsresult = $dict->ExecuteSQLArray($dsquery) or safe_die ("Couldn't \"$dsquery\" because <br />".$connect->ErrorMsg());
@@ -119,6 +121,8 @@ else //delete the survey
 
     $sdel = "DELETE FROM {$dbprefix}quota_members WHERE sid=$surveyid;";
     $sres = $connect->Execute($sdel);
+
+    rmdirr($uploaddir.'/surveys/'.$surveyid);
 
     $deletesurveyoutput .= "\t<p>".$clang->gT("This survey has been deleted.")."<br /><br />\n";
     $deletesurveyoutput .= "\t<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";

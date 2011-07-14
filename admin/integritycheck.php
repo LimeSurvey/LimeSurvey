@@ -441,7 +441,21 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
             } else {
                 foreach($fulloldsids[$oldsid] as $tablename)
                 {
-                    list($oldtxt, $surveytxt, $sid, $datetime)=explode("_", substr($tablename,strlen($dbprefix)));
+                    $tableParts = explode("_", substr($tablename,strlen($dbprefix)));
+                    if (count($tableParts) == 4) {
+                        $oldtxt     = $tableParts[0];
+                        $surveytxt  = $tableParts[1];
+                        $sid        = $tableParts[2];
+                        $datetime   = $tableParts[3];
+                        $type = $clang->gT('responses');
+                    } elseif (count($tableParts) == 5) {
+                        //This is a timings table (
+                        $oldtxt     = $tableParts[0];
+                        $surveytxt  = $tableParts[1];
+                        $sid        = $tableParts[2];
+                        $datetime   = $tableParts[4];
+                        $type = $clang->gT('timings');
+                    }
                     $year=substr($datetime, 0,4);
                     $month=substr($datetime, 4,2);
                     $day=substr($datetime, 6, 2);
@@ -452,10 +466,10 @@ if($_SESSION['USER_RIGHT_CONFIGURATOR'] == 1)
                     $jqresult=$connect->execute($jq) or safe_die($query." failed");
                     $jqcount=$jqresult->RecordCount();
                     if($jqcount == 0) {
-                        $oldsoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s"), $sid, $date);
+                        $oldsoptionaldelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s (%s)"), $sid, $date, $type);
                         //				     $oldsoptionaldelete[]=$tablename."| SID ".$four. " ". $clang->gT("saved at")." $date";
                     } else {
-                        $oldsmultidelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s)"), $sid, $date, $jqcount);
+                        $oldsmultidelete[]=$tablename."| ".sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s) (%s)"), $sid, $date, $jqcount, $type);
                         //				     $oldsmultidelete[]=$tablename."| SID ".$four." ". $clang->gT("saved at")." $date ".sprintf($clang->gT("containing %d record(s)"), $jqcount);
                     }
                 }

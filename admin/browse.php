@@ -362,7 +362,7 @@ elseif ($subaction == "all")
                     $phparray = json_decode($json[$fieldname]);
                     foreach($phparray as $metadata)
                     {
-                        $path = dirname(getcwd())."/upload/surveys/".$surveyid."/files/";
+                        $path = "{$uploaddir}/surveys/{$surveyid}/files/";
                         unlink($path.$metadata->filename); // delete the file
                     }
                 }
@@ -379,27 +379,57 @@ elseif ($subaction == "all")
         // Delete the marked responses - checked
         if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] === 'marked')
         {
+            $fieldmap = createFieldMap($surveyid);
+            $fuqtquestions = array();
+            // find all fuqt questions
+            foreach ($fieldmap as $field)
+            {
+                if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
+                    $fuqtquestions[] = $field['fieldname'];
+            }
+
             foreach ($_POST['markedresponses'] as $iResponseID)
             {
                 $iResponseID = (int)$iResponseID; // sanitize the value
-            $query="delete FROM {$surveytable} where id={$iResponseID}";
-            $connect->execute($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked
+
+                if (!empty($fuqtquestions))
+                {
+                    // find all responses (filenames) to the fuqt questions
+                    $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$iResponseID}";
+                    $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
+
+                    while($json = $responses->FetchRow())
+                    {
+                        foreach ($fuqtquestions as $fieldname)
+                        {
+                            $phparray = json_decode($json[$fieldname]);
+                            foreach($phparray as $metadata)
+                            {
+                                $path = "{$uploaddir}/surveys/{$surveyid}/files/";
+                                unlink($path.$metadata->filename); // delete the file
+                            }
+                        }
+                    }
+                }
+
+                $query="delete FROM {$surveytable} where id={$iResponseID}";
+                $connect->execute($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked
             }
         }
         // Download all files for all marked responses  - checked
         else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] === 'marked')
         {
-            // Now, zip all the files in the filelist            
-            $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";            
-            zipFiles($_POST['markedresponses'], $zipfilename);             
+            // Now, zip all the files in the filelist
+            $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
+            zipFiles($_POST['markedresponses'], $zipfilename);
         }
     }
     // Download all files for this entry - checked
     else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] != '' && $_POST['downloadfile'] !== true)
     {
         // Now, zip all the files in the filelist
-        $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";        
-        zipFiles($_POST['downloadfile'], $zipfilename);        
+        $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
+        zipFiles($_POST['downloadfile'], $zipfilename);
     }
     else if (isset($_POST['downloadindividualfile']) && $_POST['downloadindividualfile'] != '')
     {
@@ -407,7 +437,7 @@ elseif ($subaction == "all")
         $downloadindividualfile = $_POST['downloadindividualfile'];
         $fieldname = $_POST['fieldname'];
 
-        $query = "SELECT $fieldname FROM $surveytable WHERE id={$id}";
+        $query = "SELECT ".db_quote_id($fieldname)." FROM {$surveytable} WHERE id={$id}";
         $result=db_execute_num($query);
         $row=$result->FetchRow();
         $phparray = json_decode($row[0]);
@@ -1001,8 +1031,8 @@ else
 	//interview Time statistics
 	$count=false;
 	//$survstats=substr($surveytableNq);
-	$queryAvg="SELECT AVG(timings.interviewTime) AS avg, COUNT(timings.id) AS count FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL";
-	$queryAll="SELECT timings.interviewTime FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL ORDER BY timings.interviewTime";
+	$queryAvg="SELECT AVG(timings.interviewtime) AS avg, COUNT(timings.id) AS count FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL";
+	$queryAll="SELECT timings.interviewtime FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL ORDER BY timings.interviewtime";
 	$browseoutput .= '<table class="statisticssummary">';
 	if($result=db_execute_assoc($queryAvg)){
 
@@ -1021,7 +1051,7 @@ else
 			while($row=$result->FetchRow()){
 
 				if($i==$middleval){
-					$median=$row['interviewTime'];
+					$median=$row['interviewtime'];
 					break;
 				}
 				$i++;
@@ -1030,7 +1060,7 @@ else
 			while($row=$result->FetchRow()){
 				if($i==$middleval){
 					$nextrow=$result->FetchRow();
-					$median=($row['interviewTime']+$nextrow['interviewTime'])/2;
+					$median=($row['interviewtime']+$nextrow['interviewtime'])/2;
 					break;
 				}
 				$i++;
@@ -1071,21 +1101,21 @@ else
 }
 
 /**
- * Supply an array with the responseIds and all files will be added to the zip 
+ * Supply an array with the responseIds and all files will be added to the zip
  * and it will be be spit out on success
  *
  * @param array $responseIds
- * @return ZipArchive 
+ * @return ZipArchive
  */
 function zipFiles($responseIds, $zipfilename) {
     global $uploaddir, $surveyid, $surveytable;
-    
+
     require_once('classes/pclzip/pclzip.lib.php');
-    $tmpdir = $uploaddir. "/surveys/" . $surveyid . "/files/";   
-    
+    $tmpdir = $uploaddir. "/surveys/" . $surveyid . "/files/";
+
     $filelist = array();
     $fieldmap = createFieldMap($surveyid, 'full');
-    
+
     foreach ($fieldmap as $field)
     {
         if ($field['type'] == "|" && $field['aid']!=='filecount')
@@ -1093,7 +1123,7 @@ function zipFiles($responseIds, $zipfilename) {
             $filequestion[] = $field['fieldname'];
         }
     }
-    
+    $filequestion = array_map('db_quote_id',$filequestion);
     $initquery = "SELECT " . implode(', ', $filequestion);
 
     foreach ((array)$responseIds as $responseId)
@@ -1115,19 +1145,19 @@ function zipFiles($responseIds, $zipfilename) {
                         $file['responseid'] = $responseId;
                         $file['name'] = rawurldecode($file['name']);
                         $file['index'] = $filecount;
-                        /* 
-                         * Now add the file to the archive, prefix files with responseid_index to keep them 
-                         * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be 
+                        /*
+                         * Now add the file to the archive, prefix files with responseid_index to keep them
+                         * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
                          * files from a different source with the same name.
                          */
-                        $filelist[] = array(PCLZIP_ATT_FILE_NAME          =>$tmpdir . $file['filename'],                            
+                        $filelist[] = array(PCLZIP_ATT_FILE_NAME          =>$tmpdir . $file['filename'],
                                             PCLZIP_ATT_FILE_NEW_FULL_NAME =>sprintf("%05s_%02s_%s", $file['responseid'], $file['index'], $file['name']));
                     }
                 }
             }
         }
     }
-    
+
     if (count($filelist)>0) {
         $zip = new PclZip($tmpdir . $zipfilename);
         if ($zip->create($filelist)===0) {

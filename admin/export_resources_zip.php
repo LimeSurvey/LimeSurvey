@@ -29,7 +29,7 @@ if (!isset($lid))
 if ($action == "exportsurvresources" && $surveyid) {
     require("classes/phpzip/phpzip.inc.php");
     $z = new PHPZip();
-    $resourcesdir=$uploaddir. "/upload/surveys/$surveyid/";
+    $resourcesdir=$uploaddir. "/surveys/$surveyid/";
     $zipfile="$tempdir/resources-survey-$surveyid.zip";
     $z -> Zip($resourcesdir, $zipfile);
     if (is_file($zipfile)) {
