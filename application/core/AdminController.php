@@ -32,12 +32,13 @@ class AdminController extends LS_Controller {
 		//} 
 		
 		// Check if the DB is up to date
-		/*If (tableExists('surveys'))
+		If (tableExists('surveys'))
 		{
 		    $usrow = getGlobalSetting('DBVersion');
 		    if (intval($usrow)<$this->config->item('dbversionnumber'))
 		    {
-		        $action='';
+		    	show_error("Required database version: ".$this->config->item('dbversionnumber')."<br/> Your database version: ".$usrow."<br/> Please update your database.");
+		        /**$action='';
 		        require_once($rootdir.'/classes/core/language.php');
 		        $clang = new limesurvey_lang($defaultlang);
 		        include_once($homedir.'/update/updater.php');
@@ -54,14 +55,14 @@ class AdminController extends LS_Controller {
 		            $dbupgradeoutput.='</div>';
 		            echo getAdminHeader() . $dbupgradeoutput . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));            
 		        }        
-		        die;
+		        die;*/
 		    }
 		
-		      if (is_dir($homedir."/install") && $debug<2)
+		      /*if (is_dir($homedir."/install") && $debug<2)
 		       {
 		        die ("<p style='text-align: center; margin-left: auto; margin-right: auto; width: 500px; margin-top: 50px;'><img src='../images/limecursor-handle.png' /><strong>Congratulations</strong><br /><br />Your installation is now complete. The final step is to remove or rename the LimeSurvey installation directory (admin/install) on your server since it may be a security risk.<br /><br />Once this directory has been removed or renamed you will be able to log in to your new LimeSurvey Installation.<br /><br /><a href='admin.php'>Try again</a></p>");
-		       }  
-		}*/
+		       } */
+		}
         $updatelastcheck = '';
         
 		//Admin menus and standards
