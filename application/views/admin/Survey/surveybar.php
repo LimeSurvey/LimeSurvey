@@ -8,7 +8,7 @@
 			<?php if($activated == "N") { ?>
 				<img src='<?php echo $imageurl;?>/inactive.png' alt='<?php echo $clang->gT("This survey is currently not active"); ?>' />
 				<?php if($canactivate) { ?>
-					<a href="#" onclick="window.open('<?php echo site_url("admin/activate/index/$surveyid");?>', '_top')"
+					<a href="#" onclick="window.open('<?php echo site_url("admin/survey/activate/$surveyid");?>', '_top')"
 						title="<?php echo $clang->gTview("Activate this Survey"); ?>" >
                     <img src='<?php echo $imageurl; ?>/activate.png' name='ActivateSurvey' alt='<?php echo $clang->gT("Activate this Survey"); ?>'/></a>
 				<?php } else { ?>
@@ -24,7 +24,7 @@
                 	<img src='<?php echo $imageurl; ?>/active.png' title='' alt='<?php echo $clang->gT("This survey is currently active."); ?>' />
  				<?php } 
 				if($canactivate) { ?>
-                    <a href="#" onclick="window.open('<?php echo site_url("admin/deactivate/index/$surveyid"); ?>', '_top')"
+                    <a href="#" onclick="window.open('<?php echo site_url("admin/survey/deactivate/$surveyid"); ?>', '_top')"
                     	title="<?php echo $clang->gTview("Deactivate this Survey"); ?>" >
                     <img src='<?php echo $imageurl;?>/deactivate.png' alt='<?php echo $clang->gT("Deactivate this Survey"); ?>' /></a>
                 <?php } else { ?>

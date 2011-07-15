@@ -207,6 +207,7 @@
             <?php if ($adding)
             { ?>
                 <input type='hidden' name='action' value='insertquestion' />
+                <input type='hidden' name='gid' value='<?php echo $eqrow['gid']; ?>' />
             <?php }
             else
             { ?>

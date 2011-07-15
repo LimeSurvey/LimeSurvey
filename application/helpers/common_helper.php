@@ -2325,7 +2325,10 @@ function validate_templatedir($templatename)
  */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
 
-    global $CI, $globalfieldmap, $clang, $aDuplicateQIDs;
+    global $globalfieldmap, $aDuplicateQIDs;
+    $CI =& get_instance();
+    $CI->load->helper('database');
+    $clang = $CI->limesurvey_lang;
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset($globalfieldmap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
@@ -2369,7 +2372,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     //$pquery = "SELECT anonymized, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
     $CI->load->model('surveys_model');
     $fieldtoselect = array('anonymized', 'datestamp', 'ipaddr', 'refurl');
-    $conditiontoselect = "WHERE sid=$surveyid";
+    $conditiontoselect = array('sid' => $surveyid); //"WHERE sid=$surveyid";
     $presult=$CI->surveys_model->getSomeRecords($fieldtoselect,$conditiontoselect); //Checked)
     foreach ($presult->result_array() as $prow)
     {
@@ -2466,9 +2469,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $aquery.=" and questions.qid={$questionid} ";
     }
     $aquery.=" ORDER BY group_order, question_order"; */
-    $CI->load->model('conditions');
-    $CI->load->model('defaultvalues');
-    $aresult = $CI->conditions->getConditions($surveyid,$questionid,$s_lang) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />"); //Checked
+    $CI->load->model('conditions_model');
+    $CI->load->model('defaultvalues_model');
+    $aresult = $CI->conditions_model->getConditions($surveyid,$questionid,$s_lang) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />"); //Checked
 
     foreach ($aresult->result_array() as $arow) //With each question, create the appropriate field(s))
     {
@@ -2515,17 +2518,31 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 
                 if ($arow['same_default'])
                 {
-                    $conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-                    $data = $CI->defaultvalues->getSomeRecords($fieldtoselect,$conditiontoselect);
+                    $conditiontoselect = array(
+                        'qid' => $arow['qid'],
+                        'scale_id' => 0,
+                        'language' => GetBaseLanguageFromSurveyID($surveyid)
+                    ); //"WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+                    $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
                     $data  = $data->row_array();
                     $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
                 }
                 else
                 {
-                    $conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
-                    $data = $CI->defaultvalues->getSomeRecords($fieldtoselect,$conditiontoselect);
-                    $data  = $data->row_array();
-                    $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                    //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
+                    $conditiontoselect = array(
+                        'qid' => $arow['qid'],
+                        'scale_id' => 0,
+                        'language' => $clang->langcode
+                    ); 
+                    $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
+                    
+                    $row  = $data->row_array();
+                    if ($data->num_rows() >0)
+                    $fieldmap[$fieldname]['defaultvalue']=$row['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                    else
+                    $fieldmap[$fieldname]['defaultvalue']='';
+                    
                 }
             }
             switch($arow['type'])
@@ -2555,15 +2572,25 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                             if ($arow['same_default'])
                             {
-                                $conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-                                $data = $CI->defaultvalues->getSomeRecords($fieldtoselect,$conditiontoselect);
+                                //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+                                $conditiontoselect = array(
+                                    'qid' => $arow['qid'],
+                                    'scale_id' => 0,
+                                    'language' => GetBaseLanguageFromSurveyID($surveyid)
+                                ); 
+                                $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
                                 $data  = $data->row_array();
                                 $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
                             }
                             else
                             {
-                                $conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
-                                $data = $CI->defaultvalues->getSomeRecords($fieldtoselect,$conditiontoselect);
+                                //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
+                                $conditiontoselect = array(
+                                    'qid' => $arow['qid'],
+                                    'scale_id' => 0,
+                                    'language' => $clang->langcode
+                                ); 
+                                $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
                                 $data  = $data->row_array();
                                 $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
                             }
@@ -8270,6 +8297,102 @@ function getgroupuserlist($ugid)
     }
     $surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;
     return $surveyselecter;
+}
+
+/**
+ * Run an arbitrary sequence of semicolon-delimited SQL commands
+ *
+ * Assumes that the input text (file or string) consists of
+ * a number of SQL statements ENDING WITH SEMICOLONS.  The
+ * semicolons MUST be the last character in a line.
+ * Lines that are blank or that start with "#" or "--" (postgres) are ignored.
+ * Only tested with mysql dump files (mysqldump -p -d limesurvey)
+ * Function kindly borrowed by Moodle
+ * @uses $dbprefix
+ * @param string $sqlfile The path where a file with sql commands can be found on the server.
+ * @param string $sqlstring If no path is supplied then a string with semicolon delimited sql
+ * commands can be supplied in this argument.
+ * @return bool Returns true if database was modified successfully.
+ */
+function modify_database($sqlfile='', $sqlstring='')
+{
+    $CI =& get_instance();
+    $CI->load->helper('database');
+    $clang = $CI->limesurvey_lang;
+    
+    //global $dbprefix;
+    //global $defaultuser;
+    //global $defaultpass;
+    global $siteadminemail;
+    global $siteadminname;
+    //global $defaultlang;
+    global $codeString;
+    //global $rootdir, $homedir;
+    //global $connect;
+    //global $clang;
+    global $modifyoutput;
+    //global $databasetabletype;
+
+    //require_once($homedir."/classes/core/sha256.php");
+    $CI->load->library('admin/sha256');
+    $success = true;  // Let's be optimistic
+    $modifyoutput='';
+
+    if (!empty($sqlfile)) {
+        if (!is_readable($sqlfile)) {
+            $success = false;
+            echo '<p>Tried to modify database, but "'. $sqlfile .'" doesn\'t exist!</p>';
+            return $success;
+        } else {
+            $lines = file($sqlfile);
+        }
+    } else {
+        $sqlstring = trim($sqlstring);
+        if ($sqlstring{strlen($sqlstring)-1} != ";") {
+            $sqlstring .= ";"; // add it in if it's not there.
+        }
+        $lines[] = $sqlstring;
+    }
+
+    $command = '';
+
+    foreach ($lines as $line) {
+        $line = rtrim($line);
+        $length = strlen($line);
+
+        if ($length and $line[0] <> '#' and substr($line,0,2) <> '--') {
+            if (substr($line, $length-1, 1) == ';') {
+                $line = substr($line, 0, $length-1);   // strip ;
+                $command .= $line;
+                $command = str_replace('prefix_', $CI->db->dbprefix, $command); // Table prefixes
+                $command = str_replace('$defaultuser', $CI->config->item('defaultuser'), $command);
+                $command = str_replace('$defaultpass', $CI->sha256->hashing($defaultpass), $command);
+                $command = str_replace('$siteadminname', $siteadminname, $command);
+                $command = str_replace('$siteadminemail', $siteadminemail, $command);
+                $command = str_replace('$defaultlang', $CI->config->item('defaultlang'), $command);
+                $command = str_replace('$sessionname', 'ls'.sRandomChars(20,'123456789'), $command);
+                $command = str_replace('$databasetabletype', $CI->db->dbdatabasetabletype, $command);
+
+                if (! db_execute_assosc($command)) {  //Checked
+                    $command=htmlspecialchars($command);
+                    $modifyoutput .="<br />".sprintf($clang->gT("SQL command failed: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'></span><br/>");
+                    $success = false;
+                }
+                else
+                {
+                    $command=htmlspecialchars($command);
+                    $modifyoutput .=". ";
+                }
+
+                $command = '';
+            } else {
+                $command .= $line;
+            }
+        }
+    }
+
+    return $success;
+
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay
