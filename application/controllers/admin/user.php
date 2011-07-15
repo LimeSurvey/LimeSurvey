@@ -671,19 +671,19 @@ class user extends SurveyCommonController {
 	        $templaterights = array();
 	        $tquery = "SELECT * FROM ".$this->db->dbprefix("templates");
 	        $tresult = db_execute_assoc($tquery);
-	        while ($trow = $tresult->FetchRow()) {
+	        foreach ($tresult->result_array() as $trow) {
 	            if (isset($_POST[$trow["folder"]."_use"]))
 	            $templaterights[$trow["folder"]] = 1;
 	            else
 	            $templaterights[$trow["folder"]] = 0;
 	        }
 	        foreach ($templaterights as $key => $value) {
-	            $uquery = "INSERT INTO ".$this->db->dbprefix("templates_rights")." (uid,".db_quote_id('folder').",".db_quote_id('use').")  VALUES ({$postuserid},'".$key."',$value)";
-	            $uresult = $connect->execute($uquery);
+	            $uquery = "INSERT INTO ".$this->db->dbprefix("templates_rights")." (uid,`folder`,`use`)  VALUES ({$postuserid},'".$key."',$value)";
+	            $uresult = db_execute_assoc($uquery);
 	            if (!$uresult)
 	            {
-	                $uquery = "UPDATE ".$this->db->dbprefix("templates_rights")."  SET  ".db_quote_id('use')."=$value where ".db_quote_id('folder')."='$key' AND uid=".$postuserid;
-	                $uresult = $connect->execute($uquery);
+	                $uquery = "UPDATE ".$this->db->dbprefix("templates_rights")."  SET  ".$this->db->escape('use')."=$value where ".$this->db->escape('folder')."='$key' AND uid=".$postuserid;
+	                $uresult = db_execute_assoc($uquery);
 	            }
 	        }
 	        if ($uresult)

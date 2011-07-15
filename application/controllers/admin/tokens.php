@@ -114,7 +114,7 @@ class tokens extends SurveyCommonController {
 		//if ($limit==0) $limit=50;
 		//if (!isset($start)) {$start=(int)returnglobal('start');}
 		//if (!isset($limit)) {$limit = 100;}
-    	//if (!isset($start)) {$start = 0;}	    if ($limit > $tkcount) {$limit=$tkcount;}
+    	//if (!isset($start)) {$start = 0;}	    if ($limit > $tkcount) {$limit=$tkcount;}
 	    $next=$start+$limit;
 	    $last=$start-$limit;
 	    $end=$tkcount-$limit;
@@ -134,7 +134,7 @@ class tokens extends SurveyCommonController {
 		//if (!isset($order)) {$order=preg_replace('/[^_ a-z0-9-]/i', '', returnglobal('order'));}
 		//if (!isset($limit)) {$limit=(int)returnglobal('limit');}
 		
-    	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN		$thissurvey=getSurveyInfo($surveyid);
+    	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN		$thissurvey=getSurveyInfo($surveyid);
 
 		if(!$searchstring) $searchstring=$this->input->post("searchstring");
 		/*$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
@@ -656,7 +656,8 @@ class tokens extends SurveyCommonController {
 			show_error("no permissions"); // TODO Replace
 		}
 		
-		if(isset($tokenids)) {
+		if(isset($tokenids) && $tokenids=="tids") {
+			$tokenids=$this->input->post("tokenids");
 		    $tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
 		    unset($tokenids);
 		    foreach($tokenidsarray as $tokenitem) {
@@ -814,10 +815,10 @@ class tokens extends SurveyCommonController {
 	                {
 	                    // Put date into sent
 	                    $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
-	                    $udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
+	                    $udequery = "UPDATE ".$this->db->dbprefix("tokens_{$surveyid}")."\n"
 	                    ."SET sent='$today' WHERE tid={$emrow['tid']}";
 	                    //
-	                    $uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
+	                    $uderesult = db_execute_assoc($udequery);
 	                    $tokenoutput .= $clang->gT("Invitation sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)<br />\n";
 	                    if ($emailsmtpdebug==2)
 	                    {

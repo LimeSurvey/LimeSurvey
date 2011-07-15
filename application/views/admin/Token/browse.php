@@ -237,12 +237,12 @@
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='' && bHasSurveyPermission($surveyid, 'tokens','update'))
 	            { ?> 
 	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_invite.png' title='<?php
-	                echo $clang->gT("Send invitation email to this entry");?>' alt='<?php echo $clang->gT("Send invitation email to this entry");?>' onclick="window.open('{$scriptname}?action=tokens&amp;sid={$surveyid}&amp;subaction=email&amp;tid=$brow['tid']', '_top')" />
+	                echo $clang->gT("Send invitation email to this entry");?>' alt='<?php echo $clang->gT("Send invitation email to this entry");?>' onclick="<?php echo get2post(site_url("admin/tokens/email/$surveyid/")."?tid=".$brow['tid']);?>" />
 	            <?php }
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
 	            { ?>
 	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_remind.png' title='<?php
-	                echo $clang->gT("Send reminder email to this entry");?>' alt='<?php echo $clang->gT("Send reminder email to this entry");?>' onclick="window.open('{$scriptname}?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tid={$brow['tid']}', '_top')" />
+	                echo $clang->gT("Send reminder email to this entry");?>' alt='<?php echo $clang->gT("Send reminder email to this entry");?>' onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/")."?tid=".$brow['tid']);?>" />
 	           <?php } ?>
   	            </td>
 	       <?php }
@@ -270,13 +270,13 @@
             echo $clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)");
             ?>' alt='<?php
             echo $clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)");
-            ?>' onclick="window.open('scriptname?action=tokens&amp;sid={$surveyid}&amp;subaction=email&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')" />
+            ?>' onclick="<?php echo get2post(site_url("admin/tokens/email/$surveyid/tids")."?tokenids=document.getElementById('tokenboxeschecked').value");?>" />
             &nbsp;
             <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_remind.png' title='<?php
             echo $clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)");
             ?>' alt='<?php
             echo $clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)");
-            ?>' onclick="window.open('scriptname?sid={$surveyid}&amp;action=tokens&amp;subaction=remind&amp;tids='+document.getElementById('tokenboxeschecked').value, '_top')" />
+            ?>' onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/tids")."?tokenids=document.getElementById('tokenboxeschecked').value");?>" />
         <?php } ?>
         <input type='hidden' id='tokenboxeschecked' value='' onchange='alert(this.value)' />
 	    </td>

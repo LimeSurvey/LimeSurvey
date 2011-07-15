@@ -1,4 +1,4 @@
-<form action='$scriptname' method='post'>
+<form action='<?php echo site_url("admin/user/usertemplates");?>' method='post'>
 	<div class='header ui-widget-header'><?php echo $clang->gT('Edit template permissions');?></div>
     <table id="user-template-rights" width='50%' border='0' cellpadding='3' style='margin:5px auto 0 auto;'>
 	<thead>
@@ -43,7 +43,7 @@
             $tresult = db_execute_assoc($tquery) or safe_die($connect->ErrorMsg()); //Checked
 
             $table_row_odd_even = 'odd';
-            foreach ($tresult->row_array() as $trow)
+            foreach ($tresult->result_array() as $trow)
             {
                 if($table_row_odd_even == 'odd' )
                 {
@@ -55,8 +55,8 @@
                     $row_class = ' class="row_even"';
                     $table_row_odd_even = 'odd';
                 }
-                echo "\t<tr$row_class>\n<td>{$trow["folder"]}</td>\n";
-                echo "<td><input type=\"checkbox\" class=\"checkboxbtn\" name=\"{$trow["folder"]}_use\" value=\"{$trow["folder"]}_use\"";
+                echo "\t<tr$row_class>\n<td>".$trow["folder"]."</td>\n";
+                echo "<td><input type=\"checkbox\" class=\"checkboxbtn\" name=\"".$trow["folder"]."_use\" value=\"".$trow["folder"]."_use\"";
 
                 if(isset($templaterights[$trow['folder']]) && $templaterights[$trow['folder']]['use'] == 1)
                 {
