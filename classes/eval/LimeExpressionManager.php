@@ -48,7 +48,7 @@ class LimeExpressionManager {
         global $globalfieldmap, $clang, $surveyid;
 
         //checks to see if fieldmap has already been built for this page.
-        if (isset($globalfieldmap[$surveyid]['expMgr_sgqaMap'][$clang->langcode])&& !$forceRefresh) {
+        if (isset($globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode])&& !$forceRefresh) {
             return false;   // means the mappings have already been set and don't need to be re-created
         }
 
@@ -59,7 +59,6 @@ class LimeExpressionManager {
 
         $sgqaMap = array();  // mapping of SGQA to Value
         $knownVars = array();   // mapping of VarName to Value
-        $knownNamedConstants = array(); // mapping of read-only values to Value
         $debugLog = array();    // array of mappings among values to confirm their accuracy
         foreach($fieldmap as $fielddata)
         {
@@ -68,7 +67,6 @@ class LimeExpressionManager {
             {
                 continue;   // not an SGQA value
             }
-               // TODO:  Which of these question types are read-write variables vs. named constants?
             switch($fielddata['type'])
             {
                 case '!': //List - dropdown
@@ -121,21 +119,41 @@ class LimeExpressionManager {
             {
                 $codeValue = $_SESSION[$code];
                 $displayValue= retrieve_Answer($code, $_SESSION['dateformats']['phpdate']);
-                $knownVars[$varName] = array(
+                $varInfo_Code = array(
                     'codeValue'=>$codeValue,
                     'jsName'=>$jsVarName,
+                    'readWrite'=>'N',
+                    'isOnCurrentPage','N',
                     'displayValue'=>$displayValue,
                     'question'=>$question,
                     );
-                $knownNamedConstants[$varName . '.shown'] = $displayValue;
-                $knownNamedConstants[$varName . '.question']= $question;
-                $sgqaMap['INSERTANS:' . $code] = $displayValue;
+                $varInfo_DisplayVal = array(
+                    'codeValue'=>$displayValue,
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                    'isOnCurrentPage'=>'N',
+                    );
+                $varInfo_Question = array(
+                    'codeValue'=>$question,
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                    'isOnCurrentPage'=>'N',
+                    );
+                $knownVars[$varName] = $varInfo_Code;
+                $knownVars[$varName . '.shown'] = $varInfo_DisplayVal;
+                $knownVars[$varName . '.question']= $varInfo_Question;
+                $knownVars['INSERTANS:' . $code] = $varInfo_DisplayVal;
             }
             else
             {
                 unset($codeValue);
                 unset($displayValue);
-                $sgqaMap['INSERTANS:' . $code] = ""; // so if know value has been set, replace with blank - is that the desired behavior?
+                $knownVars['INSERTANS:' . $code] = array(
+                    'codeValue'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                    'isOnCurrentPage'=>'N',
+                );
             }
             $debugLog[] = array(
                 'code' => $code,
@@ -150,7 +168,6 @@ class LimeExpressionManager {
         }
 
         // Now set tokens
-        $tokenMap = array();      // mapping of TOKENS to values
         if (isset($_SESSION['token']) && $_SESSION['token'] != '')
         {
             //Gather survey data for tokenised surveys, for use in presenting questions
@@ -169,7 +186,13 @@ class LimeExpressionManager {
                     $val = $_SESSION['thistoken'][$tokenkey];
                 }
                 $key = "TOKEN:" . strtoupper($tokenkey);
-                $tokenMap[$key] = $val;
+                $knownVars[$key] = array(
+                    'codeValue'=>$val,
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                    'isOnCurrentPage'=>'N',
+                    );
+
                 $debugLog[] = array(
                     'code' => $key,
                     'type' => '&nbsp;',
@@ -184,13 +207,19 @@ class LimeExpressionManager {
         else
         {
             // Explicitly set all tokens to blank
-            $tokenMap['TOKEN:FIRSTNAME'] = "";
-            $tokenMap['TOKEN:LASTNAME'] = "";
-            $tokenMap['TOKEN:EMAIL'] = "";
-            $tokenMap['TOKEN:USESLEFT'] = "";
+            $blankVal = array(
+                    'codeValue'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                    'isOnCurrentPage'=>'N',
+                    );
+            $knownVars['TOKEN:FIRSTNAME'] = $blankVal;
+            $knownVars['TOKEN:LASTNAME'] = $blankVal;
+            $knownVars['TOKEN:EMAIL'] = $blankVal;
+            $knownVars['TOKEN:USESLEFT'] = $blankVal;
             for ($i=1;$i<=100;++$i) // TODO - is there a way to know  how many attributes are set?  Looks like max is 100
             {
-                $tokenMap['TOKEN:ATTRIBUTE_' . $i] = "";
+                $knownVars['TOKEN:ATTRIBUTE_' . $i] = $blankVal;
             }
         }
 
@@ -211,9 +240,6 @@ class LimeExpressionManager {
         file_put_contents('/tmp/LimeExpressionManager-page.html',$debugLog_html);
         
         $globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode] = $knownVars;
-        $globalfieldmap[$surveyid]['expMgr_sgqaMap'][$clang->langcode] = $sgqaMap;
-        $globalfieldmap[$surveyid]['expMgr_constants'][$clang->langcode] = $knownNamedConstants;
-        $globalfieldmap[$surveyid]['expMgr_tokens'][$clang->langcode] = $tokenMap;
 
         return true;
     }
@@ -235,13 +261,19 @@ class LimeExpressionManager {
         {
             // means that some values changed, so need to update what was registered to ExpressionManager
             $em->RegisterVarnamesUsingReplace($globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode]);
-            $em->RegisterNamedConstantsUsingReplace($globalfieldmap[$surveyid]['expMgr_sgqaMap'][$clang->langcode]);
-            $em->RegisterNamedConstantsUsingMerge($globalfieldmap[$surveyid]['expMgr_constants'][$clang->langcode]);
-            $em->RegisterNamedConstantsUsingMerge($globalfieldmap[$surveyid]['expMgr_tokens'][$clang->langcode]);
         }
         if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
         {
-            $em->RegisterNamedConstantsUsingMerge($replacementFields);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
+            $replaceArray = array();
+            foreach ($replacementFields as $key => $value) {
+                $replaceArray[$key] = array(
+                    'codeValue'=>$value,
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                    'isOnCurrentPage'=>'N',
+                );
+            }
+            $em->RegisterVarnamesUsingMerge($replaceArray);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
         }
         return $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string));
     }
@@ -270,17 +302,16 @@ class LimeExpressionManager {
     static function UnitTestProcessStringContainingExpressions()
     {
         $vars = array(
-'name' => array('codeValue'=>'Sergei', 'jsName'=>'java61764X1X1'),
-'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2'),
-'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3'),
-'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4'),
-        );
-        $namedConstants = array(
-            'INSERTANS:61764X1X1'   => 'Sergei',
-            'INSERTANS:61764X1X2'   => 45,
-            'INSERTANS:61764X1X3'   => 2,
-            'INSERTANS:61764X1X4'   => 1,
-            'TOKEN:ATTRIBUTE_1'     => 'worker',
+'name' => array('codeValue'=>'Sergei', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+// Constants
+'INSERTANS:61764X1X1'   => array('codeValue'=> 'Sergei', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:61764X1X2'   => array('codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:61764X1X3'   => array('codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:61764X1X4'   => array('codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TOKEN:ATTRIBUTE_1'     => array('codeValue'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
         );
 
         $tests = <<<EOD
@@ -328,30 +359,20 @@ EOST;
         $em = $lem->em;
 
         $em->RegisterVarnamesUsingMerge($vars);
-        $em->RegisterNamedConstantsUsingMerge($namedConstants);
 
-        print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarNames Used</th><th>Javascript VarNames</th><th>Named Constants Used</th></tr>';
+        print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
         foreach($alltests as $test)
         {
             print "<tr><td>" . $test . "</td>\n";
             print "<td>" . $em->sProcessStringContainingExpressions($test) . "</td>\n";
-            $allVarsUsed = $em->getAllVarsUsed();
-            if (is_array($allVarsUsed) and count($allVarsUsed) > 0) {
-                print "<td>" . implode(', ', $allVarsUsed) . "</td>\n";
-            }
-            else {
-                print "<td>&nbsp;</td>\n";
-            }
-            $allJsVarsUsed = $em->getAllJsVarsUsed();
-            if (is_array($allJsVarsUsed) and count($allJsVarsUsed) > 0) {
-                print "<td>" . implode(', ', $allJsVarsUsed) . "</td>\n";
-            }
-            else {
-                print "<td>&nbsp;</td>\n";
-            }            
-            $allNamedConstantsUsed = $em->getAllNamedConstantsUsed();
-            if (is_array($allNamedConstantsUsed) and count($allNamedConstantsUsed) > 0) {
-                print "<td>" . implode(', ', $allNamedConstantsUsed) . "</td>\n";
+            $varsUsed = $em->getAllVarsUsed();
+            if (is_array($varsUsed) and count($varsUsed) > 0) {
+                $varDesc = array();
+                foreach ($varsUsed as $v) {
+                    $varInfo = $em->GetVarInfo($v);
+                    $varDesc[] = $v . '(' . $varInfo['jsName'] . ',' . $varInfo['readWrite'] . ',' . $varInfo['isOnCurrentPage'] . ')';
+                }
+                print '<td>' . implode(',<br/>', $varDesc) . "</td>\n";
             }
             else {
                 print "<td>&nbsp;</td>\n";

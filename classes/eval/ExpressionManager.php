@@ -1,10 +1,9 @@
 <?php
 /**
  * Description of ExpressionManager
- * (1) Does safe evaluation of PHP expressions.  Only registered Functions, Variables, and NamedConstants are allowed.
+ * (1) Does safe evaluation of PHP expressions.  Only registered Functions, and known Variables are allowed.
  *   (a) Functions include any math, string processing, conditional, formatting, etc. functions
  *   (b) Variables are typically the question name (question.title) - they can be read/write
- *   (c) NamedConstants are any LimeReplacementField or Token, including all INSERTANS:SGQA codes - these are all read-only
  * (2) This class can replace LimeSurvey's current process of resolving strings that contain LimeReplacementFields
  *   (a) String is split by expressions (by curly braces, but safely supporting strings and escaped curly braces)
  *   (b) Expressions (things surrounded by curly braces) are evaluated - thereby doing LimeReplacementField substitution and/or more complex calculations
@@ -16,6 +15,7 @@
  * @author Thomas M. White
  */
 
+require_once('ExpressionManagerFunctions.php');
 
 class ExpressionManager {
     // These three variables are effectively static once constructed
@@ -25,7 +25,6 @@ class ExpressionManager {
     private $asCategorizeTokensRegex;
     private $amValidFunctions; // names and # params of valid functions
     private $amVars;    // names and values of valid variables
-    private $amNamedConstants;   // names and values of valid named constants
 
     // Thes variables are used while  processing the equation
     private $expr;  // the source expression
@@ -38,14 +37,14 @@ class ExpressionManager {
     private $result;    // final result of evaluating the expression;
     private $evalStatus;    // true if $result is a valid result, and  there are no serious errors
     private $varsUsed;  // list of variables referenced in the equation
-    private $namedConstantsUsed;  // list of named constants used in the equation
 
     // These  variables are only used by sProcessStringContainingExpressions
     private $allVarsUsed;   // full list of variables used within the string, even if contains multiple expressions
-    private $allNamedConstantsUsed;  // full list of named constants used in the string, even if  contains multiple expresions
 
     function __construct()
     {
+        global $exprmgr_functions;  // so can access variables from ExpressionManagerFunctions.php
+
         // List of token-matching regular expressions
         $regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
         $regex_sq_string = '(?<!\\\\)\'.*?(?<!\\\\)\'';
@@ -88,8 +87,8 @@ class ExpressionManager {
             );
 
         $this->asTokenType = array(
-            'STRING',
-            'STRING',
+            'DQ_STRING',
+            'SQ_STRING',
             'SPACE',
             'LP',
             'RP',
@@ -252,15 +251,14 @@ class ExpressionManager {
             'ucwords'		=>array('ucwords','NA','Uppercase the first character of each word in a string',1),
 
             'stddev'        =>array('stats_standard_deviation','NA','Returns the standard deviation',-1),
-
-            // Locally declared functions
-            'if'            => array('exprmgr_if','NA','Excel-style if(test,result_if_true,result_if_false)',3),
-            'list'          => array('exprmgr_list','NA','Return comma-separated list of values',-1),
         );
 
         $this->amVars = array();
-        $this->amNamedConstants = array();
-
+        
+        if (isset($exprmgr_functions) && is_array($exprmgr_functions) && count($exprmgr_functions) > 0)
+        {
+            $this->amValidFunctions = array_merge($this->amValidFunctions, $exprmgr_functions);
+        }
     }
 
     /**
@@ -404,7 +402,6 @@ class ExpressionManager {
         $this->evalStatus = false;
         $this->result = NULL;
         $this->varsUsed = array();
-        $this->namedConstantsUsed = array();
 
         if ($this->HasSyntaxErrors()) {
             return false;
@@ -494,7 +491,8 @@ class ExpressionManager {
         switch ($token[2])
         {
             case 'NUMBER':
-            case 'STRING':
+            case 'DQ_STRING':
+            case 'SQ_STRING':
                 $this->StackPush($token);
                 return true;
                 break;
@@ -513,16 +511,9 @@ class ExpressionManager {
                         $this->StackPush($result);
                         return true;
                     }
-                    else if ($this->isValidNamedConstant($token[0]))
-                    {
-                        $this->namedConstantsUsed[] = $token[0];
-                        $result = array($this->amNamedConstants[$token[0]],$token[1],'NUMBER');
-                        $this->StackPush($result);
-                        return true;
-                    }
                     else
                     {
-                        $this->AddError("Undefined variable or named constant", $token);
+                        $this->AddError("Undefined variable", $token);
                         return false;
                     }
                 }
@@ -588,35 +579,41 @@ class ExpressionManager {
         {
             $token1 = $this->tokens[++$this->pos];
             $token2 = $this->tokens[++$this->pos];
-            if ($this->isValidVariable($token1[0]) and $token2[2] == 'ASSIGN')
+            if ($token2[2] == 'ASSIGN')
             {
-                $evalStatus = $this->EvaluateLogicalOrExpression();
-                if ($evalStatus)
+                if ($this->isValidVariable($token1[0]))
                 {
-                    $result = $this->StackPop();
-                    if (!is_null($result))
+                    if ($this->isWritableVariable($token1[0]))
                     {
-                        $newResult = $token2;
-                        $newResult[2] = 'NUMBER';
-                        $newResult[0] = $this->setVariableValue($token2[0], $token1[0], $result[0]);
-                        $this->StackPush($newResult);
+                        $evalStatus = $this->EvaluateLogicalOrExpression();
+                        if ($evalStatus)
+                        {
+                            $result = $this->StackPop();
+                            if (!is_null($result))
+                            {
+                                $newResult = $token2;
+                                $newResult[2] = 'NUMBER';
+                                $newResult[0] = $this->setVariableValue($token2[0], $token1[0], $result[0]);
+                                $this->StackPush($newResult);
+                            }
+                            else
+                            {
+                                $evalStatus = false;
+                            }
+                        }
+                        return $evalStatus;
                     }
                     else
                     {
-                        $evalStatus = false;
+                        $this->AddError('The value of this variable can not be changed', $token1);
+                        return false;
                     }
                 }
-                return $evalStatus;
-            }
-            else if ($this->isValidNamedConstant($token1[0]) and $token2[2] == 'ASSIGN')
-            {
-                $this->AddError('The value of named constants cannot be changed', $token1);
-                return false;
-            }
-            else if ($token2[2] == 'ASSIGN')
-            {
-                $this->AddError('Only variables can be assigned values', $token1);
-                return false;
+                else
+                {
+                    $this->AddError('Only variables can be assigned values', $token1);
+                    return false;
+                }
             }
             else
             {
@@ -1007,16 +1004,6 @@ class ExpressionManager {
     }
 
     /**
-     * Returns array of all named constants used when parsing a string via sProcessStringContainingExpressions
-     * @return <type>
-     */
-    
-    public function GetAllNamedConstantsUsed()
-    {
-        return array_unique($this->allNamedConstantsUsed);
-    }
-
-    /**
      * Returns array of all variables used when parsing a string via sProcessStringContainingExpressions
      * @return <type>
      */
@@ -1069,9 +1056,13 @@ class ExpressionManager {
                 continue;
             }
             $pos = $token[1];
-            if ($token[2] == 'STRING')
+            if ($token[2] == 'DQ_STRING')
             {
-                $tok = "'" . $token[0] . '"';
+                $tok = '"' . $token[0] . '"';
+            }
+            else if ($token[2] == 'SQ_STRING')
+            {
+                $tok = "'" . $token[0] . "'";
             }
             else
             {
@@ -1117,32 +1108,19 @@ class ExpressionManager {
         $msg = "<span title='" . $extraErrs . "' " . $errGeneralStyle . ">" . $msg . "</span>";
         return $msg;
     }
-
-    public function GetJsVarsUsed()
-    {
-        $names = array_unique($this->varsUsed);
-        if (is_null($names)) {
-            return null;
-        }
-        $jsNames = array();
-        foreach ($names as $name)
-        {
-            if (isset($this->amVars[$name]['jsName']))
-            {
-                $jsNames[] = $this->amVars[$name]['jsName'];
-            }
-        }
-        return array_unique($jsNames);
-    }
     
     /**
-     * Return array of list of named constants used in the equation
-     * @return <type> 
+     * Get information about the variable, including JavaScript name, read-write status, and whether set on current page.
+     * @param <type> $varname
+     * @return <type>
      */
-
-    public function GetNamedConstantsUsed()
+    public function GetVarInfo($varname)
     {
-        return array_unique($this->namedConstantsUsed);
+        if (isset($this->amVars[$varname]))
+        {
+            return $this->amVars[$varname];
+        }
+        return NULL;
     }
 
     /**
@@ -1202,9 +1180,9 @@ class ExpressionManager {
                     }
                     else
                     {
-                        if (!($this->isValidVariable($token[0]) or $this->isValidNamedConstant($token[0])))
+                        if (!($this->isValidVariable($token[0])))
                         {
-                            $this->AddError("Undefined variable or named constant", $token);
+                            $this->AddError("Undefined variable", $token);
                         }
                     }
                     break;
@@ -1234,16 +1212,6 @@ class ExpressionManager {
     }
 
     /**
-     * Return true if the named constant name is registered
-     * @param <type> $name
-     * @return boolean
-     */
-    private function isValidNamedConstant($name)
-    {
-        return array_key_exists($name,$this->amNamedConstants);
-    }
-
-    /**
      * Return true if the variable name is registered
      * @param <type> $name
      * @return boolean
@@ -1251,6 +1219,17 @@ class ExpressionManager {
     private function isValidVariable($name)
     {
         return array_key_exists($name,$this->amVars);
+    }
+
+    /**
+     * Return true if the variable name is writable
+     * @param <type> $name
+     * @return <type>
+     */
+    private function isWritableVariable($name)
+    {
+        $var = $this->amVars[$name];
+        return ($var['readWrite'] == 'Y');
     }
     
     /**
@@ -1262,11 +1241,11 @@ class ExpressionManager {
     {
         $status = $this->Evaluate($expr);
         if (!$status) {
-            return true;    // if there are errors in the expression, show it instead of hiding it?
+            return false;    // if there are errors in the expression, hide it?
         }
         $result = $this->GetResult();
         if (is_null($result)) {
-            return true;    // if there are errors in the expression, show it instead of hiding it?
+            return false;    // if there are errors in the expression, hide it?
         }
         return (boolean) $result;
     }
@@ -1283,7 +1262,6 @@ class ExpressionManager {
 
         $resolvedParts = array();
         $this->allVarsUsed = array();
-        $this->allNamedConstantsUsed = array();
 
         foreach ($stringParts as $stringPart)
         {
@@ -1295,7 +1273,6 @@ class ExpressionManager {
                 {
                     $resolvedParts[] = $this->GetResult();
                     $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
-                    $this->allNamedConstantsUsed = array_merge($this->allNamedConstantsUsed, $this->GetNamedConstantsUsed());
                 }
                 else 
                 {
@@ -1415,24 +1392,6 @@ class ExpressionManager {
     }
 
     /**
-     * Add list of allowable NamedConstant names within the equation
-     * $varnames is an array of key to value mappings like this:
-     * 'myvar' => value
-     * where value is optional (e.g. can be blank), and can be any scalar type (e.g. string, number, but not array)
-     * the system will use the values as  fast lookup when doing calculations, but if it needs to set values, it will call
-     * the interface function to set the values by name
-     *
-     * @param array $varnames
-     */
-    public function RegisterNamedConstantsUsingMerge(array $varnames) {
-        $this->amNamedConstants = array_merge($this->amNamedConstants, $varnames);
-    }
-
-    public function RegisterNamedConstantsUsingReplace(array $varnames) {
-        $this->amNamedConstants = array_merge(array(), $varnames);
-    }
-
-    /**
      * Add list of allowable variable names within the equation
      * $varnames is an array of key to value mappings like this:
      * 'myvar' => value
@@ -1496,7 +1455,7 @@ class ExpressionManager {
             }
             else
             {
-                $token[2] = 'STRING';
+                $token[2] = 'STRING';    // does type matter here?
             }
             $tokens[] = $token;
         }
@@ -1533,8 +1492,9 @@ class ExpressionManager {
             // If only parsing, still want to validate syntax, so use "1" for all variables
             switch($token[2])
             {
-                case 'STRING':
-                    $this->stack[] = array(1,$token[1],'STRING');
+                case 'DQ_STRING':
+                case 'SQ_STRING':
+                    $this->stack[] = array(1,$token[1],$token[2]);
                     break;
                 case 'NUMBER':
                 default:
@@ -1572,7 +1532,7 @@ class ExpressionManager {
                 {
                     if ($this->asTokenType[$i] !== 'SPACE') {
                         $tokens0[$j][2] = $this->asTokenType[$i];
-                        if ($this->asTokenType[$i] == 'STRING')
+                        if ($this->asTokenType[$i] == 'DQ_STRING' || $this->asTokenType[$i] == 'SQ_STRING')
                         {
                             // remove outside quotes
                             $unquotedToken = stripslashes(substr($token,1,-1));
@@ -1651,149 +1611,142 @@ EOD;
 
     /**
      * Unit test the Evaluator, allowing for passing in of extra functions, variables, and tests
-     * @param array $extraFunctions
-     * @param array $extraVars
-     * @param <type> $extraTests
      */
     
-    static function UnitTestEvaluator(array $extraFunctions=array(), array $extraVars=array(), $extraTests='1~1')
+    static function UnitTestEvaluator()
     {
+        global $exprmgr_extraVars, $exprmgr_extraTests; // so can access variables from ExpressionManagerFunctions.php
         // Some test cases for Evaluator
         $vars = array(
-'one' => array('codeValue'=>1, 'jsName'=>'java_one'),
-'two' => array('codeValue'=>2, 'jsName'=>'java_two'),
-'three' => array('codeValue'=>3, 'jsName'=>'java_three'),
-'four' => array('codeValue'=>4, 'jsName'=>'java_four'),
-'five' => array('codeValue'=>5, 'jsName'=>'java_five'),
-'six' => array('codeValue'=>6, 'jsName'=>'java_six'),
-'seven' => array('codeValue'=>7, 'jsName'=>'java_seven'),
-'eight' => array('codeValue'=>8, 'jsName'=>'java_eight'),
-'nine' => array('codeValue'=>9, 'jsName'=>'java_nine'),
-'ten' => array('codeValue'=>10, 'jsName'=>'java_ten'),
-'eleven' => array('codeValue'=>11, 'jsName'=>'java_eleven'),
-'twelve' => array('codeValue'=>12, 'jsName'=>'java_twelve'),
-'half' => array('codeValue'=>.5, 'jsName'=>'java_half'),
-'hi' => array('codeValue'=>'there', 'jsName'=>'java_hi'),
-'hello' => array('codeValue'=>"Tom", 'jsName'=>'java_hello'),
-'a' => array('codeValue'=>0, 'jsName'=>'java_a'),
-'b' => array('codeValue'=>0, 'jsName'=>'java_b'),
-'c' => array('codeValue'=>0, 'jsName'=>'java_c'),
-'d' => array('codeValue'=>0, 'jsName'=>'java_d'),
+'one' => array('codeValue'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'two' => array('codeValue'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'three' => array('codeValue'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'four' => array('codeValue'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'five' => array('codeValue'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'six' => array('codeValue'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'seven' => array('codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'eight' => array('codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'nine' => array('codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'ten' => array('codeValue'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'half' => array('codeValue'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'hi' => array('codeValue'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'hello' => array('codeValue'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'a' => array('codeValue'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'b' => array('codeValue'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'c' => array('codeValue'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'d' => array('codeValue'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+// Constants
+'ADMINEMAIL' => array('codeValue'=>'value for {ADMINEMAIL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'ADMINNAME' => array('codeValue'=>'value for {ADMINNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'AID' => array('codeValue'=>'value for {AID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'ANSWERSCLEARED' => array('codeValue'=>'value for {ANSWERSCLEARED}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'ANSWER' => array('codeValue'=>'value for {ANSWER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'ASSESSMENTS' => array('codeValue'=>'value for {ASSESSMENTS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'ASSESSMENT_CURRENT_TOTAL' => array('codeValue'=>'value for {ASSESSMENT_CURRENT_TOTAL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'ASSESSMENT_HEADING' => array('codeValue'=>'value for {ASSESSMENT_HEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'CHECKJAVASCRIPT' => array('codeValue'=>'value for {CHECKJAVASCRIPT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'CLEARALL' => array('codeValue'=>'value for {CLEARALL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'CLOSEWINDOW' => array('codeValue'=>'value for {CLOSEWINDOW}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'COMPLETED' => array('codeValue'=>'value for {COMPLETED}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'DATESTAMP' => array('codeValue'=>'value for {DATESTAMP}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'EMAILCOUNT' => array('codeValue'=>'value for {EMAILCOUNT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'EMAIL' => array('codeValue'=>'value for {EMAIL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'EXPIRY' => array('codeValue'=>'value for {EXPIRY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'FIRSTNAME' => array('codeValue'=>'value for {FIRSTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'GID' => array('codeValue'=>'value for {GID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'GROUPDESCRIPTION' => array('codeValue'=>'value for {GROUPDESCRIPTION}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'GROUPNAME' => array('codeValue'=>'value for {GROUPNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:123X45X67' => array('codeValue'=>'value for {INSERTANS:123X45X67}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:123X45X67ber' => array('codeValue'=>'value for {INSERTANS:123X45X67ber}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:123X45X67ber_01a' => array('codeValue'=>'value for {INSERTANS:123X45X67ber_01a}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'LANGUAGECHANGER' => array('codeValue'=>'value for {LANGUAGECHANGER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'LANGUAGE' => array('codeValue'=>'value for {LANGUAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'LANG' => array('codeValue'=>'value for {LANG}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'LASTNAME' => array('codeValue'=>'value for {LASTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'LOADERROR' => array('codeValue'=>'value for {LOADERROR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'LOADFORM' => array('codeValue'=>'value for {LOADFORM}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'LOADHEADING' => array('codeValue'=>'value for {LOADHEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'LOADMESSAGE' => array('codeValue'=>'value for {LOADMESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'NAME' => array('codeValue'=>'value for {NAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'NAVIGATOR' => array('codeValue'=>'value for {NAVIGATOR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'NOSURVEYID' => array('codeValue'=>'value for {NOSURVEYID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'NOTEMPTY' => array('codeValue'=>'value for {NOTEMPTY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'NULL' => array('codeValue'=>'value for {NULL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'NUMBEROFQUESTIONS' => array('codeValue'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'OPTOUTURL' => array('codeValue'=>'value for {OPTOUTURL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'PASSTHRULABEL' => array('codeValue'=>'value for {PASSTHRULABEL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'PASSTHRUVALUE' => array('codeValue'=>'value for {PASSTHRUVALUE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'PERCENTCOMPLETE' => array('codeValue'=>'value for {PERCENTCOMPLETE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'PERC' => array('codeValue'=>'value for {PERC}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'PRIVACYMESSAGE' => array('codeValue'=>'value for {PRIVACYMESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'PRIVACY' => array('codeValue'=>'value for {PRIVACY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QID' => array('codeValue'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTIONHELPPLAINTEXT' => array('codeValue'=>'value for {QUESTIONHELPPLAINTEXT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTIONHELP' => array('codeValue'=>'value for {QUESTIONHELP}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_CLASS' => array('codeValue'=>'value for {QUESTION_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_CODE' => array('codeValue'=>'value for {QUESTION_CODE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_ESSENTIALS' => array('codeValue'=>'value for {QUESTION_ESSENTIALS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_FILE_VALID_MESSAGE' => array('codeValue'=>'value for {QUESTION_FILE_VALID_MESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_HELP' => array('codeValue'=>'value for {QUESTION_HELP}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_INPUT_ERROR_CLASS' => array('codeValue'=>'value for {QUESTION_INPUT_ERROR_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_MANDATORY' => array('codeValue'=>'value for {QUESTION_MANDATORY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_MAN_CLASS' => array('codeValue'=>'value for {QUESTION_MAN_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_MAN_MESSAGE' => array('codeValue'=>'value for {QUESTION_MAN_MESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_NUMBER' => array('codeValue'=>'value for {QUESTION_NUMBER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_TEXT' => array('codeValue'=>'value for {QUESTION_TEXT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_VALID_MESSAGE' => array('codeValue'=>'value for {QUESTION_VALID_MESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION' => array('codeValue'=>'value for {QUESTION}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'REGISTERERROR' => array('codeValue'=>'value for {REGISTERERROR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'REGISTERFORM' => array('codeValue'=>'value for {REGISTERFORM}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'REGISTERMESSAGE1' => array('codeValue'=>'value for {REGISTERMESSAGE1}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'REGISTERMESSAGE2' => array('codeValue'=>'value for {REGISTERMESSAGE2}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'RESTART' => array('codeValue'=>'value for {RESTART}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'RETURNTOSURVEY' => array('codeValue'=>'value for {RETURNTOSURVEY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SAVEALERT' => array('codeValue'=>'value for {SAVEALERT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SAVEDID' => array('codeValue'=>'value for {SAVEDID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SAVEERROR' => array('codeValue'=>'value for {SAVEERROR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SAVEFORM' => array('codeValue'=>'value for {SAVEFORM}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SAVEHEADING' => array('codeValue'=>'value for {SAVEHEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SAVEMESSAGE' => array('codeValue'=>'value for {SAVEMESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SAVE' => array('codeValue'=>'value for {SAVE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SGQ' => array('codeValue'=>'value for {SGQ}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SID' => array('codeValue'=>'value for {SID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SITENAME' => array('codeValue'=>'value for {SITENAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SUBMITBUTTON' => array('codeValue'=>'value for {SUBMITBUTTON}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SUBMITCOMPLETE' => array('codeValue'=>'value for {SUBMITCOMPLETE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SUBMITREVIEW' => array('codeValue'=>'value for {SUBMITREVIEW}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SURVEYCONTACT' => array('codeValue'=>'value for {SURVEYCONTACT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SURVEYDESCRIPTION' => array('codeValue'=>'value for {SURVEYDESCRIPTION}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SURVEYFORMAT' => array('codeValue'=>'value for {SURVEYFORMAT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SURVEYLANGAGE' => array('codeValue'=>'value for {SURVEYLANGAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SURVEYLISTHEADING' => array('codeValue'=>'value for {SURVEYLISTHEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SURVEYLIST' => array('codeValue'=>'value for {SURVEYLIST}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SURVEYNAME' => array('codeValue'=>'value for {SURVEYNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'SURVEYURL' => array('codeValue'=>'value for {SURVEYURL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TEMPLATECSS' => array('codeValue'=>'value for {TEMPLATECSS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TEMPLATEURL' => array('codeValue'=>'value for {TEMPLATEURL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TEXT' => array('codeValue'=>'value for {TEXT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'THEREAREXQUESTIONS' => array('codeValue'=>'value for {THEREAREXQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TIME' => array('codeValue'=>'value for {TIME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TOKEN:EMAIL' => array('codeValue'=>'value for {TOKEN:EMAIL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TOKEN:FIRSTNAME' => array('codeValue'=>'value for {TOKEN:FIRSTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TOKEN:LASTNAME' => array('codeValue'=>'value for {TOKEN:LASTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TOKENCOUNT' => array('codeValue'=>'value for {TOKENCOUNT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TOKEN_COUNTER' => array('codeValue'=>'value for {TOKEN_COUNTER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'TOKEN' => array('codeValue'=>'value for {TOKEN}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'URL' => array('codeValue'=>'value for {URL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'WELCOME' => array('codeValue'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+// also include SGQA values and read-only variable attributes
+'12X34X56'  => array('codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'12X3X5lab1_ber'    => array('codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'q5pointChoice.code'    => array('codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'q5pointChoice.value'   => array('codeValue'=> 'Father', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'qArrayNumbers.ls1.min.code'    => array('codeValue'=> 7, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'qArrayNumbers.ls1.min.value' => array('codeValue'=> 'I love LimeSurvey', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'12X3X5lab1_ber#2'  => array('codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
         );
 
-        $namedConstant = array(
-            'ADMINEMAIL'					=>'value for {ADMINEMAIL}',
-            'ADMINNAME'						=>'value for {ADMINNAME}',
-            'AID'							=>'value for {AID}',
-            'ANSWERSCLEARED'				=>'value for {ANSWERSCLEARED}',
-            'ANSWER'						=>'value for {ANSWER}',
-            'ASSESSMENTS'					=>'value for {ASSESSMENTS}',
-            'ASSESSMENT_CURRENT_TOTAL'		=>'value for {ASSESSMENT_CURRENT_TOTAL}',
-            'ASSESSMENT_HEADING'			=>'value for {ASSESSMENT_HEADING}',
-            'CHECKJAVASCRIPT'				=>'value for {CHECKJAVASCRIPT}',
-            'CLEARALL'						=>'value for {CLEARALL}',
-            'CLOSEWINDOW'					=>'value for {CLOSEWINDOW}',
-            'COMPLETED'						=>'value for {COMPLETED}',
-            'DATESTAMP'						=>'value for {DATESTAMP}',
-            'EMAILCOUNT'					=>'value for {EMAILCOUNT}',
-            'EMAIL'							=>'value for {EMAIL}',
-            'EXPIRY'						=>'value for {EXPIRY}',
-            'FIRSTNAME'						=>'value for {FIRSTNAME}',
-            'GID'							=>'value for {GID}',
-            'GROUPDESCRIPTION'				=>'value for {GROUPDESCRIPTION}',
-            'GROUPNAME'						=>'value for {GROUPNAME}',
-            'INSERTANS:123X45X67'			=>'value for {INSERTANS:123X45X67}',
-            'INSERTANS:123X45X67ber'		=>'value for {INSERTANS:123X45X67ber}',
-            'INSERTANS:123X45X67ber_01a'	=>'value for {INSERTANS:123X45X67ber_01a}',
-            'LANGUAGECHANGER'				=>'value for {LANGUAGECHANGER}',
-            'LANGUAGE'						=>'value for {LANGUAGE}',
-            'LANG'							=>'value for {LANG}',
-            'LASTNAME'						=>'value for {LASTNAME}',
-            'LOADERROR'						=>'value for {LOADERROR}',
-            'LOADFORM'						=>'value for {LOADFORM}',
-            'LOADHEADING'					=>'value for {LOADHEADING}',
-            'LOADMESSAGE'					=>'value for {LOADMESSAGE}',
-            'NAME'							=>'value for {NAME}',
-            'NAVIGATOR'						=>'value for {NAVIGATOR}',
-            'NOSURVEYID'					=>'value for {NOSURVEYID}',
-            'NOTEMPTY'						=>'value for {NOTEMPTY}',
-            'NULL'							=>'value for {NULL}',
-            'NUMBEROFQUESTIONS'				=>'value for {NUMBEROFQUESTIONS}',
-            'OPTOUTURL'						=>'value for {OPTOUTURL}',
-            'PASSTHRULABEL'					=>'value for {PASSTHRULABEL}',
-            'PASSTHRUVALUE'					=>'value for {PASSTHRUVALUE}',
-            'PERCENTCOMPLETE'				=>'value for {PERCENTCOMPLETE}',
-            'PERC'							=>'value for {PERC}',
-            'PRIVACYMESSAGE'				=>'value for {PRIVACYMESSAGE}',
-            'PRIVACY'						=>'value for {PRIVACY}',
-            'QID'							=>'value for {QID}',
-            'QUESTIONHELPPLAINTEXT'			=>'value for {QUESTIONHELPPLAINTEXT}',
-            'QUESTIONHELP'					=>'value for {QUESTIONHELP}',
-            'QUESTION_CLASS'				=>'value for {QUESTION_CLASS}',
-            'QUESTION_CODE'					=>'value for {QUESTION_CODE}',
-            'QUESTION_ESSENTIALS'			=>'value for {QUESTION_ESSENTIALS}',
-            'QUESTION_FILE_VALID_MESSAGE'	=>'value for {QUESTION_FILE_VALID_MESSAGE}',
-            'QUESTION_HELP'					=>'value for {QUESTION_HELP}',
-            'QUESTION_INPUT_ERROR_CLASS'	=>'value for {QUESTION_INPUT_ERROR_CLASS}',
-            'QUESTION_MANDATORY'			=>'value for {QUESTION_MANDATORY}',
-            'QUESTION_MAN_CLASS'			=>'value for {QUESTION_MAN_CLASS}',
-            'QUESTION_MAN_MESSAGE'			=>'value for {QUESTION_MAN_MESSAGE}',
-            'QUESTION_NUMBER'				=>'value for {QUESTION_NUMBER}',
-            'QUESTION_TEXT'					=>'value for {QUESTION_TEXT}',
-            'QUESTION_VALID_MESSAGE'		=>'value for {QUESTION_VALID_MESSAGE}',
-            'QUESTION'						=>'value for {QUESTION}',
-            'REGISTERERROR'					=>'value for {REGISTERERROR}',
-            'REGISTERFORM'					=>'value for {REGISTERFORM}',
-            'REGISTERMESSAGE1'				=>'value for {REGISTERMESSAGE1}',
-            'REGISTERMESSAGE2'				=>'value for {REGISTERMESSAGE2}',
-            'RESTART'						=>'value for {RESTART}',
-            'RETURNTOSURVEY'				=>'value for {RETURNTOSURVEY}',
-            'SAVEALERT'						=>'value for {SAVEALERT}',
-            'SAVEDID'						=>'value for {SAVEDID}',
-            'SAVEERROR'						=>'value for {SAVEERROR}',
-            'SAVEFORM'						=>'value for {SAVEFORM}',
-            'SAVEHEADING'					=>'value for {SAVEHEADING}',
-            'SAVEMESSAGE'					=>'value for {SAVEMESSAGE}',
-            'SAVE'							=>'value for {SAVE}',
-            'SGQ'							=>'value for {SGQ}',
-            'SID'							=>'value for {SID}',
-            'SITENAME'						=>'value for {SITENAME}',
-            'SUBMITBUTTON'					=>'value for {SUBMITBUTTON}',
-            'SUBMITCOMPLETE'				=>'value for {SUBMITCOMPLETE}',
-            'SUBMITREVIEW'					=>'value for {SUBMITREVIEW}',
-            'SURVEYCONTACT'					=>'value for {SURVEYCONTACT}',
-            'SURVEYDESCRIPTION'				=>'value for {SURVEYDESCRIPTION}',
-            'SURVEYFORMAT'					=>'value for {SURVEYFORMAT}',
-            'SURVEYLANGAGE'					=>'value for {SURVEYLANGAGE}',
-            'SURVEYLISTHEADING'				=>'value for {SURVEYLISTHEADING}',
-            'SURVEYLIST'					=>'value for {SURVEYLIST}',
-            'SURVEYNAME'					=>'value for {SURVEYNAME}',
-            'SURVEYURL'						=>'value for {SURVEYURL}',
-            'TEMPLATECSS'					=>'value for {TEMPLATECSS}',
-            'TEMPLATEURL'					=>'value for {TEMPLATEURL}',
-            'TEXT'							=>'value for {TEXT}',
-            'THEREAREXQUESTIONS'			=>'value for {THEREAREXQUESTIONS}',
-            'TIME'							=>'value for {TIME}',
-            'TOKEN:EMAIL'					=>'value for {TOKEN:EMAIL}',
-            'TOKEN:FIRSTNAME'				=>'value for {TOKEN:FIRSTNAME}',
-            'TOKEN:LASTNAME'				=>'value for {TOKEN:LASTNAME}',
-            'TOKEN:XXX'						=>'value for {TOKEN:XXX}',
-            'TOKENCOUNT'					=>'value for {TOKENCOUNT}',
-            'TOKEN_COUNTER'					=>'value for {TOKEN_COUNTER}',
-            'TOKEN'							=>'value for {TOKEN}',
-            'URL'							=>'value for {URL}',
-            'WELCOME'						=>'value for {WELCOME}',
-            // also include SGQA values and read-only variable attributes
-            '12X34X56'  =>5,
-            '12X3X5lab1_ber'    =>10,
-            'q5pointChoice.code'    =>5,
-            'q5pointChoice.value'   => 'Father',
-            'qArrayNumbers.ls1.min.code'    => 7,
-            'qArrayNumbers.ls1.min.value' => 'I love LimeSurvey',
-            '12X3X5lab1_ber#2'  => 15,
-        );
-
-        // Syntax for $tests is~
+        // Syntax for $tests is
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
@@ -1875,11 +1828,6 @@ NULL~++a
 NULL~--b
 11~eleven
 144~twelve * twelve
-4~if(5 > 7,2,4)
-there~if((one > two),'hi','there')
-64~if((one < two),pow(2,6),pow(6,2))
-1, 2, 3, 4, 5~list(one,two,three,min(four,five,six),max(three,four,five))
-11, 12~list(eleven,twelve)
 value for {INSERTANS:123X45X67}~INSERTANS:123X45X67
 value for {QID}~QID
 value for {ASSESSMENT_HEADING}~ASSESSMENT_HEADING
@@ -1934,32 +1882,34 @@ EOD;
         
         $em = new ExpressionManager();
         $em->RegisterVarnamesUsingMerge($vars);
-        $em->RegisterNamedConstantsUsingMerge($namedConstant);
 
-        if (is_array($extraVars) and count($extraVars) > 0)
+        if (isset($exprmgr_extraVars) && is_array($exprmgr_extraVars) and count($exprmgr_extraVars) > 0)
         {
-            $em->RegisterVarnamesUsingMerge($extraVars);
+            $em->RegisterVarnamesUsingMerge($exprmgr_extraVars);
         }
-        if (is_array($extraFunctions) and count($extraFunctions) > 0)
+        if (isset($exprmgr_extraTests) && is_array($exprmgr_extraTests) and count($exprmgr_extraTests) > 0)
         {
-            $em->RegisterFunctions($extraFunctions);
-        }
-        if (is_string($extraTests))
-        {
-            $tests .= "\n" . $extraTests;
+            $tests .= "\n" . $exprmgr_extraTests;
         }
 
-        print '<table border="1"><tr><th>Expression</th><th>Result</th><th>Expected</th><th>VarNames Used</th><th>Javascript VarNames</th><th>Named Constants Used</th><th>Errors</th></tr>';
+        print '<table border="1"><tr><th>Expression</th><th>Result</th><th>Expected</th><th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
         foreach(explode("\n",$tests)as $test)
         {
             $values = explode("~",$test);
             $expectedResult = array_shift($values);
             $expr = implode("~",$values);
             $resultStatus = 'ok';
-            print '<tr><td>' . $expr . "</td>\n";
             $status = $em->Evaluate($expr);
             $result = $em->GetResult();
             $valToShow = $result;
+            $errString = $em->GetReadableErrors();
+            print "<tr>";
+            if (strlen($errString) > 0) {
+                print "<td>" . $errString . "</td>\n";
+            }
+            else {
+                print "<td>" . $expr . "</td>\n";
+            }
             if (is_null($result)) {
                 $valToShow = "NULL";
             }
@@ -1971,28 +1921,12 @@ EOD;
             print "<td class='" . $resultStatus . "'>" . $expectedResult . "</td>\n";
             $varsUsed = $em->GetVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
-                print '<td>' . implode(', ', $varsUsed) . "</td>\n";
-            }
-            else {
-                print "<td>&nbsp;</td>\n";
-            }
-            $jsVarsUsed = $em->GetJsVarsUsed();
-            if (is_array($jsVarsUsed) and count($jsVarsUsed) > 0) {
-                print '<td>' . implode(', ', $jsVarsUsed) . "</td>\n";
-            }
-            else {
-                print "<td>&nbsp;</td>\n";
-            }
-            $namedConstantsUsed = $em->GetNamedConstantsUsed();
-            if (is_array($namedConstantsUsed) and count($namedConstantsUsed) > 0) {
-                print '<td>' . implode(', ', $namedConstantsUsed) . "</td>\n";
-            }
-            else {
-                print "<td>&nbsp;</td>\n";
-            }
-            $errString = $em->GetReadableErrors();
-            if (strlen($errString) > 0) {
-                print "<td>" . $errString . "</td>\n";
+                $varDesc = array();
+                foreach ($varsUsed as $v) {
+                    $varInfo = $em->GetVarInfo($v);
+                    $varDesc[] = $v . '(' . $varInfo['jsName'] . ',' . $varInfo['readWrite'] . ',' . $varInfo['isOnCurrentPage'] . ')';
+                }
+                print '<td>' . implode(',<br/>', $varDesc) . "</td>\n";
             }
             else {
                 print "<td>&nbsp;</td>\n";
@@ -2001,29 +1935,6 @@ EOD;
         }
         print '</table>';
     }
-}
-
-/*
- * Extra Functions can  go here.
- * TODO  Find good way to inlcude these extra functions externally.
- * Tried via ExpressionManagerFunctions, but they weren't properly included
- */
-
-function exprmgr_if($test,$ok,$error)
-{
-    if ($test)
-    {
-        return $ok;
-    }
-    else
-    {
-        return $error;
-    }
-}
-
-function exprmgr_list($args)
-{
-    return implode(", ",$args);
 }
 
 /**
