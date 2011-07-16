@@ -50,11 +50,11 @@ function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieon
     {
         if ($offset)
         {
-            $CI->db->limit($numrows,$offset);
+            //$CI->db->limit($numrows,$offset);
         }
         else
         {
-            $CI->db->limit($numrows);
+            //$CI->db->limit($numrows);
         }
     }
     if($inputarr)

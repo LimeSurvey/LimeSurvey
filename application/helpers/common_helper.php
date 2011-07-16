@@ -683,16 +683,31 @@ function getGidPrevious($surveyid, $gid)
 function getQidPrevious($surveyid, $gid, $qid)
 {
     //global $CI, $clang;
-    $CI =& get_instance();
+   /* $CI =& get_instance();
     $CI->load->helper("database");
     //$clang =  $CI->limesurvey_lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('questions_model');
     //$qquery = "SELECT * FROM ".$CI->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
+    $qquery = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order"; 
     //$qresult = db_execute_assoc($qquery);
-    $qresult = $CI->questions_model->getQuestions($surveyid,$gid,$s_lang); //checked)
+    $qresult = $CI->questions_model->getQuestionID($surveyid,$gid,$s_lang); //checked)
     $qrows = $qresult->result_array();
+var_dump($qrows);*/
 
+
+    $CI= &get_instance();
+    $CI->load->helper("database");
+    $clang = $CI->limesurvey_lang;
+    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+    //$CI->load->model('questions_model');
+    //$qquery = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
+    //$qresult = db_execute_assoc($qquery) ;
+    $qresult = $CI->questions_model->getQuestionID($surveyid,$gid,$s_lang); //checked)
+    $qrows = $qresult->result_array();
+  var_dump($qrows);  
+  
+  
     $i = 0;
     $iPrev = -1;
     if ($qresult->num_rows() > 0)
@@ -765,11 +780,11 @@ function getQidNext($surveyid, $gid, $qid)
     $clang = $CI->limesurvey_lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     //$CI->load->model('questions_model');
-    $qquery = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
+    //$qquery = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
     //$qresult = db_execute_assoc($qquery) ;
     $qresult = $CI->questions_model->getQuestionID($surveyid,$gid,$s_lang); //checked)
     $qrows = $qresult->result_array();
-    
+  var_dump($qrows);  
     $i = 0;
     $iNext = 1;
     if ($qresult->num_rows() > 0)
