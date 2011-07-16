@@ -705,8 +705,7 @@ var_dump($qrows);*/
     //$qresult = db_execute_assoc($qquery) ;
     $qresult = $CI->questions_model->getQuestionID($surveyid,$gid,$s_lang); //checked)
     $qrows = $qresult->result_array();
-  var_dump($qrows);  
-  
+   
   
     $i = 0;
     $iPrev = -1;
@@ -784,7 +783,7 @@ function getQidNext($surveyid, $gid, $qid)
     //$qresult = db_execute_assoc($qquery) ;
     $qresult = $CI->questions_model->getQuestionID($surveyid,$gid,$s_lang); //checked)
     $qrows = $qresult->result_array();
-  var_dump($qrows);  
+
     $i = 0;
     $iNext = 1;
     if ($qresult->num_rows() > 0)

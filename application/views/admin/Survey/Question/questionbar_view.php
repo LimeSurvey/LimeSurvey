@@ -96,7 +96,7 @@
             
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-                <a href='#' onclick="window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid&amp;subaction=editconditionsform', '_top')"
+                <a href='#' onclick="window.open('<?php echo site_url("admin/conditions/editconditionsform/$surveyid/$gid/$qid");?>', '_top')"
                  title="<?php echo $clang->gTview("Set/view conditions for this question"); ?>">
                 <img src='<?php echo $this->config->item('imageurl'); ?>/conditions.png' alt='<?php echo $clang->gT("Set conditions for this question"); ?>'  name='SetQuestionConditions' /></a>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt='' />
