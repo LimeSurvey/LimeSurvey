@@ -8409,4 +8409,34 @@ function modify_database($sqlfile='', $sqlstring='')
 
 }
 
+function getlabelsets($languages=null)
+// Returns a list with label sets
+// if the $languages paramter is provided then only labelset containing all of the languages in the paramter are provided
+{
+    $CI =& get_instance();
+    $CI->load->helper('database');
+    $clang = $CI->limesurvey_lang;
+    if ($languages){
+        $languages=sanitize_languagecodeS($languages);
+        $languagesarray=explode(' ',trim($languages));
+    }
+    $query = "SELECT ".$CI->db->dbprefix."labelsets.lid as lid, label_name FROM ".$CI->db->dbprefix."labelsets";
+    if ($languages){
+        $query .=" where ";
+        foreach  ($languagesarray as $item)
+        {
+            $query .=" ((languages like '% $item %') or (languages='$item') or (languages like '% $item') or (languages like '$item %')) and ";
+        }
+        $query .=" 1=1 ";
+    }
+    $query .=" order by label_name";
+    $result = db_execute_assoc($query) or safe_die ("Couldn't get list of label sets<br />$query<br />"); //Checked
+    $labelsets=array();
+    foreach ($result->result_array() as $row)
+    {
+        $labelsets[] = array($row['lid'], $row['label_name']);
+    }
+    return $labelsets;
+}
+
 // Closing PHP tag intentionally omitted - yes, it is okay

@@ -37,5 +37,11 @@ class Labels_model extends CI_Model {
         $this->db->order_by('language, sortorder, code');
         return $this->db->get('labels');
     }
+    
+    function insertRecords($data)
+    {
+        
+        return $this->db->insert('labels',$data);
+    }
 
 }

@@ -237,7 +237,7 @@ function createNewLabelTR(alternate,first){
     if (!first)
         x = x + "<td>###codeval###</td><td>###assessmentval###</td>";
     else
-        x = x + "<td><img src='../images/handle.png'></td><td>"
+        x = x + "<td><img src=" + ci_path + "/handle.png></td><td>"
                 + "<input type='hidden' class='hiddencode' value='###codeval###' />"
                 + "<input type='text' class='codeval' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"
                 + "</td><td>"
@@ -245,11 +245,11 @@ function createNewLabelTR(alternate,first){
 
     x = x + "<td><input name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
             "<a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
-            "<img height=\"16\" border=\"0\" width=\"16\" src=\"../images/edithtmlpopup.png\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\">"+
-            "<img height=\"16\" border=\"0\" align=\"top\" width=\"16\" style=\"display: none;\" src=\"../images/edithtmlpopup_disabled.png\" name=\"title_###lang###_###next###_popupctrldis\" id=\"title_###lang###_###next###_popupctrldis\" alt=\"Give focus to the HTML editor popup window\"></a></td>";
+            "<img height=\"16\" border=\"0\" width=\"16\" src=" + ci_path + "/edithtmlpopup.png name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\">"+
+            "<img height=\"16\" border=\"0\" align=\"top\" width=\"16\" style=\"display: none;\" src=" + ci_path + "/edithtmlpopup_disabled.png name=\"title_###lang###_###next###_popupctrldis\" id=\"title_###lang###_###next###_popupctrldis\" alt=\"Give focus to the HTML editor popup window\"></a></td>";
 
     if (first)
-        x = x + "<td style=\"text-align: center;\"><img class=\"btnaddanswer\" src=\"../images/addanswer.png\"><img class=\"btndelanswer\" src=\"../images/deleteanswer.png\"></td>";
+        x = x + "<td style=\"text-align: center;\"><img class=\"btnaddanswer\" src=" + ci_path + "/addanswer.png><img class=\"btndelanswer\" src=" + ci_path + "/deleteanswer.png></td>";
 
     x = x + "</tr>";
 

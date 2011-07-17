@@ -78,7 +78,7 @@
 		{ 
 	    ?>
 	    
-	    <a href="#" onclick="window.open('<?php echo site_url("admin/labels");?>', '_top')" title="<?php echo $clang->gTview("Edit label sets");?>" >
+	    <a href="#" onclick="window.open('<?php echo site_url("admin/labels/view");?>', '_top')" title="<?php echo $clang->gTview("Edit label sets");?>" >
 	    <img src='<?php echo $this->config->item('imageurl');?>/labels.png' name='LabelsEditor' alt='<?php echo $clang->gT("Edit label sets");?>' /></a>    
 	    <img src='<?php echo $this->config->item('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
 	    <?php }

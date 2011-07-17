@@ -94,6 +94,14 @@
     function deactivate($surveyid)
     {
         
+        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        		
+	   self::_getAdminHeader();
+	   self::_showadminmenu($surveyid);
+	   self::_surveybar($surveyid);
+        			
+        
         //$postsid=returnglobal('sid');
         if ($this->input->post('sid'))
         {
@@ -241,6 +249,11 @@
             $this->load->view('admin/Survey/deactivateSurvey_view',$data);
             
         }
+        
+        self::_loadEndScripts();
+                    
+                    
+	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
     function activate($surveyid)

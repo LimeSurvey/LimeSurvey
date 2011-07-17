@@ -52,5 +52,10 @@ $route['admin/survey/editsurveysettings/(:num)'] = "admin/survey/index/editsurve
 $route['admin/question/newquestion/(:num)/(:num)'] = "admin/question/index/addquestion/$1/$2";
 $route['admin/question/editquestion/(:num)/(:num)/(:num)'] = "admin/question/index/editquestion/$1/$2/$3";
 
+//labels
+$route['admin/labels/newlabel'] = "admin/labels/index/newlabelset";
+$route['admin/labels/editlabel/(:num)'] = "admin/labels/index/editlabelset/$1";
+
+
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

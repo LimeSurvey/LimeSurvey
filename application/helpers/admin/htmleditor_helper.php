@@ -108,8 +108,8 @@ function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$q
 
 function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    global $clang; //, $imageurl, $homeurl;
-
+    $CI =& get_instance(); //global $clang; //, $imageurl, $homeurl;
+    $clang = $CI->limesurvey_lang;
     $htmlcode = '';
     $imgopts = '';
     $toolbarname = 'Basic';
