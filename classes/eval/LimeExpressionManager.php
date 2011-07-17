@@ -43,13 +43,20 @@ class LimeExpressionManager {
      * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
      */
 
-    public function setVariableAndTokenMappingsForExpressionManager($sid,$forceRefresh=false,$anonymized=false)
+    public function setVariableAndTokenMappingsForExpressionManager($sid,$forceRefresh=false,$anonymized=false,$groupId=NULL)
     {
         global $globalfieldmap, $clang, $surveyid;
 
         //checks to see if fieldmap has already been built for this page.
         if (isset($globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode])&& !$forceRefresh) {
             return false;   // means the mappings have already been set and don't need to be re-created
+        }
+        if (isset($globalfieldmap[$surveyid]['exprMgr_groupId']))
+        {
+            $global_groupId = $globalfieldmap[$surveyid]['exprMgr_groupId'];
+        }
+        else {
+            $global_groupId = NULL;
         }
 
         $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
@@ -67,6 +74,13 @@ class LimeExpressionManager {
             {
                 continue;   // not an SGQA value
             }
+            $fieldNameParts = explode('X',$code);
+            $groupId = $fieldNameParts[1];
+            $isOnCurrentPage = ($groupId != NULL && $groupId == $global_groupId) ? 'Y' : 'N';
+
+            $questionId = $fieldNameParts[2];
+            $questionAttributes = getQuestionAttributes($questionId,$fielddata['type']);
+            $relevance = (isset($questionAttributes['relevance'])) ? $questionAttributes['relevance'] : 1;
             switch($fielddata['type'])
             {
                 case '!': //List - dropdown
@@ -85,12 +99,10 @@ class LimeExpressionManager {
                 case '|': //File Upload
                 case '*': //Equation
                     $varName = $fielddata['title'];
-                    $jsVarName = 'java' . $code;
                     $question = $fielddata['question'];
                     break;
                 case '1': //Array (Flexible Labels) dual scale
                     $varName = $fielddata['title'] . '.' . $fielddata['aid'] . '.' . $fielddata['scale_id'];
-                    $jsVarName = 'java' . $code;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . ': ' . $fielddata['scale'];
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -105,16 +117,67 @@ class LimeExpressionManager {
                 case 'Q': //MULTIPLE SHORT TEXT
                 case 'R': //RANKING STYLE
                     $varName = $fielddata['title'] . '.' . $fielddata['aid'];
-                    $jsVarName = 'java' . $code;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                     break;
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
                     $varName = $fielddata['title'] . '.' . $fielddata['aid'];
-                    $jsVarName = 'java' . $code;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . ': ' . $fielddata['subquestion2'];
                     break;
             }
+            switch($fielddata['type'])
+            {
+                case 'R': //RANKING STYLE
+                    if ($isOnCurrentPage=='Y')
+                    {
+                        $jsVarName = 'fvalue_' . $fieldNameParts[2];
+                    }
+                    else
+                    {
+                        $jsVarName = 'java' . $code;
+                    }
+                    break;
+                case 'D': //DATE
+                case 'N': //NUMERICAL QUESTION TYPE
+                case 'S': //SHORT FREE TEXT
+                case 'T': //LONG FREE TEXT
+                case 'U': //HUGE FREE TEXT
+                case 'Q': //MULTIPLE SHORT TEXT
+                case 'K': //MULTIPLE NUMERICAL QUESTION
+                    if ($isOnCurrentPage=='Y')
+                    {
+                        $jsVarName = 'answer' . $code;
+                    }
+                    else
+                    {
+                        $jsVarName = 'java' . $code;
+                    }
+                    break;
+                case '!': //List - dropdown
+                case '5': //5 POINT CHOICE radio-buttons
+                case 'G': //GENDER drop-down list
+                case 'I': //Language Question
+                case 'L': //LIST drop-down/radio-button list
+                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                case 'X': //BOILERPLATE QUESTION
+                case 'Y': //YES/NO radio-buttons
+                case '|': //File Upload
+                case '*': //Equation
+                case '1': //Array (Flexible Labels) dual scale
+                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                case 'F': //ARRAY (Flexible) - Row Format
+                case 'H': //ARRAY (Flexible) - Column Format
+                case 'M': //Multiple choice checkbox
+                case 'P': //Multiple choice with comments checkbox + text
+                case ':': //ARRAY (Multi Flexi) 1 to 10
+                case ';': //ARRAY (Multi Flexi) Text
+                    $jsVarName = 'java' . $code;
+                    break;
+            }
+            $readWrite = 'N';
             if (isset($_SESSION[$code]))
             {
                 $codeValue = $_SESSION[$code];
@@ -122,22 +185,23 @@ class LimeExpressionManager {
                 $varInfo_Code = array(
                     'codeValue'=>$codeValue,
                     'jsName'=>$jsVarName,
-                    'readWrite'=>'N',
-                    'isOnCurrentPage','N',
+                    'readWrite'=>$readWrite,
+                    'isOnCurrentPage',$isOnCurrentPage,
                     'displayValue'=>$displayValue,
                     'question'=>$question,
+                    'relevance'=>$relevance,
                     );
                 $varInfo_DisplayVal = array(
                     'codeValue'=>$displayValue,
                     'jsName'=>'',
                     'readWrite'=>'N',
-                    'isOnCurrentPage'=>'N',
+                    'isOnCurrentPage'=>$isOnCurrentPage,
                     );
                 $varInfo_Question = array(
                     'codeValue'=>$question,
                     'jsName'=>'',
                     'readWrite'=>'N',
-                    'isOnCurrentPage'=>'N',
+                    'isOnCurrentPage'=>$isOnCurrentPage,
                     );
                 $knownVars[$varName] = $varInfo_Code;
                 $knownVars[$varName . '.shown'] = $varInfo_DisplayVal;
@@ -151,8 +215,8 @@ class LimeExpressionManager {
                 $knownVars['INSERTANS:' . $code] = array(
                     'codeValue'=>'',
                     'jsName'=>'',
-                    'readWrite'=>'N',
-                    'isOnCurrentPage'=>'N',
+                    'readWrite'=>$readWrite,
+                    'isOnCurrentPage'=>$isOnCurrentPage,
                 );
             }
             $debugLog[] = array(
@@ -163,6 +227,9 @@ class LimeExpressionManager {
                 'question' => $question,
                 'codeValue' => isset($codeValue) ? $codeValue : '&nbsp;',
                 'displayValue' => isset($displayValue) ? $displayValue : '&nbsp;',
+                'readWrite' => $readWrite,
+                'isOnCurrentPage' => $isOnCurrentPage,
+                'relevance' => $relevance,
                 );
 
         }
@@ -201,6 +268,9 @@ class LimeExpressionManager {
                     'question' => '&nbsp;',
                     'codeValue' => '&nbsp;',
                     'displayValue' => $val,
+                    'readWrite'=>'N',
+                    'isOnCurrentPage'=>'N',
+                    'relevance'=>'',
                 );
             }
         }
@@ -224,16 +294,19 @@ class LimeExpressionManager {
         }
 
         $debugLog_html = "<table border='1'>";
-        $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>JSname</th><th>Question</th><th>CodeVal</th><th>DisplayVal</th></tr>";
+        $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>CodeVal</th><th>DisplayVal</th><th>JSname</th><th>Writable?</th><th>Set On This Page?</th><th>Relevance</th><th>Question</th></tr>";
         foreach ($debugLog as $t)
         {
             $debugLog_html .= "<tr><td>" . $t['code']
                 . "</td><td>" . $t['type']
                 . "</td><td>" . $t['varname']
-                . "</td><td>" . $t['jsName']
-                . "</td><td>" . $t['question']
                 . "</td><td>" . $t['codeValue']
                 . "</td><td>" . $t['displayValue']
+                . "</td><td>" . $t['jsName']
+                . "</td><td>" . $t['readWrite']
+                . "</td><td>" . $t['isOnCurrentPage']
+                . "</td><td>" . $t['relevance']
+                . "</td><td>" . $t['question']
                 . "</td></tr>";
         }
         $debugLog_html .= "</table>";
@@ -251,12 +324,16 @@ class LimeExpressionManager {
      * @return string - the original $string with all replacements done.
      */
 
-    static function ProcessString($string,array $replacementFields=array(), $forceRefresh=false, $anonymized=false)
+    static function ProcessString($string,array $replacementFields=array(), $forceRefresh=false, $anonymized=false, $groupId=NULL)
     {
         global $surveyid, $clang, $globalfieldmap;
 
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
+        if (!is_null($groupId))
+        {
+            $globalfieldmap[$surveyid]['exprMgr_groupId']=$groupId;
+        }
         if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized))
         {
             // means that some values changed, so need to update what was registered to ExpressionManager

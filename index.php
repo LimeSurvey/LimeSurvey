@@ -1181,7 +1181,7 @@ function checkgroupfordisplay($gid)
     $countQuestionsWithRelevanceIntThisGroup=0;
 
     // Initialize LimeExpressionManager for this group
-    LimeExpressionManager::ProcessString("",array(),true);  // forces a refresh of Token and Answer values into the replacement engine
+    LimeExpressionManager::ProcessString("",array(),true,false,$gid);  // forces a refresh of Token and Answer values into the replacement engine
 
     foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
 
@@ -1204,9 +1204,9 @@ function checkgroupfordisplay($gid)
                 {
                     $countQuestionsWithRelevanceIntThisGroup++;
                     $QuestionsWithRelevance[]=$qidattributes['relevance'];  // Create an array containing all of the questions whose Relevance Equaation must be processed.
+                }
             }
         }
-    }
     }
     if ($countQuestionsInThisGroup===0)
     {
