@@ -584,6 +584,7 @@ class ExpressionManager {
             {
                 if ($this->isValidVariable($token1[0]))
                 {
+                    $this->varsUsed[] = $token1[0];  // add this variable to list of those used in this equation
                     if ($this->isWritableVariable($token1[0]))
                     {
                         $evalStatus = $this->EvaluateLogicalOrExpression();
@@ -989,14 +990,37 @@ class ExpressionManager {
      */
     public function GetAllJsVarsUsed()
     {
+        if (is_null($this->allVarsUsed)){
+            return array();
+        }
         $names = array_unique($this->allVarsUsed);
         if (is_null($names)) {
-            return null;
+            return array();
         }
         $jsNames = array();
         foreach ($names as $name)
         {
-            if (isset($this->amVars[$name]['jsName']))
+            if (isset($this->amVars[$name]['jsName']) && $this->amVars[$name]['jsName'] != '')
+            {
+                $jsNames[] = $this->amVars[$name]['jsName'];
+            }
+        }
+        return array_unique($jsNames);
+    }
+
+    public function GetJsVarsUsed()
+    {
+        if (is_null($this->varsUsed)){
+            return array();
+        }
+        $names = array_unique($this->varsUsed);
+        if (is_null($names)) {
+            return array();
+        }
+        $jsNames = array();
+        foreach ($names as $name)
+        {
+            if (isset($this->amVars[$name]['jsName']) && $this->amVars[$name]['jsName'] != '')
             {
                 $jsNames[] = $this->amVars[$name]['jsName'];
             }
@@ -1029,6 +1053,103 @@ class ExpressionManager {
     public function GetErrors()
     {
         return $this->errs;
+    }
+
+    public function GetJavaScriptEquivalentOfExpression()
+    {
+        if ($this->HasErrors())
+        {
+            return '';
+        }
+        $tokens = $this->tokens;
+        $stringParts=array();
+        $numTokens = count($tokens);
+        for ($i=0;$i<$numTokens;++$i)
+        {
+            $token = $tokens[$i];
+            // When do these need to be quoted?
+
+            switch ($token[2])
+            {
+                case 'DQ_STRING':
+                case 'SQ_STRING':
+                    $stringParts[] = "'";
+                    $stringParts[] = addslashes($token[0]);
+                    $stringParts[] = "'";
+                    break;
+                case 'SGQA':
+                case 'WORD':
+                    if ($i+1<$numTokens && $tokens[$i+1][2] == 'LP')
+                    {
+                        // then word is a function name
+                        $funcInfo = $this->amValidFunctions[$token[0]];
+                        if ($funcInfo[1] == 'NA')
+                        {
+                            return '';  // to indicate that this is trying to use a undefined function.  Need more graceful solution
+                        }
+                        $stringParts[] = $funcInfo[1];
+                    }
+                    else if ($i+1<$numTokens && $tokens[$i+1][2] == 'ASSIGN')
+                    {
+                        $varInfo = $this->GetVarInfo($token[0]);
+                        $jsName = $varInfo['jsName'];
+                        $stringParts[] = "document.getElementById('" . $jsName . "').value";
+                    }
+                    else
+                    {
+                        $varInfo = $this->GetVarInfo($token[0]);
+                        $jsName = $varInfo['jsName'];
+                        if ($jsName != '')
+                        {
+                            $stringParts[] = "(isNaN(document.getElementById('" . $jsName . "').value) ? document.getElementById('" . $jsName . "').value : (+document.getElementById('" . $jsName . "').value))\n";
+                        }
+                        else
+                        {
+                            $stringParts[] = is_numeric($varInfo['codeValue']) ? $varInfo['codeValue'] : ("'" . addslashes($varInfo['codeValue']) . "'");
+                        }
+                    }
+                    break;
+                case 'LP':
+                case 'RP':
+                    $stringParts[] = $token[0];
+                    break;
+                case 'NUMBER':
+                    $stringParts[] = is_numeric($token[0]) ? $token[0] : ("'" . addslashes($token[0]) . "'");
+                    break;
+                case 'COMMA':
+                    $stringParts[] = $token[0] . ' ';
+                    break;
+                default:
+                    switch ($token[0])
+                    {
+                        case 'and': $stringParts[] = ' && '; break;
+                        case 'or':  $stringParts[] = ' || '; break;
+                        case 'lt':  $stringParts[] = ' < '; break;
+                        case 'le':  $stringParts[] = ' <= '; break;
+                        case 'gt':  $stringParts[] = ' > '; break;
+                        case 'ge':  $stringParts[] = ' >= '; break;
+                        case 'eq':  $stringParts[] = ' == '; break;
+                        case 'ne':  $stringParts[] = ' != '; break;
+                        default:    $stringParts[] = ' ' . $token[0] . ' '; break;
+                    }
+                    break;
+            }
+        }
+        return '(' . implode('', $stringParts) . ')';
+    }
+    
+    public function GetJavascriptTestforExpression()
+    {
+        // assumes that the hidden variables have already been declared
+        $jsParts = array();
+        $jsParts[] = '<script type="text/javascript">';
+        $jsParts[] = "<!--\n";
+        $jsParts[] = 'document.write(';
+        $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
+        $jsParts[] = ")\n";
+        $jsParts[] = "//-->\n</script>\n";
+        return implode('',$jsParts);
+        
     }
 
     /**
@@ -2077,7 +2198,37 @@ EOD;
             $tests .= "\n" . $exprmgr_extraTests;
         }
 
-        print '<table border="1"><tr><th>Expression</th><th>Result</th><th>Expected</th><th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
+        // Find all variables used on this page
+        $allJsVarnamesUsed = array();
+        foreach(explode("\n",$tests) as $test)
+        {
+            $values = explode("~",$test);
+            $expectedResult = array_shift($values);
+            $expr = implode("~",$values);
+            $status = $em->Evaluate($expr,false);   // test the equation without actually running it
+            if ($status)
+            {
+                $allJsVarnamesUsed = array_merge($allJsVarnamesUsed,$em->GetJsVarsUsed());
+            }
+        }
+        $allJsVarnamesUsed = array_unique($allJsVarnamesUsed);
+        asort($allJsVarnamesUsed);
+        print '<table border="1"><tr><td>All Javascript Variables Used</td><td>' . implode('<br/>',$allJsVarnamesUsed) . "</td></tr></table>\n";
+
+        // Create hidden inputs for each of these Javascript values
+        foreach ($allJsVarnamesUsed as $jsVarname)
+        {
+            $value = '';
+            foreach($em->amVars as $k => $v) {
+                if ($v['jsName'] == $jsVarname)
+                {
+                    $value = $v['codeValue'];
+                }
+            }
+            print "<input type='hidden' name='" . $jsVarname . "' id='" . $jsVarname . "' value='" . $value . "'/>\n";
+        }
+
+        print '<table border="1"><tr><th>Expression</th><th>Result</th><th>Expected</th><th>JavaScript Test</th><th>VarNames</th><th>JavaScript Eqn</th></tr>';
         foreach(explode("\n",$tests)as $test)
         {
             $values = explode("~",$test);
@@ -2087,17 +2238,8 @@ EOD;
             $status = $em->Evaluate($expr);
             $result = $em->GetResult();
             $valToShow = $result;
-            $errString = $em->GetReadableErrors();
             print "<tr>";
             print "<td>" . $em->GetPrettyPrintString() . "</td>\n";
-            /*
-            if (strlen($errString) > 0) {
-                print "<td>" . $errString . "</td>\n";
-            }
-            else {
-                print "<td>" . $expr . "</td>\n";
-            }
-             */
             if (is_null($result)) {
                 $valToShow = "NULL";
             }
@@ -2107,17 +2249,27 @@ EOD;
                 $resultStatus = 'error';
             }
             print "<td class='" . $resultStatus . "'>" . $expectedResult . "</td>\n";
+            print "<td>" . $em->GetJavascriptTestforExpression() . "&nbsp;</td>\n";
             $varsUsed = $em->GetVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
                 $varDesc = array();
                 foreach ($varsUsed as $v) {
                     $varInfo = $em->GetVarInfo($v);
-                    $varDesc[] = $v . '(' . $varInfo['jsName'] . ',' . $varInfo['readWrite'] . ',' . $varInfo['isOnCurrentPage'] . ')';
+                    $varDesc[] = $v;
                 }
                 print '<td>' . implode(',<br/>', $varDesc) . "</td>\n";
             }
             else {
                 print "<td>&nbsp;</td>\n";
+            }
+            $jsEqn = $em->GetJavaScriptEquivalentOfExpression();
+            if ($jsEqn == '')
+            {
+                print "<td>&nbsp;</td>\n";
+            }
+            else
+            {
+                print '<td>' . $jsEqn . "</td>\n";
             }
             print '</tr>';
         }
