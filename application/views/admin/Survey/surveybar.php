@@ -98,7 +98,7 @@
 		   		<?php } ?>
 		   		<?php if ($surveytranslate) {
 					if($hasadditionallanguages) { ?>
-                		<li><a href="<?php echo site_url("admin/translate/index/$surveyid");?>">
+                		<li><a href="<?php echo site_url("admin/translate/$surveyid");?>">
                 		<img src='<?php echo $imageurl;?>/translate_30.png' /> <?php echo $clang->gT("Quick-translation");?></a></li>
                 	<?php } else { ?>
                 		<li><a href="#" onclick="alert('<?php echo $clang->gT("Currently there are no additional languages configured for this survey.", "js");?>');" >

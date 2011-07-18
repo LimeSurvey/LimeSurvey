@@ -67,9 +67,10 @@ function fDoTranslateAjax(sBaseLang,sToLang,sToConvert,sId)
   {
       $('.ajax-loader').css('display','inline');
       $.ajax({
-            url:'admin.php',
+            // url:'admin.php',
             datatype: 'json',
             async: true,
+            type: 'POST',
             data:{
                 action: 'ajaxtranslategoogleapi',
                 baselang:sBaseLang,
