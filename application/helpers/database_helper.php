@@ -48,13 +48,14 @@ function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieon
     //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
     if ($numrows)
     {
+    	$sql .= " ";
         if ($offset)
         {
-            //$CI->db->limit($numrows,$offset);
+            $sql = $CI->db->_limit($sql, $numrows, $offset);
         }
         else
         {
-            //$CI->db->limit($numrows);
+            $sql = $CI->db->_limit($sql, $numrows, 0);
         }
     }
     if($inputarr)
