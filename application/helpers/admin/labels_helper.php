@@ -207,19 +207,19 @@ function modlabelsetanswers($lid)
         $query = "DELETE FROM ".$CI->db->dbprefix."labels  WHERE `lid` = '$lid'";
 
         $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());
-
+        
         foreach($data->{'codelist'} as $index=>$codeid){
             
             $codeObj = $data->$codeid;
 
-
+            
             $actualcode = $codeObj->{'code'};
             //$codeid = db_quoteall($codeid,true);
 
             $assessmentvalue = (int)($codeObj->{'assessmentvalue'});
-
+            $CI->load->model('labels_model');
             foreach($data->{'langs'} as $lang){
-
+                
                 $strTemp = 'text_'.$lang;
                 $title = $codeObj->$strTemp;
 
@@ -237,7 +237,7 @@ function modlabelsetanswers($lid)
                 $sort_order = $index;
                 //$lang = db_quoteall($lang);
                 
-                $data = array(
+                $insertdata = array(
                         'lid' => $lid,
                         'code' => $actualcode,
                         'title' => $title,
@@ -246,15 +246,18 @@ function modlabelsetanswers($lid)
                         'language' => $lang
                 
                 );
-                $CI->load->model('labels_model');
+                
                 //$query = "INSERT INTO ".db_table_name('labels')." (`lid`,`code`,`title`,`sortorder`, `assessment_value`, `language`)
                 //    VALUES('$lid',$actualcode,$title,$sort_order,$assessmentvalue,$lang)";
 
-                $result = $CI->labels_model->insertRecords($data); //($query) or safe_die($connect->ErrorMsg());)
+                $result = $CI->labels_model->insertRecords($insertdata); //($query) or safe_die($connect->ErrorMsg());)
             }
+            
+            
+            
 
         }
-        abc();
+        
 
     $CI->session->set_userdata('flashmessage', $clang->gT("Labels sucessfully updated"));
 
