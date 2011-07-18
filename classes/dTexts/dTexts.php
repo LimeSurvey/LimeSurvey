@@ -12,6 +12,6 @@ class dTexts
 	 */
 	public static function run($text)
 	{
-        return LimeExpressionManager::ProcessString($text);
+        return LimeExpressionManager::ProcessString($text,NULL,true);
 	}
 }

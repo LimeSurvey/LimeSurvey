@@ -319,12 +319,21 @@ class LimeExpressionManager {
 
     /**
      * Translate all Expressions, Macros, registered variables, etc. in $string
-     * @param <type> $string
+     * @global <type> $surveyid
+     * @global <type> $clang
+     * @global <type> $globalfieldmap
+     * @param <type> $string - the string to be replaced
+     * @param <type> $replacementFields - optional replacement values
+     * @param boolean $debug - if true,write translations for this page to html-formatted log file
      * @param boolean $forceRefresh - if true, reset $fieldMap and the derived arrays of registered variables and values
-     * @return string - the original $string with all replacements done.
+     * @param boolean $anonymized - if true, then don't translate TOKEN values
+     * @param <type> $groupId - the current Group ID number - this is needed to properly name the answer IDs in JavaScript
+     * @param <type> $numRecursionLevels - the number of times to recursively subtitute values in this string
+     * @param <type> $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
+     * @return <type> - the original $string with all replacements done.
      */
 
-    static function ProcessString($string,array $replacementFields=array(), $forceRefresh=false, $anonymized=false, $groupId=NULL)
+    static function ProcessString($string, $replacementFields=array(), $debug=false, $forceRefresh=false, $anonymized=false, $groupId=NULL, $numRecursionLevels=1, $whichPrettyPrintIteration=1)
     {
         global $surveyid, $clang, $globalfieldmap;
 
@@ -338,6 +347,11 @@ class LimeExpressionManager {
         {
             // means that some values changed, so need to update what was registered to ExpressionManager
             $em->RegisterVarnamesUsingReplace($globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode]);
+            if ($debug)
+            {
+                $debugLog_html = '<tr><th>Group</th><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
+                file_put_contents('/tmp/LimeExpressionManager-Debug-ThisPage.html',$debugLog_html); // replace the value
+            }
         }
         if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
         {
@@ -352,7 +366,22 @@ class LimeExpressionManager {
             }
             $em->RegisterVarnamesUsingMerge($replaceArray);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
         }
-        return $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string));
+        $result = $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string),$numRecursionLevels, $whichPrettyPrintIteration);
+
+        if ($debug)
+        {
+            if (isset($globalfieldmap[$surveyid]['exprMgr_groupId']))
+            {
+                $global_groupId = $globalfieldmap[$surveyid]['exprMgr_groupId'];
+            }
+            else {
+                $global_groupId = 'NULL';
+            }
+            $debugLog_html = '<tr><td>' . $global_groupId . '</td><td>' . $string . '</td><td>' . $em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
+            file_put_contents('/tmp/LimeExpressionManager-Debug-ThisPage.html',$debugLog_html,FILE_APPEND);
+        }
+
+        return $result;
     }
 
 
@@ -379,13 +408,13 @@ class LimeExpressionManager {
     static function UnitTestProcessStringContainingExpressions()
     {
         $vars = array(
-'name' => array('codeValue'=>'Sergei', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'name' => array('codeValue'=>'Sergei', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
+'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
+'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
+'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
 // Constants
-'INSERTANS:61764X1X1'   => array('codeValue'=> 'Sergei', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:61764X1X2'   => array('codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:61764X1X1'   => array('codeValue'=> 'Sergei', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y'),
+'INSERTANS:61764X1X2'   => array('codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y'),
 'INSERTANS:61764X1X3'   => array('codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'INSERTANS:61764X1X4'   => array('codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'TOKEN:ATTRIBUTE_1'     => array('codeValue'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
@@ -440,8 +469,10 @@ EOST;
         print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
         foreach($alltests as $test)
         {
-            print "<tr><td>" . $test . "</td>\n";
-            print "<td>" . $em->sProcessStringContainingExpressions($test) . "</td>\n";
+            $result = $em->sProcessStringContainingExpressions($test,2,1);
+            $prettyPrint = $em->GetLastPrettyPrintExpression();
+            print "<tr><td>" . $prettyPrint . "</td>\n";
+            print "<td>" . $result . "</td>\n";
             $varsUsed = $em->getAllVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
                 $varDesc = array();

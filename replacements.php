@@ -613,8 +613,9 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
     $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
 
     // Now do all of the replacements - either call it twice or do recursion within LimeExpressionManager
-    $line = LimeExpressionManager::ProcessString($line, $doTheseReplacements, false, $anonymized);
-    return LimeExpressionManager::ProcessString($line, $doTheseReplacements, false, $anonymized);
+    $line = LimeExpressionManager::ProcessString($line, $doTheseReplacements, false, false, $anonymized, NULL, 2, 1);
+    return $line;
+//    return LimeExpressionManager::ProcessString($line, $doTheseReplacements, false, false, $anonymized);
 }
 
 /**

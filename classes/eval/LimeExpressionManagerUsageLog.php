@@ -6,11 +6,13 @@ and open the template in the editor.
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>ExpressionManager::Current Data</title>
+        <title>ExpressionManager::Running Translation Log</title>
     </head>
     <body>
-        <?php
-            include('/tmp/LimeExpressionManager-page.html');
-        ?>
+        <table border='1'>
+            <?php
+                include('/tmp/LimeExpressionManager-Debug-ThisPage.html');
+            ?>
+        </table>
     </body>
 </html>
