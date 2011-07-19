@@ -286,7 +286,7 @@ function templatereplace($line, $replacements=array())
         {
         $_clearall .= "&amp;token=" . urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
         }
-        $_clearall .= "', '_top')}\" />";
+        $_clearall .= "', '_self')}\" />";
 
     if (isset($_SESSION['datestamp']))
     {
