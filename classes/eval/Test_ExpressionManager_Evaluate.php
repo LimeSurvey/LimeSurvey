@@ -19,6 +19,7 @@ and open the template in the editor.
         <title>ExpressionManager:  Unit Test Core Evaluator</title>
     </head>
     <body>
+<script type="text/javascript" src="ExpressionManager_CoreJSFunctions.js"></script>
         <?php
             include 'ExpressionManager.php';
             ExpressionManager::UnitTestEvaluator();

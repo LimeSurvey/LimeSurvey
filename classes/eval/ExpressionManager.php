@@ -144,7 +144,7 @@ class ExpressionManager {
             'hypot'			=>array('hypot','NA','Calculate the length of the hypotenuse of a right-angle triangle',2),
             'is_finite'		=>array('is_finite','NA','Finds whether a value is a legal finite number',1),
             'is_infinite'	=>array('is_infinite','NA','Finds whether a value is infinite',1),
-            'is_nan'		=>array('is_nan','NA','Finds whether a value is not a number',1),
+            'is_nan'		=>array('is_nan','isNaN','Finds whether a value is not a number',1),
             'lcg_value'		=>array('lcg_value','NA','Combined linear congruential generator',0),
             'log10'			=>array('log10','NA','Base-10 logarithm',1),
             'log1p'			=>array('log1p','NA','Returns log(1 + number), computed in a way that is accurate even when the value of number is close to zero',1),
@@ -155,7 +155,7 @@ class ExpressionManager {
             'mt_rand'		=>array('mt_rand','NA','Generate a better random value',0,2),
             'mt_srand'		=>array('mt_srand','NA','Seed the better random number generator',0,1),
             'octdec'		=>array('octdec','NA','Octal to decimal',1),
-            'pi'			=>array('pi','NA','Get value of pi',0),
+            'pi'			=>array('pi','ExprMgr_pi','Get value of pi',0),
             'pow'			=>array('pow','Math.pow','Exponential expression',2),
             'rad2deg'		=>array('rad2deg','NA','Converts the radian number to the equivalent number in degrees',1),
             'rand'			=>array('rand','Math.random','Generate a random integer',0,2),
@@ -164,19 +164,19 @@ class ExpressionManager {
             'sinh'			=>array('sinh','NA','Hyperbolic sine',1),
             'sqrt'			=>array('sqrt','Math.sqrt','Square root',1),
             'srand'			=>array('srand','NA','Seed the random number generator',0,1),
-            'sum'           =>array('array_sum','NA','Calculate the sum of values in an array',-1),
+            'sum'           =>array('array_sum','ExprMgr_sum','Calculate the sum of values in an array',-1),
             'tan'			=>array('tan','Math.tan','Tangent',1),
             'tanh'			=>array('tanh','NA','Hyperbolic tangent',1),
 
             'empty'			=>array('empty','NA','Determine whether a variable is empty',1),
-            'intval'		=>array('intval','NA','Get the integer value of a variable',1,2),
+            'intval'		=>array('intval','ExprMgr_intval','Get the integer value of a variable',1,2),
             'is_bool'		=>array('is_bool','NA','Finds out whether a variable is a boolean',1),
-            'is_float'		=>array('is_float','NA','Finds whether the type of a variable is float',1),
-            'is_int'		=>array('is_int','NA','Find whether the type of a variable is integer',1),
-            'is_null'		=>array('is_null','NA','Finds whether a variable is NULL',1),
-            'is_numeric'	=>array('is_numeric','NA','Finds whether a variable is a number or a numeric string',1),
+            'is_float'		=>array('is_float','ExprMgr_is_float','Finds whether the type of a variable is float',1),
+            'is_int'		=>array('is_int','ExprMgr_is_int','Find whether the type of a variable is integer',1),
+            'is_null'		=>array('is_null','ExprMgr_is_null','Finds whether a variable is NULL',1),
+            'is_numeric'	=>array('is_numeric','ExprMgr_is_numeric','Finds whether a variable is a number or a numeric string',1),
             'is_scalar'		=>array('is_scalar','NA','Finds whether a variable is a scalar',1),
-            'is_string'		=>array('is_string','NA','Find whether the type of a variable is string',1),
+            'is_string'		=>array('is_string','ExprMgr_is_string','Find whether the type of a variable is string',1),
 
             'addcslashes'	=>array('addcslashes','NA','Quote string with slashes in a C style',2),
             'addslashes'	=>array('addslashes','NA','Quote string with slashes',1),
@@ -194,7 +194,7 @@ class ExpressionManager {
             'htmlentities'	=>array('htmlentities','NA','Convert all applicable characters to HTML entities',1,2,3),
             'htmlspecialchars_decode'	=>array('htmlspecialchars_decode','NA','Convert special HTML entities back to characters',1,2),
             'htmlspecialchars'			=>array('htmlspecialchars','NA','Convert special characters to HTML entities',1,2,3,4),
-            'implode'		=>array('implode','NA','Join array elements with a string',-1),
+            'implode'		=>array('exprmgr_implode','ExprMgr_implode','Join array elements with a string',-1),
             'lcfirst'		=>array('lcfirst','NA','Make a string\'s first character lowercase',1),
             'levenshtein'	=>array('levenshtein','NA','Calculate Levenshtein distance between two strings',2,5),
             'ltrim'			=>array('ltrim','NA','Strip whitespace (or other characters) from the beginning of a string',1,2),
@@ -215,7 +215,7 @@ class ExpressionManager {
             'str_ireplace'  =>array('str_ireplace','NA','Case-insensitive version of str_replace',3),
             'str_pad'		=>array('str_pad','NA','Pad a string to a certain length with another string',2,3,4),
             'str_repeat'	=>array('str_repeat','NA','Repeat a string',2),
-            'str_replace'	=>array('str_replace','NA','Replace all occurrences of the search string with the replacement string',3),
+            'str_replace'	=>array('str_replace','ExprMgr_str_replace','Replace all occurrences of the search string with the replacement string',3),
             'str_rot13'		=>array('str_rot13','NA','Perform the rot13 transform on a string',1),
             'str_shuffle'	=>array('str_shuffle','NA','Randomly shuffles a string',1),
             'str_word_count'	=>array('str_word_count','NA','Return information about words used in a string',1),
@@ -228,13 +228,13 @@ class ExpressionManager {
             'stripos'		=>array('stripos','NA','Find position of first occurrence of a case-insensitive string',2,3),
             'stripslashes'	=>array('stripslashes','NA','Un-quotes a quoted string',1),
             'stristr'		=>array('stristr','NA','Case-insensitive strstr',2,3),
-            'strlen'		=>array('strlen','NA','Get string length',1),
+            'strlen'		=>array('strlen','ExprMgr_strlen','Get string length',1),
             'strnatcasecmp'	=>array('strnatcasecmp','NA','Case insensitive string comparisons using a "natural order" algorithm',2),
             'strnatcmp'		=>array('strnatcmp','NA','String comparisons using a "natural order" algorithm',2),
             'strncasecmp'	=>array('strncasecmp','NA','Binary safe case-insensitive string comparison of the first n characters',3),
             'strncmp'		=>array('strncmp','NA','Binary safe string comparison of the first n characters',3),
             'strpbrk'		=>array('strpbrk','NA','Search a string for any of a set of characters',2),
-            'strpos'		=>array('strpos','NA','Find position of first occurrence of a string',2,3),
+            'strpos'		=>array('strpos','ExprMgr_strpos','Find position of first occurrence of a string',2,3),
             'strrchr'		=>array('strrchr','NA','Find the last occurrence of a character in a string',2),
             'strrev'		=>array('strrev','NA','Reverse a string',1),
             'strripos'		=>array('strripos','NA','Find position of last occurrence of a case-insensitive string in a string',2,3),
@@ -1094,6 +1094,14 @@ class ExpressionManager {
                         $varInfo = $this->GetVarInfo($token[0]);
                         $jsName = $varInfo['jsName'];
                         $stringParts[] = "document.getElementById('" . $jsName . "').value";
+                        if ($tokens[$i+1][0] == '+=')
+                        {
+                            // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
+                            $stringParts[] = ' = ';
+                            $stringParts[] = "(isNaN(document.getElementById('" . $jsName . "').value) ? document.getElementById('" . $jsName . "').value : (+document.getElementById('" . $jsName . "').value))\n";
+                            $stringParts[] = ' + ';
+                            ++$i;
+                        }
                     }
                     else
                     {
@@ -2068,8 +2076,6 @@ EOD;
 1024~max(one,(two*three),pow(four,five),six)
 1~min(one,two,three,four,five)
 27~pow(3,3)
-5~hypot(three,four)
-0~0
 24~one * two * three * four
 -4~five - four - three - two
 0~two * three - two - two - two
@@ -2108,9 +2114,7 @@ there~hi
 0~asin(pi()/2)
 10~ceil(9.1)
 9~floor(9.9)
-32767~getrandmax()
 0~(a=rand())-a
-1~ceil((rand()+1) / getrandmax())
 15~sum(one,two,three,four,five)
 5~intval(5.7)
 1~is_float(pi())
@@ -2132,8 +2136,6 @@ NULL~(one * two + (three - four)
 NULL~(one * two + (three - four)))
 NULL~++a
 NULL~--b
-11~eleven
-144~twelve * twelve
 value for {INSERTANS:123X45X67}~INSERTANS:123X45X67
 value for {QID}~QID
 value for {ASSESSMENT_HEADING}~ASSESSMENT_HEADING
@@ -2184,6 +2186,10 @@ NULL~NUMBEROFQUESTIONS/=5
 NULL~NUMBEROFQUESTIONS-=6
 NULL~'Tom'='tired'
 NULL~max()
+1|2|3|4|5~implode('|',one,two,three,four,five)
+5~strlen(hi)
+I love LimeSurvey~str_replace('like','love','I like LimeSurvey')
+2~strpos('I like LimeSurvey','like')
 EOD;
         
         $em = new ExpressionManager();
@@ -2193,7 +2199,7 @@ EOD;
         {
             $em->RegisterVarnamesUsingMerge($exprmgr_extraVars);
         }
-        if (isset($exprmgr_extraTests) && is_array($exprmgr_extraTests) and count($exprmgr_extraTests) > 0)
+        if (isset($exprmgr_extraTests) && is_string($exprmgr_extraTests))
         {
             $tests .= "\n" . $exprmgr_extraTests;
         }

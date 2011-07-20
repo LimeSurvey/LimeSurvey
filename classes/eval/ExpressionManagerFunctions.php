@@ -8,8 +8,8 @@
 // Each allowed function is a mapping from local name to external name + number of arguments
 // Functions can have -1 (meaning unlimited), or a list of serveral allowable #s of arguments.
 $exprmgr_functions = array(
-    'if'            => array('exprmgr_if','NA','Excel-style if(test,result_if_true,result_if_false)',3),
-    'list'          => array('exprmgr_list','NA','Return comma-separated list of values',-1),
+    'if'            => array('exprmgr_if','ExprMgr_if','Excel-style if(test,result_if_true,result_if_false)',3),
+    'list'          => array('exprmgr_list','ExprMgr_list','Return comma-separated list of values',-1),
 );
 
 // Extra static variables for unit tests
@@ -46,6 +46,14 @@ function exprmgr_list($args)
     return implode(", ",$args);
 }
 
-
+function exprmgr_implode($args)
+{
+    if (count($args) <= 1)
+    {
+        return "";
+    }
+    $joiner = array_shift($args);
+    return implode($joiner,$args);
+}
 
 ?>
