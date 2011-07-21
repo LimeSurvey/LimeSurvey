@@ -28,13 +28,17 @@ and open the template in the editor.
                 <td>Integration tests showing how Expression Manager can process strings containing one or more variable, token, or expression replacements surrounded by curly braces.</td>
             </tr>
             <tr>
+                <td><a href="Test_ExpressionManager_Relevance.php">Unit Test Dynamic Relevance Processing</a></td>
+                <td>Questions and substitutions should dynamically change based upon values entered.</td>
+            </tr>
+            <tr>
                 <td><a href="LimeExpressionManagerLog.php">Running Log - Source Data</a></td>
                 <td>Shows log of mapping of variable names to SGQA and JavaScript names, plus question, and current values.</td>
             </tr>
             <tr>
                 <td><a href="LimeExpressionManagerUsageLog.php">Running Log - Translations on this Page</a></td>
                 <td>For this page group, shows all of the translation requests, the pretty-printed version of the request, and the translated results</td>
-            </tr>            
+            </tr>
             <tr>
                 <td>Ad Hoc Unit Tests</td>
                 <td>Paste own tests into form to see results.  Syntax is Answer~Expression, with one test performing.</td>

@@ -401,6 +401,37 @@ class LimeExpressionManager {
         return $em->ProcessBooleanExpression(htmlspecialchars_decode($string));
     }
 
+    static function StartProcessingGroup($groupNum)
+    {
+        $lem = LimeExpressionManager::singleton();
+        /** Need to hold onto the following:
+         * (1) Relevance Info
+         * (a) Result
+         * (b) JavaScript version of Relevance  Equation
+         * (c) Raw relevance equation?
+         * (d) question #
+         * (2) Questions
+         * (a) Substituted Text - create <span> for each equation that needs to be substituted
+         * (b) question #
+         * (3) Answers
+         * (a) question #
+         * (b) answer #?
+         * (c) Substituted Text - create <span> for each equation that needs to be substituted
+         */
+    }
+
+    static function StartProcessingQuestion($questionNum)
+    {
+        $lem = LimeExpressionManager::singleton();
+        $em = $lem->em;
+        $em->StartProcessingQuestion($questionNum);
+    }
+
+    static function FinishProcessingGroup()
+    {
+        $lem = LimeExpressionManager::singleton();
+    }
+
 
     /**
      * Unit test
@@ -467,8 +498,10 @@ EOST;
         $em->RegisterVarnamesUsingMerge($vars);
 
         print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
-        foreach($alltests as $test)
+        for ($i=0;$i<count($alltests);++$i)
         {
+            $test = $alltests[$i];
+            $em->StartProcessingQuestion($i);
             $result = $em->sProcessStringContainingExpressions($test,2,1);
             $prettyPrint = $em->GetLastPrettyPrintExpression();
             print "<tr><td>" . $prettyPrint . "</td>\n";
@@ -488,6 +521,113 @@ EOST;
             print "</tr>\n";
         }
         print '</table>';
+    }
+
+    static function UnitTestRelevance()
+    {
+        // Tests:  varName~relevance~inputType~message
+        $tests = <<<EOT
+name~1~text~What is your name?
+age~1~text~How old are you?
+badage~1~expr~{badage=((age<16) || (age>80))}
+agestop~badage~message~Sorry, {name}, you are too {if((age<16),'young',if((age>80),'old','young-or-old'))} for this test.
+kids~!badage~yesno~Do you have children?
+parents~1~expr~{parents = (!badage && kids=='Y')}
+numKids~parents~text~How many children do you have?
+kid1~parents && numKids >= 1~text~How old is your first child?
+kid2~parents && numKids >= 2~text~How old is your second child?
+kid3~parents && numKids >= 3~text~How old is your third child?
+kid4~parents && numKids >= 4~text~How old is your fourth child?
+kid5~parents && numKids >= 5~text~How old is your fifth child?
+sumage~1~expr~{sumage=sum(kid1,kid2,kid3,kid4,kid5)}
+report~parents~yesno~{name}, you said you are {age} and that you have {numKids}.  The sum of ages of your first {min(numKids,5)} kids is {sum(kid1,kid2,kid3,kid4,kid5)}.
+EOT;
+
+        $vars = array();
+        $varSeq = array();
+        $testArgs = array();
+        $argInfo = array();
+
+        // collect variables
+        foreach(explode("\n",$tests) as $test)
+        {
+            $args = explode("~",$test);
+            $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y');
+            $varSeq[] = $args[0];
+            $testArgs[] = $args;
+        }
+
+        $lem = LimeExpressionManager::singleton();
+        // start processing the group, and hold onto the
+        $em = $lem->em;
+        $em->RegisterVarnamesUsingMerge($vars);
+        $lem->StartProcessingGroup(0);
+
+        // collect relevance
+        for ($i=0;$i<count($testArgs);++$i)
+        {
+            $testArg = $testArgs[$i];
+            $var = $testArg[0];
+            $em->StartProcessingQuestion($i);
+            $argInfo[] = array(
+                'num' => $i,
+                'name' => 'java_' . $testArg[0],
+                'type' => $testArg[2],
+                'relevance' => $testArg[1],
+                'result' => $em->ProcessBooleanExpression(htmlspecialchars_decode($testArg[1]),$i),
+                'relevancejs' => $em->GetJavaScriptFunctionForRelevance($i),    // will be blank if none is needed
+                'relevanceVars' => implode('|',$em->GetJSVarsUsed()),
+                'raw_q' => $testArg[3],
+                'question' => $em->sProcessStringContainingExpressions($testArg[3],1,1),
+                'subinfo' => $em->GetCurrentSubstitutionInfo(),
+            );
+        }
+
+        // Print JavaScript
+        print "<script type='text/javascript'>\n<!--\n";
+        print "function ExprMgr_process_relevance_and_tailoring(){\n";
+        // Which should come first - relevance or tailoring (or both)?
+        foreach ($argInfo as $arg)
+        {
+            $subinfo = $arg['subinfo'];
+            foreach ($subinfo as $sub)
+            {
+                print $sub['js'];
+            }
+        }
+        foreach ($argInfo as $arg)
+        {
+            print $arg['relevancejs'];
+        }
+        print "}\n";
+        print "//-->\n</script>\n";
+
+        // Print Table of questions
+        print "<table border='1'><tr><td>";
+        foreach ($argInfo as $arg)
+        {
+            print "<input type='hidden' id='display" . $arg['num'] . "' value=''/>\n";
+            print "<div id='question" . $arg['num'] . "'>\n";
+            if ($arg['type'] == 'expr')
+            {
+                print "<div style='display: none' name='" . $arg['name'] . "' id='" . $arg['name'] . "'>" . $arg['question'] . "</div>\n";
+            }
+            else {
+                print "<table border='1' width='100%'><tr><td>[Q" . $arg['num'] . "] " . $arg['question'] . "</td>";
+                switch($arg['type'])
+                {
+                    case 'yesno':
+                    case 'text':
+                        print "<td><input type='text' name='" . $arg['name'] . "' id='" . $arg['name'] . "' value='' onchange='ExprMgr_process_relevance_and_tailoring()'/></td>\n";
+                        break;
+                    case 'message':
+                        print "";
+                        break;
+                }
+                print "</tr></table></div>\n";
+            }
+        }
+        print "</table>";
     }
 }
 ?>

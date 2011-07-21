@@ -41,6 +41,10 @@ class ExpressionManager {
     // These  variables are only used by sProcessStringContainingExpressions
     private $allVarsUsed;   // full list of variables used within the string, even if contains multiple expressions
     private $prettyPrintSource; // HTML formatted output of running sProcessStringContainingExpressions
+    private $substitutionNum; // Keeps track of number of substitions performed XXX
+    private $substitutionInfo; // array of JavaScripts to managing dynamic substitution
+    private $jsExpression;  // caches computation of JavaScript equivalent for an Expression
+    private $questionNum;   // number of question for which Relevance and Replacements being done - needed for JavaScript functions
 
     function __construct()
     {
@@ -403,6 +407,7 @@ class ExpressionManager {
         $this->evalStatus = false;
         $this->result = NULL;
         $this->varsUsed = array();
+        $this->jsExpression = NULL;
 
         if ($this->HasSyntaxErrors()) {
             return false;
@@ -1057,8 +1062,13 @@ class ExpressionManager {
 
     public function GetJavaScriptEquivalentOfExpression()
     {
+        if (!is_null($this->jsExpression))
+        {
+            return $this->jsExpression;
+        }
         if ($this->HasErrors())
         {
+            $this->jsExpression = '';
             return '';
         }
         $tokens = $this->tokens;
@@ -1143,9 +1153,14 @@ class ExpressionManager {
                     break;
             }
         }
-        return '(' . implode('', $stringParts) . ')';
+        $this->jsExpression = '(' . implode('', $stringParts) . ')';
+        return $this->jsExpression;
     }
-    
+
+    /**
+     * JavaScript Test function - simply writes the result of the current JavaScriptEquivalentFunction to the output buffer.
+     * @return <type>
+     */
     public function GetJavascriptTestforExpression()
     {
         // assumes that the hidden variables have already been declared
@@ -1158,6 +1173,44 @@ class ExpressionManager {
         $jsParts[] = "//-->\n</script>\n";
         return implode('',$jsParts);
         
+    }
+
+    /**
+     * Generate the function needed to dynamically change the value of a <span> section
+     * @param <type> $name - the ID name for the function
+     * @return <type>
+     */
+    public function GetJavaScriptFunctionForReplacement($name)
+    {
+        $jsParts = array();
+        $jsParts[] = "// Tailor " . $name . "\n";
+        $jsParts[] = "document.getElementById('" . $name . "').innerHTML=\n";
+        $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
+        $jsParts[] = ";\n";
+        return implode('',$jsParts);
+    }
+
+    /**
+     * Return the dynamic function for making the current question visible or invisible
+     */
+    public function GetJavaScriptFunctionForRelevance()
+    {
+        if (count($this->GetJsVarsUsed()) == 0)
+        {
+            return '';
+        }
+        $jsParts = array();
+        $jsParts[] = "// Process Relevance for Question " . $this->questionNum . "\n";
+        $jsParts[] = "if (\n";
+        $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
+        $jsParts[] = "\n)\n{\n";
+        $jsParts[] = "document.getElementById('question" . $this->questionNum . "').style.display='';\n";
+        $jsParts[] = "document.getElementById('display" . $this->questionNum . "').value='on';\n";
+        $jsParts[] = "}\n else {\n";
+        $jsParts[] = "document.getElementById('question" . $this->questionNum . "').style.display='none';\n";
+        $jsParts[] = "document.getElementById('display" . $this->questionNum . "').value='';\n";
+        $jsParts[] = "}\n";
+        return implode('',$jsParts);
     }
 
     /**
@@ -1516,6 +1569,13 @@ class ExpressionManager {
         return (boolean) $result;
     }
 
+    public function StartProcessingQuestion($questionNum)
+    {
+        $this->substitutionNum=0;
+        $this->questionNum = $questionNum;
+        $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
+    }
+
     /**
      * Process multiple substitution iterations of a full string, containing multiple expressions delimited by {}, return a consolidated string
      * @param <type> $src
@@ -1533,6 +1593,7 @@ class ExpressionManager {
 
         for($i=1;$i<=$numRecursionLevels;++$i)
         {
+            // TODO - Since want to use <span> for dynamic substitution, what if there are recursive substititons?
             $result = $this->sProcessStringContainingExpressionsHelper(htmlspecialchars_decode($result));
             if ($i == $whichPrettyPrintIteration)
             {
@@ -1564,23 +1625,51 @@ class ExpressionManager {
                 $prettyPrintParts[] = $stringPart[0];
             }
             else {
+                ++$this->substitutionNum;
                 if ($this->Evaluate(substr($stringPart[0],1,-1)))
                 {
-                    $resolvedParts[] = $this->GetResult();
+                    $resolvedPart = $this->GetResult();
                 }
                 else
                 {
                     // show original and errors in-line
 //                    $resolvedParts[] = $this->GetReadableErrors();
-                    $resolvedParts[] = $this->GetPrettyPrintString();
+                    $resolvedPart = $this->GetPrettyPrintString();
                 }
+                $jsVarsUsed = $this->GetJsVarsUsed();
                 $prettyPrintParts[] = $this->GetPrettyPrintString();
                 $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
+
+                // TODO Note, don't want these SPANS if they are part of a JavaScript substitution!
+                // TODO How do we prevent against that?  Regex for <script> section?
+                if (count($jsVarsUsed) > 0)
+                {
+                    $idName = "ExprMgr_tailor_" . $this->questionNum . "_" . $this->substitutionNum;
+                    $resolvedParts[] = "<span id='" . $idName . "' name='" . $idName . "'>" . $resolvedPart . "</span>";
+                    $this->substitutionVars[$idName] = 1;
+                    $this->substitutionInfo[] = array(
+                        'num' => $this->substitutionNum,
+                        'id' => $idName,
+                        'raw' => $stringPart[0],
+                        'result' => $resolvedPart,
+                        'vars' => implode('|',$this->GetJsVarsUsed()),
+                        'js' => $this->GetJavaScriptFunctionForReplacement($idName),
+                    );
+                }
+                else
+                {
+                    $resolvedParts[] = $resolvedPart;
+                }
             }
         }
         $result = implode('',$this->flatten_array($resolvedParts));
         $this->prettyPrintSource = implode('',$this->flatten_array($prettyPrintParts));
         return $result;    // recurse in case there are nested ones, avoiding infinite loops?
+    }
+
+    public function GetCurrentSubstitutionInfo()
+    {
+        return $this->substitutionInfo;
     }
 
     /**
