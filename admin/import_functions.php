@@ -1157,6 +1157,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['private']);
             unset($insertdata['notification']);
         }
+        $insertdata['startdate']=NULL;
         //Now insert the new SID and change some values
         $insertdata['sid']=$newsid;
         //Make sure it is not set active
