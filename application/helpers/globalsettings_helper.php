@@ -70,9 +70,10 @@ function getGlobalSetting($settingname)
         $dbvalue = $query->row_array();
 		//$dbvalue = $dbvalue['stg_value'];
 		//var_dump($dbvalue);
-        if (is_null($dbvalue))
+        if (empty($dbvalue))
         {
-            $registry->set($settingname,$dbvalue);
+            $registry->set($settingname,null);
+			$dbvalue="";
         } elseif (isset($CI->config->config[$settingname])) {
             // If the setting was not found in the setting table but exists as a variable (from config.php)
             // get it and save it to the table
@@ -82,7 +83,6 @@ function getGlobalSetting($settingname)
     } else {
         $dbvalue=$registry->get($settingname);
     }
-
     return $dbvalue;
 }
 
