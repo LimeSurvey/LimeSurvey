@@ -131,6 +131,8 @@ $fieldsarray["{SURVEYDESCRIPTION}"]=$thissurvey['description'];
 $fieldsarray["{FIRSTNAME}"]=$postfirstname;
 $fieldsarray["{LASTNAME}"]=$postlastname;
 $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
+$fieldsarray["{TOKEN}"]=$newtoken;
+$fieldsarray["{SID}"]=$fieldsarray["{SURVEYID}"]=$surveyid;
 
 $message=$thissurvey['email_register'];
 $subject=$thissurvey['email_register_subj'];

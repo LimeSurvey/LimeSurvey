@@ -1561,6 +1561,8 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
                 $fieldsarray["{LASTNAME}"]=$emrow['lastname'];
                 $fieldsarray["{TOKEN}"]=$emrow['token'];
                 $fieldsarray["{LANGUAGE}"]=$emrow['language'];
+                $fieldsarray["{SID}"]=$fieldsarray["{SURVEYID}"]=$surveyid;
+                $fieldsarray["{SURVEYNAME}"]=$thissurvey["surveyls_title"];
 
                 foreach ($attributes as $attributefield=>$attributedescription)
                 {
@@ -1885,6 +1887,8 @@ if ($subaction == "remind" && bHasSurveyPermission($surveyid, 'tokens','update')
                 $fieldsarray["{LASTNAME}"]=$emrow['lastname'];
                 $fieldsarray["{TOKEN}"]=$emrow['token'];
                 $fieldsarray["{LANGUAGE}"]=$emrow['language'];
+                $fieldsarray["{SID}"]=$fieldsarray["{SURVEYID}"]=$surveyid;
+                $fieldsarray["{SURVEYNAME}"]=$thissurvey["surveyls_title"];
 
                 foreach ($attributes as $attributefield=>$attributedescription)
                 {
