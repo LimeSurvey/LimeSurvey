@@ -74,7 +74,8 @@ function getGlobalSetting($settingname)
         {
             $registry->set($settingname,null);
 			$dbvalue="";
-        } elseif (isset($CI->config->config[$settingname])) {
+        }
+		if (isset($CI->config->config[$settingname])) {
             // If the setting was not found in the setting table but exists as a variable (from config.php)
             // get it and save it to the table
             setGlobalSetting($settingname,$CI->config->item($settingname));

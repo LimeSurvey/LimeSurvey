@@ -5006,6 +5006,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 		$sender=$bouncemail;
 	}
 
+	$this->email->initialize($this->config->config);
 	$CI->load->library('email');
 	//$mail = new PHPMailer;
     //if (!$mail->SetLanguage($defaultlang,$rootdir.'/classes/phpmailer/language/'))
