@@ -677,7 +677,7 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
             $quota_name=$quotadetails['name'];
         }
 
-        $query = "SELECT qid, title, question FROM ".db_table_name('questions')." WHERE $allowed_types AND sid='$surveyid' AND language='{$baselang}'";
+        $query = "SELECT qid, title, question FROM ".db_table_name('questions')." WHERE $allowed_types AND sid='$surveyid' AND language='{$baselang}' order by question_order";
         $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
         if ($result->RecordCount() == 0)
         {
@@ -690,22 +690,12 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
         {
             $quotasoutput .='<div class="header ui-widget-header">'.$clang->gT("Survey Quota").': '.$clang->gT("Add Answer").'</div><br />
 			<div class="messagebox ui-corner-all" style="width: 600px">
-				<form action="'.$scriptname.'" method="post">
-					<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-						<thead>
-						<tr>
-						  <th class="header ui-widget-header"  colspan="2">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr class="evenrow">
-							<td align="center">&nbsp;</td>
-							<td align="center">&nbsp;</td>
-						</tr>
-						<tr class="evenrow">
-							<td width="30%" align="center" valign="top"><strong>'.$clang->gT("Select Question").':</strong></td>
-							<td align="left">
-								<select name="quota_qid" size="15">';
+				<form action="'.$scriptname.'" class="form30" method="post">
+						  <div class="header ui-widget-header" >'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</div>
+                          <ul>
+                          <li>
+							<label for="quota_qid">'.$clang->gT("Select Question").':</label>
+								<select id="quota_qid" name="quota_qid" size="15">';
 
             while ($questionlisting = $result->FetchRow())
             {
@@ -714,23 +704,15 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
 
             $quotasoutput .='
 								</select>
-							</td>
-						</tr>
-						<tr align="left" class="evenrow">
-							<td colspan="2">&nbsp;</td>
-						</tr>
-						<tr align="left" class="evenrow">
-							<td>&nbsp;</td>
-							<td>
+						</li>
+                        </ul>
+						<p>
 								<input name="submit" type="submit" class="submit" value="'.$clang->gT("Next").'" />
 								<input type="hidden" name="sid" value="'.$surveyid.'" />
 								<input type="hidden" name="action" value="quotas" />
 								<input type="hidden" name="subaction" value="new_answer_two" />
 								<input type="hidden" name="quota_id" value="'.$_POST['quota_id'].'" />
-							</td>
-						</tr>
-						</tbody>
-					</table><br />
+
 				</form>
 			</div>';
         }
@@ -767,54 +749,33 @@ if(bHasSurveyPermission($surveyid, 'quotas','read'))
         } else
         {
             $quotasoutput .='<div class="header ui-widget-header">'.$clang->gT("Survey Quota").': '.$clang->gT("Add Answer").'</div><br />
-			<div class="messagebox ui-corner-all" style="width: 600px">
-				<form action="'.$scriptname.'#quota_'.$_POST['quota_id'].'" method="post">
-					<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
-						<tbody>
-							<thead>
-							<tr>
-							  <th class="header ui-widget-header" colspan="2">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</th>
-							</tr>
-							</thead>
-							<tr class="evenrow">
-								<td align="center">&nbsp;</td>
-								<td align="center">&nbsp;</td>
-							</tr>
-							<tr class="evenrow">
-								<td width="35%" align="center" valign="top"><strong>'.$clang->gT("Select Answer").':</strong></td>
-								<td align="left">
-									<select name="quota_anscode" size="15">';
+			<div class="messagebox ui-corner-all">
+				<form action="'.$scriptname.'#quota_'.$_POST['quota_id'].'" class="form30" method="post">
+                <div class="header">'.sprintf($clang->gt("New Answer for Quota '%s'"), $quota_name).'</div>
+                <ul>
+				<li><label for="quota_anscode">'.$clang->gT("Select Answer").':</label>
+									<select id="quota_anscode" name="quota_anscode" size="15">';
 
             while (list($key,$value) = each($question_answers))
             {
-                if (!isset($value['rowexists'])) $quotasoutput .='<option value="'.$key.'">'.strip_tags(substr($value['Display'],0,40)).'</option>';
+                if (!isset($value['rowexists'])) $quotasoutput .='<option value="'.$key.'">'.$key.':'.FlattenText(substr($value['Display'],0,40)).'</option>';
             }
 
 
             $quotasoutput .='
 									</select>
-								</td>
-							</tr>
-							<tr align="left" class="evenrow">
-								<td width="35%" align="center" valign="top"><strong>'.$clang->gT("Save this, then create another:").'</strong></td>
-								<td><input type="checkbox" name="createanother"></td>
-							</tr>
-							<tr align="left" class="evenrow">
-								<td colspan="2">&nbsp;</td>
-							</tr>
-							<tr align="left" class="evenrow">
-								<td>&nbsp;</td>
-								<td>
+								</li>
+                                <li>
+								<label for="createanother">'.$clang->gT("Save this, then create another:").'</label>
+								<input type="checkbox" id="createanother" name="createanother">
+							</li>
+                            </ul><p>
 									<input name="submit" type="submit" class="submit" value="'.$clang->gT("Next").'" />
 									<input type="hidden" name="sid" value="'.$surveyid.'" />
 									<input type="hidden" name="action" value="quotas" />
 									<input type="hidden" name="subaction" value="insertquotaanswer" />
 									<input type="hidden" name="quota_qid" value="'.$_POST['quota_qid'].'" />
 									<input type="hidden" name="quota_id" value="'.$_POST['quota_id'].'" />
-								</td>
-							</tr>
-						</tbody>
-					</table><br />
 				</form>
 			</div>';
         }
