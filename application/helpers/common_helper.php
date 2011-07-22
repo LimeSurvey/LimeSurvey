@@ -6610,12 +6610,12 @@ function SSL_mode()
  */
 function get_quotaCompletedCount($surveyid, $quotaid)
 {
-	global $CI;
+	$CI =& get_instance();
     $result ="N/A";
     $quota_info = getQuotaInformation($surveyid,GetBaseLanguageFromSurveyID($surveyid),$quotaid);
     $quota = $quota_info[0];
 
-    if ( db_tables_exist(db_table_name_nq('survey_'.$surveyid))  &&
+    if ( db_tables_exist($CI->db->dbprefix('survey_'.$surveyid))  &&
     count($quota['members']) > 0)
     {
         $fields_list = array(); // Keep a list of fields for easy reference
@@ -6820,7 +6820,7 @@ function vIncludeKeypad()
  */
 function getQuotaInformation($surveyid,$language,$quotaid='all')
 {
-    global $CI, $clang, $clienttoken;
+    global $CI, $clienttoken;
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
     /*$query = "SELECT * FROM ".db_table_name('quota').", ".db_table_name('quota_languagesettings')."
@@ -6853,7 +6853,7 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
             //Modify the URL - thanks janokary
             $survey_quotas['quotals_url']=str_replace("{SAVEDID}",$CI->session->userdata('srid') ? $CI->session->userdata('srid') : '', $survey_quotas['quotals_url']);
             $survey_quotas['quotals_url']=str_replace("{SID}", $surveyid, $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{LANG}", $clang->getlangcode(), $survey_quotas['quotals_url']);
+            $survey_quotas['quotals_url']=str_replace("{LANG}", $CI->limesurvey_lang->getlangcode(), $survey_quotas['quotals_url']);
             $survey_quotas['quotals_url']=str_replace("{TOKEN}",$clienttoken, $survey_quotas['quotals_url']);
 
             array_push($quota_info,array('Name' => $survey_quotas['name'],

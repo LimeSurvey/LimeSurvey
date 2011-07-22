@@ -15,9 +15,9 @@
  */
 
 /**
- * Conditions Controller
+ * Translate Controller
  *
- * This controller performs token actions
+ * This controller performs translation actions
  *
  * @package		LimeSurvey
  * @subpackage	Backend
@@ -51,6 +51,7 @@ class translate extends AdminController {
 		$clang =  $this->limesurvey_lang;
 		$_POST = $this->input->post();
 		$this->load->helper("database");
+
 		
 		
 		//  $js_admin_includes[]= $homeurl.'/scripts/translation.js';
