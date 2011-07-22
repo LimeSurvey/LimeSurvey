@@ -589,20 +589,6 @@
             . "</select>\n"
             . "</li>\n";
 
-            // Self registration
-            $editsurvey .= "<li><label for='allowregister'>".$clang->gT("Allow public registration?")."</label>\n"
-            . "<select id='allowregister' name='allowregister'>\n"
-            . "<option value='Y'";
-        if ($esrow['allowregister'] == "Y") {
-            $editsurvey .= " selected='selected'";
-        }
-            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
-            . "<option value='N'";
-        if ($esrow['allowregister'] != "Y") {
-            $editsurvey .= " selected='selected'";
-        }
-            $editsurvey .= ">".$clang->gT("No")."</option>\n"
-            . "</select></li>\n";
 
             // Start date
             $dateformatdetails=getDateFormatData($_SESSION['dateformat']);
@@ -927,6 +913,22 @@
         }
         $editsurvey .= ">".$clang->gT("No")."</option>\n"
         . "</select></li>\n";
+
+        // Self registration
+        $editsurvey .= "<li><label for='allowregister'>".$clang->gT("Allow public registration?")."</label>\n"
+        . "<select id='allowregister' name='allowregister'>\n"
+        . "<option value='Y'";
+        if ($esrow['allowregister'] == "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+            $editsurvey .= ">".$clang->gT("Yes")."</option>\n"
+            . "<option value='N'";
+        if ($esrow['allowregister'] != "Y") {
+            $editsurvey .= " selected='selected'";
+        }
+        $editsurvey .= ">".$clang->gT("No")."</option>\n"
+        . "</select></li>\n";
+
 
         // Email format
         $editsurvey .= "<li><label for=''>".$clang->gT("Use HTML format for token emails?")."</label>\n"
