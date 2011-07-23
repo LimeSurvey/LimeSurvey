@@ -9,7 +9,6 @@ and open the template in the editor.
         <title>ExpressionManager:  Test Evaluation of Strings Containing Expressions</title>
     </head>
     <body>
-<script type="text/javascript" src="ExpressionManager_CoreJSFunctions.js"></script>
         <?php
             include 'LimeExpressionManager.php';
             LimeExpressionManager::UnitTestProcessStringContainingExpressions();

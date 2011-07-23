@@ -407,14 +407,6 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
             // don't want to skip Equation type, otherwise mandatory hidden will prevent result from being available and stored.
             continue;
         }
-        /* TODO (TMW)  I'm assuming we should leave the question on the  page, but have it be invisible - that way save.php will clear the value in the database
-         * However, should the value also be NULLed in $_SESSION[] so that downstream analyses and/or replacements don't use it?
-         */
-        if (!LimeExpressionManager::ProcessRelevance($qidattributes['relevance']))
-        {
-            continue;   // this will pervent the question from being displayed
-//            unset($_SESSION['fieldarray'][$ia[1]]);   // what is the preferred way to blank a value
-        }
         // Following line DISABLED BY lemeur
         // It prevents further calls to checkquestionfordisplay if using PREVIOUS button
         // from the LimeSurvey Navigator Toolbar
@@ -558,10 +550,12 @@ if ($show_empty_group) {
 print <<<END
 	function noop_checkconditions(value, name, type)
 	{
+        ExprMgr_process_relevance_and_tailoring();
 	}
 
 	function checkconditions(value, name, type)
 	{
+        ExprMgr_process_relevance_and_tailoring();
 
 END;
 
@@ -1257,8 +1251,8 @@ if (isset($qanda) && is_array($qanda))
         if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
         // Hide Equations of attribute set to always hide them, yet unlike other questions, do include the answer fields.
         $eqnAttributes = getQuestionAttributes($qa[4], $qa[8]);
-        // TODO (TMW) Process Relevance here? Want to make the question invisible and have save.php blank out the value if it is irrelevant
-        if (!LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance']))
+        // Want to make the question invisible and have save.php blank out the value if it is irrelevant
+        if (!LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance'],$qa[4]))
         {
             $n_q_display = ' style="display: none;"';;
         }        
@@ -1310,6 +1304,9 @@ if (isset($qanda) && is_array($qanda))
 echo "\n\n<!-- END THE GROUP -->\n";
 echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
 echo "\n";
+
+LimeExpressionManager::FinishProcessingGroup();
+echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
 if (!$previewgrp){
     $navigator = surveymover(); //This gets globalised in the templatereplace function

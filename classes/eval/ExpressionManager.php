@@ -44,7 +44,6 @@ class ExpressionManager {
     private $substitutionNum; // Keeps track of number of substitions performed XXX
     private $substitutionInfo; // array of JavaScripts to managing dynamic substitution
     private $jsExpression;  // caches computation of JavaScript equivalent for an Expression
-    private $questionNum;   // number of question for which Relevance and Replacements being done - needed for JavaScript functions
 
     function __construct()
     {
@@ -1180,36 +1179,13 @@ class ExpressionManager {
      * @param <type> $name - the ID name for the function
      * @return <type>
      */
-    public function GetJavaScriptFunctionForReplacement($name)
+    public function GetJavaScriptFunctionForReplacement($name,$eqn)
     {
         $jsParts = array();
-        $jsParts[] = "// Tailor " . $name . "\n";
+        $jsParts[] = "\n// Tailor " . $name . ": { " . $eqn . " }\n";
         $jsParts[] = "document.getElementById('" . $name . "').innerHTML=\n";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
         $jsParts[] = ";\n";
-        return implode('',$jsParts);
-    }
-
-    /**
-     * Return the dynamic function for making the current question visible or invisible
-     */
-    public function GetJavaScriptFunctionForRelevance()
-    {
-        if (count($this->GetJsVarsUsed()) == 0)
-        {
-            return '';
-        }
-        $jsParts = array();
-        $jsParts[] = "// Process Relevance for Question " . $this->questionNum . "\n";
-        $jsParts[] = "if (\n";
-        $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
-        $jsParts[] = "\n)\n{\n";
-        $jsParts[] = "document.getElementById('question" . $this->questionNum . "').style.display='';\n";
-        $jsParts[] = "document.getElementById('display" . $this->questionNum . "').value='on';\n";
-        $jsParts[] = "}\n else {\n";
-        $jsParts[] = "document.getElementById('question" . $this->questionNum . "').style.display='none';\n";
-        $jsParts[] = "document.getElementById('display" . $this->questionNum . "').value='';\n";
-        $jsParts[] = "}\n";
         return implode('',$jsParts);
     }
 
@@ -1569,10 +1545,13 @@ class ExpressionManager {
         return (boolean) $result;
     }
 
-    public function StartProcessingQuestion($questionNum)
+    /**
+     * Start processing a group of substitions - will be incrementally numbered
+     */
+
+    public function StartProcessingGroup()
     {
         $this->substitutionNum=0;
-        $this->questionNum = $questionNum;
         $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
     }
 
@@ -1644,7 +1623,7 @@ class ExpressionManager {
                 // TODO How do we prevent against that?  Regex for <script> section?
                 if (count($jsVarsUsed) > 0)
                 {
-                    $idName = "ExprMgr_tailor_" . $this->questionNum . "_" . $this->substitutionNum;
+                    $idName = "ExprMgr_tailor_" . $this->substitutionNum;
                     $resolvedParts[] = "<span id='" . $idName . "' name='" . $idName . "'>" . $resolvedPart . "</span>";
                     $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
@@ -1653,7 +1632,7 @@ class ExpressionManager {
                         'raw' => $stringPart[0],
                         'result' => $resolvedPart,
                         'vars' => implode('|',$this->GetJsVarsUsed()),
-                        'js' => $this->GetJavaScriptFunctionForReplacement($idName),
+                        'js' => $this->GetJavaScriptFunctionForReplacement($idName, substr($stringPart[0],1,-1)),
                     );
                 }
                 else

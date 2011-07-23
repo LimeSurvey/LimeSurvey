@@ -1181,7 +1181,7 @@ function checkgroupfordisplay($gid)
     $countQuestionsWithRelevanceIntThisGroup=0;
 
     // Initialize LimeExpressionManager for this group
-    LimeExpressionManager::ProcessString("",array(),true,true,false,$gid);  // forces a refresh of Token and Answer values into the replacement engine
+    LimeExpressionManager::StartProcessingGroup($gid);
 
     foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
 

@@ -11,6 +11,11 @@ include_once('ExpressionManager.php');
 class LimeExpressionManager {
     private static $instance;
     private $em;    // Expression Manager
+    private $relevanceInfo;
+    private $tailorInfo;
+    private $groupNum;
+    private $debugLEM = true;   // set this to false to turn off debugging
+    private $knownVars;
     
     // A private constructor; prevents direct creation of object
     private function __construct() 
@@ -35,29 +40,41 @@ class LimeExpressionManager {
     }
 
     /**
+     * Return the dynamic function for making the current question visible or invisible
+     */
+    public function GetJavaScriptFunctionForRelevance($questionNum, $eqn)
+    {
+        $jsParts = array();
+        $jsParts[] = "\n// Process Relevance for Question " . $questionNum . ": { " . $eqn . " }\n";
+        $jsParts[] = "if (\n";
+        $jsParts[] = $this->em->GetJavaScriptEquivalentOfExpression();
+        $jsParts[] = "\n)\n{\n";
+        $jsParts[] = "document.getElementById('question" . $questionNum . "').style.display='';\n";
+        $jsParts[] = "document.getElementById('display" . $questionNum . "').value='on';\n";
+        $jsParts[] = "}\n else {\n";
+        $jsParts[] = "document.getElementById('question" . $questionNum . "').style.display='none';\n";
+        $jsParts[] = "document.getElementById('display" . $questionNum . "').value='';\n";
+        $jsParts[] = "}\n";
+        return implode('',$jsParts);
+    }
+
+    /**
      * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
      * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
      *
-     * @param <type> $sid
      * @param <type> $forceRefresh
+     * @param <type> $anonymized
      * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
      */
 
-    public function setVariableAndTokenMappingsForExpressionManager($sid,$forceRefresh=false,$anonymized=false,$groupId=NULL)
+    public function setVariableAndTokenMappingsForExpressionManager($forceRefresh=false,$anonymized=false)
     {
-        global $globalfieldmap, $clang, $surveyid;
+        global $surveyid;
 
         //checks to see if fieldmap has already been built for this page.
-        if (isset($globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode])&& !$forceRefresh) {
-            return false;   // means the mappings have already been set and don't need to be re-created
-        }
-        if (isset($globalfieldmap[$surveyid]['exprMgr_groupId']))
-        {
-            $global_groupId = $globalfieldmap[$surveyid]['exprMgr_groupId'];
-        }
-        else {
-            $global_groupId = NULL;
-        }
+//        if (isset($globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode])&& !$forceRefresh) {
+//            return false;   // means the mappings have already been set and don't need to be re-created
+//        }
 
         $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
         if (!isset($fieldmap)) {
@@ -75,8 +92,8 @@ class LimeExpressionManager {
                 continue;   // not an SGQA value
             }
             $fieldNameParts = explode('X',$code);
-            $groupId = $fieldNameParts[1];
-            $isOnCurrentPage = ($groupId != NULL && $groupId == $global_groupId) ? 'Y' : 'N';
+            $groupNum = $fieldNameParts[1];
+            $isOnCurrentPage = ($groupNum != NULL && $groupNum == $this->groupNum) ? 'Y' : 'N';
 
             $questionId = $fieldNameParts[2];
             $questionAttributes = getQuestionAttributes($questionId,$fielddata['type']);
@@ -186,7 +203,7 @@ class LimeExpressionManager {
                     'codeValue'=>$codeValue,
                     'jsName'=>$jsVarName,
                     'readWrite'=>$readWrite,
-                    'isOnCurrentPage',$isOnCurrentPage,
+                    'isOnCurrentPage'=>$isOnCurrentPage,
                     'displayValue'=>$displayValue,
                     'question'=>$question,
                     'relevance'=>$relevance,
@@ -219,18 +236,21 @@ class LimeExpressionManager {
                     'isOnCurrentPage'=>$isOnCurrentPage,
                 );
             }
-            $debugLog[] = array(
-                'code' => $code,
-                'type' => $fielddata['type'],
-                'varname' => $varName,
-                'jsName' => $jsVarName,
-                'question' => $question,
-                'codeValue' => isset($codeValue) ? $codeValue : '&nbsp;',
-                'displayValue' => isset($displayValue) ? $displayValue : '&nbsp;',
-                'readWrite' => $readWrite,
-                'isOnCurrentPage' => $isOnCurrentPage,
-                'relevance' => $relevance,
-                );
+            if ($this->debugLEM)
+            {
+                $debugLog[] = array(
+                    'code' => $code,
+                    'type' => $fielddata['type'],
+                    'varname' => $varName,
+                    'jsName' => $jsVarName,
+                    'question' => $question,
+                    'codeValue' => isset($codeValue) ? $codeValue : '&nbsp;',
+                    'displayValue' => isset($displayValue) ? $displayValue : '&nbsp;',
+                    'readWrite' => $readWrite,
+                    'isOnCurrentPage' => $isOnCurrentPage,
+                    'relevance' => $relevance,
+                    );
+            }
 
         }
 
@@ -260,18 +280,21 @@ class LimeExpressionManager {
                     'isOnCurrentPage'=>'N',
                     );
 
-                $debugLog[] = array(
-                    'code' => $key,
-                    'type' => '&nbsp;',
-                    'varname' => '&nbsp;',
-                    'jsName' => '&nbsp;',
-                    'question' => '&nbsp;',
-                    'codeValue' => '&nbsp;',
-                    'displayValue' => $val,
-                    'readWrite'=>'N',
-                    'isOnCurrentPage'=>'N',
-                    'relevance'=>'',
-                );
+                if ($this->debugLEM)
+                {
+                    $debugLog[] = array(
+                        'code' => $key,
+                        'type' => '&nbsp;',
+                        'varname' => '&nbsp;',
+                        'jsName' => '&nbsp;',
+                        'question' => '&nbsp;',
+                        'codeValue' => '&nbsp;',
+                        'displayValue' => $val,
+                        'readWrite'=>'N',
+                        'isOnCurrentPage'=>'N',
+                        'relevance'=>'',
+                    );
+                }
             }
         }
         else
@@ -293,66 +316,48 @@ class LimeExpressionManager {
             }
         }
 
-        $debugLog_html = "<table border='1'>";
-        $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>CodeVal</th><th>DisplayVal</th><th>JSname</th><th>Writable?</th><th>Set On This Page?</th><th>Relevance</th><th>Question</th></tr>";
-        foreach ($debugLog as $t)
+        if ($this->debugLEM)
         {
-            $debugLog_html .= "<tr><td>" . $t['code']
-                . "</td><td>" . $t['type']
-                . "</td><td>" . $t['varname']
-                . "</td><td>" . $t['codeValue']
-                . "</td><td>" . $t['displayValue']
-                . "</td><td>" . $t['jsName']
-                . "</td><td>" . $t['readWrite']
-                . "</td><td>" . $t['isOnCurrentPage']
-                . "</td><td>" . $t['relevance']
-                . "</td><td>" . $t['question']
-                . "</td></tr>";
+            $debugLog_html = "<table border='1'>";
+            $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>CodeVal</th><th>DisplayVal</th><th>JSname</th><th>Writable?</th><th>Set On This Page?</th><th>Relevance</th><th>Question</th></tr>";
+            foreach ($debugLog as $t)
+            {
+                $debugLog_html .= "<tr><td>" . $t['code']
+                    . "</td><td>" . $t['type']
+                    . "</td><td>" . $t['varname']
+                    . "</td><td>" . $t['codeValue']
+                    . "</td><td>" . $t['displayValue']
+                    . "</td><td>" . $t['jsName']
+                    . "</td><td>" . $t['readWrite']
+                    . "</td><td>" . $t['isOnCurrentPage']
+                    . "</td><td>" . $t['relevance']
+                    . "</td><td>" . $t['question']
+                    . "</td></tr>";
+            }
+            $debugLog_html .= "</table>";
+            file_put_contents('/tmp/LimeExpressionManager-page.html',$debugLog_html);
         }
-        $debugLog_html .= "</table>";
-        file_put_contents('/tmp/LimeExpressionManager-page.html',$debugLog_html);
         
-        $globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode] = $knownVars;
+        $this->knownVars = $knownVars;
 
         return true;
     }
 
     /**
      * Translate all Expressions, Macros, registered variables, etc. in $string
-     * @global <type> $surveyid
-     * @global <type> $clang
-     * @global <type> $globalfieldmap
      * @param <type> $string - the string to be replaced
      * @param <type> $replacementFields - optional replacement values
      * @param boolean $debug - if true,write translations for this page to html-formatted log file
-     * @param boolean $forceRefresh - if true, reset $fieldMap and the derived arrays of registered variables and values
-     * @param boolean $anonymized - if true, then don't translate TOKEN values
-     * @param <type> $groupId - the current Group ID number - this is needed to properly name the answer IDs in JavaScript
      * @param <type> $numRecursionLevels - the number of times to recursively subtitute values in this string
      * @param <type> $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
      * @return <type> - the original $string with all replacements done.
      */
 
-    static function ProcessString($string, $replacementFields=array(), $debug=false, $forceRefresh=false, $anonymized=false, $groupId=NULL, $numRecursionLevels=1, $whichPrettyPrintIteration=1)
+    static function ProcessString($string, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1)
     {
-        global $surveyid, $clang, $globalfieldmap;
-
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
-        if (!is_null($groupId))
-        {
-            $globalfieldmap[$surveyid]['exprMgr_groupId']=$groupId;
-        }
-        if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized))
-        {
-            // means that some values changed, so need to update what was registered to ExpressionManager
-            $em->RegisterVarnamesUsingReplace($globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode]);
-            if ($debug)
-            {
-                $debugLog_html = '<tr><th>Group</th><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
-                file_put_contents('/tmp/LimeExpressionManager-Debug-ThisPage.html',$debugLog_html); // replace the value
-            }
-        }
+
         if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
         {
             $replaceArray = array();
@@ -368,16 +373,9 @@ class LimeExpressionManager {
         }
         $result = $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string),$numRecursionLevels, $whichPrettyPrintIteration);
 
-        if ($debug)
+        if ($debug && $lem->debugLEM)
         {
-            if (isset($globalfieldmap[$surveyid]['exprMgr_groupId']))
-            {
-                $global_groupId = $globalfieldmap[$surveyid]['exprMgr_groupId'];
-            }
-            else {
-                $global_groupId = 'NULL';
-            }
-            $debugLog_html = '<tr><td>' . $global_groupId . '</td><td>' . $string . '</td><td>' . $em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
+            $debugLog_html = '<tr><td>' . $lem->groupNum . '</td><td>' . $string . '</td><td>' . $em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
             file_put_contents('/tmp/LimeExpressionManager-Debug-ThisPage.html',$debugLog_html,FILE_APPEND);
         }
 
@@ -390,7 +388,7 @@ class LimeExpressionManager {
      * @param <type> $string
      * @return <type>
      */
-    static function ProcessRelevance($string)
+    static function ProcessRelevance($string,$questionNum=NULL)
     {
         if (!isset($string) || trim($string=='') || trim($string)=='1')
         {
@@ -398,40 +396,137 @@ class LimeExpressionManager {
         }
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
-        return $em->ProcessBooleanExpression(htmlspecialchars_decode($string));
+        $result = $em->ProcessBooleanExpression(htmlspecialchars_decode($string));
+        if (is_null($questionNum))
+        {
+            return $result;
+        }
+        $jsVars = $em->GetJSVarsUsed();
+        if (count($jsVars) > 0)
+        {
+            $relevanceVars = implode('|',$em->GetJSVarsUsed());
+            $relevanceJS = $lem->GetJavaScriptFunctionForRelevance($questionNum,$string);
+            $lem->relevanceInfo[] = array(
+                'qid' => $questionNum,
+                'result' => $result,
+                'relevancejs' => $relevanceJS,
+                'relevanceVars' => $relevanceVars,
+            );
+        }
+        return $result;
     }
 
-    static function StartProcessingGroup($groupNum)
+    static function StartProcessingGroup($groupNum=NULL,$anonymized=false)
     {
-        $lem = LimeExpressionManager::singleton();
-        /** Need to hold onto the following:
-         * (1) Relevance Info
-         * (a) Result
-         * (b) JavaScript version of Relevance  Equation
-         * (c) Raw relevance equation?
-         * (d) question #
-         * (2) Questions
-         * (a) Substituted Text - create <span> for each equation that needs to be substituted
-         * (b) question #
-         * (3) Answers
-         * (a) question #
-         * (b) answer #?
-         * (c) Substituted Text - create <span> for each equation that needs to be substituted
-         */
-    }
+        global $surveyid;
 
-    static function StartProcessingQuestion($questionNum)
-    {
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
-        $em->StartProcessingQuestion($questionNum);
+        $em->StartProcessingGroup();
+        if (!is_null($groupNum))
+        {
+            $lem->groupNum = $groupNum;
+
+            if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager(true,$anonymized))
+            {
+                // means that some values changed, so need to update what was registered to ExpressionManager
+                $em->RegisterVarnamesUsingReplace($lem->knownVars);
+
+                if ($lem->debugLEM)
+                {
+                    $debugLog_html = '<tr><th>Group</th><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
+                    file_put_contents('/tmp/LimeExpressionManager-Debug-ThisPage.html',$debugLog_html); // replace the value
+                }
+            }
+        }
+        $lem->relevanceInfo = array();
+        $lem->tailorInfo = array();
     }
 
     static function FinishProcessingGroup()
     {
         $lem = LimeExpressionManager::singleton();
+        $em = $lem->em;
+        $lem->tailorInfo[] = $em->GetCurrentSubstitutionInfo();
     }
 
+    /*
+     * Generate JavaScript needed to do dynamic relevance and tailoring
+     * Also create list of variables that need to be declared
+     */
+    static function GetRelevanceAndTailoringJavaScript()
+    {
+        global $rooturl;
+
+        $lem = LimeExpressionManager::singleton();
+        $em = $lem->em;
+
+        $knownVars = $lem->knownVars;
+
+        $jsParts=array();
+        $allJsVarsUsed=array();
+        $jsParts[] = '<script type="text/javascript" src="' . $rooturl . '/classes/eval/ExpressionManager_CoreJSFunctions.js"></script>';
+        $jsParts[] = "<script type='text/javascript'>\n<!--\n";
+        $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(){\n";
+        // Which should come first - relevance or tailoring (or both)?
+        foreach ($lem->tailorInfo as $tailor)
+        {
+            if (is_array($tailor))
+            {
+                foreach ($tailor as $sub)
+                {
+                    $jsParts[] = $sub['js'];
+                    $vars = explode('|',$sub['vars']);
+                    if (is_array($vars))
+                    {
+                        $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                    }
+                }
+            }
+        }
+        if (is_array($lem->relevanceInfo))
+        {
+            foreach ($lem->relevanceInfo as $arg)
+            {
+                $jsParts[] = $arg['relevancejs'];
+                $vars = explode('|',$arg['relevanceVars']);
+                if (is_array($vars))
+                {
+                    $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                }
+            }
+        }
+        $jsParts[] = "}\n";
+        $jsParts[] = "//-->\n</script>\n";
+
+        // Now figure out which variables have not been declared (those not on the current page)
+        $undeclaredJsVars = array();
+        $undeclaredVal = array();
+        $allJsVarsUsed = array_unique($allJsVarsUsed);
+        foreach ($knownVars as $knownVar)
+        {
+            foreach ($allJsVarsUsed as $jsVar)
+            {
+                if ($jsVar == $knownVar['jsName'])
+                {
+                    if ($knownVar['isOnCurrentPage']=='N')
+                    {
+                        $undeclaredJsVars[] = $jsVar;
+                        $undeclaredVal[$jsVar] = $knownVar['codeValue'];
+                        break;
+                    }
+                }
+            }
+        }
+        $undeclaredJsVars = array_unique($undeclaredJsVars);
+        foreach ($undeclaredJsVars as $jsVar)
+        {
+            // TODO - is different type needed for text?  Or process value to striphtml?
+            $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar . "' value='" . htmlspecialchars($undeclaredVal[$jsVar]) . "'/>\n";
+        }
+        
+        return implode('',$jsParts);
+    }
 
     /**
      * Unit test
@@ -494,6 +589,7 @@ EOST;
 
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
+        $em->StartProcessingGroup();
 
         $em->RegisterVarnamesUsingMerge($vars);
 
@@ -501,7 +597,6 @@ EOST;
         for ($i=0;$i<count($alltests);++$i)
         {
             $test = $alltests[$i];
-            $em->StartProcessingQuestion($i);
             $result = $em->sProcessStringContainingExpressions($test,2,1);
             $prettyPrint = $em->GetLastPrettyPrintExpression();
             print "<tr><td>" . $prettyPrint . "</td>\n";
@@ -557,50 +652,30 @@ EOT;
             $testArgs[] = $args;
         }
 
+        LimeExpressionManager::StartProcessingGroup();
+
         $lem = LimeExpressionManager::singleton();
-        // start processing the group, and hold onto the
         $em = $lem->em;
         $em->RegisterVarnamesUsingMerge($vars);
-        $lem->StartProcessingGroup(0);
 
         // collect relevance
         for ($i=0;$i<count($testArgs);++$i)
         {
             $testArg = $testArgs[$i];
             $var = $testArg[0];
-            $em->StartProcessingQuestion($i);
+            LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1]),$i);
+            $question = LimeExpressionManager::ProcessString($testArg[3], NULL, true, 1, 1);
+
             $argInfo[] = array(
                 'num' => $i,
                 'name' => 'java_' . $testArg[0],
                 'type' => $testArg[2],
-                'relevance' => $testArg[1],
-                'result' => $em->ProcessBooleanExpression(htmlspecialchars_decode($testArg[1]),$i),
-                'relevancejs' => $em->GetJavaScriptFunctionForRelevance($i),    // will be blank if none is needed
-                'relevanceVars' => implode('|',$em->GetJSVarsUsed()),
-                'raw_q' => $testArg[3],
-                'question' => $em->sProcessStringContainingExpressions($testArg[3],1,1),
-                'subinfo' => $em->GetCurrentSubstitutionInfo(),
+                'question' => $question,
             );
         }
+        LimeExpressionManager::FinishProcessingGroup();
 
-        // Print JavaScript
-        print "<script type='text/javascript'>\n<!--\n";
-        print "function ExprMgr_process_relevance_and_tailoring(){\n";
-        // Which should come first - relevance or tailoring (or both)?
-        foreach ($argInfo as $arg)
-        {
-            $subinfo = $arg['subinfo'];
-            foreach ($subinfo as $sub)
-            {
-                print $sub['js'];
-            }
-        }
-        foreach ($argInfo as $arg)
-        {
-            print $arg['relevancejs'];
-        }
-        print "}\n";
-        print "//-->\n</script>\n";
+        print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
         // Print Table of questions
         print "<table border='1'><tr><td>";
