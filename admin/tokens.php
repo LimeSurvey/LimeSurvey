@@ -1943,7 +1943,7 @@ if ($subaction == "remind" && bHasSurveyPermission($surveyid, 'tokens','update')
                 $msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
                 $sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 $customheaders = array( '1' => "X-surveyid: ".$surveyid,
-                    '2' => "X-tokenid: ".$tokenid);
+                    '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
 
                 if (trim($emrow['validfrom'])!='' && convertDateTimeFormat($emrow['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1)
                 {
