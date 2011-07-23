@@ -24,7 +24,7 @@
     function view($editfile='startpage.pstpl', $screenname='welcome', $templatename='default')
     {
         
-        self::_js_admin_includes(base_url().'scripts/admin/edit_area/edit_area_loader.js');
+        //self::_js_admin_includes(base_url().'scripts/admin/edit_area/edit_area_loader.js');
         self::_js_admin_includes(base_url().'scripts/admin/templates.js');
         
         self::_getAdminHeader();

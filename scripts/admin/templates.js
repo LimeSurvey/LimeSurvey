@@ -2,7 +2,7 @@
 // based on TTabs from http://interface.eyecon.ro/
 
 $(document).ready(function(){
-    if($("#changes.full").length > 0) {
+    /* if($("#changes.full").length > 0) {
         editAreaLoader.init({
             language: adminlanguage,
             id : "changes"        // textarea id
@@ -12,7 +12,7 @@ $(document).ready(function(){
             ,word_wrap: true
             ,start_highlight: true        // to display with highlight mode on start-up
         });
-    }
+    } */
     $('#iphone').click(function(){
       $('#previewiframe').css("width", "320px");
       $('#previewiframe').css("height", "396px");

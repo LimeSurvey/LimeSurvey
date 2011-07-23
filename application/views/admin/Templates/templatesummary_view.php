@@ -1,6 +1,11 @@
 <?php if (is_template_editable($templatename)==true)
 { ?>
-
+          <script src="<?php echo base_url(); ?>scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.js" type="text/javascript"></script>
+          <link rel="stylesheet" href="<?php echo base_url(); ?>scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.css" />
+          <script src="<?php echo base_url(); ?>scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js"></script>
+          <link rel="stylesheet" href="<?php echo base_url(); ?>scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.css" />
+          <script src="<?php echo base_url(); ?>scripts/admin/codemirror_ui/js/codemirror-ui.js" type="text/javascript"></script>
+          <link rel="stylesheet" href="<?php echo base_url(); ?>scripts/admin/codemirror_ui/css/codemirror-ui.css" type="text/css" media="screen" /> 
 									   <table class='templatecontrol'>
                                        <tr>
                                        <th colspan='3'>
@@ -15,11 +20,19 @@
                                        <input type='hidden' name='screenname' value='<?php echo html_escape($screenname); ?>' />
                                        <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
                                        <input type='hidden' name='action' value='templatesavechanges' />
+                                       
                                        <textarea name='changes' id='changes' rows='15' cols='40' class='codepress html <?php echo $templateclasseditormode; ?>'>
                                        <?php if ($editfile) { 
                                         textarea_encode(filetext($templatename,$editfile,$templates));
                                        } ?>
-                                       </textarea><br />
+                                       </textarea>
+                 <script type="text/javascript">
+                 var textarea = document.getElementById('changes'); 
+                 var uiOptions = { path : '<?php echo base_url(); ?>scripts/admin/codemirror_ui/js/', searchMode : 'inline', buttons : ['undo','redo','jump','reindent','about'] }
+                 var codeMirrorOptions = { mode: "javascript" }
+                 var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	
+                 </script>
+                                       <br />
                                         <?php if (is_writable($templates[$templatename])) { ?>
                                            <input align='right' type='submit' value='<?php echo $clang->gT("Save Changes"); ?>'
                                            <?php if (!is_template_editable($templatename)) { ?>
