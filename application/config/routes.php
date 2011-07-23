@@ -56,6 +56,11 @@ $route['admin/question/editquestion/(:num)/(:num)/(:num)'] = "admin/question/ind
 $route['admin/labels/newlabel'] = "admin/labels/index/newlabelset";
 $route['admin/labels/editlabel/(:num)'] = "admin/labels/index/editlabelset/$1";
 
+//templates
+//$route['admin/templates/screenredirect/(:any)/(:any)/(:any)'] = "admin/templates/index/$1/$3/$2";
+//$route['admin/templates/fileredirect/(:any)/(:any)/(:any)'] = "admin/templates/index/$1/$2/$3";
+//$route['admin/templates/(:any)/(:any)/(:any)'] = "admin/templates/index/$3/$2/$1";
+
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

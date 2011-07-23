@@ -1,0 +1,15 @@
+<table class="welcome-table">
+{CHECKJAVASCRIPT}
+	<tr>
+		<td class="survey-description">
+			<h1>{SURVEYNAME}</h1>
+			{SURVEYDESCRIPTION}
+		</td>
+	</tr>
+	<tr>
+		<td class="survey-welcome">
+			{WELCOME}<br /><br />
+			{CLEARALL}
+		</td>
+	</tr>
+</table>

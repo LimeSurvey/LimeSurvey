@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	
+	<title>CodeMirror UI | Test Page</title>
+	
+	<script src="lib/CodeMirror-2.0/lib/codemirror.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="lib/CodeMirror-2.0/lib/codemirror.css">
+	<script src="lib/CodeMirror-2.0/mode/javascript/javascript.js"></script>
+  <link rel="stylesheet" href="lib/CodeMirror-2.0/mode/javascript/javascript.css">
+	
+	
+	<script src="js/codemirror-ui.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="css/codemirror-ui.css" type="text/css" media="screen" />
+	
+	<style type="text/css">
+		body{
+			background:#0d4664;
+			text-align:center;
+		}
+		
+		#pageBody{
+			width:930px;
+			padding:10px;
+			background:white;
+			text-align:left;
+			margin:10px auto;
+			padding-top:0px;
+			border:1px solid black;	
+			-webkit-border-radius: 15px;
+			-moz-border-radius: 15px;
+			border-radius: 15px;
+			-moz-box-shadow: 3px 3px 14px #000;
+			-webkit-box-shadow: 3px 3px 14px #000;
+			box-shadow: 3px 3px 14px #000;
+		}
+		
+		pre{
+			border:1px solid #ccc;
+			background:#eee;
+			padding:10px;
+		}
+		
+		#footer{
+			font-size:0.9em;
+			color:white;
+		}
+		#footer a{
+			color:white;
+		}
+	</style>
+	
+	
+</head>
+<body>
+
+<div id="pageBody">
+	<h1>CodeMirror UI</h1>
+	
+	<p>
+		CodeMirrorUI is a simple interface written by Jeremy Green to act as a 
+		wrapper around the <a href="http://codemirror.net/">CodeMirror</a> text editor widget by Marijn Haverbeke.
+		CodeMirror is a syntax highlighter and formatter that makes it much easier to edit source code in a browser.
+		ComeMirrorUI is a wrapper that adds interface functionality for many functions that are already built into CodeMirror itself.
+		Functionality includes undo, redo, jump to line, reindent selection, and reindent entire document. 
+		Two options for find/replace are also available.  It is based on the MirrorFrame example that Marijn included with CodeMirror.
+	</p>
+	<p>
+		This editor is enabled with the pop up find/replace widget.
+	</p>
+	<!--
+	<textarea id="code0" cols="120" rows="20"> 
+  // Here you see some JavaScript code. Mess around with it to get
+  // acquainted with CodeMirror's features.
+   
+  // Press enter inside the object and your new line will be suitably
+  // indented.
+  var keyBindings = {
+    enter: "newline-and-indent",
+    tab: "reindent-selection",
+    ctrl_z: "undo",
+    ctrl_y: "redo",
+    ctrl_backspace: "undo-for-safari (which blocks ctrl-z)",
+    ctrl_bracket: "highlight-brackets",
+    ctrl_shift_bracket: "jump-to-matching-bracket"
+  };
+   
+  // Press tab on the next line and the wrong indentation will be fixed.
+        var regex = /foo|bar/i;
+   
+  function example(x) {
+    // Local variables get a different colour than global ones.
+    var y = 44.4;
+    return x + y - z;
+  }
+  </textarea> 
+  -->
+	
+	<textarea id="code1" cols="120" rows="20"> 
+	// Here you see some JavaScript code. Mess around with it to get
+	// acquainted with CodeMirror's features.
+	 
+	// Press enter inside the object and your new line will be suitably
+	// indented.
+	var keyBindings = {
+	  enter: "newline-and-indent",
+	  tab: "reindent-selection",
+	  ctrl_z: "undo",
+	  ctrl_y: "redo",
+	  ctrl_backspace: "undo-for-safari (which blocks ctrl-z)",
+	  ctrl_bracket: "highlight-brackets",
+	  ctrl_shift_bracket: "jump-to-matching-bracket"
+	};
+	 
+	// Press tab on the next line and the wrong indentation will be fixed.
+	      var regex = /foo|bar/i;
+	 
+	function example(x) {
+	  // Local variables get a different colour than global ones.
+	  var y = 44.4;
+	  return x + y - z;
+	}
+	</textarea> 
+	
+	<h2>Easily Configurable</h2>
+	
+	<p>
+		The editor above was created with code like this:
+	</p>
+	
+	<pre>
+//first set up some variables
+var textarea = document.getElementById('code1');
+var uiOptions = { path : 'js/', searchMode : 'popup' }
+var codeMirrorOptions = { mode: "javascript" }
+
+//then create the editor
+var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
+	
+	<p>
+		Creating a new CodeMirrorUI is easy, you just call:
+	</p>
+	<pre>new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);</pre>
+	
+	<h3>Params for new CodeMirrorUI()</h3>
+	<ul>
+		<li>
+			textarea - Either a DOM element of the ID of a DOM element that should be replaced with the editor UI.
+		</li>
+		<li>
+			uiOptions - Options for the CodeMirrorUI object.
+			<ul>
+				<li>
+					path - String - The path to the codemirror-ui js directory (relative to the current document). 
+				</li>
+				<li>
+					searchMode - String - Options are 'inline' or 'popup' 
+				</li>
+				<li>
+					buttons - Array - An array of button names that should be included in the button bar.
+				</li>
+			</ul>
+		</li>
+		<li>
+			codeMirrorOptions - Standard optiosn that you would pass to any CodeMirror constructor.  See the <a href="http://codemirror.net/manual.html">CodeMirror manual</a> for more details;
+		</li>
+	</ul>
+	<h2>Installing</h2>
+	
+	<p>
+		To install CodeMirrorUI you can just copy the codemirror-ui directory into your web app.  
+		It includes a version of CodeMirror, or you can use your own version if you'd prefer.
+	</p>
+	<p>
+		Then include a link to the stylesheet and javascript files in your document. Something like this:
+	</p>
+	
+<pre class="code">
+// First the CodeMirror stuff
+&lt;script src="lib/CodeMirror-2.0/lib/codemirror.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="lib/CodeMirror-2.0/lib/codemirror.css"&gt;
+&lt;script src="lib/CodeMirror-2.0/mode/javascript/javascript.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="lib/CodeMirror-2.0/mode/javascript/javascript.css"&gt;
+
+//Then the CodeMirrorUI stuff
+&lt;script src="js/codemirror-ui.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="css/codemirror-ui.css" type="text/css" media="screen" /&gt;
+</pre>
+	
+	<p>
+		From there you can create an editor as shown above.  It is especially easy to replace any calls to
+		"CodeMirror.fromTextArea(...)" with a "new CodeMirrorUI(...)".
+	</p>
+	
+	<h2>Another example</h2>
+	
+	<p>
+		This editor is enabled with the 'inline' search widget.
+	</p>
+	<p>
+		The button for the popup search widget has been removed, 
+		along with the button for 'reindent selection'.
+	</p>
+	<textarea id="code2" cols="120" rows="30"> 
+	// Here you see some JavaScript code. Mess around with it to get
+	// acquainted with CodeMirror's features.
+	 
+	// Press enter inside the object and your new line will be suitably
+	// indented.
+	var keyBindings = {
+	  enter: "newline-and-indent",
+	  tab: "reindent-selection",
+	  ctrl_z: "undo",
+	  ctrl_y: "redo",
+	  ctrl_backspace: "undo-for-safari (which blocks ctrl-z)",
+	  ctrl_bracket: "highlight-brackets",
+	  ctrl_shift_bracket: "jump-to-matching-bracket"
+	};
+	 
+	// Press tab on the next line and the wrong indentation will be fixed.
+	      var regex = /foo|bar/i;
+	 
+	function example(x) {
+	  // Local variables get a different colour than global ones.
+	  var y = 44.4;
+	  return x + y - z;
+	}
+	</textarea> 
+
+	<p>
+		The uiOptions param for the editor above looks like this:
+	</p>
+
+
+<pre class="code">
+var uiOptions = {
+	path : 'js/',
+	searchMode = 'inline',
+	buttons : ['undo','redo','jump','reindent','about']
+}
+</pre>
+	
+	<p>
+		View the source of this page to see the actual code used to get these editors in action.
+	</p>
+
+	
+	<h2>Find the code @ Github</h2>
+	<a href="https://github.com/jagthedrummer/codemirror-ui">https://github.com/jagthedrummer/codemirror-ui</a>
+	
+	<h2>Acknowledgements</h2>
+	<h3><a href="http://codemirror.net/">Marijn Haverbeke - CodeMirror</a></h3>
+	<p>
+		Thanks to Marijn Haverbeke for creating and releasing CodeMirror in the first place.  
+		Whithout his excellent contribution to the community this project would have no reason to exist.
+	</p>
+	
+	<h3><a href="http://www.famfamfam.com/lab/icons/silk/">Mark James - Silk Icons</a></h3>
+	<p>
+	I used the Silk icon set from Mark James of <a href="http://www.famfamfam.com/">famfamfam.com</a> fame.  
+  </p>
+  
+  <h2>Versions</h2>
+  <p>
+    All version up to and including 0.0.7 are based on CodeMirror 1.
+  </p>
+  <p>
+    Versions 0.0.8 and newer are based on CodeMirror 2.  
+  </p>
+  
+  <h2>License</h2>
+  
+  <p>
+    CodeMirror UI is provided under the MIT License.  See the LICENSE file for full details.
+  </p>
+  
+  <h2>Known Usage</h2>
+  <p>
+    The following sites/apps are using CodeMirrorUI.  
+    Please let me know if you'd like to be added to this list.
+  </p>
+  <ul>
+    <li><a href="http://www.webapeel.com/">aPeel</a></li>
+  </ul>
+</div>
+
+
+	<div id="footer">
+		CodeMirrorUI is a production of <a href="http://www.octolabs.com/">OctoLabs</a>
+		<br/>
+		<a href="http://www.octolabs.com/"><img src="images/octologo.png" border="0"></a>
+	</div>
+
+
+<script type="text/javascript"> 
+
+  /*
+  var textarea = document.getElementById('code0');
+  var myCodeMirror = CodeMirror.fromTextArea(textarea, {mode: "javascript"} );
+  */
+
+  var textarea = document.getElementById('code1');
+  var editor = new CodeMirrorUI(textarea,
+   {
+  	path : 'js/',
+	searchMode : 'popup'
+   },
+   {
+    mode: "javascript"
+  });
+  
+
+  var textarea2 = document.getElementById('code2');
+  //CodeMirror.replace(textarea);
+  
+  var editor2 = new CodeMirrorUI(textarea2,
+   {
+  	path : 'js/',
+	  searchMode : 'inline',
+	  buttons : ['undo','redo','jump','reindent','about']
+   },
+   {
+    mode: "javascript"
+  });
+  
+</script> 
+
+
+</body>
+</html>

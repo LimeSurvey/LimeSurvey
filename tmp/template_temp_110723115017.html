@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+<script type="text/javascript" src="/scripts/jquery/jquery.js"></script>
+<script type="text/javascript" src="/scripts/jquery/jquery-ui.js"></script>
+<link href="/scripts/jquery/css/start/jquery-ui.css" media="all" type="text/css" rel="stylesheet" /><link href="/scripts/jquery/css/start/lime-progress.css" media="all" type="text/css" rel="stylesheet" /><script type="text/javascript" src="http://localhost/ls_ci/limesurvey_ci/scripts/admin/edit_area/edit_area_loader.js"></script>
+<script type="text/javascript" src="http://localhost/ls_ci/limesurvey_ci/scripts/admin/templates.js"></script>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>{SURVEYNAME}</title>
+		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+  		<!-- The following line includes template.css?t=110723115017 and if an RTL-language is used template-rtl.css?t=110723115017 -->
+        {TEMPLATECSS}
+		
+<!--[if lte IE 6]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css?t=110723115017" />
+<![endif]-->
+<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css?t=110723115017" />
+<![endif]-->
+<!--[if IE 8]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css?t=110723115017" />
+<![endif]-->
+
+<!-- The following CSS hides visual elements of the progress bar from screen readers. -->
+		<style type="text/css" media="aural tty">
+            progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
+		</style>
+		
+		<script type="text/javascript" src="{TEMPLATEURL}template.js?t=110723115017"></script>
+<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />		
+</head>
+<body class="default lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
+    <div class="outerframe">
+        <table class="innerframe">
+            <tr>
+                <td>
+<table class="welcome-table">
+	<tr>
+		<td class="survey-description">
+        	{CHECKJAVASCRIPT}
+			<h1>{SURVEYNAME}</h1><br />
+			<p class='surveydescription'>{SURVEYDESCRIPTION}</p>
+		</td>
+	</tr>
+	<tr>
+		<td class="survey-welcome">
+			<span class='surveywelcome'>{WELCOME}</span><br />
+			<span class="x-questions">{THEREAREXQUESTIONS}</span>
+		</td>
+	</tr>
+</table>
+<table class='privacy'>
+	<tr>
+		<td width="15%">&nbsp;</td>
+		<td class='privacynote'>{PRIVACYMESSAGE}</td>
+		<td width="15%" >&nbsp;</td>
+	</tr>
+<tr><td><br /> </td></tr>
+</table>
+<table class="navigator-table">
+	<tr>
+		<td class="save-all">
+			{SAVE}
+		</td>
+		<td class="submit-buttons">
+			{NAVIGATOR}
+		</td>
+		<td class="clear-all">
+			{CLEARALL}
+		</td>
+	</tr>
+</table>    		</td>
+    	</tr>
+    </table>
+</div></html>

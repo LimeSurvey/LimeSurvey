@@ -1040,6 +1040,11 @@
     {
         //global $surveyid;
         
+        if (!isset($action))
+        {
+            redirect("admin");
+        }
+        
         self::_js_admin_includes(base_url().'scripts/admin/surveysettings.js');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);

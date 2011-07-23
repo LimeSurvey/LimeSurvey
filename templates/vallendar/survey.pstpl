@@ -1,0 +1,13 @@
+<table class="survey-header-table">
+	<tr>
+		<td class="survey-name">
+			<img src="{TEMPLATEURL}logo.jpg" align="right" alt="Your logo" />
+			{SURVEYNAME}
+		</td>
+	</tr>
+	<tr>
+		<td class="language-changer">
+{LANGUAGECHANGER}
+		</td>
+	</tr>
+</table>

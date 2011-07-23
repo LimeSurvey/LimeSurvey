@@ -84,7 +84,7 @@
 	    <?php }
 	    if($this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') == 1)
 		{ ?>
-	    <a href="#" onclick="window.open('<?php echo site_url("admin/templates");?>', '_top')" title="<?php echo $clang->gTview("Template Editor");?>" >
+	    <a href="#" onclick="window.open('<?php echo site_url("admin/templates/view");?>', '_top')" title="<?php echo $clang->gTview("Template Editor");?>" >
 	    <img src='<?php echo $this->config->item('imageurl');?>/templates.png' name='EditTemplates' alt='<?php echo $clang->gT("Template Editor");?>' /></a>   
 	    <?php } ?>
 	</div>

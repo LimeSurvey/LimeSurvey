@@ -13,7 +13,7 @@
  * 
  */
  
- class labels extends SurveyCommonController {
+ class labels extends AdminController {
     
     function __construct()
 	{

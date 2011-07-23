@@ -1,0 +1,20 @@
+This template was originally build for Niki Verschueren.
+After the LimeSurvey team asked if I would contribute the template, I adapted it to remove all copyrighted material.
+
+The picture of the tree(s) at the top of the page was pulled from Flickr:
+
+    http://flickr.com/photos/freefoto/1315883962
+    Uploaded on September 3, 2007 by freefotouk
+    Taken with a Sony DSLR-A100.M
+
+I've called it limespired because when I started building the template, I based it on the CSS layout of the main LimeSurvey website.
+You can find a screenshot, and some SVG files that contain the source media files to make it easy for you to customize this.
+
+The best thing to do is to edit the logo.png file and you're set :)
+
+I hope you enjoy this template. Improvements, suggestions, raves and rants are welcome: joost@decock.org
+
+Bye,
+
+Joost De Cock
+

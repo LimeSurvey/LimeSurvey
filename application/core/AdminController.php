@@ -32,6 +32,7 @@ class AdminController extends LS_Controller {
 		//} 
 		
 		// Check if the DB is up to date
+        
 		If (tableExists('surveys'))
 		{
 		    $usrow = getGlobalSetting('DBVersion');

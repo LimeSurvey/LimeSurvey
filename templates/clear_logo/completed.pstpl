@@ -1,0 +1,21 @@
+<table class="completed-table bf">
+<tr>
+		<td>
+			<table width="80%" align="center">
+		<tr>
+					<td class="completed-text">
+						{COMPLETED}<br /><br />
+						<span>{URL}</span><br /><br />
+						<center>
+							<input type="button" name="closeme" value="Close Window" onclick="top.window.close();" />
+						</center>
+					</td>
+				</tr>
+			</table>
+		</td>				
+	</tr>					
+</table>							
+
+
+
+							

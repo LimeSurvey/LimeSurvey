@@ -1,0 +1,20 @@
+<table class="survey-header-table">
+	<tr>
+		<td class="survey-description">
+			<h2 class="survey-name">{SURVEYNAME}</h2>
+			<span class="survey-description-text">{SURVEYDESCRIPTION}</span>
+		</td>
+	</tr>
+	<tr>
+    <td class="graph">
+      {PERCENTCOMPLETE}
+    </td>
+  </tr>
+</table>
+<table class="language-changer-table">
+	<tr>
+    <td align="center">
+      {LANGUAGECHANGER}
+    </td>
+  </tr>
+</table>

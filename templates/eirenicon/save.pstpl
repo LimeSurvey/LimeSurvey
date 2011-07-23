@@ -1,0 +1,9 @@
+<div class="save-survey">
+	<p class="warning-text">{SAVEERROR}</p>
+	<h3 class="save-heading">{SAVEHEADING}</h3>
+	<p class="save-message">{SAVEMESSAGE}</p>
+	<span class="warning">{SAVEALERT}</span></p>
+	<div class="save-form">{SAVEFORM}</div>
+	<p class="return-to-survey">{RETURNTOSURVEY}</p>
+
+</div>

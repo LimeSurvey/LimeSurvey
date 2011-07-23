@@ -580,6 +580,7 @@ function gettemplatelist()
         closedir($handle);
     }
     ksort($list_of_files);
+    
     return $list_of_files;
 }
 
@@ -2963,7 +2964,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
  * @param mixed $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
  * @return string  Text with replaced strings
  */
-/**function templatereplace($line, $replacements=array())
+function templatereplace($line, $replacements=array())
 {
     global $surveylist, $sitename, $clienttoken, $rooturl;
     global $thissurvey, $imageurl, $defaulttemplate;
@@ -2981,8 +2982,14 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     global $saved_id, $usertemplaterootdir;
     global $totalBoilerplatequestions, $relativeurl;
     global $languagechanger;
-    global $printoutput, $captchapath, $loadname;
+    global $printoutput, $captchapath, $loadname,$CI;
+    
+    
 
+    
+    $clang = $CI->limesurvey_lang;
+    $CI->load->helper('surveytranslator');
+    $questiondetails = array('sid' => 0, 'gid' => 0, 'qid' => 0, 'aid' =>0);
 	if($question['sgq']) $questiondetails=getsidgidqidaidtype($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type
 	
 	// lets sanitize the survey template
@@ -2992,14 +2999,14 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     }
     else
     {
-        $templatename=$defaulttemplate;
+        $templatename=$CI->config->item('defaulttemplate');
     }
     $templatename=validate_templatedir($templatename);
 
     // create absolute template URL and template dir vars
     $templateurl=sGetTemplateURL($templatename).'/';
     $templatedir=sgetTemplatePath($templatename);
-
+    /**
     if (stripos ($line,"</head>"))
     {
         $line=str_ireplace("</head>",
@@ -3007,6 +3014,12 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
         .use_firebug()
         ."\t</head>", $line);
     }
+    */
+    $data = array(
+            '</head>' => "<script type=\"text/javascript\" src=\"".base_url()."scripts/admin/survey_runtime.js\"></script>\n"
+        .use_firebug()
+        ."\t</head>"
+    );
     // Get some vars : move elsewhere ?
     // surveyformat
     if (isset($thissurvey['format']))
@@ -3036,11 +3049,16 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     if (strpos($line, "{") === false) {
         return $line;
     }
-
+    /**
     foreach ($replacements as $replacementkey=>$replacementvalue)
     {
         if (strpos($line, '{'.$replacementkey.'}') !== false) $line=str_replace('{'.$replacementkey.'}', $replacementvalue, $line);
     }
+    */
+    
+    $data = array_merge($data,$replacements);
+    
+    /**
 
     if (strpos($line, "{SURVEYLISTHEADING}") !== false) $line=str_replace("{SURVEYLISTHEADING}", $surveylist['listheading'], $line);
     if (strpos($line, "{SURVEYLIST}") !== false) $line=str_replace("{SURVEYLIST}", $surveylist['list'], $line);
@@ -3057,10 +3075,31 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     if (strpos($line, "{SURVEYNAME}") !== false) $line=str_replace("{SURVEYNAME}", $thissurvey['name'], $line);
     if (strpos($line, "{SURVEYDESCRIPTION}") !== false) $line=str_replace("{SURVEYDESCRIPTION}", $thissurvey['description'], $line);
     if (strpos($line, "{SURVEYFORMAT}") !== false) $line=str_replace("{SURVEYFORMAT}", $surveyformat, $line);
-        if (strpos($line, "{WELCOME}") !== false) $line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
+    if (strpos($line, "{WELCOME}") !== false) $line=str_replace("{WELCOME}", $thissurvey['welcome'], $line);
     if (strpos($line, "{LANGUAGECHANGER}") !== false) $line=str_replace("{LANGUAGECHANGER}", $languagechanger, $line);
     if (strpos($line, "{PERCENTCOMPLETE}") !== false) $line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
-
+    */
+    $temparr = array(
+            "{SURVEYLISTHEADING}" => $surveylist['listheading'],
+            "{SURVEYLIST}" => $surveylist['list'],
+            "{NOSURVEYID}" => $surveylist['nosid'],
+      //      "{SURVEYCONTACT}" => $surveylist['contact'],
+            "{SITENAME}" => $sitename,
+            "{SURVEYLIST}" => $surveylist,
+            "{CHECKJAVASCRIPT}" => "<noscript><span class='warningjs'>".$clang->gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>",
+            "{SURVEYLANGAGE}" => $clang->langcode,
+            "{SURVEYCONTACT}" => $surveycontact,
+            "{SURVEYNAME}" => $thissurvey['name'],
+            "{SURVEYDESCRIPTION}" => $thissurvey['description'],
+            "{SURVEYFORMAT}" => $surveyformat,
+            "{WELCOME}" => $thissurvey['welcome'],
+            "{LANGUAGECHANGER}" => $languagechanger,
+            "{PERCENTCOMPLETE}" => $percentcomplete
+            
+            
+    );
+    $data = array_merge($data,$temparr);
+    
     if(
         $showgroupinfo == 'both' ||
 	    $showgroupinfo == 'name' ||
@@ -3069,11 +3108,13 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
     )
     {
-        if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
+        //if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
+        $data = array_merge($data,array("{GROUPNAME}" => $groupname));
     }
     else
     {
-        if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", '' , $line);
+        //if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", '' , $line);
+        $data = array_merge($data,array("{GROUPNAME}" => ''));
     };
     if(
         $showgroupinfo == 'both' ||
@@ -3083,38 +3124,66 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
     )
     {
-        if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
+        //if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
+        $data = array_merge($data,array("{GROUPDESCRIPTION}" => $groupdescription));
     }
     else
     {
-        if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", '' , $line);
+        //if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", '' , $line);
+        $data = array_merge($data,array("{GROUPDESCRIPTION}" => ''));
     };
 
     if (is_array($question))
     {
         if (strpos($line, "{QUESTION}") !== false)
         {
-            $line=str_replace("{QUESTION}", $question['all'], $line);
+            //$line=str_replace("{QUESTION}", $question['all'], $line);
+            $data = array_merge($data,array("{QUESTION}" => $question['all']));
         }
         else
         {
+            /**
             if (strpos($line, "{QUESTION_TEXT}") !== false) $line=str_replace("{QUESTION_TEXT}", $question['text'], $line);
             if (strpos($line, "{QUESTION_HELP}") !== false) $line=str_replace("{QUESTION_HELP}", $question['help'], $line);
             if (strpos($line, "{QUESTION_MANDATORY}") !== false) $line=str_replace("{QUESTION_MANDATORY}", $question['mandatory'], $line);
             if (strpos($line, "{QUESTION_MAN_MESSAGE}") !== false) $line=str_replace("{QUESTION_MAN_MESSAGE}", $question['man_message'], $line);
             if (strpos($line, "{QUESTION_VALID_MESSAGE}") !== false) $line=str_replace("{QUESTION_VALID_MESSAGE}", $question['valid_message'], $line);
             if (strpos($line, "{QUESTION_FILE_VALID_MESSAGE}") !== false) $line=str_replace("{QUESTION_FILE_VALID_MESSAGE}", $question['file_valid_message'], $line);
+            */
+            $temparr = array(
+                       "{QUESTION_TEXT}" => $question['text'],
+                       "{QUESTION_HELP}" => $question['help'],
+                       "{QUESTION_MANDATORY}" => $question['mandatory'],
+                       "{QUESTION_MAN_MESSAGE}" => $question['man_message'],
+                       "{QUESTION_VALID_MESSAGE}" => $question['valid_message'],
+                       "{QUESTION_FILE_VALID_MESSAGE}" => $question['file_valid_message']
+            );
+            $data = array_merge($data,$temparr);
+            
+            
         }
     }
     else
     {
-        if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
+        //if (strpos($line, "{QUESTION}") !== false) $line=str_replace("{QUESTION}", $question, $line);
+        $data = array_merge($data,array("{QUESTION}" => $question));
     };
+    
+    /**
     if (strpos($line, '{QUESTION_ESSENTIALS}') !== false) $line=str_replace('{QUESTION_ESSENTIALS}', $question['essentials'], $line);
     if (strpos($line, '{QUESTION_CLASS}') !== false) $line=str_replace('{QUESTION_CLASS}', $question['class'], $line);
     if (strpos($line, '{QUESTION_MAN_CLASS}') !== false) $line=str_replace('{QUESTION_MAN_CLASS}', $question['man_class'], $line);
     if (strpos($line, "{QUESTION_INPUT_ERROR_CLASS}") !== false) $line=str_replace("{QUESTION_INPUT_ERROR_CLASS}", $question['input_error_class'], $line);
-
+    */
+    $temparr = array(
+               '{QUESTION_ESSENTIALS}' => $question['essentials'],
+               '{QUESTION_CLASS}' => $question['class'], 
+               '{QUESTION_MAN_CLASS}' => $question['man_class'],
+               '{QUESTION_INPUT_ERROR_CLASS}' => $question['input_error_class']
+    );
+    $data = array_merge($data,$temparr);
+    
+            
     if(
         $showqnumcode == 'both' ||
 	    $showqnumcode == 'number' ||
@@ -3123,11 +3192,13 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 	    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'N')
     )
     {
-        if (strpos($line, "{QUESTION_NUMBER}") !== false) $line=str_replace("{QUESTION_NUMBER}", $question['number'], $line);
+        //if (strpos($line, "{QUESTION_NUMBER}") !== false) $line=str_replace("{QUESTION_NUMBER}", $question['number'], $line);
+        $data = array_merge($data,array("{QUESTION_NUMBER}" => $question['number']));
     }
     else
     {
-        if (strpos($line, "{QUESTION_NUMBER}") !== false) $line=str_replace("{QUESTION_NUMBER}", '' , $line);
+        //if (strpos($line, "{QUESTION_NUMBER}") !== false) $line=str_replace("{QUESTION_NUMBER}", '' , $line);
+        $data = array_merge($data,array("{QUESTION_NUMBER}" => ''));
     };
     if(
         $showqnumcode == 'both' ||
@@ -3137,15 +3208,19 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 	    ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'C')
     )
     {
-    if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $question['code'], $line);
+    //if (strpos($line, "{QUESTION_CODE}") !== false) $line=str_replace("{QUESTION_CODE}", $question['code'], $line);
+    $data = array_merge($data,array("{QUESTION_CODE}" => $question['code']));
     }
     else
     {
         if (strpos($line, "{QUESTION_CODE}") !== false) $line=preg_replace("/{QUESTION_CODE}:?/", '', $line);
+        //$data = array_merge($data,array("{QUESTION_CODE}" => $question['code']));
 
     };
 
-    if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
+    //if (strpos($line, "{ANSWER}") !== false) $line=str_replace("{ANSWER}", $answer, $line);
+    $data = array_merge($data,array("{ANSWER}" => $answer));
+    
     $totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
     if(
       $showXquestions == 'show' ||
@@ -3155,50 +3230,68 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
     {
         if ($totalquestionsAsked < 1)
         {
-            if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are no questions in this survey"), $line); //Singular
+            //if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are no questions in this survey"), $line); //Singular
+            $data = array_merge($data,array("{THEREAREXQUESTIONS}" => $clang->gT("There are no questions in this survey")));
         }
         elseif ($totalquestionsAsked == 1)
         {
-            if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There is 1 question in this survey"), $line); //Singular
+            //if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There is 1 question in this survey"), $line); //Singular
+            $data = array_merge($data,array("{THEREAREXQUESTIONS}" => $clang->gT("There is 1 question in this survey")));
         }
         else
         {
-             if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
+             //if (strpos($line, "{THEREAREXQUESTIONS}") !== false) $line=str_replace("{THEREAREXQUESTIONS}", $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey."), $line); //Note this line MUST be before {NUMBEROFQUESTIONS}
+             $data = array_merge($data,array("{THEREAREXQUESTIONS}" => $clang->gT("There are {NUMBEROFQUESTIONS} questions in this survey.")));
 	};
     }
     else
     {
-    	if (strpos($line, '{THEREAREXQUESTIONS}') !== false) $line=str_replace('{THEREAREXQUESTIONS}' , '' , $line);
+    	//if (strpos($line, '{THEREAREXQUESTIONS}') !== false) $line=str_replace('{THEREAREXQUESTIONS}' , '' , $line);
+        $data = array_merge($data,array("{THEREAREXQUESTIONS}" => ''));
     };
-    if (strpos($line, "{NUMBEROFQUESTIONS}") !== false) $line=str_replace("{NUMBEROFQUESTIONS}", $totalquestionsAsked, $line);
-
+    //if (strpos($line, "{NUMBEROFQUESTIONS}") !== false) $line=str_replace("{NUMBEROFQUESTIONS}", $totalquestionsAsked, $line);
+    $data = array_merge($data,array("{NUMBEROFQUESTIONS}" => $totalquestionsAsked));
+    
+    
     if (strpos($line, "{TOKEN}") !== false) {
         if (isset($token)) {
-            $line=str_replace("{TOKEN}", $token, $line);
+            //$line=str_replace("{TOKEN}", $token, $line);
+            $data = array_merge($data,array("{TOKEN}" => $token));
         }
         elseif (isset($clienttoken)) {
-            $line=str_replace("{TOKEN}", htmlentities($clienttoken,ENT_QUOTES,'UTF-8'), $line);
+            //$line=str_replace("{TOKEN}", htmlentities($clienttoken,ENT_QUOTES,'UTF-8'), $line);
+            $data = array_merge($data,array("{TOKEN}" => htmlentities($clienttoken,ENT_QUOTES,'UTF-8')));
         }
         else {
-            $line=str_replace("{TOKEN}",'', $line);
+            //$line=str_replace("{TOKEN}",'', $line);
+            $data = array_merge($data,array("{TOKEN}" => ''));
         }
     }
 
-    if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
+    //if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
+    $data = array_merge($data,array("{SID}" => $surveyid));
 
     if (strpos($line, "{EXPIRY}") !== false)
     {
        	$dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
-    	$datetimeobj = new Date_Time_Converter($thissurvey['expiry'] , "Y-m-d");
+        $items = array($thissurvey['expiry'],"Y-m-d");
+        $CI->load->library('Date_Time_Converter',$items);
+    	$datetimeobj = $CI->date_time_converter ; //new Date_Time_Converter($thissurvey['expiry'] , "Y-m-d");
     	$dateoutput=$datetimeobj->convert($dateformatdetails['phpdate']);
-       	$line=str_replace("{EXPIRY}", $dateoutput, $line);
+       	//$line=str_replace("{EXPIRY}", $dateoutput, $line);
+        $data = array_merge($data,array("{EXPIRY}" => $dateoutput));
     }
-    if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
+    //if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
+    $data = array_merge($data,array("{NAVIGATOR}" => $navigator));
+    
     if (strpos($line, "{SUBMITBUTTON}") !== false) {
         $submitbutton="<input class='submit' type='submit' value=' ".$clang->gT("Submit")." ' name='move2' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" />";
-        $line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
+        //$line=str_replace("{SUBMITBUTTON}", $submitbutton, $line);
+        $data = array_merge($data,array("{SUBMITBUTTON}" => $submitbutton));
     }
-    if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
+    //if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
+    $data = array_merge($data,array("{COMPLETED}" => $completed));
+    
     if (strpos($line, "{URL}") !== false) {
         if ($thissurvey['surveyls_url']!=""){
             if (trim($thissurvey['surveyls_urldescription'])!=''){
@@ -3209,40 +3302,53 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
             }
         }
         else $linkreplace='';
-        $line=str_replace("{URL}", $linkreplace, $line);
-        $line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL
+        //$line=str_replace("{URL}", $linkreplace, $line);
+        $data = array_merge($data,array("{URL}" => $linkreplace));
+        
+        //$line=str_replace("{SAVEDID}",$saved_id, $line);     // to activate the SAVEDID in the END URL
+        $data = array_merge($data,array("{SAVEDID}" => $saved_id));
+        
         if (isset($clienttoken)) {$token=$clienttoken;} else {$token='';}
-        $line=str_replace("{TOKEN}",urlencode($token), $line);          // to activate the TOKEN in the END URL
-        $line=str_replace("{SID}", $surveyid, $line);       // to activate the SID in the RND URL
+        //$line=str_replace("{TOKEN}",urlencode($token), $line);  
+        $data = array_merge($data,array("{TOKEN}" => urlencode($token)));
+                // to activate the TOKEN in the END URL
+        //$line=str_replace("{SID}", $surveyid, $line);       // to activate the SID in the RND URL
+        $data = array_merge($data,array("{SID}" => $surveyid));
+        
     }
     if (strpos($line, "{PRIVACY}") !== false)
     {
-        $line=str_replace("{PRIVACY}", $privacy, $line);
+        //$line=str_replace("{PRIVACY}", $privacy, $line);
+        $data = array_merge($data,array("{PRIVACY}" => $privacy));
     }
     if (strpos($line, "{PRIVACYMESSAGE}") !== false)
     {
-        $line=str_replace("{PRIVACYMESSAGE}", "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
+        //$line=str_replace("{PRIVACYMESSAGE}", "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."), $line);
+        $data = array_merge($data,array("{PRIVACYMESSAGE}" => "<span style='font-weight:bold; font-style: italic;'>".$clang->gT("A Note On Privacy")."</span><br />".$clang->gT("This survey is anonymous.")."<br />".$clang->gT("The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey.")));
     }
     if (strpos($line, "{CLEARALL}") !== false)  {
 
         $clearall = "<button class='nav-button ui-corner-all'  type='button' name='clearallbtn'  class='clearall' "
-        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?",'js')."')) {window.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=".$_SESSION['s_lang'];
+        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?",'js')."')) {window.open('".$CI->config->item('publicurl')."/index.php?sid=$surveyid&amp;move=clearall&amp;lang=".$CI->session->userdata('s_lang');
         if (returnglobal('token'))
         {
             $clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
         }
         $clearall .= "', '_self')}\" >".$clang->gT("Exit and Clear Survey")."</button>";
 
-        $line=str_replace("{CLEARALL}", $clearall, $line);
+        //$line=str_replace("{CLEARALL}", $clearall, $line);
+        $data = array_merge($data,array("{CLEARALL}" => $clearall));
 
     }
     // --> START NEW FEATURE - SAVE
     if (strpos($line, "{DATESTAMP}") !== false) {
-        if (isset($_SESSION['datestamp'])) {
-            $line=str_replace("{DATESTAMP}", $_SESSION['datestamp'], $line);
+        if ($CI->session->userdata('datestamp')) {
+            //$line=str_replace("{DATESTAMP}", $_SESSION['datestamp'], $line);
+            $data = array_merge($data,array("{DATESTAMP}" => $CI->session->userdata('datestamp')));
         }
         else {
-            $line=str_replace("{DATESTAMP}", "-", $line);
+            //$line=str_replace("{DATESTAMP}", "-", $line);
+            $data = array_merge($data,array("{DATESTAMP}" => "-"));
         }
     }
     // <-- END NEW FEATURE - SAVE
@@ -3264,7 +3370,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
                     $saveall= "\t\t\t<button class='nav-button ui-corner-all' name='saveallbtn'  class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") .">".$clang->gT("Resume Later")."</button>";  // Show Save So Far button
         	};
             }
-            elseif (!isset($_SESSION['step']) || !$_SESSION['step'])  //First page, show LOAD
+            elseif (!$CI->session->userdata('step'))  //First page, show LOAD
             {
                 if($thissurvey['tokenanswerspersistence'] != 'Y')
                 {
@@ -3275,7 +3381,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
                     $saveall = '';
 		};
             }
-            elseif (isset($_SESSION['scid']) && (isset($move) && $move == "movelast"))  //Already saved and on Submit Page, dont show Save So Far button
+            elseif ($CI->session->userdata('scid') && (isset($move) && $move == "movelast"))  //Already saved and on Submit Page, dont show Save So Far button
             {
                 $saveall='';
             }
@@ -3288,11 +3394,13 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
         {
             $saveall="";
         }
-        $line=str_replace("{SAVE}", $saveall, $line);
+        //$line=str_replace("{SAVE}", $saveall, $line);
+        $data = array_merge($data,array("{SAVE}" => $saveall));
 
     }
     if (strpos($line, "{TEMPLATEURL}") !== false) {
-        $line=str_replace("{TEMPLATEURL}", $templateurl, $line);
+        //$line=str_replace("{TEMPLATEURL}", $templateurl, $line);
+        $data = array_merge($data,array("{TEMPLATEURL}" => $templateurl));
     }
 
     if (strpos($line, "{TEMPLATECSS}") !== false) {
@@ -3301,7 +3409,8 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
         {
             $templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}template-rtl.css' />\n";
         }
-        $line=str_replace("{TEMPLATECSS}", $templatecss, $line);
+        //$line=str_replace("{TEMPLATECSS}", $templatecss, $line);
+        $data = array_merge($data,array("{TEMPLATECSS}" => $templatecss));
     }
 
     if (FlattenText($help,true)!='') {
@@ -3321,29 +3430,48 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
                 }
                 else
                 {
-                    $helpicon=$imageurl."/help.gif";
+                    $helpicon=$CI->config->item('imageurl')."/help.gif";
                 }
             }
-            $line=str_replace("{QUESTIONHELP}", "<img src='$helpicon' alt='Help' align='left' />".$help, $line);
+            //$line=str_replace("{QUESTIONHELP}", "<img src='$helpicon' alt='Help' align='left' />".$help, $line);
+            $data = array_merge($data,array("{QUESTIONHELP}" => "<img src='$helpicon' alt='Help' align='left' />".$help));
 
         }
-        if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+        //if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+        $data = array_merge($data,array("{QUESTIONHELPPLAINTEXT}" => strip_tags(addslashes($help))));
     }
     else
     {
-        if (strpos($line, "{QUESTIONHELP}") !== false) $line=str_replace("{QUESTIONHELP}", $help, $line);
-        if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+        //if (strpos($line, "{QUESTIONHELP}") !== false) $line=str_replace("{QUESTIONHELP}", $help, $line);
+        $data = array_merge($data,array("{QUESTIONHELP}" => $help));
+        //if (strpos($line, "{QUESTIONHELPPLAINTEXT}") !== false) $line=str_replace("{QUESTIONHELPPLAINTEXT}", strip_tags(addslashes($help)), $line);
+        $data = array_merge($data,array("{QUESTIONHELPPLAINTEXT}" => strip_tags(addslashes($help))));
     }
 
     $line=insertansReplace($line);
-
+    /**
 	if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $questiondetails['sid'], $line);
+    
 	if (strpos($line, "{GID}") !== false) $line=str_replace("{GID}", $questiondetails['gid'], $line);
 	if (strpos($line, "{QID}") !== false) $line=str_replace("{QID}", $questiondetails['qid'], $line);
 	if (strpos($line, "{AID}") !== false) $line=str_replace("{AID}", $questiondetails['aid'], $line);
     if (strpos($line, "{SGQ}") !== false) $line=str_replace("{SGQ}", $question['sgq'], $line);
 
     if (strpos($line, "{SUBMITCOMPLETE}") !== false) $line=str_replace("{SUBMITCOMPLETE}", "<strong>".$clang->gT("Thank you!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers."), $line);
+    */
+    $temparr = array(
+               "{SID}" => $questiondetails['sid'],
+               "{GID}" => $questiondetails['gid'],
+               "{QID}" => $questiondetails['qid'],
+               "{AID}" => $questiondetails['aid'], 
+               "{SGQ}" => $question['sgq'],
+               "{SUBMITCOMPLETE}" => "{SUBMITCOMPLETE}", "<strong>".$clang->gT("Thank you!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers.")
+                
+    
+    );
+    
+    $data = array_merge($data,$temparr);
+    
     if (strpos($line, "{SUBMITREVIEW}") !== false) {
         if (isset($thissurvey['allowprev']) && $thissurvey['allowprev'] == "N") {
             $strreview = "";
@@ -3351,12 +3479,14 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
         else {
             $strreview=$clang->gT("If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses.");
         }
-        $line=str_replace("{SUBMITREVIEW}", $strreview, $line);
+        //$line=str_replace("{SUBMITREVIEW}", $strreview, $line);
+        $data = array_merge($data,array("{SUBMITREVIEW}" => $strreview));
     }
 
     $line=tokenReplace($line);
 
-    if (strpos($line, "{ANSWERSCLEARED}") !== false) $line=str_replace("{ANSWERSCLEARED}", $clang->gT("Answers Cleared"), $line);
+    //if (strpos($line, "{ANSWERSCLEARED}") !== false) $line=str_replace("{ANSWERSCLEARED}", $clang->gT("Answers Cleared"), $line);
+    $data = array_merge($data,array("{ANSWERSCLEARED}" => $clang->gT("Answers Cleared")));
     if (strpos($line, "{RESTART}") !== false)
     {
         if ($thissurvey['active'] == "N")
@@ -3364,20 +3494,35 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
             $replacetext= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;newtest=Y";
             if (isset($s_lang) && $s_lang!='') $replacetext.="&amp;lang=".$s_lang;
             $replacetext.="'>".$clang->gT("Restart this Survey")."</a>";
-            $line=str_replace("{RESTART}", $replacetext, $line);
+            //$line=str_replace("{RESTART}", $replacetext, $line);
+            $data = array_merge($data,array("{RESTART}" => $replacetext));
         } else {
             $restart_extra = "";
             $restart_token = returnglobal('token');
             if (!empty($restart_token)) $restart_extra .= "&amp;token=".urlencode($restart_token);
             else $restart_extra = "&amp;newtest=Y";
             if (!empty($_GET['lang'])) $restart_extra .= "&amp;lang=".returnglobal('lang');
-            $line=str_replace("{RESTART}",  "<a href='{$publicurl}/index.php?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
+            //$line=str_replace("{RESTART}",  "<a href='{$publicurl}/index.php?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
+            $data = array_merge($data,array("{RESTART}" => "<a href='{$publicurl}/index.php?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>"));
         }
     }
+    /**
     if (strpos($line, "{CLOSEWINDOW}") !== false) $line=str_replace("{CLOSEWINDOW}", "<a href='javascript:%20self.close()'>".$clang->gT("Close this window")."</a>", $line);
     if (strpos($line, "{SAVEERROR}") !== false) $line=str_replace("{SAVEERROR}", $errormsg, $line);
     if (strpos($line, "{SAVEHEADING}") !== false) $line=str_replace("{SAVEHEADING}", $clang->gT("Save Your Unfinished Survey"), $line);
     if (strpos($line, "{SAVEMESSAGE}") !== false) $line=str_replace("{SAVEMESSAGE}", $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you.")."<br /><br />\n".$clang->gT("After having clicked the save button you can either close this browser window or continue filling out the survey."), $line);
+    */
+    $temparr = array(
+               "{CLOSEWINDOW}" => "<a href='javascript:%20self.close()'>".$clang->gT("Close this window")."</a>",
+               "{SAVEERROR}" => $errormsg,
+               "{SAVEHEADING}" => $clang->gT("Save Your Unfinished Survey"),
+               "{SAVEMESSAGE}" => $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you.")."<br /><br />\n".$clang->gT("After having clicked the save button you can either close this browser window or continue filling out the survey.")
+               
+    );
+    
+    $data = array_merge($data,$temparr);
+    
+    
     if (strpos($line, "{SAVEALERT}") !== false) 
     {
         if (isset($thissurvey['anonymized']) && $thissurvey['anonymized'] =='Y')
@@ -3388,7 +3533,8 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
         {
             $savealert="";
         }
-        $line=str_replace("{SAVEALERT}", $savealert, $line);
+        //$line=str_replace("{SAVEALERT}", $savealert, $line);
+        $data = array_merge($data,array("{SAVEALERT}" => $savealert));
     }
     
     if (strpos($line, "{RETURNTOSURVEY}") !== false)
@@ -3399,7 +3545,8 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
             $savereturn.= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
         }
         $savereturn .= "'>".$clang->gT("Return To Survey")."</a>";
-        $line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);
+        //$line=str_replace("{RETURNTOSURVEY}", $savereturn, $line);
+        $data = array_merge($data,array("{RETURNTOSURVEY}" => $savereturn));
     }
     if (strpos($line, "{SAVEFORM}") !== false) {
         //SAVE SURVEY DETAILS
@@ -3422,11 +3569,24 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
         $saveform .= "<tr><td align='right'></td><td></td></tr>\n"
         . "<tr><td></td><td><button class='nav-button ui-corner-all'  type='submit'  id='savebutton' name='savesubmit'>".$clang->gT("Save Now")."</button></td></tr>\n"
         . "</table>";
-        $line=str_replace("{SAVEFORM}", $saveform, $line);
+        //$line=str_replace("{SAVEFORM}", $saveform, $line);
+        $data = array_merge($data,array("{SAVEFORM}" => $saveform));
     }
+    
+    /**
     if (strpos($line, "{LOADERROR}") !== false) $line=str_replace("{LOADERROR}", $errormsg, $line);
     if (strpos($line, "{LOADHEADING}") !== false) $line=str_replace("{LOADHEADING}", $clang->gT("Load A Previously Saved Survey"), $line);
     if (strpos($line, "{LOADMESSAGE}") !== false) $line=str_replace("{LOADMESSAGE}", $clang->gT("You can load a survey that you have previously saved from this screen.")."<br />".$clang->gT("Type in the 'name' you used to save the survey, and the password.")."<br />", $line);
+    */
+    
+    $temparr = array(
+               "{LOADERROR}" => $errormsg,
+               "{LOADHEADING}" => $clang->gT("Load A Previously Saved Survey"),
+               "{LOADMESSAGE}" => $clang->gT("You can load a survey that you have previously saved from this screen.")."<br />".$clang->gT("Type in the 'name' you used to save the survey, and the password.")."<br />" 
+    );
+    $data = array_merge($data,$temparr);
+    
+    
     if (strpos($line, "{LOADFORM}") !== false) {
         //LOAD SURVEY DETAILS
         $loadform = "<table><tr><td align='right'>".$clang->gT("Saved name").":</td><td><input type='text' name='loadname' value='";
@@ -3443,12 +3603,23 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
 
         $loadform .="<tr><td align='right'></td><td></td></tr>\n"
         . "<tr><td></td><td><button class='nav-button ui-corner-all'  type='submit' id='loadbutton'>".$clang->gT("Load Now")."</button></td></tr></table>\n";
-        $line=str_replace("{LOADFORM}", $loadform, $line);
+        //$line=str_replace("{LOADFORM}", $loadform, $line);
+        $data = array_merge($data,array("{LOADFORM}" => $loadform));
     }
     //REGISTER SURVEY DETAILS
+    /**
     if (strpos($line, "{REGISTERERROR}") !== false) $line=str_replace("{REGISTERERROR}", $register_errormsg, $line);
     if (strpos($line, "{REGISTERMESSAGE1}") !== false) $line=str_replace("{REGISTERMESSAGE1}", $clang->gT("You must be registered to complete this survey"), $line);
     if (strpos($line, "{REGISTERMESSAGE2}") !== false) $line=str_replace("{REGISTERMESSAGE2}", $clang->gT("You may register for this survey if you wish to take part.")."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately."), $line);
+    */
+    $temparr = array(
+               "{REGISTERERROR}" => $register_errormsg,
+               "{REGISTERMESSAGE1}" => $clang->gT("You must be registered to complete this survey"),    
+               "{REGISTERMESSAGE2}" => $clang->gT("You may register for this survey if you wish to take part.")."<br />\n".$clang->gT("Enter your details below, and an email containing the link to participate in this survey will be sent immediately.") 
+    );
+    $data = array_merge($data,$temparr);
+    
+    
     if (strpos($line, "{REGISTERFORM}") !== false)
     {
         $registerform="<form method='post' action='{$publicurl}/register.php'>\n";
@@ -3492,9 +3663,9 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
         {
             $registerform .="<tr><td align='right'>".$clang->gT("Security Question").":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php?sid=$surveyid' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
         }
-*/
 
-        /*      if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
+
+        if(isset($thissurvey['attribute1']) && $thissurvey['attribute1'])
          {
          $registerform .= "<tr><td align='right'>".$thissurvey['attribute1'].":</td>\n"
          ."<td align='left'><input class='text' type='text' name='register_attribute1'";
@@ -3513,23 +3684,46 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
          $registerform .= " value='".htmlentities(returnglobal('register_attribute2'),ENT_QUOTES,'UTF-8')."'";
          }
          $registerform .= " /></td></tr>\n";
-         }        */
-/**        $registerform .= "<tr><td></td><td><button class='nav-button ui-corner-all' id='registercontinue' class='submit' type='submit' >".$clang->gT("Continue")."</button>"
+         }        
+        $registerform .= "<tr><td></td><td><button class='nav-button ui-corner-all' id='registercontinue' class='submit' type='submit' >".$clang->gT("Continue")."</button>"
         ."</td></tr>\n"
         ."</table>\n"
         ."</form>\n";
-        $line=str_replace("{REGISTERFORM}", $registerform, $line);
+        //$line=str_replace("{REGISTERFORM}", $registerform, $line);
+        $data = array_merge($data,array("{REGISTERFORM}" => $registerform));
     }
     if (strpos($line, "{ASSESSMENT_CURRENT_TOTAL}") !== false && function_exists('doAssessment'))
     {
         $assessmentdata=doAssessment($surveyid,true);
-        $line=str_replace("{ASSESSMENT_CURRENT_TOTAL}", $assessmentdata['total'], $line);
+        //$line=str_replace("{ASSESSMENT_CURRENT_TOTAL}", $assessmentdata['total'], $line);
+        $data = array_merge($data,array("{ASSESSMENT_CURRENT_TOTAL}" => $assessmentdata['total']));
     }
+    
+    /**
     if (strpos($line, "{ASSESSMENTS}") !== false) $line=str_replace("{ASSESSMENTS}", $assessments, $line);
     if (strpos($line, "{ASSESSMENT_HEADING}") !== false) $line=str_replace("{ASSESSMENT_HEADING}", $clang->gT("Your Assessment"), $line);
-    return $line;
+    */
+    $temparr = array(
+               "{ASSESSMENTS}" => $assessments,
+               "{ASSESSMENT_HEADING}" => $clang->gT("Your Assessment") 
+    );
+    $data = array_merge($data,$temparr);
+    
+    
+    $CI->load->library('parser');
+     if (file_exists($line))
+     {
+        return $CI->parser->parse($line,$data,TRUE);
+     }
+     else
+     {
+        return $CI->parser->parse_string($line,$data,TRUE);
+     }
+    
+    
+
 }
-*/
+
 /**
  * insertAnsReplace() takes a string and looks for any {INSERTANS:xxxx} variables
  *  which it then, one by one, substitutes the SGQA code with the relevant answer
@@ -6407,6 +6601,7 @@ function getTokenData($surveyid, $token)
 function sGetTemplatePath($sTemplateName)
 {
     global $CI; //$standardtemplaterootdir, $usertemplaterootdir, $defaulttemplate;
+    
     if (isStandardTemplate($sTemplateName))
     {
         return $CI->config->item("standardtemplaterootdir").'/'.$sTemplateName;
@@ -6427,6 +6622,7 @@ function sGetTemplatePath($sTemplateName)
         }
         else
         {
+            
             return $$CI->config->item("standardtemplaterootdir").'/default';
         }
     }
@@ -8438,6 +8634,73 @@ function getlabelsets($languages=null)
         $labelsets[] = array($row['lid'], $row['label_name']);
     }
     return $labelsets;
+}
+
+function getHeader($meta = false)
+{
+    global $embedded, $surveyid; //, $rooturl,$defaultlang, $js_header_includes, $css_header_includes;
+    
+    $CI =& get_instance();
+    $CI->load->helper('surveytranslator');
+    $clang = $CI->limesurvey_lang;
+    
+    $js_header_includes = array_unique($CI->config->item("js_admin_includes"));
+    $css_header_includes = array_unique($CI->config->item("css_admin_includes"));
+
+    if ($CI->session->userdata('s_lang'))
+    {
+        $surveylanguage= $CI->session->userdata('s_lang');
+    }
+    elseif (isset($surveyid) && $surveyid)
+    {
+        $surveylanguage=GetBaseLanguageFromSurveyID($surveyid);
+    }
+    else
+    {
+        $surveylanguage=$CI->config->item('defaultlang');
+    }
+
+    $js_header = ''; $css_header='';
+    foreach ($js_header_includes as $jsinclude)
+    {
+        if (substr($jsinclude,0,4) == 'http')
+            $js_header .= "<script type=\"text/javascript\" src=\"$jsinclude\"></script>\n";
+        else
+            $js_header .= "<script type=\"text/javascript\" src=\"".$CI->config->item('rooturl')."$jsinclude\"></script>\n";
+    }
+
+    foreach ($css_header_includes as $cssinclude)
+    {
+        $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$CI->config->item('rooturl').$cssinclude."\" />\n";
+    }
+
+
+    if ( !$embedded )
+    {
+        $header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
+        . "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
+        if (getLanguageRTL($surveylanguage))
+        {
+            $header.=" dir=\"rtl\" ";
+        }
+        $header.= ">\n\t<head>\n"
+        . $css_header
+        . "<script type=\"text/javascript\" src=\"".$CI->config->item('rooturl')."/scripts/jquery/jquery.js\"></script>\n"
+        . "<script type=\"text/javascript\" src=\"".$CI->config->item('rooturl')."/scripts/jquery/jquery-ui.js\"></script>\n"
+        . "<link href=\"".$CI->config->item('rooturl')."/scripts/jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
+        . "<link href=\"".$CI->config->item('rooturl')."/scripts/jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
+        . $js_header;
+
+        if ($meta)
+            $header .= $meta;
+
+        return $header;
+    }
+
+    global $embedded_headerfunc;
+
+    if ( function_exists( $embedded_headerfunc ) )
+    return $embedded_headerfunc();
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

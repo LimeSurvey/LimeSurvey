@@ -1,0 +1,12 @@
+
+<div id='loadtable'><center>
+<span class="load-error">{LOADERROR}</span>
+<h3 class="load-heading">{LOADHEADING}</h3>
+<br />
+<span class="load-message">{LOADMESSAGE}</span>
+<br />
+<div class="load-form">{LOADFORM}</div>
+<br />
+<span class="return-to-survey">{RETURNTOSURVEY}</span>
+</center>
+</div>

@@ -1,0 +1,9 @@
+<br />
+<div class="survey-completed">
+	{COMPLETED}
+</div>
+<br />
+<div>
+	{URL}
+</div>
+<br />

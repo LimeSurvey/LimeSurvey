@@ -1,0 +1,10 @@
+</div><!--endcontent-->
+<div id="footer">
+	<ul id="credits" class="wrapper">
+	<li id="poweredby"><a href="http://www.limesurvey.org/" title="LimeSurvey Website">Powered by LimeSurvey</a>
+	<li id="licence">This template is distributed under <a href="http://www.gnu.org/licenses/gpl.txt">GPL licence</a> 
+	</li>
+	<li id="donate">LimeSurvey is Free software</li>
+	</ul>
+</div>
+</div><!-- end container-->

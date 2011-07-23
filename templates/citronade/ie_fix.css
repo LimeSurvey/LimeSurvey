@@ -1,0 +1,23 @@
+/* The following styles are for versions of IE */
+.tools input,
+	.tools a,
+	.navigator input,
+	input#savebutton,
+	input#loadbutton
+		{height:2em}
+
+ .multiple-opt-comments  .answers 
+,.multiple-short-txt  .answers 
+,.numeric-multi  .answers 
+,.multiple-opt .answers 
+{
+	overflow:hidden;
+}
+.multiple-opt .answers ul li input.checkbox
+, .list-radio .answers ul li input.radio
+, .list-with-comment .answers ul li input.radio 
+, .list-radio-flexible .answers ul li input.radio 
+{
+	margin-left:0;
+}
+.ui-slider{display:inline;}

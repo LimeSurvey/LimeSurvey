@@ -1,0 +1,7 @@
+<table class="navigator-table">
+	<tr>
+		<td class="save-all" align="left" width="33.3%">{SAVE}</td>
+		<td class="progress-cell">{PERCENTCOMPLETE}</td>
+		<td class="submit-buttons" align="right" height="12" width="33.3%">{NAVIGATOR}</td>
+	</tr>
+</table>

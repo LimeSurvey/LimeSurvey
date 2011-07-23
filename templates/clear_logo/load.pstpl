@@ -1,0 +1,7 @@
+<center>
+<span class="load-error">{LOADERROR}</span>
+<p class="load-heading">{LOADHEADING}</p>
+<p class="load-message">{LOADMESSAGE}</p>
+<p class="load-form">{LOADFORM}</p>
+<span class="return-to-survey">{RETURNTOSURVEY}</span>
+</center>

@@ -1,0 +1,7 @@
+						<table class="privacy-message">
+	<tr>
+								<td>
+									{PRIVACYMESSAGE}
+								</td>
+	</tr>
+</table>

@@ -1,0 +1,41 @@
+
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<title>
+			SURVEY: {SURVEYNAME}
+		</title>
+		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+
+		<!-- The following line includes template.css and if an RTL-language is used template-rtl.css -->
+        {TEMPLATECSS}
+		
+		<!--[if lte IE 6]>
+				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_6.css" />
+		<![endif]-->
+<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_7.css" />
+<![endif]-->
+		<!--[if IE 8]>
+				<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}ie_fix_8.css" />
+<![endif]-->
+
+    <!-- The following CSS hides visual elements of the progress bar from screen readers. -->
+    <style type="text/css" media="aural tty">
+        progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
+    </style>
+		
+	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
+    <link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />   
+</head>
+	<body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}">
+
+        <div class="outerframe">
+
+	        <table align="center" cellpadding="0" cellspacing="0">
+	        	<tr class="grayboxheader">
+	        		<td width="14"><img src="{TEMPLATEURL}box_left.gif" border="0" width="14" /></td>
+			<td class="center-cell">{SURVEYNAME}</td>
+	        		<td width="14"><img src="{TEMPLATEURL}box_right.gif" border="0" width="14" /></td>
+	                </tr>
+	        </table>
+
+	        <div class="survey-main">
