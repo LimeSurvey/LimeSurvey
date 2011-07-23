@@ -5988,7 +5988,11 @@ function getBounceEmail($surveyid)
 {
     $surveyInfo=getSurveyInfo($surveyid);
 
-    if ($surveyInfo['bounce_email'] == '')
+    if ($surveyInfo['bounceprocessing'] == 'G')
+    {
+        return getGlobalSetting('siteadminbounce');
+    }
+    else if ($surveyInfo['bounce_email'] == '')
     {
         return null; // will be converted to from in MailText
     }

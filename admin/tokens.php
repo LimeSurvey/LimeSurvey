@@ -801,9 +801,8 @@ $settings=getSurveyInfo($surveyid);
 $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Bounce settings")."</div>\n";
 $tokenoutput .= "<div id='bouncesettings'>\n"
             ."<form id='bouncesettings' name='bouncesettings' action='$scriptname?action=tokens&sid=$surveyid&subaction=surveysettingsave' method='post'>"
-            ."\t\n<br><li><label for='bounce_email'>".$clang->gT('Survey bounce email:')."</label>\n"
-            ."\t\t<input type='text' size='50' id='bounce_email' name='bounce_email' value=\"".$settings['bounce_email']."\" ></li>\n"
-            ."\t<li><label for='bounceprocessing'>".$clang->gT("Bounce settings to be used")."</label>\n"
+
+            ."\t\n<br><li><label for='bounceprocessing'>".$clang->gT("Bounce settings to be used")."</label>\n"
             ."\t\t<select id='bounceprocessing' name='bounceprocessing'>\n"
             ."\t\t\t<option value='N'";
             if ($settings['bounceprocessing']=='N') {$tokenoutput .= " selected='selected'";}
@@ -816,6 +815,8 @@ $tokenoutput .= "<div id='bouncesettings'>\n"
             $tokenoutput .= ">".$clang->gT("Use global settings")."</option>\n"
             ."\t\t</select></li>\n"
 
+            ."\t<li><label for='bounce_email'>".$clang->gT('Survey bounce email:')."</label>\n"
+            ."\t\t<input type='text' size='50' id='bounce_email' name='bounce_email' value=\"".$settings['bounce_email']."\" ></li>\n"
             . "\t<li><label for='bounceaccounttype'>".$clang->gT("Server type:")."</label>\n"
             . "\t\t<select id='bounceaccounttype' name='bounceaccounttype'>\n"
             . "\t\t\t<option value='Off'";
