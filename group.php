@@ -553,6 +553,11 @@ if ($show_empty_group) {
 print <<<END
 	function noop_checkconditions(value, name, type)
 	{
+        if (type == 'radio' || type == 'select-one')
+        {
+            var hiddenformname='java'+name;
+            document.getElementById(hiddenformname).value=value;
+        }
         ExprMgr_process_relevance_and_tailoring();
 	}
 
