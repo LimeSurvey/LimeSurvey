@@ -65,13 +65,13 @@ class Answers_model extends CI_Model {
 	
 	function oldNewInsertansTags($newsid,$oldsid)
 	{
-		$sql = "SELECT a.qid, a.language, a.code, a.answer from ".$this->db->prefix('answers')." as a INNER JOIN ".$this->db->prefix('questions')." as b ON a.qid=b.qid WHERE b.sid=".$newsid." AND a.answer LIKE '%{INSERTANS:".$oldsid."X%'";
+		$sql = "SELECT a.qid, a.language, a.code, a.answer from ".$this->db->dbprefix('answers')." as a INNER JOIN ".$this->db->dbprefix('questions')." as b ON a.qid=b.qid WHERE b.sid=".$newsid." AND a.answer LIKE '%{INSERTANS:".$oldsid."X%'";
     	return $this->db->query($sql);
 	}
     
     function getCountOfCode($qid,$language)
     {
-        $data = $this->db->query("SELECT count(code) AS codecount FROM ".$this->db->prefix('answers')." WHERE qid={$qid} AND language='{$language}'");
+        $data = $this->db->query("SELECT count(code) AS codecount FROM ".$this->db->dbprefix('answers')." WHERE qid={$qid} AND language='{$language}'");
         return $data;
     }
 

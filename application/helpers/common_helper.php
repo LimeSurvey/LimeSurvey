@@ -1922,10 +1922,11 @@ function getsidgidqidaidtype($fieldcode)
  * @param mixed $dateformatid
  * @return string
  */
-function getextendedanswer($fieldcode, $value, $format='')
+function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
 {
 
-    global $surveyid, $CI, $clang, $action;
+    global $CI;
+	$clang = $CI->limesurvey_lang;
 
     // use Survey base language if s_lang isn't set in _SESSION (when browsing answers)
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
@@ -1960,10 +1961,10 @@ function getextendedanswer($fieldcode, $value, $format='')
             case "^":
             case "I":
             case "R":
-                $CI->load->model('answers');
+                $CI->load->model('answers_model');
                 
                 //$query = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid={$fields['qid']} AND code='".$connect->escape($value)."' AND scale_id=0 AND language='".$s_lang."'";
-                $result = $CI->answers->getAnswerCode($fields['qid'],$value,$s_lang) or safe_die ("Couldn't get answer type L - getextendedanswer() in common_helper.php<br />$query<br />"); //Checked
+                $result = $CI->answers_model->getAnswerCode($fields['qid'],$value,$s_lang) or safe_die ("Couldn't get answer type L - getextendedanswer() in common_helper.php<br />$query<br />"); //Checked
                 
                 foreach($result->result_array() as $row)
                 {
@@ -2018,10 +2019,10 @@ function getextendedanswer($fieldcode, $value, $format='')
             case "H":
             case "1":
                 $fieldtoselect = array('answer');
-                $condition = "WHERE qid={$fields['qid']} AND code='".$CI->db->escape($value)."' AND language='".$s_lang."'";
-                $CI->load->model('answers');
+                $condition = "qid = {$fields['qid']} AND code='".$CI->db->escape($value)."' AND language='".$s_lang."'";
+                $CI->load->model('answers_model');
                 
-                $result = $CI->answers->getSomeRecords($fieldtoselect,$condition) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common_helper.php");   //Checked
+                $result = $CI->answers_model->getSomeRecords($fieldtoselect,$condition) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common_helper.php");   //Checked
                 foreach($result->result_array() as $row)
                 {
                     $this_answer=$row['answer'];
@@ -2720,8 +2721,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($arow['type'] == "R")
         {
             //MULTI ENTRY
-            $CI->load->model('answers');
-            $data = $CI->answers->getCountOfCode($arow['qid'],$s_lang);
+            $CI->load->model('answers_model');
+            $data = $CI->answers_model->getCountOfCode($arow['qid'],$s_lang);
             $data = $data->row_array();
             $slots=$data['codecount'];//$connect->GetOne("select count(code) from ".db_table_name('answers')." where qid={$arow['qid']} and language='{$s_lang}'");
             for ($i=1; $i<=$slots; $i++)
@@ -2811,18 +2812,22 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     if ($arow['same_default'])
                     {
-                        $conditiontoselect = "WHERE sqid={$abrow['qid']} AND qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-                        $data = $CI->defaultvalues->getSomeRecords($fieldtoselect,$conditiontoselect);
+                        $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+						$CI->load->model("defaultvalues_model");
+                        $data = $CI->defaultvalues_model->getSomeRecords(array("defaultvalue"),$conditiontoselect);
                         $data  = $data->row_array();
-                        $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
+						if(isset($data['defaultvalue']))
+                        	$fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
                         //$fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
                     }
                     else
                     {
-                        $conditiontoselect = "WHERE sqid={$abrow['qid']} AND qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
-                        $data = $CI->defaultvalues->getSomeRecords($fieldtoselect,$conditiontoselect);
+                        $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
+						$CI->load->model("defaultvalues_model");
+                        $data = $CI->defaultvalues_model->getSomeRecords(array("defaultvalue"),$conditiontoselect);
                         $data  = $data->row_array();
-                        $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
+						if(isset($data['defaultvalue']))
+                        	$fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
                         
                         //$fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
                     }
@@ -2883,6 +2888,20 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         return $fieldmap;
     }
 }
+
+/**
+ * Returns true if the given survey has a File Upload Question Type
+ * @param $surveyid The survey ID
+ * @return bool
+ */
+function bHasFileUploadQuestion($surveyid) {
+    $fieldmap = createFieldMap($surveyid);
+
+    foreach ($fieldmap as $field) {
+        if (isset($field['type']) &&  $field['type'] === '|') return true;
+        }
+    }
+
 
 
 /**
@@ -3899,7 +3918,7 @@ function getSavedCount($surveyid)
 function GetBaseLanguageFromSurveyID($surveyid)
 {
     static $cache = array();
-    global $CI;
+    $CI=& get_instance();
     $surveyid=(int)($surveyid);
     if (!isset($cache[$surveyid])) {
         $fields = array('language');
@@ -3907,7 +3926,7 @@ function GetBaseLanguageFromSurveyID($surveyid)
         $CI->load->model('surveys_model');
 	    $query = $CI->surveys_model->getSomeRecords($fields,$condition);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
 	    $surveylanguage = $query->row_array(); //Checked)
-        
+	    
 	    $surveylanguage = $surveylanguage['language'];
 	    if (is_null($surveylanguage))
 	    {
@@ -5845,6 +5864,40 @@ function CSVUnquote($field)
     //print $field."\n";
     return $field;
 }
+
+function incompleteAnsFilterstate()
+{
+    global $filterout_incomplete_answers;
+    $letsfilter='';
+    $letsfilter = returnglobal('filterinc'); //read get/post filterinc
+
+	$CI =& get_instance();
+
+    // first let's initialize the incompleteanswers session variable
+    if ($letsfilter != '')
+    { // use the read value if not empty
+        $CI->session->set_userdata('incompleteanswers', $letsfilter);
+    }
+    elseif (!$CI->session->userdata('incompleteanswers'))
+    { // sets default variable value from config file
+        $CI->session->set_userdata('incompleteanswers', $filterout_incomplete_answers);
+    }
+
+    if  ($CI->session->userdata('incompleteanswers')=='filter') {
+        return "filter"; //COMPLETE ANSWERS ONLY
+    }
+    elseif ($CI->session->userdata('incompleteanswers')=='show') {
+        return false; //ALL ANSWERS
+    }
+    elseif ($CI->session->userdata('incompleteanswers')=='incomplete') {
+        return "inc"; //INCOMPLETE ANSWERS ONLY
+    }
+    else
+    { // last resort is to prevent filtering
+        return false;
+    }
+}
+
 
 /**
  * captcha_enabled($screen, $usecaptchamode)

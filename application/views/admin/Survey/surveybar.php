@@ -78,7 +78,7 @@
 			        <?php }
 			    } ?>
             	<?php if($quotas) { ?>
-		            <li><a href='<?php echo site_url("admin/quotas/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/quotas/$surveyid/");?>' >
 		            <img src='<?php echo $imageurl;?>/quota_30.png' /> <?php echo $clang->gT("Quotas");?></a></li>
 		   		<?php } ?>
 		   		<?php if($assessments) { ?>
@@ -151,7 +151,7 @@
 		   		<li><a href='#'><img src='<?php echo $imageurl;?>/responses.png' name='Responses' alt='<?php echo $clang->gT("Responses");?>' /></a><ul>
 		   		<?php if($respstatsread) {
 		   			if($canactivate) { ?>
-		            <li><a href='<?php echo site_url("admin/browse/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/browse/$surveyid/");?>' >
 		            <img src='<?php echo $imageurl;?>/browse_30.png' name='BrowseSurveyResults' /> <?php echo $clang->gT("Responses & statistics");?></a></li>
 		        <?php } else { ?>
                		<li><a href="#" onclick="alert('<?php echo $clang->gT("This survey is not active - no responses are available.","js");?>');" >
