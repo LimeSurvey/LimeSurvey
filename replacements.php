@@ -1,6 +1,6 @@
 <?php
 
-include_once('/classes/eval/LimeExpressionManager.php');
+include_once($rootdir.'/classes/eval/LimeExpressionManager.php');
 
 /**
  * This function replaces keywords in a text and is mainly intended for templates
