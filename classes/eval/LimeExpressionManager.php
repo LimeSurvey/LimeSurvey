@@ -199,43 +199,39 @@ class LimeExpressionManager {
             {
                 $codeValue = $_SESSION[$code];
                 $displayValue= retrieve_Answer($code, $_SESSION['dateformats']['phpdate']);
-                $varInfo_Code = array(
-                    'codeValue'=>$codeValue,
-                    'jsName'=>$jsVarName,
-                    'readWrite'=>$readWrite,
-                    'isOnCurrentPage'=>$isOnCurrentPage,
-                    'displayValue'=>$displayValue,
-                    'question'=>$question,
-                    'relevance'=>$relevance,
-                    );
-                $varInfo_DisplayVal = array(
-                    'codeValue'=>$displayValue,
-                    'jsName'=>'',
-                    'readWrite'=>'N',
-                    'isOnCurrentPage'=>$isOnCurrentPage,
-                    );
-                $varInfo_Question = array(
-                    'codeValue'=>$question,
-                    'jsName'=>'',
-                    'readWrite'=>'N',
-                    'isOnCurrentPage'=>$isOnCurrentPage,
-                    );
-                $knownVars[$varName] = $varInfo_Code;
-                $knownVars[$varName . '.shown'] = $varInfo_DisplayVal;
-                $knownVars[$varName . '.question']= $varInfo_Question;
-                $knownVars['INSERTANS:' . $code] = $varInfo_DisplayVal;
             }
             else
             {
-                unset($codeValue);
-                unset($displayValue);
-                $knownVars['INSERTANS:' . $code] = array(
-                    'codeValue'=>'',
-                    'jsName'=>'',
-                    'readWrite'=>$readWrite,
-                    'isOnCurrentPage'=>$isOnCurrentPage,
-                );
+                $codeValue = '';
+                $displayValue = '';
             }
+            // Set mappings of variable names to needed attributes
+            $varInfo_Code = array(
+                'codeValue'=>$codeValue,
+                'jsName'=>$jsVarName,
+                'readWrite'=>$readWrite,
+                'isOnCurrentPage'=>$isOnCurrentPage,
+                'displayValue'=>$displayValue,
+                'question'=>$question,
+                'relevance'=>$relevance,
+                );
+            $varInfo_DisplayVal = array(
+                'codeValue'=>$displayValue,
+                'jsName'=>'',
+                'readWrite'=>'N',
+                'isOnCurrentPage'=>$isOnCurrentPage,
+                );
+            $varInfo_Question = array(
+                'codeValue'=>$question,
+                'jsName'=>'',
+                'readWrite'=>'N',
+                'isOnCurrentPage'=>$isOnCurrentPage,
+                );
+            $knownVars[$varName] = $varInfo_Code;
+            $knownVars[$varName . '.shown'] = $varInfo_DisplayVal;
+            $knownVars[$varName . '.question']= $varInfo_Question;
+            $knownVars['INSERTANS:' . $code] = $varInfo_DisplayVal;
+
             if ($this->debugLEM)
             {
                 $debugLog[] = array(
@@ -244,8 +240,8 @@ class LimeExpressionManager {
                     'varname' => $varName,
                     'jsName' => $jsVarName,
                     'question' => $question,
-                    'codeValue' => isset($codeValue) ? $codeValue : '&nbsp;',
-                    'displayValue' => isset($displayValue) ? $displayValue : '&nbsp;',
+                    'codeValue' => ($codeValue=='') ? '&nbsp;' : $codeValue,
+                    'displayValue' => ($displayValue=='') ? '&nbsp;' : $displayValue,
                     'readWrite' => $readWrite,
                     'isOnCurrentPage' => $isOnCurrentPage,
                     'relevance' => $relevance,
@@ -430,7 +426,8 @@ class LimeExpressionManager {
             if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager(true,$anonymized))
             {
                 // means that some values changed, so need to update what was registered to ExpressionManager
-                $em->RegisterVarnamesUsingReplace($lem->knownVars);
+//                $em->RegisterVarnamesUsingReplace($lem->knownVars);
+                $em->RegisterVarnamesUsingMerge($lem->knownVars);
 
                 if ($lem->debugLEM)
                 {
@@ -503,26 +500,29 @@ class LimeExpressionManager {
         $undeclaredJsVars = array();
         $undeclaredVal = array();
         $allJsVarsUsed = array_unique($allJsVarsUsed);
-        foreach ($knownVars as $knownVar)
+        if (isset($knownVars) && is_array($knownVars))
         {
-            foreach ($allJsVarsUsed as $jsVar)
+            foreach ($knownVars as $knownVar)
             {
-                if ($jsVar == $knownVar['jsName'])
+                foreach ($allJsVarsUsed as $jsVar)
                 {
-                    if ($knownVar['isOnCurrentPage']=='N')
+                    if ($jsVar == $knownVar['jsName'])
                     {
-                        $undeclaredJsVars[] = $jsVar;
-                        $undeclaredVal[$jsVar] = $knownVar['codeValue'];
-                        break;
+                        if ($knownVar['isOnCurrentPage']=='N')
+                        {
+                            $undeclaredJsVars[] = $jsVar;
+                            $undeclaredVal[$jsVar] = $knownVar['codeValue'];
+                            break;
+                        }
                     }
                 }
             }
-        }
-        $undeclaredJsVars = array_unique($undeclaredJsVars);
-        foreach ($undeclaredJsVars as $jsVar)
-        {
-            // TODO - is different type needed for text?  Or process value to striphtml?
-            $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar . "' value='" . htmlspecialchars($undeclaredVal[$jsVar]) . "'/>\n";
+            $undeclaredJsVars = array_unique($undeclaredJsVars);
+            foreach ($undeclaredJsVars as $jsVar)
+            {
+                // TODO - is different type needed for text?  Or process value to striphtml?
+                $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar . "' value='" . htmlspecialchars($undeclaredVal[$jsVar]) . "'/>\n";
+            }
         }
         
         return implode('',$jsParts);

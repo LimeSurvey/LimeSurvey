@@ -389,6 +389,9 @@ $qtypesarray = array();
 
 $qnumber = 0;
 
+//This re-starts the group, after checking relevance, so get consistent and unduplcated set of replacement functions
+LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"));
+
 foreach ($_SESSION['fieldarray'] as $key=>$ia)
 {
     $qtypesarray[$ia[1]] = $ia[4];

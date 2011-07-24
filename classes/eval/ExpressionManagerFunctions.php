@@ -10,6 +10,7 @@
 $exprmgr_functions = array(
     'if'            => array('exprmgr_if','ExprMgr_if','Excel-style if(test,result_if_true,result_if_false)',3),
     'list'          => array('exprmgr_list','ExprMgr_list','Return comma-separated list of values',-1),
+    'is_empty'         => array('exprmgr_empty','ExprMgr_empty','Determine whether a variable is considered to be empty',1),
 );
 
 // Extra static variables for unit tests
@@ -27,6 +28,10 @@ there~if((one > two),'hi','there')
 64~if((one < two),pow(2,6),pow(6,2))
 1, 2, 3, 4, 5~list(one,two,three,min(four,five,six),max(three,four,five))
 11, 12~list(eleven,twelve)
+1~is_empty(0)
+1~is_empty('')
+0~is_empty(1)
+1~is_empty(a==b)
 EOD;
 
 function exprmgr_if($test,$ok,$error)
@@ -54,6 +59,11 @@ function exprmgr_implode($args)
     }
     $joiner = array_shift($args);
     return implode($joiner,$args);
+}
+
+function exprmgr_empty($arg)
+{
+    return empty($arg);
 }
 
 ?>

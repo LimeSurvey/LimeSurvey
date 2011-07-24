@@ -121,3 +121,11 @@ function ExprMgr_strpos(haystack,needle)
     var str = new String(haystack);
     return str.search(needle);
 }
+
+function ExprMgr_empty(v)
+{
+    if (v == "" || v == 0 || v == "0" || v == "false" || v == "NULL" || v == false) {
+        return true;
+    }
+    return false;
+}

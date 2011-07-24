@@ -171,7 +171,6 @@ class ExpressionManager {
             'tan'			=>array('tan','Math.tan','Tangent',1),
             'tanh'			=>array('tanh','NA','Hyperbolic tangent',1),
 
-            'empty'			=>array('empty','NA','Determine whether a variable is empty',1),
             'intval'		=>array('intval','ExprMgr_intval','Get the integer value of a variable',1,2),
             'is_bool'		=>array('is_bool','NA','Finds out whether a variable is a boolean',1),
             'is_float'		=>array('is_float','ExprMgr_is_float','Finds whether the type of a variable is float',1),
@@ -1715,12 +1714,49 @@ class ExpressionManager {
                         break;
                     case 1:
                         if (!$this->onlyparse) {
-                            $result = $funcName($params[0]);
+                            switch($funcName) {
+                                case 'acos':
+                                case 'asin':
+                                case 'atan':
+                                case 'cos':
+                                case 'exp':
+                                case 'is_nan':
+                                case 'log':
+                                case 'sin':
+                                case 'sqrt':
+                                case 'tan':
+                                    if (is_float($params[0]))
+                                    {
+                                        $result = $funcName(floatval($params[0]));
+                                    }
+                                    else
+                                    {
+                                        $result = NAN;
+                                    }
+                                    break;
+                                default:
+                                    $result = $funcName($params[0]);
+                                     break;
+                            }
                         }
                         break;
                     case 2:
                         if (!$this->onlyparse) {
-                            $result = $funcName($params[0], $params[1]);
+                            switch($funcName) {
+                                case 'atan2':
+                                    if (is_float($params[0]) && is_float($params[1]))
+                                    {
+                                        $result = $funcName(floatval($params[0]),floatval($params[1]));
+                                    }
+                                    else
+                                    {
+                                        $result = NAN;
+                                    }
+                                    break;
+                                default:
+                                    $result = $funcName($params[0], $params[1]);
+                                     break;
+                            }
                         }
                         break;
                     case 3:
