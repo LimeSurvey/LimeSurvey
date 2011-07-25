@@ -20,7 +20,7 @@ if ($action!=='update') return;
 
 ob_start();
 switch ($subaction)
-    {
+{
     case 'step2':
     case 'step3':
     case 'step4':
@@ -29,7 +29,7 @@ switch ($subaction)
     default:
         $updatefunction = 'UpdateStep1';
         RunUpdaterUpdate();
-    }
+}
 
 $buffer = $updatefunction();
 if ($buffer) echo $buffer;
@@ -540,13 +540,14 @@ function UpdateStep4()
         @unlink($tempdir.'/update.zip');
     }
     elseif($error=='') {
-        $body=''; $full_body='';
+        $body='';
+        $pFile = fopen($tempdir.'/update.zip', 'w');
         for(;;){
             $error = $http->ReadReplyBody($body,100000);
             if($error != "" || strlen($body)==0) break;
-            $full_body .= $body;
+            fwrite($pFile, $body);
         }
-        file_put_contents($tempdir.'/update.zip',$full_body);
+        fclose($pFile);
     }
     else
     {

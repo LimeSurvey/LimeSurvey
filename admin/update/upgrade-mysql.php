@@ -20,7 +20,7 @@
 function db_upgrade($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
-    global $modifyoutput, $databasename, $databasetabletype, $connect;
+    global $modifyoutput, $databasename, $databasetabletype, $connect, $clang;
     if ($oldversion < 111) {
         // Language upgrades from version 110 to 111 since the language names did change
 
@@ -443,6 +443,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `notification`"); echo $modifyoutput; flush();ob_flush();
                    
         modify_database("","ALTER TABLE `prefix_conditions` CHANGE `method` `method` CHAR( 5 ) NOT NULL default '';"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","UPDATE `prefix_surveys` set `private`='N' where `private` is NULL;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_surveys` CHANGE `private` `anonymized` char(1) collate utf8_unicode_ci NOT NULL default 'N';"); echo $modifyoutput; flush();ob_flush();
         
         
@@ -575,13 +576,19 @@ function db_upgrade($oldversion) {
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
 
-     if ($oldversion < 146)
+    if ($oldversion < 146) //Modify surveys table
+    {
+        upgrade_timing_tables146();
+        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='146' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
+
+     if ($oldversion < 147)
     {
         modify_database("", "ALTER TABLE `prefix_users` ADD `templateeditormode` VARCHAR( 7 )NOT NULL DEFAULT 'default' AFTER `htmleditormode`"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "ALTER TABLE `prefix_users` ADD `questionselectormode` VARCHAR( 7 )NOT NULL DEFAULT 'default' AFTER `templateeditormode`"); echo $modifyoutput; flush();ob_flush();
-        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='146' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='147' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }   
-    echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
+    echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
 }
 
@@ -938,6 +945,15 @@ function upgrade_tables143()
             }
         }
         closedir($handle);
-    }        
+    }
 
+}
+
+function upgrade_timing_tables146()
+{
+    global $modifyoutput,$dbprefix, $connect;
+    $aTimingTables=$connect->MetaTables('TABLES',false, "%timings");
+    foreach ($aTimingTables as $sTable) {
+        modify_database("","ALTER TABLE {$sTable} CHANGE `interviewTime` `interviewtime` DOUBLE NULL default 0;"); echo $modifyoutput; flush();ob_flush();
+    }
 }

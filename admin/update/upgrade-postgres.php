@@ -18,7 +18,7 @@
 // For this there will be a settings table which holds the last time the database was upgraded
 
 function db_upgrade($oldversion) {
-    global $modifyoutput, $databasename, $databasetabletype;
+    global $modifyoutput, $databasename, $databasetabletype, $clang;
 
 
     if ($oldversion < 127) {
@@ -283,6 +283,7 @@ function db_upgrade($oldversion) {
                    
         modify_database("","ALTER TABLE prefix_conditions ALTER COLUMN method TYPE CHAR(5)"); echo $modifyoutput; flush();ob_flush();
         
+        modify_database("","UPDATE prefix_surveys set private='N' where private is NULL;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE prefix_surveys RENAME COLUMN private TO anonymized;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized TYPE char(1);"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE prefix_surveys ALTER COLUMN anonymized SET DEFAULT 'N';"); echo $modifyoutput; flush();ob_flush();
@@ -297,14 +298,21 @@ function db_upgrade($oldversion) {
         upgrade_token_tables145();      
         modify_database("", "UPDATE prefix_settings_global SET stg_value='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
-    if ($oldversion < 146)
+
+    if ($oldversion < 146) //Modify surveys table
+    {
+        upgrade_timing_tables146();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='146' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
+
+    if ($oldversion < 147)
     {
         modify_database("", "ALTER TABLE prefix_users ADD templateeditormode character varying(7) NOT NULL DEFAULT 'default'"); echo $modifyoutput; flush();ob_flush();    
         modify_database("", "ALTER TABLE prefix_users ADD questionselectormode character varying(7) NOT NULL DEFAULT 'default'"); echo $modifyoutput; flush();ob_flush();    
-        modify_database("", "UPDATE prefix_settings_global SET stg_value='146' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='147' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }    
 
-    echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
+    echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
 }
 
@@ -555,6 +563,15 @@ function upgrade_tables143()
             }
         }
         closedir($handle);
-    }        
+    }
 
+}
+
+function upgrade_timing_tables146()
+{
+    global $modifyoutput,$dbprefix, $connect;
+    $aTimingTables=$connect->MetaTables('TABLES',false, "%timings");
+    foreach ($aTimingTables as $sTable) {
+        modify_database("","ALTER TABLE {$sTable} RENAME COLUMN \"interviewTime\" TO interviewtime;"); echo $modifyoutput; flush();ob_flush();
+    }
 }

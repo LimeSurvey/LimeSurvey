@@ -20,7 +20,7 @@
 function db_upgrade($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
-    global $modifyoutput, $dbprefix;
+    global $modifyoutput, $dbprefix, $clang;
     if ($oldversion < 111) {
 
         // Language upgrades from version 110 to 111 since the language names did change
@@ -452,6 +452,8 @@ function db_upgrade($oldversion) {
         //Add index to questions table to speed up subquestions
         modify_database("", "create index [parent_qid] on [prefix_questions] ([parent_qid])"); echo $modifyoutput; flush();ob_flush();
         
+        modify_database("","UPDATE prefix_surveys set [private]='N' where [private] is NULL;"); echo $modifyoutput; flush();ob_flush();
+
         modify_database("","EXEC sp_rename 'prefix_surveys.private','anonymized'"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE [prefix_surveys] ALTER COLUMN [anonymized] char(1) NOT NULL;"); echo $modifyoutput; flush();ob_flush();
         mssql_drop_constraint('anonymized','surveys');
@@ -470,13 +472,18 @@ function db_upgrade($oldversion) {
 
 
     }
-    if ($oldversion < 146)
+    if ($oldversion < 146) //Modify surveys table
+    {
+        upgrade_timing_tables146();
+        modify_database("", "UPDATE [prefix_settings_global] SET stg_value='146' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
+    if ($oldversion < 147)
     {
         modify_database("", "ALTER TABLE [prefix_users] ADD templateeditormode VARCHAR(7) NOT NULL default 'default'"); echo $modifyoutput; flush();ob_flush();    
         modify_database("", "ALTER TABLE [prefix_users] ADD questionselectormode VARCHAR(7) NOT NULL default 'default'"); echo $modifyoutput; flush();ob_flush();
-        modify_database("", "UPDATE [prefix_settings_global] SET stg_value='146' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("", "UPDATE [prefix_settings_global] SET stg_value='147' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }  
-    echo '<br /><br />Database update finished ('.date('Y-m-d H:i:s').')<br />';
+    echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
 }
 
@@ -562,7 +569,7 @@ function upgrade_token_tables145()
     global $modifyoutput, $dbprefix, $connect;
     $surveyidquery = db_select_tables_like($dbprefix."tokens%");
     $surveyidresult = db_execute_num($surveyidquery);
-    $tokentables=$connect->MetaTables('TABLES',false,$dbprefix."tokens%");
+    $tokentables=$connect->MetaTables('TABLES',false, $dbprefix."tokens%");
     foreach ($tokentables as $sv) {
             modify_database("","ALTER TABLE ".$sv." ADD [usesleft] int NOT NULL DEFAULT '1'"); echo $modifyoutput; flush();ob_flush();
             modify_database("","UPDATE ".$sv." SET usesleft=0 WHERE completed<>'N'"); echo $modifyoutput; flush();ob_flush();
@@ -801,4 +808,13 @@ function upgrade_tables143()
         closedir($handle);
     }        
 
+}
+
+function upgrade_timing_tables146()
+{
+    global $modifyoutput,$dbprefix, $connect;
+    $aTimingTables=$connect->MetaTables('TABLES',false, "%timings");
+    foreach ($aTimingTables as $sTable) {
+        modify_database("","EXEC sp_rename '{$sTable}.interviewTime','interviewtime'"); echo $modifyoutput; flush(); ob_flush();
+    }
 }

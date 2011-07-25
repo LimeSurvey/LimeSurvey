@@ -1,7 +1,7 @@
 <?php
 
 $versionnumber = "1.92dev";
-$dbversionnumber = 146;
+$dbversionnumber = 147;
 $buildnumber = '';
 
 ?>
