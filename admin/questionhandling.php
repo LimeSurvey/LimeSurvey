@@ -108,7 +108,7 @@ if ($action == "copyquestion")
         . "<input type='hidden' name='sid' value='$surveyid' />\n"
         . "<input type='hidden' name='oldqid' value='$qid' />\n"
         . "\t</form>\n";
-    
+
     }
 
 
@@ -121,7 +121,7 @@ if ($action == "editdefaultvalues")
     $questionrow=$connect->GetRow("SELECT type, other, title, question, same_default FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'");
     $qtproperties=getqtypelist('','array');
 
-    $editdefvalues="<div class='header ui-widget-header'>".$clang->gT('Edit default answer values')."</div> "   
+    $editdefvalues="<div class='header ui-widget-header'>".$clang->gT('Edit default answer values')."</div> "
     . '<div class="tab-pane" id="tab-pane-editdefaultvalues-'.$surveyid.'">'
     . "<form class='form30' id='frmdefaultvalues' name='frmdefaultvalues' action='$scriptname' method='post'>\n";
     foreach ($questlangs as $language)
@@ -143,7 +143,7 @@ if ($action == "editdefaultvalues")
                     $editdefvalues.=sprintf($clang->gT('Default answer value:'),$scale_id)."</label>";
                 }
                 $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype='' and scale_id={$scale_id} AND language='{$language}'");
-                
+
                 $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}' id='defaultanswerscale_{$scale_id}_{$language}'>";
                 $editdefvalues.="<option value='' ";
                 if (is_null($defaultvalue)) {
@@ -151,8 +151,8 @@ if ($action == "editdefaultvalues")
                 }
                 $editdefvalues.=">".$clang->gT('<No default value>')."</option>";
                 $answerquery = "SELECT code, answer FROM ".db_table_name('answers')." WHERE qid=$qid and language='$language' order by sortorder";
-                $answerresult = db_execute_assoc($answerquery);  
-                foreach ($answerresult as $answer)     
+                $answerresult = db_execute_assoc($answerquery);
+                foreach ($answerresult as $answer)
                 {
                     $editdefvalues.="<option ";
                     if ($answer['code']==$defaultvalue)
@@ -160,7 +160,7 @@ if ($action == "editdefaultvalues")
                         $editdefvalues.= " selected='selected' ";
                     }
                     $editdefvalues.="value='{$answer['code']}'>{$answer['answer']}</option>";
-                }       
+                }
                 $editdefvalues.="</select></li> ";
                 if ($questionrow['other']=='Y')
                 {
@@ -170,7 +170,7 @@ if ($action == "editdefaultvalues")
                 }
             }
         }
-        
+
         // If there are subquestions and no answerscales
         if ($qtproperties[$questionrow['type']]['answerscales']==0 && $qtproperties[$questionrow['type']]['subquestions']>0)
         {
@@ -186,10 +186,10 @@ if ($action == "editdefaultvalues")
                 if ($questionrow['type']=='M' || $questionrow['type']=='P')
                 {
                     $options=array(''=>$clang->gT('<No default value>'),'Y'=>$clang->gT('Checked'));
-                } 
+                }
                 $editdefvalues.="<ul>";
-                
-                foreach ($sqrows as $aSubquestion)                   
+
+                foreach ($sqrows as $aSubquestion)
                 {
                     $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid=$qid AND specialtype='' and sqid={$aSubquestion['qid']} and scale_id={$scale_id} AND language='{$language}'");
                     $editdefvalues.="<li><label for='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>{$aSubquestion['title']}: ".FlattenText($aSubquestion['question'])."</label>";
@@ -218,7 +218,7 @@ if ($action == "editdefaultvalues")
         }
             $editdefvalues.="</ul> ";
             $editdefvalues.="</div> "; // Closing page
-        }       
+        }
     $editdefvalues.="</div> "; // Closing pane
     $editdefvalues.="<input type='hidden' id='action' name='action' value='updatedefaultvalues'> "
         . "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
@@ -258,7 +258,7 @@ if ($action == "editquestion" || $action=="addquestion")
                                        'title' => $esrow['title'],
                                        'preg' => $esrow['preg'],
                                        'question' => $esrow['question'],
-                                       'help' => $esrow['help']);   
+                                       'help' => $esrow['help']);
             }
         }
         if ($egresult==false or $egresult->RecordCount()==0)
@@ -279,16 +279,16 @@ if ($action == "editquestion" || $action=="addquestion")
                 db_switchIDInsert('questions',false);
             }
         }
-         
+
         $eqquery = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
         $eqresult = db_execute_assoc($eqquery);
     }
-	
+
     $js_admin_includes[] = '../scripts/jquery/jquery.dd.js';
     $css_admin_includes[] = '../scripts/jquery/dd.css';
-    
+
     $editquestion = PrepareEditorScript();
-	
+
     $qtypelist=getqtypelist('','array');
     $qDescToCode = 'qDescToCode = {';
     $qCodeToInfo = 'qCodeToInfo = {';
@@ -301,8 +301,8 @@ if ($action == "editquestion" || $action=="addquestion")
     $editquestion .= "<script type='text/javascript'>\n{$qTypeOutput}\n</script>\n<div class='header ui-widget-header'>";
     if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
     $editquestion .= "</div>\n";
-	
-	
+
+
 	  if (!$adding)
     {
         $eqrow = $eqresult->FetchRow();  // there should be only one datarow, therefore we don't need a 'while' construct here.
@@ -323,9 +323,9 @@ if ($action == "editquestion" || $action=="addquestion")
         $eqrow['preg']='';
     }
    $editquestion .= "<div id='tabs'><ul>";
-   
-	
-	
+
+
+
 	$editquestion .= '<li><a href="#'.$eqrow['language'].'">'.getLanguageNameFromCode($eqrow['language'],false);
     $editquestion .= '('.$clang->gT("Base language").')';
 	$editquestion .= "</a></li>\n";
@@ -340,7 +340,7 @@ if ($action == "editquestion" || $action=="addquestion")
 		$editquestion .= "\n</ul>\n";
 		$editquestion .=  "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n";
 
-    
+
     $editquestion .= '<div id="'.$eqrow['language'].'">';
     $eqrow  = array_map('htmlspecialchars', $eqrow);
     $editquestion .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
@@ -484,7 +484,7 @@ if ($action == "editquestion" || $action=="addquestion")
 
         //Get the questions for this group
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        $oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
+        $oqquery = "SELECT * FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' and parent_qid=0 order by question_order" ;
         $oqresult = db_execute_assoc($oqquery);
         if ($oqresult->RecordCount())
         {
@@ -555,7 +555,7 @@ if ($action == "editquestion" || $action=="addquestion")
             . "<input type='hidden' name='sid' value='$surveyid' />\n"
             . "<input type='hidden' name='gid' value='$gid' />\n"
             ."</form>\n\n";
-            
+
         }
 
         $editquestion .= "<script type='text/javascript'>\n"
@@ -720,7 +720,7 @@ if($action == "orderquestions")
                 if (array_key_exists($oqarray[$i]['qid'], $qdarray))
                 {
                     $cqidquery = "SELECT question_order
-				          FROM ".db_table_name('conditions').", ".db_table_name('questions')." 
+				          FROM ".db_table_name('conditions').", ".db_table_name('questions')."
 						  WHERE ".db_table_name('conditions').".qid=".db_table_name('questions').".qid
 						  AND cid=".$qdarray[$oqarray[$i]['qid']][0];
                     $cqidresult = db_execute_assoc($cqidquery);
