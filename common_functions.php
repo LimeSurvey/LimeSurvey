@@ -4346,8 +4346,14 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
     $sNicetext = strip_tags($sNicetext);
     if($is_csv==true)
 	$sNicetext = str_replace(array("\r\n","\r","\n"),array(PHP_EOL,PHP_EOL,PHP_EOL), $sNicetext);
+    elseif ($sCharset=='UTF-8')
+    {
+        $sNicetext = preg_replace('/\v/u', '', $sNicetext);
+    }
     else
-      $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
+    {
+        $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
+    }
     if ($bDecodeHTMLEntities==true)
     {
         $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not properly convert &nbsp; to spaces
