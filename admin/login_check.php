@@ -91,7 +91,7 @@ if(isset($_GET['user']) && isset($_GET['onepass']))
                     //delete one time password in database
                     $uquery = "UPDATE ".db_table_name('users')."
 					SET one_time_pw=''
-					WHERE users_name='".db_quote($user)."'";	
+					WHERE users_name='".db_quote($user)."'";
 
                     $uresult = $connect->Execute($uquery);
 
@@ -151,7 +151,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
     if($action == "forgotpassword")
     {
         $loginsummary = '
-       
+
 			<form class="form44" name="forgotpassword" id="forgotpassword" method="post" action="'.$homeurl.'/admin.php" >
 				<p><strong>'.$clang->gT('You have to enter user name and email.').'</strong></p>
 
@@ -176,7 +176,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
 
 
 
-        
+
 
 
 
@@ -215,7 +215,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
             {
                 $loginsummary = "<form name='loginform' id='loginform' method='post' action='$homeurl/admin.php' ><br /><strong>".$logoutsummary."</strong><br />	<br />";
             }
-            
+
             $loginsummary .= "
                                                             <ul>
                                                                             <li><label for='user'>".$clang->gT("Username")."</label>
@@ -230,9 +230,9 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
             {
 				array_push($lan,$langkey);
 			}
-   	
+
 			foreach (getlanguagedata(true) as $langkey=>$languagekind)
-            {	
+            {
 				//The following conditional statements select the browser language in the language drop down box and echoes the other options.
                 $loginsummary .= "\t\t\t\t<option value='$langkey'>".$languagekind['nativedescription']." - ".$languagekind['description']."</option>\n";
             }
@@ -251,7 +251,7 @@ if(!isset($_SESSION['loginID']) && $action != "forgotpass" && ($action != "logou
         {
             $loginsummary .= "<p><a href='$scriptname?action=forgotpassword'>".$clang->gT("Forgot Your Password?")."</a><br />&nbsp;\n";
         }
-        $loginsummary .= "                                                </form><br /></p>";
+        $loginsummary .= "                                                </form><br /><p>";
         $loginsummary .= "                                                <script type='text/javascript'>\n";
         $loginsummary .= "                                                  document.getElementById('user').focus();\n";
         $loginsummary .= "                                                </script>\n";
