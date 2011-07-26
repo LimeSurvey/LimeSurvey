@@ -10,8 +10,8 @@ class dTexts
 	 * @param $text
 	 * @return String
 	 */
-	public static function run($text)
+	public static function run($text,$questionNum=NULL)
 	{
-        return LimeExpressionManager::ProcessString($text,NULL,true);
+        return LimeExpressionManager::ProcessString($text,$questionNum,NULL,true);
 	}
 }

@@ -1011,6 +1011,10 @@ class ExpressionManager {
         return array_unique($jsNames);
     }
 
+    /**
+     * Return the list of all of the JavaScript variables used by the most recent expression
+     * @return <type>
+     */
     public function GetJsVarsUsed()
     {
         if (is_null($this->varsUsed)){
@@ -1029,6 +1033,20 @@ class ExpressionManager {
             }
         }
         return array_unique($jsNames);
+    }
+
+    /**
+     * Return the JavaScript variable name for a named variable
+     * @param <type> $name
+     * @return <type>
+     */
+    public function GetJsVarFor($name)
+    {
+        if (isset($this->amVars[$name]) && isset($this->amVars[$name]['jsName']))
+        {
+            return $this->amVars[$name]['jsName'];
+        }
+        return '';
     }
 
     /**
@@ -1178,10 +1196,10 @@ class ExpressionManager {
      * @param <type> $name - the ID name for the function
      * @return <type>
      */
-    public function GetJavaScriptFunctionForReplacement($name,$eqn)
+    public function GetJavaScriptFunctionForReplacement($questionNum, $name,$eqn)
     {
         $jsParts = array();
-        $jsParts[] = "\n// Tailor " . $name . ": { " . $eqn . " }\n";
+        $jsParts[] = "\n// Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
         $jsParts[] = "document.getElementById('" . $name . "').innerHTML=\n";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
         $jsParts[] = ";\n";
@@ -1562,7 +1580,7 @@ class ExpressionManager {
      * @return <type>
      */
 
-    public function sProcessStringContainingExpressions($src, $numRecursionLevels=1, $whichPrettyPrintIteration=1)
+    public function sProcessStringContainingExpressions($src, $questionNum=0, $numRecursionLevels=1, $whichPrettyPrintIteration=1)
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $this->allVarsUsed = array();
@@ -1572,7 +1590,7 @@ class ExpressionManager {
         for($i=1;$i<=$numRecursionLevels;++$i)
         {
             // TODO - Since want to use <span> for dynamic substitution, what if there are recursive substititons?
-            $result = $this->sProcessStringContainingExpressionsHelper(htmlspecialchars_decode($result));
+            $result = $this->sProcessStringContainingExpressionsHelper(htmlspecialchars_decode($result),$questionNum);
             if ($i == $whichPrettyPrintIteration)
             {
                 $prettyPrint = $this->prettyPrintSource;
@@ -1588,7 +1606,7 @@ class ExpressionManager {
      * @return <type>
      */
 
-    public function sProcessStringContainingExpressionsHelper($src)
+    public function sProcessStringContainingExpressionsHelper($src, $questionNum)
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $stringParts = $this->asSplitStringOnExpressions($src);
@@ -1619,19 +1637,19 @@ class ExpressionManager {
                 $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
 
                 // TODO Note, don't want these SPANS if they are part of a JavaScript substitution!
-                // TODO How do we prevent against that?  Regex for <script> section?
                 if (count($jsVarsUsed) > 0)
                 {
-                    $idName = "ExprMgr_tailor_" . $this->substitutionNum;
+                    $idName = "ExprMgr_tailor_Q_" . $questionNum . "_" . $this->substitutionNum;
                     $resolvedParts[] = "<span id='" . $idName . "' name='" . $idName . "'>" . $resolvedPart . "</span>";
                     $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
+                        'questionNum' => $questionNum,
                         'num' => $this->substitutionNum,
                         'id' => $idName,
                         'raw' => $stringPart[0],
                         'result' => $resolvedPart,
                         'vars' => implode('|',$this->GetJsVarsUsed()),
-                        'js' => $this->GetJavaScriptFunctionForReplacement($idName, substr($stringPart[0],1,-1)),
+                        'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, substr($stringPart[0],1,-1)),
                     );
                 }
                 else

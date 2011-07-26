@@ -32,6 +32,10 @@ there~if((one > two),'hi','there')
 1~is_empty('')
 0~is_empty(1)
 1~is_empty(a==b)
+0~if('',1,0)
+1~if(' ',1,0)
+0~!is_empty(a==b)
+1~!is_empty(1)
 EOD;
 
 function exprmgr_if($test,$ok,$error)

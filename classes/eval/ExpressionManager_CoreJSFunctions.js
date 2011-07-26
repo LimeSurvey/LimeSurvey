@@ -129,3 +129,12 @@ function ExprMgr_empty(v)
     }
     return false;
 }
+
+function ExprMgr_bool(v)
+{
+    bool = new Boolean(v);
+    if (v.valueOf() && v != 'false') {
+        return true;    // fix for JavaScript native processing that considers the value "false" to be true
+    }
+    return false;
+}

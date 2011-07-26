@@ -14,7 +14,7 @@ include_once($rootdir.'/classes/eval/LimeExpressionManager.php');
  * @param boolean $anonymized Determines if token data is being used or just replaced with blanks
  * @return string  Text with replaced strings
  */
-function templatereplace($line, $replacements=array(), $anonymized=false)
+function templatereplace($line, $replacements=array(), $anonymized=false, $questionNum=NULL)
 {
     global $surveylist, $sitename, $clienttoken, $rooturl;
     global $thissurvey, $imageurl, $defaulttemplate;
@@ -610,10 +610,17 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
 	$coreReplacements['URL'] = $_linkreplace;
 	$coreReplacements['WELCOME'] = (isset($thissurvey['welcome']) ? $thissurvey['welcome'] : '');
 
-    $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
+    if (!is_null($replacements) && is_array($replacements))
+    {
+        $doTheseReplacements = array_merge($coreReplacements, $replacements);   // so $replacements overrides core values
+    }
+    else
+    {
+        $doTheseReplacements = $coreReplacements;
+    }
 
     // Now do all of the replacements - either call it twice or do recursion within LimeExpressionManager
-    $line = LimeExpressionManager::ProcessString($line, $doTheseReplacements, false, 2, 1);
+    $line = LimeExpressionManager::ProcessString($line, $questionNum, $doTheseReplacements, false, 2, 1);
     return $line;
 }
 

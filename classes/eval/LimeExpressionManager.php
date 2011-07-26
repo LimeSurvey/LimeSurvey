@@ -349,7 +349,7 @@ class LimeExpressionManager {
      * @return <type> - the original $string with all replacements done.
      */
 
-    static function ProcessString($string, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1)
+    static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1)
     {
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
@@ -367,7 +367,7 @@ class LimeExpressionManager {
             }
             $em->RegisterVarnamesUsingMerge($replaceArray);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
         }
-        $result = $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string),$numRecursionLevels, $whichPrettyPrintIteration);
+        $result = $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string),(is_null($questionNum) ? 0 : $questionNum), $numRecursionLevels, $whichPrettyPrintIteration);
 
         if ($debug && $lem->debugLEM)
         {
@@ -380,35 +380,42 @@ class LimeExpressionManager {
 
 
     /**
-     * Compute Relevance, processing $string to get a boolean value.  If there are syntax errors, currently returns true.  My change to returning null so can look for errors?
-     * @param <type> $string
+     * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, currently returns true.  My change to returning null so can look for errors?
+     * @param <type> $eqn
      * @return <type>
      */
-    static function ProcessRelevance($string,$questionNum=NULL)
+    static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL)
     {
-        if (!isset($string) || trim($string=='') || trim($string)=='1')
-        {
-            return true;
-        }
+        // These will be called in the order that questions are supposed to be asked
         $lem = LimeExpressionManager::singleton();
-        $em = $lem->em;
-        $result = $em->ProcessBooleanExpression(htmlspecialchars_decode($string));
-        if (is_null($questionNum))
+        if (!isset($eqn) || trim($eqn=='') || trim($eqn)=='1')
         {
-            return $result;
-        }
-        $jsVars = $em->GetJSVarsUsed();
-        if (count($jsVars) > 0)
-        {
-            $relevanceVars = implode('|',$em->GetJSVarsUsed());
-            $relevanceJS = $lem->GetJavaScriptFunctionForRelevance($questionNum,$string);
             $lem->relevanceInfo[] = array(
                 'qid' => $questionNum,
-                'result' => $result,
-                'relevancejs' => $relevanceJS,
-                'relevanceVars' => $relevanceVars,
+                'eqn' => $eqn,
+                'result' => true,
+                'numJsVars' => 0,
+                'relevancejs' => '',
+                'relevanceVars' => '',
+                'jsResultVar'=> $jsResultVar,
             );
+            return true;
         }
+        $em = $lem->em;
+        $result = $em->ProcessBooleanExpression(htmlspecialchars_decode($eqn));
+        $jsVars = $em->GetJSVarsUsed();
+        $relevanceVars = implode('|',$em->GetJSVarsUsed());
+        $relevanceJS = $lem->em->GetJavaScriptEquivalentOfExpression(); // if '', treat as true
+//        $relevanceJS = $lem->GetJavaScriptFunctionForRelevance($questionNum,$eqn);
+        $lem->relevanceInfo[] = array(
+            'qid' => $questionNum,
+            'eqn' => $eqn,
+            'result' => $result,
+            'numJsVars' => count($jsVars),
+            'relevancejs' => $relevanceJS,
+            'relevanceVars' => $relevanceVars,
+            'jsResultVar' => $jsResultVar,
+        );
         return $result;
     }
 
@@ -466,26 +473,61 @@ class LimeExpressionManager {
         $jsParts[] = "<script type='text/javascript'>\n<!--\n";
         $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(){\n";
         // Which should come first - relevance or tailoring (or both)?
-        foreach ($lem->tailorInfo as $tailor)
-        {
-            if (is_array($tailor))
-            {
-                foreach ($tailor as $sub)
-                {
-                    $jsParts[] = $sub['js'];
-                    $vars = explode('|',$sub['vars']);
-                    if (is_array($vars))
-                    {
-                        $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
-                    }
-                }
-            }
-        }
+
         if (is_array($lem->relevanceInfo))
         {
             foreach ($lem->relevanceInfo as $arg)
             {
-                $jsParts[] = $arg['relevancejs'];
+                // First check if there is any tailoring  and construct the tailoring JavaScript if needed
+                $tailorParts = array();
+                foreach ($lem->tailorInfo as $tailor)
+                {
+                    if (is_array($tailor))
+                    {
+                        foreach ($tailor as $sub)
+                        {
+                            if ($sub['questionNum'] == $arg['qid'])
+                            {
+                                $tailorParts[] = $sub['js'];
+                                $vars = explode('|',$sub['vars']);
+                                if (is_array($vars))
+                                {
+                                    $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $relevance = $arg['relevancejs'];
+                if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0)
+                {
+                    // Only show constitutively true relevances if there is tailoring that should be done.
+                    continue;
+                }
+                $relevance = ($relevance == '') ? '1' : $relevance;
+                $jsResultVar = $lem->em->GetJsVarFor($arg['jsResultVar']);
+                $jsParts[] = "\n// Process Relevance for Question " . $arg['qid'] . "(" . $arg['jsResultVar'] . "=" . $jsResultVar . "): { " . $arg['eqn'] . " }\n";
+                $jsParts[] = "if (\n";
+                $jsParts[] = $relevance;
+                $jsParts[] = "\n)\n{\n";
+                // Do all tailoring
+                $jsParts[] = implode("\n",$tailorParts);
+                $jsParts[] = "\n// Show Question " . $arg['qid'] . "\n";
+                $jsParts[] = "  document.getElementById('question" . $arg['qid'] . "').style.display='';\n";
+                $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
+                $jsParts[] = "}\nelse {\n";
+                $jsParts[] = "\n// Hide Question " . $arg['qid'] . ", and blank out its stored value\n";
+                // Which variable needs to be blanked?
+                if ($jsResultVar != '')
+                {
+                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value='';\n";
+                }
+                $jsParts[] = "  document.getElementById('question" . $arg['qid'] . "').style.display='none';\n";
+                $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
+                // Blank out value for question
+                $jsParts[] = "}\n";
+
                 $vars = explode('|',$arg['relevanceVars']);
                 if (is_array($vars))
                 {
@@ -597,7 +639,7 @@ EOST;
         for ($i=0;$i<count($alltests);++$i)
         {
             $test = $alltests[$i];
-            $result = $em->sProcessStringContainingExpressions($test,2,1);
+            $result = $em->sProcessStringContainingExpressions($test,$i,2,1);
             $prettyPrint = $em->GetLastPrettyPrintExpression();
             print "<tr><td>" . $prettyPrint . "</td>\n";
             print "<td>" . $result . "</td>\n";
@@ -625,17 +667,17 @@ EOST;
 name~1~text~What is your name?
 age~1~text~How old are you?
 badage~1~expr~{badage=((age<16) || (age>80))}
-agestop~badage~message~Sorry, {name}, you are too {if((age<16),'young',if((age>80),'old','young-or-old'))} for this test.
-kids~!badage~yesno~Do you have children?
+agestop~!is_empty(age) && ((age<16) || (age>80))~message~Sorry, {name}, you are too {if((age<16),'young',if((age>80),'old','middle-aged'))} for this test.
+kids~!((age<16) || (age>80))~yesno~Do you have children?
 parents~1~expr~{parents = (!badage && kids=='Y')}
-numKids~parents~text~How many children do you have?
-kid1~parents && numKids >= 1~text~How old is your first child?
-kid2~parents && numKids >= 2~text~How old is your second child?
-kid3~parents && numKids >= 3~text~How old is your third child?
-kid4~parents && numKids >= 4~text~How old is your fourth child?
-kid5~parents && numKids >= 5~text~How old is your fifth child?
+numKids~kids=='Y'~text~How many children do you have?
+kid1~numKids >= 1~text~How old is your first child?
+kid2~numKids >= 2~text~How old is your second child?
+kid3~numKids >= 3~text~How old is your third child?
+kid4~numKids >= 4~text~How old is your fourth child?
+kid5~numKids >= 5~text~How old is your fifth child?
 sumage~1~expr~{sumage=sum(kid1,kid2,kid3,kid4,kid5)}
-report~parents~yesno~{name}, you said you are {age} and that you have {numKids}.  The sum of ages of your first {min(numKids,5)} kids is {sum(kid1,kid2,kid3,kid4,kid5)}.
+report~numKids > 0~message~{name}, you said you are {age} and that you have {numKids} kids.  The sum of ages of your first {min(numKids,5)} kids is {sum(kid1,kid2,kid3,kid4,kid5)}.
 EOT;
 
         $vars = array();
@@ -663,8 +705,8 @@ EOT;
         {
             $testArg = $testArgs[$i];
             $var = $testArg[0];
-            LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1]),$i);
-            $question = LimeExpressionManager::ProcessString($testArg[3], NULL, true, 1, 1);
+            LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1]),$i,$var);
+            $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
             $argInfo[] = array(
                 'num' => $i,
@@ -685,7 +727,9 @@ EOT;
             print "<div id='question" . $arg['num'] . "'>\n";
             if ($arg['type'] == 'expr')
             {
-                print "<div style='display: none' name='" . $arg['name'] . "' id='" . $arg['name'] . "'>" . $arg['question'] . "</div>\n";
+                // Hack for testing purposes - rather than using LimeSurvey internals to store the results of equations, process them via a hidden <div>
+                print "<div style='display: none' name='hack_" . $arg['name'] . "' id='hack_" . $arg['name'] . "'>" . $arg['question'];
+                print "<input type='hidden' name='" . $arg['name'] . "' id='" . $arg['name'] . "' value=''/></div>\n";
             }
             else {
                 print "<table border='1' width='100%'><tr><td>[Q" . $arg['num'] . "] " . $arg['question'] . "</td>";
@@ -696,7 +740,7 @@ EOT;
                         print "<td><input type='text' name='" . $arg['name'] . "' id='" . $arg['name'] . "' value='' onchange='ExprMgr_process_relevance_and_tailoring()'/></td>\n";
                         break;
                     case 'message':
-                        print "";
+                        print "<input type='hidden' name='" . $arg['name'] . "' id='" . $arg['name'] . "' value=''/>\n";
                         break;
                 }
                 print "</tr></table></div>\n";

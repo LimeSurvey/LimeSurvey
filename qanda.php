@@ -542,7 +542,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
 
     $qtitle=$ia[3];
     //Replace INSERTANS statements with previously provided answers;
-    $qtitle=dTexts::run($qtitle);
+    $qtitle=dTexts::run($qtitle,$name);
 
 
     //GET HELP

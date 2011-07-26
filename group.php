@@ -1260,7 +1260,7 @@ if (isset($qanda) && is_array($qanda))
         // Hide Equations of attribute set to always hide them, yet unlike other questions, do include the answer fields.
         $eqnAttributes = getQuestionAttributes($qa[4], $qa[8]);
         // Want to make the question invisible and have save.php blank out the value if it is irrelevant
-        if (!LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance'],$qa[4]))
+        if (!LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance'],$qa[4],$qa[5]))
         {
             $n_q_display = ' style="display: none;"';;
         }        
@@ -1295,14 +1295,14 @@ if (isset($qanda) && is_array($qanda))
 	<!-- NEW QUESTION -->
 				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
 ';
-            echo templatereplace($question_template);
+            echo templatereplace($question_template,NULL,false,$qa[4]);
             echo '
 				</div>
 ';
         }
         else
         {
-            echo templatereplace($question_template);
+            echo templatereplace($question_template,NULL,false,$qa[4]);
         };
     }
 	echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
