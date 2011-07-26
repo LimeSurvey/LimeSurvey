@@ -1,0 +1,80 @@
+<?php $this->load->view("installer/header_view",array('progressValue' => $progressValue)); ?>
+<div class="container_6">
+<div class="grid_2 table">
+<p class="title"> &nbsp;Progress</p>
+<p> &nbsp;<?php echo $progressValue ; ?>% Completed</p>
+<div style="width: 320px; height: 20px; margin-left: 6px;" id="progressbar"></div>
+<br />
+<div id="steps">
+<table class="grid_2" >
+<tr class="<?php echo $classesForStep[0]; ?>">
+<td>1: License</td>
+</tr>
+<tr>
+<td></td>
+</tr>
+<tr class="<?php echo $classesForStep[1]; ?>">
+<td>2: Pre-installation check</td>
+</tr>
+<tr class="<?php echo $classesForStep[2]; ?>">
+<td>3: Configuration </td>
+</tr>
+<tr class="<?php echo $classesForStep[3]; ?>">
+<td>4: Database settings </td>
+</tr>
+<tr class="<?php echo $classesForStep[4]; ?>">
+<td>5: Optional settings</td>
+</tr>
+</table>
+</div>
+
+
+
+
+</div>
+<div class="grid_4 table">
+
+
+<p class="title">&nbsp;<?php echo $title; ?></p>
+
+
+
+
+
+<div style="-moz-border-radius:15px; border-radius:15px;" >
+<p>&nbsp;<?php echo $descp; ?></p>
+<hr />
+<b>PLEASE REMEMBER TO COMPLETELY
+REMOVE THE FOLLOWING DIRECTORY/FILES.
+You will not be able to access admin board until these has been removed. </b><br /><br />
+1. Installation directory (<?php echo $this->config->item('rootdir').'/installer'; ?>).<br />
+2. Installer script (<?php echo $this->config->item('rootdir').'/application/controllers/installer.php'; ?>).<br /><br />
+<b>Optional:</b> <br /><br />
+1. Installer view files(<?php echo $this->config->item('rootdir').'/application/views/installer'; ?>). <br /><br />
+<b> Administrator credentials :</b><br />
+Username : <?php echo $user; ?> <br />
+Password : <?php echo $pwd; ?>
+<br /><br />
+</div>
+</div>
+
+</div>
+<div class="container_6">
+<div class="grid_2">&nbsp;</div>
+<div class="grid_4 demo">
+<br/>
+<table style="width: 694px;">
+<tbody>
+<tr>
+<td align="left" style="width: 300px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Previous" onclick="javascript: window.open('<?php echo site_url("installer/install/license"); ?>', '_top')" /></td>
+<td align="center" style="width: 800px;"></td>
+<td align="right" style="width: 190px;">
+<div id="next" style="font-size:11px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" value="Next" onclick="javascript: window.open('<?php echo site_url("admin/"); ?>', '_top')" /></div>
+</form>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<?php $this->load->view("installer/footer_view"); ?>

@@ -30,6 +30,8 @@ class AdminController extends LS_Controller {
 		//{
 		//    require_once($homedir.'/admin_functions.php');
 		//} 
+        
+        self::_checkinstallation();
 		
 		// Check if the DB is up to date
         
@@ -431,6 +433,25 @@ class AdminController extends LS_Controller {
         }
         $data['checksessionpost'] = $this->session->userdata('checksessionpost');
         return $this->load->view('admin/endScripts_view',$data);
+        
+    }
+    
+    function _checkinstallation()
+    {
+        
+        if (file_exists($this->config->item('rootdir').'/installer'))
+        {
+            show_error("Installation Directory(\"".$this->config->item('rootdir')."/installer\") is present. Remove/Rename it to proceed further.");
+            exit(); 
+        }
+        
+        if (file_exists(APPPATH . 'controllers/installer.php'))
+        {
+            show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
+            exit(); 
+        }
+        
+        
         
     }
     

@@ -1,0 +1,64 @@
+.on {
+    font: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
+    color: #000000 !important;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 2.6em;
+    font-family: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
+}
+
+.off {
+    font: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
+    color: #A7A7A7;
+    font-size: 15px;
+    line-height: 2.6em;
+    font-family: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
+}
+
+.body {
+    color: #536482;
+    font-family: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
+    font-size: 13px;
+    
+    
+}
+
+.title {
+    font-size: 14px;
+    font-weight: bold;
+    
+    
+}
+
+.table {
+    background: none repeat scroll 0% 0% rgb(247, 247, 247); 
+    border-radius: 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    
+    
+}
+
+.content-table{
+    background-color: #FFFFFF;
+    border-color: #D7D7D7 #CCCCCC #CCCCCC #D7D7D7;
+    border-style: solid;
+    border-width: 1px;
+    margin: 15px 0;
+    padding: 10px;
+    position: relative;
+    font-size: 11px;
+}
+
+.content-table-heading {
+    color: #536482;
+    font-family: Tahoma,arial,Verdana,Sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+   
+}
+
+.description-field {
+    font-size: 9px;
+    
+}
+

@@ -23,7 +23,7 @@ class LS_Controller extends CI_Controller {
 	function _init()
 	{
 		
-		$this->load->helper("common");
+        $this->load->helper("common");
 				
 		// Check for most necessary requirements
 		// Now check for PHP & db version
@@ -126,5 +126,7 @@ class LS_Controller extends CI_Controller {
 		//$singleborderstyle = "style='border: 1px solid #111111'";
 		
 	}
+    
+    
 
 }
