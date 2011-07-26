@@ -118,7 +118,7 @@
 		   		<li><a href='#'>
             	<img src='<?php echo $imageurl;?>/display_export.png' name='DisplayExport' alt='<?php echo $clang->gT("Display / Export");?>' /></a><ul>
             	<?php if($surveyexport) { ?>
-		            <li><a href='<?php echo site_url("admin/exportstructure/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/export/survey/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/export_30.png' /> <?php echo $clang->gT("Export survey");?></a></li>
 		   		<?php } ?>
 		   		<?php if($onelanguage) { ?>

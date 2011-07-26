@@ -50,7 +50,7 @@
                 }
                 else
                 { ?>
-                    "<img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='40' />
+                    <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='40' />
                 <?php }
             }
     
@@ -60,7 +60,7 @@
             if(bHasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
     
-                <a href='$scriptname?action=exportstructureGroup&amp;sid=$surveyid&amp;gid=$gid' title="<?php echo $clang->gTview("Export this question group"); ?>" >
+                <a href='<?php echo site_url("admin/export/group/$surveyid/$gid");?>' title="<?php echo $clang->gTview("Export this question group"); ?>" >
                 <img src='<?php echo $this->config->item('imageurl'); ?>/dumpgroup.png' title='' alt='<?php echo $clang->gT("Export this question group"); ?>' name='ExportGroup'  /></a>
             <?php } 
     

@@ -166,7 +166,7 @@ class tokens extends SurveyCommonController {
 		
 		$data['bresult'] = $this->tokens_dynamic_model->getAllRecords($surveyid,false,$limit,$start,$order,$idata);
 		$data['clang']=$clang;
-		$data['thissurvey']=$thissurvey;
+		$data['thissurvey']=getSurveyInfo($surveyid);
 		$data['searchstring']=$searchstring;
 		$data['imageurl'] = $this->config->item('imageurl');
 		$data['surveyid']=$surveyid;
@@ -1189,6 +1189,37 @@ class tokens extends SurveyCommonController {
 	        }
 	        //$tokenoutput .= "</div>\n";
 		echo $tokenoutput;
+		}
+	}
+
+	/**
+	 * Export Dialog
+	 */
+	function exportdialog($surveyid)
+	{
+		if (bHasSurveyPermission($surveyid, 'tokens','export') )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
+		{
+			$this->load->helper("database");
+			if ($this->input->post('submit'))
+		    {
+		    	$this->load->helper("export");
+				tokens_export($surveyid);
+			}
+		    $langquery = "SELECT language FROM ".$this->db->dbprefix("tokens_$surveyid")." group by language";
+		    $langresult = db_execute_assoc($langquery);
+			$data['resultr'] = $langresult->row_array();
+			
+			$data['clang']=$this->limesurvey_lang;
+			$thissurvey=getSurveyInfo($surveyid);
+			$data['thissurvey']=$thissurvey;
+			$data['imageurl'] = $this->config->item('imageurl');
+			$data['surveyid']=$surveyid;
+	
+					
+			self::_getAdminHeader();
+			$this->load->view("admin/token/tokenbar",$data);
+			$this->load->view("admin/token/exportdialog",$data);
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
 		}
 	}
 

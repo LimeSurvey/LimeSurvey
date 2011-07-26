@@ -62,7 +62,7 @@
     
             if(bHasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
-                <a href='$scriptname?action=exportstructureQuestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'
+                <a href='<?php echo site_url("admin/export/question/$surveyid/$gid/$qid");?>'
                  title="<?php echo $clang->gTview("Export this question"); ?>" >
                 <img src='<?php echo $this->config->item('imageurl'); ?>/dumpquestion.png' alt='<?php echo $clang->gT("Export this question"); ?>' name='ExportQuestion' /></a>
             <?php } ?>

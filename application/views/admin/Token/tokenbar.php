@@ -50,7 +50,7 @@
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'tokens','export'))
 		    { ?>
-		        <a href="#" onclick="window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=exportdialog', '_top')"
+		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/exportdialog/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Export tokens to CSV file");?>'>
 			    	<img name='ExportButton' src='<?php echo $imageurl;?>/exportcsv.png' alt='<?php echo $clang->gT("Export tokens to CSV file");?>' />
 			    </a>
