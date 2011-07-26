@@ -287,6 +287,10 @@ if(isset($surveyid))
             {
                 if (isset($_POST[$validAttribute['name']]))
                 {
+                    if ($filterxsshtml)
+                    {
+                        $_POST[$validAttribute['name']]=$myFilter->process($_POST[$validAttribute['name']]);
+                    }
                     $query = "INSERT into ".db_table_name('question_attributes')."
                               (qid, value, attribute) values ($qid,'".db_quote($_POST[$validAttribute['name']])."','{$validAttribute['name']}')";
                     $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg()); // Checked
@@ -415,6 +419,12 @@ if(isset($surveyid))
         $cqr=$cqresult->FetchRow();
         $oldtype=$cqr['type'];
         $oldgid=$cqr['gid'];
+        // Prepare filterxsshtml
+        if ($filterxsshtml)
+        {
+            require_once("../classes/inputfilter/class.inputfilter_clean.php");
+            $myFilter = new InputFilter('','',1,1,1);
+        }
 
         // Remove invalid question attributes on saving
         $qattributes=questionAttributes();
@@ -436,6 +446,10 @@ if(isset($surveyid))
         {
             if (isset($_POST[$validAttribute['name']]))
             {
+                if ($filterxsshtml)
+                {
+                    $_POST[$validAttribute['name']]=$myFilter->process($_POST[$validAttribute['name']]);
+                }
                 $query = "select qaid from ".db_table_name('question_attributes')."
                           WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                 $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
@@ -510,8 +524,6 @@ if(isset($surveyid))
                     array_push($questlangs,$baselang);
                     if ($filterxsshtml)
                     {
-                        require_once("../classes/inputfilter/class.inputfilter_clean.php");
-                        $myFilter = new InputFilter('','',1,1,1);
                         $_POST['title']=$myFilter->process($_POST['title']);
                     }
                     else
