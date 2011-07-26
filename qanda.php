@@ -2020,7 +2020,7 @@ function do_list_dropdown($ia)
 
     if (trim($qidattributes['other_replace_text'])!='')
     {
-        $othertext=$clang->gT($qidattributes['other_replace_text']);
+        $othertext=$qidattributes['other_replace_text'];
     }
     else
     {
@@ -2311,7 +2311,7 @@ function do_list_radio($ia)
 
     if (trim($qidattributes['other_replace_text'])!='')
     {
-        $othertext=$clang->gT($qidattributes['other_replace_text']);
+        $othertext=$qidattributes['other_replace_text'];
     }
     else
     {
@@ -2950,7 +2950,7 @@ function do_multiplechoice($ia)
 
     if (trim($qidattributes['other_replace_text'])!='')
     {
-        $othertext=$clang->gT($qidattributes['other_replace_text']);
+        $othertext=$qidattributes['other_replace_text'];
     }
     else
     {
@@ -3426,7 +3426,7 @@ function do_multiplechoice_withcomments($ia)
 
     if (trim($qidattributes['other_replace_text'])!='')
     {
-        $othertext=$clang->gT($qidattributes['other_replace_text']);
+        $othertext=$qidattributes['other_replace_text'];
     }
     else
     {
