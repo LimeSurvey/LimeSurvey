@@ -88,13 +88,13 @@ If you are using MS SQL Server as your database system, <b>create an empty datab
 <td style="width: 224px;" align="right"><input name="dbUser" value="<?php echo set_value('dbUser'); ?>" type="text" /><?php echo "<br/>".form_error('dbUser'); ?></td>
 </tr>
 <tr>
-<td style="width: 428px;"> <b>Database Password *</b> <br />
+<td style="width: 428px;"> <b>Database Password</b> <br />
 <div class="description-field">Your Database server password.</div>
 </td>
 <td style="width: 224px;" align="right"><input name="dbPwd" value="" type="password" /><?php echo "<br/>".form_error('dbPwd'); ?></td>
 </tr>
 <tr>
-<td style="width: 428px;"> <b>Confirm Password *</b> <br />
+<td style="width: 428px;"> <b>Confirm Password</b> <br />
 <div class="description-field">Confirm your database server password.</div>
 </td>
 <td style="width: 224px;" align="right"><input name="dbConfirmPwd" value="" type="password" /><?php echo "<br/>".form_error('dbConfirmPwd'); ?></td>

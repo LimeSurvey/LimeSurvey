@@ -44,13 +44,25 @@
 <div style="-moz-border-radius:15px; border-radius:15px;" >
 <p>&nbsp;<?php echo $descp; ?></p>
 <hr />
+
+<?php if (isset($error) && $error) { ?>
+<font color="red">
+LimeSurvey tried to delete the following file but couldn't succeed. You'll have to do it manually else you won't be able to use the admin board.<br />
+This is a security precaution.</font><br />
+File path : "<?php echo $this->config->item('rootdir').'/tmp/sample_installer_file.txt'; ?>".
+<br /><br />
+<?php } ?>
+
+
+
 <b>PLEASE REMEMBER TO COMPLETELY
 REMOVE THE FOLLOWING DIRECTORY/FILES.
-You will not be able to access admin board until these has been removed. </b><br /><br />
+</b><br /><br />
 1. Installation directory (<?php echo $this->config->item('rootdir').'/installer'; ?>).<br />
 2. Installer script (<?php echo $this->config->item('rootdir').'/application/controllers/installer.php'; ?>).<br /><br />
 <b>Optional:</b> <br /><br />
 1. Installer view files(<?php echo $this->config->item('rootdir').'/application/views/installer'; ?>). <br /><br />
+Press Delete to delete these files or you can do it manually later on.<br /><br />
 <b> Administrator credentials :</b><br />
 Username : <?php echo $user; ?> <br />
 Password : <?php echo $pwd; ?>
@@ -67,7 +79,7 @@ Password : <?php echo $pwd; ?>
 <tbody>
 <tr>
 <td align="left" style="width: 300px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Previous" onclick="javascript: window.open('<?php echo site_url("installer/install/license"); ?>', '_top')" /></td>
-<td align="center" style="width: 800px;"></td>
+<td align="center" style="width: 800px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Delete" onclick="javascript: window.open('<?php echo site_url("installer/deletefiles"); ?>', '_top')"  /></td>
 <td align="right" style="width: 190px;">
 <div id="next" style="font-size:11px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" value="Next" onclick="javascript: window.open('<?php echo site_url("admin/"); ?>', '_top')" /></div>
 </form>

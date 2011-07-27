@@ -438,7 +438,7 @@ class AdminController extends LS_Controller {
     
     function _checkinstallation()
     {
-        
+        /**
         if (file_exists($this->config->item('rootdir').'/installer'))
         {
             show_error("Installation Directory(\"".$this->config->item('rootdir')."/installer\") is present. Remove/Rename it to proceed further.");
@@ -448,6 +448,12 @@ class AdminController extends LS_Controller {
         if (file_exists(APPPATH . 'controllers/installer.php'))
         {
             show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
+            exit(); 
+        } */
+        
+        if (file_exists($this->config->item('rootdir').'/tmp/sample_installer_file.txt'))
+        {
+            show_error("Permission denied. If you are done with installation, please delete this file(\"".$this->config->item('rootdir')."/tmp/sample_installer_file.txt\") Or click ".anchor("installer","here")." to install LimeSurvey");
             exit(); 
         }
         

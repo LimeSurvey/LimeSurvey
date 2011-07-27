@@ -20,12 +20,23 @@ class Installer extends CI_Controller {
     function __construct()
 	{
         parent::__construct();
+        self::_checkInstallation();
 	}
 	
 	function index()
     {
         // redirect to license screen
         redirect(site_url('installer/install/license'));
+    }
+    
+    function _checkInstallation()
+    {
+        if (!file_exists($this->config->item('rootdir').'/tmp/sample_installer_file.txt'))
+        {
+            show_error("Installation has been done already.");
+            exit();
+        }
+        
     }
     
       
@@ -64,7 +75,7 @@ class Installer extends CI_Controller {
                 }
                 //usual data required by view
                 $data['title']="Pre-installation check";
-                $data['descp']="Pre-installation check for LimeSurvey 1.9.0+";
+                $data['descp']="Pre-installation check for LimeSurvey ".$this->config->item('versionnumber');
                 $data['classesForStep']=array("off","on","off","off","off");
                 $data['progressValue']=20;
                 $data['phpVersion'] = phpversion();
@@ -262,8 +273,8 @@ class Installer extends CI_Controller {
                 $this->form_validation->set_rules('dbLocation','Database Location','required');
                 $this->form_validation->set_rules('dbName','Database Name','required');
                 $this->form_validation->set_rules('dbUser','Database User','required');
-                $this->form_validation->set_rules('dbPwd','Password','required|matches[dbConfirmPwd]');
-                $this->form_validation->set_rules('dbConfirmPwd','Confirm Password','required');
+                //$this->form_validation->set_rules('dbPwd','Password','required|matches[dbConfirmPwd]');
+                $this->form_validation->set_rules('dbConfirmPwd','Confirm Password','matches[dbPwd]');
                 $this->form_validation->set_rules('dbPrefix','Database Prefix','not required');
                 
                 //setting custom error message for confirm password field
@@ -593,8 +604,8 @@ echo "hello<br/>".$dsn;
                         {
                             
                             $statusdata = array(
-                            'optconfig_message' => 'The database you specified is up to date.'
-                            
+                            'optconfig_message' => 'The database you specified is up to date.',
+                            'step3'  => TRUE                            
                             );
                             $this->session->set_userdata($statusdata);
                             redirect(site_url("installer/loadOptView"));
@@ -718,6 +729,7 @@ echo "hello<br/>".$dsn;
                 
                 self::_writeDatabaseFile();
                 self::_writeAutoloadfile();
+                self::_writeConfigfile();
                 // confirmation message to be displayed
                 $data['confirmation']= sprintf("Database <b>%s</b> has been successfully populated.",$this->session->userdata('dbname'));
                 $data['title']="Optional settings";
@@ -729,6 +741,7 @@ echo "hello<br/>".$dsn;
                             'optional'  => 'TRUE'
                             
                 );
+                $this->load->helper('surveytranslator');
                 $this->session->set_userdata($statusdata);
                 $this->load->view('installer/optconfig_view',$data);
                 break;        
@@ -738,13 +751,82 @@ echo "hello<br/>".$dsn;
         
     }
     
+    function deletefiles()
+    {
+        $status=$this->session->userdata('deletedirectories');
+        if(!$status) {
+            redirect(site_url('installer/install/license'));
+        }
+        $this->load->helper('file');
+        $text = '';
+        /**
+        if (is_writable($this->config->item('rootdir').'/installer'))
+        {
+            delete_files($this->config->item('rootdir').'/installer/', TRUE);
+            //show_error("Installation Directory(\"".$this->config->item('rootdir')."/installer\") is present. Remove/Rename it to proceed further.");
+            //exit(); 
+        }
+        else
+        {
+            $text = "Couldn't delete Installation Directory(".$this->config->item('rootdir')."/installer) ";
+        }
+        
+        if (is_writable(APPPATH . 'controllers/installer.php'))
+        {
+            delete_files(APPPATH . 'controllers/installer.php');
+            //show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
+            //exit(); 
+        }
+        else
+        {
+            if ($text != '')
+            {
+                $text .= ", script of installation(".APPPATH . "controllers/installer.php) ";
+            }
+            else
+            {
+                $text = "Couldn't delete script of installation(".APPPATH . "controllers/installer.php) ";
+            }
+        }
+        
+        if (is_writable(APPPATH . 'views/installer'))
+        {
+            delete_files(APPPATH . 'views/installer', TRUE);
+            //show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
+            //exit(); 
+        }
+        else
+        {
+            if ($text != '')
+            {
+                $text .= "and installer views(".APPPATH . "views/installer) .";
+            }
+            else
+            {
+                $text = "Couldn't delete installer views(".APPPATH . "views/installer) .";
+            }
+        }
+        */
+        
+        header('refresh:5;url='.site_url("installer/install/0"));
+        /**
+        if ($text != '')
+        {
+           echo "<b>".$text."</b><br/>You can remove them manually later on. <br/>";
+        }
+        */
+        
+        echo 'You\'ll be redirected in about 5 secs. If not, click '.anchor("admin","here").'.';
+        
+    }
+    
     // this function does the processing of optional view form.
     function optional()
     {
         
         $status=$this->session->userdata('optional');
         if(!$status) {
-        redirect(site_url('installer/install/license'));
+            redirect(site_url('installer/install/license'));
         }
         
         //include(dirname(__FILE__).'/../../../config-sample.php');
@@ -857,6 +939,21 @@ echo "hello<br/>".$dsn;
                     //header( "refresh:5;url=".site_url('admin')); 
                     //echo 'You\'ll be redirected in about 5 secs. If not, click '.anchor('admin',"here").'.';
                     
+                    $this->session->set_userdata('deletedirectories' , TRUE);
+                    $newdata = array();
+                    //DELETE SAMPLE INSTALLER FILE. If we can't, notify user of the same.
+                    if (is_writable($this->config->item('rootdir').'/tmp/sample_installer-file.txt'))
+                    {
+                        $this->load->helper('file');
+                        delete_files($this->config->item('rootdir').'/tmp/sample_installer_file.txt',TRUE);
+                        //show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
+                        //exit(); 
+                    }
+                    else
+                    {
+                        $newdata['error'] = TRUE;
+                    }
+                    
                     $newdata['title']="Success!";
                     $newdata['descp']="LimeSurvey has been installed successfully.";
                     $newdata['classesForStep']=array("off","off","off","off","off");
@@ -888,8 +985,16 @@ echo "hello<br/>".$dsn;
     // this function loads optconfig_view with proper confirmation message.
     function loadOptView()
     {
+        $status1=$this->session->userdata('step3');
+        if(!$status1) {
+                    
+            redirect(site_url('installer/install/license'));
+        }
+        
         self::_writeDatabaseFile();
         self::_writeAutoloadfile();
+        self::_writeConfigfile();
+        $this->load->helper('surveytranslator');
         $data['confirmation']="<b>".$this->session->userdata('optconfig_message')."</b><br/>";
         $data['title']="Optional settings";
         $data['descp']="Optional settings to give you a head start";
@@ -1036,7 +1141,7 @@ echo "hello<br/>".$dsn;
                 $this->session->set_userdata(array('tablesexist' => TRUE));
                 $statusdata = array(
                             //'step2'  => 'TRUE',
-                            'step3'  => 'TRUE'
+                            'step3'  => TRUE
                             );
             
                 $this->session->unset_userdata('populatedatabase');
@@ -1290,6 +1395,21 @@ echo "hello<br/>".$dsn;
             
             $string = str_replace('$autoload[\'libraries\'] = array(\'session\');','$autoload[\'libraries\'] = array(\'database\', \'session\');', $string);
             write_file(APPPATH . 'config/autoload.php', $string);
+        }
+        
+    }
+    
+    function _writeConfigfile()
+    {
+        if ($this->session->userdata('databaseexist') && $this->session->userdata('tablesexist'))
+        {
+        
+            $this->load->helper('file');
+            
+            $string = read_file(APPPATH . 'config/config.php');
+            $this->load->helper('string');
+            $string = str_replace('$config[\'encryption_key\'] = \'encryption_key\';','$config[\'encryption_key\'] = \''.random_string("unique").'\';', $string);
+            write_file(APPPATH . 'config/config.php', $string);
         }
         
     }

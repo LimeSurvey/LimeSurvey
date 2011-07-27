@@ -78,9 +78,11 @@
 </tr>
 <tr>
 <td><b>Survey Language</b><br />
-<div class="description-field">This will be the language of your survey. Put "<b>en</b>" without double quotes for english.</div>
+<div class="description-field">This will be the language of your survey. Select "<b>en</b>" without double quotes for english.</div>
 </td>
-<td align="right"><input type="text" name="surveylang" value="en"/></td>
+<td align="right">
+<input type="text" name="surveylang" value="en"/> 
+</td>
 </tr>
 <tr>
 <td>&nbsp;</td>
