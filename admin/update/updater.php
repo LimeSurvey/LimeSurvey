@@ -627,7 +627,7 @@ function CheckForDBUpgrades()
     {
         if(isset($_GET['continue']) && $_GET['continue']==1)
         {
-            echo getAdminHeader()."<div style='width:90%; padding:1% 10%;background-color:#eee;'>";
+            echo "<div style='width:90%; padding:1% 10%;background-color:#eee;'>";
             $upgradedbtype=$databasetype;
             if ($upgradedbtype=='mssql_n' || $upgradedbtype=='odbc_mssql' || $upgradedbtype=='odbtp') $upgradedbtype='mssql';
             if ($upgradedbtype=='mssqlnative') $upgradedbtype = 'mssqlnative';
