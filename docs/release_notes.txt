@@ -77,6 +77,22 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.91+ (build 10563) to 1.91+ (build 10604)
+#Updated language: French (b00z00)
+#Updated language: Polish (elisa-ls)
+-Fixed issue #5358: Adding a question - position dropdown shows subquestions, too (c_schmitz)
+-Fixed issue #05331: FCKEditor / Whitespace Indent mangeled for Email Templates. (mot3)
+-Fixed issue #05356 : can not add html element in other_replace_text (shnoulle)
+-Fixed issue #5300: Further optimization of bounce e-mail processing (idobraca)
+-Fixed issue #5328: {SURVEYID} or {SID} replacement field missing in email templates. (mot3)
+-Fixed issue #5352: Probable Regression in database update output logic (ref #5217) (mot3)
+-Fixed issue #5355: UTF-8 linebreak breaking conditions editor (c_schmitz)
+-Fixed issue #5359: quota - order of question in add new answer (c_schmitz)
+-Fixed issue #5360: quota - answer id for matrix 5er (c_schmitz)
+-Fixed issue:  other_replace_text aren't filter if filterxsshtml are set (shnoulle)
+-Fixed issue: Bounce processing didn't work with remainders (idobraca)
+-Fixed issue: Typo in SQL command (idobraca)
+
 Changes from 1.91+ (build 10494) to 1.91+ (build 10563)
 #Updated translation: German (c_schmitz)
 #Updated translation: Norwegian Bokmal kindly provided by Peter Holme (c_schmitz)
