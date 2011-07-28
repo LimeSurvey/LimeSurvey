@@ -4304,7 +4304,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     if ($ishtml) {
         $mail->IsHTML(true);
     	$mail->Body = $body;
-        $mail->AltBody = strip_tags(br2nl(html_entity_decode($body,ENT_QUOTES,'UTF-8')));
+        $mail->AltBody = trim(strip_tags(html_entity_decode($body,ENT_QUOTES,'UTF-8')));
     } else
        {
         $mail->IsHTML(false);

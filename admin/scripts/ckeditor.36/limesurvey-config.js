@@ -71,3 +71,48 @@ CKEDITOR.editorConfig = function( config )
    	config.extraPlugins = "limereplacementfields,ajax";
 
 };
+
+/**
+ * CKEDITOR HTML writer configuration
+ *
+ * better html to text conversion (alternative text body 
+ *   for HTML emails)
+ *
+ * #05331
+ */
+CKEDITOR.on( 'instanceReady', function( ev )
+{
+	// only valid for email-message editors
+	if (! ev.editor.name.match(/^(email|message)_/)) return;
+	
+	var writer = ev.editor.dataProcessor.writer;
+	
+	writer.indentationChars = '';
+	
+	var tagsDouble = {'p': 1, 'div':1, 'h1':1, 'h2':1, 'h3':1, 'h4':1, 'h5':1, 'h6':1};
+	var tagsBlank = CKEDITOR.tools.extend( {}, CKEDITOR.dtd.$nonBodyContent);
+	
+	for ( var e in tagsDouble )
+	{
+		writer.setRules( e,
+		{
+			indent : 0,
+			breakBeforeOpen : 1,
+			breakAfterOpen : 0,
+			breakBeforeClose : 1,
+			breakAfterClose : 1
+		});
+	}
+	
+	for ( var e in tagsBlank )
+	{
+		writer.setRules( e,
+		{
+			indent : 0,
+			breakBeforeOpen : 0,
+			breakAfterOpen : 0,
+			breakBeforeClose : 0,
+			breakAfterClose : 0
+		});
+	}
+});
