@@ -15,14 +15,15 @@
  */
  
  
-function doreplacement($file) { //Produce sample page from template file
+function doreplacement($file,$data) { //Produce sample page from template file
+   /**
    $output=array();   
    foreach(file($file) as $op) {
        $output[]=templatereplace($op);
    }
    return $output; 
-   
-   //return (array)templatereplace($file);
+   */
+   return (array)templatereplace($file,array(),$data);
 }
 
 
@@ -53,7 +54,7 @@ function textarea_encode($html_code)
 
                                //Load this editfile
 function filetext($templatename,$templatefile,$templates) {
-    global $templates;
+    //global $templates;
     $sFileName=$templates[$templatename].'/'.$templatefile;
     if (file_exists($sFileName))
     {

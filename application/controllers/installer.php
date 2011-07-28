@@ -21,6 +21,8 @@ class Installer extends CI_Controller {
 	{
         parent::__construct();
         self::_checkInstallation();
+        //need to write unique encryption key before we can use session data.
+        self::_writeConfigfile();
 	}
 	
 	function index()
@@ -729,7 +731,7 @@ echo "hello<br/>".$dsn;
                 
                 self::_writeDatabaseFile();
                 self::_writeAutoloadfile();
-                self::_writeConfigfile();
+                //self::_writeConfigfile();
                 // confirmation message to be displayed
                 $data['confirmation']= sprintf("Database <b>%s</b> has been successfully populated.",$this->session->userdata('dbname'));
                 $data['title']="Optional settings";
@@ -741,7 +743,7 @@ echo "hello<br/>".$dsn;
                             'optional'  => 'TRUE'
                             
                 );
-                $this->load->helper('surveytranslator');
+                //$this->load->helper('surveytranslator');
                 $this->session->set_userdata($statusdata);
                 $this->load->view('installer/optconfig_view',$data);
                 break;        
@@ -993,7 +995,7 @@ echo "hello<br/>".$dsn;
         
         self::_writeDatabaseFile();
         self::_writeAutoloadfile();
-        self::_writeConfigfile();
+        
         $this->load->helper('surveytranslator');
         $data['confirmation']="<b>".$this->session->userdata('optconfig_message')."</b><br/>";
         $data['title']="Optional settings";
@@ -1002,7 +1004,7 @@ echo "hello<br/>".$dsn;
         $data['progressValue']=80;
                 
         $statusdata = array(
-            'optional'  => 'TRUE'
+            'optional'  => TRUE
                             
         );
         $this->session->set_userdata($statusdata);

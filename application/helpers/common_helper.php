@@ -2983,8 +2983,9 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
  * @param mixed $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
  * @return string  Text with replaced strings
  */
-function templatereplace($line, $replacements=array())
+function templatereplace($line, $replacements=array(),$redata)
 {
+    /**
     global $surveylist, $sitename, $clienttoken, $rooturl;
     global $thissurvey, $imageurl, $defaulttemplate;
     global $percentcomplete, $move;
@@ -3002,8 +3003,45 @@ function templatereplace($line, $replacements=array())
     global $totalBoilerplatequestions, $relativeurl;
     global $languagechanger;
     global $printoutput, $captchapath, $loadname,$CI;
+
+    */
+    $CI =& get_instance();
+    global $clienttoken,$sitename,$move,$showXquestions,$showgroupinfo,$showqnumcode,$questioncode,$register_errormsg;
+    global $s_lang,$errormsg,$saved_id, $totalBoilerplatequestions, $relativeurl, $languagechanger,$captchapath,$loadname;
+    
+    $thissurvey = $redata['thissurvey'] ;
+    $percentcomplete = $redata['percentcomplete'] ;
+    $groupname = $redata['groupname'] ;
+    $groupdescription = $redata['groupdescription'] ;
+    $navigator = $redata['navigator'] ;
+    $help = $redata['help'] ;
+    $surveyformat = $redata['surveyformat'] ;
+    $totalquestions = $redata['totalquestions'] ;
+    $completed = $redata['completed'] ;
+    $notanswered = $redata['notanswered'] ;
+    $privacy = $redata['privacy'] ;
+    $surveyid = $redata['surveyid'] ;
+    $token = $redata['token'] ;
+    $assessments = $redata['assessments'] ;
+    $printoutput = $redata['printoutput'] ;
+    $templatedir = $redata['templatedir'] ;
+    $templateurl = $redata['templateurl'] ;
+    if (isset($redata['surveylist']))
+    $surveylist = $redata['surveylist'] ;
+    
+    if (isset($redata['question']))
+    $question = $redata['question'] ;
+    if (isset($redata['answer']))
+    $answer = $redata['answer'] ;
+    $templatename = $redata['templatename'] ;
+    $screenname = $redata['screenname'] ;
+    $editfile = $redata['editfile'] ;
     
     
+    if (file_exists($line))
+    {
+        $line = file_get_contents($line);
+    }
 
     
     $clang = $CI->limesurvey_lang;
@@ -3023,8 +3061,8 @@ function templatereplace($line, $replacements=array())
     $templatename=validate_templatedir($templatename);
 
     // create absolute template URL and template dir vars
-    $templateurl=sGetTemplateURL($templatename).'/';
-    $templatedir=sgetTemplatePath($templatename);
+    //$templateurl=sGetTemplateURL($templatename).'/';
+    //$templatedir=sgetTemplatePath($templatename);
     /**
     if (stripos ($line,"</head>"))
     {
@@ -3035,7 +3073,7 @@ function templatereplace($line, $replacements=array())
     }
     */
     $data = array(
-            '</head>' => "<script type=\"text/javascript\" src=\"".base_url()."scripts/admin/survey_runtime.js\"></script>\n"
+            '</head>' => "<script type=\"text/javascript\" src=\"".$CI->config->item('adminscripts')."survey_runtime.js\"></script>\n"
         .use_firebug()
         ."\t</head>"
     );
@@ -3423,12 +3461,12 @@ function templatereplace($line, $replacements=array())
     }
 
     if (strpos($line, "{TEMPLATECSS}") !== false) {
-        $templatecss="<link rel='stylesheet' type='text/css' href='{$templateurl}template.css' />\n";
+        $templatecss="<link rel='stylesheet' type='text/css' href='{$templateurl}/template.css' />\n";
         if (getLanguageRTL($clang->langcode))
         {
-            $templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}template-rtl.css' />\n";
+            $templatecss.="<link rel='stylesheet' type='text/css' href='{$templateurl}/template-rtl.css' />\n";
         }
-        //$line=str_replace("{TEMPLATECSS}", $templatecss, $line);
+        //$line=str_replace("{TEMPLATECSS}", $templatecss, $line);    
         $data = array_merge($data,array("{TEMPLATECSS}" => $templatecss));
     }
 
@@ -3730,14 +3768,8 @@ function templatereplace($line, $replacements=array())
     
     
     $CI->load->library('parser');
-     if (file_exists($line))
-     {
-        return $CI->parser->parse($line,$data,TRUE);
-     }
-     else
-     {
-        return $CI->parser->parse_string($line,$data,TRUE);
-     }
+    
+    return $CI->parser->parse_string($line,$data,TRUE);
     
     
 
@@ -8714,17 +8746,17 @@ function getHeader($meta = false)
     }
 
     $js_header = ''; $css_header='';
-    foreach ($js_header_includes as $jsinclude)
+    foreach ($CI->config->item("js_admin_includes") as $jsinclude)
     {
         if (substr($jsinclude,0,4) == 'http')
             $js_header .= "<script type=\"text/javascript\" src=\"$jsinclude\"></script>\n";
         else
-            $js_header .= "<script type=\"text/javascript\" src=\"".$CI->config->item('rooturl')."$jsinclude\"></script>\n";
+            $js_header .= "<script type=\"text/javascript\" src=\"".base_url()."$jsinclude\"></script>\n";
     }
 
-    foreach ($css_header_includes as $cssinclude)
+    foreach ($CI->config->item("css_admin_includes") as $cssinclude)
     {
-        $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".$CI->config->item('rooturl').$cssinclude."\" />\n";
+        $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".base_url().$cssinclude."\" />\n";
     }
 
 
@@ -8738,10 +8770,10 @@ function getHeader($meta = false)
         }
         $header.= ">\n\t<head>\n"
         . $css_header
-        . "<script type=\"text/javascript\" src=\"".$CI->config->item('rooturl')."/scripts/jquery/jquery.js\"></script>\n"
-        . "<script type=\"text/javascript\" src=\"".$CI->config->item('rooturl')."/scripts/jquery/jquery-ui.js\"></script>\n"
-        . "<link href=\"".$CI->config->item('rooturl')."/scripts/jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
-        . "<link href=\"".$CI->config->item('rooturl')."/scripts/jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
+        . "<script type=\"text/javascript\" src=\"".$CI->config->item('generalscripts')."jquery/jquery.js\"></script>\n"
+        . "<script type=\"text/javascript\" src=\"".$CI->config->item('generalscripts')."jquery/jquery-ui.js\"></script>\n"
+        . "<link href=\"".$CI->config->item('generalscripts')."jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
+        . "<link href=\"".$CI->config->item('generalscripts')."jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
         . $js_header;
 
         if ($meta)

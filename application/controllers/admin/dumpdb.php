@@ -27,11 +27,24 @@ class Dumpdb extends AdminController {
         
         if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoModeOnly') != true) {
             
-            $sfilename = "backup_db_".random_string('unique')."_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".txt";
-            $dfilename = "LimeSurvey_".$this->db->database."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql";
+            $tables = $this->db->list_tables();
+
+            foreach ($tables as $table)
+            {
+               if ($this->db->dbprefix==substr($table, 0, strlen($this->db->dbprefix)))
+               {              
+                    $lstables[] = $table;
+               }
+            }
+            
+            
+            $sfilename = "backup_db_".random_string('unique')."_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql";
+            $dfilename = "LimeSurvey_".$this->db->database."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql.zip";
             $prefs = array(
-                'format'      => 'txt',             // gzip, zip, txt
+                'format'      => 'zip',             // gzip, zip, txt
                    // File name - NEEDED ONLY WITH ZIP FILES
+                'filename'    => $sfilename,  
+                'tables'      => $lstables, 
                 'add_drop'    => TRUE,              // Whether to add DROP TABLE statements to backup file
                 'add_insert'  => TRUE,              // Whether to add INSERT data to backup file
                 'newline'     => "\n"               // Newline character used in backup file
@@ -41,7 +54,7 @@ class Dumpdb extends AdminController {
             $backup =& $this->dbutil->backup();  
             
             $this->load->helper('file');
-            write_file('tmp/'.$sfilename, $backup); 
+            write_file('tmp/'.$sfilename.".zip", $backup); 
             
             $this->load->helper('download');
             force_download($dfilename, $backup);
@@ -52,11 +65,12 @@ class Dumpdb extends AdminController {
         }
         else
         {
-            echo "This feature is only available for MySQL databases.";
+            show_error("This feature is only available for MySQL databases.");
         }
         
     }
     
+    /**
     function index2()
     {
         
@@ -159,12 +173,13 @@ class Dumpdb extends AdminController {
     }
         return $result . ";\n\n";
     }
-    
+    */
     /**
      * Creates a full dump of the current LimeSurvey database
      *
      * @returns string Contains the dumped data
      */
+     /**
     function _completedump()
     {
         global $connect, $databasename, $dbprefix, $allowexportalldb;
@@ -191,7 +206,7 @@ class Dumpdb extends AdminController {
         }
         return $export;
     }
-    
+    */
     
     
     

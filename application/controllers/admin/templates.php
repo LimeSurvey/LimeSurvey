@@ -25,6 +25,7 @@
     {
         
         //self::_js_admin_includes(base_url().'scripts/admin/edit_area/edit_area_loader.js');
+        //self::_js_admin_includes(base_url().'scripts/jquery/jquery.js');
         self::_js_admin_includes(base_url().'scripts/admin/templates.js');
         
         self::_getAdminHeader();
@@ -380,6 +381,34 @@
         $templatedir=sGetTemplatePath($templatename);
         $templateurl=sGetTemplateURL($templatename);
         
+        // save these variables in an array
+        $data['thissurvey'] = $thissurvey;
+        $data['percentcomplete'] = $percentcomplete;
+        $data['groupname'] = $groupname;
+        $data['groupdescription'] = $groupdescription;
+        $data['navigator'] = $navigator;
+        $data['help'] = $help;
+        $data['surveyformat'] = $surveyformat;
+        $data['totalquestions'] = $totalquestions;
+        $data['completed'] = $completed;
+        $data['notanswered'] = $notanswered;
+        $data['privacy'] = $privacy;
+        $data['surveyid'] = $surveyid;
+        $data['token'] = $token;
+        $data['assessments'] = $assessments;
+        $data['printoutput'] = $printoutput;
+        $data['templatedir'] = $templatedir;
+        $data['templateurl'] = $templateurl;
+        $data['templatename'] = $templatename;
+        $data['screenname'] = $screenname;
+        $data['editfile'] = $editfile;
+        
+        
+        
+    
+        
+        
+        $myoutput[]="";
         switch($screenname) {
             case 'surveylist':
                 unset($files);
@@ -393,11 +422,12 @@
                 "listheading"=>$clang->gT("The following surveys are available:"),
                 "list"=>implode("\n",$list),
                 );
+                $data['surveylist'] = $surveylist;
         
                 $myoutput[]="";
                 foreach ($SurveyList as $qs) {
                     $files[]=array("name"=>$qs);
-                    $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/$qs"));
+                    $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/$qs",$data));
                     
                 }
                 break;
@@ -412,10 +442,10 @@
                 $myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"no-store, no-cache, must-revalidate\" />\n";
                 $myoutput[]="<meta http-equiv=\"Cache-Control\" content=\"post-check=0, pre-check=0, false\" />\n";
                 $myoutput[]="<meta http-equiv=\"Pragma\" content=\"no-cache\" />\n";
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/startpage.pstpl"));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/survey.pstpl"));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/startgroup.pstpl"));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/groupdescription.pstpl"));
+                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/startpage.pstpl",$data));
+                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/survey.pstpl",$data));
+                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/startgroup.pstpl",$data));
+                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/groupdescription.pstpl",$data));
         
                 $question = array(
         		         'all' => 'How many roads must a man walk down?'
@@ -432,12 +462,15 @@
         		         ,'input_error_class' => ''
         		         ,'number' => '1'
         		         );
+                $data['question'] = $question;
         
         		$answer="<ul><li><input type='radio' class='radiobtn' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radiobtn' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radiobtn' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/question.pstpl"));
+                $data['answer'] = $answer;
+                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/question.pstpl",$data));
         
         	    //	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:");
                 $answer="<textarea class='textarea' rows='5' cols='40'>Some text in this answer</textarea>";
+                $data['answer'] = $answer;
         	    $question = array(
         		  'all' => '<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:")
         		 ,'text' => $clang->gT('Please explain something in detail:')
@@ -453,10 +486,11 @@
         		 ,'input_error_class' => ''
         		 ,'number' => '2'
         		 );
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/question.pstpl"));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/endgroup.pstpl"));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/navigator.pstpl"));
-                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/endpage.pstpl"));
+                 $data['question'] = $question;
+                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/question.pstpl",$data));
+                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/endgroup.pstpl",$data));
+                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/navigator.pstpl",$data));
+                $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/endpage.pstpl",$data));
         		break;
         
             case 'welcome':
@@ -466,7 +500,7 @@
                 $myoutput[]="";
                 foreach ($Welcome as $qs) {
                     $files[]=array("name"=>$qs);
-                    $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/$qs"));
+                    $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/$qs",$data));
                     
                 }
                 break;
@@ -478,19 +512,19 @@
                 }
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 foreach(file("$templatedir/survey.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 foreach(file("$templatedir/register.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 $myoutput[]= "\n";
                 break;
@@ -503,15 +537,15 @@
         
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 foreach(file("$templatedir/save.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 $myoutput[]= "\n";
                 break;
@@ -524,15 +558,15 @@
         
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 foreach(file("$templatedir/load.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 $myoutput[]= "\n";
                 break;
@@ -545,15 +579,15 @@
         
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 foreach(file("$templatedir/clearall.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 $myoutput[]= "\n";
                 break;
@@ -563,7 +597,7 @@
                 $myoutput[]="";
                 foreach ($CompletedTemplate as $qs) {
                     $files[]=array("name"=>$qs);
-                    $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/$qs"));
+                    $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/$qs",$data));
                 }
                 break;
         
@@ -599,12 +633,12 @@
                                             <img src="'.$templateurl.'/print_img_radio.png" alt="Third choice" class="input-radio" height="14" width="14">Third choice
                                         </li>
                                     </ul>'
-                         ));
+                         ),$data);
                 }
                 $groupoutput=array();
                 foreach(file("$templatedir/print_group.pstpl") as $op)
                 {
-                    $groupoutput[]=templatereplace($op, array('QUESTIONS'=>implode(' ',$questionoutput)));
+                    $groupoutput[]=templatereplace($op, array('QUESTIONS'=>implode(' ',$questionoutput)),$data);
                 }
                 foreach(file("$templatedir/print_survey.pstpl") as $op)
                 {
@@ -615,7 +649,7 @@
                            'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
                            'THANKS'=>$clang->gT('Thank you for completing this survey.'),
                            'END'=>$clang->gT('This is the survey end message.')
-                   ));
+                   ),$data);
                 }
                 break;
         
@@ -627,19 +661,20 @@
                 }
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 foreach(file("$templatedir/printanswers.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array('ANSWERTABLE'=>$printoutput));
+                   $myoutput[]=templatereplace($op,array('ANSWERTABLE'=>$printoutput),$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op);
+                   $myoutput[]=templatereplace($op,$data);
                 }
                 $myoutput[]= "\n";
                 break;
         }
+        //$myoutput[] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$this->config->item('standardtemplaterooturl')."/default/template.css\" />";
         $myoutput[]="</html>";
         
         if (is_array($files)) {

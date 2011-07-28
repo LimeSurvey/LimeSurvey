@@ -21,11 +21,11 @@
                                        <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
                                        <input type='hidden' name='action' value='templatesavechanges' />
                                        
-                                       <textarea name='changes' id='changes' rows='15' cols='40' class='codepress html <?php echo $templateclasseditormode; ?>'>
-                                       <?php if ($editfile) { 
-                                        textarea_encode(filetext($templatename,$editfile,$templates));
-                                       } ?>
-                                       </textarea>
+                                        <textarea name='changes' id='changes' rows='15' cols='40' class='codepress html <?php echo $templateclasseditormode; ?>'>
+                                        <?php if (isset($editfile)) { 
+                                        echo textarea_encode(filetext($templatename,$editfile,$templates));
+                                        } ?>                                           
+                                        </textarea>
                  <script type="text/javascript">
                  var textarea = document.getElementById('changes'); 
                  var uiOptions = { path : '<?php echo base_url(); ?>scripts/admin/codemirror_ui/js/', searchMode : 'inline', buttons : ['undo','redo','jump','reindent','about'] }

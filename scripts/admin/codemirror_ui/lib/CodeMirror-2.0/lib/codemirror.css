@@ -1,6 +1,6 @@
 .CodeMirror {
   overflow: auto;
-  height: 300px;
+  height: 180px;
   line-height: 1em;
   font-family: monospace;
   _position: relative; /* IE6 hack */
