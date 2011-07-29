@@ -247,11 +247,16 @@ $conmandatoryfns=array();
 $conditions=array();
 $inputnames=array();
 $groupUnconditionnalQuestionsCount=array();
+
+LimeExpressionManager::StartProcessingPage(true,true);  // means that all variables are on the same page
+
 foreach ($_SESSION['grouplist'] as $gl)
 {
     $gid=$gl[0];
     $groupUnconditionnalQuestionsCount[$gid]=0;
     $qnumber = 0;
+
+    LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"));
 
     foreach ($_SESSION['fieldarray'] as $ia)
     {
@@ -259,11 +264,13 @@ foreach ($_SESSION['grouplist'] as $gl)
 	$ia[9] = $qnumber; // incremental question count;
         if ($ia[5] == $gid)
         {
-            $qidattributes=getQuestionAttributes($ia[0]);
+            $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
+
+            LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$ia[0],$ia[2]);
+            // TODO - double check this  about expressions - should it continue?
             if ($ia[4] != '*' && ($qidattributes===false || $qidattributes['hidden']==1)) {
                 continue;
             }
-            // TODO (TMW) Do I need to add relevance processing here?
             $qtypesarray[$ia[1]] = $ia[4];
             list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
             if ($plus_qanda)
@@ -320,6 +327,8 @@ foreach ($_SESSION['grouplist'] as $gl)
             }
         }
     }
+    LimeExpressionManager::FinishProcessingGroup();
+
 }
 
 //READ TEMPLATES, INSERT DATA AND PRESENT PAGE
@@ -380,6 +389,12 @@ END;
 print <<<END
 	function noop_checkconditions(value, name, type)
 	{
+        if (type == 'radio' || type == 'select-one')
+        {
+            var hiddenformname='java'+name;
+            document.getElementById(hiddenformname).value=value;
+        }
+        ExprMgr_process_relevance_and_tailoring();
 	}
 
 	function checkconditions(value, name, type)
@@ -403,6 +418,7 @@ if ((isset($conditions) && is_array($conditions)) ||
             var hiddenformname='java'+name;
             document.getElementById(hiddenformname).value=value;
         }
+        ExprMgr_process_relevance_and_tailoring();
 
         if (type == 'checkbox')
         {
@@ -925,6 +941,8 @@ foreach ($_SESSION['grouplist'] as $gl)
     echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
     echo "\n";
 
+    LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"));
+
     if ($groupdescription)
     {
         echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"));
@@ -985,14 +1003,14 @@ foreach ($_SESSION['grouplist'] as $gl)
 	<!-- NEW QUESTION -->
 				<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
 ';
-                    echo templatereplace($question_template);
+                    echo templatereplace($question_template,NULL,($thissurvey['anonymized']!="N"),$qa[4]);
                     echo '
 				</div>
 ';
                 }
                 else
                 {
-                    echo templatereplace($question_template);
+                    echo templatereplace($question_template,NULL,($thissurvey['anonymized']!="N"),$qa[4]);
                 };
             }
         }
@@ -1003,6 +1021,8 @@ foreach ($_SESSION['grouplist'] as $gl)
     echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
     echo "\n\n</div>\n";
     echo "\n";
+
+    LimeExpressionManager::FinishProcessingGroup();
 }
 
 //echo "&nbsp;\n";
@@ -1048,6 +1068,9 @@ if (remove_nulls_from_array($conmandatoryfns))
     $conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
     echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
 }
+
+LimeExpressionManager::FinishProcessingPage();
+echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n"
 ."<input type='hidden' name='sid' value='$surveyid' id='sid' />\n"

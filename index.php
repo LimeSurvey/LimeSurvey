@@ -1181,7 +1181,8 @@ function checkgroupfordisplay($gid)
     $countQuestionsWithRelevanceIntThisGroup=0;
 
     // Initialize LimeExpressionManager for this group - this ensures that values from prior pages are available for assessing relevance on this page
-   LimeExpressionManager::StartProcessingGroup($gid);
+    LimeExpressionManager::StartProcessingPage(false);
+    LimeExpressionManager::StartProcessingGroup($gid);
 
     foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
 

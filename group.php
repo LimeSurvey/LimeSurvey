@@ -390,6 +390,7 @@ $qtypesarray = array();
 $qnumber = 0;
 
 //This re-starts the group, after checking relevance, so get consistent and unduplcated set of replacement functions
+LimeExpressionManager::StartProcessingPage();
 LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"));
 
 foreach ($_SESSION['fieldarray'] as $key=>$ia)
@@ -1314,6 +1315,7 @@ echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
 echo "\n";
 
 LimeExpressionManager::FinishProcessingGroup();
+LimeExpressionManager::FinishProcessingPage();
 echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
 if (!$previewgrp){
