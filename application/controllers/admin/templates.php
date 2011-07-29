@@ -23,13 +23,13 @@
     
     function view($editfile='startpage.pstpl', $screenname='welcome', $templatename='default')
     {
-        
+      
         //self::_js_admin_includes(base_url().'scripts/admin/edit_area/edit_area_loader.js');
         //self::_js_admin_includes(base_url().'scripts/jquery/jquery.js');
         self::_js_admin_includes(base_url().'scripts/admin/templates.js');
         
         self::_getAdminHeader();
-        self::_initTemplateInfo($templatename, $screenname, $editfile);
+        self::_initialise($templatename, $screenname, $editfile);
         
         self::_loadEndScripts();
                 
@@ -143,11 +143,13 @@
         
     }
     
-    function _initTemplateInfo($templatename, $screenname, $editfile)
+    function _initialise($templatename, $screenname, $editfile)
     {
         global $siteadminname, $siteadminemail;
         $clang = $this->limesurvey_lang;
         $this->load->helper('admin/template');
+
+        
         //Standard Template Subfiles
         //Only these files may be edited or saved
         $files[]=array('name'=>'assessment.pstpl');
@@ -262,7 +264,7 @@
         
         $templatename = sanitize_paranoid_string($templatename);
         //if (!isset($templatedir)) {$templatedir = sanitize_paranoid_string(returnglobal('templatedir'));}
-        $editfile = sanitize_filename($editfile);
+        //$editfile = sanitize_filename($editfile);
         $screenname=auto_unescape($screenname);
         
         // Checks if screen name is in the list of allowed screen names
@@ -486,7 +488,7 @@
         		 ,'input_error_class' => ''
         		 ,'number' => '2'
         		 );
-                 $data['question'] = $question;
+                $data['question'] = $question;
                 $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/question.pstpl",$data));
                 $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/endgroup.pstpl",$data));
                 $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/navigator.pstpl",$data));
@@ -501,6 +503,7 @@
                 foreach ($Welcome as $qs) {
                     $files[]=array("name"=>$qs);
                     $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/$qs",$data));
+                    //exit();
                     
                 }
                 break;
@@ -510,22 +513,28 @@
                 foreach($Register as $qs) {
                    $files[]=array("name"=>$qs);
                 }
-                foreach(file("$templatedir/startpage.pstpl") as $op)
+                $myoutput[] =  templatereplace("$templatedir/startpage.pstpl",array(),$data);
+                $myoutput[] =  templatereplace("$templatedir/survey.pstpl",array(),$data);
+                $myoutput[] =  templatereplace("$templatedir/register.pstpl",array(),$data);
+                $myoutput[] =  templatereplace("$templatedir/endpage.pstpl",array(),$data);
+                
+                /**foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/survey.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/register.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
+                */
                 $myoutput[]= "\n";
                 break;
         
@@ -534,19 +543,25 @@
                 foreach($Save as $qs) {
                    $files[]=array("name"=>$qs);
                 }
-        
+                
+                $myoutput[] =  templatereplace("$templatedir/startpage.pstpl",array(),$data);
+                $myoutput[] =  templatereplace("$templatedir/save.pstpl",array(),$data);
+                $myoutput[] =  templatereplace("$templatedir/endpage.pstpl",array(),$data);
+                /**
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/save.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
+                */
+                
                 $myoutput[]= "\n";
                 break;
         
@@ -555,19 +570,23 @@
                 foreach($Load as $qs) {
                    $files[]=array("name"=>$qs);
                 }
-        
+                $myoutput[] =  templatereplace("$templatedir/startpage.pstpl",array(),$data);
+                $myoutput[] =  templatereplace("$templatedir/load.pstpl",array(),$data);
+                $myoutput[] =  templatereplace("$templatedir/endpage.pstpl",array(),$data);
+                
+                /**
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/load.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
-                }
+                   $myoutput[]=templatereplace($op,array(),$data);
+                } */
                 $myoutput[]= "\n";
                 break;
         
@@ -576,19 +595,23 @@
                 foreach ($Clearall as $qs) {
                    $files[]=array("name"=>$qs);
                 }
+                $myoutput[] =  templatereplace("$templatedir/startpage.pstpl",array(),$data);
+                $myoutput[] =  templatereplace("$templatedir/clear.pstpl",array(),$data);
+                $myoutput[] =  templatereplace("$templatedir/endpage.pstpl",array(),$data);
         
+                /**
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/clearall.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
-                }
+                   $myoutput[]=templatereplace($op,array(),$data);
+                } */
                 $myoutput[]= "\n";
                 break;
         
@@ -636,10 +659,22 @@
                          ),$data);
                 }
                 $groupoutput=array();
+                $groupoutput[] = templatereplace("$templatedir/print_group.pstpl",array('QUESTIONS'=>implode(' ',$questionoutput)),$data);
+                /**
                 foreach(file("$templatedir/print_group.pstpl") as $op)
                 {
                     $groupoutput[]=templatereplace($op, array('QUESTIONS'=>implode(' ',$questionoutput)),$data);
                 }
+                */
+                $myoutput[] =  templatereplace("$templatedir/print_survey.pstpl",array('GROUPS'=>implode(' ',$groupoutput),
+                           'FAX_TO' => $clang->gT("Please fax your completed survey to:")." 000-000-000",
+                           'SUBMIT_TEXT'=> $clang->gT("Submit your survey."),
+                           'HEADELEMENTS'=>getPrintableHeader(),
+                           'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
+                           'THANKS'=>$clang->gT('Thank you for completing this survey.'),
+                           'END'=>$clang->gT('This is the survey end message.')
+                   ),$data);
+                   /**
                 foreach(file("$templatedir/print_survey.pstpl") as $op)
                 {
                    $myoutput[]=templatereplace($op, array('GROUPS'=>implode(' ',$groupoutput),
@@ -649,8 +684,9 @@
                            'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
                            'THANKS'=>$clang->gT('Thank you for completing this survey.'),
                            'END'=>$clang->gT('This is the survey end message.')
-                   ),$data);
+                   ),$data); 
                 }
+                */
                 break;
         
             case 'printanswers':
@@ -659,9 +695,15 @@
                 {
                    $files[]=array("name"=>$qs);
                 }
+                
+                $myoutput[] =  templatereplace("$templatedir/startpage.pstpl",array(),$data);
+                $myoutput[] =  templatereplace("$templatedir/printanswers.pstpl",array('ANSWERTABLE'=>$printoutput),$data);
+                $myoutput[] =  templatereplace("$templatedir/endpage.pstpl",array(),$data);
+                
+                /**
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
+                   $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/printanswers.pstpl") as $op)
                 {
@@ -669,8 +711,8 @@
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,$data);
-                }
+                   $myoutput[]=templatereplace($op,array(),$data);
+                } */
                 $myoutput[]= "\n";
                 break;
         }
@@ -710,6 +752,7 @@
            } // while
            closedir($handle);
         }
+
         
         self::_templateditorbar($codelanguage,$highlighter,$this->session->userdata('flashmessage'),$templatename,$templates,$editfile,$screenname);
         

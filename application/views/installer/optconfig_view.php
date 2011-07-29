@@ -81,7 +81,30 @@
 <div class="description-field">This will be your default language. Select "<b>en</b>" without double quotes for english.</div>
 </td>
 <td align="right">
-<input type="text" name="surveylang" value="en"/> 
+
+<select id='surveylang' name='surveylang' style='width:156px;'>
+
+<?php
+			
+			foreach (getlanguagedata(true,true) as $langkey=>$languagekind)
+            {
+				if ($langkey=="en")
+				{
+					?>
+					<option value='<?php echo $langkey; ?>' selected='yes'><?php echo $languagekind['nativedescription']." - ".$languagekind['description']; ?></option>
+					<?php
+				}
+				else
+				{
+                ?>
+                <option value='<?php echo $langkey; ?>'><?php echo $languagekind['nativedescription']." - ".$languagekind['description']; ?></option>
+                <?php
+            }
+				
+            }
+?>
+</select>
+<!--<input type="text" name="surveylang" value="en"/>  -->
 </td>
 </tr>
 <tr>

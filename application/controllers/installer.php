@@ -743,7 +743,7 @@ echo "hello<br/>".$dsn;
                             'optional'  => 'TRUE'
                             
                 );
-                //$this->load->helper('surveytranslator');
+                $this->load->helper('surveytranslator');
                 $this->session->set_userdata($statusdata);
                 $this->load->view('installer/optconfig_view',$data);
                 break;        
@@ -841,8 +841,8 @@ echo "hello<br/>".$dsn;
             $defaultuser = $this->input->post('adminLoginName');
             $defaultpass = $this->input->post('adminLoginPwd');
             $siteadminname = $this->input->post('siteName');
-            $defaultlang = $this->input->post('adminEmail');
-            $siteadminemail = $this->input->post('surveylang');
+            $defaultlang = $this->input->post('surveylang');
+            $siteadminemail = $this->input->post('adminEmail');
             
             //if any of the field was left blank, replace it with default.
             if ($defaultuser=='')

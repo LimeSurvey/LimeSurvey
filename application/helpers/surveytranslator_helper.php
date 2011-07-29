@@ -301,8 +301,21 @@ function getLanguageDetails($codetosearch)
     }
 }
 
-function getLanguageData($orderbynative=false) {
-	$clang = &get_instance()->limesurvey_lang;
+function getLanguageData($orderbynative=false,$installer=false) {
+    
+    if ($installer)
+    {
+        $CI = &get_instance();
+        $lang = array('en');
+		//$lang = array($this->config->item('defaultlang'));
+		$CI->load->library('Limesurvey_lang',$lang);
+        $clang = $CI->limesurvey_lang;
+    }
+    else
+    {
+        $clang = &get_instance()->limesurvey_lang;
+    }
+	
     static $supportedLanguages;
     static $result = array();
 
