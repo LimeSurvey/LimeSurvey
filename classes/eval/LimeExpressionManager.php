@@ -164,6 +164,7 @@ class LimeExpressionManager {
                 case 'U': //HUGE FREE TEXT
                 case 'Q': //MULTIPLE SHORT TEXT
                 case 'K': //MULTIPLE NUMERICAL QUESTION
+                case 'X': //BOILERPLATE QUESTION
                     if ($isOnCurrentPage=='Y')
                     {
                         $jsVarName = 'answer' . $code;
@@ -178,10 +179,7 @@ class LimeExpressionManager {
                 case 'G': //GENDER drop-down list
                 case 'I': //Language Question
                 case 'L': //LIST drop-down/radio-button list
-                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                case 'X': //BOILERPLATE QUESTION
                 case 'Y': //YES/NO radio-buttons
-                case '|': //File Upload
                 case '*': //Equation
                 case '1': //Array (Flexible Labels) dual scale
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
@@ -191,10 +189,29 @@ class LimeExpressionManager {
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'M': //Multiple choice checkbox
-                case 'P': //Multiple choice with comments checkbox + text
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
                     $jsVarName = 'java' . $code;
+                    break;
+                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    // Don't want to use the one that ends in 'comment'
+                    $goodcode = preg_replace("/^(.*?)(comment)?$/","$1",$code);
+                    $jsVarName = 'java' . $goodcode;
+                    break;
+                case '|': //File Upload
+                    // Only want the use the one that ends in '_filecount'
+                    $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$code);
+                    $jsVarName = $goodcode . '_filecount';
+                    break;
+                case 'P': //Multiple choice with comments checkbox + text
+                    if (preg_match("/comment$/",$code) && $isOnCurrentPage=='Y')
+                    {
+                        $jsVarName = 'answer' . $code;  // is this true for survey.php and not for group.php?
+                    }
+                    else
+                    {
+                        $jsVarName = 'java' . $code;
+                    }
                     break;
             }
             $readWrite = 'N';

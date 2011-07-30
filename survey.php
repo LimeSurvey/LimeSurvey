@@ -394,6 +394,19 @@ print <<<END
             var hiddenformname='java'+name;
             document.getElementById(hiddenformname).value=value;
         }
+
+        if (type == 'checkbox')
+        {
+            var hiddenformname='java'+name;
+			var chkname='answer'+name;
+            if (document.getElementById(chkname).checked)
+            {
+                document.getElementById(hiddenformname).value='Y';
+            } else
+            {
+		        document.getElementById(hiddenformname).value='';
+            }
+        }
         ExprMgr_process_relevance_and_tailoring();
 	}
 
@@ -418,8 +431,6 @@ if ((isset($conditions) && is_array($conditions)) ||
             var hiddenformname='java'+name;
             document.getElementById(hiddenformname).value=value;
         }
-        ExprMgr_process_relevance_and_tailoring();
-
         if (type == 'checkbox')
         {
             var hiddenformname='java'+name;
@@ -432,6 +443,8 @@ if ((isset($conditions) && is_array($conditions)) ||
 		        document.getElementById(hiddenformname).value='';
             }
         }
+        ExprMgr_process_relevance_and_tailoring();
+
 END;
     $java="";
     $cqcount=1;

@@ -559,12 +559,24 @@ print <<<END
             var hiddenformname='java'+name;
             document.getElementById(hiddenformname).value=value;
         }
+
+        if (type == 'checkbox')
+        {
+            var hiddenformname='java'+name;
+			var chkname='answer'+name;
+            if (document.getElementById(chkname).checked)
+            {
+                document.getElementById(hiddenformname).value='Y';
+            } else
+            {
+		        document.getElementById(hiddenformname).value='';
+            }
+        }
         ExprMgr_process_relevance_and_tailoring();
 	}
 
 	function checkconditions(value, name, type)
 	{
-        ExprMgr_process_relevance_and_tailoring();
 
 END;
 
@@ -597,6 +609,7 @@ if ((isset($conditions) && is_array($conditions)) ||
 		        document.getElementById(hiddenformname).value='';
             }
         }
+        ExprMgr_process_relevance_and_tailoring();
 
 END;
     $java="";

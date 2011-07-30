@@ -1331,6 +1331,16 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             }
             $questionsummary .= "</td></tr>";
         }
+        $questionAttributes = getQuestionAttributes($qid, $qrrow['type']);
+        if (!is_null($questionAttributes['relevance']))
+        {
+            $questionsummary .= "<tr>"
+            . "<td align='right' valign='top'><strong>"
+            . $clang->gT("Relevance:")."</strong></td>\n"
+            . "<td align='left'>";
+            $questionsummary .= $questionAttributes['relevance'];
+            $questionsummary .= "</td></tr>\n";
+        }
         $questionsummary .= "</table>";
     }
 }
