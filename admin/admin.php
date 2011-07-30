@@ -280,6 +280,10 @@ if(isset($_SESSION['loginID']))
         }
         else { include('access_denied.php'); }
     }
+    elseif ($action == 'emailtemplates')
+    {
+        $_SESSION['FileManagerContext']="edit:emailsettings:$surveyid";
+    }
     elseif ($action == 'iteratesurvey')
     {
         if(bHasSurveyPermission($surveyid,'surveyactivation','update'))    {include('iterate_survey.php');}
