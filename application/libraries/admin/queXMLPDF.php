@@ -4,7 +4,8 @@
  * Modify these two lines to point to your TCPDF installation
  * Tested with TCPDF 5.8.008 - see http://www.tcpdf.org/
  */
-require(APPPATH.'config/tcpdf_config_ci'.EXT);
+//require(APPPATH.'config/tcpdf_config_ci'.EXT);
+require('pdf.php');
 require_once($tcpdf['base_directory'].'/tcpdf.php');
 require_once($tcpdf['base_directory'].'/config/lang/eng.php');
 //require_once($homedir .'/classes/tcpdf/tcpdf.php');
@@ -19,7 +20,7 @@ require_once($tcpdf['base_directory'].'/config/lang/eng.php');
  * @link      http://quexml.sourceforge.net
  * @link      http://quexf.sourceforge.net
  */
-class queXMLPDF extends TCPDF {
+class queXMLPDF extends pdf {
 
 	/**
 	 * Define an inch in MM
@@ -543,8 +544,9 @@ class queXMLPDF extends TCPDF {
     
     function __construct()
     {
+    	parent::__construct();
         $CI =& get_instance();
-		$this->style = $CI->load->view('libraries/quexmlpdf/style_view.php','',true);
+		$this->style = $CI->load->view('libraries/quexmlpdf/style_view','',true);
     }
 	/**
 	 * Add a box group to the page layout system

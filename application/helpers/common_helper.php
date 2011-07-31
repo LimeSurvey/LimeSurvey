@@ -2019,7 +2019,7 @@ function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
             case "H":
             case "1":
                 $fieldtoselect = array('answer');
-                $condition = "qid = {$fields['qid']} AND code='".$CI->db->escape($value)."' AND language='".$s_lang."'";
+                $condition = "qid = {$fields['qid']} AND code=".$CI->db->escape($value)." AND language='".$s_lang."'";
                 $CI->load->model('answers_model');
                 
                 $result = $CI->answers_model->getSomeRecords($fieldtoselect,$condition) or safe_die ("Couldn't get answer type F/H - getextendedanswer() in common_helper.php");   //Checked
@@ -4144,10 +4144,10 @@ function getQuestionAttributes($qid, $type='')
     $setattributes=array();
     $qid=sanitize_int($qid);
     $fields = array('attribute', 'value');
-    $condition = "WHERE qid=$qid";
-    $CI->load->model('question_attributes');
+    $condition = "qid = $qid";
+    $CI->load->model('question_attributes_model');
     //$query = "SELECT attribute, value FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
-    $result = $CI->question_attributes->getSomeRecords($fields,$condition) or safe_die("Error finding question attributes");  //Checked)
+    $result = $CI->question_attributes_model->getSomeRecords($fields,$condition) or safe_die("Error finding question attributes");  //Checked)
     $setattributes=array();
     foreach ($result->result_array() as $row)
     {

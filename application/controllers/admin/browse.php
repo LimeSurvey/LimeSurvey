@@ -1109,25 +1109,4 @@ class browse extends SurveyCommonController {
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		
 	}
-
-	/**
-	 * Browse Menu Bar
-	 */
-	function _browsemenubar($surveyid, $title='')
-	{
-	    //BROWSE MENU BAR
-		$data['title'] = $title;
-		$data['thissurvey'] = getSurveyInfo($surveyid);
-		$data['imageurl'] = $this->config->item("imageurl");
-		$data['clang'] = $this->limesurvey_lang;
-		$data['surveyid'] = $surveyid;
-		
-		$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-        $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        $tmp_survlangs[] = $baselang;
-        rsort($tmp_survlangs);
-		$data['tmp_survlangs'] = $tmp_survlangs;
-		
-	    $this->load->view("admin/browse/browsemenubar_view", $data);
-	}
 }

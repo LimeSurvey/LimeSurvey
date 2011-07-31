@@ -1123,4 +1123,25 @@
         $data['showstyle'] = $showstyle;
 		$this->load->view("admin/survey/surveysummary",$data);
     }
+    
+	/**
+	 * Browse Menu Bar
+	 */
+	function _browsemenubar($surveyid, $title='')
+	{
+	    //BROWSE MENU BAR
+		$data['title'] = $title;
+		$data['thissurvey'] = getSurveyInfo($surveyid);
+		$data['imageurl'] = $this->config->item("imageurl");
+		$data['clang'] = $this->limesurvey_lang;
+		$data['surveyid'] = $surveyid;
+		
+		$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $tmp_survlangs[] = $baselang;
+        rsort($tmp_survlangs);
+		$data['tmp_survlangs'] = $tmp_survlangs;
+		
+	    $this->load->view("admin/browse/browsemenubar_view", $data);
+	}
 }

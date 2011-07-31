@@ -55,14 +55,15 @@ function spss_export_data ($na = null) {
     //Now get the query string with all fields to export
     $query = spss_getquery();
 
-    $result=db_execute_num($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
-    $num_fields = $result->FieldCount();
+    $result=db_execute_assoc($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
+    $num_fields =  count($result->row_array());
 
     //This shouldn't occur, but just to be safe:
     if (count($fields)<>$num_fields) safe_die("Database inconsistency error");
 
-    while (!$result->EOF) {
-        $row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
+    foreach ($result->result_array() as $row) {
+    	$row = array_change_key_case($row,CASE_UPPER);
+        //$row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
         reset($fields);	//Jump to the first element in the field array
         $i = 1;
         foreach ($fields as $field)
@@ -138,7 +139,7 @@ function spss_export_data ($na = null) {
                     echo("'0'");
                 }
             } elseif (!$field['hide']) {
-                $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
+            	$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
                 if (trim($strTmp) != ''){
                     $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
                     /*
@@ -158,7 +159,6 @@ function spss_export_data ($na = null) {
             $i++;
         }
         echo "\n";
-        $result->MoveNext();
     }
 }
 
@@ -169,7 +169,8 @@ function spss_export_data ($na = null) {
  * @return array or false
  */
 function spss_getvalues ($field = array(), $qidattributes = null ) {
-    global $surveyid, $dbprefix, $connect, $clang, $language, $length_vallabel;
+    global $surveyid, $dbprefix, $connect, $language, $length_vallabel;
+	$clang =& get_instance()->limesurvey_lang;
 
     if (!isset($field['LStype']) || empty($field['LStype'])) return false;
     $answers=array();
@@ -281,6 +282,7 @@ function spss_fieldmap($prefix = 'V') {
     global $surveyid, $dbprefix, $typeMap, $connect, $clang;
     global $surveyprivate, $tokensexist, $language;
 
+	$CI =& get_instance();
     $fieldmap = createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
 
     #See if tokens are being used
@@ -317,7 +319,7 @@ function spss_fieldmap($prefix = 'V') {
     }
 
     $tempArray = array();
-    $fieldnames = array_values($connect->MetaColumnNames("{$dbprefix}survey_$surveyid", true));
+    $fieldnames = array_values($CI->db->list_fields("survey_$surveyid"));
     $num_results = count($fieldnames);
     $num_fields = $num_results;
     $diff = 0;
@@ -1686,7 +1688,7 @@ function group_getXMLStructure($xml,$gid)
 
 function question_export($action, $surveyid, $gid, $qid)
 {
-	$fn = "limesurvey_group_$qid.lsg";
+	$fn = "limesurvey_question_$qid.lsq";
 	$xml = getXMLWriter();    
 	$CI =& get_instance();
 	$dbprefix = $CI->db->dbprefix;

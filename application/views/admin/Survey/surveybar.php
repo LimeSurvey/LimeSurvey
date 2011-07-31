@@ -135,13 +135,13 @@
 		   		<?php } ?>
 		   		<?php if($surveyexport) {
 		   			if($onelanguage) { ?>
-		            <li><a href='<?php echo site_url("admin/showquexmlsurvey/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/export/showquexmlsurvey/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' /> <?php echo $clang->gT("QueXML export");?></a></li>
 		        <?php } else { ?>
-		            <li><a href='<?php echo site_url("admin/showquexmlsurvey/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/export/showquexmlsurvey/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' /> <?php echo $clang->gT("QueXML export");?></a><ul>
 		            <?php foreach ($languagelist as $tmp_lang) { ?>
-		                <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/showquexmlsurvey/index/$surveyid/$tmp_lang");?>'>
+		                <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/export/showquexmlsurvey/$surveyid/$tmp_lang");?>'>
 		                <img src='<?php echo $imageurl;?>/scanner_30.png' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
 		            <?php } ?>
 		            </ul></li>
