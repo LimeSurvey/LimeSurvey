@@ -384,7 +384,7 @@ function savedcontrol()
                 $message.="\n\n".$thissurvey['name']."\n\n";
                 $message.=$clang->gT("Name","unescaped").": ".$_POST['savename']."\n";
                 $message.=$clang->gT("Password","unescaped").": ".$_POST['savepass']."\n\n";
-                $message.=$clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped").":\n";
+                $message.=$clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped")."\n";
                 $message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
 
                 if ($clienttoken){$message.="&token=".$clienttoken;}
@@ -423,7 +423,7 @@ function savedsilent()
     $to = $tokenentryarray['firstname'].' '.$tokenentryarray['lastname'].' <'.$tokenentryarray['email'].'>';
     $subject = $clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
     $message = $clang->gT("Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey.","unescaped")."\n\n";
-    $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped").":\n";
+    $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped")."\n";
     $language = $tokenentryarray['language'];
 
     if($modrewrite)

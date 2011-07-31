@@ -1082,10 +1082,7 @@ if (isset($canswers))
 {
     foreach($canswers as $can)
     {
-        $an=str_replace("'", "`", $can[2]);
-        $an=str_replace("\r", " ", $an);
-        $an=str_replace("\n", " ", $an);
-        $an=strip_tags($an);
+        $an=FlattenText($can[2]);
         $conditionsoutput_main_content .= "Fieldnames[$jn]='$can[0]';\n"
         ."Codes[$jn]='$can[1]';\n"
         ."Answers[$jn]='$an';\n";

@@ -542,7 +542,7 @@ function getGlobalSetting($settingname)
     global $connect, $$settingname;
     $registry = SettingsStorage::getInstance();
     if (!$registry->isRegistered($settingname)) {
-        $usquery = "SELECT stg_value FfROM ".db_table_name("settings_global")." where stg_name='$settingname'";
+        $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='$settingname'";
         $dbvalue=$connect->GetOne($usquery);
         if (is_null($dbvalue))
         {

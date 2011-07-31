@@ -173,6 +173,7 @@ class queXMLPDF extends TCPDF {
 	protected $style = "<style>
 		td.questionTitle {font-weight:bold; font-size:12pt;}
 		td.questionText {font-weight:bold; font-size:12pt;} 
+		td.vasLabel {font-weright:bold; font-size:10pt; text-align:center;}
 		td.questionHelp {font-weight:normal; text-align:right; font-style:italic; font-size:8pt;}
 		td.questionHelpAfter {text-align:center; font-weight:bold; font-size:10pt;}
 		td.responseAboveText {font-weight:normal; font-style:normal; text-align:left; font-size:12pt;} 
@@ -1128,8 +1129,9 @@ class queXMLPDF extends TCPDF {
 					else if (isset($r->vas))
 					{
 						$rtmp['type'] = 'vas';
-						$rtmp['width'] = current($r->vas->length);
-						$rtmp['text'] = current($r->vas->label);
+						$rtmp['width'] = 100; 
+						$rtmp['labelleft'] = current($r->vas->labelleft);
+						$rtmp['labelright'] = current($r->vas->labelright);
 					}
 					$rstmp['response'] = $rtmp;
 					$qtmp['responses'][] = $rstmp;
@@ -1291,7 +1293,7 @@ class queXMLPDF extends TCPDF {
 							$this->drawMatrixTextVertical($subquestions,$response['width'],$text,$bgtype);
 						break;
 					case 'vas':
-						$this->drawMatrixVas($subquestions,$text);
+						$this->drawMatrixVas($subquestions,$text,$response['labelleft'],$response['labelright']);
 						break;
 		
 				}
@@ -1332,7 +1334,7 @@ class queXMLPDF extends TCPDF {
 						break;
 					case 'vas':
 						$this->addBoxGroup(1,$varname,$rtext,strlen($this->vasIncrements));
-						$this->drawVas($response['text']);
+						$this->drawVas("",$response['labelleft'],$response['labelright']);
 						break;
 		
 				}
@@ -1395,16 +1397,19 @@ class queXMLPDF extends TCPDF {
 	 * 
 	 * @param array $subquestions The subquestions containing text and varname
 	 * @param string|bool $parenttext The question text of the parent or false if not specified
+	 * @param string $labelleft The left hand side label
+	 * @param string $labelright The right hand side label
 	 * 
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2010-09-20
 	 */
-	protected function drawMatrixVas($subquestions,$parenttext = false)
+	protected function drawMatrixVas($subquestions,$parenttext = false,$labelleft,$labelright)
 	{
 		$c = count($subquestions);
 		
 		$width = strlen($this->vasIncrements);	
 
+		$heading = true;
 		for ($i = 0; $i < $c; $i++)
 		{
 			$s = $subquestions[$i];
@@ -1417,13 +1422,15 @@ class queXMLPDF extends TCPDF {
 
 
 
-			$this->drawVas($s['text']);
+			$this->drawVas($s['text'],$labelleft,$labelright,$heading);
 		
 			$currentY = $this->GetY();
 		
 			//Insert a gap here
 			$this->Rect($this->getMainPageX(),$this->GetY(),$this->getMainPageWidth(),$this->subQuestionLineSpacing,'F',array(),$this->backgroundColourQuestion);
 			$this->SetY($currentY + $this->subQuestionLineSpacing,false);
+			
+			$heading = false;
 
 		}
 		
@@ -1451,7 +1458,7 @@ class queXMLPDF extends TCPDF {
 		//Align to skip column on right
 		$this->SetX(($this->getPageWidth() - $this->getMainPageX() - $this->skipColumnWidth - $this->longTextResponseWidth),false);
 		//Add to pay layout
-		$this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $this->longTextResponseWidth, $this->GetX() + $height);
+		$this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $this->longTextResponseWidth, $this->GetY() + $height);
 		$this->SetDrawColor($this->lineColour[0],$this->lineColour[1],$this->lineColour[2]);
 		$this->Cell($this->longTextResponseWidth,$height,'',$border,0,'',true,'',0,false,'T','C');
 		$currentY = $currentY + $height;
@@ -1462,22 +1469,40 @@ class queXMLPDF extends TCPDF {
 	/**
 	 * Draw a VAS
 	 * 
-	 * @param mixed $text The label for the VAS if any
+	 * @param string $text The text of this item
+	 * @param string $labelleft The left hand side label
+	 * @param string $labelright The right hand side label
+	 * @param bool $heading Whether to draw a heading or not
 	 * 
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2010-09-20
 	 */
-	protected function drawVas($text)
+	protected function drawVas($text, $labelleft,$labelright,$heading = true)
 	{
+		$textwidth = $this->getMainPageWidth() - $this->skipColumnWidth - ($this->vasLength + ($this->vasLineWidth * 2.0)) - 2;
+		$this->setBackground('question');
+
+		if ($heading)
+		{
+			//draw heading
+			$lwidth = 20;
+			$slwidth = $textwidth - ($lwidth / 2);
+			$gapwidth = ($this->vasLength + ($this->vasLineWidth * 2.0)) - $lwidth;
+	
+	
+			$html = "<table><tr><td width=\"{$slwidth}mm\"></td><td width=\"{$lwidth}mm\" class=\"vasLabel\">$labelleft</td><td width=\"{$gapwidth}mm\"></td><td width=\"{$lwidth}mm\" class=\"vasLabel\">$labelright</td></tr></table>";
+	
+	
+			$this->writeHTMLCell($this->getMainPageWidth(), 0, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,false);
+		}
+
 		$currentY = $this->GetY();
 
-		$textwidth = $this->getMainPageWidth() - $this->skipColumnWidth - ($this->vasLength + ($this->vasLineWidth * 2.0)) - 2;
 
 		$html = "<table><tr><td width=\"{$textwidth}mm\" class=\"responseText\">$text</td><td></td></tr></table>";
 		
 		$textwidth += 2;
 
-		$this->setBackground('question');
 
 		$this->writeHTMLCell($this->getMainPageWidth(), $this->vasAreaHeight, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,false);
 

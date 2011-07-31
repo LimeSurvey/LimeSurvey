@@ -16,6 +16,7 @@
 
 require_once('replacements.php');
 
+
 /**
 * This function gives back an array that defines which survey permissions and what part of the CRUD+Import+Export subpermissions is available.
 * - for example it would not make sense to have  a 'create' permissions for survey locale settings as they exist with every survey
@@ -4179,6 +4180,7 @@ function doFooter()
 // (e.g. for email and template functions)
 function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 {
+
     foreach ( $fieldsarray as $key => $value )
     {
         $text=str_replace($key, $value, $text);
@@ -4320,7 +4322,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     if ($ishtml) {
         $mail->IsHTML(true);
     	$mail->Body = $body;
-        $mail->AltBody = strip_tags(br2nl(html_entity_decode($body,ENT_QUOTES,'UTF-8')));
+        $mail->AltBody = trim(strip_tags(html_entity_decode($body,ENT_QUOTES,'UTF-8')));
     } else
        {
         $mail->IsHTML(false);
@@ -4362,8 +4364,14 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
     $sNicetext = strip_tags($sNicetext);
     if($is_csv==true)
 	$sNicetext = str_replace(array("\r\n","\r","\n"),array(PHP_EOL,PHP_EOL,PHP_EOL), $sNicetext);
+    elseif ($sCharset=='UTF-8')
+    {
+        $sNicetext = preg_replace('/\v/u', '', $sNicetext);
+    }
     else
-      $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
+    {
+        $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
+    }
     if ($bDecodeHTMLEntities==true)
     {
         $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not properly convert &nbsp; to spaces
@@ -6004,7 +6012,11 @@ function getBounceEmail($surveyid)
 {
     $surveyInfo=getSurveyInfo($surveyid);
 
-    if ($surveyInfo['bounce_email'] == '')
+    if ($surveyInfo['bounceprocessing'] == 'G')
+    {
+        return getGlobalSetting('siteadminbounce');
+    }
+    else if ($surveyInfo['bounce_email'] == '')
     {
         return null; // will be converted to from in MailText
     }

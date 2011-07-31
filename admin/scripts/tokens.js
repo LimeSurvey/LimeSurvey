@@ -66,5 +66,6 @@ function turnoff(ui,evt)
   $("#bounceaccountpass").attr('disabled',bounce_disabled);
   $("#bounceencryption").attr('disabled',bounce_disabled);
   $("#bounceaccountencryption").attr('disabled',bounce_disabled);
+  if ($("#bounceprocessing").val()=='G') {$("#bounce_email").attr('disabled',bounce_disabled);} else {$("#bounce_email").attr('disabled','');}
 }
 

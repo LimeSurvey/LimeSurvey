@@ -159,10 +159,9 @@ switch ($fieldtype)
         break;
     case 'email-inv':
     case 'email-rem':
-        // these 2 fields are supported by email-inv and email-rem
+        // these 3 fields are supported by email-inv and email-rem
         // but not email-reg for the moment
         $replFields[]=array('EMAIL',$clang->gT("Email from the token"));
-        $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
         $replFields[]=array('USESLEFT',$clang->gT("Uses left"));
         $replFields[]=array('OPTOUTURL',$clang->gT("URL for a respondent to opt-out this survey"));
     case 'email-reg':
@@ -170,6 +169,8 @@ switch ($fieldtype)
         $replFields[]=array('LASTNAME',$clang->gT("Last name from token"));
         $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
         $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
+        $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
+        $replFields[]=array('SURVEYID',$clang->gT("ID of the survey"));
         $attributes=GetTokenFieldsAndNames($surveyid,true);
         foreach ($attributes as $attributefield=>$attributedescription)
         {
