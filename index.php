@@ -1017,11 +1017,7 @@ function loadanswers()
 function makegraph($currentstep, $total)
 {
     global $thissurvey;
-    global $publicurl, $clang, $js_header_includes, $css_header_includes;
-
-    $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
-    $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
-    $css_header_includes[]= '/scripts/jquery/css/start/lime-progress.css';
+    global $publicurl, $clang;
 
     $size = intval(($currentstep-1)/$total*100);
 

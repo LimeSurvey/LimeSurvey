@@ -1753,7 +1753,6 @@ function do_date($ia)
 {
     global $clang, $js_header_includes, $css_header_includes, $thissurvey;
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
-    $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
     $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
 
 
@@ -4346,7 +4345,6 @@ function do_multiplenumeric($ia)
                     $slider_showmax='';
                 }
 
-                $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
                 $js_header_includes[] = '/scripts/jquery/lime-slider.js';
 
                 if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')

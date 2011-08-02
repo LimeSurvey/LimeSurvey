@@ -1928,7 +1928,6 @@ $subaction == "editthiscondition" || $subaction == "delete")
 
     $js_admin_includes[]= $homeurl.'/scripts/conditions.js';
     $js_admin_includes[]= $rooturl.'/scripts/jquery/lime-conditions-tabs.js';
-    $js_admin_includes[]= $rooturl.'/scripts/jquery/jquery-ui.js';
 
     if ($subaction == "editthiscondition" && isset($p_cid))
     {
