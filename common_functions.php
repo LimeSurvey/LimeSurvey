@@ -4179,7 +4179,10 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 /**
  * This function mails a text $body to the recipient $to.
  * You can use more than one recipient when using a semikolon separated string with recipients.
+ * If you send several emails at once please supply an email object so that it can be re-used over and over. Especially with SMTP connections this speeds up things by 200%.
+ * If you supply an email object Do not forget to close the mail connection by calling $mail->SMTPClose();
  *
+ * @param mixed $mail This is an PHPMailer object. If null, one will be created automatically and unset afterwards. If supplied it won't be unset.
  * @param string $body Body text of the email in plain text or HTML
  * @param mixed $subject Email subject
  * @param mixed $to
@@ -4190,7 +4193,7 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
  * @param mixed $attachment
  * @return bool If successful returns true
  */
-function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null, $customheaders="")
+function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null, $customheaders="")
 {
 
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
@@ -4215,8 +4218,17 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 	{
 		$sender=$bouncemail;
 	}
+    $bUnsetEmail=false;
+    if (is_null($mail))
+    {
+        $bUnsetEmail=true;
+        $mail = new PHPMailer;
+    }
+    else
+    {
+        $mail->SMTPKeepAlive=true;
+    }
 
-	$mail = new PHPMailer;
     if (!$mail->SetLanguage($defaultlang,$rootdir.'/classes/phpmailer/language/'))
     {
         $mail->SetLanguage('en',$rootdir.'/classes/phpmailer/language/');
@@ -4326,6 +4338,10 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         ob_end_clean();
     }
     $maildebugbody=$mail->Body;
+    if ($bUnsetEmail)
+    {
+        unset($mail);
+    }
 	return $sent;
 }
 

@@ -75,7 +75,7 @@ if (!isset($_SESSION['loginID']))
                 $from = $siteadminemail;
                 $sitename = $siteadminname;
 
-                if(SendEmailMessage($body, $subject, $to, $from, $sitename, false,$siteadminbounce))
+                if(SendEmailMessage(null, $body, $subject, $to, $from, $sitename, false,$siteadminbounce))
                 {
                     $query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hashing($new_pass)."' WHERE uid={$fields['uid']}";
                     $connect->Execute($query); //Checked
@@ -190,7 +190,7 @@ if (!isset($_SESSION['loginID']))
                         }
                         else
                         {
-                            
+
                             if ( $fields['lang']=='auto' && isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) )
                             {
                                 $browlang=strtolower( $_SERVER["HTTP_ACCEPT_LANGUAGE"] );
@@ -211,7 +211,7 @@ if (!isset($_SESSION['loginID']))
                             else
                             {
                                 $_SESSION['adminlang'] = $fields['lang'];
-                            }                            
+                            }
                             $clang = new limesurvey_lang($_SESSION['adminlang']);
                         }
                         $login = true;
@@ -430,7 +430,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
     elseif($valid_email)
     {
         $new_pass = createPassword();
-        $uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label) 
+        $uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label)
                    VALUES ('".db_quote($new_user)."', '".SHA256::hashing($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, 'auto', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
         $uresult = $connect->Execute($uquery); //Checked
 
@@ -478,7 +478,7 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
             $to = $new_user." <$new_email>";
             $from = $siteadminname." <$siteadminemail>";
             $addsummary .="<div class='messagebox ui-corner-all'>";
-            if(SendEmailMessage($body, $subject, $to, $from, $sitename, true, $siteadminbounce))
+            if(SendEmailMessage(null, $body, $subject, $to, $from, $sitename, true, $siteadminbounce))
             {
                 $addsummary .= "<br />".$clang->gT("Username").": $new_user<br />".$clang->gT("Email").": $new_email<br />";
                 $addsummary .= "<br />".$clang->gT("An email with a generated password was sent to the user.");

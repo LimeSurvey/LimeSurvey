@@ -389,7 +389,7 @@ function savedcontrol()
 
                 if ($clienttoken){$message.="&token=".$clienttoken;}
                 $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
+                if (SendEmailMessage(null, $message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
                 {
                     $emailsent="Y";
                 }
@@ -434,7 +434,7 @@ function savedsilent()
     {
         $message .= "\n\n$publicurl/index.php?lang=$language&sid=$surveyid&token=$clienttoken";
     };
-    if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
+    if (SendEmailMessage(null, $message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
     {
         $emailsent="Y";
     }
