@@ -3804,9 +3804,8 @@ function do_file_upload($ia)
 
     $answer .= "<div id='".$ia[1]."_uploadedfiles'></div>";
 
-    //$answer .= '<br />Trouble uploading files? Try the <a href="#" onclick="showBasic()">Simple Uploader</a><div id="basic">'.$basic.'</div>';
-
     $answer .= '<script type="text/javascript">
+                    var surveyid = '.$surveyid.';
                     $(document).ready(function(){
                         var fieldname = "'.$ia[1].'";
                         var filecount = $("#"+fieldname+"_filecount").val();

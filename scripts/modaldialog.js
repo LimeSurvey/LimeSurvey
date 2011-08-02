@@ -16,13 +16,13 @@ $(function() {
         var buttonsOpts = {};
         buttonsOpts[translt.returnTxt] = function() {
                         // Fix for the IE bug 04965
-                        var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); } 
+                        var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); }
                         if (pass) {
                             $(this).dialog('destroy');
                             $('iframe#uploader').remove();
                         }
                     };
-        
+
         var horizontalPadding = 30;
         var verticalPadding = 20;
         $('#uploader').dialog('destroy'); // destroy the old modal dialog
@@ -41,7 +41,7 @@ $(function() {
                 draggable: true,
                 closeOnEscape: false,
                 beforeclose: function() {
-                        var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); } 
+                        var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); }
                             if (pass) {
                                 $(this).dialog('destroy');
                                 $('iframe#uploader').remove();
@@ -72,7 +72,7 @@ $(function() {
                 draggable: true,
                 closeOnEscape: false,
                 beforeclose: function() {
-                    var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); } 
+                    var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); }
                     return pass;
                 },
                 overlay: {
@@ -119,7 +119,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
         $('#'+fieldname+'_uploadedfiles').html(display);
         return;
     }
-    
+
     if (jsonstring !== '')
     {
         jsonobj = eval('(' + jsonstring + ')');
@@ -136,7 +136,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
             if (pos)
             {
                 if (isValueInArray(image_extensions, jsonobj[i].ext))
-                    display += '<tr><td><img src="uploader.php?filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'" height=100px  align="center"/></td>';
+                    display += '<tr><td><img src="uploader.php?sid='+surveyid+'&amp;filegetcontents='+decodeURIComponent(jsonobj[i].filename)+'" height=100px  align="center"/></td>';
                 else
                     display += '<tr><td><img src="images/placeholder.png" height=100px  align="center"/></td>';
             }
@@ -162,7 +162,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
 function copyJSON(jsonstring, filecount, fieldname, show_title, show_comment, pos) {
     $('#'+fieldname).val(jsonstring);
     $('#'+fieldname+'_filecount').val(filecount);
-    
+
     displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show_comment, pos);
 }
 

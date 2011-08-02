@@ -507,11 +507,12 @@ function createinsertquery()
 
                         for ($i = 0; $i < count($phparray); $i++)
                         {
-                            if (!rename($tmp . $phparray[$i]->filename, $target . $phparray[$i]->filename))
-                                echo "Error Moving file to its destination";
-
-                            $_SESSION[$value] = json_encode($phparray);
+                            $sDestinationFileName='fu_'.sRandomChars(15);
+                            if (!rename($tmp . $phparray[$i]->filename, $target . $sDestinationFileName))
+                                echo "Error moving file to its destination";
+                            $phparray[$i]->filename=$sDestinationFileName;
                         }
+                        $_SESSION[$value] = json_encode($phparray);
                     }
                     $values[] = $connect->qstr($_SESSION[$value], get_magic_quotes_gpc());
                     // filename is changed from undefined to a random value

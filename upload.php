@@ -59,7 +59,7 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     $clang = new limesurvey_lang($baselang);
 
-    $randfilename = sRandomChars(15);
+    $randfilename = 'futmp_'.sRandomChars(15);
     $sTempUploadDir = $tempdir.'/upload/';
     $randfileloc = $sTempUploadDir . $randfilename;
     $filename = $_FILES['uploadfile']['name'];
@@ -105,14 +105,6 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
 
         else if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
         {
-            if (!isset($_SESSION[$fieldname]['filecount']))
-                $_SESSION[$fieldname]['filecount'] = 0;
-
-            $filecount = $_SESSION[$fieldname]['filecount'] += 1;
-            $_SESSION[$fieldname]['files'][$filecount]['name'] = rawurlencode(basename($filename));
-            $_SESSION[$fieldname]['files'][$filecount]['size'] = $size;
-            $_SESSION[$fieldname]['files'][$filecount]['ext']  = $ext;
-            $_SESSION[$fieldname]['files'][$filecount]['filename']   = $randfilename;
 
             $return = array(
                         "success"       => true,
@@ -150,19 +142,10 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
         }
         elseif (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $randfileloc))
         {
-            if (!isset($_SESSION[$fieldname]['filecount']))
-                $_SESSION[$fieldname]['filecount'] = 0;
 
-            $filecount = $_SESSION[$fieldname]['filecount'] += 1;
-
-            $_SESSION[$fieldname]['files'][$filecount]['name'] = rawurlencode(basename($filename));
-            $_SESSION[$fieldname]['files'][$filecount]['size'] = $size;
-            $_SESSION[$fieldname]['files'][$filecount]['ext']  = $ext;
-            $_SESSION[$fieldname]['files'][$filecount]['filename']   = $randfilename;
 
             $return = array(
                 "success" => true,
-                "file_index" => $filecount,
                 "size"    => $size,
                 "name"    => rawurlencode(basename($filename)),
                 "ext"     => $ext,
