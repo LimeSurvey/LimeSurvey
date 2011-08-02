@@ -1119,13 +1119,12 @@ class ExpressionManager {
                     {
                         $varInfo = $this->GetVarInfo($token[0]);
                         $jsName = $varInfo['jsName'];
+                        $displayNum = (isset($varInfo['displayNum']) ? $varInfo['displayNum'] : '');
                         $stringParts[] = "document.getElementById('" . $jsName . "').value";
                         if ($tokens[$i+1][0] == '+=')
                         {
                             // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
-                            $stringParts[] = ' = ';
-                            $stringParts[] = "(isNaN(document.getElementById('" . $jsName . "').value) ? document.getElementById('" . $jsName . "').value : (+document.getElementById('" . $jsName . "').value))\n";
-                            $stringParts[] = ' + ';
+                            $stringParts[] = " = ExprMgr_value('" . $jsName . "','" . $displayNum . "') + ";
                             ++$i;
                         }
                     }
@@ -1133,9 +1132,10 @@ class ExpressionManager {
                     {
                         $varInfo = $this->GetVarInfo($token[0]);
                         $jsName = $varInfo['jsName'];
+                        $displayNum = (isset($varInfo['displayNum']) ? $varInfo['displayNum'] : '');
                         if ($jsName != '')
                         {
-                            $stringParts[] = "(isNaN(document.getElementById('" . $jsName . "').value) ? document.getElementById('" . $jsName . "').value : (+document.getElementById('" . $jsName . "').value))\n";
+                            $stringParts[] = "ExprMgr_value('" . $jsName . "','" . $displayNum . "') ";
                         }
                         else
                         {
@@ -2309,11 +2309,12 @@ NULL~NUMBEROFQUESTIONS-=6
 NULL~'Tom'='tired'
 NULL~max()
 1|2|3|4|5~implode('|',one,two,three,four,five)
+0, 1, 3, 5~list(0,one,'',three,'',five)
 5~strlen(hi)
 I love LimeSurvey~str_replace('like','love','I like LimeSurvey')
 2~strpos('I like LimeSurvey','like')
 EOD;
-        
+
         $em = new ExpressionManager();
         $em->RegisterVarnamesUsingMerge($vars);
 

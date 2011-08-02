@@ -68,22 +68,34 @@ function ExprMgr_if(a,b,c)
     return (!!a) ? b : c;
 }
 
+/**
+ *  Returns comma separated list of non-null values
+ */
+
 function ExprMgr_list()
 {
     // takes variable number of arguments
     var result="";
+    var joiner = ', ';
+    j=1;    // keep track of how many non-null values seen
     for (i=0;i<arguments.length;++i) {
         var arg = arguments[i];
-        if (i > 0) {
-            result += ", " + arg;
-        }
-        else {
-            result += arg;
+        if (arg !== '') {
+            if (j > 1) {
+                result += joiner + arg;
+            }
+            else {
+                result += arg;
+            }
+            ++j;
         }
     }
     return result;
 }
 
+/**
+ * Returns concatenates list with first argument as the separator
+ */
 function ExprMgr_implode()
 {
     // takes variable number of arguments
@@ -137,4 +149,32 @@ function ExprMgr_bool(v)
         return true;    // fix for JavaScript native processing that considers the value "false" to be true
     }
     return false;
+}
+
+/**
+ * Return the value for data element jsName, treating it as blank if its question is irrelevant on the current page.
+ * Also convert the string 'false' to '' to cope with a JavaScript type casting issue
+ */
+function ExprMgr_value(jsName,displayNum)
+{
+    if (displayNum!='') {
+        try {
+            if (document.getElementById(displayNum).value=='') {
+                return '';  // means that the question is not being displayed, so should be irrelevant for the expression
+            }
+        }
+        catch (e) {
+            ;  // This happens when the question is asked on a different page - so fall through and use its value
+        }
+    }
+    value = document.getElementById(jsName).value;
+    if (isNaN(value)) {
+        if (value==='false') {
+            return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
+        }
+        return value;
+    }
+    else {
+        return +value;  // convert it to numeric return type
+    }
 }

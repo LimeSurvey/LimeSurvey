@@ -19,6 +19,7 @@ class LimeExpressionManager {
     private $pageRelevanceInfo;
     private $pageTailorInfo;
     private $allOnOnePage=false;    // internally set to true for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
+    private $resetFunctions;
     
     // A private constructor; prevents direct creation of object
     private function __construct() 
@@ -87,6 +88,12 @@ class LimeExpressionManager {
         $sgqaMap = array();  // mapping of SGQA to Value
         $knownVars = array();   // mapping of VarName to Value
         $debugLog = array();    // array of mappings among values to confirm their accuracy
+        /*
+        if ($this->debugLEM)
+        {
+            file_put_contents('/tmp/LimeExpressionManager_fieldmap.html', print_r($fieldmap,TRUE));
+        }
+         */
         foreach($fieldmap as $fielddata)
         {
             $code = $fielddata['fieldname'];
@@ -99,6 +106,7 @@ class LimeExpressionManager {
             $isOnCurrentPage = ($allOnOnePage || ($groupNum != NULL && $groupNum == $this->groupNum)) ? 'Y' : 'N';
 
             $questionId = $fieldNameParts[2];
+            $questionNum = $fielddata['qid'];
             $questionAttributes = getQuestionAttributes($questionId,$fielddata['type']);
             $relevance = (isset($questionAttributes['relevance'])) ? $questionAttributes['relevance'] : 1;
             switch($fielddata['type'])
@@ -234,18 +242,21 @@ class LimeExpressionManager {
                 'displayValue'=>$displayValue,
                 'question'=>$question,
                 'relevance'=>$relevance,
+                'displayNum'=>'display' . $questionNum,
                 );
             $varInfo_DisplayVal = array(
                 'codeValue'=>$displayValue,
                 'jsName'=>'',
                 'readWrite'=>'N',
                 'isOnCurrentPage'=>$isOnCurrentPage,
+                'displayNum'=>'display' . $questionNum,
                 );
             $varInfo_Question = array(
                 'codeValue'=>$question,
                 'jsName'=>'',
                 'readWrite'=>'N',
                 'isOnCurrentPage'=>$isOnCurrentPage,
+                'displayNum'=>'display' . $questionNum,
                 );
             $knownVars[$varName] = $varInfo_Code;
             $knownVars[$varName . '.shown'] = $varInfo_DisplayVal;
@@ -294,6 +305,7 @@ class LimeExpressionManager {
                     'jsName'=>'',
                     'readWrite'=>'N',
                     'isOnCurrentPage'=>'N',
+                    'displayNum'=>'',
                     );
 
                 if ($this->debugLEM)
@@ -321,6 +333,7 @@ class LimeExpressionManager {
                     'jsName'=>'',
                     'readWrite'=>'N',
                     'isOnCurrentPage'=>'N',
+                    'displayNum'=>'',
                     );
             $knownVars['TOKEN:FIRSTNAME'] = $blankVal;
             $knownVars['TOKEN:LASTNAME'] = $blankVal;
@@ -450,6 +463,7 @@ class LimeExpressionManager {
         $lem = LimeExpressionManager::singleton();
         $lem->pageRelevanceInfo=array();
         $lem->pageTailorInfo=array();
+        $lem->resetFunctions=array();
         $lem->allOnOnePage=$allOnOnePage;
 
         if ($debug && $lem->debugLEM)
@@ -566,19 +580,21 @@ class LimeExpressionManager {
                 $jsParts[] = "\n)\n{\n";
                 // Do all tailoring
                 $jsParts[] = implode("\n",$tailorParts);
-                $jsParts[] = "\n// Show Question " . $arg['qid'] . "\n";
-                $jsParts[] = "  document.getElementById('question" . $arg['qid'] . "').style.display='';\n";
+                $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
                 $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
                 $jsParts[] = "}\nelse {\n";
-                $jsParts[] = "\n// Hide Question " . $arg['qid'] . ", and blank out its stored value\n";
-                // Which variable needs to be blanked?
-                if ($jsResultVar != '')
-                {
-                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value='';\n";
-                }
-                $jsParts[] = "  document.getElementById('question" . $arg['qid'] . "').style.display='none';\n";
+                $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                 $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
-                // Blank out value for question
+                // Which variable needs to be blanked?  Depends on the type of question
+                if (isset($lem->resetFunctions[$arg['qid']]))
+                {
+                    $jsParts[] = "  reset_question_" . $arg['qid'] . "();\n";
+                }
+                else
+                {
+                    // Function hasn't been defined yet
+//                    $jsParts[] = "  try { reset_question_" . $arg['qid'] . "(); } catch (e) { }\n";
+                }
                 $jsParts[] = "}\n";
 
                 $vars = explode('|',$arg['relevanceVars']);
@@ -589,6 +605,12 @@ class LimeExpressionManager {
             }
         }
         $jsParts[] = "}\n";
+
+        foreach($lem->resetFunctions as $resetFn)
+        {
+            $jsParts[] = $resetFn;
+        }
+
         $jsParts[] = "//-->\n</script>\n";
 
         // Now figure out which variables have not been declared (those not on the current page)
@@ -621,6 +643,13 @@ class LimeExpressionManager {
         }
         
         return implode('',$jsParts);
+    }
+
+    static function SetResetFunction($questionNum, $functionContents)
+    {
+        $lem = LimeExpressionManager::singleton();
+        $fn = "function reset_question_" . $questionNum . "() {\n" . $functionContents . "\n}\n";
+        $lem->resetFunctions[$questionNum] = $fn;
     }
 
     /**
@@ -739,10 +768,11 @@ EOT;
         $argInfo = array();
 
         // collect variables
+        $i=0;
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
-            $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y');
+            $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'displayNum'=>'display' . $i++);
             $varSeq[] = $args[0];
             $testArgs[] = $args;
         }
@@ -778,7 +808,7 @@ EOT;
         print "<table border='1'><tr><td>";
         foreach ($argInfo as $arg)
         {
-            print "<input type='hidden' id='display" . $arg['num'] . "' value=''/>\n";
+            print "<input type='hidden' id='display" . $arg['num'] . "' value='on'/>\n";    // set all as  On by default - relevance processing will blank them as needed
             print "<div id='question" . $arg['num'] . "'>\n";
             if ($arg['type'] == 'expr')
             {
@@ -787,7 +817,7 @@ EOT;
                 print "<input type='hidden' name='" . $arg['name'] . "' id='" . $arg['name'] . "' value=''/></div>\n";
             }
             else {
-                print "<table border='1' width='100%'><tr><td>[Q" . $arg['num'] . "] " . $arg['question'] . "</td>";
+                print "<table border='1' width='100%'>\n<tr>\n<td>[Q" . $arg['num'] . "] " . $arg['question'] . "</td>\n";
                 switch($arg['type'])
                 {
                     case 'yesno':
@@ -798,8 +828,18 @@ EOT;
                         print "<input type='hidden' name='" . $arg['name'] . "' id='" . $arg['name'] . "' value=''/>\n";
                         break;
                 }
-                print "</tr></table></div>\n";
+                print "</tr>\n</table>\n";
             }
+            /*
+            // Placeholder for function to explicitly reset the GUI widget and NULL the stored value
+            print "<script type='text/javascript'>\n<!--\n";
+            print "function reset_question_" . $arg['num'] . "() {\n";
+            print "\tdocument.getElementById('" . $arg['name'] . "').value='';\n";
+            print "\tdocument.getElementByid('display" . $arg['num'] . "').value='on';\n";
+            print "}\n";
+            print "// -->\n</script>\n";
+             */
+            print "</div>\n";
         }
         print "</table>";
     }

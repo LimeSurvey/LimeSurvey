@@ -9,6 +9,7 @@ and open the template in the editor.
         <title>ExpressionManager:  Unit Test Relevance</title>
     </head>
 <script type="text/javascript" src="ExpressionManager_CoreJSFunctions.js"></script>
+<script type="text/javascript" src="../../scripts/jquery/jquery.js"></script>
     <body onload="ExprMgr_process_relevance_and_tailoring();">
         <?php
             include 'LimeExpressionManager.php';

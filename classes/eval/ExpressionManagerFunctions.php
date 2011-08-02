@@ -52,7 +52,21 @@ function exprmgr_if($test,$ok,$error)
 
 function exprmgr_list($args)
 {
-    return implode(", ",$args);
+    $result="";
+    $j=1;    // keep track of how many non-null values seen
+    foreach ($args as $arg)
+    {
+        if ($arg != '') {
+            if ($j > 1) {
+                $result .= ', ' . $arg;
+            }
+            else {
+                $result .= $arg;
+            }
+            ++$j;
+        }
+    }
+    return $result;
 }
 
 function exprmgr_implode($args)
