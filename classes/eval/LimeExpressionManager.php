@@ -438,7 +438,7 @@ class LimeExpressionManager {
      * @param <type> $eqn
      * @return <type>
      */
-    static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL)
+    static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
     {
         // These will be called in the order that questions are supposed to be asked
         $lem = LimeExpressionManager::singleton();
@@ -452,6 +452,8 @@ class LimeExpressionManager {
                 'relevancejs' => '',
                 'relevanceVars' => '',
                 'jsResultVar'=> $jsResultVar,
+                'type'=>$type,
+                'hidden'=>$hidden,
             );
             return true;
         }
@@ -459,7 +461,7 @@ class LimeExpressionManager {
         $result = $em->ProcessBooleanExpression(htmlspecialchars_decode($eqn));
         $jsVars = $em->GetJSVarsUsed();
         $relevanceVars = implode('|',$em->GetJSVarsUsed());
-        $relevanceJS = $lem->em->GetJavaScriptEquivalentOfExpression(); // if '', treat as true
+        $relevanceJS = $lem->em->GetJavaScriptEquivalentOfExpression();
         $lem->groupRelevanceInfo[] = array(
             'qid' => $questionNum,
             'eqn' => $eqn,
@@ -468,6 +470,8 @@ class LimeExpressionManager {
             'relevancejs' => $relevanceJS,
             'relevanceVars' => $relevanceVars,
             'jsResultVar' => $jsResultVar,
+            'type'=>$type,
+            'hidden'=>$hidden,
         );
         return $result;
     }
@@ -600,8 +604,22 @@ class LimeExpressionManager {
                 $jsParts[] = "\n)\n{\n";
                 // Do all tailoring
                 $jsParts[] = implode("\n",$tailorParts);
-                $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
-                $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
+                if ($arg['hidden'] == 1) {
+                    $jsParts[] = "  // This question should always be hidden\n";
+                    $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
+                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
+                }
+                else {
+                    $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
+                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
+                }
+                // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
+                if ($arg['type'] == '*')
+                {
+                    $jsParts[] = "  // Write value from the question into the answer field\n";
+                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(ExprMgr_strip_tags($('#question" . $arg['qid'] . " .questiontext').html())));\n";
+
+                }
                 $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
                 $jsParts[] = "}\nelse {\n";
                 $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";

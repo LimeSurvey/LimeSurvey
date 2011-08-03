@@ -173,3 +173,13 @@ function ExprMgr_value(jsName,relevanceNum)
         return +value;  // convert it to numeric return type
     }
 }
+
+/* 
+ * Remove HTML and PHP tags from string
+ */
+function ExprMgr_strip_tags(htmlString)
+{
+   var tmp = document.createElement("DIV");
+   tmp.innerHTML = htmlString;
+   return tmp.textContent||tmp.innerText;
+}

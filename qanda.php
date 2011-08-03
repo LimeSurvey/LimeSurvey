@@ -1629,14 +1629,7 @@ function do_boilerplate($ia)
 
 function do_equation($ia)
 {
-    global $js_header_includes;
-    $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
-    $answer='<input type="hidden" name="'.$ia[1].'" id="answer'.$ia[1].'" value="';
-    // Initallly just process values through LimeExpressionManager (e.g. templatereplace())
-    // Later, output a JavaScript function that will compute these on the fly
-    $result = templatereplace($ia[3]);
-    $answer .= htmlspecialchars($result, ENT_QUOTES);   // answer should store Equation value
-    $answer .= '" />';
+    $answer='<input type="hidden" name="'.$ia[1].'" id="java'.$ia[1].'" value=""/>';
     $inputnames[]=$ia[1];
     $mandatory=null;
 
@@ -1674,12 +1667,12 @@ function do_5pointchoice($ia)
 
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
-        $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"NoAnswer\" value=\"\"";
+        $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"$ia[1]NANS\" value=\"\"";
         if (!$_SESSION[$ia[1]])
         {
             $answer .= CHECKED;
         }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"NoAnswer\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"$ia[1]NANS\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
 
     }
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";

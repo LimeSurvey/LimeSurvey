@@ -225,7 +225,7 @@ class ExpressionManager {
             'strcmp'		=>array('strcmp','NA','Binary safe string comparison',2),
             'strcoll'		=>array('strcoll','NA','Locale based string comparison',2),
             'strcspn'		=>array('strcspn','NA','Find length of initial segment not matching mask',2,3,4),
-            'strip_tags'	=>array('strip_tags','NA','Strip HTML and PHP tags from a string',1,2),
+            'strip_tags'	=>array('strip_tags','ExprMgr_strip_tags','Strip HTML and PHP tags from a string',1,2),
             'stripcslashes'	=>array('stripcslashes','NA','Un-quote string quoted with addcslashes',1),
             'stripos'		=>array('stripos','NA','Find position of first occurrence of a case-insensitive string',2,3),
             'stripslashes'	=>array('stripslashes','NA','Un-quotes a quoted string',1),
@@ -2326,6 +2326,9 @@ NULL~max()
 5~strlen(hi)
 I love LimeSurvey~str_replace('like','love','I like LimeSurvey')
 2~strpos('I like LimeSurvey','like')
+Hi there!~d='<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>'
+Hi there!~c=strip_tags(d)
+Hi there!~c
 EOD;
 
         $em = new ExpressionManager();

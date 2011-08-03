@@ -1273,8 +1273,9 @@ if (isset($qanda) && is_array($qanda))
         if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
         // Hide Equations of attribute set to always hide them, yet unlike other questions, do include the answer fields.
         $eqnAttributes = getQuestionAttributes($qa[4], $qa[8]);
+        $hidden = (isset($eqnAttributes['hidden']) ? $eqnAttributes['hidden'] : 0);
         // Want to make the question invisible and have save.php blank out the value if it is irrelevant
-        if (!LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance'],$qa[4],$qa[5]))
+        if (!LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance'],$qa[4],$qa[5],$qa[8],$hidden))
         {
             $n_q_display = ' style="display: none;"';;
         }        
