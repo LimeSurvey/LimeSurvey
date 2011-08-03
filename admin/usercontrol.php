@@ -859,7 +859,7 @@ function getInitialAdmin_uid()
 
 function fGetLoginAttemptUpdateQry($la,$sIp)
 {
-    $timestamp = date("Y-m-d H:m:s");
+    $timestamp = date("Y-m-d H:i:s");
     if ($la)
         $query = "UPDATE ".db_table_name('failed_login_attempts')
                  ." SET number_attempts=number_attempts+1, last_attempt = '$timestamp' WHERE ip='$sIp'";
