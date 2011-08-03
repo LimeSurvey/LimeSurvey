@@ -77,6 +77,14 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.91+ (build 10604) to 1.91+ (build )
+-Fixed issue: sanitize_token should be used to sanitize tokens, not sanitize_xss_string (jcleeland)
+-Fixed issue #05156: Insert picture not possible in email templates (lemeur)
+-Fixed issue #5357: Assessment rules lost on import when using MSSQL server (c_schmitz)
+-Fixed issue #5367 : Unable to import old survey with Array dual scale question ( thanks c_schmitz ) (shnoulle)
+-Fixed issue #5371: File was no properly deleted/shown when submitting page and coming back later (c_schmitz)
+-Fixed issue: Optimized SMTP connections so they are re-used instead of opening one connection for each email send (c_schmitz)
+
 Changes from 1.91+ (build 10563) to 1.91+ (build 10604)
 #Updated translation: French (b00z00)
 #Updated translation: Polish (elisa-ls)
