@@ -88,6 +88,27 @@ if (isset($_POST['timerquestion']))
 {
     $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
 }
+//CHECK FOR RELEVANCE RESULTS
+$aIrrelevant = array();
+$aRelevance = array();
+foreach ($_POST as $key=>$value) {
+    if (preg_match('/^relevance\d+$/',$key)) {
+        $aRelevance[substr($key,9)] = $value;
+        if ($value!='1') {
+            if (isset($_POST[$key . 'codes'])) {
+                $aIrrelevant = array_merge($aIrrelevant,explode('|',$_POST[$key . 'codes']));
+            }
+        }
+    }
+}
+$_SESSION['irrelevantCodes'] = array_unique($aIrrelevant);
+if (!isset($_SESSION['relevanceStatus'])) {
+    $_SESSION['relevanceStatus'] = array();
+}
+foreach ($aRelevance as $key=>$value)
+{
+    $_SESSION['relevanceStatus'][$key] = $value;
+}
 
 //Check to see if we should set a submitdate or not
 // this depends on the move, and on quesitons checks
@@ -464,6 +485,10 @@ function createinsertquery()
         $inserts=array_unique($_SESSION['insertarray']);
 
         $colnames_hidden=Array();
+        // Add irrelevant columns to list of hidden fields
+        if (isset($_SESSION['irrelevantCodes'])) {
+            $colnames_hidden = array_merge($colnames_hidden,$_SESSION['irrelevantCodes']);
+        }
         foreach ($inserts as $value)
         {
             //Work out if the field actually exists in this survey
@@ -479,8 +504,6 @@ function createinsertquery()
                 // morover, doing this only once reduces the perfomance impact
                 // Never blank out result for Equation question type, even though it is hidden
 
-                // TODO (TMW)  Do Relevance processing here?
-                // TODO (TMW)  Store Relevance result in $_SESSION so don't have to compute it in multiple places?
                 if ($move == "movesubmit" && $deletenonvalues==1 && $fieldexists['type']!='*' && !checkconfield($value))
                 {
                     $values[]='NULL';

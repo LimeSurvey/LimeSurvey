@@ -511,7 +511,20 @@ class ExpressionManager {
                     if ($this->isValidVariable($token[0]))
                     {
                         $this->varsUsed[] = $token[0];  // add this variable to list of those used in this equation
-                        $result = array($this->amVars[$token[0]]['codeValue'],$token[1],'NUMBER');
+                        if (isset($this->amVars[$token[0]]['relevanceStatus'])) {
+                            $relStatus = $this->amVars[$token[0]]['relevanceStatus'];
+                        }
+                        else {
+                            $relStatus = 1;   // default
+                        }
+                        if ($relStatus==1)
+                        {
+                            $result = array($this->amVars[$token[0]]['codeValue'],$token[1],'NUMBER');
+                        }
+                        else
+                        {
+                            $result = array(0,$token[1],'NUMBER');
+                        }
                         $this->StackPush($result);
                         return true;
                     }
@@ -1119,12 +1132,12 @@ class ExpressionManager {
                     {
                         $varInfo = $this->GetVarInfo($token[0]);
                         $jsName = $varInfo['jsName'];
-                        $displayNum = (isset($varInfo['displayNum']) ? $varInfo['displayNum'] : '');
+                        $relevanceNum = (isset($varInfo['relevanceNum']) ? $varInfo['relevanceNum'] : '');
                         $stringParts[] = "document.getElementById('" . $jsName . "').value";
                         if ($tokens[$i+1][0] == '+=')
                         {
                             // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
-                            $stringParts[] = " = ExprMgr_value('" . $jsName . "','" . $displayNum . "') + ";
+                            $stringParts[] = " = ExprMgr_value('" . $jsName . "','" . $relevanceNum . "') + ";
                             ++$i;
                         }
                     }
@@ -1132,10 +1145,10 @@ class ExpressionManager {
                     {
                         $varInfo = $this->GetVarInfo($token[0]);
                         $jsName = $varInfo['jsName'];
-                        $displayNum = (isset($varInfo['displayNum']) ? $varInfo['displayNum'] : '');
+                        $relevanceNum = (isset($varInfo['relevanceNum']) ? $varInfo['relevanceNum'] : '');
                         if ($jsName != '')
                         {
-                            $stringParts[] = "ExprMgr_value('" . $jsName . "','" . $displayNum . "') ";
+                            $stringParts[] = "ExprMgr_value('" . $jsName . "','" . $relevanceNum . "') ";
                         }
                         else
                         {

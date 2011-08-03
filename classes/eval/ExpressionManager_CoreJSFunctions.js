@@ -155,16 +155,11 @@ function ExprMgr_bool(v)
  * Return the value for data element jsName, treating it as blank if its question is irrelevant on the current page.
  * Also convert the string 'false' to '' to cope with a JavaScript type casting issue
  */
-function ExprMgr_value(jsName,displayNum)
+function ExprMgr_value(jsName,relevanceNum)
 {
-    if (displayNum!='') {
-        try {
-            if (document.getElementById(displayNum).value=='') {
-                return '';  // means that the question is not being displayed, so should be irrelevant for the expression
-            }
-        }
-        catch (e) {
-            ;  // This happens when the question is asked on a different page - so fall through and use its value
+    if (relevanceNum!='') {
+        if (document.getElementById(relevanceNum).value!=='1') {
+            return '';  // means that the question is not relevant
         }
     }
     value = document.getElementById(jsName).value;

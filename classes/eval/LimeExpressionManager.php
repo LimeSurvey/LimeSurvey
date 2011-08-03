@@ -20,6 +20,8 @@ class LimeExpressionManager {
     private $pageTailorInfo;
     private $allOnOnePage=false;    // internally set to true for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
     private $resetFunctions;
+    private $qid2code;  // array of mappings of Question # to list of SGQA codes used within it
+    private $jsVar2qid; // reverse mapping of JavaScript Variable name to Question
     
     // A private constructor; prevents direct creation of object
     private function __construct() 
@@ -41,25 +43,6 @@ class LimeExpressionManager {
     public function __clone()
     {
         trigger_error('Clone is not allowed.', E_USER_ERROR);
-    }
-
-    /**
-     * Return the dynamic function for making the current question visible or invisible
-     */
-    public function GetJavaScriptFunctionForRelevance($questionNum, $eqn)
-    {
-        $jsParts = array();
-        $jsParts[] = "\n// Process Relevance for Question " . $questionNum . ": { " . $eqn . " }\n";
-        $jsParts[] = "if (\n";
-        $jsParts[] = $this->em->GetJavaScriptEquivalentOfExpression();
-        $jsParts[] = "\n)\n{\n";
-        $jsParts[] = "document.getElementById('question" . $questionNum . "').style.display='';\n";
-        $jsParts[] = "document.getElementById('display" . $questionNum . "').value='on';\n";
-        $jsParts[] = "}\n else {\n";
-        $jsParts[] = "document.getElementById('question" . $questionNum . "').style.display='none';\n";
-        $jsParts[] = "document.getElementById('display" . $questionNum . "').value='';\n";
-        $jsParts[] = "}\n";
-        return implode('',$jsParts);
     }
 
     /**
@@ -88,6 +71,8 @@ class LimeExpressionManager {
         $sgqaMap = array();  // mapping of SGQA to Value
         $knownVars = array();   // mapping of VarName to Value
         $debugLog = array();    // array of mappings among values to confirm their accuracy
+        $qid2code = array();    // List of codes for each question - needed to know which to NULL if a question is irrelevant
+        $jsVar2qid = array();
         /*
         if ($this->debugLEM)
         {
@@ -109,6 +94,27 @@ class LimeExpressionManager {
             $questionNum = $fielddata['qid'];
             $questionAttributes = getQuestionAttributes($questionId,$fielddata['type']);
             $relevance = (isset($questionAttributes['relevance'])) ? $questionAttributes['relevance'] : 1;
+
+            // Create list of codes associated with each question
+            $codeList = (isset($qid2code[$questionNum]) ? $qid2code[$questionNum] : '');
+            if ($codeList == '')
+            {
+                $codeList = $code;
+            }
+            else
+            {
+                $codeList .= '|' . $code;
+            }
+            $qid2code[$questionNum] = $codeList;
+
+            // Check off-page relevance status
+            if (isset($_SESSION['relevanceStatus'])) {
+                $relStatus = (isset($_SESSION['relevanceStatus'][$questionId]) ? $_SESSION['relevanceStatus'][$questionId] : 1);
+            }
+            else {
+                $relStatus = 1;
+            }
+
             switch($fielddata['type'])
             {
                 case '!': //List - dropdown
@@ -242,26 +248,31 @@ class LimeExpressionManager {
                 'displayValue'=>$displayValue,
                 'question'=>$question,
                 'relevance'=>$relevance,
-                'displayNum'=>'display' . $questionNum,
+                'relevanceNum'=>'relevance' . $questionNum,
+                'relevanceStatus'=>$relStatus,
                 );
             $varInfo_DisplayVal = array(
                 'codeValue'=>$displayValue,
                 'jsName'=>'',
                 'readWrite'=>'N',
                 'isOnCurrentPage'=>$isOnCurrentPage,
-                'displayNum'=>'display' . $questionNum,
+                'relevanceNum'=>'relevance' . $questionNum,
+                'relevanceStatus'=>$relStatus,
                 );
             $varInfo_Question = array(
                 'codeValue'=>$question,
                 'jsName'=>'',
                 'readWrite'=>'N',
                 'isOnCurrentPage'=>$isOnCurrentPage,
-                'displayNum'=>'display' . $questionNum,
+                'relevanceNum'=>'relevance' . $questionNum,
+                'relevanceStatus'=>$relStatus,
                 );
             $knownVars[$varName] = $varInfo_Code;
             $knownVars[$varName . '.shown'] = $varInfo_DisplayVal;
             $knownVars[$varName . '.question']= $varInfo_Question;
             $knownVars['INSERTANS:' . $code] = $varInfo_DisplayVal;
+
+            $jsVar2qid[$jsVarName] = $questionNum;
 
             if ($this->debugLEM)
             {
@@ -305,7 +316,8 @@ class LimeExpressionManager {
                     'jsName'=>'',
                     'readWrite'=>'N',
                     'isOnCurrentPage'=>'N',
-                    'displayNum'=>'',
+                    'relevanceNum'=>'',
+                    'relevanceStatus'=>'1',
                     );
 
                 if ($this->debugLEM)
@@ -333,7 +345,8 @@ class LimeExpressionManager {
                     'jsName'=>'',
                     'readWrite'=>'N',
                     'isOnCurrentPage'=>'N',
-                    'displayNum'=>'',
+                    'relevanceNum'=>'',
+                    'relevanceStatus'=>'1',
                     );
             $knownVars['TOKEN:FIRSTNAME'] = $blankVal;
             $knownVars['TOKEN:LASTNAME'] = $blankVal;
@@ -368,6 +381,8 @@ class LimeExpressionManager {
         }
         
         $this->knownVars = $knownVars;
+        $this->qid2code = $qid2code;
+        $this->jsVar2qid = $jsVar2qid;
 
         return true;
     }
@@ -445,7 +460,6 @@ class LimeExpressionManager {
         $jsVars = $em->GetJSVarsUsed();
         $relevanceVars = implode('|',$em->GetJSVarsUsed());
         $relevanceJS = $lem->em->GetJavaScriptEquivalentOfExpression(); // if '', treat as true
-//        $relevanceJS = $lem->GetJavaScriptFunctionForRelevance($questionNum,$eqn);
         $lem->groupRelevanceInfo[] = array(
             'qid' => $questionNum,
             'eqn' => $eqn,
@@ -483,6 +497,8 @@ class LimeExpressionManager {
         if (!is_null($groupNum))
         {
             $lem->groupNum = $groupNum;
+            $lem->qid2code = array();   // List of codes for each question - needed to know which to NULL if a question is irrelevant
+            $lem->jsVar2qid = array();
 
             if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager(true,$anonymized,$lem->allOnOnePage))
             {
@@ -529,6 +545,8 @@ class LimeExpressionManager {
         // flatten relevance array, keeping proper order
 
         $pageRelevanceInfo=array();
+        $qidList = array(); // list of questions used in relevance and tailoring
+
         if (is_array($lem->pageRelevanceInfo))
         {
             foreach($lem->pageRelevanceInfo as $prel)
@@ -565,11 +583,13 @@ class LimeExpressionManager {
                         }
                     }
                 }
+                $qidList[$arg['qid']] = $arg['qid'];
 
                 $relevance = $arg['relevancejs'];
                 if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0)
                 {
                     // Only show constitutively true relevances if there is tailoring that should be done.
+                    $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
                     continue;
                 }
                 $relevance = ($relevance == '') ? '1' : $relevance;
@@ -582,9 +602,11 @@ class LimeExpressionManager {
                 $jsParts[] = implode("\n",$tailorParts);
                 $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
                 $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
+                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
                 $jsParts[] = "}\nelse {\n";
                 $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                 $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
+                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
                 // Which variable needs to be blanked?  Depends on the type of question
                 if (isset($lem->resetFunctions[$arg['qid']]))
                 {
@@ -629,6 +651,10 @@ class LimeExpressionManager {
                         {
                             $undeclaredJsVars[] = $jsVar;
                             $undeclaredVal[$jsVar] = $knownVar['codeValue'];
+
+                            if (isset($lem->jsVar2qid[$jsVar])) {
+                                $qidList[$lem->jsVar2qid[$jsVar]] = $lem->jsVar2qid[$jsVar];
+                            }
                             break;
                         }
                     }
@@ -639,6 +665,21 @@ class LimeExpressionManager {
             {
                 // TODO - is different type needed for text?  Or process value to striphtml?
                 $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar . "' value='" . htmlspecialchars($undeclaredVal[$jsVar]) . "'/>\n";
+            }
+        }
+        sort($qidList,SORT_NUMERIC);
+        foreach ($qidList as $qid)
+        {
+            if (isset($_SESSION['relevanceStatus'])) {
+                $relStatus = (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 1);
+            }
+            else {
+                $relStatus = 1;
+            }
+            $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid . "' value='" . $relStatus . "'/>\n";
+            if (isset($lem->qid2code[$qid]))
+            {
+                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' name='relevance" . $qid . "codes' value='" . $lem->qid2code[$qid] . "'/>\n";
             }
         }
         
@@ -772,7 +813,7 @@ EOT;
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
-            $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'displayNum'=>'display' . $i++);
+            $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'relevanceNum'=>'relevance' . $i++, 'relevanceStatus'=>'1');
             $varSeq[] = $args[0];
             $testArgs[] = $args;
         }
@@ -809,6 +850,7 @@ EOT;
         foreach ($argInfo as $arg)
         {
             print "<input type='hidden' id='display" . $arg['num'] . "' value='on'/>\n";    // set all as  On by default - relevance processing will blank them as needed
+            print "<input type='hidden' id='relevance" . $arg['num'] . "' value='1'/>\n";    // set all as  On by default - relevance processing will blank them as needed
             print "<div id='question" . $arg['num'] . "'>\n";
             if ($arg['type'] == 'expr')
             {
