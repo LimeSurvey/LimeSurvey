@@ -273,7 +273,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
             . "onclick=\"if (confirm('" . $clang->gT("Are you sure you want to clear all your responses?", 'js') . "')) {window.open('{$publicurl}/index.php?sid=$surveyid&amp;move=clearall&amp;lang=" . $_s_lang;
         if (returnglobal('token'))
         {
-        $_clearall .= "&amp;token=" . urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
+        $_clearall .= "&amp;token=" . urlencode(trim(sanitize_token(strip_tags(returnglobal('token')))));
         }
         $_clearall .= "', '_self')}\" />";
 
@@ -622,7 +622,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
  * Takes array mappings of key=>value and replaces all occurances of {key} with value in $line
  * @param <type> $line
  * @param <type> $doTheseReplacements
- * @return <type> 
+ * @return <type>
  */
 
 function doReplacements($line, $doTheseReplacements)
@@ -690,7 +690,7 @@ function PassthruReplace($line, $thissurvey)
 {
     $line=str_replace("{PASSTHRULABEL}", $thissurvey['passthrulabel'], $line);
     $line=str_replace("{PASSTHRUVALUE}", $thissurvey['passthruvalue'], $line);
-    
+
     if (!isset($_SESSION['ls_initialquerystr'])) return $line;
     //  Replacement for variable passthru argument like {PASSTHRU:myarg}
     while (strpos($line,"{PASSTHRU:") !== false)
