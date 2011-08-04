@@ -3945,6 +3945,19 @@ function CategorySort($a, $b)
     return $result;
 }
 
+if (!function_exists('get_magic_quotes_gpc')) {
+    /**
+     * Gets the current configuration setting of magic_quotes_gpc
+     * NOTE: Compat variant for PHP 6+ versions
+     * 
+     * @link http://www.php.net/manual/en/function.get-magic-quotes-gpc.php
+     * @return int 0 if magic_quotes_gpc is off, 1 otherwise.
+     */
+    function get_magic_quotes_gpc() {
+        return 0;
+    }
+}
+
 // make sure the given string (which comes from a POST or GET variable)
 // is safe to use in MySQL.  This does nothing if gpc_magic_quotes is on.
 function auto_escape($str) {
@@ -3960,8 +3973,9 @@ function auto_escape($str) {
 // a SQL query.
 function auto_unescape($str) {
     if (!isset($str)) {return null;};
-    if (!get_magic_quotes_gpc())
-    return $str;
+    if (!get_magic_quotes_gpc()) {
+        return $str;
+    }
     return stripslashes($str);
 }
 // make a string safe to include in an HTML 'value' attribute.
