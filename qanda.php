@@ -1768,7 +1768,6 @@ function do_date($ia)
 {
     global $clang, $js_header_includes, $css_header_includes, $thissurvey;
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
-    $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
     $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
 
 
@@ -3781,14 +3780,13 @@ function do_file_upload($ia)
         $scriptloc = 'uploader.php';
     }
 
-    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='$scriptloc?sid=$surveyid&fieldname=".$ia[1]."&qid=".$ia[0]."&preview="
-    .$questgrppreview."&show_title=".$qidattributes['show_title']."&show_comment="
-    .$qidattributes['show_comment']."&pos=".($pos?1:0)."'>" . $clang->gT('Upload files') . "</a></h2><br /><br />";
+    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}?sid={$surveyid}&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}&amp;preview="
+    ."{$questgrppreview}&amp;show_title={$qidattributes['show_title']}&amp;show_comment={$qidattributes['show_comment']}&amp;pos=".($pos?1:0)."'>" .$clang->gT('Upload files'). "</a></h2><br /><br />";
 
     $answer = "<script type='text/javascript'>
         var translt = {
              title: '" . $clang->gT('Upload your files') . "',
-             returnTxt: '" . $clang->gT('Return to Survey') . "'
+             returnTxt: '" . $clang->gT('Return to survey') . "'
             };
     </script>\n";
     if ($pos)
@@ -3820,9 +3818,8 @@ function do_file_upload($ia)
 
     $answer .= "<div id='".$ia[1]."_uploadedfiles'></div>";
 
-    //$answer .= '<br />Trouble uploading files? Try the <a href="#" onclick="showBasic()">Simple Uploader</a><div id="basic">'.$basic.'</div>';
-
     $answer .= '<script type="text/javascript">
+                    var surveyid = '.$surveyid.';
                     $(document).ready(function(){
                         var fieldname = "'.$ia[1].'";
                         var filecount = $("#"+fieldname+"_filecount").val();
@@ -4363,7 +4360,6 @@ function do_multiplenumeric($ia)
                     $slider_showmax='';
                 }
 
-                $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
                 $js_header_includes[] = '/scripts/jquery/lime-slider.js';
 
                 if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')

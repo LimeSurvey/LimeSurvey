@@ -33,7 +33,7 @@ if (($ugid && !$surveyid) || $action == "editusergroups" || $action == "adduserg
         $grpquery = "SELECT gp.* FROM ".db_table_name('user_groups')." AS gp, ".db_table_name('user_in_groups')." AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=".$_SESSION['loginID'];
         $grpresult = db_execute_assoc($grpquery);//Checked
         $grpresultcount = $grpresult->RecordCount();
-        if ($grpresultcount>0) 
+        if ($grpresultcount>0)
         {
         $grow = array_map('htmlspecialchars', $grpresult->FetchRow());
     }
@@ -152,7 +152,7 @@ if ($action == "setusertemplates")
             ."<br /><input type='checkbox' alt='".$clang->gT("Check or uncheck all items")."' class='tipme' id='checkall' />"
             ."</th>\n\t</tr>\n"
             ."\t</thead>\n";
-			
+
             $usersummary .= "<tfoot>\n"
             ."<tr>\n"
             ."<td colspan=\"3\">\n"
@@ -162,7 +162,7 @@ if ($action == "setusertemplates")
             ."</td>\n"
             ."</tr>\n"
             ."</tfoot>\n";
-			
+
 			$usersummary .= "<tbody>\n";
 
             $tquery = "SELECT * FROM ".$dbprefix."templates";
@@ -305,7 +305,7 @@ if ($action == "setuserrights")
                 $row=$adminresult->FetchRow();
 
                 $usersummary .="<tr>\n";
-                 
+
                 // Only Initial SuperAdmin can give SuperAdmin rights
                 if($row['uid'] == $_SESSION['loginID'])
                 { // RENAMED AS SUPERADMIN
@@ -581,7 +581,7 @@ if ($action == "editusers")
         $userlist = array();
         $srow = $uresult->FetchRow();
         $usr['parent'] = $srow['users_name'];
-         
+
         //TODO: Find out why parent isn't set
         // ==> because it is parent_id ;-)
         if (isset($usr['parent_id']))
@@ -816,7 +816,7 @@ if ($action == "mailsendusergroup")
 
 
         //echo $body . '-'.$subject .'-'.'<pre>'.htmlspecialchars($to).'</pre>'.'-'.$from;
-        if (SendEmailMessage( $body, $subject, $to, $from,''))
+        if (SendEmailMessage(null, $body, $subject, $to, $from,''))
         {
             $usersummary = "<div class=\"messagebox\">\n";
             $usersummary .= "<div class=\"successheader\">".$clang->gT("Message(s) sent successfully!")."</div>\n"
@@ -857,13 +857,13 @@ if ($action == "editusergroupindb")
 		$usersummary = "<div class=\"messagebox\">\n";
         if(updateusergroup($db_name, $db_description, $ugid))
         {
-            
+
 			$usersummary .= "<div class=\"successheader\">".$clang->gT("Edit User Group Successfully!")."</div>\n"
             . "<br />".$clang->gT("Name").": {$html_name}<br />\n"
             . $clang->gT("Description: ").$html_description."<br />\n"
             . "<br /><a href='$scriptname?action=editusergroups&amp;ugid={$ugid}'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
         }
-        else 
+        else
 		{
 			$usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to update!")."</div>\n"
         . "<br /><a href='$scriptname?action=editusergroups'>".$clang->gT("Continue")."</a><br />&nbsp;\n";

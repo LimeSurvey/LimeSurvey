@@ -117,7 +117,7 @@ $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
 $result = $connect->Execute($query, array($postfirstname,
 $postlastname,
 returnglobal('register_email'),
-                                          'OK', 
+                                          'OK',
 $newtoken)
 //                             $postattribute1,   $postattribute2)
 ) or safe_die ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
@@ -158,7 +158,7 @@ $subject=ReplaceFields($subject, $fieldsarray);
 
 $html=""; //Set variable
 
-if (SendEmailMessage($message, $subject, returnglobal('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
+if (SendEmailMessage(null, $message, $subject, returnglobal('register_email'), $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
 {
     // TLR change to put date into sent
     //	$query = "UPDATE {$dbprefix}tokens_$surveyid\n"
@@ -180,8 +180,8 @@ else
 if (!$thissurvey['template'])
 {
     $thistpl=sGetTemplatePath(validate_templatedir('default'));
-} 
-else 
+}
+else
 {
     $thistpl=sGetTemplatePath(validate_templatedir($thissurvey['template']));
 }

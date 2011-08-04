@@ -410,7 +410,7 @@ function savedcontrol()
 
                 if ($clienttoken){$message.="&token=".$clienttoken;}
                 $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
+                if (SendEmailMessage(null, $message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
                 {
                     $emailsent="Y";
                 }
@@ -455,7 +455,7 @@ function savedsilent()
     {
         $message .= "\n\n$publicurl/index.php?lang=$language&sid=$surveyid&token=$clienttoken";
     };
-    if (SendEmailMessage($message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
+    if (SendEmailMessage(null, $message, $subject, $to, $from, $sitename, false, getBounceEmail($surveyid)))
     {
         $emailsent="Y";
     }
@@ -534,11 +534,12 @@ function createinsertquery()
 
                         for ($i = 0; $i < count($phparray); $i++)
                         {
-                            if (!rename($tmp . $phparray[$i]->filename, $target . $phparray[$i]->filename))
-                                echo "Error Moving file to its destination";
-
-                            $_SESSION[$value] = json_encode($phparray);
+                            $sDestinationFileName='fu_'.sRandomChars(15);
+                            if (!rename($tmp . $phparray[$i]->filename, $target . $sDestinationFileName))
+                                echo "Error moving file to its destination";
+                            $phparray[$i]->filename=$sDestinationFileName;
                         }
+                        $_SESSION[$value] = json_encode($phparray);
                     }
                     $values[] = $connect->qstr($_SESSION[$value], get_magic_quotes_gpc());
                     // filename is changed from undefined to a random value

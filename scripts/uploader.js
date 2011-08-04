@@ -298,7 +298,8 @@ function deletefile(fieldname, count) {
                 $('#uploadstatus').html(translt.errorMoreAllowed.replace('%s',(maxfiles - filecount)));
         }
     }
-    file_index = $("#"+fieldname+"_file_index_"+count).val();
-    xmlhttp.open('GET','delete.php?sid='+surveyid+'&fieldname='+fieldname+'&file_index='+file_index, true);
+    filename=$("#"+fieldname+"_filename_"+count).val();
+    name=$("#"+fieldname+"_name_"+count).val();
+    xmlhttp.open('GET','delete.php?sid='+surveyid+'&fieldname='+fieldname+'&filename='+filename+'&name='+encodeURI(name), true);
     xmlhttp.send();
 }

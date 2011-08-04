@@ -5,13 +5,6 @@ require_once(dirname(__FILE__).'/common.php');
 require_once($homedir.'/classes/core/class.progressbar.php');
 require_once(dirname(__FILE__).'/classes/core/language.php');
 
-if (isset($_GET['filegetcontents']))
-{
-    $sFileName=sanitize_filename($_GET['filegetcontents'],true,true);
-    readfile($tempdir."/upload/".$sFileName);
-    exit();
-}
-
 if (!isset($surveyid))
 {
     $surveyid=returnglobal('sid');
@@ -21,6 +14,22 @@ else
     //This next line ensures that the $surveyid value is never anything but a number.
     $surveyid=sanitize_int($surveyid);
 }
+
+if (isset($_GET['filegetcontents']))
+{
+    $sFileName=sanitize_filename($_GET['filegetcontents']);
+    if (substr($sFileName,0,6)=='futmp_')
+    {
+        $sFileDir = $tempdir.'/upload/';
+    }
+    elseif(substr($sFileName,0,3)=='fu_'){
+        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
+    }
+    readfile($sFileDir.$sFileName);
+    exit();
+}
+
+
 
 // Compute the Session name
 // Session name is based:

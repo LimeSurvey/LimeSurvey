@@ -1553,6 +1553,7 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
         if ($emcount > 0)
         {
             $tokenoutput .= "<ul>\n";
+            $oMail = new PHPMailer;
             while ($emrow = $emresult->FetchRow())
             {
                 unset($fieldsarray);
@@ -1605,10 +1606,10 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
                         $fieldsarray["@@SURVEYURL@@"]="$publicurl/index.php?lang=".trim($emrow['language'])."&amp;sid=$surveyid&amp;token={$emrow['token']}";
                     }
                 }
-        $customheaders = array( '1' => "X-surveyid: ".$surveyid,
-                    '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
+                $customheaders = array( '1' => "X-surveyid: ".$surveyid,
+                            '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
 
-        $modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
+                $modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
                 $modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
                 if (trim($emrow['validfrom'])!='' && convertDateTimeFormat($emrow['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1)
@@ -1619,7 +1620,7 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
                 {
                     $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.")."<br />", $fieldsarray);
                 }
-                elseif (SendEmailMessage($modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid),null,$customheaders))
+                elseif (SendEmailMessage($oMail, $modmessage, $modsubject, $to , $from, $sitename, $ishtml, getBounceEmail($surveyid),null,$customheaders))
                 {
                     // Put date into sent
                     $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -1678,6 +1679,7 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
                 }
                 $tokenoutput .="</form>\n";
             }
+            $oMail->SmtpClose();
         }
         else
         {
@@ -1879,6 +1881,7 @@ if ($subaction == "remind" && bHasSurveyPermission($surveyid, 'tokens','update')
             $tokenoutput .= "<table width='450' align='center' >\n"
             ."\t<tr>\n"
             ."<td><font size='1'>\n";
+            $oMail = new PHPMailer;
             while ($emrow = $emresult->FetchRow())
             {
                 unset($fieldsarray);
@@ -1942,8 +1945,8 @@ if ($subaction == "remind" && bHasSurveyPermission($surveyid, 'tokens','update')
 
                 $msgsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
                 $sendmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
-$customheaders = array( '1' => "X-surveyid: ".$surveyid,
-                    '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
+                $customheaders = array( '1' => "X-surveyid: ".$surveyid,
+                                        '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
 
                 if (trim($emrow['validfrom'])!='' && convertDateTimeFormat($emrow['validfrom'],'Y-m-d H:i:s','U')*1>date('U')*1)
                 {
@@ -1953,7 +1956,7 @@ $customheaders = array( '1' => "X-surveyid: ".$surveyid,
                 {
                     $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.")."<br />", $fieldsarray);
                 }
-                elseif (SendEmailMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid),null,$customheaders))
+                elseif (SendEmailMessage($oMail, $sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid),null,$customheaders))
                 {
 
                     // Put date into remindersent
@@ -1976,6 +1979,7 @@ $customheaders = array( '1' => "X-surveyid: ".$surveyid,
                 }
                 $lasttid = $emrow['tid'];
             }
+            $oMail->SmtpClose();
             if ($ctcount > $emcount)
             {
                 $lefttosend = $ctcount-$maxemails;

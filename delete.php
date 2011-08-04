@@ -50,26 +50,40 @@ if (empty($_SESSION) || !isset($_SESSION['fieldname']))
     die("You don't have a valid session !");
 }
 
-    $file_index = (int)$_GET['file_index'];
-    $fieldname = $_GET['fieldname'];
-    $filename = "tmp/upload/".$_SESSION[$fieldname]['files'][$file_index]['filename'];
-    $name = $_SESSION[$fieldname]['files'][$file_index]['name'];
-
-    $fh = fopen($filename, 'w') or die("can't open file");
-    fclose($fh);
-
-    if (unlink($filename))
+    $sFieldname = $_GET['fieldname'];
+    $sFilename = sanitize_filename($_GET['filename']);
+    $sOriginalFileName=sanitize_filename($_GET['name']);
+    if (substr($sFilename,0,6)=='futmp_')
     {
-        echo sprintf($clang->gT('File %s deleted'), rawurldecode($name));
-        for ($i = $file_index; $i < $_SESSION[$fieldname]['filecount']; $i++)
+        $sFileDir = $tempdir.'/upload/';
+    }
+    elseif(substr($sFilename,0,3)=='fu_'){
+        $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
+    }
+    else die('Invalid filename');
+
+    $sJSON = $_SESSION[$fieldname];
+    $aFiles = json_decode(stripslashes($sJSON),true);
+
+    if(substr($sFilename,0,3)=='fu_'){
+        $iFileIndex=0;
+        $found=false;
+        foreach ($aFiles as $aFile)
         {
-            $_SESSION[$fieldname]['files'][$i]['name'] = $_SESSION[$fieldname]['files'][$i + 1]['name'];
-            $_SESSION[$fieldname]['files'][$i]['size'] = $_SESSION[$fieldname]['files'][$i + 1]['size'];
-            $_SESSION[$fieldname]['files'][$i]['ext']  = $_SESSION[$fieldname]['files'][$i + 1]['ext'];
-            $_SESSION[$fieldname]['files'][$i]['filename']   = $_SESSION[$fieldname]['files'][$i + 1]['filename'];
+           if ($aFile['filename']==$sFilename)
+           {
+            $found=true;
+            break;
+           }
+           $iFileIndex++;
         }
-        $_SESSION[$fieldname]['files'][$_SESSION[$fieldname]['filecount']] = NULL;
-        $_SESSION[$fieldname]['filecount'] -= 1;
+        if ($found==true) unset($aFiles[$iFileIndex]);
+       $_SESSION[$fieldname] = json_encode($aFiles);
+    }
+
+    if (@unlink($sFileDir.$sFilename))
+    {
+       echo sprintf($clang->gT('File %s deleted'), $sOriginalFileName);
     }
     else
         echo $clang->gT('Oops, There was an error deleting the file');

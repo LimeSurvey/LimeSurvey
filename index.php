@@ -1017,11 +1017,7 @@ function loadanswers()
 function makegraph($currentstep, $total)
 {
     global $thissurvey;
-    global $publicurl, $clang, $js_header_includes, $css_header_includes;
-
-    $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
-    $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
-    $css_header_includes[]= '/scripts/jquery/css/start/lime-progress.css';
+    global $publicurl, $clang;
 
     $size = intval(($currentstep-1)/$total*100);
 
@@ -2090,7 +2086,7 @@ function submittokens($quotaexit=false)
                 //Only send confirmation email if there is a valid email address
                 if (validate_email($cnfrow['email']))
                 {
-                    SendEmailMessage($message, $subject, $to, $from, $sitename,$ishtml);
+                    SendEmailMessage(null,$message, $subject, $to, $from, $sitename,$ishtml);
                 }
             }
             else
@@ -2227,9 +2223,10 @@ function SendSubmitNotifications()
     {
         $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,($thissurvey['anonymized'] == "Y"));
         $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,($thissurvey['anonymized'] == "Y"));
+        $oMail = new PHPMailer;
         foreach ($aEmailNotificationTo as $sRecipient)
         {
-            if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
+            if (!SendEmailMessage($oMail, $sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
             {
                 if ($debug>0)
                 {
@@ -2237,15 +2234,17 @@ function SendSubmitNotifications()
                 }
             }
         }
+        $oMail->SmtpClose();
     }
 
     if (count($aEmailResponseTo)>0)
     {
         $sMessage=templatereplace($thissurvey['email_admin_responses'],$aReplacementVars);
         $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars);
+        $mail = new PHPMailer;
         foreach ($aEmailResponseTo as $sRecipient)
         {
-            if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
+            if (!SendEmailMessage($mail,$sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
             {
                 if ($debug>0)
                 {
@@ -2253,6 +2252,7 @@ function SendSubmitNotifications()
                 }
             }
         }
+        $mail->SmtpClose();
     }
 
 
@@ -2284,7 +2284,7 @@ function submitfailed($errormsg='')
         . "$subquery\n\n"
         . $clang->gT("ERROR MESSAGE","unescaped").":\n"
         . $errormsg."\n\n";
-        SendEmailMessage($email, $clang->gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
+        SendEmailMessage(null,$email, $clang->gT("Error saving results","unescaped"), $thissurvey['adminemail'], $thissurvey['adminemail'], "LimeSurvey", false, getBounceEmail($surveyid));
         //echo "<!-- EMAIL CONTENTS:\n$email -->\n";
         //An email has been sent, so we can kill off this session.
         session_unset();
