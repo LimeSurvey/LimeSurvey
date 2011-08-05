@@ -74,7 +74,7 @@ if($subaction=='bounceprocessing')
 						$token=explode(": ",$item);
 						if($surveyidoriginal == $surveyid[1])
 						{ 
-							$bouncequery = "UPDATE ".db_table_name("tokens_$surveyidoriginal")." set emailstatus='bounced' where token='".db_quote($token[1])."';";
+							$bouncequery = "UPDATE ".db_table_name("tokens_$surveyidoriginal")." set emailstatus='bounced', usesleft=0 where token='".db_quote($token[1])."';";
 							$anish=$connect->Execute($bouncequery);
 							$bouncetotal++;
 						}
@@ -128,7 +128,7 @@ if($subaction=='bounceprocessing')
 							$token=explode(": ",$item);
 							if($surveyidoriginal == $surveyid[1])
 							{ 
-$bouncequery = "UPDATE ".db_table_name("tokens_$surveyidoriginal")." set emailstatus='bounced' where 							  token='".db_quote($token[1])."';";
+                                $bouncequery = "UPDATE ".db_table_name("tokens_$surveyidoriginal")." set emailstatus='bounced', usesleft=0 where token='".db_quote($token[1])."';";
 								$anish=$connect->Execute($bouncequery) or safe_die ("Couldn't update sent field<br />$query<br />".$connect->ErrorMsg());
 								$bouncetotal++;
 							}

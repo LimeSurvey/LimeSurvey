@@ -320,7 +320,7 @@ if($subaction=='bounceprocessing')
                                                       $tokenBounce=explode(": ",$item);
                             if($surveyid == $surveyidBounce[1])
                             {
-                                $bouncequery = "UPDATE ".db_table_name("tokens_{$surveyid}")." SET emailstatus='bounced' WHERE token=".db_quoteall($tokenBounce[1]);
+                                $bouncequery = "UPDATE ".db_table_name("tokens_{$surveyid}")." SET emailstatus='bounced', usesleft=0 WHERE token=".db_quoteall($tokenBounce[1]);
                                 $bmark=$connect->Execute($bouncequery);
                                 $readbounce=imap_body($mbox,$count); // Put read
                                 if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
