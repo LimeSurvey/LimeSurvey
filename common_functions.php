@@ -4352,6 +4352,8 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
         ob_end_clean();
     }
     $maildebugbody=$mail->Body;
+    $mail->ClearAddresses();
+    $mail->ClearCustomHeaders();
     if ($bUnsetEmail)
     {
         unset($mail);

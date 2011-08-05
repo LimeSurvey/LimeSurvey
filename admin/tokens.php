@@ -1557,7 +1557,7 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
             while ($emrow = $emresult->FetchRow())
             {
                 unset($fieldsarray);
-                $to = $emrow['email'];
+                $to = $emrow['firstname']." ".$emrow['lastname']." <".$emrow['email'].">";
                 $fieldsarray["{EMAIL}"]=$emrow['email'];
                 $fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
                 $fieldsarray["{LASTNAME}"]=$emrow['lastname'];
@@ -1885,7 +1885,7 @@ if ($subaction == "remind" && bHasSurveyPermission($surveyid, 'tokens','update')
             while ($emrow = $emresult->FetchRow())
             {
                 unset($fieldsarray);
-                $to = $emrow['email'];
+                $to = $emrow['firstname']." ".$emrow['lastname']." <".$emrow['email'].">";
                 $fieldsarray["{EMAIL}"]=$emrow['email'];
                 $fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
                 $fieldsarray["{LASTNAME}"]=$emrow['lastname'];
