@@ -674,12 +674,24 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         $surveysummary .= "</td></tr>\n"
         . "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Description:")."</strong></td>\n<td align='left'>";
-        if (trim($surveyinfo['surveyls_description'])!='') {$surveysummary .= " {$surveyinfo['surveyls_description']}";}
+
+        LimeExpressionManager::StartProcessingGroup($gid);  // loads list of replacement values available for this group
+
+        if (trim($surveyinfo['surveyls_description'])!='') 
+        {
+            templatereplace($surveyinfo['surveyls_description']);
+            $surveysummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+        }
         $surveysummary .= "</td></tr>\n"
         . "<tr >\n"
         . "<td align='right' valign='top'><strong>"
         . $clang->gT("Welcome:")."</strong></td>\n"
-        . "<td align='left'> {$surveyinfo['surveyls_welcometext']}</td></tr>\n"
+        . "<td align='left'>";
+
+        templatereplace($surveyinfo['surveyls_welcometext']);
+        $surveysummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+        
+        $surveysummary .= "</td></tr>\n"
         . "<tr ><td align='right' valign='top'><strong>"
         . $clang->gT("Administrator:")."</strong></td>\n"
         . "<td align='left'> {$surveyinfo['admin']} ({$surveyinfo['adminemail']})</td></tr>\n";
@@ -1010,7 +1022,11 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         . "{$grow['group_name']} ({$grow['gid']})</td></tr>\n"
         . "<tr><td valign='top' align='right'><strong>"
         . $clang->gT("Description:")."</strong></td>\n<td align='left'>";
-        if (trim($grow['description'])!='') {$groupsummary .=$grow['description'];}
+        if (trim($grow['description'])!='')
+        {
+            templatereplace($grow['description']);
+            $groupsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+        }
         $groupsummary .= "</td></tr>\n";
 
         if (!is_null($condarray))
@@ -1269,9 +1285,8 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         $questionsummary .= $clang->gT("Question:") . "</strong></td>\n<td align='left'>";
 
         // Color code the question, help, and relevance
-        LimeExpressionManager::StartProcessingGroup($gid);  // loads list of available replacement values
 
-        LimeExpressionManager::ProcessString($qrrow['question']);
+        templatereplace($qrrow['question']);
         $questionsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
 
         $questionsummary .= "</td></tr>\n"
@@ -1279,7 +1294,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         . $clang->gT("Help:")."</strong></td>\n<td align='left'>";
         if (trim($qrrow['help'])!='')
         {
-            LimeExpressionManager::ProcessString($qrrow['help']);
+            templatereplace($qrrow['help']);
             $questionsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();            
         }
         $questionsummary .= "</td></tr>\n";
