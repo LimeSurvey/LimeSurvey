@@ -476,6 +476,16 @@ class LimeExpressionManager {
         return $result;
     }
 
+    /**
+     * Used to show potential syntax errors of processing Relevance or Equations.
+     * @return <type>
+     */
+    static function GetLastPrettyPrintExpression()
+    {
+        $lem = LimeExpressionManager::singleton();
+        return $lem->em->GetLastPrettyPrintExpression();
+    }
+
     static function StartProcessingPage($debug=true,$allOnOnePage=false)
     {
         $lem = LimeExpressionManager::singleton();

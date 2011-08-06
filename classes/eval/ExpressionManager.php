@@ -454,26 +454,34 @@ class ExpressionManager {
         while (($this->pos + 1) < $this->count)
         {
             $token = $this->tokens[++$this->pos];
-            switch ($token[0])
+            if ($token[2] == 'BINARYOP')
             {
-                case '+':
-                case '-';
-                    if ($this->EvaluateMultiplicativeExpression())
-                    {
-                        if (!$this->EvalBinary($token))
+                switch ($token[0])
+                {
+                    case '+':
+                    case '-';
+                        if ($this->EvaluateMultiplicativeExpression())
+                        {
+                            if (!$this->EvalBinary($token))
+                            {
+                                return false;
+                            }
+                            // else continue;
+                        }
+                        else
                         {
                             return false;
                         }
-                        // else continue;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                    break;
-                default:
-                    --$this->pos;
-                    return true;
+                        break;
+                    default:
+                        --$this->pos;
+                        return true;
+                }
+            }
+            else
+            {
+                --$this->pos;
+                return true;
             }
         }
         return true;
@@ -863,28 +871,36 @@ class ExpressionManager {
         while (($this->pos + 1) < $this->count)
         {
             $token = $this->tokens[++$this->pos];
-            switch ($token[0])
+            if ($token[2] == 'BINARYOP')
             {
-                case '*':
-                case '/';
-                    if ($this->EvaluateUnaryExpression())
-                    {
-                        if (!$this->EvalBinary($token))
+                switch ($token[0])
+                {
+                    case '*':
+                    case '/';
+                        if ($this->EvaluateUnaryExpression())
                         {
+                            if (!$this->EvalBinary($token))
+                            {
+                                return false;
+                            }
+                            // else  continue
+                        }
+                        else
+                        {
+                            // an error must have occurred
                             return false;
                         }
-                        // else  continue
-                    }
-                    else
-                    {
-                        // an error must have occurred
-                        return false;
-                    }
-                    break;
-                    break;
-                default:
-                    --$this->pos;
-                    return true;
+                        break;
+                        break;
+                    default:
+                        --$this->pos;
+                        return true;
+                }
+            }
+            else
+            {
+                --$this->pos;
+                return true;
             }
         }
         return true;
@@ -983,20 +999,28 @@ class ExpressionManager {
             return false;
         }
         $token = $this->tokens[++$this->pos];
-        switch ($token[0])
+        if ($token[2] == 'NOT' || $token[2] == 'BINARYOP')
         {
-            case '+':
-            case '-':
-            case '!':
-                if (!$this->EvaluatePrimaryExpression())
-                {
-                    return false;
-                }
-                return $this->EvalUnary($token);
-                break;
-            default:
-                --$this->pos;
-                return $this->EvaluatePrimaryExpression();
+            switch ($token[0])
+            {
+                case '+':
+                case '-':
+                case '!':
+                    if (!$this->EvaluatePrimaryExpression())
+                    {
+                        return false;
+                    }
+                    return $this->EvalUnary($token);
+                    break;
+                default:
+                    --$this->pos;
+                    return $this->EvaluatePrimaryExpression();
+            }
+        }
+        else
+        {
+            --$this->pos;
+            return $this->EvaluatePrimaryExpression();
         }
     }
 
@@ -1167,6 +1191,7 @@ class ExpressionManager {
                     $stringParts[] = $token[0] . ' ';
                     break;
                 default:
+                    // don't need to check type of $token[2] here since already handling SQ_STRING and DQ_STRING above
                     switch ($token[0])
                     {
                         case 'and': $stringParts[] = ' && '; break;
@@ -2329,6 +2354,7 @@ I love LimeSurvey~str_replace('like','love','I like LimeSurvey')
 Hi there!~d='<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>'
 Hi there!~c=strip_tags(d)
 Hi there!~c
++,-,*,/,!,,,and,&&,or,||,gt,>,lt,<,ge,>=,le,<=,eq,==,ne,!=~implode(',','+','-','*','/','!',',','and','&&','or','||','gt','>','lt','<','ge','>=','le','<=','eq','==','ne','!=')
 EOD;
 
         $em = new ExpressionManager();

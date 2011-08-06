@@ -1265,11 +1265,23 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             else {$questionsummary .= ": (<i>".$clang->gT("Optional Question")."</i>)";}
         }
         $questionsummary .= "</td></tr>\n"
-        . "<tr><td align='right' valign='top'><strong>"
-        . $clang->gT("Question:")."</strong></td>\n<td align='left'>".$qrrow['question']."</td></tr>\n"
+        . "<tr><td align='right' valign='top'><strong>";
+        $questionsummary .= $clang->gT("Question:") . "</strong></td>\n<td align='left'>";
+
+        // Color code the question, help, and relevance
+        LimeExpressionManager::StartProcessingGroup($gid);  // loads list of available replacement values
+
+        LimeExpressionManager::ProcessString($qrrow['question']);
+        $questionsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
+
+        $questionsummary .= "</td></tr>\n"
         . "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Help:")."</strong></td>\n<td align='left'>";
-        if (trim($qrrow['help'])!=''){$questionsummary .= $qrrow['help'];}
+        if (trim($qrrow['help'])!='')
+        {
+            LimeExpressionManager::ProcessString($qrrow['help']);
+            $questionsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();            
+        }
         $questionsummary .= "</td></tr>\n";
         if ($qrrow['preg'])
         {
@@ -1334,11 +1346,21 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         $questionAttributes = getQuestionAttributes($qid, $qrrow['type']);
         if (!is_null($questionAttributes['relevance']))
         {
+            $relevance = $questionAttributes['relevance'];
+            if ($relevance !== '' && $relevance !== '1' && $relevance !== '0')
+            {
+                LimeExpressionManager::ProcessString("{" . $relevance . "}");    // tests Relevance equation so can pretty-print it
+                $rel2show = LimeExpressionManager::GetLastPrettyPrintExpression();
+            }
+            else
+            {
+                $rel2show = $relevance;
+            }
             $questionsummary .= "<tr>"
             . "<td align='right' valign='top'><strong>"
             . $clang->gT("Relevance:")."</strong></td>\n"
             . "<td align='left'>";
-            $questionsummary .= $questionAttributes['relevance'];
+            $questionsummary .= $rel2show;
             $questionsummary .= "</td></tr>\n";
         }
         $questionsummary .= "</table>";
