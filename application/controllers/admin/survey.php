@@ -148,7 +148,7 @@
                 //$tdeactivatequery = db_rename_table(db_table_name_nq($toldtable) ,db_table_name_nq($tnewtable));
                 $tdeactivateresult = db_rename_table($toldtable ,$tnewtable) or die ("Couldn't deactivate tokens table because:<br /><br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
                 
-                if ($this->db->databasetype=='postgres')
+                if ($this->db->dbdriver=='postgres')
                 {
                     // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
                     //$deactivatequery = db_rename_table(db_table_name_nq($toldtable).'_tid_seq',db_table_name_nq($tnewtable).'_tid_seq');
@@ -163,15 +163,15 @@
         
             // IF there are any records in the saved_control table related to this survey, they have to be deleted
             $query = "DELETE FROM ".$this->db->dbprefix."saved_control WHERE sid={$postsid}";
-            $result = $connect->Execute($query);
-        
+            //$result = $connect->Execute($query);
+            $result = db_execute_assoc($query);
             $oldtable=$this->db->dbprefix."survey_{$postsid}";
             $newtable=$this->db->dbprefix."old_survey_{$postsid}_{$date}";
         
             //Update the auto_increment value from the table before renaming
             $new_autonumber_start=0;
             $query = "SELECT id FROM $oldtable ORDER BY id desc";
-            $result = db_select_limit_assoc($query, 1,-1, false, false);
+            $result = db_select_limit_assoc($query, 1,0, false, false);
             if ($result)
             {
                 foreach ($result->result_array() as $row)
@@ -189,13 +189,20 @@
                     }
                 }
             }
-            $query = "UPDATE ".$this->db->dbprefix."surveys SET autonumber_start=$new_autonumber_start WHERE sid=$surveyid";
-            @$result = db_execute_assosc($query); //Note this won't die if it fails - that's deliberate.
+            /**
+            $query = "UPDATE ".$this->db->dbprefix."surveys SET autonumber_start=$new_autonumber_start WHERE sid=$postsid";
+            //echo "hello".$new_autonumber_start."---".$postsid;
+            $result = db_execute_assosc($query); //Note this won't die if it fails - that's deliberate.
+            */
+            $condn = array('sid' => $surveyid);
+            $insertdata = array('autonumber_start' => $new_autonumber_start);
+            $this->load->model('surveys_model');
+            $this->surveys_model->updateSurvey($insertdata,$condn);
         
             //$deactivatequery = db_rename_table($oldtable,$newtable);
             $deactivateresult = db_rename_table($oldtable,$newtable) or die ("Couldn't make backup of the survey table. Please try again. <br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
-        
-            if ($this->db->databasetype=='postgres')
+            
+            if ($this->db->dbdriver=='postgres')
             {
                 // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
                 //$deactivatequery = db_rename_table($oldtable.'_id_seq',$newtable.'_id_seq');
@@ -207,9 +214,15 @@
             //            $dict = NewDataDictionary($connect);
             //            $dropindexquery=$dict->DropIndexSQL(db_table_name_nq($oldtable).'_idx');
             //            $connect->Execute($dropindexquery[0]);
-        
-            $deactivatequery = "UPDATE ".$this->db->dbprefix."surveys SET active='N' WHERE sid=$surveyid";
-            $deactivateresult = db_execute_assosc($deactivatequery) or die ("Couldn't deactivate because updating of surveys table failed!<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>Admin</a>");
+            
+            
+            $insertdata = array('active' => 'N');
+            //$this->load->model('surveys_model');
+            
+            /**
+            $deactivatequery = "UPDATE ".$this->db->dbprefix."surveys SET active='N' WHERE sid=$surveyid"; */
+            $deactivateresult = $this->surveys_model->updateSurvey($insertdata,$condn) or die ("Couldn't deactivate because updating of surveys table failed!<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>Admin</a>");
+            
             /**
             $deactivateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
             $deactivateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Deactivate Survey")." ($surveyid)</div>\n";

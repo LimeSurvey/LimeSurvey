@@ -160,7 +160,7 @@
 				} ?>
 		   		<?php if($responsescreate) {
 		   			if($canactivate) { ?>
-		            <li><a href='<?php echo site_url("admin/dataentry/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/dataentry/view/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/dataentry_30.png' /> <?php echo $clang->gT("Data entry screen");?></a></li>
 		        <?php } else { ?>
                		<li><a href="#" onclick="alert('<?php echo $clang->gT("This survey is not active, data entry is not allowed","js");?>');" >

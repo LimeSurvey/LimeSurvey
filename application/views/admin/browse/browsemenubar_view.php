@@ -29,7 +29,7 @@
     <img name='ViewLast' src='<?php echo $imageurl;?>/viewlast.png' alt='<?php echo $clang->gT("Display Last 50 Responses");?>' /></a>
 <?php }
 if (bHasSurveyPermission($surveyid,'responses','create')) { ?>
-    <a href='<?php echo site_url("admin/dataentry/$surveyid/");?>' "<?php echo $clang->gTview("Dataentry Screen for Survey");?>" >
+    <a href='<?php echo site_url("admin/dataentry/view/$surveyid/");?>' "<?php echo $clang->gTview("Dataentry Screen for Survey");?>" >
     <img name='DataEntry' src='<?php echo $imageurl;?>/dataentry.png' alt='<?php echo $clang->gT("Dataentry Screen for Survey");?>' /></a>
 <?php }
 if (bHasSurveyPermission($surveyid,'statistics','read')) { ?>
@@ -59,7 +59,7 @@ if (bHasSurveyPermission($surveyid,'responses','create'))
 <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
 
 <?php if (bHasSurveyPermission($surveyid,'responses','read')) { ?>
-    <a href='<?php echo site_url("admin/saved/$surveyid/");?>' title="<?php echo $clang->gTview("View Saved but not submitted Responses");?>" >
+    <a href='<?php echo site_url("admin/saved/view/$surveyid/");?>' title="<?php echo $clang->gTview("View Saved but not submitted Responses");?>" >
     <img src='<?php echo $imageurl;?>/saved.png' title='' alt='<?php echo $clang->gT("View Saved but not submitted Responses");?>' name='BrowseSaved' /></a>
 <?php }
 if (bHasSurveyPermission($surveyid,'responses','import'))  { ?>   

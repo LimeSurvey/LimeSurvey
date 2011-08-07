@@ -1521,6 +1521,7 @@ function getSurveyInfo($surveyid, $languagecode='')
     $surveyid=sanitize_int($surveyid);
     $languagecode=sanitize_languagecode($languagecode);
     $thissurvey=false;
+    
     // if no language code is set then get the base language one
     if (!isset($languagecode) || $languagecode=='')
     {
@@ -1560,7 +1561,7 @@ function getSurveyInfo($surveyid, $languagecode='')
         $thissurvey['passthrulabel']=$CI->session->userdata('passthrulabel') ? $CI->session->userdata('passthrulabel') : "";
         $thissurvey['passthruvalue']=$CI->session->userdata('passthruvalue') ? $CI->session->userdata('passthruvalue') : "";
     }
-
+    
     //not sure this should be here... ToDo: Find a better place
     if (function_exists('makelanguagechanger')) $languagechanger = makelanguagechanger();
     return $thissurvey;
@@ -3943,12 +3944,16 @@ function PassthruReplace($line, $thissurvey)
  */
 function getSavedCount($surveyid)
 {
+    
     global $CI;
+    
     $surveyid=(int)$surveyid;
-    $CI->load->model('saved_control');
+    
+    $CI->load->model('saved_control_model');
+    
     
     //$query = "SELECT COUNT(*) FROM ".db_table_name('saved_control')." WHERE sid=$surveyid";
-    $count=$CI->saved_control->getCountOfAll($surveyid);
+    $count=$CI->saved_control_model->getCountOfAll($surveyid);
     return $count;
 }
 
@@ -5832,10 +5837,12 @@ function languageDropdown($surveyid,$selected)
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     array_unshift($slangs,$baselang);
     $html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
+    
     foreach ($slangs as $lang)
     {
-        if ($lang == $selected) $html .= "\t<option value='{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&language={$lang}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
-        if ($lang != $selected) $html .= "\t<option value='{$homeurl}/admin.php?action=dataentry&sid={$surveyid}&language={$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";
+        $link = site_url("admin/dataentry/view/".$surveyid."/".$lang);
+        if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
+        if ($lang != $selected) $html .= "\t<option value='{$link}'>".getLanguageNameFromCode($lang,false)."</option>\n";
     }
     $html .= "</select>";
     return $html;
