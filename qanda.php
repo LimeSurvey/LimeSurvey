@@ -5151,6 +5151,7 @@ function do_gender($ia)
 function do_array_5point($ia)
 {
     global $dbprefix, $notanswered, $thissurvey, $clang;
+    $inputnames=array();
 
     if ($ia[8] == 'Y')
     {

@@ -2870,7 +2870,7 @@ function buildsurveysession()
         }
     }
 
-    $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
+    if (isset($_SESSION['fieldarray'])) $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
 
     // Check if the current survey language is set - if not set it
     // this way it can be changed later (for example by a special question type)
