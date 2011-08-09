@@ -407,7 +407,7 @@ if ($action == "setuserrights")
 }	// if
 
 
-if($action == "setasadminchild")
+if($subaction == "setasadminchild")
 {
     // Set user as child of ADMIN FOR
     // MORE RIGHT MANAGEMENT POSSIBILITIES
@@ -417,9 +417,7 @@ if($action == "setasadminchild")
     {
         $query = "UPDATE ".db_table_name('users')." SET parent_id =1 WHERE uid = ".$postuserid;
         $connect->Execute($query) or safe_die($connect->ErrorMsg()." ".$query); //Checked
-        $usersummary = "<br /><strong>".$clang->gT("Setting as Administrator Child")."</strong><br />"
-        . "<br />".$clang->gT("Set Parent successful.")."<br />"
-        . "<br /><a href='$scriptname?action=editusers'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
+        $_SESSION['flashmessage']=$clang->gT("Ownership was successfully changed.");
     }
     else
     {
@@ -540,8 +538,9 @@ if ($action == "editusers")
         if ($_SESSION['loginID'] == "1" && $usr['parent_id'] !=1 )
         {
             $usersummary .= "<form method='post' action='$scriptname'>"
-            ."<input type='submit' value='".$clang->gT("Take Ownership")."' />"
-            ."<input type='hidden' name='action' value='setasadminchild' />"
+            ."<input type='image' src='$imageurl/takeownership_small.png' alt='".$clang->gT("Take ownership")."' />"
+            ."<input type='hidden' name='action' value='editusers' />"
+            ."<input type='hidden' name='subaction' value='setasadminchild' />"
             ."<input type='hidden' name='user' value='{$usr['user']}' />"
             ."<input type='hidden' name='uid' value='{$usr['uid']}' />"
             ."</form>";
