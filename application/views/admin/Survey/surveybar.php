@@ -35,7 +35,7 @@
         </div>
         <ul class='sf-menu'>
         	<?php if($onelanguage) { ?>
-	        	<li><a href='#' accesskey='d' onclick="window.open('index.php?sid=<?php echo $surveyid;?>&amp;newtest=Y&amp;lang=<?php echo $baselang;?>', '_blank')" title="<?php echo $icontext2;?>" >
+	        	<li><a href='#' accesskey='d' onclick="window.open('<?php echo site_url("index/sid/$surveyid/newtest/Y/lang/$baselang");?>', '_blank')" title="<?php echo $icontext2;?>" >
 	            <img src='<?php echo $imageurl;?>/do.png' alt='<?php echo $icontext;?>' />
 	            </a></li>
         	<?php } else { ?>
@@ -45,7 +45,7 @@
 	            <li><a accesskey='d' target='_blank' href='index.php?sid=<?php echo $surveyid;?>&amp;newtest=Y'>
 	            <img src='<?php echo $imageurl;?>/do_30.png' /> <?php echo $icontext;?> </a><ul>
 	            <?php foreach ($languagelist as $tmp_lang) { ?>
-	                <li><a accesskey='d' target='_blank' href='index.php?sid=<?php echo $surveyid;?>&amp;newtest=Y&amp;lang=<?php echo $tmp_lang;?>'>
+	                <li><a accesskey='d' target='_blank' href='<?php echo site_url("index/sid/$surveyid/newtest/Y/lang/$tmp_lang");?>'>
 	                <img src='<?php echo $imageurl;?>/do_30.png' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
 	            <?php } ?>
 	            </ul></li>

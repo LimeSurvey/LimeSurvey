@@ -12,6 +12,8 @@
  *
  * $Id: language.php 9648 2011-01-07 13:06:39Z c_schmitz $
  *
+ * 
+ * 
 
 
  Wrapper to use phpgettext as a class and omit having an english translation
@@ -29,10 +31,9 @@ class Limesurvey_lang {
     var $langcode;
 
     function limesurvey_lang($params = array()){
-    	
-		if(!isset($params['langcode']))
+		if(empty($params))
 			trigger_error('langcode param is undefined ', E_USER_WARNING);
-		$langcode=$params['langcode'];	
+		$langcode=reset($params);	
 		
 		$CI =& get_instance();
         $CI->load->helper('sanitize');

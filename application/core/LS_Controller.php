@@ -115,11 +115,12 @@ class LS_Controller extends CI_Controller {
 		
 		
 		//SET LOCAL TIME
-		//if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
-		//if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
-		//{
-		//    $this->config->set_item("timeadjust",$timeadjust.' hours');
-		//}
+		$timeadjust = $this->config->item("timeadjust");
+		if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
+		if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
+		{
+		    $this->config->set_item("timeadjust",$timeadjust.' hours');
+		}
 		
 		// SITE STYLES
 		//$setfont = "<font size='2' face='verdana'>";

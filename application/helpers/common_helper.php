@@ -1796,7 +1796,7 @@ function returnglobal($stringname)
     $useWebserverAuth = $CI->config->item('useWebserverAuth');
     if ((isset($useWebserverAuth) && $useWebserverAuth === true) || $stringname=='sid') // don't read SID from a Cookie
     {
-        if ($CI->input->get_post($stringname)) $urlParam = $CI->input->get_post('stringname');
+        if ($CI->input->get_post($stringname)) $urlParam = $CI->input->get_post($stringname);
         //if ($this->input->cookie('stringname')) $urlParam = $this->input->cookie('stringname');
     }
     elseif ($CI->input->get_post($stringname) )
@@ -1892,7 +1892,7 @@ function getsidgidqidaidtype($fieldcode)
 
         $s_lang = GetBaseLanguageFromSurveyID($fsid);
         $fieldtoselect = array('type');
-        $condition = "WHERE qid=".$fqid." AND language='".$s_lang."'";
+        $condition = "qid = ".$fqid." AND language='".$s_lang."'";
         $CI->load->model('questions_model');
         $result = $CI->questions_model->getSomeRecords($fieldtoselect,$condition);
         //$result = db_execute_assoc($query) or safe_die ("Couldn't get question type - getsidgidqidaidtype() in common.php<br />".$connect->ErrorMsg()); //Checked
@@ -3007,10 +3007,26 @@ function templatereplace($line, $replacements=array(),$redata)
 
     */
     $CI =& get_instance();
-    global $clienttoken,$sitename,$move,$showXquestions,$showgroupinfo,$showqnumcode,$questioncode,$register_errormsg;
+    global $clienttoken,$token,$sitename,$move,$showXquestions,$showqnumcode,$questioncode,$register_errormsg;
     global $s_lang,$errormsg,$saved_id, $totalBoilerplatequestions, $relativeurl, $languagechanger,$captchapath,$loadname;
-    
-    $thissurvey = $redata['thissurvey'] ;
+
+	//extract($redata);
+	$allowedvars = array('surveylist', 'sitename', 'clienttoken', 'rooturl', 'thissurvey', 'imageurl', 'defaulttemplate',
+					'percentcomplete', 'move', 'groupname', 'groupdescription', 'question', 'showXquestions',
+					'showgroupinfo', 'showqnumcode', 'questioncode', 'answer', 'navigator', 'help', 'totalquestions',
+					'surveyformat', 'completed', 'register_errormsg', 'notanswered', 'privacy', 'surveyid', 'publicurl',
+					'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'clang', 'saved_id', 'usertemplaterootdir',
+					'totalBoilerplatequestions', 'relativeurl', 'languagechanger', 'printoutput', 'captchapath', 'loadname');
+	
+	foreach($allowedvars as $var)
+	{
+		if(isset($redata[$var])) $$var = $redata[$var];
+	}
+	
+	$showXquestions = $CI->config->item("showXquestions");
+	$showgroupinfo = $CI->config->item("showgroupinfo");
+	
+    /*$thissurvey = $redata['thissurvey'] ;
     $percentcomplete = $redata['percentcomplete'] ;
     $groupname = $redata['groupname'] ;
     $groupdescription = $redata['groupdescription'] ;
@@ -3039,7 +3055,7 @@ function templatereplace($line, $replacements=array(),$redata)
     
     $templatename = $redata['templatename'] ;
     $screenname = $redata['screenname'] ;
-    $editfile = $redata['editfile'] ;
+    $editfile = $redata['editfile'] ;*/
     
     
     if (file_exists($line))
@@ -3063,6 +3079,8 @@ function templatereplace($line, $replacements=array(),$redata)
         $templatename=$CI->config->item('defaulttemplate');
     }
     $templatename=validate_templatedir($templatename);
+	if(!isset($templatedir)) $templatedir = sGetTemplatePath($templatename);
+	if(!isset($templateurl)) $templateurl = sGetTemplateURL($templatename)."/";
 
     // create absolute template URL and template dir vars
     //$templateurl=sGetTemplateURL($templatename).'/';
@@ -3071,7 +3089,7 @@ function templatereplace($line, $replacements=array(),$redata)
     if (stripos ($line,"</head>"))
     {
         $line=str_ireplace("</head>",
-            "<script type=\"text/javascript\" src=\"".$CI->config->item('adminscripts')."survey_runtime.js\"></script>\n"
+            "<script type=\"text/javascript\" src=\"".$CI->config->item('generalscripts')."survey_runtime.js\"></script>\n"
         .use_firebug()
         ."\t</head>", $line);
     }
@@ -3141,13 +3159,18 @@ function templatereplace($line, $replacements=array(),$redata)
     if (strpos($line, "{LANGUAGECHANGER}") !== false) $line=str_replace("{LANGUAGECHANGER}", $languagechanger, $line);
     if (strpos($line, "{PERCENTCOMPLETE}") !== false) $line=str_replace("{PERCENTCOMPLETE}", $percentcomplete, $line);
     */
+   
+   if(!isset($percentcomplete)) $percentcomplete = "PERCENTCOMPLETE";
+   if(!isset($thissurvey['description'])) $thissurvey['description'] = "SURVEYDESCRIPTION";
+   if(!isset($thissurvey['welcome'])) $thissurvey['welcome'] = "WELCOME";
+   
     $temparr = array(
             "SURVEYLISTHEADING" => (isset($surveylist))?$surveylist['listheading']:'',
             "SURVEYLIST" => (isset($surveylist))?$surveylist['list']:'',
             "NOSURVEYID" => (isset($surveylist))?$surveylist['nosid']:'',
       //      "{SURVEYCONTACT}" => $surveylist['contact'],
             "SITENAME" => $sitename,
-            "SURVEYLIST" => (isset($surveylist))?$surveylist:'',
+      //      "SURVEYLIST" => (isset($surveylist))?$surveylist['list']:'',
             "CHECKJAVASCRIPT" => "<noscript><span class='warningjs'>".$clang->gT("Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters.")."</span></noscript>",
             "SURVEYLANGAGE" => $clang->langcode,
             "SURVEYCONTACT" => $surveycontact,
@@ -3161,12 +3184,12 @@ function templatereplace($line, $replacements=array(),$redata)
     );
     $data = array_merge($data,$temparr);
     
-    if(
-        $showgroupinfo == 'both' ||
+    if(isset($groupname) &&
+        ($showgroupinfo == 'both' ||
 	    $showgroupinfo == 'name' ||
 	    ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
 	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N')
+	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'N'))
     )
     {
         //if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", $groupname, $line);
@@ -3177,12 +3200,12 @@ function templatereplace($line, $replacements=array(),$redata)
         //if (strpos($line, "{GROUPNAME}") !== false) $line=str_replace("{GROUPNAME}", '' , $line);
         $data = array_merge($data,array("GROUPNAME" => ''));
     };
-    if(
-        $showgroupinfo == 'both' ||
+    if(isset($groupdescription) &&
+        ($showgroupinfo == 'both' ||
 	    $showgroupinfo == 'description' ||
 	    ($showgroupinfo == 'choose' && !isset($thissurvey['showgroupinfo'])) ||
 	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'B') ||
-	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D')
+	    ($showgroupinfo == 'choose' && $thissurvey['showgroupinfo'] == 'D'))
     )
     {
         //if (strpos($line, "{GROUPDESCRIPTION}") !== false) $line=str_replace("{GROUPDESCRIPTION}", $groupdescription, $line);
@@ -3286,7 +3309,8 @@ function templatereplace($line, $replacements=array(),$redata)
     if (isset($answer))
     $data = array_merge($data,array("ANSWER" => $answer));
     
-    $totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
+	if(!isset($totalquestions)) $totalquestions = 0;
+	$totalquestionsAsked = $totalquestions - $totalBoilerplatequestions;
     if(
       $showXquestions == 'show' ||
       ($showXquestions == 'choose' && !isset($thissurvey['showXquestions'])) ||
@@ -3334,7 +3358,8 @@ function templatereplace($line, $replacements=array(),$redata)
     }
 
     //if (strpos($line, "{SID}") !== false) $line=str_replace("{SID}", $surveyid, $line);
-    $data = array_merge($data,array("SID" => $surveyid));
+    if(isset($surveyid))
+    	$data = array_merge($data,array("SID" => $surveyid));
 
     if (strpos($line, "{EXPIRY}") !== false)
     {
@@ -3347,6 +3372,7 @@ function templatereplace($line, $replacements=array(),$redata)
         $data = array_merge($data,array("EXPIRY" => $dateoutput));
     }
     //if (strpos($line, "{NAVIGATOR}") !== false) $line=str_replace("{NAVIGATOR}", $navigator, $line);
+    if(!isset($navigator)) $navigator = "NAVIGATOR";
     $data = array_merge($data,array("NAVIGATOR" => $navigator));
     
     if (strpos($line, "{SUBMITBUTTON}") !== false) {
@@ -3355,6 +3381,7 @@ function templatereplace($line, $replacements=array(),$redata)
         $data = array_merge($data,array("SUBMITBUTTON" => $submitbutton));
     }
     //if (strpos($line, "{COMPLETED}") !== false) $line=str_replace("{COMPLETED}", $completed, $line);
+    if(!isset($completed)) $completed = "COMPLETED";    
     $data = array_merge($data,array("COMPLETED" => $completed));
     
     if (strpos($line, "{URL}") !== false) {
@@ -3394,10 +3421,10 @@ function templatereplace($line, $replacements=array(),$redata)
     if (strpos($line, "{CLEARALL}") !== false)  {
 
         $clearall = "<button class='nav-button ui-corner-all'  type='button' name='clearallbtn'  class='clearall' "
-        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?",'js')."')) {window.open('".$CI->config->item('publicurl')."/index.php?sid=$surveyid&amp;move=clearall&amp;lang=".$CI->session->userdata('s_lang');
+        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?",'js')."')) {window.open('".site_url('index/sid/'.$surveyid.'/move/clearall/lang/'.$_SESSION['s_lang']);
         if (returnglobal('token'))
         {
-            $clearall .= "&amp;token=".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
+            $clearall .= "/token/".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
         }
         $clearall .= "', '_self')}\" >".$clang->gT("Exit and Clear Survey")."</button>";
 
@@ -3407,9 +3434,9 @@ function templatereplace($line, $replacements=array(),$redata)
     }
     // --> START NEW FEATURE - SAVE
     if (strpos($line, "{DATESTAMP}") !== false) {
-        if ($CI->session->userdata('datestamp')) {
+        if (isset($_SESSION['datestamp'])) {
             //$line=str_replace("{DATESTAMP}", $_SESSION['datestamp'], $line);
-            $data = array_merge($data,array("DATESTAMP" => $CI->session->userdata('datestamp')));
+            $data = array_merge($data,array("DATESTAMP" => $_SESSION['datestamp']));
         }
         else {
             //$line=str_replace("{DATESTAMP}", "-", $line);
@@ -3435,7 +3462,7 @@ function templatereplace($line, $replacements=array(),$redata)
                     $saveall= "\t\t\t<button class='nav-button ui-corner-all' name='saveallbtn'  class='saveall' onclick=\"javascript:document.limesurvey.move.value = this.value;addHiddenField(document.getElementById('limesurvey'),'saveall',this.value);document.getElementById('limesurvey').submit();\" ". (($thissurvey['active'] != "Y")? "disabled='disabled'":"") .">".$clang->gT("Resume Later")."</button>";  // Show Save So Far button
         	};
             }
-            elseif (!$CI->session->userdata('step'))  //First page, show LOAD
+            elseif (!isset($_SESSION['step']))  //First page, show LOAD
             {
                 if($thissurvey['tokenanswerspersistence'] != 'Y')
                 {
@@ -3446,7 +3473,7 @@ function templatereplace($line, $replacements=array(),$redata)
                     $saveall = '';
 		};
             }
-            elseif ($CI->session->userdata('scid') && (isset($move) && $move == "movelast"))  //Already saved and on Submit Page, dont show Save So Far button
+            elseif (isset($_SESSION['scid']) && (isset($move) && $move == "movelast"))  //Already saved and on Submit Page, dont show Save So Far button
             {
                 $saveall='';
             }
@@ -3478,6 +3505,7 @@ function templatereplace($line, $replacements=array(),$redata)
         $data = array_merge($data,array("TEMPLATECSS" => $templatecss));
     }
 
+	if(!isset($help)) $help = "";
     if (FlattenText($help,true)!='') {
         if (strpos($line, "{QUESTIONHELP}") !== false)
         {
@@ -3528,7 +3556,7 @@ function templatereplace($line, $replacements=array(),$redata)
                "SID" => $questiondetails['sid'],
                "GID" => $questiondetails['gid'],
                "QID" => $questiondetails['qid'],
-               "AID" => $questiondetails['aid'], 
+               "AID" => (isset($questiondetails['aid']) ? $questiondetails['aid'] : ''), 
                "SGQ" => (isset($question))?$question['sgq']:'',
                "SUBMITCOMPLETE" => "<strong>".$clang->gT("Thank you!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers.")
                 
@@ -3556,19 +3584,19 @@ function templatereplace($line, $replacements=array(),$redata)
     {
         if ($thissurvey['active'] == "N")
         {
-            $replacetext= "<a href='".$CI->config->item('publicurl')."/index.php?sid=$surveyid&amp;newtest=Y";
-            if (isset($s_lang) && $s_lang!='') $replacetext.="&amp;lang=".$s_lang;
+            $replacetext= "<a href='".site_url("index/sid/$surveyid/newtest/Y");
+            if (isset($s_lang) && $s_lang!='') $replacetext.="/lang/".$s_lang;
             $replacetext.="'>".$clang->gT("Restart this Survey")."</a>";
             //$line=str_replace("{RESTART}", $replacetext, $line);
             $data = array_merge($data,array("RESTART" => $replacetext));
         } else {
             $restart_extra = "";
             $restart_token = returnglobal('token');
-            if (!empty($restart_token)) $restart_extra .= "&amp;token=".urlencode($restart_token);
-            else $restart_extra = "&amp;newtest=Y";
-            if (!empty($_GET['lang'])) $restart_extra .= "&amp;lang=".returnglobal('lang');
+            if (!empty($restart_token)) $restart_extra .= "/token/".urlencode($restart_token);
+            else $restart_extra = "/newtest/Y";
+            if (!empty($_GET['lang'])) $restart_extra .= "/lang/".returnglobal('lang');
             //$line=str_replace("{RESTART}",  "<a href='{$publicurl}/index.php?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
-            $data = array_merge($data,array("RESTART" => "<a href='".$CI->config->item('publicurl')."/index.php?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>"));
+            $data = array_merge($data,array("RESTART" => "<a href='".site_url("index/sid/$surveyid$restart_extra")."'>".$clang->gT("Restart this Survey")."</a>"));
         }
     }
     /**
@@ -3768,6 +3796,7 @@ function templatereplace($line, $replacements=array(),$redata)
     if (strpos($line, "{ASSESSMENTS}") !== false) $line=str_replace("{ASSESSMENTS}", $assessments, $line);
     if (strpos($line, "{ASSESSMENT_HEADING}") !== false) $line=str_replace("{ASSESSMENT_HEADING}", $clang->gT("Your Assessment"), $line);
     */
+   	if(!isset($assessments)) $assessments = "ASSESSMENTS";
     $temparr = array(
                "ASSESSMENTS" => $assessments,
                "ASSESSMENT_HEADING" => $clang->gT("Your Assessment") 
@@ -3964,6 +3993,7 @@ function getSavedCount($surveyid)
  */
 function GetBaseLanguageFromSurveyID($surveyid)
 {
+	//if(empty($surveyid)) var_dump(debug_backtrace());
     static $cache = array();
     $CI=& get_instance();
     $surveyid=(int)($surveyid);
@@ -4030,7 +4060,7 @@ function SetSurveyLanguage($surveyid, $language)
     {
         // see if language actually is present in survey
         $fields = array('language', 'additional_languages');
-        $condition = " WHERE sid=$surveyid";
+        $condition = "sid = $surveyid";
         $CI->load->model('surveys_model');
         
         //$query = "SELECT  language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
@@ -4044,13 +4074,13 @@ function SetSurveyLanguage($surveyid, $language)
         or (isset($default_language) && $default_language == $language)
         ) {
             // Language not supported, or default language for survey, fall back to survey's default language
-            $CI->session->set_userdata('s_lang',$default_language);
+            $_SESSION['s_lang'] = $default_language;
             //echo "Language not supported, resorting to ".$_SESSION['s_lang']."<br />";
         } else {
-            $CI->session->set_userdata('s_lang',$language);
+            $_SESSION['s_lang'] =  $language;
             //echo "Language will be set to ".$_SESSION['s_lang']."<br />";
         }
-        $lang = array($CI->session->userdata('s_lang'));
+        $lang = array($_SESSION['s_lang']);
         $CI->load->library('Limesurvey_lang',$lang);
         $clang = $CI->limesurvey_lang;
         //$clang = new limesurvey_lang($_SESSION['s_lang']);
@@ -4062,8 +4092,8 @@ function SetSurveyLanguage($surveyid, $language)
         //$clang = new limesurvey_lang($defaultlang);
     }
 
-    $thissurvey=getSurveyInfo($surveyid, $CI->session->userdata('s_lang'));
-    $CI->session->userdata('dateformats',getDateFormatData($thissurvey['surveyls_dateformat']));
+    $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
+    $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
     return $clang;
 }
 
@@ -4201,7 +4231,7 @@ function questionAttributes($returnByName=false)
 
     // If you insert a new attribute please do it in correct alphabetical order!
 
-    $qattributes["alphasort"]=array(
+   $qattributes["alphasort"]=array(
     "types"=>"!LOWZ",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
@@ -4245,8 +4275,8 @@ function questionAttributes($returnByName=false)
     'default'=>'1',
     'inputtype'=>'integer',
     "help"=>$clang->gT("If one of the subquestions is marked then for each marked subquestion this value is added as assessment."),
-    "caption"=>$clang->gT('Assessment value'));    
-    
+    "caption"=>$clang->gT('Assessment value'));
+
     $qattributes["category_separator"]=array(
     "types"=>"!",
     'category'=>$clang->gT('Display'),
@@ -4369,7 +4399,7 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Auto-check exclusive option if all others are checked'));
 
     // Map Options
-    
+
     $qattributes["location_city"]=array(
     "types"=>"S",
     'readonly_when_active'=>true,
@@ -4423,7 +4453,7 @@ function questionAttributes($returnByName=false)
     1=>$clang->gT('Google Maps')),
     "help"=>$clang->gT("Activate this to show a map above the input field where the user can select a location"),
     "caption"=>$clang->gT("Use mapping service"));
-    
+
     $qattributes["location_mapwidth"]=array(
     "types"=>"S",
     'category'=>$clang->gT('Location'),
@@ -4432,7 +4462,7 @@ function questionAttributes($returnByName=false)
     'default'=>'500',
     "help"=>$clang->gT("Width of the map in pixel"),
     "caption"=>$clang->gT("Map width"));
-    
+
     $qattributes["location_mapheight"]=array(
     "types"=>"S",
     'category'=>$clang->gT('Location'),
@@ -4459,7 +4489,7 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'text',
     "help"=>$clang->gT('Default coordinates of the map when the page first loads. Format: latitude [space] longtitude'),
     "caption"=>$clang->gT('Default position'));
-	
+
     $qattributes["location_mapzoom"]=array(
     "types"=>"S",
     'category'=>$clang->gT('Location'),
@@ -4468,9 +4498,9 @@ function questionAttributes($returnByName=false)
     'default'=>'11',
     "help"=>$clang->gT("Map zoom level"),
     "caption"=>$clang->gT("Zoom level"));
-    
+
     // End Map Options
-    
+
     $qattributes["hide_tip"]=array(
     "types"=>"!KLMNOPRWZ",
     'category'=>$clang->gT('Display'),
@@ -4751,11 +4781,21 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
-    'options'=>array(0=>$clang->gT('No'),
-    1=>$clang->gT('Yes')),
+    'options'=>array(0=>$clang->gT('Off'),
+        1=>$clang->gT('Randomize on each page load'),
+        2=>$clang->gT('Randomize once on survey start')
+    ),
     'default'=>0,
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
+
+    $qattributes["parent_order"]=array(
+    "types"=>"!ABCEFHKLMOPQRWZ1:;",
+    'category'=>$clang->gT('Display'),
+    'sortorder'=>100,
+    'inputtype'=>'text',
+    "caption"=>$clang->gT('Get order from previous question'),
+    "help"=>$clang->gT('Enter question ID to get subquestion order from a previous question'));
 
     $qattributes["slider_layout"]=array(
     "types"=>"K",
@@ -4821,11 +4861,11 @@ function questionAttributes($returnByName=false)
         1=>$clang->gT('Yes - stars'),
         2=>$clang->gT('Yes - slider with emoticon'),
         ),
-    'default'=>0,                 
+    'default'=>0,
     "help"=>$clang->gT('Use slider layout'),
     "caption"=>$clang->gT('Use slider layout'));
-    
-    
+
+
     $qattributes["slider_showminmax"]=array(
     "types"=>"K",
     'category'=>$clang->gT('Slider'),
@@ -5124,7 +5164,6 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'text',
     "help"=>$clang->gT("Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"),
     "caption"=>$clang->gT("Randomization group name"));
-    
 
     //This builds a more useful array (don't modify)
     if ($returnByName==false)
@@ -5772,6 +5811,89 @@ function getArrayFiltersExcludesOutGroup($qid)
 }
 
 /**
+ * getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
+ * @global string $surveyid
+ * @global string $gid
+ * @global string $dbprefix
+ * @return returns an array of codes that were selected else returns false
+ */
+function getArrayFilterExcludesForQuestion($qid)
+{
+    static $cascadesCache = array();
+    static $cache = array();
+	
+	$CI = & get_instance();
+	$dbprefix = $CI->db->dbprefix;
+
+    // TODO: Check list_filter values to make sure questions are previous?
+    global $surveyid;
+    $qid=sanitize_int($qid);
+
+    if (isset($cache[$qid])) return $cache[$qid];
+
+    $attributes = getQuestionAttributes($qid);
+    $excludevals=array();
+    if (isset($attributes['array_filter_exclude'])) // We Found a array_filter_exclude attribute
+    {
+        $selected=array();
+        $excludevals[] = $attributes['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
+        /* Find any cascades and place them in the $excludevals array*/
+        if (!isset($cascadesCache[$surveyid])) {
+            $cascadesCache[$surveyid] = getArrayFilterExcludesCascadesForGroup($surveyid, "", "title");
+        }
+        $array_filterXqs_cascades = $cascadesCache[$surveyid];
+
+        if(isset($array_filterXqs_cascades[$qid]))
+        {
+            foreach($array_filterXqs_cascades[$qid] as $afc)
+            {
+                $excludevals[]=array("value"=>$afc);
+
+            }
+        }
+        /* For each $val (question title) that applies to this, check what values exist and add them to the $selected array */
+        foreach ($excludevals as $val)
+        {
+            foreach ($_SESSION['fieldarray'] as $fields) //iterate through every question in the survey
+            {
+                if ($fields[2] == $val)
+                {
+                    // we found the target question, now we need to know what the answers were!
+                    $fields[0]=sanitize_int($fields[0]);
+                    $query = "SELECT title FROM ".$CI->db->dbprefix('questions')." where parent_qid='{$fields[0]}' AND language='".$_SESSION['s_lang']."' order by question_order";
+                    $qresult = db_execute_assoc($query);  //Checked
+                    foreach ($qresult->result_array() as $code)
+                    {
+                        if (isset($_SESSION[$fields[1]]))
+                            if ((isset($_SESSION[$fields[1].$code['title']]) && $_SESSION[$fields[1].$code['title']] == "Y")
+                            || $_SESSION[$fields[1]] == $code['title'])
+                                array_push($selected,$code['title']);
+                    }
+                    //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
+                    $query = "SELECT other FROM ".$CI->db->dbprefix('questions')." where qid='{$fields[0]}'";
+                    $qresult = db_execute_assoc($query);
+                    foreach ($qresult->result_array() as $row) {$other=$row['other'];}
+                    if($other == "Y")
+                    {
+                        if($_SESSION[$fields[1].'other'] != "") {array_push($selected, "other");}
+                    }
+                }
+            }
+        }
+        if(count($selected) > 0)
+        {
+            $cache[$qid] = $selected;
+            return $cache[$qid];
+        } else {
+            $cache[$qid] = false;
+            return $cache[$qid];
+        }
+    }
+    $cache[$qid] = false;
+    return $cache[$qid];
+}
+
+/**
  * Unsets all Session variables to kill session
  */
 function killSession()  //added by Dennis
@@ -5782,8 +5904,10 @@ function killSession()  //added by Dennis
     // making dummy session variable check to destroy session completely!
     if($CI->session->userdata('loginID'))
     $CI->session->unset_userdata('loginID');
-		
-   /* // Delete the Session Cookie
+	
+	//This is necessary for frontend:
+	
+    // Delete the Session Cookie
     $CookieInfo = session_get_cookie_params();
     if ( (empty($CookieInfo['domain'])) && (empty($CookieInfo['secure'])) ) {
         setcookie(session_name(), '', time()-3600, $CookieInfo['path']);
@@ -5800,7 +5924,7 @@ function killSession()  //added by Dennis
     }
     $_SESSION = array(); // redundant with previous lines
     session_unset();
-    @session_destroy();*/
+    @session_destroy(); 
 }
 
 function CSVEscape($str)
@@ -7307,7 +7431,7 @@ function checkquestionfordisplay($qid, $gid=null)
                 ." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
                 $result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked
 				 */
-				$query2=$CI->questions->getSomeRecords("type, gid",array('qid'=>$row['cqid'],'language'=>$CI->session->userdata('s_lang')));
+				$query2=$CI->questions_model->getSomeRecords(array("type, gid"),array('qid'=>$row['cqid'],'language'=>$CI->session->userdata('s_lang')));
                 //while($row2=$result2->FetchRow())
                 foreach ($query2->result_array() as $row2)
                 {
@@ -7331,7 +7455,7 @@ function checkquestionfordisplay($qid, $gid=null)
                 ." WHERE qid={$row['cqid']} AND language='".$_SESSION['s_lang']."'";
                 $result2=db_execute_assoc($query2) or safe_die ("Coudn't get type from questions<br />$ccquery<br />".$connect->ErrorMsg());   //Checked
 				 */
-				 $query2=$CI->questions->getSomeRecords("type, gid",array('qid'=>$row['cqid'],'language'=>$CI->session->userdata('s_lang')));
+				 $query2=$CI->questions_model->getSomeRecords(array("type, gid"),array('qid'=>$row['cqid'],'language'=>$CI->session->userdata('s_lang')));
                 foreach ($query2->result_array() as $row2)
                 //while($row2=$result2->FetchRow())
                 {
@@ -8746,8 +8870,8 @@ function getHeader($meta = false)
     $CI->load->helper('surveytranslator');
     $clang = $CI->limesurvey_lang;
     
-    $js_header_includes = array_unique($CI->config->item("js_admin_includes"));
-    $css_header_includes = array_unique($CI->config->item("css_admin_includes"));
+    //$js_header_includes = array_unique($CI->config->item("js_admin_includes"));
+    //$css_header_includes = array_unique($CI->config->item("css_admin_includes"));
 
     if ($CI->session->userdata('s_lang'))
     {
@@ -8763,19 +8887,23 @@ function getHeader($meta = false)
     }
 
     $js_header = ''; $css_header='';
-    foreach ($CI->config->item("js_admin_includes") as $jsinclude)
-    {
-        if (substr($jsinclude,0,4) == 'http')
-            $js_header .= "<script type=\"text/javascript\" src=\"$jsinclude\"></script>\n";
-        else
-            $js_header .= "<script type=\"text/javascript\" src=\"".base_url()."$jsinclude\"></script>\n";
-    }
-
-    foreach ($CI->config->item("css_admin_includes") as $cssinclude)
-    {
-        $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".base_url().$cssinclude."\" />\n";
-    }
-
+    if($CI->config->item("js_admin_includes"))
+	{
+	    foreach ($CI->config->item("js_admin_includes") as $jsinclude)
+	    {
+	        if (substr($jsinclude,0,4) == 'http')
+	            $js_header .= "<script type=\"text/javascript\" src=\"$jsinclude\"></script>\n";
+	        else
+	            $js_header .= "<script type=\"text/javascript\" src=\"".base_url()."$jsinclude\"></script>\n";
+	    }
+	}
+	if($CI->config->item("css_admin_includes"))
+	{
+	    foreach ($CI->config->item("css_admin_includes") as $cssinclude)
+	    {
+	        $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".base_url().$cssinclude."\" />\n";
+	    }
+	}
 
     if ( !$embedded )
     {
@@ -8803,6 +8931,57 @@ function getHeader($meta = false)
 
     if ( function_exists( $embedded_headerfunc ) )
     return $embedded_headerfunc();
+}
+
+
+function doHeader()
+{
+    echo getHeader();
+}
+
+/**
+ * This function returns the header for the printable survey
+ * @return String
+ *
+ */
+function getPrintableHeader()
+{
+    global $rooturl,$homeurl;
+    $headelements = '
+            <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+            <script type="text/javascript" src="'.$rooturl.'/scripts/jquery/jquery.js"></script>
+            <script type="text/javascript" src="'.$homeurl.'/scripts/printablesurvey.js"></script>
+
+    <!--[if lt IE 7]>
+            <script type="text/javascript" src="'.$homeurl.'/scripts/DD_belatedPNG_0.0.8a-min.js"></script>
+            <script>
+  DD_belatedPNG.fix("img");
+</script>
+    <![endif]-->
+    ';
+    return $headelements;
+}
+
+// This function returns the Footer as result string
+// If you want to echo the Footer use doFooter() !
+function getFooter()
+{
+    global $embedded;
+
+    if ( !$embedded )
+    {
+        return "\n\n\t</body>\n</html>\n";
+    }
+
+    global $embedded_footerfunc;
+
+    if ( function_exists( $embedded_footerfunc ) )
+    return $embedded_footerfunc();
+}
+
+function doFooter()
+{
+    echo getFooter();
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

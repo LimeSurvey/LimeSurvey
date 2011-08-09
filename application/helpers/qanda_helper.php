@@ -47,14 +47,20 @@
  * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
  */
 
-if($shownoanswer > 0 && $thissurvey['shownoanswer'] != 'N')
+ /**
+  * setNoAnswerMode
+  */
+function setNoAnswerMode($thissurvey)
 {
-    define('SHOW_NO_ANSWER',1);
+	if(getGlobalSetting('shownoanswer') > 0 && $thissurvey['shownoanswer'] != 'N')
+	{
+	    define('SHOW_NO_ANSWER',1);
+	}
+	else
+	{
+	    define('SHOW_NO_ANSWER',0);
+	};
 }
-else
-{
-    define('SHOW_NO_ANSWER',0);
-};
 
 function retrieveConditionInfo($ia)
 {
@@ -81,7 +87,7 @@ function retrieveConditionInfo($ia)
         ."WHERE {$dbprefix}conditions.cqid={$dbprefix}questions.qid "
         ."AND {$dbprefix}conditions.qid=questionssrc.qid "
         ."AND {$dbprefix}conditions.qid=$ia[0] "
-        ."AND {$dbprefix}questions.language='".$CI->session->userdata('s_lang')."' "
+        ."AND {$dbprefix}questions.language='".$_SESSION['s_lang']."' "
         ."AND {$dbprefix}conditions.cfieldname NOT LIKE '{%' "
         ."ORDER BY {$dbprefix}conditions.scenario, "
         ."{$dbprefix}conditions.cqid, "
@@ -183,7 +189,7 @@ function retrieveJSidname($cd,$currentgid=null)
 
     if ($cd[4] == "L")
     {
-        $cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$CI->session->userdata('s_lang')."'";
+        $cccquery="SELECT code FROM {$dbprefix}answers WHERE qid={$cd[1]} AND language='".$_SESSION['s_lang']."'";
         $cccresult=db_execute_assoc($cccquery); // Checked
         $cccount=$cccresult->num_rows();
     }
@@ -322,7 +328,7 @@ function setman_ranking($ia)
 {
     $CI =& get_instance();
     $dbprefix = $CI->db->dbprefix;
-    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' ORDER BY sortorder, answer";
+    $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
     $ansresult = db_execute_assoc($ansquery);  //Checked
     $anscount = $ansresult->num_rows();
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
@@ -348,11 +354,11 @@ function setman_questionandcode($ia)
 {
     $CI =& get_instance();
     $dbprefix = $CI->db->dbprefix;
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."' and parent_qid=0";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     $qrow = $qresult->row_array();
     $other = $qrow['other'];
-    $subquestionquery = "SELECT title FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+    $subquestionquery = "SELECT title FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     $sqresult = db_execute_assoc($subquestionquery); //Checked
 
     foreach ($sqresult->row_array() as $subquestionrow)
@@ -393,9 +399,9 @@ function setman_multiflex($ia)
 
     $mandatorys=array();
     $mandatoryfns=array();
-    $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY question_order, title";
+    $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order, title";
     $ansresult = db_execute_assoc($ansquery);
-    $ans2query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' and scale_id=1 ORDER BY question_order, title";
+    $ans2query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order, title";
     $ans2result = db_execute_assoc($ans2query);
 
     foreach ($ans2result->result_array()as $ans2row)
@@ -458,7 +464,7 @@ function setman_questionandcode_multiscale($ia)
 {
     $CI =& get_instance();
     $dbprefix = $CI->db->dbprefix;
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."'";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
     foreach ($qresult->result_array() as $qrow)
     {
@@ -469,7 +475,7 @@ function setman_questionandcode_multiscale($ia)
     $subquery="SELECT * "
             ."FROM {$dbprefix}questions "
             ."WHERE parent_qid={$ia[0]} "
-            ."AND language='".$CI->session->userdata('s_lang')."' "
+            ."AND language='".$_SESSION['s_lang']."' "
             ."ORDER BY question_order";
     $subresult = db_execute_assoc($subquery); //Checked
 
@@ -478,7 +484,7 @@ function setman_questionandcode_multiscale($ia)
             ."FROM {$dbprefix}answers "
             ."WHERE qid={$ia[0]} "
             ."AND scale_id=0 "
-            ."AND language='".$CI->session->userdata('s_lang')."' "
+            ."AND language='".$_SESSION['s_lang']."' "
             ."ORDER BY sortorder";
     $ans1result = db_execute_assoc($ans1query);   //Checked
     $ans1count = $ans1result->num_rows();
@@ -488,7 +494,7 @@ function setman_questionandcode_multiscale($ia)
             ."FROM {$dbprefix}answers "
             ."WHERE qid={$ia[0]} "
             ."AND scale_id=1 "
-            ."AND language='".$CI->session->userdata('s_lang')."' "
+            ."AND language='".$_SESSION['s_lang']."' "
             ."ORDER BY sortorder";
     $ans2result = db_execute_assoc($ans2query);   //Checked
     $ans2count = $ans2result->num_rows();
@@ -556,18 +562,19 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
 
     $qtitle=$ia[3];
     //Replace INSERTANS statements with previously provided answers;
-    $qtitle=dTexts::run($qtitle);
+    $CI->load->library("Dtexts");
+    $qtitle=Dtexts::run($qtitle);
 
 
     //GET HELP
-    $hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."'";
+    $hquery="SELECT help FROM {$dbprefix}questions WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."'";
     $hresult=db_execute_assoc($hquery) or safe_die($connect->ErrorMsg());       //Checked
     $help="";
     $hrow=$hresult->row_array(); $help=reset($hrow);
 
     //A bit of housekeeping to stop PHP Notices
     $answer = "";
-    if (!$CI->session->userdata($ia[1])) {$CI->session->set_userdata($ia[1],"");}
+    if (!isset($_SESSION[$ia[1]])) {$_SESSION[$ia[1]] = "";}
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     //echo "<pre>";print_r($qidattributes);echo "</pre>";
     //Create the question/answer html
@@ -958,7 +965,7 @@ function validation_message($ia)
             $help='';
             $helpselect="SELECT help\n"
             ."FROM {$dbprefix}questions\n"
-            ."WHERE qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."'";
+            ."WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
             $helpresult=db_execute_assoc($helpselect) or safe_die($helpselect.'<br />'.$connect->ErrorMsg());     //Checked
             foreach ($helpresult->result_array() as $helprow)
             {
@@ -1086,9 +1093,9 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 	
     /* The following lines cover for previewing questions, because no $_SESSION['fieldarray'] exists.
      This just stops error messages occuring */
-    if(!$CI->session->userdata('fieldarray'))
+    if(!isset($_SESSION['fieldarray']))
     {
-        $CI->session->set_userdata('fieldarray', array());
+        $_SESSION['fieldarray'] = array();
     }
     /* End */
 
@@ -1170,8 +1177,8 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 		margin-bottom: 5px;
 		font-size: 8pt;";
     $timersessionname="timer_question_".$ia[0];
-    if($CI->session->userdata($timersessionname)) {
-        $time_limit=$CI->session->userdata($timersessionname);
+    if(isset($_SESSION[$timersessionname])) {
+        $time_limit=$_SESSION[$timersessionname];
     }
 
     $output = "
@@ -1208,7 +1215,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
         {
             global $gid;
             $qcount=0;
-            foreach($CI->session->userdata('fieldarray') as $ib)
+            foreach($_SESSION['fieldarray'] as $ib)
             {
                 if($ib[5] == $gid)
                 {
@@ -1507,7 +1514,7 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
             } else {
                 $hiddenfield = "<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />\n";
             }
-            $CI->session->set_userdata($valuename, ''); //Remove any saved results for this since it is no longer being displayed
+            $_SESSION[$valuename] = ''; //Remove any saved results for this since it is no longer being displayed
         }
         else
         {
@@ -1603,7 +1610,7 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
             } else {
             $hiddenfield="\n<input type='hidden' name='tbdisp$rowname' id='tbdisp$rowname' value='off' />";
             }
-            $CI->session->set_userdata($valuename, ''); //Remove any saved results for this since it is no longer being displayed
+            $_SESSION[$valuename] = ''; //Remove any saved results for this since it is no longer being displayed
         }
     }
     else
@@ -1642,7 +1649,7 @@ function do_boilerplate($ia)
         $answer .= return_timer_script($qidattributes, $ia);
     }
 
-    $answer .= '<input type="hidden" name="$ia[1]" id="answer'.$ia[1].'" value="" />';
+    $answer .= '<input type="hidden" name="'.$ia[1].'" id="answer'.$ia[1].'" value="" />';
     $inputnames[]=$ia[1];
 
     return array($answer, $inputnames);
@@ -1672,7 +1679,7 @@ function do_5pointchoice($ia)
     for ($fp=1; $fp<=5; $fp++)
     {
         $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer$ia[1]$fp\" value=\"$fp\"";
-        if ($CI->session->userdata($ia[1]) == $fp)
+        if ($_SESSION[$ia[1]] == $fp)
         {
             $answer .= CHECKED;
         }
@@ -1682,14 +1689,14 @@ function do_5pointchoice($ia)
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
         $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"NoAnswer\" value=\"\"";
-        if (!$CI->session->userdata($ia[1]))
+        if (!isset($_SESSION[$ia[1]]))
         {
             $answer .= CHECKED;
         }
         $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"NoAnswer\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
 
     }
-    $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$CI->session->userdata($ia[1])."\" />\n";
+    $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION[$ia[1]]."\" />\n";
     $inputnames[]=$ia[1];
     if($qidattributes['slider_rating']==1){
     	$css_header_includes[]= '/admin/scripts/rating/jquery.rating.css';
@@ -1720,10 +1727,10 @@ function do_5pointchoice($ia)
     }
     
     if($qidattributes['slider_rating']==2){
-	    if(!$CI->session->userdata($ia[1]) OR $CI->session->userdata($ia[1])==''){
+	    if(!isset($_SESSION[$ia[1]]) OR $_SESSION[$ia[1]]==''){
 	    	$value=1;
 	    }else{
-	    	$value=$CI->session->userdata($ia[1]);
+	    	$value=$_SESSION[$ia[1]];
 	    }
     	$answer.="
     		<div style=\"float:left;\">
@@ -1801,9 +1808,9 @@ function do_date($ia)
     $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
 
     if (trim($qidattributes['dropdown_dates'])!=0) {
-        if (!empty($CI->session->userdata($ia[1])))
+        if (!empty($_SESSION[$ia[1]]))
         {
-            $datetimeobj = getdate(DateTime::createFromFormat("Y-m-d H:i:s", $CI->session->userdata($ia[1]))->getTimeStamp());
+            $datetimeobj = getdate(DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION[$ia[1]])->getTimeStamp());
             $currentyear = $datetimeobj['year'];
             $currentmonth = $datetimeobj['mon'];
             $currentdate = $datetimeobj['mday'];
@@ -2018,7 +2025,7 @@ function do_date($ia)
             }
         }
 
-        $answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$CI->session->userdata($ia[1]).'" maxlength="10" alt="'.$clang->gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+        $answer .= '<input class="text" type="text" size="10" name="'.$ia[1].'" style="display: none" id="answer'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" maxlength="10" alt="'.$clang->gT('Answer').'" onchange="'.$checkconditionFunction.'(this.value, this.name, this.type)" />
 			</p>';
         $answer .= '<input type="hidden" name="qattribute_answer[]" value="'.$ia[1].'" />
 			        <input type="hidden" id="qattribute_answer'.$ia[1].'" name="qattribute_answer'.$ia[1].'" />
@@ -2033,9 +2040,9 @@ function do_date($ia)
         $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
 
         // Format the date  for output
-        if (trim($CI->session->userdata($ia[1]))!='')
+        if (trim($_SESSION[$ia[1]])!='')
         {
-            $dateoutput = DateTime::createFromFormat("Y-m-d H:i:s", $CI->session->userdata($ia[1]))->format($dateformatdetails['phpdate']);
+            $dateoutput = DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION[$ia[1]])->format($dateformatdetails['phpdate']);
         }
         else
         {
@@ -2109,18 +2116,18 @@ function do_language($ia)
     $answerlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $answerlangs [] = GetBaseLanguageFromSurveyID($surveyid);
     $answer = "\n\t<p class=\"question\">\n<select name=\"$ia[1]\" id=\"answer$ia[1]\" onchange=\"document.getElementById('lang').value=this.value; $checkconditionFunction(this.value, this.name, this.type);\">\n";
-    if (!$CI->session->userdata($ia[1])) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
+    if (!$_SESSION[$ia[1]]) {$answer .= "\t<option value=\"\" selected=\"selected\">".$clang->gT('Please choose...')."</option>\n";}
     foreach ($answerlangs as $ansrow)
     {
         $answer .= "\t<option value=\"{$ansrow}\"";
-        if ($CI->session->userdata($ia[1]) == $ansrow)
+        if ($_SESSION[$ia[1]] == $ansrow)
         {
             $answer .= SELECTED;
         }
         $answer .= '>'.getLanguageNameFromCode($ansrow, true)."</option>\n";
     }
     $answer .= "</select>\n";
-    $answer .= "<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$CI->session->userdata($ia[1])."\" />\n";
+    $answer .= "<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION[$ia[1]]."\" />\n";
 
     $inputnames[]=$ia[1];
     $answer .= "\n<input type=\"hidden\" name=\"lang\" id=\"lang\" value=\"\" />\n\t</p>\n";
@@ -2168,24 +2175,24 @@ function do_list_dropdown($ia)
     $answer='';
 
 
-    $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."' ";
+    $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
     $result = db_execute_assoc($query);      //Checked
     $row = $result->row_array(); $other = $row['other'];
 
     //question attribute random order set?
     if ($qidattributes['random_order']==1)
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
     }
     //question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY answer";
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
     }
     //no question attributes -> order by sortorder
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
 
     $ansresult = db_execute_assoc($ansquery) or safe_die('Couldn\'t get answers<br />'.$ansquery.'<br />'.$connect->ErrorMsg());    //Checked
@@ -2195,7 +2202,7 @@ function do_list_dropdown($ia)
         foreach ($ansresult->result_array() as $ansrow)
         {
             $opt_select = '';  
-            if ($CI->session->userdata($ia[1]) == $ansrow['code'])
+            if ($_SESSION[$ia[1]] == $ansrow['code'])
             {
                 $opt_select = SELECTED;
             }
@@ -2230,7 +2237,7 @@ function do_list_dropdown($ia)
 
             foreach ($optionlistarray as $optionarray)
             {
-                if ($CI->session->userdata($ia[1]) == $optionarray['code'])
+                if ($_SESSION[$ia[1]] == $optionarray['code'])
                 {
                     $opt_select = SELECTED;
                 }
@@ -2248,7 +2255,7 @@ function do_list_dropdown($ia)
         $opt_select='';
         foreach ($defaultopts as $optionarray)
         {
-            if ($CI->session->userdata($ia[1]) == $optionarray['code'])
+            if ($_SESSION[$ia[1]] == $optionarray['code'])
             {
                 $opt_select = SELECTED;
             }
@@ -2262,14 +2269,14 @@ function do_list_dropdown($ia)
         }
     }
 
-    if (!$CI->session->userdata($ia[1]))
+    if (!$_SESSION[$ia[1]])
     {
         $answer = '					<option value=""'.SELECTED.'>'.$clang->gT('Please choose...').'</option>'."\n".$answer;
     }
 
     if (isset($other) && $other=='Y')
     {
-        if ($CI->session->userdata($ia[1]) == '-oth-')
+        if ($_SESSION[$ia[1]] == '-oth-')
         {
             $opt_select = SELECTED;
         }
@@ -2280,12 +2287,12 @@ function do_list_dropdown($ia)
         $answer .= '					<option value="-oth-"'.$opt_select.'>'.$othertext."</option>\n";
     }
 
-    if (($CI->session->userdata($ia[1]) || $CI->session->userdata($ia[1]) != '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
+    if (($_SESSION[$ia[1]] || $_SESSION[$ia[1]] != '') && $ia[6] != 'Y' && $ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         $answer .= '<option value="">'.$clang->gT('No answer')."</option>\n";
     }
     $answer .= '				</select>
-				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$CI->session->userdata($ia[1]).'" />';
+				<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" />';
 
     if (isset($other) && $other=='Y')
     {
@@ -2324,7 +2331,7 @@ function do_list_dropdown($ia)
 
         $inputnames[]=$ia[1].'other';
 
-        if ($CI->session->userdata($ia[1]) != '-oth-')
+        if ($_SESSION[$ia[1]] != '-oth-')
         {
             $answer .= 'none';
         }
@@ -2338,7 +2345,7 @@ function do_list_dropdown($ia)
         // --> START NEW FEATURE - SAVE
         $answer .= "  alt='".$clang->gT('Other answer')."' onchange='$checkconditionFunction(this.value, this.name, this.type);'";
         $thisfieldname="$ia[1]other";
-        if ($CI->session->userdata($thisfieldname)) { $answer .= " value='".htmlspecialchars($CI->session->userdata($thisfieldname),ENT_QUOTES)."' ";}
+        if ($_SESSION[$thisfieldname]) { $answer .= " value='".htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES)."' ";}
         $answer .= ' />';
         $answer .= "</p>";
         // --> END NEW FEATURE - SAVE
@@ -2407,48 +2414,45 @@ function do_list_radio($ia)
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
-    $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."' ";
+    $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
     $result = db_execute_assoc($query);  //Checked
     foreach ($result->result_array() as $row)
     {
         $other = $row['other'];
     }
 	
-	$sessionao = $CI->session->userdata('answer_order');
-
     //question attribute random order set?
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
     }
-    elseif ($qidattributes['random_order']==2 && !isset($sessionao[$ia[0]])) {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY ".db_random();
+    elseif ($qidattributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
-        $sessionao[$ia[0]]=$ansresult;
-        $CI->session->set_userdata('answer_order',$sessionao);
+        $_SESSION['answer_order'][$ia[0]]=$ansresult;    
     }
-    elseif (isset($sessionao[$ia[0]]))
+    elseif (isset($_SESSION['answer_order'][$ia[0]]))
     {
-            $ansresult = $sessionao[$ia[0]];  //Checked
+            $ansresult = $_SESSION['answer_order'][$ia[0]];  //Checked
     }
-
+	
     //question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY answer";
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
     }
 
     //no question attributes -> order by sortorder
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
         $ansresult = db_execute_assoc($ansquery)->result_array();;  //Checked
     }
 
     $anscount = count($ansresult);
 
-    if (trim($qidattributes['parent_order']!=''))
+    if (trim($qidattributes['parent_order'])!='')
     {
         $iParentQID=(int) $qidattributes['parent_order'];
         $aResult=array();
@@ -2500,7 +2504,7 @@ function do_list_radio($ia)
     {
         $myfname = $ia[1].$ansrow['code'];
         $check_ans = '';
-        if ($CI->session->userdata($ia[1]) == $ansrow['code'])
+        if ($_SESSION[$ia[1]] == $ansrow['code'])
         {
             $check_ans = CHECKED;
         }
@@ -2552,7 +2556,7 @@ function do_list_radio($ia)
         }
 
 
-        if ($CI->session->userdata($ia[1]) == '-oth-')
+        if ($_SESSION[$ia[1]] == '-oth-')
         {
             $check_ans = CHECKED;
         }
@@ -2562,9 +2566,9 @@ function do_list_radio($ia)
         }
 
         $thisfieldname=$ia[1].'other';
-        if ($CI->session->userdata($thisfieldname))
+        if ($_SESSION[$thisfieldname])
         {
-            $answer_other = ' value="'.htmlspecialchars($CI->session->userdata($thisfieldname),ENT_QUOTES).'"';
+            $answer_other = ' value="'.htmlspecialchars($_SESSION[$thisfieldname],ENT_QUOTES).'"';
         }
         else
         {
@@ -2608,7 +2612,7 @@ function do_list_radio($ia)
 
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
-        if ((!$CI->session->userdata($ia[1]) || $CI->session->userdata($ia[1]) == '') || ($CI->session->userdata($ia[1]) == ' ' ))
+        if ((!$_SESSION[$ia[1]] || $_SESSION[$ia[1]] == '') || ($_SESSION[$ia[1]] == ' ' ))
         {
             $check_ans = CHECKED; //Check the "no answer" radio button if there is no answer in session.
         }
@@ -2641,7 +2645,7 @@ function do_list_radio($ia)
     }
     //END OF ITEMS
     $answer .= $wrapper['whole-end'].'
-<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$CI->session->userdata($ia[1])."\" />\n";
+<input type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$_SESSION[$ia[1]]."\" />\n";
 
     $checkotherscript = "";
 
@@ -2699,17 +2703,17 @@ function do_listwithcomment($ia)
 
     //question attribute random order set?
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
     }
     //question attribute alphasort set?
     elseif ($qidattributes['alphasort']==1)
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY answer";
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
     }
     //no question attributes -> order by sortorder
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
 
     $ansresult = db_execute_assoc($ansquery);      //Checked
@@ -2727,7 +2731,7 @@ function do_listwithcomment($ia)
         foreach ($ansresult->result_array() as $ansrow)
         {
             $check_ans = '';
-            if ($CI->session->userdata($ia[1]) == $ansrow['code'])
+            if ($_SESSION[$ia[1]] == $ansrow['code'])
             {
                 $check_ans = CHECKED;
             }
@@ -2740,11 +2744,11 @@ function do_listwithcomment($ia)
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            if ((!$CI->session->userdata($ia[1]) || $CI->session->userdata($ia[1]) == '') ||($CI->session->userdata($ia[1]) == ' ' ))
+            if ((!$_SESSION[$ia[1]] || $_SESSION[$ia[1]] == '') ||($_SESSION[$ia[1]] == ' ' ))
             {
                 $check_ans = CHECKED;
             }
-            elseif (($CI->session->userdata($ia[1]) || $CI->session->userdata($ia[1]) != ''))
+            elseif (($_SESSION[$ia[1]] || $_SESSION[$ia[1]] != ''))
             {
                 $check_ans = '';
             }
@@ -2770,14 +2774,14 @@ function do_listwithcomment($ia)
 
 	<textarea class="textarea" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.floor($tarows).'" cols="30" >';
         // --> END NEW FEATURE - SAVE
-        if ($CI->session->userdata($fname2) && $CI->session->userdata($fname2))
+        if (isset($_SESSION[$fname2]) && $_SESSION[$fname2])
         {
-            $answer .= str_replace("\\", "", $CI->session->userdata($fname2));
+            $answer .= str_replace("\\", "", $_SESSION[$fname2]);
         }
         $answer .= '</textarea>
 </p>
 
-<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$CI->session->userdata($ia[1])."\" />
+<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$_SESSION[$ia[1]]."\" />
 ";
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';
@@ -2792,7 +2796,7 @@ function do_listwithcomment($ia)
         foreach ($ansresult->result_array() as $ansrow)
         {
             $check_ans = '';
-            if ($CI->session->userdata($ia[1]) == $ansrow['code'])
+            if ($_SESSION[$ia[1]] == $ansrow['code'])
             {
                 $check_ans = SELECTED;
             }
@@ -2805,11 +2809,11 @@ function do_listwithcomment($ia)
         }
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
         {
-            if ((!$CI->session->userdata($ia[1]) || $CI->session->userdata($ia[1]) == '') ||($CI->session->userdata($ia[1]) == ' '))
+            if ((!$_SESSION[$ia[1]] || $_SESSION[$ia[1]] == '') ||($_SESSION[$ia[1]] == ' '))
             {
                 $check_ans = SELECTED;
             }
-            elseif ($CI->session->userdata($ia[1]) || $CI->session->userdata($ia[1]) != '')
+            elseif ($_SESSION[$ia[1]] || $_SESSION[$ia[1]] != '')
             {
                 $check_ans = '';
             }
@@ -2828,12 +2832,12 @@ function do_listwithcomment($ia)
 	'.$hint_comment.'
 	<textarea class="textarea" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.$tarows.'" cols="'.$maxoptionsize.'" >';
         // --> END NEW FEATURE - SAVE
-        if ($CI->session->userdata($fname2))
+        if (isset($_SESSION[$fname2]) && $_SESSION[$fname2])
         {
-            $answer .= str_replace("\\", "", $CI->session->userdata($fname2));
+            $answer .= str_replace("\\", "", $_SESSION[$fname2]);
         }
         $answer .= '</textarea>
-	<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]." value=\"".$CI->session->userdata($fname2)."\" />\n</p>\n";
+	<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]." value=\"{$_SESSION[$ia[1]]}\" />\n</p>\n";
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';
     }
@@ -2865,9 +2869,9 @@ function do_ranking($ia)
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     $answer="";
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
     } else {
-        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY sortorder, answer";
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
     $ansresult = db_execute_assoc($ansquery);   //Checked
     $anscount= $ansresult->num_rows();
@@ -2955,7 +2959,7 @@ function do_ranking($ia)
     for ($i=1; $i<=$anscount; $i++)
     {
         $myfname=$ia[1].$i;
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
         {
             $existing++;
         }
@@ -2963,11 +2967,11 @@ function do_ranking($ia)
     for ($i=1; $i<=$max_answers; $i++)
     {
         $myfname = $ia[1].$i;
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
         {
             foreach ($answers as $ans)
             {
-                if ($ans[0] == $CI->session->userdata($myfname))
+                if ($ans[0] == $_SESSION[$myfname])
                 {
                     $thiscode=$ans[0];
                     $thistext=$ans[1];
@@ -2976,7 +2980,7 @@ function do_ranking($ia)
         }
         $ranklist .= "\t<tr><td class=\"position\">&nbsp;<label for='RANK_{$ia[0]}$i'>"
         ."$i:&nbsp;</label></td><td class=\"item\"><input class=\"text\" type=\"text\" name=\"RANK_{$ia[0]}$i\" id=\"RANK_{$ia[0]}$i\"";
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]))
         {
             $ranklist .= " value='";
             $ranklist .= htmlspecialchars($thistext, ENT_QUOTES);
@@ -2985,7 +2989,7 @@ function do_ranking($ia)
         $ranklist .= " onfocus=\"this.blur()\" />\n";
         $ranklist .= "<input type=\"hidden\" name=\"$myfname\" id=\"fvalue_{$ia[0]}$i\" value='";
         $chosen[]=""; //create array
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]))
         {
             $ranklist .= $thiscode;
             $chosen[]=array($thiscode, $thistext);
@@ -3214,28 +3218,26 @@ function do_multiplechoice($ia)
         ;
     }
 	
-	$sessionao = $CI->session->userdata("answer_order");
-
-    $qquery = "SELECT other FROM ".$CI->db->dbprefix('questions')." WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."' and parent_qid=0";
+    $qquery = "SELECT other FROM ".$CI->db->dbprefix('questions')." WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
     }
-    elseif ($qidattributes['random_order']==2 && !isset($sessionao[$ia[0]])) {
-        $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+    elseif ($qidattributes['random_order']==2 && !isset($_SESSION["answer_order"][$ia[0]])) {
+        $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
-        $sessionao[$ia[0]]=$ansresult;    
+        $_SESSION["answer_order"]=$ansresult;    
     }
-    elseif (isset($sessionao[$ia[0]]))
+    elseif (isset($_SESSION["answer_order"][$ia[0]]))
     {
-            $ansresult = $sessionao['answer_order'][$ia[0]];  //Checked
+            $ansresult = $_SESSION["answer_order"][$ia[0]];  //Checked
     }
     else
     {
-        $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
     }
 
@@ -3310,9 +3312,9 @@ function do_multiplechoice($ia)
         $answer .= '		<input class="checkbox" type="checkbox" name="'.$ia[1].$ansrow['title'].'" id="answer'.$ia[1].$ansrow['title'].'" value="Y"';
 
         /* If the question has already been ticked, check the checkbox */
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]))
         {
-            if ($CI->session->userdata($myfname) == 'Y')
+            if ($_SESSION[$myfname] == 'Y')
             {
                 $answer .= CHECKED;
                 if(in_array($ansrow['title'], $excludeallothers))
@@ -3363,9 +3365,9 @@ function do_multiplechoice($ia)
         ++$fn;
         /* Now add the hidden field to contain information about this answer */
         $answer .= '		<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]))
         {
-            $answer .= $CI->session->userdata($myfname);
+            $answer .= $_SESSION[$myfname];
         }
         $answer .= "\" />\n{$wrapper['item-end']}";
 
@@ -3417,7 +3419,7 @@ function do_multiplechoice($ia)
 		$answer .= $hiddenfield.'
 		<input class="checkbox" type="checkbox" name="'.$myfname.'cbox" alt="'.$clang->gT('Other').'" id="answer'.$myfname.'cbox"';
 
-        if ($CI->session->userdata($myfname) && trim($CI->session->userdata($myfname))!='')
+        if (isset($_SESSION[$myfname]) && trim($_SESSION[$myfname])!='')
         {
             $answer .= CHECKED;
         }
@@ -3427,9 +3429,9 @@ function do_multiplechoice($ia)
         $answer .= "' />
 		<label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
 		<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]))
         {
-            $answer .= ' value="'.htmlspecialchars($CI->session->userdata($myfname),ENT_QUOTES).'"';
+            $answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
         }
         $answer .= " onkeyup='$checkconditionFunction(this.value, this.name, this.type);'";
         $answer .= " onkeypress='if ($.trim($(\"#answer{$myfname}\").val())!=\"\") {document.getElementById(\"answer{$myfname}cbox\").checked=true;}$numbersonly' ".$callmaxanswscriptother.' />
@@ -3473,9 +3475,9 @@ function do_multiplechoice($ia)
         }
 
 
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]))
         {
-            $answer .= htmlspecialchars($CI->session->userdata($myfname),ENT_QUOTES);
+            $answer .= htmlspecialchars($_SESSION[$myfname],ENT_QUOTES);
         }
 
         $answer .= "\" />\n{$wrapper['item-end']}";
@@ -3680,13 +3682,13 @@ function do_multiplechoice_withcomments($ia)
         ;
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."' and parent_qid=0";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     } else {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);  //Checked
     $anscount = $ansresult->num_rows()*2;
@@ -3727,9 +3729,9 @@ function do_multiplechoice_withcomments($ia)
         . "\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 
         /* If the question has already been ticked, check the checkbox */
-        if ($CI->session->userdata($myfname))
+        if ($_SESSION[$myfname])
         {
-            if ($CI->session->userdata($myfname) == 'Y')
+            if ($_SESSION[$myfname] == 'Y')
             {
                 $answer_main .= CHECKED;
             }
@@ -3742,15 +3744,15 @@ function do_multiplechoice_withcomments($ia)
         if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
         $answer_main .= "<input type='hidden' name='java$myfname' id='java$myfname' value='";
-        if ($CI->session->userdata($myfname))
+        if ($_SESSION[$myfname])
         {
-            $answer_main .= $CI->session->userdata($myfname);
+            $answer_main .= $_SESSION[$myfname];
         }
         $answer_main .= "' />\n";
         $fn++;
         $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment\">\n"
         ."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
-        if ($CI->session->userdata($myfname2)) {$answer_main .= htmlspecialchars($CI->session->userdata($myfname2),ENT_QUOTES);}
+        if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
         $answer_main .= "'  onclick='cancelBubbleThis(event);' onkeyup='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
 
@@ -3768,9 +3770,9 @@ function do_multiplechoice_withcomments($ia)
         $anscount = $anscount + 2;
         $answer_main .= "\t<li class=\"other\">\n<span class=\"option\">\n"
         . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
-        if ($CI->session->userdata($myfname))
+        if ($_SESSION[$myfname])
         {
-            $answer_main .= ' value="'.htmlspecialchars($CI->session->userdata($myfname),ENT_QUOTES).'"';
+            $answer_main .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
         }
         $fn++;
         // --> START NEW FEATURE - SAVE
@@ -3780,7 +3782,7 @@ function do_multiplechoice_withcomments($ia)
 				<input class="text" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
         // --> END NEW FEATURE - SAVE
 
-        if ($CI->session->userdata($myfname2)) {$answer_main .= htmlspecialchars($CI->session->userdata($myfname2),ENT_QUOTES);}
+        if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
         $answer_main .= '" onkeyup="'.$callmaxanswscriptcheckbox2.'(document.getElementById(\'answer'.$myfname."'))\" />\n";
 
@@ -3914,48 +3916,47 @@ function do_file_upload($ia)
 
     // Fetch question attributes
     if (trim($qidattributes['max_num_of_files'])!='')
-        $CI->session->set_userdata('maxfiles', $qidattributes['max_num_of_files']);
+        $_SESSION['maxfiles']=$qidattributes['max_num_of_files'];
 
     if (trim($qidattributes['min_num_of_files'])!='')
-        $CI->session->set_userdata('minfiles', $qidattributes['min_num_of_files']);
+        $_SESSION['minfiles']=$qidattributes['min_num_of_files'];
 
     if (trim($qidattributes['max_filesize'])!='')
-        $CI->session->set_userdata('maxfilesize', $qidattributes['max_filesize']);
+        $_SESSION['maxfilesize']=$qidattributes['max_filesize'];
 
     if (trim($qidattributes['allowed_filetypes'])!='')
-        $CI->session->set_userdata('allowed_filetypes', $qidattributes['allowed_filetypes']);
+        $_SESSION['allowed_filetypes']=$qidattributes['allowed_filetypes'];
 
     if (trim($qidattributes['show_title'])!='')
-        $CI->session->set_userdata('show_title', $qidattributes['show_title']);
+        $_SESSION['show_title'] = $qidattributes['show_title'];
 
     if (trim($qidattributes['show_comment'])!='')
-        $CI->session->set_userdata('show_comment', $qidattributes['show_comment']);
+        $_SESSION['show_comment'] = $qidattributes['show_comment'];
 
-    $CI->session->set_userdata('fieldname', $ia[1]);
-    
+    $_SESSION['fieldname'] = $ia[1];    
     // Basic uploader
     $basic  = '<br /><br /><table border="0" cellpadding="10" cellspacing="10" align="center">'
                     .'<tr>';
-    if ($CI->session->userdata('show_title')) { $basic .= '<th align="center"><b>Title</b></th><th>&nbsp;&nbsp;</th>'; }
-    if ($CI->session->userdata('show_comment')) { $basic .= '<th align="center"><b>Comment</b></th><th>&nbsp;&nbsp;</th>'; }
+    if (isset($_SESSION['show_title'])) { $basic .= '<th align="center"><b>Title</b></th><th>&nbsp;&nbsp;</th>'; }
+    if (isset($_SESSION['show_comment'])) { $basic .= '<th align="center"><b>Comment</b></th><th>&nbsp;&nbsp;</th>'; }
     $basic .=           '<th align="center"><b>Select file</b></th>'
                     .'</tr>'
                     .'<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>'
                     .'<tbody>';
 
-    for ($i = 1; $i <= $CI->session->userdata('maxfiles'); $i++) {
+    for ($i = 1; $i <= $_SESSION['maxfiles']; $i++) {
          $basic .= '<tr>'
                         .'<td>';
-         if ($CI->session->userdata('show_title'))
+         if (isset($_SESSION['show_title']))
              $basic .=      '<input class="basic_'.$ia[1].'" type="text" name="'.$ia[1].'_title_'.$i
-                            .'" id="'.$ia[1].'_title_'.$i.'" value="'.$CI->session->userdata($ia[1])
+                            .'" id="'.$ia[1].'_title_'.$i.'" value="'.$_SESSION[$ia[1]]
                             .'" maxlength="100" />'
                         .'</td>'
                         .'<td>&nbsp;&nbsp;</td>';
-         if ($CI->session->userdata('show_comment'))
+         if (isset($_SESSION['show_comment']))
              $basic .=  '<td>'
                             .'<input class="basic_'.$ia[1].'" type="textarea" name="'.$ia[1].'_comment_'.$i
-                            .'" id="'.$ia[1].'_comment_'.$i.'" value="'.$CI->session->userdata($ia[1])
+                            .'" id="'.$ia[1].'_comment_'.$i.'" value="'.$_SESSION[$ia[1]]
                             .'" maxlength="100" />'
                         .'</td>'
                         .'<td>&nbsp;&nbsp;</td>';
@@ -3976,19 +3977,19 @@ function do_file_upload($ia)
 
     if ($pos)
     {
-        $CI->session->userdata('preview', 1);
+        $_SESSION['preview'] = 1 ;
         $questgrppreview = 1;   // Preview is launched from Question or group level
         $scriptloc = '../uploader.php';
     }
     else if ($thissurvey['active'] != "Y")
     {
-        $CI->session->userdata('preview', 1);
+        $_SESSION['preview'] = 1;
         $questgrppreview = 0;
         $scriptloc = 'uploader.php';
     }
     else
     {
-        $CI->session->userdata('preview', 0);
+        $_SESSION['preview'] = 0;
         $questgrppreview = 0;
         $scriptloc = 'uploader.php';
     }
@@ -4097,8 +4098,8 @@ function do_file_upload($ia)
                         {
                             jsonobj = eval('(' + jsonstring + ')');
                             var display = '<table width=\"100%\"><tr><th align=\"center\" width=\"20%\">&nbsp;</th>";
-                            if ($CI->session->userdata('show_title')) { $answer .= "<th align=\"center\"><b>Title</b></th>"; }
-                            if ($CI->session->userdata('show_comment')) { $answer .= "<th align=\"center\"><b>Comment</b></th>"; }
+                            if (isset($_SESSION['show_title'])) { $answer .= "<th align=\"center\"><b>Title</b></th>"; }
+                            if (isset($_SESSION['show_comment'])) { $answer .= "<th align=\"center\"><b>Comment</b></th>"; }
                             $answer .= "<th align=\"center\"><b>Name</b></th></tr>';";
 
                 $answer .= "var image_extensions = new Array('gif', 'jpeg', 'jpg', 'png', 'swf', 'psd', 'bmp', 'tiff', 'jp2', 'iff', 'bmp', 'xbm', 'ico');
@@ -4121,9 +4122,9 @@ function do_file_upload($ia)
                                                     display += '<tr><td><img src=\"images/placeholder.png\" height=100px  align=\"center\"/></td>';";
                                 }
 
-                                if ($CI->session->userdata('show_title'))
+                                if (isset($_SESSION['show_title']))
                                     $answer .= "display += '<td>'+jsonobj[i].title+'</td>';";
-                                if ($CI->session->userdata('show_comment'))
+                                if (isset($_SESSION['show_comment']))
                                     $answer .= "display += '<td>'+jsonobj[i].comment+'</td>';";
 
         $answer .= "            display += '<td>'+decodeURIComponent(jsonobj[i].name)+'</td><td>" . $editbutton . "</td></tr>';
@@ -4145,11 +4146,11 @@ function do_file_upload($ia)
 
     $answer .= $uploadbutton;
 
-    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".$CI->session->userdata($ia[1])."' />";
+    $answer .= "<input type='hidden' id='".$ia[1]."' name='".$ia[1]."' value='".$_SESSION[$ia[1]]."' />";
     $answer .= "<input type='hidden' id='".$ia[1]."_filecount' name='".$ia[1]."_filecount' value=";
 
-    if ($CI->session->userdata($ia[1]."_filecount"))
-        $answer .= $CI->session->userdata($ia[1]."_filecount")." />";
+    if (isset($_SESSION[$ia[1]."_filecount"]))
+        $answer .= $_SESSION[$ia[1]."_filecount"]." />";
     else
         $answer .= "0 />";
 
@@ -4174,7 +4175,7 @@ function do_file_upload($ia)
                         var i;
                         var jsonstring = "[";
 
-                        for (i = 1, filecount = 0; i <= '.$CI->session->userdata('maxfiles').'; i++)
+                        for (i = 1, filecount = 0; i <= '.$_SESSION['maxfiles'].'; i++)
                         {
                             if ($("#'.$ia[1].'_"+i).val() == "")
                                 continue;
@@ -4186,12 +4187,12 @@ function do_file_upload($ia)
                             if ($("#answer'.$ia[1].'_"+i).val() != "")
                                 jsonstring += "{';
 
-    if ($CI->session->userdata('show_title'))
+    if (isset($_SESSION['show_title']))
         $answer .= '\"title\":\""+$("#'.$ia[1].'_title_"+i).val()+"\",';
     else
         $answer .= '\"title\":\"\",';
 
-    if ($CI->session->userdata('show_comment'))
+    if (isset($_SESSION['show_comment']))
         $answer .= '\"comment\":\""+$("#'.$ia[1].'_comment_"+i).val()+"\",';
     else
         $answer .= '\"comment\":\"\",';
@@ -4286,11 +4287,11 @@ function do_multipleshorttext($ia)
     }
 
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = db_execute_assoc($ansquery);    //Checked
@@ -4352,9 +4353,9 @@ function do_multipleshorttext($ia)
                     $label_width = strlen(trim(strip_tags($ansrow['question'])));
                 }
 
-                if ($CI->session->userdata($myfname))
+                if (isset($_SESSION[$myfname]))
                 {
-                    $answer_main .= $CI->session->userdata($myfname);
+                    $answer_main .= $_SESSION[$myfname];
                 }
 
                 $answer_main .= "</textarea>\n".$suffix."\n\t</span>\n"
@@ -4380,9 +4381,9 @@ function do_multipleshorttext($ia)
                     $label_width = strlen(trim(strip_tags($ansrow['question'])));
                 }
 
-                if ($CI->session->userdata($myfname))
+                if (isset($_SESSION[$myfname]))
                 {
-                    $answer_main .= $CI->session->userdata($myfname);
+                    $answer_main .= $_SESSION[$myfname];
                 }
 
                 // --> START NEW FEATURE - SAVE
@@ -4440,9 +4441,9 @@ function do_multiplenumeric($ia)
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
         $calculateValue[]=3;
     }
-    elseif (trim($qidattributes['num_value_equals_sgqa'])!='' && $CI->session->userdata($qidattributes['num_value_equals_sgqa']))
+    elseif (trim($qidattributes['num_value_equals_sgqa'])!='' && isset($_SESSION[$qidattributes['num_value_equals_sgqa']]))
     {
-        $equals_num_value=$CI->session->userdata($qidattributes['num_value_equals_sgqa']);
+        $equals_num_value=$_SESSION[$qidattributes['num_value_equals_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
         $calculateValue[]=3;
     }
@@ -4457,8 +4458,8 @@ function do_multiplenumeric($ia)
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
         $calculateValue[]=2;
     }
-    elseif (trim($qidattributes['min_num_value_sgqa'])!='' && $CI->session->userdata($qidattributes['min_num_value_sgqa'])){
-        $min_num_value=$CI->session->userdata($qidattributes['min_num_value_sgqa']);
+    elseif (trim($qidattributes['min_num_value_sgqa'])!='' && isset($_SESSION[$qidattributes['min_num_value_sgqa']])){
+        $min_num_value=$_SESSION[$qidattributes['min_num_value_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
         $calculateValue[]=2;
     }
@@ -4473,8 +4474,8 @@ function do_multiplenumeric($ia)
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(1)';
         $calculateValue[]=1;
     }
-    elseif (trim($qidattributes['max_num_value_sgqa'])!='' && $CI->session->userdata($qidattributes['max_num_value_sgqa'])){
-        $max_num_value = $CI->session->userdata($qidattributes['max_num_value_sgqa']);
+    elseif (trim($qidattributes['max_num_value_sgqa'])!='' && isset($_SESSION[$qidattributes['max_num_value_sgqa']])){
+        $max_num_value = $_SESSION[$qidattributes['max_num_value_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(1)';
         $calculateValue[]=1;
     }
@@ -4605,11 +4606,11 @@ function do_multiplenumeric($ia)
 
     if ($qidattributes['random_order']==1)
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = db_execute_assoc($ansquery);	//Checked
@@ -4680,10 +4681,10 @@ function do_multiplenumeric($ia)
                 
                 
                 $answer_main .= "<span class=\"input\">\n\t".$prefix."\n\t<input class=\"text $kpclass\" type=\"text\" size=\"".$tiwidth.'" name="'.$myfname.'" id="answer'.$myfname.'" value="';
-                if ($CI->session->userdata($myfname))
+                if (isset($_SESSION[$myfname]))
                 {
-                    $CI->session->set_userdata($myfname, str_replace('.',$sSeperator,$CI->session->userdata($myfname)));
-                    $answer_main .= $CI->session->userdata($myfname);
+                    $_SESSION[$myfname] = str_replace('.',$sSeperator,$_SESSION[$myfname]);
+                    $answer_main .= $_SESSION[$myfname];
                 }
 
                 $answer_main .= '" onkeyup="'.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.' maxlength="'.$maxsize."\" />\n\t".$suffix."\n</span>\n\t</li>\n";
@@ -4707,9 +4708,9 @@ function do_multiplenumeric($ia)
                 $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
                 $js_header_includes[] = '/scripts/jquery/lime-slider.js';
 
-                if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) != '')
+                if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')
                 {
-                    $slider_startvalue = $CI->session->userdata($myfname) * $slider_divisor;
+                    $slider_startvalue = $_SESSION[$myfname] * $slider_divisor;
                     $displaycallout_atstart=1;
                 }
                 elseif ($slider_default != "")
@@ -4745,9 +4746,9 @@ function do_multiplenumeric($ia)
                 . "\t</div>"
                 . "</div>$sliderright\n"
                 . "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" style=\"display: none;\" value=\"";
-                if ($CI->session->userdata($myfname))
+                if (isset($_SESSION[$myfname]))
                 {
-                    $answer_main .= $CI->session->userdata($myfname);
+                    $answer_main .= $_SESSION[$myfname];
                 }
                 elseif ($slider_default != "")
                 {
@@ -4973,7 +4974,7 @@ function do_numerical($ia)
     }
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeperator = $sSeperator['seperator'];
-    $this->session->set_userdata($ia[1], str_replace('.',$sSeperator,$this->session->userdata($ia[1])));
+    $_SESSION[$ia[1]] = str_replace('.',$sSeperator,$_SESSION[$ia[1]]);
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -4986,7 +4987,7 @@ function do_numerical($ia)
     }
     // --> START NEW FEATURE - SAVE
     $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
-    . "id=\"answer{$ia[1]}\" value=\"".$this->session->userdata($ia[1])."\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
+    . "id=\"answer{$ia[1]}\" value=\"".$_SESSION[$ia[1]]."\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
     . "maxlength=\"{$maxsize}\" />\n\t{$suffix}\n</p>\n";
     if ($qidattributes['hide_tip']==0)
     {
@@ -5107,14 +5108,14 @@ function do_shortfreetext($ia)
         .'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
         // --> END NEW FEATURE - SAVE
 
-        if ($CI->session->userdata($ia[1])) {$answer .= str_replace("\\", "", $CI->session->userdata($ia[1]));}
+        if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
 
         $answer .= "</textarea>\n";
     }
     elseif((int)($qidattributes['location_mapservice'])!=0){
 
         $mapservice = $qidattributes['location_mapservice'];
-        $currentLocation = $CI->session->userdata($ia[1]);
+        $currentLocation = $_SESSION[$ia[1]];
         $currentLatLong = null;
 
         $floatLat = 0;
@@ -5158,7 +5159,7 @@ function do_shortfreetext($ia)
         		zoom['$ia[1]'] = {$qidattributes['location_mapzoom']};
         	</script>
             <p class=\"question\">
-            <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"".$CI->session->userdata($myfname)."\">
+            <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"".$_SESSION[$myfname]."\">
             
             <input class=\"text location\" type=\"text\" size=\"20\" name=\"$ia[1]_c\"
                 id=\"answer$ia[1]_c\" value=\"$currentLocation\"
@@ -5189,7 +5190,7 @@ function do_shortfreetext($ia)
     {
         //no question attribute set, use common input text field
         $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\""
-        .htmlspecialchars($CI->session->userdata($ia[1]),ENT_QUOTES,'UTF-8')
+        .htmlspecialchars($_SESSION[$ia[1]],ENT_QUOTES,'UTF-8')
         ."\" maxlength=\"$maxsize\" onkeyup=\"$checkconditionFunction(this.value, this.name, this.type)\" $numbersonly />\n\t$suffix\n</p>\n";
     }
 
@@ -5287,7 +5288,7 @@ function do_longfreetext($ia)
     .'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)">';
     // --> END NEW FEATURE - SAVE
 
-    if ($CI->session->userdata($ia[1])) {$answer .= str_replace("\\", "", $CI->session->userdata($ia[1]));}
+    if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
 
     $answer .= "</textarea>\n";
 
@@ -5371,7 +5372,7 @@ function do_hugefreetext($ia)
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
     // <-- END ENHANCEMENT - DISPLAY ROWS
 
-    if ($CI->session->userdata($ia[1])) {$answer .= str_replace("\\", "", $CI->session->userdata($ia[1]));}
+    if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
 
     $answer .= "</textarea>\n";
 
@@ -5406,7 +5407,7 @@ function do_yesno($ia)
     $answer = "<ul>\n"
     . "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}Y\" value=\"Y\"";
 
-    if ($CI->session->userdata($ia[1]) == 'Y')
+    if ($_SESSION[$ia[1]] == 'Y')
     {
         $answer .= CHECKED;
     }
@@ -5415,7 +5416,7 @@ function do_yesno($ia)
     . "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}N\" value=\"N\"";
     // --> END NEW FEATURE - SAVE
 
-    if ($CI->session->userdata($ia[1]) == 'N')
+    if ($_SESSION[$ia[1]] == 'N')
     {
         $answer .= CHECKED;
     }
@@ -5426,7 +5427,7 @@ function do_yesno($ia)
     if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
     {
         $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"{$ia[1]}\" id=\"answer{$ia[1]}\" value=\"\"";
-        if ($CI->session->userdata($ia[1]) == '')
+        if ($_SESSION[$ia[1]] == '')
         {
             $answer .= CHECKED;
         }
@@ -5435,7 +5436,7 @@ function do_yesno($ia)
         // --> END NEW FEATURE - SAVE
     }
 
-    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"{".$CI->session->userdata($ia[1])."}\" />\n";
+    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"{".$_SESSION[$ia[1]]."}\" />\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }
@@ -5463,7 +5464,7 @@ function do_gender($ia)
     $answer = "<ul>\n"
     . "\t<li>\n"
     . '		<input class="radio" type="radio" name="'.$ia[1].'" id="answer'.$ia[1].'F" value="F"';
-    if ($CI->session->userdata($ia[1]) == 'F')
+    if ($_SESSION[$ia[1]] == 'F')
     {
         $answer .= CHECKED;
     }
@@ -5472,7 +5473,7 @@ function do_gender($ia)
 
     $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'M" value="M"';
 
-    if ($CI->session->userdata($ia[1]) == 'M')
+    if ($_SESSION[$ia[1]] == 'M')
     {
         $answer .= CHECKED;
     }
@@ -5495,7 +5496,7 @@ function do_gender($ia)
          }
          */
         $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1].'" value=""';
-        if ($CI->session->userdata($ia[1]) == '')
+        if ($_SESSION[$ia[1]] == '')
         {
             $answer .= CHECKED;
         }
@@ -5504,7 +5505,7 @@ function do_gender($ia)
         // --> END NEW FEATURE - SAVE
 
     }
-    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$CI->session->userdata($ia[1])."\" />\n";
+    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION[$ia[1]]."\" />\n";
 
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
@@ -5563,11 +5564,11 @@ function do_array_5point($ia)
 
 
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
 
     $ansresult = db_execute_assoc($ansquery);     //Checked
@@ -5617,7 +5618,7 @@ function do_array_5point($ia)
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
          containing a list of unanswered questions, the current question must be in the array,
          and there must be no answer available for the item in this session. */
-        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($CI->session->userdata($myfname) == '') ) {
+        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == '') ) {
             $answertext = "<span class=\"errormandatory\">{$answertext}</span>";
         }
 
@@ -5632,16 +5633,16 @@ function do_array_5point($ia)
         . "\t<th class=\"answertext\" width=\"$answerwidth%\">\n$answertext\n"
         . $hiddenfield
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]))
         {
-            $answer_t_content .= $CI->session->userdata($myfname);
+            $answer_t_content .= $_SESSION[$myfname];
         }
         $answer_t_content .= "\" />\n\t</th>\n";
         for ($i=1; $i<=5; $i++)
         {
             $answer_t_content .= "\t<td class=\"answer_cell_00$i\">\n<label for=\"answer$myfname-$i\">"
             ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" title=\"$i\"";
-            if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == $i)
+            if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i)
             {
                 $answer_t_content .= CHECKED;
             }
@@ -5664,7 +5665,7 @@ function do_array_5point($ia)
         {
             $answer_t_content .= "\t<td>\n<label for=\"answer$myfname-\">"
             ."\n\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer').'"';
-            if (!$CI->session->userdata($myfname) || $CI->session->userdata($myfname) == '')
+            if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
             {
                 $answer_t_content .= CHECKED;
             }
@@ -5706,7 +5707,7 @@ function do_array_10point($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]."  AND language='".$CI->session->userdata('s_lang')."'";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);      //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
@@ -5727,14 +5728,14 @@ function do_array_10point($ia)
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);   //Checked
-    $anscount = $ansresult->row_count();
+    $anscount = $ansresult->num_rows();
 
     $fn = 1;
     $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a ten point Likert scale array\" >\n\n"
@@ -5773,7 +5774,7 @@ function do_array_10point($ia)
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
          containing a list of unanswered questions, the current question must be in the array,
          and there must be no answer available for the item in this session. */
-        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($CI->session->userdata($myfname) == "") ) {
+        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") ) {
             $answertext = "<span class='errormandatory'>{$answertext}</span>";
         }
         $trbc = alternation($trbc , 'row');
@@ -5787,9 +5788,9 @@ function do_array_10point($ia)
         . "\t<th class=\"answertext\">\n$answertext\n"
         . $hiddenfield
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]))
         {
-            $answer_t_content .= $CI->session->userdata($myfname);
+            $answer_t_content .= $_SESSION[$myfname];
         }
         $answer_t_content .= "\" />\n\t</th>\n";
 
@@ -5797,7 +5798,7 @@ function do_array_10point($ia)
         {
             $answer_t_content .= "\t<td class=\"answer_cell_00$i\">\n<label for=\"answer$myfname-$i\">\n"
             ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-$i\" value=\"$i\" title=\"$i\"";
-            if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == $i)
+            if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $i)
             {
                 $answer_t_content .= CHECKED;
             }
@@ -5810,7 +5811,7 @@ function do_array_10point($ia)
         {
             $answer_t_content .= "\t<td>\n<label for=\"answer$myfname-\">\n"
             ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer')."\"";
-            if ($CI->session->userdata($myfname) || $CI->session->userdata($myfname) == '')
+            if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
             {
                 $answer_t_content .= CHECKED;
             }
@@ -5845,7 +5846,7 @@ function do_array_yesnouncertain($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."'";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);	//Checked
     $qrow = $qresult->result_array(); $other = $qrow['other'];
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
@@ -5865,14 +5866,14 @@ function do_array_yesnouncertain($ia)
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);	//Checked
-    $anscount = $ansresult->row_count();
+    $anscount = $ansresult->num_rows();
     $fn = 1;
     $answer = "\n<table class=\"question\" summary=\"".str_replace('"','' ,strip_tags($ia[3]))." - a Yes/No/uncertain Likert scale array\">\n"
     . "\t<colgroup class=\"col-responses\">\n"
@@ -5915,7 +5916,7 @@ function do_array_yesnouncertain($ia)
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
              containing a list of unanswered questions, the current question must be in the array,
              and there must be no answer available for the item in this session. */
-            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($CI->session->userdata($myfname) == '') ) {
+            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == '') ) {
                 $answertext = "<span class='errormandatory'>{$answertext}</span>";
             }
             $trbc = alternation($trbc , 'row');
@@ -5931,7 +5932,7 @@ function do_array_yesnouncertain($ia)
             . "\t\t\t\t$answertext</th>\n"
             . "\t<td class=\"answer_cell_Y\">\n<label for=\"answer$myfname-Y\">\n"
             . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-Y\" value=\"Y\" title=\"".$clang->gT('Yes').'"';
-            if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == 'Y')
+            if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'Y')
             {
                 $answer_t_content .= CHECKED;
             }
@@ -5941,7 +5942,7 @@ function do_array_yesnouncertain($ia)
             . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-U\" value=\"U\" title=\"".$clang->gT('Uncertain')."\"";
             // --> END NEW FEATURE - SAVE
 
-            if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == 'U')
+            if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'U')
             {
                 $answer_t_content .= CHECKED;
             }
@@ -5951,7 +5952,7 @@ function do_array_yesnouncertain($ia)
             . "<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-N\" value=\"N\" title=\"".$clang->gT('No').'"';
             // --> END NEW FEATURE - SAVE
 
-            if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == 'N')
+            if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'N')
             {
                 $answer_t_content .= CHECKED;
             }
@@ -5959,9 +5960,9 @@ function do_array_yesnouncertain($ia)
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n"
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
             // --> END NEW FEATURE - SAVE
-            if ($CI->session->userdata($myfname))
+            if (isset($_SESSION[$myfname]))
             {
-                $answer_t_content .= $CI->session->userdata($myfname);
+                $answer_t_content .= $_SESSION[$myfname];
             }
             $answer_t_content .= "\" />\n\t</td>\n";
 
@@ -5969,7 +5970,7 @@ function do_array_yesnouncertain($ia)
             {
                 $answer_t_content .= "\t<td>\n\t<label for=\"answer$myfname-\">\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer')."\"";
-                if (!$CI->session->userdata($myfname) || $CI->session->userdata($myfname) == '')
+                if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
                 {
                     $answer_t_content .= CHECKED;
                 }
@@ -6003,7 +6004,7 @@ function do_array_increasesamedecrease($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."'";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
@@ -6026,14 +6027,14 @@ function do_array_increasesamedecrease($ia)
         $other = $qrow['other'];
     }
     if ($qidattributes['random_order']==1) {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
     {
-        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+        $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
     }
     $ansresult = db_execute_assoc($ansquery);  //Checked
-    $anscount = $ansresult->row_count();
+    $anscount = $ansresult->num_rows();
 
     $fn = 1;
 
@@ -6074,7 +6075,7 @@ function do_array_increasesamedecrease($ia)
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
          containing a list of unanswered questions, the current question must be in the array,
          and there must be no answer available for the item in this session. */
-        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($CI->session->userdata($myfname) == "") )
+        if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") )
         {
             $answertext = "<span class=\"errormandatory\">{$answertext}</span>";
         }
@@ -6091,16 +6092,16 @@ function do_array_increasesamedecrease($ia)
         . "$answertext\n"
         . $hiddenfield
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-        if ($CI->session->userdata($myfname))
+        if (isset($_SESSION[$myfname]))
         {
-            $answer_body .= $CI->session->userdata($myfname);
+            $answer_body .= $_SESSION[$myfname];
         }
         $answer_body .= "\" />\n\t</th>\n";
 
         $answer_body .= "\t<td class=\"answer_cell_I\">\n"
         . "<label for=\"answer$myfname-I\">\n"
         ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-I\" value=\"I\" title=\"".$clang->gT('Increase').'"';
-        if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == 'I')
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'I')
         {
             $answer_body .= CHECKED;
         }
@@ -6112,7 +6113,7 @@ function do_array_increasesamedecrease($ia)
         . "<label for=\"answer$myfname-S\">\n"
         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-S\" value=\"S\" title=\"".$clang->gT('Same').'"';
 
-        if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == 'S')
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'S')
         {
             $answer_body .= CHECKED;
         }
@@ -6124,7 +6125,7 @@ function do_array_increasesamedecrease($ia)
         . "<label for=\"answer$myfname-D\">\n"
         . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-D\" value=\"D\" title=\"".$clang->gT('Decrease').'"';
         // --> END NEW FEATURE - SAVE
-        if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == 'D')
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == 'D')
         {
             $answer_body .= CHECKED;
         }
@@ -6133,7 +6134,7 @@ function do_array_increasesamedecrease($ia)
         . "</label>\n"
         . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
 
-        if ($CI->session->userdata($myfname)) {$answer_body .= $CI->session->userdata($myfname);}
+        if (isset($_SESSION[$myfname])) {$answer_body .= $_SESSION[$myfname];}
         $answer_body .= "\" />\n\t</td>\n";
 
         if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
@@ -6141,7 +6142,7 @@ function do_array_increasesamedecrease($ia)
             $answer_body .= "\t<td>\n"
             . "<label for=\"answer$myfname-\">\n"
             . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" id=\"answer$myfname-\" value=\"\" title=\"".$clang->gT('No answer').'"';
-            if (!$CI->session->userdata($myfname) || $CI->session->userdata($myfname) == '')
+            if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
             {
                 $answer_body .= CHECKED;
             }
@@ -6177,10 +6178,10 @@ function do_array($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."'";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);     //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
-    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY sortorder, code";
+    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
@@ -6217,26 +6218,24 @@ function do_array($ia)
         $ansresult = db_execute_assoc($ansquery);  //Checked
         if ($ansresult->num_rows()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        
-        $sessionao = $CI->session->userdata('answer_order');
-        
+                
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
             $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
         }
-        elseif ($qidattributes['random_order']==2 && !isset($sessionao[$ia[0]])) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+        elseif ($qidattributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
             $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
             $sessionao[$ia[0]]=$ansresult;
-			$CI->session->set_userdata('answer_order',$sessionao);
+            $_SESSION['answer_order'][$ia[0]]=$ansresult;    
         }
-        elseif (isset($sessionao[$ia[0]]))
+        elseif (isset($_SESSION['answer_order'][$ia[0]]))
         {
-                $ansresult = $sessionao[$ia[0]];  //Checked
+                $ansresult = $_SESSION['answer_order'][$ia[0]];  //Checked
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
             $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
         }
         
@@ -6324,7 +6323,7 @@ function do_array($ia)
 
             if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
 
-            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($CI->session->userdata($myfname) == '') ) {
+            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == '') ) {
                 $answertext = '<span class="errormandatory">'.$answertext.'</span>';
             }
             // Get array_filter stuff
@@ -6341,9 +6340,9 @@ function do_array($ia)
             . "\t<th class=\"answertext\">\n$answertext"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if ($CI->session->userdata($myfname))
+            if (isset($_SESSION[$myfname]))
             {
-                $answer .= $CI->session->userdata($myfname);
+                $answer .= $_SESSION[$myfname];
             }
             $answer .= "\" />\n\t</th>\n";
 
@@ -6354,7 +6353,7 @@ function do_array($ia)
                 . "<label for=\"answer$myfname-$ld\">\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
                 . html_escape(strip_tags($labelans[$thiskey])).'"';
-                if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == $ld)
+                if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld)
                 {
                     $answer .= CHECKED;
                 }
@@ -6380,7 +6379,7 @@ function do_array($ia)
             {
                 $answer .= "\t<td>\n<label for=\"answer$myfname-\">\n"
                 ."\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"\" id=\"answer$myfname-\" title=\"".$clang->gT('No answer').'"';
-                if (!$CI->session->userdata($myfname) || $CI->session->userdata($myfname) == '')
+                if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
                 {
                     $answer .= CHECKED;
                 }
@@ -6427,11 +6426,11 @@ function do_array($ia)
        if ($ansresult->num_rows()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;} 
        // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
        $ansresult = db_execute_assoc($ansquery); //Checked
        $anscount = $ansresult->num_rows();
@@ -6470,7 +6469,7 @@ function do_array($ia)
 
            if (strpos($answertext,'|')) {$answerwidth=$answerwidth/2;}
 
-           if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($CI->session->userdata($myfname) == '') ) {
+           if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == '') ) {
                $answertext = '<span class="errormandatory">'.$answertext.'</span>';
            }
            // Get array_filter stuff
@@ -6481,16 +6480,16 @@ function do_array($ia)
            . "\t<th class=\"answertext\">\n$answertext"
            . $hiddenfield
            . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-           if ($CI->session->userdata($myfname))
+           if ($_SESSION[$myfname])
            {
-               $answer .= $CI->session->userdata($myfname);
+               $answer .= $_SESSION[$myfname];
            }
            $answer .= "\" />\n\t</th>\n";
            
            $answer .= "\t<td >\n"
            . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"$checkconditionFunction(this.value, this.name, this.type);\">\n";
 
-           if (!$CI->session->userdata($myfname) || $CI->session->userdata($myfname) =='')
+           if (!$_SESSION[$myfname] || $_SESSION[$myfname] =='')
            {
                $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose')."...</option>\n";
            }
@@ -6498,7 +6497,7 @@ function do_array($ia)
            foreach ($labels as $lrow)
            {
                $answer .= "\t<option value=\"".$lrow['code'].'" ';
-               if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == $lrow['code'])
+               if ($_SESSION[$myfname] && $_SESSION[$myfname] == $lrow['code'])
                {
                    $answer .= SELECTED;
                }
@@ -6508,7 +6507,7 @@ function do_array($ia)
            if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
            {
                $answer .= "\t<option value=\"\" ";
-               if (!$CI->session->userdata($myfname) || $CI->session->userdata($myfname) == '')
+               if (!$_SESSION[$myfname] || $_SESSION[$myfname] == '')
                {
                    $answer .= SELECTED;
                }
@@ -6567,7 +6566,7 @@ function do_array_multitext($ia)
 
     //echo "<pre>"; print_r($_POST); echo "</pre>";
     $defaultvaluescript = "";
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."'";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
@@ -6694,7 +6693,7 @@ function do_array_multitext($ia)
     }
     $columnswidth=100-($answerwidth*2);
 
-    $lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]}  AND language='".$CI->session->userdata('s_lang')."' and scale_id=1 ORDER BY question_order";
+    $lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = db_execute_assoc($lquery);
     if ($lresult->num_rows() > 0)
     {
@@ -6726,11 +6725,11 @@ function do_array_multitext($ia)
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);
         $anscount = $ansresult->num_rows();
@@ -6800,7 +6799,7 @@ function do_array_multitext($ia)
                 foreach($labelcode as $ld)
                 {
                     $myfname2=$myfname.'_'.$ld;
-                    if($CI->session->userdata($myfname2) == '')
+                    if($_SESSION[$myfname2] == '')
                     {
                         $emptyresult=1;
                     }
@@ -6823,14 +6822,14 @@ function do_array_multitext($ia)
             . "\t\t\t\t".$hiddenfield
             . "$answertext\n"
             . "\t\t\t\t<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if ($CI->session->userdata($myfname)) {$answer .= $CI->session->userdata($myfname);}
+            if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
             $answer .= "\" />\n\t\t\t</th>\n";
             $thiskey=0;
             foreach ($labelcode as $ld)
             {
 
                 $myfname2=$myfname."_$ld";
-                $myfname2value = $CI->session->userdata($myfname2) ? $CI->session->userdata($myfname2) : "";
+                $myfname2value = isset($_SESSION[$myfname2]) ? $_SESSION[$myfname2] : "";
                 $answer .= "\t<td class=\"answer_cell_00$ld\">\n"
                 . "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
                 . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
@@ -6904,7 +6903,7 @@ function do_array_multiflexi($ia)
 
     //echo '<pre>'; print_r($_POST); echo '</pre>';
     $defaultvaluescript = '';
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."' and parent_qid=0";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
@@ -6993,7 +6992,7 @@ function do_array_multiflexi($ia)
     }
     $columnswidth=100-($answerwidth*2);
 
-    $lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]}  AND language='".$CI->session->userdata('s_lang')."' and scale_id=1 ORDER BY question_order";
+    $lquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]}  AND language='".$_SESSION['s_lang']."' and scale_id=1 ORDER BY question_order";
     $lresult = db_execute_assoc($lquery);
     if ($lresult->num_rows() > 0)
     {
@@ -7013,18 +7012,18 @@ function do_array_multiflexi($ia)
         if ($ansresult->num_rows()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
         if (trim($qidattributes['parent_order']!=''))
         {
             $iParentQID=(int) $qidattributes['parent_order'];
             $aResult=array();
-			$sessionao = $CI->session->userdata('answer_order');
+			$sessionao = $_SESSION['answer_order'];
             foreach ($sessionao[$iParentQID] as $aOrigRow)
             {
                 $sCode=$aOrigRow['title'];
@@ -7097,7 +7096,7 @@ function do_array_multiflexi($ia)
                 foreach($labelcode as $ld)
                 {
                     $myfname2=$myfname.'_'.$ld;
-                    if($CI->session->userdata($myfname2) == "")
+                    if($_SESSION[$myfname2] == "")
                     {
                         $emptyresult=1;
                     }
@@ -7122,9 +7121,9 @@ function do_array_multiflexi($ia)
             . "$answertext\n"
             . $hiddenfield
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if ($CI->session->userdata($myfname))
+            if (isset($_SESSION[$myfname]))
             {
-                $answer .= $CI->session->userdata($myfname);
+                $answer .= $_SESSION[$myfname];
             }
             $answer .= "\" />\n\t</th>\n";
             $first_hidden_field = '';
@@ -7135,9 +7134,9 @@ function do_array_multiflexi($ia)
                 if ($checkboxlayout == false)
                 {
                     $myfname2=$myfname."_$ld";
-                    if($CI->session->userdata($myfname2))
+                    if(isset($_SESSION[$myfname2]))
                     {
-                        $myfname2_java_value = " value=\"".$CI->session->userdata($myfname2)."\" ";
+                        $myfname2_java_value = " value=\"".$_SESSION[$myfname2]."\" ";
                     }
                     else
                     {
@@ -7155,7 +7154,7 @@ function do_array_multiflexi($ia)
 
                         for($ii=$minvalue; ($reverse? $ii>=$maxvalue:$ii<=$maxvalue); $ii+=$stepvalue) {
                             $answer .= "<option value=\"$ii\"";
-                            if($CI->session->userdata($myfname2) && $CI->session->userdata($myfname2) == $ii) {
+                            if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2] == $ii) {
                                 $answer .= SELECTED;
                             }
                             $answer .= ">$ii</option>\n";
@@ -7169,8 +7168,8 @@ function do_array_multiflexi($ia)
                         . html_escape($labelans[$thiskey]).'"'
                         . " onchange=\"$checkconditionFunction(this.value, this.name, this.type)\" onkeypress=\"return goodchars(event,'0123456789$sSeperator')\""
                         . " value=\"";
-                        if($CI->session->userdata($myfname2) && $CI->session->userdata($myfname2)) {
-                            $answer .= $CI->session->userdata($myfname2);
+                        if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2]) {
+                            $answer .= $_SESSION[$myfname2];
                         }
                         $answer .= "\" />\n";
                     }
@@ -7183,7 +7182,7 @@ function do_array_multiflexi($ia)
                 else
                 {
                     $myfname2=$myfname."_$ld";
-                    if($CI->session->userdata($myfname2) && $CI->session->userdata($myfname2) == '1')
+                    if(isset($_SESSION[$myfname2]) && $_SESSION[$myfname2] == '1')
                     {
                         $myvalue = '1';
                         $setmyvalue = CHECKED;
@@ -7258,10 +7257,10 @@ function do_arraycolumns($ia)
     }
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."'";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);    //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
-    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid=".$ia[0]."  AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY sortorder, code";
+    $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid=".$ia[0]."  AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
     $lresult = db_execute_assoc($lquery);   //Checked
     if ($lresult->num_rows() > 0)
     {
@@ -7278,14 +7277,14 @@ function do_arraycolumns($ia)
             $labels[]=array('answer'=>$clang->gT('No answer'), 'code'=>'');
         }
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);  //Checked
-        $anscount = $ansresult->row_array();
+        $anscount = $ansresult->num_rows();
         if ($anscount>0)
         {
             $fn=1;
@@ -7304,7 +7303,7 @@ function do_arraycolumns($ia)
             . "\t<thead>\n"
             . "<tr>\n"
             . "\t<td>&nbsp;</td>\n";
-            foreach($ansresult->row_array() as $ansrow)
+            foreach($ansresult->result_array() as $ansrow)
             {
                 $anscode[]=$ansrow['title'];
                 $answers[]=dTexts::run($ansrow['question']);
@@ -7318,7 +7317,7 @@ function do_arraycolumns($ia)
                 /* Check if this item has not been answered: the 'notanswered' variable must be an array,
                  containing a list of unanswered questions, the current question must be in the array,
                  and there must be no answer available for the item in this session. */
-                if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($CI->session->userdata($myfname) == "") )
+                if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "") )
                 {
                     $ld = "<span class=\"errormandatory\">{$ld}</span>";
                 }
@@ -7348,11 +7347,11 @@ function do_arraycolumns($ia)
                     . "\t<input class=\"radio\" type=\"radio\" name=\"".$myfname.'" value="'.$ansrow['code'].'" '
                     . 'id="answer'.$myfname.'-'.$ansrow['code'].'" '
                     . 'title="'.html_escape(strip_tags($ansrow['answer'])).'"';
-                    if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == $ansrow['code'])
+                    if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ansrow['code'])
                     {
                         $answer .= CHECKED;
                     }
-                    elseif (!$CI->session->userdata($myfname) && $ansrow['code'] == '')
+                    elseif (!isset($_SESSION[$myfname]) && $ansrow['code'] == '')
                     {
                         $answer .= CHECKED;
                         // Humm.. (by lemeur), not sure this section can be reached
@@ -7371,9 +7370,9 @@ function do_arraycolumns($ia)
             {
                 $myfname=$ia[1].$ld;
                 $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
-                if ($CI->session->userdata($myfname))
+                if (isset($_SESSION[$myfname]))
                 {
-                    $answer .= $CI->session->userdata($myfname);
+                    $answer .= $_SESSION[$myfname];
                 }
                 $answer .= "\" />\n";
                 $inputnames[]=$myfname;
@@ -7417,10 +7416,10 @@ function do_array_dual($ia)
     $inputnames=array();
     $labelans1=array();
     $labelans=array();
-    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$CI->session->userdata('s_lang')."'";
+    $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $other = reset(db_execute_assoc($qquery)->row_array());    //Checked
-    $lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=0 AND qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' ORDER BY sortorder, code";
-    $lquery1 = "SELECT * FROM {$dbprefix}answers WHERE scale_id=1 AND qid={$ia[0]} AND language='".$CI->session->userdata('s_lang')."' ORDER BY sortorder, code";
+    $lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
+    $lquery1 = "SELECT * FROM {$dbprefix}answers WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
     if ($qidattributes['use_dropdown']==1)
@@ -7495,11 +7494,11 @@ function do_array_dual($ia)
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
         }
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$CI->session->userdata('s_lang')."' and scale_id=0 ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);   //Checked
         $anscount = $ansresult->num_rows();
@@ -7661,7 +7660,7 @@ function do_array_dual($ia)
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
             containing a list of unanswered questions, the current question must be in the array,
             and there must be no answer available for the item in this session. */
-            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && (($CI->session->userdata($myfname) == '') || ($CI->session->userdata($myfname1) == '')) )
+            if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && (($_SESSION[$myfname] == '') || ($_SESSION[$myfname1] == '')) )
             {
                 $answertext = "<span class='errormandatory'>{$answertext}</span>";
             }
@@ -7679,7 +7678,7 @@ function do_array_dual($ia)
             . $hiddenfield
             . "$answertext\n"
             . "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-            if ($CI->session->userdata($myfname)) {$answer .= $CI->session->userdata($myfname);}
+            if (isset($_SESSION[$myfname])) {$answer .= $_SESSION[$myfname];}
             $answer .= "\" />\n\t</th>\n";
             $hiddenanswers='';
             $thiskey=0;
@@ -7690,7 +7689,7 @@ function do_array_dual($ia)
                 . "<label for=\"answer$myfname-$ld\">\n"
                 . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname\" value=\"$ld\" id=\"answer$myfname-$ld\" title=\""
                 . html_escape(strip_tags($labelans[$thiskey])).'"';
-                if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == $ld)
+                if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $ld)
                 {
                     $answer .= CHECKED;
                 }
@@ -7707,7 +7706,7 @@ function do_array_dual($ia)
                 $answer .= "\t<td class=\"dual_scale_separator\">&nbsp;</td>\n";		// separator
                 array_push($inputnames,$myfname1);
                 $hiddenanswers .= "<input type=\"hidden\" name=\"java$myfname1\" id=\"java$myfname1\" value=\"";
-                if ($CI->session->userdata($myfname1)) {$hiddenanswers .= $CI->session->userdata($myfname1);}
+                if (isset($_SESSION[$myfname1])) {$hiddenanswers .= $_SESSION[$myfname1];}
                 $hiddenanswers .= "\" />\n";
                 $thiskey=0;
                 foreach ($labelcode1 as $ld) // second label set
@@ -7721,7 +7720,7 @@ function do_array_dual($ia)
                     $answer .= "<label for=\"answer$myfname1-$ld\">\n"
                     . "\t<input class=\"radio\" type=\"radio\" name=\"$myfname1\" value=\"$ld\" id=\"answer$myfname1-$ld\" title=\""
                     . html_escape(strip_tags($labelans1[$thiskey])).'"';
-                    if ($CI->session->userdata($myfname1) && $CI->session->userdata($myfname1) == $ld)
+                    if (isset($_SESSION[$myfname1]) && $_SESSION[$myfname1] == $ld)
                     {
                         $answer .= CHECKED;
                     }
@@ -7750,7 +7749,7 @@ function do_array_dual($ia)
 				$answer .= "\t<td class=\"dual_scale_no_answer\">\n"
                 . "<label for='answer$myfname-'>\n"
                 . "\t<input class='radio' type='radio' name='$myfname' value='' id='answer$myfname-' title='".$clang->gT("No answer")."'";
-                if (!$CI->session->userdata($myfname) || $CI->session->userdata($myfname) == "")
+                if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == "")
                 {
                     $answer .= CHECKED;
                 }
@@ -7787,13 +7786,13 @@ function do_array_dual($ia)
 
         //question atribute random_order set?
         if ($qidattributes['random_order']==1) {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$CI->session->userdata('s_lang')."' ORDER BY ".db_random();
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
 
         //no question attributes -> order by sortorder
         else
         {
-            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$CI->session->userdata('s_lang')."' ORDER BY question_order";
+            $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery);    //Checked
         $anscount = $ansresult->num_rows();
@@ -7895,7 +7894,7 @@ function do_array_dual($ia)
                 $dualgroup1=1;
                 $myfname1 = $ia[1].$ansrow['title']."#".$dualgroup1;
 
-                if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($CI->session->userdata($myfname) == "" || $CI->session->userdata($myfname1) == "") )
+                if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "" || $_SESSION[$myfname1] == "") )
                 {
                     $answertext="<span class='errormandatory'>".dTexts::run($ansrow['question'])."</span>";
                 }
@@ -7929,7 +7928,7 @@ function do_array_dual($ia)
                 $answer .= "\t<td >\n"
                 . "<select name=\"$myfname\" id=\"answer$myfname\" onchange=\"array_dual_dd_checkconditions(this.value, this.name, this.type,$dualgroup,$checkconditionFunction);\">\n";
 
-                if (!$CI->session->userdata($myfname) || $CI->session->userdata($myfname) =='')
+                if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] =='')
                 {
                     $answer .= "\t<option value=\"\" ".SELECTED.'>'.$clang->gT('Please choose...')."</option>\n";
                 }
@@ -7937,7 +7936,7 @@ function do_array_dual($ia)
                 foreach ($labels0 as $lrow)
                 {
                     $answer .= "\t<option value=\"".$lrow['code'].'" ';
-                    if ($CI->session->userdata($myfname) && $CI->session->userdata($myfname) == $lrow['code'])
+                    if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] == $lrow['code'])
                     {
                         $answer .= SELECTED;
                     }
@@ -7947,7 +7946,7 @@ function do_array_dual($ia)
                 if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
                 {
                     $answer .= "\t<option value=\"\" ";
-                    if (!$CI->session->userdata($myfname) || $CI->session->userdata($myfname) == '')
+                    if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] == '')
                     {
                         $answer .= SELECTED;
                     }
@@ -7961,9 +7960,9 @@ function do_array_dual($ia)
                     $answer .= "\t<td class=\"ddsuffix\">$ddsuffix</td>\n";
                 }
                 $answer .= "<input type=\"hidden\" name=\"java$myfname\" id=\"java$myfname\" value=\"";
-                if ($CI->session->userdata($myfname))
+                if (isset($_SESSION[$myfname]))
                 {
-                    $answer .= $CI->session->userdata($myfname);
+                    $answer .= $_SESSION[$myfname];
                 }
                 $answer .= "\" />\n"
                 . "\t</td>\n";
@@ -7983,7 +7982,7 @@ function do_array_dual($ia)
                 $answer .= "\t<td>\n"
                 . "<select name=\"$myfname1\" id=\"answer$myfname1\" onchange=\"array_dual_dd_checkconditions(this.value, this.name, this.type,$dualgroup1,$checkconditionFunction);\">\n";
 
-                if (!$CI->session->userdata($myfname) || $CI->session->userdata($myfname) =='')
+                if (!isset($_SESSION[$myfname]) || $_SESSION[$myfname] =='')
                 {
                     $answer .= "\t<option value=\"\"".SELECTED.'>'.$clang->gT('Please choose...')."</option>\n";
                 }
@@ -7991,7 +7990,7 @@ function do_array_dual($ia)
                 foreach ($labels1 as $lrow1)
                 {
                     $answer .= "\t<option value=\"".$lrow1['code'].'" ';
-                    if ($CI->session->userdata($myfname1) && $CI->session->userdata($myfname1) == $lrow1['code'])
+                    if (isset($_SESSION[$myfname1]) && $_SESSION[$myfname1] == $lrow1['code'])
                     {
                         $answer .= SELECTED;
                     }
@@ -8001,7 +8000,7 @@ function do_array_dual($ia)
                 if ($ia[6] != 'Y' && SHOW_NO_ANSWER == 1)
                 {
                     $answer .= "\t<option value='' ";
-                    if (!$CI->session->userdata($myfname1) || $CI->session->userdata($myfname1) == '')
+                    if (!isset($_SESSION[$myfname1]) || $_SESSION[$myfname1] == '')
                     {
                         $answer .= SELECTED;
                     }
@@ -8015,9 +8014,9 @@ function do_array_dual($ia)
                     $answer .= "\t<td class=\"ddsuffix\">$ddsuffix</td>\n";
                 }
                 $answer .= "<input type=\"hidden\" name=\"java$myfname1\" id=\"java$myfname1\" value=\"";
-                if ($CI->session->userdata($myfname1))
+                if (isset($_SESSION[$myfname1]))
                 {
-                    $answer .= $CI->session->userdata($myfname1);
+                    $answer .= $_SESSION[$myfname1];
                 }
                 $answer .= "\" />\n"
                 . "\t</td>\n";
@@ -8047,8 +8046,7 @@ function answer_replace($text)
     {
         $replace=substr($text, strpos($text, "{INSERTANS:"), strpos($text, "}", strpos($text, "{INSERTANS:"))-strpos($text, "{INSERTANS:")+1);
         $replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
-		$dateformats =& get_instance()->session->userdata('dateformats');
-        $replace3=retrieve_Answer($replace2, $dateformats['phpdate']);
+        $replace3=retrieve_Answer($replace2, $_SESSION['dateformats']['phpdate']);
         $text=str_replace($replace, $replace3, $text);
     } //while
     return $text;

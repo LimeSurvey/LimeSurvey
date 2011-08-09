@@ -16,9 +16,16 @@ class Questions_model extends CI_Model {
 
 	function getSomeRecords($fields,$condition=FALSE,$order=FALSE)
 	{
-		foreach ($fields as $field)
+		if(is_array($fields))
 		{
-			$this->db->select($field);
+			foreach ($fields as $field)
+			{
+				$this->db->select($field);
+			}
+		}
+		else
+		{
+			$this->db->select($fields);
 		}
 		if ($condition != FALSE)
 		{
