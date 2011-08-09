@@ -50,6 +50,10 @@ td.tenpoint {
   font-family: verdana;
 }
 
+span.qnumcode {
+	font-style:italic;
+}	
+
 .questionhelp {
   font-size: 10px;
   font-style: italic;

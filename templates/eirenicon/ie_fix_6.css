@@ -1,9 +1,9 @@
 /* The following styles are for versions of IE 6 and older */
-.choice-5-pt-radio ul {
+.choice-5-pt-radio .question-answer ul {
   margin-left: 2.5em;
 }
 
-.yes-no ul,.gender ul {
+.yes-no .question-answer ul,.gender .question-answer ul {
   margin-left: 2em;
 }
 

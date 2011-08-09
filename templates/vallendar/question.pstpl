@@ -5,13 +5,11 @@
 				<table width="100%" cellspacing="0">
 					<tr>
 						<td class="question-text">
-							{QUESTION_CODE}
-								<span class="asterisk">{QUESTION_MANDATORY}</span>{QUESTION_TEXT}<br />
-								<span class="questionhelp">{QUESTION_HELP}</span>
-								{QUESTION_MAN_MESSAGE}
-								{QUESTION_VALID_MESSAGE}
-								{QUESTION_FILE_VALID_MESSAGE}
-							</b></font>
+							<span class="qnumcode">{QUESTION_NUMBER} {QUESTION_CODE} </span> <span class="asterisk">{QUESTION_MANDATORY}</span>{QUESTION_TEXT}<br />
+							<span class="questionhelp">{QUESTION_HELP}</span>
+							{QUESTION_MAN_MESSAGE}
+							{QUESTION_VALID_MESSAGE}
+							{QUESTION_FILE_VALID_MESSAGE}
 						</td>
 					</tr>
 					<tr>

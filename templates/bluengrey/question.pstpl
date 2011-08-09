@@ -1,7 +1,7 @@
 <div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS}">
 	<div class="question">
 		<div class="questiontext">
-			{QUESTION_CODE}:
+			<span class="qnumcode">{QUESTION_NUMBER} {QUESTION_CODE} </span> 
 			<span class="asterisk">{QUESTION_MANDATORY}</span>{QUESTION_TEXT}<br />
 			<span class="questionhelp">{QUESTION_HELP}</span>
 			{QUESTION_MAN_MESSAGE}

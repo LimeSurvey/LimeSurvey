@@ -4,7 +4,7 @@
 			<td align="left">
 				<table width="100%" cellspacing="0" cellpadding="8" border="0">
 					<tr><td class="be">
-						<span class="asterisk">{QUESTION_MANDATORY}</span>{QUESTION_TEXT}<br />
+						<span class="asterisk">{QUESTION_MANDATORY}</span><span class="qnumcode">{QUESTION_NUMBER} {QUESTION_CODE} </span>{QUESTION_TEXT}<br />
 						<span class="questionhelp">{QUESTION_HELP}</span>
 						{QUESTION_MAN_MESSAGE}
 						{QUESTION_VALID_MESSAGE}
