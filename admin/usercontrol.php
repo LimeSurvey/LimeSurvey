@@ -552,7 +552,7 @@ elseif (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_
                     }
                 }
 
-                $query = "SELECT sid FROM ".db_table_name('surveys')." WHERE owner_id = $current_user ;";
+                $query = "SELECT sid FROM ".db_table_name('surveys')." WHERE owner_id = $postuserid ;";
                 $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
                 if($result->RecordCount() == 0) {
                     $action = "finaldeluser";
