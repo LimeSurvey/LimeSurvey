@@ -4,7 +4,7 @@
 <img src='<?php echo $imageurl;?>/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />
 <img src='<?php echo $imageurl;?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
 <?php if (isset($rlanguage)) { ?>
-	<a href='<?php echo site_url("admin/dataentry/$surveyid/edit/$id/$rlanguage");?>' title='<?php echo $clang->gTview("Edit this entry");?>'>
+	<a href='<?php echo site_url("admin/dataentry/editdata/edit/$id/$surveyid/$rlanguage");?>' title='<?php echo $clang->gTview("Edit this entry");?>'>
 	<img align='left' src='<?php echo $imageurl;?>/edit.png' alt='<?php $clang->gT("Edit this entry");?>' /></a>
 <?php }
 if (bHasSurveyPermission($surveyid,'responses','delete') && isset($rlanguage)) { ?>
