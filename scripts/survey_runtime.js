@@ -160,6 +160,23 @@ function GMapsInitialize(question,lat,lng) {
     return map;
 }
 
+function resetMap(qID) {
+	var question = $('#question'+qID+' input.location').attr('name');
+	var name = question.substr(0,question.length - 2);
+	var coordinates = $('#question'+qID+' input.location').attr('value');
+	var xy = coordinates.split(" ");
+	var currentMap = gmaps[question];
+	var marker = gmaps["marker__"+question];
+	var markerLatLng = new GLatLng(xy[0],xy[1]);
+	marker.setLatLng(markerLatLng);
+	var geocoder = new GClientGeocoder();
+	geocoder.getLocations(markerLatLng,function(response){
+		parseGeocodeAddress(response,name);
+	});
+	currentMap.checkResize();
+	currentMap.setCenter(markerLatLng);
+}
+
 function parseGeocodeAddress(response, name){
 	var city  = '';
 	var state = '';
