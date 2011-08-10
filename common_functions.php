@@ -3949,7 +3949,7 @@ if (!function_exists('get_magic_quotes_gpc')) {
     /**
      * Gets the current configuration setting of magic_quotes_gpc
      * NOTE: Compat variant for PHP 6+ versions
-     * 
+     *
      * @link http://www.php.net/manual/en/function.get-magic-quotes-gpc.php
      * @return int 0 if magic_quotes_gpc is off, 1 otherwise.
      */
@@ -4377,10 +4377,13 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
     $sNicetext = strip_javascript($sTextToFlatten);
     $sNicetext = strip_tags($sNicetext);
     if($is_csv==true)
-	$sNicetext = str_replace(array("\r\n","\r","\n"),array(PHP_EOL,PHP_EOL,PHP_EOL), $sNicetext);
+    {
+       $sNicetext = str_replace(array("\r\n","\r","\n"),array(PHP_EOL,PHP_EOL,PHP_EOL), $sNicetext);
+    }
     elseif ($sCharset=='UTF-8')
     {
-        $sNicetext = preg_replace('/\v/u', '', $sNicetext);
+        $sNicetext = preg_replace('/[\x0a\x0b\x0c\x0d\x85\x2028\x2029]/u', '', $sNicetext);
+        $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
     }
     else
     {
