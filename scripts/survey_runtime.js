@@ -15,8 +15,16 @@ $(document).ready(function()
 
     // Keypad functions
     var kp = $("input.num-keypad");
-    if(kp.length) kp.keypad({showAnim: 'fadeIn', keypadOnly: false});
-    kp = $("input.text-keypad");
+    if(kp.length)
+	{ 
+		kp.keypad({
+			showAnim: 'fadeIn', keypadOnly: false,
+			onKeypress: function(key, value, inst) { 
+				$(this).trigger('keyup');
+			}
+		});
+	}
+    kp = $(".text-keypad");
     if(kp.length)
     {
         var spacer = $.keypad.HALF_SPACE;
@@ -31,7 +39,11 @@ $(document).ready(function()
 			    'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
 			    $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
 			    $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
-			    $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER]});
+			    $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
+				onKeypress: function(key, value, inst) { 
+					$(this).trigger('keyup');
+				}
+			});
     }
 
     $(".location").each(function(index,element){
