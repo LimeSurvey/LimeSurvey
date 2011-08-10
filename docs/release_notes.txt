@@ -77,7 +77,16 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
-Changes from 1.91+ (build 10629) to 1.91+ (build 10747)
+Changes from 1.91+ (build 10647) to 1.91+ (build 10669)
+-Fixed issue #5385: No response with blank page when clicking "Take ownership" by admin in account management (c_schmitz)
+-Fixed issue #5387: Layout a little too wide when editing label sets (c_schmitz)
+-Fixed issue #5389: V character not displayed (c_schmitz)
+-Fixed issue: Additional confirmation for moving surveys to a different user even if to be deleted user owns no surveys (c_schmitz)
+-Fixed issue: Disable tokens where participants opted out or their e-mail is marked as bounced when bounce processing script is used (idobraca)
+#Updated translation: Polish (elisa-ls)
+
+
+Changes from 1.91+ (build 10629) to 1.91+ (build 10647)
 #Updated translation: Arabic by Abed W. Ayyad (c_schmitz)
 #Updated translation: Chinese Simplified by Yooyooh (c_schmitz)
 #Updated translation: Greek (c_schmitz)
