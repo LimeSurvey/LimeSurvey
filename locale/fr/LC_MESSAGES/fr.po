@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey French language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-07 19:35+0100\n"
-"PO-Revision-Date: 2011-08-07 19:36+0100\n"
+"POT-Creation-Date: 2011-08-10 22:46+0100\n"
+"PO-Revision-Date: 2011-08-10 22:48+0100\n"
 "Last-Translator: b00z00 <b00z00@b00z00.org>\n"
 "Language-Team: Sébastien GAUGRY <_>\n"
 "Language: \n"
@@ -1024,14 +1024,14 @@ msgstr "Inactivé"
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1301
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1326
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1401
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:4983
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5032
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5068
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5104
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:4986
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5035
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5071
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5107
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:1983
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:2135
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7484
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7538
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7485
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7539
 msgid "Please choose..."
 msgstr "Veuillez choisir ..."
 
@@ -1040,8 +1040,8 @@ msgstr "Veuillez choisir ..."
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1302
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1327
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1402
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5033
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5069
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5036
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5072
 msgid "None"
 msgstr "Aucun"
 
@@ -1110,8 +1110,8 @@ msgstr "Autre"
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:3850
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:3861
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5043
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5513
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5552
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5514
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5553
 msgid "Yes"
 msgstr "Oui"
 
@@ -1148,15 +1148,15 @@ msgstr "Oui"
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:3849
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:3860
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5052
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5515
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5570
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5516
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5571
 msgid "No"
 msgstr "Non"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1892
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1900
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5943
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5948
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5946
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:5951
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:1660
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:2153
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:2454
@@ -1164,25 +1164,25 @@ msgstr "Non"
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:2647
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5063
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5131
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5227
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5291
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5386
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5434
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5518
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5590
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5680
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5759
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5866
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5888
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5961
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6094
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6830
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5228
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5292
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5387
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5435
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5519
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5591
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5681
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5760
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5867
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5889
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5962
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6095
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6831
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7122
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7197
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7302
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7504
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7558
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6832
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7123
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7198
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7303
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7505
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7559
 msgid "No answer"
 msgstr "Sans réponse"
 
@@ -1197,26 +1197,26 @@ msgid "Female"
 msgstr "Féminin"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1908
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5514
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5560
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5515
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5561
 msgid "Uncertain"
 msgstr "Incertain"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1914
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5675
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5718
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5676
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5719
 msgid "Increase"
 msgstr "Augmenter"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1915
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5677
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5741
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5678
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5742
 msgid "Decrease"
 msgstr "Diminuer"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:1916
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5676
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5729
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5677
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5730
 msgid "Same"
 msgstr "Sans changement"
 
@@ -2238,36 +2238,36 @@ msgstr "Le courriel n'a pas été envoyé car le mode démo est activé."
 msgid "SMTP debug output:"
 msgstr "Sortie du debug SMTP :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:4883
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:4886
 #, php-format
 msgid "SQL command failed: %s Reason: %s"
 msgstr "Commande SQL en échec : %s Raison : %s"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7039
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7042
 msgid "Token code"
 msgstr "Code d'invitation"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7040
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7043
 msgid "Language code"
 msgstr "Code de langue"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7041
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7044
 msgid "Invitation sent date"
 msgstr "Date d'envoi de l'invitation"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7042
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7045
 msgid "Last Reminder sent date"
 msgstr "Date du dernier rappel envoyé"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7043
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7046
 msgid "Total numbers of sent reminders"
 msgstr "Total des rappels envoyés"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7044
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7047
 msgid "Uses left"
 msgstr "Utilisations restantes"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7065
+#: /home/b00z00/__SVN/limesurvey/limesurvey/common_functions.php:7068
 #, php-format
 msgid "Attribute %s"
 msgstr "Attribut %s"
@@ -2572,8 +2572,8 @@ msgstr "Retour au questionnaire"
 
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:3952
 #: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:4266
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5525
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7354
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:5526
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7355
 msgid "Error: This question has no answers."
 msgstr "Erreur : cette question n'a pas de réponse."
 
@@ -2629,25 +2629,25 @@ msgstr "Seuls des nombres peuvent être entrés dans ce champ"
 msgid "Drag and drop the pin to the desired location. You may also right click on the map to move the pin."
 msgstr "Glisser/Déplacer la punaise à la position désirée. Vous povez égaliser Cliquer-droit sur la carte pour déplacer le punaise."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6074
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6075
 msgid "Please choose"
 msgstr "Veuillez choisir"
 
 # D:\www\limesurvey/qanda.php:728
 # D:\www\limesurvey/qanda.php:952
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6118
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6454
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6791
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6943
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7584
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6119
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6455
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6792
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6944
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:7585
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Erreur : il n'y a pas d'options de réponse pour cette question et/ou elles n'existent pas dans cette langue."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6709
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6710
 msgid "..."
 msgstr "..."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6937
+#: /home/b00z00/__SVN/limesurvey/limesurvey/qanda.php:6938
 msgid "Error: There are no answers defined for this question."
 msgstr "Erreur : il n'y a pas de réponse définie pour cette question."
 
@@ -7589,8 +7589,8 @@ msgstr "Courriel d'enregistrement public :"
 
 # E:\www\limesurvey/admin/html.php:694
 #: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:60
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:661
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:769
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:660
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:768
 msgid "Mail to all Members"
 msgstr "Courriel à tous les membres"
 
@@ -7660,172 +7660,168 @@ msgstr "Utiliser tous/Gérer les modèles"
 msgid "Manage Labels"
 msgstr "Gérer les jeux d'étiquettes"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:420
-msgid "Setting as Administrator Child"
-msgstr "Définir comme enfant de l'administrateur"
-
 # E:\www\limesurvey/admin/usercontrol.php:120
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:421
-msgid "Set Parent successful."
-msgstr "Définition du parent réussie."
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:420
+msgid "Ownership was successfully changed."
+msgstr "Le propriétaire a été modifié avec succès."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:432
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:430
 msgid "User control"
 msgstr "Contrôle des utilisateurs"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:444
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:442
 msgid "No of surveys"
 msgstr "Nombre de questionnaires"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:446
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:444
 msgid "Created by"
 msgstr "Créé par"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:463
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:461
 msgid "Edit user"
 msgstr "Éditer l'utilisateur"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:522
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:520
 msgid "Edit this user"
 msgstr "Éditer cet utilisateur"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:534
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:532
 msgid "Set global permissions for this user"
 msgstr "Définir des permissions globales pour cet utilisateur"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:543
-msgid "Take Ownership"
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:541
+msgid "Take ownership"
 msgstr "Devenir propriétaire"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:552
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:551
 msgid "Set template permissions for this user"
 msgstr "Définir des permissions sur les modèles pour cet utilisateur"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:563
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:562
 msgid "Delete this user"
 msgstr "Supprimer cet utilisateur"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:605
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:604
 msgid "Add user:"
 msgstr "Ajouter un utilisateur :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:623
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:643
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:622
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:642
 msgid "Name:"
 msgstr "Nom :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:627
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:626
 msgid "Add Group"
 msgstr "Ajouter un groupe"
 
 # E:\www\limesurvey/admin/usercontrol.php:342
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:640
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:639
 #, php-format
 msgid "Editing user group (Owner: %s)"
 msgstr "Édition du groupe d'utilisateur (Propriétaire : %s)"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:647
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:646
 msgid "Update User Group"
 msgstr "Mise à jour du groupe d'utilisateurs"
 
 # E:\www\limesurvey/admin/html.php:1685
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:663
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:662
 msgid "Send me a copy:"
 msgstr "Envoyer moi une copie :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:665
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:664
 msgid "Subject:"
 msgstr "Objet :"
 
 # E:\www\limesurvey/admin/html.php:1691
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:669
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:668
 msgid "Send"
 msgstr "Envoyer"
 
 # C:\wamp\www\limesurvey/classes/core/surveytranslator.php:139
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:670
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:669
 msgid "Reset"
 msgstr "Réinitialiser"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:678
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:677
 msgid "Deleting User Group"
 msgstr "Suppression du groupe d'utilisateurs"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:695
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:736
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:694
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:735
 msgid "Group Name"
 msgstr "Nom du groupe "
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:700
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:699
 msgid "Could not delete user group."
 msgstr "Impossible de supprimer le groupe d'utilisateurs."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:711
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:710
 msgid "Could not delete user group. No group selected."
 msgstr "Impossible de supprimer le groupe d'utilisateurs. Aucun groupe sélectionné."
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:720
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:719
 msgid "Adding User Group"
 msgstr "Ajouter un groupe d'utilisateurs"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:740
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:863
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:903
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:739
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:862
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:902
 msgid "Description: "
 msgstr "Description :"
 
 # E:\www\limesurvey/admin/usercontrol.php:342
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:743
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:742
 msgid "User group successfully added!"
 msgstr "Groupe d'utilisateurs ajouté avec succès !"
 
 # E:\www\limesurvey/admin/usercontrol.php:153
 # E:\www\limesurvey/admin/usercontrol.php:157
 # E:\www\limesurvey/admin/usercontrol.php:171
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:748
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:755
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:747
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:754
 msgid "Failed to add Group!"
 msgstr "Échec de l'ajout du groupe !"
 
 # E:\www\limesurvey/admin/admin.php:102
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:749
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:748
 msgid "Group already exists!"
 msgstr "Le groupe existe déjà !"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:756
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:755
 msgid "Group name was not supplied!"
 msgstr "Le nom du groupe n'était pas rempli !"
 
 # E:\www\limesurvey/admin/usercontrol.php:120
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:822
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:821
 msgid "Message(s) sent successfully!"
 msgstr "Message(s) envoyé(s) avec succès !"
 
 # E:\www\limesurvey/admin/html.php:1683
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:823
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:822
 msgid "To:"
 msgstr "À :"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:829
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:828
 #, php-format
 msgid "Email to %s failed. Error Message:"
 msgstr "L'envoi du courriel à %s a échoué. Message d'erreur :"
 
 # E:\www\limesurvey/admin/usercontrol.php:342
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:861
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:860
 msgid "Edit User Group Successfully!"
 msgstr "Groupe d'utilisateurs édité avec succès !"
 
 # E:\www\limesurvey/admin/usercontrol.php:342
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:868
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:867
 msgid "Failed to update!"
 msgstr "Échec de la mise à jour !"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:951
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:950
 msgid "Delete this user from group"
 msgstr "Supprimer cet utilisateur du groupe"
 
-#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:1046
+#: /home/b00z00/__SVN/limesurvey/limesurvey/admin/userrighthandling.php:1045
 msgid "Adding User to group"
 msgstr "Ajouter un utilisateur au groupe"
 
@@ -11825,19 +11821,21 @@ msgstr "Veuillez cliquer ci-dessous pour structurer la base de données"
 msgid "Could not create database"
 msgstr "Impossible de créer la base de données"
 
+#~ msgid "Setting as Administrator Child"
+#~ msgstr "Définir comme enfant de l'administrateur"
+
+# E:\www\limesurvey/admin/usercontrol.php:120
+#~ msgid "Set Parent successful."
+#~ msgstr "Définition du parent réussie."
 #~ msgid "Do you want to save your changes ?"
 #~ msgstr "Voulez vous sauvegarder vos changements ?"
-
 #~ msgid "Did not copy questions"
 #~ msgstr "Questions non copiées"
-
 #~ msgid "No condition selected to copy from"
 #~ msgstr "Aucune condition à copier sélectionnée"
-
 #~ msgid "No question selected to copy condition to"
 #~ msgstr ""
 #~ "Aucune question sélectionnée pour lui appliquer la ou les conditions. "
-
 #~ msgid ""
 #~ "Dear {FIRSTNAME},\n"
 #~ "\n"
@@ -11876,169 +11874,121 @@ msgstr "Impossible de créer la base de données"
 #~ "----------------------------------------------\n"
 #~ "Cliquez ici pour remplir ce questionnaire :\n"
 #~ "{SURVEYURL}"
-
 #~ msgid "The defined LimeSurvey database does not exist"
 #~ msgstr "La base de données définie pour LimeSurvey n'existe pas"
-
 #~ msgid ""
 #~ "Either your selected database has not yet been created or there is a "
 #~ "problem accessing it."
 #~ msgstr ""
 #~ "Soit votre base de données n'a pas été créée soit il y a un problème pour "
 #~ "y accéder."
-
 #~ msgid "Export database"
 #~ msgstr "Exporter la base de données"
-
 #~ msgid "Question Code:"
 #~ msgstr "Code de la question : "
-
 #~ msgid ""
 #~ "Are you sure you want to copy these condition(s) to the questions you "
 #~ "have selected?"
 #~ msgstr ""
 #~ "Êtes-vous sûr de vouloir copier cette(ces) condition(s) aux questions "
 #~ "sélectionnées ?"
-
 #~ msgid "Import answers from a deactivated survey table"
 #~ msgstr "Importer des réponses d'une table de questionnaire désactivé"
-
 #~ msgid "Quick Statistics"
 #~ msgstr "Statistiques rapides"
-
 #~ msgid "Display select boxes"
 #~ msgstr "Afficher les boites de sélection"
-
 #~ msgid "Prefix|Suffix"
 #~ msgstr "Préfixe|Suffixe"
-
 #~ msgid "Enter a header text for scale B"
 #~ msgstr "Saisir un texte pour l'entête de l'échelle B"
-
 #~ msgid "Header scale B"
 #~ msgstr "Entête de l'échelle B"
-
 #~ msgid "City"
 #~ msgstr "Ville"
-
 #~ msgid "State"
 #~ msgstr "État"
-
 #~ msgid "Country"
 #~ msgstr "Pays"
-
 #~ msgid "Width"
 #~ msgstr "Largeur"
-
 #~ msgid "Zoom"
 #~ msgstr "Zoom"
-
 #~ msgid "none"
 #~ msgstr "aucun"
-
 #~ msgid "Dropdown"
 #~ msgstr "Déroulant"
-
 #~ msgid "Timing"
 #~ msgstr "Minuteur"
-
 #~ msgid "2nd time limit display time"
 #~ msgstr ""
 #~ "Durée d'affichage du 2nd message d'avertissement d'expiration du délai"
-
 #~ msgid "Survey Name (ID)"
 #~ msgstr "Nom du questionnaire (ID)"
-
 #~ msgid "For further information contact %s"
 #~ msgstr "Pour plus d'information, contactez %s"
-
 #~ msgid ""
 #~ "If you have been issued with a token, please enter it in the box below "
 #~ "and click continue."
 #~ msgstr ""
 #~ "Si vous avez reçu une invitation, saisissez-la dans le champ ci-dessous "
 #~ "et cliquez sur Continuer."
-
 #~ msgid "Boilerplate Question"
 #~ msgstr "Question sans réponse"
-
 #~ msgid "Please Choose..."
 #~ msgstr "Veuillez sélectionner ..."
-
 #~ msgid "Thank You!"
 #~ msgstr "Merci !"
-
 #~ msgid "First Name"
 #~ msgstr "Prénom"
-
 #~ msgid "Last Name"
 #~ msgstr "Nom"
-
 #~ msgid "Email Address"
 #~ msgstr "Adresse de courriel"
-
 #~ msgid "2nd Time Limit Warning CSS Style"
 #~ msgstr "Style CSS du 2nd message d'avertissement "
-
 #~ msgid "Failed! Reason: "
 #~ msgstr "Échec ! Cause :"
-
 #~ msgid ""
 #~ "One or more mandatory questions have not been answered. You cannot "
 #~ "proceed until these have been completed"
 #~ msgstr ""
 #~ "Vous n'avez pas répondu à une ou plusieurs questions obligatoires. Vous "
 #~ "ne pourrez pas poursuivre tant que vous n'aurez pas répondu à celles-ci"
-
 #~ msgid ""
 #~ "One or more questions have not been answered in a valid manner. You "
 #~ "cannot proceed until these answers are valid"
 #~ msgstr ""
 #~ "Vous n'avez pas répondu correctement à une ou plusieurs questions. Vous "
 #~ "ne pourrez pas poursuivre tant que ces réponses ne sont pas valides"
-
 #~ msgid "Base Language"
 #~ msgstr "Langue de base"
-
 #~ msgid "Convert resources links?"
 #~ msgstr "Convertir les liens de ressources ?"
-
 #~ msgid "Data Entry"
 #~ msgstr "Saisie de données"
-
 #~ msgid "IP-Address"
 #~ msgstr "Adresse IP"
-
 #~ msgid "Label 1"
 #~ msgstr "Étiquette 1"
-
 #~ msgid "Label 2"
 #~ msgstr "Étiquette 2"
-
 #~ msgid "Labelsets"
 #~ msgstr "Jeux d'étiquettes"
-
 #~ msgid "Edit Label Set"
 #~ msgstr "Éditer le jeu d'étiquettes"
-
 #~ msgid "Close Window"
 #~ msgstr "Fermer la fenêtre"
-
 #~ msgid "This survey is not currently active"
 #~ msgstr "Ce questionnaire est actuellement inactivé"
-
 #~ msgid "This survey is currently active"
 #~ msgstr "Ce questionnaire est actuellement activé"
-
 #~ msgid "Responses will be date stamped"
 #~ msgstr "Les réponses seront datées"
-
 #~ msgid "Base Language:"
 #~ msgstr "Langue de base :"
-
 #~ msgid "Exit Link"
 #~ msgstr "Lien de sortie "
-
 # E:\www\limesurvey/admin/usercontrol.php:153
 # E:\www\limesurvey/admin/usercontrol.php:157
 # E:\www\limesurvey/admin/usercontrol.php:171
