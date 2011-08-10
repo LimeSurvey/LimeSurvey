@@ -22,7 +22,7 @@
 					<img src='<?php echo $imageurl; ?>/notyetstarted.png' alt='<?php echo $clang->gT("This survey is active but has a start date."); ?>' />
                 <?php } else { ?>
                 	<img src='<?php echo $imageurl; ?>/active.png' title='' alt='<?php echo $clang->gT("This survey is currently active."); ?>' />
- 				<?php } 
+ 				<?php }
 				if($canactivate) { ?>
                     <a href="#" onclick="window.open('<?php echo site_url("admin/survey/deactivate/$surveyid"); ?>', '_top')"
                     	title="<?php echo $clang->gTview("Deactivate this Survey"); ?>" >
@@ -186,59 +186,59 @@
 
 <div class='menubar-right'>
         <?php if ($permission)
-        { ?> 
+        { ?>
             <span class="boxcaption"><?php echo $clang->gT("Question groups"); ?>:</span>
             <select name='groupselect' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
-            
+
          <?php echo $groups; ?>
              </select>
         <?php } ?>
-        
-        <span class='arrow-wrapper'> 
+
+        <span class='arrow-wrapper'>
         <?php if ($GidPrev != "")
         { ?>
             <a href='<?php echo site_url("admin/survey/view/$surveyid/$GidPrev"); ?>'>
             <img src='<?php echo $this->config->item('imageurl'); ?>/previous_20.png' title='' alt='<?php echo $clang->gT("Previous question group"); ?>'
-            name='questiongroupprevious' <?php echo $clang->gT("Previous question group"); ?>/> </a>
+            name='questiongroupprevious' /> </a>
         <?php }
         else
         { ?>
-           
+
             <img src='<?php echo $this->config->item('imageurl'); ?>/previous_disabled_20.png' title='' alt='<?php echo $clang->gT("No previous question group"); ?>'
             name='noquestiongroupprevious' />
         <?php }
 
-        
+
         if ($GidNext != "")
         { ?>
-          
-           
+
+
             <a href='<?php echo site_url("admin/survey/view/$surveyid/$GidNext"); ?>'>
             <img src='<?php echo $this->config->item('imageurl'); ?>/next_20.png' title='' alt='<?php echo $clang->gT("Next question group"); ?>'
             name='questiongroupnext' /> </a>
         <?php }
         else
         { ?>
-           
+
             <img src='<?php echo $this->config->item('imageurl'); ?>/next_disabled_20.png' title='' alt='<?php echo $clang->gT("No next question group"); ?>'
             name='noquestiongroupnext' />
         <?php } ?>
 		 </span>
 
 
-        
+
 
         <?php if(bHasSurveyPermission($surveyid,'surveycontent','create'))
         {
             if ($activated == "Y")
             { ?>
                 <a href='#'>
-                <img src='<?php echo $this->config->item('imageurl'); ?>/add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled"); ?> - <?php echo $clang->gT("This survey is currently active."); ?>' 
+                <img src='<?php echo $this->config->item('imageurl'); ?>/add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled"); ?> - <?php echo $clang->gT("This survey is currently active."); ?>'
                 name='AddNewGroup' /></a>
             <?php }
             else
             { ?>
-                
+
                  <a href="#" onclick="window.open('<?php echo site_url("admin/questiongroup/add/$surveyid"); ?>', '_top')"
                  title="<?php echo $clang->gTview("Add new group to survey"); ?>">
                  <img src='<?php echo $this->config->item('imageurl'); ?>/add.png' alt='<?php echo $clang->gT("Add new group to survey"); ?>' name='AddNewGroup' /></a>
@@ -250,15 +250,15 @@
          alt='<?php echo $clang->gT("Hide details of this Survey"); ?>' name='MinimiseSurveyWindow'
          onclick='document.getElementById("surveydetails").style.display="none";' />
 
-         <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/plus.gif' title='<?php echo $clang->gT("Show details of this survey"); ?>' 
-         alt='<?php echo $clang->gT("Show details of this survey"); ?>' name='MaximiseSurveyWindow' 
+         <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/plus.gif' title='<?php echo $clang->gT("Show details of this survey"); ?>'
+         alt='<?php echo $clang->gT("Show details of this survey"); ?>' name='MaximiseSurveyWindow'
          onclick='document.getElementById("surveydetails").style.display="";' />
 
         <?php if (!$gid)
         { ?>
-            
-             <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' title='<?php echo $clang->gT("Close this survey"); ?>' 
-             alt='<?php echo $clang->gT("Close this survey"); ?>' name='CloseSurveyWindow' 
+
+             <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' title='<?php echo $clang->gT("Close this survey"); ?>'
+             alt='<?php echo $clang->gT("Close this survey"); ?>' name='CloseSurveyWindow'
              onclick="window.open('<?php echo site_url("admin"); ?>', '_top')" />
         <?php }
         else
