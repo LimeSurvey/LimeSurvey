@@ -4382,7 +4382,7 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
     }
     elseif ($sCharset=='UTF-8')
     {
-        $sNicetext = preg_replace('/[\x0a\x0b\x0c\x0d\x85\x2028\x2029]/u', '', $sNicetext);
+        $sNicetext = preg_replace('/[\x0a\x0b\x0c\x0d\x85\x2028\x2029]/', ' ', $sNicetext);
         $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
     }
     else
