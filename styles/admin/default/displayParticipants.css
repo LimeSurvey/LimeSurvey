@@ -1,0 +1,10 @@
+
+.ui-icon.searchicon {
+width: 16px;
+height: 16px;
+background-image:url('images/search.gif');
+}
+.ui-icon.exporticon {
+
+    background-image:url('images/export.gif');
+}

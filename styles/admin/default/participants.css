@@ -1,0 +1,15 @@
+th {
+	padding: 0 1em;
+	text-align: left;
+        background-color: #9AAEDB;
+        
+        height: 25px;
+        width:270px;
+        text-align: center;
+        color: black;
+        font-size:100%; 
+	}
+        td{
+                text-align: center;
+                background-color: #EEF6FF;
+        }
