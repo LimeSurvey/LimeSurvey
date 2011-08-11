@@ -162,7 +162,7 @@ class ExpressionManager {
             'pow'			=>array('pow','Math.pow','Exponential expression',2),
             'rad2deg'		=>array('rad2deg','NA','Converts the radian number to the equivalent number in degrees',1),
             'rand'			=>array('rand','Math.random','Generate a random integer',0,2),
-            'round'			=>array('round','Math.round','Rounds a float',1,2,3),
+            'round'			=>array('round','ExprMgr_round','Rounds a number to an optional precision',1,2),
             'sin'			=>array('sin','Math.sin','Sine',1),
             'sinh'			=>array('sinh','NA','Hyperbolic sine',1),
             'sqrt'			=>array('sqrt','Math.sqrt','Square root',1),
@@ -243,8 +243,8 @@ class ExpressionManager {
             'strrpos'		=>array('strrpos','NA','Find the position of the last occurrence of a substring in a string',2,3),
             'strspn'        =>array('strspn','NA','Finds the length of the initial segment of a string consisting entirely of characters contained within a given mask.',2,3,4),
             'strstr'		=>array('strstr','NA','Find first occurrence of a string',2,3),
-            'strtolower'	=>array('strtolower','toLowerCase','Make a string lowercase',1),
-            'strtoupper'	=>array('strtoupper','toUpperCase','Make a string uppercase',1),
+            'strtolower'	=>array('strtolower','ExprMgr_strtolower','Make a string lowercase',1),
+            'strtoupper'	=>array('strtoupper','ExprMgr_strtoupper','Make a string uppercase',1),
             'strtr'			=>array('strtr','NA','Translate characters or replace substrings',3),
             'substr_compare'=>array('substr_compare','NA','Binary safe comparison of two strings from an offset, up to length characters',3,4,5),
             'substr_count'	=>array('substr_count','NA','Count the number of substring occurrences',2,3,4),
@@ -252,8 +252,6 @@ class ExpressionManager {
             'substr'		=>array('substr','NA','Return part of a string',2,3),
             'ucfirst'		=>array('ucfirst','NA','Make a string\'s first character uppercase',1),
             'ucwords'		=>array('ucwords','NA','Uppercase the first character of each word in a string',1),
-
-            'stddev'        =>array('stats_standard_deviation','NA','Returns the standard deviation',-1),
         );
 
         $this->amVars = array();
@@ -2355,6 +2353,8 @@ Hi there!~d='<span id="d" style="border-style: solid; border-width: 2px; border-
 Hi there!~c=strip_tags(d)
 Hi there!~c
 +,-,*,/,!,,,and,&&,or,||,gt,>,lt,<,ge,>=,le,<=,eq,==,ne,!=~implode(',','+','-','*','/','!',',','and','&&','or','||','gt','>','lt','<','ge','>=','le','<=','eq','==','ne','!=')
+HI THERE!~strtoupper(c)
+hi there!~strtolower(c)
 EOD;
 
         $em = new ExpressionManager();

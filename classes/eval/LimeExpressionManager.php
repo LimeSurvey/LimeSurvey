@@ -627,7 +627,7 @@ class LimeExpressionManager {
                 if ($arg['type'] == '*')
                 {
                     $jsParts[] = "  // Write value from the question into the answer field\n";
-                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(ExprMgr_strip_tags($('#question" . $arg['qid'] . " .questiontext').html())));\n";
+                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(ExprMgr_strip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
 
                 }
                 $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";

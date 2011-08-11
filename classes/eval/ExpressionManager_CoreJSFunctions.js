@@ -183,3 +183,52 @@ function ExprMgr_strip_tags(htmlString)
    tmp.innerHTML = htmlString;
    return tmp.textContent||tmp.innerText;
 }
+
+function ExprMgr_round()
+{
+    if (arguments.length==1) {
+        return Math.round(arguments[0]);
+    }
+    if (arguments.length==2) {
+        num = new  Number(arguments[0]);
+        return num.toFixed(arguments[1]);
+    }
+    return 0;
+}
+
+function ExprMgr_stddev()
+{
+    vals = new Array();
+    j = 0;
+    for (i=0;i<arguments.length;++i) {
+        if (ExprMgr_is_numeric(arguments[i])) {
+            vals[j++] = arguments[i];
+        }
+    }
+    count = vals.length;
+    if (count <= 1) {
+        return 0;   // what should default value be?
+    }
+    sum = 0;
+    for (i=0;i<vals.length;++i) {
+        sum += vals[i];
+    }
+    mean = sum / count;
+
+    sumsqmeans = 0;
+    for (i=0;i<vals.length;++i) {
+        sumsqmeans += (vals[i] - mean) * (vals[i] - mean);
+    }
+    stddev = Math.sqrt(sumsqmeans / (count-1));
+    return stddev;
+}
+
+function ExprMgr_strtoupper(s)
+{
+    return s.toUpperCase();
+}
+
+function ExprMgr_strtolower(s)
+{
+    return s.toLowerCase();
+}
