@@ -107,15 +107,14 @@ function &db_select_column($sql)
  *
  * @param mixed $id Fieldname to be quoted
  */
- /**
+
 function db_quote_id($id)
 {
-    global $databasetype;
     // WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
     //  $quote = $connect->nameQuote;
     //  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
 
-    switch ($databasetype)
+    switch (get_instance()->db->platform())
     {
         case "mysqli" :
         case "mysql" :
@@ -134,7 +133,7 @@ function db_quote_id($id)
             return "`".$id."`";
     }
 }
-*/
+
 function db_random()
 {
     //global $connect,$databasetype;
