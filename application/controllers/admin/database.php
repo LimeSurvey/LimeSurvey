@@ -28,7 +28,232 @@ class Database extends AdminController {
         }
         
         
+        if ($action == "updateansweroptions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
+        {
+            $this->load->helper('database');
+            $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    
+            $alllanguages = $anslangs;
+            array_unshift($alllanguages,$baselang);
+    
+    
+            $query = "select type from ".$this->db->dbprefix."questions where qid=$qid";
+            $res= db_execute_assoc($query);
+            $resrow = $res->row_array();
+            $questiontype = $resrow['type']; //$connect->GetOne($query);    // Checked)
+            $qtypes=getqtypelist('','array');
+            $scalecount=$qtypes[$questiontype]['answerscales'];
+    
+            $count=0;
+            $invalidCode = 0;
+            $duplicateCode = 0;
+             
+            //require_once("../classes/inputfilter/class.inputfilter_clean.php");
+            //$myFilter = new InputFilter('','',1,1,1);
+            $_POST = $this->input->post();
+            //First delete all answers
+            $query = "delete from ".$this->db->dbprefix."answers where qid=".$qid;
+            $result = db_execute_assoc($query); // Checked
+    
+            for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
+            {
+                $maxcount=(int) $_POST['answercount_'.$scale_id];
+                
+                for ($sortorderid=1;$sortorderid<$maxcount;$sortorderid++)
+                {
+                    $oldcode=sanitize_paranoid_string($_POST['oldcode_'.$sortorderid.'_'.$scale_id]);
+                    $code=sanitize_paranoid_string($_POST['code_'.$sortorderid.'_'.$scale_id]);
+                    $assessmentvalue=(int) $_POST['assessment_'.$sortorderid.'_'.$scale_id];
+                    foreach ($alllanguages as $language)
+                    {
+                        $answer=$_POST['answer_'.$language.'_'.$sortorderid.'_'.$scale_id];
+                        
+                        /**if ($filterxsshtml)
+                        {
+                            //Sanitize input, strip XSS
+                            $answer=$myFilter->process($answer);
+                        }
+                        else
+                        { */
+                            $answer=html_entity_decode($answer, ENT_QUOTES, "UTF-8");
+                        //}
+                        // Fix bug with FCKEditor saving strange BR types
+                        $answer=fix_FCKeditor_text($answer);
+                        
+                        // Now we insert the answers
+                        $query = "INSERT INTO ".$this->db->dbprefix."answers (code,answer,qid,sortorder,language,assessment_value, scale_id)
+                                  VALUES ('".$code."', '".
+                        $answer."', ".
+                        $qid.", ".
+                        $sortorderid.", '".
+                        $language."', ".
+                        $assessmentvalue.",
+                        $scale_id)";
+                        if (!$result = db_execute_assoc($query)) // Checked
+                        {
+                            $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to update answers","js")." - ".$query." - ".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+                        }
+                    } // foreach ($alllanguages as $language)
+    
+                    if($code !== $oldcode) {
+                        $query='UPDATE '.$this->db->dbprefix.'conditions SET value=\''.$code.' WHERE cqid='.$qid.' AND value=\''.$oldcode.'\'';
+                        db_execute_assoc($query);
+                    }
+    
+                }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
+            }  //  for ($scale_id=0;
+    
+            if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
+            if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
+    
+            $sortorderid--;
+            $this->session->set_userdata('flashmessage', $clang->gT("Answer options were successfully saved."));                    
+            
+            if ($databaseoutput != '')
+            {
+                echo $databaseoutput;
+            }
+            else
+            {
+                redirect(site_url('admin/question/answeroptions/'.$surveyid.'/'.$gid.'/'.$qid));
+            }
+            
+            //$action='editansweroptions';
+    
+        }
         
+        
+        if ($action == "updatesubquestions" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
+        {
+            $this->load->helper('database');
+            $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            array_unshift($anslangs,$baselang);
+    
+            $query = "select type from ".$this->db->dbprefix."questions where qid=$qid";
+            $res=db_execute_assoc($query);
+            $row = $res->row_array();
+            $questiontype = $row['type']; //$connect->GetOne($query);    // Checked
+            $qtypes=getqtypelist('','array');
+            $scalecount=$qtypes[$questiontype]['subquestions'];
+            $_POST = $this->input->post();
+            $clang = $this->limesurvey_lang;
+            // First delete any deleted ids
+            $deletedqids=explode(' ', trim($_POST['deletedqids']));
+    
+            foreach ($deletedqids as $deletedqid)
+            {
+                $deletedqid=(int)$deletedqid;
+                if ($deletedqid>0)
+                { // don't remove undefined
+                $query = "DELETE FROM ".$this->db->dbprefix."questions WHERE qid='{$deletedqid}'";  // Checked
+                if (!$result = db_execute_assoc($query))
+                {
+                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." \")\n //-->\n</script>\n";
+                }
+            }
+            }
+    
+            //Determine ids by evaluating the hidden field
+            $rows=array();
+            $codes=array();
+            $oldcodes=array();
+            foreach ($_POST as $postkey=>$postvalue)
+            {
+                $postkey=explode('_',$postkey);
+                if ($postkey[0]=='answer')
+                {
+                    $rows[$postkey[3]][$postkey[1]][$postkey[2]]=$postvalue;
+                }
+                if ($postkey[0]=='code')
+                {
+                    $codes[$postkey[2]][]=$postvalue;
+                }
+                if ($postkey[0]=='oldcode')
+                {
+                    $oldcodes[$postkey[2]][]=$postvalue;
+                }
+            }
+            $count=0;
+            $invalidCode = 0;
+            $duplicateCode = 0;
+            $dupanswers = array();
+            /*
+             for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
+             {
+    
+             // Find duplicate codes and add these to dupanswers array
+             $foundCat=array_count_values($codes);
+             foreach($foundCat as $key=>$value){
+             if($value>=2){
+             $dupanswers[]=$key;
+             }
+             }
+             }
+             */
+            //require_once("../classes/inputfilter/class.inputfilter_clean.php");
+            //$myFilter = new InputFilter('','',1,1,1);
+    
+    
+            $insertqids=array();
+            for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
+            {
+                foreach ($anslangs as $language)
+                {
+                    $position=0;
+                    foreach ($rows[$scale_id][$language] as $subquestionkey=>$subquestionvalue)
+                    {
+                        if (substr($subquestionkey,0,3)!='new')
+                        {
+                            $query='Update '.$this->db->dbprefix.'questions set question_order='.($position+1).', title=\''.$codes[$scale_id][$position].'\', question=\''.$subquestionvalue.'\', scale_id='.$scale_id.' where qid=\''.$subquestionkey.'\' AND language=\''.$language.'\'';
+                            db_execute_assoc($query);
+    
+                            if($codes[$scale_id][$position] !== $oldcodes[$scale_id][$position]) {
+                                $query='UPDATE '.$this->db->dbprefix.'conditions SET cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.$codes[$scale_id][$position].'" WHERE cqid='.$qid.' AND cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.$oldcodes[$scale_id][$position].'"';
+                                db_execute_assoc($query);
+                                $query='UPDATE '.$this->db->dbprefix.'conditions SET value="'.$codes[$scale_id][$position].'" WHERE cqid='.$qid.' AND cfieldname="'.$surveyid.'X'.$gid.'X'.$qid.'" AND value="'.$oldcodes[$scale_id][$position].'"';
+                                db_execute_assoc($query);
+                            }
+    
+                        }
+                        else
+                        {
+                            if (!isset($insertqid[$position]))
+                            {
+                                $query='INSERT into '.$this->db->dbprefix.'questions (sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$surveyid.','.$gid.','.($position+1).',\''.$codes[$scale_id][$position].'\',\''.$subquestionvalue.'\','.$qid.',\''.($language).'\','.$scale_id.')';
+                                db_execute_assoc($query);
+                                $insertqid[$position]=$this->db->insert_id(); //$connect->Insert_Id(db_table_name_nq('questions'),"qid");
+                            }
+                            else
+                            {
+                                db_switchIDInsert('questions',true);
+                                $query='INSERT into '.$this->db->dbprefix.'questions (qid, sid, gid, question_order, title, question, parent_qid, language, scale_id) values ('.$insertqid[$position].','.$surveyid.','.$gid.','.($position+1).',\''.$codes[$scale_id][$position].'\',\''.$subquestionvalue.'\','.$qid.',\''.$language.'\','.$scale_id.')';
+                                db_execute_assoc($query);
+                                db_switchIDInsert('questions',true);
+                            }
+                        }
+                        $position++;
+                    }
+    
+                }
+            }
+            //include("surveytable_functions.php");
+            //surveyFixColumns($surveyid);
+            $this->session->set_userdata('flashmessage', $clang->gT("Subquestions were successfully saved."));                    
+            
+            //$action='editsubquestions';
+            
+            if ($databaseoutput != '')
+            {
+                echo $databaseoutput;
+            }
+            else
+            {
+                redirect(site_url('admin/question/subquestions/'.$surveyid.'/'.$gid.'/'.$qid));
+            }
+        }
+    
         if ($action == "insertquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
         {
             $_POST = $this->input->post();

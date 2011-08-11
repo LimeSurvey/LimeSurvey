@@ -1690,9 +1690,9 @@ function StandardSort($a, $b)
 }
 
 
-function fixsortorderAnswers($qid) //Function rewrites the sortorder for a group of answers
+function fixsortorderAnswers($qid,$surveyid=null) //Function rewrites the sortorder for a group of answers
 {
-    global $CI, $surveyid;
+    global $CI;
     $qid=sanitize_int($qid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
