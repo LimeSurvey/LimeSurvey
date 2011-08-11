@@ -7,19 +7,19 @@
         var attname = "<?php echo $clang->gT("Attribute Name:"); ?>";
         removeitem = new Array(); // Array to hold values that are to be removed from langauges option
          </script>
-        <link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/adminstyle.css")?>" />
-        <script src="<?php echo site_url("scripts/admin/admin_core.js")?>" type="text/javascript"></script>
-        <script src="<?php echo site_url("scripts/jquery/jquery.js")?>" type="text/javascript"></script>
-        <script src="<?php echo site_url("scripts/jquery/jquery-ui.js")?>" type="text/javascript"></script>
-        <script src="<?php echo site_url("scripts/admin/viewAttribute.js")?>" type="text/javascript"></script>
-        <link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/participants.css")?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
+        <script src="<?php echo $this->config->item('adminscripts')."admin_core.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo $this->config->item('adminscripts')."viewAttribute.js" ?>" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/participants.css" ?>" />
     </head>
     <body>
         <div class='menubar-title ui-widget-header'><strong><center><?php echo $clang->gT("Attribute Settings"); ?></center> </strong></div><br><br>
         <?php
         $hidden = array();
          $attributeview = form_open('/admin/participants/saveAttribute/'.$this->uri->segment(4),"",$hidden);
-        $plus = array('src' => 'images/plus.png',
+        $plus = array('src' => base_url()."images/plus.png",
                       'alt' => 'Add Language',
                       'title' => 'Add Language',
                       'id' => 'add',
@@ -89,7 +89,7 @@
             $attributeview .= anchor('admin/participants/delAttributeValues/'.$attributes->attribute_id.'/'.$value['value_id'],img($del));
             $attributeview .= "</td></tr>";
             }
-            $attributeview .= "</table><a href='#' class='add'><img src = ".site_url('images/plus.png')." alt='Add Attribute' width='25' height='25' title='Add Attribute' id='add' name='add'></a>";
+            $attributeview .= "</table><a href='#' class='add'><img src = ".base_url().'images/plus.png'." alt='Add Attribute' width='25' height='25' title='Add Attribute' id='add' name='add'></a>";
             $attributeview .= "</div><br><br>".form_submit('submit', 'Save');
             $attributeview .= form_close()."</center>";
             echo $attributeview;

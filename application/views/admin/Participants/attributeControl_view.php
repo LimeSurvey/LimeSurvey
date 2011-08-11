@@ -1,9 +1,9 @@
 <html>
     <head>
-        <script src="<?php echo site_url("scripts/jquery/jquery.js")?>" type="text/javascript"></script>
-        <script src="<?php echo site_url("scripts/jquery/jquery-ui.js")?>" type="text/javascript"></script>
-         <script src="<?php echo site_url("scripts/admin/attributeControl.js")?>" type="text/javascript"></script>
-        <link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/participants.css")?>" />
+        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
+         <script src="<?php echo $this->config->item('adminscripts')."attributeControl.js" ?>" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/participants.css" ?>" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
@@ -85,7 +85,7 @@
         </div>
         </table></li>
         <br>
-        <li><a href="#" class="add"><img src = "<?php echo site_url('images/plus.png')?>" alt="Add Attribute" width="25" height="25" title="Add Attribute" id="add" name="add"></a></li></ul>
+        <li><a href="#" class="add"><img src = "<?php echo base_url().'images/plus.png' ?>" alt="Add Attribute" width="25" height="25" title="Add Attribute" id="add" name="add"></a></li></ul>
 
         <br>
         <p><input type="submit" name="Save" value="Save"></p>

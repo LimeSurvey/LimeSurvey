@@ -3,12 +3,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
-        <link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/adminstyle.css")?>" />
-        <script src="<?php echo site_url("scripts/jquery/jquery.js")?>" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
+        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
     </head>
     <body>
         <?php
-           $uploadSummary = "<div class='header ui-widget-header'>".$clang->gT("CPDB CSV Summary")."</div><div class='messagebox ui-corner-all'>";
+               
+            $uploadSummary = "<div class='header ui-widget-header'>".$clang->gT("CPDB CSV Summary")."</div><div class='messagebox ui-corner-all'>";
             if($this->session->flashdata('errorinupload') == "") {
             $uploadSummary .= "<div class='successheader'>".$clang->gT('Uploaded CSV file successfully')."</div>";
             if($this->session->flashdata('imported') !=0) {
@@ -34,9 +35,9 @@
             $uploadSummary .= "<li>".sprintf($clang->gT("%s records with invalid email address removed"),count($this->session->flashdata('invalidemaillist')));
             $uploadSummary .= "<a href='#' onclick='$(\"#invalidemaillist\").toggle();'>".$clang->gT('List')."</a>";
             $uploadSummary .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'><ul>";
-               foreach($this->session->flashdata('invalidmaillist') as $data) 
+              foreach($this->session->flashdata('invalidmaillist') as $data) 
               {
-            $uploadSummary.= "<li>".$data."</li>";
+                    $uploadSummary.= "<li>".$data."</li>";
               }
             }
            $uploadSummary .= "</ul></div></li>";
@@ -56,6 +57,7 @@
                 $uploadSummary .= "<div class='warningheader'>".$this->session->flashdata('errorinupload')."</div>";
           }
           echo $uploadSummary;
+          
           ?>
          
     </body>

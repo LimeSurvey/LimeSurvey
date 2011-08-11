@@ -2,13 +2,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/adminstyle.css")?>" />
-        <link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/attributeMapCSV.css")?>" />
-        <script src="<?php echo site_url("scripts/jquery/jquery.js")?>" type="text/javascript"></script>
-        <script src="<?php echo site_url("scripts/jquery/jquery-ui.js")?>" type="text/javascript"></script>
-        <script src="<?php echo site_url("scripts/jquery/jquery.qtip.js")?>" type="text/javascript"></script>
-        <script src="<?php echo site_url("scripts/jquery/jquery.ui.sortable.js")?>" type="text/javascript"></script>
-        <script src="<?php echo site_url("scripts/admin/attributeMapCSV.js")?>" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/attributeMapCSV.css" ?>" />
+        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.qtip.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.ui.sortable.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo $this->config->item('adminscripts')."attributeMapCSV.js" ?>" type="text/javascript"></script>
         <script type="text/javascript">
             var redUrl = "<?php echo site_url("admin/participants/summaryview");?>";
             var copyUrl = "<?php echo site_url("admin/participants/uploadCSV");?>";

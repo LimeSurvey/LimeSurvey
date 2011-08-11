@@ -328,9 +328,9 @@ myform.submit();
 
 //-->
 </script>
-<link rel="stylesheet" type="text/css" href="<?php echo site_url("scripts/jquery/css/jquery.multiselect.css")?>" />
-<script src="<?php echo site_url("scripts/admin/tokentocpdb.js")?>" type="text/javascript"></script>
-<script src="<?php echo site_url("scripts/jquery/jquery.multiselect.min.js")?>" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/jquery.multiselect.css" ?>" />
+<script src="<?php echo $this->config->item('adminscripts')."tokentocpdb.js" ?>" type="text/javascript"></script>
+<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.min.js" ?>" type="text/javascript"></script>
 <div id="norowselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
             <p>
                 <?php echo $clang->gT("Please select at least one participant to be added"); ?>

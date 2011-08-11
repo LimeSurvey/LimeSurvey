@@ -1,21 +1,21 @@
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/adminstyle.css")?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/adminstyle.css")?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo site_url("scripts/jquery/css/start/jquery-ui.css")?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo site_url("scripts/jquery/css/jquery.multiselect.css")?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo site_url("scripts/jquery/css/jquery.multiselect.filter.css")?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/displayParticipants.css")?>" />
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo site_url("scripts/jquery/jqGrid/css/ui.jqgrid.css")?>" />
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo site_url("scripts/jquery/jqGrid/css/jquery.ui.datepicker.css")?>" />
-<script src="<?php echo site_url("scripts/jquery/jquery.js")?>" type="text/javascript"></script>
-<script src="<?php echo site_url("scripts/jquery/jqGrid/js/i18n/grid.locale-en.js")?>" type="text/javascript"></script>
-<script src="<?php echo site_url("scripts/jquery/jqGrid/js/jquery.jqGrid.min.js")?>" type="text/javascript"></script>
-<script src="<?php echo site_url("scripts/jquery/jqGrid/js/jquery.ui.datepicker.js")?>" type="text/javascript"></script>
-<script src="<?php echo site_url("scripts/jquery/jqGrid/js/jquery.ui.core.js")?>" type="text/javascript"></script>
-<script src="<?php echo site_url("scripts/jquery/jquery-ui.js")?>" type="text/javascript"></script>
-<script src="<?php echo site_url("scripts/jquery/jquery.multiselect.min.js")?>" type="text/javascript"></script>
-<script src="<?php echo site_url("scripts/jquery/jquery.multiselect.filter.min.js")?>" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/start/jquery-ui.css" ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/jquery.multiselect.css" ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/jquery.multiselect.filter.css" ?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/displayParticipants.css" ?>" />
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css" ?>" />
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css" ?>" />
+<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js"?>" type="text/javascript"></script>
+<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js" ?>" type="text/javascript"></script>
+<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js" ?>" type="text/javascript"></script>
+<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.ui.datepicker.js" ?>" type="text/javascript"></script>
+<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.ui.core.js" ?>" type="text/javascript"></script>
+<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
+<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.min.js" ?>" type="text/javascript"></script>
+<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.filter.min.js" ?>" type="text/javascript"></script>
 <?php
 /* If there are any attributes to display as extra columns in the jqGrid, iterate through them */
 
@@ -90,7 +90,7 @@ var jsonUrl = "<?php echo site_url("admin/participants/getParticipants_json");?>
 var jsonSearchUrl = "<?php echo site_url("admin/participants/getParticipantsResults_json");?>";
 var editUrl = "<?php echo site_url("admin/participants/editParticipant"); ?>";
 var minusbutton = "<?php echo site_url("/images/deleteanswer.png"); ?>";
-var addbutton = "<?php echo site_url("/images/plus.png"); ?>";
+var addbutton = "<?php echo base_url()."images/plus.png" ?>";
 var surveylinkUrl = "<?php echo site_url("admin/participants/getSurveyInfo_json"); ?>";
 var getAttribute_json = "<?php echo site_url("admin/participants/getAttribute_json");?>";
 var exporttocsv = "<?php echo site_url("admin/participants/exporttocsv");?>";
@@ -117,11 +117,12 @@ var colModels = '[{"name":"participant_id", "index":"participant_id", "width":10
     echo $colModels;
 ?>
 </script>
-<script src="<?php echo site_url("scripts/admin/displayParticipant.js")?>" type="text/javascript"></script>
+<script src="<?php echo $this->config->item('generalscripts')."admin/displayParticipant.js" ?>" type="text/javascript"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
 </head>
 <body>
+    
 <div id ="search" style="display:none">
 <?php 
 $optionsearch = array( '' => 'Select One',
@@ -157,7 +158,7 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
 <td><?php echo form_dropdown('field_1',$optionsearch,'','id="field_1"'); ?></td>
 <td><?php echo form_dropdown('condition_1',$optioncontition,'','id="condition_1"'); ?></td>
 <td><input type="text" id="conditiontext_1" style="margin-left:10px;" /></td>
-<td><img src=<?php echo site_url("/images/plus.png"); ?>  id="addbutton" style="margin-bottom:4px"></td>
+<td><img src=<?php echo base_url()."images/plus.png" ?>  id="addbutton" style="margin-bottom:4px"></td>
 </tr>
 </table>
 <br>

@@ -7,8 +7,8 @@ and open the template in the editor.
     <head>
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/adminstyle.css")?>" />
-        <script src="<?php echo site_url("scripts/admin/userControl.js")?>" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
+        <script src="<?php echo $this->config->item('adminscripts')."userControl.js" ?>" type="text/javascript"></script>
         <title></title>
     </head>
     <body>

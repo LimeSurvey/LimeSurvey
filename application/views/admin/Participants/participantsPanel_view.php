@@ -2,7 +2,7 @@
 <html>
     <head>
 
-        <link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/adminstyle.css")?>" />
+       <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
         <title></title>
     </head>
     <body>

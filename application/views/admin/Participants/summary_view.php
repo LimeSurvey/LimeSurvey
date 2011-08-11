@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <html>
-    <head><link rel="stylesheet" type="text/css" href="<?php echo site_url("styles/admin/default/adminstyle.css")?>" /></head>
+    <head><link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" /></head>
     <body>
         <div class='header ui-widget-header'>
         <?php echo $clang->gT("Central Participants Database Summary");?>
@@ -34,7 +34,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th>
+	<th>
             <?php echo $clang->gT("Participants you have shared  ");?>
 		</th>
 		<td>

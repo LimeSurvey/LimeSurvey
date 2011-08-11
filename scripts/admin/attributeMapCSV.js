@@ -85,7 +85,7 @@ $(document).ready(function(){
                         newarray : newcurrentarray,
                         mappedarray : mappedarray
                         }, function(msg){ 
-                        $(location).attr('href',redUrl);
+                        //$(location).attr('href',redUrl);
                     });
         }); 
         

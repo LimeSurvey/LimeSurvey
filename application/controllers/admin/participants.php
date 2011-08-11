@@ -853,7 +853,7 @@ function attributeMapCSV()
     {
         $data = array('upload_data' => $this->upload->data());
         $filename = $this->upload->data('full_path');
-        $the_full_file_path = site_url('/tmp/uploads/'.$filename['file_name']);
+        $the_full_file_path = base_url().'tmp/uploads/'.$filename['file_name'];
         $regularfields = array('firstname','participant_id','lastname','email','language','blacklisted','owner_uid');
         $csvread = fopen($the_full_file_path,'r');
         
@@ -1135,10 +1135,12 @@ function uploadCSV()
              }
            $recordcount++;
         }
+       
        unlink('tmp/uploads/'.basename($the_full_file_path));
 
        self::_getAdminHeader();
        $clang = $this->limesurvey_lang;
+       
        $data = array('clang'=> $clang,
                 'duplicatelist' => $duplicatelist,
                 'recordcount' => $recordcount-1,
@@ -1151,16 +1153,7 @@ function uploadCSV()
                 'invalidattribute' => $invalidattribute,
                 'invalidparticipantid' => $invalidparticipantid
            );
-       $this->session->set_flashdata('duplicatelist', $duplicatelist);
-       $this->session->set_flashdata('recordcount', $recordcount-1);
-       $this->session->set_flashdata('mincriteria', $mincriteria);
-       $this->session->set_flashdata('imported', $imported);
-       $this->session->set_flashdata('dupcount', count($duplicatelist));
-       $this->session->set_flashdata('errorinupload', $errorinupload);
-       $this->session->set_flashdata('invalidmaillist', $invalidemaillist);
-       $this->session->set_flashdata('mandatory', $mandatory);
-       $this->session->set_flashdata('invalidattribute', $invalidattribute);
-       $this->session->set_flashdata('invalidattribute',$invalidparticipantid);
+          redirect('admin/participants/summaryview');
 }
 function summaryview()
 {

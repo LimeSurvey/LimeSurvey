@@ -93,7 +93,7 @@
 		    <?php } ?>
                         <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
                         <?php $participantpanel = array(
-                        'src' => 'images/tokens.png',
+                        'src' => base_url().'images/tokens.png',
                         'alt' => 'Central Participant Panel',
                         'title' => 'Central Participant Panel',
                           );
