@@ -39,7 +39,7 @@ class Dumpdb extends AdminController {
             
             
             $sfilename = "backup_db_".random_string('unique')."_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql";
-            $dfilename = "LimeSurvey_".$this->db->database."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql.gz";
+            $dfilename = "LimeSurvey_".$this->db->database."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql.zip";
             $prefs = array(
                 'format'      => 'zip',             // gzip, zip, txt
                    // File name - NEEDED ONLY WITH ZIP FILES
@@ -54,7 +54,7 @@ class Dumpdb extends AdminController {
             $backup =& $this->dbutil->backup();  
             
             $this->load->helper('file');
-            write_file('tmp/'.$sfilename.".gz", $backup); 
+            write_file('tmp/'.$sfilename.".zip", $backup); 
             
             $this->load->helper('download');
             force_download($dfilename, $backup);

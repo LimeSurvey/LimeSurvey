@@ -22,7 +22,7 @@
 					<img src='<?php echo $imageurl; ?>/notyetstarted.png' alt='<?php echo $clang->gT("This survey is active but has a start date."); ?>' />
                 <?php } else { ?>
                 	<img src='<?php echo $imageurl; ?>/active.png' title='' alt='<?php echo $clang->gT("This survey is currently active."); ?>' />
- 				<?php }
+ 				<?php } 
 				if($canactivate) { ?>
                     <a href="#" onclick="window.open('<?php echo site_url("admin/survey/deactivate/$surveyid"); ?>', '_top')"
                     	title="<?php echo $clang->gTview("Deactivate this Survey"); ?>" >
@@ -35,7 +35,7 @@
         </div>
         <ul class='sf-menu'>
         	<?php if($onelanguage) { ?>
-	        	<li><a href='#' accesskey='d' onclick="window.open('<?php echo site_url("index/sid/$surveyid/newtest/Y/lang/$baselang");?>', '_blank')" title="<?php echo $icontext2;?>" >
+	        	<li><a href='#' accesskey='d' onclick="window.open('index.php?sid=<?php echo $surveyid;?>&amp;newtest=Y&amp;lang=<?php echo $baselang;?>', '_blank')" title="<?php echo $icontext2;?>" >
 	            <img src='<?php echo $imageurl;?>/do.png' alt='<?php echo $icontext;?>' />
 	            </a></li>
         	<?php } else { ?>
@@ -45,7 +45,7 @@
 	            <li><a accesskey='d' target='_blank' href='index.php?sid=<?php echo $surveyid;?>&amp;newtest=Y'>
 	            <img src='<?php echo $imageurl;?>/do_30.png' /> <?php echo $icontext;?> </a><ul>
 	            <?php foreach ($languagelist as $tmp_lang) { ?>
-	                <li><a accesskey='d' target='_blank' href='<?php echo site_url("index/sid/$surveyid/newtest/Y/lang/$tmp_lang");?>'>
+	                <li><a accesskey='d' target='_blank' href='index.php?sid=<?php echo $surveyid;?>&amp;newtest=Y&amp;lang=<?php echo $tmp_lang;?>'>
 	                <img src='<?php echo $imageurl;?>/do_30.png' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
 	            <?php } ?>
 	            </ul></li>
@@ -135,13 +135,13 @@
 		   		<?php } ?>
 		   		<?php if($surveyexport) {
 		   			if($onelanguage) { ?>
-		            <li><a href='<?php echo site_url("admin/export/showquexmlsurvey/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/showquexmlsurvey/index/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' /> <?php echo $clang->gT("QueXML export");?></a></li>
 		        <?php } else { ?>
-		            <li><a href='<?php echo site_url("admin/export/showquexmlsurvey/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/showquexmlsurvey/index/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' /> <?php echo $clang->gT("QueXML export");?></a><ul>
 		            <?php foreach ($languagelist as $tmp_lang) { ?>
-		                <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/export/showquexmlsurvey/$surveyid/$tmp_lang");?>'>
+		                <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/showquexmlsurvey/index/$surveyid/$tmp_lang");?>'>
 		                <img src='<?php echo $imageurl;?>/scanner_30.png' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
 		            <?php } ?>
 		            </ul></li>
@@ -160,7 +160,7 @@
 				} ?>
 		   		<?php if($responsescreate) {
 		   			if($canactivate) { ?>
-		            <li><a href='<?php echo site_url("admin/dataentry/view/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/dataentry/index/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/dataentry_30.png' /> <?php echo $clang->gT("Data entry screen");?></a></li>
 		        <?php } else { ?>
                		<li><a href="#" onclick="alert('<?php echo $clang->gT("This survey is not active, data entry is not allowed","js");?>');" >
@@ -186,59 +186,59 @@
 
 <div class='menubar-right'>
         <?php if ($permission)
-        { ?>
+        { ?> 
             <span class="boxcaption"><?php echo $clang->gT("Question groups"); ?>:</span>
             <select name='groupselect' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
-
+            
          <?php echo $groups; ?>
              </select>
         <?php } ?>
-
-        <span class='arrow-wrapper'>
+        
+        <span class='arrow-wrapper'> 
         <?php if ($GidPrev != "")
         { ?>
             <a href='<?php echo site_url("admin/survey/view/$surveyid/$GidPrev"); ?>'>
             <img src='<?php echo $this->config->item('imageurl'); ?>/previous_20.png' title='' alt='<?php echo $clang->gT("Previous question group"); ?>'
-            name='questiongroupprevious' /> </a>
+            name='questiongroupprevious' <?php echo $clang->gT("Previous question group"); ?>/> </a>
         <?php }
         else
         { ?>
-
+           
             <img src='<?php echo $this->config->item('imageurl'); ?>/previous_disabled_20.png' title='' alt='<?php echo $clang->gT("No previous question group"); ?>'
             name='noquestiongroupprevious' />
         <?php }
 
-
+        
         if ($GidNext != "")
         { ?>
-
-
+          
+           
             <a href='<?php echo site_url("admin/survey/view/$surveyid/$GidNext"); ?>'>
             <img src='<?php echo $this->config->item('imageurl'); ?>/next_20.png' title='' alt='<?php echo $clang->gT("Next question group"); ?>'
             name='questiongroupnext' /> </a>
         <?php }
         else
         { ?>
-
+           
             <img src='<?php echo $this->config->item('imageurl'); ?>/next_disabled_20.png' title='' alt='<?php echo $clang->gT("No next question group"); ?>'
             name='noquestiongroupnext' />
         <?php } ?>
 		 </span>
 
 
-
+        
 
         <?php if(bHasSurveyPermission($surveyid,'surveycontent','create'))
         {
             if ($activated == "Y")
             { ?>
                 <a href='#'>
-                <img src='<?php echo $this->config->item('imageurl'); ?>/add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled"); ?> - <?php echo $clang->gT("This survey is currently active."); ?>'
+                <img src='<?php echo $this->config->item('imageurl'); ?>/add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled"); ?> - <?php echo $clang->gT("This survey is currently active."); ?>' 
                 name='AddNewGroup' /></a>
             <?php }
             else
             { ?>
-
+                
                  <a href="#" onclick="window.open('<?php echo site_url("admin/questiongroup/add/$surveyid"); ?>', '_top')"
                  title="<?php echo $clang->gTview("Add new group to survey"); ?>">
                  <img src='<?php echo $this->config->item('imageurl'); ?>/add.png' alt='<?php echo $clang->gT("Add new group to survey"); ?>' name='AddNewGroup' /></a>
@@ -250,15 +250,15 @@
          alt='<?php echo $clang->gT("Hide details of this Survey"); ?>' name='MinimiseSurveyWindow'
          onclick='document.getElementById("surveydetails").style.display="none";' />
 
-         <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/plus.gif' title='<?php echo $clang->gT("Show details of this survey"); ?>'
-         alt='<?php echo $clang->gT("Show details of this survey"); ?>' name='MaximiseSurveyWindow'
+         <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/plus.gif' title='<?php echo $clang->gT("Show details of this survey"); ?>' 
+         alt='<?php echo $clang->gT("Show details of this survey"); ?>' name='MaximiseSurveyWindow' 
          onclick='document.getElementById("surveydetails").style.display="";' />
 
         <?php if (!$gid)
         { ?>
-
-             <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' title='<?php echo $clang->gT("Close this survey"); ?>'
-             alt='<?php echo $clang->gT("Close this survey"); ?>' name='CloseSurveyWindow'
+            
+             <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' title='<?php echo $clang->gT("Close this survey"); ?>' 
+             alt='<?php echo $clang->gT("Close this survey"); ?>' name='CloseSurveyWindow' 
              onclick="window.open('<?php echo site_url("admin"); ?>', '_top')" />
         <?php }
         else

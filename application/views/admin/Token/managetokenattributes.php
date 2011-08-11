@@ -11,7 +11,10 @@
         echo "<tr><td>$tokenfield</td><td><input type='text' name='description_$tokenfield' value='".htmlspecialchars($tokendescription,ENT_QUOTES,'UTF-8')."' /></td><td>";
         if ($examplerow!==false)
         {
+            if(!$tokenfield[10]=='c')
+            {
             echo htmlspecialchars($examplerow[$tokenfield]);
+            }
         }
         else
         {

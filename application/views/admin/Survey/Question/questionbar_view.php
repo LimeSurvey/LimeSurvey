@@ -114,7 +114,7 @@
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
                 { ?>
-                    <a href='<?php echo site_url('admin/question/subquestions/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
+                    <a href='$scriptname?action=editsubquestions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'
                     title='<?php echo $clang->gTview("Edit subquestions for this question"); ?>'>
                     <img src='<?php echo $this->config->item('imageurl'); ?>/subquestions.png' alt='<?php echo $clang->gT("Edit subquestions for this question"); ?>' name='EditSubquestions' /></a>
                 <?php }
@@ -129,7 +129,7 @@
     
             if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] >0)
             { ?>
-                <a href='<?php echo site_url('admin/question/answeroptions/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
+                <a href='$scriptname?action=editansweroptions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'
                 title="<?php echo $clang->gTview("Edit answer options for this question"); ?>">
                 <img src='<?php echo $this->config->item('imageurl'); ?>/answers.png' alt='<?php echo $clang->gT("Edit answer options for this question"); ?>' name='EdtAnswerOptions' /></a>
             <?php }

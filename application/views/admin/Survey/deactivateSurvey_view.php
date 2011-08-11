@@ -8,7 +8,7 @@
             <?php echo $clang->gT("In an active survey, a table is created to store all the data-entry records."); ?>
             <p><?php echo $clang->gT("When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."); ?></p>
             <p><?php echo $clang->gT("Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."); ?></p>
-            <p><?php echo $clang->gT("Your responses table will be renamed to:"). "{$dbprefix}old_".$surveyid."_{$date}"; ?></p>
+            <p><?php echo $clang->gT("Your responses table will be renamed to:"). "{$dbprefix}old_$surveyid_{$date}"; ?></p>
             <p><?php echo $clang->gT("Also you should export your responses before deactivating."); ?></p>
             <input type='submit' value='<?php echo $clang->gT("Deactivate Survey"); ?>' onclick="<?php echo get2post(site_url("admin/survey/deactivate/".$surveyid)."?action=deactivate&amp;ok=Y&amp;sid=$surveyid"); ?>" />
             </div><br />

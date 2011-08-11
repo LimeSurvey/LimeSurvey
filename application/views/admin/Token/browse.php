@@ -14,12 +14,11 @@
       <?php  } ?>
         <img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' hspace='0' align='left' />
    <?php  } ?>
-    
     <a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/0/$order/".urlencode($searchstring));?>'
-    	title='<?php echo $clang->gTview("Show start...");?>'>
+    title='<?php echo $clang->gTview("Show start...");?>'>
     <img name='DBeginButton' align='left' src='<?php echo $imageurl;?>/databegin.png' alt='<?php echo $clang->gT("Show start...");?>' /></a>
     <a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$last/$order/".urlencode($searchstring));?>'
-	 title='<?php echo $clang->gTview("Show previous...");?>'>
+	title='<?php echo $clang->gTview("Show previous...");?>'>
 	<img name='DBackButton' align='left' src='<?php echo $imageurl;?>/databack.png' alt='<?php echo $clang->gT("Show previous...");?>' /></a>
 	<img src='<?php echo $imageurl;?>/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />
 	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$next/$order/".urlencode($searchstring));?>'
@@ -29,9 +28,7 @@
 	title='<?php echo $clang->gTview("Show last...");?>'>
 	<img name='DEndButton' align='left'  src='<?php echo $imageurl;?>/dataend.png' alt='<?php echo $clang->gT("Show last...");?>' /></a>
 	<img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' hspace='0' align='left' />
-	
-
-<form id='tokensearch' method='post' action='<?php echo site_url("admin/tokens/browse/$surveyid");?>'>
+    <form id='tokensearch' method='post' action='<?php echo site_url("admin/tokens/browse/$surveyid");?>'>
 	<input type='text' name='searchstring' value='<?php echo htmlspecialchars($searchstring,ENT_QUOTES,'utf-8');?>' />
 	<input type='submit' value='<?php echo $clang->gT("Search");?>' />
 	<input type='hidden' name='order' value='<?php echo $order;?>' />
@@ -203,8 +200,7 @@
 	                if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
 	                {
 	                    $toklang = ($brow['language'] == '') ? $baselanguage : $brow['language']; ?>
-	                    <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/do_16.png' title='<?php
-	                    echo $clang->gT("Do Survey");?>' alt='<?php echo $clang->gT("Do Survey");?>' onclick="window.open('{$publicurl}/index.php?sid={$surveyid}&amp;lang={$toklang}&amp;token=trim($brow['token'])', '_blank')\" />
+	                    <input style='height: 16px; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>'+'/do_16.png'  title='<?php echo $clang->gT("Do Survey");?>'  alt= '<?php echo $clang->gT("Do Survey"); ?>' onclick="window.open('{$publicurl}/index.php?sid={$surveyid}&amp;lang={$toklang}&amp;token=trim($brow['.token.'])', '_blank')\" />
 	                <?php }
 	                else
 	                { ?>
@@ -242,7 +238,7 @@
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
 	            { ?>
 	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_remind.png' title='<?php
-	                echo $clang->gT("Send reminder email to this entry");?>' alt='<?php echo $clang->gT("Send reminder email to this entry");?>' onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/")."?tid=".$brow['tid']);?>" />
+	                 echo $clang->gT("Send reminder email to this entry");?>' alt='<?php echo $clang->gT("Send reminder email to this entry");?>' onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/")."?tid=".$brow['tid']);?>" />
 	           <?php } ?>
   	            </td>
 	       <?php }
@@ -276,7 +272,7 @@
             echo $clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)");
             ?>' alt='<?php
             echo $clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)");
-            ?>' onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/tids")."?tokenids=document.getElementById('tokenboxeschecked').value");?>" />
+           ?>' onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/tids")."?tokenids=document.getElementById('tokenboxeschecked').value");?>" />
         <?php } ?>
         <input type='hidden' id='tokenboxeschecked' value='' onchange='alert(this.value)' />
 	    </td>
@@ -284,26 +280,36 @@
 	<?php }
 	//End multiple item actions
 ?>
-	</table><br />
+	</table>
+<!-- Code for central Participants database -->
+        <p><input type='button' name='addtocpdb' id='addtocpdb' value='Add Participants to Central Database'/><br />
+<!-- End of Code for central Participants database -->
 <script type="text/javascript">
+var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
+var okBtn = "<?php echo $clang->gT("OK") ?>";
+var survey_id = "<?php echo $this->uri->segment(4); ?>";
+var addtocpdbUrl = "<?php echo site_url("admin/participants/addToCentral"); ?>";
+var addpartAddBtn = "<?php echo $clang->gT("Add to CPDB") ?>";
+var addpartTitle = "<?php echo $clang->gT('Add Participant to CPDB'); ?>";
+var attMapUrl = "<?php echo site_url("admin/participants/attributeMapToken");?>";
+var postUrl = "<?php echo site_url("admin/participants/setSession"); ?>";
 <!--
 	for(i=0; i<document.forms.length; i++)
 	{
-var el = document.createElement('input');
-el.type = 'hidden';
-el.name = 'checksessionbypost';
-el.value = 'kb9e2u4s55';
-document.forms[i].appendChild(el);
+        var el = document.createElement('input');
+        el.type = 'hidden';
+        el.name = 'checksessionbypost';
+        el.value = 'kb9e2u4s55';
+        document.forms[i].appendChild(el);
 	}
-
 	function addHiddenElement(theform,thename,thevalue)
 	{
-var myel = document.createElement('input');
-myel.type = 'hidden';
-myel.name = thename;
-theform.appendChild(myel);
-myel.value = thevalue;
-return myel;
+        var myel = document.createElement('input');
+        myel.type = 'hidden';
+        myel.name = thename;
+        theform.appendChild(myel);
+        myel.value = thevalue;
+        return myel;
 	}
 
 	function sendPost(myaction,checkcode,arrayparam,arrayval)
@@ -322,3 +328,34 @@ myform.submit();
 
 //-->
 </script>
+<link rel="stylesheet" type="text/css" href="<?php echo site_url("scripts/jquery/css/jquery.multiselect.css")?>" />
+<script src="<?php echo site_url("scripts/admin/tokentocpdb.js")?>" type="text/javascript"></script>
+<script src="<?php echo site_url("scripts/jquery/jquery.multiselect.min.js")?>" type="text/javascript"></script>
+<div id="norowselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
+            <p>
+                <?php echo $clang->gT("Please select at least one participant to be added"); ?>
+            </p>
+        </div>
+<?php $ajaxloader = array('src' => 'images/ajax-loader.gif',
+                          'alt' => 'Ajax Loader',
+                          'title' => 'Ajax Loader'); ?>
+ <div id="processing" title="<?php echo $clang->gT("Processing .....") ?>" style="display:none">
+<?php echo img($ajaxloader); ?>
+<div id="addcpdb" title="addsurvey" style="display:none">
+  <p><?php echo $clang->gT("Please select the attributes that are to be added to the central database"); ?></p>
+        <p>
+           <select id="attributeid" name="attributeid" multiple="multiple">
+            <?php
+               if(!empty($attrfieldnames))
+                {
+                       foreach($attrfieldnames as $key=>$value)
+                        {
+                           echo "<option value='".$key."'>".$value."</option>";
+                        }
+               }
+            
+             ?>
+         </select>
+        </p>
+       
+</div>

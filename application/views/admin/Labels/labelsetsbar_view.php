@@ -10,7 +10,7 @@
    <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' align='left' alt='' />
    <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' width='76' align='left' height='20' alt='' />
    <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
-   <a href='<?php echo site_url("admin/labels/exportmulti");?>' title="<?php echo $clang->gTview("Export Label Set"); ?>" >
+   <a href='admin.php?action=labels&amp;subaction=exportmulti' title="<?php echo $clang->gTview("Export Label Set"); ?>" >
     <img src='<?php echo $this->config->item('imageurl'); ?>/dumplabelmulti.png' alt='<?php echo $clang->gT("Export multiple label sets"); ?>' align='left' /></a>
    </div>
    <div class='menubar-right'>

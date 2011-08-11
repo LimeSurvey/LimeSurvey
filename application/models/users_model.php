@@ -70,12 +70,32 @@ class Users_model extends CI_Model {
 		$this->db->where(array("uid"=>$uid));
 		$this->db->update('users',$data);
 	}
-	
+        function getShareSetting()
+	{
+		$this->db->where(array("uid"=>$this->session->userdata('loginID')));
+		$result= $this->db->get('users');
+                return $result->row();
+	}
+        // Resturns the full name of the user
+        function getName($userid)
+        {
+                $this->db->select('full_name');
+                $this->db->from('users');
+            	$this->db->where(array("uid"=>$userid));
+                $result = $this->db->get();
+                return $result->row();
+        }
+        function getID($fullname)
+        {
+                $this->db->select('uid');
+                $this->db->from('users');
+            	$this->db->where(array("full_name"=>$fullname));
+                $result = $this->db->get();
+                return $result->row();
+        }
 	function updatePassword($uid,$password)
 	{
-		$data = array(
-				'password' => $password
-				);
+		$data = array('password' => $password);
 		$this->db->where(array("uid"=>$uid));
 		$this->db->update('users',$data);
 	}

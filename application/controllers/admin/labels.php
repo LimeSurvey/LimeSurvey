@@ -439,17 +439,6 @@
             
         }
     }
-
-	function exportmulti()
-	{
-		self::_getAdminHeader();
-		self::_labelsetbar(0);
-        self::_js_admin_includes(base_url().'scripts/admin/labels.js');
-		$data['clang'] = $this->limesurvey_lang;
-        $data['labelsets'] = getlabelsets();
-		$this->load->view('admin/Labels/exportmulti_view', $data);
-		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-	}
     
     function _labelsetbar($lid=0)
     {

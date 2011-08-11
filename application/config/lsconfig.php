@@ -63,7 +63,7 @@ $config['stringcomparizonoperators']   =   0;                // By default, Lime
 $config['printanswershonorsconditions'] = 1;	      // Set to 1 if you want the participant printanswers feature to show only the questions that were displayed survey branching-logic
 $config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
 $config['admintheme']         =  'default';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
-
+$config['userideditable']    =  'N';
 $config['defaulttemplate']    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
 
 $config['allowedtemplateuploads'] = 'gif,ico,jpg,png';  // File types allowed to be uploaded in the templates section.

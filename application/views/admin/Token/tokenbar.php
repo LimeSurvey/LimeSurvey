@@ -91,6 +91,14 @@
 		        	<img name='BounceSettings' src='<?php echo $imageurl;?>/bounce_settings.png' alt='<?php echo $clang->gT("Bounce settings");?>' />
 		        </a>
 		    <?php } ?>
+                        <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
+                        <?php $participantpanel = array(
+                        'src' => 'images/tokens.png',
+                        'alt' => 'Central Participant Panel',
+                        'title' => 'Central Participant Panel',
+                          );
+                        echo anchor('admin/participants/index',img($participantpanel));
+                        ?>
     	</div>
     	<div class='menubar-right'><a href="#" onclick="showhelp('show')" title='<?php echo $clang->gTview("Show help");?>'>
 		    <img src='<?php echo $imageurl;?>/showhelp.png' align='right' alt='<?php echo $clang->gT("Show help");?>' /></a>

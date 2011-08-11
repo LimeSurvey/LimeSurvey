@@ -1,5 +1,6 @@
 // $Id: tokens.js 8633 2010-04-25 12:57:33Z c_schmitz 
 $(document).ready(function(){
+    
     $("#bounceprocessing").change(turnoff);
     turnoff();	
     $('img#bounceprocessing').bind('click',function(){
@@ -46,9 +47,7 @@ $(document).ready(function(){
 		});
 		$('#tokenboxeschecked').val(selecteditems);	    
 	});
-});
-
-function checkbounces(surveyid) {
+        function checkbounces(surveyid) {
 $("#dialog-modal").dialog('open');
  var url = 'admin.php?action=tokens&subaction=bounceprocessing&sid='+surveyid
   $('#dialog-modal').html('<p><img style="margin-top:42px" src="../images/ajax-loader.gif" width="200" height="25" /></p>');
@@ -68,3 +67,11 @@ function turnoff(ui,evt)
   $("#bounceaccountencryption").attr('disabled',bounce_disabled);
 }
 
+$(function() { 
+    $('input[type="checkbox"]').bind('click',function() {
+        if($(this).is(':checked')) {
+            $('#some_textarea').html($(this).val());
+         }
+   });
+});
+});

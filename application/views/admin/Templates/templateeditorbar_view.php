@@ -8,7 +8,7 @@ function copyprompt(text, defvalue, copydirectory, action)
 {
     if (newtemplatename=window.prompt(text, defvalue))
     {
-        sendPost('<?php echo site_url('admin/templates/template'); ?>'+action,'<?php echo $this->session->userdata('checksessionpost'); ?>',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));
+        sendPost('admin.php','<?php echo $this->session->userdata('checksessionpost'); ?>',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));
     }
 }
 function checkuploadfiletype(filename)

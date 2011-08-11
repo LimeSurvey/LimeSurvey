@@ -313,7 +313,7 @@ function getLanguageData($orderbynative=false,$installer=false) {
     }
     else
     {
-        $clang = &get_instance()->limesurvey_lang;
+	$clang = &get_instance()->limesurvey_lang;
     }
 	
     static $supportedLanguages;

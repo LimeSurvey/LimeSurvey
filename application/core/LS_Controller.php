@@ -23,7 +23,7 @@ class LS_Controller extends CI_Controller {
 	function _init()
 	{
 		
-        $this->load->helper("common");
+		$this->load->helper("common");
 				
 		// Check for most necessary requirements
 		// Now check for PHP & db version
@@ -115,44 +115,18 @@ class LS_Controller extends CI_Controller {
 		
 		
 		//SET LOCAL TIME
-		$timeadjust = $this->config->item("timeadjust");
-		if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
-		if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
-		{
-		    $this->config->set_item("timeadjust",$timeadjust.' hours');
-		}
+		//if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
+		//if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
+		//{
+		//    $this->config->set_item("timeadjust",$timeadjust.' hours');
+		//}
 		
 		// SITE STYLES
 		//$setfont = "<font size='2' face='verdana'>";
 		//$singleborderstyle = "style='border: 1px solid #111111'";
 		
-		self::_checkinstallation();
-		
 	}
 
-    function _checkinstallation()
-    {
-        /**
-        if (file_exists($this->config->item('rootdir').'/installer'))
-        {
-            show_error("Installation Directory(\"".$this->config->item('rootdir')."/installer\") is present. Remove/Rename it to proceed further.");
-            exit(); 
-        }
-        
-        if (file_exists(APPPATH . 'controllers/installer.php'))
-        {
-            show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
-            exit(); 
-        } */
-        
-        if (file_exists($this->config->item('rootdir').'/tmp/sample_installer_file.txt'))
-        {
-            show_error("Permission denied. If you are done with installation, please delete this file(\"".$this->config->item('rootdir')."/tmp/sample_installer_file.txt\") Or click ".anchor("installer","here")." to install LimeSurvey");
-            exit(); 
-        }
-        
-        
-        
-    }
+    
 
 }

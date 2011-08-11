@@ -15,7 +15,7 @@
                                        <tr><th class='subheader' width='150'>
                                        <?php echo $clang->gT("Standard Files:"); ?></th>
                                        <td align='center' valign='top' rowspan='3'>
-                                       <form name='editTemplate' method='post' action='<?php echo site_url("admin/templates/templatesavechanges"); ?>'>
+                                       <form name='editTemplate' method='post' action='admin.php'>
                                        <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                                        <input type='hidden' name='screenname' value='<?php echo html_escape($screenname); ?>' />
                                        <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
@@ -57,8 +57,7 @@
                                        </select>
         
                                        </td>
-                                       <td valign='top' align='right' width='20%'>
-                                       <form action='<?php echo site_url("admin/templates/templatefiledelete"); ?>' method='post'>
+                                       <td valign='top' align='right' width='20%'><form action='admin.php' method='post'>
                                        <table width='90' align='left' border='0' cellpadding='0' cellspacing='0'><tr><td></td></tr>
                                        <tr><td><select size='11' style='min-width:130px;' name='otherfile' id='otherfile'>
                                        <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
@@ -72,10 +71,8 @@
                                         />
                                        <input type='hidden' name='screenname' value='<?php echo html_escape($screenname); ?>' />
                                        <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
-                                       <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
                                        <input type='hidden' name='action' value='templatefiledelete' />
-                                       </td></tr></table>
-                                       </form></td>
+                                       </td></tr></table></form></td>
                                        </tr>
                                        <tr>
                                        <td valign='top'>
@@ -92,8 +89,7 @@
                                        <input type='hidden' name='screenname' value='<?php echo html_escape($screenname); ?>' />
                                        <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                                        <input type='hidden' name='action' value='templateuploadfile' />
-                                       </td></tr></table>
-                                       </form>
+                                       </td></tr></table></form>
                                        </td>
                                        </tr>
                                        </table>

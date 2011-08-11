@@ -36,7 +36,7 @@ class Labelsets_model extends CI_Model {
         $this->db->order_by('lid','asc');
         return $this->db->get('labelsets');
     }
-    
+
     function insertRecords($data)
     {
         

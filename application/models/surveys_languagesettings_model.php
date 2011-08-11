@@ -75,5 +75,11 @@ class Surveys_languagesettings_model extends CI_Model {
     {
         return $this->db->insert('surveys_languagesettings', $data); 
     }
+    function getSurveyNames($surveyid)
+    {
+        $this->db->select('surveyls_title')->from('surveys_languagesettings')->where('surveyls_language',$this->session->userdata('adminlang'))->where('surveyls_survey_id',$surveyid);
+        $query = $this->db->get();
+        return $query;
+    }
 
 }

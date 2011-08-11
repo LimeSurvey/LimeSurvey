@@ -225,7 +225,7 @@ class tokens extends SurveyCommonController {
 			'emailstatus' => $_POST['emailstatus'],
 			'token' => $santitizedtoken,
 			'language' => sanitize_languagecode($_POST['language']),
-		    'sent' => $_POST['sent'],
+                        'sent' => $_POST['sent'],
 			'remindersent' => $_POST['remindersent'],
 			'completed' => $_POST['completed'],
 			'usesleft' => $_POST['usesleft'],
@@ -382,28 +382,32 @@ class tokens extends SurveyCommonController {
 	function delete($surveyid, $tokenid=null,$limit=50,$start=0,$order=false,$searchstring=false)
 	{
 
-		if(bHasSurveyPermission($surveyid, 'tokens','delete')) {
+                	if(bHasSurveyPermission($surveyid, 'tokens','delete')) {
 			$clang=$this->limesurvey_lang;
 			$this->load->model("tokens_dynamic_model");
 			$this->session->set_userdata('metaHeader', "<meta http-equiv=\"refresh\" content=\"1;URL=".site_url("/admin/tokens/browse/$surveyid")."\" />");
 	
 			if($this->input->post("tokenids")) {
-				    $tokenidsarray=explode("|", substr($this->input->post("tokenids"), 1)); //Make the tokenids string into an array, and exclude the first character
+			    $tokenidsarray=explode("|", substr($this->input->post("tokenids"), 1)); //Make the tokenids string into an array, and exclude the first character
+                                    $data = array('token_id' => $tokenidsarray);
 				    foreach($tokenidsarray as $tokenitem) {
 				        if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
 				    }
-			}
-		    if(isset($tokenids) && count($tokenids)>0) {
+                            }
+                    if(isset($tokenids) && count($tokenids)>0) {
 		        if(implode(", ", $tokenids) != "") {
-					$this->tokens_dynamic_model->deleteTokens($surveyid,$tokenids);
+                		$this->tokens_dynamic_model->deleteTokens($surveyid,$tokenids);
 		            $tokenoutput = $clang->gT("Marked tokens have been deleted.");
 		        } else {
 		            $tokenoutput = $clang->gT("No tokens were selected for deletion");
 		        }
 		    } elseif (isset($tokenid)) {
-				$this->tokens_dynamic_model->deleteToken($surveyid,$tokenid);
-		       	$tokenoutput = $clang->gT("Token has been deleted.");
+                        $data = array('token_id' => $tokenid);
+                        $this->tokens_dynamic_model->deleteToken($surveyid,$tokenid);
+                        $tokenoutput = $clang->gT("Token has been deleted.");
 		    }
+                        $data['survey_id']=$surveyid; // This is for lime_survey_links delete
+                        $this->tokens_dynamic_model->deleteParticipantLinks($data); // This is for lime_survey_links delete
 			$data['clang']=$this->limesurvey_lang;
 			$data['thissurvey']=getSurveyInfo($surveyid);
 			$data['imageurl'] = $this->config->item('imageurl');
@@ -607,7 +611,7 @@ class tokens extends SurveyCommonController {
 			self::_getAdminHeader();
 			$this->load->view("admin/token/tokenbar",$data);
 			self::_showMessageBox(sprintf($clang->gT("%s field(s) were successfully added."),$number2add),
-					"<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('".site_url("admin/tokens/managetokenattributes/$surveyid")."', '_top')\" />");
+			"<br /><input type='button' value='".$clang->gT("Back to attribute field management.")."' onclick=\"window.open('".site_url("admin/tokens/managetokenattributes/$surveyid")."', '_top')\" />");
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
 	}
@@ -631,7 +635,6 @@ class tokens extends SurveyCommonController {
 		    //$execresult=db_execute_assoc($updatequery);
 			$this->load->model("surveys_model");
 			$this->surveys_model->updateSurvey(array("attributedescriptions"=>$fieldcontents),array("sid"=>$surveyid));
-		
 			$clang=$this->limesurvey_lang;
 			$data['clang']=$this->limesurvey_lang;
 			$data['thissurvey']=getSurveyInfo($surveyid);
@@ -1177,6 +1180,7 @@ class tokens extends SurveyCommonController {
 	            }
 	            $tokenoutput .= "\t</tr>\n"
 	            ."</table>\n";
+                    $tokenoutput .= "<p><input type='button' name='addtocpdb' id='addtocpdb' value='addtocpdb'/>";
 	        }
 	        else
 	        {
@@ -1427,13 +1431,15 @@ class tokens extends SurveyCommonController {
 			$this->load->dbforge();
 			$this->dbforge->add_field("tid int(11) NOT NULL AUTO_INCREMENT");
 			$fields = array(
+                                'participant_id' => array('type' => 'VARCHAR', 'constraint' => 50),
 	                        'firstname' => array('type' => 'VARCHAR', 'constraint' => 40),
 	                        'lastname' => array('type' => 'VARCHAR', 'constraint' => 40),
 	                        'email' => array('type' => 'TEXT'),
 	                        'emailstatus' => array('type' => 'TEXT'),
 	                        'token' => array('type' => 'VARCHAR', 'constraint' => 36),
 	                        'language' => array('type' => 'VARCHAR', 'constraint' => 25),
-	                        'sent' => array('type' => 'VARCHAR', 'constraint' => 17, 'default' => 'N'),
+	                        'blacklisted' => array('type' => 'CHAR', 'constraint' => 1),
+                                'sent' => array('type' => 'VARCHAR', 'constraint' => 17, 'default' => 'N'),
 	                        'remindersent' => array('type' => 'VARCHAR', 'constraint' => 17, 'default' => 'N'),
 	                        'remindercount' => array('type' => 'INT', 'constraint' => 11, 'default' => 0),
 	                        'completed' => array('type' => 'VARCHAR', 'constraint' => 17, 'default' => 'N'),

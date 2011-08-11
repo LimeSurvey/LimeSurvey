@@ -51,171 +51,6 @@
         redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,'refresh');
     }
     
-    function templatefiledelete()
-    {
-        if ($this->input->post('action') == "templatefiledelete") {
-            $the_full_file_path = $this->config->item('usertemplaterootdir')."/".$this->input->post('templatename')."/".$this->input->post('otherfile'); //This is where the temp file is
-            unlink($the_full_file_path);
-            redirect("admin/templates/view/".$this->input->post('editfile')."/".$this->input->post('screenname')."/".$this->input->post('templatename'));
-        }
-        
-    }
-    
-    function templaterename()
-    {
-        
-        if ($this->input->post('action') == "templaterename" && $this->input->post('newname') && $this->input->post('copydir')) 
-        {
-            $newdirname=$this->config->item('usertemplaterootdir')."/".$this->input->post('newname');
-            $olddirname=$this->config->item('usertemplaterootdir')."/".$this->input->post('copydir');
-            if(isStandardTemplate($this->input->post('newname')))
-            {
-                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Template could not be renamed to `%s`.","js"), $this->input->post('newname'))." ".$clang->gT("This name is reserved for standard template.","js")."\");\n//-->\n</script>";
-            }
-            elseif (rename($olddirname, $newdirname)==false)
-            {
-               echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory could not be renamed to `%s`.","js"), $this->input->post('newname'))." ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
-            }
-            else 
-            {
-                //$templates[$this->input->post('newname')]=$newdirname;
-                $templatename=$this->input->post('newname');
-                self::view("startpage.pstpl","welcome",$templatename);
-            }
-            
-            
-            
-        }
-        
-        
-    }
-    
-    function templatecopy()
-    {
-        if ($this->input->post('action') == "templatecopy" && $this->input->post('newname') && $this->input->post('copydir')) {
-           //Copies all the files from one template directory to a new one
-           //This is a security issue because it is allowing copying from get variables...
-           $this->load->helper('admin/template');
-           $newdirname=$this->config->item('usertemplaterootdir')."/".$this->input->post('newname');
-           $copydirname=sGetTemplatePath($this->input->post('copydir'));
-           $mkdirresult=mkdir_p($newdirname);
-           if ($mkdirresult == 1) {
-               $copyfiles=getListOfFiles($copydirname);
-               foreach ($copyfiles as $file) {
-                   $copyfile=$copydirname."/".$file;
-                   $newfile=$newdirname."/".$file;
-                   if (!copy($copyfile, $newfile)) {
-                       echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Failed to copy %s to new template directory.","js"), $file)."\");\n//-->\n</script>";
-                   }
-               }
-        	   //$templates[$newname]=$newdirname;
-               $templatename=$this->input->post('newname');
-               self::view("startpage.pstpl","welcome",$templatename);
-           } elseif($mkdirresult == 2) {
-               echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory with the name `%s` already exists - choose another name","js"), $this->input->post('newname'))."\");\n//-->\n</script>";
-           } else {
-               echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Unable to create directory `%s`.","js"), $this->input->post('newname'))." ".$clang->gT("Please check the directory permissions.","js")."\");\n//-->\n</script>";
-           }
-        }
-        
-    }
-    
-    function delete($templatename)
-    {
-        $this->load->helper("admin/template");
-        if (is_template_editable($templatename)==true)
-        {
-           $clang = $this->limesurvey_lang; 
-           if (rmdirr($this->config->item('usertemplaterootdir')."/".$templatename)==true)
-           {
-               $condn = array('template' => $templatename);
-               $this->load->model('surveys_model');
-               $this->surveys_model->updateSurvey(array('template' => $this->config->item('defaulttemplate')),$condn);
-               
-               /**
-               $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";
-               $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
-        
-               $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";
-               $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
-                */
-               $this->load->helper('database');
-               $templatequery = "delete from ".$this->db->dbprefix."templates_rights where folder='$templatename'\n";
-               db_execute_assoc($templatequery);//$connect->Execute($templatequery) or safe_die ("Couldn't update template_rights<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked)
-        
-               $templatequery = "delete from ".$this->db->dbprefix."templates where folder='$templatename'\n";
-               db_execute_assoc($templatequery);//$connect->Execute($templatequery) or safe_die ("Couldn't update templates<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
-               
-               $flashmessage=sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename);
-               //unset($templates[$templatename]);
-               //$templatename = $this->config->item('defaulttemplate');
-           }
-           else
-           {
-                $flashmessage=sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."),$templatename);
-           }
-        }
-        // redirect with default templatename, editfile and screenname
-        redirect("admin/templates/view","refresh");
-    }
-    
-    function templatesavechanges()
-    {
-        
-        if ($this->input->post('changes')) {
-           $changedtext=$this->input->post('changes');
-           $changedtext=str_replace ('<?','',$changedtext);
-           if(get_magic_quotes_gpc())
-           {
-               $changedtext = stripslashes($changedtext);
-           }
-        }
-        
-        if ($this->input->post('changes_cp')) {
-           $changedtext=$this->input->post('changes_cp');
-           $changedtext=str_replace ('<?','',$changedtext);
-           if(get_magic_quotes_gpc())
-           {
-               $changedtext = stripslashes($changedtext);
-           }
-        }
-        
-        $action = $this->input->post('action');
-        $editfile = $this->input->post('editfile');
-        $templatename = $this->input->post('templatename');
-        $screenname = $this->input->post('screenname');
-        $files = self::_initfiles($templatename);
-        $cssfiles = self::_initcssfiles();
-        
-        if ($action=="templatesavechanges" && $changedtext) {
-            
-            $this->load->helper('admin/template');
-            $changedtext=str_replace("\r\n", "\n", $changedtext);
-            
-            if ($editfile) {
-                // Check if someone tries to submit a file other than one of the allowed filenames
-                if (multiarray_search($files,'name',$editfile)===false && multiarray_search($cssfiles,'name',$editfile)===false) {show_error('Invalid template filename');}  // Die you sneaky bastard!
-                $savefilename=$this->config->item('usertemplaterootdir')."/".$templatename."/".$editfile;
-                if (is_writable($savefilename)) {
-                   if (!$handle = fopen($savefilename, 'w')) {
-                       echo "Could not open file ($savefilename)";
-                       exit;
-                   }
-                   if (!fwrite($handle, $changedtext)) {
-                       echo "Cannot write to file ($savefilename)";
-                       exit;
-                   }
-                   fclose($handle);
-                } else {
-                   show_error( "The file $savefilename is not writable");
-                   
-                }
-            }
-        }
-        
-        redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,"refresh");
-    }
-    
     function _templateditorbar($codelanguage,$highlighter,$flashmessage,$templatename,$templates,$editfile,$screenname)
     {
         $data['clang'] = $this->limesurvey_lang;
@@ -308,52 +143,6 @@
         
     }
     
-    function _initfiles($templatename)
-    {
-        $files[]=array('name'=>'assessment.pstpl');
-        $files[]=array('name'=>'clearall.pstpl');
-        $files[]=array('name'=>'completed.pstpl');
-        $files[]=array('name'=>'endgroup.pstpl');
-        $files[]=array('name'=>'endpage.pstpl');
-        $files[]=array('name'=>'groupdescription.pstpl');
-        $files[]=array('name'=>'load.pstpl');
-        $files[]=array('name'=>'navigator.pstpl');
-        $files[]=array('name'=>'printanswers.pstpl');
-        $files[]=array('name'=>'privacy.pstpl');
-        $files[]=array('name'=>'question.pstpl');
-        $files[]=array('name'=>'register.pstpl');
-        $files[]=array('name'=>'save.pstpl');
-        $files[]=array('name'=>'surveylist.pstpl');
-        $files[]=array('name'=>'startgroup.pstpl');
-        $files[]=array('name'=>'startpage.pstpl');
-        $files[]=array('name'=>'survey.pstpl');
-        $files[]=array('name'=>'welcome.pstpl');
-        $files[]=array('name'=>'print_survey.pstpl');
-        $files[]=array('name'=>'print_group.pstpl');
-        $files[]=array('name'=>'print_question.pstpl');
-        
-        if(is_file($this->config->item('usertemplaterootdir').'/'.$templatename.'/question_start.pstpl')) 
-        {
-           $files[]=array('name'=>'question_start.pstpl');
-        }
-        
-        return $files;
-        
-    }
-    
-    function _initcssfiles()
-    {
-        $cssfiles[]=array('name'=>'template.css');
-        $cssfiles[]=array('name'=>'template-rtl.css');
-        $cssfiles[]=array('name'=>'ie_fix_6.css');
-        $cssfiles[]=array('name'=>'ie_fix_7.css');
-        $cssfiles[]=array('name'=>'ie_fix_8.css');
-        $cssfiles[]=array('name'=>'print_template.css');
-        $cssfiles[]=array('name'=>'template.js');
-        
-        return $cssfiles;
-    }
-    
     function _initialise($templatename, $screenname, $editfile)
     {
         global $siteadminname, $siteadminemail;
@@ -363,7 +152,6 @@
         
         //Standard Template Subfiles
         //Only these files may be edited or saved
-        /**
         $files[]=array('name'=>'assessment.pstpl');
         $files[]=array('name'=>'clearall.pstpl');
         $files[]=array('name'=>'completed.pstpl');
@@ -385,14 +173,9 @@
         $files[]=array('name'=>'print_survey.pstpl');
         $files[]=array('name'=>'print_group.pstpl');
         $files[]=array('name'=>'print_question.pstpl');
-        */
-        $files = self::_initfiles($templatename);
-        
-        
         
         //Standard CSS Files
         //These files may be edited or saved
-        /**
         $cssfiles[]=array('name'=>'template.css');
         $cssfiles[]=array('name'=>'template-rtl.css');
         $cssfiles[]=array('name'=>'ie_fix_6.css');
@@ -400,8 +183,6 @@
         $cssfiles[]=array('name'=>'ie_fix_8.css');
         $cssfiles[]=array('name'=>'print_template.css');
         $cssfiles[]=array('name'=>'template.js');
-        */
-        $cssfiles = self::_initcssfiles();
         
         //Standard Support Files
         //These files may be edited or saved
@@ -508,7 +289,23 @@
         if(in_array($this->session->userdata('adminlang'),$availableeditorlanguages)) {$codelanguage=$this->session->userdata('adminlang');}
         else  {$codelanguage='en';}
         
+        if ($this->input->post('changes')) {
+           $changedtext=$this->input->post('changes');
+           $changedtext=str_replace ('<?','',$changedtext);
+           if(get_magic_quotes_gpc())
+           {
+               $changedtext = stripslashes($changedtext);
+           }
+        }
         
+        if ($this->input->post('changes_cp')) {
+           $changedtext=$this->input->post('changes_cp');
+           $changedtext=str_replace ('<?','',$changedtext);
+           if(get_magic_quotes_gpc())
+           {
+               $changedtext = stripslashes($changedtext);
+           }
+        }
         
         $templates=gettemplatelist();
         if (!isset($templates[$templatename]))

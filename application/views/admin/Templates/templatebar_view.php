@@ -17,7 +17,7 @@
        <a href='#' title='<?php echo $clang->gTview("Rename this template"); ?>' onclick="javascript: copyprompt('<?php echo $clang->gT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
         <img name='RenameTemplate' src='<?php echo $this->config->item('imageurl'); ?>/edit.png' alt='<?php echo $clang->gT("Rename this template"); ?>' /></a>
        <a href='#' title='<?php echo $clang->gTview("Delete this template"); ?>'
-       onclick='if (confirm("<?php echo $clang->gT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo site_url('admin/templates/delete/'.$templatename); ?>", "_top")' >
+       onclick='if (confirm("<?php echo $clang->gT("Are you sure you want to delete this template?", "js"); ?>")) window.open("admin.php?action=templates&amp;subaction=delete&amp;templatename=$templatename", "_top")' >
         <img name='DeleteTemplate' src='<?php echo $this->config->item('imageurl'); ?>/delete.png' alt='<?php echo $clang->gT("Delete this template"); ?>'/></a>
     <?php } ?>
         <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='20' height='10' />

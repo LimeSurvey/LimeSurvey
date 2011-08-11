@@ -139,7 +139,18 @@ class Tokens_dynamic_model extends CI_Model {
 		$dlquery = "DELETE FROM ".$this->db->dbprefix("tokens_$surveyid")." WHERE tid={$tokenid}";
 		return $this->db->query($dlquery);
 	}
-	
+        /*
+         * This function is responsible for deletion of links in the lime_survey_links
+         */
+	function deleteParticipantLinks($data)
+        {
+            foreach($data['token_id'] as $tid)
+            {
+                $this->db->where('token_id',$tid);
+                $this->db->where('survey_id',$data['survey_id']);
+                $this->db->delete('survey_links');    
+            }
+        }
 	function deleteTokens($surveyid,$tokenids)
 	{
         $dlquery = "DELETE FROM ".$this->db->dbprefix("tokens_$surveyid")." WHERE tid IN (".implode(", ", $tokenids).")";
