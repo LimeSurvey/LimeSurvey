@@ -16,9 +16,16 @@ class Questions_model extends CI_Model {
 
 	function getSomeRecords($fields,$condition=FALSE,$order=FALSE)
 	{
-		foreach ($fields as $field)
+		if(is_array($fields))
 		{
-			$this->db->select($field);
+			foreach ($fields as $field)
+			{
+				$this->db->select($field);
+			}
+		}
+		else
+		{
+			$this->db->select($fields);
 		}
 		if ($condition != FALSE)
 		{
@@ -89,7 +96,7 @@ class Questions_model extends CI_Model {
     
     function getQuestionType($qid)
     {
-        return $this->db->query('SELECT type FROM '.$this->db->dbprefix('questions').' WHERE qid=$qid and parent_qid=0 group by type');
+        return $this->db->query('SELECT type FROM '.$this->db->dbprefix('questions').' WHERE qid='.((int)$qid).' and parent_qid=0 group by type');
     }
 	
 	function getSubQuestions($sid,$sLanguage)
