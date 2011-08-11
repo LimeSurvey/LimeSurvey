@@ -544,7 +544,7 @@ function getGlobalSetting($settingname)
     if (!$registry->isRegistered($settingname)) {
         $usquery = "SELECT stg_value FROM ".db_table_name("settings_global")." where stg_name='$settingname'";
         $dbvalue=$connect->GetOne($usquery);
-        if (is_null($dbvalue))
+        if (!is_null($dbvalue))
         {
             $registry->set($settingname,$dbvalue);
         } elseif (isset($$settingname)) {

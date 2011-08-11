@@ -815,4 +815,3 @@ function getAnswerAndTokenMappings($forceRefresh=false,$anonymized=false)
     $globalfieldmap[$surveyid]['full-VarMap'][$clang->langcode] = $fullMap;
     return $fullMap;
 }
-?>
