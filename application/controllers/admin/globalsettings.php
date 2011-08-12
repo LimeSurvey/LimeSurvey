@@ -12,8 +12,19 @@
  *
  * $Id$
  */
+
+/**
+ * GlobalSettings Controller
+ *
+ *
+ * @package		LimeSurvey
+ * @subpackage	Backend
+ */
 class GlobalSettings extends AdminController {
 
+	/**
+	 * Constructor
+	 */
 	function __construct()
 	{
 		parent::__construct();

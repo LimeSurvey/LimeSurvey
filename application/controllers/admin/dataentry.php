@@ -10,7 +10,7 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * $Id: dataentry.php 10193 2011-06-05 12:20:37Z c_schmitz $
+ * $Id$
  */
 
 /*
