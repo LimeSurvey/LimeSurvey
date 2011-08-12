@@ -636,7 +636,7 @@ END;
 		            $newjava_runonce = true;
 		            $newjava ="";
 		
-		            $newjava .= "\n\tif (((";
+		            $newjava .= "\n\t\tif (((";
 		
 		        }
 		
@@ -965,17 +965,21 @@ END;
 		
 		        if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//End If Statement
 		        {
-		            $endzone = ")))\n";
-		            $endzone .= "\t{\n";
-		            $endzone .= "document.getElementById('question$cd[0]').style.display='';\n";
-		            $endzone .= "document.getElementById('display$cd[0]').value='on';\n";
-		            $endzone .= "\t}\n";
-		            $endzone .= "\telse\n";
-		            $endzone .= "\t{\n";
-		            $endzone .= "document.getElementById('question$cd[0]').style.display='none';\n";
-		            $endzone .= "document.getElementById('display$cd[0]').value='';\n";
-		            $endzone .= "\t}\n";
-		            $cqcount++;
+					$endzone = ")))\n";
+					$endzone .= "\t\t{\n";
+					$endzone .= "\t\t\tdocument.getElementById('question$cd[0]').style.display='';\n";
+					$endzone .= "\t\t\tdocument.getElementById('display$cd[0]').value='on';\n";
+					$endzone .= "\t\t\tif(\$('#question$cd[0] div[id^=\"gmap_canvas\"]').length > 0)\n";
+					$endzone .= "\t\t\t{\n";
+					$endzone .= "\t\t\t\tresetMap($cd[0]);\n";
+					$endzone .= "\t\t\t}\n";
+					$endzone .= "\t\t}\n";
+					$endzone .= "\t\telse\n";
+					$endzone .= "\t\t{\n";
+					$endzone .= "\t\t\tdocument.getElementById('question$cd[0]').style.display='none';\n";
+					$endzone .= "\t\t\tdocument.getElementById('display$cd[0]').value='';\n";
+					$endzone .= "\t\t}\n";
+					$cqcount++;
 		        }
 		
 		        // If next condition doesn't exist, or if nex condition is on a different question
@@ -1200,7 +1204,7 @@ END;
 		}
 		
 		if (isset($java)) {echo $java;}
-		echo "\n\tdocument.getElementById('runonce').value=1;\n"
+		echo "\n\t\tdocument.getElementById('runonce').value=1;\n"
 		. "\t}\n"
 		."\t//-->\n"
 		."\t</script>\n\n"; // End checkconditions javascript function
