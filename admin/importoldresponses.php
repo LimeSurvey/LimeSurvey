@@ -82,17 +82,7 @@ if (!$subaction == "import")
 }
 elseif (isset($surveyid) && $surveyid && isset($oldtable))
 {
-    /*
-     * TODO:
-     * - mysql fit machen
-     * -- quotes für mysql beachten --> ` 
-     * - warnmeldung mehrsprachig
-     * - testen
-     */
-    //	if($databasetype=="postgres")
-    //	{
     $activetable = "{$dbprefix}survey_$surveyid";
-
     //Fields we don't want to import
     $dontimportfields = array(
 		 //,'otherfield'
@@ -109,7 +99,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
     $aValidFields=array_diff($aValidFields,$dontimportfields);
 
 
-    $queryOldValues = "SELECT ".implode(", ",$aValidFields)." FROM {$oldtable} ";
+    $queryOldValues = "SELECT ".implode(", ",array_map("db_quote_id",$aValidFields))." FROM {$oldtable} ";
     $resultOldValues = db_execute_assoc($queryOldValues) or safe_die("Error:<br />$queryOldValues<br />".$connect->ErrorMsg());
     $iRecordCount=$resultOldValues->RecordCount();
     $aSRIDConversions=array();
@@ -118,9 +108,9 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
         $iOldID=$row['id'];
         unset($row['id']);
 
-        $sInsertSQL=$connect->GetInsertSQL($activetable,$row);
+        $sInsertSQL="INSERT into {$activetable} (".implode(",",array_map("db_quote_id",array_keys($row))).") VALUES (".implode(",",array_map("db_quoteall",array_values($row))).")";
         $result = $connect->Execute($sInsertSQL) or safe_die("Error:<br />$sInsertSQL<br />".$connect->ErrorMsg());
-        $aSRIDConversions[$iOldID]=$connect->Insert_ID();
+        $aSRIDConversions[$iOldID]=$connect->Insert_Id($activetable,"id");
     }
 
     $_SESSION['flashmessage'] = sprintf($clang->gT("%s old response(s) were successfully imported."),$iRecordCount);               
@@ -144,8 +134,7 @@ elseif (isset($surveyid) && $surveyid && isset($oldtable))
             {
                 $row['id']=$aSRIDConversions[$row['id']];   
             }
-            else continue;
-            $sInsertSQL=$connect->GetInsertSQL($sNewTimingsTable,$row);
+            $sInsertSQL="INSERT into {$sNewTimingsTable} (".implode(",",array_map("db_quote_id",array_keys($row))).") VALUES (".implode(",",array_map("db_quoteall",array_values($row))).")";
             $result = $connect->Execute($sInsertSQL) or safe_die("Error:<br />$sInsertSQL<br />".$connect->ErrorMsg());
         }
         $_SESSION['flashmessage'] = sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT);               
