@@ -316,6 +316,117 @@ function exporttocsvcount()
         $clang = $this->limesurvey_lang;        
         echo sprintf($clang->gT("Export %s participant(s) to CSV  "),count($query));
 }
+function exporttocsvcountAll()
+{
+        $this->load->model('participants_model');
+       if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+        {
+                $table_name = 'participants';
+                $getquery = $this->db->get($table_name);
+                $query = $getquery->result_array();
+        }
+        else
+        {
+            $userid = $this->session->userdata('loginID');
+            $query = $this->participants_model->getParticipantsOwner($userid);
+        }
+        $clang = $this->limesurvey_lang;        
+        if(count($query) > 0 )
+        {
+            echo sprintf($clang->gT("Export %s participant(s) to CSV  "),count($query));
+        }
+        else
+        {
+            echo count($query);
+        }
+}
+function exporttocsvAll()
+{
+        $this->load->model('participant_attribute_model');
+        $this->load->model('participants_model');
+        if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+        {
+                $table_name = 'participants';
+                $getquery = $this->db->get($table_name);
+                $query = $getquery->result_array();
+        }
+        else
+        {
+            $userid = $this->session->userdata('loginID');
+            $query = $this->participants_model->getParticipantsOwner($userid);
+        }
+        
+        if(!$query)
+            return false;
+        // Starting the PHPExcel library
+        $this->load->library('admin/phpexcel/PHPExcel');
+        $this->load->library('admin/phpexcel/PHPExcel/IOFactory');
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->getProperties()->setTitle("export")->setDescription("none");
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Field names in the first row
+        $fields = array ('participant_id','firstname','lastname' ,'email' ,'language' ,'blacklisted','owner_uid' );
+        $col = 0;
+        foreach ($fields as $field)
+        {
+            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, 1, $field);
+            $col++;
+        }
+             // Fetching the table data
+            $row = 2;
+            foreach($query as $field => $data)
+            {
+                $col = 0;
+                foreach ($fields as $field)
+                {
+                    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $data[$field]);
+                    $col++;
+                }
+                $row++;
+            }
+                   
+            $attributenames = $this->participant_attribute_model->getAttributes();
+            foreach($attributenames as $key=>$value)
+            {
+                
+                $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, 1,$value['attribute_name']);
+                $col++;
+            }
+            // Fetching the table data
+            $row = 2;
+            foreach($query as $field => $data)
+            {
+                $col = 0;
+                foreach ($fields as $field)
+                {
+                    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $data[$field]);
+                    $col++;
+                }
+                foreach($attributenames as $key=>$value)
+                {
+                    $answer=$this->participant_attribute_model->getAttributeValue($data['participant_id'],$value['attribute_id']);
+                    if(isset($answer->value))
+                    {
+                        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,$answer->value);
+                    }
+                    else
+                    {
+                        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,"");
+                    }
+                    $col++;
+                }
+            $row++;
+            }
+        
+$objPHPExcel->setActiveSheetIndex(0);
+$objWriter = new PHPExcel_Writer_CSV($objPHPExcel);
+header('Content-Type: application/vnd.ms-excel');
+header('Content-Disposition: attachment;filename="central_'.$this->session->userdata('full_name').'.csv"');
+header('Cache-Control: max-age=0');
+$objWriter->save('php://output');
+
+}
+
 function exporttocsv()
 {
         $this->load->model('participant_attribute_model');

@@ -13,7 +13,7 @@
 		    <?php echo $clang->gT("Total Participants in central table  ");?>
 		</th>
 		<td>
-			<?php echo $this->session->flashdata('totalrecords'); ?>
+			<?php echo $totalrecords; ?>
 		</td>
 	</tr>
 	<tr>

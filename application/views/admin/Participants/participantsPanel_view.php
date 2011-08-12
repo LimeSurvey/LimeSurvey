@@ -1,9 +1,18 @@
 
 <html>
     <head>
-
+    <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js"?>" type="text/javascript"></script>
+    <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
+        <script src="<?php echo $this->config->item('adminscripts')."participantPanel.js" ?>" type="text/javascript"></script>
+    
        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
         <title></title>
+        <script type="text/javascript">
+        var exporttocsvcountall = "<?php echo site_url("admin/participants/exporttocsvcountAll");?>";
+        var exporttocsvall = "<?php echo site_url("admin/participants/exporttocsvAll");?>";
+        var okBtn = "<?php echo $clang->gT("OK") ?>";
+        var error = "<?php echo $clang->gT("Error") ?>";
+        </script>
     </head>
     <body>
        <div class="menubar">
@@ -28,6 +37,16 @@
           'src' => 'images/importcsv.png',
           'alt' => 'Import from CSV',
           'title' => 'Import from CSV',
+            'style' => 'margin-left:0px',
+            'style' => 'margin-right:1px'
+          );
+                
+        $export = array(
+          'src' => 'images/exportcsv.png',
+          'alt' => 'Export All',
+          'title' => 'Export All',
+          'name' => 'export',
+           'id' => 'export',
             'style' => 'margin-left:0px',
             'style' => 'margin-right:1px'
           );
@@ -71,7 +90,11 @@
           'alt' => '',
           'title' => ''
           );
-        
+        $ajaxloader = array(
+          'src' => 'images/ajax-loader.gif',
+          'alt' => 'Ajax Loader',
+          'title' => 'Ajax Loader'
+          );
         $participantPanel = "<div class='menubar-main'>";
         $participantPanel .= "<div class='menubar-left'>";
         
@@ -80,6 +103,7 @@
         $participantPanel.= anchor('admin/participants/displayParticipants',img($display));
         $participantPanel .= img($seperator);
         $participantPanel.= anchor('admin/participants/importCSV',img($import));
+        $participantPanel.= img($export);
         $participantPanel .= img($seperator);
         $participantPanel.= anchor('admin/participants/blacklistControl',img($blacklist));
         if($this->session->userdata('USER_RIGHT_SUPERADMIN'))
@@ -93,6 +117,14 @@
         
         $participantPanel.= "</div>";
         $participantPanel.= "</div>";
+        $participantPanel.= "<div id='exportcsvallprocessing' title='exportcsvall' style='display:none'>";
+        $participantPanel.= img($ajaxloader);
+        $participantPanel.= "</div>";
+        $participantPanel.= "<div id='exportcsvallnorow' title='exportcsvallnorow' style='display:none'>";
+        $participantPanel.= $clang->gT("There are no participants to be exported");
+        $participantPanel.= "</div>";
+
+        
         echo $participantPanel;
     ?>
 </div>

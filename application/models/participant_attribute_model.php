@@ -96,7 +96,6 @@ class participant_attribute_model extends CI_Model
         $this->db->from('participant_attribute_names');
         $this->db->join('participant_attribute_names_lang', 'participant_attribute_names.attribute_id = participant_attribute_names_lang.attribute_id');
      	$this->db->where('lang',$this->session->userdata('adminlang'));
-        
         $data=$this->db->get();
         return $data->result_array();
     }
