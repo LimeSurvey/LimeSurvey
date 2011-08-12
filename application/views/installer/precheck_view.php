@@ -42,9 +42,9 @@
 <legend class="content-table-heading">Basic settings</legend>
 <table style="width: 671px; margin-top: 0px; border-top-width: 1px; ">
 <tr>
-<td  style="width: 209px;">&nbsp;</td>
-<td align="center" style="width: 225px;"><b>Reccommended settings</b></td>
-<td align="center" style="width: 225px;"><b>Current settings</b></td>
+<td  style="width: 209px;">Required settings</td>
+<td align="center" style="width: 225px;"><b>Recommended setting</b></td>
+<td align="center" style="width: 225px;"><b>Current setting</b></td>
 </tr>
 <tr>
 <td style="width: 209px;">PHP version</td>
@@ -59,7 +59,8 @@
 <tr>
 <td style="width: 209px;">Root directory</td>
 <td align="center" style="width: 225px;">Found,Writable</td>
-<td align="center" style="width: 225px;"><?php echo $directoryPresent ; if ($directoryWritable) echo ",$directoryWritable" ; ?></td>
+<td align="center" style="width: 225px;"><?php if (isset($derror) && $derror) { ?><b><font color="red"><?php echo $directoryPresent ; if ($directoryWritable) echo ",$directoryWritable" ; ?></font></b>
+<?php } else { ?><?php echo $directoryPresent ; if ($directoryWritable) echo ",$directoryWritable" ; ?> <?php } ?></td>
 </tr>
 <tr>
 <td style="width: 209x;">mysql php library</td>
@@ -69,17 +70,20 @@
 <tr>
 <td style="width: 209px;">/tmp directory</td>
 <td align="center" style="width: 225px;">Found,Writable</td>
-<td align="center" style="width: 225px;"><?php echo $tmpdirPresent ; if ($tmpdirWritable) echo ",$tmpdirWritable" ; ?></td>
+<td align="center" style="width: 225px;"><?php if (isset($terror) && $terror) { ?><b><font color="red"><?php echo $tmpdirPresent ; if ($tmpdirWritable) echo ",$tmpdirWritable" ; ?></font></b>
+<?php } else { ?><?php echo $tmpdirPresent ; if ($tmpdirWritable) echo ",$tmpdirWritable" ; ?><?php } ?></td>
 </tr>
 <tr>
 <td style="width: 209px;">/upload directory</td>
 <td align="center" style="width: 225px;">Found,Writable</td>
-<td align="center" style="width: 225px;"><?php echo $uploaddirPresent ; if ($uploaddirWritable) echo ",$uploaddirWritable" ; ?></td>
+<td align="center" style="width: 225px;"><?php if (isset($uerror) && $uerror) { ?><b><font color="red"><?php echo $uploaddirPresent ; if ($uploaddirWritable) echo ",$uploaddirWritable" ; ?></font></b>
+<?php } else { ?><?php echo $uploaddirPresent ; if ($uploaddirWritable) echo ",$uploaddirWritable" ; ?><?php } ?></td>
 </tr>
 <tr>
 <td style="width: 209px;">/template directory</td>
 <td align="center" style="width: 225px;">Found,Writable</td>
-<td align="center" style="width: 225px;"><?php echo $templatedirPresent ; if ($templatedirWritable) echo ",$templatedirWritable" ; ?></td>
+<td align="center" style="width: 225px;"><?php if (isset($tperror) && $tperror) { ?><b><font color="red"><?php echo $templatedirPresent ; if ($templatedirWritable) echo ",$templatedirWritable" ; ?></font></b>
+<?php } else { ?><?php echo $templatedirPresent ; if ($templatedirWritable) echo ",$templatedirWritable" ; ?><?php } ?></td>
 </tr>
 
 </table>

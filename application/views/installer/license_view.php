@@ -1,4 +1,18 @@
 <?php $this->load->view("installer/header_view",array('progressValue' => $progressValue)); ?>
+<script type="text/javascript">
+    function changecbStatus() {
+		  
+          document.formcheck.accept.checked=(! document.formcheck.accept.checked);
+          if (document.getElementById("cbStatus").checked == false) {
+                $('#next').hide('slow');
+                alert("You need to accept license terms and conditions to proceed further.")
+            } else {
+                $('#next').show('fast');
+            }
+		}
+  </script>
+
+
 <div class="container_6">
 <div class="grid_2 table">
 <p class="title"> &nbsp;Progress</p>

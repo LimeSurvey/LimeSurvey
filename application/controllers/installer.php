@@ -116,7 +116,7 @@ class Installer extends CI_Controller {
                 }
                 
                 //directory permissions checking 
-                // chill.php file check
+                // root directory file check
                 
                 if (file_exists($this->config->item('rootdir')))
                 {
@@ -128,6 +128,7 @@ class Installer extends CI_Controller {
                     else
                     {
                         $data['directoryWritable'] = "Unwritable";
+                        $data['derror'] = true;
                         $proceed=false;
                     }
                     
@@ -136,6 +137,7 @@ class Installer extends CI_Controller {
                 {
                     $data['directoryPresent'] = "Not Found";
                     $data['directoryWritable'] = "";
+                    $data['derror'] = true;
                     $proceed=false;
                 }
                 // tmp directory check
@@ -150,6 +152,7 @@ class Installer extends CI_Controller {
                     else
                     {
                         $data['tmpdirWritable'] = "Unwritable";
+                        $data['terror'] = true;
                         $proceed=false;
                     }
                     
@@ -158,6 +161,7 @@ class Installer extends CI_Controller {
                 {
                     $data['tmpdirPresent'] = "Not Found";
                     $data['tmpdirWritable'] = "";
+                    $data['terror'] = true;
                     $proceed=false;
                 }
                 // templates directory check
@@ -172,6 +176,7 @@ class Installer extends CI_Controller {
                     else
                     {
                         $data['templatedirWritable'] = "Unwritable";
+                        $data['tperror'] = true;
                         $proceed=false;
                     }
                     
@@ -180,6 +185,7 @@ class Installer extends CI_Controller {
                 {
                     $data['templatedirPresent'] = "Not Found";
                     $data['templatedirWritable'] = "";
+                    $data['tperror'] = true;
                     $proceed=false;
                 }
                 //upload directory check
@@ -194,6 +200,7 @@ class Installer extends CI_Controller {
                     else
                     {
                         $data['uploaddirWritable'] = "Unwritable";
+                        $data['uerror'] = true;
                         $proceed=false;
                     }
                     
@@ -202,6 +209,7 @@ class Installer extends CI_Controller {
                 {
                     $data['uploaddirPresent'] = "Not Found";
                     $data['uploaddirWritable'] = "";
+                    $data['uerror'] = true;
                     $proceed=false;
                 }
                 
