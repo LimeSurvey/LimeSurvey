@@ -841,10 +841,13 @@ function attributeMapCSV()
     if (!$this->upload->do_upload())
     {
         $errorinupload = array('error' => $this->upload->display_errors());
+        $this->session->unset_userdata('summary');
+        $data = array( 'errorinupload' => $errorinupload);
+       
+           $this->session->set_userdata('summary',$data);
         self::_getAdminHeader();
         $clang = $this->limesurvey_lang;
-        $data = array('clang'=> $clang,
-                      'errorinupload' => $errorinupload );
+        $data = array('clang'=> $clang);
         $this->load->view('admin/Participants/participantsPanel_view',$data);
         $this->load->view('admin/Participants/uploadSummary_view',$data);
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
@@ -984,6 +987,7 @@ function uploadCSV()
                 }
                 $invalidemail=false;
                 $dupfound = false;
+                $thisduplicate = 0;
                 $filterduplicatefields=array('firstname','lastname','email');
                 foreach($writearray as $value)
                 {
@@ -997,15 +1001,18 @@ function uploadCSV()
                     $result=$this->participants_model->checkforDuplicate($data);
                     if($result == true )
                     {
+                         $thisduplicate = 1;
                          $dupcount++;
                     }
 
                 }
-                if($dupcount > 0)
+                
+                if($thisduplicate == 1)
                 {
                     $dupfound = true;
                     $duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
                 }
+                
                 $writearray['email'] = trim($writearray['email']);
                 if($writearray['email']!='')
                 {
@@ -1036,12 +1043,12 @@ function uploadCSV()
                     }
                     else
                     {
-
                       foreach($writearray as $key=> $value)
                        {
-                          
-                          if(in_array($key, $allowedfieldnames))
+                          if(!empty($mappedarray))
                           {
+                          if(in_array($key, $allowedfieldnames))
+                            {
                               foreach($mappedarray as $attid=>$attname)
                               {
                                   if($attname == $key)
@@ -1061,6 +1068,7 @@ function uploadCSV()
                                   }
                               }
                               
+                            }
                           }
                          /* if(is_numeric($key) && in_array($key, $allowedfieldnames))
                            {
@@ -1127,6 +1135,7 @@ function uploadCSV()
                            }
                           }*/
                        }
+                       
                        $this->participants_model->insertParticipantCSV($writearray);
                       $imported++;
                     }
@@ -1141,19 +1150,19 @@ function uploadCSV()
        self::_getAdminHeader();
        $clang = $this->limesurvey_lang;
        
-       $data = array('clang'=> $clang,
-                'duplicatelist' => $duplicatelist,
-                'recordcount' => $recordcount-1,
-                'mincriteria' =>  $mincriteria,
-                'imported' => $imported,
-                'dupcount' => count($duplicatelist),
-                'errorinupload' => $errorinupload,
-                'invalidemaillist'=> $invalidemaillist,
-                'mandatory' => $mandatory,
-                'invalidattribute' => $invalidattribute,
-                'invalidparticipantid' => $invalidparticipantid
-           );
-          redirect('admin/participants/summaryview');
+       $data = array(   'duplicatelist' => $duplicatelist,
+                        'recordcount' => $recordcount-1,
+                        'mincriteria' =>  $mincriteria,
+                        'imported' => $imported,
+                        'dupcount' => count($duplicatelist),
+                        'errorinupload' => $errorinupload,
+                        'invalidemaillist'=> $invalidemaillist,
+                        'mandatory' => $mandatory,
+                        'invalidattribute' => $invalidattribute,
+                        'invalidparticipantid' => $invalidparticipantid   );
+       $this->session->unset_userdata('summary');
+       $this->session->set_userdata('summary',$data);
+       //redirect('admin/participants/summaryview');
 }
 function summaryview()
 {

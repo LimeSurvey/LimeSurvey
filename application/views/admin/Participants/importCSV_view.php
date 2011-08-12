@@ -89,9 +89,9 @@
         <div class="messagebox ui-corner-all">
         <div class="header ui-widget-header"><?php $clang->gT("CSV input format") ?></div>
         <p><?php echo $clang->gT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order.");?></p>
-        <span style="font-weight:bold;">Mandatory fields:</span><?php echo $clang->gT("First Name, Last Name, E-Mail"); ?>
+        <span style="font-weight:bold;">Mandatory fields:</span><?php echo $clang->gT("firstname, lastname, email"); ?>
         <br>
-        <span style="font-weight:bold;">Optional fields:</span><?php echo $clang->gT("Blacklist,Attributes,Language"); ?>
+        <span style="font-weight:bold;">Optional fields:</span><?php echo $clang->gT("blacklist,language"); ?>
         </div>
         </div>
     </body>
