@@ -5102,7 +5102,7 @@ function do_shortfreetext($ia)
             <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$qidattributes['location_mapwidth']}px; height: {$qidattributes['location_mapheight']}px\"></div>";
 
         if ($qidattributes['location_mapservice']==1)
-            $js_header_includes[] = "http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key={$googleMapsAPIKey}";
+            $js_header_includes[] = "http://maps.googleapis.com/maps/api/js?sensor=false";
         elseif ($qidattributes['location_mapservice']==2)
             $js_header_includes[] = "http://www.openlayers.org/api/OpenLayers.js";
             
