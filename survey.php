@@ -440,7 +440,7 @@ END;
             $java .= $endzone;
             $endzone = "";
             $cqcount=1;
-            $java .= "\n   if (((";
+            $java .= "\n        if (((";
         }
 
         if (!isset($oldcq) || !$oldcq)
@@ -674,15 +674,19 @@ END;
         if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
         {
             $endzone = ")))\n"
-            . "    {\n"
-            . "    document.getElementById('question$cd[0]').style.display='';\n"
-            . "    document.getElementById('display$cd[0]').value='on';\n"
-            . "    }\n"
-            . "   else\n"
-            . "    {\n"
-            . "    document.getElementById('question$cd[0]').style.display='none';\n"
-            . "    document.getElementById('display$cd[0]').value='';\n"
-            . "    }\n";
+            . "        {\n"
+            . "            document.getElementById('question$cd[0]').style.display='';\n"
+            . "            document.getElementById('display$cd[0]').value='on';\n"
+            . "            if(\$('#question$cd[0] div[id^=\"gmap_canvas\"]').length > 0)\n"
+            . "            {\n"
+            . "                resetMap($cd[0]);\n"
+            . "            }\n"
+            . "        }\n"
+            . "        else\n"
+            . "        {\n"
+            . "            document.getElementById('question$cd[0]').style.display='none';\n"
+            . "            document.getElementById('display$cd[0]').value='';\n"
+            . "        }\n";
             $cqcount++;
         }
         $oldq = $cd[0]; //Update oldq for next loop
