@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id$
- * 
+ *
  */
 
 /**
@@ -33,7 +33,7 @@ class export extends SurveyCommonController {
 		$this->load->helper("export");
 		$this->load->helper("database");
 	}
-	
+
 	function survey($surveyid)
 	{
 		if(bHasSurveyPermission($surveyid,'surveycontent','export')) {
@@ -52,12 +52,12 @@ class export extends SurveyCommonController {
 	    	self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
 	}
-	
+
 	function _surveyexport($action, $surveyid)
 	{
 		if($action == "exportstructurexml")
 		{
-			    $fn = "limesurvey_survey_$surveyid.lss";      
+			    $fn = "limesurvey_survey_$surveyid.lss";
 			    header("Content-Type: text/xml");
 			    header("Content-Disposition: attachment; filename=$fn");
 			    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
@@ -82,8 +82,8 @@ class export extends SurveyCommonController {
 				header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 				header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 				header("Pragma: public");                          // HTTP/1.0
-			
-				echo quexml_export($surveyid, $quexmllang);	
+
+				echo quexml_export($surveyid, $quexmllang);
 				exit;
 			}
 			elseif($action == "exportstructureLsrcCsv")
@@ -92,7 +92,7 @@ class export extends SurveyCommonController {
 			}
 		}
 	}
-	
+
 	function group($surveyid, $gid)
 	{
 		if($this->config->item("export4lsrc") === true && bHasSurveyPermission($surveyid,'survey','export')) {
@@ -117,7 +117,7 @@ class export extends SurveyCommonController {
 			return;
 		}
 	}
-	
+
 	function question($surveyid, $gid, $qid)
 	{
 		if($this->config->item("export4lsrc") === true && bHasSurveyPermission($surveyid,'survey','export')) {
@@ -142,7 +142,7 @@ class export extends SurveyCommonController {
 			return;
 		}
 	}
-	
+
 	function exportresults($surveyid)
 	{
 		if (!isset($imageurl)) {$imageurl="./images";}
@@ -153,40 +153,40 @@ class export extends SurveyCommonController {
 		if (!isset($convertyto1)) {$convertyto1=returnglobal('convertyto1');}
 		if (!isset($convertnto2)) {$convertnto2=returnglobal('convertnto2');}
 		if (!isset($convertspacetous)) {$convertspacetous=returnglobal('convertspacetous');}
-		
+
 		$clang = $this->limesurvey_lang;
 		$_POST = $this->input->post();
 		$dbprefix = $this->db->dbprefix;
-		
+
 		if (!bHasSurveyPermission($surveyid, 'responses','export'))
 		{
 		    exit;
 		}
-		
+
 		//include_once(dirname(__FILE__)."/classes/phpexcel/PHPExcel.php");
 		//include_once(dirname(__FILE__)."/classes/tcpdf/extensiontcpdf.php");
 		//include_once(dirname(__FILE__)."/exportresults_objects.php");
 		$this->load->helper("admin/exportresults");
-		
+
 		$surveybaselang=GetBaseLanguageFromSurveyID($surveyid);
 		$exportoutput="";
-		
+
 		// Get info about the survey
 		$thissurvey=getSurveyInfo($surveyid);
-		
+
 		if (!$exportstyle)
 		{
-		
+
 		    //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
 		    $excesscols=createFieldMap($surveyid);
 		    $excesscols=array_keys($excesscols);
-		
-		
-		
+
+
+
 		    $afieldcount = count($excesscols);
 			self::_getAdminHeader();
 		    self::_browsemenubar($surveyid, $clang->gT("Export results"));
-			
+
 			if (incompleteAnsFilterstate() == "filter")
 			{
 			    $selecthide="selected='selected'";
@@ -204,7 +204,7 @@ class export extends SurveyCommonController {
 			    $selecthide="";
 			    $selectshow="selected='selected'";
 			    $selectinc="";
-			} 
+			}
 			$data['selecthide'] = $selecthide;
 			$data['selectshow'] = $selectshow;
 			$data['selectinc'] = $selectinc;
@@ -222,7 +222,7 @@ class export extends SurveyCommonController {
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		    return;
 		}
-		
+
 		// Export Language is set by default to surveybaselang
 		// * the explang language code is used in SQL queries
 		// * the alang object is used to translate headers and hardcoded answers
@@ -230,8 +230,8 @@ class export extends SurveyCommonController {
 		// the exportresults form
 		$explang = $surveybaselang;
 		$elang=new limesurvey_lang($explang);
-		
-		//Get together our FormattingOptions and then call into the exportSurvey 
+
+		//Get together our FormattingOptions and then call into the exportSurvey
 		//function.
 		$options = new FormattingOptions();
 		$options->selectedColumns = $_POST['colselect'];
@@ -242,7 +242,7 @@ class export extends SurveyCommonController {
 		if ($options->convertN)
 		{
 		    $options->nValue = $convertnto;
-		        } 
+		        }
 		$options->convertY = $convertyto1;
 		if ($options->convertY)
 		        {
@@ -252,9 +252,9 @@ class export extends SurveyCommonController {
 		$options->headerSpacesToUnderscores = $convertspacetous;
 		$options->headingFormat = $exportstyle;
 		$options->responseCompletionState = incompleteAnsFilterstate();
-		
+
 		//If we have no data for the filter state then default to show all.
-		if (empty($options->responseCompletionState)) 
+		if (empty($options->responseCompletionState))
 		{
 		    $options->responseCompletionState = 'show';
 		    if (in_array('first_name',$_POST['attribute_select']))
@@ -273,7 +273,7 @@ class export extends SurveyCommonController {
 		    {
 		        $dquery .= ", {$dbprefix}tokens_$surveyid.token";
 		    }
-		
+
 		    foreach ($attributeFields as $attr_name)
 		    {
 		        if (in_array($attr_name,$_POST['attribute_select']))
@@ -286,12 +286,12 @@ class export extends SurveyCommonController {
 		{
 		    $options->responseCompletionState = 'incomplete';
 		}
-		
+
 		$resultsService = new ExportSurveyResultsService();
 		$resultsService->exportSurvey($surveyid, $explang, $options);
-		
+
 		exit;
-				
+
 	}
 
 	/*
@@ -348,7 +348,7 @@ class export extends SurveyCommonController {
 		';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
 		'|'=>Array('name'=>'File upload','size'=>1,'SPSStype'=>'A'),
 		);
-		
+
 		$filterstate = incompleteAnsFilterstate();
 		$spssver = returnglobal('spssver');
 		if (is_null($spssver)) {
@@ -359,10 +359,10 @@ class export extends SurveyCommonController {
 		} else {
 		    $this->session->set_userdata('spssversion', $spssver);
 		}
-		
+
 		$length_varlabel = '255'; // Set the max text length of Variable Labels
 		$length_vallabel = '120'; // Set the max text length of Value Labels
-		
+
 		switch ($spssver) {
 		    case 1:	//<16
 		        $length_data	 = '255'; // Set the max text length of the Value
@@ -372,19 +372,19 @@ class export extends SurveyCommonController {
 		        break;
 		    default:
 		        $length_data	 = '16384'; // Set the max text length of the Value
-		
+
 		}
-		
+
 		$headerComment = '*$Rev: 10193 $' . " $filterstate $spssver.\n";
-		
+
 		if (isset($_POST['dldata'])) $subaction = "dldata";
 		if (isset($_POST['dlstructure'])) $subaction = "dlstructure";
-		
+
 		if  (!isset($subaction))
 		{
 			self::_getAdminHeader();
 			self::_browsemenubar($surveyid, $clang->gT('Export results'));
-			
+
 			$selecthide="";
 			$selectshow="";
 			$selectinc="";
@@ -398,7 +398,7 @@ class export extends SurveyCommonController {
 			    default:
 			        $selectshow="selected='selected'";
 			}
-			
+
 			$data['clang'] = $clang;
 			$data['selectinc'] = $selectinc;
 			$data['selecthide'] = $selecthide;
@@ -406,45 +406,45 @@ class export extends SurveyCommonController {
 			$data['spssver'] = $spssver;
 			$this->load->view("admin/Export/spss_view",$data);
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-			
+
 		} else {
 		    // Get Base language:
-		
+
 		    $language = GetBaseLanguageFromSurveyID($surveyid);
 		    $clang = new limesurvey_lang($language);
 		    $this->load->helper("admin/exportresults");
 		}
-		
-		
-		
+
+
+
 		if  ($subaction=='dldata') {
 		    header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_data_file.dat");
 		    header("Content-type: text/comma-separated-values; charset=UTF-8");
 		    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		    header("Pragma: public");
-		
+
 		    if ($spssver == 2) echo "\xEF\xBB\xBF";
 		    $na = "";
 		    spss_export_data($na);
-		
+
 		    exit;
 		}
-		
-		
+
+
 		if  ($subaction=='dlstructure') {
 		    header("Content-Disposition: attachment; filename=survey_".$surveyid."_SPSS_syntax_file.sps");
 		    header("Content-type: application/download; charset=UTF-8");
 		    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		    header("Pragma: public");
-		
+
 		    // Build array that has to be returned
 		    $fields = spss_fieldmap();
-		
+
 		    //Now get the query string with all fields to export
 		    $query = spss_getquery();
 		    $result=db_execute_assoc($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
 		    $num_fields = count($result->row_array());
-		
+
 		    //Now we check if we need to adjust the size of the field or the type of the field
 		    foreach ($result->result_array() as $row) {
 		    	$row = array_values($row);
@@ -456,7 +456,7 @@ class export extends SurveyCommonController {
 		                $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
 		                $len = mb_strlen($strTmp);
 		                if($len > $fields[$fieldno]['size']) $fields[$fieldno]['size'] = $len;
-		
+
 		                if (trim($strTmp) != ''){
 		                    if ($fields[$fieldno]['SPSStype']=='F' && (my_is_numeric($strTmp)===false || $fields[$fieldno]['size']>16))
 		                    {
@@ -467,7 +467,7 @@ class export extends SurveyCommonController {
 		            $fieldno++;
 		        }
 		    }
-		
+
 		    /**
 		     * End of DATA print out
 		     *
@@ -496,13 +496,13 @@ class export extends SurveyCommonController {
 		    }
 		    echo ".\nCACHE.\n"
 		    ."EXECUTE.\n";
-		
+
 		    //Create the variable labels:
 		    echo "*Define Variable Properties.\n";
 		    foreach ($fields as $field) {
 		        if (!$field['hide']) echo "VARIABLE LABELS " . $field['id'] . " \"" . str_replace('"','""',mb_substr(strip_tags_full($field['VariableLabel']),0,$length_varlabel)) . "\".\n";
 		    }
-		
+
 		    // Create our Value Labels!
 		    echo "*Define Value labels.\n";
 		    foreach ($fields as $field) {
@@ -526,7 +526,7 @@ class export extends SurveyCommonController {
 		            }
 		        }
 		    }
-		
+
 		    foreach ($fields as $field){
 		        if($field['scale']!=='') {
 		            switch ($field['scale']) {
@@ -538,7 +538,7 @@ class export extends SurveyCommonController {
 		            }
 		        }
 		    }
-		
+
 		    //Rename the Variables (in case somethings goes wrong, we still have the OLD values
 		    foreach ($fields as $field){
 		        if (isset($field['sql_name']) && $field['hide']===0) {
@@ -546,15 +546,15 @@ class export extends SurveyCommonController {
 		            if (!preg_match ("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
 		                $ftitle = "q_" . $ftitle;
 		            }
-		            $ftitle = str_replace(array(" ","-",":",";","!","/","\\"), array("_","_hyph_","_dd_","_dc_","_excl_","_fs_","_bs_"), $ftitle);
+		            $ftitle = str_replace(array(" ","-",":",";","!","/","\\","'"), array("_","_hyph_","_dd_","_dc_","_excl_","_fs_","_bs_",'_qu_'), $ftitle);
 		            if ($ftitle != $field['title']) echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
-		            echo "RENAME VARIABLE ( " . $field['id'] . " = " . $ftitle . " ).\n";
+		            echo "RENAME VARIABLE ( " . $field['id'] . ' = ' . $ftitle . " ).\n";
 		        }
 		    }
 		    exit;
 		}
-	
-		
+
+
 	}
 
 	/*
@@ -583,7 +583,7 @@ class export extends SurveyCommonController {
 		$length_varlabel = '25500'; // Set the max text length of Variable Labels
 		$headerComment = '';
 		$tempFile = '';
-		
+
 		//for scale 1=nominal, 2=ordinal, 3=scale
 		$typeMap = array(
 		'5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -616,20 +616,20 @@ class export extends SurveyCommonController {
 		':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
 		';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
 		);
-		
+
 		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 		$filterstate = incompleteAnsFilterstate();
-		
+
 		$headerComment = '#$Rev: 10193 $' . " $filterstate.\n";
-		
+
 		if (isset($_POST['dldata'])) $subaction = "dldata";
 		if (isset($_POST['dlstructure'])) $subaction = "dlstructure";
-		
+
 		if  (!isset($subaction))
 		{
 			self::_getAdminHeader();
 		    self::_browsemenubar($surveyid, $clang->gT('Export results'));
-		
+
 			$selecthide="";
 			$selectshow="";
 			$selectinc="";
@@ -643,12 +643,12 @@ class export extends SurveyCommonController {
 				default:
 					$selectshow="selected='selected'";
 			}
-	
+
 			$data['clang'] = $clang;
 			$data['selectinc'] = $selectinc;
 			$data['selecthide'] = $selecthide;
 			$data['selectshow'] = $selectshow;
-			$this->load->view("admin/Export/r_view",$data);	
+			$this->load->view("admin/Export/r_view",$data);
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
 		else
@@ -658,44 +658,44 @@ class export extends SurveyCommonController {
 		    $clang = new limesurvey_lang($language);
 		    $this->load->helper("admin/exportresults");
 		}
-		
-		
+
+
 		if  ($subaction=='dldata')
 		{
 		    header("Content-Disposition: attachment; filename=survey_".$surveyid."_data_file.csv");
 		    header("Content-type: text/comma-separated-values; charset=UTF-8");
 		    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		    header("Pragma: public");
-		
+
 		    $na="";	//change to empty string instead of two double quotes to fix warnings on NA
 		    spss_export_data($na);
-		
+
 		    exit;
 		}
-		
+
 		if  ($subaction=='dlstructure')
 		{
 		    header("Content-Disposition: attachment; filename=Surveydata_syntax.R");
 		    header("Content-type: application/download; charset=UTF-8");
 		    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		    header("Pragma: public");
-		
+
 		  echo $headerComment;
 		  echo "data <- read.table(\"survey_".$surveyid
 		      ."_data_file.csv\", sep=\",\", quote = \"'\", "
 		      ."na.strings=c(\"\",\"\\\"\\\"\"), "
 		      ."stringsAsFactors=FALSE)\n\n";
 		//  echo "names(data) <- paste(\"V\",1:dim(data)[2],sep=\"\")\n\n";
-		
+
 		    // Build array that has to be returned
 		  $fields = spss_fieldmap("V");
-		
+
 		    //Now get the query string with all fields to export
 		    $query = spss_getquery();
-		
+
 		    $result=db_execute_assoc($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
 		    $num_fields = count($result->row_array());
-		
+
 		    //Now we check if we need to adjust the size of the field or the type of the field
 		    foreach ($result->result_array() as $row) {
 		    	$row = array_values($row);
@@ -707,7 +707,7 @@ class export extends SurveyCommonController {
 		                $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
 		                $len = mb_strlen($strTmp);
 		                if($len > $fields[$fieldno]['size']) $fields[$fieldno]['size'] = $len;
-		
+
 		                if (trim($strTmp) != ''){
 		                    if ($fields[$fieldno]['SPSStype']=='F' && (my_is_numeric($strTmp)===false || $fields[$fieldno]['size']>16))
 		                    {
@@ -718,7 +718,7 @@ class export extends SurveyCommonController {
 		            $fieldno++;
 		        }
 		    }
-		
+
 		  $errors = "";
 		  $i = 1;
 		  foreach ($fields as $field)
@@ -742,12 +742,12 @@ class export extends SurveyCommonController {
 		                //@TODO set $type to format for date
 		                break;
 		        }
-		
+
 		    if (!$field['hide'])
 		    {
 		      echo "data[, " . $i . "] <- "
 		           ."as.$type(data[, " . $i . "])\n";
-		
+
 		      echo 'attributes(data)$variable.labels[' . $i . '] <- "'
 		              . addslashes(
 		                  htmlspecialchars_decode(
@@ -755,7 +755,7 @@ class export extends SurveyCommonController {
 		                      strip_tags_full(
 		                        $field['VariableLabel']),0,$length_varlabel)))  // <AdV> added htmlspecialchars_decode
 		              . '"' . "\n";
-		
+
 		      // Create the value Labels!
 		      if (isset($field['answers']))
 		      {
@@ -785,7 +785,7 @@ class export extends SurveyCommonController {
 		            }
 		            echo "$str)$scale)\n";
 		        }
-		
+
 		    //Rename the Variables (in case somethings goes wrong, we still have the OLD values
 		      if (isset($field['sql_name']))
 		      {
@@ -810,14 +810,14 @@ class export extends SurveyCommonController {
 		        {
 		          echo "#sql_name not set\n";
 		        }
-		
+
 		      }
 		      else
 		      {
 		        echo "#Field hidden\n";
 		      }
 		      echo "\n";
-		
+
 		    }  // end foreach
 		    echo $errors;
 		    exit;
@@ -838,7 +838,7 @@ class export extends SurveyCommonController {
 		{
 		    return;
 		}
-		
+
 		if (!$subaction == "export")
 		{
 		    if(incompleteAnsFilterstate() == "inc")
@@ -859,10 +859,10 @@ class export extends SurveyCommonController {
 		        $selectshow="selected='selected'";
 		        $selectinc="";
 		    }
-			
-		  	self::_getAdminHeader();		
+
+		  	self::_getAdminHeader();
 		    self::_browsemenubar($surveyid, $clang->gT("Export VV file"));
-		 
+
 			$data["clang"] = $this->limesurvey_lang;
 			$data['selectinc'] = $selectinc;
 			$data['selecthide'] = $selecthide;
@@ -879,14 +879,14 @@ class export extends SurveyCommonController {
 		    //header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		    //header("Pragma: cache");
 		    $s="\t";
-		
+
 		    $fieldmap=createFieldMap($surveyid, "full");
 		    $surveytable = "{$dbprefix}survey_$surveyid";
-		
+
 		    GetBaseLanguageFromSurveyID($surveyid);
-		
+
 		    $fieldnames = array_values($this->db->list_fields("survey_$surveyid"));
-		
+
 		    //Create the human friendly first line
 		    $firstline="";
 		    $secondline="";
@@ -913,7 +913,7 @@ class export extends SurveyCommonController {
 		        $query .= " WHERE submitdate >= '01/01/1980' ";
 		    }
 		    $result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg()); //Checked
-		
+
 		    foreach ($result->result_array() as $row)
 		    {
 		        foreach ($fieldnames as $field)
@@ -949,12 +949,12 @@ class export extends SurveyCommonController {
 		    }
 		    echo $vvoutput;
 		    exit;
-		
+
 		    //$vvoutput .= "<pre>$firstline</pre>";
 		    //$vvoutput .= "<pre>$secondline</pre>";
 		    //$vvoutput .= "<pre>"; print_r($fieldnames); $vvoutput .= "</pre>";
 		    //$vvoutput .= "<pre>"; print_r($fieldmap); $vvoutput .= "</pre>";
-		
+
 		}
 
 	}
@@ -963,10 +963,10 @@ class export extends SurveyCommonController {
 	 * quexml survey export
 	 */
 	function showquexmlsurvey($surveyid, $lang = null)
-	{				
+	{
 		global $tempdir;
 		$tempdir = $this->config->item("tempdir");
-		
+
 		// Set the language of the survey, either from GET parameter of session var
 		if (isset($lang))
 		{
@@ -976,50 +976,50 @@ class export extends SurveyCommonController {
 		{
 		    $surveyprintlang=GetbaseLanguageFromSurveyid($surveyid);
 		}
-		
+
 		// Setting the selected language for printout
 		$clang = new limesurvey_lang($surveyprintlang);
-		
+
 		$this->load->library("admin/queXMLPDF");
 		$quexmlpdf = $this->quexmlpdf; //new queXMLPDF(PDF_PAGE_ORIENTATION, 'mm', PDF_PAGE_FORMAT, true, 'UTF-8', false);
-		
+
 		set_time_limit(120);
-		
+
 		$noheader = true;
-		
+
 		$quexml = quexml_export($surveyid, $surveyprintlang);
-		
+
 		$quexmlpdf->create($quexmlpdf->createqueXML($quexml));
-		
+
 		//NEED TO GET QID from $quexmlpdf
 		$qid = intval($quexmlpdf->getQuestionnaireId());
-		
+
 		$zipdir=self::_tempdir($tempdir);
-		
+
 		$f1 = "$zipdir/quexf_banding_{$qid}_{$surveyprintlang}.xml";
 		$f2 = "$zipdir/quexmlpdf_{$qid}_{$surveyprintlang}.pdf";
 		$f3 = "$zipdir/quexml_{$qid}_{$surveyprintlang}.xml";
 		$f4 = "$zipdir/readme.txt";
-		
+
 		file_put_contents($f1, $quexmlpdf->getLayout());
 		file_put_contents($f2, $quexmlpdf->Output("quexml_$qid.pdf", 'S'));
 		file_put_contents($f3, $quexml);
 		file_put_contents($f4, $clang->gT('This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys.'));
-		
+
 		$this->load->library("admin/Phpzip");
 		$z = $this->phpzip;
 		$zipfile="$tempdir/quexmlpdf_{$qid}_{$surveyprintlang}.zip";
 		$z->Zip($zipdir, $zipfile);
-		
+
 		unlink($f1);
 		unlink($f2);
 		unlink($f3);
 		unlink($f4);
 		rmdir($zipdir);
-		
+
 		header('Content-Type: application/zip');
 		header('Content-Transfer-Encoding: binary');
-		header('Content-Disposition: attachment; filename="quexmlpdf_' . $qid . '_' . $surveyprintlang . '.zip"'); 
+		header('Content-Disposition: attachment; filename="quexmlpdf_' . $qid . '_' . $surveyprintlang . '.zip"');
 		$len = filesize($zipfile);
 		header("Content-Length: $len;\n");
 		header("Pragma: public");
@@ -1042,12 +1042,12 @@ class export extends SurveyCommonController {
 		        header("Pragma: public");
 		        header("Expires: 0");
 		        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		
+
 		        header("Content-Type: application/force-download");
 		        header( "Content-Disposition: attachment; filename=resources-survey-$surveyid.zip" );
 		        header( "Content-Description: File Transfer");
 		        @readfile($zipfile);
-		
+
 		        //Delete the temporary file
 		        unlink($zipfile);
 				return;
@@ -1063,64 +1063,64 @@ class export extends SurveyCommonController {
 		        header("Pragma: public");
 		        header("Expires: 0");
 		        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		
+
 		        header("Content-Type: application/force-download");
 		        header( "Content-Disposition: attachment; filename=resources-label-$lid.zip" );
 		        header( "Content-Description: File Transfer");
 		        @readfile($zipfile);
-		
+
 		        //Delete the temporary file
 		        unlink($zipfile);
 				return;
 		    }
 		}
 	}
-	
+
 	function dumplabel($lid=null)
 	{
 		// DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
 		// ON ANOTHER SURVEY SETUP DUMP ALL DATA WITH RELATED QID FROM THE FOLLOWING TABLES
 		// 1. questions
 		// 2. answers
-		   
+
 		$lids=returnglobal('lids');
 		if (!$lid && !$lids) die('No LID has been provided. Cannot dump label set.');
-		
+
 		if ($lid)
 		{
 		  $lids=array($lid);
 		}
 		$lids=array_map('sanitize_int',$lids);
-		                        
+
 		$fn = "limesurvey_labelset_".implode('_',$lids).".lsl";
-		$xml = getXMLWriter();             
-		
+		$xml = getXMLWriter();
+
 		header("Content-Type: text/html/force-download");
 		header("Content-Disposition: attachment; filename=$fn");
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Pragma: cache");                          // HTTP/1.0
-		
+
 		$xml->openURI('php://output');
-		
+
 		$xml->setIndent(true);
 		$xml->startDocument('1.0', 'UTF-8');
 		$xml->startElement('document');
-		$xml->writeElement('LimeSurveyDocType','Label set');    
+		$xml->writeElement('LimeSurveyDocType','Label set');
 		$xml->writeElement('DBVersion',$this->config->item("dbversionnumber"));
 		// Label sets table
 		$dbprefix = $this->db->dbprefix;
 		$lsquery = "SELECT * FROM {$dbprefix}labelsets WHERE lid=".implode(' or lid=',$lids);
 		BuildXMLFromQuery($xml,$lsquery,'labelsets');
 		// Labels
-		$lquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {$dbprefix}labels WHERE lid=".implode(' or lid=',$lids);           
+		$lquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {$dbprefix}labels WHERE lid=".implode(' or lid=',$lids);
 		BuildXMLFromQuery($xml,$lquery,'labels');
 		$xml->endElement(); // close columns
 		$xml->endDocument();
 		exit;
 
-	
+
 	}
 
 	/**
@@ -1129,13 +1129,13 @@ class export extends SurveyCommonController {
 	function _tempdir($dir, $prefix='', $mode=0700)
 	{
 	    if (substr($dir, -1) != '/') $dir .= '/';
-	
+
 	    do
 	    {
 	        $path = $dir.$prefix.mt_rand(0, 9999999);
 	    } while (!mkdir($path, $mode));
-	
+
 	    return $path;
 	}
-	
+
 }
