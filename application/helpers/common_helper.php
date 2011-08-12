@@ -3424,7 +3424,7 @@ function templatereplace($line, $replacements=array(),$redata)
     if (strpos($line, "{CLEARALL}") !== false)  {
 
         $clearall = "<button class='nav-button ui-corner-all'  type='button' name='clearallbtn'  class='clearall' "
-        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?",'js')."')) {window.open('".site_url('index/sid/'.$surveyid.'/move/clearall/lang/'.$_SESSION['s_lang']);
+        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?",'js')."')) {window.open('".site_url('survey/sid/'.$surveyid.'/move/clearall/lang/'.$_SESSION['s_lang']);
         if (returnglobal('token'))
         {
             $clearall .= "/token/".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
@@ -3587,7 +3587,7 @@ function templatereplace($line, $replacements=array(),$redata)
     {
         if ($thissurvey['active'] == "N")
         {
-            $replacetext= "<a href='".site_url("index/sid/$surveyid/newtest/Y");
+            $replacetext= "<a href='".site_url("survey/sid/$surveyid/newtest/Y");
             if (isset($s_lang) && $s_lang!='') $replacetext.="/lang/".$s_lang;
             $replacetext.="'>".$clang->gT("Restart this Survey")."</a>";
             //$line=str_replace("{RESTART}", $replacetext, $line);
@@ -3599,7 +3599,7 @@ function templatereplace($line, $replacements=array(),$redata)
             else $restart_extra = "/newtest/Y";
             if (!empty($_GET['lang'])) $restart_extra .= "/lang/".returnglobal('lang');
             //$line=str_replace("{RESTART}",  "<a href='{$publicurl}/index.php?sid=$surveyid".$restart_extra."'>".$clang->gT("Restart this Survey")."</a>", $line);
-            $data = array_merge($data,array("RESTART" => "<a href='".site_url("index/sid/$surveyid$restart_extra")."'>".$clang->gT("Restart this Survey")."</a>"));
+            $data = array_merge($data,array("RESTART" => "<a href='".site_url("survey/sid/$surveyid$restart_extra")."'>".$clang->gT("Restart this Survey")."</a>"));
         }
     }
     /**

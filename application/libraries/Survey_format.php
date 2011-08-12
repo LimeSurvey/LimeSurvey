@@ -341,7 +341,7 @@
 		if(isset($popup)) {echo $popup;}
 		if(isset($vpopup)) {echo $vpopup;}
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
-		echo "\n<form method='post' action='".site_url("index/$surveyid")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+		echo "\n<form method='post' action='".site_url("survey/$surveyid")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 		//PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 		echo "\n<!-- INPUT NAMES -->\n"
 		."\t<input type='hidden' name='fieldnames' id='fieldnames' value='"

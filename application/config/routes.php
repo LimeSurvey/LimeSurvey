@@ -38,8 +38,14 @@
 |
 */
 
-$route['default_controller'] = "index";
+$route['default_controller'] = "survey";
 $route['404_override'] = '';
+
+//Compatibility with classic modrewrite
+$route['(:num)/lang-(:any)/tk-(:any)'] = "survey/sid/$1/lang/$2/token/$3"; //This one must be first
+$route['(:num)/lang-(:any)'] = "survey/sid/$1/lang/$2";
+$route['(:num)/tk-(:any)'] = "survey/sid/$1/token/$2";
+$route['(:num)'] = "survey/sid/$1";
 
 //Admin Routes
 $route['admin'] = "admin/index";

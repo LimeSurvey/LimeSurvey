@@ -529,11 +529,11 @@ class Group_format {
 		$hiddenfieldnames=implode("|", $inputnames);
 		
 		if (isset($upload_file) && $upload_file)
-		    echo "<form enctype=\"multipart/form-data\" method='post' action='".site_url("index")."' id='limesurvey' name='limesurvey' autocomplete='off'>
+		    echo "<form enctype=\"multipart/form-data\" method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
 		      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 		else
-		    echo "<form method='post' action='".site_url("index")."' id='limesurvey' name='limesurvey' autocomplete='off'>
+		    echo "<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
 		      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
 		

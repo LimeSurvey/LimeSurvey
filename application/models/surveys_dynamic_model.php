@@ -40,4 +40,9 @@ class Surveys_dynamic_model extends CI_Model {
         return $this->db->query($querysel);
 	}
     
+    function insertRecords($sid,$data)
+    {
+        return $this->db->insert('survey_'.$sid, $data); 
+    }
+    
 }

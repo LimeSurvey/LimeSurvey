@@ -467,7 +467,7 @@ class Question_format {
 		    }
 		}
 		
-		echo "\n<form method='post' action='".site_url("index")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
+		echo "\n<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 		
 		//PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 		echo "\n\n<!-- INPUT NAMES -->\n";

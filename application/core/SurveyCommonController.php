@@ -690,8 +690,8 @@
         //$sumquery3 =  "SELECT * FROM ".db_table_name('questions')." WHERE sid={$surveyid} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
         $sumresult3 = $this->questions_model->getAllRecords($condition); //$connect->Execute($sumquery3); //Checked
         $sumcount3 = $sumresult3->num_rows();
-		
-		$data['canactivate'] = $sumcount3>0 && bHasSurveyPermission($surveyid,'surveyactivation','update');
+
+		$data['canactivate'] = $sumcount3 > 0 && bHasSurveyPermission($surveyid,'surveyactivation','update');
 		$data['candeactivate'] = bHasSurveyPermission($surveyid,'surveyactivation','update');
 		$data['expired'] = $surveyinfo['expires']!='' && ($surveyinfo['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $this->config->item('timeadjust')));
 		$data['notstarted'] = ($surveyinfo['startdate']!='') && ($surveyinfo['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $this->config->item('timeadjust')));
@@ -1123,4 +1123,25 @@
         $data['showstyle'] = $showstyle;
 		$this->load->view("admin/survey/surveysummary",$data);
     }
+    
+	/**
+	 * Browse Menu Bar
+	 */
+	function _browsemenubar($surveyid, $title='')
+	{
+	    //BROWSE MENU BAR
+		$data['title'] = $title;
+		$data['thissurvey'] = getSurveyInfo($surveyid);
+		$data['imageurl'] = $this->config->item("imageurl");
+		$data['clang'] = $this->limesurvey_lang;
+		$data['surveyid'] = $surveyid;
+		
+		$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $tmp_survlangs[] = $baselang;
+        rsort($tmp_survlangs);
+		$data['tmp_survlangs'] = $tmp_survlangs;
+		
+	    $this->load->view("admin/browse/browsemenubar_view", $data);
+	}
 }

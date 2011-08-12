@@ -4,11 +4,11 @@
 <img src='<?php echo $imageurl;?>/blank.gif' width='31' height='20' border='0' hspace='0' align='left' alt='' />
 <img src='<?php echo $imageurl;?>/seperator.gif' border='0' hspace='0' align='left' alt='' />
 <?php if (isset($rlanguage)) { ?>
-	<a href='<?php echo site_url("admin/dataentry/$surveyid/edit/$id/$rlanguage");?>' title='<?php echo $clang->gTview("Edit this entry");?>'>
+	<a href='<?php echo site_url("admin/dataentry/editdata/edit/$id/$surveyid/$rlanguage");?>' title='<?php echo $clang->gTview("Edit this entry");?>'>
 	<img align='left' src='<?php echo $imageurl;?>/edit.png' alt='<?php $clang->gT("Edit this entry");?>' /></a>
 <?php }
 if (bHasSurveyPermission($surveyid,'responses','delete') && isset($rlanguage)) { ?>
-    <a href='#' title='<?php echo $clang->gTview("Delete this entry");?>' onclick="if (confirm('<?php echo $clang->gT("Are you sure you want to delete this entry?","js");?>')) {<?php echo get2post('?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid);?>}">
+    <a href='#' title='<?php echo $clang->gTview("Delete this entry");?>' onclick="if (confirm('<?php echo $clang->gT("Are you sure you want to delete this entry?","js");?>')) {<?php echo get2post(site_url("admin/dataentry/delete").'?action=dataentry&amp;subaction=delete&amp;id='.$id.'&amp;sid='.$surveyid);?>}">
     <img align='left' hspace='0' border='0' src='<?php echo $imageurl;?>/delete.png' alt='<?php echo $clang->gT("Delete this entry");?>' /></a>
 <?php } else { ?>
     <img align='left' hspace='0' border='0' src='<?php echo $imageurl;?>/delete_disabled.png' alt='<?php echo $clang->gT("You don't have permission to delete this entry.");?>'/>

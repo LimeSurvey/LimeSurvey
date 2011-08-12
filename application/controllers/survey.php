@@ -1,6 +1,20 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/*
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ * 
+ * $Id: survey.php 10433 2011-07-06 14:18:45Z dionet $
+ * 
+ */
 
-class index extends FrontendController {
+class survey extends LS_Controller {
 
 	function __construct()
 	{
@@ -447,17 +461,13 @@ class index extends FrontendController {
 		    {
 		        foreach($result->result_array() as $rows)
 		        {
-		            $link = "<li><a href='".site_url("index/sid/".$rows['sid']);
+		            $link = "<li><a href='".site_url($rows['sid']);
 		            if (isset($param['lang']))
 		            {
-		                $link .= "/".sanitize_languagecode($param['lang']);
-		            }
-		            if (isset($param['lang']))
-		            {
-		                $link .= "/".sanitize_languagecode($param['lang']);
+		                $link .= "/lang-".sanitize_languagecode($param['lang']);
 		            }
 		            $link .= "'  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
-		            if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".site_url("statistics/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
+		            if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".site_url("statistics_user/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
 		            $link .= "</li>\n";
 		            $list[]=$link;
 		        }
@@ -700,7 +710,9 @@ class index extends FrontendController {
 		//Allow loading of saved survey
 		if (isset($_POST['loadall']) && $_POST['loadall'] == $clang->gT("Load Unfinished Survey"))
 		{
-		    require_once("load.php");
+			$vars = compact(array_keys(get_defined_vars()));
+		    $this->load->library("load_answers");
+			$this->load_answers->run($vars);
 		}
 		
 		

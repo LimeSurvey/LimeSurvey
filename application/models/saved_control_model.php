@@ -32,8 +32,15 @@ class Saved_control_model extends CI_Model {
     
     function getCountOfAll($sid)
     {
-        $data = $this->db->query("SELECT COUNT(*) FROM ".$this->db->prefix('saved_control')." WHERE sid=$sid");
-        return $data;
+        $data = $this->db->query("SELECT COUNT(*) AS countall FROM ".$this->db->dbprefix."saved_control WHERE sid=$sid");
+        $row = $data->row_array();
+        
+        return $row['countall'];
+    }
+    
+    function insertRecords($data)
+    {
+        return $this->db->insert('saved_control', $data); 
     }
 
 }
