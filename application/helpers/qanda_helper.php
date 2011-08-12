@@ -2682,10 +2682,20 @@ function do_list_radio($ia)
 // ---------------------------------------------------------------
 function do_listwithcomment($ia)
 {
-    global $maxoptionsize, $dropdownthreshold, $lwcdropdowns;
+    global $maxoptionsize, $dropdownthreshold, $lwcdropdowns, $thissurvey;
 	$CI =& get_instance();
     $dbprefix = $CI->db->dbprefix;
 	$clang = $CI->limesurvey_lang;
+
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "text-keypad";
+    }
+    else
+    {
+        $kpclass = "";
+    }
 
     if ($ia[8] == 'Y')
     {
@@ -2772,7 +2782,7 @@ function do_listwithcomment($ia)
 <p class="comment">
 	<label for="answer'.$ia[1].'comment">'.$hint_comment.':</label>
 
-	<textarea class="textarea" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.floor($tarows).'" cols="30" >';
+	<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'comment" id="answer'.$ia[1].'comment" rows="'.floor($tarows).'" cols="30" >';
         // --> END NEW FEATURE - SAVE
         if (isset($_SESSION[$fname2]) && $_SESSION[$fname2])
         {
@@ -3098,6 +3108,16 @@ function do_multiplechoice($ia)
 	$CI =& get_instance();
     $dbprefix = $CI->db->dbprefix;
 	$clang = $CI->limesurvey_lang;
+
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "text-keypad";
+    }
+    else
+    {
+        $kpclass = "";
+    }
 
     // Find out if any questions have attributes which reference this questions
     // based on value of attribute. This could be array_filter and array_filter_exclude
@@ -3428,7 +3448,7 @@ function do_multiplechoice($ia)
         $answer .= " $checkconditionFunction(document.getElementById(\"answer$myfname\").value, document.getElementById(\"answer$myfname\").name, document.getElementById(\"answer$myfname\").type);";
         $answer .= "' />
 		<label for=\"answer$myfname\" class=\"answertext\">".$othertext."</label>
-		<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
+		<input class=\"text ".$kpclass."\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\"";
         if (isset($_SESSION[$myfname]))
         {
             $answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
@@ -3602,6 +3622,16 @@ function do_multiplechoice_withcomments($ia)
     $dbprefix = $CI->db->dbprefix;
 	$clang = $CI->limesurvey_lang;
 
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "text-keypad";
+    }
+    else
+    {
+        $kpclass = "";
+    }
+
     $attribute_ref=false;
     $qaquery = "SELECT qid,attribute FROM ".$CI->db->dbprefix('question_attributes')." WHERE value LIKE '".strtolower($ia[2])."'";
     $qaresult = db_execute_assoc($qaquery);     //Checked
@@ -3751,7 +3781,7 @@ function do_multiplechoice_withcomments($ia)
         $answer_main .= "' />\n";
         $fn++;
         $answer_main .= "</span>\n<span class=\"comment\">\n\t<label for='answer$myfname2' class=\"answer-comment\">\n"
-        ."<input class='text' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
+        ."<input class='text ".$kpclass."' type='text' size='40' id='answer$myfname2' name='$myfname2' title='".$clang->gT("Make a comment on your choice here:")."' value='";
         if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
         $answer_main .= "'  onclick='cancelBubbleThis(event);' onkeyup='if (jQuery.trim($(\"#answer{$myfname2}\").val())!=\"\") { document.getElementById(\"answer{$myfname}\").checked=true;$checkconditionFunction(document.getElementById(\"answer{$myfname}\").value,\"$myfname\",\"checkbox\");}' onkeyup='".$callmaxanswscriptcheckbox2."(document.getElementById(\"answer{$myfname}\"))' />\n\t</label>\n</span>\n"
@@ -3769,7 +3799,7 @@ function do_multiplechoice_withcomments($ia)
         $myfname2 = $myfname.'comment';
         $anscount = $anscount + 2;
         $answer_main .= "\t<li class=\"other\">\n<span class=\"option\">\n"
-        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
+        . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
         if ($_SESSION[$myfname])
         {
             $answer_main .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
@@ -5228,9 +5258,20 @@ function getLatLongFromIp($ip){
 // ---------------------------------------------------------------
 function do_longfreetext($ia)
 {
-    global $js_header_includes;
+    global $js_header_includes, $thissurvey;
 	$CI =& get_instance();
 	$clang = $CI->limesurvey_lang;
+
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "text-keypad";
+    }
+    else
+    {
+        $kpclass = "";
+    }
+
 
     if ($ia[8] == 'Y')
     {
@@ -5286,7 +5327,7 @@ function do_longfreetext($ia)
 
 
     // --> START NEW FEATURE - SAVE
-    $answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+    $answer .= '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)">';
     // --> END NEW FEATURE - SAVE
 
@@ -5310,8 +5351,19 @@ function do_longfreetext($ia)
 // ---------------------------------------------------------------
 function do_hugefreetext($ia)
 {
+    global $thissurvey;
 	$CI =& get_instance();
 	$clang = $CI->limesurvey_lang;
+
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "text-keypad";
+    }
+    else
+    {
+        $kpclass = "";
+    }
 
     if ($ia[8] == 'Y')
     {
@@ -5367,7 +5419,7 @@ function do_hugefreetext($ia)
     // --> START ENHANCEMENT - TEXT INPUT WIDTH
 
     // --> START NEW FEATURE - SAVE
-    $answer .= '<textarea class="textarea" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+	$answer .= '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
     .'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)">';
     // --> END NEW FEATURE - SAVE
 
@@ -6557,6 +6609,16 @@ function do_array_multitext($ia)
 	$clang = $CI->limesurvey_lang;
 	$dbprefix = $CI->db->dbprefix;
 
+    if ($thissurvey['nokeyboard']=='Y')
+    {
+        vIncludeKeypad();
+        $kpclass = "text-keypad";
+    }
+    else
+    {
+        $kpclass = "";
+    }
+
     if ($ia[8] == 'Y')
     {
         $checkconditionFunction = "checkconditions";
@@ -6835,7 +6897,7 @@ function do_array_multitext($ia)
                 $answer .= "\t<td class=\"answer_cell_00$ld\">\n"
                 . "\t\t\t\t<label for=\"answer{$myfname2}\">\n"
                 . "\t\t\t\t<input type=\"hidden\" name=\"java{$myfname2}\" id=\"java{$myfname2}\" />\n"
-                . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" title=\""
+                . "\t\t\t\t<input type=\"text\" name=\"$myfname2\" id=\"answer{$myfname2}\" class=\"".$kpclass."\" title=\""
                 . FlattenText($labelans[$thiskey]).'" '
                 . 'size="'.$inputwidth.'" '
                 . ' value="'.str_replace ('"', "'", str_replace('\\', '', $myfname2value))."\" />\n";
