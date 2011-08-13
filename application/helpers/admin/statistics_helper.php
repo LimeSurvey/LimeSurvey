@@ -3195,7 +3195,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         if ($language=='ar')
                         {
                             $lblout=$lbl; //reset text order to original
-                            include_once($rootdir.'/classes/core/Arabic.php');
+                            $CI->load->library("admin/Arabic");
                             $Arabic = new Arabic('ArGlyphs');
                             foreach($lblout as $kkey => $kval){
                                 if (preg_match("^[A-Za-z]^", $kval)) { //auto detect if english

@@ -301,7 +301,7 @@ class Installer extends CI_Controller {
                 {
                         
                     //to establish connection withh different DB.
-                    require_once($this->config->item('rootdir').'/classes/adodb/adodb.inc.php');
+                    require_once(APPPATH.'third_party/adodb/adodb.inc.php');
                     //lets assume
                     
                     
@@ -840,7 +840,7 @@ echo "hello<br/>".$dsn;
         }
         
         //include(dirname(__FILE__).'/../../../config-sample.php');
-        require_once($this->config->item('rootdir').'/classes/adodb/adodb.inc.php');
+        require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         
         //check if passwords match , input class take care of any xss filetring or sql injection
         if ($this->input->post('adminLoginPwd') == $this->input->post('confirmPwd'))
@@ -1030,7 +1030,7 @@ echo "hello<br/>".$dsn;
         }
           
         //include(dirname(__FILE__).'/../../../config-sample.php');
-        require_once($this->config->item('rootdir').'/classes/adodb/adodb.inc.php');
+        require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
         $databasetype = $this->session->userdata('databasetype');
         $connect=ADONewConnection($databasetype);
@@ -1110,7 +1110,7 @@ echo "hello<br/>".$dsn;
         }
         
         //include(dirname(__FILE__).'/../../../config-sample.php');
-        require_once($this->config->item('rootdir').'/classes/adodb/adodb.inc.php');
+        require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
         $databasetype = $this->session->userdata('databasetype');
         
@@ -1191,7 +1191,7 @@ echo "hello<br/>".$dsn;
     
     
         //include(dirname(__FILE__).'/../../../config-sample.php');
-        require_once($this->config->item('rootdir').'/classes/adodb/adodb.inc.php');
+        require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
         $databasetype = $this->session->userdata('databasetype');
         $connect=ADONewConnection($databasetype);
@@ -1441,7 +1441,7 @@ echo "hello<br/>".$dsn;
     function _db_execute_num($sql,$inputarr=false)
     {
         //include(dirname(__FILE__).'/../../../config-sample.php');
-        require_once($this->config->item('rootdir').'/classes/adodb/adodb.inc.php');
+        require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
         $databasetype = $this->session->userdata('databasetype');
         $connect=ADONewConnection($databasetype);;

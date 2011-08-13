@@ -188,7 +188,7 @@ class Limesurvey_lang {
 
 }
 
-require_once(dirname(__FILE__).'/../../classes/php-gettext/streams.php');
-require_once(dirname(__FILE__).'/../../classes/php-gettext/gettext.php');
+require_once(APPPATH.'third_party/php-gettext/streams.php');
+require_once(APPPATH.'third_party/php-gettext/gettext.php');
 
 ?>

@@ -332,7 +332,7 @@ class survey extends LS_Controller {
 		        {
 		            safe_die('You cannot start this script directly');
 		        }
-		        require_once(dirname(__FILE__).'/classes/core/language.php');
+		        //require_once(dirname(__FILE__).'/classes/core/language.php');
 		        $baselang = GetBaseLanguageFromSurveyID($surveyid);
 		        $this->load->library('Limesurvey_lang',array("langcode"=>$baselang));
 				$clang = $this->limesurvey_lang;

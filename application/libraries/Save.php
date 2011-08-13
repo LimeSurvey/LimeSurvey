@@ -457,10 +457,7 @@ class Save {
 	    
 		$clang = $CI->limesurvey_lang;
 		$timeadjust = $CI->config->item("timeadjust");
-	
-	    require_once("classes/inputfilter/class.inputfilter_clean.php");
-	    $myFilter = new InputFilter('','',1,1,1);
-	
+
 	    $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
 	
 	    if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
