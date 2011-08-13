@@ -9,7 +9,7 @@
             <?php if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
                  <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt=''  />
-                 <a href="#" onclick="window.open('$scriptname?action=previewgroup&amp;sid=$surveyid&amp;gid=$gid','_blank')"
+                 <a href="#" onclick="window.open('<?php echo site_url("survey/action/previewgroup/sid/$surveyid/gid/$gid/");?>','_blank')"
                  title="<?php echo $clang->gTview("Preview current question group"); ?>">
                  <img src='<?php echo $this->config->item('imageurl'); ?>/preview.png' alt='<?php echo $clang->gT("Preview current question group"); ?>' name='PreviewGroup' /></a>
             <?php }

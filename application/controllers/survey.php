@@ -202,11 +202,18 @@ class survey extends LS_Controller {
 		}
 		$previewgrp = false;
 		if (isset($param['action']) && ($param['action'] == 'previewgroup')){
-			$rightquery="SELECT uid FROM {$dbprefix}survey_permissions WHERE sid=".$this->db->escape($surveyid)." AND uid = ".$this->db->escape($_SESSION['loginID'].' group by uid');
+			$rightquery="SELECT uid FROM {$dbprefix}survey_permissions WHERE sid=".$this->db->escape($surveyid)." AND uid = ".$this->db->escape($this->session->userdata('loginID')).' group by uid';
 			$rightresult = db_execute_assoc($rightquery);
-			if ($rightresult->num_rows() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
+			if ($rightresult->num_rows() > 0 || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
 			{
 				$previewgrp = true;
+			}
+			else
+			{
+				$baselang = GetBaseLanguageFromSurveyID($surveyid);
+		    	$this->load->library('Limesurvey_lang',array("langcode"=>$baselang));
+				show_error("\t<span class='error'>".$this->limesurvey_lang->gT("ERROR")."</span><br /><br />\n"
+		        ."\t".$this->limesurvey_lang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n");
 			}
 		}
 		    	

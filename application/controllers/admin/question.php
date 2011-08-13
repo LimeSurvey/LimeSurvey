@@ -1505,9 +1505,138 @@
         }
     }
     
-    
-    
-      
+    function preview($surveyid, $qid, $lang = null)
+    {
+		$this->load->helper("qanda");
+		$this->load->helper("surveytranslator");
+		
+		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
+		$surveyid = (int) $surveyid;
+		if (!isset($qid)) {$qid=returnglobal('qid');}
+		if (empty($surveyid)) {die("No SID provided.");}
+		if (empty($qid)) {die("No QID provided.");}
+		
+		if (!isset($lang) || $lang == "")
+		{
+		    $language = GetBaseLanguageFromSurveyID($surveyid);
+		} else {
+		    $language = $lang;
+		}
+		
+		//Use $_SESSION instead of $this->session for frontend features.
+		$_SESSION['s_lang'] = $language;
+		$_SESSION['fieldmap']=createFieldMap($surveyid,'full',true,$qid);
+		// Prefill question/answer from defaultvalues
+		foreach ($_SESSION['fieldmap'] as $field)
+		{
+		    if (isset($field['defaultvalue']))
+		    {
+		        $_SESSION[$field['fieldname']]=$field['defaultvalue'];
+		    }
+		}
+		$clang = new limesurvey_lang(array($language));
+		
+		$thissurvey=getSurveyInfo($surveyid);
+		setNoAnswerMode($thissurvey);
+		$_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
+		
+		$qquery = 'SELECT * FROM '.$this->db->dbprefix('questions')." WHERE sid='$surveyid' AND qid='$qid' AND language='".$this->db->escape_str($language)."'";
+		$qresult = db_execute_assoc($qquery);
+		$qrows = $qresult->row_array();
+		$ia = array(0 => $qid,
+		1 => $surveyid.'X'.$qrows['gid'].'X'.$qid,
+		2 => $qrows['title'],
+		3 => $qrows['question'],
+		4 => $qrows['type'],
+		5 => $qrows['gid'],
+		6 => $qrows['mandatory'],
+		//7 => $qrows['other']); // ia[7] is conditionsexist not other
+		7 => 'N',
+		8 => 'N' ); // ia[8] is usedinconditions
+		
+		$answers = retrieveAnswers($ia);
+		
+		if (!$thissurvey['template'])
+		{
+		    $thistpl=sGetTemplatePath($defaulttemplate);
+		}
+		else
+		{
+		    $thistpl=sGetTemplatePath(validate_templatedir($thissurvey['template']));
+		}
+		
+		doHeader();
+		$dummy_js = '
+				<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
+				<script type="text/javascript">
+		        /* <![CDATA[ */
+		            function checkconditions(value, name, type)
+		            {
+		            }
+				function noop_checkconditions(value, name, type)
+				{
+				}
+		        /* ]]> */
+				</script>
+		        ';
+		
+		
+		$answer=$answers[0][1];
+		$help=$answers[0][2];
+		
+		$question = $answers[0][0];
+		$question['code']=$answers[0][5];
+		$question['class'] = question_class($qrows['type']);
+		$question['essentials'] = 'id="question'.$qrows['qid'].'"';
+		$question['sgq']=$ia[1];
+		
+		//Temporary fix for error condition arising from linked question via replacement fields
+		//@todo: find a consistent way to check and handle this - I guess this is already handled but the wrong values are entered into the DB
+		
+		$search_for = '{INSERTANS';
+		if(strpos($question['text'],$search_for)!==false){
+		    $pattern_text = '/{([A-Z])*:([0-9])*X([0-9])*X([0-9])*}/';
+		    $replacement_text = $clang->gT('[Dependency on another question (ID $4)]');
+		    $text = preg_replace($pattern_text,$replacement_text,$question['text']);    
+		    $question['text']=$text;
+		}
+		
+		if ($qrows['mandatory'] == 'Y')
+		{
+		    $question['man_class'] = ' mandatory';
+		}
+		else
+		{
+		    $question['man_class'] = '';
+		};
+		
+		$vars = compact(array_keys(get_defined_vars()));
+		$content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
+		$content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">'; 
+		$content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"),array(),$vars);
+		
+		$question_template = file_get_contents("$thistpl/question.pstpl");
+		if(substr_count($question_template , '{QUESTION_ESSENTIALS}') > 0 ) // the following has been added for backwards compatiblity.
+		{// LS 1.87 and newer templates
+		$content .= "\n".templatereplace($question_template,array(),$vars)."\n";
+		}
+		else
+		{// LS 1.86 and older templates
+		$content .= '<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
+		$content .= "\n".templatereplace($question_template,array(),$vars)."\n";
+		$content .= "\n\t</div>\n";
+		};
+		
+		$content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),$vars).$dummy_js;
+		$content .= '<p>&nbsp;</form>';
+		$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
+		
+		echo $content;
+		echo "</html>\n";
+		
+		
+		exit;
+	}
     
     
  }

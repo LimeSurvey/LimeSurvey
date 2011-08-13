@@ -9,7 +9,7 @@
             {
                 if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
                 { ?>
-                    <a href="#" accesskey='q' onclick="window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid', '_blank')"
+                    <a href="#" accesskey='q' onclick="window.open('<?php echo site_url("admin/question/preview/$surveyid/$qid/");?>', '_blank')"
                     title="<?php echo $clang->gTview("Preview This Question"); ?>">
                     <img src='<?php echo $this->config->item('imageurl'); ?>/preview.png' alt='<?php echo $clang->gT("Preview This Question"); ?>' name='previewquestionimg' /></a>
                     <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt='' />
