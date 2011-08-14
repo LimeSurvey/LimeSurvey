@@ -5281,18 +5281,28 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
  */
 function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachment=null, $customheaders="")
 {
-	global $CI, $maildebug, $maildebugbody;
-    //global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
-    //global $rootdir, $maildebug?, $maildebugbody?, $emailsmtpssl, $clang, $demoModeOnly?, $emailcharset;
 
+    global $maildebug, $maildebugbody;
+
+	$CI =& get_instance();
 	$CI->config->load('email');
-	//$CI->config->item('');
+	$clang = $CI->limesurvey_lang;
+	$emailmethod = $this->config->item("protocol");
+	$emailsmtphost = $this->config->item("emailsmtphost");
+	$emailsmtpuser = $this->config->item("emailsmtpuser");
+	$emailsmtppassword = $this->config->item("emailsmtppassword");
+	$emailsmtpdebug = $this->config->item("emailsmtpdebug");
+	$emailsmtpssl = $this->config->item("emailsmtpssl");
+	$defaultlang = $this->config->item("defaultlang");
+	$demoModeOnly = $this->config->item("demoModeOnly");
+	$emailcharset = $this->config->item("charset");
+	
 
     if (!is_array($customheaders) && $customheaders == '')
     {
         $customheaders=array();
     }
-    if ($CI->config->item('demoModeOnly')==true)
+    if ($demoModeOnly==true)
     {
         $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
         $maildebugbody='';
@@ -5308,21 +5318,18 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 		$sender=$bouncemail;
 	}
 
-	$this->email->initialize($this->config->config);
-	$CI->load->library('email');
-	//$mail = new PHPMailer;
-    //if (!$mail->SetLanguage($defaultlang,$rootdir.'/classes/phpmailer/language/'))
-    //{
-    //    $mail->SetLanguage('en',$rootdir.'/classes/phpmailer/language/');
-    //}
-
-    //Auto loaded
-	//$mail->CharSet = $emailcharset;
-
-	//if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
-    //    if ($emailsmtpssl===1) {$mail->SMTPSecure = "ssl";}
-    //	 else {$mail->SMTPSecure = $emailsmtpssl;}
-	//}
+	
+	require_once(APPDATA.'/third_party/phpmailer/class.phpmailer.php');
+	$mail = new PHPMailer;
+    if (!$mail->SetLanguage($defaultlang,APPDATA.'/third_party/phpmailer/language/'))
+    {
+        $mail->SetLanguage('en',APPDATA.'/third_party/phpmailer/language/');
+    }
+	$mail->CharSet = $emailcharset;
+	if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
+        if ($emailsmtpssl===1) {$mail->SMTPSecure = "ssl";}
+    	 else {$mail->SMTPSecure = $emailsmtpssl;}
+	 }
 
 	$fromname='';
 	$fromemail=$from;
@@ -5340,7 +5347,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 		$sendername=trim(substr($sender,0, strpos($sender,'<')-1));
 	}
 
-	/*switch ($emailmethod) {
+	switch ($emailmethod) {
     	case "qmail":
 			$mail->IsQmail();
 			break;
@@ -5372,74 +5379,61 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     	   	//Set to the default value to rule out incorrect settings.
     		$emailmethod="mail";
     		$mail->IsMail();
-	}*/
+	}
 
-    //$mail->SetFrom($fromemail, $fromname);
-	$CI->email->from($fromemail, $fromname);
-	//Unsupported by CI mail class:
-    //$mail->Sender = $senderemail; // Sets Return-Path for error notifications
+    $mail->SetFrom($fromemail, $fromname);
+    $mail->Sender = $senderemail; // Sets Return-Path for error notifications
     $toemails = explode(";", $to);
-
-	$toarray = array();
     foreach ($toemails as $singletoemail)
     {
         if (strpos($singletoemail, '<') )
         {
 	       $toemail=substr($singletoemail,strpos($singletoemail,'<')+1,strpos($singletoemail,'>')-1-strpos($singletoemail,'<'));
            $toname=trim(substr($singletoemail,0, strpos($singletoemail,'<')-1));
-           //$mail->AddAddress($toemail,$toname);
-           $toarray[] = $toemail;
+           $mail->AddAddress($toemail,$toname);
         }
         else
         {
-            //$mail->AddAddress($singletoemail);
-			$toarray[] = $singletoemail;
+            $mail->AddAddress($singletoemail);
         }
     }
-	$CI->email->to($toarray);
-
-	//Unsupported
-    /*if (is_array($customheaders))
+    if (is_array($customheaders))
     {
         foreach ($customheaders as $key=>$val) {
             $mail->AddCustomHeader($val);
         }
     }
 	$mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.sourceforge.net)");
-	 */
-
 	if (get_magic_quotes_gpc() != "0")	{$body = stripcslashes($body);}
     if ($ishtml) {
-        /*$mail->IsHTML(true);
+        $mail->IsHTML(true);
     	$mail->Body = $body;
-        $mail->AltBody = strip_tags(br2nl(html_entity_decode($body,ENT_QUOTES,'UTF-8')));*/
-       $CI->email->message($body);
-	   $CI->email->set_alt_message(strip_tags(br2nl(html_entity_decode($body,ENT_QUOTES,'UTF-8'))));
+        $mail->AltBody = strip_tags(br2nl(html_entity_decode($body,ENT_QUOTES,'UTF-8')));
     } else
        {
-        //$mail->IsHTML(false);
-        //$mail->Body = $body;
-		$CI->email->message($body);
+        $mail->IsHTML(false);
+        $mail->Body = $body;
        }
 
     // add the attachment if there is one
     if(!is_null($attachment))
-	$CI->email->attach($attachment);
-    //$mail->AddAttachment($attachment);
+    $mail->AddAttachment($attachment);
 
-	if (trim($subject)!='') {$CI->email->subject($subject);/*$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";*/}
+	if (trim($subject)!='') {$mail->Subject = "=?$emailcharset?B?" . base64_encode($subject) . "?=";}
     if ($emailsmtpdebug>0) {
         ob_start();
     }
-    $sent=$CI->email->send();//$mail->Send();
-    //$maildebug=$mail->ErrorInfo;
+    $sent=$mail->Send();
+    $maildebug=$mail->ErrorInfo;
     if ($emailsmtpdebug>0) {
         $maildebug .= '<li>'.$clang->gT('SMTP debug output:').'</li><pre>'.strip_tags(ob_get_contents()).'</pre>';
         ob_end_clean();
     }
-    //$maildebugbody=$mail->Body;
+    $maildebugbody=$mail->Body;
+	//if(!$sent) var_dump($maildebug);
 	return $sent;
 }
+
 
 /**
  *  This functions removes all HTML tags, Javascript, CRs, linefeeds and other strange chars from a given text
