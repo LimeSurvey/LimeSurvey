@@ -5287,15 +5287,15 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 	$CI =& get_instance();
 	$CI->config->load('email');
 	$clang = $CI->limesurvey_lang;
-	$emailmethod = $this->config->item("protocol");
-	$emailsmtphost = $this->config->item("emailsmtphost");
-	$emailsmtpuser = $this->config->item("emailsmtpuser");
-	$emailsmtppassword = $this->config->item("emailsmtppassword");
-	$emailsmtpdebug = $this->config->item("emailsmtpdebug");
-	$emailsmtpssl = $this->config->item("emailsmtpssl");
-	$defaultlang = $this->config->item("defaultlang");
-	$demoModeOnly = $this->config->item("demoModeOnly");
-	$emailcharset = $this->config->item("charset");
+	$emailmethod = $CI->config->item("protocol");
+	$emailsmtphost = $CI->config->item("emailsmtphost");
+	$emailsmtpuser = $CI->config->item("emailsmtpuser");
+	$emailsmtppassword = $CI->config->item("emailsmtppassword");
+	$emailsmtpdebug = $CI->config->item("emailsmtpdebug");
+	$emailsmtpssl = $CI->config->item("emailsmtpssl");
+	$defaultlang = $CI->config->item("defaultlang");
+	$demoModeOnly = $CI->config->item("demoModeOnly");
+	$emailcharset = $CI->config->item("charset");
 	
 
     if (!is_array($customheaders) && $customheaders == '')
