@@ -1,7 +1,7 @@
 <div id='import'>
 
         
-        <form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='<?php echo site_url('admin/import/survey'); ?>' method='post' onsubmit='return validatefilename(this,"<?php echo $clang->gT('Please select a file to import!', 'js'); ?> ");'>
+        <form enctype='multipart/form-data' class='form30' id='importsurvey' name='importsurvey' action='<?php echo site_url('admin/survey/copy'); ?>' method='post' onsubmit='return validatefilename(this,"<?php echo $clang->gT('Please select a file to import!', 'js'); ?> ");'>
         <ul>
                     <li><label for='the_file'><?php echo $clang->gT("Select survey structure file (*.lss, *.csv):");  ?> </label>
                     <input id='the_file' name="the_file" type="file" size="50" /></li>
