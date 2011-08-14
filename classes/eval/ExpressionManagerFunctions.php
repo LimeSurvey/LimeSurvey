@@ -8,10 +8,10 @@
 // Each allowed function is a mapping from local name to external name + number of arguments
 // Functions can have -1 (meaning unlimited), or a list of serveral allowable #s of arguments.
 $exprmgr_functions = array(
-    'if'            => array('exprmgr_if','ExprMgr_if','Excel-style if(test,result_if_true,result_if_false)',3),
-    'list'          => array('exprmgr_list','ExprMgr_list','Return comma-separated list of values',-1),
-    'is_empty'         => array('exprmgr_empty','ExprMgr_empty','Determine whether a variable is considered to be empty',1),
-    'stddev'        => array('exprmgr_stddev','ExprMgr_stddev','Calculate the  Sample Standard  Deviation for the list of numbers',-1),
+    'if'            => array('exprmgr_if','LEMif','Excel-style if(test,result_if_true,result_if_false)',3),
+    'list'          => array('exprmgr_list','LEMlist','Return comma-separated list of values',-1),
+    'is_empty'         => array('exprmgr_empty','LEMempty','Determine whether a variable is considered to be empty',1),
+    'stddev'        => array('exprmgr_stddev','LEMstddev','Calculate the  Sample Standard  Deviation for the list of numbers',-1),
 );
 
 // Extra static variables for unit tests

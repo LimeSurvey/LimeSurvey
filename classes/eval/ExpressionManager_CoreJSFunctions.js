@@ -1,11 +1,11 @@
 /* Core JavaScript functions needed by ExpressionManager */
 
-function ExprMgr_pi()
+function LEMpi()
 {
     return Math.PI;
 }
 
-function ExprMgr_sum()
+function LEMsum()
 {
     // takes variable number of arguments
     var result=0;
@@ -18,7 +18,7 @@ function ExprMgr_sum()
     return result;
 }
 
-function ExprMgr_intval(a)
+function LEMintval(a)
 {
     if (isNaN(a)) {
         return NaN;
@@ -26,12 +26,12 @@ function ExprMgr_intval(a)
     return Math.floor(+a);
 }
 
-function ExprMgr_is_null(a)
+function LEMis_null(a)
 {
     return (a == null);
 }
 
-function ExprMgr_is_float(a)
+function LEMis_float(a)
 {
     if (isNaN(a))
     {
@@ -42,7 +42,7 @@ function ExprMgr_is_float(a)
     return (Math.floor(num) != num);
 }
 
-function ExprMgr_is_int(a)
+function LEMis_int(a)
 {
     if (isNaN(a))
     {
@@ -53,17 +53,17 @@ function ExprMgr_is_int(a)
     return (Math.floor(num) == num);
 }
 
-function ExprMgr_is_numeric(a)
+function LEMis_numeric(a)
 {
     return !(isNaN(a));
 }
 
-function ExprMgr_is_string(a)
+function LEMis_string(a)
 {
     return isNaN(a);
 }
 
-function ExprMgr_if(a,b,c)
+function LEMif(a,b,c)
 {
     return (!!a) ? b : c;
 }
@@ -72,7 +72,7 @@ function ExprMgr_if(a,b,c)
  *  Returns comma separated list of non-null values
  */
 
-function ExprMgr_list()
+function LEMlist()
 {
     // takes variable number of arguments
     var result="";
@@ -96,7 +96,7 @@ function ExprMgr_list()
 /**
  * Returns concatenates list with first argument as the separator
  */
-function ExprMgr_implode()
+function LEMimplode()
 {
     // takes variable number of arguments
     var result="";
@@ -116,25 +116,25 @@ function ExprMgr_implode()
     return result;
 }
 
-function ExprMgr_strlen(a)
+function LEMstrlen(a)
 {
     var  str = new String(a);
     return str.length;
 }
 
-function ExprMgr_str_replace(needle, replace, haystack)
+function LEMstr_replace(needle, replace, haystack)
 {
     var str = new String(haystack);
     return str.replace(needle, replace);
 }
 
-function ExprMgr_strpos(haystack,needle)
+function LEMstrpos(haystack,needle)
 {
     var str = new String(haystack);
     return str.search(needle);
 }
 
-function ExprMgr_empty(v)
+function LEMempty(v)
 {
     if (v == "" || v == 0 || v == "0" || v == "false" || v == "NULL" || v == false) {
         return true;
@@ -142,7 +142,7 @@ function ExprMgr_empty(v)
     return false;
 }
 
-function ExprMgr_bool(v)
+function LEMbool(v)
 {
     bool = new Boolean(v);
     if (v.valueOf() && v != 'false') {
@@ -155,7 +155,7 @@ function ExprMgr_bool(v)
  * Return the value for data element jsName, treating it as blank if its question is irrelevant on the current page.
  * Also convert the string 'false' to '' to cope with a JavaScript type casting issue
  */
-function ExprMgr_value(jsName,relevanceNum)
+function LEMvalue(jsName,relevanceNum)
 {
     if (relevanceNum!='') {
         if (document.getElementById(relevanceNum).value!=='1') {
@@ -174,17 +174,42 @@ function ExprMgr_value(jsName,relevanceNum)
     }
 }
 
+/**
+ * Return the value for data element jsName, treating it as blank if its question is irrelevant on the current page.
+ * Also convert the string 'false' to '' to cope with a JavaScript type casting issue
+ */
+function LEMval(alias)
+{
+    jsName = LEMalias2varName[alias].jsName;
+    attr = LEMvarNameAttr[jsName];
+    if (attr.qid!='') {
+        if (document.getElementById('relevance' + attr.qid).value!=='1'){
+            return '';
+        }
+    }
+    value = document.getElementById(attr.jsName).value;
+    if (isNaN(value)) {
+        if (value==='false') {
+            return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
+        }
+        return value;
+    }
+    else {
+        return +value;  // convert it to numeric return type
+    }
+}
+
 /* 
  * Remove HTML and PHP tags from string
  */
-function ExprMgr_strip_tags(htmlString)
+function LEMstrip_tags(htmlString)
 {
    var tmp = document.createElement("DIV");
    tmp.innerHTML = htmlString;
    return tmp.textContent||tmp.innerText;
 }
 
-function ExprMgr_round()
+function LEMround()
 {
     if (arguments.length==1) {
         return Math.round(arguments[0]);
@@ -196,12 +221,12 @@ function ExprMgr_round()
     return 0;
 }
 
-function ExprMgr_stddev()
+function LEMstddev()
 {
     vals = new Array();
     j = 0;
     for (i=0;i<arguments.length;++i) {
-        if (ExprMgr_is_numeric(arguments[i])) {
+        if (LEMis_numeric(arguments[i])) {
             vals[j++] = arguments[i];
         }
     }
@@ -223,12 +248,30 @@ function ExprMgr_stddev()
     return stddev;
 }
 
-function ExprMgr_strtoupper(s)
+function LEMstrtoupper(s)
 {
     return s.toUpperCase();
 }
 
-function ExprMgr_strtolower(s)
+function LEMstrtolower(s)
 {
     return s.toLowerCase();
+}
+
+/*
+ * return true if any of the arguments are not relevant
+ */
+function LEManyNA()
+{
+    for (i=0;i<arguments.length;++i) {
+        var arg = arguments[i];
+        jsName = LEMalias2varName[arg].jsName;
+        attr = LEMvarNameAttr[jsName];
+        if (attr.qid!='') {
+            if (document.getElementById('relevance' + attr.qid).value!=='1'){
+                return true;    // means that the question is not relevant
+            }
+        }
+    }
+    return false;
 }

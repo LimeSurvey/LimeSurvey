@@ -22,6 +22,8 @@ class LimeExpressionManager {
     private $resetFunctions;
     private $qid2code;  // array of mappings of Question # to list of SGQA codes used within it
     private $jsVar2qid; // reverse mapping of JavaScript Variable name to Question
+    private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
+    private $varNameAttr;   // JavaScript array of mappings of canonical JavaScript variable name to key attributes.
     
     // A private constructor; prevents direct creation of object
     private function __construct() 
@@ -73,6 +75,8 @@ class LimeExpressionManager {
         $debugLog = array();    // array of mappings among values to confirm their accuracy
         $qid2code = array();    // List of codes for each question - needed to know which to NULL if a question is irrelevant
         $jsVar2qid = array();
+        $alias2varName = array();
+        $varNameAttr = array();
         /*
         if ($this->debugLEM)
         {
@@ -267,12 +271,47 @@ class LimeExpressionManager {
                 'relevanceNum'=>'relevance' . $questionNum,
                 'relevanceStatus'=>$relStatus,
                 );
+            $varInfo_NAOK = array(
+                'codeValue'=>$codeValue,
+                'jsName'=>$jsVarName . '.NAOK',
+                'readWrite'=>$readWrite,
+                'isOnCurrentPage'=>$isOnCurrentPage,
+                'displayValue'=>$displayValue,
+                'question'=>$question,
+                'relevance'=>'1',
+                'relevanceNum'=>'',
+                'relevanceStatus'=>'1',
+                );
             $knownVars[$varName] = $varInfo_Code;
             $knownVars[$varName . '.shown'] = $varInfo_DisplayVal;
             $knownVars[$varName . '.question']= $varInfo_Question;
             $knownVars['INSERTANS:' . $code] = $varInfo_DisplayVal;
+            $knownVars[$varName . '.NAOK'] = $varInfo_NAOK;
 
             $jsVar2qid[$jsVarName] = $questionNum;
+
+            // Create JavaScript arrays
+            $alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':{'jsName':'" . $jsVarName . "'}");
+            $alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':{'jsName':'" . $jsVarName . "'}");
+//            $alias2varName['INSERTANS:'.$code] = array('jsName'=>$jsVarName, 'jsPart'=> "'INSERTANS:" . $code . "':{'jsName':'" . $jsVarName . "'}");
+//            $alias2varName[$varName . '.NAOK'] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . ".NAOK':{'jsName':'" . $jsVarName . ".NAOK'}");
+
+
+            $varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
+                . "'jsName':'" . $jsVarName
+                . "','code':'" . $codeValue
+//                . "','shown':'" . $displayValue
+//                . "','question':'" . $question
+                . "','qid':'" . $questionNum
+                . "'}";
+/*
+            $varNameAttr[$jsVarName . '.NAOK'] = "'" . $jsVarName . ".NAOK':{"
+                . "'jsName':'" . $jsVarName . '.NAOK'
+                . "','code':'" . $codeValue
+//                . "','shown':'" . $displayValue
+//                . "','question':'" . $question
+                . "','qid':''}";
+ */
 
             if ($this->debugLEM)
             {
@@ -383,6 +422,8 @@ class LimeExpressionManager {
         $this->knownVars = $knownVars;
         $this->qid2code = $qid2code;
         $this->jsVar2qid = $jsVar2qid;
+        $this->alias2varName = $alias2varName;
+        $this->varNameAttr = $varNameAttr;
 
         return true;
     }
@@ -492,6 +533,8 @@ class LimeExpressionManager {
         $lem->pageRelevanceInfo=array();
         $lem->pageTailorInfo=array();
         $lem->resetFunctions=array();
+        $lem->alias2varName=array();
+        $lem->varNameAttr=array();
         $lem->allOnOnePage=$allOnOnePage;
 
         if ($debug && $lem->debugLEM)
@@ -627,7 +670,7 @@ class LimeExpressionManager {
                 if ($arg['type'] == '*')
                 {
                     $jsParts[] = "  // Write value from the question into the answer field\n";
-                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(ExprMgr_strip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
+                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
 
                 }
                 $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
@@ -656,9 +699,55 @@ class LimeExpressionManager {
         }
         $jsParts[] = "}\n";
 
+        $allJsVarsUsed = array_unique($allJsVarsUsed);
+
         foreach($lem->resetFunctions as $resetFn)
         {
             $jsParts[] = $resetFn;
+        }
+
+        // Add JavaScript Mapping Arrays
+        if (isset($lem->alias2varName) && count($lem->alias2varName) > 0)
+        {
+            $neededAliases=array();
+            $neededCanonical=array();
+            $neededCanonicalAttr=array();
+            foreach ($allJsVarsUsed as $jsVar)
+            {
+                if ($jsVar == '') {
+                    continue;
+                }
+                if (preg_match("/^.*\.NAOK$/", $jsVar)) {
+                    $jsVar = preg_replace("/\.NAOK$/","",$jsVar);
+                }
+                $neededCanonical[] = $jsVar;
+                foreach ($lem->alias2varName as $key=>$value)
+                {
+                    if ($jsVar == $value['jsName'])
+                    {
+                        $neededAliases[] = $value['jsPart'];
+                    }
+                }
+                $found = array_search($jsVar,$lem->alias2varName);
+            }
+            $neededCanonical = array_unique($neededCanonical);
+            foreach ($neededCanonical as $nc)
+            {
+                $neededCanonicalAttr[] = $lem->varNameAttr[$nc];
+            }
+            $neededAliases = array_unique($neededAliases);
+            if (count($neededAliases) > 0)
+            {
+                $jsParts[] = "var LEMalias2varName = {\n";
+                $jsParts[] = implode(",\n",$neededAliases);
+                $jsParts[] = "};\n";
+            }
+            if (count($neededCanonicalAttr) > 0)
+            {
+                $jsParts[] = "var LEMvarNameAttr = {\n";
+                $jsParts[] = implode(",\n",$neededCanonicalAttr);
+                $jsParts[] = "};\n";
+            }
         }
 
         $jsParts[] = "//-->\n</script>\n";
@@ -666,7 +755,6 @@ class LimeExpressionManager {
         // Now figure out which variables have not been declared (those not on the current page)
         $undeclaredJsVars = array();
         $undeclaredVal = array();
-        $allJsVarsUsed = array_unique($allJsVarsUsed);
         if (isset($knownVars) && is_array($knownVars))
         {
             foreach ($knownVars as $knownVar)
@@ -827,11 +915,12 @@ kid2~numKids >= 2~text~How old is your second child?
 kid3~numKids >= 3~text~How old is your third child?
 kid4~numKids >= 4~text~How old is your fourth child?
 kid5~numKids >= 5~text~How old is your fifth child?
-sumage~1~expr~{sumage=sum(kid1,kid2,kid3,kid4,kid5)}
-report~numKids > 0~message~{name}, you said you are {age} and that you have {numKids} kids.  The sum of ages of your first {min(numKids,5)} kids is {sum(kid1,kid2,kid3,kid4,kid5)}.
+sumage~1~expr~{sumage=sum(kid1.NAOK,kid2.NAOK,kid3.NAOK,kid4.NAOK,kid5.NAOK)}
+report~numKids > 0~message~{name}, you said you are {age} and that you have {numKids} kids.  The sum of ages of your first {min(numKids,5)} kids is {sumage}.
 EOT;
 
         $vars = array();
+        $varsNAOK = array();
         $varSeq = array();
         $testArgs = array();
         $argInfo = array();
@@ -842,6 +931,7 @@ EOT;
         {
             $args = explode("~",$test);
             $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'relevanceNum'=>'relevance' . $i++, 'relevanceStatus'=>'1');
+            $varsNAOK[$args[0] . '.NAOK'] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0] . '.NAOK', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'relevanceNum'=>'', 'relevanceStatus'=>'1');
             $varSeq[] = $args[0];
             $testArgs[] = $args;
         }
@@ -853,8 +943,11 @@ EOT;
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
         $em->RegisterVarnamesUsingMerge($vars);
+        $em->RegisterVarnamesUsingMerge($varsNAOK);
 
         // collect relevance
+        $alias2varName = array();
+        $varNameAttr = array();
         for ($i=0;$i<count($testArgs);++$i)
         {
             $testArg = $testArgs[$i];
@@ -862,13 +955,30 @@ EOT;
             LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1]),$i,$var);
             $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
+            $jsVarName='java_' . $testArg[0];
+
             $argInfo[] = array(
                 'num' => $i,
-                'name' => 'java_' . $testArg[0],
+                'name' => $jsVarName,
                 'type' => $testArg[2],
                 'question' => $question,
             );
+            $alias2varName[$var] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $var . "':{'jsName':'" . $jsVarName . "'}");
+            $alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':{'jsName':'" . $jsVarName . "'}");
+//            $alias2varName[$var . '.NAOK'] = array('jsName'=>$jsVarName . '.NAOK', 'jsPart' => "'" . $var . ".NAOK':{'jsName':'" . $jsVarName . ".NAOK'}");
+//            $alias2varName[$jsVarName . '.NAOK'] = array('jsName'=>$jsVarName . '.NAOK', 'jsPart' => "'" . $jsVarName . ".NAOK':{'jsName':'" . $jsVarName . ".NAOK'}");
+            $varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
+                . "'jsName':'" . $jsVarName
+                . "','qid':'" . $i
+                . "'}";
+            /*
+            $varNameAttr[$jsVarName . '.NAOK'] = "'" . $jsVarName . ".NAOK':{"
+                . "'jsName':'" . $jsVarName
+                . "','qid':''}";
+             */
         }
+        $lem->alias2varName = $alias2varName;
+        $lem->varNameAttr = $varNameAttr;
         LimeExpressionManager::FinishProcessingGroup();
 
         print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();

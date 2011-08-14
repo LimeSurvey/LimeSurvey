@@ -158,27 +158,27 @@ class ExpressionManager {
             'mt_rand'		=>array('mt_rand','NA','Generate a better random value',0,2),
             'mt_srand'		=>array('mt_srand','NA','Seed the better random number generator',0,1),
             'octdec'		=>array('octdec','NA','Octal to decimal',1),
-            'pi'			=>array('pi','ExprMgr_pi','Get value of pi',0),
+            'pi'			=>array('pi','LEMpi','Get value of pi',0),
             'pow'			=>array('pow','Math.pow','Exponential expression',2),
             'rad2deg'		=>array('rad2deg','NA','Converts the radian number to the equivalent number in degrees',1),
             'rand'			=>array('rand','Math.random','Generate a random integer',0,2),
-            'round'			=>array('round','ExprMgr_round','Rounds a number to an optional precision',1,2),
+            'round'			=>array('round','LEMround','Rounds a number to an optional precision',1,2),
             'sin'			=>array('sin','Math.sin','Sine',1),
             'sinh'			=>array('sinh','NA','Hyperbolic sine',1),
             'sqrt'			=>array('sqrt','Math.sqrt','Square root',1),
             'srand'			=>array('srand','NA','Seed the random number generator',0,1),
-            'sum'           =>array('array_sum','ExprMgr_sum','Calculate the sum of values in an array',-1),
+            'sum'           =>array('array_sum','LEMsum','Calculate the sum of values in an array',-1),
             'tan'			=>array('tan','Math.tan','Tangent',1),
             'tanh'			=>array('tanh','NA','Hyperbolic tangent',1),
 
-            'intval'		=>array('intval','ExprMgr_intval','Get the integer value of a variable',1,2),
+            'intval'		=>array('intval','LEMintval','Get the integer value of a variable',1,2),
             'is_bool'		=>array('is_bool','NA','Finds out whether a variable is a boolean',1),
-            'is_float'		=>array('is_float','ExprMgr_is_float','Finds whether the type of a variable is float',1),
-            'is_int'		=>array('is_int','ExprMgr_is_int','Find whether the type of a variable is integer',1),
-            'is_null'		=>array('is_null','ExprMgr_is_null','Finds whether a variable is NULL',1),
-            'is_numeric'	=>array('is_numeric','ExprMgr_is_numeric','Finds whether a variable is a number or a numeric string',1),
+            'is_float'		=>array('is_float','LEMis_float','Finds whether the type of a variable is float',1),
+            'is_int'		=>array('is_int','LEMis_int','Find whether the type of a variable is integer',1),
+            'is_null'		=>array('is_null','LEMis_null','Finds whether a variable is NULL',1),
+            'is_numeric'	=>array('is_numeric','LEMis_numeric','Finds whether a variable is a number or a numeric string',1),
             'is_scalar'		=>array('is_scalar','NA','Finds whether a variable is a scalar',1),
-            'is_string'		=>array('is_string','ExprMgr_is_string','Find whether the type of a variable is string',1),
+            'is_string'		=>array('is_string','LEMis_string','Find whether the type of a variable is string',1),
 
             'addcslashes'	=>array('addcslashes','NA','Quote string with slashes in a C style',2),
             'addslashes'	=>array('addslashes','NA','Quote string with slashes',1),
@@ -196,7 +196,7 @@ class ExpressionManager {
             'htmlentities'	=>array('htmlentities','NA','Convert all applicable characters to HTML entities',1,2,3),
             'htmlspecialchars_decode'	=>array('htmlspecialchars_decode','NA','Convert special HTML entities back to characters',1,2),
             'htmlspecialchars'			=>array('htmlspecialchars','NA','Convert special characters to HTML entities',1,2,3,4),
-            'implode'		=>array('exprmgr_implode','ExprMgr_implode','Join array elements with a string',-1),
+            'implode'		=>array('exprmgr_implode','LEMimplode','Join array elements with a string',-1),
             'lcfirst'		=>array('lcfirst','NA','Make a string\'s first character lowercase',1),
             'levenshtein'	=>array('levenshtein','NA','Calculate Levenshtein distance between two strings',2,5),
             'ltrim'			=>array('ltrim','NA','Strip whitespace (or other characters) from the beginning of a string',1,2),
@@ -217,7 +217,7 @@ class ExpressionManager {
             'str_ireplace'  =>array('str_ireplace','NA','Case-insensitive version of str_replace',3),
             'str_pad'		=>array('str_pad','NA','Pad a string to a certain length with another string',2,3,4),
             'str_repeat'	=>array('str_repeat','NA','Repeat a string',2),
-            'str_replace'	=>array('str_replace','ExprMgr_str_replace','Replace all occurrences of the search string with the replacement string',3),
+            'str_replace'	=>array('str_replace','LEMstr_replace','Replace all occurrences of the search string with the replacement string',3),
             'str_rot13'		=>array('str_rot13','NA','Perform the rot13 transform on a string',1),
             'str_shuffle'	=>array('str_shuffle','NA','Randomly shuffles a string',1),
             'str_word_count'	=>array('str_word_count','NA','Return information about words used in a string',1),
@@ -225,26 +225,26 @@ class ExpressionManager {
             'strcmp'		=>array('strcmp','NA','Binary safe string comparison',2),
             'strcoll'		=>array('strcoll','NA','Locale based string comparison',2),
             'strcspn'		=>array('strcspn','NA','Find length of initial segment not matching mask',2,3,4),
-            'strip_tags'	=>array('strip_tags','ExprMgr_strip_tags','Strip HTML and PHP tags from a string',1,2),
+            'strip_tags'	=>array('strip_tags','LEMstrip_tags','Strip HTML and PHP tags from a string',1,2),
             'stripcslashes'	=>array('stripcslashes','NA','Un-quote string quoted with addcslashes',1),
             'stripos'		=>array('stripos','NA','Find position of first occurrence of a case-insensitive string',2,3),
             'stripslashes'	=>array('stripslashes','NA','Un-quotes a quoted string',1),
             'stristr'		=>array('stristr','NA','Case-insensitive strstr',2,3),
-            'strlen'		=>array('strlen','ExprMgr_strlen','Get string length',1),
+            'strlen'		=>array('strlen','LEMstrlen','Get string length',1),
             'strnatcasecmp'	=>array('strnatcasecmp','NA','Case insensitive string comparisons using a "natural order" algorithm',2),
             'strnatcmp'		=>array('strnatcmp','NA','String comparisons using a "natural order" algorithm',2),
             'strncasecmp'	=>array('strncasecmp','NA','Binary safe case-insensitive string comparison of the first n characters',3),
             'strncmp'		=>array('strncmp','NA','Binary safe string comparison of the first n characters',3),
             'strpbrk'		=>array('strpbrk','NA','Search a string for any of a set of characters',2),
-            'strpos'		=>array('strpos','ExprMgr_strpos','Find position of first occurrence of a string',2,3),
+            'strpos'		=>array('strpos','LEMstrpos','Find position of first occurrence of a string',2,3),
             'strrchr'		=>array('strrchr','NA','Find the last occurrence of a character in a string',2),
             'strrev'		=>array('strrev','NA','Reverse a string',1),
             'strripos'		=>array('strripos','NA','Find position of last occurrence of a case-insensitive string in a string',2,3),
             'strrpos'		=>array('strrpos','NA','Find the position of the last occurrence of a substring in a string',2,3),
             'strspn'        =>array('strspn','NA','Finds the length of the initial segment of a string consisting entirely of characters contained within a given mask.',2,3,4),
             'strstr'		=>array('strstr','NA','Find first occurrence of a string',2,3),
-            'strtolower'	=>array('strtolower','ExprMgr_strtolower','Make a string lowercase',1),
-            'strtoupper'	=>array('strtoupper','ExprMgr_strtoupper','Make a string uppercase',1),
+            'strtolower'	=>array('strtolower','LEMstrtolower','Make a string lowercase',1),
+            'strtoupper'	=>array('strtoupper','LEMstrtoupper','Make a string uppercase',1),
             'strtr'			=>array('strtr','NA','Translate characters or replace substrings',3),
             'substr_compare'=>array('substr_compare','NA','Binary safe comparison of two strings from an offset, up to length characters',3,4,5),
             'substr_count'	=>array('substr_count','NA','Count the number of substring occurrences',2,3,4),
@@ -1134,9 +1134,7 @@ class ExpressionManager {
             {
                 case 'DQ_STRING':
                 case 'SQ_STRING':
-                    $stringParts[] = "'";
-                    $stringParts[] = addslashes($token[0]);
-                    $stringParts[] = "'";
+                    $stringParts[] = "'" . addslashes($token[0]) . "'";
                     break;
                 case 'SGQA':
                 case 'WORD':
@@ -1159,7 +1157,15 @@ class ExpressionManager {
                         if ($tokens[$i+1][0] == '+=')
                         {
                             // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
-                            $stringParts[] = " = ExprMgr_value('" . $jsName . "','" . $relevanceNum . "') + ";
+                            if (preg_match("/^.*\.NAOK$/",$token[0]))
+                            {
+                                $varName = preg_replace("/^(.*)\.NAOK$/", "$1", $token[0]);
+                            }
+                            else
+                            {
+                                $varName = $token[0];
+                            }
+                            $stringParts[] = " = LEMval('" . $varName . "') + ";
                             ++$i;
                         }
                     }
@@ -1170,7 +1176,15 @@ class ExpressionManager {
                         $relevanceNum = (isset($varInfo['relevanceNum']) ? $varInfo['relevanceNum'] : '');
                         if ($jsName != '')
                         {
-                            $stringParts[] = "ExprMgr_value('" . $jsName . "','" . $relevanceNum . "') ";
+                            if (preg_match("/^.*\.NAOK$/",$token[0]))
+                            {
+                                $varName = preg_replace("/^(.*)\.NAOK$/", "$1", $token[0]);
+                            }
+                            else
+                            {
+                                $varName = $token[0];
+                            }
+                            $stringParts[] = "LEMval('" . $varName . "') ";
                         }
                         else
                         {
@@ -1198,14 +1212,32 @@ class ExpressionManager {
                         case 'le':  $stringParts[] = ' <= '; break;
                         case 'gt':  $stringParts[] = ' > '; break;
                         case 'ge':  $stringParts[] = ' >= '; break;
-                        case 'eq':  $stringParts[] = ' == '; break;
-                        case 'ne':  $stringParts[] = ' != '; break;
+                        case 'eq':  case '==': $stringParts[] = ' == '; break;
+                        case 'ne':  case '!=': $stringParts[] = ' != '; break;
                         default:    $stringParts[] = ' ' . $token[0] . ' '; break;
                     }
                     break;
             }
         }
-        $this->jsExpression = '(' . implode('', $stringParts) . ')';
+        // for each variable that does not have a default value, add clause to throw error if any of them are NA
+        $nonNAvarsUsed = array();
+        foreach ($this->GetJsVarsUsed() as $var)
+        {
+            if (!preg_match("/^.*\.NAOK$/", $var))
+            {
+                $nonNAvarsUsed[] = $var;
+            }
+        }
+        $mainClause = implode('', $stringParts);
+        $varsUsed = implode("', '", $nonNAvarsUsed);
+        if ($varsUsed != '')
+        {
+            $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),''," . $mainClause . ")";
+        }
+        else
+        {
+            $this->jsExpression = '(' . $mainClause . ')';
+        }
         return $this->jsExpression;
     }
 
@@ -1213,15 +1245,19 @@ class ExpressionManager {
      * JavaScript Test function - simply writes the result of the current JavaScriptEquivalentFunction to the output buffer.
      * @return <type>
      */
-    public function GetJavascriptTestforExpression()
+    public function GetJavascriptTestforExpression($expected)
     {
         // assumes that the hidden variables have already been declared
+        $expr = $this->GetJavaScriptEquivalentOfExpression();
+        if (is_null($expr) || $expr == '') {
+            $expr = "'NULL'";
+        }
         $jsParts = array();
         $jsParts[] = '<script type="text/javascript">';
         $jsParts[] = "<!--\n";
-        $jsParts[] = 'document.write(';
-        $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
-        $jsParts[] = ")\n";
+        $jsParts[] = "var val = " . $expr . ";\n";
+        $jsParts[] = "var class = (val == '" . $expected . "') ? 'ok' : 'error';\n";
+        $jsParts[] = "document.write('<table width=\'100%\'><tr><td class=\'' + class + '\'>' + val + '</td></tr></table>');\n";
         $jsParts[] = "//-->\n</script>\n";
         return implode('',$jsParts);
         
@@ -1675,7 +1711,7 @@ class ExpressionManager {
                 // TODO Note, don't want these SPANS if they are part of a JavaScript substitution!
                 if (count($jsVarsUsed) > 0)
                 {
-                    $idName = "ExprMgr_tailor_Q_" . $questionNum . "_" . $this->substitutionNum;
+                    $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
                     $resolvedParts[] = "<span id='" . $idName . "' name='" . $idName . "'>" . $resolvedPart . "</span>";
                     $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
@@ -2222,6 +2258,19 @@ EOD;
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
+6~max(five,(one + (two * four)- three))
+6~max((one + (two * four)- three))
+212~5 + max(1,(2+3),(4 + (5 + 6)),((7 + 8) + 9),((10 + 11), 12),(13 + (14 * 15) - 16))
+29~five + max(one, (two + three), (four + (five + six)),((seven + eight) + nine),((ten + eleven), twelve),(one + (two * three) - four))
+1024~max(one,(two*three),pow(four,five),six)
+1~(one * (two + (three - four) + five) / six)
+2~max(one,two)
+5~max(one,two,three,four,five)
+1~min(five,four,one,two,three)
+0~(a=rand())-a
+3~floor(pi())
+2.4~(one  * two) + (three * four) / (five * six)
+1~sin(0.5 * pi())
 50~12X34X56 * 12X3X5lab1_ber
 3~a=three
 3~c=a
@@ -2229,19 +2278,13 @@ EOD;
 15~c+=a
 5~c/=a
 -1~c-=six
-2~max(one,two)
-5~max(one,two,three,four,five)
-1024~max(one,(two*three),pow(four,five),six)
-1~min(one,two,three,four,five)
 27~pow(3,3)
 24~one * two * three * four
 -4~five - four - three - two
 0~two * three - two - two - two
 4~two * three - two
-3~floor(pi())
 1~pi() == pi() * 2 - pi()
 1~sin(pi()/2)
-1~sin(0.5 * pi())
 1~sin(pi()/2) == sin(.5 * pi())
 105~5 + 1, 7 * 15
 7~7
@@ -2268,11 +2311,10 @@ there~hi
 0~four ne four
 0~one * hi
 5~abs(-five)
-0~acos(pi()/2)
-0~asin(pi()/2)
+0~acos(cos(pi()))-pi()
+0~floor(asin(sin(pi())))
 10~ceil(9.1)
 9~floor(9.9)
-0~(a=rand())-a
 15~sum(one,two,three,four,five)
 5~intval(5.7)
 1~is_float(pi())
@@ -2280,8 +2322,6 @@ there~hi
 1~is_numeric(five)
 0~is_numeric(hi)
 1~is_string(hi)
-2.4~(one  * two) + (three * four) / (five * six)
-1~(one * (two + (three - four) + five) / six)
 0~one && 0
 0~two and 0
 1~five && 6
@@ -2355,6 +2395,10 @@ Hi there!~c
 +,-,*,/,!,,,and,&&,or,||,gt,>,lt,<,ge,>=,le,<=,eq,==,ne,!=~implode(',','+','-','*','/','!',',','and','&&','or','||','gt','>','lt','<','ge','>=','le','<=','eq','==','ne','!=')
 HI THERE!~strtoupper(c)
 hi there!~strtolower(c)
+1~three == three
+1~three == 3
+1~c == 'Hi there!'
+1~c == "Hi there!"
 EOD;
 
         $em = new ExpressionManager();
@@ -2384,20 +2428,40 @@ EOD;
         }
         $allJsVarnamesUsed = array_unique($allJsVarnamesUsed);
         asort($allJsVarnamesUsed);
-        print '<table border="1"><tr><td>All Javascript Variables Used</td><td>' . implode('<br/>',$allJsVarnamesUsed) . "</td></tr></table>\n";
-
-        // Create hidden inputs for each of these Javascript values
-        foreach ($allJsVarnamesUsed as $jsVarname)
+        print "All Javascript Variables Used<br/>";
+        print '<table border="1"><tr><th>#</th><th>JsVarname</th><th>Value</th><th>Relevance</th></tr>';
+        $i=0;
+        $LEMvarNameAttr=array();
+        $LEMalias2varName=array();
+        foreach ($allJsVarnamesUsed as $jsVarName)
         {
-            $value = '';
+            ++$i;
+            print "<tr><td>" .  $i . "</td><td>" . $jsVarName;
             foreach($em->amVars as $k => $v) {
-                if ($v['jsName'] == $jsVarname)
+                if ($v['jsName'] == $jsVarName)
                 {
                     $value = $v['codeValue'];
                 }
             }
-            print "<input type='hidden' name='" . $jsVarname . "' id='" . $jsVarname . "' value='" . $value . "'/>\n";
+            print "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1'/>\n";
+            print "<input type='hidden' name='" . $jsVarName . "' id='" . $jsVarName . "' value='" . $value . "'/>\n";
+            print "</td></tr>\n";
+            $LEMalias2varName[] = "'" . substr($jsVarName,5) . "':{'jsName':'" . $jsVarName . "'}";
+            $LEMalias2varName[] = "'" . $jsVarName . "':{'jsName':'" . $jsVarName . "'}";
+            $LEMvarNameAttr[] = "'" . $jsVarName .  "': {"
+                . "'jsName':'" . $jsVarName
+                . "','code':'" . $value
+                . "','shown':'" . $value
+                . "','question':'"
+                . "','qid':'" . $i . "'}";
         }
+        print "</table>\n";
+
+        print "<script type='text/javascript'>\n";
+        print "<!--\n";
+        print "var LEMalias2varName= {". implode(",\n", $LEMalias2varName) ."};\n";
+        print "var LEMvarNameAttr= {" . implode(",\n", $LEMvarNameAttr) . "};\n";
+        print "//-->\n</script>\n";
 
         print '<table border="1"><tr><th>Expression</th><th>Result</th><th>Expected</th><th>JavaScript Test</th><th>VarNames</th><th>JavaScript Eqn</th></tr>';
         foreach(explode("\n",$tests)as $test)
@@ -2420,7 +2484,7 @@ EOD;
                 $resultStatus = 'error';
             }
             print "<td class='" . $resultStatus . "'>" . $expectedResult . "</td>\n";
-            print "<td>" . $em->GetJavascriptTestforExpression() . "&nbsp;</td>\n";
+            print "<td>" . $em->GetJavascriptTestforExpression($expectedResult) . "&nbsp;</td>\n";
             $varsUsed = $em->GetVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
                 $varDesc = array();
