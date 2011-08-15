@@ -653,6 +653,7 @@ class tokens extends SurveyCommonController {
 	 */
 	function email($surveyid,$tokenids=null)
 	{
+		global $maildebug, $maildebugbody;
 		$clang=$this->limesurvey_lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens', 'update'))   
 		{
@@ -830,7 +831,7 @@ class tokens extends SurveyCommonController {
 	                }
 	                else
 	                {
-	                    $tokenoutput .= '<li>'.ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." "./*$maildebug.*/"<br />", $fieldsarray).'</li>';
+	                    $tokenoutput .= '<li>'.ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray).'</li>';
 	                    /*if ($debug>0)
 	                    {
 	                        $tokenoutput .= "<pre>Subject : $modsubject<br /><br />".htmlspecialchars($maildebugbody)."</pre>";

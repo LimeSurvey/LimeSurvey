@@ -5319,11 +5319,11 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 	}
 
 	
-	require_once(APPDATA.'/third_party/phpmailer/class.phpmailer.php');
+	require_once(APPPATH.'/third_party/phpmailer/class.phpmailer.php');
 	$mail = new PHPMailer;
-    if (!$mail->SetLanguage($defaultlang,APPDATA.'/third_party/phpmailer/language/'))
+    if (!$mail->SetLanguage($defaultlang,APPPATH.'/third_party/phpmailer/language/'))
     {
-        $mail->SetLanguage('en',APPDATA.'/third_party/phpmailer/language/');
+        $mail->SetLanguage('en',APPPATH.'/third_party/phpmailer/language/');
     }
 	$mail->CharSet = $emailcharset;
 	if (isset($emailsmtpssl) && trim($emailsmtpssl)!=='' && $emailsmtpssl!==0) {
