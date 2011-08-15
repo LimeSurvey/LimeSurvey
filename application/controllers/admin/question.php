@@ -1432,12 +1432,13 @@
         
     }
     
-    function questionattributes()
+    function ajaxquestionattributes()
     {
-        
+        $surveyid = $this->input->post("sid");
+        $qid = $this->input->post("qid");
         $thissurvey=getSurveyInfo($surveyid);
-        $type=returnglobal('question_type');
-        if (isset($qid))
+        $type=$this->input->post('question_type');
+        if ($qid != "undefined")
         {
             $attributesettings=getQuestionAttributes($qid);
         }
@@ -1502,6 +1503,7 @@
                 $ajaxoutput .="</li>\n";
             }
             $ajaxoutput .= "</ul></fieldset>";
+			echo $ajaxoutput;
         }
     }
     
