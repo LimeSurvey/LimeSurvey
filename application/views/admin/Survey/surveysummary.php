@@ -12,7 +12,13 @@
 			<strong><?php echo $clang->gT("Survey URL") ." (".getLanguageNameFromCode($surveyinfo['language'],false)."):";?></strong>
 		</td>
 		<td align='left'>
-			<!-- TODO Port -->
+		<?php $tmp_url = site_url($surveyinfo['sid']);
+        echo "<a href='$tmp_url/lang-".$surveyinfo['language']."' target='_blank'>$tmp_url/lang-".$surveyinfo['language']."</a>";
+        foreach ($aAdditionalLanguages as $langname)
+        {
+            echo "&nbsp;<a href='$tmp_url/lang-$langname' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)
+            ."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='".$this->config->item("imageurl")."flags/$langname.png' /></a>";
+        } ?>
 		</td>
 	</tr>
     <tr>
@@ -128,4 +134,16 @@
     		<?php echo $warnings.$hints;?>
     	</td>
     </tr>
+    <?php if ($tableusage != false){
+            if ($tableusage['dbtype']=='mysql'){
+                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
+                $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2); ?>
+                <tr><td align='right' valign='top'><strong><?php echo $clang->gT("Table Column Usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
+                <tr><td align='right' valign='top'><strong><?php echo $clang->gT("Table Size Usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div></td></tr>
+            <?php }
+            elseif (($arrCols['dbtype'] == 'mssqlnative')||($arrCols['dbtype'] == 'postgres')||($arrCols['dbtype'] == 'odbtp')||($arrCols['dbtype'] == 'mssql_n')){
+                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2); ?>
+                <tr><td align='right' valign='top'><strong><?php echo $clang->gT("Table Column Usage");?>: </strong></td><td><strong><?php echo $column_usage;?>%</strong><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
+            <?php }
+        } ?>
 </table>

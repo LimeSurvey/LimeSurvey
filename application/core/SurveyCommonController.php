@@ -973,25 +973,6 @@
             . ">".$clang->gT("By Group")."</a>]";
             $surveysummary2 .= "</td></tr>\n";
         }
-
-		//SURVEY URL PART
-        /** front end functionality required
-        if ( $modrewrite ) {
-            $tmp_url = $GLOBALS['publicurl'] . '/' . $surveyinfo['sid'];
-            $surveysummary .= "<td align='left'> <a href='$tmp_url/lang-".$surveyinfo['language']."' target='_blank'>$tmp_url/lang-".$surveyinfo['language']."</a>";
-            foreach ($aAdditionalLanguages as $langname)
-            {
-                $surveysummary .= "&nbsp;<a href='$tmp_url/lang-$langname' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";
-            }
-        } else {
-            $tmp_url = $GLOBALS['publicurl'] . '/index.php?sid=' . $surveyinfo['sid'];
-            $surveysummary .= "<td align='left'> <a href='$tmp_url&amp;lang=".$surveyinfo['language']."' target='_blank'>$tmp_url&amp;lang=".$surveyinfo['language']."</a>";
-            foreach ($aAdditionalLanguages as $langname)
-            {
-                $surveysummary .= "&nbsp;<a href='$tmp_url&amp;lang=$langname' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='../images/flags/$langname.png' /></a>";
-            }
-        }
-        */
         
         $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
         if (trim($surveyinfo['startdate'])!= '')
@@ -1088,25 +1069,9 @@
         $data['hints']=$surveysummary2;
 
         //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
-        /*
-        $tableusage = get_dbtableusage($surveyid);
-        if ($tableusage != false){
-
-            if ($tableusage['dbtype']=='mysql'){
-                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
-                $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2);
-
-
-                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='{$column_usage}'></div> </td></tr>";
-                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Size Usage")}: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='{$size_usage}'></div></td></tr>";
-            }
-            elseif (($arrCols['dbtype'] == 'mssqlnative')||($arrCols['dbtype'] == 'postgres')||($arrCols['dbtype'] == 'odbtp')||($arrCols['dbtype'] == 'mssql_n')){
-                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
-                $surveysummary .="<tr><td align='right' valign='top'><strong>{$clang->gT("Table Column Usage")}: </strong></td><td><strong>{$column_usage}%</strong><div class='progressbar' style='width:20%; height:15px;' name='{$column_usage}'></div> </td></tr>";
-            }
-            
-        }
-        */
+        
+        $data['tableusage'] = get_dbtableusage($surveyid);
+        
         //$gid || $qid || 
        
         
@@ -1121,6 +1086,7 @@
         /**if ($gid) {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";} */
         $data['showstyle'] = $showstyle;
+        $data['aAdditionalLanguages'] = $aAdditionalLanguages;
 		$this->load->view("admin/survey/surveysummary",$data);
     }
     
