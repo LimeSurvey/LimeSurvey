@@ -5101,7 +5101,7 @@ function do_shortfreetext($ia)
                 class=\"mapservice\" value = \"{$qidattributes['location_mapservice']}\" >
             <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$qidattributes['location_mapwidth']}px; height: {$qidattributes['location_mapheight']}px\"></div>";
 
-        if ($qidattributes['location_mapservice']==1 && $_SERVER['HTTPS'] == "on")
+        if ($qidattributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
             $js_header_includes[] = "https://maps.googleapis.com/maps/api/js?sensor=false";
         else if ($qidattributes['location_mapservice']==1)
             $js_header_includes[] = "http://maps.googleapis.com/maps/api/js?sensor=false";
