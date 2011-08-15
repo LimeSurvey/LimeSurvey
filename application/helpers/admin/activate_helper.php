@@ -135,7 +135,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
         if ($qtypes[$chkrow['type']]['subquestions']>0)
         {
             $chaquery = "SELECT * FROM ".$CI->db->dbprefix."questions WHERE parent_qid = {$chkrow['qid']} ORDER BY question_order";
-            $charesult=db_execute_assosc($chaquery);
+            $charesult=db_execute_assoc($chaquery);
             $chacount=$charesult->num_rows();
             if ($chacount == 0)
             {
@@ -145,7 +145,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
         if ($qtypes[$chkrow['type']]['answerscales']>0)
         {
             $chaquery = "SELECT * FROM ".$CI->db->dbprefix."answers WHERE qid = {$chkrow['qid']} ORDER BY sortorder, answer";
-            $charesult=db_execute_assosc($chaquery);
+            $charesult=db_execute_assoc($chaquery);
             $chacount=$charesult->num_rows();
             if ($chacount == 0)
             {
@@ -325,7 +325,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 $createsurvey .= " VARCHAR(20) NOT NULL";
                 break;
             case 'id':
-                $createsurvey .= " INT NOT NULL AUTO PRIMARY";
+                $createsurvey .= " INT(10) NOT NULL AUTO_INCREMENT";
                 $createsurveytimings .= " `{$arow['fieldname']}` INT NOT NULL PRIMARY,\n";
                 break;
             case "startdate":
@@ -336,13 +336,13 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 $createsurvey .= " DATETIME";
                 break;
             case "lastpage":
-                $createsurvey .= " INT";
+                $createsurvey .= " INT(10)";
                 break;
             case "N":  //NUMERICAL
                 $createsurvey .= " FLOAT";
                 break;
             case "S":  //SHORT TEXT
-                if ($CI->db->dbdriver=='mysql' || $CI->db->dbdriver=='mysqli')    {$createsurvey .= " VARCHAR(4000)";}
+                if ($CI->db->dbdriver=='mysql' || $CI->db->dbdriver=='mysqli')    {$createsurvey .= " TEXT";}
                 else  {$createsurvey .= " VARCHAR(255)";}
                 break;
             case "L":  //LIST (RADIO)
@@ -356,18 +356,18 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 }
                 else
                 {
-                    $createsurvey .= " VARCHAR(4000)";
+                    $createsurvey .= " TEXT";
                 }
                 break;
             case "K":  // Multiple Numerical
-                $createsurvey .= " FLOAT";
+                $createsurvey .= " FLOAT(20)";
                 break;
             case "U":  //Huge text
             case "Q":  //Multiple short text
             case "T":  //LONG TEXT
             case ";":  //Multi Flexi
             case ":":  //Multi Flexi
-                $createsurvey .= " VARCHAR(4000)";
+                $createsurvey .= " TEXT";
                 break;
             case "D":  //DATE
                 $createsurvey .= " DATETIME";
@@ -386,15 +386,15 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 if (strpos($arow['fieldname'], "_"))
                     $createsurvey .= " INT(1)";
                 else
-                    $createsurvey .= " VARCHAR(4000)";
+                    $createsurvey .= " TEXT";
                 break;
             case "ipaddress":
                 if ($prow['ipaddr'] == "Y")
-                    $createsurvey .= " VARCHAR(4000)";
+                    $createsurvey .= " TEXT";
                 break;
             case "url":
                 if ($prow['refurl'] == "Y")
-                    $createsurvey .= " VARCHAR(4000)";
+                    $createsurvey .= " TEXT";
                 break;
             case "token":
                 if ($prow['anonymized'] == "N")
@@ -419,11 +419,11 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
         }
 
         $createsurvey = $createsurveybkup. $createsurvey;
-        $CI->dbforge->add_field($createsurvey);
-
-
     }
 
+    $CI->dbforge->add_field($createsurvey);
+	$CI->dbforge->add_key('id', TRUE);
+	
     if ($simulate){
         return array('dbengine'=>$CI->db->databasetabletype, 'dbtype'=>$CI->db->dbdriver, 'fields'=>$arrSim);
     }
@@ -463,6 +463,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
         "<pre>$createsurvey</pre>\n
         <a href='$link'>".$clang->gT("Main Admin Screen")."</a>\n</div>" ;
     }
+	
     //if ($execresult != 0 && $execresult !=1)
     if ($execresult)
     {
@@ -479,14 +480,14 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                         mssql_drop_primary_index('survey_'.$postsid);                        
                         mssql_drop_constraint('id','survey_'.$postsid);
                         $autonumberquery = "alter table ".$CI->db->dbprefix."survey_{$postsid} drop column id "; 
-                        db_execute_assosc($autonumberquery);  
+                        db_execute_assoc($autonumberquery);  
                         $autonumberquery = "alter table ".$CI->db->dbprefix."survey_{$postsid} add [id] int identity({$row['autonumber_start']},1)"; 
-                        db_execute_assosc($autonumberquery);  
+                        db_execute_assoc($autonumberquery);  
                     }
                     else
                     {
                         $autonumberquery = "ALTER TABLE ".$CI->db->dbprefix."survey_{$postsid} AUTO_INCREMENT = ".$row['autonumber_start'];
-                        $result = @db_execute_assosc($autonumberquery);  
+                        $result = @db_execute_assoc($autonumberquery);  
                          
                     }
                 }
@@ -514,7 +515,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                     $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the ".$CI->config->item('rootdir')."upload/surveys directory.") . "</div>";
         
         $acquery = "UPDATE ".$CI->db->dbprefix."surveys SET active='Y' WHERE sid=".$surveyid;
-        $acresult = db_execute_assosc($acquery);
+        $acresult = db_execute_assoc($acquery);
         
         if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         {
