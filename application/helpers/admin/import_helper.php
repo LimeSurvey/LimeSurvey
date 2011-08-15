@@ -1198,6 +1198,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             $insertdata[(string)$key]=(string)$value;
         }
+       
         $oldsid=$insertdata['sid'];
         if($iDesiredSurveyId!=NULL)
         {
@@ -1231,7 +1232,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['bouncetime'] = NULL;
         }
         
-        
+        var_dump($insertdata);
         db_switchIDInsert('surveys',true);
         //$query=$connect->GetInsertSQL($tablename,$insertdata);
         
