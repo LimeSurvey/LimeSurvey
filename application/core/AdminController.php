@@ -320,7 +320,7 @@ class AdminController extends LS_Controller {
 	{
 	    //$squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM {$dbprefix}users WHERE uid=$loginID";
 	    $this->load->model("Users_model");
-		$query = $this->Users_model->getSomeRecords(array("create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label"),array("uid"=>$loginID));
+		$query = $this->Users_model->getSomeRecords(array("create_survey, configurator, create_user, delete_user, superadmin,participant_panel, manage_template, manage_label"),array("uid"=>$loginID));
 		//$sresult = db_execute_assoc($squery); //Checked
 	    //if ($sresult->RecordCount()>0)
 	    if($query->num_rows() > 0)
@@ -328,8 +328,9 @@ class AdminController extends LS_Controller {
 	        //$fields = $sresult->FetchRow();
 			$fields = $query->row_array(); 
 	        $this->session->set_userdata('USER_RIGHT_CREATE_SURVEY', $fields['create_survey']);
+                $this->session->set_userdata('USER_RIGHT_PARTICIPANT_PANEL', $fields['participant_panel']);
 	        $this->session->set_userdata('USER_RIGHT_CONFIGURATOR', $fields['configurator']);
-	        $this->session->set_userdata('USER_RIGHT_CREATE_USER', $fields['create_user']);
+                 $this->session->set_userdata('USER_RIGHT_CREATE_USER', $fields['create_user']);
 	        $this->session->set_userdata('USER_RIGHT_DELETE_USER', $fields['delete_user']);
 	        $this->session->set_userdata('USER_RIGHT_SUPERADMIN', $fields['superadmin']);
 	        $this->session->set_userdata('USER_RIGHT_MANAGE_TEMPLATE', $fields['manage_template']);

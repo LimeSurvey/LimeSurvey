@@ -2,7 +2,7 @@
 	
 <table width='100%' border='0'>
 <tr>
-<td colspan='7' class='header ui-widget-header' align='center'>
+<td colspan='8' class='header ui-widget-header' align='center'>
 <?php echo $clang->gT("Set User Rights");?>: <?php echo htmlspecialchars(sanitize_user($_POST['user']));?>
 </td>
 </tr>
@@ -12,10 +12,10 @@
 $userlist = getuserlist();
 foreach ($userlist as $usr) { 
     if ($usr['uid'] == $postuserid) {
-        $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM ".$this->db->dbprefix("users")." WHERE uid=".$this->session->userdata['loginID'];	//		added by Dennis
+        $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, participant_panel,manage_template, manage_label FROM ".$this->db->dbprefix("users")." WHERE uid=".$this->session->userdata['loginID'];	//		added by Dennis
         $sresult = db_select_limit_assoc($squery); //Checked
         $parent = $sresult->row_array();
-
+        
         // Initial SuperAdmin has parent_id == 0
         $adminquery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE parent_id=0";
         $adminresult = db_select_limit_assoc($adminquery, 1);
@@ -28,6 +28,7 @@ foreach ($userlist as $usr) {
         if($row['uid'] == $this->session->userdata('loginID'))
         { // RENAMED AS SUPERADMIN
             echo "<th align='center' class='admincell'>".$clang->gT("SuperAdministrator")."</th>\n";
+            echo "<th align='center' >".$clang->gT("Participant Panel")."</th>\n";
         }
         if($parent['create_survey']) {
             echo "<th align='center'>".$clang->gT("Create Survey")."</th>\n";
@@ -52,13 +53,20 @@ foreach ($userlist as $usr) {
         </tr>
         <tr>
 
-        <?php // Only Initial SuperAdmmin can give SuperAdmin right
+        <?php  
+        //// Only Initial SuperAdmmin can give SuperAdmin right
         if($row['uid'] ==  $this->session->userdata('loginID')) {
             echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"superadmin\" id=\"superadmin\" value=\"superadmin\"";
             if($usr['superadmin']) {
                 echo " checked='checked' ";
             }
-            echo "onclick=\"if (this.checked == true) {document.getElementById('create_survey').checked=true;document.getElementById('configurator').checked=true;document.getElementById('create_user').checked=true;document.getElementById('delete_user').checked=true;document.getElementById('manage_template').checked=true;document.getElementById('manage_label').checked=true;}\"";
+            echo "onclick=\"if (this.checked == true) {document.getElementById('create_survey').checked=true;document.getElementById('configurator').checked=true;document.getElementById('participant_panel').checked=true;document.getElementById('configurator').checked=true;document.getElementById('create_user').checked=true;document.getElementById('delete_user').checked=true;document.getElementById('manage_template').checked=true;document.getElementById('manage_label').checked=true;}\"";
+            echo " /></td>\n";
+            // Only Initial SuperAdmmin can give Participant Panel's right
+            echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"participant_panel\" id=\"participant_panel\" value=\"participant_panel\"";
+            if($usr['participant_panel']) {
+                echo " checked='checked' ";
+            }
             echo " /></td>\n";
         }
         if($parent['create_survey']) {

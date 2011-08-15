@@ -197,6 +197,26 @@ function editShareInfo()
                    'shared_uid' => $this->input->post('shared_uid'));
     $this->participant_shares_model->updateShare($data);
 }
+function delParticipant()
+{
+    
+    $this->load->model('participants_model');
+    $selectoption = $this->input->post('selectedoption');
+    $participant_id = $this->input->post('participant_id');
+    if($selectoption=="po")
+    {
+      $this->participants_model->deleteParticipant($participant_id);
+    }
+    elseif($selectoption=="ptt")
+    {
+       $this->participants_model->deleteParticipantToken($participant_id);
+    }
+    else
+    {
+       $this->participants_model->deleteParticipantTokenAnswer($participant_id);
+    }
+    
+}
 /*
  * This function is resposible for editing data on the jqGrid
  */
@@ -224,7 +244,6 @@ function editParticipant()
     }
     if($operation == 'edit')
     {
-        
         $data = array(
         'participant_id' => $_POST['id'],
         'firstname' => $_POST['firstname'],
@@ -234,10 +253,6 @@ function editParticipant()
         'blacklisted' => $_POST['blacklisted'],
         'owner_uid' => $oid);
         $this->participants_model->updateRow($data);
-    }
-    elseif($operation == 'del')
-    {
-    	$this->participants_model->deleteRow($_POST);
     }
     elseif($operation == 'add')
     {
@@ -954,8 +969,7 @@ function attributeMapCSV()
         $errorinupload = array('error' => $this->upload->display_errors());
         $this->session->unset_userdata('summary');
         $data = array( 'errorinupload' => $errorinupload);
-       
-           $this->session->set_userdata('summary',$data);
+        $this->session->set_userdata('summary',$data);
         self::_getAdminHeader();
         $clang = $this->limesurvey_lang;
         $data = array('clang'=> $clang);
@@ -1459,6 +1473,61 @@ function attributeMapToken()
     $this->load->view('admin/Participants/attributeMapToken_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
-
+function isValidGuid($guid)
+{
+    return (!empty($guid) && preg_match('/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $guid));
+}
+function blacklistParticipant()
+    {
+        $this->load->model('participants_model');
+        $participant_id = $this->uri->segment(4);
+        $survey_id = $this->uri->segment(5);
+        $clang = $this->limesurvey_lang;
+        if(!is_numeric($survey_id))
+        {
+            $blacklist = $this->uri->segment(5);
+            if($blacklist=='Y' || $blacklist =='N')
+            {
+                $data = array('blacklisted' => $blacklist,'participant_id' => $participant_id );
+                $result = $this->participants_model->blacklistparticipantglobal($data);
+                $result['global'] = 1;
+                $result['clang'] = $clang;
+                $result['blacklist'] = $blacklist;
+                $this->load->view('admin/Participants/blacklist_view',$result);
+            }
+            else
+            {
+                $result['is_participant']=0;
+                $result['is_updated']=0;
+                $result['clang'] = $clang;
+                $this->load->view('admin/Participants/blacklist_view',$result);
+            }
+        }
+        else
+        {
+            $blacklist = $this->uri->segment(6);
+            if( $blacklist=='Y' || $blacklist =='N')
+            {
+                $data = array('blacklisted' => $blacklist);
+                $result = $this->participants_model->blacklistparticipantlocal($data,$survey_id,$participant_id);$result['global'] = 1;
+                $result['clang'] = $clang;
+                $result['local'] = 1;
+                $result['blacklist'] = $blacklist;
+                $this->load->view('admin/Participants/blacklist_view',$result);
+                
+            }
+            else
+            {
+                $result['is_participant']=0;
+                $result['is_updated']=0;
+                $result['clang'] = $clang;
+                $this->load->view('admin/Participants/blacklist_view',$result);
+   
+            }
+            
+        }
+           
+        
+    }
 }
 ?>

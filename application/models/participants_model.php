@@ -33,24 +33,84 @@ function updateRow($data)
     $this->db->where('participant_id',$data['participant_id']);
 	$this->db->update('participants',$data);
 }
+function deleteParticipantTokenAnswer($rows)
+{
+    $rowid=explode(",",$rows);
+    //$rowid = array('243148a0-bf56-4ee1-a6d2-a1f1cb5243d5');
+    foreach($rowid as $row)
+    {
+            $this->db->where('participant_id',$row);
+            $tokens = $this->db->get('survey_links');
+            foreach($tokens->result_array() as $key => $value)
+            {
+                $this->db->where('participant_id',$row);
+                $this->db->delete('participants'); //Delete from participants
+                if($this->db->table_exists('tokens_'.$value['survey_id']))
+                {
+                    $this->db->select('token');
+                    $this->db->where('participant_id',$value['participant_id']);
+                    $tokenid = $this->db->get('tokens_'.$value['survey_id']);
+                    $token = $tokenid->row();
+                    if($this->db->table_exists('survey_'.$value['survey_id']))
+                    {
+                        if(!empty($token->token))
+                        {
+                            $this->db->where('token',$tokenid->row()->token);
+                            $gettoken=$this->db->get('survey_'.$value['survey_id']);
+                            $this->db->where('token',$gettoken->row()->token);
+                            $this->db->delete('survey_'.$value['survey_id']);
+                        }
+                    }
+                  $this->db->where('participant_id',$value['participant_id']);
+                  $this->db->delete('tokens_'.$value['survey_id']);// Deletes from token
+               }
+            }
+     }
+    
+}
+function deleteParticipantToken($rows)
+{
+    $rowid=explode(",",$rows);
+    foreach($rowid as $row)
+    {
+        $this->db->where('participant_id',$row);
+	$tokens = $this->db->get('survey_links');
+        foreach($tokens->result_array() as $key => $value)
+        {
+            if($this->db->table_exists('tokens_'.$value['survey_id']))
+            {
+                $this->db->where('participant_id',$value['participant_id']);
+                $this->db->delete('tokens_'.$value['survey_id']);
+            }
+        }
+        $this->db->where('participant_id',$row);
+	$this->db->delete('participants');
+        $this->db->where('participant_id',$row);
+	$this->db->delete('survey_links');
+        $this->db->where('participant_id',$row);
+	$this->db->delete('participant_attribute');
+    }
+    
+}
 /*
  * This function deletes the row marked in the navigator
  * Parameters : row id's
  * Return Data : None
 */
-function deleteRow($rows)
+function deleteParticipant($rows)
 {
 	// Converting the comma seperated id's to an array to delete multiple rows
-	$rowid=explode(",",$rows['id']);
-	foreach($rowid as $row)
+    $rowid=explode(",",$rows);
+    foreach($rowid as $row)
     {
         $this->db->where('participant_id',$row);
 		$this->db->delete('participants');
         $this->db->where('participant_id',$row);
-		$this->db->delete('participant_shares');
+		$this->db->delete('survey_links');
         $this->db->where('participant_id',$row);
 		$this->db->delete('participant_attribute');
     }
+    
 }
 /*
  * This function is responsible for adding the participant to the database from the CSV upload
@@ -1142,6 +1202,45 @@ function copytosurveyatt($surveyid,$mapped,$newcreate)
     }
     $returndata = array('success'=>$sucessfull,'duplicate'=>$duplicate);
     return $returndata;
+}
+function blacklistparticipantglobal($data)
+{   
+    $this->db->where('participant_id',$data['participant_id']);
+    $this->db->get('participants');
+    $is_participant = $this->db->affected_rows();
+    $this->db->where('participant_id',$data['participant_id']);
+    $this->db->update('participants', $data); 
+    $is_updated = $this->db->affected_rows();
+    $result = array('is_participant' => $is_participant,
+                    'is_updated' => $is_updated    );
+    return $result;
+    
+}
+function blacklistparticipantlocal($data,$survey_id,$tid)
+{
+    $is_survey = $this->db->table_exists('tokens_'.$survey_id);
+    if($is_survey)
+    {
+        $this->db->where('tid',$tid);
+        $this->db->get('tokens_'.$survey_id);
+        $is_participant = $this->db->affected_rows();
+        $this->db->where('tid',$tid);
+        $this->db->update('tokens_'.$survey_id, $data); 
+        $is_updated = $this->db->affected_rows();
+        $result = array('is_participant' => $is_participant,
+                        'is_updated' => $is_updated,
+                        'is_survey' => $is_survey);
+    }
+    else
+    {
+        $is_survey = $this->db->table_exists('tokens_'.$survey_id);
+        $is_participant = "";
+        $is_updated="";
+        $result = array('is_participant' => $is_participant,
+                        'is_updated' => $is_updated,
+                        'is_survey' => $is_survey);
+    }
+    return $result;
 }
 }
 

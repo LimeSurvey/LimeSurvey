@@ -394,6 +394,7 @@ CREATE TABLE prefix_users (
     email character varying(320) NOT NULL,
     create_survey integer DEFAULT 0 NOT NULL,
     create_user integer DEFAULT 0 NOT NULL,
+    participant_panel integer DEFAULT 0 NOT NULL,
     delete_user integer DEFAULT 0 NOT NULL,
     superadmin integer DEFAULT 0 NOT NULL,
     configurator integer DEFAULT 0 NOT NULL,
@@ -414,6 +415,76 @@ CREATE TABLE prefix_templates_rights (
   "uid" integer NOT NULL,
   "folder" character varying(255) NOT NULL,
   "use" integer NOT NULL
+);
+
+-- 
+-- Table structure for table participants
+--   
+CREATE TABLE prefix_participants (
+  "participant_id" VARCHAR( 50 ) NOT NULL,
+  "firstname" VARCHAR( 40 ) NOT NULL,
+  "lastname" VARCHAR( 40 ) NOT NULL,
+  "email" VARCHAR( 80 ) NOT NULL,
+  "language" VARCHAR( 2 ) NOT NULL,
+  "blacklisted" VARCHAR( 1 ) NOT NULL,
+  "owner_uid" integer NOT NULL,
+  PRIMARY KEY (participant_id)
+);
+-- 
+-- Table structure for table participant_attribute
+--   
+CREATE TABLE prefix_participant_attribute (
+  "participant_id" VARCHAR( 50 ) NOT NULL,
+  "attribute_id" integer NOT NULL,
+  "value" integer NOT NULL,
+  PRIMARY KEY (participant_id,attribute_id)
+);
+-- 
+-- Table structure for table participant_attribute_names
+--   
+CREATE TABLE prefix_participant_attribute_names (
+  "attribute_id" integer NOT NULL AUTO_INCREMENT,
+  "attribute_type" VARCHAR( 30 ) NOT NULL,
+  "visible" CHAR( 5 ) NOT NULL,
+  PRIMARY KEY (attribute_type,attribute_id)
+);
+-- 
+-- Table structure for table participant_attribute_lang
+--   
+CREATE TABLE prefix_participant_attribute_names_lang (
+  "id" integer NOT NULL AUTO_INCREMENT,
+  "attribute_id" integer NOT NULL,
+  "attribute_name" VARCHAR( 30 ) NOT NULL,
+  "lang" CHAR( 5 ) NOT NULL,
+  PRIMARY KEY (lang,attribute_id)
+);
+-- 
+-- Table structure for table participant_attribute_values
+--   
+CREATE TABLE prefix_participant_attribute_values (
+  "attribute_id" integer NOT NULL,
+  "value_id" integer NOT NULL AUTO_INCREMENT,
+  "value" VARCHAR( 20 ) NOT NULL,
+  PRIMARY KEY (attribute_id,value_id)
+);
+-- 
+-- Table structure for table participant_shares
+--   
+CREATE TABLE prefix_participant_shares (
+  "participant_id" VARCHAR( 50 ) NOT NULL,
+  "shared_uid" integer NOT NULL,
+  "date_added" date NOT NULL,
+  "can_edit" VARCHAR( 5 ) NOT NULL
+);
+-- 
+-- Table structure for table participant_attribute_values
+--   
+CREATE TABLE prefix_survey_links (
+  "participant_id" VARCHAR( 50 ) NOT NULL,
+  "token_id" integer NOT NULL,
+  "survey_id" integer NOT NULL,
+  "date_created" date NOT NULL,
+  PRIMARY KEY (participant_id,token_id,survey_id)
 );
 
 ALTER TABLE ONLY prefix_templates_rights ADD CONSTRAINT prefix_templates_rights_pkey PRIMARY KEY ("uid","folder");
@@ -459,7 +530,7 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '147');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '148');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 
@@ -469,6 +540,6 @@ INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
 INSERT INTO prefix_users(
             users_name, "password", full_name, parent_id, lang, email, 
-            create_survey, create_user, delete_user, superadmin, configurator, 
+            create_survey, create_user, participant_panel, delete_user, superadmin, configurator, 
             manage_template, manage_label,htmleditormode)
-            VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1,'default');
+            VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1,1,'default');

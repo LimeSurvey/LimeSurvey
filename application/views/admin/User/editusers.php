@@ -106,6 +106,7 @@
     $uresult = db_execute_assoc($uquery); //Checked
     $userlist = array();
     $srow = $uresult->row_array();
+    
     $usr['parent'] = $srow['users_name']; ?>
     
     <?php if (isset($usr['parent_id'])) { ?>

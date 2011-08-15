@@ -1,3 +1,4 @@
+
 <div class='menubar'>
 	<div class='menubar-title ui-widget-header'>
 		<div class='menubar-title-left'>
@@ -87,8 +88,11 @@
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/templates/view");?>', '_top')" title="<?php echo $clang->gTview("Template Editor");?>" >
 	    <img src='<?php echo $this->config->item('imageurl');?>/templates.png' name='EditTemplates' alt='<?php echo $clang->gT("Template Editor");?>' /></a>   
 	    <?php } ?>
+            <?php if($this->session->userdata('USER_RIGHT_PARTICIPANT_PANEL') == 1)
+		{ 	 ?>
             <a href="#" onclick="window.open('<?php echo site_url("admin/participants");?>', '_top')" title="<?php echo $clang->gTview("Pariticpant's panel");?>" >
 	    <img src='<?php echo $this->config->item('imageurl');?>/tokens.png' name='participantpanel' alt='<?php echo $clang->gT("Participant's Panel");?>' /></a>   
+            <?php } ?>
 	</div>
 	<div class='menubar-right'><span class="boxcaption"><?php echo $clang->gT("Surveys");?>:</span>
 	    <select onchange="window.open(this.options[this.selectedIndex].value,'_top')">

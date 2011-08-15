@@ -45,7 +45,7 @@
             <strong>LimeSurvey Setup</strong></font>
         </td>
     </tr>
-<?php echo $adminoutputText; ?>
+<?php if (isset($adminoutputText))echo $adminoutputText; ?>
         </td>
     </tr>
 </table><br />
@@ -61,7 +61,7 @@
 <tr>
 <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Previous" onclick="javascript: window.open('<?php echo site_url("installer/install/1"); ?>', '_top')" /></td>
 <td align="center" style="width: 227px;"></td>
-<td align="right" style="width: 227px;"><?php echo $adminoutputForm; ?></td>
+<td align="right" style="width: 227px;"><?php if (isset($adminoutputForm)) echo $adminoutputForm; ?></td>
 </tr>
 </tbody>
 </table>

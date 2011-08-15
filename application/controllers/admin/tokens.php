@@ -748,6 +748,7 @@ class tokens extends SurveyCommonController {
 
 	        $attributes=GetTokenFieldsAndNames($surveyid);
 			$tokenoutput="";
+                        
 	        if ($emcount > 0)
 	        {
 	            foreach ($emresult->result_array() as $emrow)
@@ -789,6 +790,7 @@ class tokens extends SurveyCommonController {
 	                }
 	                else
 	                {
+                            echo "dfsA";
 	                    $fieldsarray["{OPTOUTURL}"]="<a href='$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
 	                    if ( $modrewrite )
 	                    {

@@ -382,6 +382,7 @@ CREATE TABLE [prefix_users] (
   [email] VARCHAR(320) NOT NULL UNIQUE,
   [create_survey] TINYINT NOT NULL default '0',
   [create_user] TINYINT NOT NULL default '0',
+  [participant_panel] TINYINT NOT NULL default '0',
   [delete_user] TINYINT NOT NULL default '0',
   [superadmin] TINYINT NOT NULL default '0',
   [configurator] TINYINT NOT NULL default '0',
@@ -404,8 +405,74 @@ CREATE TABLE [prefix_templates_rights] (
     [use] int NOT NULL,
     PRIMARY KEY  ([uid],[folder])
 );
-
-
+--
+-- Table structure for table participants
+--
+CREATE TABLE [prefix_participants] (
+    [participant_id] varchar(50) NOT NULL,
+    [firstname] varchar(40) NOT NULL,
+    [lastname] varchar(40) NOT NULL,
+    [email] varchar(80) NOT NULL,
+    [language] varchar(2) NOT NULL,
+    [blacklisted] varchar(1) NOT NULL,
+    [owner_uid] int(20) NOT NULL,
+    PRIMARY KEY  ([participant_id])
+);
+--
+-- Table structure for table participant attribute
+--
+CREATE TABLE [prefix_participant_attribute] (
+    [participant_id] varchar(50) NOT NULL,
+    [attribute_id] int(11) NOT NULL,
+    [value] varchar(50) NOT NULL,
+    PRIMARY KEY  ([participant_id],[attribute_id])
+);
+--
+-- Table structure for table participant attribute names
+--
+CREATE TABLE [prefix_participant_attribute_names] (
+    [attribute_id] int(11) NOT NULL AUTO_INCREMENT,
+    [attribute_type] varchar(4) NOT NULL,
+    [visible] char(5) NOT NULL,
+    PRIMARY KEY  ([attribute_id],[attribute_type])
+);
+--
+-- Table structure for table participant attribute names lang
+--
+CREATE TABLE [prefix_participant_attribute_names_lang] (
+    [id] int(11) NOT NULL AUTO_INCREMENT,
+    [attribute_id] int(11) NOT NULL,
+    [attribute_name] varchar(30) NOT NULL,
+    [lang] varchar(4) NOT NULL,
+    PRIMARY KEY  ([attribute_id],[attribute_type])
+);
+--
+-- Table structure for table participant attribute values
+--
+CREATE TABLE [prefix_participant_attribute_values] (
+    [attribute_id] int(11) NOT NULL,
+    [value_id] int(11) NOT NULL AUTO_INCREMENT,
+    [value] varchar(20) NOT NULL,
+    PRIMARY KEY  ([attribute_id],[value_id])
+);
+--
+-- Table structure for table participant shares
+--
+CREATE TABLE [prefix_participant_shares] (
+    [participant_id] varchar(50) NOT NULL,
+    [share_uid] int(11) NOT NULL,
+    [date_added] datetime,
+    [can_edit] text NOT NULL    
+);
+--
+-- Table structure for table survey links
+--
+CREATE TABLE [prefix_survey_links] (
+    [participant_id] varchar(50) NOT NULL,
+    [token_id] int(11) NOT NULL,
+    [survey_id] int(11) NOT NULL,
+    [date_created] datetime
+);
 --
 -- Table structure for table templates
 --						  
@@ -447,11 +514,11 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '147');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '148');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 
 
 --
 -- Create admin user
 --
-INSERT INTO [prefix_users] ([users_name], [password], [full_name], [parent_id], [lang] ,[email], [create_survey], [create_user] ,[delete_user] ,[superadmin] ,[configurator] ,[manage_template] , [manage_label]) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1);
+INSERT INTO [prefix_users] ([users_name], [password], [full_name], [parent_id], [lang] ,[email], [participant_panel], [create_survey], [create_user] ,[delete_user] ,[superadmin] ,[configurator] ,[manage_template] , [manage_label]) VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail', 1,1,1,1,1,1,1,1);

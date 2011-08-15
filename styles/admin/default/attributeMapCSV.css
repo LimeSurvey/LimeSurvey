@@ -2,22 +2,21 @@ html, body{
     height: 100%;
 }
 .main{
-  width: 1200px; 
-  margin: 0 auto;  
+    width: 1200px; 
+    margin: 0 auto;  
 }
 #sep{
- margin-top: 10px;
+   margin-top: 10px;
 }
 #newcreated{ 
   
-    float : left;
-    background-color: #D2E0F2;
+   float : left;
+   background-color: #D2E0F2;
  }
 #csvattribute { 
     float : left;
     background-color: #D2E0F2;
     height: 100%;
-    
 }
 #centralattribute { 
     float : left;
@@ -47,8 +46,7 @@ html, body{
     border-width: 1px;
     overflow : auto;
     text-align:center;
- }
-
+}
 .heading{
     background: #EAF2FF;
     text-decoration: none;
@@ -58,19 +56,19 @@ html, body{
     
 }
 li{
-        border:solid 2px #DEDEDE;
-        background:#FFFFFF ;
-        color:#222222;
-        width : 200px;
-        margin-top: 2px;
-        margin-left:6%;
-        margin-bottom: 2px;
-        list-style: none;
-        padding:4px;
-        text-align:center;
+    border:solid 2px #DEDEDE;
+    background:#FFFFFF ;
+    color:#222222;
+    width : 200px;
+    margin-top: 2px;
+    margin-left:6%;
+    margin-bottom: 2px;
+    list-style: none;
+    padding:4px;
+    text-align:center;
 }
 .notsortable li{
-        background:#696565;
-        color: white;
+    background:#696565;
+    color: white;
 }
  

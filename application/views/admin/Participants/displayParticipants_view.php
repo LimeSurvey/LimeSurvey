@@ -1,7 +1,6 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
 <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/start/jquery-ui.css" ?>" />
 <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/jquery.multiselect.css" ?>" />
 <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/jquery.multiselect.filter.css" ?>" />
@@ -16,6 +15,7 @@
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.min.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.filter.min.js" ?>" type="text/javascript"></script>
+<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.ui.selectable.min.js" ?>" type="text/javascript"></script>
 <?php
 /* If there are any attributes to display as extra columns in the jqGrid, iterate through them */
 
@@ -79,11 +79,13 @@ var addpartErrorMsg = "<?php echo $clang->gT("Either you don't own a survey or i
 var mapButton = "<?php echo $clang->gT("Next") ?>";
 var error = "<?php echo $clang->gT("Error") ?>";
 var exportcsv = "<?php echo $clang->gT("Export CSV") ?>";
+var nooptionselected = "<?php echo $clang->gT("Please choose either of the options") ?>";
 var removecondition = "<?php echo $clang->gT("Remove Condition") ?>";
 var selectSurvey = "<?php echo $clang->gT("Please select a survey to add participants to"); ?>";
 var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
 var exportBtn = "<?php echo $clang->gT("Export") ?>";
 var okBtn = "<?php echo $clang->gT("OK") ?>";
+var deleteMsg = "<br><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>Delete Participant from central table only</li><li class='ui-widget-content' id='ptt'>Delete Participant from central table and token table</li><li class='ui-widget-content' id='ptta'>Delete Participant from central table, token table and from results as well</li></ol></center>";
 var searchBtn = "<?php echo $clang->gT("Search") ?>";
 var shareMsg = "<?php echo $clang->gT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
 var jsonUrl = "<?php echo site_url("admin/participants/getParticipants_json");?>";
@@ -91,6 +93,7 @@ var jsonSearchUrl = "<?php echo site_url("admin/participants/getParticipantsResu
 var editUrl = "<?php echo site_url("admin/participants/editParticipant"); ?>";
 var minusbutton = "<?php echo site_url("/images/deleteanswer.png"); ?>";
 var addbutton = "<?php echo base_url()."images/plus.png" ?>";
+var delparticipantUrl = "<?php echo site_url("admin/participants/delParticipant");?>";
 var surveylinkUrl = "<?php echo site_url("admin/participants/getSurveyInfo_json"); ?>";
 var getAttribute_json = "<?php echo site_url("admin/participants/getAttribute_json");?>";
 var exporttocsv = "<?php echo site_url("admin/participants/exporttocsv");?>";
@@ -257,6 +260,5 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
         ?>
     </select>
 </div>
-
 </body>
 </html>

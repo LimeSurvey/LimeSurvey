@@ -222,10 +222,23 @@ ondblClickRow: function(id)
       }
    
 });
-
-jQuery("#displayparticipants").jqGrid('navGrid','#pager',{add:true,del:true,edit:false,refresh: true,search: true},{},{width : 400},{},{multipleSearch:true, multipleGroup:true});
+jQuery("#displayparticipants").jqGrid('navGrid','#pager',{add:true,del:true,edit:false,refresh: true,search: true},{},{ width : 400},{msg:deleteMsg, width : 700, beforeSubmit : function(postdata, formid) {
+     if(!$('#selectable .ui-selected').attr('id'))
+     {
+             alert(nooptionselected);
+              message = "dummy";
+     }
+     else 
+     {
+         $.post(delparticipantUrl, { participant_id : postdata ,selectedoption : $('#selectable .ui-selected').attr('id')}, function(data) {});
+        success = "dummy";
+         message = "dummy";
+         return[success,message]; 
+     }
+     
+} ,beforeShowForm:function(form) {$('#selectable').bind("mousedown", function (e) {e.metaKey = false;}).selectable({tolerance: 'fit'})}},{multipleSearch:true, multipleGroup:true});
 $("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Export to CSV", buttonicon:'exporticon', onClickButton:function(){
-            $.post(exporttocsvcount, { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
+            $.post(exporttocsvcount, {searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
                             function(data) {
                             titlemsg = data;
                             

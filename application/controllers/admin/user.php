@@ -60,7 +60,7 @@ class user extends SurveyCommonController {
 	        //$uresult = db_execute_assoc($uquery); //Checked
 	        $uresult = $this->users_model->getSomeRecords(array("users_name"),array("uid"=>$usrhimself['parent_id']));
 	        $srow = $uresult->row_array();
-	        //$usersummary .= "<td align='center'><strong>{$srow['users_name']}</strong></td>\n";
+                //$usersummary .= "<td align='center'><strong>{$srow['users_name']}</strong></td>\n";
 	    }
 	
 		$data['usrhimself']=$usrhimself;
@@ -136,13 +136,13 @@ class user extends SurveyCommonController {
 	            db_execute_assoc($template_query); //Checked
 	
 	            // add new user to userlist
-	            $squery = "SELECT uid, users_name, password, parent_id, email, create_survey, configurator, create_user, delete_user, superadmin, manage_template, manage_label FROM ".$this->db->dbprefix('users')." WHERE uid='{$newqid}'";			//added by Dennis
+	            $squery = "SELECT uid, users_name, password, parent_id, email, create_survey, configurator, create_user, delete_user, participant_panel,superadmin, manage_template, manage_label FROM ".$this->db->dbprefix('users')." WHERE uid='{$newqid}'";			//added by Dennis
 	            $sresult = db_execute_assoc($squery);//Checked
 	            $srow = $sresult->row_array();
 	            $userlist = getuserlist();
 	            array_push($userlist, array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'],
 				"password"=>$srow["password"], "parent_id"=>$srow['parent_id'], // "level"=>$level,
-				"create_survey"=>$srow['create_survey'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'],
+				"create_survey"=>$srow['create_survey'],"participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'],
 				"delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'],
 				"manage_label"=>$srow['manage_label']));
 	
@@ -564,6 +564,7 @@ class user extends SurveyCommonController {
 	
 	            // Forbids Allowing more privileges than I have
 	            if(isset($_POST['create_survey']) && $this->session->userdata('USER_RIGHT_CREATE_SURVEY'))$rights['create_survey']=1;		else $rights['create_survey']=0;
+                    if(isset($_POST['participant_panel']) && $this->session->userdata('USER_RIGHT_PARTICIPANT_PANEL'))$rights['participant_panel']=1;	else $rights['participant_panel']=0;
 	            if(isset($_POST['configurator']) && $this->session->userdata('USER_RIGHT_CONFIGURATOR'))$rights['configurator']=1;			else $rights['configurator']=0;
 	            if(isset($_POST['create_user']) && $this->session->userdata('USER_RIGHT_CREATE_USER'))$rights['create_user']=1;			else $rights['create_user']=0;
 	            if(isset($_POST['delete_user']) && $this->session->userdata('USER_RIGHT_DELETE_USER'))$rights['delete_user']=1;			else $rights['delete_user']=0;
@@ -583,6 +584,7 @@ class user extends SurveyCommonController {
 	            if(isset($_POST['create_survey']))$rights['create_survey']=1;		else $rights['create_survey']=0;
 	            if(isset($_POST['configurator']))$rights['configurator']=1;			else $rights['configurator']=0;
 	            if(isset($_POST['create_user']))$rights['create_user']=1;			else $rights['create_user']=0;
+                    if(isset($_POST['participant_panel']))$rights['participant_panel']=1;	else $rights['participant_panel']=0;
 	            if(isset($_POST['delete_user']))$rights['delete_user']=1;			else $rights['delete_user']=0;
 	
 	            // Only Initial Superadmin can give this right
@@ -593,7 +595,7 @@ class user extends SurveyCommonController {
 	                // Initial SuperAdmin has parent_id == 0
 	                $adminquery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE parent_id=0";
 	                $adminresult = db_select_limit_assoc($adminquery, 1);
-	                $row=$adminresult->FetchRow();
+	                $row=$adminresult->row_array();
 	                 
 	                if($row['uid'] == $this->session->userdata('loginID'))	// it's the original superadmin !!!
 	                {

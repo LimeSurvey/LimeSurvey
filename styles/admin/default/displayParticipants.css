@@ -1,10 +1,10 @@
-
 .ui-icon.searchicon {
 width: 16px;
 height: 16px;
 background-image:url('images/search.gif');
 }
-.ui-icon.exporticon {
-
-    background-image:url('images/export.gif');
-}
+#selectable .ui-selecting { background: #7FFFD4;  }
+#selectable .ui-selected { background: 	#5CB3FF; color: white; }
+#selectable { list-style-type: none; margin: 2px; padding: 0; width: 80%; }
+#selectable li {  padding: 1em; font-size: 1em; height: 9px;text-align: center;margin: 4px;}
+.ui-icon.exporticon { background-image:url('images/export.gif');}
