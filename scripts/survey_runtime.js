@@ -183,8 +183,9 @@ function resetMap(qID) {
 }
 
 // Reverse geocoder
-var geocoder = new google.maps.Geocoder();
 function geocodeAddress(name, pos) {
+	var geocoder = new google.maps.Geocoder();
+	
 	var city  = '';
 	var state = '';
 	var country = '';
