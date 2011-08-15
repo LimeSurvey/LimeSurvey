@@ -16,6 +16,7 @@
                     <li><label for='copysurveyresetconditions'><?php echo  $clang->gT("Reset conditions?") ; ?></label>
                     <input id='copysurveyresetconditions' name="copysurveyresetconditions" type="checkbox" /></li></ul>
                     <p><input type='submit' value='<?php echo $clang->gT("Copy survey"); ?>' />
+                    <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                     <input type='hidden' name='action' value='copysurvey' /></p></form>
 
         

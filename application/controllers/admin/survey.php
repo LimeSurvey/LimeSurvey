@@ -890,6 +890,8 @@
     {
         $importsurvey = "";
         $action = $this->input->post('action');
+        $surveyid = $this->input->post('sid');
+        
         if ($action == "importsurvey" || $action == "copysurvey")
         {
             if ( $this->input->post('copysurveytranslinksfields') == "on"  || $this->input->post('translinksfields') == "on")
@@ -952,6 +954,7 @@
             {
                 $surveyid = sanitize_int($this->input->post('copysurveylist'));
                 $exclude = array();
+                
                 if (get_magic_quotes_gpc()) {$sNewSurveyName = stripslashes($this->input->post('copysurveyname'));}
                 else{
                     $sNewSurveyName=$this->input->post('copysurveyname');
@@ -979,8 +982,47 @@
                     $exclude['conditions'] = true;
                 }
                 //include("export_structure_xml.php");
-                $this->load->helper('admin/export_structure_xml');
-                $copysurveydata = getXMLData($exclude);
+                
+                if (!$surveyid)
+                {
+                    self::_getAdminHeader();
+                    echo ""
+                    ."<br />\n"
+                    ."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
+                    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
+                    .$clang->gT("Export Survey")."</strong></td></tr>\n"
+                    ."\t<tr><td align='center'>\n"
+                    ."<br /><strong><font color='red'>"
+                    .$clang->gT("Error")."</font></strong><br />\n"
+                    .$clang->gT("No SID has been provided. Cannot dump survey")."<br />\n"
+                    ."<br /><input type='submit' value='"
+                    .$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
+                    ."\t</td></tr>\n"
+                    ."</table>\n"
+                    ."</body></html>\n";
+                    exit;
+                }
+                
+                
+                $this->load->helper('export_helper');
+                
+                
+                if (!isset($copyfunction))
+                {
+                    $fn = "limesurvey_survey_$surveyid.lss";      
+                    header("Content-Type: text/xml");
+                    header("Content-Disposition: attachment; filename=$fn");
+                    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+                    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+                    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                    header("Pragma: public");                          // HTTP/1.0
+                    echo getXMLData();
+                    exit;
+                }
+                
+                $copysurveydata = survey_getXMLData($surveyid,$exclude);
+                
+                
             }
             
             // Now, we have the survey : start importing
@@ -1172,8 +1214,8 @@
         }
         $editsurvey .= "</form>";
         if ($action == "newsurvey") {
-            $editsurvey .= self::_tabImport();
-            $editsurvey .= self::_tabCopy();
+            $editsurvey .= self::_tabImport($surveyid);
+            $editsurvey .= self::_tabCopy($surveyid);
         } elseif ($action == "editsurveysettings") {
             $editsurvey .= self::_tabResourceManagement($surveyid);
         }
@@ -2223,7 +2265,7 @@
         return $this->load->view('admin/survey/superview/superTokens_view',$data, true); 
     }
     
-    function _tabImport()
+    function _tabImport($surveyid)
     {
         $clang = $this->limesurvey_lang;
         /**
@@ -2244,13 +2286,14 @@
         $editsurvey .= "</div>\n";
         return $editsurvey; */
         $data['clang'] = $clang;
+        $data['surveyid'] = $surveyid;
         //$data['esrow'] = $esrow;
         
         //$data['showqnumcode'] = $showqnumcode;
         return $this->load->view('admin/survey/superview/superImport_view',$data, true); 
     }
     
-    function _tabCopy()
+    function _tabCopy($surveyid)
     {
         $clang = $this->limesurvey_lang;
         /**
@@ -2284,6 +2327,7 @@
         */
         
         $data['clang'] = $clang;
+        $data['surveyid'] = $surveyid;
         //$data['esrow'] = $esrow;
         
         //$data['showqnumcode'] = $showqnumcode;

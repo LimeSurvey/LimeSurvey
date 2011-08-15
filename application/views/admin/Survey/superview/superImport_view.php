@@ -8,6 +8,7 @@
                     <li><label for='translinksfields'><?php echo $clang->gT("Convert resource links and INSERTANS fields?"); ?> </label>
                     <input id='translinksfields' name="translinksfields" type="checkbox" checked='checked'/></li></ul>
                     <p><input type='submit' value='<?php echo $clang->gT("Import survey"); ?>' />
+                    <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                     <input type='hidden' name='action' value='importsurvey' /></p></form>
 
 </div>

@@ -482,8 +482,10 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 {
 	$CI =& get_instance();
     $dbprefix = $CI->db->dbprefix;
+    $CI->load->helper('database');
     $QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg()); //safe
     preg_match('/FROM (\w+)( |,)/', $Query, $MatchResults);
+    
     if ($tagname!='')
     {
         $TableName=$tagname;
