@@ -33,7 +33,7 @@ class statistics_user extends LS_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	public function _remap($method, $params = array())
 	{
 		array_unshift($params, $method);
@@ -42,16 +42,16 @@ class statistics_user extends LS_Controller {
 
 	function action($surveyid)
 	{
-		
+
 		$this->load->library('admin/progressbar','progressbar');
 		$this->load->helper("admin/statistics");
 		$this->load->helper('database');
 		$this->load->helper('surveytranslator');
-		
+
 		//XXX enable/disable this for testing
 		//$publicgraphs = 1;
 		//$showaggregateddata = 1;
-		
+
 		/*
 		 * List of important settings:
 		 * - publicstatistics: General survey setting which determines if public statistics for this survey
@@ -66,7 +66,7 @@ class statistics_user extends LS_Controller {
 		 * - filterout_incomplete_answers: Setting taken from config-defaults.php which determines if
 		 * 	 not completed answers will be filtered.
 		 */
-		
+
 		if(!isset($surveyid))
 			$surveyid=returnglobal('sid');
 		else
@@ -75,8 +75,8 @@ class statistics_user extends LS_Controller {
 		    //This next line ensures that the $surveyid value is never anything but a number.
 		    safe_die('You have to provide a valid survey ID.');
 		}
-		
-		
+
+
 		if ($surveyid)
 		{
 		    $actquery="SELECT * FROM ".$this->db->dbprefix('surveys')." WHERE sid=$surveyid and active='Y'";
@@ -93,7 +93,7 @@ class statistics_user extends LS_Controller {
 		        {
 		            safe_die('The public statistics for this survey are deactivated.');
 		        }
-		         
+
 		        //check if graphs should be shown for this survey
 		        if ($surveyinfo['publicgraphs']=='Y')
 		        {
@@ -103,11 +103,11 @@ class statistics_user extends LS_Controller {
 		        }
 		    }
 		}
-		
+
 		//we collect all the output within this variable
 		$statisticsoutput ='';
-		
-		
+
+
 		//for creating graphs we need some more scripts which are included here
 		//True -> include
 		//False -> forget about charts
@@ -116,7 +116,7 @@ class statistics_user extends LS_Controller {
 		    require_once(APPPATH.'third_party/pchart/pchart/pChart.class');
 		    require_once(APPPATH.'third_party/pchart/pchart/pData.class');
 		    require_once(APPPATH.'third_party/pchart/pchart/pCache.class');
-		
+
 		    $MyCache = new pCache($this->config->item("tempdir").'/');
 		    //$currentuser is created as prefix for pchart files
 		    if (isset($_SERVER['REDIRECT_REMOTE_USER']))
@@ -132,13 +132,13 @@ class statistics_user extends LS_Controller {
 		        $currentuser="standard";
 		    }
 		}
-		
-		
+
+
 		// Set language for questions and labels to base language of this survey
 		$language = GetBaseLanguageFromSurveyID($surveyid);
-		
-		
-		$chartfontfile = $this->config->item("chartfontfile");		
+
+
+		$chartfontfile = $this->config->item("chartfontfile");
 		//pick the best font file if font setting is 'auto'
 		if ($chartfontfile=='auto')
 		{
@@ -151,19 +151,19 @@ class statistics_user extends LS_Controller {
 		    {
 		        $chartfontfile='KacstFarsi.ttf';
 		    }
-		
+
 		}
-		
-		
-		
+
+
+
 		//set survey language for translations
 		$clang = SetSurveyLanguage($surveyid, $language);
-		
-		
+
+
 		//Create header (fixes bug #3097)
 		$surveylanguage= $language;
 		sendcacheheaders();
-		
+
 		$header=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n"
 		. "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"".$surveylanguage."\" lang=\"".$surveylanguage."\"";
 		if (getLanguageRTL($surveylanguage))
@@ -176,45 +176,44 @@ class statistics_user extends LS_Controller {
 		. "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
 		    . "<link href=\"".$thisSurveyCssPath."/template.css\" rel=\"stylesheet\" type=\"text/css\" />\n"
 		. "</head>\n<body>\n";
-		
+
 		echo $header;
-		
-		
-		
+
+
+
 		/*
 		 * only show questions where question attribute "public_statistics" is set to "1"
 		 */
-		$query = "SELECT ".$this->db->dbprefix("questions").".*, group_name, group_order\n"
-		."FROM ".$this->db->dbprefix("questions").", ".$this->db->dbprefix("groups").", ".$this->db->dbprefix("question_attributes")."\n"
-		."WHERE ".$this->db->dbprefix("groups").".gid=".$this->db->dbprefix("questions").".gid\n"
-		."AND ".$this->db->dbprefix("groups").".language='".$language."'\n"
-		."AND ".$this->db->dbprefix("questions").".language='".$language."'\n"
-		."AND ".$this->db->dbprefix("questions").".sid=$surveyid\n"
-		."AND ".$this->db->dbprefix("questions").".qid=".$this->db->dbprefix("question_attributes").".qid\n"
-		."AND ".$this->db->dbprefix("question_attributes").".attribute='public_statistics'\n";
-		$databasetype = $this->db->platform();
-		if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' or $databasetype=="mssqlnative")
-		{
-		    $query .="AND CAST(CAST(".$this->db->dbprefix("question_attributes").".value as varchar) as int)='1'\n";
-		}
-		else
-		{
-		    $query .="AND ".$this->db->dbprefix("question_attributes").".value='1'\n";
-		}
-		
-		
-		
-		
+
+        $query = "SELECT q.* , group_name, group_order\n"
+        ."FROM ".$this->db->dbprefix("questions")." q, ".$this->db->dbprefix("groups")." g, ".$this->db->dbprefix("question_attributes")." qa\n"
+        ."WHERE g.gid=q.gid\n"
+        ."AND g.language='".$language."'\n"
+        ."AND q.language='".$language."'\n"
+        ."AND q.sid={$surveyid}\n"
+        ."AND q.qid=qa.qid\n"
+        ."AND q.parent_qid=0\n"
+        ."AND qa.attribute='public_statistics'\n";
+        $databasetype = $this->db->platform();
+        if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' or $databasetype=="mssqlnative")
+        {
+            $query .="AND CAST(CAST(qa.value as varchar) as int)='1'\n";
+        }
+        else
+        {
+            $query .="AND qa.value='1'\n";
+        }
+
 		//execute query
 		$result = db_execute_assoc($query) or safe_die("Couldn't do it!<br />$query<br />".$connect->ErrorMsg());
-		
+
 		//store all the data in $rows
 		$rows = $result->result_array();
-		
-		
+
+
 		//SORT IN NATURAL ORDER!
 		usort($rows, 'GroupOrderThenQuestionOrder');
-		
+
 		//put the question information into the filter array
 		foreach ($rows as $row)
 		{
@@ -226,13 +225,13 @@ class statistics_user extends LS_Controller {
 		    $row['group_name'],
 		    FlattenText($row['question']));
 		}
-		
+
 		//number of records for this survey
 		$totalrecords = 0;
-		
+
 		//count number of answers
 		$query = "SELECT count(*) FROM ".$this->db->dbprefix("survey_$surveyid");
-		
+
 		//if incompleted answers should be filtert submitdate has to be not null
 		//this setting is taken from config-defaults.php
 		if ($this->config->item("filterout_incomplete_answers") == true)
@@ -240,22 +239,22 @@ class statistics_user extends LS_Controller {
 		    $query .= " WHERE ".$this->db->dbprefix("survey_$surveyid").".submitdate is not null";
 		}
 		$result = db_execute_assoc($query) or safe_die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
-		
+
 		//$totalrecords = total number of answers
 		foreach($result->result_array() as $row)
 		{
 		    $totalrecords=reset($row);
 		}
-		
-		
+
+
 		//this is the array which we need later...
 		$summary = array();
 		//...while this is the array from copy/paste which we don't want to replace because this is a nasty source of error
 		$allfields = array();
-		
-		
+
+
 		//---------- CREATE SGQA OF ALL QUESTIONS WHICH USE "PUBLIC_STATISTICS" ----------
-		
+
 		        /*
 		 * let's go through the filter array which contains
 		 * 	['qid'],
@@ -265,7 +264,7 @@ class statistics_user extends LS_Controller {
 		 ['group_name'],
 		 ['question'];
 		         */
-		
+
 		$currentgroup='';
 		// use to check if there are any question with public statistics
 		if(isset($filters)){
@@ -273,7 +272,7 @@ class statistics_user extends LS_Controller {
 		{
 		    //SGQ identifier
 		    $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}";
-		
+
 		    //let's switch through the question type for each question
 		    switch ($flt[2])
 		    {
@@ -282,7 +281,7 @@ class statistics_user extends LS_Controller {
 		            //get answers
 		            $query = "SELECT title as code, question as answer FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
 		            $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-		
+
 		            //go through all the (multiple) answers
 		            foreach($result->result_array() as $row)
 		            {
@@ -299,7 +298,7 @@ class statistics_user extends LS_Controller {
 		            //get answers
 		            $query = "SELECT title as code, question as answer FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='$flt[0]' AND language = '{$language}' ORDER BY question_order";
 		            $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-		
+
 		            //go through all the (multiple) answers
 		            foreach($result->result_array() as $row)
 		            {
@@ -316,7 +315,7 @@ class statistics_user extends LS_Controller {
 		            break;
 		        case ";":  //ARRAY (Multi Flex) (Text)
 		        case ":":  //ARRAY (Multi Flex) (Numbers)
-		            $query = "SELECT title, question FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
+                    $query = "SELECT title, question FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' AND scale_id=0 ORDER BY question_order";
 		            $result = db_execute_assoc($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 		            foreach($result->result_array() as $row)
 		            {
@@ -324,7 +323,7 @@ class statistics_user extends LS_Controller {
 		                $fresult = db_execute_assoc($fquery);
 		                foreach($fresult->result_array() as $frow)
 		                {
-		                    $myfield2 = "T".$myfield . reset($row) . "_" . $frow['title'];
+		                    $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
 		                $allfields[]=$myfield2;
 		            }
 		            }
@@ -333,10 +332,10 @@ class statistics_user extends LS_Controller {
 		            //get some answers
 		            $query = "SELECT code, answer FROM ".$this->db->dbprefix("answers")." WHERE qid='$flt[0]' AND language='{$language}' ORDER BY sortorder, answer";
 		            $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-		
+
 		            //get number of answers
 		            $count = $result->num_rows();
-		
+
 		            //loop through all answers. if there are 3 items to rate there will be 3 statistics
 		            for ($i=1; $i<=$count; $i++)
 		            {
@@ -351,7 +350,7 @@ class statistics_user extends LS_Controller {
 		            //get answers
 		            $query = "SELECT title, question FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
 		            $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
-		
+
 		            //loop through answers
 		            foreach($result->result_array() as $row)
 		            {
@@ -363,7 +362,7 @@ class statistics_user extends LS_Controller {
 		                $allfields[]=$myfield2;
 		            }	//end WHILE -> loop through all answers
 		            break;
-		
+
 		        case "P":  //P - Multiple choice with comments
 		        case "M":  //M - Multiple choice
 		        case "N":  //N - Numerical input
@@ -371,49 +370,49 @@ class statistics_user extends LS_Controller {
 		            $myfield2 = $flt[2].$myfield;
 		                    $allfields[]=$myfield2;
 		            break;
-		        default:   //Default settings    
+		        default:   //Default settings
 		            $allfields[] = $myfield;
 		            break;
-		
+
 		    }	//end switch -> check question types and create filter forms
 		}
 		//end foreach -> loop through all questions with "public_statistics" enabled
 		}// end if -> for removing the error message in case there are no filters
 		$summary = $allfields;
-		
+
 		//---------- CREATE STATISTICS ----------
-		
-		
+
+
 		//some progress bar stuff
-		
+
 		// Create progress bar which is shown while creating the results
 		$prb = new ProgressBar();
 		$prb->pedding = 2;	// Bar Pedding
 		$prb->brd_color = "#404040 #dfdfdf #dfdfdf #404040";	// Bar Border Color
-		
+
 		$prb->setFrame();	// set ProgressBar Frame
 		$prb->frame['left'] = 50;	// Frame position from left
 		$prb->frame['top'] = 	80;	// Frame position from top
 		$prb->addLabel('text','txt1',$clang->gT("Please wait ..."));	// add Text as Label 'txt1' and value 'Please wait'
 		$prb->addLabel('percent','pct1');	// add Percent as Label 'pct1'
 		$prb->addButton('btn1',$clang->gT('Go back'),'?action=statistics&amp;sid='.$surveyid);	// add Button as Label 'btn1' and action '?restart=1'
-		
+
 		//progress bar starts with 35%
 		$process_status = 35;
 		$prb->show();	// show the ProgressBar
-		
-		
+
+
 		// 1: Get list of questions with answers chosen
 		//"Getting Questions and Answers ..." is shown above the bar
 		$prb->setLabelValue('txt1',$clang->gT('Getting questions and answers ...'));
 		$prb->moveStep(5);
-		
+
 		// creates array of post variable names
 		for (reset($_POST); $key=key($_POST); next($_POST))
 		{
 		    $postvars[]=$key;
 		}
-		
+
 		//show some main data at the beginnung
 		// CHANGE JSW_NZ - let's allow html formatted questions to show
 		$statisticsoutput .= "\n<div id='statsContainer'>\n"
@@ -422,43 +421,43 @@ class statistics_user extends LS_Controller {
 		."$thisSurveyTitle</div>\n"
 		."\t\t<div class='statsNumRecords'>"
 		.$clang->gT("Total records in survey")." : $totalrecords</div>\n";
-		
+
 		//close statsHeader
 		$statisticsoutput .= "\t</div>\n";
-		
-		
+
+
 		//push progress bar from 35 to 40
 		$process_status = 40;
-		
+
 		//Show Summary results
 		if (isset($summary) && $summary)
 		{
 		    //"Generating Summaries ..." is shown above the progress bar
 		    $prb->setLabelValue('txt1',$clang->gT('Generating summaries ...'));
 		    $prb->moveStep($process_status);
-		
+
 		    //let's run through the survey // Fixed bug 3053 with array_unique
 		    $runthrough=array_unique($summary);
-		
+
 		    //loop through all selected questions
 		    foreach ($runthrough as $rt)
 		    {
-		
+
 		        //update progress bar
 		        if ($process_status < 100) $process_status++;
 		        $prb->moveStep($process_status);
-		
+
 		    }	// end foreach -> loop through all questions
-		
+
 		    $statisticsoutput .= generate_statistics($surveyid, $summary, $summary, $publicgraphs, 'html',null,$language,false);
-		
+
 		                //output
 		    $statisticsoutput .= "<br />\n"
 		    . "</div>\n";
-		
+
 		}	//end if -> show summary results
-		
-		
+
+
 		//done! set progress bar to 100%
 		if (isset($prb))
 		{
@@ -466,16 +465,16 @@ class statistics_user extends LS_Controller {
 		    $prb->moveStep(100);
 		    $prb->hide();
 		}
-		
-		
+
+
 		//output everything:
 		echo $statisticsoutput;
-		
-		
+
+
 		//output footer
 		echo getFooter();
-		
-		
+
+
 		//Delete all Session Data
 		$_SESSION['finished'] = true;
 
