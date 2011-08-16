@@ -457,7 +457,7 @@ CREATE TABLE `prefix_survey_links` (
   `participant_id` varchar(50) NOT NULL,
   `token_id` int(11) NOT NULL,
   `survey_id` int(11) NOT NULL,
-  `datecreated` datetime NOT NULL,
+  `date_created` datetime NOT NULL,
    PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
  ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
