@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id$
- * 
+ *
  */
 
 /**
@@ -23,7 +23,7 @@
  * @subpackage	Backend
  */
 class conditions extends SurveyCommonController {
-    
+
 	/**
 	 * Constructor
 	 */
@@ -31,23 +31,23 @@ class conditions extends SurveyCommonController {
 	{
 		parent::__construct();
 	}
-	
+
 	public function _remap($method, $params = array())
 	{
 		array_unshift($params, $method);
 	    return call_user_func_array(array($this, "action"), $params);
 	}
-	
+
 	function action($subaction, $surveyid=null, $gid=null, $qid=null)
 	{
-		
+
 		//Compatibility variables for CI
 		$_POST = $this->input->post();
 		$clang = $this->limesurvey_lang;
 		$dbprefix = $this->db->dbprefix;
 		$imageurl=$this->config->item("imageurl");
 		$this->load->helper("database");
-		
+
 		if($this->input->post("subaction")) $subaction=$this->input->post("subaction");
 
 		//BEGIN Sanitizing POSTed data
@@ -55,7 +55,7 @@ class conditions extends SurveyCommonController {
 		if (!isset($qid)) {$qid=returnglobal('qid');}
 		if (!isset($gid)) {$gid=returnglobal('gid');}
 		if (!isset($p_scenario)) {$p_scenario=returnglobal('scenario');}
-		if (!isset($p_cqid)) 
+		if (!isset($p_cqid))
 		{
 		    $p_cqid=returnglobal('cqid');
 		    if ($p_cqid == '') $p_cqid=0; // we are not using another question as source of condition
@@ -65,10 +65,10 @@ class conditions extends SurveyCommonController {
 		if (!isset($p_cquestions)) {$p_cquestions=returnglobal('cquestions');}
 		if (!isset($p_csrctoken)) {$p_csrctoken=returnglobal('csrctoken');}
 		if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnglobal('prevQuestionSGQA');}
-		
+
 		if (!isset($p_canswers))
 		{
-		
+
 		    if (isset($_POST['canswers']) && is_array($_POST['canswers']))
 		    {
 		        foreach ($_POST['canswers'] as $key => $val)
@@ -77,12 +77,12 @@ class conditions extends SurveyCommonController {
 		        }
 		    }
 		}
-		
+
 		// this array will be used soon,
 		// to explain wich conditions is used to evaluate the question
 		if (isset($stringcomparizonoperators) && $stringcomparizonoperators == 1)
 		{
-		    $method = array(            
+		    $method = array(
 		            "<"  => $clang->gT("Less than"),
 		            "<=" => $clang->gT("Less than or equal to"),
 		            "==" => $clang->gT("equals"),
@@ -98,7 +98,7 @@ class conditions extends SurveyCommonController {
 		}
 		else
 		{
-		    $method = array(            
+		    $method = array(
 		            "<"  => $clang->gT("Less than"),
 		            "<=" => $clang->gT("Less than or equal to"),
 		            "==" => $clang->gT("equals"),
@@ -108,7 +108,7 @@ class conditions extends SurveyCommonController {
 		            "RX" => $clang->gT("Regular expression")
 		            );
 		}
-		
+
 		if (isset($_POST['method']))
 		{
 		    if (!in_array($_POST['method'], array_keys($method)))
@@ -120,20 +120,20 @@ class conditions extends SurveyCommonController {
 		        $p_method = trim ($_POST['method']);
 		    }
 		}
-		
-		
+
+
 		if (isset($_POST['newscenarionum']))
 		{
 		    $p_newscenarionum = sanitize_int($_POST['newscenarionum']);
 		}
 		//END Sanitizing POSTed data
-		
+
 		//include_once("login_check.php");
 		//include_once("database.php");
 		// Caution (lemeur): database.php uses auto_unescape on all entries in $_POST
 		// Take care to not use auto_unescape on $_POST variables after this
-		
-		
+
+
 		//MAKE SURE THAT THERE IS A SID
 		if (!isset($surveyid) || !$surveyid)
 		{
@@ -142,7 +142,7 @@ class conditions extends SurveyCommonController {
 			show_error($conditionsoutput);
 		    return;
 		}
-		
+
 		//MAKE SURE THAT THERE IS A QID
 		if (!isset($qid) || !$qid)
 		{
@@ -151,28 +151,28 @@ class conditions extends SurveyCommonController {
 			show_error($conditionsoutput);
 		    return;
 		}
-		
-		
+
+
 		// If we made it this far, then lets develop the menu items
 		// add the conditions container table
-		
+
 		$extraGetParams ="";
 		if (isset($qid) && isset($gid))
 		{
 		    $extraGetParams="/$gid/$qid/";
 		}
-		
+
 
 		$conditionsoutput_action_error = ""; // defined during the actions
 		$conditionsoutput_main_content = ""; // everything after the menubar
-		
+
 		$markcidarray=Array();
 		if (isset($_GET['markcid']))
 		{
 		    $markcidarray=explode("-",$_GET['markcid']);
 		}
-		
-		
+
+
 		//BEGIN PROCESS ACTIONS
 		// ADD NEW ENTRY IF THIS IS AN ADD
 		if (isset($p_subaction) && $p_subaction == "insertcondition")
@@ -196,7 +196,7 @@ class conditions extends SurveyCommonController {
 		        {
 		            $conditionCfieldname=$p_csrctoken;
 		        }
-		
+
 		        if (isset($p_canswers))
 		        {
 		            foreach ($p_canswers as $ca)
@@ -211,7 +211,7 @@ class conditions extends SurveyCommonController {
 		                ."AND value='".$ca."'";
 		                $result = db_execute_assoc($query) or safe_die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
 		                $count_caseinsensitivedupes = $result->num_rows();
-		
+
 		                if ($count_caseinsensitivedupes == 0)
 		                {
 		                $query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
@@ -220,7 +220,7 @@ class conditions extends SurveyCommonController {
 		            }
 		        }
 		        }
-		
+
 		        unset($posted_condition_value);
 		        // Please note that auto_unescape is already applied in database.php included above
 		        // so we only need to db_quote _POST variables
@@ -240,7 +240,7 @@ class conditions extends SurveyCommonController {
 		        {
 		            $posted_condition_value = db_quote($_POST['ConditionRegexp']);
 		        }
-		
+
 		        if (isset($posted_condition_value))
 		        {
 		            $query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
@@ -249,7 +249,7 @@ class conditions extends SurveyCommonController {
 		        }
 		    }
 		}
-		
+
 		// UPDATE ENTRY IF THIS IS AN EDIT
 		if (isset($p_subaction) && $p_subaction == "updatecondition")
 		{
@@ -272,7 +272,7 @@ class conditions extends SurveyCommonController {
 		        {
 		            $conditionCfieldname=$p_csrctoken;
 		        }
-		
+
 		        if (isset($p_canswers))
 		        {
 		            foreach ($p_canswers as $ca)
@@ -282,7 +282,7 @@ class conditions extends SurveyCommonController {
 		                $result = db_execute_assoc($query) or safe_die ("Couldn't update condition<br />$query<br />".$connect->ErrorMsg());
 		            }
 		        }
-		
+
 		        unset($posted_condition_value);
 		        // Please note that auto_unescape is already applied in database.php included above
 		        // so we only need to db_quote _POST variables
@@ -302,7 +302,7 @@ class conditions extends SurveyCommonController {
 		        {
 		            $posted_condition_value = db_quote($_POST['ConditionRegexp']);
 		        }
-		
+
 		        if (isset($posted_condition_value))
 		        {
 		            $query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}' , cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value='".$posted_condition_value."' "
@@ -311,35 +311,35 @@ class conditions extends SurveyCommonController {
 		        }
 		    }
 		}
-		
+
 		// DELETE ENTRY IF THIS IS DELETE
 		if (isset($p_subaction) && $p_subaction == "delete")
 		{
 		    $query = "DELETE FROM {$dbprefix}conditions WHERE cid={$p_cid}";
 		    $result = db_execute_assoc($query) or safe_die ("Couldn't delete condition<br />$query<br />".$connect->ErrorMsg());
 		}
-		
+
 		// DELETE ALL CONDITIONS IN THIS SCENARIO
 		if (isset($p_subaction) && $p_subaction == "deletescenario")
 		{
 		    $query = "DELETE FROM {$dbprefix}conditions WHERE qid={$qid} AND scenario={$p_scenario}";
 		    $result = db_execute_assoc($query) or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
 		}
-		
+
 		// UPDATE SCENARIO
 		if (isset($p_subaction) && $p_subaction == "updatescenario" && isset($p_newscenarionum))
 		{
 		    $query = "UPDATE {$dbprefix}conditions SET scenario=$p_newscenarionum WHERE qid={$qid} AND scenario={$p_scenario}";
 		    $result = db_execute_assoc($query) or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
 		}
-		
+
 		// DELETE ALL CONDITIONS FOR THIS QUESTION
 		if (isset($p_subaction) && $p_subaction == "deleteallconditions")
 		{
 		    $query = "DELETE FROM {$dbprefix}conditions WHERE qid={$qid}";
 		    $result = db_execute_assoc($query) or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
 		}
-		
+
 		// RENUMBER SCENARIOS
 		if (isset($p_subaction) && $p_subaction == "renumberscenarios")
 		{
@@ -352,9 +352,9 @@ class conditions extends SurveyCommonController {
 		        $result2 = db_execute_assoc($query2) or safe_die ("Couldn't renumber scenario<br />$query<br />".$connect->ErrorMsg());
 		        $newindex++;
 		    }
-		
+
 		}
-		
+
 		// COPY CONDITIONS IF THIS IS COPY
 		if (isset($p_subaction) && $p_subaction == "copyconditions")
 		{
@@ -392,7 +392,7 @@ class conditions extends SurveyCommonController {
 		                ."AND value='".$pfc['value']."'";
 		                $result = db_execute_assoc($query) or safe_die("Couldn't check for existing condition<br />$query<br />".$connect->ErrorMsg());
 		                $count_caseinsensitivedupes = $result->num_rows();
-		
+
 		                $countduplicates = 0;
 		                if ($count_caseinsensitivedupes != 0)
 		                {
@@ -401,7 +401,7 @@ class conditions extends SurveyCommonController {
 		                        if ($ccrow['value'] == $pfc['value']) $countduplicates++;
 		                    }
 		                }
-		
+
 		                if ($countduplicates == 0) //If there is no match, add the condition.
 		                {
 		                    $query = "INSERT INTO {$dbprefix}conditions ( qid,scenario,cqid,cfieldname,method,value) \n"
@@ -433,23 +433,23 @@ class conditions extends SurveyCommonController {
 		            $CopyConditionsMessage = "<div class='warningheader'>(".$clang->gT("No conditions could be copied (due to duplicates)").")</div>";
 		        }
 		    }
-		    
+
 		        }
 		//END PROCESS ACTIONS
-		
-		
-		
+
+
+
 		$cquestions=Array();
 		$canswers=Array();
-		
-		
-		
+
+
+
 		//BEGIN: GATHER INFORMATION
 		// 1: Get information for this question
 		if (!isset($qid)) {$qid=returnglobal('qid');}
 		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 		$thissurvey=getSurveyInfo($surveyid);
-		
+
 		$query = "SELECT * "
 		."FROM {$dbprefix}questions, "
 		."{$dbprefix}groups "
@@ -465,9 +465,9 @@ class conditions extends SurveyCommonController {
 		    $questiontext=$rows['question'];
 		    $questiontype=$rows['type'];
 		}
-		
+
 		// 2: Get all other questions that occur before this question that are pre-determined answer types
-		
+
 		// To avoid natural sort order issues,
 		// first get all questions in natural sort order
 		// , and find out which number in that order this question is
@@ -479,12 +479,12 @@ class conditions extends SurveyCommonController {
 		."AND {$dbprefix}questions.sid=$surveyid "
 		."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 		."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."' " ;
-		
+
 		$qresult = db_execute_assoc($qquery) or safe_die ("$qquery<br />".$connect->ErrorMsg());
 		$qrows = $qresult->result_array();
 		// Perform a case insensitive natural sort on group name then question title (known as "code" in the form) of a multidimensional array
 		usort($qrows, 'GroupOrderThenQuestionOrder');
-		
+
 		$position="before";
 		// Go through each question until we reach the current one
 		foreach ($qrows as $qrow)
@@ -500,7 +500,7 @@ class conditions extends SurveyCommonController {
 		        break;
 		    }
 		}
-		
+
 		// Now, using the same array which is now properly sorted by group then question
 		// Create an array of all the questions that appear AFTER the current one
 		$position = "before";
@@ -516,10 +516,10 @@ class conditions extends SurveyCommonController {
 		        $postquestionlist[]=$qrow['qid'];
 		    }
 		}
-		
+
 		$theserows=array();
 		$postrows=array();
-		
+
 		if (isset($questionlist) && is_array($questionlist))
 		{
 		    foreach ($questionlist as $ql)
@@ -539,11 +539,11 @@ class conditions extends SurveyCommonController {
 		        ."AND {$dbprefix}questions.qid=$ql "
 		        ."AND {$dbprefix}questions.language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 		        ."AND {$dbprefix}groups.language='".GetBaseLanguageFromSurveyID($surveyid)."'" ;
-		
+
 		        $result=db_execute_assoc($query) or die("Couldn't get question $qid");
-		
+
 		        $thiscount=$result->num_rows();
-		
+
 		        // And store again these questions in this array...
 		        foreach ($result->result_array() as $myrows)
 		        {                   //key => value
@@ -558,7 +558,7 @@ class conditions extends SurveyCommonController {
 		        }
 		    }
 		}
-		
+
 		if (isset($postquestionlist) && is_array($postquestionlist))
 		{
 		    foreach ($postquestionlist as $pq)
@@ -578,12 +578,12 @@ class conditions extends SurveyCommonController {
 		        ."q.qid=$pq AND "
 		        ."q.language='".GetBaseLanguageFromSurveyID($surveyid)."' AND "
 		        ."g.language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-		
-		
+
+
 		        $result = db_execute_assoc($query) or safe_die("Couldn't get postquestions $qid<br />$query<br />".$connect->ErrorMsg());
-		
+
 		        $postcount=$result->num_rows();
-		
+
 		        foreach ($result->result_array() as $myrows)
 		        {
 		            $postrows[]=array("qid"=>$myrows['qid'],
@@ -598,9 +598,9 @@ class conditions extends SurveyCommonController {
 		    }
 		    $postquestionscount=count($postrows);
 		}
-		
+
 		$questionscount=count($theserows);
-		
+
 		if (isset($postquestionscount) && $postquestionscount > 0)
 		{ //Build the array used for the questionNav and copyTo select boxes
 		foreach ($postrows as $pr)
@@ -609,16 +609,16 @@ class conditions extends SurveyCommonController {
 				"fieldname"=>$pr['sid']."X".$pr['gid']."X".$pr['qid']);
 		}
 		}
-		
+
 		// Previous question parsing ==> building cquestions[] and canswers[]
 		if ($questionscount > 0)
 		{
 		    $X="X";
-		
+
 		    foreach($theserows as $rows)
 		    {
 		        $shortquestion=$rows['title'].": ".strip_tags($rows['question']);
-		
+
 		        if ($rows['type'] == "A" ||
 		        $rows['type'] == "B" ||
 		        $rows['type'] == "C" ||
@@ -631,15 +631,15 @@ class conditions extends SurveyCommonController {
 		            ."WHERE parent_qid={$rows['qid']} "
 		            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 		            ."ORDER BY question_order";
-		
+
 		            $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
-		
+
 		            foreach ($aresult->result_array() as $arows)
 		            {
 		                $shortanswer = "{$arows['title']}: [" . FlattenText($arows['question']) . "]";
 		                $shortquestion=$rows['title'].":$shortanswer ".FlattenText($rows['question']);
 		                $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
-		
+
 		                switch ($rows['type'])
 		                {
 		                    case "A": //Array 5 buttons
@@ -684,12 +684,12 @@ class conditions extends SurveyCommonController {
 		                {
 		                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", $clang->gT("No answer"));
 		                }
-		
+
 		            } //while
 		        }
 		        elseif ($rows['type'] == ":" || $rows['type'] == ";")
 		        { // Multiflexi
-		
+
 		            //Get question attribute for $canswers
 		            $qidattributes=getQuestionAttributes($rows['qid'], $rows['type']);
 		            if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {
@@ -707,14 +707,14 @@ class conditions extends SurveyCommonController {
 		            } else {
 		                $stepvalue=1;
 		            }
-		
+
 		            if (isset($qidattributes['multiflexible_checkbox']) && $qidattributes['multiflexible_checkbox']!=0) {
 		                $minvalue=0;
 		                $maxvalue=1;
 		                $stepvalue=1;
 		            }
 		            // Get the Y-Axis
-		
+
 		            $fquery = "SELECT sq.*, q.other"
 		            ." FROM ".$this->db->dbprefix('questions')." sq, ".$this->db->dbprefix('questions')." q"
 		            ." WHERE sq.sid=$surveyid AND sq.parent_qid=q.qid "
@@ -723,34 +723,34 @@ class conditions extends SurveyCommonController {
 		            ." AND q.qid={$rows['qid']}
 		               AND sq.scale_id=0
 		               ORDER BY sq.question_order";
-		            
+
 		            $y_axis_db = db_execute_assoc($fquery);
-		            
-		             // Get the X-Axis   
+
+		             // Get the X-Axis
 		             $aquery = "SELECT sq.*
-		                         FROM ".$this->db->dbprefix('questions')." q, ".$this->db->dbprefix('questions')." sq 
-		                         WHERE q.sid=$surveyid 
+		                         FROM ".$this->db->dbprefix('questions')." q, ".$this->db->dbprefix('questions')." sq
+		                         WHERE q.sid=$surveyid
 		                         AND sq.parent_qid=q.qid
 		                         AND q.language='".GetBaseLanguageFromSurveyID($surveyid)."'
 		                         AND sq.language='".GetBaseLanguageFromSurveyID($surveyid)."'
 		                         AND q.qid=".$rows['qid']."
 		                         AND sq.scale_id=1
 		                         ORDER BY sq.question_order";
-		              
+
 		            $x_axis_db=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
-		
+
 		            foreach ($x_axis_db->result_array() as $frow)
 		            {
 		                $x_axis[$frow['title']]=$frow['question'];
 		            }
-		            
+
 		            foreach ($y_axis_db->result_array() as $arow)
 		            {
 		                foreach($x_axis as $key=>$val)
 		                {
 		                    $shortquestion=$rows['title'].":{$arows['title']}:$key: [".strip_tags($arows['question']). "][" .strip_tags($val). "] " . FlattenText($rows['question']);
 		                    $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."_".$key);
-		
+
 		                    if ($rows['type'] == ":")
 		                    {
 		                        for($ii=$minvalue; $ii<=$maxvalue; $ii+=$stepvalue)
@@ -770,7 +770,7 @@ class conditions extends SurveyCommonController {
 		            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 		            ."ORDER BY question_order";
 		            $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
-		
+
 		            foreach ($aresult->result_array() as $arows)
 		            {
 		                $attr = getQuestionAttributes($rows['qid']);
@@ -779,11 +779,11 @@ class conditions extends SurveyCommonController {
 		                $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label1]";
 		                $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
 		                $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0");
-		
+
 		                $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label2]";
 		                $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
 		                $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1");
-		
+
 		                // first label
 		                $lquery="SELECT * "
 		                ."FROM {$dbprefix}answers "
@@ -796,7 +796,7 @@ class conditions extends SurveyCommonController {
 		                {
 		                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
 		                }
-		
+
 		                // second label
 		                $lquery="SELECT * "
 		                ."FROM {$dbprefix}answers "
@@ -809,7 +809,7 @@ class conditions extends SurveyCommonController {
 		                {
 		                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "{$lrows['code']}", "{$lrows['code']}");
 		                }
-		
+
 		                // Only Show No-Answer if question is not mandatory
 		                if ($rows['mandatory'] != 'Y')
 		                {
@@ -826,19 +826,19 @@ class conditions extends SurveyCommonController {
 		            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 		            ."ORDER BY question_order";
 		            $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to Array questions<br />$aquery<br />".$connect->ErrorMsg());
-		
+
 		            foreach ($aresult->result_array() as $arows)
 		            {
 		                $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
 		                $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
 		                $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
-		
+
 		                // Only Show No-Answer if question is not mandatory
 		                if ($rows['mandatory'] != 'Y')
 		                {
 		                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", $clang->gT("No answer"));
 		                }
-		
+
 		            } //while
 		        }
 		        elseif ($rows['type'] == "R") //Answer Ranking
@@ -882,12 +882,12 @@ class conditions extends SurveyCommonController {
 		            ."AND language='".GetBaseLanguageFromSurveyID($surveyid)."' "
 		            ."ORDER BY question_order";
 		            $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
-		
+
 		            foreach ($aresult->result_array() as $arows)
 		            {
 		                $theanswer = addcslashes($arows['question'], "'");
 		                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
-		
+
 		                $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
 		                $shortanswer .= "[".$clang->gT("Single checkbox")."]";
 		                $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
@@ -934,16 +934,16 @@ class conditions extends SurveyCommonController {
 		                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 		                    }
 		                    break;
-		
+
 		                case "N": // Simple Numerical questions
-		
+
 		                    // Only Show No-Answer if question is not mandatory
 		                    if ($rows['mandatory'] != 'Y')
 		                    {
 		                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", $clang->gT("No answer"));
 		                    }
 		                    break;
-		
+
 		                default:
 		                    $aquery="SELECT * "
 		                    ."FROM {$dbprefix}answers "
@@ -954,7 +954,7 @@ class conditions extends SurveyCommonController {
 		                    ."answer";
 		                    // Ranking question? Replacing "Ranking" by "this"
 		                    $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get answers to this question<br />$aquery<br />".$connect->ErrorMsg());
-		
+
 		                    foreach ($aresult->result_array() as $arows)
 		                    {
 		                        $theanswer = addcslashes($arows['answer'], "'");
@@ -981,7 +981,7 @@ class conditions extends SurveyCommonController {
 		                        {
 		                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", $clang->gT("Other"));
 		                        }
-		
+
 		                        // Only Show No-Answer if question is not mandatory
 		                        if ($rows['mandatory'] != 'Y')
 		                        {
@@ -994,8 +994,8 @@ class conditions extends SurveyCommonController {
 		    } //foreach theserows
 		} //if questionscount > 0
 		//END Gather Information for this question
-		
-		
+
+
 		$quesitonNavOptions = "<optgroup class='activesurveyselect' label='".$clang->gT("Before","js")."'>";
 		foreach ($theserows as $row)
 		{
@@ -1057,20 +1057,17 @@ class conditions extends SurveyCommonController {
 		$jn=0;
 		if (isset($canswers))
 		{
-		    foreach($canswers as $can)
-		    {
-		        $an=str_replace("'", "`", $can[2]);
-		        $an=str_replace("\r", " ", $an);
-		        $an=str_replace("\n", " ", $an);
-		        $an=strip_tags($an);
-		        $javascriptpre .= "Fieldnames[$jn]='$can[0]';\n"
-		        ."Codes[$jn]='$can[1]';\n"
-		        ."Answers[$jn]='$an';\n";
-		        $jn++;
-		    }
+            foreach($canswers as $can)
+            {
+                $an=json_encode(FlattenText($can[2]));
+                $conditionsoutput_main_content .= "Fieldnames[$jn]='$can[0]';\n"
+                ."Codes[$jn]='$can[1]';\n"
+                ."Answers[$jn]={$an};\n";
+                $jn++;
+            }
 		}
 		$jn=0;
-		
+
 		if (isset($cquestions))
 		{
 		    foreach ($cquestions as $cqn)
@@ -1081,7 +1078,7 @@ class conditions extends SurveyCommonController {
 		        $jn++;
 		    }
 		}
-		
+
 		//  record a JS variable to let jQuery know if survey is Anonymous
 		if ($thissurvey['anonymized'] == 'Y')
 		{
@@ -1091,10 +1088,10 @@ class conditions extends SurveyCommonController {
 		{
 		    $javascriptpre .= "isAnonymousSurvey = false;";
 		}
-		
+
 		$javascriptpre .= "//-->\n"
 		."</script>\n";
-		
+
 		//END: PREPARE JAVASCRIPT TO SHOW MATCHING ANSWERS TO SELECTED QUESTION
 
 
@@ -1112,7 +1109,7 @@ class conditions extends SurveyCommonController {
 		$data['javascriptpre'] = $javascriptpre;
 		$this->load->view("admin/conditions/conditionshead_view",$data);
 
-		
+
 		//BEGIN DISPLAY CONDITIONS FOR THIS QUESTION
 		if ($subaction=='index' ||
 		$subaction=='editconditionsform' || $subaction=='insertcondition' ||
@@ -1132,10 +1129,10 @@ class conditions extends SurveyCommonController {
 		    ."ORDER BY {$dbprefix}conditions.scenario";
 		    $scenarioresult = db_execute_assoc($scenarioquery) or safe_die ("Couldn't get other (scenario) conditions for question $qid<br />$query<br />".$connect->Error);
 		    $scenariocount=$scenarioresult->num_rows();
-			
+
 		    $showreplace="$questiontitle". self::_showSpeaker($questiontext);
 		    $onlyshow=str_replace("{QID}", $showreplace, $clang->gT("Only show question {QID} IF"));
-			
+
 			$data['conditionsoutput'] = $conditionsoutput_main_content;
 			$data['extraGetParams'] = $extraGetParams;
 			$data['quesitonNavOptions'] = $quesitonNavOptions;
@@ -1145,10 +1142,10 @@ class conditions extends SurveyCommonController {
 			$data['subaction'] = $subaction;
 			$data['scenariocount'] = $scenariocount;
 			$this->load->view("admin/conditions/conditionslist_view",$data);
-			
+
 		    if ($scenariocount > 0)
 		    {
-		    	
+
 				self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery.checkgroup.js');
 		        foreach ($scenarioresult->result_array() as $scenarionr)
 		        {
@@ -1171,7 +1168,7 @@ class conditions extends SurveyCommonController {
 		            {
 		                $initialCheckbox = "";
 		            }
-		
+
 		            $conditionsoutput_main_content .= "<tr><td>\n"
 		            ."<table width='100%' cellspacing='0'><tr>$initialCheckbox<td width='90%'>$scenariotext&nbsp;\n"
 		            ."<form action='".site_url("/admin/conditions/updatescenario/$surveyid/$gid/$qid/")."' method='post' id='editscenario{$scenarionr['scenario']}' style='display: none'>\n"
@@ -1186,7 +1183,7 @@ class conditions extends SurveyCommonController {
 		            ."<input type='button' name='cancel' value='".$clang->gT("Cancel")."' onclick=\"$('#editscenario{$scenarionr['scenario']}').hide('slow');\"/>\n"
 		            ."</form></td>\n"
 		            . "<td width='10%' valign='middle' align='right'><form id='deletescenario{$scenarionr['scenario']}' action='".site_url("/admin/conditions/deletescenario/$surveyid/$gid/$qid/")."' method='post' name='deletescenario{$scenarionr['scenario']}' style='margin-bottom:0;'>\n";
-		
+
 		            if ($scenariotext != "" && ($subaction == "editconditionsform" ||$subaction == "insertcondition" ||
 		            $subaction == "updatecondition" || $subaction == "editthiscondition" ||
 		            $subaction == "renumberscenarios" || $subaction == "updatescenario" ||
@@ -1196,23 +1193,23 @@ class conditions extends SurveyCommonController {
 		                ." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?","js")."')) {document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}\""
 		                ." title='".$clang->gTview("Delete this scenario")."' >"
 		                ." <img src='$imageurl/scenario_delete.png' ".$clang->gT("Delete this scenario")." name='DeleteWholeGroup' /></a>\n";
-		
+
 		                $conditionsoutput_main_content .= "\t<a href='#' "
 		                ." id='editscenariobtn{$scenarionr['scenario']}'"
 		                ." onclick=\"$('#editscenario{$scenarionr['scenario']}').toggle('slow');\""
 		                ." title='".$clang->gTview("Edit scenario")."' >"
 		                ." <img src='$imageurl/scenario_edit.png' alt='".$clang->gT("Edit scenario")."' name='DeleteWholeGroup' /></a>\n";
-		
+
 		            }
-		
+
 		            $conditionsoutput_main_content .= "\t<input type='hidden' name='scenario' value='{$scenarionr['scenario']}' />\n"
 		            ."\t<input type='hidden' name='qid' value='$qid' />\n"
 		            ."\t<input type='hidden' name='sid' value='$surveyid' />\n"
 		            ."\t<input type='hidden' name='subaction' value='deletescenario' />\n"
 		            ."</form></td></tr></table></td></tr>\n";
-		
+
 		            unset($currentfield);
-		
+
 		            $query = "SELECT {$dbprefix}conditions.cid, "
 		            ."{$dbprefix}conditions.scenario, "
 		            ."{$dbprefix}conditions.cqid, "
@@ -1234,7 +1231,7 @@ class conditions extends SurveyCommonController {
 		            ."ORDER BY {$dbprefix}groups.group_order,{$dbprefix}questions.question_order";
 		            $result = db_execute_assoc($query) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 		            $conditionscount=$result->num_rows();
-		
+
 		            $querytoken = "SELECT {$dbprefix}conditions.cid, "
 		            ."{$dbprefix}conditions.scenario, "
 		            ."{$dbprefix}conditions.cqid, "
@@ -1250,9 +1247,9 @@ class conditions extends SurveyCommonController {
 		            ."ORDER BY {$dbprefix}conditions.cfieldname";
 		            $resulttoken = db_execute_assoc($querytoken) or safe_die ("Couldn't get other conditions for question $qid<br />$query<br />".$connect->ErrorMsg());
 		            $conditionscounttoken=$resulttoken->num_rows();
-		
+
 		            $conditionscount=$conditionscount+$conditionscounttoken;
-		
+
 		            if ($conditionscount > 0)
 		            {
 		                $aConditionsMerged=Array();
@@ -1264,7 +1261,7 @@ class conditions extends SurveyCommonController {
 		                {
 		                    $aConditionsMerged[]=$arow;
 		                }
-		
+
 		                //				while ($rows=$result->FetchRow())
 		                foreach ($aConditionsMerged as $rows)
 		                {
@@ -1286,7 +1283,7 @@ class conditions extends SurveyCommonController {
 		                        // Style used when editing a condition
 		                        $markcidstyle="background-color: #FCCFFF;";
 		                    }
-		
+
 		                    if (isset($currentfield) && $currentfield != $rows['cfieldname'])
 		                    {
 		                        $conditionsoutput_main_content .= "<tr class='evenrow'>\n"
@@ -1305,7 +1302,7 @@ class conditions extends SurveyCommonController {
 		                    ."\t<td><form style='margin-bottom:0;' name='conditionaction{$rows['cid']}' id='conditionaction{$rows['cid']}' method='post' action='".site_url("/admin/conditions/conditions/$surveyid/$gid/$qid/")."'>\n"
 		                    ."<table width='100%' style='height: 13px;' cellspacing='0' cellpadding='0'>\n"
 		                    ."\t<tr>\n";
-		
+
 		                    if ( $subaction == "copyconditionsform" || $subaction == "copyconditions")
 		                    {
 		                        $conditionsoutput_main_content .= "<td>&nbsp;&nbsp;</td>"
@@ -1316,7 +1313,7 @@ class conditions extends SurveyCommonController {
 		                    $conditionsoutput_main_content .= ""
 		                    ."<td valign='middle' align='right' width='40%'>\n"
 		                    ."\t<font size='1' face='verdana'>\n";
-		
+
 		                    $leftOperandType = 'unknown'; // prevquestion, tokenattr
 		                    if ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0)
 		                    {
@@ -1352,7 +1349,7 @@ class conditions extends SurveyCommonController {
 		                            }
 		                        }
 		                    }
-		
+
 		                    $conditionsoutput_main_content .= "\t</font></td>\n"
 		                    ."\t<td align='center' valign='middle' width='20%'>\n"
 		                    ."<font size='1'>\n" //    .$clang->gT("Equals")."</font></td>"
@@ -1362,7 +1359,7 @@ class conditions extends SurveyCommonController {
 		                    ."\n"
 		                    ."\t<td align='left' valign='middle' width='30%'>\n"
 		                    ."<font size='1' face='verdana'>\n";
-		
+
 		                    // let's read the condition's right operand
 		                    // determine its type and display it
 		                    $rightOperandType = 'unknown'; // predefinedAnsw,constantVal, prevQsgqa, tokenAttr, regexp
@@ -1388,7 +1385,7 @@ class conditions extends SurveyCommonController {
 		                        {
 		                            $matchedSGQAText=$rows['value'].' ('.$clang->gT("Not found").')';
 		                        }
-		
+
 		                        $conditionsoutput_main_content .= "".html_escape($matchedSGQAText)."\n";
 		                    }
 		                    elseif ($thissurvey['anonymized'] != 'Y' && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0)
@@ -1413,7 +1410,7 @@ class conditions extends SurveyCommonController {
 		                            {
 		                                $conditionsoutput_main_content .= "$can[2] ($can[1])\n";
 		                                $rightOperandType = 'predefinedAnsw';
-		
+
 		                            }
 		                        }
 		                    }
@@ -1431,10 +1428,10 @@ class conditions extends SurveyCommonController {
 		                            $conditionsoutput_main_content .= "".html_escape($rows['value'])."\n";
 		                        }
 		                    }
-		
+
 		                    $conditionsoutput_main_content .= "\t</font></td>\n"
 		                    ."\t<td align='right' valign='middle' width='10%'>\n";
-		
+
 		                    if ($subaction == "editconditionsform" ||$subaction == "insertcondition" ||
 		                    $subaction == "updatecondition" || $subaction == "editthiscondition" ||
 		                    $subaction == "renumberscenarios" || $subaction == "deleteallconditions" ||
@@ -1469,7 +1466,7 @@ class conditions extends SurveyCommonController {
 		                            $conditionsoutput_main_content .= ""
 		                            ."\t<input type='hidden' id='cquestions{$rows['cid']}' name='cquestions' value='".html_escape($rows['cfieldname'])."' />\n";
 		                        }
-		
+
 		                        // now set the corresponding hidden input field
 		                        // depending on the rightOperandType
 		                        // This is used when Editting a condition
@@ -1499,7 +1496,7 @@ class conditions extends SurveyCommonController {
 		                            ."\t<input type='hidden' id='editModeTargetVal{$rows['cid']}' name='EDITConditionConst' value='".html_escape($rows['value'])."' />\n";
 		                        }
 		                    }
-		
+
 		                    $conditionsoutput_main_content .= ""
 		                    ."\t</td>\n"
 		                    ."\t</tr>\n"
@@ -1530,26 +1527,26 @@ class conditions extends SurveyCommonController {
 		    }
 		    $conditionsoutput_main_content .= ""
 		    . "</table>\n";
-		
+
 		    $conditionsoutput_main_content .= "</td></tr>\n";
 
 		}
 		//END DISPLAY CONDITIONS FOR THIS QUESTION
-		
-		
+
+
 		// Separator
 		$conditionsoutput_main_content .= "\t<tr bgcolor='#555555'><td colspan='3'></td></tr>\n";
-		
-		
+
+
 		// BEGIN: DISPLAY THE COPY CONDITIONS FORM
 		if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 		{
 		    $conditionsoutput_main_content .= "<tr class=''><td colspan='3'>\n"
 		    ."<form action='".site_url("admin/conditions/copyconditions/$surveyid/$gid/$qid/")."' name='copyconditions' id='copyconditions' method='post'>\n";
-		
+
 		    $conditionsoutput_main_content .= "<div class='header ui-widget-header'>".$clang->gT("Copy conditions")."</div>\n";
-		
-		
+
+
 		    //CopyConditionsMessage
 		    if (isset ($CopyConditionsMessage))
 		    {
@@ -1557,14 +1554,14 @@ class conditions extends SurveyCommonController {
 		        ."$CopyConditionsMessage\n"
 		        ."</div>\n";
 		    }
-		
+
 		    if (isset($conditionsList) && is_array($conditionsList))
 		    {
 		        //TIBO
 				self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery.multiselect.min.js');
-		
+
 		        $conditionsoutput_main_content .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( {autoOpen: true, noneSelectedText: '".$clang->gT("No questions selected")."', checkAllText: '".$clang->gT("Check all")."', uncheckAllText: '".$clang->gT("Uncheck all")."', selectedText: '# ".$clang->gT("selected")."', beforeclose: function(){return false;},height: 200 } ); });</script>";
-		
+
 		        $conditionsoutput_main_content .= "\t<div class='conditioncopy-tbl-row'>\n"
 		        ."\t<div class='condition-tbl-left'>".$clang->gT("Copy the selected conditions to").":</div>\n"
 		        ."\t<div class='condition-tbl-right'>\n"
@@ -1579,7 +1576,7 @@ class conditions extends SurveyCommonController {
 		        $conditionsoutput_main_content .= "\t\t</select>\n"
 		        ."\t</div>\n"
 		        ."\t</div>\n";
-		
+
 		        if ( !isset($pquestions) || count($pquestions) == 0)
 		        {
 		            $disableCopyCondition=" disabled='disabled'";
@@ -1588,7 +1585,7 @@ class conditions extends SurveyCommonController {
 		        {
 		            $disableCopyCondition=" ";
 		        }
-		
+
 		        $conditionsoutput_main_content .= "\t<div class='condition-tbl-full'>\n"
 		//        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){prepareCopyconditions(); return true;} else {return false;}\" $disableCopyCondition/>\n"
 		        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"prepareCopyconditions(); return true;\" $disableCopyCondition/>\n"
@@ -1597,7 +1594,7 @@ class conditions extends SurveyCommonController {
 		        ."<input type='hidden' name='gid' value='$gid' />\n"
 		        ."<input type='hidden' name='qid' value='$qid' />\n"
 		        ."</div>\n";
-		
+
 		        $conditionsoutput_main_content .= "<script type=\"text/javascript\">\n"
 		        ."function prepareCopyconditions()\n"
 		        ."{\n"
@@ -1610,7 +1607,7 @@ class conditions extends SurveyCommonController {
 		        ."\t});\n"
 		        ."}\n"
 		        ."</script>\n";
-		
+
 		    }
 		    else
 		    {
@@ -1618,12 +1615,12 @@ class conditions extends SurveyCommonController {
 		        ."<div class='partialheader'>".$clang->gT("This survey's questions don't use conditions")."</div><br />\n"
 		        ."</div>\n";
 		    }
-		
+
 		    $conditionsoutput_main_content .= "</form></td></tr>\n";
-		
+
 		}
 		// END: DISPLAY THE COPY CONDITIONS FORM
-		
+
 		if ( isset($cquestions) )
 		{
 		    if ( count($cquestions) > 0 && count($cquestions) <=10)
@@ -1639,8 +1636,8 @@ class conditions extends SurveyCommonController {
 		{
 		    $qcount = 0;
 		}
-		
-		
+
+
 		//BEGIN: DISPLAY THE ADD or EDIT CONDITION FORM
 		if ($subaction == "editconditionsform" || $subaction == "insertcondition" ||
 		$subaction == "updatecondition" || $subaction == "deletescenario" ||
@@ -1659,9 +1656,9 @@ class conditions extends SurveyCommonController {
 		        $mytitle = $clang->gT("Add condition");
 		    }
 		    $conditionsoutput_main_content .= "<div class='header ui-widget-header'>".$mytitle."</div>\n";
-		
+
 		    ///////////////////////////////////////////////////////////////////////////////////////////
-		
+
 		    // Begin "Scenario" row
 		    if  ( ( $subaction != "editthiscondition" && isset($scenariocount) && ($scenariocount == 1 || $scenariocount==0)) ||
 		    ( $subaction == "editthiscondition" && isset($scenario) && $scenario == 1) )
@@ -1677,14 +1674,14 @@ class conditions extends SurveyCommonController {
 		        $scenarioTxt = "";
 		        $scenarioInputStyle = "style = ''";
 		    }
-		
+
 		    $conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
 		    ."<div class='condition-tbl-left'>$scenarioAddBtn&nbsp;".$clang->gT("Scenario")."</div>\n"
 		    ."<div class='condition-tbl-right'><input type='text' name='scenario' id='scenario' value='1' size='2' $scenarioInputStyle/>"
 		    ."$scenarioTxt\n"
 		    ."</div>\n"
 		    ."</div>\n";
-		
+
 		    // Begin "Question" row
 		    $conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
 		    ."<div class='condition-tbl-left'>".$clang->gT("Question")."</div>\n"
@@ -1694,7 +1691,7 @@ class conditions extends SurveyCommonController {
 		    ."\t<li><a href=\"#SRCPREVQUEST\"><span>".$clang->gT("Previous questions")."</span></a></li>\n"
 		    ."\t<li><a href=\"#SRCTOKENATTRS\"><span>".$clang->gT("Token fields")."</span></a></li>\n"
 		    ."\t</ul>\n";
-		
+
 		    // Previous question tab
 		    $conditionsoutput_main_content .= "<div id='SRCPREVQUEST'><select name='cquestions' id='cquestions' size='".($qcount+1)."' >\n";
 		    if (isset($cquestions))
@@ -1719,10 +1716,10 @@ class conditions extends SurveyCommonController {
 		            $conditionsoutput_main_content .= ">$cqn[0]</option>\n";
 		        }
 		    }
-		
+
 		    $conditionsoutput_main_content .= "</select>\n"
 		    ."</div>\n";
-		
+
 		    // Source token Tab
 		    $conditionsoutput_main_content .= "<div id='SRCTOKENATTRS'><select name='csrctoken' id='csrctoken' size='".($qcount+1)."' >\n";
 		    foreach (GetTokenFieldsAndNames($surveyid) as $tokenattr => $tokenattrName)
@@ -1738,15 +1735,15 @@ class conditions extends SurveyCommonController {
 		        }
 		        $conditionsoutput_main_content .= "<option value='{TOKEN:".strtoupper($tokenattr)."}' $selectThisSrcTokenAttr>".html_escape($tokenattrName)."</option>\n";
 		    }
-		
+
 		    $conditionsoutput_main_content .= "</select>\n"
 		    ."</div>\n\n";
-		
+
 		    $conditionsoutput_main_content .= "\t</div>\n"; // end conditionsource div
-		
+
 		    $conditionsoutput_main_content .= "</div>\n"
 		    ."</div>\n";
-		
+
 		    // Begin "Comparison operator" row
 		    $conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
 		    ."<div class='condition-tbl-left'>".$clang->gT("Comparison operator")."</div>\n"
@@ -1773,11 +1770,11 @@ class conditions extends SurveyCommonController {
 		    $conditionsoutput_main_content .="</select>\n"
 		    ."</div>\n"
 		    ."</div>\n";
-		
+
 		    // Begin "Answer" row
 		    $conditionsoutput_main_content .="<div class='condition-tbl-row'>\n"
 		    ."<div class='condition-tbl-left'>".$clang->gT("Answer")."</div>\n";
-		
+
 		    if ($subaction == "editthiscondition")
 		    {
 		        $multipletext = "";
@@ -1818,8 +1815,8 @@ class conditions extends SurveyCommonController {
 		            $EDITConditionRegexp="";
 		        }
 		    }
-		
-		
+
+
 		    $conditionsoutput_main_content .= ""
 		    ."<div class='condition-tbl-right'>\n"
 		    ."<div id=\"conditiontarget\" class=\"tabs-nav\">\n"
@@ -1830,14 +1827,14 @@ class conditions extends SurveyCommonController {
 		    ."\t\t<li><a href=\"#TOKENATTRS\"><span>".$clang->gT("Token fields")."</span></a></li>\n"
 		    ."\t\t<li><a href=\"#REGEXP\"><span>".$clang->gT("RegExp")."</span></a></li>\n"
 		    ."\t</ul>\n";
-		
+
 		    // Predefined answers tab
 		    $conditionsoutput_main_content .= "\t<div id='CANSWERSTAB'>\n"
 		    ."\t\t<select  name='canswers[]' $multipletext id='canswers' size='7'>\n"
 		    ."\t\t</select>\n"
 		    ."\t\t<br /><span id='canswersLabel'>".$clang->gT("Predefined answer options for this question")."</span>\n"
 		    ."\t</div>\n";
-		
+
 		    // Constant tab
 		    $conditionsoutput_main_content .= "\t<div id='CONST' style='display:' >\n"
 		    ."\t\t<textarea name='ConditionConst' id='ConditionConst' rows='5' cols='113'>$EDITConditionConst</textarea>\n"
@@ -1861,7 +1858,7 @@ class conditions extends SurveyCommonController {
 		    $conditionsoutput_main_content .= "\t\t</select>\n"
 		    ."\t\t<br /><span id='prevQuestionSGQALabel'>".$clang->gT("Answers from previous questions")."</span>\n"
 		    ."\t</div>\n";
-		
+
 		    // Token tab
 		    $conditionsoutput_main_content .= "\t<div id='TOKENATTRS'>\n"
 		    ."\t\t<select name='tokenAttr' id='tokenAttr' size='7'>\n";
@@ -1869,24 +1866,24 @@ class conditions extends SurveyCommonController {
 		    {
 		        $conditionsoutput_main_content .= "\t\t<option value='{TOKEN:".strtoupper($tokenattr)."}'>".html_escape($tokenattrName)."</option>\n";
 		    }
-		
+
 		    $conditionsoutput_main_content .= "\t\t</select>\n"
 		    ."\t\t<br /><span id='tokenAttrLabel'>".$clang->gT("Attributes values from the participant's token")."</span>\n"
 		    ."\t</div>\n";
-		
+
 		    // Regexp Tab
 		    $conditionsoutput_main_content .= "\t<div id='REGEXP' style='display:'>\n"
 		    ."\t\t<textarea name='ConditionRegexp' id='ConditionRegexp' rows='5' cols='113'>$EDITConditionRegexp</textarea>\n"
 		    ."\t\t<br /><div id='ConditionRegexpLabel'><a href=\"http://docs.limesurvey.org/tiki-index.php?page=Using+Regular+Expressions\" target=\"_blank\">".$clang->gT("Regular expression")."</a></div>\n"
 		    ."\t</div>\n";
-		
+
 		    $conditionsoutput_main_content .= "</div>\n"; // end conditiontarget div
-		
-		
+
+
 		    self::_js_admin_includes($this->config->item("adminscripts").'conditions.js');
 		    self::_js_admin_includes($this->config->item("generalscripts").'jquery/lime-conditions-tabs.js');
 		    self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery-ui.js');
-		
+
 		    if ($subaction == "editthiscondition" && isset($p_cid))
 		    {
 		        $submitLabel = $clang->gT("Update condition");
@@ -1899,10 +1896,10 @@ class conditions extends SurveyCommonController {
 		        $submitSubaction = "insertcondition";
 		        $submitcid = "";
 		    }
-		
+
 		    $conditionsoutput_main_content .= "</div>\n"
 		    ."</div>\n";
-		
+
 		    // Begin buttons row
 		    $conditionsoutput_main_content .= "<div class='condition-tbl-full'>\n"
 		    ."\t<input type='reset' id='resetForm' value='".$clang->gT("Clear")."' />\n"
@@ -1918,12 +1915,12 @@ class conditions extends SurveyCommonController {
 		    ."<input type='hidden' name='canswersToSelect' id='canswersToSelect' value='' />\n" // auto-select target answers by jQuery when editing a condition
 		    ."</div>\n"
 		    ."</form>\n";
-		
+
 		    if (!isset($js_getAnswers_onload))
 		    {
 		        $js_getAnswers_onload = '';
 		    }
-		
+
 		    $conditionsoutput_main_content .= "<script type='text/javascript'>\n"
 		    . "<!--\n"
 		    . "\t".$js_getAnswers_onload."\n";
@@ -1931,7 +1928,7 @@ class conditions extends SurveyCommonController {
 		    {
 		        $conditionsoutput_main_content .= "\tdocument.getElementById('method').value='".$p_method."';\n";
 		    }
-		
+
 		    if ($subaction == "editthiscondition")
 		    { // in edit mode we read previous values in order to dusplay them in the corresponding inputs
 		        if (isset($_POST['EDITConditionConst']) && $_POST['EDITConditionConst'] != '')
@@ -1963,7 +1960,7 @@ class conditions extends SurveyCommonController {
 		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
 		            $conditionsoutput_main_content .= "\t$('#canswersToSelect').val('".$_POST['EDITcanswers'][0]."');\n";
 		        }
-		
+
 		        if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
 		        {
 		            $conditionsoutput_main_content .= "\tdocument.getElementById('csrctoken').value='".html_escape($_POST['csrctoken'])."';\n";
@@ -2009,7 +2006,7 @@ class conditions extends SurveyCommonController {
 		            }
 		            $conditionsoutput_main_content .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
 		        }
-		
+
 		        if (isset($_POST['csrctoken']) && $_POST['csrctoken'] != '')
 		        {
 		            $conditionsoutput_main_content .= "\tdocument.getElementById('csrctoken').value='".html_escape($_POST['csrctoken'])."';\n";
@@ -2021,7 +2018,7 @@ class conditions extends SurveyCommonController {
 		            $conditionsoutput_main_content .= "\tdocument.getElementById('editSourceTab').value='#SRCPREVQUEST';\n";
 		        }
 		    }
-		
+
 		    if (isset($p_scenario))
 		    {
 		        $conditionsoutput_main_content .= "\tdocument.getElementById('scenario').value='".$p_scenario."';\n";
@@ -2031,10 +2028,10 @@ class conditions extends SurveyCommonController {
 		    $conditionsoutput_main_content .= "</td></tr>\n";
 		}
 		//END: DISPLAY THE ADD or EDIT CONDITION FORM
-		
-		
+
+
 		$conditionsoutput_main_content .= "</table>\n";
-		
+
 		$conditionsoutput = $conditionsoutput_main_content;
 
 		$data['conditionsoutput'] = $conditionsoutput;
@@ -2047,20 +2044,20 @@ class conditions extends SurveyCommonController {
 	    global $max;
 		$clang = $this->limesurvey_lang;
 		$imageurl = $this->config->item("imageurl");
-	
+
 	    if(!isset($max))
 	    {
 	        $max = 20;
 	    }
 	    $htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
 	    $jshinttext=javascript_escape($hinttext,true,true);
-	
+
 	    if(strlen(html_entity_decode($hinttext,ENT_QUOTES,'UTF-8')) > ($max+3))
 	    {
 	        $shortstring = FlattenText($hinttext);
-	
+
 	        $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $max, 'UTF-8'));
-	
+
 	        //output with hoover effect
 	        $reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
 	        ." onclick=\"alert('".$clang->gT("Question","js").": $jshinttext')\" />"
@@ -2071,12 +2068,12 @@ class conditions extends SurveyCommonController {
 	    else
 	    {
 	        $shortstring = FlattenText($hinttext);
-	
+
 	        $reshtml= "<span title='".$shortstring."'> \"$shortstring\"</span>";
 	    }
-	
+
 	    return $reshtml;
-	
+
 	}
-		
+
 }
