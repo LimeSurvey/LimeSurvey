@@ -77,9 +77,20 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.91+ (build 10695) to 1.91+ (build 10746)
+#Updated translation: German (c_schmitz)
+#Updated translation: German (informal) (c_schmitz)
+#Updated translation: Norwegian Bokmal - kindly provided by Pal Monstad (c_schmitz)
+#Updated translation: Polish (elisa-ls)
+-Fixed issue #5189: IE Non-Secure Warnings on HTTPS survey (tpartner)
+-Fixed issue #5306: Google Map doesn't center on default Lat/Lon (tpartner)
+-Fixed issue #5392: ERROR: column "SID" of relation "lime_surveys" does not exist with posgresql (shnoulle)
+-Fixed issue #5393: Error in public statistics when using Multiflex Number question type (c_schmitz)
+-Fixed issue: Quote in variable name breaks SPSS script (c_schmitz)
+
 Changes from 1.91+ (build 10669) to 1.91+ (build 10695)
 #Updated language : French (b00z00)
--Fixed issue #05383: Keyboard-less operation doesn't work for all input fields (tpartner)
+-Fixed issue #5383: Keyboard-less operation doesn't work for all input fields (tpartner)
 -Fixed issue #5394. 2, 8 and 9 are removed from survey id in admin part (shnoulle)
 -Fixed issue: Values in global settings were not properly pre-defined and thus invalid if global settings have not been saved yet (c_schmitz)
 
