@@ -83,7 +83,7 @@ if ($surveyid)
         {
             safe_die('The public statistics for this survey are deactivated.');
         }
-         
+
         //check if graphs should be shown for this survey
         if ($surveyinfo['publicgraphs']=='Y')
         {
@@ -173,21 +173,22 @@ echo $header;
 /*
  * only show questions where question attribute "public_statistics" is set to "1"
  */
-$query = "SELECT ".db_table_name("questions").".*, group_name, group_order\n"
-."FROM ".db_table_name("questions").", ".db_table_name("groups").", ".db_table_name("question_attributes")."\n"
-."WHERE ".db_table_name("groups").".gid=".db_table_name("questions").".gid\n"
-."AND ".db_table_name("groups").".language='".$language."'\n"
-."AND ".db_table_name("questions").".language='".$language."'\n"
-."AND ".db_table_name("questions").".sid=$surveyid\n"
-."AND ".db_table_name("questions").".qid=".db_table_name("question_attributes").".qid\n"
-."AND ".db_table_name("question_attributes").".attribute='public_statistics'\n";
+$query = "SELECT q.* , group_name, group_order\n"
+."FROM ".db_table_name("questions")." q, ".db_table_name("groups")." g, ".db_table_name("question_attributes")." qa\n"
+."WHERE g.gid=q.gid\n"
+."AND g.language='".$language."'\n"
+."AND q.language='".$language."'\n"
+."AND q.sid={$surveyid}\n"
+."AND q.qid=qa.qid\n"
+."AND q.parent_qid=0\n"
+."AND qa.attribute='public_statistics'\n";
 if ($databasetype=='mssql_n' or $databasetype=='mssql' or $databasetype=='odbc_mssql' or $databasetype=="mssqlnative")
 {
-    $query .="AND CAST(CAST(".db_table_name("question_attributes").".value as varchar) as int)='1'\n";
+    $query .="AND CAST(CAST(qa.value as varchar) as int)='1'\n";
 }
 else
 {
-    $query .="AND ".db_table_name("question_attributes").".value='1'\n";
+    $query .="AND qa.value='1'\n";
 }
 
 
@@ -304,7 +305,7 @@ if(isset($filters)){
 				break;
 			case ";":  //ARRAY (Multi Flex) (Text)
 			case ":":  //ARRAY (Multi Flex) (Numbers)
-				$query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' ORDER BY question_order";
+				$query = "SELECT title, question FROM ".db_table_name("questions")." WHERE parent_qid='$flt[0]' AND language='{$language}' AND scale_id=0 ORDER BY question_order";
 				$result = db_execute_num($query) or die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
 				while ($row=$result->FetchRow())
 				{
@@ -312,9 +313,9 @@ if(isset($filters)){
 					$fresult = db_execute_assoc($fquery);
 					while ($frow = $fresult->FetchRow())
 					{
-						$myfield2 = "T".$myfield . $row[0] . "_" . $frow['title'];
-					$allfields[]=$myfield2;
-				}
+						$myfield2 = $myfield . $row[0] . "_" . $frow['title'];
+					    $allfields[]=$myfield2;
+				    }
 				}
 				break;
 			case "R": //RANKING
@@ -359,7 +360,7 @@ if(isset($filters)){
 				$myfield2 = $flt[2].$myfield;
 						$allfields[]=$myfield2;
 				break;
-			default:   //Default settings    
+			default:   //Default settings
 				$allfields[] = $myfield;
 				break;
 
