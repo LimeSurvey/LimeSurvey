@@ -23,7 +23,7 @@
  * @version $Id$
  * @access public
  */
-class Usergroups extends AdminController {
+class Usergroups extends Admin_Controller {
 
 
     /**

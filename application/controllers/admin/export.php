@@ -22,7 +22,7 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class export extends SurveyCommonController {
+class export extends Survey_Common_Controller {
 
 	/**
 	 * Constructor

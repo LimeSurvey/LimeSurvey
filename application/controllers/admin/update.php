@@ -23,7 +23,7 @@ list(,$updaterversion)=explode(' ','$Rev: 588887976 $');  // this is updated by 
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class update extends AdminController {
+class update extends Admin_Controller {
 
 	/**
 	 * Constructor

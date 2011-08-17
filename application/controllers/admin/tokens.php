@@ -22,7 +22,7 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class tokens extends SurveyCommonController {
+class tokens extends Survey_Common_Controller {
     
 	/**
 	 * Constructor

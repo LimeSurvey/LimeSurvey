@@ -22,7 +22,7 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class quotas extends SurveyCommonController {
+class quotas extends Survey_Common_Controller {
     
 	/**
 	 * Constructor

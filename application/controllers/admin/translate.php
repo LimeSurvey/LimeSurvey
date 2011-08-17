@@ -22,7 +22,7 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class translate extends AdminController {
+class translate extends Admin_Controller {
     
 	/**
 	 * Constructor

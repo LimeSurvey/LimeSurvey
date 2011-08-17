@@ -56,7 +56,7 @@
   * @version $Id$
   * @access public
   */
- class dataentry extends SurveyCommonController {
+ class dataentry extends Survey_Common_Controller {
     
     /**
      * dataentry::__construct()

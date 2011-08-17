@@ -22,7 +22,7 @@
   * @version $Id$
   * @access public
   */
- class question extends SurveyCommonController {
+ class question extends Survey_Common_Controller {
     
     /**
      * question::__construct()

@@ -12,7 +12,7 @@
  *
  * $Id$
  */
-class fck_LimeReplacementFields extends AdminController {
+class fck_LimeReplacementFields extends Admin_Controller {
 
 	function __construct()
 	{

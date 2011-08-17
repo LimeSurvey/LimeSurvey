@@ -22,7 +22,7 @@
   * @version $Id$
   * @access public
   */
- class labels extends AdminController {
+ class labels extends Admin_Controller {
     
     /**
      * labels::__construct()

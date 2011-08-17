@@ -22,7 +22,7 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class Authentication extends AdminController {
+class Authentication extends Admin_Controller {
 
 	/**
 	 * Constructor

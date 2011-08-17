@@ -987,7 +987,7 @@ echo "hello<br/>".$dsn;
                     }
                     
                     // if successfully data is inserted, notify user to login and redirect to proper link
-                    // code to force user to rename/delete installation directory will be in admincontroller
+                    // code to force user to rename/delete installation directory will be in Admin_Controller
                     //header( "refresh:5;url=".site_url('admin')); 
                     //echo 'You\'ll be redirected in about 5 secs. If not, click '.anchor('admin',"here").'.';
                     

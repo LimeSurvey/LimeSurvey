@@ -22,7 +22,7 @@
   * @version $Id$
   * @access public
   */
- class templates extends AdminController {
+ class templates extends Admin_Controller {
     
     /**
      * templates::__construct()

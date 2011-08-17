@@ -12,7 +12,7 @@
  *
  *	$Id$
  */
-class AdminController extends LS_Controller {
+class Admin_Controller extends LS_Controller {
 	function __construct()
 	{
 		parent::__construct();

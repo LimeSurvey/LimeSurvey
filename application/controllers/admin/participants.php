@@ -2,7 +2,7 @@
 /*
  * This is the main controller for Participants Panel
  */
-class participants extends AdminController
+class participants extends Admin_Controller
 {
 /*
  * This function is responsible for loading the view 'participantsPanel'

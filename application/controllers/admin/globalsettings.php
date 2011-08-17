@@ -20,7 +20,7 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class GlobalSettings extends AdminController {
+class GlobalSettings extends Admin_Controller {
 
 	/**
 	 * Constructor

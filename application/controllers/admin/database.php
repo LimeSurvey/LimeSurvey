@@ -22,7 +22,7 @@
  * @version $Id$
  * @access public
  */
-class Database extends AdminController {
+class Database extends Admin_Controller {
 
 
     /**

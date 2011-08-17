@@ -22,7 +22,7 @@
  * @version $Id$
  * @access public
  */
-class Dumpdb extends AdminController {
+class Dumpdb extends Admin_Controller {
     
     function __construct()
 	{

@@ -22,7 +22,7 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class conditions extends SurveyCommonController {
+class conditions extends Survey_Common_Controller {
 
 	/**
 	 * Constructor
