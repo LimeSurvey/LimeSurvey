@@ -229,7 +229,7 @@ class export extends SurveyCommonController {
 		// In the future it might be possible to 'post' the 'export language' from
 		// the exportresults form
 		$explang = $surveybaselang;
-		$elang=new limesurvey_lang($explang);
+		$elang=new limesurvey_lang(array($explang));
 
 		//Get together our FormattingOptions and then call into the exportSurvey
 		//function.
@@ -411,7 +411,7 @@ class export extends SurveyCommonController {
 		    // Get Base language:
 
 		    $language = GetBaseLanguageFromSurveyID($surveyid);
-		    $clang = new limesurvey_lang($language);
+		    $clang = new limesurvey_lang(array($language));
 		    $this->load->helper("admin/exportresults");
 		}
 
@@ -655,7 +655,7 @@ class export extends SurveyCommonController {
 		{
 		    // Get Base language:
 		    $language = GetBaseLanguageFromSurveyID($surveyid);
-		    $clang = new limesurvey_lang($language);
+		    $clang = new limesurvey_lang(array($language));
 		    $this->load->helper("admin/exportresults");
 		}
 
@@ -978,7 +978,7 @@ class export extends SurveyCommonController {
 		}
 
 		// Setting the selected language for printout
-		$clang = new limesurvey_lang($surveyprintlang);
+		$clang = new limesurvey_lang(array($surveyprintlang));
 
 		$this->load->library("admin/queXMLPDF");
 		$quexmlpdf = $this->quexmlpdf; //new queXMLPDF(PDF_PAGE_ORIENTATION, 'mm', PDF_PAGE_FORMAT, true, 'UTF-8', false);

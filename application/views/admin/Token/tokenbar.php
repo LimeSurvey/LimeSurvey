@@ -86,7 +86,7 @@
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'tokens','update'))
 		    { ?>
-		        <a href="#" onclick="window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=bouncesettings', '_top')" 
+		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/bouncesettings/$surveyid");?>', '_top')" 
 		        	title='<?php echo $clang->gTview("Bounce processing settings");?>' >
 		        	<img name='BounceSettings' src='<?php echo $imageurl;?>/bounce_settings.png' alt='<?php echo $clang->gT("Bounce settings");?>' />
 		        </a>

@@ -1505,6 +1505,11 @@
         
     }
     
+    /**
+     * question::questionattributes()
+     * 
+     * @return
+     */
     function ajaxquestionattributes()
     {
         $surveyid = $this->input->post("sid");

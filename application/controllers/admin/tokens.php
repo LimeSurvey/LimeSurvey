@@ -1379,6 +1379,48 @@ class tokens extends SurveyCommonController {
 		}
 	}
 
+	function bouncesettings($surveyid)
+	{
+		$clang = $this->limesurvey_lang;
+		$data['clang']=$this->limesurvey_lang;
+		$data['thissurvey'] = $data['settings']=getSurveyInfo($surveyid);
+		$data['imageurl'] = $this->config->item('imageurl');
+		$data['surveyid']=$surveyid;
+		
+		if($this->input->post())
+		{
+			$_POST = $this->input->post();
+			@$fieldvalue = array("bounceprocessing"=>$_POST['bounceprocessing'],
+			"bounce_email"=>$_POST['bounce_email'],
+			);
+				
+			if(@$_POST['bounceprocessing']=='L')
+			{
+				$fieldvalue['bounceaccountencryption']=$_POST['bounceaccountencryption'];
+				$fieldvalue['bounceaccountuser']=$_POST['bounceaccountuser'];
+				$fieldvalue['bounceaccountpass']=$_POST['bounceaccountpass'];
+				$fieldvalue['bounceaccounttype']=$_POST['bounceaccounttype'];
+				$fieldvalue['bounceaccounthost']=$_POST['bounceaccounthost'];
+			}
+			
+			$where = "sid = $surveyid";
+			$this->load->helper("database");
+			db_execute_assoc($this->db->update_string('surveys', $fieldvalue, $where));					
+			//$connect->AutoExecute("{$dbprefix}surveys", $fieldvalue, 2,"sid=$surveyid",get_magic_quotes_gpc());
+			self::_getAdminHeader();
+			$this->load->view("admin/token/tokenbar",$data);
+		    self::_showMessageBox($clang->gT("Bounce settings"),$clang->gT("Bounce settings have been saved."),"successheader");
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		}
+		else
+		{
+			self::_getAdminHeader();
+			$this->load->view("admin/token/tokenbar",$data);
+			$this->load->view("admin/token/bounce",$data);
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		}
+	}
+
 	/**
 	 * Handle token form for addnew/edit actions
 	 */
