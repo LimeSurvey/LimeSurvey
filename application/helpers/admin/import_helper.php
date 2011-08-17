@@ -1533,12 +1533,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             $insertdata['bouncetime'] = NULL;
         }
-<<<<<<< .mine
-        
-        
-=======
 
->>>>>>> .r10756
         db_switchIDInsert('surveys',true);
         //$query=$connect->GetInsertSQL($tablename,$insertdata);
 
@@ -1547,10 +1542,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $results['surveys']++;
         db_switchIDInsert('surveys',false);
     }
-<<<<<<< .mine
-    
-=======
->>>>>>> .r10756
+
     $results['newsid']=$newsid;
 
     // Import survey languagesettings table ===================================================================================

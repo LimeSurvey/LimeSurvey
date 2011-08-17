@@ -40,11 +40,8 @@ class Surveys_model extends CI_Model {
 
     function insertNewSurvey($data)
     {
-<<<<<<< .mine
-        return $this->db->insert('surveys', $data); 
-=======
+
         return $this->db->insert('surveys', $data);
->>>>>>> .r10756
     }
 
     function updateSurvey($data,$condition)
