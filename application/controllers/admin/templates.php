@@ -13,14 +13,36 @@
  * 
  */
  
+ /**
+  * templates
+  * 
+  * @package LimeSurvey_CI
+  * @author 
+  * @copyright 2011
+  * @version $Id$
+  * @access public
+  */
  class templates extends AdminController {
     
+    /**
+     * templates::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
 		parent::__construct();
 	}
     
     
+    /**
+     * templates::view()
+     * Load default view screen of template controller.
+     * @param string $editfile
+     * @param string $screenname
+     * @param string $templatename
+     * @return
+     */
     function view($editfile='startpage.pstpl', $screenname='welcome', $templatename='default')
     {
       
@@ -40,17 +62,38 @@
         
         
     }
-    //temporary solution to th bug that crashes LS!
+    //temporary solution to the bug that crashes LS!
+    /**
+     * templates::screenredirect()
+     * Function that modify order of arguments and pass to main viewing function i.e. view()
+     * @param string $editfile
+     * @param string $templatename
+     * @param string $screenname
+     * @return
+     */
     function screenredirect($editfile='startpage.pstpl', $templatename='default', $screenname='welcome')
     {
         redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,'refresh');
     }
     //temporary solution to th bug that crashes LS!
+    /**
+     * templates::fileredirect()
+     * Function that modify order of arguments and pass to main viewing function i.e. view()
+     * @param string $templatename
+     * @param string $screenname
+     * @param string $editfile
+     * @return
+     */
     function fileredirect($templatename='default', $screenname='welcome', $editfile='startpage.pstpl')
     {
         redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,'refresh');
     }
     
+    /**
+     * templates::templatefiledelete()
+     * Function responsible to delete a template file.
+     * @return
+     */
     function templatefiledelete()
     {
         if ($this->input->post('action') == "templatefiledelete") {
@@ -61,6 +104,11 @@
         
     }
     
+    /**
+     * templates::templaterename()
+     * Function responsible to rename a template(folder).
+     * @return
+     */
     function templaterename()
     {
         
@@ -90,6 +138,11 @@
         
     }
     
+    /**
+     * templates::templatecopy()
+     * Function responsible to copy a template.
+     * @return
+     */
     function templatecopy()
     {
         if ($this->input->post('action') == "templatecopy" && $this->input->post('newname') && $this->input->post('copydir')) {
@@ -120,6 +173,12 @@
         
     }
     
+    /**
+     * templates::delete()
+     * Function responsible to delete a template.
+     * @param mixed $templatename
+     * @return
+     */
     function delete($templatename)
     {
         $this->load->helper("admin/template");
@@ -159,6 +218,11 @@
         redirect("admin/templates/view","refresh");
     }
     
+    /**
+     * templates::templatesavechanges()
+     * Function responsible to save the changes made in CodemMirror editor.
+     * @return
+     */
     function templatesavechanges()
     {
         
@@ -216,6 +280,18 @@
         redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,"refresh");
     }
     
+    /**
+     * templates::_templateditorbar()
+     * Load main menu bar of template editor screen.
+     * @param mixed $codelanguage
+     * @param mixed $highlighter
+     * @param mixed $flashmessage
+     * @param mixed $templatename
+     * @param mixed $templates
+     * @param mixed $editfile
+     * @param mixed $screenname
+     * @return
+     */
     function _templateditorbar($codelanguage,$highlighter,$flashmessage,$templatename,$templates,$editfile,$screenname)
     {
         $data['clang'] = $this->limesurvey_lang;
@@ -232,6 +308,16 @@
         
     }
     
+    /**
+     * templates::_templatebar()
+     * Load menu bar related to a template.
+     * @param mixed $screenname
+     * @param mixed $editfile
+     * @param mixed $screens
+     * @param mixed $tempdir
+     * @param mixed $templatename
+     * @return
+     */
     function _templatebar($screenname,$editfile,$screens,$tempdir,$templatename)
     {
         $data['clang'] = $this->limesurvey_lang;
@@ -246,6 +332,19 @@
         
     }
     
+    /**
+     * templates::_templatesummary()
+     * Load CodeMirror editor and various files information.
+     * @param mixed $templatename
+     * @param mixed $screenname
+     * @param mixed $editfile
+     * @param mixed $templates
+     * @param mixed $files
+     * @param mixed $cssfiles
+     * @param mixed $otherfiles
+     * @param mixed $myoutput
+     * @return
+     */
     function _templatesummary($templatename,$screenname,$editfile,$templates,$files,$cssfiles,$otherfiles,$myoutput)
     {
         
@@ -308,6 +407,12 @@
         
     }
     
+    /**
+     * templates::_initfiles()
+     * Function that initialises file data.
+     * @param mixed $templatename
+     * @return
+     */
     function _initfiles($templatename)
     {
         $files[]=array('name'=>'assessment.pstpl');
@@ -341,6 +446,11 @@
         
     }
     
+    /**
+     * templates::_initcssfiles()
+     * Function that initialises cssfile data.
+     * @return
+     */
     function _initcssfiles()
     {
         $cssfiles[]=array('name'=>'template.css');
@@ -354,6 +464,14 @@
         return $cssfiles;
     }
     
+    /**
+     * templates::_initialise()
+     * Function that initialises all data and call other functions to load default view.
+     * @param mixed $templatename
+     * @param mixed $screenname
+     * @param mixed $editfile
+     * @return
+     */
     function _initialise($templatename, $screenname, $editfile)
     {
         global $siteadminname, $siteadminemail;

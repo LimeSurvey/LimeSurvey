@@ -14,6 +14,307 @@
  *	Files Purpose:
  */
 
+/**
+ * CSVImportLabelset()
+ * Function responsible to import label set from CSV format.
+ * @param mixed $sFullFilepath
+ * @param mixed $options
+ * @return
+ */
+function CSVImportLabelset($sFullFilepath, $options)
+        {
+            //global $dbprefix, $connect, $clang;
+            $CI =& get_instance();
+            $CI->load->helper('database');
+            $clang = $CI->limesurvey_lang;
+            $results['labelsets']=0;
+            $results['labels']=0;
+            $results['warnings']=array();
+            $csarray=buildLabelSetCheckSumArray();
+            //$csarray is now a keyed array with the Checksum of each of the label sets, and the lid as the key
+        
+            $handle = fopen($sFullFilepath, "r");
+            while (!feof($handle))
+            {
+                $buffer = fgets($handle); //To allow for very long survey welcomes (up to 10k)
+                $bigarray[] = $buffer;
+            }
+            fclose($handle);
+            if (substr($bigarray[0], 0, 27) != "# LimeSurvey Label Set Dump" && substr($bigarray[0], 0, 28) != "# PHPSurveyor Label Set Dump")
+            {
+                return $results['fatalerror']=$clang->gT("This file is not a LimeSurvey label set file. Import failed.");
+            }
+        
+            for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
+            {
+                unset($bigarray[$i]);
+            }
+            $bigarray = array_values($bigarray);
+        
+            //LABEL SETS
+            if (array_search("# LABELS TABLE\n", $bigarray))
+            {
+                $stoppoint = array_search("# LABELS TABLE\n", $bigarray);
+            }
+            elseif (array_search("# LABELS TABLE\r\n", $bigarray))
+            {
+                $stoppoint = array_search("# LABELS TABLE\r\n", $bigarray);
+            }
+            else
+            {
+                $stoppoint = count($bigarray)-1;
+            }
+            for ($i=0; $i<=$stoppoint+1; $i++)
+            {
+                if ($i<$stoppoint-2) {$labelsetsarray[] = $bigarray[$i];}
+                unset($bigarray[$i]);
+            }
+            $bigarray = array_values($bigarray);
+        
+        
+            //LABELS
+            $stoppoint = count($bigarray)-1;
+        
+            for ($i=0; $i<$stoppoint; $i++)
+            {
+                // do not import empty lines
+                if (trim($bigarray[$i])!='')
+                {
+                    $labelsarray[] = $bigarray[$i];
+                }
+                unset($bigarray[$i]);
+            }
+        
+        
+        
+            $countlabelsets = count($labelsetsarray)-1;
+            $countlabels = count($labelsarray)-1;
+        
+        
+            if (isset($labelsetsarray) && $labelsetsarray) {
+                $count=0;
+                foreach ($labelsetsarray as $lsa) {
+                    $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
+                    $fieldcontents=convertCSVRowToArray($lsa,',','"');
+                    if ($count==0) {$count++; continue;}
+        
+                    $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
+        
+                    // Save old labelid
+                    $oldlid=$labelsetrowdata['lid'];
+                    // set the new language
+        
+                    unset($labelsetrowdata['lid']);
+        
+                    $newvalues=array_values($labelsetrowdata);
+                    //$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                    $lsainsert = "insert INTO ".$CI->db->dbprefix."labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+                    $lsiresult= db_execute_assoc($lsainsert);
+                    //$lsiresult=$connect->Execute($lsainsert);
+                    $results['labelsets']++;            
+        
+                    // Get the new insert id for the labels inside this labelset
+                    $newlid=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}labelsets",'lid');
+        
+                    if ($labelsarray) {
+                        $count=0;
+                        $lfieldorders=convertCSVRowToArray($labelsarray[0],',','"');
+                        unset($labelsarray[0]);
+                        foreach ($labelsarray as $la) {
+        
+                            $lfieldcontents=convertCSVRowToArray($la,',','"');
+                            // Combine into one array with keys and values since its easier to handle
+                            $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
+                            $labellid=$labelrowdata['lid'];
+                             
+                            if ($labellid == $oldlid) {
+                                $labelrowdata['lid']=$newlid;
+        
+                                // translate internal links
+                                $labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
+                                if (!isset($labelrowdata["assessment_value"]))
+                                {
+                                    $labelrowdata["assessment_value"]=(int)$labelrowdata["code"];
+                                }
+        
+                                $newvalues=array_values($labelrowdata);
+                                //$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
+                                $lainsert = "insert INTO ".$CI->db->dbprefix."labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+                                $liresult=db_execute_assoc($lainsert);
+                                //$liresult=$connect->Execute($lainsert);
+                                $results['labels']++;
+                            }
+                        }
+                    }
+        
+                    //CHECK FOR DUPLICATE LABELSETS
+        
+                    if (isset($_POST['checkforduplicates']))
+                    {
+                        $thisset="";
+                        $query2 = "SELECT code, title, sortorder, language, assessment_value
+                                   FROM ".$CI->db->dbprefix."labels
+                                   WHERE lid=".$newlid."
+                                   ORDER BY language, sortorder, code";
+                        $result2 = db_execute_assoc($query2) or show_error("Died querying labelset $lid<br />$query2<br />");
+                        foreach($result2->result_array() as $row2)
+                        {
+                            $row2 = array_values($row2);
+                            $thisset .= implode('.', $row2);
+                        } // while
+                        $newcs=dechex(crc32($thisset)*1);
+                        unset($lsmatch);
+        
+                        if (isset($csarray) && $options['checkforduplicates']=='on')
+                        {
+                            foreach($csarray as $key=>$val)
+                            {
+                                //			echo $val."-".$newcs."<br/>";  For debug purposes
+                                if ($val == $newcs)
+                                {
+                                    $lsmatch=$key;
+                                }
+                            }
+                        }
+                        if (isset($lsmatch))
+                        {
+                            //There is a matching labelset. So, we will delete this one and refer
+                            //to the matched one.
+                            $query = "DELETE FROM ".$CI->db->dbprefix."labels WHERE lid=$newlid";
+                            $result=$connect->Execute($query) or show_error("Couldn't delete labels<br />$query<br />");
+                            $query = "DELETE FROM ".$CI->db->dbprefix."labelsets WHERE lid=$newlid";
+                            $result=$connect->Execute($query) or show_error("Couldn't delete labelset<br />$query<br />");
+                            $newlid=$lsmatch;
+                            $results['warnings'][]=$clang->gT("Label set was not imported because the same label set already exists.")." ".sprintf($clang->gT("Existing LID: %s"),$newlid);
+                             
+                        }
+                        //END CHECK FOR DUPLICATES
+                    }
+                }
+            }
+        
+            return $results;
+        }
+        
+        
+/**
+ * XMLImportLabelsets()
+ * Function resp[onsible to import a labelset from XML format.
+ * @param mixed $sFullFilepath
+ * @param mixed $options
+ * @return
+ */
+function XMLImportLabelsets($sFullFilepath, $options)
+    {
+        //global $connect, $dbprefix, $clang;
+        $CI =& get_instance();
+        $CI->load->helper('database');
+        $clang = $CI->limesurvey_lang;
+        $xml = simplexml_load_file($sFullFilepath);    
+        if ($xml->LimeSurveyDocType!='Label set') show_error('This is not a valid LimeSurvey label set structure XML file.');
+        $dbversion = (int) $xml->DBVersion;
+        $csarray=buildLabelSetCheckSumArray();
+        $aLSIDReplacements=array();     
+        $results['labelsets']=0;
+        $results['labels']=0;
+        $results['warnings']=array();
+        $dbprefix = $CI->db->dbprefix;
+                               
+        // Import labels table ===================================================================================
+    
+        //$tablename=$dbprefix.'labelsets';
+        foreach ($xml->labelsets->rows->row as $row)
+        {
+           $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $oldlsid=$insertdata['lid'];
+            unset($insertdata['lid']); // save the old qid
+            
+            $CI->load->model('labelsets_model');
+            
+            
+            // Insert the new question    
+            //$query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result = $CI->labelsets_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+            $results['labelsets']++;
+    
+            $newlsid=$CI->db->insert_id(); //$connect->Insert_ID($tablename,"lid"); // save this for later
+            $aLSIDReplacements[$oldlsid]=$newlsid; // add old and new lsid to the mapping array
+        }
+                              
+                                                                                          
+        // Import labels table ===================================================================================
+    
+        //$tablename=$dbprefix.'labels';
+        foreach ($xml->labels->rows->row as $row)
+        {
+           $insertdata=array(); 
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['lid']=$aLSIDReplacements[$insertdata['lid']];
+            $CI->load->model('labels_model');
+            
+            //$query=$connect->GetInsertSQL($tablename,$insertdata); 
+            $result = $CI->labels_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+            $results['labels']++;
+        }
+        
+        //CHECK FOR DUPLICATE LABELSETS
+    
+        if (isset($_POST['checkforduplicates']))
+        {
+            foreach (array_values($aLSIDReplacements) as $newlid)
+            {
+                $thisset="";
+                $query2 = "SELECT code, title, sortorder, language, assessment_value
+                           FROM ".$CI->db->dbprefix."labels
+                           WHERE lid=".$newlid."
+                           ORDER BY language, sortorder, code";
+                $result2 = db_execute_assoc($query2) or show_error("Died querying labelset $lid<br />");
+                foreach($result2->result_array() as $row2)
+                {
+                    $row2 = array_values($row2);
+                    $thisset .= implode('.', $row2);
+                } // while
+                $newcs=dechex(crc32($thisset)*1);
+                unset($lsmatch);
+    
+                if (isset($csarray) && $options['checkforduplicates']=='on')
+                {
+                    foreach($csarray as $key=>$val)
+                    {
+                        if ($val == $newcs)
+                        {
+                            $lsmatch=$key;
+                        }
+                    }
+                }
+                if (isset($lsmatch))
+                {
+                    //There is a matching labelset. So, we will delete this one and refer
+                    //to the matched one.
+                    $query = "DELETE FROM ".$CI->db->dbprefix."labels WHERE lid=$newlid";
+                    $result=db_execute_assoc($query) or show_error("Couldn't delete labels<br />$query<br />");
+                    $results['labels']=$results['labels']-$CI->db->affected_rows();
+                    $query = "DELETE FROM ".$CI->db->dbprefix."labelsets WHERE lid=$newlid";
+                    $result=db_execute_assoc($query) or show_error("Couldn't delete labelset<br />$query<br />");
+                    $results['labelsets']--;
+                    $newlid=$lsmatch;
+                    $results['warnings'][]=$clang->gT("Label set was not imported because the same label set already exists.")." ".sprintf($clang->gT("Existing LID: %s"),$newlid);
+                     
+                }
+            }
+            //END CHECK FOR DUPLICATES
+        }    
+        return $results;
+    }
+
+
 
 /**
 * This function imports the old CSV data from 1.50 to 1.87 or older. Starting with 1.90 (DBVersion 143) there is an XML format instead

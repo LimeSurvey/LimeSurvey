@@ -13,6 +13,15 @@
  * $Id$
  */
 
+/**
+ * Dumpdb
+ * 
+ * @package LimeSurvey_CI
+ * @author 
+ * @copyright 2011
+ * @version $Id$
+ * @access public
+ */
 class Dumpdb extends AdminController {
     
     function __construct()
@@ -20,6 +29,11 @@ class Dumpdb extends AdminController {
 		parent::__construct();
 	}
     
+    /**
+     * Dumpdb::index()
+     * Dump database. Only LimeSurvey tables are dumped.
+     * @return void
+     */
     function index()
     {
         $this->load->dbutil();

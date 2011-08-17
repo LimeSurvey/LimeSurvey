@@ -1,13 +1,46 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+/*
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ * 
+ * $Id$
+ * 
+ */
+/**
+ * Database
+ * 
+ * @package LimeSurvey_CI
+ * @author 
+ * @copyright 2011
+ * @version $Id$
+ * @access public
+ */
 class Database extends AdminController {
 
 
+    /**
+     * Database::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
 		parent::__construct();
 	}
     
+    /**
+     * Database::index()
+     * 
+     * @param mixed $action
+     * @return
+     */
     function index($action=null)
     {
         
@@ -21,7 +54,7 @@ class Database extends AdminController {
         $surveyid = $this->input->post("sid");
         $gid = $this->input->post("gid");
         $qid = $this->input->post("qid");
-        
+        // if $action is not passed, check post data.
         if (!$action)
         {
             $action = $this->input->post("action");           
@@ -1388,7 +1421,7 @@ class Database extends AdminController {
         
     }
     
-    /**
+    /** Database::_aTemplateDefaultTexts()
     * Returns the default email template texts as array
     * 
     * @param mixed $oLanguage Required language translationb object
@@ -1448,7 +1481,7 @@ class Database extends AdminController {
         );
     }
     
-    /**
+    /** Database::_GiveAllSurveyPermissions()
     * Gives all available survey permissions for a certain survey to a user 
     * 
     * @param mixed $iUserID  The User ID
@@ -1475,7 +1508,7 @@ class Database extends AdminController {
          self::_SetSurveyPermissions($iUserID, $iSurveyID, $aPermissionsToSet);
     }
     
-    /**
+    /** Database::_SetSurveyPermissions()
     * Set the survey permissions for a user. Beware that all survey permissions for the particual survey are removed before the new ones are written.
     * 
     * @param int $iUserID The User ID

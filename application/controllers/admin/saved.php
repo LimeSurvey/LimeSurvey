@@ -13,13 +13,33 @@
  * $Id$
  */
  
+ /**
+  * saved
+  * 
+  * @package LimeSurvey_CI
+  * @author 
+  * @copyright 2011
+  * @version $Id$
+  * @access public
+  */
  class saved extends SurveyCommonController {
     
+    /**
+     * saved::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
 		parent::__construct();
 	}
     
+    /**
+     * saved::view()
+     * Load viewing of unsaved responses screen.
+     * @param mixed $surveyid
+     * @return
+     */
     function view($surveyid)
     {
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
@@ -56,6 +76,11 @@
         
     }
     
+    /**
+     * saved::delete()
+     * Function responsible to delete saved responses.
+     * @return
+     */
     function delete()
     {
         $surveyid=$this->input->post('sid');
@@ -87,6 +112,12 @@
         redirect("admin/saved/view/".$surveyid,'refresh');
     }
     
+    /**
+     * saved::_showSavedList()
+     * Load saved list.
+     * @param mixed $surveyid
+     * @return
+     */
     function _showSavedList($surveyid)
     {
         //global $dbprefix, $connect, $clang, $savedsurveyoutput, $scriptname, $imageurl, $surrows;
@@ -111,6 +142,12 @@
     //				[<a href='saved.php?sid=$surveyid&amp;action=remind&amp;scid=".$row['scid']."'>".$clang->gT("Remind")."</a>]
     //               c_schmitz: Since its without function at the moment i removed it from the above lines
     
+    /**
+     * saved::_savedmenubar()
+     * Load menu bar of saved controller.
+     * @param mixed $surveyid
+     * @return
+     */
     function _savedmenubar($surveyid)
     {
         //global $surveyid, $scriptname, $imageurl, $clang;

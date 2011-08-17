@@ -47,13 +47,36 @@
 
  */
  
+ /**
+  * dataentry
+  * 
+  * @package LimeSurvey_CI
+  * @author 
+  * @copyright 2011
+  * @version $Id$
+  * @access public
+  */
  class dataentry extends SurveyCommonController {
     
+    /**
+     * dataentry::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
 		parent::__construct();
 	}
     
+    /**
+     * dataentry::editdata()
+     * Edit dataentry.
+     * @param mixed $subaction
+     * @param mixed $id
+     * @param mixed $surveyid
+     * @param mixed $language
+     * @return
+     */
     function editdata($subaction,$id,$surveyid,$language)
     {
         if (!isset($sDataEntryLanguage))
@@ -1034,6 +1057,11 @@
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
+    /**
+     * dataentry::delete()
+     * delete dataentry 
+     * @return
+     */
     function delete()
     {
         self::_getAdminHeader();
@@ -1073,6 +1101,11 @@
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
+    /**
+     * dataentry::update()
+     * update dataentry 
+     * @return
+     */
     function update()
     {
         self::_getAdminHeader();
@@ -1206,6 +1239,11 @@
         
     }
     
+    /**
+     * dataentry::insert()
+     * insert new dataentry
+     * @return
+     */
     function insert()
     {
         self::_getAdminHeader();
@@ -1599,6 +1637,13 @@
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
+    /**
+     * dataentry::view()
+     * view a dataentry
+     * @param mixed $surveyid
+     * @param mixed $lang
+     * @return
+     */
     function view($surveyid,$lang=NULL)
     {
         self::_getAdminHeader();

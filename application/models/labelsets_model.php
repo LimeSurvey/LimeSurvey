@@ -32,7 +32,7 @@ class Labelsets_model extends CI_Model {
     
     function getLID()
     {
-        $his->db->select('lid');
+        $this->db->select('lid');
         $this->db->order_by('lid','asc');
         return $this->db->get('labelsets');
     }

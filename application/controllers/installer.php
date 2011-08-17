@@ -13,10 +13,24 @@
  * @author Shubham Sachdeva
  */
 
+/**
+ * Installer
+ * 
+ * @package LimeSurvey_CI
+ * @author Shubham Sachdeva
+ * @copyright 2011
+ * @version $Id$
+ * @access public
+ */
 class Installer extends CI_Controller {
     
     
     
+    /**
+     * Installer::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
         parent::__construct();
@@ -25,12 +39,22 @@ class Installer extends CI_Controller {
         self::_writeConfigfile();
 	}
 	
+	/**
+	 * Installer::index()
+	 * 
+	 * @return
+	 */
 	function index()
     {
         // redirect to license screen
         redirect(site_url('installer/install/license'));
     }
     
+    /**
+     * Installer::_checkInstallation()
+     * check if installation should proceed further or not. (Based on existance of 'sample_installer_file.txt' file.)
+     * @return
+     */
     function _checkInstallation()
     {
         if (!file_exists($this->config->item('rootdir').'/tmp/sample_installer_file.txt'))
@@ -42,6 +66,12 @@ class Installer extends CI_Controller {
     }
     
       
+    /**
+     * Installer::install()
+     * Install Limeurvey database and default settings.
+     * @param integer $step
+     * @return
+     */
     function install($step=0)
     {
         
@@ -58,7 +88,7 @@ class Installer extends CI_Controller {
                 $this->load->view('installer/license_view',$data);
                 break;            
             }
-                        
+            // time to check few writing permissions and optional settings.            
             case 0:
             {
                 //check user checked the checkbox. if yes,save the status 
@@ -257,6 +287,7 @@ class Installer extends CI_Controller {
                 $this->load->view('installer/precheck_view',$data);
                 break;
             }
+            // Configure database screen
             case 1:
             {
                 //check if user has completed step2
@@ -399,7 +430,7 @@ class Installer extends CI_Controller {
                         echo 'You\'ll be redirected in about 5 secs. If not, click '.anchor("installer/install/0","here").'.';
                     }
                     */ 
-                    
+                    $_POST = $this->input->post();
                     $databaseport='default';
                     $databasepersistent=true;
                     $dbhost='';
@@ -495,7 +526,7 @@ echo "hello<br/>".$dsn;
                     }
                     */
                                         
-                    $_POST = $this->input->post();
+                    
                     $database_exists =false;
                     $connection_db = false;
                     // Now try connecting to the database
@@ -727,6 +758,7 @@ echo "hello<br/>".$dsn;
                           
                 break;
             }
+            // Optional settings screen
             case 2:
             {
                 //check status whether user is done populating DB,
@@ -761,6 +793,11 @@ echo "hello<br/>".$dsn;
         
     }
     
+    /**
+     * Installer::deletefiles()
+     * delete installer files at end of installation.
+     * @return
+     */
     function deletefiles()
     {
         $status=$this->session->userdata('deletedirectories');
@@ -831,6 +868,11 @@ echo "hello<br/>".$dsn;
     }
     
     // this function does the processing of optional view form.
+    /**
+     * Installer::optional()
+     * Processes optional configuration screen data
+     * @return
+     */
     function optional()
     {
         
@@ -993,6 +1035,11 @@ echo "hello<br/>".$dsn;
         
     }
     // this function loads optconfig_view with proper confirmation message.
+    /**
+     * Installer::loadOptView()
+     * Loads optional configuration screen.
+     * @return
+     */
     function loadOptView()
     {
         $status1=$this->session->userdata('step3');
@@ -1021,6 +1068,11 @@ echo "hello<br/>".$dsn;
     }
     
     //function used to create different DB systems.
+    /**
+     * Installer::createdb()
+     * Create database. 
+     * @return
+     */
     function createdb()
     {
         // check status . to be called only when database don't exist else rdirect to proper link.
@@ -1101,6 +1153,11 @@ echo "hello<br/>".$dsn;
     }
     
     //function used to populate database
+    /**
+     * Installer::populatedb()
+     * Function to populate the database.
+     * @return
+     */
     function populatedb()
     {
         $status1=$this->session->userdata('populatedatabase');
@@ -1175,6 +1232,13 @@ echo "hello<br/>".$dsn;
     }
     
     //function that ultimately populate database.
+    /**
+     * Installer::_modify_database()
+     * Function that actually modify the database. Read $sqlfile and execute it.
+     * @param string $sqlfile
+     * @param string $sqlstring
+     * @return
+     */
     function _modify_database($sqlfile='', $sqlstring='')
     {
         $dbprefix=$this->session->userdata('dbprefix');
@@ -1291,6 +1355,11 @@ echo "hello<br/>".$dsn;
 
     }
     
+    /**
+     * Installer::_writeDatabaseFile()
+     * Function to write given database settings in APPPATH.'application/config/database.php'
+     * @return
+     */
     function _writeDatabaseFile()
     {
         //write database.php if database exists and has been populated.
@@ -1394,6 +1463,11 @@ echo "hello<br/>".$dsn;
                 }
     }
     
+    /**
+     * Installer::_writeAutoloadfile()
+     * Function to make database library get autoloaded in APPPATH.'application/config/autoload.php'
+     * @return
+     */
     function _writeAutoloadfile()
     {
         if ($this->session->userdata('databaseexist') && $this->session->userdata('tablesexist'))
@@ -1409,6 +1483,11 @@ echo "hello<br/>".$dsn;
         
     }
     
+    /**
+     * Installer::_writeConfigfile()
+     * Function to write session encryption key in APPPATH.'application/config/config.php'
+     * @return
+     */
     function _writeConfigfile()
     {
         if ($this->session->userdata('databaseexist') && $this->session->userdata('tablesexist'))
@@ -1426,6 +1505,11 @@ echo "hello<br/>".$dsn;
     
    
     
+    /**
+     * Installer::_getRandomID()
+     * Create a random survey ID - based on code from Ken Lyle
+     * @return
+     */
     function _getRandomID()
     {        // Create a random survey ID - based on code from Ken Lyle
         // Random sid/ question ID generator...
@@ -1438,6 +1522,13 @@ echo "hello<br/>".$dsn;
         return $sid;
     }
     
+    /**
+     * Installer::_db_execute_num()
+     * Function to execute database queries and return normal array(not assosciative one!).
+     * @param mixed $sql
+     * @param bool $inputarr
+     * @return
+     */
     function _db_execute_num($sql,$inputarr=false)
     {
         //include(dirname(__FILE__).'/../../../config-sample.php');
@@ -1452,6 +1543,13 @@ echo "hello<br/>".$dsn;
         return $dataset;
     }
     
+    /**
+     * Installer::_db_quote_id()
+     * Function to quote values to be inserted later on.
+     * @param mixed $id
+     * @param mixed $databasetype
+     * @return
+     */
     function _db_quote_id($id,$databasetype)
     {
         
@@ -1479,6 +1577,14 @@ echo "hello<br/>".$dsn;
         }
     }
     
+    /**
+     * Installer::_db_table_name()
+     * Function to return complete database table name.
+     * @param mixed $name
+     * @param mixed $dbprefix
+     * @param mixed $databasetype
+     * @return
+     */
     function _db_table_name($name,$dbprefix,$databasetype)
     {
         return self::_db_quote_id($dbprefix.$name,$databasetype);

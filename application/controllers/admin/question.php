@@ -13,13 +13,35 @@
  * 
  */
  
+ /**
+  * question
+  * 
+  * @package LimeSurvey_CI
+  * @author 
+  * @copyright 2011
+  * @version $Id$
+  * @access public
+  */
  class question extends SurveyCommonController {
     
+    /**
+     * question::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
 		parent::__construct();
 	}
     
+    /**
+     * question::answeroptions()
+     *  Load complete editing of answer options screen.
+     * @param mixed $surveyid
+     * @param mixed $gid
+     * @param mixed $qid
+     * @return
+     */
     function answeroptions($surveyid,$gid,$qid)
     {
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.dd.js');
@@ -50,6 +72,14 @@
         
     }
     
+    /**
+     * question::_editansweroptions()
+     * Load editing of answer options specific screen only.
+     * @param mixed $surveyid
+     * @param mixed $gid
+     * @param mixed $qid
+     * @return
+     */
     function _editansweroptions($surveyid,$gid,$qid)
     {
         $this->load->helper('database');
@@ -329,6 +359,14 @@
         
     }
     
+    /**
+     * question::subquestions()
+     * Load complete subquestions screen.
+     * @param mixed $surveyid
+     * @param mixed $gid
+     * @param mixed $qid
+     * @return
+     */
     function subquestions($surveyid,$gid,$qid)
     {
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.dd.js');
@@ -361,6 +399,14 @@
         
     }
     
+    /**
+     * question::_editsubquestion()
+     * Load only subquestion specific screen only.
+     * @param mixed $surveyid
+     * @param mixed $gid
+     * @param mixed $qid
+     * @return
+     */
     function _editsubquestion($surveyid,$gid,$qid)
     {
         $this->load->helper('database');
@@ -649,6 +695,15 @@
     }
     
     
+    /**
+     * question::index()
+     * Load edit/new question screen depending on $action.
+     * @param mixed $action
+     * @param mixed $surveyid
+     * @param mixed $gid
+     * @param mixed $qid
+     * @return
+     */
     function index($action,$surveyid,$gid,$qid=null)
     {
        
@@ -1060,6 +1115,12 @@
     
     }    
     
+    /**
+     * question::_questionjavascript()
+     * Load javascript functions required in question screen.
+     * @param mixed $type
+     * @return
+     */
     function _questionjavascript($type)
     {
         /**
@@ -1137,6 +1198,13 @@
     }
     
     
+    /**
+     * question::order()
+     * Load ordering of question in a question group screen.
+     * @param mixed $surveyid
+     * @param mixed $gid
+     * @return
+     */
     function order($surveyid,$gid)
     {
         
@@ -1373,6 +1441,11 @@
     
         
     
+    /**
+     * question::delete()
+     * Function responsible for deleting a question.
+     * @return
+     */
     function delete()
     {
         $clang = $this->limesurvey_lang;
@@ -1432,7 +1505,16 @@
         
     }
     
+<<<<<<< .mine
+    /**
+     * question::questionattributes()
+     * 
+     * @return
+     */
+    function questionattributes()
+=======
     function ajaxquestionattributes()
+>>>>>>> .r10749
     {
         $surveyid = $this->input->post("sid");
         $qid = $this->input->post("qid");
@@ -1507,6 +1589,14 @@
         }
     }
     
+    /**
+     * question::preview()
+     * Load preview of a question screen.
+     * @param mixed $surveyid
+     * @param mixed $qid
+     * @param mixed $lang
+     * @return
+     */
     function preview($surveyid, $qid, $lang = null)
     {
 		$this->load->helper("qanda");

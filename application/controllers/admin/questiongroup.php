@@ -13,14 +13,33 @@
  * 
  */
  
+ /**
+  * questiongroup
+  * 
+  * @package LimeSurvey_CI
+  * @author 
+  * @copyright 2011
+  * @version $Id$
+  * @access public
+  */
  class questiongroup extends SurveyCommonController {
     
+    /**
+     * questiongroup::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
 		parent::__construct();
 	}
     
     
+    /**
+     * questiongroup::add()
+     * Load add new question grup screen.
+     * @return
+     */
     function add($surveyid)
     {
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
@@ -132,6 +151,11 @@
         
     }
     
+    /**
+     * questiongroup::delete()
+     * Function responsible for deleting a question group.
+     * @return
+     */
     function delete()
     {
         $action = $this->input->post("action");
@@ -183,6 +207,11 @@
         }
     }
     
+    /**
+     * questiongroup::edit()
+     * Load editing of a question group screen.
+     * @return
+     */
     function edit($surveyid,$gid)
     {
         
@@ -312,6 +341,11 @@
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
+    /**
+     * questiongroup::order()
+     * Load ordering of question group screen.
+     * @return
+     */
     function order($surveyid)
     {
         $clang = $this->limesurvey_lang;

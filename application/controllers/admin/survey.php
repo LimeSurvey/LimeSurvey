@@ -13,19 +13,260 @@
  * $Id$
  */
  
+ /**
+  * survey
+  * 
+  * @package LimeSurvey_CI
+  * @author 
+  * @copyright 2011
+  * @version $Id$
+  * @access public
+  */
  class survey extends SurveyCommonController {
     
+    /**
+     * survey::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
 		parent::__construct();
 	}
+    
+    function importsurveyresources()
+    {
+        $clang = $this->limesurvey_lang;
+        $action = $this->input->post('action');
+        $surveyid = $this->input->post('sid');
+        self::_getAdminHeader();
+        self::_showadminmenu($surveyid);
+        self::_surveybar($surveyid,NULL);
+        self::_surveysummary($surveyid,$action);
+        
+        if ($action == "importsurveyresources" && $surveyid) 
+        {
+            $importsurveyresourcesoutput = "<div class='header ui-widget-header'>".$clang->gT("Import survey resources")."</div>\n";
+            $importsurveyresourcesoutput .= "<div class='messagebox ui-corner-all'>";
+        
+            if ($demoModeOnly === true)
+            {
+                $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                $importsurveyresourcesoutput .= $clang->gT("Demo Mode Only: Uploading file is disabled in this system.")."<br /><br />\n";
+                $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+                $importsurveyresourcesoutput .= "</div>\n";
+                show_error($importsurveyresourcesoutput);
+                return;
+            }
+        
+            //require("classes/phpzip/phpzip.inc.php");
+            $this->load->library('admin/Phpzip');
+            $zipfile=$_FILES['the_file']['tmp_name'];
+            $z = $this->phpzip; //new PHPZip();
+        
+            // Create temporary directory
+            // If dangerous content is unzipped
+            // then no one will know the path
+            $extractdir=self::_tempdir($this->config->item('tempdir'));
+            $basedestdir = $this->config->item('publicdir')."/upload/surveys";
+            $destdir=$basedestdir."/$surveyid/";
+        
+            if (!is_writeable($basedestdir))
+            {
+                $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                $importsurveyresourcesoutput .= sprintf ($clang->gT("Incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
+                $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+                $importsurveyresourcesoutput .= "</div>\n";
+                show_error($importsurveyresourcesoutput);
+                return;
+            }
+        
+            if (!is_dir($destdir))
+            {
+                mkdir($destdir);
+            }
+        
+            $aImportedFilesInfo=null;
+            $aErrorFilesInfo=null;
+        
+        
+            if (is_file($zipfile))
+            {
+                $importsurveyresourcesoutput .= "<div class=\"successheader\">".$clang->gT("Success")."</div><br />\n";
+                $importsurveyresourcesoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
+                $importsurveyresourcesoutput .= $clang->gT("Reading file..")."<br /><br />\n";
+        
+                if ($z->extract($extractdir,$zipfile) != 'OK')
+                {
+                    $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                    $importsurveyresourcesoutput .= $clang->gT("This file is not a valid ZIP file archive. Import failed.")."<br /><br />\n";
+                    $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+                    $importsurveyresourcesoutput .= "</div>\n";
+                    show_error($importsurveyresourcesoutput);
+                    return;
+                }
+        
+                // now read tempdir and copy authorized files only
+                $dh = opendir($extractdir);
+                while($direntry = readdir($dh))
+                {
+                    if (($direntry!=".")&&($direntry!=".."))
+                    {
+                        if (is_file($extractdir."/".$direntry))
+                        { // is  a file
+                            $extfile = substr(strrchr($direntry, '.'),1);
+                            if  (!(stripos(','.$allowedresourcesuploads.',',','.$extfile.',') === false))
+                            { //Extension allowed
+                                if (!copy($extractdir."/".$direntry, $destdir.$direntry))
+                                {
+                                    $aErrorFilesInfo[]=Array(
+        								"filename" => $direntry,
+        								"status" => $clang->gT("Copy failed")
+                                    );
+                                    unlink($extractdir."/".$direntry);
+        
+                                }
+                                else
+                                {
+                                    $aImportedFilesInfo[]=Array(
+        								"filename" => $direntry,
+        								"status" => $clang->gT("OK")
+                                    );
+                                    unlink($extractdir."/".$direntry);
+                                }
+                            }
+        
+                            else
+                            { // Extension forbidden
+                                $aErrorFilesInfo[]=Array(
+        							"filename" => $direntry,
+        							"status" => $clang->gT("Error")." (".$clang->gT("Forbidden Extension").")"
+        							);
+        							unlink($extractdir."/".$direntry);
+                            }
+                        } // end if is_file
+                    } // end if ! . or ..
+                } // end while read dir
+        
+        
+                //Delete the temporary file
+                unlink($zipfile);
+                //Delete temporary folder
+                rmdir($extractdir);
+        
+                // display summary
+                $okfiles = 0;
+                $errfiles= 0;
+                $ErrorListHeader = "";
+                $ImportListHeader = "";
+                if (is_null($aErrorFilesInfo) && !is_null($aImportedFilesInfo))
+                {
+                    $status=$clang->gT("Success");
+                    $statusClass='successheader';
+                    $okfiles = count($aImportedFilesInfo);
+                    $ImportListHeader .= "<br /><strong><u>".$clang->gT("Imported Files List").":</u></strong><br />\n";
+                }
+                elseif (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
+                {
+                    $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                    $importsurveyresourcesoutput .= $clang->gT("This ZIP archive contains no valid Resources files. Import failed.")."<br /><br />\n";
+                    $importsurveyresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP archives.")."<br /><br />\n";
+                    $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+                    $importsurveyresourcesoutput .= "</div>\n";
+                    show_error($importsurveyresourcesoutput);
+                    return;
+        
+                }
+                elseif (!is_null($aErrorFilesInfo) && !is_null($aImportedFilesInfo))
+                {
+                    $status=$clang->gT("Partial");
+                    $statusClass='partialheader';
+                    $okfiles = count($aImportedFilesInfo);
+                    $errfiles = count($aErrorFilesInfo);
+                    $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
+                    $ImportListHeader .= "<br /><strong><u>".$clang->gT("Imported Files List").":</u></strong><br />\n";
+                }
+                else
+                {
+                    $status=$clang->gT("Error");
+                    $statusClass='warningheader';
+                    $errfiles = count($aErrorFilesInfo);
+                    $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
+                }
+        
+                $importsurveyresourcesoutput .= "<strong>".$clang->gT("Imported Resources for")." SID:</strong> $surveyid<br /><br />\n";
+                $importsurveyresourcesoutput .= "<div class=\"".$statusClass."\">".$status."</div><br />\n";
+                $importsurveyresourcesoutput .= "<strong><u>".$clang->gT("Resources Import Summary")."</u></strong><br />\n";
+                $importsurveyresourcesoutput .= "".$clang->gT("Total Imported files").": $okfiles<br />\n";
+                $importsurveyresourcesoutput .= "".$clang->gT("Total Errors").": $errfiles<br />\n";
+                $importsurveyresourcesoutput .= $ImportListHeader;
+                foreach ($aImportedFilesInfo as $entry)
+                {
+                    $importsurveyresourcesoutput .= "\t<li>".$clang->gT("File").": ".$entry["filename"]."</li>\n";
+                }
+                if (!is_null($aImportedFilesInfo))
+                {
+                    $importsurveyresourcesoutput .= "\t</ul><br />\n";
+                }
+                $importsurveyresourcesoutput .= $ErrorListHeader;
+                foreach ($aErrorFilesInfo as $entry)
+                {
+                    $importsurveyresourcesoutput .= "\t<li>".$clang->gT("File").": ".$entry['filename']." (".$entry['status'].")</li>\n";
+                }
+                if (!is_null($aErrorFilesInfo))
+                {
+                    $importsurveyresourcesoutput .= "\t</ul><br />\n";
+                }
+            }
+            else
+            {
+                $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                $importsurveyresourcesoutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
+                $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+                $importsurveyresourcesoutput .= "</div>\n";
+                show_error($importsurveyresourcesoutput);
+                return;
+            }
+            $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+            $importsurveyresourcesoutput .= "</div>\n";
+            
+            $data['display'] = $importlabeloutput;
+            $this->load->view('survey_view',$data);
+        }
+        
+        self::_loadEndScripts();
+                
+                
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        
+    }
+    
+    //---------------------
+    // Comes from http://fr2.php.net/tempnam
+    function _tempdir($dir, $prefix='', $mode=0700)
+    {
+        if (substr($dir, -1) != '/') $dir .= '/';
+    
+        do
+        {
+            $path = $dir.$prefix.mt_rand(0, 9999999);
+        } while (!mkdir($path, $mode));
+    
+        return $path;
+    }
+	
 	
 	/**
-	 * Shows survey details
+	 * survey::view()
+	 * Load complete view of survey properties and actions specified by $surveyid
+	 * @param mixed $surveyid
+	 * @param mixed $gid
+	 * @param mixed $qid
+	 * @return
 	 */
 	function view($surveyid,$gid=null,$qid=null)
 	{
-	    
+	    // show till question menubar.
         if (!is_null($qid))
         {
             $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
@@ -46,6 +287,7 @@
         }
         else
         {
+            //show till questiongroup menu bar.
             if (!is_null($gid))
             {
                 $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
@@ -65,6 +307,7 @@
             }
             else
             {
+                //show till survey menu bar.
                 if(bHasSurveyPermission($surveyid,'survey','read'))
         	    {
                     $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
@@ -91,6 +334,12 @@
         
 	}
     
+    /**
+     * survey::deactivate()
+     * Function responsible to deactivate a survey.
+     * @param mixed $surveyid
+     * @return
+     */
     function deactivate($surveyid)
     {
         
@@ -269,6 +518,12 @@
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
+    /**
+     * survey::activate()
+     * Function responsible to activate survey.
+     * @param mixed $surveyid
+     * @return
+     */
     function activate($surveyid)
     {
         
@@ -377,6 +632,11 @@
     }
     
     
+    /**
+     * survey::listsurveys()
+     * Function that load list of surveys and it's few quick properties.
+     * @return
+     */
     function listsurveys()
     {
         $clang = $this->limesurvey_lang;
@@ -640,6 +900,11 @@
         
     }
     
+    /**
+     * survey::delete()
+     * Function responsible to delete a survey.
+     * @return
+     */
     function delete()
     {
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
@@ -747,6 +1012,12 @@
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
+    /**
+     * survey::editlocalsettings()
+     * Load editing of local settings of a survey screen.
+     * @param mixed $surveyid
+     * @return
+     */
     function editlocalsettings($surveyid)
     {
         $clang = $this->limesurvey_lang;
@@ -886,6 +1157,11 @@
 
     }
     
+    /**
+     * survey::copy()
+     * Function responsible to import/copy a survey based on $action.
+     * @return
+     */
     function copy()
     {
         $importsurvey = "";
@@ -1147,6 +1423,13 @@
         
     }
     
+    /**
+     * survey::index()
+     * Load edit/new survey screen.
+     * @param mixed $action
+     * @param mixed $surveyid
+     * @return
+     */
     function index($action,$surveyid=null)
     {
         //global $surveyid;
@@ -1249,6 +1532,13 @@
     }
     
     
+    /**
+     * survey::_fetchSurveyInfo()
+     * Load survey information based on $action.
+     * @param mixed $action
+     * @param mixed $surveyid
+     * @return
+     */
     function _fetchSurveyInfo($action,$surveyid=null)
     {
         if ($action == 'newsurvey')
@@ -1300,6 +1590,11 @@
         return $esrow;
     }
     
+    /**
+     * survey::_generalTabNewSurvey()
+     * Load "General" tab of new survey screen.
+     * @return
+     */
     function _generalTabNewSurvey()
     {
         global $siteadminname,$siteadminemail;
@@ -1413,6 +1708,13 @@
             return $this->load->view('admin/survey/superview/superGeneralNewSurvey_view',$data, true);
     }
         
+    /**
+     * survey::_generalTabEditSurvey()
+     * Load "General" tab of edit survey screen.
+     * @param mixed $surveyid
+     * @param mixed $esrow
+     * @return
+     */
     function _generalTabEditSurvey($surveyid,$esrow)
     {
         global $siteadminname,$siteadminemail;
@@ -1493,6 +1795,12 @@
         
     }
     
+    /**
+     * survey::_tabPresentationNavigation()
+     * Load "Presentation & navigation" tab.
+     * @param mixed $esrow
+     * @return
+     */
     function _tabPresentationNavigation($esrow)
     {
         $clang = $this->limesurvey_lang;
@@ -1841,6 +2149,12 @@
         
     }
     
+    /**
+     * survey::_tabPublicationAccess()
+     * Load "Publication * access control" tab.
+     * @param mixed $esrow
+     * @return
+     */
     function _tabPublicationAccess($esrow)
     {
         $clang = $this->limesurvey_lang;
@@ -2001,6 +2315,12 @@
         
     }
     
+    /**
+     * survey::_tabNotificationDataManagement()
+     * Load "Notification & data management" tab.
+     * @param mixed $esrow
+     * @return
+     */
     function _tabNotificationDataManagement($esrow)
     {
         $clang = $this->limesurvey_lang;
@@ -2229,6 +2549,12 @@
         
     }
     
+    /**
+     * survey::_tabTokens()
+     * Load "Tokens" tab.
+     * @param mixed $esrow
+     * @return
+     */
     function _tabTokens($esrow)
     {
         $clang = $this->limesurvey_lang;
@@ -2265,6 +2591,12 @@
         return $this->load->view('admin/survey/superview/superTokens_view',$data, true); 
     }
     
+    /**
+     * survey::_tabImport()
+     * Load "Import" tab.
+     * @param mixed $surveyid
+     * @return
+     */
     function _tabImport($surveyid)
     {
         $clang = $this->limesurvey_lang;
@@ -2293,6 +2625,12 @@
         return $this->load->view('admin/survey/superview/superImport_view',$data, true); 
     }
     
+    /**
+     * survey::_tabCopy()
+     * Load "Copy" tab.
+     * @param mixed $surveyid
+     * @return
+     */
     function _tabCopy($surveyid)
     {
         $clang = $this->limesurvey_lang;
@@ -2335,6 +2673,12 @@
     }
     
     
+    /**
+     * survey::_tabResourceManagement()
+     * Load "Resources" tab.
+     * @param mixed $surveyid
+     * @return
+     */
     function _tabResourceManagement($surveyid)
     {
         $clang = $this->limesurvey_lang;

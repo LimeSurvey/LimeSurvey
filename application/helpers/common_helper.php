@@ -4108,29 +4108,31 @@ function buildLabelSetCheckSumArray()
 {
     global $CI;
     // BUILD CHECKSUMS FOR ALL EXISTING LABEL SETS
-    $CI->load->model('labelsets');
+    $CI->load->model('labelsets_model');
 
     /**$query = "SELECT lid
               FROM ".db_table_name('labelsets')."
               ORDER BY lid"; */
-    $result = $CI->labelsets->getLID();//($query) or safe_die("safe_died collecting labelset ids<br />$query<br />");  //Checked)
+    $result = $CI->labelsets_model->getLID();//($query) or safe_die("safe_died collecting labelset ids<br />$query<br />");  //Checked)
     $csarray=array();
+    $CI->load->model('labels_model');
     foreach($result->result_array() as $row)
     {
         $thisset="";
-        $CI->load->models('labels');
+        
 
         /**$query2 = "SELECT code, title, sortorder, language, assessment_value
                    FROM ".db_table_name('labels')."
                    WHERE lid={$row['lid']}
                    ORDER BY language, sortorder, code"; */
-        $result2 = $CI->labels->getLabelCodeInfo($row['lid']) or safe_die("safe_died querying labelset $lid<br />$query2<br />"); //Checked
+        $result2 = $CI->labels_model->getLabelCodeInfo($row['lid']) or show_error("safe_died querying labelset $lid<br />"); //Checked
         foreach ($result2->result_array() as $row2)
         {
             $thisset .= implode('.', $row2);
         } // while
         $csarray[$row['lid']]=dechex(crc32($thisset)*1);
     }
+    
     return $csarray;
 }
 

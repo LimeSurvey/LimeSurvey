@@ -13,13 +13,354 @@
  * 
  */
  
+ /**
+  * labels
+  * 
+  * @package LimeSurvey_CI
+  * @author 
+  * @copyright 2011
+  * @version $Id$
+  * @access public
+  */
  class labels extends AdminController {
     
+    /**
+     * labels::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
 		parent::__construct();
 	}
     
+    /**
+     * labels::importlabelresources()
+     * Function responsible to import label resources from a '.zip' file.
+     * @return
+     */
+    function importlabelresources()
+    {
+        $clang = $this->limesurvey_lang;
+        $action = $this->input->post('action');
+        $lid = $this->input->post('lid');
+        self::_getAdminHeader();
+        self::_labelsetbar();
+        if ($action == "importlabelresources" && $lid)
+        {
+            $importlabelresourcesoutput = "<div class='header ui-widget-header'>".$clang->gT("Import Label Set")."</div>\n";
+            $importlabelresourcesoutput .= "<div class='messagebox ui-corner-all'>";
+        
+            if ($demoModeOnly === true)
+            {
+                $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                $importlabelresourcesoutput .= sprintf ($clang->gT("Demo mode only: Uploading files is disabled in this system."),$basedestdir)."<br /><br />\n";
+                $importlabelresourcesoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('".site_url('admin/labels/view/'.$lid)."', '_top')\" />\n";
+                $importlabelresourcesoutput .= "</div>\n";
+                show_error($importlabelresourcesoutput);
+                return;
+            }
+        
+            //require("classes/phpzip/phpzip.inc.php");
+            $this->load->library('admin/Phpzip');
+            //$the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
+            $zipfile=$_FILES['the_file']['tmp_name'];
+            $z = $this->phpzip; // PHPZip();
+            // Create temporary directory
+            // If dangerous content is unzipped
+            // then no one will know the path
+            $extractdir=self::_tempdir($this->config->item('tempdir'));
+            $basedestdir = $this->config->item('publicdir')."/upload/labels";
+            $destdir=$basedestdir."/$lid/";
+        
+            if (!is_writeable($basedestdir))
+            {
+                $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                $importlabelresourcesoutput .= sprintf ($clang->gT("Incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
+                $importlabelresourcesoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('".site_url('admin/labels/view/'.$lid)."', '_top')\" />\n";
+                $importlabelresourcesoutput .= "</div>\n";
+                show_error($importlabelresourcesoutput);
+                return;
+            }
+        
+            if (!is_dir($destdir))
+            {
+                mkdir($destdir);
+            }
+        
+            $aImportedFilesInfo=null;
+            $aErrorFilesInfo=null;
+        
+        
+            if (is_file($zipfile))
+            {
+                $importlabelresourcesoutput .= "<div class=\"successheader\">".$clang->gT("Success")."</div><br />\n";
+                $importlabelresourcesoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
+                $importlabelresourcesoutput .= $clang->gT("Reading file..")."<br /><br />\n";
+        
+                if ($z->extract($extractdir,$zipfile) != 'OK')
+                {
+                    $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                    $importlabelresourcesoutput .= $clang->gT("This file is not a valid ZIP file archive. Import failed.")."<br /><br />\n";
+                    $importlabelresourcesoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('".site_url('admin/labels/view/'.$lid)."', '_top')\" />\n";
+                    $importlabelresourcesoutput .= "</div>\n";
+                    show_error($importlabelresourcesoutput);
+                    return;
+                }
+        
+                // now read tempdir and copy authorized files only
+                $dh = opendir($extractdir);
+                while($direntry = readdir($dh))
+                {
+                    if (($direntry!=".")&&($direntry!=".."))
+                    {
+                        if (is_file($extractdir."/".$direntry))
+                        { // is  a file
+                            $extfile = substr(strrchr($direntry, '.'),1);
+                            if  (!(stripos(','.$allowedresourcesuploads.',',','.$extfile.',') === false))
+                            { //Extension allowed
+                                if (!copy($extractdir."/".$direntry, $destdir.$direntry))
+                                {
+                                    $aErrorFilesInfo[]=Array(
+        								"filename" => $direntry,
+        								"status" => $clang->gT("Copy failed")
+                                    );
+                                    unlink($extractdir."/".$direntry);
+        
+                                }
+                                else
+                                {
+                                    $aImportedFilesInfo[]=Array(
+        								"filename" => $direntry,
+        								"status" => $clang->gT("OK")
+                                    );
+                                    unlink($extractdir."/".$direntry);
+                                }
+                            }
+        
+                            else
+                            { // Extension forbidden
+                                $aErrorFilesInfo[]=Array(
+        							"filename" => $direntry,
+        							"status" => $clang->gT("Error")." (".$clang->gT("Forbidden Extension").")"
+        							);
+        							unlink($extractdir."/".$direntry);
+                            }
+                        } // end if is_file
+                    } // end if ! . or ..
+                } // end while read dir
+        
+        
+                //Delete the temporary file
+                unlink($zipfile);
+                //Delete temporary folder
+                rmdir($extractdir);
+        
+                // display summary
+                $okfiles = 0;
+                $errfiles= 0;
+                $ErrorListHeader .= "";
+                $ImportListHeader .= "";
+                if (is_null($aErrorFilesInfo) && !is_null($aImportedFilesInfo))
+                {
+                    $status=$clang->gT("Success");
+                    $statusClass='successheader';
+                    $okfiles = count($aImportedFilesInfo);
+                    $ImportListHeader .= "<br /><strong><u>".$clang->gT("Imported Files List").":</u></strong><br />\n";
+                }
+                elseif (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
+                {
+                    $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                    $importlabelresourcesoutput .= $clang->gT("This ZIP archive contains no valid Resources files. Import failed.")."<br /><br />\n";
+                    $importlabelresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP archives.")."<br /><br />\n";
+                    $importlabelresourcesoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('".site_url('admin/labels/view/'.$lid)."', '_top')\" />\n";
+                    $importlabelresourcesoutput .= "</div>\n";
+                    show_error($importlabelresourcesoutput);
+                    return;
+                }
+                elseif (!is_null($aErrorFilesInfo) && !is_null($aImportedFilesInfo))
+                {
+                    $status=$clang->gT("Partial");
+                    $statusClass='partialheader';
+                    $okfiles = count($aImportedFilesInfo);
+                    $errfiles = count($aErrorFilesInfo);
+                    $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
+                    $ImportListHeader .= "<br /><strong><u>".$clang->gT("Imported Files List").":</u></strong><br />\n";
+                }
+                else
+                {
+                    $status=$clang->gT("Error");
+                    $statusClass='warningheader';
+                    $errfiles = count($aErrorFilesInfo);
+                    $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
+                }
+        
+                $importlabelresourcesoutput .= "<strong>".$clang->gT("Imported Resources for")." LID:</strong> $lid<br /><br />\n";
+                $importlabelresourcesoutput .= "<div class=\"".$statusClass."\">".$status."</div><br />\n";
+                $importlabelresourcesoutput .= "<strong><u>".$clang->gT("Resources Import Summary")."</u></strong><br />\n";
+                $importlabelresourcesoutput .= "".$clang->gT("Total Imported files").": $okfiles<br />\n";
+                $importlabelresourcesoutput .= "".$clang->gT("Total Errors").": $errfiles<br />\n";
+                $importlabelresourcesoutput .= $ImportListHeader;
+                foreach ($aImportedFilesInfo as $entry)
+                {
+                    $importlabelresourcesoutput .= "\t<li>".$clang->gT("File").": ".$entry["filename"]."</li>\n";
+                }
+                if (!is_null($aImportedFilesInfo))
+                {
+                    $importlabelresourcesoutput .= "\t</ul><br />\n";
+                }
+                $importlabelresourcesoutput .= $ErrorListHeader;
+                foreach ($aErrorFilesInfo as $entry)
+                {
+                    $importlabelresourcesoutput .= "\t<li>".$clang->gT("File").": ".$entry['filename']." (".$entry['status'].")</li>\n";
+                }
+                if (!is_null($aErrorFilesInfo))
+                {
+                    $importlabelresourcesoutput .= "\t</ul><br />\n";
+                }
+            }
+            else
+            {
+                $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                $importlabelresourcesoutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
+                $importlabelresourcesoutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('".site_url('admin/labels/view/'.$lid)."', '_top')\" />\n";
+                $importlabelresourcesoutput .= "</div>\n";
+                show_error($importlabelresourcesoutput);
+                return;
+            }
+            $importlabelresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/labels/view/'.$lid)."', '_top')\">\n";
+            $importlabelresourcesoutput .= "</div>\n";
+            
+            $data['display'] = $importlabeloutput;
+            $this->load->view('survey_view',$data);
+        }
+        
+        self::_loadEndScripts();
+                
+                
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    
+    
+    }
+    
+    //---------------------
+    // Comes from http://fr2.php.net/tempnam
+    function _tempdir($dir, $prefix='', $mode=0700)
+    {
+        if (substr($dir, -1) != '/') $dir .= '/';
+    
+        do
+        {
+            $path = $dir.$prefix.mt_rand(0, 9999999);
+        } while (!mkdir($path, $mode));
+    
+        return $path;
+    }
+    
+    /**
+     * labels::import()
+     * Function to import a label set
+     * @return
+     */
+    function import()
+    {
+        $clang = $this->limesurvey_lang;
+        $action = $this->input->post('action');
+        self::_getAdminHeader();
+        self::_labelsetbar();
+        if ($action == 'importlabels')
+        {
+            $_POST = $this->input->post();
+            $this->load->helper('admin/import');
+            $importlabeloutput = "<div class='header ui-widget-header'>".$clang->gT("Import Label Set")."</div>\n";
+
+            $sFullFilepath = $this->config->item('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
+            $aPathInfo = pathinfo($sFullFilepath);
+            $sExtension = $aPathInfo['extension'];
+            
+            if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
+            {
+                $importlabeloutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
+                $importlabeloutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$tempdir)."<br /><br />\n";
+                $importlabeloutput .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('".site_url('admin')."', '_top')\"><br /><br />\n";
+                show_error($importlabeloutput);
+                return;
+            }
+            
+            $importlabeloutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div><br />\n";
+            $importlabeloutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
+            $importlabeloutput .= $clang->gT("Reading file..")."<br /><br />\n";
+            $options['checkforduplicates']='off';
+            if (isset($_POST['checkforduplicates']))
+            {
+                $options['checkforduplicates']=$_POST['checkforduplicates'];
+            }
+            
+            if (strtolower($sExtension)=='csv')
+            {
+                $aImportResults=CSVImportLabelset($sFullFilepath, $options);
+            }
+            elseif (strtolower($sExtension)=='lsl')
+            {
+                $aImportResults=XMLImportLabelsets($sFullFilepath, $options);
+            }
+            else
+            {
+                $importlabeloutput .= "<br />\n<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+                $importlabeloutput .= "<strong><u>".$clang->gT("Label set import summary")."</u></strong><br />\n";
+                $importlabeloutput .= $clang->gT("Uploaded label set file needs to have an .lsl extension.")."<br /><br />\n";
+                $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to label set administration")."' onclick=\"window.open('".site_url('admin/labels/view')."', '_top')\" />\n";
+                $importlabeloutput .= "</div><br />\n";
+            }
+            unlink($sFullFilepath);  
+            
+            if (isset($aImportResults))
+            {
+                if (count($aImportResults['warnings'])>0)
+                {
+                    $importlabeloutput .= "<br />\n<div class='warningheader'>".$clang->gT("Warnings")."</div><ul>\n";
+                    foreach ($aImportResults['warnings'] as $warning)
+                    {
+                        $importlabeloutput .= '<li>'.$warning.'</li>';
+                    } 
+                    $importlabeloutput .= "</ul>\n";
+                }
+                
+                $importlabeloutput .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
+                $importlabeloutput .= "<strong><u>".$clang->gT("Label set import summary")."</u></strong><br />\n";
+                $importlabeloutput .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
+                $importlabeloutput .= "\t<li>".$clang->gT("Labels").": {$aImportResults['labels']}</li></ul>\n";
+                $importlabeloutput .= "<p><strong>".$clang->gT("Import of label set(s) is completed.")."</strong><br /><br />\n";
+                $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to label set administration")."' onclick=\"window.open('".site_url('admin/labels/view')."', '_top')\" />\n";
+                $importlabeloutput .= "</div><br />\n";
+            }
+            
+            
+            $importlabeloutput .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
+            $importlabeloutput .= "<strong><u>".$clang->gT("Label set import summary")."</u></strong><br />\n";
+            $importlabeloutput .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
+            $importlabeloutput .= "\t<li>".$clang->gT("Labels").": {$aImportResults['labels']}</li></ul>\n";
+            $importlabeloutput .= "<p><strong>".$clang->gT("Import of label set(s) is completed.")."</strong><br /><br />\n";
+            $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to label set administration")."' onclick=\"window.open('".site_url('admin/labels/view')."', '_top')\" />\n";
+            $importlabeloutput .= "</div><br />\n";
+            
+            $data['display'] = $importlabeloutput;
+            $this->load->view('survey_view',$data);
+            
+        }
+        self::_loadEndScripts();
+                
+                
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    }
+    
+    /**
+     * labels::index()
+     * Function to load new/edit labelset screen.
+     * @param mixed $action
+     * @param integer $lid
+     * @return
+     */
     function index($action,$lid=0)
     {
         
@@ -158,6 +499,12 @@
         
     }
     
+    /**
+     * labels::view()
+     * Function to view a labelset.
+     * @param bool $lid
+     * @return
+     */
     function view($lid=false)
     {
         $clang = $this->limesurvey_lang;
@@ -361,7 +708,7 @@
                     $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
                 }
         
-                $labelsoutput.="<div id='up_resmgmt'><div>\t<form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='edit_this_action_later' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+                $labelsoutput.="<div id='up_resmgmt'><div>\t<form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='".site_url('admin/labels/importlabelresources')."' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
                 . "\t<input type='hidden' name='lid' value='$lid' />\n"
                 . "\t<input type='hidden' name='action' value='importlabelresources' />\n"
                 . "\t<ul style='list-style-type:none; text-align:center'>\n"
@@ -404,6 +751,11 @@
         
     }
     
+    /**
+     * labels::process()
+     * Process labels form data depending on $action.
+     * @return
+     */
     function process()
     {
         if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_LABEL') == 1)
@@ -440,6 +792,11 @@
         }
     }
 
+	/**
+	 * labels::exportmulti()
+	 * 
+	 * @return
+	 */
 	function exportmulti()
 	{
 		self::_getAdminHeader();
@@ -451,6 +808,12 @@
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 	}
     
+    /**
+     * labels::_labelsetbar()
+     * Load labelset menu.
+     * @param integer $lid
+     * @return
+     */
     function _labelsetbar($lid=0)
     {
         $data['clang'] = $this->limesurvey_lang;

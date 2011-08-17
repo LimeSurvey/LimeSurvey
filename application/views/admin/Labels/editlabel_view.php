@@ -60,7 +60,7 @@
         </div> 
         <?php if ($action == "newlabelset"){ ?>
             <div id='neweditlblset1'>
-                <form enctype='multipart/form-data' id='importlabels' name='importlabels' action='admin.php' method='post'>
+                <form enctype='multipart/form-data' id='importlabels' name='importlabels' action='<?php echo site_url('admin/labels/import'); ?>' method='post'>
                 <div class='header ui-widget-header'>
                 <?php echo $clang->gT("Import label set(s)"); ?>
                 </div><ul>

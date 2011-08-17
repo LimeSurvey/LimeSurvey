@@ -1,13 +1,47 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+/*
+ * LimeSurvey
+ * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+ * All rights reserved.
+ * License: GNU/GPL License v2 or later, see LICENSE.php
+ * LimeSurvey is free software. This version may have been modified pursuant
+ * to the GNU General Public License, and as distributed it includes or
+ * is derivative of works licensed under the GNU General Public License or
+ * other free or open source software licenses.
+ * See COPYRIGHT.php for copyright notices and details.
+ * 
+ * $Id$
+ * 
+ */
+ 
+/**
+ * Usergroups
+ * 
+ * @package LimeSurvey_CI
+ * @author 
+ * @copyright 2011
+ * @version $Id$
+ * @access public
+ */
 class Usergroups extends AdminController {
 
 
+    /**
+     * Usergroups::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
 		parent::__construct();
 	}
     
+    /**
+     * Usergroups::mail()
+     * Function responsible to send an e-mail to a user group.
+     * @param mixed $ugid
+     * @return
+     */
     function mail($ugid)
     {
         
@@ -125,6 +159,11 @@ class Usergroups extends AdminController {
 	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
+    /**
+     * Usergroups::delete()
+     * Function responsible to delete a user group.
+     * @return
+     */
     function delete()
     {
         
@@ -197,6 +236,11 @@ class Usergroups extends AdminController {
     }
     
     
+    /**
+     * Usergroups::add()
+     * Load add user group screen.
+     * @return
+     */
     function add()
     {
         $clang = $this->limesurvey_lang;
@@ -293,6 +337,12 @@ class Usergroups extends AdminController {
         
     }
     
+    /**
+     * Usergroups::edit()
+     * Load edit user group screen.
+     * @param mixed $ugid
+     * @return
+     */
     function edit($ugid)
     {
         $clang = $this->limesurvey_lang;
@@ -375,6 +425,12 @@ class Usergroups extends AdminController {
     
     
     
+    /**
+     * Usergroups::view()
+     * Load viewing of a user group screen.
+     * @param bool $ugid
+     * @return
+     */
     function view($ugid=false)
     {
         $clang = $this->limesurvey_lang;
@@ -510,6 +566,12 @@ class Usergroups extends AdminController {
     
     
     
+    /**
+     * Usergroups::_usergroupbar()
+     * Load menu bar of user group controller.
+     * @param bool $ugid
+     * @return
+     */
     function _usergroupbar($ugid=false)
     {
         $this->load->helper('database');
@@ -534,6 +596,14 @@ class Usergroups extends AdminController {
         $this->load->view('admin/UserGroup/usergroupbar_view',$data);
     }
     
+    /**
+     * Usergroups::_updateusergroup()
+     * Function responsible to update a user group.
+     * @param mixed $name
+     * @param mixed $description
+     * @param mixed $ugid
+     * @return
+     */
     function _updateusergroup($name, $description, $ugid)
     {
         //global $dbprefix, $scriptname, $connect;
@@ -544,6 +614,11 @@ class Usergroups extends AdminController {
         return db_execute_assoc($uquery);  //or safe_die($connect->ErrorMsg()) ; //Checked)
     }
     
+    /**
+     * Usergroups::_refreshtemplates()
+     * Function to refresh templates.
+     * @return
+     */
     function _refreshtemplates() {
         //global $connect ;
         //global $dbprefix ;
@@ -575,6 +650,13 @@ class Usergroups extends AdminController {
     }
     
     // adds Usergroups in Database by Moses
+    /**
+     * Usergroups::_addUserGroupInDB()
+     * Function that add a user group in database.
+     * @param mixed $group_name
+     * @param mixed $group_description
+     * @return
+     */
     function _addUserGroupInDB($group_name, $group_description) {
         //global $connect;
         
