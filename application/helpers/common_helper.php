@@ -2469,6 +2469,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $s_lang = $sQuestionLanguage;
     }
     $qtypes=getqtypelist('','array');
+    
     /**
     $aquery = "SELECT *, "
         ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
@@ -2750,9 +2751,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         {
             //$abquery = "SELECT value FROM ".db_table_name('question_attributes');
             $fieldtoselect = array('value');
-            $conditiontoselect = " WHERE attribute='max_num_of_files' AND qid=".$arow['qid'];
-            $CI->load->model('question_attributes');
-            $abresult = $CI->question_attributes->getSomeRecords($fieldtoselect,$conditiontoselect) or safe_die ("Couldn't get maximum)
+            $conditiontoselect = array('attribute' => 'max_num_of_files' , 'qid' => $arow['qid']);
+            $CI->load->model('question_attributes_model');
+            $abresult = $CI->question_attributes_model->getSomeRecords($fieldtoselect,$conditiontoselect) or show_error("Couldn't get maximum)
                 number of files that can be uploaded <br />");
             $abrow = $abresult->row_array();
 
@@ -6343,6 +6344,7 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
     $aGIDReplacements=array_flip($aGIDReplacements);
     $aQIDReplacements=array_flip($aQIDReplacements);
     $aFieldMap=createFieldMap($iNewSID);
+    
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
     {
@@ -7738,16 +7740,16 @@ function sStripDBPrefix($sTableName)
 function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 {
     global $CI; //$connect, $dbprefix;
-
+    $CI->load->helper('database');
     $newsid=sanitize_int($newsid);
     $oldsid=sanitize_int($oldsid);
 
-	$CI->load->model('Surveys_languagesettings');
+	$CI->load->model('surveys_languagesettings_model');
 
     # translate 'surveyls_urldescription' and 'surveyls_url' INSERTANS tags in surveyls
-    //$sql = "SELECT surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url from {$dbprefix}surveys_languagesettings WHERE surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{INSERTANS:".$oldsid."X%' OR surveyls_url LIKE '%{INSERTANS:".$oldsid."X%')";
-    //$res = db_execute_assoc($sql) or safe_die("Can't read groups table in transInsertAns ".$connect->ErrorMsg());     // Checked
-    $result=$CI->Surveys_languagesettings->getSomeRecords("surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url","surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{INSERTANS:".$oldsid."X%' OR surveyls_url LIKE '%{INSERTANS:".$oldsid."X%')");
+    $sql = "SELECT surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url from ".$CI->db->dbprefix."surveys_languagesettings WHERE surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{INSERTANS:".$oldsid."X%' OR surveyls_url LIKE '%{INSERTANS:".$oldsid."X%')";
+    $result = db_execute_assoc($sql) or show_error("Can't read groups table in transInsertAns ");     // Checked
+    //$result=$CI->surveys_languagesettings_model->getSomeRecords(array("surveyls_survey_id", "surveyls_language", "surveyls_urldescription", "surveyls_url"),"surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{INSERTANS:".$oldsid."X%' OR surveyls_url LIKE '%{INSERTANS:".$oldsid."X%')");
 
     //while ($qentry = $res->FetchRow())
 	foreach ($result->result_array() as $qentry)
@@ -7782,7 +7784,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 				'surveyls_language' => $language
 			);
 
-			$CI->Surveys_languagesettings->update($data,$where);
+			$CI->surveys_languagesettings_model->update($data,$where);
 
         } // Enf if modified
     } // end while qentry
@@ -7790,12 +7792,12 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
     $CI->load->model('groups_model');
 
     # translate 'description' INSERTANS tags in groups
-    //$sql = "SELECT gid, language, group_name, description from {$dbprefix}groups WHERE sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'";
-    //$res = db_execute_assoc($sql) or safe_die("Can't read groups table in transInsertAns ".$connect->ErrorMsg());     // Checked
-	$result=$CI->groups_model->getSomeRecords("gid, language, group_name, description","sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'");
+    $sql = "SELECT gid, language, group_name, description from ".$CI->db->dbprefix."groups WHERE sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'";
+    $res = db_execute_assoc($sql) or show_error("Can't read groups table in transInsertAns ".$connect->ErrorMsg());     // Checked
+	//$result=$CI->groups_model->getSomeRecords("gid, language, group_name, description","sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'");
 
     //while ($qentry = $res->FetchRow())
-	foreach ($result->result_array() as $qentry)
+	foreach ($res->result_array() as $qentry)
     {
         $gpname = $qentry['group_name'];
         $description = $qentry['description'];
@@ -7835,9 +7837,9 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 
     $CI->load->model('questions_model');
     # translate 'question' and 'help' INSERTANS tags in questions
-    //$sql = "SELECT qid, language, question, help from {$dbprefix}questions WHERE sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')";
-    //$res = db_execute_assoc($sql) or safe_die("Can't read question table in transInsertAns ".$connect->ErrorMsg());     // Checked
-	$result=$CI->questions_model->getSomeRecords("qid, language, question, help","sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')");
+    $sql = "SELECT qid, language, question, help from ".$CI->db->dbprefix."questions WHERE sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')";
+    $res = db_execute_assoc($sql) or show_error("Can't read question table in transInsertAns ");     // Checked
+	//$result=$CI->questions_model->getSomeRecords("qid, language, question, help","sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')");
 
     //while ($qentry = $res->FetchRow())
 	foreach ($result->result_array() as $qentry)
@@ -7872,17 +7874,17 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 				'language' => $language
 			);
 
-			$CI->questions->update($data,$where);
+			$CI->questions_model->update($data,$where);
 
         } // Enf if modified
     } // end while qentry
 
 
-    $CI->load->model('answers');
+    $CI->load->model('answers_model');
     # translate 'answer' INSERTANS tags in answers
     //$sql = "SELECT a.qid, a.language, a.code, a.answer from {$dbprefix}answers as a INNER JOIN {$dbprefix}questions as b ON a.qid=b.qid WHERE b.sid=".$newsid." AND a.answer LIKE '%{INSERTANS:".$oldsid."X%'";
     //$res = db_execute_assoc($sql) or safe_die("Can't read answers table in transInsertAns ".$connect->ErrorMsg());     // Checked
-	$result=$CI->answers->oldNewInsertansTags($newsid,$oldsid);
+	$result=$CI->answers_model->oldNewInsertansTags($newsid,$oldsid);
 
     //while ($qentry = $res->FetchRow())
 	foreach ($result->result_array() as $qentry)
@@ -7915,7 +7917,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 				'language' => $language
 			);
 
-			$CI->answers->update($data,$where);
+			$CI->answers_model->update($data,$where);
 
         } // Enf if modified
     } // end while qentry

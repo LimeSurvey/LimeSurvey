@@ -1,5 +1,5 @@
 <div id='resources'>
-            <form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='someaction' method='post' onsubmit='return validatefilename(this,"<?php echo $clang->gT('Please select a file to import!','js'); ?>");'>
+            <form enctype='multipart/form-data'  class='form30' id='importsurveyresources' name='importsurveyresources' action='<?php echo site_url('admin/survey/importsurveyresources'); ?>' method='post' onsubmit='return validatefilename(this,"<?php echo $clang->gT('Please select a file to import!','js'); ?>");'>
             <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
             <input type='hidden' name='action' value='importsurveyresources' />
             <ul>

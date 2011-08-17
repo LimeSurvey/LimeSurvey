@@ -34,6 +34,11 @@
 		parent::__construct();
 	}
     
+    /**
+     * survey::importsurveyresources()
+     * Function responsible to import survey reasources.
+     * @return
+     */
     function importsurveyresources()
     {
         $clang = $this->limesurvey_lang;
@@ -1193,6 +1198,7 @@
             
             if ($action == 'importsurvey')
             {
+                
                 $the_full_file_path = $this->config->item('tempdir') . "/" . $_FILES['the_file']['name'];
                 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
                 {

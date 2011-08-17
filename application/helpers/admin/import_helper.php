@@ -1438,6 +1438,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $clang = $CI->limesurvey_lang;
     require_once ($CI->config->item('rootdir').'/application/third_party/adodb/adodb.inc.php');
     $connect = ADONewConnection($CI->db->dbdriver);
+    $aGIDReplacements = array();
     if ($sXMLdata == NULL)
     {
         $xml = simplexml_load_file($sFullFilepath);
@@ -1532,7 +1533,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             $insertdata['bouncetime'] = NULL;
         }
+<<<<<<< .mine
+        
+        
+=======
 
+>>>>>>> .r10756
         db_switchIDInsert('surveys',true);
         //$query=$connect->GetInsertSQL($tablename,$insertdata);
 
@@ -1541,6 +1547,10 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $results['surveys']++;
         db_switchIDInsert('surveys',false);
     }
+<<<<<<< .mine
+    
+=======
+>>>>>>> .r10756
     $results['newsid']=$newsid;
 
     // Import survey languagesettings table ===================================================================================
@@ -1549,6 +1559,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $CI->load->model('surveys_languagesettings_model');
     foreach ($xml->surveys_languagesettings->rows->row as $row)
     {
+        
         $insertdata=array();
         foreach ($row as $key=>$value)
         {
@@ -1571,7 +1582,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $insertdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_email_confirm']);
 
         //$query=$connect->GetInsertSQL($tablename,$insertdata);
-        $result = $CI->surveys_languagesettings_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+        $result = $CI->surveys_languagesettings_model->insertNewSurvey($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
     }
 
 
@@ -1927,13 +1938,17 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $results['quotals']++;
         }
     }
-
+    
+    
+    
     // Set survey rights
     GiveAllSurveyPermissions($CI->session->userdata('loginID'),$newsid);
     if ($bTranslateInsertansTags)
     {
+        
         $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
         TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
+        
     }
 
     return $results;
