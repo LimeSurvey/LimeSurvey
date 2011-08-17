@@ -6769,7 +6769,7 @@ function updatecheck()
     //global $CI;
     $CI =& get_instance();
     $updateinfo=GetUpdateInfo();
-    if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)$CI->config->item('versionnumber') && trim($CI->config->item('versionnumber'))!='')
+    if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)$CI->config->item('buildnumber') && trim($CI->config->item('buildnumber'))!='')
     {
         setGlobalSetting('updateavailable',1);
         setGlobalSetting('updatebuild',$updateinfo['Targetversion']['build']);

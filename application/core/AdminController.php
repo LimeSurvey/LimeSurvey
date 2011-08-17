@@ -31,39 +31,6 @@ class AdminController extends LS_Controller {
 		//    require_once($homedir.'/admin_functions.php');
 		//} 
         
-		// Check if the DB is up to date
-        
-		If (tableExists('surveys'))
-		{
-		    $usrow = getGlobalSetting('DBVersion');
-		    if (intval($usrow)<$this->config->item('dbversionnumber'))
-		    {
-		    	show_error("Required database version: ".$this->config->item('dbversionnumber')."<br/> Your database version: ".$usrow."<br/> Please update your database.");
-		        /**$action='';
-		        require_once($rootdir.'/classes/core/language.php');
-		        $clang = new limesurvey_lang($defaultlang);
-		        include_once($homedir.'/update/updater.php');
-		        if(isset($_GET['continue']) && $_GET['continue']==1) 
-		        {   
-		            echo CheckForDBUpgrades();
-		            echo "<br /><a href='$homeurl'>".$clang->gT("Back to main menu")."</a></div>";
-		            updatecheck();                     
-		        }        
-		        else
-		        {   
-		            $dbupgradeoutput='<div class="messagebox">';
-		            $dbupgradeoutput.= CheckForDBUpgrades();                    
-		            $dbupgradeoutput.='</div>';
-		            echo getAdminHeader() . $dbupgradeoutput . getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));            
-		        }        
-		        die;*/
-		    }
-		
-		      /*if (is_dir($homedir."/install") && $debug<2)
-		       {
-		        die ("<p style='text-align: center; margin-left: auto; margin-right: auto; width: 500px; margin-top: 50px;'><img src='../images/limecursor-handle.png' /><strong>Congratulations</strong><br /><br />Your installation is now complete. The final step is to remove or rename the LimeSurvey installation directory (admin/install) on your server since it may be a security risk.<br /><br />Once this directory has been removed or renamed you will be able to log in to your new LimeSurvey Installation.<br /><br /><a href='admin.php'>Try again</a></p>");
-		       } */
-		}
         $updatelastcheck = '';
         
 		//Admin menus and standards
@@ -72,7 +39,16 @@ class AdminController extends LS_Controller {
 	    self::_sessioncontrol();
 		
 		//SET LANGUAGE DIRECTORY
-
+		// Check if the DB is up to date
+        
+		If (tableExists('surveys'))
+		{
+		    $usrow = getGlobalSetting('DBVersion');
+		    if (intval($usrow)<$this->config->item('dbversionnumber') && $this->router->class != "update" && $this->router->class != "authentication") {
+				redirect('/admin/update/db', 'refresh');
+		    }
+		}
+		
 	    $langdir=$this->config->item("publicurl")."/locale/".$this->session->userdata('adminlang')."/help";
 	    $langdirlocal=$this->config->item("rootdir")."/locale/".$this->session->userdata('adminlang')."/help";
 	
@@ -218,7 +194,7 @@ class AdminController extends LS_Controller {
 	/**
 	* Prints Admin Header
 	*/
-	function _getAdminHeader($meta=false)
+	function _getAdminHeader($meta=false, $return = false)
 	{
 		if (!$this->session->userdata("adminlang") || $this->session->userdata("adminlang")=='')
 		{
@@ -272,13 +248,13 @@ class AdminController extends LS_Controller {
 			$data['flashmessage'] = $this->session->userdata('flashmessage');
 			$this->session->unset_userdata('flashmessage');
 	    }
-	   	$this->load->view("admin/Super/header",$data);
+	   	return $this->load->view("admin/Super/header",$data, $return);
 	}
 	
 	/**
 	 * Prints Admin Footer
 	 */
-	function _getAdminFooter($url, $explanation)
+	function _getAdminFooter($url, $explanation, $return = false)
 	{
 	    //global $js_admin_includes, $homeurl;
 	    //global $versionnumber, $buildnumber, $setfont, $imageurl, $clang;
@@ -310,7 +286,7 @@ class AdminController extends LS_Controller {
 	    	$data['js_admin_includes'] = array_unique($this->config->item("js_admin_includes"));
 	    }
 	    
-		$this->load->view("admin/Super/footer",$data);
+		return $this->load->view("admin/Super/footer",$data, $return);
 	}
 	
 	/**
