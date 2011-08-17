@@ -1505,16 +1505,7 @@
         
     }
     
-<<<<<<< .mine
-    /**
-     * question::questionattributes()
-     * 
-     * @return
-     */
-    function questionattributes()
-=======
     function ajaxquestionattributes()
->>>>>>> .r10749
     {
         $surveyid = $this->input->post("sid");
         $qid = $this->input->post("qid");

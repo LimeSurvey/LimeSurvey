@@ -32,7 +32,7 @@ function CSVImportLabelset($sFullFilepath, $options)
             $results['warnings']=array();
             $csarray=buildLabelSetCheckSumArray();
             //$csarray is now a keyed array with the Checksum of each of the label sets, and the lid as the key
-        
+
             $handle = fopen($sFullFilepath, "r");
             while (!feof($handle))
             {
@@ -44,13 +44,13 @@ function CSVImportLabelset($sFullFilepath, $options)
             {
                 return $results['fatalerror']=$clang->gT("This file is not a LimeSurvey label set file. Import failed.");
             }
-        
+
             for ($i=0; $i<9; $i++) //skipping the first lines that are not needed
             {
                 unset($bigarray[$i]);
             }
             $bigarray = array_values($bigarray);
-        
+
             //LABEL SETS
             if (array_search("# LABELS TABLE\n", $bigarray))
             {
@@ -70,11 +70,11 @@ function CSVImportLabelset($sFullFilepath, $options)
                 unset($bigarray[$i]);
             }
             $bigarray = array_values($bigarray);
-        
-        
+
+
             //LABELS
             $stoppoint = count($bigarray)-1;
-        
+
             for ($i=0; $i<$stoppoint; $i++)
             {
                 // do not import empty lines
@@ -84,59 +84,59 @@ function CSVImportLabelset($sFullFilepath, $options)
                 }
                 unset($bigarray[$i]);
             }
-        
-        
-        
+
+
+
             $countlabelsets = count($labelsetsarray)-1;
             $countlabels = count($labelsarray)-1;
-        
-        
+
+
             if (isset($labelsetsarray) && $labelsetsarray) {
                 $count=0;
                 foreach ($labelsetsarray as $lsa) {
                     $fieldorders  =convertCSVRowToArray($labelsetsarray[0],',','"');
                     $fieldcontents=convertCSVRowToArray($lsa,',','"');
                     if ($count==0) {$count++; continue;}
-        
+
                     $labelsetrowdata=array_combine($fieldorders,$fieldcontents);
-        
+
                     // Save old labelid
                     $oldlid=$labelsetrowdata['lid'];
                     // set the new language
-        
+
                     unset($labelsetrowdata['lid']);
-        
+
                     $newvalues=array_values($labelsetrowdata);
                     //$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                     $lsainsert = "insert INTO ".$CI->db->dbprefix."labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
                     $lsiresult= db_execute_assoc($lsainsert);
                     //$lsiresult=$connect->Execute($lsainsert);
-                    $results['labelsets']++;            
-        
+                    $results['labelsets']++;
+
                     // Get the new insert id for the labels inside this labelset
                     $newlid=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}labelsets",'lid');
-        
+
                     if ($labelsarray) {
                         $count=0;
                         $lfieldorders=convertCSVRowToArray($labelsarray[0],',','"');
                         unset($labelsarray[0]);
                         foreach ($labelsarray as $la) {
-        
+
                             $lfieldcontents=convertCSVRowToArray($la,',','"');
                             // Combine into one array with keys and values since its easier to handle
                             $labelrowdata=array_combine($lfieldorders,$lfieldcontents);
                             $labellid=$labelrowdata['lid'];
-                             
+
                             if ($labellid == $oldlid) {
                                 $labelrowdata['lid']=$newlid;
-        
+
                                 // translate internal links
                                 $labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
                                 if (!isset($labelrowdata["assessment_value"]))
                                 {
                                     $labelrowdata["assessment_value"]=(int)$labelrowdata["code"];
                                 }
-        
+
                                 $newvalues=array_values($labelrowdata);
                                 //$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
                                 $lainsert = "insert INTO ".$CI->db->dbprefix."labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
@@ -146,9 +146,9 @@ function CSVImportLabelset($sFullFilepath, $options)
                             }
                         }
                     }
-        
+
                     //CHECK FOR DUPLICATE LABELSETS
-        
+
                     if (isset($_POST['checkforduplicates']))
                     {
                         $thisset="";
@@ -164,7 +164,7 @@ function CSVImportLabelset($sFullFilepath, $options)
                         } // while
                         $newcs=dechex(crc32($thisset)*1);
                         unset($lsmatch);
-        
+
                         if (isset($csarray) && $options['checkforduplicates']=='on')
                         {
                             foreach($csarray as $key=>$val)
@@ -186,17 +186,17 @@ function CSVImportLabelset($sFullFilepath, $options)
                             $result=$connect->Execute($query) or show_error("Couldn't delete labelset<br />$query<br />");
                             $newlid=$lsmatch;
                             $results['warnings'][]=$clang->gT("Label set was not imported because the same label set already exists.")." ".sprintf($clang->gT("Existing LID: %s"),$newlid);
-                             
+
                         }
                         //END CHECK FOR DUPLICATES
                     }
                 }
             }
-        
+
             return $results;
         }
-        
-        
+
+
 /**
  * XMLImportLabelsets()
  * Function resp[onsible to import a labelset from XML format.
@@ -210,62 +210,62 @@ function XMLImportLabelsets($sFullFilepath, $options)
         $CI =& get_instance();
         $CI->load->helper('database');
         $clang = $CI->limesurvey_lang;
-        $xml = simplexml_load_file($sFullFilepath);    
+        $xml = simplexml_load_file($sFullFilepath);
         if ($xml->LimeSurveyDocType!='Label set') show_error('This is not a valid LimeSurvey label set structure XML file.');
         $dbversion = (int) $xml->DBVersion;
         $csarray=buildLabelSetCheckSumArray();
-        $aLSIDReplacements=array();     
+        $aLSIDReplacements=array();
         $results['labelsets']=0;
         $results['labels']=0;
         $results['warnings']=array();
         $dbprefix = $CI->db->dbprefix;
-                               
+
         // Import labels table ===================================================================================
-    
+
         //$tablename=$dbprefix.'labelsets';
         foreach ($xml->labelsets->rows->row as $row)
         {
-           $insertdata=array(); 
+           $insertdata=array();
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
             }
             $oldlsid=$insertdata['lid'];
             unset($insertdata['lid']); // save the old qid
-            
+
             $CI->load->model('labelsets_model');
-            
-            
-            // Insert the new question    
-            //$query=$connect->GetInsertSQL($tablename,$insertdata); 
+
+
+            // Insert the new question
+            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result = $CI->labelsets_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
             $results['labelsets']++;
-    
+
             $newlsid=$CI->db->insert_id(); //$connect->Insert_ID($tablename,"lid"); // save this for later
             $aLSIDReplacements[$oldlsid]=$newlsid; // add old and new lsid to the mapping array
         }
-                              
-                                                                                          
+
+
         // Import labels table ===================================================================================
-    
+
         //$tablename=$dbprefix.'labels';
         foreach ($xml->labels->rows->row as $row)
         {
-           $insertdata=array(); 
+           $insertdata=array();
             foreach ($row as $key=>$value)
             {
                 $insertdata[(string)$key]=(string)$value;
             }
             $insertdata['lid']=$aLSIDReplacements[$insertdata['lid']];
             $CI->load->model('labels_model');
-            
-            //$query=$connect->GetInsertSQL($tablename,$insertdata); 
+
+            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result = $CI->labels_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
             $results['labels']++;
         }
-        
+
         //CHECK FOR DUPLICATE LABELSETS
-    
+
         if (isset($_POST['checkforduplicates']))
         {
             foreach (array_values($aLSIDReplacements) as $newlid)
@@ -283,7 +283,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
                 } // while
                 $newcs=dechex(crc32($thisset)*1);
                 unset($lsmatch);
-    
+
                 if (isset($csarray) && $options['checkforduplicates']=='on')
                 {
                     foreach($csarray as $key=>$val)
@@ -306,11 +306,11 @@ function XMLImportLabelsets($sFullFilepath, $options)
                     $results['labelsets']--;
                     $newlid=$lsmatch;
                     $results['warnings'][]=$clang->gT("Label set was not imported because the same label set already exists.")." ".sprintf($clang->gT("Existing LID: %s"),$newlid);
-                     
+
                 }
             }
             //END CHECK FOR DUPLICATES
-        }    
+        }
         return $results;
     }
 
@@ -325,7 +325,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
 function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 {
     //global $dbprefix, $connect, $timeadjust, $clang;
-    
+
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -738,7 +738,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
     if (isset($surveyrowdata['private'])){
         $surveyrowdata['anonymized']=$surveyrowdata['private'];
         unset($surveyrowdata['private']);
-    }                            
+    }
     if (isset($surveyrowdata['startdate'])) {unset($surveyrowdata['startdate']);}
     $surveyrowdata['bounce_email']=$surveyrowdata['adminemail'];
     if (!isset($surveyrowdata['datecreated']) || $surveyrowdata['datecreated']=='' || $surveyrowdata['datecreated']=='null') {$surveyrowdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $CI->config->item('timeadjust'))); }
@@ -746,7 +746,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
     $CI->load->model('surveys_model');
     $iresult = $CI->surveys_model->insertNewSurvey($surveyrowdata) or show_error("<br />".$clang->gT("Import of this survey file failed")."<br />{$surveyarray[0]}<br /><br />\n" );
     /**
-    
+
     $values=array_values($surveyrowdata);
     $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
     $insert = "INSERT INTO ".$CI->db->dbprefix."surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
@@ -773,7 +773,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
         $surveylsrowdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $surveylsrowdata['surveyls_email_confirm']);
         unset($surveylsrowdata['lastpage']);
         $surveylsrowdata['surveyls_survey_id']=$newsid;
-        
+
         $CI->load->model('surveys_languagesettings_model');
         $lsiresult = $CI->surveys_languagesettings_model->insertNewSurvey($surveylsrowdata) or show_error("<br />".$clang->gT("Import of this survey file failed")."<br />");
         /**
@@ -819,11 +819,11 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             $oldlid=$labelsetrowdata['lid'];
 
             unset($labelsetrowdata['lid']);
-            
+
             $CI->load->model('labelsets_model');
             $lsiresult = $CI->labelsets_model->insertRecords($labelsetrowdata);
             /**
-            
+
             $newvalues=array_values($labelsetrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
             $lsainsert = "INSERT INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
@@ -852,8 +852,8 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
                         // translate internal links
                         $labelrowdata['title']=translink('label', $oldlid, $newlid, $labelrowdata['title']);
-                        
-                        
+
+
                         $CI->load->model('labels_model');
                         $liresult = $CI->labels_model->insertRecords($labelrowdata);
                         /**
@@ -950,10 +950,10 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             $grouprowdata['description']=translink('survey', $oldsid, $newsid, $grouprowdata['description']);
 
             if (isset($grouprowdata['gid'])) db_switchIDInsert('groups',true);
-            
+
             $CI->load->model('groups_model');
             $gres = $CI->groups_model->insertRecords($grouprowdata) or show_error($clang->gT('Error').": Failed to insert group<br />\<br />\n");
-            
+
             /**
             $tablename=$CI->db->dbprefix.'groups';
             $ginsert = $connect->GetinsertSQL($tablename,$grouprowdata);
@@ -1030,10 +1030,10 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             if (isset($questionrowdata['qid'])) {
                 db_switchIDInsert('questions',true);
             }
-            
+
             $CI->load->model('questions_model');
             $qres = $CI->questions_model->insertRecords($questionrowdata) or show_error ($clang->gT("Error").": Failed to insert question<br />");
-            
+
             /**
             $tablename=$dbprefix.'questions';
             $qinsert = $connect->GetInsertSQL($tablename,$questionrowdata);
@@ -1175,9 +1175,9 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
                 $questionrowdata['question_order']=$answerrowdata['sortorder'];
                 $questionrowdata['language']=$answerrowdata['language'];
                 $questionrowdata['type']=$oldquestion['newtype'];
-                
-                
-                
+
+
+
                 /**
                 $tablename=$dbprefix.'questions';
                 $query=$connect->GetInsertSQL($tablename,$questionrowdata); */
@@ -1267,7 +1267,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             $asrowdata["sid"]=$newsid;
             unset($asrowdata["id"]);
             $CI->load->model('assessments_model');
-            
+
             //$tablename=$dbprefix.'assessments';
             //$asinsert = $connect->GetInsertSQL($tablename,$asrowdata);
             $result=$CI->assessments_model->insertRecords($asrowdata) or show_error("Couldn't insert assessment<br />");
@@ -1431,9 +1431,9 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true)
 {
     //global $connect, $dbprefix, $clang, $timeadjust;
-    
+
     $CI =& get_instance();
-    
+
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
     require_once ($CI->config->item('rootdir').'/application/third_party/adodb/adodb.inc.php');
@@ -1451,7 +1451,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $results['error'] = $clang->gT("This is not a valid LimeSurvey survey structure XML file.");
         return $results;
     }
-    
+
     $dbversion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
     $aQuotaReplacements=array();
@@ -1490,16 +1490,16 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
     //$tablename=$CI->db->dbprefix.'surveys';
     $CI->load->model('surveys_model');
-    
+
     foreach ($xml->surveys->rows->row as $row)
     {
         $insertdata=array();
-        
+
         foreach ($row as $key=>$value)
         {
             $insertdata[(string)$key]=(string)$value;
         }
-       
+
         $oldsid=$insertdata['sid'];
         if($iDesiredSurveyId!=NULL)
         {
@@ -1509,7 +1509,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             $newsid=GetNewSurveyID($oldsid);
         }
-        
+
         //Now insert the new SID and change some values
         $insertdata['sid']=$newsid;
         //Make sure it is not set active
@@ -1517,9 +1517,9 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         //Set current user to be the owner
         $insertdata['owner_id']=$CI->session->userdata('loginID');
         //Change creation date to import date
-        
+
         $insertdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $CI->config->item('timeadjust')));
-        
+
         if ($insertdata['expires'] == '')
         {
             $insertdata['expires'] = NULL;
@@ -1532,18 +1532,15 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         {
             $insertdata['bouncetime'] = NULL;
         }
-        
-        var_dump($insertdata);
+
         db_switchIDInsert('surveys',true);
         //$query=$connect->GetInsertSQL($tablename,$insertdata);
-        
+
         $result = $CI->surveys_model->insertNewSurvey($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
-        
+
         $results['surveys']++;
         db_switchIDInsert('surveys',false);
     }
-    echo "hello";
-    exit();
     $results['newsid']=$newsid;
 
     // Import survey languagesettings table ===================================================================================
@@ -1700,7 +1697,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             else
             {
                db_switchIDInsert('questions',false);
-            }            
+            }
             $results['subquestions']++;
         }
     }
@@ -1806,7 +1803,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 if (!isset($aGIDReplacements[$oldcgid]))
                     continue;
             }
-            
+
             unset($insertdata["cid"]);
 
             // recreate the cfieldname with the new IDs
@@ -1954,11 +1951,11 @@ function GetNewSurveyID($oldsid)
     $CI =& get_instance();
     $CI->load->helper('database');
     //$clang = $CI->limesurvey_lang;
-    $query = "SELECT sid FROM ".$CI->db->dbprefix."surveys WHERE sid=$oldsid"; 
-    
+    $query = "SELECT sid FROM ".$CI->db->dbprefix."surveys WHERE sid=$oldsid";
+
     $res = db_execute_assoc($query);
     $isresult = $res->row_array(); //$connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$oldsid");)
-    
+
     //if (!is_null($isresult))
     if($res->num_rows > 0)
     {
@@ -1971,7 +1968,7 @@ function GetNewSurveyID($oldsid)
             //$isresult = $res->row_array(); //$connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid");
         }
         while ($res->num_rows > 0);
-        
+
         return $newsid;
     }
     else
@@ -1990,9 +1987,9 @@ function GiveAllSurveyPermissions($iUserID, $iSurveyID)
          {
            if (in_array($sPermissionDetailKey,array('create','read','update','delete','import','export')) && $sPermissionDetailValue==true)
            {
-               $aPermissionsToSet[$sPermissionName][$sPermissionDetailKey]=1;    
+               $aPermissionsToSet[$sPermissionName][$sPermissionDetailKey]=1;
            }
-             
+
          }
      }
      SetSurveyPermissions($iUserID, $iSurveyID, $aPermissionsToSet);
@@ -2000,9 +1997,9 @@ function GiveAllSurveyPermissions($iUserID, $iSurveyID)
 
 /**
 * Set the survey permissions for a user. Beware that all survey permissions for the particual survey are removed before the new ones are written.
-* 
+*
 * @param int $iUserID The User ID
-* @param int $iSurveyID The Survey ID 
+* @param int $iSurveyID The Survey ID
 * @param array $aPermissions  Array with permissions in format <permissionname>=>array('create'=>0/1,'read'=>0/1,'update'=>0/1,'delete'=>0/1)
 */
 function SetSurveyPermissions($iUserID, $iSurveyID, $aPermissions)
@@ -2014,7 +2011,7 @@ function SetSurveyPermissions($iUserID, $iSurveyID, $aPermissions)
     $sQuery = "delete from ".$CI->db->dbprefix."survey_permissions WHERE sid = {$iSurveyID} AND uid = {$iUserID}";
     db_execute_assoc($sQuery);
     $bResult=true;
-    
+
     foreach($aPermissions as $sPermissionname=>$aPermissions)
     {
         if (!isset($aPermissions['create'])) {$aPermissions['create']=0;}

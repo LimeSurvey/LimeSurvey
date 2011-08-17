@@ -9,15 +9,15 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id$
- * 
+ *
  */
 /**
  * Database
- * 
+ *
  * @package LimeSurvey_CI
- * @author 
+ * @author
  * @copyright 2011
  * @version $Id$
  * @access public
@@ -37,7 +37,7 @@ class Database extends AdminController {
 
     /**
      * Database::index()
-     * 
+     *
      * @param mixed $action
      * @return
      */
@@ -137,7 +137,7 @@ class Database extends AdminController {
                     } // foreach ($alllanguages as $language)
 
                     if($code !== $oldcode) {
-                        $query='UPDATE '.$this->db->dbprefix.'conditions SET value=\''.$code.' WHERE cqid='.$qid.' AND value=\''.$oldcode.'\'';
+                        $query='UPDATE '.$this->db->dbprefix.'conditions SET value=\''.$code.'\' WHERE cqid='.$qid.' AND value=\''.$oldcode.'\'';
                         db_execute_assoc($query);
                     }
 
