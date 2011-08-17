@@ -18,22 +18,22 @@
                     title="<?php echo $clang->gTview("Preview This Question"); ?>">
                     <img src='<?php echo $this->config->item('imageurl'); ?>/preview.png' title='' alt='<?php echo $clang->gT("Preview This Question"); ?>' name='previewquestionimg' /></a>
                     <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt=''  />
-    
+
                 <?php }
             } ?>
-    
-               
+
+
            <?php  if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-                
+
                 <a href='<?php echo site_url("admin/question/editquestion/".$surveyid."/".$gid."/".$qid); ?>'
                  title="<?php echo $clang->gTview("Edit current question"); ?>">
-                <img src='<?php echo $this->config->item('imageurl'); ?>/edit.png' alt='<?php echo $clang->gT("Edit Current Question"); ?>' name='EditQuestion' /></a> 
+                <img src='<?php echo $this->config->item('imageurl'); ?>/edit.png' alt='<?php echo $clang->gT("Edit Current Question"); ?>' name='EditQuestion' /></a>
             <?php } ?>
-    
-    
-            
-    
+
+
+
+
             <?php if ((($qct == 0 && $activated != "Y") || $activated != "Y") && bHasSurveyPermission($surveyid,'surveycontent','delete'))
             {
                 if (is_null($condarray))
@@ -53,25 +53,25 @@
             }
             else {
                 ?>
-                
+
                 <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='40' />
-                
-                <?php } 
-    
-    
-    
+
+                <?php }
+
+
+
             if(bHasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
                 <a href='<?php echo site_url("admin/export/question/$surveyid/$gid/$qid");?>'
                  title="<?php echo $clang->gTview("Export this question"); ?>" >
                 <img src='<?php echo $this->config->item('imageurl'); ?>/dumpquestion.png' alt='<?php echo $clang->gT("Export this question"); ?>' name='ExportQuestion' /></a>
             <?php } ?>
-    
+
             <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt='' />
-    
-    
-            
-    
+
+
+
+
             <?php if(bHasSurveyPermission($surveyid,'surveycontent','create'))
             {
                 if ($activated != "Y")
@@ -92,8 +92,8 @@
             else
             { ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='40' />
-            <?php } 
-            
+            <?php }
+
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
                 <a href='#' onclick="window.open('<?php echo site_url("admin/conditions/editconditionsform/$surveyid/$gid/$qid");?>', '_top')"
@@ -104,12 +104,12 @@
             else
             { ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='40' />
-            <?php } 
-    
-    
-            
-    
-            
+            <?php }
+
+
+
+
+
             if(bHasSurveyPermission($surveyid,'surveycontent','read'))
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
@@ -118,34 +118,34 @@
                     title='<?php echo $clang->gTview("Edit subquestions for this question"); ?>'>
                     <img src='<?php echo $this->config->item('imageurl'); ?>/subquestions.png' alt='<?php echo $clang->gT("Edit subquestions for this question"); ?>' name='EditSubquestions' /></a>
                 <?php }
-            } 
+            }
             else
             { ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='40' />
             <?php }
-    
-    
-           
-    
+
+
+
+
             if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] >0)
             { ?>
                 <a href='<?php echo site_url('admin/question/answeroptions/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
                 title="<?php echo $clang->gTview("Edit answer options for this question"); ?>">
-                <img src='<?php echo $this->config->item('imageurl'); ?>/answers.png' alt='<?php echo $clang->gT("Edit answer options for this question"); ?>' name='EdtAnswerOptions' /></a>
+                <img src='<?php echo $this->config->item('imageurl'); ?>/answers.png' alt='<?php echo $clang->gT("Edit answer options for this question"); ?>' name='EditAnswerOptions' /></a>
             <?php }
             else
             { ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='40' />
             <?php }
-    
-    
 
-    
+
+
+
             if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             { ?>
                 <a href='$scriptname?action=editdefaultvalues&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'
                 title="<?php echo $clang->gTview("Edit default answers for this question"); ?>">
-                <img src='<?php echo $this->config->item('imageurl'); ?>/defaultanswers.png' alt='<?php echo $clang->gT("Edit default answers for this question"); ?>' name='EdtAnswerOptions' /></a> 
+                <img src='<?php echo $this->config->item('imageurl'); ?>/defaultanswers.png' alt='<?php echo $clang->gT("Edit default answers for this question"); ?>' name='EditDefaultAnswerOptions' /></a>
             <?php } ?>
             </div>
             <div class='menubar-right'>
@@ -162,8 +162,8 @@
             </div>
             </div>
             <p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>
-    
-            
+
+
             <table  id='questiondetails' <?php echo $qshowstyle; ?>><tr><td width='20%' align='right'><strong>
             <?php echo $clang->gT("Code:"); ?></strong></td>
             <td align='left'><?php echo $qrrow['title']; ?>
@@ -189,7 +189,7 @@
                 <?php echo $clang->gT("Validation:"); ?></strong></td><td align='left'><?php echo $qrrow['preg']; ?>
                 </td></tr>
             <?php } ?>
-            
+
             <tr><td align='right' valign='top'><strong>
             <?php echo $clang->gT("Type:"); ?></strong></td><td align='left'><?php echo $qtypes[$qrrow['type']]['description']; ?>
             </td></tr>
@@ -200,9 +200,9 @@
                 <?php echo $clang->gT("Warning"); ?>: <a href='$scriptname?sid={$surveyid}&amp;gid={$gid}&amp;qid={$qid}&amp;action=editansweroptions'><?php echo $clang->gT("You need to add answer options to this question"); ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/answers_20.png' title='
                 <?php echo $clang->gT("Edit answer options for this question"); ?>' name='EditThisQuestionAnswers'/></span></td></tr>
-            <?php } 
-    
-    
+            <?php }
+
+
             if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0)
             { ?>
                <tr ><td></td><td align='left'>
@@ -211,7 +211,7 @@
                 <img src='<?php echo $this->config->item('imageurl'); ?>/subquestions_20.png' title='
                 <?php echo $clang->gT("Edit subquestions for this question"); ?>' name='EditThisQuestionAnswers' /></span></td></tr>
             <?php }
-    
+
             if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
             { ?>
                 <tr>
@@ -219,14 +219,14 @@
                 <?php echo $clang->gT("Option 'Other':"); ?></strong></td>
                 <td align='left'>
                 <?php if ($qrrow['other'] == "Y") { ?>
-                <?php echo $clang->gT("Yes"); ?> 
+                <?php echo $clang->gT("Yes"); ?>
                 <?php } else
                 { ?>
                     <?php echo $clang->gT("No"); ?>
-                    
+
                 <?php } ?>
                 </td></tr>
-            <?php } 
+            <?php }
             if (isset($qrrow['mandatory']) and ($qrrow['type'] != "X") and ($qrrow['type'] != "|"))
             { ?>
                 <tr>
@@ -234,14 +234,14 @@
                 <?php echo $clang->gT("Mandatory:"); ?></strong></td>
                 <td align='left'>
                 <?php if ($qrrow['mandatory'] == "Y") { ?>
-                <?php echo $clang->gT("Yes"); ?> 
+                <?php echo $clang->gT("Yes"); ?>
                 <?php } else
                 { ?>
                     <?php echo $clang->gT("No"); ?>
-                    
+
                 <?php } ?>
                 </td></tr>
-            <?php } 
+            <?php }
             if (!is_null($condarray))
             { ?>
                 <tr>
@@ -249,7 +249,7 @@
                 <?php echo $clang->gT("Other questions having conditions on this question:"); ?>
                 </strong></td><td align='left' valign='bottom'>
                 <?php foreach ($condarray[$qid] as $depqid => $depcid)
-                { 
+                {
                     $listcid=implode("-",$depcid); ?>
                      <a href='#' onclick="window.open('admin.php?sid=<?php echo $surveyid; ?>&amp;qid=<?php echo $depqid; ?>&amp;action=conditions&amp;markcid=<?php echo $listcid; ?>','_top')">[QID: <?php echo $depqid; ?>]</a>
                 <?php } ?>
