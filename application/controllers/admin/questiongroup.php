@@ -10,20 +10,20 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 
+ *
  */
- 
+
  /**
   * questiongroup
-  * 
-  * @package LimeSurvey_CI
-  * @author 
+  *
+  * @package LimeSurvey
+  * @author
   * @copyright 2011
   * @version $Id$
   * @access public
   */
  class questiongroup extends Survey_Common_Controller {
-    
+
     /**
      * questiongroup::__construct()
      * Constructor
@@ -33,8 +33,8 @@
 	{
 		parent::__construct();
 	}
-    
-    
+
+
     /**
      * questiongroup::add()
      * Load add new question grup screen.
@@ -46,28 +46,28 @@
         {
             $action = "addgroup";//$this->input->post('action');
             $clang = $this->limesurvey_lang;
-            
+
             $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
             $this->config->set_item("css_admin_includes", $css_admin_includes);
             self::_getAdminHeader();
             self::_showadminmenu();
-            self::_surveybar($surveyid); 
+            self::_surveybar($surveyid);
             self::_surveysummary($surveyid,"addgroup");
             if ($action == "addgroup")
             {
-                $this->load->helper('admin/htmleditor');      
-                $this->load->helper('surveytranslator'); 
+                $this->load->helper('admin/htmleditor');
+                $this->load->helper('surveytranslator');
                 $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
                 $grplangs[] = $baselang;
                 $grplangs = array_reverse($grplangs);
-                
+
                 $data['clang'] = $clang;
                 $data['surveyid'] = $surveyid;
                 $data['action'] = $action;
                 $data['grplangs'] = $grplangs;
                 $this->load->view('admin/Survey/QuestionGroups/addGroup_view',$data);
-                
+
                 /**
                 $newgroupoutput = PrepareEditorScript();
                 $newgroupoutput .= "<div class='header ui-widget-header'>".$clang->gT("Add question group")."</div>\n";
@@ -81,20 +81,20 @@
             		if (bHasSurveyPermission($surveyid,'surveycontent','import'))
                     {
                         $newgroupoutput .= '<li><a href="#import">'.$clang->gT("Import question group")."</a></li>\n";
-                		
+
                 	}
             		$newgroupoutput .= "</ul>";
-            
+
                 //    $newgroupoutput .="<table width='100%' border='0'  class='tab-page'>\n\t<tr><td>\n"
                 $newgroupoutput .="\n";
                 $newgroupoutput .= "<form action='$scriptname' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=\"if (1==0 ";
-            
+
                 foreach ($grplangs as $grouplang)
                 {
                     $newgroupoutput .= "|| document.getElementById('group_name_$grouplang').value.length==0 ";
                 }
                 $newgroupoutput .=" ) {alert ('".$clang->gT("Error: You have to enter a group title for each language.",'js')."'); return false;}\" >";
-            
+
                 foreach ($grplangs as $grouplang)
                 {
                     $newgroupoutput .= '<div id="'.$grouplang.'">';
@@ -110,12 +110,12 @@
                     . "\t<p><input type='submit' value='".$clang->gT("Save question group")."' />\n"
                     . "</div>\n";
                 }
-            
+
                 $newgroupoutput.= "<input type='hidden' name='action' value='insertquestiongroup' />\n"
                 . "<input type='hidden' name='sid' value='$surveyid' />\n"
                 . "</form>\n";
-            
-            
+
+
                 // Import TAB
                 if (bHasSurveyPermission($surveyid,'surveycontent','import'))
                 {
@@ -134,23 +134,23 @@
                     // End Import TABS
                     $newgroupoutput.= "</div>";
                 }
-            	 
-            
-            
+
+
+
                 // End of TABS
                  $newgroupoutput.= "</div>"; */
-            	
-            
+
+
             }
-            
+
             self::_loadEndScripts();
-            
+
             self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
             }
-        
-        
+
+
     }
-    
+
     /**
      * questiongroup::delete()
      * Function responsible for deleting a question group.
@@ -181,7 +181,7 @@
             }
             $query = "DELETE FROM ".$this->db->dbprefix."assessments WHERE sid=$surveyid AND gid=$gid";
             $result = db_execute_assoc($query) ; //or safe_die($connect->ErrorMsg());  // Checked
-    
+
             $query = "DELETE FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid";
             $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());  // Checked
             if ($result)
@@ -189,13 +189,13 @@
                 $gid = "";
                 $groupselect = getgrouplist($gid,$surveyid);
                 fixSortOrderGroups($surveyid);
-                $this->session->set_userdata('flashmessage', $clang->gT("The question group was deleted."));               
+                $this->session->set_userdata('flashmessage', $clang->gT("The question group was deleted."));
             }
             else
             {
                 $databaseoutput = "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\")\n //-->\n</script>\n";
             }
-            
+
             if ($databaseoutput != '')
             {
                 echo $databaseoutput;
@@ -206,7 +206,7 @@
             }
         }
     }
-    
+
     /**
      * questiongroup::edit()
      * Load editing of a question group screen.
@@ -214,32 +214,32 @@
      */
     function edit($surveyid,$gid)
     {
-        
+
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
-            
+
             $action = "editgroup";//$this->input->post('action');
             $clang = $this->limesurvey_lang;
-            
+
             $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
             $this->config->set_item("css_admin_includes", $css_admin_includes);
             self::_getAdminHeader();
             self::_showadminmenu();
-            self::_surveybar($surveyid,$gid); 
-            
+            self::_surveybar($surveyid,$gid);
+
             if ($action == "editgroup")
             {
-                
-                $this->load->helper('admin/htmleditor');      
-                $this->load->helper('surveytranslator'); 
-                $this->load->helper('database');      
-                
+
+                $this->load->helper('admin/htmleditor');
+                $this->load->helper('surveytranslator');
+                $this->load->helper('database');
+
                 $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
-            
+
                 $grplangs[] = $baselang;
                 $grplangs = array_flip($grplangs);
-            
+
                 $egquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid";
                 $egresult = db_execute_assoc($egquery);
                 foreach ($egresult->result_array() as $esrow)
@@ -252,9 +252,9 @@
                         $grplangs[$esrow['language']] = 99;
                     }
                     if ($esrow['language'] == $baselang) $basesettings = array('group_name' => $esrow['group_name'],'description' => $esrow['description'],'group_order' => $esrow['group_order']);
-            
+
                 }
-            
+
                 while (list($key,$value) = each($grplangs))
                 {
                     if ($value != 99)
@@ -263,7 +263,7 @@
                         $egresult = db_execute_assoc($egquery);
                     }
                 }
-            
+
                 $egquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid AND language='$baselang'";
                 $egresult = db_execute_assoc($egquery);
                 $editgroup = PrepareEditorScript();
@@ -295,7 +295,7 @@
                     $data['surveyid'] = $surveyid;
                     $data['gid'] = $gid;
                     $data['esrow'] = $esrow;
-                    
+
                     $tab_content[$i] = $this->load->view('admin/Survey/QuestionGroups/editGroup_view',$data,true); /**"<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n"
                         . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
                         . "\t</span></div>\n"
@@ -305,21 +305,21 @@
                         . "\t</span></div><div style='clear:both'></div>"; */
                     $i++;
                 }
-            
+
                 $editgroup .= "<div class='header ui-widget-header'>".$clang->gT("Edit Group")."</div>\n"
                 . "<form name='frmeditgroup' id='frmeditgroup' action='".site_url("admin/database/index")."' class='form30' method='post'>\n<div id='tabs'><ul>\n";
-            
-            
+
+
                 foreach ($tab_title as $i=>$eachtitle){
                     $editgroup .= "\t<li style='clear:none'><a href='#editgrp$i'>$eachtitle</a></li>\n";
-                    
+
                 }
                 $editgroup.="</ul>\n";
-            
+
                 foreach ($tab_content as $i=>$eachcontent){
                     $editgroup .= "\n<div id='editgrp$i'>$eachcontent</div>";
                 }
-                
+
                 $editgroup .= "</div>\n\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Update Group")."' />\n"
                 . "\t<input type='hidden' name='action' value='updategroup' />\n"
                 . "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
@@ -328,19 +328,19 @@
                 . "\t</p>\n"
                 . "</form>\n";
             }
-            
+
             //echo $editsurvey;
             $finaldata['display'] = $editgroup;
             $this->load->view('survey_view',$finaldata);
-            
-            
-            
+
+
+
         }
         self::_loadEndScripts();
-            
+
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
+
     /**
      * questiongroup::order()
      * Load ordering of question group screen.
@@ -353,17 +353,17 @@
         $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_getAdminHeader();
         self::_showadminmenu();
-        self::_surveybar($surveyid); 
-        
+        self::_surveybar($surveyid);
+
         if(bHasSurveyPermission($surveyid,'surveycontent','update'))
         {
             $_POST = $this->input->post();
             $this->load->helper('database');
-            
+
             // Check if one of the up/down buttons have been clicked
             if ($this->input->post('groupordermethod') && $this->input->post('sortorder'))
             {
-                
+
                 $postsortorder=sanitize_int($this->input->post('sortorder'));
                 switch($this->input->post('groupordermethod'))
                 {
@@ -378,7 +378,7 @@
                         $cdquery = "UPDATE ".$this->db->dbprefix."groups SET group_order='$oldsortorder' WHERE sid=$surveyid AND group_order=-1";
                         $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg()); //Checked
                         break;
-    
+
                         // Pressing the Down button
                     case 'down':
                         $newsortorder=$postsortorder+1;
@@ -395,7 +395,7 @@
             // Move the question to specific position
             if ((!empty($_POST['groupmovefrom']) || (isset($_POST['groupmovefrom']) && $_POST['groupmovefrom'] == '0')) && (!empty($_POST['groupmoveto']) || (isset($_POST['groupmoveto']) && $_POST['groupmoveto'] == '0')))
             {
-                
+
                 $newpos=(int)$_POST['groupmoveto'];
                 $oldpos=(int)$_POST['groupmovefrom'];
                 if($newpos > $oldpos)
@@ -410,10 +410,10 @@
                     $cdquery = "UPDATE ".$this->db->dbprefix."groups SET group_order=$newpos WHERE sid=$surveyid AND group_order=-1";
                     $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
                 }
-                
+
                 if(($newpos+1) < $oldpos)
                 {
-                    
+
                     //echo "Newpos $newpos, Oldpos $oldpos";
                     //Move the question we're changing out of the way
                     $cdquery = "UPDATE ".$this->db->dbprefix."groups SET group_order=-1 WHERE sid=$surveyid AND group_order=$oldpos";
@@ -426,18 +426,18 @@
                     $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
                 }
             }
-            
+
             $ordergroups = "<div class='header ui-widget-header'>".$clang->gT("Change Group Order")."</div><br />\n";
-    
+
             // Get groups dependencies regarding conditions
             // => Get an array of groups containing questions with conditions outside the group
             // $groupdepsarray[dependent-gid][target-gid]['conditions'][qid-having-conditions]=Array(cids...)
             $groupdepsarray = GetGroupDepsForConditions($surveyid);
             $nicegroupdeps=array();
-            
+
             if (!is_null($groupdepsarray))
             {
-                
+
                 $ordergroups .= "<ul class='movableList'><li class='movableNode'><strong><font color='orange'>".$clang->gT("Warning").":</font> ".$clang->gT("Current survey has questions with conditions outside their own group")."</strong><br /><br /><i>".$clang->gT("Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set")."</i></strong><br /><br/>".$clang->gT("The following groups are concerned").":<ul>\n";
                 foreach ($groupdepsarray as $depgid => $depgrouprow)
                 {
@@ -455,13 +455,13 @@
                 }
                 $ordergroups .= "</ul></li></ul>";
             }
-            
+
             $ordergroups .= "<form method='post' action=''><ul class='movableList'>";
             //Get the groups from this survey
             $s_lang = GetBaseLanguageFromSurveyID($surveyid);
             $ogquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid='{$surveyid}' AND language='{$s_lang}' order by group_order,group_name" ;
             $ogresult = db_execute_assoc($ogquery) or safe_die($connect->ErrorMsg());//Checked
-            
+
             $ogarray = array(); //$ogresult->GetArray();
             foreach ($ogresult->result_array() as $row)
             {
@@ -491,7 +491,7 @@
                     $i++;
                 }
             }
-            
+
             //END FIX BROKEN ORDER
             $miniogarray=$ogarray;
             $groupcount = count($ogarray);
@@ -511,9 +511,9 @@
                 {
                     $updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
                 }
-    
+
                 $ordergroups.="<li class='movableNode' id='gid".$ogarray[$i]['gid']."'>\n" ;
-    
+
                 // DROP DOWN LIST //
                 //Move to location
                 //$ordergroups.="<li class='movableNode'>\n" ;
@@ -545,7 +545,7 @@
                 }
                 //Find out if any groups use this as a dependency
                 $max_end_order=$groupcount+1; //By default, stop the list at the last group
-    
+
                 if ( !is_null($nicegroupdeps))
                 {
                     //to find which question has a dependence on this one
@@ -573,22 +573,22 @@
                     $minipos++;
                 }
                 $ordergroups.="</select>\n";
-    
+
                 // BUTTONS //
                 $ordergroups.= "<input style='float:right;";
-    
+
                 if ($i == 0){$ordergroups.="visibility:hidden;";}
                 $ordergroups.="' type='image' src='".$this->config->item('imageurl')."/up.png' name='btnup_$i' onclick=\"$('#sortorder').val('{$ogarray[$i]['group_order']}');$('#groupordermethod').val('up')\" ".$updisabled."/>\n";
-    
+
                 if ($i < $groupcount-1)
                 {
                     // Fill the hidden field 'sortorder' so we know what field is moved down
                     $ordergroups.= "<input type='image' src='".$this->config->item('imageurl')."/down.png' style='float:right;' name='btndown_$i' onclick=\"$('#sortorder').val('{$ogarray[$i]['group_order']}');$('#groupordermethod').val('down')\" ".$downdisabled."/>\n";
                 }
                 $ordergroups.=$ogarray[$i]['group_name']."</li>\n" ;
-    
+
             }
-    
+
             $ordergroups.="</ul>\n"
             . "<input type='hidden' name='groupmovefrom' />\n"
             . "<input type='hidden' id='groupordermethod' name='groupordermethod' />\n"
@@ -601,19 +601,19 @@
         else
         {
             $ordergroups = access_denied('ordergroups',$surveyid);
-            
+
             //include("access_denied.php");
         }
-        
+
         $finaldata['display'] = $ordergroups;
         $this->load->view('survey_view',$finaldata);
         self::_loadEndScripts();
-            
+
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
-    
-    
-    
-    
+
+
+
+
+
  }

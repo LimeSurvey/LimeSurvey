@@ -16,7 +16,7 @@
  /**
   * survey
   *
-  * @package LimeSurvey_CI
+  * @package LimeSurvey
   * @author
   * @copyright 2011
   * @version $Id$

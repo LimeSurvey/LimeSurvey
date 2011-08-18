@@ -12,18 +12,18 @@
  *
  * $Id$
  */
- 
+
  /**
   * saved
-  * 
-  * @package LimeSurvey_CI
-  * @author 
+  *
+  * @package LimeSurvey
+  * @author
   * @copyright 2011
   * @version $Id$
   * @access public
   */
  class saved extends Survey_Common_Controller {
-    
+
     /**
      * saved::__construct()
      * Constructor
@@ -33,7 +33,7 @@
 	{
 		parent::__construct();
 	}
-    
+
     /**
      * saved::view()
      * Load viewing of unsaved responses screen.
@@ -45,37 +45,37 @@
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
         self::_js_admin_includes(base_url().'scripts/admin/saved.js');
         self::_getAdminHeader();
-        
-        if(bHasSurveyPermission($surveyid,'responses','read')) 
+
+        if(bHasSurveyPermission($surveyid,'responses','read'))
         {
             $clang = $this->limesurvey_lang;
             $thissurvey=getSurveyInfo($surveyid);
-            
+
             $savedsurveyoutput = "<div class='menubar'>\n"
             . "<div class='menubar-title ui-widget-header'><span style='font-weight:bold;'>\n";
             $savedsurveyoutput .= $clang->gT("Saved Responses")."</span> ".$thissurvey['name']." (ID: $surveyid)</div>\n"
             . "<div class='menubar-main'>\n"
             . "<div class='menubar-left'>\n";
-            
+
             $savedsurveyoutput .= self::_savedmenubar($surveyid);
-            
+
             $savedsurveyoutput .= "</div></div></div>\n";
-            
+
             $savedsurveyoutput .= "<div class='header ui-widget-header'>".$clang->gT("Saved Responses:") . " ". getSavedCount($surveyid)."</div><p>";
-            
+
             $data['display'] = $savedsurveyoutput;
             $this->load->view('survey_view',$data);
             self::_showSavedList($surveyid);
         }
-        
+
         self::_loadEndScripts();
-                
-                
+
+
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
-        
+
+
     }
-    
+
     /**
      * saved::delete()
      * Function responsible to delete saved responses.
@@ -88,7 +88,7 @@
         $scid=$this->input->post('scid');
         $subaction=$this->input->post('subaction');
         $surveytable = $this->db->dbprefix."survey_".$surveyid;
-        
+
         if ($subaction == "delete" && $surveyid && $scid)
         {
             $query = "DELETE FROM ".$this->db->dbprefix."saved_control
@@ -102,7 +102,7 @@
                 //then delete the rest
                 $query = "DELETE FROM {$surveytable} WHERE id={$srid}";
                 $result = db_execute_assosc($query) or die("Couldn't delete");
-        
+
             }
             else
             {
@@ -111,7 +111,7 @@
         }
         redirect("admin/saved/view/".$surveyid,'refresh');
     }
-    
+
     /**
      * saved::_showSavedList()
      * Load saved list.
@@ -122,7 +122,7 @@
     {
         //global $dbprefix, $connect, $clang, $savedsurveyoutput, $scriptname, $imageurl, $surrows;
         $this->load->helper('database');
-        
+
         $query = "SELECT scid, srid, identifier, ip, saved_date, email, access_code\n"
         ."FROM ".$this->db->dbprefix."saved_control\n"
         ."WHERE sid=$surveyid\n"
@@ -130,18 +130,18 @@
         $result = db_execute_assoc($query) or safe_die ("Couldn't summarise saved entries<br />$query<br />");
         if ($result->num_rows() > 0)
         {
-            
+
             $data['result'] = $result;
             $data['clang'] = $clang;
             $data['surveyid'] = $surveyid;
-            
+
             $this->load->view('admin/Saved/savedlist_view',$data);
         }
     }
-    
+
     //				[<a href='saved.php?sid=$surveyid&amp;action=remind&amp;scid=".$row['scid']."'>".$clang->gT("Remind")."</a>]
     //               c_schmitz: Since its without function at the moment i removed it from the above lines
-    
+
     /**
      * saved::_savedmenubar()
      * Load menu bar of saved controller.
@@ -168,6 +168,6 @@
          . "\t\t\t<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt=''>\n";*/
         return $surveyoptions;
     }
- 
- 
+
+
  }

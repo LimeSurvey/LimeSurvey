@@ -15,17 +15,17 @@
 
 /**
  * Installer
- * 
- * @package LimeSurvey_CI
+ *
+ * @package LimeSurvey
  * @author Shubham Sachdeva
  * @copyright 2011
  * @version $Id$
  * @access public
  */
 class Installer extends CI_Controller {
-    
-    
-    
+
+
+
     /**
      * Installer::__construct()
      * Constructor
@@ -38,10 +38,10 @@ class Installer extends CI_Controller {
         //need to write unique encryption key before we can use session data.
         self::_writeConfigfile();
 	}
-	
+
 	/**
 	 * Installer::index()
-	 * 
+	 *
 	 * @return
 	 */
 	function index()
@@ -49,7 +49,7 @@ class Installer extends CI_Controller {
         // redirect to license screen
         redirect(site_url('installer/install/license'));
     }
-    
+
     /**
      * Installer::_checkInstallation()
      * check if installation should proceed further or not. (Based on existance of 'sample_installer_file.txt' file.)
@@ -62,10 +62,10 @@ class Installer extends CI_Controller {
             show_error("Installation has been done already.");
             exit();
         }
-        
+
     }
-    
-      
+
+
     /**
      * Installer::install()
      * Install Limeurvey database and default settings.
@@ -74,27 +74,27 @@ class Installer extends CI_Controller {
      */
     function install($step=0)
     {
-        
+
         switch($step){
             case "license" :
             {
-                
-                // $data array contain all the information required by view.            
+
+                // $data array contain all the information required by view.
                 $data['title']="License";
                 $data['descp']="GNU General Public License:";
                 $data['classesForStep']=array("on","off","off","off","off");
                 $data['progressValue']=0;
-                
+
                 $this->load->view('installer/license_view',$data);
-                break;            
+                break;
             }
-            // time to check few writing permissions and optional settings.            
+            // time to check few writing permissions and optional settings.
             case 0:
             {
-                //check user checked the checkbox. if yes,save the status 
+                //check user checked the checkbox. if yes,save the status
                 if ($this->input->post('accept'))
                 {
-                    
+
                     $statusdata = array(
                         'license'  => 'TRUE'
                     );
@@ -113,20 +113,20 @@ class Installer extends CI_Controller {
                 $data['phpVersion'] = phpversion();
                 // variable storing next button link.initially null
                 $data['next']="";
-                
+
                 //proceed variable check if all requirements are true. If any of them is false, proceed is set false.
                 $proceed = true; //lets be optimistic!
-                
+
                 //  version check
                 $ver = explode( '.', PHP_VERSION );
                 $ver_num = $ver[0] . $ver[1] . $ver[2];
-        
-                if ($ver_num < 500) 
+
+                if ($ver_num < 500)
                 {
                     $proceed=false;
                 }
-                
-                
+
+
                 //mbstring library check
                 if ( function_exists('mb_convert_encoding') )
                 $data['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
@@ -135,7 +135,7 @@ class Installer extends CI_Controller {
                     $data['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
                     $proceed=false;
                 }
-                
+
                 //mysql php library check
                 if ( function_exists('mysql_connect') )
                 $data['mysqlphpPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
@@ -144,10 +144,10 @@ class Installer extends CI_Controller {
                     $data['mysqlphpPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
                     $proceed=false;
                 }
-                
-                //directory permissions checking 
+
+                //directory permissions checking
                 // root directory file check
-                
+
                 if (file_exists($this->config->item('rootdir')))
                 {
                     $data['directoryPresent'] = "Found";
@@ -161,7 +161,7 @@ class Installer extends CI_Controller {
                         $data['derror'] = true;
                         $proceed=false;
                     }
-                    
+
                 }
                 else
                 {
@@ -171,7 +171,7 @@ class Installer extends CI_Controller {
                     $proceed=false;
                 }
                 // tmp directory check
-                
+
                 if (file_exists($this->config->item('rootdir').'/tmp/'))
                 {
                     $data['tmpdirPresent'] = "Found";
@@ -185,7 +185,7 @@ class Installer extends CI_Controller {
                         $data['terror'] = true;
                         $proceed=false;
                     }
-                    
+
                 }
                 else
                 {
@@ -195,7 +195,7 @@ class Installer extends CI_Controller {
                     $proceed=false;
                 }
                 // templates directory check
-                
+
                 if (file_exists($this->config->item('rootdir').'/templates/'))
                 {
                     $data['templatedirPresent'] = "Found";
@@ -209,7 +209,7 @@ class Installer extends CI_Controller {
                         $data['tperror'] = true;
                         $proceed=false;
                     }
-                    
+
                 }
                 else
                 {
@@ -219,7 +219,7 @@ class Installer extends CI_Controller {
                     $proceed=false;
                 }
                 //upload directory check
-                
+
                 if (file_exists($this->config->item('rootdir').'/upload/'))
                 {
                     $data['uploaddirPresent'] = "Found";
@@ -233,7 +233,7 @@ class Installer extends CI_Controller {
                         $data['uerror'] = true;
                         $proceed=false;
                     }
-                    
+
                 }
                 else
                 {
@@ -242,21 +242,21 @@ class Installer extends CI_Controller {
                     $data['uerror'] = true;
                     $proceed=false;
                 }
-                
+
                 //optional settings check
                 //gd library check
                 $gdArray = gd_info();
-                
+
                 if ( $gdArray["FreeType Support"] )
                 $data['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
                 else
                 $data['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
-                //ldap library check                
+                //ldap library check
                 if ( function_exists('ldap_connect') )
                 $data['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
                 else
                 $data['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
-                //php zip library check                
+                //php zip library check
                 if ( function_exists('zip_open') )
                 $data['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
                 else
@@ -266,24 +266,24 @@ class Installer extends CI_Controller {
                 $data['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
                 else
                 $data['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
-                
-                
-        
-                                
-                
-                
-                              
-                
+
+
+
+
+
+
+
+
                 //after all check, if flag value is true, show next button and sabe step2 status.
                 if ($proceed)
                 {
-                    $data['next']=TRUE; 
+                    $data['next']=TRUE;
                     $statusdata = array(
                         'step2'  => 'TRUE'
                     );
                     $this->session->set_userdata($statusdata);
                 }
-                
+
                 $this->load->view('installer/precheck_view',$data);
                 break;
             }
@@ -295,7 +295,7 @@ class Installer extends CI_Controller {
                 if(!$status) {
                 redirect(site_url('installer/install/license'));
                 }
-                
+
                 //usual data required by view
                 $data['title']="Database configuration";
                 $data['descp']="Connection settings:";
@@ -303,12 +303,12 @@ class Installer extends CI_Controller {
                 $data['progressValue']=40;
                 // errorConnection store text to be displayed if connection with DB fail
                 $data['errorConnection']="";
-                
+
                 //load form validation library and helpers necessary.
                 $this->load->helper('form');
                 $this->load->library('form_validation');
 
-                
+
                 //setting form validation rules.
                 $this->form_validation->set_rules('dbType','Database Type','required');
                 $this->form_validation->set_rules('dbLocation','Database Location','required');
@@ -317,12 +317,12 @@ class Installer extends CI_Controller {
                 //$this->form_validation->set_rules('dbPwd','Password','required|matches[dbConfirmPwd]');
                 $this->form_validation->set_rules('dbConfirmPwd','Confirm Password','matches[dbPwd]');
                 $this->form_validation->set_rules('dbPrefix','Database Prefix','not required');
-                
+
                 //setting custom error message for confirm password field
                 $this->form_validation->set_message('matches','Passwords do not match!');
                 //setting error delimiters so that errors can be displayed in red!
                 $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
-                
+
                 //run validation, if it fails, load the view again else proceed to next step.
                 if ($this->form_validation->run() == FALSE)
                 {
@@ -330,19 +330,19 @@ class Installer extends CI_Controller {
                 }
                 else
                 {
-                        
+
                     //to establish connection withh different DB.
                     require_once(APPPATH.'third_party/adodb/adodb.inc.php');
                     //lets assume
-                    
-                    
+
+
                     //write variables in database.php
                     //$this->load->helper('file');
                     /**
                     $dbvalues = array(
                                 'hostname' => $this->input->post('dbLocation'),
                                 'username' => $this->input->post('dbUser'),
-                                'password' => $this->input->post('dbPwd'), 
+                                'password' => $this->input->post('dbPwd'),
                                 'database' => $this->input->post('dbName'),
                                 'dbdriver' => $this->input->post('dbType'),
                                 'dbprefix' => $this->input->post('dbPrefix'),
@@ -357,51 +357,51 @@ class Installer extends CI_Controller {
                                 'stricton' => 'FALSE',
                                 'port' => 'default',
                                 'databasetabletype' => 'myISAM'
-                    
+
                     );
-                    
-                    $dbdata = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); " ."\n" 
-                            ."/*"."\n" 
-                            ." | -------------------------------------------------------------------"."\n" 
-                            ." | DATABASE CONNECTIVITY SETTINGS"."\n" 
-                            ." | ------------------------------------------------------------------- "."\n" 
-                            ." | This file will contain the settings needed to access your database."."\n" 
-                            ." | "."\n" 
-                            ." | For complete instructions please consult the 'Database Connection' "."\n" 
-                            ." | page of the User Guide. "."\n" 
-                            ." | "."\n" 
-                            ." | ------------------------------------------------------------------- "."\n" 
-                            ." | EXPLANATION OF VARIABLES "."\n" 
-                            ." | ------------------------------------------------------------------- "."\n" 
-                            ." | "."\n" 
-                            ." |	['hostname'] The hostname of your database server. "."\n" 
-                            ." |	['username'] The username used to connect to the database "."\n" 
-                            ." |	['password'] The password used to connect to the database "."\n" 
-                            ." |	['database'] The name of the database you want to connect to "."\n" 
-                            ." |	['dbdriver'] The database type. ie: mysql.  Currently supported: "."\n" 
-                            ." 				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8 "."\n" 
-                            ." |	['dbprefix'] You can add an optional prefix, which will be added "."\n" 
-                            ." |				 to the table name when using the  Active Record class "."\n" 
-                            ." |	['pconnect'] TRUE/FALSE - Whether to use a persistent connection "."\n" 
-                            ." |	['db_debug'] TRUE/FALSE - Whether database errors should be displayed. "."\n" 
-                            ." |	['cache_on'] TRUE/FALSE - Enables/disables query caching "."\n" 
-                            ." |	['cachedir'] The path to the folder where cache files should be stored "."\n" 
-                            ." |	['char_set'] The character set used in communicating with the database "."\n" 
-                            ." |	['dbcollat'] The character collation used in communicating with the database "."\n" 
-                            ." |	['swap_pre'] A default table prefix that should be swapped with the dbprefix "."\n" 
-                            ." |	['autoinit'] Whether or not to automatically initialize the database. "."\n" 
-                            ." |	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections "."\n" 
-                            ." |							- good for ensuring strict SQL while developing "."\n" 
-                            ." | "."\n" 
-                            .' | The $active_group'." variable lets you choose which connection group to "."\n" 
-                            ." | make active.  By default there is only one group (the 'default' group). "."\n" 
-                            ." | "."\n" 
-                            .' | The $active_record'." variables lets you determine whether or not to load "."\n" 
+
+                    $dbdata = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); " ."\n"
+                            ."/*"."\n"
+                            ." | -------------------------------------------------------------------"."\n"
+                            ." | DATABASE CONNECTIVITY SETTINGS"."\n"
+                            ." | ------------------------------------------------------------------- "."\n"
+                            ." | This file will contain the settings needed to access your database."."\n"
+                            ." | "."\n"
+                            ." | For complete instructions please consult the 'Database Connection' "."\n"
+                            ." | page of the User Guide. "."\n"
+                            ." | "."\n"
+                            ." | ------------------------------------------------------------------- "."\n"
+                            ." | EXPLANATION OF VARIABLES "."\n"
+                            ." | ------------------------------------------------------------------- "."\n"
+                            ." | "."\n"
+                            ." |	['hostname'] The hostname of your database server. "."\n"
+                            ." |	['username'] The username used to connect to the database "."\n"
+                            ." |	['password'] The password used to connect to the database "."\n"
+                            ." |	['database'] The name of the database you want to connect to "."\n"
+                            ." |	['dbdriver'] The database type. ie: mysql.  Currently supported: "."\n"
+                            ." 				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8 "."\n"
+                            ." |	['dbprefix'] You can add an optional prefix, which will be added "."\n"
+                            ." |				 to the table name when using the  Active Record class "."\n"
+                            ." |	['pconnect'] TRUE/FALSE - Whether to use a persistent connection "."\n"
+                            ." |	['db_debug'] TRUE/FALSE - Whether database errors should be displayed. "."\n"
+                            ." |	['cache_on'] TRUE/FALSE - Enables/disables query caching "."\n"
+                            ." |	['cachedir'] The path to the folder where cache files should be stored "."\n"
+                            ." |	['char_set'] The character set used in communicating with the database "."\n"
+                            ." |	['dbcollat'] The character collation used in communicating with the database "."\n"
+                            ." |	['swap_pre'] A default table prefix that should be swapped with the dbprefix "."\n"
+                            ." |	['autoinit'] Whether or not to automatically initialize the database. "."\n"
+                            ." |	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections "."\n"
+                            ." |							- good for ensuring strict SQL while developing "."\n"
+                            ." | "."\n"
+                            .' | The $active_group'." variable lets you choose which connection group to "."\n"
+                            ." | make active.  By default there is only one group (the 'default' group). "."\n"
+                            ." | "."\n"
+                            .' | The $active_record'." variables lets you determine whether or not to load "."\n"
                             ." | the active record class "."\n" */
-                          //  ." */ "."\n" 
-                           /** ." "."\n" 
-                            .'$active_group = \'default\'; '."\n" 
-                            .'$active_record = TRUE; '."\n" 
+                          //  ." */ "."\n"
+                           /** ." "."\n"
+                            .'$active_group = \'default\'; '."\n"
+                            .'$active_record = TRUE; '."\n"
                             ." "."\n" ;
                     foreach ($dbvalues as $key=>$value)
                     {
@@ -413,10 +413,10 @@ class Installer extends CI_Controller {
                         {
                             $dbdata .= '$db[\'default\'][\'' . $key . '\'] = \''. $value.'\';'."\n" ;
                         }
-                        
+
                     }
                     $dbdata .= '$config[\'dbdriver\'] = $db[\'default\'][\'dbdriver\']; ' . "\n" . "\n" */
-                    //       . "/* End of file database.php */ ". "\n" 
+                    //       . "/* End of file database.php */ ". "\n"
                     //        . "/* Location: ./application/config/database.php */ ";
                     /**
                     if (is_writable(APPPATH . 'config/database.php'))
@@ -429,13 +429,13 @@ class Installer extends CI_Controller {
                         echo "<b>directory not writable</b><br/>";
                         echo 'You\'ll be redirected in about 5 secs. If not, click '.anchor("installer/install/0","here").'.';
                     }
-                    */ 
+                    */
                     $_POST = $this->input->post();
                     $databaseport='default';
                     $databasepersistent=true;
                     $dbhost='';
                     $connect=ADONewConnection($_POST['dbType']);
-                    
+
                     //check connection
                     /**
                     $dsn = $this->input->post('dbType').'://'.$_POST['dbUser'].":".$_POST['dbPwd'].'@'.$_POST['dbLocation'].'/'.$_POST['dbName']; //.'?char_set=utf8&dbcollat=utf8_general_ci&cache_on=true&cachedir=\'\'';
@@ -470,11 +470,11 @@ echo "hello<br/>".$dsn;
                         $newdata['progressValue']=40;
                         $newdata['errorConnection'] ='<b>Try again! Connection with database failed.</b>';
                         $this->load->view('installer/dbconfig_view',$newdata);
-                        
+
                     }
                     else
                     {
-                        
+
                     }
 
                     $database_exists =false;
@@ -502,31 +502,31 @@ echo "hello<br/>".$dsn;
 
                         default: safe_die("Unknown database type");
                     }
-                    
+
                     //$this->load->dbutil();
                     //$database_exists = $this->dbutil->database_exists($this->input->post('dbName'));
-                    
+
                     if (!$database_exists)
                     {
-                        
+
                             $statusdata = array(
                             'databaseDontExist'  => 'TRUE'
                             );
                             $this->session->set_userdata($statusdata);
-                            
+
                             $values['adminoutputText'].= "\t<tr bgcolor='#efefef'><td align='center'>\n"
                             ."<strong>"."Database doesn't exist!"."</strong><br /><br />\n"
                             ."The database you specified does not exist."."<br />\n"
                             ."LimeSurvey can attempt to create this database for you."."<br /><br />\n"
                             ."Your selected database name is:"."<strong>".$this->input->post('dbName')."</strong><br />\n"
                             ."</center>\n" ;
-                            
+
                             $values['adminoutputForm']="<form action='".base_url()."index.php/installer/createdb/' method='post'><input type='submit' value='"
                             ."Create Database"."' /></form>";
                     }
                     */
-                                        
-                    
+
+
                     $database_exists =false;
                     $connection_db = false;
                     // Now try connecting to the database
@@ -543,12 +543,12 @@ echo "hello<br/>".$dsn;
                             if (!@$connect->PConnect($dbhost, $_POST['dbUser'], $_POST['dbPwd']))
                             {
                                 $connection_db=false;
-                                                               
+
                             }
                             else{
                                 $connection_db=true;
                             }
-                            
+
                         }
                     }
                     else
@@ -557,12 +557,12 @@ echo "hello<br/>".$dsn;
                         {
                             $database_exists = TRUE;
                             $connection_db=true;
-                            
+
                         }
                         else {
                             // If that doesnt work try connection without database-name
                             $connect->database = '';
-                            
+
                             if (!@$connect->Connect($dbhost, $_POST['dbUser'], $_POST['dbPwd']))
                             {
                                 $connection_db=false;
@@ -572,10 +572,10 @@ echo "hello<br/>".$dsn;
                             }
                         }
                     }
-                    
-                   
-                                 
-                     
+
+
+
+
                     //if connection with database fail
                     if (!$connection_db)
                     {
@@ -584,11 +584,11 @@ echo "hello<br/>".$dsn;
                     }
                     else
                     {
-                                             
+
                         //saving the form data
                         $statusdata = array(
                             //'step2'  => 'TRUE',
-                            
+
                             'dbname' => $this->input->post('dbName'),
                             'databasetype' => $this->input->post('dbType'),
                             'dblocation' => $dbhost,
@@ -597,29 +597,29 @@ echo "hello<br/>".$dsn;
                             'dbprefix' => $this->input->post('dbPrefix')
                             );
                         $this->session->set_userdata($statusdata);
-                        
+
                          //check if table exists or not
-                    
-                        //static $tablelist; 
+
+                        //static $tablelist;
                         $tablename = 'surveys';
                         $tablesdontexist=false; //!$this->db->table_exists($tablename); //false;
-                        
+
                         if (!isset($tablelist)) $tablelist = $connect->MetaTables();
-                    
+
                         if ($tablelist==false)
                         {
                             $tablesdontexist = true;
-                        
+
                         }
                         else
                         {
                             $proceed=false;
-                        
+
                             foreach ($tablelist as $tbl)
                             {
                                 if (self::_db_quote_id($tbl,$this->input->post('dbType')) == self::_db_table_name($tablename,$_POST['dbPrefix'],$_POST['dbType']))
                                 {
-                                
+
                                     $proceed=true;
                                     break;
                                 }
@@ -629,34 +629,34 @@ echo "hello<br/>".$dsn;
                             else
                             $tablesdontexist = true;
                         }
-                    
-                    
+
+
                         // AdoDB seems to be defaulting to ADODB_FETCH_NUM and we want to be sure that the right default mode is set
 
                         $connect->SetFetchMode(ADODB_FETCH_ASSOC);
-                        
+
                         $dbexistsbutempty=($database_exists && $tablesdontexist);
-                        
+
                         //store them in session
                         $this->session->set_userdata(array('databaseexist' => $database_exists, 'tablesexist' => !$tablesdontexist));
-                        
+
                         // If database is up to date, redirect to Optional Configuration screen.
                         if ($database_exists && !$tablesdontexist)
                         {
-                            
+
                             $statusdata = array(
                             'optconfig_message' => 'The database you specified is up to date.',
-                            'step3'  => TRUE                            
+                            'step3'  => TRUE
                             );
                             $this->session->set_userdata($statusdata);
                             redirect(site_url("installer/loadOptView"));
                         }
-                        
-                        
-                        
+
+
+
                         if ($_POST['dbType']=='mysql' || $_POST['dbType']=='mysqli') {
-                        if ($this->config->item('debug')>1) { 
-                            @$connect->Execute("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'");  
+                        if ($this->config->item('debug')>1) {
+                            @$connect->Execute("SET SESSION SQL_MODE='STRICT_ALL_TABLES,ANSI'");
                         }//for development - use mysql in the strictest mode  //Checked)
                             $infoarray=$connect->ServerInfo();
                             if (version_compare ($infoarray['version'],'4.1','<'))
@@ -672,7 +672,7 @@ echo "hello<br/>".$dsn;
                             @$connect->Execute('SET DATEFORMAT ymd;');     //Checked
                             @$connect->Execute('SET QUOTED_IDENTIFIER ON;');     //Checked
                         }
-                        
+
                         /**
                         //writing config.php
                         //checking just in case
@@ -693,42 +693,42 @@ echo "hello<br/>".$dsn;
                         $values['descp']="Database settings";
                         $values['classesForStep']=array("off","off","off","on","off");
                         $values['progressValue']=60;
-                               
+
                         //it store text content
                         $values['adminoutputText']='';
                         //it store the form code to be displayed
                         $values['adminoutputForm']='';
-                        
-                        
-                        
-                        //if DB exist, check if its empty or up to date. if not, tell user LS can create it.                   
+
+
+
+                        //if DB exist, check if its empty or up to date. if not, tell user LS can create it.
                         if (!$database_exists)
                         {
                             $statusdata = array(
                             'databaseDontExist'  => 'TRUE'
                             );
                             $this->session->set_userdata($statusdata);
-                            
+
                             $values['adminoutputText'].= "\t<tr bgcolor='#efefef'><td align='center'>\n"
                             ."<strong>"."Database doesn't exist!"."</strong><br /><br />\n"
                             ."The database you specified does not exist."."<br />\n"
                             ."LimeSurvey can attempt to create this database for you."."<br /><br />\n"
                             ."Your selected database name is:"."<strong>".$this->input->post('dbName')."</strong><br />\n"
                             ."</center>\n" ;
-                            
+
                             $values['adminoutputForm']="<form action='".site_url("installer/createdb")."' method='post'><input type='submit' value='"
                             ."Create Database"."' class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' /></form>";
-                            
-                        
+
+
                         }
                         elseif ($dbexistsbutempty ) //&& !(returnglobal('createdbstep2')==$clang->gT("Populate Database")))
                         {
                             $statusdata = array(
                             'populatedatabase'  => 'TRUE'
-                            
+
                             );
                             $this->session->set_userdata($statusdata);
-                            
+
                             $connect->database = $this->input->post('dbName');
                             $connect->Execute("USE DATABASE `".$this->input->post('dbName')."`");
                             $values['adminoutputText'].= "\t<tr bgcolor='#efefef'><td colspan='2' align='center'>\n";
@@ -749,13 +749,13 @@ echo "hello<br/>".$dsn;
                             $values['adminoutput'].="<br />Please ".anchor("admin","log in.");
 
                         }
-                        
-                        
-                        
+
+
+
                         $this->load->view('installer/dbsettings_view',$values);
                     }
                 }
-                          
+
                 break;
             }
             // Optional settings screen
@@ -765,10 +765,10 @@ echo "hello<br/>".$dsn;
                 $status1=$this->session->userdata('step3');
                 $status2=$this->session->userdata('databaseDontExist');
                 if(!$status1) {
-                    
+
                     redirect(site_url('installer/install/license'));
                 }
-                
+
                 self::_writeDatabaseFile();
                 self::_writeAutoloadfile();
                 //self::_writeConfigfile();
@@ -778,21 +778,21 @@ echo "hello<br/>".$dsn;
                 $data['descp']="Optional settings to give you a head start";
                 $data['classesForStep']=array("off","off","off","off","on");
                 $data['progressValue']=80;
-                
+
                 $statusdata = array(
                             'optional'  => 'TRUE'
-                            
+
                 );
                 $this->load->helper('surveytranslator');
                 $this->session->set_userdata($statusdata);
                 $this->load->view('installer/optconfig_view',$data);
-                break;        
+                break;
             }
-            
+
         }
-        
+
     }
-    
+
     /**
      * Installer::deletefiles()
      * delete installer files at end of installation.
@@ -811,18 +811,18 @@ echo "hello<br/>".$dsn;
         {
             delete_files($this->config->item('rootdir').'/installer/', TRUE);
             //show_error("Installation Directory(\"".$this->config->item('rootdir')."/installer\") is present. Remove/Rename it to proceed further.");
-            //exit(); 
+            //exit();
         }
         else
         {
             $text = "Couldn't delete Installation Directory(".$this->config->item('rootdir')."/installer) ";
         }
-        
+
         if (is_writable(APPPATH . 'controllers/installer.php'))
         {
             delete_files(APPPATH . 'controllers/installer.php');
             //show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
-            //exit(); 
+            //exit();
         }
         else
         {
@@ -835,12 +835,12 @@ echo "hello<br/>".$dsn;
                 $text = "Couldn't delete script of installation(".APPPATH . "controllers/installer.php) ";
             }
         }
-        
+
         if (is_writable(APPPATH . 'views/installer'))
         {
             delete_files(APPPATH . 'views/installer', TRUE);
             //show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
-            //exit(); 
+            //exit();
         }
         else
         {
@@ -854,7 +854,7 @@ echo "hello<br/>".$dsn;
             }
         }
         */
-        
+
         header('refresh:5;url='.site_url("installer/install/0"));
         /**
         if ($text != '')
@@ -862,11 +862,11 @@ echo "hello<br/>".$dsn;
            echo "<b>".$text."</b><br/>You can remove them manually later on. <br/>";
         }
         */
-        
+
         echo 'You\'ll be redirected in about 5 secs. If not, click '.anchor("admin","here").'.';
-        
+
     }
-    
+
     // this function does the processing of optional view form.
     /**
      * Installer::optional()
@@ -875,25 +875,25 @@ echo "hello<br/>".$dsn;
      */
     function optional()
     {
-        
+
         $status=$this->session->userdata('optional');
         if(!$status) {
             redirect(site_url('installer/install/license'));
         }
-        
+
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
-        
+
         //check if passwords match , input class take care of any xss filetring or sql injection
         if ($this->input->post('adminLoginPwd') == $this->input->post('confirmPwd'))
         {
-            
+
             $defaultuser = $this->input->post('adminLoginName');
             $defaultpass = $this->input->post('adminLoginPwd');
             $siteadminname = $this->input->post('siteName');
             $defaultlang = $this->input->post('surveylang');
             $siteadminemail = $this->input->post('adminEmail');
-            
+
             //if any of the field was left blank, replace it with default.
             if ($defaultuser=='')
             $defaultuser  = "admin";
@@ -905,18 +905,18 @@ echo "hello<br/>".$dsn;
             $defaultlang  = "en";
             if ($siteadminemail=='')
             $siteadminemail  = "your-email@example.net";
-            
+
             $adminpwd = $defaultpass;
-                
-            
+
+
             $dbname = $this->session->userdata('dbname');
             $databasetype = $this->session->userdata('databasetype');
             $connect=ADONewConnection($databasetype);
-            
+
             //require_once($rootdir."/classes/core/sha256.php");
             //require_once($rootdir."/classes/core/surveytranslator.php");
             //require_once($rootdir."/classes/core/sanitize.php");
-            
+
                 //checking DB Connection
                 if (!$connect->Connect($this->session->userdata('dblocation'), $this->session->userdata('dbuser'), $this->session->userdata('dbpwd'),$dbname))
                 {
@@ -928,7 +928,7 @@ echo "hello<br/>".$dsn;
                     $this->load->view('dbconfig_view',$data);
                 }
                 else
-                { 
+                {
                 $this->load->library('admin/sha256','sha256');
                 $defaultpass=$this->sha256->hashing($defaultpass);
                 /**
@@ -946,11 +946,11 @@ echo "hello<br/>".$dsn;
                               'configurator' => 1,
                               'manage_template' => 1,
                               'manage_label' => 1
-                
-                
+
+
                 );
-                
-                $this->db->insert('users', $insertdata); 
+
+                $this->db->insert('users', $insertdata);
                 */
                     //finding dbtype and inserting new data
                     $createdbtype=$databasetype;
@@ -960,9 +960,9 @@ echo "hello<br/>".$dsn;
                     if ($createdbtype=='mssql' || $createdbtype=='odbc' || $createdbtype=='odbtp') $createdbtype='mssql';
                     if($createdbtype=='mssqlnative') $createdbtype='mssqlnative';
                     //$defaultpass=SHA256::hashing($defaultpass);
-            
+
                     switch ($createdbtype) {
-            
+
                         case "mysql":
                         {
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`, `create_user` , `delete_user` , `superadmin` , `configurator` , `manage_template` , `manage_label`) VALUES (\''.$defaultuser.'\', \''.$defaultpass.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
@@ -983,14 +983,14 @@ echo "hello<br/>".$dsn;
                             $connect->Execute('INSERT INTO '.$this->session->userdata("dbprefix").'users (users_name, "password", full_name, parent_id, lang ,email, create_survey, create_user , delete_user , superadmin , configurator , manage_template , manage_label, htmleditormode) VALUES (\''.$defaultuser.'\', \''.$defaultpass.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1,\'default\')');
                             break;
                         }
-            
+
                     }
-                    
+
                     // if successfully data is inserted, notify user to login and redirect to proper link
                     // code to force user to rename/delete installation directory will be in Admin_Controller
-                    //header( "refresh:5;url=".site_url('admin')); 
+                    //header( "refresh:5;url=".site_url('admin'));
                     //echo 'You\'ll be redirected in about 5 secs. If not, click '.anchor('admin',"here").'.';
-                    
+
                     $this->session->set_userdata('deletedirectories' , TRUE);
                     $newdata = array();
                     //DELETE SAMPLE INSTALLER FILE. If we can't, notify user of the same.
@@ -999,24 +999,24 @@ echo "hello<br/>".$dsn;
                         $this->load->helper('file');
                         delete_files($this->config->item('rootdir').'/tmp/sample_installer_file.txt',TRUE);
                         //show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
-                        //exit(); 
+                        //exit();
                     }
                     else
                     {
                         $newdata['error'] = TRUE;
                     }
-                    
+
                     $newdata['title']="Success!";
                     $newdata['descp']="LimeSurvey has been installed successfully.";
                     $newdata['classesForStep']=array("off","off","off","off","off");
                     $newdata['progressValue']=100;
                     $newdata['user']=$defaultuser;
                     $newdata['pwd']=$adminpwd;
-                    
+
                     $this->load->view('installer/success_view',$newdata);
-                    
-                 } 
-            
+
+                 }
+
         }
         else
         {
@@ -1026,13 +1026,13 @@ echo "hello<br/>".$dsn;
                             'optconfig_message' => 'Password don\'t match.'
                             );
             $this->session->set_userdata($statusdata);
-            redirect(site_url('installer/loadOptView'));                 
-                
+            redirect(site_url('installer/loadOptView'));
+
         }
-            
-            
-        
-        
+
+
+
+
     }
     // this function loads optconfig_view with proper confirmation message.
     /**
@@ -1044,33 +1044,33 @@ echo "hello<br/>".$dsn;
     {
         $status1=$this->session->userdata('step3');
         if(!$status1) {
-                    
+
             redirect(site_url('installer/install/license'));
         }
-        
+
         self::_writeDatabaseFile();
         self::_writeAutoloadfile();
-        
+
         $this->load->helper('surveytranslator');
         $data['confirmation']="<b>".$this->session->userdata('optconfig_message')."</b><br/>";
         $data['title']="Optional settings";
         $data['descp']="Optional settings to give you a head start";
         $data['classesForStep']=array("off","off","off","off","on");
         $data['progressValue']=80;
-                
+
         $statusdata = array(
             'optional'  => TRUE
-                            
+
         );
         $this->session->set_userdata($statusdata);
         $this->load->view('installer/optconfig_view',$data);
-        
+
     }
-    
+
     //function used to create different DB systems.
     /**
      * Installer::createdb()
-     * Create database. 
+     * Create database.
      * @return
      */
     function createdb()
@@ -1080,13 +1080,13 @@ echo "hello<br/>".$dsn;
         if(!$status) {
             redirect(site_url('installer/install/license'));
         }
-          
+
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
         $databasetype = $this->session->userdata('databasetype');
         $connect=ADONewConnection($databasetype);
-        
+
         //checking DB Connection
         if (!$connect->Connect($this->session->userdata('dblocation'), $this->session->userdata('dbuser'), $this->session->userdata('dbpwd')))
         {
@@ -1098,8 +1098,8 @@ echo "hello<br/>".$dsn;
             $this->load->view('dbconfig_view',$data);
         }
         else
-        { 
-        
+        {
+
             $values['adminoutputForm']='';
             switch ($databasetype)
             {
@@ -1112,7 +1112,7 @@ echo "hello<br/>".$dsn;
                 case 'odbtp': $createDb=$connect->Execute("CREATE DATABASE [$dbname];");
                 break;
                 default: $createDb=$connect->Execute("CREATE DATABASE $dbname");
-            } 
+            }
             //$this->load->dbforge();
             if ($createDb) //Database has been successfully created
             {
@@ -1120,7 +1120,7 @@ echo "hello<br/>".$dsn;
                 $connect->Execute("USE DATABASE `$dbname`");
                 $statusdata = array(
                                 'populatedatabase'  => 'TRUE'
-                            
+
                                 );
                 $this->session->set_userdata($statusdata);
                 $this->session->set_userdata(array('databaseexist' => TRUE));
@@ -1130,7 +1130,7 @@ echo "hello<br/>".$dsn;
                 $values['adminoutputText'] .= "Please click below to populate the database<br /><br />\n";
                 $values['adminoutputForm'] .= "<form method='post' action='".site_url('installer/populatedb')."'>";
                 $values['adminoutputForm'] .= "<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='Populate Database' ></form>";
-            
+
                 $this->session->unset_userdata('databaseDontExist');
             }
             else
@@ -1141,9 +1141,9 @@ echo "hello<br/>".$dsn;
                 $data['classesForStep']=array("off","off","on","off","off");
                 $data['progressValue']=40;
                 $this->load->view('installer/dbconfig_view',$data);
-                
+
             }
-        
+
             $values['title']="Database settings";
             $values['descp']="Database settings";
             $values['classesForStep']=array("off","off","off","on","off");
@@ -1151,7 +1151,7 @@ echo "hello<br/>".$dsn;
             $this->load->view('installer/dbsettings_view',$values);
         }
     }
-    
+
     //function used to populate database
     /**
      * Installer::populatedb()
@@ -1161,19 +1161,19 @@ echo "hello<br/>".$dsn;
     function populatedb()
     {
         $status1=$this->session->userdata('populatedatabase');
-        
+
         if(!$status1) {
             redirect(site_url('installer/install/license'));
         }
-        
+
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
         $databasetype = $this->session->userdata('databasetype');
-        
+
         $connect=ADONewConnection($databasetype);
-        
-        
+
+
         //checking DB Connection
         if (!$connect->Connect($this->session->userdata('dblocation'), $this->session->userdata('dbuser'), $this->session->userdata('dbpwd'),$dbname))
         {
@@ -1185,21 +1185,21 @@ echo "hello<br/>".$dsn;
             $this->load->view('dbconfig_view',$data);
         }
         else
-        { 
-        
+        {
+
             $createdbtype=$databasetype;
-            
+
             if ($databasetype=='mysql' || $databasetype=='mysqli') {
                 $connect->Execute("ALTER DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
                 $createdbtype='mysql';
             }
             if ($createdbtype=='mssql' || $createdbtype=='odbc' || $createdbtype=='odbtp') $createdbtype='mssql';
-            if($createdbtype=='postgres' && $connect->pgVersion=='9') 
+            if($createdbtype=='postgres' && $connect->pgVersion=='9')
             {
                 $connect->execute("ALTER DATABASE {$dbname} SET bytea_output='escape';");
             }
             if($createdbtype=='mssqlnative') $createdbtype='mssqlnative';
-            
+
             if (self::_modify_database($this->config->item('rootdir').'/installer/sql/create-'.$createdbtype.'.sql'))
             {
                 //$data1['adminoutput'] = '';
@@ -1210,11 +1210,11 @@ echo "hello<br/>".$dsn;
                             //'step2'  => 'TRUE',
                             'step3'  => TRUE
                             );
-            
+
                 $this->session->unset_userdata('populatedatabase');
                 $this->session->set_userdata($statusdata);
                 redirect(site_url('installer/install/2'));
-            
+
             }
             else
             {
@@ -1225,12 +1225,12 @@ echo "hello<br/>".$dsn;
                 $values['progressValue']=60;
                 $this->load->view('installer/dbsettings_view',$values);
             }
-        
+
         }
-        
-        
+
+
     }
-    
+
     //function that ultimately populate database.
     /**
      * Installer::_modify_database()
@@ -1248,19 +1248,19 @@ echo "hello<br/>".$dsn;
         $siteadminname="Your Name";
         $defaultlang="en";
         //global $codeString;
-    
-       
+
+
         //global $modifyoutput;
         $databasetabletype="myISAM";
-    
-    
+
+
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
         $databasetype = $this->session->userdata('databasetype');
         $connect=ADONewConnection($databasetype);
-        
-        
+
+
         //checking DB Connection
         if (!$connect->Connect($this->session->userdata('dblocation'), $this->session->userdata('dbuser'), $this->session->userdata('dbpwd'),$dbname))
         {
@@ -1272,7 +1272,7 @@ echo "hello<br/>".$dsn;
             $this->load->view('dbconfig_view',$data);
         }
         else
-        { 
+        {
             //require_once($rootdir."/classes/core/sha256.php");
             //require_once($rootdir."/classes/core/surveytranslator.php");
             //require_once($rootdir."/classes/core/sanitize.php");
@@ -1282,8 +1282,8 @@ echo "hello<br/>".$dsn;
             $modifyoutput='';
             /**
             $this->load->dbforge();
-            
-            
+
+
             $this->dbforge->add_field("qid int(11) NOT NULL DEFAULT '0'");
             $this->dbforge->add_field("code varchar(5) NOT NULL default ''");
             $this->dbforge->add_field("answer text NOT NULL");
@@ -1292,9 +1292,9 @@ echo "hello<br/>".$dsn;
             $this->dbforge->add_field("language varchar(20) default 'en'");
             $this->dbforge->add_field("scale_id tinyint NOT NULL default '0'");
             $this->dbforge->add_field("assessment_value int(11) NOT NULL default '0'");
-            
+
             */
-            
+
 
             if (!empty($sqlfile)) {
                 if (!is_readable($sqlfile)) {
@@ -1313,7 +1313,7 @@ echo "hello<br/>".$dsn;
             }
 
             $command = '';
-    
+
 
             foreach ($lines as $line) {
                 $line = rtrim($line);
@@ -1324,12 +1324,12 @@ echo "hello<br/>".$dsn;
                         $line = substr($line, 0, $length-1);   // strip ;
                         $command .= $line;
                         $command = str_replace('prefix_', $dbprefix, $command); // Table prefixes
-                        $command = str_replace('$defaultuser', $defaultuser, $command); 
-                        $command = str_replace('$defaultpass', $defaultpass, $command); 
+                        $command = str_replace('$defaultuser', $defaultuser, $command);
+                        $command = str_replace('$defaultpass', $defaultpass, $command);
                         $command = str_replace('$siteadminname', $siteadminname, $command);
-                        $command = str_replace('$siteadminemail', $siteadminemail, $command); 
-                        $command = str_replace('$defaultlang', $defaultlang, $command); 
-                        $command = str_replace('$sessionname', 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID(), $command); 
+                        $command = str_replace('$siteadminemail', $siteadminemail, $command);
+                        $command = str_replace('$defaultlang', $defaultlang, $command);
+                        $command = str_replace('$sessionname', 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID(), $command);
                         $command = str_replace('$databasetabletype', $databasetabletype, $command);
 
                         if (! self::_db_execute_num($command)) {  //Checked
@@ -1354,7 +1354,7 @@ echo "hello<br/>".$dsn;
         }
 
     }
-    
+
     /**
      * Installer::_writeDatabaseFile()
      * Function to write given database settings in APPPATH.'application/config/database.php'
@@ -1367,11 +1367,11 @@ echo "hello<br/>".$dsn;
                 {
                     //write variables in database.php
                             $this->load->helper('file');
-                            
+
                             $dbvalues = array(
                                         'hostname' => $this->session->userdata('dblocation'),
                                         'username' => $this->session->userdata('dbuser'),
-                                        'password' => $this->session->userdata('dbpwd'), 
+                                        'password' => $this->session->userdata('dbpwd'),
                                         'database' => $this->session->userdata('dbname'),
                                         'dbdriver' => $this->session->userdata('databasetype'),
                                         'dbprefix' => $this->session->userdata('dbprefix'),
@@ -1386,51 +1386,51 @@ echo "hello<br/>".$dsn;
                                         'stricton' => 'FALSE',
                                         'port' => 'default',
                                         'databasetabletype' => 'myISAM'
-                            
+
                             );
-                            
-                            $dbdata = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); " ."\n" 
-                                    ."/*"."\n" 
-                                    ." | -------------------------------------------------------------------"."\n" 
-                                    ." | DATABASE CONNECTIVITY SETTINGS"."\n" 
-                                    ." | ------------------------------------------------------------------- "."\n" 
-                                    ." | This file will contain the settings needed to access your database."."\n" 
-                                    ." | "."\n" 
-                                    ." | For complete instructions please consult the 'Database Connection' "."\n" 
-                                    ." | page of the User Guide. "."\n" 
-                                    ." | "."\n" 
-                                    ." | ------------------------------------------------------------------- "."\n" 
-                                    ." | EXPLANATION OF VARIABLES "."\n" 
-                                    ." | ------------------------------------------------------------------- "."\n" 
-                                    ." | "."\n" 
-                                    ." |	['hostname'] The hostname of your database server. "."\n" 
-                                    ." |	['username'] The username used to connect to the database "."\n" 
-                                    ." |	['password'] The password used to connect to the database "."\n" 
-                                    ." |	['database'] The name of the database you want to connect to "."\n" 
-                                    ." |	['dbdriver'] The database type. ie: mysql.  Currently supported: "."\n" 
-                                    ." 				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8 "."\n" 
-                                    ." |	['dbprefix'] You can add an optional prefix, which will be added "."\n" 
-                                    ." |				 to the table name when using the  Active Record class "."\n" 
-                                    ." |	['pconnect'] TRUE/FALSE - Whether to use a persistent connection "."\n" 
-                                    ." |	['db_debug'] TRUE/FALSE - Whether database errors should be displayed. "."\n" 
-                                    ." |	['cache_on'] TRUE/FALSE - Enables/disables query caching "."\n" 
-                                    ." |	['cachedir'] The path to the folder where cache files should be stored "."\n" 
-                                    ." |	['char_set'] The character set used in communicating with the database "."\n" 
-                                    ." |	['dbcollat'] The character collation used in communicating with the database "."\n" 
-                                    ." |	['swap_pre'] A default table prefix that should be swapped with the dbprefix "."\n" 
-                                    ." |	['autoinit'] Whether or not to automatically initialize the database. "."\n" 
-                                    ." |	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections "."\n" 
-                                    ." |							- good for ensuring strict SQL while developing "."\n" 
-                                    ." | "."\n" 
-                                    .' | The $active_group'." variable lets you choose which connection group to "."\n" 
-                                    ." | make active.  By default there is only one group (the 'default' group). "."\n" 
-                                    ." | "."\n" 
-                                    .' | The $active_record'." variables lets you determine whether or not to load "."\n" 
-                                    ." | the active record class "."\n" 
-                                    ." */ "."\n" 
-                                    ." "."\n" 
-                                    .'$active_group = \'default\'; '."\n" 
-                                    .'$active_record = TRUE; '."\n" 
+
+                            $dbdata = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); " ."\n"
+                                    ."/*"."\n"
+                                    ." | -------------------------------------------------------------------"."\n"
+                                    ." | DATABASE CONNECTIVITY SETTINGS"."\n"
+                                    ." | ------------------------------------------------------------------- "."\n"
+                                    ." | This file will contain the settings needed to access your database."."\n"
+                                    ." | "."\n"
+                                    ." | For complete instructions please consult the 'Database Connection' "."\n"
+                                    ." | page of the User Guide. "."\n"
+                                    ." | "."\n"
+                                    ." | ------------------------------------------------------------------- "."\n"
+                                    ." | EXPLANATION OF VARIABLES "."\n"
+                                    ." | ------------------------------------------------------------------- "."\n"
+                                    ." | "."\n"
+                                    ." |	['hostname'] The hostname of your database server. "."\n"
+                                    ." |	['username'] The username used to connect to the database "."\n"
+                                    ." |	['password'] The password used to connect to the database "."\n"
+                                    ." |	['database'] The name of the database you want to connect to "."\n"
+                                    ." |	['dbdriver'] The database type. ie: mysql.  Currently supported: "."\n"
+                                    ." 				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8 "."\n"
+                                    ." |	['dbprefix'] You can add an optional prefix, which will be added "."\n"
+                                    ." |				 to the table name when using the  Active Record class "."\n"
+                                    ." |	['pconnect'] TRUE/FALSE - Whether to use a persistent connection "."\n"
+                                    ." |	['db_debug'] TRUE/FALSE - Whether database errors should be displayed. "."\n"
+                                    ." |	['cache_on'] TRUE/FALSE - Enables/disables query caching "."\n"
+                                    ." |	['cachedir'] The path to the folder where cache files should be stored "."\n"
+                                    ." |	['char_set'] The character set used in communicating with the database "."\n"
+                                    ." |	['dbcollat'] The character collation used in communicating with the database "."\n"
+                                    ." |	['swap_pre'] A default table prefix that should be swapped with the dbprefix "."\n"
+                                    ." |	['autoinit'] Whether or not to automatically initialize the database. "."\n"
+                                    ." |	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections "."\n"
+                                    ." |							- good for ensuring strict SQL while developing "."\n"
+                                    ." | "."\n"
+                                    .' | The $active_group'." variable lets you choose which connection group to "."\n"
+                                    ." | make active.  By default there is only one group (the 'default' group). "."\n"
+                                    ." | "."\n"
+                                    .' | The $active_record'." variables lets you determine whether or not to load "."\n"
+                                    ." | the active record class "."\n"
+                                    ." */ "."\n"
+                                    ." "."\n"
+                                    .'$active_group = \'default\'; '."\n"
+                                    .'$active_record = TRUE; '."\n"
                                     ." "."\n" ;
                             foreach ($dbvalues as $key=>$value)
                             {
@@ -1442,12 +1442,12 @@ echo "hello<br/>".$dsn;
                                 {
                                     $dbdata .= '$db[\'default\'][\'' . $key . '\'] = \''. $value.'\';'."\n" ;
                                 }
-                                
+
                             }
-                            $dbdata .= '$config[\'dbdriver\'] = $db[\'default\'][\'dbdriver\']; ' . "\n" . "\n" 
-                                   . "/* End of file database.php */ ". "\n" 
+                            $dbdata .= '$config[\'dbdriver\'] = $db[\'default\'][\'dbdriver\']; ' . "\n" . "\n"
+                                   . "/* End of file database.php */ ". "\n"
                                     . "/* Location: ./application/config/database.php */ ";
-                            
+
                             if (is_writable(APPPATH . 'config/database.php'))
                             {
                                 write_file(APPPATH . 'config/database.php', $dbdata);
@@ -1458,11 +1458,11 @@ echo "hello<br/>".$dsn;
                                 echo "<b>directory not writable</b><br/>";
                                 echo 'You\'ll be redirected in about 5 secs. If not, click '.anchor("installer/install/0","here").'.';
                             }
-                            
-                    
+
+
                 }
     }
-    
+
     /**
      * Installer::_writeAutoloadfile()
      * Function to make database library get autoloaded in APPPATH.'application/config/autoload.php'
@@ -1472,17 +1472,17 @@ echo "hello<br/>".$dsn;
     {
         if ($this->session->userdata('databaseexist') && $this->session->userdata('tablesexist'))
         {
-        
+
             $this->load->helper('file');
-            
+
             $string = read_file(APPPATH . 'config/autoload.php');
-            
+
             $string = str_replace('$autoload[\'libraries\'] = array(\'session\');','$autoload[\'libraries\'] = array(\'database\', \'session\');', $string);
             write_file(APPPATH . 'config/autoload.php', $string);
         }
-        
+
     }
-    
+
     /**
      * Installer::_writeConfigfile()
      * Function to write session encryption key in APPPATH.'application/config/config.php'
@@ -1492,19 +1492,19 @@ echo "hello<br/>".$dsn;
     {
         if ($this->session->userdata('databaseexist') && $this->session->userdata('tablesexist'))
         {
-        
+
             $this->load->helper('file');
-            
+
             $string = read_file(APPPATH . 'config/config.php');
             $this->load->helper('string');
             $string = str_replace('$config[\'encryption_key\'] = \'encryption_key\';','$config[\'encryption_key\'] = \''.random_string("unique").'\';', $string);
             write_file(APPPATH . 'config/config.php', $string);
         }
-        
+
     }
-    
-   
-    
+
+
+
     /**
      * Installer::_getRandomID()
      * Create a random survey ID - based on code from Ken Lyle
@@ -1521,7 +1521,7 @@ echo "hello<br/>".$dsn;
         $sid = $sid . substr ($salt, rand() % strlen($salt), 1);
         return $sid;
     }
-    
+
     /**
      * Installer::_db_execute_num()
      * Function to execute database queries and return normal array(not assosciative one!).
@@ -1542,7 +1542,7 @@ echo "hello<br/>".$dsn;
         $dataset=$connect->Execute($sql,$inputarr);  //Checked
         return $dataset;
     }
-    
+
     /**
      * Installer::_db_quote_id()
      * Function to quote values to be inserted later on.
@@ -1552,7 +1552,7 @@ echo "hello<br/>".$dsn;
      */
     function _db_quote_id($id,$databasetype)
     {
-        
+
         // WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
         //  $quote = $connect->nameQuote;
         //  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
@@ -1576,7 +1576,7 @@ echo "hello<br/>".$dsn;
                 return "`".$id."`";
         }
     }
-    
+
     /**
      * Installer::_db_table_name()
      * Function to return complete database table name.
@@ -1590,5 +1590,5 @@ echo "hello<br/>".$dsn;
         return self::_db_quote_id($dbprefix.$name,$databasetype);
     }
 
-    
+
 }

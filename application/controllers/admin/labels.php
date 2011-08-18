@@ -10,20 +10,20 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 
+ *
  */
- 
+
  /**
   * labels
-  * 
-  * @package LimeSurvey_CI
-  * @author 
+  *
+  * @package LimeSurvey
+  * @author
   * @copyright 2011
   * @version $Id$
   * @access public
   */
  class labels extends Admin_Controller {
-    
+
     /**
      * labels::__construct()
      * Constructor
@@ -33,7 +33,7 @@
 	{
 		parent::__construct();
 	}
-    
+
     /**
      * labels::importlabelresources()
      * Function responsible to import label resources from a '.zip' file.
@@ -50,7 +50,7 @@
         {
             $importlabelresourcesoutput = "<div class='header ui-widget-header'>".$clang->gT("Import Label Set")."</div>\n";
             $importlabelresourcesoutput .= "<div class='messagebox ui-corner-all'>";
-        
+
             if ($demoModeOnly === true)
             {
                 $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
@@ -60,7 +60,7 @@
                 show_error($importlabelresourcesoutput);
                 return;
             }
-        
+
             //require("classes/phpzip/phpzip.inc.php");
             $this->load->library('admin/Phpzip');
             //$the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
@@ -72,7 +72,7 @@
             $extractdir=self::_tempdir($this->config->item('tempdir'));
             $basedestdir = $this->config->item('publicdir')."/upload/labels";
             $destdir=$basedestdir."/$lid/";
-        
+
             if (!is_writeable($basedestdir))
             {
                 $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
@@ -82,22 +82,22 @@
                 show_error($importlabelresourcesoutput);
                 return;
             }
-        
+
             if (!is_dir($destdir))
             {
                 mkdir($destdir);
             }
-        
+
             $aImportedFilesInfo=null;
             $aErrorFilesInfo=null;
-        
-        
+
+
             if (is_file($zipfile))
             {
                 $importlabelresourcesoutput .= "<div class=\"successheader\">".$clang->gT("Success")."</div><br />\n";
                 $importlabelresourcesoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
                 $importlabelresourcesoutput .= $clang->gT("Reading file..")."<br /><br />\n";
-        
+
                 if ($z->extract($extractdir,$zipfile) != 'OK')
                 {
                     $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
@@ -107,7 +107,7 @@
                     show_error($importlabelresourcesoutput);
                     return;
                 }
-        
+
                 // now read tempdir and copy authorized files only
                 $dh = opendir($extractdir);
                 while($direntry = readdir($dh))
@@ -126,7 +126,7 @@
         								"status" => $clang->gT("Copy failed")
                                     );
                                     unlink($extractdir."/".$direntry);
-        
+
                                 }
                                 else
                                 {
@@ -137,7 +137,7 @@
                                     unlink($extractdir."/".$direntry);
                                 }
                             }
-        
+
                             else
                             { // Extension forbidden
                                 $aErrorFilesInfo[]=Array(
@@ -149,13 +149,13 @@
                         } // end if is_file
                     } // end if ! . or ..
                 } // end while read dir
-        
-        
+
+
                 //Delete the temporary file
                 unlink($zipfile);
                 //Delete temporary folder
                 rmdir($extractdir);
-        
+
                 // display summary
                 $okfiles = 0;
                 $errfiles= 0;
@@ -194,7 +194,7 @@
                     $errfiles = count($aErrorFilesInfo);
                     $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
                 }
-        
+
                 $importlabelresourcesoutput .= "<strong>".$clang->gT("Imported Resources for")." LID:</strong> $lid<br /><br />\n";
                 $importlabelresourcesoutput .= "<div class=\"".$statusClass."\">".$status."</div><br />\n";
                 $importlabelresourcesoutput .= "<strong><u>".$clang->gT("Resources Import Summary")."</u></strong><br />\n";
@@ -230,33 +230,33 @@
             }
             $importlabelresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/labels/view/'.$lid)."', '_top')\">\n";
             $importlabelresourcesoutput .= "</div>\n";
-            
+
             $data['display'] = $importlabeloutput;
             $this->load->view('survey_view',$data);
         }
-        
+
         self::_loadEndScripts();
-                
-                
+
+
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-    
-    
+
+
     }
-    
+
     //---------------------
     // Comes from http://fr2.php.net/tempnam
     function _tempdir($dir, $prefix='', $mode=0700)
     {
         if (substr($dir, -1) != '/') $dir .= '/';
-    
+
         do
         {
             $path = $dir.$prefix.mt_rand(0, 9999999);
         } while (!mkdir($path, $mode));
-    
+
         return $path;
     }
-    
+
     /**
      * labels::import()
      * Function to import a label set
@@ -277,7 +277,7 @@
             $sFullFilepath = $this->config->item('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
             $aPathInfo = pathinfo($sFullFilepath);
             $sExtension = $aPathInfo['extension'];
-            
+
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
             {
                 $importlabeloutput .= "<strong><font color='red'>".$clang->gT("Error")."</font></strong><br />\n";
@@ -286,7 +286,7 @@
                 show_error($importlabeloutput);
                 return;
             }
-            
+
             $importlabeloutput .= "<div class='messagebox ui-corner-all'><div class='successheader'>".$clang->gT("Success")."</div><br />\n";
             $importlabeloutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
             $importlabeloutput .= $clang->gT("Reading file..")."<br /><br />\n";
@@ -295,7 +295,7 @@
             {
                 $options['checkforduplicates']=$_POST['checkforduplicates'];
             }
-            
+
             if (strtolower($sExtension)=='csv')
             {
                 $aImportResults=CSVImportLabelset($sFullFilepath, $options);
@@ -312,8 +312,8 @@
                 $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to label set administration")."' onclick=\"window.open('".site_url('admin/labels/view')."', '_top')\" />\n";
                 $importlabeloutput .= "</div><br />\n";
             }
-            unlink($sFullFilepath);  
-            
+            unlink($sFullFilepath);
+
             if (isset($aImportResults))
             {
                 if (count($aImportResults['warnings'])>0)
@@ -322,10 +322,10 @@
                     foreach ($aImportResults['warnings'] as $warning)
                     {
                         $importlabeloutput .= '<li>'.$warning.'</li>';
-                    } 
+                    }
                     $importlabeloutput .= "</ul>\n";
                 }
-                
+
                 $importlabeloutput .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
                 $importlabeloutput .= "<strong><u>".$clang->gT("Label set import summary")."</u></strong><br />\n";
                 $importlabeloutput .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
@@ -334,8 +334,8 @@
                 $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to label set administration")."' onclick=\"window.open('".site_url('admin/labels/view')."', '_top')\" />\n";
                 $importlabeloutput .= "</div><br />\n";
             }
-            
-            
+
+
             $importlabeloutput .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br />\n";
             $importlabeloutput .= "<strong><u>".$clang->gT("Label set import summary")."</u></strong><br />\n";
             $importlabeloutput .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
@@ -343,17 +343,17 @@
             $importlabeloutput .= "<p><strong>".$clang->gT("Import of label set(s) is completed.")."</strong><br /><br />\n";
             $importlabeloutput .= "<input type='submit' value='".$clang->gT("Return to label set administration")."' onclick=\"window.open('".site_url('admin/labels/view')."', '_top')\" />\n";
             $importlabeloutput .= "</div><br />\n";
-            
+
             $data['display'] = $importlabeloutput;
             $this->load->view('survey_view',$data);
-            
+
         }
         self::_loadEndScripts();
-                
-                
+
+
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
+
     /**
      * labels::index()
      * Function to load new/edit labelset screen.
@@ -363,15 +363,15 @@
      */
     function index($action,$lid=0)
     {
-        
+
         $this->load->helper('database');
         $this->load->helper('surveytranslator');
         $clang = $this->limesurvey_lang;
-    
-        
+
+
         self::_getAdminHeader();
         self::_labelsetbar($lid);
-        
+
         if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_LABEL') == 1)
         {
             if ($action == "editlabelset")
@@ -382,12 +382,12 @@
                 $data['lbname'] = $lbname;
                 $data['lblid'] = $lblid;
             }
-            
+
             $data['clang'] = $clang;
             $data['action'] = $action;
             $data['lid'] = $lid;
-            
-            
+
+
             /**$labelsoutput.="<div class='header header_statistics'>\n"
             ."<input type='image' src='$imageurl/close.gif' align='right' "
             ."onclick=\"window.open('admin.php?action=labels&amp;lid=$lid', '_top')\" />\n"; */
@@ -395,16 +395,16 @@
             else { $tabitem=$clang->gT("Edit label set");}
             $langidsarray=explode(" ",trim($langids)); //Make an array of it
             //$labelsoutput.= "\n\t</div>\n";
-            
+
             if (isset($row['lid'])) { $panecookie=$row['lid'];} else  {$panecookie='new';}
-            
+
             $data['langids'] = $langids;
             $data['langidsarray'] = $langidsarray;
             $data['panecookie'] = $panecookie;
             $data['tabitem'] = $tabitem;
             /**$tab_title[0] = $tabitem;
             $tab_content[0] = "<form method='post' class='form30' id='labelsetform' action='admin.php' onsubmit=\"return isEmpty(document.getElementById('label_name'), '".$clang->gT("Error: You have to enter a name for this label set.","js")."')\">\n";
-    
+
             $tab_content[0].= "<ul'>\n"
             ."<li><label for='languageids'>".$clang->gT("Set name:")."</label>\n"
             ."\t<input type='hidden' name='languageids' id='languageids' value='$langids' />"
@@ -420,11 +420,11 @@
                 $tab_content[0].=  "\t<option id='".$langid."' value='".$langid."'";
                 $tab_content[0].= ">".getLanguageNameFromCode($langid,false)."</option>\n";
             }
-    
+
             //  Add/Remove Buttons
             $tab_content[0].= "</select></td>"
             . "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(1,'".$clang->gT("You cannot remove this item since you need at least one language in a labelset.", "js")."')\" id=\"RemoveBtn\"  /></td>\n"
-    
+
             // Available languages listbox
             . "<td align='left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>";
             foreach (getLanguageData() as  $langkey=>$langname)
@@ -435,7 +435,7 @@
                     $tab_content[0].= ">".$langname['description']."</option>\n";
                 }
             }
-    
+
             $tab_content[0].= "\t</select></td>"
             ." </tr></table></li></ul>\n"
             ."<p><input type='submit' value='";
@@ -446,14 +446,14 @@
             if ($action == "newlabelset") {$tab_content[0].= "insertlabelset";}
             else {$tab_content[0].= "updateset";}
             $tab_content[0].= "' />\n";
-    
+
             if ($action == "editlabelset") {
                 $tab_content[0].= "<input type='hidden' name='lid' value='$lblid' />\n";
             }
-    
+
             $tab_content[0].= "</form>\n";
-    
-    
+
+
             if ($action == "newlabelset"){
                 $tab_title[1] = $clang->gT("Import label set(s)");
                 $tab_content[1] = "<form enctype='multipart/form-data' id='importlabels' name='importlabels' action='admin.php' method='post'>\n"
@@ -476,7 +476,7 @@
                 ."<input type='hidden' name='action' value='importlabels' />\n"
                 ."</form></div>\n";
             }
-    
+
             $labelsoutput .= "<div id='tabs'><ul>";
             foreach($tab_title as $i=>$eachtitle){
                 $labelsoutput .= "<li><a href='#neweditlblset$i'>$eachtitle</a></li>";
@@ -486,19 +486,19 @@
                 $labelsoutput .= "<div id='neweditlblset$i'>$eachcontent</div>";
             }
             $labelsoutput .= "</div>";
-            
+
             */
             $this->load->view('admin/Labels/editlabel_view',$data);
-        
+
         }
-        
+
         self::_loadEndScripts();
-                    
-                    
+
+
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
+
     }
-    
+
     /**
      * labels::view()
      * Function to view a labelset.
@@ -512,29 +512,29 @@
         self::_getAdminHeader();
         self::_js_admin_includes(base_url().'scripts/admin/labels.js');
         self::_js_admin_includes(base_url().'scripts/admin/updateset.js');
-        
+
         if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_LABEL') == 1)
         {
-            
+
             self::_labelsetbar($lid);
-            
+
             $this->load->model('labelsets_model');
             $condn = array('lid' => $lid);
-                
+
             //$query = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid=$lid";
             $result = $this->labelsets_model->getAllRecords($condn); //($query);)
-                
+
             if ($lid && $result->num_rows()>0)
             {
                 //NOW GET THE ANSWERS AND DISPLAY THEM
-                
-                
+
+
                 if ($result->num_rows()>0)
                 {
-                    
+
                     $data['lid'] = $lid;
                     $data['clang'] = $clang;
-                    $data['row'] = $result->row_array(); 
+                    $data['row'] = $result->row_array();
                     $this->load->view("admin/Labels/labelbar_view",$data);
                 }
                 /**
@@ -565,20 +565,20 @@
         					$labelsoutput .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
                 }
                 */
-        
+
                 //LABEL ANSWERS  - SHOW THE MASK FOR EDITING THE LABELS
-        
+
         		//$js_admin_includes[]='scripts/updateset.js';
-        
+
                 //$qulabelset = "SELECT * FROM ".db_table_name('labelsets')." WHERE lid=$lid";
                 $rslabelset = $this->labelsets_model->getAllRecords($condn); //db_execute_assoc($qulabelset) or safe_die($connect->ErrorMsg());
                 $rwlabelset=$rslabelset->row_array();
                 $lslanguages=explode(" ", trim($rwlabelset['languages']));
-                
+
                 $this->load->helper("admin/htmleditor");
-                
+
                 PrepareEditorScript(true);
-                
+
                 $maxquery = "SELECT max(sortorder) as maxsortorder, sortorder FROM ".$this->db->dbprefix."labels WHERE lid=$lid and language='{$lslanguages[0]}'";
                 $maxresult = db_execute_assoc($maxquery); // or safe_die($connect->ErrorMsg());
                 $msorow=$maxresult->row_array();
@@ -596,47 +596,47 @@
                 $this->load->helper("surveytranslator");
                 foreach ($lslanguages as $lslanguage)
                 {
-                    
+
                     $position=0;
                     $query = "SELECT * FROM ".$this->db->dbprefix."labels WHERE lid=$lid and language='$lslanguage' ORDER BY sortorder, code";
                     $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());
                     $labelcount = $result->num_rows();
                     $tab_title[$i] = getLanguageNameFromCode($lslanguage,false);
-        
+
                     $tab_content[$i] = "
                         <input type='hidden' class='lslanguage' value='{$lslanguage}'>
                         <table class='answertable' align='center'>
                             <thead align='center'>
                                 <tr>";
-        
+
                     if ($first)
                         $tab_content[$i] .= "<th>&nbsp;</th>";
-        
+
                     $tab_content[$i] .= "<th class='settingcaption'>{$clang->gT("Code")}</th>
                                     <th class='settingcaption'>{$clang->gT("Assessment value")}</th>
                                     <th class='settingcaption'>{$clang->gT("Title")}</th>";
-        
+
                     if ($first)
                         $tab_content[$i] .= "<th class='settingcaption'>{$clang->gT("Action")}</th>";
-        
+
                     $tab_content[$i] .= "</tr>
                             </thead>
                             <tbody align='center'>
                     ";
-        
+
                     $alternate=false;
                     foreach ($result->result_array() as $row)
                     {
                         $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
                         if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
-        
+
                         $tab_content[$i].= "<tr style='white-space: nowrap;' name='{$row['sortorder']}'";
-        
+
                         if ($alternate==true)
                             $tab_content[$i].=' class = "highlight" ';
                         else
                             $alternate=true;
-        
+
                         $tab_content[$i] .= ">";
                         if (!$first)
                             $tab_content[$i].= "<td>{$row['code']}</td><td>{$row['assessment_value']}</td>";
@@ -648,66 +648,66 @@
                                     <input type='text'  class='codeval'id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5'
                                         size='6' value='{$row['code']}'/>
                                 </td>
-        
+
                                 <td>
                                     <input type='text' class='assessmentval' id='assessmentvalue_{$row['sortorder']}' style='text-align: right;' name='assessmentvalue_{$row['sortorder']}' maxlength='5' size='6' value='{$row['assessment_value']}' />
                                 </td>
                             ";
-        
+
                         $tab_content[$i].= "
                              <td>
                                 <input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='3000' size='80' value=\"".html_escape($row['title'])."\" />"
                                 .getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[".$clang->gT("Label:", "js")."](".$row['language'].")",'','','',$action)
                             ."</td>";
-        
+
                          if ($first)
                              $tab_content[$i] .= "
                              <td style='text-align:center;'>
                              <img src='".$this->config->item('imageurl')."/addanswer.png' class='btnaddanswer' /><img src='".$this->config->item('imageurl')."/deleteanswer.png' class='btndelanswer' />
                              </td>
                              </tr>";
-        
+
                         $position++;
                     }
-        
+
                     $tab_content[$i] .= "</tbody></table>";
-        
+
                     $tab_content[$i] .= "<button class='btnquickadd' id='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
-        
+
                     $tab_content[$i].= "<p><input type='submit' name='method' value='".$clang->gT("Save Changes")."'  id='saveallbtn_$lslanguage' /></p>";
-        
-        
+
+
                     $first=false;
-        
+
                     $i++;
                 }
-        
+
                 $labelsoutput .= "<div id='tabs'><ul>";
                 foreach($tab_title as $i=>$eachtitle){
                     $labelsoutput .= "<li><a href='#neweditlblset$i'>$eachtitle</a></li>";
                 }
                 $labelsoutput .= "<li><a href='#up_resmgmt'>".$clang->gT("Uploaded Resources Management")."</a></li>";
                 $labelsoutput .= "</ul>";
-        
+
                 foreach($tab_content as $i=>$eachcontent){
                     $labelsoutput .= "<div id='neweditlblset$i'>$eachcontent</div>";
                 }
                 $labelsoutput .="</form>";
-        
-        
+
+
                 $disabledIfNoResources = '';
                 if (hasResources($lid,'label') === false)
                 {
                     $disabledIfNoResources = " disabled='disabled'";
                 }
-        
+
                 // TAB for resources management
                 $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) {this.form.submit();}'";
                 if (!function_exists("zip_open"))
                 {
                     $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
                 }
-        
+
                 $labelsoutput.="<div id='up_resmgmt'><div>\t<form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='".site_url('admin/labels/importlabelresources')."' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
                 . "\t<input type='hidden' name='lid' value='$lid' />\n"
                 . "\t<input type='hidden' name='action' value='importlabelresources' />\n"
@@ -721,9 +721,9 @@
                 . "\t\t<li><label>&nbsp;</label>\n"
                 . "\t\t<input type='button' value='".$clang->gT("Import Resources ZIP Archive")."' $ZIPimportAction /></li>\n"
                 . "\t\t</ul></form></div></div>\n";
-        
+
                 $labelsoutput .= "</div>";
-        
+
                 $labelsoutput .= "<div id='quickadd' name='{$clang->gT('Quick add')}'style='display:none;'><div style='float:left;'>
                               <label for='quickadd'>".$clang->gT('Enter your labels:')."</label>
                               <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.')."' rows='30' style='width:570px;'></textarea>
@@ -731,26 +731,26 @@
                               <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
                               <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>
                            </div> ";
-                           
+
                 $displaydata['display'] = $labelsoutput;
                 //$data['display'] = $editsurvey;
                 $this->load->view('survey_view',$displaydata);
-                
-                
+
+
             }
-            
-            
-        
+
+
+
         }
-        
-        
+
+
         self::_loadEndScripts();
-                    
-                    
+
+
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
+
     }
-    
+
     /**
      * labels::process()
      * Process labels form data depending on $action.
@@ -762,22 +762,22 @@
         {
             $_POST = $this->input->post();
             if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
-            
+
             if (isset($_POST['method']) && get_magic_quotes_gpc())
             {
                 $_POST['method']  = stripslashes($_POST['method']);
             }
-            
+
             $action = $this->input->post('action');
             $this->load->helper('admin/labels');
             $lid = $this->input->post('lid');
-            
+
             //DO DATABASE UPDATESTUFF
             if ($action == "updateset") {updateset($lid);}
             if ($action == "insertlabelset") {$lid=insertlabelset();}
             if (($action == "modlabelsetanswers")||($action == "ajaxmodlabelsetanswers")) {modlabelsetanswers($lid);}
             if ($action == "deletelabelset") {if (deletelabelset($lid)) {$lid=0;}}
-            
+
             if ($lid)
             {
                 redirect("admin/labels/view/".$lid);
@@ -786,15 +786,15 @@
             {
                 redirect("admin/labels/view");
             }
-            
-            
-            
+
+
+
         }
     }
 
 	/**
 	 * labels::exportmulti()
-	 * 
+	 *
 	 * @return
 	 */
 	function exportmulti()
@@ -807,7 +807,7 @@
 		$this->load->view('admin/Labels/exportmulti_view', $data);
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 	}
-    
+
     /**
      * labels::_labelsetbar()
      * Load labelset menu.
@@ -820,8 +820,8 @@
         $data['lid'] = $lid;
         $data['labelsets'] = getlabelsets();
         $this->load->view("admin/Labels/labelsetsbar_view",$data);
-        
+
     }
-    
-    
+
+
  }

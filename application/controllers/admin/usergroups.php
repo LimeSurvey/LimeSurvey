@@ -9,16 +9,16 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id$
- * 
+ *
  */
- 
+
 /**
  * Usergroups
- * 
- * @package LimeSurvey_CI
- * @author 
+ *
+ * @package LimeSurvey
+ * @author
  * @copyright 2011
  * @version $Id$
  * @access public
@@ -35,7 +35,7 @@ class Usergroups extends Admin_Controller {
 	{
 		parent::__construct();
 	}
-    
+
     /**
      * Usergroups::mail()
      * Function responsible to send an e-mail to a user group.
@@ -44,33 +44,33 @@ class Usergroups extends Admin_Controller {
      */
     function mail($ugid)
     {
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
-        
+
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
-    	self::_js_admin_includes(base_url().'scripts/admin/users.js');	
+    	self::_js_admin_includes(base_url().'scripts/admin/users.js');
         self::_getAdminHeader();
         self::_showadminmenu(false);
         $action = $this->input->post("action");
-        
+
         self::_usergroupbar($ugid);
-        
+
         if ($action == "mailsendusergroup")
         {
             $usersummary = "<div class=\"header\">".$clang->gT("Mail to all Members")."</div>\n";
             $usersummary .= "<div class=\"messagebox\">\n";
             $_POST = $this->input->post();
-            
+
             // user must be in user group
             // or superadmin
             $query = "SELECT uid FROM ".$this->db->dbprefix."user_in_groups WHERE ugid = {$ugid} AND uid = ".$this->session->userdata('loginID');
             $result = db_execute_assoc($query); //Checked
-            
+
             if($result->num_rows() > 0 || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
             {
-        
+
                 $eguquery = "SELECT * FROM ".$this->db->dbprefix."user_in_groups AS a INNER JOIN ".$this->db->dbprefix."users AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " AND b.uid != ".$this->session->userdata('loginID')." ORDER BY b.users_name";
                 $eguresult = db_execute_assoc($eguquery); //Checked
                 $addressee = '';
@@ -82,7 +82,7 @@ class Usergroups extends Admin_Controller {
                 }
                 $to = substr("$to", 0, -2);
                 $addressee = substr("$addressee", 0, -2);
-        
+
                 $from_user = "SELECT email, users_name, full_name FROM ".$this->db->dbprefix."users WHERE uid = " .$this->session->userdata('loginID');
                 $from_user_result = db_execute_assoc($from_user); //Checked
                 $from_user_row = $from_user_result->row_array();
@@ -94,11 +94,11 @@ class Usergroups extends Admin_Controller {
                 {
                     $from = $from_user_row['users_name'].' <'.$from_user_row['email'].'> ';
                 }
-        
-                
+
+
                 $body = $_POST['body'];
                 $subject = $_POST['subject'];
-        
+
                 if(isset($_POST['copymail']) && $_POST['copymail'] == 1)
                 {
                     if ($to == "")
@@ -106,11 +106,11 @@ class Usergroups extends Admin_Controller {
                     else
                     $to .= ", " . $from;
                 }
-        
+
                 $body = str_replace("\n.", "\n..", $body);
                 $body = wordwrap($body, 70);
-        
-        
+
+
                 //echo $body . '-'.$subject .'-'.'<pre>'.htmlspecialchars($to).'</pre>'.'-'.$from;
                 if (SendEmailMessage( $body, $subject, $to, $from,''))
                 {
@@ -129,7 +129,7 @@ class Usergroups extends Admin_Controller {
                     {
                         $usersummary .= "<br /><pre>Subject : $subject<br /><br />".htmlspecialchars($maildebugbody)."<br /></pre>";
                     }
-        
+
                     $usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
                 }
             }
@@ -138,7 +138,7 @@ class Usergroups extends Admin_Controller {
                 //include("access_denied.php");
             }
             $usersummary .= "</div>\n";
-            
+
             $displaydata['display'] = $usersummary;
             //$data['display'] = $editsurvey;
             $this->load->view('survey_view',$displaydata);
@@ -148,17 +148,17 @@ class Usergroups extends Admin_Controller {
             $query = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM ".$this->db->dbprefix."user_groups AS a LEFT JOIN ".$this->db->dbprefix."user_in_groups AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = ".$this->session->userdata('loginID')." ORDER BY name";
             $result = db_execute_assoc($query); //Checked
             $crow = $result->row_array();
-        
+
             $data['clang'] = $clang;
             $this->load->view("admin/UserGroup/mailUserGroup_view",$data);
         }
-        
+
         self::_loadEndScripts();
-                
-                
+
+
 	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
+
     /**
      * Usergroups::delete()
      * Function responsible to delete a user group.
@@ -166,13 +166,13 @@ class Usergroups extends Admin_Controller {
      */
     function delete()
     {
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
-        
+
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
-    	self::_js_admin_includes(base_url().'scripts/admin/users.js');	
+    	self::_js_admin_includes(base_url().'scripts/admin/users.js');
         self::_getAdminHeader();
         self::_showadminmenu(false);
         $action = $this->input->post("action");
@@ -183,19 +183,19 @@ class Usergroups extends Admin_Controller {
         {
             $usersummary = "<div class=\"header\">".$clang->gT("Deleting User Group")."...</div>\n";
             $usersummary .= "<div class=\"messagebox\">\n";
-        
+
             if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
             {
-        
+
                 if(!empty($ugid) && ($ugid > -1))
                 {
-                    
+
                     $query = "SELECT ugid, name, owner_id FROM ".$this->db->dbprefix."user_groups WHERE ugid = {$ugid} AND owner_id = ".$this->session->userdata('loginID');
                     $result = db_select_limit_assoc($query, 1);
                     if($result->num_rows() > 0)
                     {
                         $row = $result->row_array();
-        
+
                         $remquery = "DELETE FROM ".$this->db->dbprefix."user_groups WHERE ugid = {$ugid} AND owner_id = ".$this->session->userdata('loginID');
                         if(db_execute_assoc($remquery)) //Checked)
                         {
@@ -222,20 +222,20 @@ class Usergroups extends Admin_Controller {
                 }
             }
             $usersummary .= "</div>\n";
-            
+
             $displaydata['display'] = $usersummary;
             //$data['display'] = $editsurvey;
             $this->load->view('survey_view',$displaydata);
         }
-        
+
         self::_loadEndScripts();
-                
-                
+
+
 	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
+
     }
-    
-    
+
+
     /**
      * Usergroups::add()
      * Load add user group screen.
@@ -245,23 +245,23 @@ class Usergroups extends Admin_Controller {
     {
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
-        
+
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
-    	self::_js_admin_includes(base_url().'scripts/admin/users.js');	
+    	self::_js_admin_includes(base_url().'scripts/admin/users.js');
         self::_getAdminHeader();
         self::_showadminmenu(false);
         $action = $this->input->post("action");
         if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
         {
-            
+
             self::_usergroupbar(false);
             $data['clang'] = $clang;
             if ($action == "usergroupindb")
             {
                 $usersummary = "<div class=\"header\">".$clang->gT("Adding User Group")."...</div>\n";
                 $usersummary .= "<div class=\"messagebox\">\n";
-            
+
                 if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
                 {
                     $_POST = $this->input->post();
@@ -269,7 +269,7 @@ class Usergroups extends Admin_Controller {
                     $db_group_description = $_POST['group_description'];
                     $html_group_name = htmlspecialchars($_POST['group_name']);
                     $html_group_description = htmlspecialchars($_POST['group_description']);
-            
+
                     if(isset($db_group_name) && strlen($db_group_name) > 0)
                     {
                         if (strlen($db_group_name) > 21)
@@ -278,7 +278,7 @@ class Usergroups extends Admin_Controller {
                             $usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add Group!")."</div>\n"
                             . "<br />" . $clang->gT("Group name length more than 20 characters!")."<br />\n"; //need to nupdate translations for this phrase.
                             $usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
-                            
+
                         }
                         else
                         {
@@ -286,7 +286,7 @@ class Usergroups extends Admin_Controller {
                             if($ugid > 0)
                             {
                                 $usersummary .= "<br />".$clang->gT("Group Name").": ".$html_group_name."<br /><br />\n";
-                
+
                                 if(isset($db_group_description) && strlen($db_group_description) > 0)
                                 {
                                     $usersummary .= $clang->gT("Description: ").$html_group_description."<br /><br />\n";
@@ -303,7 +303,7 @@ class Usergroups extends Admin_Controller {
                                 $usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
                             }
                         }
-                        
+
                     }
                     else
                     {
@@ -321,22 +321,22 @@ class Usergroups extends Admin_Controller {
                 $displaydata['display'] = $usersummary;
                 //$data['display'] = $editsurvey;
                 $this->load->view('survey_view',$displaydata);
-                
+
             }
             else
             {
                 $this->load->view("admin/UserGroup/addUserGroup_view",$data);
             }
-            
-        
+
+
         }
         self::_loadEndScripts();
-                
-                
+
+
 	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
+
     }
-    
+
     /**
      * Usergroups::edit()
      * Load edit user group screen.
@@ -347,17 +347,17 @@ class Usergroups extends Admin_Controller {
     {
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
-        
+
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
-    	self::_js_admin_includes(base_url().'scripts/admin/users.js');	
+    	self::_js_admin_includes(base_url().'scripts/admin/users.js');
         self::_getAdminHeader();
         self::_showadminmenu(false);
         $action = $this->input->post("action");
-        
+
         if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
         {
-            
+
             self::_usergroupbar($ugid);
             $data['clang'] = $clang;
             if ($action == "editusergroupindb")
@@ -366,14 +366,14 @@ class Usergroups extends Admin_Controller {
                 if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
                 {
                     $ugid = $_POST['ugid'];
-            
+
                     $db_name = $_POST['name'];
                     $db_description = $_POST['description'];
                     $html_name = html_escape($_POST['name']);
                     $html_description = html_escape($_POST['description']);
-            
+
             		$usersummary = "<div class=\"messagebox\">\n";
-                    
+
                     if(self::_updateusergroup($db_name, $db_description, $ugid))
                     {
                         $link = site_url("admin/usergroups/view/$ugid");
@@ -383,7 +383,7 @@ class Usergroups extends Admin_Controller {
                         . "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
                         //. "<br /><a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                     }
-                    else 
+                    else
             		{
             			$link = site_url("admin/usergroups/view");
                         $usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to update!")."</div>\n"
@@ -391,22 +391,22 @@ class Usergroups extends Admin_Controller {
                         //. "<br /><a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
                     }
             		$usersummary .= "</div>\n";
-                    
+
                     $displaydata['display'] = $usersummary;
                     //$data['display'] = $editsurvey;
                     $this->load->view('survey_view',$displaydata);
-                
+
             	}
                 else
                 {
                     //include("access_denied.php");
                 }
-                
-                
+
+
             }
             else
             {
-                
+
                 $query = "SELECT * FROM ".$this->db->dbprefix."user_groups WHERE ugid = ".$ugid." AND owner_id = ".$this->session->userdata('loginID');
                 $result = db_select_limit_assoc($query, 1);
                 $esrow = $result->row_array();
@@ -414,17 +414,17 @@ class Usergroups extends Admin_Controller {
                 $data['ugid'] = $ugid;
                 $this->load->view("admin/UserGroup/editUserGroup_view",$data);
             }
-            
-        
+
+
         }
         self::_loadEndScripts();
-                
-                
+
+
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
-    
-    
+
+
+
     /**
      * Usergroups::view()
      * Load viewing of a user group screen.
@@ -435,30 +435,30 @@ class Usergroups extends Admin_Controller {
     {
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
-        
+
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
-    	self::_js_admin_includes(base_url().'scripts/admin/users.js');	
+    	self::_js_admin_includes(base_url().'scripts/admin/users.js');
         self::_getAdminHeader();
-        self::_showadminmenu(false); 
-        
+        self::_showadminmenu(false);
+
         self::_usergroupbar($ugid);
-        
+
         if ( $this->session->userdata('loginID'))
         {
-            
+
             if($ugid)
             {
-                
+
                 $ugid = sanitize_int($ugid);
-    
+
                 $query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM ".$this->db->dbprefix."user_groups AS a LEFT JOIN ".$this->db->dbprefix."user_in_groups AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = ".$this->session->userdata('loginID')." ORDER BY name";
                 $result = db_execute_assoc($query); //Checked
                 $crow = $result->row_array();
-    
+
                 if($result->num_rows() > 0)
                 {
-                    
+
                     if(!empty($crow['description']))
                     {
                         $usergroupsummary = "<table width='100%' border='0'>\n"
@@ -467,8 +467,8 @@ class Usergroups extends Admin_Controller {
                         . "{$crow['description']}</font></td></tr>\n"
                         . "</table>";
                     }
-    
-                    
+
+
                     $eguquery = "SELECT * FROM ".$this->db->dbprefix."user_in_groups AS a INNER JOIN ".$this->db->dbprefix."users AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
                     $eguresult = db_execute_assoc($eguquery); //Checked
                     $usergroupsummary .= "<table class='users'>\n"
@@ -477,11 +477,11 @@ class Usergroups extends Admin_Controller {
                     . "<th>".$clang->gT("Username")."</th>\n"
                     . "<th>".$clang->gT("Email")."</th>\n"
                     . "</tr></thead><tbody>\n";
-    
+
                     $query2 = "SELECT ugid FROM ".$this->db->dbprefix."user_groups WHERE ugid = ".$ugid." AND owner_id = ".$this->session->userdata('loginID');
                     $result2 = db_select_limit_assoc($query2, 1);
                     $row2 = $result2->row_array();
-                    
+
                     $row = 1;
                     $usergroupentries='';
                     foreach ($eguresult->result_array() as $egurow)
@@ -492,7 +492,7 @@ class Usergroups extends Admin_Controller {
                             if ($bgcc == "evenrow") {$bgcc = "oddrow";}
                             else {$bgcc = "evenrow";}
                         }
-    
+
                         if($egurow['uid'] == $crow['owner_id'])
                         {
                             $usergroupowner = "<tr class='$bgcc'>\n"
@@ -502,12 +502,12 @@ class Usergroups extends Admin_Controller {
                             . "</tr>";
                             continue;
                         }
-    
+
                         //	output users
-                        
+
                         $usergroupentries .= "<tr class='$bgcc'>\n"
                         . "<td align='center'>\n";
-    
+
                         if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
                         {
                             $usergroupentries .= "<form method='post' action='scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
@@ -526,7 +526,7 @@ class Usergroups extends Admin_Controller {
                     $usergroupsummary .= $usergroupowner;
                     if (isset($usergroupentries)) {$usergroupsummary .= $usergroupentries;};
                     $usergroupsummary .= '</tbody></table>';
-                    
+
                     if(isset($row2['ugid']))
                     {
                         $usergroupsummary .= "<form action='scriptname?ugid={$ugid}' method='post'>\n"
@@ -540,7 +540,7 @@ class Usergroups extends Admin_Controller {
                         . "</tr></tbody></table>\n"
                         . "</form>\n";
                     }
-                    
+
                     $displaydata['display'] = $usergroupsummary;
                     //$data['display'] = $editsurvey;
                     $this->load->view('survey_view',$displaydata);
@@ -555,17 +555,17 @@ class Usergroups extends Admin_Controller {
         {
             //include("access_denied.php");
         }
-        
+
         self::_loadEndScripts();
-                
-                
+
+
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
-        
+
+
     }
-    
-    
-    
+
+
+
     /**
      * Usergroups::_usergroupbar()
      * Load menu bar of user group controller.
@@ -580,22 +580,22 @@ class Usergroups extends Admin_Controller {
             $grpquery = "SELECT gp.* FROM ".$this->db->dbprefix."user_groups AS gp, ".$this->db->dbprefix."user_in_groups AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=".$this->session->userdata('loginID');
             $grpresult = db_execute_assoc($grpquery);//Checked
             $grpresultcount = $grpresult->num_rows();
-            if ($grpresultcount>0) 
+            if ($grpresultcount>0)
             {
                 $grow = array_map('htmlspecialchars', $grpresult->row_array());
             }
-            
+
             $data['grow'] = $grow;
             $data['grpresultcount'] = $grpresultcount;
-            
+
         }
-        
+
         $data['ugid'] = $ugid;
-        
-        
+
+
         $this->load->view('admin/UserGroup/usergroupbar_view',$data);
     }
-    
+
     /**
      * Usergroups::_updateusergroup()
      * Function responsible to update a user group.
@@ -607,13 +607,13 @@ class Usergroups extends Admin_Controller {
     function _updateusergroup($name, $description, $ugid)
     {
         //global $dbprefix, $scriptname, $connect;
-        
+
         $this->load->helper('database');
         $uquery = "UPDATE ".$this->db->dbprefix."user_groups SET name = '$name', description = '$description' WHERE ugid =$ugid";
         // TODO
         return db_execute_assoc($uquery);  //or safe_die($connect->ErrorMsg()) ; //Checked)
     }
-    
+
     /**
      * Usergroups::_refreshtemplates()
      * Function to refresh templates.
@@ -622,7 +622,7 @@ class Usergroups extends Admin_Controller {
     function _refreshtemplates() {
         //global $connect ;
         //global $dbprefix ;
-        
+
         $this->load->helper('database');
         $template_a = gettemplatelist();
     	foreach ($template_a as $tp=>$fullpath) {
@@ -630,25 +630,25 @@ class Usergroups extends Admin_Controller {
             // if not create it with current user as creator (user with rights "create user" can assign template rights)
             $query = "SELECT * FROM ".$this->db->dbprefix."templates WHERE folder LIKE '".$tp."'";
             $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
-    
+
             if ($result->num_rows() == 0) {
                 //$query2 = "INSERT INTO ".$this->db->dbprefix."templates (".db_quote_id('folder').",".db_quote_id('creator').") VALUES ('".$tp."', ".$_SESSION['loginID'].')' ;
                 $data = array(
                         'folder' => $tp,
                         'creator' => $this->session->userdata('loginID')
-                
-                
+
+
                 );
-                
+
                 $this->load->model('templates_model');
                 $this->templates_model->insertRecords($data);
-                
+
                 //db_execute_assoc($query2); // or safe_die($connect->ErrorMsg()); //Checked
             }
         }
         return true;
     }
-    
+
     // adds Usergroups in Database by Moses
     /**
      * Usergroups::_addUserGroupInDB()
@@ -659,18 +659,18 @@ class Usergroups extends Admin_Controller {
      */
     function _addUserGroupInDB($group_name, $group_description) {
         //global $connect;
-        
+
         $this->load->helper('database');
         //$iquery = "INSERT INTO ".$this->db->dbprefix."user_groups (name, description, owner_id) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
         $data = array(
                 'name' => $group_name,
                 'description' => $group_description,
                 'owner_id' => $this->session->userdata('loginID')
-        
+
         );
         $this->load->model('user_groups_model');
-        
-        
+
+
         if($this->user_groups_model->insertRecords($data)) { //Checked
             $id = $this->db->insert_id(); //$connect->Insert_Id(db_table_name_nq('user_groups'),'ugid');
             if($id > 0) {

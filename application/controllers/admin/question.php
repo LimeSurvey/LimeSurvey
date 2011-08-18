@@ -10,20 +10,20 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 
+ *
  */
- 
+
  /**
   * question
-  * 
-  * @package LimeSurvey_CI
-  * @author 
+  *
+  * @package LimeSurvey
+  * @author
   * @copyright 2011
   * @version $Id$
   * @access public
   */
  class question extends Survey_Common_Controller {
-    
+
     /**
      * question::__construct()
      * Constructor
@@ -33,7 +33,7 @@
 	{
 		parent::__construct();
 	}
-    
+
     /**
      * question::answeroptions()
      *  Load complete editing of answer options screen.
@@ -48,30 +48,30 @@
         self::_js_admin_includes(base_url().'scripts/admin/answers.js');
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.blockUI.js');
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.selectboxes.min.js');
-        
-        
+
+
         $css_admin_includes[] = base_url().'scripts/jquery/dd.css';
-        
+
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
-    		
+
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);;
         self::_surveybar($surveyid,$gid);
         self::_surveysummary($surveyid,"viewgroup");
         self::_questiongroupbar($surveyid,$gid,$qid,"addquestion");
         self::_questionbar($surveyid,$gid,$qid,"editansweroptions");
-        
+
         $this->session->set_userdata('FileManagerContext',"edit:answer:{$surveyid}");
-        
+
         self::_editansweroptions($surveyid,$gid,$qid);
         self::_loadEndScripts();
-                
-                
+
+
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
+
     }
-    
+
     /**
      * question::_editansweroptions()
      * Load editing of answer options specific screen only.
@@ -86,23 +86,23 @@
         // Get languages select on survey.
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        
+
         $qquery = "SELECT type FROM ".$this->db->dbprefix."questions WHERE qid=$qid AND language='".$baselang."'";
         $res = db_execute_assoc($qquery);
-        
+
         $qrow = $res->row_array(); //$connect->GetRow($qquery);
         $qtype = $qrow['type'];
         //
         $qtypes=getqtypelist('','array');
-        
+
         $scalecount=$qtypes[$qtype]['answerscales'];
-        
+
         //Check if there is at least one answer
         for ($i = 0; $i < $scalecount; $i++)
         {
             $qquery = "SELECT count(*) as num_ans  FROM ".$this->db->dbprefix."answers WHERE qid=$qid AND scale_id=$i AND language='".$baselang."'";
             $res = db_execute_assoc($qquery);
-            
+
             $qresult = $res->row_array(); //$connect->GetOne($qquery); //Checked)
             if ($qresult==0)
             {
@@ -110,8 +110,8 @@
                 db_execute_assoc($query);
             }
         }
-    
-    
+
+
         // check that there are answers for every language supported by the survey
         for ($i = 0; $i < $scalecount; $i++)
         {
@@ -125,9 +125,9 @@
                 }
             }
         }
-    
+
         array_unshift($anslangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $anslangs
-    
+
         //delete the answers in languages not supported by the survey
         $languagequery = "SELECT DISTINCT language FROM ".$this->db->dbprefix."answers WHERE (qid = $qid) AND (language NOT IN ('".implode("','",$anslangs)."'))";
         $languageresult = db_execute_assoc($languagequery); //Checked
@@ -151,22 +151,22 @@
         $this->load->helper('admin/htmleditor');
         // Print Key Control JavaScript
         //$vasummary = PrepareEditorScript();
-    
+
         $query = "SELECT sortorder FROM ".$this->db->dbprefix."answers WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder desc";
         $result = db_execute_assoc($query);// or safe_die($connect->ErrorMsg()); //Checked
         $anscount = $result->num_rows();
         $row=$result->row_array();
         $maxsortorder=$row['sortorder']+1;
-        
+
         $data['clang'] = $this->limesurvey_lang;
         $data['surveyid'] = $surveyid;
         $data['gid'] = $gid;
         $data['qid'] = $qid;
         $data['anslangs'] = $anslangs;
         $data['scalecount'] = $scalecount;
-        
-        
-        
+
+
+
         /**
         $vasummary .= "<div class='header ui-widget-header'>\n"
         .$clang->gT("Edit answer options")
@@ -180,9 +180,9 @@
         $vasummary .= "<div class='tab-pane' id='tab-pane-answers-$surveyid'>";
         */
         //$first=true;
-    
+
         //$vasummary .= "<div id='xToolbar'></div>\n";
-    
+
         // the following line decides if the assessment input fields are visible or not
         $this->load->model('surveys_model');
         //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
@@ -193,7 +193,7 @@
         $assessmentvisible=($surveyinfo['assessments']=='Y' && $qtypes[$qtype]['assessable']==1);
         $data['assessmentvisible'] = $assessmentvisible;
         $this->load->view('admin/Survey/Question/answerOptions_view',$data);
-        
+
         /**
         // Insert some Javascript variables
         $surveysummary .= "\n<script type='text/javascript'>
@@ -209,15 +209,15 @@
                               var sAssessmentValue='".$clang->gT('Assessment value','js')."';
                               var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate answer codes.','js')."';
                               var langs='".implode(';',$anslangs)."';</script>\n";
-        
+
         foreach ($anslangs as $anslang)
         {
             $vasummary .= "<div class='tab-page' id='tabpage_$anslang'>"
             ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
             if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
-    
+
             $vasummary .= "</h2>";
-    
+
             for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
             {
                 $position=0;
@@ -225,8 +225,8 @@
                 {
                     $vasummary.="<div class='header ui-widget-header' style='margin-top:5px;'>".sprintf($clang->gT("Answer scale %s"),$scale_id+1)."</div>";
                 }
-    
-    
+
+
                 $vasummary .= "<table class='answertable' id='answers_{$anslang}_$scale_id' align='center' >\n"
                 ."<thead>"
                 ."<tr>\n"
@@ -240,14 +240,14 @@
                 {
                     $vasummary .="<th style='display:none;'>&nbsp;";
                 }
-    
+
                 $vasummary .= "</th>\n"
                 ."<th align='center'>".$clang->gT("Answer option")."</th>\n"
                 ."<th align='center'>".$clang->gT("Actions")."</th>\n"
                 ."</tr></thead>"
                 ."<tbody align='center'>";
                 $alternate=true;
-    
+
                 $query = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
                 $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
                 $anscount = $result->RecordCount();
@@ -255,16 +255,16 @@
                 {
                     $row['code'] = htmlspecialchars($row['code']);
                     $row['answer']=htmlspecialchars($row['answer']);
-    
+
                     $vasummary .= "<tr class='row_$position ";
                     if ($alternate==true)
                     {
                         $vasummary.='highlight';
                     }
                     $alternate=!$alternate;
-    
+
                     $vasummary .=" '><td align='right'>\n";
-    
+
                     if ($first)
                     {
                         $vasummary .= "<img class='handle' src='$imageurl/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_{$position}_{$scale_id}' name='oldcode_{$position}_{$scale_id}' value=\"{$row['code']}\" /><input type='text' class='code' id='code_{$position}_{$scale_id}' name='code_{$position}_{$scale_id}' value=\"{$row['code']}\" maxlength='5' size='5'"
@@ -274,12 +274,12 @@
                     else
                     {
                         $vasummary .= "&nbsp;</td><td>{$row['code']}";
-    
+
                     }
-    
+
                     $vasummary .= "</td>\n"
                     ."<td\n";
-    
+
                     if ($assessmentvisible && $first)
                     {
                         $vasummary .= "><input type='text' class='assessment' id='assessment_{$position}_{$scale_id}' name='assessment_{$position}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
@@ -300,15 +300,15 @@
                     {
                         $vasummary .= " style='display:none;'>";
                     }
-    
+
                     $vasummary .= "</td><td>\n"
                     ."<input type='text' class='answer' id='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' name='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' size='100' value=\"{$row['answer']}\" />\n"
                     . getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer');
-    
+
                     // Deactivate delete button for active surveys
                     $vasummary.="</td><td><img src='$imageurl/addanswer.png' class='btnaddanswer' />";
                     $vasummary.="<img src='$imageurl/deleteanswer.png' class='btndelanswer' />";
-    
+
                     $vasummary .= "</td></tr>\n";
                     $position++;
                 }
@@ -319,19 +319,19 @@
                 }
                 $vasummary .= "<button id='btnlsbrowser_{$scale_id}' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
                 $vasummary .= "<button id='btnquickadd_{$scale_id}' class='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
-    
+
                 if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1){
                     $vasummary .= "<button class='bthsaveaslabel' id='bthsaveaslabel_{$scale_id}' type='button'>".$clang->gT('Save as label set')."</button>";
-                    
+
                     }
             }
-    
+
             $position=sprintf("%05d", $position);
-    
+
             $first=false;
             $vasummary .= "</div>";
         }
-        
+
         // Label set browser
     //                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
         $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;width:260px;'>
@@ -340,7 +340,7 @@
                           <br /><button id='btnlsreplace' type='button'>".$clang->gT('Replace')."</button>
                           <button id='btnlsinsert' type='button'>".$clang->gT('Add')."</button>
                           <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>
-    
+
                        <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";
         $vasummary .= "<div id='quickadd' style='display:none;'><div style='float:left;'>
                           <label for='quickadd'>".$clang->gT('Enter your answers:')."</label>
@@ -354,11 +354,11 @@
         $vasummary .= "</div></form>";
 
 */
-        
-        
-        
+
+
+
     }
-    
+
     /**
      * question::subquestions()
      * Load complete subquestions screen.
@@ -373,32 +373,32 @@
         self::_js_admin_includes(base_url().'scripts/admin/subquestions.js');
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.blockUI.js');
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.selectboxes.min.js');
-        
-        
+
+
         $css_admin_includes[] = base_url().'scripts/jquery/dd.css';
-        
+
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
-    		
+
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);;
         self::_surveybar($surveyid,$gid);
         self::_surveysummary($surveyid,"viewgroup");
         self::_questiongroupbar($surveyid,$gid,$qid,"addquestion");
         self::_questionbar($surveyid,$gid,$qid,"editsubquestions");
-        
+
         $this->session->set_userdata('FileManagerContext',"edit:answer:{$surveyid}");
-        
+
         self::_editsubquestion($surveyid,$gid,$qid);
         self::_loadEndScripts();
-                
-                
+
+
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
-        
-        
+
+
+
     }
-    
+
     /**
      * question::_editsubquestion()
      * Load only subquestion specific screen only.
@@ -411,21 +411,21 @@
     {
         $this->load->helper('database');
         $clang = $this->limesurvey_lang;
-        
+
         // Get languages select on survey.
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-   
+
         $sQuery = "SELECT type FROM ".$this->db->dbprefix."questions WHERE qid={$qid} AND language='{$baselang}'";
-        
+
         $res = db_execute_assoc($sQuery);
-        
-        $resultrow = $res->row_array(); 
-        
+
+        $resultrow = $res->row_array();
+
         $sQuestiontype=$resultrow['type']; //$connect->GetOne($sQuery);
         $aQuestiontypeInfo=getqtypelist($sQuestiontype,'array');
         $iScaleCount=$aQuestiontypeInfo[$sQuestiontype]['subquestions'];
-    
+
         for ($iScale = 0; $iScale < $iScaleCount; $iScale++)
         {
             $sQuery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE parent_qid={$qid} AND language='{$baselang}' and scale_id={$iScale}";
@@ -459,8 +459,8 @@
                 }
             }
         }
-    
-    
+
+
         array_unshift($anslangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $anslangs
         /**
         $vasummary = "\n<script type='text/javascript'>
@@ -473,7 +473,7 @@
                           var quickaddtitle='".$clang->gT('Quick-add subquestions','js')."';
                           var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate subquestion codes.','js')."';
                           var langs='".implode(';',$anslangs)."';</script>\n";
-    
+
         */
         //delete the subquestions in languages not supported by the survey
         $qquery = "SELECT DISTINCT language FROM ".$this->db->dbprefix."questions WHERE (parent_qid = $qid) AND (language NOT IN ('".implode("','",$anslangs)."'))";
@@ -483,8 +483,8 @@
             $qquery = "DELETE FROM ".$this->db->dbprefix."questions WHERE (parent_qid = $qid) AND (language = '".$qrow["language"]."')";
             db_execute_assoc($qquery); //Checked
         }
-    
-    
+
+
         // Check sort order for subquestions
         $qquery = "SELECT type FROM ".$this->db->dbprefix."questions WHERE qid=$qid AND language='".$baselang."'";
         $qresult = db_execute_assoc($qquery); //Checked
@@ -503,7 +503,7 @@
         $this->load->helper('admin/htmleditor_helper');
         // Print Key Control JavaScript
         //$vasummary .= PrepareEditorScript();
-    
+
         $query = "SELECT question_order FROM ".$this->db->dbprefix."questions WHERE parent_qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY question_order desc";
         $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
         $data['anscount'] = $anscount = $result->num_rows();
@@ -522,19 +522,19 @@
         . "<input type='hidden' id='sortorder' name='sortorder' value='' />\n"
         . "<input type='hidden' id='deletedqids' name='deletedqids' value='' />\n";
         $vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
-        
+
         $first=true;
         $sortorderids='';
         $codeids='';
         */
         //$vasummary .= "<div id='xToolbar'></div>\n";
-    
+
         // the following line decides if the assessment input fields are visible or not
         // for some question types the assessment values is set in the label set instead of the answers
         $qtypes=getqtypelist('','array');
         $this->load->helper('surveytranslator');
         $data['scalecount'] = $scalecount=$qtypes[$qtype]['subquestions'];
-        
+
         $this->load->model('surveys_model');
         //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
         $sumresult1 = $this->surveys_model->getDataOnSurvey($surveyid); //$sumquery1, 1) ; //Checked
@@ -556,7 +556,7 @@
             ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
             if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
             $vasummary .= "</h2>";
-    
+
             for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
             {
                 $position=0;
@@ -590,9 +590,9 @@
                 {
                     $row['title'] = htmlspecialchars($row['title']);
                     $row['question']=htmlspecialchars($row['question']);
-    
+
                     if ($first) {$codeids=$codeids.' '.$row['question_order'];}
-    
+
                     $vasummary .= "<tr id='row_{$row['language']}_{$row['qid']}_{$row['scale_id']}'";
                     if ($alternate==true)
                     {
@@ -603,9 +603,9 @@
                     {
                         $alternate=true;
                     }
-    
+
                     $vasummary .=" ><td align='right'>\n";
-    
+
                     if ($activated == 'Y' ) // if activated
                     {
                         $vasummary .= "&nbsp;</td><td><input type='hidden' name='code_{$row['qid']}_{$row['scale_id']}' value=\"{$row['title']}\" maxlength='5' size='5'"
@@ -616,12 +616,12 @@
                         $vasummary .= "<img class='handle' src='$imageurl/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_{$row['qid']}_{$row['scale_id']}' name='oldcode_{$row['qid']}_{$row['scale_id']}' value=\"{$row['title']}\" /><input type='text' id='code_{$row['qid']}_{$row['scale_id']}' class='code' name='code_{$row['qid']}_{$row['scale_id']}' value=\"{$row['title']}\" maxlength='5' size='5'"
                         ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
                         ." />";
-    
+
                     }
                     else
                     {
                         $vasummary .= "</td><td>{$row['title']}";
-    
+
                     }
                     //      <img class='handle' src='$imageurl/handle.png' /></td><td>
                     $vasummary .= "</td><td>\n"
@@ -629,14 +629,14 @@
                     . getEditor("editanswer","answer_".$row['language']."_".$row['qid']."_{$row['scale_id']}", "[".$clang->gT("Subquestion:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer')
                     ."</td>\n"
                     ."<td>\n";
-    
+
                     // Deactivate delete button for active surveys
                     if ($activated != 'Y' && $first)
                     {
                         $vasummary.="<img src='$imageurl/addanswer.png' class='btnaddanswer' />";
                         $vasummary.="<img src='$imageurl/deleteanswer.png' class='btndelanswer' />";
                     }
-    
+
                     $vasummary .= "</td></tr>\n";
                     $position++;
                 }
@@ -652,14 +652,14 @@
                 if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1){
                     $vasummary .= "<button class='bthsaveaslabel' id='bthsaveaslabel_{$scale_id}' $disabled type='button'>".$clang->gT('Save as label set')."</button>";
                 }
-    
+
             }
-    
+
             $first=false;
             $vasummary .= "</div>";
         }
-       
-    
+
+
         // Label set browser
     //                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
         $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left; width:260px;'>
@@ -687,14 +687,14 @@
             ."</td>\n"
             ."</tr>\n";
         }
-    
+
         $vasummary .= "</div></form>";
         */
-        
+
         $this->load->view('admin/Survey/Question/subQuestion_view',$data);
     }
-    
-    
+
+
     /**
      * question::index()
      * Load edit/new question screen depending on $action.
@@ -706,37 +706,37 @@
      */
     function index($action,$surveyid,$gid,$qid=null)
     {
-       
+
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.dd.js');
         $css_admin_includes[] = base_url().'scripts/jquery/dd.css';
-        
+
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
-    		
+
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);;
         self::_surveybar($surveyid,$gid);
         self::_surveysummary($surveyid,"viewgroup");
         self::_questiongroupbar($surveyid,$gid,$qid,"addquestion");
-        
+
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
             $this->session->set_userdata('FileManagerContext',"edit:question:".$surveyid);
             $_POST = $this->input->post();
             $clang = $this->limesurvey_lang;
-            $this->load->helper('admin/htmleditor');      
-            $this->load->helper('surveytranslator'); 
-            $this->load->helper('database');      
-            
+            $this->load->helper('admin/htmleditor');
+            $this->load->helper('surveytranslator');
+            $this->load->helper('database');
+
             if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
-            
+
             $data['adding'] = $adding =($action=="addquestion");
             $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             $questlangs[] = $baselang;
             $questlangs = array_flip($questlangs);
             	// prepare selector Mode TODO: with and without image
-        
+
             if (!$adding)
             {
                 $egquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
@@ -759,15 +759,15 @@
                                                'title' => $esrow['title'],
                                                'preg' => $esrow['preg'],
                                                'question' => $esrow['question'],
-                                               'help' => $esrow['help']);   
+                                               'help' => $esrow['help']);
                     }
                 }
                 if ($egresult==false or $egresult->num_rows()==0)
                 {
                     safe_die('Invalid question id');
                 }
-        
-        
+
+
                 while (list($key,$value) = each($questlangs))
                 {
                     if ($value != 99)
@@ -780,15 +780,15 @@
                         db_switchIDInsert('questions',false);
                     }
                 }
-                 
+
                 $eqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
                 $eqresult = db_execute_assoc($eqquery);
             }
-        	
-            
-            
+
+
+
             //$editquestion = PrepareEditorScript();
-        	
+
             $qtypelist=getqtypelist('','array');
             $qDescToCode = 'qDescToCode = {';
             $qCodeToInfo = 'qCodeToInfo = {';
@@ -797,11 +797,11 @@
                 $qCodeToInfo .= " '{$qtype}' : '".json_encode($qdesc)."', \n";
             }
             $data['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
-        
+
             /**$editquestion .= "<script type='text/javascript'>\n{$qTypeOutput}\n</script>\n<div class='header ui-widget-header'>";
             if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
             $editquestion .= "</div>\n";
-        	
+
         	*/
             if (!$adding)
             {
@@ -825,12 +825,12 @@
             $data['eqrow'] = $eqrow;
             $data['surveyid'] = $surveyid;
             $data['gid'] = $gid;
-            
+
             /**
            $editquestion .= "<div id='tabs'><ul>";
-           
-        	
-        	
+
+
+
         	$editquestion .= '<li><a href="#'.$eqrow['language'].'">'.getLanguageNameFromCode($eqrow['language'],false);
             $editquestion .= '('.$clang->gT("Base language").')';
         	$editquestion .= "</a></li>\n";
@@ -844,8 +844,8 @@
         		}
         		$editquestion .= "\n</ul>\n";
         		$editquestion .=  "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n";
-        
-            
+
+
             $editquestion .= '<div id="'.$eqrow['language'].'">';
             $eqrow  = array_map('htmlspecialchars', $eqrow);
             $editquestion .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
@@ -863,7 +863,7 @@
             . "<span class='settingentry'>&nbsp;\n"
             . "\t</span></div>\n";
             $editquestion .= '&nbsp;</div>';
-        
+
             */
             if (!$adding)
             {
@@ -890,7 +890,7 @@
                 }
             }
             else
-            { 
+            {
                 $addlanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
                 foreach  ($addlanguages as $addlanguage)
                 {
@@ -910,8 +910,8 @@
                     $editquestion .= '</div>';
                 }
             }
-        
-            
+
+
             //question type:
             $editquestion .= "\t<div id='questionbottom'><ul>\n"
             . "<li><label for='question_type'>".$clang->gT("Question Type:")."</label>\n"; */
@@ -923,8 +923,8 @@
             $surveyinfo = array_map('FlattenText', $surveyinfo);
             //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
             $data['activated'] = $activated = $surveyinfo['active'];
-            
-            
+
+
             if ($activated != "Y")
             {
             	// Prepare selector Class for javascript function : TODO with or without picture
@@ -943,9 +943,9 @@
                 $editquestion .= "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be changed (survey is active)")."\n"
                 . "<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}' />\n";
             }
-        
+
             $editquestion  .="\t</li>\n";
-        
+
             */
             if (!$adding) {$qattributes=questionAttributes();}
             else
@@ -971,7 +971,7 @@
             }
             $editquestion .= "\t<li id='OtherSelection'>\n"
             . "<label>".$clang->gT("Option 'Other':")."</label>\n";
-        
+
             if ($activated != "Y")
             {
                 $editquestion .= "<label for='OY'>".$clang->gT("Yes")."</label><input id='OY' type='radio' class='radiobtn' name='other' value='Y'";
@@ -987,7 +987,7 @@
                 . "\t<input type='hidden' name='other' value=\"{$eqrow['other']}\" />\n";
             }
             $editquestion .= "\t</li>\n";
-        
+
             $editquestion .= "\t<li id='MandatorySelection'>\n"
             . "<label>".$clang->gT("Mandatory:")."</label>\n"
             . "\t<label for='MY'>".$clang->gT("Yes")."</label><input id='MY' type='radio' class='radiobtn' name='mandatory' value='Y'";
@@ -997,16 +997,16 @@
             if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked='checked'";}
             $editquestion .= " />\n"
             . "</li>\n";
-        
+
             $editquestion .= "\t<li id='Validation'>\n"
             . "<label for='preg'>".$clang->gT("Validation:")."</label>\n"
             . "<input type='text' id='preg' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
             . "\t</li>";
-        
+
         */
             if ($adding)
             {
-        
+
                 //Get the questions for this group
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
                 $oqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
@@ -1036,7 +1036,7 @@
                     $editquestion .= "<input type='hidden' name='questionposition' value='' />";
                 }
             }
-        
+
             $editquestion .="</ul>\n";
             $editquestion .= '<p><a id="showadvancedattributes">'.$clang->gT("Show advanced settings").'</a><a id="hideadvancedattributes" style="display:none;">'.$clang->gT("Hide advanced settings").'</a></p>'
             .'<div id="advancedquestionsettingswrapper" style="display:none;">'
@@ -1044,7 +1044,7 @@
             .'<div id="advancedquestionsettings"></div>'
             .'</div>'
             ."<p><input type='submit' value='".$clang->gT("Save")."' />";
-        
+
             if ($adding)
             {
                 $editquestion .="\t<input type='hidden' name='action' value='insertquestion' />\n";
@@ -1056,13 +1056,13 @@
             }
             $editquestion .= "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
             . "</div></form></div>\n";
-        
-        
-        
+
+
+
             if ($adding)
             {
                 // Import dialogue
-        
+
                 if (bHasSurveyPermission($surveyid,'surveycontent','import'))
                 {
                     $editquestion .= "<br /><div class='header ui-widget-header'>".$clang->gT("...or import a question")."</div>\n"
@@ -1083,38 +1083,38 @@
                     . "<input type='hidden' name='sid' value='$surveyid' />\n"
                     . "<input type='hidden' name='gid' value='$gid' />\n"
                     ."</form>\n\n";
-                    
+
                 }
-        
+
                 $editquestion .= "<script type='text/javascript'>\n"
                 ."<!--\n"
                 ."document.getElementById('title').focus();\n"
                 ."//-->\n"
                 ."</script>\n";
-        
+
             }
-        
+
             $editquestion .= questionjavascript($eqrow['type']); */
             $data['qid'] = $qid;
-            
+
             $this->load->view("admin/Survey/Question/editQuestion_view",$data);
-            self::_questionJavascript($eqrow['type']); 
-            
-            
+            self::_questionJavascript($eqrow['type']);
+
+
         }
         else
         {
             include('access_denied.php');
-        }  
-        
+        }
+
         self::_loadEndScripts();
-                
-                
+
+
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-    
-    
-    }    
-    
+
+
+    }
+
     /**
      * question::_questionjavascript()
      * Load javascript functions required in question screen.
@@ -1132,7 +1132,7 @@
         $newquestionoutput .= "\tvar qnames = new Array();\n\n";
         $newquestionoutput .= "\tvar qhelp = new Array();\n\n";
         $newquestionoutput .= "\tvar qcaption = new Array();\n\n";
-    
+
         //The following javascript turns on and off (hides/displays) various fields when the questiontype is changed
         $newquestionoutput .="\nfunction OtherSelection(QuestionType)\n"
         . "\t{\n"
@@ -1190,14 +1190,14 @@
         . "\t}\n"
         . "\tOtherSelection('$type');\n"
         . "</script>\n";
-    
+
         return $newquestionoutput;
         */
-        
+
         $this->load->view('admin/Survey/Question/questionJavascript_view',array('type' => $type));
     }
-    
-    
+
+
     /**
      * question::order()
      * Load ordering of question in a question group screen.
@@ -1207,7 +1207,7 @@
      */
     function order($surveyid,$gid)
     {
-        
+
         $clang = $this->limesurvey_lang;
         $_POST = $this->input->post();
         if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
@@ -1217,21 +1217,21 @@
         $gid = $this->input->post('gid');
         $qid = $this->input->post('qid'); */
         $this->load->helper("database");
-        
+
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
-            
+
             $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
  			$this->config->set_item("css_admin_includes", $css_admin_includes);
-        		
+
  			self::_getAdminHeader();
  			self::_showadminmenu($surveyid);;
  			self::_surveybar($surveyid,$gid);
             self::_surveysummary($surveyid,"viewgroup");
-            
+
             self::_questiongroupbar($surveyid,$gid,null,"viewgroup");
-                
-            
+
+
             if (isset($_POST['questionordermethod']))
             {
                 switch($_POST['questionordermethod'])
@@ -1247,7 +1247,7 @@
                         $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order='$oldsortorder' WHERE gid=$gid AND question_order=-1";
                         $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
                         break;
-        
+
                         // Pressing the Down button
                     case 'down':
                         $newsortorder=$postsortorder+1;
@@ -1291,23 +1291,23 @@
                     $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());
                 }
             }
-        
+
             //Get the questions for this group
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             $oqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' and parent_qid=0 order by question_order" ;
             $oqresult = db_execute_assoc($oqquery);
-        
+
             $orderquestions = "<div class='header ui-widget-header'>".$clang->gT("Change Question Order")."</div>";
-        
+
             $questioncount = $oqresult->num_rows();
             $oqarray = array(); //$oqresult->GetArray();
-            
+
             foreach ($oqresult->result_array() as $row)
             {
                 $oqarray[] = $row;
             }
             $minioqarray=$oqarray;
-        
+
             // Get the condition dependecy array for all questions in this array and group
             $questdepsarray = GetQuestDepsForConditions($surveyid,$gid);
             if (!is_null($questdepsarray))
@@ -1319,16 +1319,16 @@
                     {
                         $listcid=implode("-",$targcid);
                         $question=arraySearchByKey($depqid, $oqarray, "qid", 1);
-        
+
                         $orderquestions .= "<li><a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;gid=".$gid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">".$question['title'].": ".FlattenText($question['question']). " [QID: ".$depqid."] </a> ";
                     }
                     $orderquestions .= "</li>\n";
                 }
                 $orderquestions .= "</ul></div>";
             }
-        
+
             $orderquestions	.= "<form method='post' action=''><ul class='movableList'>";
-        
+
             for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start with 0
             {
                 $downdisabled = "";
@@ -1347,7 +1347,7 @@
                 {
                     $updisabled = "disabled=\"true\" class=\"disabledUpDnBtn\"";
                 }
-        
+
                 //Move to location
                 $orderquestions.="<li class='movableNode'>\n" ;
                 $orderquestions.="\t<select style='float:right; margin-left: 5px;";
@@ -1385,7 +1385,7 @@
                         if (array_key_exists($oqarray[$i]['qid'], $qdarray))
                         {
                             $cqidquery = "SELECT question_order
-        				          FROM ".$this->db->dbprefix."conditions, ".$this->db->dbprefix."questions  
+        				          FROM ".$this->db->dbprefix."conditions, ".$this->db->dbprefix."questions
         						  WHERE ".$this->db->dbprefix."conditions.qid=".$this->db->dbprefix."questions.qid
         						  AND cid=".$qdarray[$oqarray[$i]['qid']][0];
                             $cqidresult = db_execute_assoc($cqidquery);
@@ -1404,7 +1404,7 @@
                     $minipos++;
                 }
                 $orderquestions.="</select>\n";
-        
+
                 $orderquestions.= "\t<input style='float:right;";
                 if ($i == 0) {$orderquestions.="visibility:hidden;";}
                 $orderquestions.="' type='image' src='".$this->config->item('imageurl')."/up.png' name='btnup_$i' onclick=\"$('#sortorder').val('{$oqarray[$i]['question_order']}');$('#questionordermethod').val('up');\" ".$updisabled."/>\n";
@@ -1416,7 +1416,7 @@
                 $orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ".FlattenText($oqarray[$i]['question']);
                 $orderquestions.= "</li>\n" ;
             }
-        
+
             $orderquestions.="</ul>\n"
             . "<input type='hidden' name='questionmovefrom' />\n"
             . "<input type='hidden' name='questionordermethod' id='questionordermethod' />\n"
@@ -1425,22 +1425,22 @@
             . "\t<input type='hidden' name='action' value='orderquestions' />"
             . "</form>" ;
             $orderquestions .="<br />" ;
-            
-            
+
+
             $finaldata['display'] = $orderquestions;
             $this->load->view('survey_view',$finaldata);
-            
+
             self::_loadEndScripts();
-            
+
             self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
         }
-        
-        
+
+
     }
-    
-    
-        
-    
+
+
+
+
     /**
      * question::delete()
      * Function responsible for deleting a question.
@@ -1454,8 +1454,8 @@
         $gid = $this->input->post('gid');
         $qid = $this->input->post('qid');
         $this->load->helper("database");
-        
-        if ($action == "delquestion" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))     
+
+        if ($action == "delquestion" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
         {
             if (!isset($qid)) {$qid=returnglobal('qid');}
             //check if any other questions have conditions which rely on this question. Don't delete if there are.
@@ -1474,9 +1474,9 @@
                 $result = db_execute_assoc($sql);
                 $row = $result->row_array();
                 $gid = $row['gid'];
-                
+
                 //$gid = $connect->GetOne(); // Checked
-                
+
                 //see if there are any conditions/attributes/answers/defaultvalues for this question, and delete them now as well
                 db_execute_assoc("DELETE FROM ".$this->db->dbprefix."conditions WHERE qid={$qid}");    // Checked
                 db_execute_assoc("DELETE FROM ".$this->db->dbprefix."question_attributes WHERE qid={$qid}"); // Checked
@@ -1485,13 +1485,13 @@
                 db_execute_assoc("DELETE FROM ".$this->db->dbprefix."defaultvalues WHERE qid={$qid}"); // Checked
                 db_execute_assoc("DELETE FROM ".$this->db->dbprefix."quota_members WHERE qid={$qid}");
                 fixsortorderQuestions($gid, $surveyid);
-    
+
                 $qid="";
                 $postqid="";
                 $_GET['qid']="";
             }
-            $this->session->set_userdata('flashmessage', $clang->gT("Question was successfully deleted."));   
-            
+            $this->session->set_userdata('flashmessage', $clang->gT("Question was successfully deleted."));
+
             if ($databaseoutput != '')
             {
                 echo $databaseoutput;
@@ -1499,15 +1499,15 @@
             else
             {
                 redirect(site_url('admin/survey/view/'.$surveyid."/".$gid));
-            }                 
+            }
         }
-        
-        
+
+
     }
-    
+
     /**
      * question::questionattributes()
-     * 
+     *
      * @return
      */
     function ajaxquestionattributes()
@@ -1520,7 +1520,7 @@
         {
             $attributesettings=getQuestionAttributes($qid);
         }
-    
+
         $availableattributes=questionAttributes();
         if (isset($availableattributes[$type]))
         {
@@ -1547,10 +1547,10 @@
                     $ajaxoutput.="<legend>{$qa['category']}</legend>\n<ul>";
                     $currentfieldset=$qa['category'];
                 }
-    
+
                 $ajaxoutput .= "<li>"
                 ."<label for='{$qa['name']}' title='".$qa['help']."'>".$qa['caption']."</label>";
-    
+
                 if (isset($qa['readonly']) && $qa['readonly']==true && $thissurvey['active']=='Y')
                 {
                     $ajaxoutput .= "$value";
@@ -1584,7 +1584,7 @@
 			echo $ajaxoutput;
         }
     }
-    
+
     /**
      * question::preview()
      * Load preview of a question screen.
@@ -1597,20 +1597,20 @@
     {
 		$this->load->helper("qanda");
 		$this->load->helper("surveytranslator");
-		
+
 		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 		$surveyid = (int) $surveyid;
 		if (!isset($qid)) {$qid=returnglobal('qid');}
 		if (empty($surveyid)) {die("No SID provided.");}
 		if (empty($qid)) {die("No QID provided.");}
-		
+
 		if (!isset($lang) || $lang == "")
 		{
 		    $language = GetBaseLanguageFromSurveyID($surveyid);
 		} else {
 		    $language = $lang;
 		}
-		
+
 		//Use $_SESSION instead of $this->session for frontend features.
 		$_SESSION['s_lang'] = $language;
 		$_SESSION['fieldmap']=createFieldMap($surveyid,'full',true,$qid);
@@ -1623,11 +1623,11 @@
 		    }
 		}
 		$clang = new limesurvey_lang(array($language));
-		
+
 		$thissurvey=getSurveyInfo($surveyid);
 		setNoAnswerMode($thissurvey);
 		$_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
-		
+
 		$qquery = 'SELECT * FROM '.$this->db->dbprefix('questions')." WHERE sid='$surveyid' AND qid='$qid' AND language='".$this->db->escape_str($language)."'";
 		$qresult = db_execute_assoc($qquery);
 		$qrows = $qresult->row_array();
@@ -1641,9 +1641,9 @@
 		//7 => $qrows['other']); // ia[7] is conditionsexist not other
 		7 => 'N',
 		8 => 'N' ); // ia[8] is usedinconditions
-		
+
 		$answers = retrieveAnswers($ia);
-		
+
 		if (!$thissurvey['template'])
 		{
 		    $thistpl=sGetTemplatePath($defaulttemplate);
@@ -1652,7 +1652,7 @@
 		{
 		    $thistpl=sGetTemplatePath(validate_templatedir($thissurvey['template']));
 		}
-		
+
 		doHeader();
 		$dummy_js = '
 				<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
@@ -1667,28 +1667,28 @@
 		        /* ]]> */
 				</script>
 		        ';
-		
-		
+
+
 		$answer=$answers[0][1];
 		$help=$answers[0][2];
-		
+
 		$question = $answers[0][0];
 		$question['code']=$answers[0][5];
 		$question['class'] = question_class($qrows['type']);
 		$question['essentials'] = 'id="question'.$qrows['qid'].'"';
 		$question['sgq']=$ia[1];
-		
+
 		//Temporary fix for error condition arising from linked question via replacement fields
 		//@todo: find a consistent way to check and handle this - I guess this is already handled but the wrong values are entered into the DB
-		
+
 		$search_for = '{INSERTANS';
 		if(strpos($question['text'],$search_for)!==false){
 		    $pattern_text = '/{([A-Z])*:([0-9])*X([0-9])*X([0-9])*}/';
 		    $replacement_text = $clang->gT('[Dependency on another question (ID $4)]');
-		    $text = preg_replace($pattern_text,$replacement_text,$question['text']);    
+		    $text = preg_replace($pattern_text,$replacement_text,$question['text']);
 		    $question['text']=$text;
 		}
-		
+
 		if ($qrows['mandatory'] == 'Y')
 		{
 		    $question['man_class'] = ' mandatory';
@@ -1697,12 +1697,12 @@
 		{
 		    $question['man_class'] = '';
 		};
-		
+
 		$vars = compact(array_keys(get_defined_vars()));
 		$content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
-		$content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">'; 
+		$content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">';
 		$content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"),array(),$vars);
-		
+
 		$question_template = file_get_contents("$thistpl/question.pstpl");
 		if(substr_count($question_template , '{QUESTION_ESSENTIALS}') > 0 ) // the following has been added for backwards compatiblity.
 		{// LS 1.87 and newer templates
@@ -1714,17 +1714,17 @@
 		$content .= "\n".templatereplace($question_template,array(),$vars)."\n";
 		$content .= "\n\t</div>\n";
 		};
-		
+
 		$content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),$vars).$dummy_js;
 		$content .= '<p>&nbsp;</form>';
 		$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
-		
+
 		echo $content;
 		echo "</html>\n";
-		
-		
+
+
 		exit;
 	}
-    
-    
+
+
  }

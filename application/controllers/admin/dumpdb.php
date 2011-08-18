@@ -12,23 +12,22 @@
  *
  * $Id$
  */
-
 /**
  * Dumpdb
- * 
- * @package LimeSurvey_CI
- * @author 
+ *
+ * @package LimeSurvey
+ * @author
  * @copyright 2011
  * @version $Id$
  * @access public
  */
 class Dumpdb extends Admin_Controller {
-    
+
     function __construct()
 	{
 		parent::__construct();
 	}
-    
+
     /**
      * Dumpdb::index()
      * Dump database. Only LimeSurvey tables are dumped.
@@ -38,62 +37,62 @@ class Dumpdb extends Admin_Controller {
     {
         $this->load->dbutil();
         $this->load->helper("string");
-        
+
         if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoModeOnly') != true) {
-            
+
             $tables = $this->db->list_tables();
 
             foreach ($tables as $table)
             {
                if ($this->db->dbprefix==substr($table, 0, strlen($this->db->dbprefix)))
-               {              
+               {
                     $lstables[] = $table;
                }
             }
-            
-            
+
+
             $sfilename = "backup_db_".random_string('unique')."_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql";
             $dfilename = "LimeSurvey_".$this->db->database."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql.gz";
             $prefs = array(
                 'format'      => 'zip',             // gzip, zip, txt
                    // File name - NEEDED ONLY WITH ZIP FILES
-                'filename'    => $sfilename,  
-                'tables'      => $lstables, 
+                'filename'    => $sfilename,
+                'tables'      => $lstables,
                 'add_drop'    => TRUE,              // Whether to add DROP TABLE statements to backup file
                 'add_insert'  => TRUE,              // Whether to add INSERT data to backup file
                 'newline'     => "\n"               // Newline character used in backup file
               );
 
-            $this->dbutil->backup($prefs);  
-            $backup =& $this->dbutil->backup();  
-            
+            $this->dbutil->backup($prefs);
+            $backup =& $this->dbutil->backup();
+
             $this->load->helper('file');
-            write_file('tmp/'.$sfilename.".gz", $backup); 
-            
+            write_file('tmp/'.$sfilename.".gz", $backup);
+
             $this->load->helper('download');
             force_download($dfilename, $backup);
-            
-            
-            
-            
+
+
+
+
         }
         else
         {
             show_error("This feature is only available for MySQL databases.");
         }
-        
+
     }
-    
+
     /**
     function index2()
     {
-        
+
         $this->load->dbutil();
-        
+
         if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoModeOnly') != true && $action=='dumpdb') {
-        
+
             $export=self::_completedump();
-        
+
             $file_name = "LimeSurvey_".$this->db->database."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql";
             Header("Content-type: application/octet-stream");
             Header("Content-Disposition: attachment; filename=$file_name");
@@ -101,9 +100,9 @@ class Dumpdb extends Admin_Controller {
             echo $export;
             exit; // needs to be inside the condition so the updater still can include this file
         }
-    
+
     }
-    
+
     function _defdump($tablename)
     {
         //global $connect;
@@ -124,7 +123,7 @@ class Dumpdb extends Admin_Controller {
             $def .= ",\n";
         }
         $def = preg_replace("#,\n$#","", $def);
-    
+
         $result = db_execute_assoc("SHOW KEYS FROM $tablename");
         foreach($result->result_array() as $row)
         {
@@ -134,7 +133,7 @@ class Dumpdb extends Admin_Controller {
             if ($row["Sub_part"]!='')  $row["Column_name"].=" ({$row["Sub_part"]})";
             $index[$kname][] = $row["Column_name"];
         }
-    
+
         while(list($x, $columns) = @each($index))
         {
             $def .= ",\n";
@@ -145,22 +144,22 @@ class Dumpdb extends Admin_Controller {
         $def .= "\n);\n\n\n";
         return (stripslashes($def));
     }
-    
+
     function _datadump ($table) {
-    
+
         //global $connect;
         $this->load->helper("database");
-        
+
         $result = "#\n";
         $result .="# Table data for $table"."\n";
         $result .="#\n";
-    
+
         $query = db_execute_num("select * from $table");
         $num_fields = $query->FieldCount();
         $aFieldNames= $connect->MetaColumnNames($table, true);
         $sFieldNames= implode('`,`',$aFieldNames);
         $numrow = $query->RecordCount();
-    
+
         if ($numrow>0)
         {
             $result .= "INSERT INTO `{$table}` (`{$sFieldNames}`) VALUES";
@@ -178,7 +177,7 @@ class Dumpdb extends Admin_Controller {
                 {
                     $result .= "NULL";
                 }
-    
+
                 if ($j<($num_fields-1)) $result .= ",";
             }
                 $result .= "),\n";
@@ -205,7 +204,7 @@ class Dumpdb extends Admin_Controller {
         }
         $export .="# Date of Dump: ". date("d-M-Y") ."\n";
         $export .="#------------------------------------------"."\n\n\n";
-    
+
         foreach($tables as $table) {
             if ($allowexportalldb==0) {
                 if ($dbprefix==substr($table, 0, strlen($dbprefix))) {
@@ -221,7 +220,7 @@ class Dumpdb extends Admin_Controller {
         return $export;
     }
     */
-    
-    
-    
+
+
+
 }

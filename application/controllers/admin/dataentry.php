@@ -46,18 +46,18 @@
 
 
  */
- 
+
  /**
   * dataentry
-  * 
-  * @package LimeSurvey_CI
-  * @author 
+  *
+  * @package LimeSurvey
+  * @author
   * @copyright 2011
   * @version $Id$
   * @access public
   */
  class dataentry extends Survey_Common_Controller {
-    
+
     /**
      * dataentry::__construct()
      * Constructor
@@ -67,7 +67,7 @@
 	{
 		parent::__construct();
 	}
-    
+
     /**
      * dataentry::editdata()
      * Edit dataentry.
@@ -84,7 +84,7 @@
             $sDataEntryLanguage = GetBaseLanguageFromSurveyID($surveyid);
         }
         $surveyinfo=getSurveyInfo($surveyid);
-        
+
         self::_getAdminHeader();
         if (bHasSurveyPermission($surveyid, 'responses','update'))
         {
@@ -96,7 +96,7 @@
             $this->load->helper('database');
             //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
             $fnquery = "SELECT * FROM ".$this->db->dbprefix."questions, ".$this->db->dbprefix."groups g, ".$this->db->dbprefix."surveys WHERE
-    		".$this->db->dbprefix."questions.gid=g.gid AND 
+    		".$this->db->dbprefix."questions.gid=g.gid AND
     		".$this->db->dbprefix."questions.language = '{$sDataEntryLanguage}' AND g.language = '{$sDataEntryLanguage}' AND
     		".$this->db->dbprefix."questions.sid=".$this->db->dbprefix."surveys.sid AND ".$this->db->dbprefix."questions.sid='$surveyid'
             order by group_order, question_order";
@@ -113,14 +113,14 @@
             } // Get table output into array
             // Perform a case insensitive natural sort on group name then question title of a multidimensional array
             // $fnames = (Field Name in Survey Table, Short Title of Question, Question Type, Field Name, Question Code, Predetermined Answers if exist)
-            
+
             $fnames['completed'] = array('fieldname'=>"completed", 'question'=>$clang->gT("Completed"), 'type'=>'completed');
-    
+
             $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage));
             $nfncount = count($fnames)-1;
-    
+
             //SHOW INDIVIDUAL RECORD
-    
+
             if ($subaction == "edit" && bHasSurveyPermission($surveyid,'responses','update'))
             {
                 $idquery = "SELECT * FROM $surveytable WHERE id=$id";
@@ -175,7 +175,7 @@
                 $results[]=$results1;
             }
             //	$dataentryoutput .= "<pre>";print_r($results);$dataentryoutput .= "</pre>";
-    
+
             $dataentryoutput.="<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n"
             ."\t<div class='header ui-widget-header'>";
             if ($subaction=='edit')
@@ -187,13 +187,13 @@
                 $dataentryoutput .= sprintf($clang->gT("Viewing response (ID %s)"),$id);
             }
             $dataentryoutput .="</div>\n";
-    
-    
+
+
             $dataentryoutput .= "<form method='post' action='".site_url('admin/dataentry/update')."' name='editresponse' id='editresponse'>\n"
             ."<table id='responsedetail' width='99%' align='center' cellpadding='0' cellspacing='0'>\n";
             $highlight=false;
             unset($fnames['lastpage']);
-            
+
             // unset timings
             foreach ($fnames as $fname)
             {
@@ -203,7 +203,7 @@
                     $nfncount--;
                 }
             }
-            
+
             foreach ($results as $idrow)
             {
                 //$dataentryoutput .= "<pre>"; print_r($idrow);$dataentryoutput .= "</pre>";
@@ -217,7 +217,7 @@
                     $dataentryoutput .= "\t<tr";
                     if ($highlight) $dataentryoutput .=" class='odd'";
                        else $dataentryoutput .=" class='even'";
-                     
+
                     $highlight=!$highlight;
                     $dataentryoutput .=">\n"
                     ."<td valign='top' align='right' width='25%'>"
@@ -321,7 +321,7 @@
                             {
                                 unset($optCategorySeparator);
                             }
-    
+
                             if (substr($fname['fieldname'], -5) == "other")
                             {
                                 $dataentryoutput .= "\t<input type='text' name='{$fname['fieldname']}' value='"
@@ -335,7 +335,7 @@
                                 ."<option value=''";
                                 if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
                                 $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
-    
+
                                 if (!isset($optCategorySeparator))
                                 {
                                     foreach ($lresult->result_array() as $llrow)
@@ -361,7 +361,7 @@
                                             $optgroups[$categorytext][] = array ( 'code' => $llrow['code'], 'answer' => $answertext);
                                         }
                                     }
-    
+
                                     foreach ($optgroups as $categoryname => $optionlistarray)
                                     {
                                         $dataentryoutput .= "<optgroup class=\"dropdowncategory\" label=\"".$categoryname."\">\n";
@@ -379,9 +379,9 @@
                                         if ($idrow[$fname['fieldname']] == $optionarray['code']) {$dataentryoutput .= " selected='selected'";}
                                         $dataentryoutput .= ">{$optionarray['answer']}</option>\n";
                                     }
-    
+
                                 }
-    
+
                                 $oquery="SELECT other FROM ".$this->db->dbprefix."questions WHERE qid={$fname['qid']} AND ".$this->db->dbprefix."questions.language = '{$sDataEntryLanguage}'";
                                 $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />".$oquery."<br />");
                                 foreach($oresult->result_array() as $orow)
@@ -404,7 +404,7 @@
                             ."<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
                             $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
-    
+
                             foreach ($lresult->result_array() as $llrow)
                             {
                                 $dataentryoutput .= "<option value='{$llrow['code']}'";
@@ -501,10 +501,10 @@
                                 $answers[] = array($ansrow['code'], $ansrow['answer']);
                             }
                             //now find out how many existing values there are
-    
+
                             $chosen[]=""; //create array
                             if (!isset($ranklist)) {$ranklist="";}
-    
+
                             if (isset($currentvalues))
                             {
                                 $existing = count($currentvalues);
@@ -544,7 +544,7 @@
                                 }
                                 $ranklist .= " id='cut_$thisqid$j' onclick=\"deletethis_$thisqid(document.editresponse.RANK_$thisqid$j.value, document.editresponse.d$myfname$j.value, document.editresponse.RANK_$thisqid$j.id, this.id)\" /><br />\n\n";
                             }
-    
+
                             if (!isset($choicelist)) {$choicelist="";}
                             $choicelist .= "<select class='choicelist' size='$anscount' name='CHOICES' id='CHOICES_$thisqid' onclick=\"rankthis_$thisqid(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" >\n";
                             foreach ($answers as $ans)
@@ -578,7 +578,7 @@
                             unset($answers);
                             $fname=prev($fnames);
                             break;
-    
+
                         case "M": //Multiple choice checkbox
                             $qidattributes=getQuestionAttributes($fname['qid']);
                             if (trim($qidattributes['display_columns'])!='')
@@ -589,7 +589,7 @@
                             {
                                 $dcols=0;
                             }
-    
+
                             //					while ($fname[3] == "M" && $question != "" && $question == $fname['type'])
                             $thisqid=$fname['qid'];
                             while ($fname['qid'] == $thisqid)
@@ -607,27 +607,27 @@
                                     if ($idrow[$fname['fieldname']] == "Y") {$dataentryoutput .= " checked";}
                                     $dataentryoutput .= " />{$fname['subquestion']}<br />\n";
                                 }
-    
+
                                 $fname=next($fnames);
                                 }
                             $fname=prev($fnames);
-    
+
                                     break;
-    
+
                         case "I": //Language Switch
                             $lquery = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid={$fname['qid']} AND language = '{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                             $lresult = db_execute_assoc($lquery);
-    
-    
+
+
                             $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                             $baselang = GetBaseLanguageFromSurveyID($surveyid);
                             array_unshift($slangs,$baselang);
-    
+
                             $dataentryoutput.= "<select name='{$fname['fieldname']}'>\n";
                             $dataentryoutput .= "<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {$dataentryoutput .= " selected='selected'";}
                             $dataentryoutput .= ">".$clang->gT("Please choose")."..</option>\n";
-    
+
                             foreach ($slangs as $lang)
                             {
                                 $dataentryoutput.="<option value='{$lang}'";
@@ -636,7 +636,7 @@
                             }
                             $dataentryoutput .= "</select>";
                             break;
-    
+
                         case "P": //Multiple choice with comments checkbox + text
                             $dataentryoutput .= "<table>\n";
                             while (isset($fname) && $fname['type'] == "P")
@@ -680,14 +680,14 @@
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
                                 $qAttributes = getQuestionAttributes($fname['qid']);
-                                
+
                                 for ($i = 0; $i < $idrow[$fname['fieldname']]['max_files'], isset($metadata[$i]); $i++)
                                 {
                                     if ($qAttributes['show_title'])
                                         $dataentryoutput .= '<tr><td width="25%">Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
                                     if ($qAttributes['show_comment'])
                                         $dataentryoutput .= '<tr><td width="25%">Comment  </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_comment_'.$i .'" name="comment"  size=50 value="'.htmlspecialchars($metadata[$i]["comment"]) .'" /></td></tr>';
-    
+
                                     $dataentryoutput .= '<tr><td>        File name</td><td><input   class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_name_'.$i    .'" name="name" size=50 value="'.htmlspecialchars(rawurldecode($metadata[$i]["name"]))    .'" /></td></tr>'
                                                        .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_size_'.$i    .'" name="size"     size=50 value="'.htmlspecialchars($metadata[$i]["size"])    .'" /></td></tr>'
                                                        .'<tr><td></td><td><input type="hidden" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_ext_'.$i     .'" name="ext"      size=50 value="'.htmlspecialchars($metadata[$i]["ext"])     .'" /></td></tr>'
@@ -714,7 +714,7 @@
                                                                 }
                                                                 jsonstr += "]";
                                                                 $("#'.$fname['fieldname'].'").val(jsonstr);
-    
+
                                                             });
                                                          });
                                                      </script>';
@@ -876,7 +876,7 @@
                                 $dataentryoutput .= "\t<input type='radio' class='radiobtn' name='{$fname['fieldname']}' value=''";
                                 if ($idrow[$fname['fieldname']] == '') {$dataentryoutput .= " checked";}
                                 $dataentryoutput .= " />".$clang->gT("No answer")."&nbsp;\n";
-    
+
                                 $dataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
                                 $fname=next($fnames);
@@ -904,8 +904,8 @@
                                     $maxvalue=$qidattributes['multiflexible_max'];
                                 }
                             }
-    
-    
+
+
                             if (trim($qidattributes['multiflexible_step'])!='') {
                                 $stepvalue=$qidattributes['multiflexible_step'];
                             } else {
@@ -938,7 +938,7 @@
                                         $dataentryoutput .= ">$ii</option>\n";
                                     }
                                 }
-    
+
                                 $dataentryoutput .= "</td>\n"
                                 ."\t</tr>\n";
                                 $fname=next($fnames);
@@ -969,7 +969,7 @@
                             .$idrow[$fname['fieldname']] . "' />\n";
                             break;
                     }
-    
+
                     $dataentryoutput .= "		</td>
     							</tr>\n";
                 } while ($fname=next($fnames));
@@ -991,8 +991,8 @@
             }
             elseif ($subaction == "editsaved" && bHasSurveyPermission($surveyid,'responses','update'))
             {
-    
-    
+
+
                 $dataentryoutput .= "<script type='text/javascript'>
     				  <!--
     					function saveshow(value)
@@ -1043,29 +1043,29 @@
     					</td>
     				</tr>\n";
             }
-    
+
             $dataentryoutput .= "</form>\n";
-            
+
             $data['display'] = $dataentryoutput;
             $this->load->view('survey_view',$data);
-            
+
         }
-        
+
         self::_loadEndScripts();
-                
-                
+
+
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
+
     /**
      * dataentry::delete()
-     * delete dataentry 
+     * delete dataentry
      * @return
      */
     function delete()
     {
         self::_getAdminHeader();
-        
+
         $subaction = $this->input->post('subaction');
         $surveyid = $this->input->post('sid');
         $id = $this->input->post('id');
@@ -1075,51 +1075,51 @@
             {
                 $clang = $this->limesurvey_lang;
                 $surveytable = $this->db->dbprefix."survey_".$surveyid;
-                
-                
+
+
                 $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
                 $dataentryoutput .= "<div class='messagebox ui-corner-all'>\n";
-        
+
                 $thissurvey=getSurveyInfo($surveyid);
-        
+
                 $delquery = "DELETE FROM $surveytable WHERE id=$id";
                 $this->load->helper('database');
                 $delresult = db_execute_assosc($delquery) or safe_die ("Couldn't delete record $id<br />\n");
-        
+
                 $dataentryoutput .= "<div class='successheader'>".$clang->gT("Record Deleted")." (ID: $id)</div><br /><br />\n"
                 ."<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('".site_url('admin/browse/'.$surveyid.'/all')."', '_top')\" /><br /><br />\n"
                 ."</div>\n";
-                
+
                 $data['display'] = $dataentryoutput;
                 $this->load->view('survey_view',$data);
             }
         }
-        
+
         self::_loadEndScripts();
-                
-                
+
+
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
+
     /**
      * dataentry::update()
-     * update dataentry 
+     * update dataentry
      * @return
      */
     function update()
     {
         self::_getAdminHeader();
-        
+
         $subaction = $this->input->post('subaction');
         $surveyid = $this->input->post('sid');
         $id = $this->input->post('id');
         $lang = $this->input->post('language');
-        
+
         //if (bHasSurveyPermission($surveyid, 'responses','update'))
         //{
             if ($subaction == "update"  && bHasSurveyPermission($surveyid,'responses','update'))
             {
-        
+
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
                 $this->load->helper("admin/html_helper");
                 $this->load->helper("database");
@@ -1127,12 +1127,12 @@
                 $surveytable = $this->db->dbprefix."survey_".$surveyid;
                 $_POST = $this->input->post();
                 browsemenubar($clang->gT("Data entry"),$surveyid,TRUE);
-                
-                
+
+
                 $dataentryoutput = "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
-        
+
                 $fieldmap= createFieldMap($surveyid);
-        
+
                 // unset timings
                 foreach ($fieldmap as $fname)
                 {
@@ -1141,10 +1141,10 @@
                         unset($fieldmap[$fname['fieldname']]);
                     }
                 }
-                
+
                 $thissurvey=getSurveyInfo($surveyid);
                 $updateqr = "UPDATE $surveytable SET \n";
-        
+
                 foreach ($fieldmap as $irow)
                 {
                     $fieldname=$irow['fieldname'];
@@ -1171,12 +1171,12 @@
                         {
                             $qidattributes = getQuestionAttributes($irow['qid'], $irow['type']);
                             $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
-                            
+
                             $items = array($thisvalue,$dateformatdetails['phpdate']);
                             $this->load->library('Date_Time_Converter',$items);
                             $datetimeobj = $this->date_time_converter ;
                             //need to check if library get initialized with new value of constructor or not.
-                            
+
                             //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
                             $updateqr .= $fieldname." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";// db_quote_id($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
                         }
@@ -1211,7 +1211,7 @@
                 }
                 $updateqr = substr($updateqr, 0, -3);
                 $updateqr .= " WHERE id=$id";
-        
+
                 $updateres = db_execute_assoc($updateqr) or safe_die("Update failed:<br />\n<br />$updateqr");
                 while (ob_get_level() > 0) {
                     ob_end_flush();
@@ -1223,22 +1223,22 @@
                 ."<input type='submit' value='".$clang->gT("View This Record")."' onclick=\"window.open('$link1', '_top')\" /><br /><br />\n"
                 ."<input type='submit' value='".$clang->gT("Browse Responses")."' onclick=\"window.open('$link2', '_top')\" />\n"
                 ."</div>\n";
-                
+
                 $data['display'] = $dataentryoutput;
                 $this->load->view('survey_view',$data);
             }
-            
-            
+
+
         //}
-        
+
         self::_loadEndScripts();
-                
-                
+
+
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
-        
+
+
     }
-    
+
     /**
      * dataentry::insert()
      * insert new dataentry
@@ -1247,10 +1247,10 @@
     function insert()
     {
         self::_getAdminHeader();
-        
+
         $subaction = $this->input->post('subaction');
         $surveyid = $this->input->post('sid');
-        
+
         if (bHasSurveyPermission($surveyid, 'responses','read'))
         {
             if ($subaction == "insert" && bHasSurveyPermission($surveyid,'responses','create'))
@@ -1262,15 +1262,15 @@
                 $this->load->helper("admin/html_helper");
                 $this->load->helper("database");
                 browsemenubar($clang->gT("Data entry"),$surveyid,TRUE);
-                
-                
+
+
                 $dataentryoutput ='';
                 $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n"
                 ."\t<div class='messagebox ui-corner-all'>\n";
-        
+
                 $lastanswfortoken=''; // check if a previous answer has been submitted or saved
                 $rlanguage='';
-    
+
                 if ($this->input->post('token'))
                 {
                     $tokencompleted = "";
@@ -1282,7 +1282,7 @@
                     {
                         $tokencompleted = $tcrow['completed'];
                     }
-        
+
                     if ($tccount < 1)
                     { // token doesn't exist in token table
                         $lastanswfortoken='UnknownToken';
@@ -1305,12 +1305,12 @@
                         }
                     }
                 }
-               
+
                 if (tableExists('tokens_'.$thissurvey['sid']) && (!$this->input->post('token')))
                 {// First Check if the survey uses tokens and if a token has been provided
-                    
+
                     $errormsg="<div class='warningheader'>".$clang->gT("Error")."</div> <p>".$clang->gT("This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance.")."</p>\n";
-        
+
                 }
                 elseif (tableExists('tokens_'.$thissurvey['sid']) && $lastanswfortoken == 'UnknownToken')
                 {
@@ -1368,7 +1368,7 @@
         					   <td><input type='text' name='save_email' value='".$this->input->post('save_email')."' />
         					  <tr><td align='right'>".$clang->gT("Start Language:")."</td>
         					   <td><input type='text' name='save_language' value='".$this->input->post('save_language')."' />\n";
-                             $_POST = $this->input->post();  
+                             $_POST = $this->input->post();
                             foreach ($_POST as $key=>$val)
                             {
                                 if (substr($key, 0, 4) != "save" && $key != "action" && $key !="sid" && $key != "datestamp" && $key !="ipaddr")
@@ -1402,7 +1402,7 @@
                     if ($thissurvey['datestamp'] == "Y") {$_POST['startdate']=$_POST['datestamp'];}
                     if (isset($_POST['closerecord']))
                     {
-                        if ($thissurvey['datestamp'] == "Y") 
+                        if ($thissurvey['datestamp'] == "Y")
                         {
                             $_POST['submitdate']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->config->item('timeadjust'));
                         }
@@ -1411,7 +1411,7 @@
                             $_POST['submitdate']=date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
                         }
                     }
-                    
+
                     foreach ($fieldmap as $irow)
                     {
                         $fieldname = $irow['fieldname'];
@@ -1428,7 +1428,7 @@
                                     $json = $_POST[$fieldname];
                                     $phparray = json_decode(stripslashes($json));
                                     $filecount = 0;
-        
+
                                     for ($i = 0; $filecount < count($phparray); $i++)
                                     {
                                         if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
@@ -1436,7 +1436,7 @@
                                             $target = dirname(getcwd())."/upload/surveys/". $thissurvey['sid'] ."/files/".sRandomChars(20);
                                             $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
                                             $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
-        
+
                                             if (move_uploaded_file($_FILES[$fieldname."_file_".$i]['tmp_name'], $target))
                                             {
                                                 $phparray[$filecount]->filename = basename($target);
@@ -1448,10 +1448,10 @@
                                             }
                                         }
                                     }
-        
+
                                     //$columns[] .= $fieldname; //db_quote_id($fieldname);
                                     $values = array_merge($values,array($fieldname => json_encode($phparray))); // .= json_encode($phparray); //db_quoteall(json_encode($phparray), true);
-                                    
+
                                 }
                                 else
                                 {
@@ -1469,7 +1469,7 @@
                                 $datetimeobj = $this->date_time_converter ; //new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
                                 //$columns[] .= $fieldname; //db_quote_id($fieldname);
                                 //$values[] .= $datetimeobj->convert("Y-m-d H:i:s"); //db_quoteall($datetimeobj->convert("Y-m-d H:i:s"),true);
-                                $values = array_merge($values,array($fieldname => $datetimeobj->convert("Y-m-d H:i:s"))); 
+                                $values = array_merge($values,array($fieldname => $datetimeobj->convert("Y-m-d H:i:s")));
                             }
                             else
                             {
@@ -1479,17 +1479,17 @@
                             }
                         }
                     }
-                    
+
                     //$SQL = "INSERT INTO $surveytable
         			//		(".implode(',',$columns).")
-        			//		VALUES 
+        			//		VALUES
         			//		(".implode(',',$values).")";
-                            
+
                     $this->load->model('surveys_dynamic_model');
                     $iinsert = $this->surveys_dynamic_model->insertRecords($surveyid,$values);
-        
+
                     //$iinsert = $connect->Execute($SQL) or safe_die ("Could not insert your data:<br />$SQL<br />\n" .$connect->ErrorMsg());
-        
+
                     if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
                     {
                         // get submit date
@@ -1497,13 +1497,13 @@
                             { $submitdate = $_POST['closedate']; }
                         else
                             { $submitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust); }
-                        
+
         				// check how many uses the token has left
         				$usesquery = "SELECT usesleft FROM ".$this->db->dbprefix."tokens_$surveyid WHERE token=".$_POST['token'];
         				$usesresult = db_execute_assoc($usesquery);
         				$usesrow = $usesresult->row_array();
         				if (isset($usesrow)) { $usesleft = $usesrow['usesleft']; }
-        				
+
                         // query for updating tokens
                         $utquery = "UPDATE ".$this->db->dbprefix."tokens_$surveyid\n";
                         if (bIsTokenCompletedDatestamped($thissurvey))
@@ -1530,7 +1530,7 @@
                         }
                         $utquery .= "WHERE token=".$_POST['token'];
                         $utresult = db_execute_assosc($utquery); //$connect->Execute($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());
-                        
+
                         // save submitdate into survey table
                         $srid = $this->db->insert_id(); // $connect->Insert_ID();
                         $sdquery = "UPDATE ".$this->db->dbprefix."survey_$surveyid SET submitdate='".$submitdate."' WHERE id={$srid}\n";
@@ -1554,27 +1554,27 @@
                         if ($this->saved_control_model->insertRecords($scdata))
                         {
                             $scid = $this->db->insert_id(); // $connect->Insert_ID("{$dbprefix}saved_control","scid");
-        
+
                             $dataentryoutput .= "<font class='successtitle'>".$clang->gT("Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you.")."</font><br />\n";
-        
+
                             $tkquery = "SELECT * FROM ".$this->db->dbprefix."tokens_$surveyid";
                             if ($tkresult = db_execute_assosc($tkquery)) //If the query fails, assume no tokens table exists
                             {
                                 $tokendata = array (
-                                            "firstname"=> $saver['identifier'],	
-                                            "lastname"=> $saver['identifier'], 	
+                                            "firstname"=> $saver['identifier'],
+                                            "lastname"=> $saver['identifier'],
                             				        "email"=>$saver['email'],
                                             "token"=>sRandomChars(15),
                                             "language"=>$saver['language'],
-                                            "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust), 	
+                                            "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust),
                                             "completed"=>"N");
                                 $this->load->model('tokens_dynamic_model');
                                 $this->tokens_dynamic_model->insertTokens($surveyid,$tokendata);
                                 //$connect->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
                                 $dataentryoutput .= "<font class='successtitle'>".$clang->gT("A token entry for the saved survey has been created too.")."</font><br />\n";
-        
+
                             }
-        
+
                             if ($saver['email'])
                             {
                                 //Send email
@@ -1589,7 +1589,7 @@
                                     $message.=$this->config->item('publicurl')."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&lang=".urlencode($saver['language'])."&loadname=".urlencode($saver['identifier'])."&loadpass=".urlencode($saver['password']);
                                     if (isset($tokendata['token'])) {$message.="&token=".$tokendata['token'];}
                                     $from = $thissurvey['adminemail'];
-        
+
                                     if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
                                     {
                                         $emailsent="Y";
@@ -1597,19 +1597,19 @@
                                     }
                                 }
                             }
-        
+
                         }
                         else
                         {
                             safe_die("Unable to insert record into saved_control table.<br /><br />");
                         }
-        
+
                     }
                     $dataentryoutput .= "\t<div class='successheader'>".$clang->gT("Success")."</div>\n";
                     $thisid=$this->db->insert_id();
                     $dataentryoutput .= "\t".$clang->gT("The entry was assigned the following record id: ")." {$thisid}<br /><br />\n";
                 }
-        
+
                 $dataentryoutput .= $errormsg;
                 $dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Add Another Record")."' onclick=\"window.open('".site_url('admin/dataentry/view/'.$surveyid.'/'.$_POST['language'])."', '_top')\" /><br /><br />\n";
                 $dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Return to survey administration")."' onclick=\"window.open('".site_url('admin/survey/view/'.$surveyid)."', '_top')\" /><br /><br />\n";
@@ -1622,21 +1622,21 @@
                     $dataentryoutput .= "\t<input type='submit' value='".$clang->gT("Browse Saved Responses")."' onclick=\"window.open('".site_url('admin/saved/'.$surveyid.'/all')."', '_top')\" /><br /><br />\n";
                 }
                 $dataentryoutput .= "</div>\n";
-                
+
                 $data['display'] = $dataentryoutput;
                 $this->load->view('survey_view',$data);
-        
+
             }
-        
-        
+
+
         }
-        
+
         self::_loadEndScripts();
-                
-                
+
+
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
+
     /**
      * dataentry::view()
      * view a dataentry
@@ -1647,21 +1647,21 @@
     function view($surveyid,$lang=NULL)
     {
         self::_getAdminHeader();
-        
+
         if (bHasSurveyPermission($surveyid, 'responses','read'))
         {
             $clang = $this->limesurvey_lang;
-            
+
             $sDataEntryLanguage = GetBaseLanguageFromSurveyID($surveyid);
             $surveyinfo=getSurveyInfo($surveyid);
-            
+
             $this->load->helper("admin/html_helper");
             browsemenubar($clang->gT("Data entry"),$surveyid,TRUE);
-            
+
             $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             array_unshift($slangs,$baselang);
-    
+
             if(is_null($lang) || !in_array($lang,$slangs))
             {
                 $sDataEntryLanguage = $baselang;
@@ -1671,7 +1671,7 @@
                 $blang = $this->limesurvey_lang; //new limesurvey_lang($lang);
                 $sDataEntryLanguage = $lang;
             }
-            
+
             $langlistbox = languageDropdown($surveyid,$sDataEntryLanguage);
             $thissurvey=getSurveyInfo($surveyid);
             //This is the default, presenting a blank dataentry form
@@ -1680,7 +1680,7 @@
             //$dataentryoutput .= $surveyoptions;
             /**
             $dataentryoutput .= "<div class='header ui-widget-header'>".$clang->gT("Data entry")."</div>\n";
-    
+
             $dataentryoutput .= "<form action='$scriptname?action=dataentry' enctype='multipart/form-data' name='addsurvey' method='post' id='addsurvey'>\n"
             ."<table class='data-entry-tbl' cellspacing='0'>\n"
             ."\t<tr>\n"
@@ -1689,9 +1689,9 @@
             ."\t<br />".FlattenText($thissurvey['description'])."\n"
             ."\t</td>\n"
             ."\t</tr>\n";
-    
+
             $dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
-    
+
             if (count(GetAdditionalLanguagesFromSurveyID($surveyid))>0)
             {
                 $dataentryoutput .= "\t<tr>\n"
@@ -1699,10 +1699,10 @@
                 ."\t".$langlistbox."\n"
                 ."\t</td>\n"
                 ."\t</tr>\n";
-    
+
                 $dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
             }
-    
+
             if (tableExists('tokens_'.$thissurvey['sid'])) //Give entry field for token id
             {
                 $dataentryoutput .= "\t<tr>\n"
@@ -1712,9 +1712,9 @@
                 ."\t<input type='text' id='token' name='token' onkeyup='activateSubmit(this);' />\n"
                 ."</td>\n"
                 ."\t</tr>\n";
-    
+
                 $dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
-    
+
                 $dataentryoutput .= "\n"
                 . "\t<script type=\"text/javascript\"><!-- \n"
                 . "\tfunction activateSubmit(me)\n"
@@ -1730,8 +1730,8 @@
                 . "\t}"
                 . "\t//--></script>\n";
             }
-    
-        
+
+
             if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
             {
                 $localtimedate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
@@ -1743,10 +1743,10 @@
                 ."\t<input type='text' name='datestamp' value='$localtimedate' />\n"
                 ."</td>\n"
                 ."\t</tr>\n";
-    
+
                 $dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
             }
-    
+
             if ($thissurvey['ipaddr'] == "Y") //Give ipaddress field
             {
                 $dataentryoutput .= "\t<tr>\n"
@@ -1757,7 +1757,7 @@
                 ."\t<input type='text' name='ipaddr' value='NULL' />\n"
                 ."</td>\n"
                 ."\t</tr>\n";
-    
+
                 $dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
             } */
             $data['clang'] = $clang;
@@ -1765,12 +1765,12 @@
             $data['langlistbox'] = $langlistbox;
             $data['surveyid'] = $surveyid;
             $data['blang'] = $blang;
-            
+
             $this->load->view("admin/DataEntry/caption_view",$data);
-            
+
             $this->load->helper('database');
-            
-    
+
+
             // SURVEY NAME AND DESCRIPTION TO GO HERE
             $degquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY ".$this->db->dbprefix."groups.group_order";
             $degresult = db_execute_assoc($degquery);
@@ -1784,15 +1784,15 @@
                 ."<td colspan='3' align='center'><strong>".FlattenText($degrow['group_name'])."</strong></td>\n"
                 ."\t</tr>\n";
                 $gid = $degrow['gid'];
-    
+
                 $dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
-    
+
                 $deqrows = array(); //Create an empty array in case FetchRow does not return any rows
                 foreach ($deqresult->result_array() as $deqrow) {$deqrows[] = $deqrow;} //Get table output into array
-    
+
                 // Perform a case insensitive natural sort on group name then question title of a multidimensional array
                 usort($deqrows, 'GroupOrderThenQuestionOrder');
-    
+
                 foreach ($deqrows as $deqrow)
                 {
                     //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
@@ -1804,11 +1804,11 @@
                     {
                         if ($s == 0 && $scenarioresult->num_rows() > 1) { $explanation .= " <br />-------- <i>Scenario {$scenariorow['scenario']}</i> --------<br />";}
                         if ($s > 0) { $explanation .= " <br />-------- <i>".$clang->gT("OR")." Scenario {$scenariorow['scenario']}</i> --------<br />";}
-    
+
                         $x=0;
                         $distinctquery="SELECT DISTINCT cqid, ".$this->db->dbprefix."questions.title FROM ".$this->db->dbprefix."conditions, ".$this->db->dbprefix."questions WHERE ".$this->db->dbprefix."conditions.cqid=".$this->db->dbprefix."questions.qid AND ".$this->db->dbprefix."conditions.qid={$deqrow['qid']} AND ".$this->db->dbprefix."conditions.scenario={$scenariorow['scenario']} ORDER BY cqid";
                         $distinctresult=db_execute_assoc($distinctquery);
-    
+
                         foreach ($distinctresult->result_array() as $distinctrow)
                         {
                             if ($x > 0) {$explanation .= " <i>".$blang->gT("AND")."</i><br />";}
@@ -1857,7 +1857,7 @@
                                             $conditions[]=$conrow['method']."'".$frow['title']."'";
                                         } // while
                                         break;
-    
+
                                     case "E":
                                         switch($conrow['value'])
                                         {
@@ -1885,7 +1885,7 @@
                                 $answer_section="";
                                 switch($conrow['type'])
                                 {
-    
+
                                     case "1":
                                         $ansquery="SELECT answer FROM ".$this->db->dbprefix."answers WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$baselang}'";
                                         $ansresult=db_execute_assoc($ansquery);
@@ -1896,7 +1896,7 @@
                                         $operator=$clang->gT("OR");
                                         if (isset($conditions)) $conditions = array_unique($conditions);
                                         break;
-    
+
                                     case "A":
                                     case "B":
                                     case "C":
@@ -1953,17 +1953,17 @@
                         $cdata['explanation'] = $explanation;
                         //$dataentryoutput .= "<tr class ='data-entry-explanation'><td class='data-entry-small-text' colspan='3' align='left'>$explanation</td></tr>\n";
                     }
-    
+
                     //END OF GETTING CONDITIONS
-    
+
                     //Alternate bgcolor for different groups
                     if (!isset($bgc)) {$bgc = "even";}
                     if ($bgc == "even") {$bgc = "odd";}
                     else {$bgc = "even";}
-        
+
                     $qid = $deqrow['qid'];
                     $fieldname = "$surveyid"."X"."$gid"."X"."$qid";
-                    
+
                     $cdata['bgc'] = $bgc;
                     $cdata['fieldname'] = $fieldname;
                     $cdata['deqrow'] = $deqrow;
@@ -1980,7 +1980,7 @@
                     ."<td valign='top'  align='left' style='padding-left: 20px'>\n"; */
                     //DIFFERENT TYPES OF DATA FIELD HERE
                     $cdata['blang'] = $blang;
-                    
+
                     $cdata['thissurvey'] = $thissurvey;
                     if ($deqrow['help'])
                     {
@@ -2022,7 +2022,7 @@
                             ."<option value='F'>".$blang->gT("Female")."</option>\n"
                             ."<option value='M'>".$blang->gT("Male")."</option>\n"
                             ."\t</select>\n";
-                            
+
                             break; */
                         case "Q": //MULTIPLE SHORT TEXT
                         case "K":
@@ -2039,19 +2039,19 @@
                                 ."\t<td><input type='text' name='$fieldname{$dearow['title']}' /></td>\n"
                                 ."</tr>\n";
                             }
-                            $dataentryoutput .= "\t</table>\n"; 
+                            $dataentryoutput .= "\t</table>\n";
                             */
                             break;
-                            
+
                         case "1": // multi scale^
                             $deaquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$baselang}' ORDER BY question_order";
                             $dearesult = db_execute_assoc($deaquery);
-                            
+
                             $cdata['dearesult'] = $dearesult;
                             /**
-                            
+
                             $dataentryoutput .='<table><tr><td></td><th>'.sprintf($clang->gT('Label %s'),'1').'</th><th>'.sprintf($clang->gT('Label %s'),'2').'</th></tr>';
-    
+
                             while ($dearow = $dearesult->FetchRow())
                             {
                                 // first scale
@@ -2099,7 +2099,7 @@
                             }
                             $dataentryoutput .= "</tr></table>"; */
                             break;
-    
+
                         case "L": //LIST drop-down/radio-button list
                         case "!":
                             $qidattributes=getQuestionAttributes($deqrow['qid']);
@@ -2159,17 +2159,17 @@
                                     $datatemp .= ">{$optionarray['answer']}</option>\n";
                                 }
                             }
-    
+
                             if ($defexists=="") {$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
                             else {$dataentryoutput .=$datatemp;}
-    
+
                             $oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
                             $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />");
                             foreach($oresult->result_array() as $orow)
                             {
                                 $fother=$orow['other'];
                             }
-                            
+
                             $cdata['fother'] = $fother;
                             /**
                             if ($fother == "Y")
@@ -2196,7 +2196,7 @@
                                 $datatemp .= "<option value='{$dearow['code']}'";
                                 //if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
                                 $datatemp .= ">{$dearow['answer']}</option>\n";
-                                
+
                             }
                             $cdata['datatemp'] = $datatemp;
                             $cdata['defexists'] = $defexists;
@@ -2206,7 +2206,7 @@
                             $dataentryoutput .= "\t</select>\n"
                             ."\t<br />".$blang->gT("Comment").":<br />\n"
                             ."\t<textarea cols='40' rows='5' name='$fieldname"
-                            ."comment'></textarea>\n"; 
+                            ."comment'></textarea>\n";
                             */
                             break;
                         case "R": //RANKING TYPE QUESTION
@@ -2214,7 +2214,7 @@
                             $ansquery = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid=$thisqid AND language='{$sDataEntryLanguage}' ORDER BY sortorder, answer";
                             $ansresult = db_execute_assoc($ansquery);
                             $anscount = $ansresult->num_rows();
-                            
+
                             $cdata['thisqid'] = $thisqid;
                             $cdata['anscount'] = $anscount;
                             /**
@@ -2400,12 +2400,12 @@
                             $meaquery = "SELECT title, question FROM ".$this->db->dbprefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = db_execute_assoc($meaquery);
                             $meacount = $mearesult->num_rows();
-                            
+
                             $cdata['dcols'] = $dcols;
                             $cdata['meacount'] = $meacount;
                             $cdata['mearesult'] = $mearesult;
                             /**
-                            
+
                             if ($deqrow['other'] == "Y") {$meacount++;}
                             if ($dcols > 0 && $meacount >= $dcols)
                             {
@@ -2460,7 +2460,7 @@
                             $dataentryoutput .= "<option value=''";
                             $dataentryoutput .= " selected='selected'";
                             $dataentryoutput .= ">".$blang->gT("Please choose")."..</option>\n";
-    
+
                             foreach ($slangs as $lang)
                             {
                                 $dataentryoutput.="<option value='{$lang}'";
@@ -2474,7 +2474,7 @@
                             //$dataentryoutput .= "<table border='0'>\n";
                             $meaquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order, question";
                             $mearesult = db_execute_assoc($meaquery);
-                            
+
                             $cdata['mearesult'] = $mearesult;
                             /**
                             while ($mearow = $mearesult->FetchRow())
@@ -2511,31 +2511,31 @@
                             /**
                             // JS to update the json string
                             $dataentryoutput .= "<script type='text/javascript'>
-    
+
                                 function updateJSON".$fieldname."() {
-    
+
                                     var jsonstr = '[';
                                     var i;
                                     var filecount = 0;
-    
+
                                     for (i = 0; i < " . $qidattributes['max_num_of_files'] . "; i++)
                                     {
                                         if ($('#".$fieldname."_file_'+i).val() != '')
                                         {";
-    
+
                             if ($qidattributes['show_title'])
                                 $dataentryoutput .= "jsonstr += '{\"title\":\"'+$('#".$fieldname."_title_'+i).val()+'\",';";
                             else
                                 $dataentryoutput .= "jsonstr += '{\"title\":\"\",';";
-    
-                            
+
+
                             if ($qidattributes['show_comment'])
                                 $dataentryoutput .= "jsonstr += '\"comment\":\"'+$('#".$fieldname."_comment_'+i).val()+'\",';";
                             else
                                 $dataentryoutput .= "jsonstr += '\"comment\":\"\",';";
-    
+
                             $dataentryoutput .= "jsonstr += '\"name\":\"'+$('#".$fieldname."_file_'+i).val()+'\"}';";
-    
+
                             $dataentryoutput .= "jsonstr += ',';\n
                                 filecount++;
                                         }
@@ -2543,23 +2543,23 @@
                                     // strip trailing comma
                                     if (jsonstr.charAt(jsonstr.length - 1) == ',')
                                     jsonstr = jsonstr.substring(0, jsonstr.length - 1);
-                                    
+
                                     jsonstr += ']';
                                     $('#" . $fieldname . "').val(jsonstr);
                                     $('#" . $fieldname . "_filecount').val(filecount);
                                 }
                             </script>\n";
-    
+
                             $dataentryoutput .= "<table border='0'>\n";
-    
-    
+
+
                             if ($qidattributes['show_title'] && $qidattributes['show_title'])
                                 $dataentryoutput .= "<tr><th>Title</th><th>Comment</th>";
                             else if ($qidattributes['show_title'])
                                 $dataentryoutput .= "<tr><th>Title</th>";
                             else if ($qidattributes['show_comment'])
                                 $dataentryoutput .= "<tr><th>Comment</th>";
-    
+
                             $dataentryoutput .= "<th>Select file</th></tr>\n";
                             */
                             $maxfiles = $qidattributes['max_num_of_files'];
@@ -2570,10 +2570,10 @@
                                 $dataentryoutput .= "<tr>\n";
                                 if ($qidattributes['show_title'])
                                     $dataentryoutput .= "<td align='center'><input type='text' id='".$fieldname."_title_".$i  ."' maxlength='100' onChange='updateJSON".$fieldname."()' /></td>\n";
-    
+
                                 if ($qidattributes['show_comment'])
                                     $dataentryoutput .= "<td align='center'><input type='text' id='".$fieldname."_comment_".$i."' maxlength='100' onChange='updateJSON".$fieldname."()' /></td>\n";
-    
+
                                 $dataentryoutput .= "<td align='center'><input type='file' name='".$fieldname."_file_".$i."' id='".$fieldname."_file_".$i."' onChange='updateJSON".$fieldname."()' /></td>\n</tr>\n";
                             }
                             $dataentryoutput .= "<tr><td align='center'><input type='hidden' name='".$fieldname."' id='".$fieldname."' value='' /></td>\n</tr>\n";
@@ -2604,7 +2604,7 @@
                         case "A": //ARRAY (5 POINT CHOICE) radio-buttons
                             $meaquery = "SELECT title, question FROM ".$this->db->dbprefix."questions WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = db_execute_assoc($meaquery);
-                            
+
                             $cdata['mearesult'] = $mearesult;
                             /**
                             $dataentryoutput .= "<table>\n";
@@ -2716,7 +2716,7 @@
                                     $maxvalue=$qidattributes['multiflexible_max'];
                                 }
                             }
-                             
+
                             if (trim($qidattributes['multiflexible_step'])!='') {
                                 $stepvalue=$qidattributes['multiflexible_step'];
                             } else {
@@ -2731,8 +2731,8 @@
                             $cdata['minvalue'] = $minvalue;
                             $cdata['maxvalue'] = $maxvalue;
                             $cdata['stepvalue'] = $stepvalue;
-                            
-                             
+
+
                             //$dataentryoutput .= "<table>\n";
                             //$dataentryoutput .= "  <tr><td></td>\n";
                             //$labelcodes=array();
@@ -2745,9 +2745,9 @@
                                 $dataentryoutput .= "    <th>{$data['question']}</th>\n";
                                 $labelcodes[]=$data['title'];
                             }
-                             
+
                             $dataentryoutput .= "  </tr>\n";
-                            */ 
+                            */
                             $meaquery = "SELECT question, title FROM ".$this->db->dbprefix."questions WHERE parent_qid={$deqrow['qid']} and scale_id=0 and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
                             $cdata['mearesult'] = $mearesult;
@@ -2765,10 +2765,10 @@
                                     $answerleft=$mearow['question'];
                                     $answerright='';
                                 }
-                                
-                                
-                                
-                                
+
+
+
+
                                 $dataentryoutput .= "\t<tr>\n";
                                 $dataentryoutput .= "<td align='right'>{$answerleft}</td>\n";
                                 foreach($labelcodes as $ld)
@@ -2789,11 +2789,11 @@
                                     $dataentryoutput .= "</td>\n";
                                 }
                                 $dataentryoutput .= "\t</tr>\n";
-                                
+
                                 $i++;
                             }
                             $i--;
-                            
+
                             $dataentryoutput .= "</table>\n";
                             */
                             break;
@@ -2803,7 +2803,7 @@
                             $lquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE scale_id=1 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $lresult=db_execute_assoc($lquery) or die ("Couldn't get labels, Type \":\"<br />$lquery<br />");
                             $cdata['lresult'] = $lresult;
-                            
+
                             /**
                             $labelcodes=array();
                             while ($data=$lresult->FetchRow())
@@ -2811,13 +2811,13 @@
                                 $dataentryoutput .= "    <th>{$data['question']}</th>\n";
                                 $labelcodes[]=$data['title'];
                             }
-                             
+
                             $dataentryoutput .= "  </tr>\n";
                             */
-                             
+
                             $meaquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE scale_id=0 and parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult=db_execute_assoc($meaquery) or die ("Couldn't get answers, Type \":\"<br />$meaquery<br />");
-                            
+
                             $cdata['mearesult'] = $mearesult;
                             /**
                             $i=0;
@@ -2852,7 +2852,7 @@
                         case "H":
                             $meaquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE parent_qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult=db_execute_assoc($meaquery) or safe_die ("Couldn't get answers, Type \"E\"<br />$meaquery<br />");
-                            
+
                             $cdata['mearesult'] = $mearesult;
                             /**
                             $dataentryoutput .= "<table>\n";
@@ -2874,7 +2874,7 @@
                                 $dataentryoutput .= "\t<select name='$fieldname{$mearow['title']}'>\n";
                                 $dataentryoutput .= "<option value=''>".$blang->gT("Please choose")."..</option>\n";
                                 */
-                                
+
                                 $fquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY sortorder, code";
                                 $fresult = db_execute_assoc($fquery);
                                 $cdata['fresult'] = $fresult;
@@ -2896,19 +2896,19 @@
                     //$dataentryoutput .= "</td>\n";
                     //$dataentryoutput .= "\t</tr>\n";
                     //$dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
-                    
+
                     $dataentryoutput .= $this->load->view("admin/DataEntry/content_view",$cdata,TRUE);
                 }
             }
-            
+
             $sdata['display'] = $dataentryoutput;
             $this->load->view("survey_view",$sdata);
-            
+
             $adata['clang'] = $clang;
             $adata['thissurvey'] = $thissurvey;
             $adata['surveyid'] = $surveyid;
             $adata['sDataEntryLanguage'] = $sDataEntryLanguage;
-            
+
             if ($thissurvey['active'] == "Y")
             {
                 /**
@@ -2954,7 +2954,7 @@
     					  <tr><td align='right'>".$clang->gT("Email:")."</td>
     					  <td><input type='text' name='save_email' /></td></tr>
     					  <tr><td align='right'>".$clang->gT("Start Language:")."</td>
-    					  <td>"; 
+    					  <td>";
                           */
                     $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                     $sbaselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -2969,8 +2969,8 @@
                         else {$dataentryoutput.="\t<option value='{$lang}'>".getLanguageNameFromCode($lang,false)."</option>\n";}
                     }
                     $dataentryoutput .= "</select>";
-    
-    
+
+
                     $dataentryoutput .= "</td></tr></table></div>\n";
                     $dataentryoutput .= "</td>\n";
                     $dataentryoutput .= "\t</tr>\n";
@@ -2980,7 +2980,7 @@
                 $dataentryoutput .= "\t<tr>\n";
                 $dataentryoutput .= "<td colspan='3' align='center'>\n";
                 $dataentryoutput .= "\t<input type='submit' id='submitdata' value='".$clang->gT("Submit")."'";
-    
+
                 if (tableExists('tokens_'.$thissurvey['sid']))
                 {
                     $dataentryoutput .= " disabled='disabled'/>\n";
@@ -3024,20 +3024,20 @@
             $dataentryoutput .= "\t</tr>\n";
             $dataentryoutput .= "</table>\n";
             $dataentryoutput .= "\t</form>\n";
-        
+
             */
-            
+
             $this->load->view("admin/DataEntry/active_html_view",$adata);
-            
+
         }
-        
+
         self::_loadEndScripts();
-                
-                
+
+
 	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
-        
+
     }
-    
-    
+
+
  }
