@@ -362,9 +362,12 @@ $config['proxy_ips'] = '';
 |  Auto-load Super Controllers
 |--------------------------------------------------------------------------
 */
-function __autoload($class) {
-	if(strpos($class, 'CI_') !== 0) {
-		@include_once (APPPATH . 'core/' . $class . EXT);
+if (!function_exists('__autoload'))
+{
+	function __autoload($class) {
+		if(strpos($class, 'CI_') !== 0) {
+			@include_once (APPPATH . 'core/' . $class . EXT);
+		}
 	}
 }
 
