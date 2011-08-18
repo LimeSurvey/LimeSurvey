@@ -443,7 +443,7 @@ CREATE TABLE [prefix_participant_attribute_names_lang] (
     [id] int(11) NOT NULL AUTO_INCREMENT,
     [attribute_id] int(11) NOT NULL,
     [attribute_name] varchar(30) NOT NULL,
-    [lang] varchar(4) NOT NULL,
+    [lang] varchar(20) NOT NULL,
     PRIMARY KEY  ([attribute_id],[attribute_type])
 );
 --

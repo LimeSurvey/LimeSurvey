@@ -455,7 +455,7 @@ CREATE TABLE prefix_participant_attribute_names_lang (
   "id" integer NOT NULL AUTO_INCREMENT,
   "attribute_id" integer NOT NULL,
   "attribute_name" VARCHAR( 30 ) NOT NULL,
-  "lang" CHAR( 5 ) NOT NULL,
+  "lang" CHAR( 20 ) NOT NULL,
   PRIMARY KEY (lang,attribute_id)
 );
 -- 
