@@ -16,8 +16,13 @@
         echo "<a href='{$tmp_url}/lang-".$surveyinfo['language']."' target='_blank'>{$tmp_url}/lang-".$surveyinfo['language']."</a>";
         foreach ($aAdditionalLanguages as $langname)
         {
+
+            echo "&nbsp;<a href='$tmp_url/lang-$langname' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)
+            ."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='".$this->config->item("imageurl")."/flags/$langname.png' /></a>";
+
             echo "&nbsp;<a href='{$tmp_url}/lang-{$langname}' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)
             ."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='".$this->config->item("imageurl")."/flags/{$langname}.png' /></a>";
+
         } ?>
 		</td>
 	</tr>

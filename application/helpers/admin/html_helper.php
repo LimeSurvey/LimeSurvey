@@ -118,7 +118,7 @@ function browsemenubar($title='',$surveyid=null,$load=false)
     //Import old response table
     if (bHasSurveyPermission($surveyid,'responses','create'))  
     {
-        $browsemenubar .= "<a href='".$CI->config->item('scriptname')."?action=importoldresponses&amp;sid=$surveyid' title=\"".$clang->gTview("Import responses from a deactivated survey table")."\" >"
+        $browsemenubar .= "<a href='".site_url('admin/dataentry/import/'.$surveyid)."' title=\"".$clang->gTview("Import responses from a deactivated survey table")."\" >"
         . "<img name='ImportOldResponses' src='".$CI->config->item('imageurl')."/importold.png' alt='".$clang->gT("Import responses from a deactivated survey table")."' /></a>\n";
     }       
 
@@ -134,7 +134,7 @@ function browsemenubar($title='',$surveyid=null,$load=false)
     //Import VV
     if (bHasSurveyPermission($surveyid,'responses','import'))  
     {    
-        $browsemenubar .= "<a href='".$CI->config->item('scriptname')."?action=vvimport&amp;sid=$surveyid' title=\"".$clang->gTview("Import a VV survey file")."\" >"
+        $browsemenubar .= "<a href='".site_url('admin/dataentry/vvimport/'.$surveyid)."' title=\"".$clang->gTview("Import a VV survey file")."\" >"
         . "<img src='".$CI->config->item('imageurl')."/importvv.png' alt='".$clang->gT("Import a VV survey file")."' /></a>\n";
     }
 

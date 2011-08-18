@@ -3429,7 +3429,7 @@ function templatereplace($line, $replacements=array(),$redata)
     if (strpos($line, "{CLEARALL}") !== false)  {
 
         $clearall = "<button class='nav-button ui-corner-all'  type='button' name='clearallbtn'  class='clearall' "
-        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?",'js')."')) {window.open('".site_url('survey/sid/'.$surveyid.'/move/clearall/lang/'.$_SESSION['s_lang']);
+        ."onclick=\"if (confirm('".$clang->gT("Are you sure you want to clear all your responses?",'js')."')) {window.open('".site_url('survey/sid/'.$surveyid.'/move/clearall/lang/'.$CI->session->userdata('s_lang'));
         if (returnglobal('token'))
         {
             $clearall .= "/token/".urlencode(trim(sanitize_xss_string(strip_tags(returnglobal('token')))));
@@ -7728,7 +7728,9 @@ function checkquestionfordisplay($qid, $gid=null)
 */
 function sStripDBPrefix($sTableName)
 {
-    global $dbprefix;
+    //global $dbprefix;
+    global $CI; 
+    $dbprefix = $CI->db->dbprefix;
     return substr($sTableName,strlen($dbprefix));
 }
 

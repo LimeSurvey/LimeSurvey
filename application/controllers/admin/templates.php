@@ -33,8 +33,292 @@
 	{
 		parent::__construct();
 	}
+    
+    /**
+     * templates::upload()
+     * function responsible to import a template archive.
+     * @return void
+     */
+    function upload()
+    {
+        $clang = $this->limesurvey_lang;
+        
+        self::_js_admin_includes(base_url().'scripts/admin/templates.js');
+        
+        self::_getAdminHeader();
+        self::_initialise('default','welcome', 'startpage.pstpl',FALSE);
+        $lid = $this->input->post('lid');
+        $action = $this->input->post('action');
+        
+        
+        
+        if ($action == 'templateupload')
+        {
+            $basedestdir = $this->config->item('publicdir')."/upload/surveys";
+            $importtemplateoutput = "<div class='header ui-widget-header'>".$clang->gT("Import template")."</div>\n";
+            $importtemplateoutput .= "<div class='messagebox ui-corner-all'>";
+            
+            if ($this->config->item('demoModeOnly') === true)
+            {
+                $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                $importtemplateoutput .= sprintf ($clang->gT("Demo mode: Uploading templates is disabled."),$basedestdir)."<br/><br/>\n";
+                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                $importtemplateoutput .= "</div>\n";
+                show_error($importtemplateoutput);
+                return;
+            }
+        
+            //require("classes/phpzip/phpzip.inc.php");
+            $this->load->library('admin/Phpzip');
+            //$the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
+            $zipfile=$_FILES['the_file']['tmp_name'];
+            $z = $this->phpzip; //new PHPZip();
+            // Create temporary directory
+            // If dangerous content is unzipped
+            // then no one will know the path
+            $extractdir=self::_tempdir($this->config->item('tempdir'));
+            $basedestdir = $this->config->item('usertemplaterootdir');
+            $newdir=str_replace('.','',self::_strip_ext(sanitize_paranoid_string($_FILES['the_file']['name'])));
+            $destdir=$basedestdir.'/'.$newdir.'/';
+        
+            if (!is_writeable($basedestdir))
+            {
+                $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                $importtemplateoutput .= sprintf ($clang->gT("Incorrect permissions in your %s folder."),$basedestdir)."<br/><br/>\n";
+                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                $importtemplateoutput .= "</div>\n";
+                show_error($importtemplateoutput);
+                return;
+            }
+            
+            if (!is_dir($destdir))
+            {
+                mkdir($destdir);
+            }
+            else
+            {
+                $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                $importtemplateoutput .= sprintf ($clang->gT("Template '%s' does already exist."),$newdir)."<br/><br/>\n";
+                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                $importtemplateoutput .= "</div>\n";
+                show_error($importtemplateoutput);
+                return;
+            }
+        
+            $aImportedFilesInfo=array();
+            $aErrorFilesInfo=array();
+        
+        
+            if (is_file($zipfile))
+            {
+                $importtemplateoutput .= "<div class=\"successheader\">".$clang->gT("Success")."</div><br />\n";
+                $importtemplateoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
+                $importtemplateoutput .= $clang->gT("Reading file..")."<br /><br />\n";
+                
+                if ($z->extract($extractdir,$zipfile) != 'OK')
+                {
+                    $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                    $importtemplateoutput .= $clang->gT("This file is not a valid ZIP file archive. Import failed.")."<br/><br/>\n";
+                    $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                    $importtemplateoutput .= "</div>\n";
+                    show_error($importtemplateoutput);
+                    return;
+                }
+        
+                $ErrorListHeader = "";
+                $ImportListHeader = "";
+        
+                // now read tempdir and copy authorized files only
+                $dh = opendir($extractdir);
+                while($direntry = readdir($dh))
+                {
+                    if (($direntry!=".")&&($direntry!=".."))
+                    {
+                        if (is_file($extractdir."/".$direntry))
+                        { // is  a file
+                            $extfile = substr(strrchr($direntry, '.'),1);
+                            if  (!(stripos(','.$allowedresourcesuploads.',',','.$extfile.',') === false))
+                            { //Extension allowed
+                                if (!copy($extractdir."/".$direntry, $destdir.$direntry))
+                                {
+                                    $aErrorFilesInfo[]=Array(
+                                        "filename" => $direntry,
+                                        "status" => $clang->gT("Copy failed")
+                                    );
+                                    unlink($extractdir."/".$direntry);
+        
+                                }
+                                else
+                                {
+                                    $aImportedFilesInfo[]=Array(
+                                        "filename" => $direntry,
+                                        "status" => $clang->gT("OK")
+                                    );
+                                    unlink($extractdir."/".$direntry);
+                                }
+                            }
+        
+                            else
+                            { // Extension forbidden
+                                $aErrorFilesInfo[]=Array(
+                                    "filename" => $direntry,
+                                    "status" => $clang->gT("Error")." (".$clang->gT("Forbidden Extension").")"
+                                    );
+                                    unlink($extractdir."/".$direntry);
+                            }
+                        } // end if is_file
+                    } // end if ! . or ..
+                } // end while read dir
+        
+        
+                //Delete the temporary file
+                unlink($zipfile);
+                closedir($dh);
+                //Delete temporary folder
+                rmdir($extractdir);
+        
+                // display summary
+                $okfiles = 0;
+                $errfiles= 0;
+                if (count($aErrorFilesInfo)==0 && count($aImportedFilesInfo)>0)
+                {
+                    $status=$clang->gT("Success");
+                    $statusClass='successheader';
+                    $okfiles = count($aImportedFilesInfo);
+                    $ImportListHeader .= "<br /><strong><u>".$clang->gT("Imported Files List").":</u></strong><br />\n";
+                }
+                elseif (count($aErrorFilesInfo)==0 && count($aImportedFilesInfo)==0)
+                {
+                    $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                    $importtemplateoutput .= $clang->gT("This ZIP archive contains no valid template files. Import failed.")."<br /><br />\n";
+                    $importtemplateoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP archives.")."<br/><br/>\n";
+                    $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                    $importtemplateoutput .= "</div>\n";
+                    show_error($importtemplateoutput);
+                    return;
+        
+                }
+                elseif (count($aErrorFilesInfo)>0 && count($aImportedFilesInfo)>0)
+                {
+                    $status=$clang->gT("Partial");
+                    $statusClass='partialheader';
+                    $okfiles = count($aImportedFilesInfo);
+                    $errfiles = count($aErrorFilesInfo);
+                    $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
+                    $ImportListHeader .= "<br /><strong><u>".$clang->gT("Imported Files List").":</u></strong><br />\n";
+                }
+                else
+                {
+                    $status=$clang->gT("Error");
+                    $statusClass='warningheader';
+                    $errfiles = count($aErrorFilesInfo);
+                    $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
+                }
+        
+                $importtemplateoutput .= "<strong>".$clang->gT("Imported template files for")."</strong> $lid<br /><br />\n";
+                $importtemplateoutput .= "<div class=\"".$statusClass."\">".$status."</div><br />\n";
+                $importtemplateoutput .= "<strong><u>".$clang->gT("Resources Import Summary")."</u></strong><br />\n";
+                $importtemplateoutput .= "".$clang->gT("Total Imported files").": $okfiles<br />\n";
+                $importtemplateoutput .= "".$clang->gT("Total Errors").": $errfiles<br />\n";
+                $importtemplateoutput .= $ImportListHeader;
+                foreach ($aImportedFilesInfo as $entry)
+                {
+                    $importtemplateoutput .= "\t<li>".$clang->gT("File").": ".$entry["filename"]."</li>\n";
+                }
+                if (!is_null($aImportedFilesInfo))
+                {
+                    $importtemplateoutput .= "\t</ul><br />\n";
+                }
+                $importtemplateoutput .= $ErrorListHeader;
+                foreach ($aErrorFilesInfo as $entry)
+                {
+                    $importtemplateoutput .= "\t<li>".$clang->gT("File").": ".$entry['filename']." (".$entry['status'].")</li>\n";
+                }
+                if (!is_null($aErrorFilesInfo))
+                {
+                    $importtemplateoutput .= "\t</ul><br />\n";
+                }
+            }
+            else
+            {
+                $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
+                $importtemplateoutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$basedestdir)."<br/><br/>\n";
+                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                $importtemplateoutput .= "</div>\n";
+                show_error($importtemplateoutput);
+                return;
+            }
+            $importtemplateoutput .= "<input type='submit' value='".$clang->gT("Open imported template")."' onclick=\"window.open('".site_url('admin/templates/view/startpage.pstpl/welcome/'.$newdir)."', '_top')\"/>\n";
+            $importtemplateoutput .= "</div>\n";
+            
+            $idata['display'] = $importtemplateoutput;
+            $this->load->view('survey_view',$idata);
+            
+        }
+        else
+        {
+            
+            $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) {this.form.submit();}'";
+            if (!function_exists("zip_open"))
+            {
+                $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
+            }
+            $templatesoutput= "<div class='header ui-widget-header'>".$clang->gT("Uploaded template file") ."</div>\n";
+    
 
-
+            $templatesoutput.= "\t<form enctype='multipart/form-data' id='importtemplate' name='importtemplate' action='".site_url('admin/templates/upload')."' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+                            . "\t<input type='hidden' name='lid' value='$lid' />\n"
+                            . "\t<input type='hidden' name='action' value='templateupload' />\n"
+                            . "\t<ul>\n"
+                            . "<li><label for='the_file'>".$clang->gT("Select template ZIP file:")."</label>\n"
+                            . "<input id='the_file' name='the_file' type=\"file\" size=\"50\" /></li>\n"
+                            . "<li><label>&nbsp;</label><input type='button' value='".$clang->gT("Import template ZIP archive")."' $ZIPimportAction /></li>\n"
+                            . "\t</ul></form>\n";
+            $data['display'] = $templatesoutput;
+            $this->load->view('survey_view',$data);
+        }
+        
+        
+        
+        self::_loadEndScripts();
+                
+                
+	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        
+        
+    }
+    
+    //---------------------
+    // Comes from http://fr2.php.net/tempnam
+    function _tempdir($dir, $prefix='', $mode=0700)
+    {
+        if (substr($dir, -1) != '/') $dir .= '/';
+    
+        do
+        {
+            $path = $dir.$prefix.mt_rand(0, 9999999);
+        } while (!mkdir($path, $mode));
+    
+        return $path;
+    }
+    
+    /**
+     * Strips file extension
+     *
+     * @param string $name
+     * @return string
+     */
+    function _strip_ext($name)
+    {
+        $ext = strrchr($name, '.');
+        if($ext !== false)
+        {
+            $name = substr($name, 0, -strlen($ext));
+        }
+        return $name;
+    }
+    
+    
     /**
      * templates::view()
      * Load default view screen of template controller.
@@ -470,9 +754,10 @@
      * @param mixed $templatename
      * @param mixed $screenname
      * @param mixed $editfile
+     * @param bool $showsummary
      * @return
      */
-    function _initialise($templatename, $screenname, $editfile)
+    function _initialise($templatename, $screenname, $editfile,$showsummary=TRUE)
     {
         global $siteadminname, $siteadminemail;
         $clang = $this->limesurvey_lang;
@@ -1078,6 +1363,7 @@
         self::_templateditorbar($codelanguage,$highlighter,$this->session->userdata('flashmessage'),$templatename,$templates,$editfile,$screenname);
 
         self::_templatebar($screenname,$editfile,$screens,$this->config->item('tempdir'),$templatename);
+        if ($showsummary)
         self::_templatesummary($templatename,$screenname,$editfile,$templates,$files,$cssfiles,$otherfiles,$myoutput);
 
 

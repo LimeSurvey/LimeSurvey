@@ -45,7 +45,7 @@
                 <?php }
                 else
                 { ?>
-                    <a href='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'
+                    <a href='<?php echo site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
     				onclick="alert('<?php echo $clang->gT("It's impossible to delete this question because there is at least one question having a condition on it.","js"); ?>')"
     				title="<?php echo $clang->gTview("Disabled - Delete current question"); ?>">
     				<img src='<?php echo $this->config->item('imageurl'); ?>/delete_disabled.png' name='DeleteWholeQuestion' alt='<?php echo $clang->gT("Disabled - Delete current question"); ?>' /></a>
@@ -197,7 +197,7 @@
             { ?>
                 <tr ><td></td><td align='left'>
                 <span class='statusentryhighlight'>
-                <?php echo $clang->gT("Warning"); ?>: <a href='$scriptname?sid={$surveyid}&amp;gid={$gid}&amp;qid={$qid}&amp;action=editansweroptions'><?php echo $clang->gT("You need to add answer options to this question"); ?>
+                <?php echo $clang->gT("Warning"); ?>: <a href='<?php echo site_url('admin/question/answeroptions/'.$surveyid."/".$gid."/".$qid); ?>'><?php echo $clang->gT("You need to add answer options to this question"); ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/answers_20.png' title='
                 <?php echo $clang->gT("Edit answer options for this question"); ?>' name='EditThisQuestionAnswers'/></span></td></tr>
             <?php }
@@ -207,7 +207,7 @@
             { ?>
                <tr ><td></td><td align='left'>
                 <span class='statusentryhighlight'>
-                <?php echo $clang->gT("Warning"); ?>: <a href='$scriptname?sid={$surveyid}&amp;gid={$gid}&amp;qid={$qid}&amp;action=editsubquestions'><?php echo $clang->gT("You need to add subquestions to this question"); ?>
+                <?php echo $clang->gT("Warning"); ?>: <a href='<?php echo site_url('admin/question/subquestions/'.$surveyid."/".$gid."/".$qid); ?>'><?php echo $clang->gT("You need to add subquestions to this question"); ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/subquestions_20.png' title='
                 <?php echo $clang->gT("Edit subquestions for this question"); ?>' name='EditThisQuestionAnswers' /></span></td></tr>
             <?php }

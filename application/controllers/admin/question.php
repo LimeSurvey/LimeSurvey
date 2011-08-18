@@ -1506,7 +1506,7 @@
     }
 
     /**
-     * question::questionattributes()
+     * question::ajaxquestionattributes()
      *
      * @return
      */

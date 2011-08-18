@@ -169,7 +169,7 @@
 				} ?>
 				<?php if($responsesread) {
 		   			if($canactivate) { ?>
-		            <li><a href='<?php echo site_url("admin/saved/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/saved/view/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/saved_30.png' name='BrowseSaved' /> <?php echo $clang->gT("Partial (saved) responses");?></a></li>
 		        <?php } else { ?>
                		<li><a href="#" onclick="alert('<?php echo $clang->gT("This survey is not active - no responses are available","js");?>');" >

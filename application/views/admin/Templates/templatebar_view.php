@@ -26,7 +26,7 @@
         <a href='#' onclick='javascript:window.open("admin.php?action=templatezip&amp;editfile=$editfile&amp;screenname=<?php echo urlencode($screenname); ?>&amp;templatename=$templatename", "_top")'
          title="<?php echo $clang->gTview("Export Template"); ?>" >
         <img name='Export' src='<?php echo $this->config->item('imageurl'); ?>/export.png' alt='<?php echo $clang->gT("Export Template"); ?>' /></a>
-        <a href='#' onclick='javascript:window.open("admin.php?action=templates&amp;subaction=templateupload", "_top")'
+        <a href='#' onclick='javascript:window.open("<?php echo site_url('admin/templates/upload'); ?>", "_top")'
          title="<?php echo $clang->gTview("Import template"); ?>" >
         <img name='ImportTemplate' src='<?php echo $this->config->item('imageurl'); ?>/import.png' alt='<?php echo $clang->gT("Import template"); ?>' title='' /></a>
         <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt='' border='0' />
