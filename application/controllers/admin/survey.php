@@ -1797,7 +1797,7 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
         $data['surveyid'] = $surveyid;
-        return $this->load->view('admin/survey/superview/superGeneralEditSurvey_view',$data, true);
+        return $this->load->view('admin/Survey/superview/superGeneralEditSurvey_view',$data, true);
 
     }
 
@@ -2151,7 +2151,7 @@
         $data['showXquestions'] = $showXquestions;
         $data['showgroupinfo'] = $showgroupinfo;
         $data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/superview/superPresentation_view',$data, true);
+        return $this->load->view('admin/Survey/superview/superPresentation_view',$data, true);
 
     }
 
@@ -2317,7 +2317,7 @@
         $data['expires'] = $expires;
         //$data['showgroupinfo'] = $showgroupinfo;
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/superview/superPublication_view',$data, true);
+        return $this->load->view('admin/Survey/superview/superPublication_view',$data, true);
 
     }
 
@@ -2551,7 +2551,7 @@
         $data['esrow'] = $esrow;
 
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/superview/superNotification_view',$data, true);
+        return $this->load->view('admin/Survey/superview/superNotification_view',$data, true);
 
     }
 
@@ -2594,7 +2594,7 @@
         $data['esrow'] = $esrow;
 
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/superview/superTokens_view',$data, true);
+        return $this->load->view('admin/Survey/superview/superTokens_view',$data, true);
     }
 
     /**
@@ -2628,7 +2628,7 @@
         //$data['esrow'] = $esrow;
 
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/superview/superImport_view',$data, true);
+        return $this->load->view('admin/Survey/superview/superImport_view',$data, true);
     }
 
     /**
@@ -2675,7 +2675,7 @@
         //$data['esrow'] = $esrow;
 
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/superview/superCopy_view',$data, true);
+        return $this->load->view('admin/Survey/superview/superCopy_view',$data, true);
     }
 
 
@@ -2725,7 +2725,7 @@
         $data['disabledIfNoResources'] = $disabledIfNoResources;
         $dqata['sCKEditorURL'] = $sCKEditorURL;
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/superview/superResourceManagement_view',$data, true);
+        return $this->load->view('admin/Survey/superview/superResourceManagement_view',$data, true);
 
     }
 
