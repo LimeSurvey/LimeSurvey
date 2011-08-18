@@ -2469,7 +2469,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $s_lang = $sQuestionLanguage;
     }
     $qtypes=getqtypelist('','array');
-    
+
     /**
     $aquery = "SELECT *, "
         ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
@@ -2601,6 +2601,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                                 );
                                 $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
                                 $data  = $data->row_array();
+                                if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
                                 $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
                             }
                             else
@@ -2613,6 +2614,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                                 );
                                 $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
                                 $data  = $data->row_array();
+                                if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
                                 $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
                             }
                         }
@@ -2924,7 +2926,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     static $timingsFieldMap;
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
-	
+
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
@@ -4120,7 +4122,7 @@ function buildLabelSetCheckSumArray()
     foreach($result->result_array() as $row)
     {
         $thisset="";
-        
+
 
         /**$query2 = "SELECT code, title, sortorder, language, assessment_value
                    FROM ".db_table_name('labels')."
@@ -4133,7 +4135,7 @@ function buildLabelSetCheckSumArray()
         } // while
         $csarray[$row['lid']]=dechex(crc32($thisset)*1);
     }
-    
+
     return $csarray;
 }
 
@@ -5302,7 +5304,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 	$defaultlang = $CI->config->item("defaultlang");
 	$demoModeOnly = $CI->config->item("demoModeOnly");
 	$emailcharset = $CI->config->item("charset");
-	
+
 
     if (!is_array($customheaders) && $customheaders == '')
     {
@@ -5324,7 +5326,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 		$sender=$bouncemail;
 	}
 
-	
+
 	require_once(APPPATH.'/third_party/phpmailer/class.phpmailer.php');
 	$mail = new PHPMailer;
     if (!$mail->SetLanguage($defaultlang,APPPATH.'/third_party/phpmailer/language/'))
@@ -6344,7 +6346,7 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
     $aGIDReplacements=array_flip($aGIDReplacements);
     $aQIDReplacements=array_flip($aQIDReplacements);
     $aFieldMap=createFieldMap($iNewSID);
-    
+
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
     {
@@ -9057,7 +9059,7 @@ function get_dbtableusage($surveyid){
 
     $columns_used = count($arrCols['fields']);
 
-    
+
 
     return (array( 'dbtype'=>$arrCols['dbtype'], 'column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
 }
