@@ -5,6 +5,6 @@ background-image:url('images/search.gif');
 }
 #selectable .ui-selecting { background: #7FFFD4;  }
 #selectable .ui-selected { background: 	#5CB3FF; color: white; }
-#selectable { list-style-type: none; margin: 2px; padding: 0; width: 80%; }
+#selectable { list-style-type: none; margin: 2px; padding: 0; width: 90%; }
 #selectable li {  padding: 1em; font-size: 1em; height: 9px;text-align: center;margin: 4px;}
 .ui-icon.exporticon { background-image:url('images/export.gif');}

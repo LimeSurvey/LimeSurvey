@@ -586,8 +586,8 @@ function getParticipantsResults_json()
      }
      
     $i=0;
-foreach($records as $row=>$value)
-        {   
+        foreach($records as $row=>$value)
+            {   
             $data->rows[$i]['id']=$value['participant_id'];
             $username = $this->users_model->getName($value['owner_uid']);//for conversion of uid to human readable names
             $surveycount = $this->participants_model->getSurveyCount($value['participant_id']);
@@ -650,10 +650,17 @@ foreach($records as $row=>$value)
  */
 function getParticipants_json()
 {
+    
     $this->load->model('participants_model');
     $this->load->model('participant_attribute_model');
     $this->load->model('users_model');
     $attid = $this->participant_attribute_model->getAttributeVisibleID();
+    $participantfields = array('participant_id','can_edit','firstname','lastname','email','blacklisted','surveys','language','owner_uid');
+    //print_r($participantfields);
+    foreach($attid as $key=>$value)
+    {
+        array_push($participantfields,$value['attribute_name']);
+    }
     if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
     {
         $records = $this-> participants_model->getParticipants();
@@ -663,29 +670,63 @@ function getParticipants_json()
         $i=0;
         foreach($records->result() as $row)
         {   
-            $data->rows[$i]['id']=$row->participant_id;
+            //$data->rows[$i]['id']=$row->participant_id;
+            //$sortablearray[$i]['id']=$row->participant_id;
             $username = $this->users_model->getName($row->owner_uid);//for conversion of uid to human readable names
             $surveycount = $this->participants_model->getSurveyCount($row->participant_id);
-            $data->rows[$i]['cell']=array($row->participant_id,"true",$row->firstname,$row->lastname,$row->email,$row->blacklisted,$surveycount,$row->language ,$username->full_name);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is 
+            $sortablearray[$i]=array($row->participant_id,"true",$row->firstname,$row->lastname,$row->email,$row->blacklisted,$surveycount,$row->language ,$username->full_name);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is 
             $attributes =  $this->participant_attribute_model->getParticipantVisibleAttribute($row->participant_id);
             foreach($attid as $attributeid)
             {
                 $answer=$this->participant_attribute_model->getAttributeValue($row->participant_id,$attributeid['attribute_id']);
                 if(isset($answer->value))
                 {
-                    array_push($data->rows[$i]['cell'],$answer->value);
+                    array_push($sortablearray[$i],$answer->value);
                 }
                 else
                 {
-                    array_push($data->rows[$i]['cell'],"");
+                    array_push($sortablearray[$i],"");
                 }
             }
             $i++;
         }
-        echo json_encode($data);
+         function subval_sort($a,$subkey,$order) {
+            	foreach($a as $k=>$v) {
+        		$b[$k] = strtolower($v[$subkey]);
+        	}
+                if($order == "asc")
+                {
+                    asort($b,SORT_REGULAR);
+                }
+        	else
+                {
+                    arsort($b,SORT_REGULAR);
+                }
+        	foreach($b as $key=>$val) {
+        		$c[] = $a[$key];
+                }
+                return $c;
+            }
+            $indexsort = array_search($this->input->post('sidx'), $participantfields);
+            $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
+            $i=0;
+            $count = count($sortedarray[0]);
+            foreach($sortedarray as $key=>$value)
+            {
+                $data->rows[$i]['id']=$value[0];   
+                $data->rows[$i]['cell'] = array();
+                for($j=0 ; $j < $count ; $j++)
+                {
+                    array_push($data->rows[$i]['cell'],$value[$j]);
+                }
+                $i++;
+            }
+            
+          echo json_encode($data);
     }
     else // Only the owned and shared participants will be visible
     {
+        
         $userid = $this->session->userdata('loginID');
         $records = $this->participants_model->getParticipantsOwner($userid);
         $data->page = 1;
@@ -697,23 +738,53 @@ function getParticipants_json()
         {
             $surveycount = $this->participants_model->getSurveyCount($row->participant_id);
             $ownername = $this->users_model->getName($row->owner_uid); //for conversion of uid to human readable names
-            $data->rows[$i]['id']=$row->participant_id;
-            $data->rows[$i]['cell']=array($row->participant_id,$row->can_edit,$row->firstname,$row->lastname,$row->email,$row->blacklisted,$surveycount,$row->language,$ownername->full_name);
+            $sortablearray[$i]=array($row->participant_id,$row->can_edit,$row->firstname,$row->lastname,$row->email,$row->blacklisted,$surveycount,$row->language,$ownername->full_name);
             $attributes =  $this->participant_attribute_model->getParticipantVisibleAttribute($row->participant_id);
             foreach($attid as $attributeid)
                 {
                     $answer=$this->participant_attribute_model->getAttributeValue($row->participant_id,$attributeid['attribute_id']);
                     if(isset($answer->value))
                     {
-                        array_push($data->rows[$i]['cell'],$answer->value);
+                        array_push($sortablearray[$i],$answer->value);
                     }
                     else
                     {
-                        array_push($data->rows[$i]['cell'],"");
+                        array_push($sortablearray[$i],"");
                     }                    
                 }
             $i++;
         }
+        function subval_sort($a,$subkey,$order) {
+            	foreach($a as $k=>$v) {
+        		$b[$k] = strtolower($v[$subkey]);
+        	}
+                if($order == "asc")
+                {
+                    asort($b,SORT_REGULAR);
+                }
+        	else
+                {
+                    arsort($b,SORT_REGULAR);
+                }
+        	foreach($b as $key=>$val) {
+        		$c[] = $a[$key];
+                }
+                return $c;
+            }
+            $indexsort = array_search($this->input->post('sidx'), $participantfields);
+            $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
+            $i=0;
+            $count = count($sortedarray[0]);
+            foreach($sortedarray as $key=>$value)
+            {
+                $data->rows[$i]['id']=$value[0];   
+                $data->rows[$i]['cell'] = array();
+                for($j=0 ; $j < $count ; $j++)
+                {
+                    array_push($data->rows[$i]['cell'],$value[$j]);
+                }
+                $i++;
+            }
         echo json_encode($data);
     }
 }
@@ -961,7 +1032,7 @@ function attributeMapCSV()
 {   
     $config['upload_path'] = './tmp/uploads';
     $config['allowed_types'] = 'text/x-csv|text/plain|application/octet-stream|csv';
-    $config['max_size']	= '100';
+    $config['max_size']	= '1000';
     $this->load->library('upload',$config);
     $errorinupload = "";
     if (!$this->upload->do_upload())
@@ -1016,6 +1087,7 @@ function attributeMapCSV()
  */
 function uploadCSV()
 {
+            $this->session->unset_userdata('summary');
             $characterset = $this->input->post('characterset');
             $seperator = $this->input->post('seperatorused');
             $newarray = $this->input->post('newarray');
@@ -1137,7 +1209,7 @@ function uploadCSV()
                     $dupfound = true;
                     $duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
                 }
-                
+                $invalidemail=false;
                 $writearray['email'] = trim($writearray['email']);
                 if($writearray['email']!='')
                 {
@@ -1151,7 +1223,8 @@ function uploadCSV()
                         }
                     }
                 }
-                if (!$dupfound)
+                
+                if (!$dupfound && !$invalidemail)
                 {
                     $uuid = $this->gen_uuid();
                     if (!isset($writearray['participant_id'])|| $writearray['participant_id'] == ""){$writearray['participant_id'] = $uuid;}
@@ -1259,34 +1332,30 @@ function uploadCSV()
                              }
                            }
                           }*/
+                         }
                        }
-                       
-                       $this->participants_model->insertParticipantCSV($writearray);
-                      $imported++;
-                    }
+                     $this->participants_model->insertParticipantCSV($writearray);
+                   $imported++;
                 }
                 $mincriteria++;
              }
            $recordcount++;
         }
-       
        unlink('tmp/uploads/'.basename($the_full_file_path));
-
        self::_getAdminHeader();
        $clang = $this->limesurvey_lang;
+       $this->session->set_userdata('recordcount',$recordcount-1);
+       $this->session->set_userdata('duplicatelist',$duplicatelist);
+       $this->session->set_userdata('mincriteria',$mincriteria);
+       $this->session->set_userdata('imported',$imported);
+       $this->session->set_userdata('errorinupload',$errorinupload);
+       $this->session->set_userdata('invalidemaillist',$invalidemaillist);
+       $this->session->set_userdata('mandatory',$mandatory);
+       $this->session->set_userdata('invalidattribute',$invalidattribute);
+       $this->session->set_userdata('mandatory',$mandatory);
+       $this->session->set_userdata('invalidparticipantid',$invalidparticipantid);
        
-       $data = array(   'duplicatelist' => $duplicatelist,
-                        'recordcount' => $recordcount-1,
-                        'mincriteria' =>  $mincriteria,
-                        'imported' => $imported,
-                        'dupcount' => count($duplicatelist),
-                        'errorinupload' => $errorinupload,
-                        'invalidemaillist'=> $invalidemaillist,
-                        'mandatory' => $mandatory,
-                        'invalidattribute' => $invalidattribute,
-                        'invalidparticipantid' => $invalidparticipantid   );
-       $this->session->unset_userdata('summary');
-       $this->session->set_userdata('summary',$data);
+       //$this->session->set_userdata('summary',$data);
        //redirect('admin/participants/summaryview');
 }
 function summaryview()
@@ -1473,9 +1542,9 @@ function attributeMapToken()
     $this->load->view('admin/Participants/attributeMapToken_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
-function isValidGuid($guid)
+function mapCSVcancelled()
 {
-    return (!empty($guid) && preg_match('/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $guid));
+    unlink('tmp/uploads/'.basename($_POST['fullfilepath']));
 }
 function blacklistParticipant()
     {
@@ -1529,5 +1598,10 @@ function blacklistParticipant()
            
         
     }
+function saveVisible()
+{
+    $this->load->model('participant_attribute_model');
+    $this->participant_attribute_model->saveAttributeVisible($this->input->post('attid'),$this->input->post('visiblevalue'));
+}
 }
 ?>

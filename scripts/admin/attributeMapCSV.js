@@ -58,6 +58,12 @@ $(document).ready(function(){
                 }
             
         });   
+        $('#attmapcancel').click(function(){
+                $.post(mapCSVcancelled, {fullfilepath : thefilepath},
+                function(data){
+               $(location).attr('href',displayParticipants);
+         });
+        });
         $('#attmap').click(function(){
                 var mappedarray = {};
                 

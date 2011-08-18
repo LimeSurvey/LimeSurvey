@@ -41,10 +41,14 @@ class participant_attribute_model extends CI_Model
     }
     function getAttributeVisibleID()
     {
-        $this->db->select('attribute_id');
-        $this->db->order_by('attribute_id','desc');
-        $data = $this->db->get_where('participant_attribute_names', array('visible' => "TRUE"));
-        return $data->result_array();
+
+        $this->db->select('participant_attribute_names.*,participant_attribute_names_lang.*');
+        $this->db->order_by('participant_attribute_names.attribute_id', 'desc'); 
+        $this->db->where('participant_attribute_names.visible','TRUE');
+        $this->db->join('participant_attribute_names_lang', 'participant_attribute_names_lang.attribute_id = participant_attribute_names.attribute_id');
+        $this->db->where('participant_attribute_names_lang.lang',$this->session->userdata('adminlang'));
+        $data = $this->db->get('participant_attribute_names');
+     	return $data->result_array();
     }
     function getAttributesValues($attribute_id)
     {
@@ -133,10 +137,21 @@ class participant_attribute_model extends CI_Model
     {
        $query = $this->db->insert('participant_attribute',$data);
     }
+    function saveAttributeVisible($attid,$visiblecondition)
+    {
+    
+        $attribute_id = explode("_", $attid);
+        $data=array('visible'=>$visiblecondition);
+        if($visiblecondition == "")
+        {
+            $data=array('visible'=>'FALSE');
+        }
+        $this->db->where('attribute_id',$attribute_id[1]);
+        $this->db->update('participant_attribute_names',$data); 
+    }
     function editParticipantAttributeValue($data)
     {
-   	
-        $this->db->where('participant_id', $data['participant_id']);
+   	$this->db->where('participant_id', $data['participant_id']);
         $this->db->where('attribute_id', $data['attribute_id']);
         $this->db->update('participant_attribute',$data); 
     }

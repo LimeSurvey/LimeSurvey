@@ -1,15 +1,19 @@
 <html>
-    <head>
-        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
-        <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
-         <script src="<?php echo $this->config->item('adminscripts')."attributeControl.js" ?>" type="text/javascript"></script>
-        <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/participants.css" ?>" />
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-         <div class='header ui-widget-header'>
-        <strong><?php echo $clang->gT("Attribute Control"); ?> </strong></div>
-        <?php
+<head>
+    <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
+    <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
+    <script src="<?php echo $this->config->item('adminscripts')."attributeControl.js" ?>" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/participants.css" ?>" />
+    <script type="text/javascript">
+    var saveVisibleMsg = "<?php echo $clang->gT("Attribute Visiblity Changed") ?>";    
+    var saveVisible = "<?php echo site_url("admin/participants/saveVisible");?>";
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+    <div class='header ui-widget-header'>
+    <strong><?php echo $clang->gT("Attribute Control"); ?> </strong></div>
+    <?php
         $attribute = array('class' => 'form44');
         echo form_open('/admin/participants/storeAttributes',$attribute);?>
         <br></br>
@@ -20,9 +24,8 @@
                 <th>Visible in participant panel</th>
                 <th>Actions </th>
             </tr>
-                    <?php
-
-        foreach($result as $row=>$value)
+   <?php
+       foreach($result as $row=>$value)
         {
             echo "<tr>";
             echo "<td>";
@@ -44,21 +47,19 @@
             echo "</td><td>";
             if($value['visible']=="TRUE")
             {
-            $data = array(
-                'name'        => 'visible',
-                'id'          => 'visible',
-                'checked'     => TRUE,
-                'disabled'    => 'disabled'
-                );
+                    $data = array( 'name'    => 'visible_'.$value['attribute_id'],
+                                   'id'      => 'visible_'.$value['attribute_id'],
+                                   'value'   => 'TRUE',
+                                   'checked' => TRUE
+                                   );
             }
             else
-            {$data = array(
-                'name'        => 'visible',
-                'id'          => 'visible',
-                'checked'     => FALSE,
-                'disabled'    => 'disabled'
-                );
-
+            {
+                    $data = array('name'     => 'visible.'.$value['attribute_id'],
+                                  'id'       => 'visible_'.$value['attribute_id'],
+                                  'value'   => 'TRUE',
+                                  'checked' => FALSE
+                                  );
             }
             echo form_checkbox($data);
             echo "</td><td>";
@@ -86,9 +87,7 @@
         </table></li>
         <br>
         <li><a href="#" class="add"><img src = "<?php echo base_url().'images/plus.png' ?>" alt="Add Attribute" width="25" height="25" title="Add Attribute" id="add" name="add"></a></li></ul>
-
         <br>
         <p><input type="submit" name="Save" value="Save"></p>
-
     </body>
 </html>

@@ -1,5 +1,15 @@
 $(document).ready(function() {
-         $(".attid").hide();
+   $(":checkbox").change(function(){
+       var visibleid = $(this).attr('id');
+       $.post(saveVisible, 
+       { attid : $(this).attr('id'),
+         visiblevalue : $("#"+visibleid+":checked").val()},
+       function(data) {});
+   });
+ 
+         
+         
+        $(".attid").hide();
         $('#add').effect('pulsate', { times: 2 }, 1000);
         var id = 1;
         $('.add').click(function(){

@@ -59,7 +59,7 @@ foreach ($getlangvalues as $keycode => $keydesc) {
         foreach($attributes as $row)
             {
                 $attnames[]='"'.$row['attribute_name'].'"';
-                $uidNames[]='{"name": "'.$row['attribute_name'].'", "index":"'.$row['attribute_name'].'", "sorttype":"int", "sortable": true, "align":"center"}';
+                $uidNames[]='{"name": "'.$row['attribute_name'].'", "index":"'.$row['attribute_name'].'", "sorttype":"string", "sortable": true, "align":"center"}';
             }
         $columnNames = ','.implode(",",$attnames).''; //Add to the end of the standard list of columnNames
 
@@ -85,7 +85,10 @@ var selectSurvey = "<?php echo $clang->gT("Please select a survey to add partici
 var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
 var exportBtn = "<?php echo $clang->gT("Export") ?>";
 var okBtn = "<?php echo $clang->gT("OK") ?>";
-var deleteMsg = "<br><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>Delete Participant from central table only</li><li class='ui-widget-content' id='ptt'>Delete Participant from central table and token table</li><li class='ui-widget-content' id='ptta'>Delete Participant from central table, token table and from results as well</li></ol></center>";
+var deletefrompanel = "<?php echo $clang->gT("Delete participant(s) from central participants panel only") ?>";
+var deletefrompanelandtoken = "<?php echo $clang->gT("Delete participant(s) from central panel and tokens tables") ?>";
+var deletefrompaneltokenandresponse = "<?php echo $clang->gT("Delete participant(s) from central panel, tokens tables and all associated responses") ?>";
+var deleteMsg = "<br><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
 var searchBtn = "<?php echo $clang->gT("Search") ?>";
 var shareMsg = "<?php echo $clang->gT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
 var jsonUrl = "<?php echo site_url("admin/participants/getParticipants_json");?>";

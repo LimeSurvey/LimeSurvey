@@ -134,7 +134,8 @@ function insertParticipantCSV($data)
 */
 function getParticipants()
 {
-    $this->db->order_by("lastname", "asc"); 
+        
+    //$this->db->order_by("lastname", "asc"); 
     $data = $this->db->get('participants');
     return $data;
 }
@@ -846,7 +847,7 @@ function getParticipantsOwnerCount($userid)
     $this->db->from('participants');
     $this->db->join('participant_shares',' participants.participant_id=participant_shares.participant_id','left');
     $this->db->where('owner_uid',$userid);
-    $this->db->or_where('shared_uid', $userid);
+    $this->db->or_where('share_uid', $userid);
     $this->db->group_by('participants.participant_id');
     $query=$this->db->get();
     return $query->num_rows();
@@ -861,7 +862,7 @@ function getParticipantsOwner($userid)
     $this->db->from('participants');
     $this->db->join('participant_shares',' participants.participant_id=participant_shares.participant_id','left');
     $this->db->where('owner_uid',$userid);
-    $this->db->or_where('shared_uid', $userid);
+    $this->db->or_where('share_uid', $userid);
     $this->db->group_by('participants.participant_id');
     $query=$this->db->get();
     return $query;

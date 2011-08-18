@@ -88,6 +88,7 @@
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/templates/view");?>', '_top')" title="<?php echo $clang->gTview("Template Editor");?>" >
 	    <img src='<?php echo $this->config->item('imageurl');?>/templates.png' name='EditTemplates' alt='<?php echo $clang->gT("Template Editor");?>' /></a>   
 	    <?php } ?>
+            <img src='<?php echo $this->config->item('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
             <?php if($this->session->userdata('USER_RIGHT_PARTICIPANT_PANEL') == 1)
 		{ 	 ?>
             <a href="#" onclick="window.open('<?php echo site_url("admin/participants");?>', '_top')" title="<?php echo $clang->gTview("Pariticpant's panel");?>" >

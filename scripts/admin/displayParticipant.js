@@ -1,6 +1,7 @@
 var idexternal=parseInt(3);
 function addcondition() 
-{id=2;
+{
+    id=2;
     html = "<tr name='joincondition_"+idexternal+"' id='joincondition_"+idexternal+"'><td><select name='join_"+idexternal+"' id='join_"+idexternal+"'>\n\
     <option value='and'>AND</option><option value='or'>OR</option></td></tr>";
     html2 = "<tr><td><select name='field_"+idexternal+"' \n\
@@ -75,17 +76,18 @@ colNames : jQuery.parseJSON(colNames),
 colModel: jQuery.parseJSON(colModels),
 height: "100%",
 width: "100%",
-rowNum: 50,
+rowNum: 25,
 editable:true,
 scrollOffset:0,
 autowidth: true,
 sortable : true,
 sortname: 'firstname',
-sortorder: 'acs',
+sortorder: 'asc',
 viewrecords : true,
 rowList: [25,50,100,250,500,1000,5000,10000],
 multiselect: true,
-loadonce:true,
+loadonce : false,
+
 ondblClickRow: function(id)
                 {
                 var can_edit = $('#displayparticipants').getCell(id, 'can_edit');
@@ -222,7 +224,16 @@ ondblClickRow: function(id)
       }
    
 });
-jQuery("#displayparticipants").jqGrid('navGrid','#pager',{add:true,del:true,edit:false,refresh: true,search: true},{},{ width : 400},{msg:deleteMsg, width : 700, beforeSubmit : function(postdata, formid) {
+jQuery("#displayparticipants").jqGrid('navGrid','#pager',{add:true,del:true,edit:false,refresh: true,search: false},{},{ width : 400},{msg:deleteMsg, width : 700, 
+                     afterShowForm: function($form) {
+                               var dialog = $form.closest('div.ui-jqdialog'),
+                                   selRowId = jQuery("#displayparticipants").jqGrid('getGridParam', 'selrow'),
+                                   selRowCoordinates = $('#'+selRowId).offset();
+                               dialog.offset(selRowCoordinates);
+                           },
+      
+
+ beforeSubmit : function(postdata, formid) {
      if(!$('#selectable .ui-selected').attr('id'))
      {
              alert(nooptionselected);
@@ -268,7 +279,7 @@ $("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Export to CSV
 }});
 
 $("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Full Search", buttonicon:'searchicon', onClickButton:function(){
-
+        $("#displayparticipants").setGridParam({loadonce: false});
                 var dialog_buttons={};
                 dialog_buttons[searchBtn]=function(){
                 searchconditions="";
@@ -332,7 +343,6 @@ $("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Full Search",
 	        });    
  
 }});
-
 $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnEspace:true});
 	//script for sharing of participants
 	$("#sharingparticipants").dialog({
