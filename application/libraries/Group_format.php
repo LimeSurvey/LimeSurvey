@@ -18,10 +18,12 @@ class Group_format {
  	function run($args) {
  		
 		global $surveyid, $thissurvey, $totalquestions;
- 
+        
+        
+        
 		extract($args);
 		$CI =& get_instance();
-
+        $CI->load->helper('frontend');
 		$dbprefix = $CI->db->dbprefix;
 
 		$_POST = $CI->input->post();
@@ -45,10 +47,12 @@ class Group_format {
 		}
 		else
 		{
-		    //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
+		    
+            //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
 		    if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		    {
-		        $totalquestions = buildsurveysession($surveyid);
+		        
+                $totalquestions = buildsurveysession($surveyid);
 		        $_SESSION['step'] = 0;
 		        if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
 		            //If explicitply set, hide the welcome screen
@@ -271,7 +275,7 @@ class Group_format {
 		            if ($thissurvey['printanswers']=='Y')
 		            {
 		                $completed .= "<br /><br />"
-		                ."<a class='printlink' href='printanswers.php?sid=$surveyid'  target='_blank'>"
+		                ."<a class='printlink' href='".site_url('printanswers/view/'.$surveyid)."'  target='_blank'>"
 		                .$clang->gT("Print your answers.")
 		                ."</a><br />\n";
 		            }

@@ -33,6 +33,7 @@ class survey extends LS_Controller {
     	global $thissurvey, $thisstep;
     	global $clienttoken;
 		
+        
 		//Replace $_GET:
 		$arg_list = func_get_args();		
 		if($arg_list[0]==__CLASS__) array_shift($arg_list);
@@ -918,9 +919,11 @@ class survey extends LS_Controller {
 		//  - the survey is active
 		//  - a token information has been provided
 		//  - the survey is setup to allow token-response-persistence
+        
 		if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
 		{
-		    // load previous answers if any (dataentry with nosubmit)
+		    
+            // load previous answers if any (dataentry with nosubmit)
 		    $srquery="SELECT id FROM {$thissurvey['tablename']}"
 		    . " WHERE {$thissurvey['tablename']}.token='".$this->db->escape($token)."'\n";
 		

@@ -1466,6 +1466,7 @@ function buildsurveysession($surveyid)
     global $totalBoilerplatequestions, $totalquestions;
     global $templang, $move, $rooturl, $publicurl;
 	
+    
 	$CI =& get_instance();
 	$_POST = $CI->input->post();
 	//$_SESSION = $CI->session->userdata;
@@ -1483,7 +1484,7 @@ function buildsurveysession($surveyid)
     if ($tokensexist == 0 &&
     captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
-
+        
         // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
         if (!isset($loadsecurity) ||
         !isset($_SESSION['secanswer']) ||
@@ -1546,6 +1547,7 @@ function buildsurveysession($surveyid)
     // TOKEN REQUIRED BUT NO TOKEN PROVIDED
     if ($tokensexist == 1 && !returnglobal('token'))
     {
+        
         if ($thissurvey['nokeyboard']=='Y')
         {
             vIncludeKeypad();
@@ -1621,6 +1623,7 @@ function buildsurveysession($surveyid)
     elseif ($tokensexist == 1 && returnglobal('token') &&
     !captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
+        
         //check if tokens actually haven't been already used
 		$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
         //check if token actually does exist
@@ -1798,6 +1801,7 @@ function buildsurveysession($surveyid)
 
 	if (isset($_GET['token']) && db_tables_exist($dbprefix.'tokens_'.$surveyid))
     {
+        
         //get language from token (if one exists)
         $tkquery2 = "SELECT * FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token='".db_quote($clienttoken)."' AND (completed = 'N' or completed='')";
         //echo $tkquery2;

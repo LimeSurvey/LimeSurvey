@@ -1931,7 +1931,7 @@ function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
 
     // use Survey base language if s_lang isn't set in _SESSION (when browsing answers)
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    if  (!isset($action) || (isset($action) && $action!='browse') )
+    if  (!isset($action) || (isset($action) && $action!='browse') || $action == NULL )
     {
         if ($CI->session->userdata('s_lang')) $s_lang = $CI->session->userdata('s_lang');  //This one does not work in admin mode when you browse a particular answer
     }
@@ -4060,17 +4060,19 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 // If null or 0 is given for $surveyid then the default language from config-defaults.php is returned
 function SetSurveyLanguage($surveyid, $language)
 {
+    //$CI =& get_instance();
+    //$clang = $CI->limesurvey_lang;
     global $CI;
-    $clang = $CI->limesurvey_lang;
     $surveyid=sanitize_int($surveyid);
-    $CI->load->config('lsconfig');
+    //$CI->load->config('lsconfig');
     $defaultlang = $CI->config->item('defaultlang');
     //require_once($rootdir.'/classes/core/language.php');
+    
     if (isset($surveyid) && $surveyid>0)
     {
         // see if language actually is present in survey
         $fields = array('language', 'additional_languages');
-        $condition = "sid = $surveyid";
+        $condition = array('sid' => $surveyid); //"sid = $surveyid";
         $CI->load->model('surveys_model');
 
         //$query = "SELECT  language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
@@ -4103,6 +4105,7 @@ function SetSurveyLanguage($surveyid, $language)
     }
 
     $thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
+    $CI->load->helper('surveytranslator');
     $_SESSION['dateformats'] = getDateFormatData($thissurvey['surveyls_dateformat']);
     return $clang;
 }
@@ -7076,7 +7079,8 @@ function aGetFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode)
     global $CI;
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
     //Get response data
-    $idquery = $CI->Surveys_dynamic_model->getAllRecords($iSurveyID, array('id'=>$iResponseID));
+    $CI->load->model('surveys_dynamic_model');
+    $idquery = $CI->surveys_dynamic_model->getAllRecords($iSurveyID, array('id'=>$iResponseID));
 	$idrow = $idquery->row_array();
     //$idquery = "SELECT * FROM ".db_table_name('survey_'.$iSurveyID)." WHERE id=".$iResponseID;
     //$idrow=$connect->GetRow($idquery) or safe_die ("Couldn't get entry<br />\n$idquery<br />\n".$connect->ErrorMsg()); //Checked
@@ -7108,7 +7112,7 @@ function aGetFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode)
                 }
                 else
                 {
-                    $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+                    $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
                     $aResultTable[$fname['fieldname']]=array($question,'',$answer);
                     continue;
                 }
@@ -7116,7 +7120,7 @@ function aGetFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode)
         }
         else
         {
-            $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+            $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
             $aResultTable[$fname['fieldname']]=array($question,'',$answer);
             continue;
         }
@@ -7129,7 +7133,7 @@ function aGetFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode)
         if (isset($fname['subquestion2']))
         $subquestion .= "[{$fname['subquestion2']}]";
 
-        $answer=getextendedanswer($fname['fieldname'], $idrow[$fname['fieldname']]);
+        $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
         $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
     }
     return $aResultTable;
