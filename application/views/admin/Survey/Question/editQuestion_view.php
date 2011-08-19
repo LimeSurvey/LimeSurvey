@@ -226,7 +226,7 @@
                 if (bHasSurveyPermission($surveyid,'surveycontent','import'))
                 { ?>
                     <br /><div class='header ui-widget-header'><?php echo $clang->gT("...or import a question"); ?></div>
-                    <form enctype='multipart/form-data' id='importquestion' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,"<?php echo $clang->gT('Please select a file to import!','js'); ?>");'>
+                    <form enctype='multipart/form-data' id='importquestion' name='importquestion' action='<?php echo site_url('admin/question/import'); ?>' method='post' onsubmit='return validatefilename(this,"<?php echo $clang->gT('Please select a file to import!','js'); ?>");'>
                     <ul>
                     <li>
                     <label for='the_file'><?php echo $clang->gT("Select LimeSurvey question file (*.lsq/*.csv)"); ?>:</label>

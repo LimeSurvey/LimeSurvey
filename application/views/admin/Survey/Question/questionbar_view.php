@@ -143,7 +143,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             { ?>
-                <a href='$scriptname?action=editdefaultvalues&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'
+                <a href='<?php echo site_url('admin/question/editdefaultvalues/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
                 title="<?php echo $clang->gTview("Edit default answers for this question"); ?>">
                 <img src='<?php echo $this->config->item('imageurl'); ?>/defaultanswers.png' alt='<?php echo $clang->gT("Edit default answers for this question"); ?>' name='EditDefaultAnswerOptions' /></a>
             <?php } ?>

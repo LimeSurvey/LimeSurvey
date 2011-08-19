@@ -33,6 +33,283 @@
 	{
 		parent::__construct();
 	}
+    
+    /**
+     * question::import()
+     * Function responsible to import a question.
+     * @return void
+     */
+    function import()
+    {
+        $action = $this->input->post('action');
+        $surveyid = $this->input->post('sid');
+        $gid = $this->input->post('gid');
+        $clang = $this->limesurvey_lang;
+        
+        
+        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+	    $this->config->set_item("css_admin_includes", $css_admin_includes);
+
+        self::_getAdminHeader();
+        self::_showadminmenu($surveyid);
+        self::_surveybar($surveyid,$gid);
+        self::_surveysummary($surveyid,"viewquestion");
+        self::_questiongroupbar($surveyid,$gid,NULL,"viewgroup");
+        
+        if ($action == 'importquestion')
+        {
+            
+            $importquestion = "<div class='header ui-widget-header'>".$clang->gT("Import Question")."</div>\n";
+            $importquestion .= "<div class='messagebox ui-corner-all'>\n";
+            
+            $sFullFilepath = $this->config->item('tempdir'). DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
+            $aPathInfo = pathinfo($sFullFilepath);
+            $sExtension = $aPathInfo['extension'];  
+            
+            if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
+            {
+                $fatalerror = sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$this->config->item('tempdir'));
+            }
+            
+            // validate that we have a SID and GID
+            if (!$surveyid)
+            {
+                $fatalerror .= $clang->gT("No SID (Survey) has been provided. Cannot import question.");
+            }
+            //else
+            //{
+            //   $surveyid=returnglobal('sid');
+            //}
+            
+            if (!$gid)
+            {
+                $fatalerror .= $clang->gT("No GID (Group) has been provided. Cannot import question");
+                //return;
+            }
+            /**else
+            {
+                $postgid=returnglobal('gid');
+            }*/
+            
+            if (isset($fatalerror))
+            {
+                $importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+                $importquestion .= $fatalerror."<br /><br />\n";
+                $importquestion .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('".site_url('admin')."', '_top')\" /><br /><br />\n";
+                $importquestion .= "</div>\n";
+                unlink($sFullFilepath);
+                show_error($importquestion);
+                return;
+            }
+            
+            // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
+            $importquestion .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n"
+            .$clang->gT("File upload succeeded.")."<br /><br />\n"
+            .$clang->gT("Reading file..")."<br /><br />\n";
+            $this->load->helper('admin/import');
+            if (strtolower($sExtension)=='csv')
+            {
+                $aImportResults=CSVImportQuestion($sFullFilepath, $surveyid, $gid);
+            }
+            elseif (strtolower($sExtension)=='lsq')
+            {
+                $aImportResults=XMLImportQuestion($sFullFilepath, $surveyid, $gid);
+            }
+            else show_error('Unknown file extension');
+            FixLanguageConsistency($surveyid);
+            
+            if (isset($aImportResults['fatalerror']))
+            {
+                    $importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+                    $importquestion .= $aImportResults['fatalerror']."<br /><br />\n";
+                    $importquestion .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('".site_url('admin')."', '_top')\" />\n";
+                    $importquestion .=  "</div>\n";
+                    unlink($sFullFilepath);
+                    show_error($importquestion);
+                    return;
+            }
+            
+            $importquestion .= "<div class='successheader'>".$clang->gT("Success")."</div><br />\n"
+            ."<strong><u>".$clang->gT("Question import summary")."</u></strong><br />\n"
+            ."<ul style=\"text-align:left;\">\n"
+            ."\t<li>".$clang->gT("Questions").": ".$aImportResults['questions']."</li>\n"
+            ."\t<li>".$clang->gT("Subquestions").": ".$aImportResults['subquestions']."</li>\n"
+            ."\t<li>".$clang->gT("Answers").": ".$aImportResults['answers']."</li>\n";
+            if (strtolower($sExtension)=='csv')  {
+                $importquestion.="\t<li>".$clang->gT("Label sets").": ".$aImportResults['labelsets']." (".$aImportResults['labels'].")</li>\n";
+            }
+            $importquestion.="\t<li>".$clang->gT("Question attributes:").$aImportResults['question_attributes']."</li>"
+            ."</ul>\n";
+            
+            $importquestion .= "<strong>".$clang->gT("Question import is complete.")."</strong><br />&nbsp;\n";
+            $importquestion .= "<input type='submit' value='".$clang->gT("Go to question")."' onclick=\"window.open('".site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$aImportResults['newqid'])."', '_top')\" />\n";
+            $importquestion .= "</div><br />\n";
+            
+            unlink($sFullFilepath);
+            
+            $data['display'] = $importquestion;
+            $this->load->view('survey_view',$data);
+        }
+        
+        self::_loadEndScripts();
+
+
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        
+    }
+    
+    /**
+     * question::editdefaultvalues()
+     * Load edit default values of a question screen
+     * @param mixed $surveyid
+     * @param mixed $gid
+     * @param mixed $qid
+     * @return void
+     */
+    function editdefaultvalues($surveyid,$gid,$qid)
+    {
+        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
+
+        self::_getAdminHeader();
+        self::_showadminmenu($surveyid);
+        self::_surveybar($surveyid,$gid);
+        self::_surveysummary($surveyid,"editdefaultvalues");
+        self::_questiongroupbar($surveyid,$gid,$qid,"editdefaultvalues");
+
+        self::_questionbar($surveyid,$gid,$qid,"editdefaultvalues");
+        
+        $clang = $this->limesurvey_lang;
+        $this->load->helper('database');
+        $this->load->helper('surveytranslator');
+        
+        $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        array_unshift($questlangs,$baselang);
+        $query = "SELECT type, other, title, question, same_default FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'";
+        $res = db_execute_assoc($query);
+        $questionrow=$res->row_array(); //$connect->GetRow("SELECT type, other, title, question, same_default FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'");)
+        $qtproperties=getqtypelist('','array');
+    
+        $editdefvalues="<div class='header ui-widget-header'>".$clang->gT('Edit default answer values')."</div> "   
+        . '<div class="tab-pane" id="tab-pane-editdefaultvalues-'.$surveyid.'">'
+        . "<form class='form30' id='frmdefaultvalues' name='frmdefaultvalues' action='".site_url('admin/database/index')."' method='post'>\n";
+        
+        foreach ($questlangs as $language)
+        {
+            $editdefvalues .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false).'</h2>';
+            $editdefvalues.="<ul> ";
+            // If there are answerscales
+            if ($qtproperties[$questionrow['type']]['answerscales']>0)
+            {
+                for ($scale_id=0;$scale_id<$qtproperties[$questionrow['type']]['answerscales'];$scale_id++)
+                {
+                    $editdefvalues.=" <li><label for='defaultanswerscale_{$scale_id}_{$language}'>";
+                    if ($qtproperties[$questionrow['type']]['answerscales']>1)
+                    {
+                        $editdefvalues.=sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</label>";
+                    }
+                    else
+                    {
+                        $editdefvalues.=sprintf($clang->gT('Default answer value:'),$scale_id)."</label>";
+                    }
+                    $query = "SELECT defaultvalue FROM ".$this->db->dbprefix."defaultvalues WHERE qid=$qid AND specialtype='' and scale_id={$scale_id} AND language='{$language}'";
+                    $res = db_execute_assoc($query);
+                    $defaultvalue=$res->row_array(); //$connect->GetOne("SELECT defaultvalue FROM ".$this->db->dbprefix."defaultvalues WHERE qid=$qid AND specialtype='' and scale_id={$scale_id} AND language='{$language}'");
+                    
+                    $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}' id='defaultanswerscale_{$scale_id}_{$language}'>";
+                    $editdefvalues.="<option value='' ";
+                    if (is_null($defaultvalue)) {
+                     $editdefvalues.= " selected='selected' ";
+                    }
+                    $editdefvalues.=">".$clang->gT('<No default value>')."</option>";
+                    $answerquery = "SELECT code, answer FROM ".$this->db->dbprefix."answers WHERE qid=$qid and language='$language' order by sortorder";
+                    $answerresult = db_execute_assoc($answerquery);  
+                    foreach ($answerresult->result_array() as $answer)     
+                    {
+                        $editdefvalues.="<option ";
+                        if ($answer['code']==$defaultvalue)
+                        {
+                            $editdefvalues.= " selected='selected' ";
+                        }
+                        $editdefvalues.="value='{$answer['code']}'>{$answer['answer']}</option>";
+                    }       
+                    $editdefvalues.="</select></li> ";
+                    if ($questionrow['other']=='Y')
+                    {
+                        $query = "SELECT defaultvalue FROM ".$this->db->dbprefix."defaultvalues WHERE qid=$qid and specialtype='other' AND scale_id={$scale_id} AND language='{$language}'";
+                        $res = db_execute_assoc($query);
+                        $defaultvalue=$res->row_array(); //$connect->GetOne("SELECT defaultvalue FROM ".$this->db->dbprefix."defaultvalues WHERE qid=$qid and specialtype='other' AND scale_id={$scale_id} AND language='{$language}'");
+                        if (is_null($defaultvalue)) $defaultvalue='';
+                        $editdefvalues.="<li><label for='other_{$scale_id}_{$language}'>".$clang->gT("Default value for option 'Other':")."<label><input type='text' name='other_{$scale_id}_{$language}' value='$defaultvalue' id='other_{$scale_id}_{$language}'></li>";
+                    }
+                }
+            }
+            
+            // If there are subquestions and no answerscales
+            if ($qtproperties[$questionrow['type']]['answerscales']==0 && $qtproperties[$questionrow['type']]['subquestions']>0)
+            {
+                for ($scale_id=0;$scale_id<$qtproperties[$questionrow['type']]['subquestions'];$scale_id++)
+                {
+                    $sqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND parent_qid=$qid and language='".$language."' and scale_id=0 order by question_order";
+                    $sqresult = db_execute_assoc($sqquery);
+                    //$sqrows = $sqresult->GetRows();
+                    if ($qtproperties[$questionrow['type']]['subquestions']>1)
+                    {
+                        $editdefvalues.=" <div class='header ui-widget-header'>".sprintf($clang->gT('Default answer for scale %s:'),$scale_id)."</div>";
+                    }
+                    if ($questionrow['type']=='M' || $questionrow['type']=='P')
+                    {
+                        $options=array(''=>$clang->gT('<No default value>'),'Y'=>$clang->gT('Checked'));
+                    } 
+                    $editdefvalues.="<ul>";
+                    
+                    foreach ($sqresult->result_array() as $aSubquestion)                   
+                    {
+                        $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".$this->db->dbprefix."defaultvalues WHERE qid=$qid AND specialtype='' and sqid={$aSubquestion['qid']} and scale_id={$scale_id} AND language='{$language}'");
+                        $editdefvalues.="<li><label for='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>{$aSubquestion['title']}: ".FlattenText($aSubquestion['question'])."</label>";
+                        $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}' id='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>";
+                        foreach ($options as $value=>$label)
+                        {
+                            $editdefvalues.="<option ";
+                            if ($value==$defaultvalue)
+                            {
+                                $editdefvalues.= " selected='selected' ";
+                            }
+                            $editdefvalues.="value='{$value}'>{$label}</option>";
+                        }
+                        $editdefvalues.="</select></li> ";
+                    }
+                }
+            }
+                if ($language==$baselang && count($questlangs)>1)
+                {
+                $editdefvalues.="<li><label for='samedefault'>".$clang->gT('Use same default value across languages:')."<label><input type='checkbox' name='samedefault' id='samedefault'";
+                if ($questionrow['same_default'])
+                {
+                    $editdefvalues.=" checked='checked'";
+                }
+                $editdefvalues.="></li>";
+            }
+                $editdefvalues.="</ul> ";
+                $editdefvalues.="</div> "; // Closing page
+            }       
+        $editdefvalues.="</div> "; // Closing pane
+        $editdefvalues.="<input type='hidden' id='action' name='action' value='updatedefaultvalues'> "
+            . "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
+            . "\t<input type='hidden' id='gid' name='gid' value='$gid' /></p>\n"
+            . "\t<input type='hidden' id='qid' name='qid' value='$qid' />";
+        $editdefvalues.="<p><input type='submit' value='".$clang->gT('Save')."'/></form>";
+        
+        $data['display'] = $editdefvalues;
+        $this->load->view('survey_view',$data);
+        
+        self::_loadEndScripts();
+
+
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        
+    }
 
     /**
      * question::answeroptions()

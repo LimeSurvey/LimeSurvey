@@ -4060,7 +4060,8 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 // If null or 0 is given for $surveyid then the default language from config-defaults.php is returned
 function SetSurveyLanguage($surveyid, $language)
 {
-    global $CI, $clang;
+    global $CI;
+    $clang = $CI->limesurvey_lang;
     $surveyid=sanitize_int($surveyid);
     $CI->load->config('lsconfig');
     $defaultlang = $CI->config->item('defaultlang');
@@ -9064,6 +9065,68 @@ function get_dbtableusage($surveyid){
 
 
     return (array( 'dbtype'=>$arrCols['dbtype'], 'column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
+}
+
+/**
+ *  Checks that each object from an array of CSV data [question-rows,answer-rows,labelsets-row] supports at least a given language
+ *
+ * @param mixed $csvarray array with a line of csv data per row
+ * @param mixed $idkeysarray  array of integers giving the csv-row numbers of the object keys
+ * @param mixed $langfieldnum  integer giving the csv-row number of the language(s) filed
+ *        ==> the language field  can be a single language code or a
+ *            space separated language code list
+ * @param mixed $langcode  the language code to be tested
+ * @param mixed $hasheader  if we should strip off the first line (if it contains headers)
+ */
+function  bDoesImportarraySupportsLanguage($csvarray,$idkeysarray,$langfieldnum,$langcode, $hasheader = false)
+{
+    $CI =& get_instance();
+    // An array with one row per object id and langsupport status as value
+    $objlangsupportarray=Array();
+    if ($hasheader === true)
+    { // stripping first row to skip headers if any
+        array_shift($csvarray);
+    }
+
+    foreach ($csvarray as $csvrow)
+    {
+        $rowcontents = convertCSVRowToArray($csvrow,',','"');
+        $rowid = "";
+        foreach ($idkeysarray as $idfieldnum)
+        {
+            $rowid .= $rowcontents[$idfieldnum]."-";
+        }
+        $rowlangarray = explode (" ", $rowcontents[$langfieldnum]);
+        if (!isset($objlangsupportarray[$rowid]))
+        {
+            if (array_search($langcode,$rowlangarray)!== false)
+            {
+                $objlangsupportarray[$rowid] = "true";
+            }
+            else
+            {
+                $objlangsupportarray[$rowid] = "false";
+            }
+        }
+        else
+        {
+            if ($objlangsupportarray[$rowid] == "false" &&
+            array_search($langcode,$rowlangarray) !== false)
+            {
+                $objlangsupportarray[$rowid] = "true";
+            }
+        }
+    } // end foreach rown
+
+    // If any of the object doesn't support the given language, return false
+    if (array_search("false",$objlangsupportarray) === false)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

@@ -595,7 +595,7 @@
             . "</div>\n"; */
             //  $groupsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
             
-            if ($action=='editgroup'|| $action=='addquestion' || $action == 'viewquestion') 
+            if ($action=='editgroup'|| $action=='addquestion' || $action == 'viewquestion' || $action == "editdefaultvalues") 
             {
                 $gshowstyle="style='display: none'";
             }
@@ -1075,7 +1075,7 @@
         //$gid || $qid || 
        
         
-        if ($action=="deactivate"|| $action=="activate" || $action=="surveysecurity"
+        if ($action=="deactivate"|| $action=="activate" || $action=="surveysecurity" || $action=="editdefaultvalues"
         || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity"
         || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
         || $action=="editsurveysettings"|| $action=="editsurveylocalesettings" || $action=="updatesurveysettingsandeditlocalesettings" || $action=="addgroup" || $action=="importgroup"
