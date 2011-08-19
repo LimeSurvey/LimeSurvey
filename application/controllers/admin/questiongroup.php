@@ -33,6 +33,113 @@
 	{
 		parent::__construct();
 	}
+    
+    /**
+     * questiongroup::import()
+     * Function responsible to import a question group.
+     * @return
+     */
+    function import()
+    {
+        $action = $this->input->post('action');
+        $surveyid = $this->input->post('sid');
+        $clang = $this->limesurvey_lang;
+        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        self::_getAdminHeader();
+        self::_showadminmenu();
+        self::_surveybar($surveyid,NULL);
+        self::_surveysummary($surveyid,"importgroup");
+        if ($action == 'importgroup')
+        {
+            $importgroup = "<div class='header ui-widget-header'>".$clang->gT("Import question group")."</div>\n";
+            $importgroup .= "<div class='messagebox ui-corner-all'>\n";
+            
+            $sFullFilepath = $this->config->item('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
+            $aPathInfo = pathinfo($sFullFilepath);
+            $sExtension = $aPathInfo['extension'];
+            
+            if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
+            {
+                $fatalerror = sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$this->config->item('tempdir'));
+            }
+            
+            // validate that we have a SID
+            if (!returnglobal('sid'))
+            {
+                $fatalerror .= $clang->gT("No SID (Survey) has been provided. Cannot import question.");
+            }
+            /**else
+            {
+                $surveyid=returnglobal('sid');
+            }*/
+            
+            if (isset($fatalerror))
+            {
+                $importgroup .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+                $importgroup .= $fatalerror."<br /><br />\n";
+                $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br />\n";
+                $importgroup .= "</div>\n";
+                @unlink($sFullFilepath);
+                show_error($importgroup);
+                return;
+            }
+            $this->load->helper('admin/import');
+            // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
+            $importgroup .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n"
+            .$clang->gT("File upload succeeded.")."<br /><br />\n"
+            .$clang->gT("Reading file..")."<br /><br />\n";
+            if (strtolower($sExtension)=='csv')
+            {
+                $aImportResults=CSVImportGroup($sFullFilepath, $surveyid);
+            }
+            elseif (strtolower($sExtension)=='lsg')
+            {
+                $aImportResults=XMLImportGroup($sFullFilepath, $surveyid);
+            }
+            else die('Unknown file extension');
+            FixLanguageConsistency($surveyid);
+            
+            if (isset($aImportResults['fatalerror']))
+            {
+                    $importgroup .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+                    $importgroup .= $aImportResults['fatalerror']."<br /><br />\n";
+                    $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+                    $importgroup .=  "</div>\n";
+                    unlink($sFullFilepath);
+                    show_error($importgroup);
+                    return;
+            }
+            
+            $importgroup .= "<div class='successheader'>".$clang->gT("Success")."</div><br />\n"
+            ."<strong><u>".$clang->gT("Question group import summary")."</u></strong><br />\n"
+            ."<ul style=\"text-align:left;\">\n"
+            ."\t<li>".$clang->gT("Groups").": ".$aImportResults['groups']."</li>\n"
+            ."\t<li>".$clang->gT("Questions").": ".$aImportResults['questions']."</li>\n"
+            ."\t<li>".$clang->gT("Subquestions").": ".$aImportResults['subquestions']."</li>\n"
+            ."\t<li>".$clang->gT("Answers").": ".$aImportResults['answers']."</li>\n"
+            ."\t<li>".$clang->gT("Conditions").": ".$aImportResults['conditions']."</li>\n";
+            if (strtolower($sExtension)=='csv')  {
+                $importgroup.="\t<li>".$clang->gT("Label sets").": ".$aImportResults['labelsets']." (".$aImportResults['labels'].")</li>\n";
+            }
+            $importgroup.="\t<li>".$clang->gT("Question attributes:").$aImportResults['question_attributes']."</li>"
+            ."</ul>\n";
+            
+            $importgroup .= "<strong>".$clang->gT("Question group import is complete.")."</strong><br />&nbsp;\n";
+            $importgroup .= "<input type='submit' value='".$clang->gT("Go to question group")."' onclick=\"window.open('".site_url('admin/survey/view/'.$surveyid.'/'.$aImportResults['newgid'])."', '_top')\" />\n";
+            $importgroup .= "</div><br />\n";
+            
+            unlink($sFullFilepath);
+            
+            $data['display'] = $importgroup;
+            $this->load->view('survey_view',$data);
+            
+            
+        }
+        self::_loadEndScripts();
+
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    }
 
 
     /**
