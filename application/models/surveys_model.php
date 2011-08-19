@@ -47,7 +47,7 @@ class Surveys_model extends CI_Model {
     function updateSurvey($data,$condition)
     {
         $this->db->where($condition);
-        $this->db->update('surveys', $data);
+        return $this->db->update('surveys', $data);
     }
 
 

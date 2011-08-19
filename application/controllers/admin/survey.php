@@ -397,8 +397,8 @@
             //See if there is a tokens table for this survey
             if (tableExists("tokens_{$postsid}"))
             {
-                $toldtable="tokens_{$postsid}";
-                $tnewtable="old_tokens_{$postsid}_{$date}";
+                $toldtable=$this->db->dbprefix."tokens_{$postsid}";
+                $tnewtable=$this->db->dbprefix."old_tokens_{$postsid}_{$date}";
                 //$tdeactivatequery = db_rename_table(db_table_name_nq($toldtable) ,db_table_name_nq($tnewtable));
                 $tdeactivateresult = db_rename_table($toldtable ,$tnewtable) or die ("Couldn't deactivate tokens table because:<br /><br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
 

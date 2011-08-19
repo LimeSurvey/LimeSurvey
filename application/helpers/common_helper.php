@@ -7175,35 +7175,31 @@ function aArrayInvert($aArr)
  */
 function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
 {
-	global $CI;
-
-	$fieldmap = $CI->session->userdata('fieldmap');
-
-    if(@$fieldmap[$aFieldnamesInfoInv[$q][0]]['type'] != 'M')
+    if (@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'M' || @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'P' || @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'O')
     {
-        // all answers required
-        $bAnsw = true;
+        // multiple choice and list with comments question types - just one answer is required and comments are not required
+        $bAnsw = false;
         foreach($aFieldnamesInfoInv[$q] as $sField)
         {
-            if(!$CI->session->userdata($sField) || trim($CI->session->userdata($sField))=='')
+            if(!strstr($sField, 'comment') && isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
             {
-                $bAnsw = false;
+                $bAnsw = true;
                 break;
             }
         }
     }
     else
     {
-        // multiple choice, just one answer is required
-        $bAnsw = false;
-    foreach($aFieldnamesInfoInv[$q] as $sField)
-    {
-        if(!$CI->session->userdata($sField) || trim($CI->session->userdata($sField))=='')
-		{
-                $bAnsw = true;
-            break;
+        // all answers required for all other question types
+        $bAnsw = true;
+        foreach($aFieldnamesInfoInv[$q] as $sField)
+        {
+            if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
+            {
+                $bAnsw = false;
+                break;
+            }
         }
-    }
     }
     return $bAnsw;
 }
