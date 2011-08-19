@@ -353,8 +353,6 @@
 
 	   self::_getAdminHeader();
 	   self::_showadminmenu($surveyid);
-	   self::_surveybar($surveyid);
-
 
         //$postsid=returnglobal('sid');
         if ($this->input->post('sid'))
@@ -388,6 +386,7 @@
             $data['date'] = $date;
             $data['dbprefix'] = $this->db->dbprefix;
             $data['step1'] = true;
+            self::_surveybar($surveyid);
             $this->load->view('admin/Survey/deactivateSurvey_view',$data);
         }
 
@@ -413,6 +412,8 @@
                     $deactivateresult = db_execute_assosc($setidx) or die ("Could not alter the index for this token table. <br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
 
                 }
+                $data['tnewtable'] = $tnewtable;
+                $data['toldtable'] = $toldtable;
             }
 
             // IF there are any records in the saved_control table related to this survey, they have to be deleted
@@ -511,8 +512,8 @@
 
             $data['clang'] = $clang;
             $data['surveyid'] = $surveyid;
-            $data['tnewtable'] = $tnewtable;
-            $data['toldtable'] = $toldtable;
+            $data['newtable'] = $newtable;
+            self::_surveybar($surveyid);
             $this->load->view('admin/Survey/deactivateSurvey_view',$data);
 
         }
