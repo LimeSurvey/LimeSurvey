@@ -14,7 +14,7 @@
     <div class='header ui-widget-header'>
     <strong><?php echo $clang->gT("Attribute Control"); ?> </strong></div>
     <?php
-        $attribute = array('class' => 'form44');
+       $attribute = array('class' => 'form44');
         echo form_open('/admin/participants/storeAttributes',$attribute);?>
         <br></br>
         <ul><li><table id='atttable'class='hovertable'>
@@ -85,7 +85,6 @@
         <div id="attid" id="attid">
         </div>
         </table></li>
-        <br>
         <li><a href="#" class="add"><img src = "<?php echo base_url().'images/plus.png' ?>" alt="Add Attribute" width="25" height="25" title="Add Attribute" id="add" name="add"></a></li></ul>
         <br>
         <p><input type="submit" name="Save" value="Save"></p>

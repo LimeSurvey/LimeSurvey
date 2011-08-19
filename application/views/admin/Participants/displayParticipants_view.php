@@ -85,16 +85,17 @@ var selectSurvey = "<?php echo $clang->gT("Please select a survey to add partici
 var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
 var exportBtn = "<?php echo $clang->gT("Export") ?>";
 var okBtn = "<?php echo $clang->gT("OK") ?>";
+var deletefrompanelmsg = "<?php echo $clang->gT("Select one of the three options") ?>";
 var deletefrompanel = "<?php echo $clang->gT("Delete participant(s) from central participants panel only") ?>";
 var deletefrompanelandtoken = "<?php echo $clang->gT("Delete participant(s) from central panel and tokens tables") ?>";
 var deletefrompaneltokenandresponse = "<?php echo $clang->gT("Delete participant(s) from central panel, tokens tables and all associated responses") ?>";
-var deleteMsg = "<br><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
+var deleteMsg = "<br>"+deletefrompanelmsg+"<br><br><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
 var searchBtn = "<?php echo $clang->gT("Search") ?>";
 var shareMsg = "<?php echo $clang->gT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
 var jsonUrl = "<?php echo site_url("admin/participants/getParticipants_json");?>";
 var jsonSearchUrl = "<?php echo site_url("admin/participants/getParticipantsResults_json");?>";
 var editUrl = "<?php echo site_url("admin/participants/editParticipant"); ?>";
-var minusbutton = "<?php echo site_url("/images/deleteanswer.png"); ?>";
+var minusbutton = "<?php echo base_url()."images/deleteanswer.png" ?>";
 var addbutton = "<?php echo base_url()."images/plus.png" ?>";
 var delparticipantUrl = "<?php echo site_url("admin/participants/delParticipant");?>";
 var surveylinkUrl = "<?php echo site_url("admin/participants/getSurveyInfo_json"); ?>";
@@ -111,12 +112,12 @@ var ajaxUrl = "<?php echo site_url("images/ajax-loader.gif"); ?>";
 var redUrl = "<?php echo site_url("admin/participants/displayParticipants");?>";
 var colNames = '["participant_id","can_edit","<?php echo $clang->gT("First Name") ?>","<?php echo $clang->gT("Last Name") ?>","<?php echo $clang->gT("E-Mail") ?>","<?php echo $clang->gT("Blacklisted") ?>","<?php echo $clang->gT("Surveys") ?>","<?php echo $clang->gT("Language") ?>","<?php echo $clang->gT("Owner Name") ?>"<?php echo $columnNames; ?>]';
 var colModels = '[{"name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
-    colModels += '{"name":"can_edit", "index":"can_edit", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
+    colModels += '{"name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{"name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":120, "align":"center", "editable":true},';
     colModels += '{"name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":120, "align":"center", "editable":true},';
     colModels += '{"name":"email", "index":"email","align":"center","width":300, "sorttype":"string", "sortable": true, "editable":true},';
-    colModels += '{"name":"blacklisted", "index":"blacklisted","align":"center", "sorttype":"string", "sortable": true, "editable":true, "edittype":"checkbox", "editoptions":{"value":"Y:N"}},';
-    colModels += '{"name":"surveys", "index":"surveys","align":"center", "sorttype":"int", "sortable": true,"width":120,"editable":false},';
+    colModels += '{"name":"blacklisted", "index":"blacklisted","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true, "edittype":"checkbox", "editoptions":{"value":"Y:N"}},';
+    colModels += '{"name":"surveys", "index":"surveys","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":false},';
 <?php
     $colModels  ="colModels += '".implode(",';\n colModels += '",$langNames).",";
     $colModels .= implode(",';\n colModels += '", $uidNames)."]';";
@@ -172,7 +173,7 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
 
 </div>
 <br>
-<table id="displayparticipants"></table> <div id="pager"></div>
+<table id="displayparticipants"  ></table> <div id="pager"></div>
 <p><input type="button" name="share" id="share" value="Share" /><input type="button" name="addtosurvey" id="addtosurvey" value="Add to Survey" />
 </p>
 </table>
@@ -245,7 +246,12 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
             'checked'     => TRUE,
             'style'       => 'margin:10px',
             );
+
         echo form_checkbox($data); ?><input type="hidden" name="redirect" id="redirect" value='TRUE'></p>
+        <ol id='selectableadd' class='selectable' >
+                <li class='ui-widget-content' id='selected'><?php echo $clang->gT("selected") ?></li>
+                <li class='ui-widget-content' id='all'><?php echo $clang->gT("all") ?></li>
+        </ol>
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">
 	<p>

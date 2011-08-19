@@ -132,14 +132,17 @@ function insertParticipantCSV($data)
  * Paramteres : None
  * Return Data : Active Record
 */
-function getParticipants()
+function getParticipants($page,$limit)
 {
-        
-    //$this->db->order_by("lastname", "asc"); 
-    $data = $this->db->get('participants');
+    $start = $limit*$page - $limit;
+    $data = $this->db->get('participants',$limit,$start);
     return $data;
 }
-function getParticipantsSearchMultiple($condition)
+function getParticipantsCount()
+{
+     return $this->db->count_all_results('participants');
+}
+function getParticipantsSearchMultiple($condition,$page,$limit)
 {
    $i=0;
    $j=1;
@@ -470,7 +473,16 @@ function getParticipantsSearchMultiple($condition)
         }
         else{$i=$i+4;}
     }
-    $data= $this->db->get();
+    if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get();
+                  }
+                  else
+                  {
+                   $this->db->limit($limit,$start);
+                  $data = $this->db->get();
+                    }   
+    
     $otherdata = $data->result_array();
     if(!empty($tobedonelater))
     {    
@@ -513,7 +525,17 @@ function getParticipantsSearchMultiple($condition)
     {
         $this->db->or_where('participant_id',$value['participant_id']);
     }
-    $data=$this->db->get();
+    if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get();
+                  }
+                  else
+                  {
+                   $this->db->limit($limit,$start);
+                  $data = $this->db->get();
+                    }   
+    
+
     $orddata = $data->result_array();
     $finalanswer = array_merge($otherdata,$orddata);
     return $finalanswer;
@@ -524,15 +546,22 @@ function getParticipantsSearchMultiple($condition)
     }
     
 }
-function getParticipantsSearch($condition)
+function getParticipantsSearch($condition,$page,$limit)
 {  
+    $start = $limit*$page - $limit;
     if($condition[1]=='equal')
         {
           if($condition[0]=='surveys')
           {
               $resultarray = array();
-              $this->db->order_by("lastname", "asc"); 
-              $data = $this->db->get('participants');
+              if($page == 0 && $limit == 0)
+              {
+                $data = $this->db->get('participants');
+              }
+              else
+              {
+                  $data = $this->db->get('participants',$limit,$start);
+              }   
               foreach($data->result_array() as $key=>$value)
               {
                   $this->db->where('participant_id',$value['participant_id']);
@@ -547,13 +576,19 @@ function getParticipantsSearch($condition)
           }
           else if($condition[0]=='owner_name')
           {
-                     $this->db->select('uid');
+                $this->db->select('uid');
                 $this->db->where('full_name',$condition[2]);
                 $userid = $this->db->get('users');
                 $uid = $userid->row();
                 $this->db->where('owner_uid',$uid->uid);
-                $this->db->order_by("lastname", "asc"); 
-                $data=$this->db->get('participants');
+                if($page == 0 && $limit == 0)
+                {
+                    $data = $this->db->get('participants');
+                }
+                else
+                {
+                    $data = $this->db->get('participants',$limit,$start);
+                }   
                 return $data->result_array();
           }
           else if(is_numeric($condition[0]))
@@ -563,15 +598,29 @@ function getParticipantsSearch($condition)
                 $this->db->join('participants', 'participant_attribute.participant_id = participants.participant_id');
                 $this->db->where('participant_attribute.attribute_id',$condition[0]);
                 $this->db->where('participant_attribute.value',$condition[2]);
-                $data=$this->db->get();
+                if($page == 0 && $limit == 0)
+                {
+                    $data = $this->db->get();
+                }
+                else
+                {
+                      $this->db->limit($limit,$start);
+                      $data = $this->db->get();
+                }   
                 return $data->result_array();
           }
           else
           {
             $this->db->where($condition[0],$condition[2]);
-            $this->db->order_by("lastname", "asc"); 
-            $data=$this->db->get('participants');
-            return $data->result_array();
+            if($page == 0 && $limit == 0)
+              {
+                $data = $this->db->get('participants');
+              }
+              else
+              {
+                  $data = $this->db->get('participants',$limit,$start);
+              }   
+             return $data->result_array();
           }
         }
         else if($condition[1]=='contains')
@@ -580,8 +629,14 @@ function getParticipantsSearch($condition)
           if($condition[0]=='surveys')
           {
               $resultarray = array();
-              $this->db->order_by("lastname", "asc"); 
-              $data = $this->db->get('participants');
+              if($page == 0 && $limit == 0)
+              {
+                $data = $this->db->get('participants');
+              }
+              else
+              {
+                  $data = $this->db->get('participants',$limit,$start);
+              }   
               foreach($data->result_array() as $key=>$value)
               {
                   $this->db->where('participant_id',$value['participant_id']);
@@ -604,7 +659,14 @@ function getParticipantsSearch($condition)
                 $uid = $userid->row();
                 $this->db->where('owner_uid',$uid->uid);
                 $this->db->order_by("lastname", "asc"); 
-                $data=$this->db->get('participants');
+                if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
                 return $data->result_array();
           }
           else if(is_numeric($condition[0]))
@@ -614,14 +676,28 @@ function getParticipantsSearch($condition)
                 $this->db->join('participants', 'participant_attribute.participant_id = participants.participant_id');
                 $this->db->where('participant_attribute.attribute_id',$condition[0]);
                 $this->db->like('participant_attribute.value',$condition[2]);
-                $data=$this->db->get();
+                if($page == 0 && $limit == 0)
+                {
+                    $data = $this->db->get();
+                }
+                else
+                {
+                      $this->db->limit($limit,$start);
+                      $data = $this->db->get();
+                }   
                 return $data->result_array();
           }
           else
           {
                 $this->db->like($condition[0],$condition[2]); 
-                $this->db->order_by("lastname", "asc"); 
-                $data=$this->db->get('participants');
+                if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
                 return $data->result_array();
           }
           
@@ -631,8 +707,15 @@ function getParticipantsSearch($condition)
             if($condition[0]=='surveys')
           {
               $resultarray = array();
-              $this->db->order_by("lastname", "asc"); 
-              $data = $this->db->get('participants');
+              
+              if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
               foreach($data->result_array() as $key=>$value)
               {
                   $this->db->where('participant_id',$value['participant_id']);
@@ -653,8 +736,14 @@ function getParticipantsSearch($condition)
                 $userid = $this->db->get('users');
                 $uid = $userid->row();
                 $this->db->where('owner_uid',$uid->uid);
-                $this->db->order_by("lastname", "asc"); 
-                $data=$this->db->get('participants');
+                if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
                 return $data->result_array();
           }
           else if(is_numeric($condition[0]))
@@ -664,14 +753,28 @@ function getParticipantsSearch($condition)
                 $this->db->join('participants', 'participant_attribute.participant_id = participants.participant_id');
                 $this->db->where('participant_attribute.attribute_id',$condition[0]);
                 $this->db->where_not_in('participant_attribute.value',$condition[2]);
-                $data=$this->db->get();
+                if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                      $this->db->limit($limit,$start);
+                    $data = $this->db->get('participants');
+                  }   
                 return $data->result_array();
           }
           else
           {
             $this->db->where_not_in($condition[0],$condition[2]);
-            $this->db->order_by("lastname", "asc"); 
-            $data=$this->db->get('participants');
+            if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
             return $data->result_array();
           }
         }
@@ -681,7 +784,14 @@ function getParticipantsSearch($condition)
           {
               $resultarray = array();
               $this->db->order_by("lastname", "asc"); 
-              $data = $this->db->get('participants');
+              if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
               foreach($data->result_array() as $key=>$value)
               {
                   $this->db->where('participant_id',$value['participant_id']);
@@ -701,8 +811,14 @@ function getParticipantsSearch($condition)
                 $userid = $this->db->get('users');
                 $uid = $userid->row();
                 $this->db->where('owner_uid',$uid->uid);
-                $this->db->order_by("lastname", "asc"); 
-                $data=$this->db->get('participants');
+                if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
                 return $data->result_array();
           }
           else if(is_numeric($condition[0]))
@@ -712,14 +828,28 @@ function getParticipantsSearch($condition)
                 $this->db->join('participants', 'participant_attribute.participant_id = participants.participant_id');
                 $this->db->where('participant_attribute.attribute_id',$condition[0]);
                 $this->db->not_like('participant_attribute.value',$condition[2]);
-                $data=$this->db->get();
+                if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                      $this->db->limit($limit,$start);
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
                 return $data->result_array();
           }
           else
           {
             $this->db->not_like($condition[0],$condition[2]);
-            $this->db->order_by("lastname", "asc"); 
-            $data=$this->db->get('participants');
+            if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
             return $data->result_array();
           }
         }
@@ -728,8 +858,14 @@ function getParticipantsSearch($condition)
           if($condition[0]=='surveys')
           {
               $resultarray = array();
-              $this->db->order_by("lastname", "asc"); 
-              $data = $this->db->get('participants');
+              if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
               foreach($data->result_array() as $key=>$value)
               {
                   $this->db->where('participant_id',$value['participant_id']);
@@ -750,7 +886,14 @@ function getParticipantsSearch($condition)
                 $uid = $userid->row();
                 $this->db->where('owner_uid',$uid->uid);
                 $this->db->order_by("lastname", "asc"); 
-                $data=$this->db->get('participants');
+                if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
                 return $data->result_array();
           }
           else if(is_numeric($condition[0]))
@@ -760,14 +903,29 @@ function getParticipantsSearch($condition)
                 $this->db->join('participants', 'participant_attribute.participant_id = participants.participant_id');
                 $this->db->where('participant_attribute.attribute_id',$condition[0]);
                 $this->db->where('participant_attribute.value >',$condition[2]);
-                $data=$this->db->get();
+                if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                      $this->db->limit($limit,$start);
+                  $data = $this->db->get('participants');
+                    }   
                 return $data->result_array();
           }
           else
           {
             $this->db->where($condition[0].' >',$condition[2]); 
             $this->db->order_by("lastname", "asc"); 
-            $data=$this->db->get('participants');
+            if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
             return $data->result_array();
           }
         }
@@ -776,8 +934,15 @@ function getParticipantsSearch($condition)
           if($condition[0]=='surveys')
           {
               $resultarray = array();
-              $this->db->order_by("lastname", "asc"); 
-              $data = $this->db->get('participants');
+              
+              if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
               foreach($data->result_array() as $key=>$value)
               {
                   $this->db->where('participant_id',$value['participant_id']);
@@ -798,8 +963,15 @@ function getParticipantsSearch($condition)
                 $userid = $this->db->get('users');
                 $uid = $userid->row();
                 $this->db->where('owner_uid <',$uid->uid);
-                $this->db->order_by("lastname", "asc"); 
-                $data=$this->db->get('participants');
+                
+                if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
                 return $data->result_array();
           }
           else if(is_numeric($condition[0]))
@@ -809,14 +981,28 @@ function getParticipantsSearch($condition)
                 $this->db->join('participants', 'participant_attribute.participant_id = participants.participant_id');
                 $this->db->where('participant_attribute.attribute_id',$condition[0]);
                 $this->db->not_like('participant_attribute.value <',$condition[2]);
-                $data=$this->db->get();
+              if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                      $this->db->limit($limit,$start);
+                  $data = $this->db->get('participants');
+                    }   
                 return $data->result_array();
           }
           else
           {
             $this->db->where($condition[0].' <',$condition[2]); 
-            $this->db->order_by("lastname", "asc"); 
-            $data=$this->db->get('participants');
+            if($page == 0 && $limit == 0)
+                  {
+                    $data = $this->db->get('participants');
+                  }
+                  else
+                  {
+                  $data = $this->db->get('participants',$limit,$start);
+                    }   
             return $data->result_array();
           }
           

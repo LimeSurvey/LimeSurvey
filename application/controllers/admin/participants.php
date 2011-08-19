@@ -556,10 +556,13 @@ $objWriter->save('php://output');
 
 function getParticipantsResults_json()
 {
+    $page = $this->input->post('page');
+    $limit = $this->input->post('rows');                                
     $this->load->model('participants_model');
     $this->load->model('participant_attribute_model');
     $this->load->model('users_model');
     $attid = $this->participant_attribute_model->getAttributeVisibleID();
+    $participantfields = array('participant_id','can_edit','firstname','lastname','email','blacklisted','surveys','language','owner_uid');
     if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
     {
         $searchcondition = $this->uri->segment(4);
@@ -569,44 +572,75 @@ function getParticipantsResults_json()
         if(count($condition)==3)
         {
             
-            $records = $this-> participants_model->getParticipantsSearch($condition);
-            $data->page = 1;
-            $data->records = count ($this->participants_model->getParticipantsSearch($condition));
-            $data->total = ceil ($data->records /10 );
+            $records = $this-> participants_model->getParticipantsSearch($condition,$page,$limit);
+            $data->page = $page;
+            $data->records = count ($this->participants_model->getParticipantsSearch($condition,0,0));
+            $data->total = ceil ($data->records /$limit );
         
         }
         else
         {
-            $records = $this-> participants_model->getParticipantsSearchMultiple($condition);
-            $data->page = 1;
-            $data->records = count ($this->participants_model->getParticipantsSearch($condition));
-            $data->total = ceil ($data->records /10 );
+            $records = $this-> participants_model->getParticipantsSearchMultiple($condition,$page,$limit);
+            $data->page = $page;
+            $data->records = count ($this->participants_model->getParticipantsSearchMultiple($condition,0,0));
+            $data->total = ceil ($data->records /$limit );
         }
         
      }
      
-    $i=0;
+        $i=0;
         foreach($records as $row=>$value)
             {   
-            $data->rows[$i]['id']=$value['participant_id'];
             $username = $this->users_model->getName($value['owner_uid']);//for conversion of uid to human readable names
             $surveycount = $this->participants_model->getSurveyCount($value['participant_id']);
-            $data->rows[$i]['cell']=array($value['participant_id'],"true",$value['firstname'],$value['lastname'],$value['email'],$value['blacklisted'],$surveycount,$value['language'],$username->full_name);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is 
+            $sortablearray[$i]=array($value['participant_id'],"true",$value['firstname'],$value['lastname'],$value['email'],$value['blacklisted'],$surveycount,$value['language'],$username->full_name);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is 
             $attributes =  $this->participant_attribute_model->getParticipantVisibleAttribute($value['participant_id']);
             foreach($attid as $attributeid)
             {
                 $answer=$this->participant_attribute_model->getAttributeValue($value['participant_id'],$attributeid['attribute_id']);
                 if(isset($answer->value))
                 {
-                    array_push($data->rows[$i]['cell'],$answer->value);
+                    array_push($sortablearray[$i],$answer->value);
                 }
                 else
                 {
-                    array_push($data->rows[$i]['cell'],"");
+                    array_push($sortablearray[$i],"");
                 }
             }
             $i++;
         }
+        function subval_sort($a,$subkey,$order) {
+            	foreach($a as $k=>$v) {
+        		$b[$k] = strtolower($v[$subkey]);
+        	}
+                if($order == "asc")
+                {
+                    asort($b,SORT_REGULAR);
+                }
+        	else
+                {
+                    arsort($b,SORT_REGULAR);
+                }
+        	foreach($b as $key=>$val) {
+        		$c[] = $a[$key];
+                }
+                return $c;
+            }
+            $indexsort = array_search($this->input->post('sidx'), $participantfields);
+            $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
+            $i=0;
+            $count = count($sortedarray[0]);
+            foreach($sortedarray as $key=>$value)
+            {
+                $data->rows[$i]['id']=$value[0];   
+                $data->rows[$i]['cell'] = array();
+                for($j=0 ; $j < $count ; $j++)
+                {
+                    array_push($data->rows[$i]['cell'],$value[$j]);
+                }
+                $i++;
+            }
+            
         echo json_encode($data);
     
     /*else // Only the owned and shared participants will be visible
@@ -650,23 +684,23 @@ function getParticipantsResults_json()
  */
 function getParticipants_json()
 {
-    
+    $page = $this->input->post('page');
+    $limit = $this->input->post('rows');                                
     $this->load->model('participants_model');
     $this->load->model('participant_attribute_model');
     $this->load->model('users_model');
     $attid = $this->participant_attribute_model->getAttributeVisibleID();
     $participantfields = array('participant_id','can_edit','firstname','lastname','email','blacklisted','surveys','language','owner_uid');
-    //print_r($participantfields);
     foreach($attid as $key=>$value)
     {
         array_push($participantfields,$value['attribute_name']);
     }
     if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
     {
-        $records = $this-> participants_model->getParticipants();
-        $data->page = 1;
-        $data->records = count ($this->participants_model->getParticipants()->result_array());
-        $data->total = ceil ($data->records /10 );
+        $records = $this-> participants_model->getParticipants($page,$limit);
+        $data->page = $page;
+        $data->records = $this->participants_model->getParticipantsCount();
+        $data->total = ceil ( $data->records / $limit );
         $i=0;
         foreach($records->result() as $row)
         {   
@@ -729,9 +763,9 @@ function getParticipants_json()
         
         $userid = $this->session->userdata('loginID');
         $records = $this->participants_model->getParticipantsOwner($userid);
-        $data->page = 1;
+        $data->page = $page;
         $data->records = count ($this->participants_model->getParticipantsOwner($userid)->result_array());
-        $data->total = ceil ($data->records /10 );
+        $data->total = ceil($data->records/$limit);
         $attid = $this->participant_attribute_model->getAttributeVisibleID();
         $i=0;
         foreach($records->result() as $row)

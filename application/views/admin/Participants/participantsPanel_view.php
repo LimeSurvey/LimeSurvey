@@ -1,4 +1,3 @@
-
 <html>
     <head>
     <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js"?>" type="text/javascript"></script>
@@ -63,19 +62,21 @@
             'style' => 'margin-left:1px',
             'style' => 'margin-right:1px'
           );
-        $user = array(
-          'src' => 'images/tokens.png',
+        $globalsettings = array(
+          'src' => 'images/token_manage.png',
           'alt' => 'Global Participant Settings',
           'title' => 'Global Participant Settings',
           'style' => 'margin-left:5px',
           'style' => 'margin-right:1px'
           );
         $attributecontrol = array(
-          'src' => 'images/token_manage.png',
+          'src' => 'images/tag_green.png',
           'alt' => 'Attribute Control',
           'title' => 'Attribute Control',
-           'style' => 'margin-left:0px',
-            'style' => 'margin-right:1px'
+          'width' => 50,
+          'height' => 35,
+          'style' => 'margin-left:0px',
+          'style' => 'margin-right:1px'
           );
         $sharepanel = array(
           'src' => 'images/share.png',
@@ -108,7 +109,7 @@
         $participantPanel.= anchor('admin/participants/blacklistControl',img($blacklist));
         if($this->session->userdata('USER_RIGHT_SUPERADMIN'))
         {
-        $participantPanel.= anchor('admin/participants/userControl',img($user));
+        $participantPanel.= anchor('admin/participants/userControl',img($globalsettings));
         }
         $participantPanel .= img($seperator);
         $participantPanel.= anchor('admin/participants/attributeControl',img($attributecontrol));

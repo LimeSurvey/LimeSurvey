@@ -4,7 +4,14 @@ height: 16px;
 background-image:url('images/search.gif');
 }
 #selectable .ui-selecting { background: #7FFFD4;  }
-#selectable .ui-selected { background: 	#5CB3FF; color: white; }
+#selectable .ui-selected { background: 	#5CB3FF; color: #000000; }
 #selectable { list-style-type: none; margin: 2px; padding: 0; width: 90%; }
 #selectable li {  padding: 1em; font-size: 1em; height: 9px;text-align: center;margin: 4px;}
 .ui-icon.exporticon { background-image:url('images/export.gif');}
+
+
+#selectableadd .ui-selecting { background: #66CCFF; }
+#selectableadd .ui-selected { background: #66CCFF; color: #000000; }
+#selectableadd { list-style-type: none; margin: 0; padding: 0;background-color: #66CCFF; }
+#selectableadd li { margin: 3px; vertical-align: middle; margin-left: 35px;padding: 1px; float: left; width: 120px; height: 16px; text-align: center; }
+
