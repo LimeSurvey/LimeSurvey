@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id$
- * 
+ *
  */
 
 /**
@@ -23,7 +23,7 @@
  * @subpackage	Backend
  */
 class browse extends Survey_Common_Controller {
-    
+
 	/**
 	 * Constructor
 	 */
@@ -31,13 +31,13 @@ class browse extends Survey_Common_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	public function _remap($method, $params = array())
 	{
 		array_unshift($params, $method);
 	    return call_user_func_array(array($this, "action"), $params);
 	}
-	
+
 	function action($surveyid = null, $subaction = null, $var1 = null, $var2 = null, $var3 = null, $var4 = null)
 	{
 		$_POST = $this->input->post();
@@ -45,13 +45,13 @@ class browse extends Survey_Common_Controller {
 		$this->load->helper("database");
 		$this->load->helper("surveytranslator");
 		$data = array();
-		
+
 		if (!isset($limit)) {$limit=returnglobal('limit');}
 		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 		if (!isset($id)) {$id=returnglobal('id');}
 		if (!isset($order)) {$order=returnglobal('order');}
 		if (!isset($browselang)) {$browselang=returnglobal('browselang');}
-				
+
 		// Some test in response table
 		if (!isset($surveyid) && !isset($subaction)) //NO SID OR ACTION PROVIDED
 		{
@@ -63,13 +63,13 @@ class browse extends Survey_Common_Controller {
 		            ."</div>");
 		    return;
 		}
-		
+
 		$data['surveyid'] = $surveyid;
 		$data['subaction'] = $subaction;
-		
+
 		//CHECK IF SURVEY IS ACTIVATED AND EXISTS
 		$actquery = "SELECT * FROM ".$this->db->dbprefix('surveys')." as a inner join ".$this->db->dbprefix('surveys_languagesettings')." as b on (b.surveyls_survey_id=a.sid and b.surveyls_language=a.language) WHERE a.sid=".$this->db->escape($surveyid);
-		
+
 		$actresult = db_execute_assoc($actquery);
 		$actcount = $actresult->num_rows();
 		if ($actcount > 0)
@@ -86,10 +86,10 @@ class browse extends Survey_Common_Controller {
 		         * Used for deleting a record, fix quote bugs..
 		         */
 		        $surveytableNq = $this->db->dbprefix("survey_".$surveyid);
-		
+
 		        $surveyname = "{$actrow['surveyls_title']}";
 		        if ($actrow['active'] == "N") //SURVEY IS NOT ACTIVE YET
-		        {    
+		        {
 		            show_error("\t<div class='messagebox ui-corner-all'><div class='header ui-widget-header'>"
 		                . $clang->gT("Browse Responses")."</div><div class='warningheader'>"
 		                .$clang->gT("Error")."\t</div>\n"
@@ -110,14 +110,14 @@ class browse extends Survey_Common_Controller {
 		        ."</div>");
 		    return;
 		}
-		
+
 		//OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
-		
+
 		$surveyinfo=getSurveyInfo($surveyid);
 		//require_once(dirname(__FILE__).'/sessioncontrol.php');
-		
+
 		// Set language for questions and labels to base language of this survey
-		
+
 		if (isset($browselang) && $browselang!='')
 		{
 		    $_SESSION['browselang']=$browselang;
@@ -138,30 +138,30 @@ class browse extends Survey_Common_Controller {
 		    $language = GetBaseLanguageFromSurveyID($surveyid);
 		}
 
-		self::_getAdminHeader();		
+		self::_getAdminHeader();
 		$surveyoptions = "";
 		self::_browsemenubar($surveyid, $clang->gT("Browse Responses"));
 		$browseoutput = "";
-		
+
 		self::_js_admin_includes($this->config->item("adminscripts").'browse.js');
-		
-		
-		
+
+
+
 		$qulanguage = GetBaseLanguageFromSurveyID($surveyid);
-		
-		
+
+
 		// Looking at a SINGLE entry
-		
+
 		if ($subaction == "id")
 		{
 			$id=$var1;
 		    //SHOW HEADER
 		    if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens script
 		    //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE
-		
+
 		    $fncount = 0;
-		
-		
+
+
 		    $fieldmap=createFieldMap($surveyid,'full',false,false,$language);
 
 		    //add token to top of list if survey is not private
@@ -174,7 +174,7 @@ class browse extends Survey_Common_Controller {
 		    }
 		    $fnames[] = array("submitdate", $clang->gT("Submission date"), $clang->gT("Completed"), "0", 'D');
 		    $fnames[] = array("completed", $clang->gT("Completed"), "0");
-		
+
 		    foreach ($fieldmap as $field)
 		    {
 		        if ($field['fieldname']=='lastpage' || $field['fieldname'] == 'submitdate')
@@ -184,8 +184,8 @@ class browse extends Survey_Common_Controller {
 		        if ($field['type']=='page_time')
 		            continue;
 		        if ($field['type']=='answer_time')
-		            continue;            
-		
+		            continue;
+
 		        $question=$field['question'];
 		        if ($field['type'] != "|")
 		        {
@@ -202,15 +202,15 @@ class browse extends Survey_Common_Controller {
 		            if ($field['aid']!=='filecount')
 		            {
 		                $qidattributes=getQuestionAttributes($field['qid']);
-		
+
 		                for ($i = 0; $i < $field['max_files']; $i++)
 		                {
 		                    if ($qidattributes['show_title'] == 1)
 		                        $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (Title)",     "type"=>"|", "metadata"=>"title",   "index"=>$i);
-		
+
 		                    if ($qidattributes['show_comment'] == 1)
 		                        $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (Comment)",   "type"=>"|", "metadata"=>"comment", "index"=>$i);
-		
+
 		                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (File name)", "type"=>"|", "metadata"=>"name",    "index"=>$i);
 		                    $fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (File size)", "type"=>"|", "metadata"=>"size",    "index"=>$i);
 		                    //$fnames[] = array($field['fieldname'], "File ".($i+1)." - ".$field['question']." (extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
@@ -220,7 +220,7 @@ class browse extends Survey_Common_Controller {
 		                $fnames[] = array($field['fieldname'], "File count");
 		        }
 		}
-		
+
 		    $nfncount = count($fnames)-1;
 		    //SHOW INDIVIDUAL RECORD
 		    $idquery = "SELECT * FROM $surveytable ";
@@ -301,17 +301,17 @@ class browse extends Survey_Common_Controller {
 		    }
 			$this->load->view("admin/browse/browseidfooter_view", $data);
 		}
-		
+
 		elseif ($subaction == "all")
 		{
 		    if(isset($var3)) $order = $var3;
-		    
+
 		    /**
 		     * fnames is used as informational array
 		     * it containts
 		     *             $fnames[] = array(<dbfieldname>, <some strange title>, <questiontext>, <group_id>, <questiontype>);
 		     */
-		  
+
 		    if (!isset($_POST['sql']))
 		    {$browseoutput .= $surveyoptions;} //don't show options when called from another script with a filter on
 		    else
@@ -325,16 +325,16 @@ class browse extends Survey_Common_Controller {
 		                ."</font></td>\n"
 		                ."\t</tr>\n"
 		                ."</table></td></tr>\n";
-		
+
 		    }
-		
+
 		    //Delete Individual answer using inrow delete buttons/links - checked
 		    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] != '' && $_POST['deleteanswer'] != 'marked' && bHasSurveyPermission($surveyid,'responses','delete'))
 		    {
 		        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value
-		
+
 		        // delete the files as well if its a fuqt
-		
+
 		        $fieldmap = createFieldMap($surveyid);
 		        $fuqtquestions = array();
 		        // find all fuqt questions
@@ -343,13 +343,13 @@ class browse extends Survey_Common_Controller {
 		            if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
 		                $fuqtquestions[] = $field['fieldname'];
 		        }
-		
+
 		        if (!empty($fuqtquestions))
 		        {
 		            // find all responses (filenames) to the fuqt questions
 		            $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$_POST['deleteanswer']}";
 		            $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
-		
+
 		            foreach ($responses->result_array() as $json)
 		            {
 		                foreach ($fuqtquestions as $fieldname)
@@ -363,13 +363,13 @@ class browse extends Survey_Common_Controller {
 		                }
 		            }
 		        }
-		
+
 		        // delete the row
 		        $query="delete FROM $surveytable where id=".mysql_real_escape_string($_POST['deleteanswer']);
 		        db_execute_assoc($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
 		    }
 		    // Marked responses -> deal with the whole batch of marked responses
-		    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasSurveyPermission($surveyid,'responses','delete'))        
+		    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0 && bHasSurveyPermission($surveyid,'responses','delete'))
 		    {
 		        // Delete the marked responses - checked
 		        if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] === 'marked')
@@ -378,14 +378,14 @@ class browse extends Survey_Common_Controller {
 		            {
 		                $iResponseID = (int)$iResponseID; // sanitize the value
 		            $query="delete FROM {$surveytable} where id={$iResponseID}";
-		            db_execute_assoc($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked  
+		            db_execute_assoc($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked
 		            }
 		        }
 		        // Download all files for all marked responses  - checked
 		        else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] === 'marked')
 		        {
 		            $fieldmap = createFieldMap($surveyid, 'full');
-		
+
 		            $files = array();
 		            $filelist = array();
 		            foreach ($fieldmap as $field)
@@ -395,7 +395,7 @@ class browse extends Survey_Common_Controller {
 		                    $filequestion[] = $field['fieldname'];
 		                }
 		            }
-		
+
 		            $fields = createFieldMap($surveyid, 'full', false, false, $language);
 		            $initquery = "SELECT ";
 		            $count = 0;
@@ -407,12 +407,12 @@ class browse extends Survey_Common_Controller {
 		                    $initquery .= ", $question ";
 		                $count++;
 		            }
-		
+
 		            $filecount = 0;
 		            foreach ($_POST['markedresponses'] as $iResponseID)
 		            {
 		                $iResponseID=(int)$iResponseID; // sanitize the value
-		
+
 		                $query = $initquery." FROM $surveytable WHERE id={$iResponseID}";
 		                $filearray = db_execute_assoc($query) or safe_die("Could not download response<br />$query<br />".$connect->ErrorMsg());
 		                $metadata = array();
@@ -432,22 +432,22 @@ class browse extends Survey_Common_Controller {
 		            }
 		            // Now, zip all the files in the filelist
 		            $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
-		
+
 		            $zip = new ZipArchive();
 		            $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
 		            if (file_exists($tmpdir."/".$zipfilename))
 		                unlink($tmpdir."/".$zipfilename);
-		
+
 		            if ($zip->open($tmpdir."/".$zipfilename, ZIPARCHIVE::CREATE) !== TRUE)
 		            {
 		                exit("Cannot Open <$zipfilename>\n");
 		            }
-		
+
 		            foreach ($filelist as $file)
 		                $zip->addFile($tmpdir . "/" . $file['filename'], $file['name']);
-		
+
 		            $zip->close();
-		
+
 		            if (file_exists($tmpdir."/".$zipfilename)) {
 		                header('Content-Description: File Transfer');
 		                header('Content-Type: application/octet-stream');
@@ -470,7 +470,7 @@ class browse extends Survey_Common_Controller {
 		    {
 		        $_POST['downloadfile'] = (int) $_POST['downloadfile'];
 		        $fieldmap = createFieldMap($surveyid, 'full');
-		
+
 		        $files = array();
 		        $filelist = array();
 		        foreach ($fieldmap as $field)
@@ -490,7 +490,7 @@ class browse extends Survey_Common_Controller {
 		                $query .= ", $question ";
 		            $count++;
 		        }
-		        $query .= " FROM $surveytable WHERE id=".$_POST['downloadfile'];
+		        $query .= " FROM {$surveytable} WHERE id={$_POST['downloadfile']}";
 		        $filearray = db_execute_assoc($query) or safe_die("Could not download response<br />$query<br />".$connect->ErrorMsg());
 		        foreach ($filearray->result_array() as $metadata)
 		        {
@@ -506,23 +506,23 @@ class browse extends Survey_Common_Controller {
 		                }
 		            }
 		        }
-		
+
 		        // Now, zip all the files in the filelist
 		        $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
-		        
+
 		        $zip = new ZipArchive();
 		        $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
 		        if (file_exists($tmpdir ."/". $zipfilename))
 		            unlink($tmpdir . "/" . $zipfilename);
-		
+
 		        if ($zip->open($tmpdir . "/" . $zipfilename, ZIPARCHIVE::CREATE) !== TRUE)
 		        {
 		            exit("Cannot Open <$zipfilename>\n");
 		        }
-		
+
 		        foreach ($filelist as $file)
 		            $zip->addFile($tmpdir . "/" . $file['filename'], $file['name']);
-		        
+
 		        $zip->close();
 		        if (file_exists($tmpdir."/".$zipfilename)) {
 		            header('Content-Description: File Transfer');
@@ -545,19 +545,19 @@ class browse extends Survey_Common_Controller {
 		        $id = (int)$_POST['id'];
 		        $downloadindividualfile = $_POST['downloadindividualfile'];
 		        $fieldname = $_POST['fieldname'];
-		
+
 		        $query = "SELECT $fieldname FROM $surveytable WHERE id={$id}";
 		        $result=db_execute_assoc($query);
 		        $row=$result->row_array();
 		        $phparray = json_decode(reset($row));
-		
+
 		        for ($i = 0; $i < count($phparray); $i++)
 		        {
 		            if ($phparray[$i]->name == $downloadindividualfile)
 		            {
 		                $dir = dirname(getcwd());
 		                $file = $dir."/upload/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
-		
+
 		                if (file_exists($file)) {
 		                    header('Content-Description: File Transfer');
 		                    header('Content-Type: application/octet-stream');
@@ -576,8 +576,8 @@ class browse extends Survey_Common_Controller {
 		            }
 		        }
 		    }
-		    
-		
+
+
 		    //add token to top of list if survey is not private
 		    if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable)) //add token to top of list if survey is not private
 		    {
@@ -586,25 +586,25 @@ class browse extends Survey_Common_Controller {
 		        $fnames[] = array("lastname", "Last name", $clang->gT("Last name"), 0);
 		        $fnames[] = array("email", "Email", $clang->gT("Email"), 0);
 		    }
-		
+
 		    $fnames[] = array("submitdate", $clang->gT("Completed"), $clang->gT("Completed"), "0", 'D');
 		    $fields = createFieldMap($surveyid, 'full', false, false, $language);
-		
+
 		    $fnames[] = array("submitdate", "Completed", $clang->gT("Completed"), "0", 'D');
 		    $fields = createFieldMap($surveyid, 'full', false, false, $language);
-		
+
 		    foreach ($fields as $fielddetails)
 		    {
 		        if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate')
 		            continue;
-		
+
 		        $question=$fielddetails['question'];
 		        if ($fielddetails['type'] != "|")
 		        {
 		            if ($fielddetails['fieldname']=='lastpage' || $fielddetails['fieldname'] == 'submitdate' || $fielddetails['fieldname'] == 'token')
 		                continue;
-		            
-		            // no headers for time data 
+
+		            // no headers for time data
 		            if ($fielddetails['type']=='interview_time')
 					    continue;
 		            if ($fielddetails['type']=='page_time')
@@ -624,15 +624,15 @@ class browse extends Survey_Common_Controller {
 		            if ($fielddetails['aid']!=='filecount')
 		            {
 		                $qidattributes=getQuestionAttributes($fielddetails['qid']);
-		                
+
 		                for ($i = 0; $i < $fielddetails['max_files']; $i++)
 		                {
 		                    if ($qidattributes['show_title'] == 1)
 		                        $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Title)",     "type"=>"|", "metadata"=>"title",   "index"=>$i);
-		                        
+
 		                    if ($qidattributes['show_comment'] == 1)
 		                        $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(Comment)",   "type"=>"|", "metadata"=>"comment", "index"=>$i);
-		
+
 		                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File name)", "type"=>"|", "metadata"=>"name",    "index"=>$i);
 		                    $fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(File size)", "type"=>"|", "metadata"=>"size",    "index"=>$i);
 		                    //$fnames[] = array($fielddetails['fieldname'], "File ".($i+1)." - ".$fielddetails['question']."(extension)", "type"=>"|", "metadata"=>"ext",     "index"=>$i);
@@ -642,11 +642,11 @@ class browse extends Survey_Common_Controller {
 		                $fnames[] = array($fielddetails['fieldname'], "File count");
 		        }
 		    }
-		
+
 		    $fncount = count($fnames);
-		
+
 		    //NOW LETS CREATE A TABLE WITH THOSE HEADINGS
-		
+
 		    $tableheader = "<!-- DATA TABLE -->";
 		    if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%'>\n";}
 		    else {$tableheader .= "<table class='browsetable'>\n";}
@@ -677,12 +677,12 @@ class browse extends Survey_Common_Controller {
 		        $tableheader .="<img id='imgDownloadMarkedFiles' src='".$this->config->item("imageurl")."/down_all.png' alt='".$clang->gT('Download marked files')."' />";
 		    }
 		    $tableheader .="</td></tr></tfoot>\n\n";
-		    
+
 		    if(isset($var1)) $start = (int) $var1; else $start=returnglobal('start');
 		    if(isset($var2)) $limit = (int) $var2; else $limit=returnglobal('limit');
 		    if (!isset($limit) || $limit== '') {$limit = 50;}
 		    if (!isset($start) || $start =='') {$start = 0;}
-		
+
 		    //Create the query
 		    if ($surveyinfo['anonymized'] == "N" && db_tables_exist($tokentable))
 		    {
@@ -690,34 +690,34 @@ class browse extends Survey_Common_Controller {
 		    } else {
 		        $sql_from = $surveytable;
 		    }
-		    
+
 		    $selectedgroup = returnglobal('selectgroup'); // group token id
-		    
+
 		    $sql_where = "";
 		    if (incompleteAnsFilterstate() == "inc")
 		    {
 		        $sql_where .= "submitdate IS NULL";
-		        
+
 		    }
 		    elseif (incompleteAnsFilterstate() == "filter")
 		    {
 		        $sql_where .= "submitdate IS NOT NULL";
-		        
+
 		    }
-		    
+
 		    //LETS COUNT THE DATA
 		    $dtquery = "SELECT count(*) FROM $sql_from";
 		    if ($sql_where!="")
 		    {
 		        $dtquery .=" WHERE $sql_where";
 		    }
-		    
+
 		    $dtresult=db_execute_assoc($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
 		    $dtrow=$dtresult->row_array();
 			$dtcount=reset($dtrow);
-		
+
 		    if ($limit > $dtcount) {$limit=$dtcount;}
-		
+
 		    //NOW LETS SHOW THE DATA
 		    if (isset($_POST['sql']))
 		    {
@@ -737,7 +737,7 @@ class browse extends Survey_Common_Controller {
 		            {
 		                $dtquery .= " WHERE submitdate IS NOT NULL ";
 		            }
-		
+
 		            $dtquery .= " ORDER BY {$surveytable}.id";
 		        }
 		        else
@@ -750,7 +750,7 @@ class browse extends Survey_Common_Controller {
 		            if (incompleteAnsFilterstate() == "inc")
 		            {
 		                $dtquery .= "submitdate IS NULL ";
-		
+
 		                if (stripcslashes($_POST['sql']) !== "")
 		                {
 		                    $dtquery .= " AND ";
@@ -759,7 +759,7 @@ class browse extends Survey_Common_Controller {
 		            elseif (incompleteAnsFilterstate() == "filter")
 		            {
 		                $dtquery .= " submitdate IS NOT NULL ";
-		
+
 		                if (stripcslashes($_POST['sql']) !== "")
 		                {
 		                    $dtquery .= " AND ";
@@ -781,17 +781,17 @@ class browse extends Survey_Common_Controller {
 		        if (incompleteAnsFilterstate() == "inc")
 		        {
 		            $dtquery .= " WHERE submitdate IS NULL ";
-		
+
 		        }
 		        elseif (incompleteAnsFilterstate() == "filter")
 		        {
 		            $dtquery .= " WHERE submitdate IS NOT NULL ";
 		        }
-		
+
 		        $dtquery .= " ORDER BY {$surveytable}.id";
 		    }
 		    if ($order == "desc") {$dtquery .= " DESC";}
-		
+
 		    if (isset($limit))
 		    {
 		        if (!isset($start)) {$start = 0;}
@@ -803,8 +803,8 @@ class browse extends Survey_Common_Controller {
 		    }
 		    $dtcount2 = $dtresult->num_rows();
 		    $cells = $fncount+1;
-		
-		
+
+
 		    //CONTROL MENUBAR
 		    $last=$start-$limit;
 		    $next=$start+$limit;
@@ -813,7 +813,7 @@ class browse extends Survey_Common_Controller {
 		    if ($last <0) {$last=0;}
 		    if ($next >= $dtcount) {$next=$dtcount-$limit;}
 		    if ($end < 0) {$end=0;}
-		
+
 			$data['dtcount2'] = $dtcount2;
 			$data['start'] = $start;
 			$data['tableheader'] = $tableheader;
@@ -822,7 +822,7 @@ class browse extends Survey_Common_Controller {
 			$data['next'] = $next;
 			$data['end'] = $end;
 			$this->load->view("admin/browse/browseallheader_view", $data);
-		
+
 		    foreach ($dtresult->result_array() as $dtrow)
 		    {
 				if (!isset($bgcc)) {$bgcc="even";}
@@ -843,32 +843,32 @@ class browse extends Survey_Common_Controller {
 		elseif ($surveyinfo['savetimings']=="Y" && $subaction == "time"){
 			$browseoutput .= $surveyoptions;
 			$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Time statistics').'</div>';
-			
+
 			// table of time statistics - only display completed surveys
 		    $browseoutput .= "\n<script type='text/javascript'>
-		                          var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."'; 
-		                          var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."'; 
+		                          var strdeleteconfirm='".$clang->gT('Do you really want to delete this response?','js')."';
+		                          var strDeleteAllConfirm='".$clang->gT('Do you really want to delete all marked responses?','js')."';
 		                        </script>\n";
-		
+
 		    if (isset($_POST['deleteanswer']) && $_POST['deleteanswer']!='')
 		    {
-		        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value     
+		        $_POST['deleteanswer']=(int) $_POST['deleteanswer']; // sanitize the value
 		        $query="delete FROM $surveytable where id={$_POST['deleteanswer']}";
 		        db_execute_assoc($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg()); // checked
 		    }
-		
+
 		    if (isset($_POST['markedresponses']) && count($_POST['markedresponses'])>0)
 		    {
 		        foreach ($_POST['markedresponses'] as $iResponseID)
 		        {
 		            $iResponseID=(int)$iResponseID; // sanitize the value
 		            $query="delete FROM $surveytable where id={$iResponseID}";
-		            db_execute_assoc($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());  // checked  
+		            db_execute_assoc($query) or safe_die("Could not delete response<br />$dtquery<br />".$connect->ErrorMsg());  // checked
 		        }
 		    }
-		    
+
 		    $fields=createTimingsFieldMap($surveyid,'full');
-		
+
 		    foreach ($fields as $fielddetails)
 		    {
 		        // headers for answer id and time data
@@ -882,7 +882,7 @@ class browse extends Survey_Common_Controller {
 					$fnames[]=array($fielddetails['fieldname'],$clang->gT('Question').": ".$fielddetails['title']);
 		    }
 		    $fncount = count($fnames);
-		
+
 		    //NOW LETS CREATE A TABLE WITH THOSE HEADINGS
 		    $tableheader = "<!-- DATA TABLE -->";
 		    if ($fncount < 10) {$tableheader .= "<table class='browsetable' width='100%'>\n";}
@@ -907,26 +907,26 @@ class browse extends Survey_Common_Controller {
 		    $tableheader .= "\t<tfoot><tr><td colspan=".($fncount+2).">"
 		                   ."<img id='imgDeleteMarkedResponses' src='$imageurl/token_delete.png' alt='".$clang->gT('Delete marked responses')."' />"
 		                   ."\t</tr></tfoot>\n\n";
-		
+
 		    $start=returnglobal('start');
 		    $limit=returnglobal('limit');
 		    if (!isset($limit) || $limit== '') {$limit = 50;}
 		    if (!isset($start) || $start =='') {$start = 0;}
-		    
+
 		    //LETS COUNT THE DATA
 		    $dtquery = "SELECT count(*) FROM {$surveytimingstable} INNER JOIN {$surveytable} ON {$surveytimingstable}.id={$surveytable}.id WHERE submitdate IS NOT NULL ";
-		    
+
 		    $dtresult=db_execute_assoc($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
 		    $dtrow=$dtresult->row_array();
 			$dtcount=reset($dtrow);
-		
+
 		    if ($limit > $dtcount) {$limit=$dtcount;}
-		
+
 		    //NOW LETS SHOW THE DATA
 		    $dtquery = "SELECT * FROM $surveytimingstable INNER JOIN {$surveytable} ON {$surveytimingstable}.id={$surveytable}.id WHERE submitdate IS NOT NULL ORDER BY $surveytable.id";
-		    
+
 		    if ($order == "desc") {$dtquery .= " DESC";}
-		
+
 		    if (isset($limit))
 		    {
 		        if (!isset($start)) {$start = 0;}
@@ -938,7 +938,7 @@ class browse extends Survey_Common_Controller {
 		    }
 		    $dtcount2 = $dtresult->num_rows();
 		    $cells = $fncount+1;
-		
+
 		    //CONTROL MENUBAR
 		    $last=$start-$limit;
 		    $next=$start+$limit;
@@ -947,7 +947,7 @@ class browse extends Survey_Common_Controller {
 		    if ($last <0) {$last=0;}
 		    if ($next >= $dtcount) {$next=$dtcount-$limit;}
 		    if ($end < 0) {$end=0;}
-		
+
 		    $browseoutput .= "<div class='menubar'>\n"
 		            . "\t<div class='menubar-title ui-widget-header'>\n"
 		            . "<strong>".$clang->gT("Data view control")."</strong></div>\n"
@@ -961,7 +961,7 @@ class browse extends Survey_Common_Controller {
 		                ."title='".$clang->gTview("Show previous..")."' >"
 		                ."<img name='DataBack' align='left'  src='$imageurl/databack.png' alt='".$clang->gT("Show previous..")."' /></a>\n"
 		                ."<img src='$imageurl/blank.gif' width='13' height='20' border='0' hspace='0' align='left' alt='' />\n"
-		
+
 		                ."<a href='$scriptname?action=browse&amp;subaction=time&amp;sid=$surveyid&amp;start=$next&amp;limit=$limit' " .
 		                "title='".$clang->gT("Show next...")."' >".
 		                "<img name='DataForward' align='left' src='$imageurl/dataforward.png' alt='".$clang->gT("Show next..")."' /></a>\n"
@@ -973,11 +973,11 @@ class browse extends Survey_Common_Controller {
 		    $selectshow='';
 		    $selectinc='';
 		    $selecthide='';
-		
+
 		    if(incompleteAnsFilterstate() == "inc") { $selectinc="selected='selected'"; }
 		    elseif (incompleteAnsFilterstate() == "filter") { $selecthide="selected='selected'"; }
 		    else { $selectshow="selected='selected'"; }
-		
+
 		    $browseoutput .="<form action='$scriptname?action=browse' id='browseresults' method='post'><font size='1' face='verdana'>\n"
 		            ."<img src='$imageurl/blank.gif' width='31' height='20' border='0' hspace='0' align='right' alt='' />\n"
 		            ."".$clang->gT("Records displayed:")."<input type='text' size='4' value='$dtcount2' name='limit' id='limit' />\n"
@@ -993,9 +993,9 @@ class browse extends Survey_Common_Controller {
 		    }
 		    $browseoutput .= 	 "</form></div>\n"
 		            ."\t</div><form action='$scriptname?action=browse' id='resulttableform' method='post'>\n";
-		
+
 		    $browseoutput .= $tableheader;
-		
+
 		    foreach($dtresult->result_array() as $dtrow)
 		    {
 		        if (!isset($bgcc)) {$bgcc="evenrow";}
@@ -1010,11 +1010,11 @@ class browse extends Survey_Common_Controller {
 		        <a href='$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id={$dtrow['id']}'><img src='$imageurl/token_viewanswer.png' alt='".$clang->gT('View response details')."'/></a>
 		        <a href='$scriptname?action=dataentry&amp;sid=$surveyid&amp;subaction=edit&amp;id={$dtrow['id']}'><img src='$imageurl/token_edit.png' alt='".$clang->gT('Edit this response')."'/></a>
 		        <a><img id='deleteresponse_{$dtrow['id']}' src='$imageurl/token_delete.png' alt='".$clang->gT('Delete this response')."' class='deleteresponse'/></a></td>\n";
-				
+
 		        for ($i = 0; $i<$fncount; $i++)
 		        {
 		            $browsedatafield=htmlspecialchars($dtrow[$fnames[$i][0]]);
-		            
+
 		            // seconds -> minutes & seconds
 					if (strtolower(substr($fnames[$i][0],-4)) == "time")
 					{
@@ -1034,10 +1034,10 @@ class browse extends Survey_Common_Controller {
 		    <input type='hidden' name='subaction' value='time' />
 		    <input id='deleteanswer' name='deleteanswer' value='' type='hidden' />
 		    </form>\n<br />\n";
-			
+
 			// Interview time
 			$browseoutput .= '<div class="header ui-widget-header">'.$clang->gT('Interview time').'</div>';
-			
+
 			//interview Time statistics
 			$count=false;
 			//$survstats=substr($surveytableNq);
@@ -1045,26 +1045,26 @@ class browse extends Survey_Common_Controller {
 			$queryAll="SELECT timings.interviewTime FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL ORDER BY timings.interviewTime";
 			$browseoutput .= '<table class="statisticssummary">';
 			if($result=db_execute_assoc($queryAvg)){
-		
+
 				$row=$result->row_array();
 				$min = (int)($row['avg']/60);
 				$sec = $row['avg']%60;
 				$count=$row['count'];
 				$browseoutput .= '<tr><Th>'.$clang->gT('Average interview time: ')."</th><td>{$min} min. {$sec} sec.</td></tr>";
 			}
-			
+
 			if($count && $result=db_execute_assoc($queryAll)){
-				
+
 				$middleval = floor(($count-1)/2);
 				$i=0;
 				if($count%2){
 					foreach($result->result_array() as $row){
-						
+
 						if($i==$middleval){
 							$median=$row['interviewTime'];
 							break;
 						}
-						$i++;		
+						$i++;
 					}
 				}else{
 					foreach($result->result_array() as $row){
@@ -1073,7 +1073,7 @@ class browse extends Survey_Common_Controller {
 							$median=($row['interviewTime']+$nextrow['interviewTime'])/2;
 							break;
 						}
-						$i++;		
+						$i++;
 					}
 				}
 				$min = (int)($median/60);
@@ -1097,7 +1097,7 @@ class browse extends Survey_Common_Controller {
 		    $gnquery2 = "SELECT count(id) FROM $surveytable WHERE submitdate IS NOT NULL";
 		    $gnresult = db_execute_assoc($gnquery);
 		    $gnresult2 = db_execute_assoc($gnquery2);
-		
+
 			$gnrow=$gnresult->row_array();
 			$data['num_total_answers']=reset($gnrow);
 			$gnrow2=$gnresult2->row_array();
@@ -1107,6 +1107,6 @@ class browse extends Survey_Common_Controller {
 
 		echo $browseoutput;
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-		
+
 	}
 }

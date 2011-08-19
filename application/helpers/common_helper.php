@@ -6154,25 +6154,6 @@ function convertCsvreturn2return($string)
  */
 function tableExists($tablename)
 {
-	//PORT
-	//global $CI;
-    //global $connect;
-    //static $tablelist;
-
-    //if (!isset($tablelist)) $tablelist = $connect->MetaTables();
-	/*if (!isset($tablelist)) $tablelist = $this->db->list_tables();
-    if ($tablelist==false)
-    {
-        return false;
-    }
-    foreach ($tablelist as $tbl)
-    {
-        if (db_quote_id($tbl) == db_table_name($tablename))
-        {
-            return true;
-        }
-    }
-    return false;*/
    $CI =& get_instance();
    return $CI->db->table_exists($tablename);
 }
@@ -7730,7 +7711,7 @@ function checkquestionfordisplay($qid, $gid=null)
 function sStripDBPrefix($sTableName)
 {
     //global $dbprefix;
-    global $CI; 
+    global $CI;
     $dbprefix = $CI->db->dbprefix;
     return substr($sTableName,strlen($dbprefix));
 }
