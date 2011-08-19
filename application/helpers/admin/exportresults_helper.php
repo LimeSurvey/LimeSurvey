@@ -671,27 +671,8 @@ class Survey
                 break;
 
             default:
-                if ($fieldName == 'token')
-                {
-                    //TODO Is there a condition where the token table does not exist and this should be reported?  Figure out how to capture such an instance.
-                    $tokens = $this->getTokens($answerCode);
-                    if (!empty($tokens))
-                    {
-                        foreach ($tokens as $token)
-                        {
-                            $fullAnswer .= $token['lastname'].', '.$token['firstname'];
-                        }
-                    }
-                    else
-                    {
-                        //TODO Verify that I converted this branch correctly.
-                        $fullAnswer .= $translator->translate('Tokens problem - token table missing', $languageCode);
-                    }
-                }
-                else
-                {
+
                     $fullAnswer .= $answerCode;
-                }
         }
 
         return $fullAnswer;
