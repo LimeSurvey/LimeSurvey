@@ -1,37 +1,37 @@
-//$Id: admin_core.js 10154 2011-05-31 11:45:24Z c_schmitz $    
+//$Id: admin_core.js 10154 2011-05-31 11:45:24Z c_schmitz $
 
 $(document).ready(function(){
     setupAllTabs();
-    if(typeof(userdateformat) !== 'undefined') 
+    if(typeof(userdateformat) !== 'undefined')
     {
-        $(".popupdate").each(function(i,e) { 
+        $(".popupdate").each(function(i,e) {
             format=$('#dateformat'+e.name).val();
             if(!format) format = userdateformat;
-            $(e).datepicker({ dateFormat: format,  
+            $(e).datepicker({ dateFormat: format,
                               showOn: 'button',
-                              changeYear: true, 
-                              changeMonth: true, 
+                              changeYear: true,
+                              changeMonth: true,
                               duration: 'fast'
                             }, $.datepicker.regional[userlanguage]);
         });
-        $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',  
+        $(".popupdatetime").datepicker({ dateFormat: userdateformat+' 00:00',
                               showOn: 'button',
-                              changeYear: true, 
-                              changeMonth: true, 
+                              changeYear: true,
+                              changeMonth: true,
                               duration: 'fast'
                             }, $.datepicker.regional[userlanguage]);
     }
 
-    $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");   
+    $('button,input[type=submit],input[type=button],input[type=reset]').addClass("limebutton ui-state-default ui-corner-all");
     $('button,input[type=submit],input[type=button],input[type=reset]').hover(
-        function(){ 
-            $(this).addClass("ui-state-hover"); 
+        function(){
+            $(this).addClass("ui-state-hover");
         },
-        function(){ 
-            $(this).removeClass("ui-state-hover"); 
+        function(){
+            $(this).removeClass("ui-state-hover");
         }
     )
-    
+
 
     // Loads the tooltips for the toolbars  except the surveybar
     $('img[alt],input[src]').not('.surveybar img').each(function() {
@@ -39,14 +39,14 @@ $(document).ready(function(){
         {
              $(this).qtip({
                style: {name: 'cream',
-                        tip:true, 
-                        color:'#1D2D45', 
+                        tip:true,
+                        color:'#1D2D45',
                         border: {
                              width: 1,
                              radius: 5,
                              color: '#EADF95'}
-                       },  
-               position: {adjust: { 
+                       },
+               position: {adjust: {
                         screen: true, scroll:true},
                         corner: {
                                 target: 'bottomRight'}
@@ -57,11 +57,11 @@ $(document).ready(function(){
 
                });
         }
-    });    
+    });
 
     $(".progressbar").each(function(){
         var pValue = parseInt($(this).attr('name'));
-    
+
         $(this).progressbar({
                             value: pValue
         });
@@ -69,25 +69,25 @@ $(document).ready(function(){
         if (pValue > 85){
             $("div",$(this)).css({ 'background': 'Red' });
         }
-	
+
 	$("div",this).html(pValue + "%");
     });
-    
-    
-    
+
+
+
     $('label[title]').each(function() {
         if($(this).attr('title') != '')
         {
              $(this).qtip({
                style: {name: 'cream',
-                        tip:true, 
-                        color:'#1D2D45', 
+                        tip:true,
+                        color:'#1D2D45',
                         border: {
                              width: 1,
                              radius: 5,
                              color: '#EADF95'}
-                       },  
-               position: {adjust: { 
+                       },
+               position: {adjust: {
                         screen: true, scroll:true},
                         corner: {
                                 target: 'bottomRight'}
@@ -95,21 +95,21 @@ $(document).ready(function(){
                show: {effect: {length:50}}
                });
         }
-    });    
-    
+    });
+
     $('.dosurvey').qtip({
         content:{
                 text:$('#dosurveylangpopup')
         },
         style: {name: 'cream',
-                        tip:true, 
-                color:'#1D2D45', 
+                        tip:true,
+                color:'#1D2D45',
                 border: {
                      width: 1,
                      radius: 5,
                      color: '#EADF95'}
-               },  
-        position: {adjust: { 
+               },
+        position: {adjust: {
                 screen: true, scroll:true},
                 corner: {
                         target: 'bottomMiddle',
@@ -123,21 +123,21 @@ $(document).ready(function(){
                when: {
                    event:'unfocus'
                }}
-    }); 
+    });
 
     $('#previewquestion').qtip({
         content:{
                 text:$('#previewquestionpopup')
         },
         style: {name: 'cream',
-                        tip:true, 
-                color:'#111111', 
+                        tip:true,
+                color:'#111111',
                 border: {
                      width: 1,
                      radius: 5,
                      color: '#EADF95'}
-               },  
-        position: {adjust: { 
+               },
+        position: {adjust: {
                 screen: true, scroll:true},
                 corner: {
                         target: 'bottomMiddle',
@@ -151,21 +151,21 @@ $(document).ready(function(){
                when: {
                    event:'unfocus'
                }}
-    });            
-    
+    });
+
     $('.tipme').each(function() {
         if($(this).attr('alt') != '')
         {
              $(this).qtip({
                style: {name: 'cream',
-                        tip:true, 
-                        color:'#111111', 
+                        tip:true,
+                        color:'#111111',
                         border: {
                              width: 1,
                              radius: 5,
                              color: '#EADF95'}
-                       },  
-               position: {adjust: { 
+                       },
+               position: {adjust: {
                         screen: true, scroll:true},
                         corner: {
                                 target: 'topRight',
@@ -176,11 +176,11 @@ $(document).ready(function(){
 
                });
         }
-    });    
-    
+    });
+
 
     if ($('#showadvancedattributes').length>0) updatequestionattributes();
-    
+
     $('#showadvancedattributes').click(function(){
         $('#showadvancedattributes').hide();
         $('#hideadvancedattributes').show();
@@ -188,7 +188,7 @@ $(document).ready(function(){
           "height": "toggle", "opacity": "toggle"
         });
 
-    })                                                                                 
+    })
     $('#hideadvancedattributes').click(function(){
         $('#showadvancedattributes').show();
         $('#hideadvancedattributes').hide();
@@ -196,12 +196,12 @@ $(document).ready(function(){
           "height": "toggle", "opacity": "toggle"
         });
 
-    }) 
+    })
     $('#question_type').change(updatequestionattributes);
 
     $('#MinimizeGroupWindow').click(function(){
         $('#groupdetails').hide();
-    });     
+    });
     $('#MaximizeGroupWindow').click(function(){
         $('#groupdetails').show();
     });
@@ -224,7 +224,7 @@ $(document).ready(function(){
                 },function(oData)
                 {
                     old_owner =  $($(oldThis).parent()).html();
-		    
+
                     old_owner = (old_owner.split("("))[0];
                     $($(oldThis).parent()).html('<select class="ownername_select" id="ownername_select_'+survey_id+'"></select>'
                     + '<input class="ownername_button" id="ownername_button_'+survey_id+'" type="button" initial_text="'+initial_text+'" value="'+translate_to+'">');
@@ -251,9 +251,9 @@ $(document).ready(function(){
             newowner: newowner,
             survey_id : survey_id
        }, function (data){
-	
+
            var objToUpdate = $($(oldThis).parent());
-	    
+
            if (data.record_count>0)
                $(objToUpdate).html(data.newowner);
            else
@@ -271,41 +271,41 @@ $(document).ready(function(){
            OtherSelection(selected_value);
 	});
     }
-    
-    
-    
+
+
+
 });
 
 function qTypeDropdownInit()
 {
-            $("#question_type_child a").each(function(index,element){
+    $("#question_type_child a").each(function(index,element){
 
-                $(element).qtip({
-                       style: {
-                                    'margin' : '15px',
-                                    'width': '450px',
-                                    'height':'auto',
-                                    'border':{
-                                            width: 4,
-                                            radius: 2
-                                    }
-                            },
-                       content: getToolTip($(element).text()),
-                       position: {
-                                    corner:{
-                                            target: 'leftMiddle',
-                                            tooltip:'rightMiddle'
-                                    }
-                            },
-                       show: 'mouseover',
-                       hide: 'mouseout'
-                });
+        $(element).qtip({
+               style: {
+                            'margin' : '15px',
+                            'width': '450px',
+                            'height':'auto',
+                            'border':{
+                                    width: 4,
+                                    radius: 2
+                            }
+                    },
+               content: getToolTip($(element).text()),
+               position: {
+                            corner:{
+                                    target: 'leftMiddle',
+                                    tooltip:'rightMiddle'
+                            }
+                    },
+               show: 'mouseover',
+               hide: 'mouseout'
+        });
 
-            });
-    }
-    
-    
-    
+    });
+}
+
+
+
 
 var aToolTipData = {
 
@@ -318,7 +318,7 @@ function getToolTip(type){
     var code = qDescToCode[''+type];
     var multiple = 0;
     if (code=='S') multiple = 2;
-    
+
     if (code == ":") code = "COLON";
     else if(code == "|") code = "PIPE";
 
@@ -345,26 +345,26 @@ function updatequestionattributes()
                                                                                    sid:$('#sid').val()
                                                                                   }, function(){
             // Loads the tooltips for the toolbars
-            
+
             // Loads the tooltips for the toolbars
            $('.loader').hide();
             $('label[title]').qtip({
-               style: {name: 'cream', 
-                         tip: true, 
-                       color:'#111111', 
+               style: {name: 'cream',
+                         tip: true,
+                       color:'#111111',
                       border: {
                              width: 1,
                              radius: 5,
                              color: '#EADF95'}
-                       },  
-               position: {adjust: { 
+                       },
+               position: {adjust: {
                         screen: true, scroll:true},
                         corner: {
                                 target: 'bottomRight'}
                         },
                show: {effect: {length:50}}
-            });}                                                                                        
-    );  
+            });}
+    );
 }
 
 function validatefilename (form, strmessage )
@@ -393,10 +393,10 @@ function codeCheck(prefix, elementcount, helperMsg, reservedKeywordMsg)
 {
     var i, j;
     var X = new Array();
-    
+
     for (i=0; i<=elementcount; i++) {
         j = document.getElementById(prefix+i);
-        if (j != undefined) 
+        if (j != undefined)
         {
            j.value=trim(j.value);
            if (j.value == "other")
@@ -406,7 +406,7 @@ function codeCheck(prefix, elementcount, helperMsg, reservedKeywordMsg)
            }
            X.push(j.value);
         }
-    }   
+    }
     if (arrHasDupes(X))
     {
     	alert(helperMsg);
@@ -429,10 +429,10 @@ function arrHasDupes( A ) {                          // finds any duplicate arra
 
 
 // (c) 2006 Simon Wunderlin, License: GPL, hacks want to be free ;)
-// This fix forces Firefox to fire the onchange event if someone changes select box with cursor keys 
+// This fix forces Firefox to fire the onchange event if someone changes select box with cursor keys
 function ev_gecko_select_keyup_ev(Ev) {
 	// prevent tab, alt, ctrl keys from fireing the event
-	if (Ev.keyCode && (Ev.keyCode == 1 || Ev.keyCode == 9 || 
+	if (Ev.keyCode && (Ev.keyCode == 1 || Ev.keyCode == 9 ||
 	    Ev.keyCode == 16 || Ev.altKey || Ev.ctrlKey))
 		return true;
 	Ev.target.onchange();
@@ -450,8 +450,8 @@ function init_gecko_select_hack() {
 function getkey(e)
 {
    if (window.event) return window.event.keyCode;
-      else 
-         if (e) return e.which; 
+      else
+         if (e) return e.which;
              else return null;
 }
 
@@ -460,20 +460,20 @@ function goodchars(e, goods)
     var key, keychar;
     key = getkey(e);
     if (key == null) return true;
-    
+
     // get character
     keychar = String.fromCharCode(key);
     keychar = keychar.toLowerCase();
     goods = goods.toLowerCase();
-    
+
     // check goodkeys
     if (goods.indexOf(keychar) != -1)
         return true;
-    
+
     // control keys
     if ( key==null || key==0 || key==8 || key==9  || key==27 )
       return true;
-    
+
     // else return false
     return false;
 }
@@ -643,7 +643,7 @@ String.prototype.splitCSV = function(sep) {
   }return foo;
 };
 
-// This is a helper function to extract the question ID from a DOM ID element 
+// This is a helper function to extract the question ID from a DOM ID element
 function removechars(strtoconvert){
   return strtoconvert.replace(/[-a-zA-Z_]/g,"");
 }
@@ -664,7 +664,7 @@ function htmlspecialchars(str) {
 function saveaslabelset()
 {
     var lang = langs.split(";");
-    
+
 
     dataToSend = {};
     dataToSend['langs'] = lang;
@@ -685,12 +685,12 @@ function saveaslabelset()
         };
         $(lang).each(function(index,element){
             dataToSend[code]['text_'+element] = $("#answer_"+element+"_"+code+"_0").val();
-            
+
         });
     });
 
     var label_name = prompt("Enter new label name", "");
-    
+
     var data = {
         action: 'ajaxmodlabelsetanswers',
         lid:'1',

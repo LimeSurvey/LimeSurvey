@@ -289,11 +289,13 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
         foreach($newqType as $group=>$members)
         {
             $qtypeselecter .= '<optgroup label="'.$group.'">';
-            foreach($members as $TypeCode=>$TypeProperties){
+            foreach($members as $TypeCode=>$TypeProperties)
+            {
                 $qtypeselecter .= "<option value='$TypeCode'";
                 if ($SelectedCode == $TypeCode) {$qtypeselecter .= " selected='selected'";}
                 $qtypeselecter .= ">{$TypeProperties['description']}</option>\n";
             }
+            $qtypeselecter .= '</optgroup>';
         }
 
         return $qtypeselecter;

@@ -892,8 +892,8 @@ class conditions extends Survey_Common_Controller {
 		                $shortanswer .= "[".$clang->gT("Single checkbox")."]";
 		                $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
 		                $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
-		                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', 'checked');
-		                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', 'not checked');
+                        $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', $clang->gT("checked"));
+                        $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', $clang->gT("not checked"));
 		            }
 		        }
 		        elseif($rows['type'] == "X") //Boilerplate question

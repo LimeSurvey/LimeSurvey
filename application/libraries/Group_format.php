@@ -14,11 +14,11 @@
  */
 
 class Group_format {
- 	
+
  	function run($args) {
- 		
+
 		global $surveyid, $thissurvey, $totalquestions;
-        
+
         
         
 		extract($args);
@@ -28,8 +28,8 @@ class Group_format {
 
 		$_POST = $CI->input->post();
 		$allowmandbackwards = $CI->config->item("allowmandbackwards");
-		
-		
+
+
 		//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 		$previewgrp = false;
 		if (isset($param['action']) && ($param['action']=='previewgroup')){
@@ -39,7 +39,7 @@ class Group_format {
 			if ($param['newtest']=="Y")
 				setcookie("limesurvey_timers", "0");
 		$show_empty_group = false;
-		
+
 		if ($previewgrp)
 		{
 			$_SESSION['prevstep'] = 1;
@@ -48,23 +48,23 @@ class Group_format {
 		else
 		{
 		    
-            //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
+		    //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
 		    if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		    {
 		        
-                $totalquestions = buildsurveysession($surveyid);
+		        $totalquestions = buildsurveysession($surveyid);
 		        $_SESSION['step'] = 0;
 		        if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
 		            //If explicitply set, hide the welcome screen
 		            $_SESSION['step'] = 1;
-		        } 
+		        }
 		    }
-		    
+
 		    if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 		    if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
 		    if (!isset($gl)) {$gl=array('null');}
 		    $_SESSION['prevstep']=$_SESSION['step'];
-		
+
 		    //Move current step ###########################################################################
 		    if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev']=='Y' || $thissurvey['allowjumps']=='Y'))
 		    {
@@ -81,18 +81,18 @@ class Group_format {
 		        if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep'])))
 		            $_SESSION['step'] = $move;
 		    }
-		
+
 		    // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
 		    // Previously we used to keep the session and redirect the user to the
 		    // submit page.
 		    //if (isset($_SESSION['finished'])) {$move='movesubmit'; }
-		
+
 		    if ($_SESSION['step'] == 0) {
 		        display_first_page();
 		        exit;
 		    }
-		
-		
+
+
 		    //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 		    //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
 		    if ($allowmandbackwards==1 && (
@@ -105,23 +105,23 @@ class Group_format {
 		    {
 		        $backok="N";
 		    }
-		
+
 		    //Now, we check mandatory questions if necessary
 		    //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 		    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
-		
+
 		    //CHECK INPUT
 		    $notvalidated=aCheckInput($surveyid, $move, $backok);
-		
+
 		    // CHECK UPLOADED FILES
 		    $filenotvalidated = checkUploadedFileValidity($surveyid, $move, $backok);
-		
+
 		    //SEE IF THIS GROUP SHOULD DISPLAY
 		    $show_empty_group = false;
-		    
+
 		    if ($_SESSION['step']==0)
 				$show_empty_group = true;
-				
+
 		    if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 		    {
 		        while(isset($_SESSION['grouplist'][$_SESSION['step']-1]) && checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0]) === false)
@@ -141,7 +141,7 @@ class Group_format {
 		                // or create an empty page giving the user the explicit option to submit.
 		                if (isset($show_empty_group_if_the_last_group_is_hidden) && $show_empty_group_if_the_last_group_is_hidden == true)
 		                {
-		                	
+
 		                    $show_empty_group = true;
 		                    break;
 		                } else
@@ -153,7 +153,7 @@ class Group_format {
 		            }
 		        }
 		    }
-		
+
 		    //SUBMIT ###############################################################################
 		    if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
 		    {
@@ -165,7 +165,7 @@ class Group_format {
 		                $_SESSION['insertarray'][] = "refurl";
 		            }
 		        }
-		
+
 		        //COMMIT CHANGES TO DATABASE
 		        if ($thissurvey['active'] != "Y") //If survey is not active, don't really commit
 		        {
@@ -173,23 +173,23 @@ class Group_format {
 		            {
 		                $assessments = doAssessment($surveyid);
 		            }
-		
+                    $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
 		            if($thissurvey['printanswers'] != 'Y')
 		            {
 		                killSession();
 		            }
-		
+
 		            sendcacheheaders();
 		            doHeader();
-		
+
 		            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
-		
+
 		            //Check for assessments
 		            if ($thissurvey['assessments']== "Y" && $assessments)
 		            {
 		                echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		            }
-		
+
 		            // fetch all filenames from $_SESSIONS['files'] and delete them all
 		            // from the /upload/tmp/ directory
 		            /*echo "<pre>";print_r($_SESSION);echo "</pre>";
@@ -215,15 +215,15 @@ class Group_format {
 		                $cookiename="PHPSID".returnglobal('sid')."STATUS";
 		                setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
 		            }
-		
+
 		            //Before doing the "templatereplace()" function, check the $thissurvey['url']
 		            //field for limereplace stuff, and do transformations!
 		            $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
 		            $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-		
+
 		            $content='';
 		            $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
-		
+
 		            //Check for assessments
 		            if ($thissurvey['assessments']== "Y")
 		            {
@@ -233,22 +233,22 @@ class Group_format {
 		                    $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		                }
 		            }
-		
+
 		            //Update the token if needed and send a confirmation email
 		            if (isset($clienttoken) && $clienttoken)
 		            {
 		                submittokens();
 		            }
-		
+
 		            //Send notifications
-		
+
 		            SendSubmitNotifications();
-		
-		
+
+
 		            $content='';
-		
+
 		            $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
-		
+
 		            //echo $thissurvey['url'];
 		            //Check for assessments
 		            if ($thissurvey['assessments']== "Y")
@@ -259,8 +259,8 @@ class Group_format {
 		                    $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		                }
 		            }
-		
-		
+
+
 		            if (trim(strip_tags($thissurvey['surveyls_endtext']))=='')
 		            {
 		                $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
@@ -270,7 +270,7 @@ class Group_format {
 		            {
 		                $completed = $thissurvey['surveyls_endtext'];
 		            }
-		
+
 		            // Link to Print Answer Preview  **********
 		            if ($thissurvey['printanswers']=='Y')
 		            {
@@ -280,9 +280,9 @@ class Group_format {
 		                ."</a><br />\n";
 		            }
 		            //*****************************************
-		
+
 		            if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
-		
+
 		            // Link to Public statistics  **********
 		            if ($thissurvey['publicstatistics']=='Y')
 		            {
@@ -292,15 +292,15 @@ class Group_format {
 		                ."</a><br />\n";
 		            }
 		            //*****************************************
-		
+
 		            $_SESSION['finished']=true;
 		            $_SESSION['sid']=$surveyid;
-		
+
 		            sendcacheheaders();
 		            if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
 		            {
 		                //Automatically redirect the page to the "url" setting for the survey
-		
+
 		                $url = $thissurvey['surveyls_url'];
 		                $url = dTexts::run($thissurvey['surveyls_url']);
 		                $url = passthruReplace($url, $thissurvey);
@@ -308,23 +308,23 @@ class Group_format {
 		                $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
 		                $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
 		                $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
-		
+
 		                header("Location: {$url}");
-		
+
 		            }
-		
-		
+
+
 		            //if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
 		            if($thissurvey['printanswers'] != 'Y')
 		            {
 		                killSession();
 		            }
-		
+
 		            doHeader();
 		            echo $content;
-		
+
 		        }
-		
+
 		        echo templatereplace(file_get_contents("$thistpl/completed.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		        echo "\n<br />\n";
 		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
@@ -332,7 +332,7 @@ class Group_format {
 		        exit;
 		    }
 		}
-		
+
 		//SEE IF $surveyid EXISTS ####################################################################
 		if ($surveyexists <1)
 		{
@@ -344,14 +344,14 @@ class Group_format {
 		    doFooter();
 		    exit;
 		}
-		
+
 		//GET GROUP DETAILS
-		
+
 		if ($previewgrp)
 		{
 			setcookie("limesurvey_timers", "0");
 		    $_SESSION['step'] = $param['gid']+1;
-		
+
 		    foreach($_SESSION['grouplist'] as $index=>$group)
 		    {
 		        if ($group[0]==$param['gid']){
@@ -359,7 +359,7 @@ class Group_format {
 		            break;
 		        }
 		    }
-		
+
 		    $gid=$_SESSION['grouplist'][$grouparrayno][0];
 		    $groupname=$_SESSION['grouplist'][$grouparrayno][1];
 		    $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
@@ -380,21 +380,21 @@ class Group_format {
 		        $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
 		    }
 		}
-		
+
 		//Setup an inverted fieldnamesInfo for quick lookup of field answers.
 		$aFieldnamesInfoInv = aArrayInvert($_SESSION['fieldnamesInfo']);
 		if ($_SESSION['step'] > $_SESSION['maxstep'])
 		{
 		    $_SESSION['maxstep'] = $_SESSION['step'];
 		}
-		
+
 		//******************************************************************************************************
 		//PRESENT SURVEY
 		//******************************************************************************************************
-		
-		
-		
-		
+
+
+
+
 		//require_once("qanda.php"); //This should be qanda.php when finished
 		$CI->load->helper("qanda");
 		setNoAnswerMode($thissurvey);
@@ -405,23 +405,23 @@ class Group_format {
 		$conmandatoryfns=array();
 		$conditions=array();
 		$inputnames=array();
-		
+
 		$qtypesarray = array();
-		
+
 		$qnumber = 0;
-		
+
 		foreach ($_SESSION['fieldarray'] as $key=>$ia)
 		{
 		    $qtypesarray[$ia[1]] = $ia[4];
 		    ++$qnumber;
 		    $ia[9] = $qnumber; // incremental question count;
-		
+
 		    if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))
 		    {
 		        if(IsSet($hideQuestion[$ia[0]]) && $hideQuestion[$ia[0]]==true){
 		        	continue;
 		        }
-		    	
+
 		        $qidattributes=getQuestionAttributes($ia[0]);
 		        if ($qidattributes===false || $qidattributes['hidden']==1) {
 		            // Should we really skip the question here, maybe the result won't be stored if we do that
@@ -431,7 +431,7 @@ class Group_format {
 		        // It prevents further calls to checkquestionfordisplay if using PREVIOUS button
 		        // from the LimeSurvey Navigator Toolbar
 		        // $_SESSION['fieldarray'][$key][7]='N';
-		
+
 		        //Get the answers/inputnames
 		        list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 		        if ($plus_qanda)
@@ -444,25 +444,25 @@ class Group_format {
 		        {
 		            $inputnames = addtoarray_single($inputnames, $plus_inputnames);
 		        }
-		
+
 		        //Display the "mandatory" popup if necessary
 		        if (isset($notanswered))
 		        {
 		            list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
 		        }
-		
+
 		        //Display the "validation" popup if necessary
 		        if (isset($notvalidated))
 		        {
 		            list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
 		        }
-		
+
 		        // Display the "file validation" popup if necessary
 		        if (isset($filenotvalidated))
 		        {
 		            list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
 		        }
-		
+
 		        //Get list of mandatory questions
 		        list($plusman, $pluscon)=create_mandatorylist($ia);
 		        if ($plusman !== null)
@@ -477,7 +477,7 @@ class Group_format {
 		            $conmandatorys=addtoarray_single($conmandatorys, $plus_conman);
 		            $conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
 		        }
-		
+
 		        //Build an array containing the conditions that apply for this page
 		        $plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
 		        if ($plus_conditions)
@@ -488,7 +488,7 @@ class Group_format {
 		    if ($ia[4] == "|")
 		        $upload_file = TRUE;
 		} //end iteration
-		
+
 		if (isset($thissurvey['showprogress']) && $thissurvey['showprogress'] == 'Y')
 		{
 		    if ($show_empty_group)
@@ -501,21 +501,21 @@ class Group_format {
 		    }
 		}
 		$languagechanger = makelanguagechanger();
-		
+
 		//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 		sendcacheheaders();
 		doHeader();
-		
+
 		if (isset($popup)) {echo $popup;}
 		if (isset($vpopup)) {echo $vpopup;}
 		if (isset($fpopup)) {echo $fpopup;}
-		
+
 		//foreach(file("$thistpl/startpage.pstpl") as $op)
 		//{
 		//  echo templatereplace($op);
 		//}
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
-		
+
 		//ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
 		if ($_SESSION['step'] != $_SESSION['prevstep'] ||
 		    (isset($_SESSION['stepno']) && $_SESSION['stepno'] % 2))
@@ -529,9 +529,9 @@ class Group_format {
 		        . "</script>\n";
 		    }
 		}
-		
+
 		$hiddenfieldnames=implode("|", $inputnames);
-		
+
 		if (isset($upload_file) && $upload_file)
 		    echo "<form enctype=\"multipart/form-data\" method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
@@ -540,20 +540,20 @@ class Group_format {
 		    echo "<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
 		      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
-		
+
 		// <-- END FEATURE - SAVE
-		
+
 		// <-- START THE SURVEY -->
-		
+
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),compact(array_keys(get_defined_vars())));
-		
+
 		// the runonce element has been changed from a hidden to a text/display:none one
 		// in order to workaround an not-reproduced issue #4453 (lemeur)
 		echo "<input type='text' id='runonce' value='0' style='display: none;'/>
 		    <!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
 		    <script type='text/javascript'>
 		    <!--\n";
-		
+
 		// Find out if there are any array_filter questions in this group
 		if ($show_empty_group) {
 		    unset($array_filterqs);
@@ -565,17 +565,17 @@ class Group_format {
 		    $array_filterXqs = getArrayFilterExcludesForGroup($surveyid,$gid);
 		    $array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, $gid);
 		}
-		
+
 		print <<<END
 			function noop_checkconditions(value, name, type)
 			{
 			}
-		
+
 			function checkconditions(value, name, type)
 			{
-		    
+
 END;
-		
+
 		// If there are conditions or arrray_filter questions then include the appropriate Javascript
 		if ((isset($conditions) && is_array($conditions)) ||
 		(isset($array_filterqs) && is_array($array_filterqs)) ||
@@ -585,14 +585,14 @@ END;
 		    {
 		        $endzone="";
 		    }
-		
+
 		    print <<<END
 		        if (type == 'radio' || type == 'select-one')
 		        {
 		            var hiddenformname='java'+name;
 		            document.getElementById(hiddenformname).value=value;
 		        }
-		
+
 		        if (type == 'checkbox')
 		        {
 		            var hiddenformname='java'+name;
@@ -605,11 +605,11 @@ END;
 				        document.getElementById(hiddenformname).value='';
 		            }
 		        }
-		
+
 END;
 		    $java="";
 		    $cqcount=1;
-		
+
 		    /* $conditions element structure
 		     * $condition[n][0] => question id
 		     * $condition[n][1] => question with value to evaluate
@@ -621,12 +621,12 @@ END;
 		     * $condition[n][6] => method used to evaluate *NEW*
 		     * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
 		     */
-		
+
 		    for ($i=0;$i<count($conditions);$i++)
 		    {
 		        $cd=$conditions[$i]; // this is the currently evaluated condition
 		        if (trim($cd[6])=='') $cd[6]='=='; // assume operator == when not defined
-		
+
 		        // If this is a New Question ('New If Statement'):
 		        // * add the endzone to output and reset it
 		        // * reset the cqcount (used to append && or || to conditions
@@ -639,15 +639,15 @@ END;
 		            $cqcount=1;
 		            $newjava_runonce = true;
 		            $newjava ="";
-		
+
 		            $newjava .= "\n\t\tif (((";
-		
+
 		        }
-		
+
 		        // try to determine if local eval (in php) of this simple condition is possible
 		        $localEvaluationPossible = false;
 		        unset($localEvaluation);
-		
+
 		        if ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[2], $sourceconditiontokenattr))
 		        { // Source of this simple condition is TokenAttr
 		            if ( isset($_SESSION['token']) &&
@@ -660,12 +660,12 @@ END;
 		                // or if target value is  an @SGQA@ answer from a previous page (group)
 		                if (preg_match('/^@([0-9]+X([0-9]+)X[^@]+)@/', $cd[3], $comparedfieldname))
 		                { // target condition value is an SGQA code
-		
+
 		                    $targetSgqa_gid = $comparedfieldname[2];
 		                    if ($targetSgqa_gid != $gid)
 		                    { // target answer was on a previous page
 		                        $localEvaluationPossible = true;
-		
+
 		                        if (isset($_SESSION[$comparedfieldname[1]]))
 		                        {
 		                            $answercvalue=$_SESSION[$comparedfieldname[1]];
@@ -694,7 +694,7 @@ END;
 		                else
 		                { // other cases cwith TokenAttr as source an be evaluated locally
 		                    $localEvaluationPossible = true;
-		
+
 		                    if ($cd[6] == 'RX')
 		                    { // the comparison right operand is a RegExp
 		                        if (preg_match('/'.trim($cd[3]).'/',trim($tokenAttrSourceValue)))
@@ -743,8 +743,8 @@ END;
 		                        }
 		                    }
 		                }
-		                 
-		                 
+
+
 		            }
 		            else
 		            { // Can't evaluate ==> False
@@ -756,7 +756,7 @@ END;
 		        {
 		            $localEvaluationPossible = false;
 		            unset($localEvaluation);
-		
+
 		            // If the Gid of the question used for the condition is on the same group,
 		            // the set the runconce flag to False, because we'll need to evaluate this condition
 		            //each time another question in this page is modified
@@ -774,7 +774,7 @@ END;
 		                    $localEvaluation = true;
 		                }
 		            }
-		
+
 		            $idname=retrieveJSidname($cd,$gid);
 		            $JSsourceElt = "document.getElementById('$idname')";
 		            $JSsourceVal = "document.getElementById('$idname').value";
@@ -784,13 +784,13 @@ END;
 		            $localEvaluationPossible = true;
 		            $localEvaluation = "'seriousError' == 'VerySeriousError'";
 		        }
-		
-		
+
+
 		        if (!isset($oldcq) || !$oldcq)
 		        {
 		            $oldcq = $cd[2];
 		        }
-		
+
 		        // Different scenario's are or-ed; within 1 scenario, conditions are and-ed.
 		        if ($cqcount > 1 && isset($oldscenario) && $oldscenario != $cd[7])
 		        {	// We have a new scenario, so "or" the scenario.
@@ -805,8 +805,8 @@ END;
 		            $newjava .= ") && (";
 		        }
 		        $oldscenario=$cd[7];
-		
-		
+
+
 		        if ($localEvaluationPossible == true && isset($localEvaluation))
 		        {
 		            $newjava .= "$localEvaluation";
@@ -850,9 +850,9 @@ END;
 		                    $qid_from_sgq=$comparedfieldname[2];
 		                    $q2type=$qtypesarray[$sgq_from_sgqa];
 		                    $idname2 = retrieveJSidname(Array('',$qid_from_sgq,$comparedfieldname[1],'Y',$q2type,$sgq_from_sgqa));
-		
+
 		                    $newjava .= "( $JSsourceElt != null && $JSsourceVal != '') && ";
-		
+
 		                    $newjava .= "( document.getElementById('$idname2') != null && document.getElementById('$idname2').value != '') && ";
 		                    $cqidattributes = getQuestionAttributes($cd[1]);
 		                    //if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
@@ -868,7 +868,7 @@ END;
 		                    {
 		                        $newjava .= "($JSsourceVal $cd[6] document.getElementById('$idname2').value)";
 		                    }
-		
+
 		                } // end target @SGQA@
 		                elseif ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $targetconditiontokenattr))
 		                {
@@ -966,7 +966,7 @@ END;
 		                } // end target as Constant or Answer Code
 		            } // generic cases for javasript evals
 		        } // end not local eval
-		
+
 		        if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//End If Statement
 		        {
 					$endzone = ")))\n";
@@ -985,13 +985,13 @@ END;
 					$endzone .= "\t\t}\n";
 					$cqcount++;
 		        }
-		
+
 		        // If next condition doesn't exist, or if nex condition is on a different question
 		        // then current If statemement is over. We just need to check if it should be wrapped in an
 		        // additionnal runonce If statement
 		        if ( ( isset($conditions[$i+1]) && $conditions[$i+1][0] != $cd[0]) || (! isset($conditions[$i+1])) )
 		        { // After If Statement
-		
+
 		            if ($newjava_runonce == true)
 		            {
 		                $java .= "    if (document.getElementById('runonce').value == '0')\n"
@@ -1005,11 +1005,11 @@ END;
 		            }
 		            $newjava = "";
 		        }
-		
+
 		        $oldq = $cd[0]; //Update oldq for next loop
 		        $oldcq = $cd[2];  //Update oldcq for next loop
 		    } // end foreach
-		
+
 		    //Close the expression for those where the question source is not on this page
 		    //echo "OLDQ: $oldq, CD[0]: $cd[0], GID: $gid, sourceQuestionGid: $sourceQuestionGid[1]\n";
 		    if (isset($sourceQuestionGid[1]) && ((isset($oldq) && $oldq != $cd[0] || !isset($oldq)) && $sourceQuestionGid[1] != $gid))
@@ -1018,7 +1018,7 @@ END;
 		    }
 		    $java .= $endzone;
 		}
-		
+
 		if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 		(isset($array_filterXqs) && is_array($array_filterXqs)))
 		{
@@ -1033,16 +1033,16 @@ END;
 		        $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
 		        if ($attralist['type'] == "M" || $attralist['type'] == "P")
 		        {
-		            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
-		            $tqresult = db_execute_assoc($tqquery); //Checked   
+		            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+		            $tqresult = db_execute_assoc($tqquery); //Checked
 		            $OrigQuestion = $tqresult->row_array();
-		            
+
 		            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
 		            {
-		                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+		                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
 		            } else {
 		                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
-		            } 
+		            }
 		            $qresult = db_execute_assoc($qquery); //Checked
 		            $other=null;
 		            foreach($qresult->result_array() as $fansrows)
@@ -1085,7 +1085,7 @@ END;
 		                    $appendj .= "\t}\n";
 		                }
 		            }
-		
+
 		            if($other=="Y") {
 		                $fquestans = "answer".$qfbase."other";
 		                $tbody = "javatbd".$qbase."other";
@@ -1116,16 +1116,16 @@ END;
 		        $qfbase = $surveyid."X".$gid."X".$attralist['fid'];
 		        if ($attralist['type'] == "M" || $attralist['type'] == "P")
 		        {
-		            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';"; 
-		            $tqresult = db_execute_assoc($tqquery); //Checked   
+		            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+		            $tqresult = db_execute_assoc($tqquery); //Checked
 		            $OrigQuestion = $tqresult->row_array();
-		            
+
 		            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
 		            {
-		                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;"; 
+		                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
 		            } else {
 		                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
-		            } 
+		            }
 		            $qresult = db_execute_assoc($qquery); //Checked
 		            $other=null;
 		            foreach($qresult->result_array() as $fansrows)
@@ -1146,11 +1146,11 @@ END;
 		                    $appendj .= "\n";
 		                    $appendj .= "\tif (\n";
 		                    $appendj .= "\t\t(document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y')\n";
-		
+
 		                    /* If this question is a cascading question, then it also needs to check the status of the question that this one relies on */
 		                    if(isset($array_filterXqs_cascades[$attralist['qid']]))
 		                    {
-		
+
 		                        foreach($array_filterXqs_cascades[$attralist['qid']] as $cascader)
 		                        {
 		                            $cascadefqa ="java".$surveyid."X".$gid."X".$cascader.$fansrows['title'];
@@ -1206,41 +1206,41 @@ END;
 		    }
 		    $java .= $appendj;
 		}
-		
+
 		if (isset($java)) {echo $java;}
 		echo "\n\t\tdocument.getElementById('runonce').value=1;\n"
 		. "\t}\n"
 		."\t//-->\n"
 		."\t</script>\n\n"; // End checkconditions javascript function
-		
+
 		echo "\n\n<!-- START THE GROUP -->\n";
 		echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		echo "\n";
-		
+
 		if ($groupdescription)
 		{
 		    echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		}
 		echo "\n";
-		
+
 		//Display the "mandatory" message on page if necessary
 		if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
 		{
 		    echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
 		}
-		
+
 		//Display the "validation" message on page if necessary
 		if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
 		{
 		    echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
 		}
-		
+
 		//Display the "file validation" message on page if necessary
 		if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true)
 		{
 		    echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 		}
-		
+
 		echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 		if (isset($qanda) && is_array($qanda))
 		{
@@ -1248,9 +1248,9 @@ END;
 		    {
 				$lastgrouparray = explode("X",$qa[7]);
 				$lastgroup = $lastgrouparray[0]."X".$lastgrouparray[1]; // id of the last group, derived from question id
-				
+
 		        $q_class = question_class($qa[8]); // render question class (see common.php)
-		
+
 		        if ($qa[9] == 'Y')
 		        {
 		            $man_class = ' mandatory';
@@ -1259,15 +1259,15 @@ END;
 		        {
 		            $man_class = '';
 		        }
-		
+
 		        if (!bCheckQuestionForAnswer($qa[7], $aFieldnamesInfoInv) &&
 		                $_SESSION['maxstep'] != $_SESSION['step'])
 		        {
 		            $man_class .= ' missing';
 		        }
-		
+
 		        if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
-		
+
 		        $question= $qa[0];
 		        //===================================================================
 		        // The following four variables offer the templating system the
@@ -1281,7 +1281,7 @@ END;
 		        //===================================================================
 		        $answer=$qa[1];
 		        $help=$qa[2];
-		
+
 		        $question_template = file_get_contents($thistpl.'/question.pstpl');
 		        if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )
 		        {
@@ -1303,73 +1303,73 @@ END;
 		        };
 		    }
 			echo "<input type='hidden' name='lastgroup' value='$lastgroup' id='lastgroup' />\n"; // for counting the time spent on each group
-		    
-		
+
+
 		}
 		echo "\n\n<!-- END THE GROUP -->\n";
 		echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		echo "\n";
-		
+
 		if (!$previewgrp){
 		    $navigator = surveymover(); //This gets globalised in the templatereplace function
-		
+
 		    echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 		    echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		    echo "\n";
-		
+
 		    if ($thissurvey['active'] != "Y")
 		    {
 		        echo "<p style='text-align:center' class='error'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";
 		    }
-		
-		
+
+
 		    if($thissurvey['allowjumps']=='Y')
 		    {
 		        echo "\n\n<!-- PRESENT THE INDEX -->\n";
-		
+
 		        echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
 		        for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
 		        {
 		            $g = $_SESSION['grouplist'][$n];
 		            if(!checkgroupfordisplay($g[0]))
 		                continue;
-		
+
 		            $sText = FlattenText($g[1]);
-		
+
 		            $bGAnsw = true;
 		            foreach($_SESSION['fieldarray'] as $ia)
 		            {
 		                if($ia[5] != $g[0])
 		                    continue;
-		
+
 		                $qidattributes=getQuestionAttributes($ia[0], $ia[4]);
 		                if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
 		                    continue;
-		
+
 		                if (!bCheckQuestionForAnswer($ia[1], $aFieldnamesInfoInv))
 		                {
 		                    $bGAnsw = false;
 		                    break;
 		                }
 		            }
-		
+
 		            ++$v;
-		
+
 		            $class = ($n == $_SESSION['step'] - 1? 'current': ($bGAnsw? 'answer': 'missing'));
 		            if($v % 2) $class .= " odd";
-		
+
 		            $s = $n + 1;
 		            echo "<div class=\"row $class\" onclick=\"javascript:document.limesurvey.move.value = '$s'; document.limesurvey.submit();\"><span class=\"hdr\">$v</span><span title=\"$sText\">$sText</span></div>";
 		        }
-		
+
 		        if($_SESSION['maxstep'] == $_SESSION['totalsteps'])
 		        {
 		            echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
 		                . $clang->gT("Submit")." ' name='move2' />\n";
 		        }
-		
+
 		        echo '</div></div>';
-		
+
 		        echo "<script type=\"text/javascript\">\n"
 		        . "  $(\".outerframe\").addClass(\"withindex\");\n"
 		        . "  var idx = $(\"#index\");\n"
@@ -1378,9 +1378,9 @@ END;
 		        . "</script>\n";
 		        echo "\n";
 		    }
-		
+
 		    echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging
-		
+
 		    if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
 		    {
 		        //if conditions exist, create hidden inputs for 'previously' answered questions
@@ -1415,7 +1415,7 @@ END;
 		        $conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
 		        echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
 		    }
-		
+
 		    echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
 		    echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
 		    echo "<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n";
@@ -1424,15 +1424,15 @@ END;
 		    }
 		}
 		echo "</form>\n";
-		
+
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
-		
+
 		echo "\n";
-		
+
 		doFooter();
-		
-		// Closing PHP tag intentionally left out - yes, it is okay       
-				
-		
+
+		// Closing PHP tag intentionally left out - yes, it is okay
+
+
 	}
 }
