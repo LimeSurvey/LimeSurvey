@@ -912,12 +912,19 @@
      */
     function delete()
     {
+        $this->load->helper("database");
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_getAdminHeader();
         $data['surveyid'] = $surveyid = $this->input->post('sid');
-        self::_showadminmenu($surveyid);
-        self::_surveybar($this->input->post('sid'));
+        if ($this->input->post('deleteok'))
+        {
+            self::_showadminmenu(false);
+        }
+        else{
+            self::_showadminmenu($surveyid);
+        }
+        if (!$this->input->post('deleteok')) self::_surveybar($this->input->post('sid'));
 
         if(bHasSurveyPermission($surveyid,'survey','delete'))
         {
@@ -950,7 +957,7 @@
 
                 $dsquery = "SELECT qid FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid";
                 $dsresult = db_execute_assoc($dsquery) or safe_die ("Couldn't find matching survey to delete<br />$dsquery<br />");
-                while ($dsrow = $dsresult->result_array())
+                foreach ($dsresult->result_array() as $dsrow)
                 {
                     //$asdel = "DELETE FROM {$dbprefix}answers WHERE qid={$dsrow['qid']}";
                     //$asres = $connect->Execute($asdel);
