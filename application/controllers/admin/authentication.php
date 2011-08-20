@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id$
- * 
+ *
  */
 
 /**
@@ -30,7 +30,7 @@ class Authentication extends Admin_Controller {
 	function __construct()
 	{
 		parent::__construct();
-        
+
 	}
 
 	/**
@@ -40,7 +40,7 @@ class Authentication extends Admin_Controller {
 	{
 		redirect('/admin', 'refresh');
 	}
-	
+
 	/**
 	 * Show login screen and parse login data
 	 */
@@ -53,7 +53,7 @@ class Authentication extends Admin_Controller {
 			$this->load->model("failed_login_attempts_model");
 			$query = $this->failed_login_attempts_model->getAllRecords(array("ip"=>$sIp));
 			//$query = "SELECT * FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
-			
+
 			$bCannotLogin = false;
 			$intNthAttempt = 0;
 			//if ($result!==false && $result->RecordCount() >= 1)
@@ -64,16 +64,16 @@ class Authentication extends Admin_Controller {
 				if ($intNthAttempt>=$this->config->item("maxLoginAttempt")){
 					$bCannotLogin = true;
 				}
-				
+
 				$iLastAttempt = strtotime($field['last_attempt']);
-				
+
 				if (time() > $iLastAttempt + $this->config->item("timeOutTime")){
 					$bCannotLogin = false;
 					//$query = "DELETE FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
 					$this->failed_login_attempts_model->deleteAttempts($sIp);
 				}
 			}
-			
+
 			if (!$bCannotLogin)
 	        {
 	        	if($this->input->post('action'))
@@ -91,10 +91,10 @@ class Authentication extends Admin_Controller {
                 $data['errormsg']="";
                 $data['maxattempts']=sprintf($this->limesurvey_lang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($this->config->item("timeOutTime")/60))."<br />";
 				$data['clang']=$this->limesurvey_lang;
-				
+
 				parent::_getAdminHeader();
 				$this->load->view('admin/Authentication/error', $data);
-				parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
+				parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 			}
 		}
 		else
@@ -102,7 +102,7 @@ class Authentication extends Admin_Controller {
 			redirect('/admin', 'refresh');
 		}
 	}
-	
+
 	/**
 	 * Logout user
 	 */
@@ -112,7 +112,7 @@ class Authentication extends Admin_Controller {
 
         self::_showLoginForm('<p>'.$this->limesurvey_lang->gT("Logout successful."));
 	}
-	
+
 	/**
 	 * Forgot Password screen
 	 */
@@ -122,7 +122,7 @@ class Authentication extends Admin_Controller {
 		if(!$this->input->post("action"))
 		{
 			$data['clang'] = $this->limesurvey_lang;
-			
+
 			parent::_getAdminHeader();
 			$this->load->view('admin/Authentication/forgotpassword', $data);
 			parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
@@ -131,7 +131,7 @@ class Authentication extends Admin_Controller {
 		{
 			$postuser = $this->input->post("user");
             $emailaddr = $this->input->post("email");
-            //$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser)." AND email=".$connect->qstr($emailaddr);			
+            //$query = "SELECT users_name, password, uid FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser)." AND email=".$connect->qstr($emailaddr);
             //$result = db_select_limit_assoc($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());  // Checked
             $this->load->model("Users_model");
 			$query = $this->Users_model->getSomeRecords(array("users_name, password, uid"),array("users_name"=>$postuser,"email"=>$emailaddr));
@@ -142,11 +142,11 @@ class Authentication extends Admin_Controller {
 				$data['errormsg']=$this->limesurvey_lang->gT("User name and/or email not found!");
 				$data['maxattempts']="";
 				$data['clang']=$this->limesurvey_lang;
-				
+
 				parent::_getAdminHeader();
 				$this->load->view('admin/Authentication/error', $data);
-				parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
-				
+				parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+
             }
             else
             {
@@ -170,13 +170,13 @@ class Authentication extends Admin_Controller {
                     //$query = "UPDATE ".db_table_name('users')." SET password='".SHA256::hashing($new_pass)."' WHERE uid={$fields['uid']}";
                     //$connect->Execute($query); //Checked
                     $this->Users_model->updatePassword($fields['uid'], $this->sha256->hashing($new_pass));
-                    
+
 					$data['clang'] = $clang;
 					$data['message'] = "<br />".$clang->gT("Username").": {$fields['users_name']}<br />".$clang->gT("Email").": {$emailaddr}<br />
 					<br />".$clang->gT("An email with your login data was sent to you.");
 					parent::_getAdminHeader();
 					$this->load->view('admin/Authentication/message', $data);
-					parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
+					parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
                 }
                 else
                 {
@@ -185,31 +185,31 @@ class Authentication extends Admin_Controller {
 					$data['message'] = "<br />".str_replace("{EMAIL}", $emailaddr, $tmp) . "<br />";
 					parent::_getAdminHeader();
 					$this->load->view('admin/Authentication/message', $data);
-					parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
-					
+					parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+
                 }
             }
        }
-		
+
 	}
-	
+
 	/**
 	 * Show login screen
 	 * @param optional message
 	 */
 	function _showLoginForm($logoutsummary="")
 	{
-		
+
 		$refererargs=''; // If this is a direct access to admin.php, no args are given
         // If we are called from a link with action and other args set, get them
         if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'])
         {
             $refererargs = html_escape($_SERVER['QUERY_STRING']);
         }
-		
+
 		$data['refererargs'] = $refererargs;
 		$data['clang'] = $this->limesurvey_lang;
-		
+
 		if ($logoutsummary=="")
 		{
 			$data['summary'] = $this->limesurvey_lang->gT("You have to login first.");
@@ -218,87 +218,18 @@ class Authentication extends Admin_Controller {
 		{
 			$data['summary'] = $logoutsummary;
 		}
-		
+
 	    $lan=array();
 		$this->load->helper("surveytranslator");
         foreach (getlanguagedata(true) as $langkey=>$languagekind)
         {
 			array_push($lan,$langkey);
 		}
-		//The loop above stores all the language codes supported by LimeSurvey in a numeric array $lan.
-		$x=0;
-		while ($x<count($lan))
-		{
-			if ($lan[$x]=="zh-Hans")
-			{
-				$lan[$x]="zh";
-			}
-			elseif ($lan[$x]=="zh-Hant-HK")
-			{
-				$lan[$x]="zh-hk";
-			}
-			elseif ($lan[$x]=="zh-Hant-TW")
-			{
-				$lan[$x]="zh-tw";
-			}
-			elseif ($lan[$x]=="de-informal")
-			{
-				$lan[$x]="de";
-			}
-			elseif ($lan[$x]=="it-formal")
-			{
-				$lan[$x]="it";
-			}
-			elseif ($lan[$x]=="nl-informal")
-			{
-				$lan[$x]="nl";
-			}
-			else
-			{
-				$lan[$x]=strtolower($lan[$x]);
-			}
-			$x++;
-		}
-		
-		//The above loop changes certain elements of $lan to the language codes which are supported by the browsers.
-		$browlang="";
-		if ( isset( $_SERVER["HTTP_ACCEPT_LANGUAGE"] ) )
-		{
-			$browlang=strtolower( $_SERVER["HTTP_ACCEPT_LANGUAGE"] );
-			$browlang=str_replace(' ', '', $browlang);
-			$browlang=explode( ",", $browlang);
-			$browlang=$browlang[0];
-			$browlang=explode( ";", $browlang);
-			$browlang=$browlang[0];
-			$check=0;
-			$value=26;
-			if ($browlang!="zh-hk" && $browlang!="zh-tw" && $browlang!="es-mx" && $browlang!="pt-br")
-			{
-				$browlang=explode( "-",$browlang);
-				$browlang=$browlang[0];
-			}
-			//This if statement converts all the browser codes to Internet Explorer codes if the user is using Internet Explorer.
-		}
-		$x=0;
-		$count=-1;
-		while ($x<count($lan))
-		{
-			if ($browlang==$lan[$x])
-			{
-				$count=$x;
-			}
-			$x++;
-		}
-		if ($check==1)
-		{
-			$count=$value;
-		}
-		$data['count']=$count;
 
 		parent::_getAdminHeader();
 		$this->load->view('admin/Authentication/login', $data);
-		parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
-		
+		parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+
 	}
 
 	/**
@@ -308,7 +239,7 @@ class Authentication extends Admin_Controller {
 	 */
 	function _doLogin($sIp,$bLoginAttempted)
 	{
-		
+
         $clang = $this->limesurvey_lang;
 		$postuser = sanitize_user($this->input->post("user"));
 		//$query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
@@ -332,10 +263,10 @@ class Authentication extends Admin_Controller {
                 if ($bLoginAttempted+1>=$this->config->item("maxLoginAttempt"))
                     $data['maxattempts']=sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($this->config->item("timeOutTime")/60))."<br />";
 				$data['clang']=$clang;
-				
+
 				parent::_getAdminHeader();
 				$this->load->view('admin/Authentication/error', $data);
-				parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
+				parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
             }
 
 
@@ -375,7 +306,7 @@ class Authentication extends Admin_Controller {
                 $this->session->set_userdata('dateformat',$fields['dateformat']);
                 // Compute a checksession random number to test POSTs
                 $this->session->set_userdata('checksessionpost',sRandomChars(10));
-				
+
 				$postloginlang=sanitize_languagecode($this->input->post('loginlang'));
                 if (isset($postloginlang) && $postloginlang!='default')
                 {
@@ -422,7 +353,7 @@ class Authentication extends Admin_Controller {
 	            //$query = fGetLoginAttemptUpdateQry($bLoginAttempted,$sIp);
 	            $this->load->model("failed_login_attempts_model");
 				$query = $this->failed_login_attempts_model->addAttempt($bLoginAttempted,$sIp);
-	
+
 	            //$result = $connect->Execute($query) or safe_die ($query."<br />".$connect->ErrorMsg());;
 	            if ($query)
 	            {
@@ -432,10 +363,10 @@ class Authentication extends Admin_Controller {
 	                if ($bLoginAttempted+1>=$this->config->item("maxLoginAttempt"))
 	                    $data['maxattempts']=sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($this->config->item("timeOutTime")/60))."<br />";
 					$data['clang']=$clang;
-					
+
 					parent::_getAdminHeader();
 					$this->load->view('admin/Authentication/error', $data);
-					parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
+					parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 	            }
             }
         }

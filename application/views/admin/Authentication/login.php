@@ -6,25 +6,15 @@
                                         <input name='password' id='password' type='password' size='40' maxlength='40' /></li>
                                         <li><label for='loginlang'><?php echo $clang->gT("Language");?></label>
                                         <select id='loginlang' name='loginlang' style='width:216px;'>
-            <option value="default"><?php echo $clang->gT('Default');?></option>
+            <option value="default" selected="selected"><?php echo $clang->gT('Default');?></option>
 <?php
 			$x=0;
 			foreach (getlanguagedata(true) as $langkey=>$languagekind)
             {
 				//The following conditional statements select the browser language in the language drop down box and echoes the other options.
-				if ($x==$count)
-				{
-					?>
-					<option value='<?php echo $langkey; ?>' selected='yes'><?php echo $languagekind['nativedescription']." - ".$languagekind['description']; ?></option>
-					<?php
-				}
-				else
-				{
                 ?>
                 <option value='<?php echo $langkey; ?>'><?php echo $languagekind['nativedescription']." - ".$languagekind['description']; ?></option>
                 <?php
-            }
-				$x++;
             }
 ?>
 </select>

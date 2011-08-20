@@ -163,7 +163,7 @@ class Question_format {
 		                    $gid=$gl[0];
 		                    $groupname=$gl[1];
 		                    $groupdescription=$gl[2];
-		                    if (auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && $groupdescription) {$newgroup = "Y";} else {$newgroup == "N";}
+		                    if (auto_unescape($_POST['lastgroupname']) != strip_tags($groupname) && trim($groupdescription)!='') {$newgroup = "Y";} else {$newgroup == "N";}
 		                }
 		            }
 		        }
@@ -367,7 +367,7 @@ class Question_format {
 
 		//Check if current page is for group description only
 		$bIsGroupDescrPage = false;
-		if ($newgroup == "Y" && $groupdescription &&
+		if ($newgroup == "Y" && trim($groupdescription)!='' &&
 		    (isset($move) && $move != "moveprev" && !is_int($move)) &&
 		    $_SESSION['maxstep'] == $_SESSION['step'])
 		{

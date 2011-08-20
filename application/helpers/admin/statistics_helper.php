@@ -249,9 +249,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         $pdf->SetSubject($surveyInfo['surveyls_title']);
         $pdf->SetKeywords('LimeSurvey, Statistics, Survey '.$surveyid.'');
         $pdf->SetDisplayMode('fullpage', 'two');
-        // set default header data
-        // the path looks awkward - did not find a better solution to set the image path?
-        $pdf->SetHeaderData('../../../../images/statistics.png', 10, $statlang->gT("Quick statistics") , $statlang->gT("Survey")." ".$surveyid." '".$surveyInfo['surveyls_title']."'");
 
         // set header and footer fonts
         $pdf->setHeaderFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_MAIN));
