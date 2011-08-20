@@ -19,8 +19,8 @@ class Group_format {
 
 		global $surveyid, $thissurvey, $totalquestions;
 
-        
-        
+
+
 		extract($args);
 		$CI =& get_instance();
         $CI->load->helper('frontend');
@@ -47,11 +47,11 @@ class Group_format {
 		}
 		else
 		{
-		    
+
 		    //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
 		    if (!isset($_SESSION['step']) || !$_SESSION['step'])
 		    {
-		        
+
 		        $totalquestions = buildsurveysession($surveyid);
 		        $_SESSION['step'] = 0;
 		        if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
@@ -297,10 +297,10 @@ class Group_format {
 		            $_SESSION['sid']=$surveyid;
 
 		            sendcacheheaders();
+
+                    //Automatically redirect the page to the "url" setting for the survey
 		            if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
 		            {
-		                //Automatically redirect the page to the "url" setting for the survey
-
 		                $url = $thissurvey['surveyls_url'];
 		                $url = dTexts::run($thissurvey['surveyls_url']);
 		                $url = passthruReplace($url, $thissurvey);
@@ -310,7 +310,6 @@ class Group_format {
 		                $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
 
 		                header("Location: {$url}");
-
 		            }
 
 
@@ -540,7 +539,7 @@ class Group_format {
 		    echo "<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>
 		      <!-- INPUT NAMES -->
 		      <input type='hidden' name='fieldnames' value='{$hiddenfieldnames}' id='fieldnames' />\n";
-
+        echo sDefaultSubmitHandler();
 		// <-- END FEATURE - SAVE
 
 		// <-- START THE SURVEY -->

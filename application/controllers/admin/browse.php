@@ -743,31 +743,21 @@ class browse extends Survey_Common_Controller {
 		        else
 		        {
 		            if ($surveytable['anonymized'] == "N" && db_tables_exist($tokentable))
-		                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token ";
+		                $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token where 1=1 ";
 		            else
-		                $dtquery = "SELECT * FROM $surveytable ";
+		                $dtquery = "SELECT * FROM $surveytable where 1=1 ";
 		            $selectedgroup = returnglobal('selectgroup');
 		            if (incompleteAnsFilterstate() == "inc")
 		            {
-		                $dtquery .= "submitdate IS NULL ";
-
-		                if (stripcslashes($_POST['sql']) !== "")
-		                {
-		                    $dtquery .= " AND ";
-		                }
+		                $dtquery .= " AND submitdate IS NULL ";
 		            }
 		            elseif (incompleteAnsFilterstate() == "filter")
 		            {
-		                $dtquery .= " submitdate IS NOT NULL ";
-
-		                if (stripcslashes($_POST['sql']) !== "")
-		                {
-		                    $dtquery .= " AND ";
-		                }
+		                $dtquery .= " AND submitdate IS NOT NULL ";
 		            }
 		            if (stripcslashes($_POST['sql']) !== "")
 		            {
-		                $dtquery .= stripcslashes($_POST['sql'])." ";
+		                $dtquery .=  ' AND '. stripcslashes($_POST['sql'])." ";
 		            }
 		            $dtquery .= " ORDER BY {$surveytable}.id";
 		        }

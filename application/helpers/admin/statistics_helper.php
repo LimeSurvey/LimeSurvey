@@ -325,7 +325,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     foreach ($postvars as $pv)
     {
         //Only do this if there is actually a value for the $pv
-        if (in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap) || (substr($pv,0,1)=='D' && in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap)))
+        if (in_array($pv, $allfields) || in_array(substr($pv,1),$aQuestionMap) || in_array($pv,$aQuestionMap) || (($pv[0]=='D' || $pv[0]=='N' || $pv[0]=='K') && in_array(substr($pv,1,strlen($pv)-2),$aQuestionMap)))
         {
             $firstletter=substr($pv,0,1);
             /*

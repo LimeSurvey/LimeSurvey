@@ -1434,11 +1434,11 @@ function getgrouplistlang($gid, $language,$surveyid)
 
 function getuserlist($outputformat='fullinfoarray')
 {
-    
+
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
     $CI->load->helper("database");
-    
+
     if ($CI->session->userdata('loginID'))
     {
         $myuid=sanitize_int($CI->session->userdata('loginID'));
@@ -3420,6 +3420,12 @@ function templatereplace($line, $replacements=array(),$redata)
         $data = array_merge($data,array("SID" => $surveyid));
 
     }
+
+    if (strpos($line, "{LANG}") !== false)
+    {
+        $line=str_replace("{LANG}", $clang->getlangcode(), $line);
+    }
+
     if (strpos($line, "{PRIVACY}") !== false)
     {
         //$line=str_replace("{PRIVACY}", $privacy, $line);
@@ -4071,7 +4077,7 @@ function SetSurveyLanguage($surveyid, $language)
     //$CI->load->config('lsconfig');
     $defaultlang = $CI->config->item('defaultlang');
     //require_once($rootdir.'/classes/core/language.php');
-    
+
     if (isset($surveyid) && $surveyid>0)
     {
         // see if language actually is present in survey
@@ -7183,7 +7189,12 @@ function aArrayInvert($aArr)
  */
 function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
 {
-    if (@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'M' || @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'P' || @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'O')
+    if (@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'X')
+    {
+        // boilerplate have no answers
+        return true;
+    }
+    elseif (@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'M' || @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'P' || @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'O')
     {
         // multiple choice and list with comments question types - just one answer is required and comments are not required
         $bAnsw = false;
@@ -9146,7 +9157,7 @@ function sGetSurveyUserlist($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surv
 
     if ($CI->config->item('usercontrolSameGroupPolicy') == true)
     {
-        
+
         $authorizedUsersList = getuserlist('onlyuidarray');
     }
 
@@ -9164,7 +9175,7 @@ function sGetSurveyUserlist($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surv
     }
     if (!isset($svexist)) {$surveyselecter = "<option value='-1' selected='selected'>".$clang->gT("Please choose...")."</option>\n".$surveyselecter;}
     else {$surveyselecter = "<option value='-1'>".$clang->gT("None")."</option>\n".$surveyselecter;}
-    
+
     return $surveyselecter;
 }
 
@@ -9213,5 +9224,22 @@ function getsurveyusergrouplist($outputformat='htmloptions',$surveyid)
     }
 }
 
+/*
+ * Emit the standard (last) onsubmit handler for the survey.
+ *
+ * This code in injected in the three questionnaire modes right after the <form> element,
+ * before the individual questions emit their own onsubmit replacement code.
+ */
+function sDefaultSubmitHandler()
+{
+    return <<<EOS
+    <script type='text/javascript'>
+    <!--
+        // register the standard (last) onsubmit handler *first*
+        document.limesurvey.onsubmit = std_onsubmit_handler;
+    -->
+    </script>
+EOS;
+}
 
 // Closing PHP tag intentionally omitted - yes, it is okay

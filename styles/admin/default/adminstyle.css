@@ -392,20 +392,30 @@ span.settingcaption {
 
 .settingentry {
     float: left;
-    width: 600px;
+    width: 660px;
     padding-left: 5px;
     font-size: 13px;
     text-align: left;
     clear: right;
     margin-bottom: 10px;
     background-color: #F8F8FF;
+	outline: 0 none;
+}
+
+.settingentry span {
+	outline: 0 none;
 }
 
 .settingrow {
-    width: 1000px;
+    width: 1015px;
     clear: left;
-    margin-bottom: 20px;
+    margin: 0 auto 20px auto;
     background-color: #F8F8FF;
+}
+
+.settingrow .cke_skin_office2003,
+.settingrow .cke_skin_office2003 .cke_wrapper{
+	margin-bottom: 0;
 }
 
 .movableList {
@@ -559,10 +569,7 @@ a.optoutemail {
 }
 
 /* Browse response css */
-#resulttableform{ /* get head allway */
-	width:100%;
-	overflow:auto;
-}
+
 .browsetable {
     border: 1px solid;  
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
@@ -904,7 +911,7 @@ form#personalsettings {
 }
 
 div.messagebox {
-    width: 450px;
+    width: 550px;
     margin:10px auto; 
     border: 1px solid;
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
@@ -1196,17 +1203,16 @@ div.loader {
 #newquestiongroup .ui-tabs-panel iframe,
 #sendinvitation .ui-tabs-panel iframe,
 #addnewsurvey .ui-tabs-panel iframe {
-    width:600px !important;
+
 }
 
 #editsurvey textarea,
 #editsurvey input {
-    width: 600px;
+
 }
 
 #editsurvey td {
-    padding-left: 15px;
-    font-size: 9pt;
+
 } 
 
 

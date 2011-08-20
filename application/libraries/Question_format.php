@@ -473,7 +473,8 @@ class Question_format {
 		}
 
 		echo "\n<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
-
+        echo sDefaultSubmitHandler();
+        
 		//PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 		echo "\n\n<!-- INPUT NAMES -->\n";
 		echo "\t<input type='hidden' name='fieldnames' value='";

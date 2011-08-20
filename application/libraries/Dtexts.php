@@ -35,7 +35,7 @@ class Dtexts
 		}
 		return $text;
 	}
-	
+
 	/**
 	 * Loader for the adequate "worker" class
 	 * @param $name Worker name
@@ -43,7 +43,7 @@ class Dtexts
 	 */
 	public static function loadFunction($name)
 	{
-		$name=ucwords($name);
+		$name=ucfirst(strtolower($name));
         $CI =& get_instance();
         $CI->load->config('lsconfig.php');
         $rootdir = $this->config->item('rootdir');
@@ -66,5 +66,5 @@ class Dtexts
 		}
 		return $class;
 	}
-	
+
 }

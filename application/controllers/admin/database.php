@@ -59,16 +59,16 @@ class Database extends Admin_Controller {
         {
             $action = $this->input->post("action");
         }
-        
-        if ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))     
+
+        if ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
-            
+
             $this->load->helper('database');
             $_POST = $this->input->post();
             $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             array_unshift($questlangs,$baselang);
-    
+
             // same_default value on/off for question
             $uqquery = "UPDATE ".$this->db->dbprefix."questions";
             if (isset($_POST['samedefault']))
@@ -98,44 +98,44 @@ class Database extends Admin_Controller {
                     foreach ($questlangs as $language)
                     {
                        if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language]))
-                       {                                                                       
+                       {
                            self::_Updatedefaultvalues($qid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
                        }
                        if (isset($_POST['other_'.$scale_id.'_'.$language]))
                        {
                            self::_Updatedefaultvalues($qid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
-                       } 
+                       }
                     }
                 }
             }
             if ($qtproperties[$questiontype]['subquestions']>0)
             {
-    
+
                 foreach ($questlangs as $language)
                 {
                     $sqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND parent_qid=$qid and language='".$language."' and scale_id=0 order by question_order";
                     $sqresult = db_execute_assoc($sqquery);
                     //$sqrows = $sqresult->GetRows();
-    
+
                     for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['subquestions'];$scale_id++)
                     {
                        foreach ($sqresult->result_array() as $aSubquestionrow)
                        {
                            if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']]))
-                           {                                                                       
+                           {
                                self::_Updatedefaultvalues($qid,$aSubquestionrow['qid'],$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']],true);
                            }
     /*                       if (isset($_POST['other_'.$scale_id.'_'.$language]))
                            {
                                Updatedefaultvalues($postqid,$qid,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
                            } */
-                           
-                       } 
+
+                       }
                     }
                 }
             }
-            $this->session->set_userdata('flashmessage', $clang->gT("Default value settings were successfully saved."));  
-            
+            $this->session->set_userdata('flashmessage', $clang->gT("Default value settings were successfully saved."));
+
             if ($databaseoutput != '')
             {
                 echo $databaseoutput;
@@ -143,7 +143,7 @@ class Database extends Admin_Controller {
             else
             {
                 redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid));
-            }                  
+            }
         }
 
 
@@ -335,7 +335,7 @@ class Database extends Admin_Controller {
                             $query='Update '.$this->db->dbprefix.'questions set question_order='.($position+1).', title=\''.$codes[$scale_id][$position].'\', question=\''.$subquestionvalue.'\', scale_id='.$scale_id.' where qid=\''.$subquestionkey.'\' AND language=\''.$language.'\'';
                             db_execute_assoc($query);
 
-                            if($codes[$scale_id][$position] !== $oldcodes[$scale_id][$position]) {
+                            if(isset($oldcodes[$scale_id][$position]) && $codes[$scale_id][$position] !== $oldcodes[$scale_id][$position]) {
                                 $query='UPDATE '.$this->db->dbprefix.'conditions SET cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.$codes[$scale_id][$position].'" WHERE cqid='.$qid.' AND cfieldname="+'.$surveyid.'X'.$gid.'X'.$qid.$oldcodes[$scale_id][$position].'"';
                                 db_execute_assoc($query);
                                 $query='UPDATE '.$this->db->dbprefix.'conditions SET value="'.$codes[$scale_id][$position].'" WHERE cqid='.$qid.' AND cfieldname="'.$surveyid.'X'.$gid.'X'.$qid.'" AND value="'.$oldcodes[$scale_id][$position].'"';
@@ -1513,11 +1513,11 @@ class Database extends Admin_Controller {
 
 
     }
-    
+
     /**
-    * This is a convenience function to update/delete answer default values. If the given 
+    * This is a convenience function to update/delete answer default values. If the given
     * $defaultvalue is empty then the entry is removed from table defaultvalues
-    * 
+    *
     * @param mixed $qid   Question ID
     * @param mixed $scale_id  Scale ID
     * @param mixed $specialtype  Special type (i.e. for  'Other')
@@ -1533,7 +1533,7 @@ class Database extends Admin_Controller {
        {
           $query = "DELETE FROM ".$this->db->dbprefix."defaultvalues WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'";
           db_execute_assoc($query);
-          //$connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'");                           
+          //$connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'");
        }
        else
        {
@@ -1545,13 +1545,13 @@ class Database extends Admin_Controller {
            {
                $query = 'INSERT INTO '.$this->db->dbprefix."defaultvalues (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES ('".$defaultvalue."',{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})";
                db_execute_assoc($query);
-               //$connect->execute('INSERT INTO '.$this->db->dbprefix."defaultvalues (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})");        
+               //$connect->execute('INSERT INTO '.$this->db->dbprefix."defaultvalues (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})");
            }
            else
            {
                $query = 'UPDATE '.$this->db->dbprefix."defaultvalues set defaultvalue='".$defaultvalue."'  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'";
                db_execute_assoc($query);
-               //$connect->execute('UPDATE '.$this->db->dbprefix."defaultvalues set defaultvalue='".$defaultvalue."'  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'");        
+               //$connect->execute('UPDATE '.$this->db->dbprefix."defaultvalues set defaultvalue='".$defaultvalue."'  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'");
            }
        }
     }
