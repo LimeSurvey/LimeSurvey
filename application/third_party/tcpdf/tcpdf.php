@@ -10333,15 +10333,20 @@ class TCPDF {
 	protected function _putinfo() {
 		$oid = $this->_newobj();
 		$out = '<<';
-		if (!$this->empty_string($this->title)) {
+        
+        if (!$this->empty_string($this->title)) {
 			// The document's title.
 			$out .= ' /Title '.$this->_textstring($this->title, $oid);
 		}
+        
 		if (!$this->empty_string($this->author)) {
+		  
 			// The name of the person who created the document.
 			$out .= ' /Author '.$this->_textstring($this->author, $oid);
 		}
+        
 		if (!$this->empty_string($this->subject)) {
+		  
 			// The subject of the document.
 			$out .= ' /Subject '.$this->_textstring($this->subject, $oid);
 		}

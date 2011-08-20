@@ -1075,7 +1075,7 @@
         //$gid || $qid || 
        
         
-        if ($action=="deactivate"|| $action=="activate" || $action=="surveysecurity" || $action=="editdefaultvalues"
+        if ($action=="deactivate"|| $action=="activate" || $action=="surveysecurity" || $action=="editdefaultvalues" || $action == "editemailtemplates"
         || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity"
         || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
         || $action=="editsurveysettings"|| $action=="editsurveylocalesettings" || $action=="updatesurveysettingsandeditlocalesettings" || $action=="addgroup" || $action=="importgroup"

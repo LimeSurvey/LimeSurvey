@@ -86,7 +86,7 @@
 		            <img src='<?php echo $imageurl;?>/assessments_30.png' /> <?php echo $clang->gT("Assessments");?></a></li>
 		   		<?php } ?>
             	<?php if($surveylocale) { ?>
-		            <li><a href='<?php echo site_url("admin/emailtemplates/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/emailtemplates/edit/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/emailtemplates_30.png' name='EditEmailTemplates' /> <?php echo $clang->gT("Email templates");?></a></li>
 		   		<?php } ?>
             	</ul></li>

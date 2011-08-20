@@ -14,13 +14,33 @@
  * 
  */
 
+/**
+ * printanswers
+ * 
+ * @package LimeSurvey_CI
+ * @copyright 2011
+ * @version $Id$
+ * @access public
+ */
 class printanswers extends LS_Controller {
 
+	/**
+	 * printanswers::__construct()
+	 * Constructor
+	 * @return
+	 */
 	function __construct()
 	{
 		parent::__construct();
 	}
     
+    /**
+     * printanswers::view()
+     * View answers at the end of a survey in one place. To export as pdf, set 'usepdfexport' = 1 in lsconfig.php and $printableexport='pdf'.
+     * @param mixed $surveyid
+     * @param bool $printableexport
+     * @return
+     */
     function view($surveyid,$printableexport=FALSE)
     {
         
@@ -28,13 +48,14 @@ class printanswers extends LS_Controller {
         
         if($this->config->item('usepdfexport'))
         {
-            require_once($pdfexportdir."/extensiontcpdf.php");
+            //require_once($pdfexportdir."/extensiontcpdf.php");
+            $this->load->library('admin/pdf');
         }
         
         //if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
         //else {
             //This next line ensures that the $surveyid value is never anything but a number.
-            $surveyid=sanitize_int($surveyid);
+        $surveyid=sanitize_int($surveyid);
         //}
         $this->load->helper('database');
         //$clang = $this->limesurvey_lang;
@@ -81,14 +102,14 @@ class printanswers extends LS_Controller {
             sendcacheheaders();
             doHeader();
         
-            echo templatereplace(file_get_contents(sGetTemplatePath(validate_templatedir("default"))."/startpage.pstpl"));
+            echo templatereplace(file_get_contents(sGetTemplatePath(validate_templatedir("default"))."/startpage.pstpl"),array(),array());
             echo "<center><br />\n"
             ."\t<font color='RED'><strong>".$clang->gT("ERROR")."</strong></font><br />\n"
             ."\t".$clang->gT("We are sorry but your session has expired.")."<br />".$clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection.")."<br />\n"
             ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."\n"
             ."</center><br />\n";
         
-            echo templatereplace(file_get_contents(sGetTemplatePath(validate_templatedir("default"))."/endpage.pstpl"));
+            echo templatereplace(file_get_contents(sGetTemplatePath(validate_templatedir("default"))."/endpage.pstpl"),array(),array());
             doFooter();
             exit;
         };
@@ -176,16 +197,19 @@ class printanswers extends LS_Controller {
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
         //SHOW HEADER
         $printoutput = '';
-        if(isset($usepdfexport) && $usepdfexport == 1)
+        if($this->config->item('usepdfexport') == 1)
         {
             $printoutput .= "<form action='".site_url('printanswers/view/'.$surveyid.'/pdf')."' method='post'>\n<center><input type='submit' value='".$clang->gT("PDF Export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
         }
-        if($printableexport)
+        if($printableexport=='pdf')
         {
-            $pdf = new PDF($pdforientation);
-            $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
-            $pdf->AddPage();
-                $pdf->titleintopdf($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
+            //$pdf = new PDF($pdforientation);
+            require ($this->config->item('rootdir').'/application/config/tcpdf_config_ci.php');
+            $this->_config = $tcpdf;
+            //$this->pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
+            $this->pdf->AddPage();
+            //$pdf->titleintopdf($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
+            $this->pdf->SetTitle($clang->gT("Survey name (ID)",'unescaped').": {$surveyname} ({$surveyid})");
         }
         $printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
         
@@ -201,9 +225,9 @@ class printanswers extends LS_Controller {
         unset ($aFullResponseTable['startdate']);
         
         $printoutput .= "<table class='printouttable' >\n";
-        if($printableexport)
+        if($printableexport=='pdf')
         {
-            $pdf->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your answer",'unescaped'));
+            $this->pdf->intopdf($clang->gT("Question",'unescaped').": ".$clang->gT("Your answer",'unescaped'));
         }
         
         $oldgid = 0;
@@ -215,8 +239,8 @@ class printanswers extends LS_Controller {
                 
         	    if($printableexport)
         	    {
-        		    $pdf->intopdf(FlattenText($fname[0],true));
-        		    $pdf->ln(2);
+        		    $this->pdf->intopdf(FlattenText($fname[0],true));
+        		    $this->pdf->ln(2);
                 }
                 else
                 {
@@ -225,10 +249,10 @@ class printanswers extends LS_Controller {
         	}
             elseif (substr($sFieldname,0,4)=='qid_')
             {
-                if($printableexport)
+                if($printableexport=='pdf')
                 {
-                    $pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
-                    $pdf->ln(2);
+                    $this->pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
+                    $this->pdf->ln(2);
                 }
                 else
                 {
@@ -237,10 +261,10 @@ class printanswers extends LS_Controller {
             }
             else
             {
-                if($printableexport)
+                if($printableexport=='pdf')
                 {
-                    $pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
-                    $pdf->ln(2);
+                    $this->pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
+                    $this->pdf->ln(2);
                 }
                     else
                     {
@@ -250,7 +274,7 @@ class printanswers extends LS_Controller {
         }
         
         $printoutput .= "</table>\n";
-        if($printableexport)
+        if($printableexport=='pdf')
         {
         
             header("Pragma: public");
@@ -273,15 +297,15 @@ class printanswers extends LS_Controller {
                  
                 header("Content-Disposition: Attachment; filename=\"". $sExportFileName ."-".$surveyid.".pdf\"");
                  
-     			$pdf->Output($this->config->item('tempdir').'/'.$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
-        		header("Content-Length: ". filesize($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf"));
+     			$this->pdf->Output($this->config->item('tempdir').'/'.$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
+        		header("Content-Length: ". filesize($this->config->item('tempdir').'/'.$sExportFileName."-".$surveyid.".pdf"));
         		readfile($this->config->item('tempdir').'/'.$sExportFileName."-".$surveyid.".pdf");
         		unlink($this->config->item('tempdir').'/'.$sExportFileName."-".$surveyid.".pdf");
         
             }
             else
             {
-        			$pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
+        			$this->pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
             }
         }
         

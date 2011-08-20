@@ -342,11 +342,11 @@ $config['showsgqacode'] =  false;
  *  At this point no support can be given - if you want to help to fix it please get in touch with us
  */
 
-$config['usepdfexport']   = 0;                       //Set 0 to disable; 1 to enable
-$config['pdfdefaultfont'] = 'freemono';              //Default font for the pdf Export
-$config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
+$config['usepdfexport']   = 1;                       //Set 0 to disable; 1 to enable
+//$config['pdfdefaultfont'] = 'freemono';              //Default font for the pdf Export
+//$config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['notsupportlanguages'] = array('zh-Hant-TW','zh-Hant-HK','zh-Hans','ja','th');
-$config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
+//$config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
 
 
 
