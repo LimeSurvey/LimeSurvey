@@ -62,7 +62,7 @@
 		            <img src='<?php echo $imageurl;?>/token_manage_30.png' name='EditGeneralSettings' /> <?php echo $clang->gT("General settings");?></a></li>
 		   		<?php } ?>
             	<?php if($surveysecurity) { ?>
-		            <li><a href='<?php echo site_url("admin/surveysecurity/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/surveypermission/view/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/survey_security_30.png' name='SurveySecurity' /> <?php echo $clang->gT("Survey permissions");?></a></li>
 		   		<?php } ?>
             	<?php if ($surveycontent) {
