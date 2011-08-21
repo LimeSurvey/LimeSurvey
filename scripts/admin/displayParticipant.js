@@ -413,21 +413,73 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
 	        $('#shareform').html(sfNoUser);
 	    }
 	});
+        function basename(path) {
+    return path.replace(/\\/g,'/').replace( /.*\//, '' );
+}
 
     $('#addtosurvey').click(function() {
+            var selected = "";
             var myGrid = $("#displayparticipants").jqGrid();
-            $('#selectableadd').bind("mousedown", function (e) {e.metaKey = false;}).selectable({tolerance: 'fit'})
             var rows = myGrid.getGridParam('selarrrow');
-            var allRowsInGrid = $("#displayparticipants").jqGrid('getRowData');
-            alert(allRowsInGrid);
-            var dialog_buttons={};
-            dialog_buttons[mapButton]=function(){
+            $('#selectableadd').bind("mousedown", function (e) {e.metaKey = false;}).selectable({tolerance: 'fit',
+            selected: function(event, ui) { 
+                  if(ui.selected.id == "all")
+                    {
+                          $.post(getaddtosurveymsg, { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
+                                        function(data) {
+                                        $('#addsurvey').dialog('option', 'title', data);
+
+                                        }   );
+                                selected = "search";
+                    }
+                    else if(ui.selected.id == "allingrid")
+                    {
+                        $.post(getaddtosurveymsg, { searchcondition: 'getParticipants_json'},
+                                        function(data) {
+                                        $('#addsurvey').dialog('option', 'title', data);
+
+                                        }   
+                                    );
+                              selected = "all";
+                    }
+                    else
+                    {
+                        $('#addsurvey').dialog('option', 'title', rows.length+" participants are to be copied");
+                        selected = "rows";
+                    }
+               }
+            });
+                if(rows == "")
+                {
+                    $('#selected').hide();
+                    if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))=='getParticipants_json')
+                    {
+                        $('#selectableadd').selectable("disable");
+                        $('ol#selectableadd li').eq(1).addClass('ui-selected');
+                        selected = "all";
+                    }   
+                                        
+                }
+                if(rows != "")
+                {
+                    if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))=='getParticipants_json')
+                    {
+                            $('#all').hide();
+                            $('#allingrid').css('margin-left','130px');
+                    }
+                    
+                }
+                var dialog_buttons={};
+                dialog_buttons[mapButton]=function(){
+                    
+                
                 var survey_id=$('#survey_id').val();
                 var redirect ="";
                 if(survey_id=="")
                 {
                       alert(selectSurvey);
                 }
+        
                 else
                 {
                    if(jQuery('#redirect').is(":checked")) 
@@ -438,18 +490,63 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
                    {
                             redirect = "";
                    }
-                     addtoSurvey(rows,survey_id,redirect);
+                   if(selected == "search")
+                       {
+                           $.post(getSearchIDs, { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
+                           function(data) {                                  
+                                $('#count').val($('#ui-dialog-title-addsurvey').text());
+                                $('#participant_id').val(data);
+                                $("#addsurvey").submit(); 
+                             });
+                                        
+                       }
+                   else if(selected == "all")
+                       {
+                                $.post(getSearchIDs, { searchcondition: 'getParticipants_json'},
+                                function(data) 
+                                {
+                                    $('#count').val($('#ui-dialog-title-addsurvey').text());
+                                    $('#participant_id').val(data);
+                                    $("#addsurvey").submit(); 
+                                }   
+                               );
+                       }
+                    else
+                       {
+                               rows = myGrid.getGridParam('selarrrow');
+                               $('#count').val($('#ui-dialog-title-addsurvey').text());
+                               $('#participant_id').val(rows);
+                               $("#addsurvey").submit(); 
+                       }
+                  
                 }
+                //
                };
+                     
                dialog_buttons[cancelBtn]=function(){    $(this).dialog("close");};
                     /* End of building array containing button functions */
                     $("#addsurvey").dialog({
-                        height: 300,
-                        width: 400,
-                        title : addpartTitle,
-            			modal: true,
-                                buttons: dialog_buttons
-                            });
+                        height: 320,
+                        width: 450,
+                        title : addsurvey,
+            		modal: true,
+                        open: function(event, ui) {
+                              if(selected == "all")
+                              {
+                                      $.post(getaddtosurveymsg, { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
+                                        function(data) {
+                                        $('#addsurvey').dialog('option', 'title', data);
+
+                                        });
+                              }
+                        
+                        },
+                        
+                        buttons: dialog_buttons
+                      });
+            
+                            
+             
                   if (!($("#survey_id").length > 0)) {
                 $('#addsurvey').html(addpartErrorMsg);
 } 

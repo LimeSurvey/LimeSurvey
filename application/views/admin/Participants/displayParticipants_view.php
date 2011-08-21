@@ -16,6 +16,7 @@
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.min.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.filter.min.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.ui.selectable.min.js" ?>" type="text/javascript"></script>
+
 <?php
 /* If there are any attributes to display as extra columns in the jqGrid, iterate through them */
 
@@ -78,6 +79,7 @@ var addpartTitle = "<?php echo $clang->gT("Add Participant to Survey"); ?>";
 var addpartErrorMsg = "<?php echo $clang->gT("Either you don't own a survey or it doesn't have token table"); ?>";
 var mapButton = "<?php echo $clang->gT("Next") ?>";
 var error = "<?php echo $clang->gT("Error") ?>";
+var addsurvey = "<?php echo $clang->gT("Add to Survey") ?>";
 var exportcsv = "<?php echo $clang->gT("Export CSV") ?>";
 var nooptionselected = "<?php echo $clang->gT("Please choose either of the options") ?>";
 var removecondition = "<?php echo $clang->gT("Remove Condition") ?>";
@@ -86,6 +88,7 @@ var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
 var exportBtn = "<?php echo $clang->gT("Export") ?>";
 var okBtn = "<?php echo $clang->gT("OK") ?>";
 var deletefrompanelmsg = "<?php echo $clang->gT("Select one of the three options") ?>";
+var noRowSelected = "<?php echo $clang->gT("You have no row selected") ?>";
 var deletefrompanel = "<?php echo $clang->gT("Delete participant(s) from central participants panel only") ?>";
 var deletefrompanelandtoken = "<?php echo $clang->gT("Delete participant(s) from central panel and tokens tables") ?>";
 var deletefrompaneltokenandresponse = "<?php echo $clang->gT("Delete participant(s) from central panel, tokens tables and all associated responses") ?>";
@@ -95,6 +98,8 @@ var shareMsg = "<?php echo $clang->gT("You can see and edit settings for shared 
 var jsonUrl = "<?php echo site_url("admin/participants/getParticipants_json");?>";
 var jsonSearchUrl = "<?php echo site_url("admin/participants/getParticipantsResults_json");?>";
 var editUrl = "<?php echo site_url("admin/participants/editParticipant"); ?>";
+var getSearchIDs = "<?php echo site_url("admin/participants/getSearchIDs"); ?>";
+var getaddtosurveymsg = "<?php echo site_url("admin/participants/getaddtosurveymsg"); ?>";
 var minusbutton = "<?php echo base_url()."images/deleteanswer.png" ?>";
 var addbutton = "<?php echo base_url()."images/plus.png" ?>";
 var delparticipantUrl = "<?php echo site_url("admin/participants/delParticipant");?>";
@@ -221,7 +226,11 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
             );
         echo form_checkbox($data); ?><input type="hidden" name="can_edit" id="can_edit" value='TRUE'></p>
     </div>
-        <div id="addsurvey" title="addsurvey" style="display:none">
+        <!--<div id="addsurvey" title="addsurvey" style="display:none">-->
+        <div class="ui-widget ui-helper-hidden" id="client-script-return-msg" style="display:none">
+        <form action="<?php echo site_url("admin/participants/attributeMap");?>" name="addsurvey" id="addsurvey" method="POST">
+            <input type="hidden" name="participant_id" id="participant_id" value=""></input>
+            <input type="hidden" name="count" id="count" value=""></input>
 	<p>
 	<?php echo $clang->gT("Please select the survey to which participants are to be added"); ?></p>
         <p>
@@ -249,9 +258,11 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
 
         echo form_checkbox($data); ?><input type="hidden" name="redirect" id="redirect" value='TRUE'></p>
         <ol id='selectableadd' class='selectable' >
-                <li class='ui-widget-content' id='selected'><?php echo $clang->gT("selected") ?></li>
-                <li class='ui-widget-content' id='all'><?php echo $clang->gT("all") ?></li>
+                <li class='ui-widget-content' id='all' name='all'><?php echo $clang->gT("Filtered") ?></li>
+                <li class='ui-widget-content' id='allingrid' name='allingrid'  name='allingrid'><?php echo $clang->gT("All In the Grid") ?></li>
+                <li class='ui-widget-content' id='selected' name='Selected' style='width: 322px;'><?php echo $clang->gT("Manually Selected") ?></li>
         </ol>
+            </form>
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">
 	<p>

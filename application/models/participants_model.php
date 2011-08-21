@@ -138,6 +138,12 @@ function getParticipants($page,$limit)
     $data = $this->db->get('participants',$limit,$start);
     return $data;
 }
+function getParticipantswithoutlimit()
+{    
+    $data = $this->db->get('participants');
+    return $data;
+}
+
 function getParticipantsCount()
 {
      return $this->db->count_all_results('participants');
@@ -148,7 +154,8 @@ function getParticipantsSearchMultiple($condition,$page,$limit)
    $j=1;
    $tobedonelater =array();
    $this->load->library('subquery');
-   $this->db->from('participants');
+   $start = $limit*$page - $limit;
+  $this->db->from('participants');
    $con= count($condition);
    while($i < $con){      
    if($i<3){
@@ -480,7 +487,7 @@ function getParticipantsSearchMultiple($condition,$page,$limit)
                   else
                   {
                    $this->db->limit($limit,$start);
-                  $data = $this->db->get();
+                    $data = $this->db->get();
                     }   
     
     $otherdata = $data->result_array();
@@ -526,14 +533,14 @@ function getParticipantsSearchMultiple($condition,$page,$limit)
         $this->db->or_where('participant_id',$value['participant_id']);
     }
     if($page == 0 && $limit == 0)
-                  {
-                    $data = $this->db->get();
-                  }
-                  else
-                  {
-                   $this->db->limit($limit,$start);
-                  $data = $this->db->get();
-                    }   
+    {
+        $data = $this->db->get();
+    }
+    else
+    {
+        $this->db->limit($limit,$start);
+        $data = $this->db->get();
+    }   
     
 
     $orddata = $data->result_array();
@@ -543,6 +550,28 @@ function getParticipantsSearchMultiple($condition,$page,$limit)
     else
     {
      return $otherdata;   
+    }
+    
+}
+function is_owner($participant_id)
+{
+    $userid=$this->session->userdata('loginID');
+    $this->db->select('participant_id');
+    $this->db->where('participant_id',$participant_id);
+    $this->db->where('owner_uid',$userid);
+    $is_owner = $this->db->get('participants');
+    //$is_owner->num_rows();
+    $this->db->select('participant_id');
+    $this->db->where('participant_id',$participant_id);
+    $this->db->where('share_uid',$userid);
+    $is_shared = $this->db->get('participant_shares');
+    if($is_shared->num_rows() || $is_shared->num_rows())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
     }
     
 }
@@ -558,7 +587,7 @@ function getParticipantsSearch($condition,$page,$limit)
               {
                 $data = $this->db->get('participants');
               }
-              else
+                  else
               {
                   $data = $this->db->get('participants',$limit,$start);
               }   
@@ -572,7 +601,10 @@ function getParticipantsSearch($condition,$page,$limit)
                      array_push($resultarray,$value); 
                   }
               }
-              return $resultarray;
+              foreach($resultarray as $key=>$value)
+              {
+                  
+              }
           }
           else if($condition[0]=='owner_name')
           {
@@ -696,8 +728,8 @@ function getParticipantsSearch($condition,$page,$limit)
                   }
                   else
                   {
-                  $data = $this->db->get('participants',$limit,$start);
-                    }   
+                    $data = $this->db->get('participants',$limit,$start);
+                  }   
                 return $data->result_array();
           }
           
@@ -982,27 +1014,27 @@ function getParticipantsSearch($condition,$page,$limit)
                 $this->db->where('participant_attribute.attribute_id',$condition[0]);
                 $this->db->not_like('participant_attribute.value <',$condition[2]);
               if($page == 0 && $limit == 0)
-                  {
-                    $data = $this->db->get('participants');
-                  }
-                  else
-                  {
-                      $this->db->limit($limit,$start);
-                  $data = $this->db->get('participants');
-                    }   
-                return $data->result_array();
+              {
+                $data = $this->db->get('participants');
+              }
+              else
+              {
+                $this->db->limit($limit,$start);
+                $data = $this->db->get('participants');
+              }   
+              return $data->result_array();
           }
           else
           {
             $this->db->where($condition[0].' <',$condition[2]); 
             if($page == 0 && $limit == 0)
-                  {
-                    $data = $this->db->get('participants');
-                  }
-                  else
-                  {
-                  $data = $this->db->get('participants',$limit,$start);
-                    }   
+            {
+                $data = $this->db->get('participants');
+            }
+            else
+            {
+                $data = $this->db->get('participants',$limit,$start);
+            }   
             return $data->result_array();
           }
           
@@ -1275,11 +1307,13 @@ function copyToCentral($surveyid,$newarr,$mapped)
         $returndata = array('success'=>$sucessfull,'duplicate'=>$duplicate);
         return $returndata;
 }
-function copytosurveyatt($surveyid,$mapped,$newcreate)
+function copytosurveyatt($surveyid,$mapped,$newcreate,$participantid)
 {
-    $participantid = $this->session->userdata('participantid');
+    
     $duplicate=0;
     $sucessfull=0;
+    $participantid = explode(",",$participantid);
+    $participantid = array_slice($participantid,1); 
     $number2add=sanitize_int(count($newcreate));
     $tokenfieldnames = array_values($this->db->list_fields("tokens_$surveyid"));
     $tokenattributefieldnames=array_filter($tokenfieldnames,'filterforattributes');

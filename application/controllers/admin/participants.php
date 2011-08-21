@@ -152,10 +152,10 @@ function getShareInfo_json()
         $i=0;
         foreach($records->result() as $row) 
         {
-            $shared = $this->users_model->getName($row->shared_uid); //for conversion of uid to human readable names
+            $shared = $this->users_model->getName($row->share_uid); //for conversion of uid to human readable names
             $owner = $this->users_model->getName($row->owner_uid);
             $data->rows[$i]['id']=$row->participant_id; 
-            $data->rows[$i]['cell']=array($row->firstname,$row->lastname,$row->email,$shared->full_name,$row->shared_uid,$owner->full_name,$row->date_added,$row->can_edit);
+            $data->rows[$i]['cell']=array($row->firstname,$row->lastname,$row->email,$shared->full_name,$row->share_uid,$owner->full_name,$row->date_added,$row->can_edit);
             $i++;
         }
         echo json_encode($data); 
@@ -172,9 +172,9 @@ function getShareInfo_json()
         $i=0;
         foreach($records->result() as $row)
         {
-                $sharename = $this->users_model->getName($row->shared_uid); //for conversion of uid to human readable names
+                $sharename = $this->users_model->getName($row->share_uid); //for conversion of uid to human readable names
                 $data->rows[$i]['id']=$row->participant_id;
-                $data->rows[$i]['cell']=array($row->firstname,$row->lastname,$row->email,$sharename->full_name,$row->shared_uid,$row->date_added,$row->can_edit);
+                $data->rows[$i]['cell']=array($row->firstname,$row->lastname,$row->email,$sharename->full_name,$row->share_uid,$row->date_added,$row->can_edit);
                 $i++;
         }
         echo json_encode($data);
@@ -194,7 +194,7 @@ function editShareInfo()
         }
     $data = array( 'participant_id' => $this->input->post('participant_id'),
                    'can_edit' => $this->input->post('can_edit'),
-                   'shared_uid' => $this->input->post('shared_uid'));
+                   'share_uid' => $this->input->post('share_uid'));
     $this->participant_shares_model->updateShare($data);
 }
 function delParticipant()
@@ -441,7 +441,87 @@ header('Cache-Control: max-age=0');
 $objWriter->save('php://output');
 
 }
-
+function getaddtosurveymsg()
+{
+    $this->load->model('participants_model');
+    $searchcondition = basename($this->input->post('searchcondition'));
+    if($searchcondition != 'getParticipants_json')
+    {
+        $participantid = "";
+        $condition = explode("||",$searchcondition);  
+        if(count($condition)==3)
+        {
+            $query = $this->participants_model->getParticipantsSearch($condition,0,0);
+        }
+        else
+        {
+            $query = $this->participants_model->getParticipantsSearchMultiple($condition,0,0);
+        }
+        $clang = $this->limesurvey_lang;
+        echo sprintf($clang->gT("%s participant(s) are to be copied "),count($query));
+   }
+    else
+    {
+        $participantid = "";
+        if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+        {
+            $query = $this->participants_model->getParticipantswithoutlimit();
+        }
+        else
+        {
+            $query = $this->participants_model->getParticipantsOwner($this->session->userdata('loginID'));
+        }
+        $clang = $this->limesurvey_lang;
+       echo sprintf($clang->gT("%s participant(s) are to be copied "),count($query->result_array()));
+       
+    }
+ 
+    
+}
+function getSearchIDs()
+{
+     $this->load->model('participants_model');
+    $searchcondition = basename($this->input->post('searchcondition'));
+    if($searchcondition != 'getParticipants_json')
+    {
+        $participantid = "";
+        $condition = explode("||",$searchcondition);  
+        
+        if(count($condition)==3)
+        {
+            $query = $this->participants_model->getParticipantsSearch($condition,0,0);
+        }
+        else
+        {
+            $query = $this->participants_model->getParticipantsSearchMultiple($condition,0,0);
+        }
+        foreach($query as $key=>$value)
+        {
+            $participantid  = $participantid.",".$value['participant_id'];
+            
+        }
+    echo $participantid;
+    }
+    else
+    {
+        $participantid = "";
+        if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+        {
+            $query = $this->participants_model->getParticipantswithoutlimit();
+        }
+        else
+        {
+            $query = $this->participants_model->getParticipantsOwner($this->session->userdata('loginID'));
+        }
+        
+        foreach($query->result_array() as $key=>$value)
+        {
+            $participantid  = $participantid.",".$value['participant_id'];
+            
+        }
+    echo $participantid;
+    }
+}
 function exporttocsv()
 {
         $this->load->model('participant_attribute_model');
@@ -453,7 +533,7 @@ function exporttocsv()
         {
             if($searchcondition != 'getParticipants_json')
             {
-              $condition = explode("||",$searchcondition);  
+               $condition = explode("||",$searchcondition);  
                if(count($condition)==3)
                {
                     $query = $this-> participants_model->getParticipantsSearch($condition);
@@ -553,7 +633,6 @@ header('Cache-Control: max-age=0');
 $objWriter->save('php://output');
         
 }
-
 function getParticipantsResults_json()
 {
     $page = $this->input->post('page');
@@ -586,7 +665,6 @@ function getParticipantsResults_json()
             $data->total = ceil ($data->records /$limit );
         }
         
-     }
      
         $i=0;
         foreach($records as $row=>$value)
@@ -642,40 +720,89 @@ function getParticipantsResults_json()
             }
             
         echo json_encode($data);
-    
-    /*else // Only the owned and shared participants will be visible
+    }
+    else // Only the owned and shared participants will be visible
     {
-        $userid = $this->session->userdata('loginID');
-        $records = $this->participants_model->getParticipantsOwner($userid);
-        $data->page = 1;
-        $data->records = count ($this->participants_model->getParticipantsOwner($userid)->result_array());
-        $data->total = ceil ($data->records /10 );
-        $attid = $this->participant_attribute_model->getAttributeVisibleID();
-        $i=0;
-        foreach($records->result() as $row)
+        $searchcondition = $this->uri->segment(4);
+        $searchcondition = urldecode($searchcondition);
+        $finalcondition = array();
+        $condition = explode("||",$searchcondition);        
+        if(count($condition)==3)
         {
-            $surveycount = $this->participants_model->getSurveyCount($row->participant_id);
-            $ownername = $this->users_model->getName($row->owner_uid); //for conversion of uid to human readable names
-            $data->rows[$i]['id']=$row->participant_id;
-            $data->rows[$i]['cell']=array($row->participant_id,$row->can_edit,$row->firstname,$row->lastname,$row->email,$row->blacklisted,$surveycount,$row->language,$ownername->full_name);
-            $attributes =  $this->participant_attribute_model->getParticipantVisibleAttribute($row->participant_id);
-            foreach($attid as $attributeid)
+            
+            $records = $this-> participants_model->getParticipantsSearch($condition,$page,$limit);
+            $data->page = $page;
+                 
+        }
+        else
+        {
+            $records = $this-> participants_model->getParticipantsSearchMultiple($condition,$page,$limit);
+            $data->page = $page;
+        }
+        $i=0;
+        foreach($records as $row=>$value)
+            {
+            if($this->participants_model->is_owner($value['participant_id']))
+            {
+                $username = $this->users_model->getName($value['owner_uid']);//for conversion of uid to human readable names
+                $surveycount = $this->participants_model->getSurveyCount($value['participant_id']);
+                $sortablearray[$i]=array($value['participant_id'],"true",$value['firstname'],$value['lastname'],$value['email'],$value['blacklisted'],$surveycount,$value['language'],$username->full_name);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is 
+                $attributes =  $this->participant_attribute_model->getParticipantVisibleAttribute($value['participant_id']);
+                foreach($attid as $attributeid)
                 {
-                    $answer=$this->participant_attribute_model->getAttributeValue($row->participant_id,$attributeid['attribute_id']);
+                    $answer=$this->participant_attribute_model->getAttributeValue($value['participant_id'],$attributeid['attribute_id']);
                     if(isset($answer->value))
                     {
-                        array_push($data->rows[$i]['cell'],$answer->value);
+                        array_push($sortablearray[$i],$answer->value);
                     }
-                    else
+                    else    
                     {
-                        array_push($data->rows[$i]['cell'],"");
-                    }                    
+                        array_push($sortablearray[$i],"");
+                    }
                 }
             $i++;
+            }
         }
+        
+        function subval_sort($a,$subkey,$order) {
+            	foreach($a as $k=>$v) {
+        		$b[$k] = strtolower($v[$subkey]);
+        	}
+                if($order == "asc")
+                {
+                    asort($b,SORT_REGULAR);
+                }
+        	else
+                {
+                    arsort($b,SORT_REGULAR);
+                }
+        	foreach($b as $key=>$val) {
+        		$c[] = $a[$key];
+                }
+                return $c;
+            }
+            if(!empty($sortablearray))
+            {
+                $data->records = count($sortablearray);
+                $data->total = ceil (count($sortablearray) /$limit );
+                $indexsort = array_search($this->input->post('sidx'), $participantfields);
+                $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
+                $i=0;
+                $count = count($sortedarray[0]);
+                foreach($sortedarray as $key=>$value)
+                {
+                    $data->rows[$i]['id']=$value[0];   
+                    $data->rows[$i]['cell'] = array();
+                    for($j=0 ; $j < $count ; $j++)
+                    {
+                        array_push($data->rows[$i]['cell'],$value[$j]);
+                    }
+                    $i++;
+                }
+            }
         echo json_encode($data);
     }
-    */
+    
 }
 /*
  * This function sends the data in JSON format extracted from the database to be displayed using the jqGrid
@@ -1441,7 +1568,7 @@ function shareParticipants()
     {
         $time = time();
         $data = array('participant_id' =>$id,
-                      'shared_uid' => $shareuserid,
+                      'share_uid' => $shareuserid,
                       'date_added' => standard_date($format, $time),
                       'can_edit' => $can_edit);
         $this->participant_shares_model->storeParticipantShare($data);
@@ -1464,6 +1591,7 @@ function addToCentral()
  */
 function addToToken()
 {
+    
     $this->load->model('participants_model');
     $response = $this->participants_model->copytoSurvey($this->input->post('participantid'),$this->input->post('surveyid'),$this->input->post('attributeid'));
     $clang = $this->limesurvey_lang;
@@ -1474,12 +1602,13 @@ function addToToken()
  */
 function addToTokenattmap()
 {
+    $participant_id= $this->input->post('participant_id');
     $surveyid = $this->input->post('surveyid');
     $mapped = $this->input->post('mapped');
     $newcreate = $this->input->post('newarr');
     $this->load->model('participants_model');
     $clang = $this->limesurvey_lang;
-    $response=$this->participants_model->copytosurveyatt($surveyid,$mapped,$newcreate);
+    $response=$this->participants_model->copytosurveyatt($surveyid,$mapped,$newcreate,$participant_id);
     echo sprintf($clang->gT("%s participants have been copied,%s participants have not been copied because they already exisit "),$response['success'],$response['duplicate']);    
     
 }
@@ -1490,7 +1619,10 @@ function attributeMap()
 {
     self::_getAdminHeader();
     $clang = $this->limesurvey_lang;
-    $surveyid = $this->uri->segment(4);
+    $surveyid = $this->input->post('survey_id');
+    $redirect = $this->input->post('redirect');
+    $count = $this->input->post('count');
+    $participant_id = $this->input->post('participant_id');
     $this->load->model('participant_attribute_model');
     $attributes = $this->participant_attribute_model->getAttributes();
     $tokenfieldnames = array_values($this->db->list_fields("tokens_$surveyid"));
@@ -1528,8 +1660,11 @@ function attributeMap()
     $data = array('clang'=> $clang,
                   'selectedcentralattribute' => $selectedcentralattribute,
                   'selectedtokenattribute' => $selectedattribute,
-                  'alreadymappedattributename' => $alreadymappedattname
-                 );
+                  'alreadymappedattributename' => $alreadymappedattname,
+                  'survey_id' => $surveyid,
+                  'redirect' => $redirect,
+                  'participant_id'=>$participant_id,
+                  'count' => $count);
     $this->load->view('admin/Participants/attributeMap_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }

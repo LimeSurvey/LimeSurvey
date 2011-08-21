@@ -69,6 +69,7 @@ $(document).ready(function(){
             
         });   
         $('#attmap').click(function(){
+            
                 var mappedarray = {};
                 $.each(tokencurrentarray, function(index,value) { 
                             if(value[0]=='c')
@@ -80,17 +81,18 @@ $(document).ready(function(){
                    $.each(newcurrentarray, function(index,value) { 
                         newcurrentarray[index] = value.substring(2);
                     });
-             $("#processing").dialog({
+            $("#processing").dialog({
 	            height: 90,
-				width: 50,
-				modal: true
+                    width: 50,
+                    modal: true
 	            
 	        });
-                
+        
         $("#processing").load(copyUrl, {
                         mapped: mappedarray,
                         newarr: newcurrentarray,
-                        surveyid: surveyId
+                        surveyid: surveyId,
+                        participant_id : participant_id
                         }, function(msg){
                             $(this).dialog("close");
                             alert(msg);

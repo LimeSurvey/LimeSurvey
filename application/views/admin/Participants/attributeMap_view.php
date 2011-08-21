@@ -11,18 +11,18 @@
         <script src="<?php echo $this->config->item('adminscripts')."attributeMap.js" ?>" type="text/javascript"></script>
         <script type="text/javascript">
             var redUrl = "<?php echo site_url("admin/participants/displayParticipants");?>";
-            var surveyId = "<?php echo $this->uri->segment(4); ?>";
-            var redirect = "<?php echo $this->uri->segment(5); ?>";
-            if(redirect=='redirect')
+            var surveyId = "<?php echo $survey_id ?>";
+            var redirect = "<?php echo $redirect ?>";
+            if(redirect=='TRUE')
                 {
-                    redUrl = "<?php echo site_url("admin/tokens/browse").'/'.$this->uri->segment(4);?>";
+                    redUrl = "<?php echo site_url("admin/tokens/browse").'/'.$survey_id;?>";
                 }
             var copyUrl = "<?php echo site_url("admin/participants/addToTokenattmap");?>";
-            
-        </script>
+            var participant_id = "<?php echo $participant_id; ?>";   
+         </script>
   </head>
 <body>
-<div class='header ui-widget-header'><strong><?php echo sprintf($clang->gT("Select attributes to copy with your %s participant(s)"),count($this->session->userdata('participantid')));?></strong></div>
+<div class='header ui-widget-header'><strong><?php echo $count ?></strong></div>
 <div class="main">
 <?php if(!empty($selectedcentralattribute)) { ?>
 <div id="centralattribute">
