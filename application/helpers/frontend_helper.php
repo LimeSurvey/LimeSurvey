@@ -380,6 +380,7 @@ function checkconfield($value)
     }
     $value_qid=0;
     $value_type='';
+    $value_isconditionnal='N';
 
     //$value is the fieldname for the field we are checking for conditions
     foreach ($_SESSION['fieldarray'] as $sfa) //Go through each field
@@ -841,8 +842,10 @@ function checkconditionalmandatorys($move, $backok=null)
 function checkUploadedFileValidity($surveyid, $move, $backok=null)
 {
     global $thisstep;
+
 	$CI =& get_instance();
 	$_POST = $CI->input->post();
+    $clang = $CI->limesurvey_lang;
 	//$_SESSION = $CI->session->userdata;
 
     if (!isset($backok) || $backok != "Y")
@@ -893,7 +896,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                                 if ($file['size'] > $validation['max_filesize'] * 1000)
                                 {
                                     $filenotvalidated = array();
-                                    $filenotvalidated[$field."_file_".$i] = "Sorry, the uploaded file (".$file['size'].") is larger than the allowed filesize of ".$validation['max_filesize']." KB.";
+                                    $filenotvalidated[$field."_file_".$i] = sprintf($clang->gT("Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."), $file['size'], $validation['max_filesize']);
                                     $append = true;
                                 }
 
@@ -906,13 +909,13 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                                 {
                                     if (isset($append) && $append)
                                     {
-                                        $filenotvalidated[$field."_file_".$i] .= "Sorry, only ".$validation['allowed_filetypes']." extensions are allowed ! ";
+                                        $filenotvalidated[$field."_file_".$i] .= sprintf($clang->gT("Sorry, only %s extensions are allowed !"),$validation['allowed_filetypes']);
                                         unset($append);
                                     }
                                     else
                                     {
                                         $filenotvalidated = array();
-                                        $filenotvalidated[$field."_file_".$i] = "Sorry, only ".$validation['allowed_filetypes']." extensions are allowed ! ";
+                                        $filenotvalidated[$field."_file_".$i] .= sprintf($clang->gT("Sorry, only %s extensions are allowed !"),$validation['allowed_filetypes']);
                                     }
                                 }
                             }
@@ -924,7 +927,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                     if ($filecount < $validation['min_num_of_files'])
                     {
                         $filenotvalidated = array();
-                        $filenotvalidated[$field] = "The minimum number of files have not been uploaded";
+                        $filenotvalidated[$field] = $clang->gT("The minimum number of files have not been uploaded");
                     }
                 }
             }
@@ -2193,7 +2196,7 @@ function doAssessment($surveyid, $returndataonly=false)
     }
     $query = "SELECT * FROM ".$CI->db->dbprefix('assessments')."
 			  WHERE sid=$surveyid and language='{$_SESSION['s_lang']}'
-			  ORDER BY scope";
+			  ORDER BY scope, id";
     if ($result = db_execute_assoc($query))   //Checked
 
     {

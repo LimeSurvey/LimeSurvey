@@ -23,7 +23,7 @@
  */
 function fixNumbering($fixnumbering)
 {
-    
+
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -81,7 +81,7 @@ function checkGroup($postsid)
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
-    
+
     $baselang = GetBaseLanguageFromSurveyID($postsid);
     $groupquery = "SELECT g.gid,g.group_name,count(q.qid) as count from ".$CI->db->dbprefix."questions as q RIGHT JOIN ".$CI->db->dbprefix."groups as g ON q.gid=g.gid AND g.language=q.language WHERE g.sid=$postsid AND g.language='$baselang' group by g.gid,g.group_name;";
     $groupresult=db_execute_assoc($groupquery); // or safe_die($groupquery."<br />".$connect->ErrorMsg());
@@ -113,7 +113,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
-    
+
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
     //	# "L" -> LIST
@@ -127,7 +127,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     //  # ":" -> Array Multi Flexi Numbers
     //  # ";" -> Array Multi Flexi Text
     //  # "1" -> MULTI SCALE
-    
+
     $chkquery = "SELECT qid, question, gid, type FROM ".$CI->db->dbprefix."questions WHERE sid={$surveyid} and parent_qid=0";
     $chkresult = db_execute_assoc($chkquery) or safe_die ("Couldn't get list of questions<br />$chkquery<br />");
     foreach ($chkresult->result_array() as $chkrow)
@@ -206,7 +206,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
         $qidorder[]=array($c, $qrow['qid']);
         $c++;
     }
-    
+
     $qordercount="";
     //1: Get each condition's question id
     $conquery= "SELECT ".$CI->db->dbprefix."conditions.qid, cqid, ".$CI->db->dbprefix."questions.question, "
@@ -240,7 +240,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
             $b++;
         }
     }
-    
+
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
     $fieldmap=createFieldMap($surveyid, "full");
     if (isset($fieldmap))
@@ -251,7 +251,7 @@ function checkQuestions($postsid, $surveyid, $qtypes)
         }
         $fieldlist=array_reverse($fieldlist); //let's always change the later duplicate, not the earlier one
     }
-    
+
     $checkKeysUniqueComparison = create_function('$value','if ($value > 1) return true;');
     @$duplicates = array_keys (array_filter (array_count_values($fieldlist), $checkKeysUniqueComparison));
     if (isset($duplicates))
@@ -282,12 +282,12 @@ function checkQuestions($postsid, $surveyid, $qtypes)
 function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = false)
 {
     //global $dbprefix, $connect, $clang, $CI->db->dbdriver,$databasetabletype;
-    
+
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
-    
-    
+
+
      $createsurvey='';
      $activateoutput='';
      $createsurveytimings='';
@@ -423,33 +423,33 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
 
     $CI->dbforge->add_field($createsurvey);
 	$CI->dbforge->add_key('id', TRUE);
-	
+
     if ($simulate){
         return array('dbengine'=>$CI->db->databasetabletype, 'dbtype'=>$CI->db->dbdriver, 'fields'=>$arrSim);
     }
-    
+
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     $createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
     $tabname = "survey_{$postsid}"; // dbprefix is added automatically
-    
+
     /**
      $taboptarray = array('mysql' => 'ENGINE='.$CI->db->databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
                          'mysqli'=> 'ENGINE='.$CI->db->databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci');
     */
     //$dict = NewDataDictionary($connect);
     //$sqlarray = $dict->CreateTableSQL($tabname, $createsurvey, $taboptarray);
-    
+
     $execresult=$CI->dbforge->create_table($tabname, TRUE);
-    
+
     if (isset($savetimings) && $savetimings=="TRUE")
     {
         $tabnametimings = $tabname .'_timings';
-        
-        
-        //$sqlarraytimings = $dict->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);    
+
+
+        //$sqlarraytimings = $dict->CreateTableSQL($tabnametimings, $createsurveytimings, $taboptarray);
     }
-    
+
     //$execresult=$dict->ExecuteSQLArray($sqlarray,1);
     //if ($execresult==0 || $execresult==1)
     if (!$execresult)
@@ -463,11 +463,11 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
         "<pre>$createsurvey</pre>\n
         <a href='$link'>".$clang->gT("Main Admin Screen")."</a>\n</div>" ;
     }
-	
+
     //if ($execresult != 0 && $execresult !=1)
     if ($execresult)
     {
-        
+
         $anquery = "SELECT autonumber_start FROM ".$CI->db->dbprefix."surveys WHERE sid={$postsid}";
         if ($anresult=db_execute_assoc($anquery))
         {
@@ -477,22 +477,22 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 if ($row['autonumber_start'] > 0)
                 {
                     if ($CI->db->dbdriver=='odbc_mssql' || $CI->db->dbdriver=='odbtp' || $CI->db->dbdriver=='mssql_n' || $CI->db->dbdriver=='mssqlnative') {
-                        mssql_drop_primary_index('survey_'.$postsid);                        
+                        mssql_drop_primary_index('survey_'.$postsid);
                         mssql_drop_constraint('id','survey_'.$postsid);
-                        $autonumberquery = "alter table ".$CI->db->dbprefix."survey_{$postsid} drop column id "; 
-                        db_execute_assoc($autonumberquery);  
-                        $autonumberquery = "alter table ".$CI->db->dbprefix."survey_{$postsid} add [id] int identity({$row['autonumber_start']},1)"; 
-                        db_execute_assoc($autonumberquery);  
+                        $autonumberquery = "alter table ".$CI->db->dbprefix."survey_{$postsid} drop column id ";
+                        db_execute_assoc($autonumberquery);
+                        $autonumberquery = "alter table ".$CI->db->dbprefix."survey_{$postsid} add [id] int identity({$row['autonumber_start']},1)";
+                        db_execute_assoc($autonumberquery);
                     }
                     else
                     {
                         $autonumberquery = "ALTER TABLE ".$CI->db->dbprefix."survey_{$postsid} AUTO_INCREMENT = ".$row['autonumber_start'];
-                        $result = @db_execute_assoc($autonumberquery);  
-                         
+                        $result = @db_execute_assoc($autonumberquery);
+
                     }
                 }
             }
-            
+
             if (isset($savetimings) && $savetimings=="TRUE")
             {
                 foreach ($fieldstiming as $field)
@@ -503,7 +503,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 //$dict->ExecuteSQLArray($sqlarraytimings,1);    // create a timings table for this survey
             }
         }
-        
+
         $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n";
         $activateoutput .= "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n";
         $activateoutput .= "<div class='successheader'>".$clang->gT("Survey has been activated. Results table has been successfully created.")."</div><br /><br />\n";
@@ -511,12 +511,22 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
         // create the survey directory where the uploaded files can be saved
         if ($createsurveydirectory)
             if (!file_exists($CI->config->item('rootdir')."upload/surveys/" . $postsid . "/files") && !(mkdir($CI->config->item('rootdir')."upload/surveys/" . $postsid . "/files", 0777, true)))
+            if (!file_exists($CI->config->item('uploaddir')."/surveys/" . $postsid . "/files"))
+            {
+               if (!(mkdir($CI->config->item('uploaddir')."/surveys/" . $postsid . "/files", 0777, true)))
+               {
+
                 $activateoutput .= "<div class='warningheader'>".
                     $clang->gT("The required directory for saving the uploaded files couldn't be created. Please check file premissions on the ".$CI->config->item('rootdir')."upload/surveys directory.") . "</div>";
-        
+               }
+               else
+               {
+                   file_put_contents($CI->config->item('uploaddir')."/surveys/" . $postsid . "/files/index.html",'<html><head></head><body></body></html>');
+               }
+            }
         $acquery = "UPDATE ".$CI->db->dbprefix."surveys SET active='Y' WHERE sid=".$surveyid;
         $acresult = db_execute_assoc($acquery);
-        
+
         if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         {
             $activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
@@ -525,7 +535,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
         else
         {
             $link = site_url("admin/survey/view/".$postsid);
-            
+
             $activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
             $activateoutput .= "<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n";
             $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post("$scriptname?action=tokens&amp;sid={$postsid}&amp;createtable=Y")."\" />\n";
@@ -555,7 +565,7 @@ function mssql_drop_constraint($fieldname, $tablename)
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
-    
+
     // find out the name of the default constraint
     // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
     $dfquery ="SELECT c_obj.name AS constraint_name
@@ -579,7 +589,7 @@ function mssql_drop_primary_index($tablename)
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
-     
+
     // find out the constraint name of the old primary key
     $pkquery = "SELECT CONSTRAINT_NAME "
               ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "

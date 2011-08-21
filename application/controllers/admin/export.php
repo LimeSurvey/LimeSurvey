@@ -918,19 +918,26 @@ class export extends Survey_Common_Controller {
 		    {
 		        foreach ($fieldnames as $field)
 		        {
-		            $value=trim($row[$field]);
-		            // sunscreen for the value. necessary for the beach.
-		            // careful about the order of these arrays:
-		            // lbrace has to be substituted *first*
-		            $value=str_replace(array("{",
-					"\n",
-					"\r",
-					"\t"),
-		            array("{lbrace}",
-					"{newline}",
-					"{cr}",
-					"{tab}"),
-		            $value);
+                    if (is_null($row[$field]))
+                    {
+                        $value='{question_not_shown}';
+                    }
+                    else
+                    {
+		                $value=trim($row[$field]);
+		                // sunscreen for the value. necessary for the beach.
+		                // careful about the order of these arrays:
+		                // lbrace has to be substituted *first*
+		                $value=str_replace(array("{",
+					    "\n",
+					    "\r",
+					    "\t"),
+		                array("{lbrace}",
+					    "{newline}",
+					    "{cr}",
+					    "{tab}"),
+		                $value);
+                    }
 		            // one last tweak: excel likes to quote values when it
 		            // exports as tab-delimited (esp if value contains a comma,
 		            // oddly enough).  So we're going to encode a leading quote,
@@ -1055,7 +1062,7 @@ class export extends Survey_Common_Controller {
 		}
 		if ($action == "exportlabelresources") {
 			$lid = $id;
-		    $resourcesdir=$this->config->item("uploaddir")."/upload/labels/$lid/";
+		    $resourcesdir=$this->config->item("uploaddir")."/labels/$lid/";
 		    $zipfile=$this->config->item("tempdir")."/resources-labelset-$lid.zip";
 		    $z -> Zip($resourcesdir, $zipfile);
 		    if (is_file($zipfile)) {

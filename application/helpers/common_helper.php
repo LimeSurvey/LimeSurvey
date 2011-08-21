@@ -4742,7 +4742,7 @@ function questionAttributes($returnByName=false)
 	"caption"=>$clang->gT("Text inputs"));
 
     $qattributes["other_comment_mandatory"]=array(
-    "types"=>"MPLW!Z",
+    "types"=>"PLW!Z",
     'category'=>$clang->gT('Logic'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -5265,8 +5265,8 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
     {
         $str=strip_tags($str);
     }
-    return str_replace(array('\'','"', "\n"),
-    array("\\'",'\u0022', "\\n"),
+    return str_replace(array('\'','"', "\n", "\r"),
+    array("\\'",'\u0022', "\\n",'\r'),
     $str);
 }
 
@@ -7644,13 +7644,13 @@ function checkquestionfordisplay($qid, $gid=null)
                     }
                     if (eval('if (trim($cfieldname)'. $matchOperator.' trim($cvalue)) return true; else return false;'))
                     {
-                        error_log("TIBO1 oper=$matchOperator");
+                      //  error_log("TIBO1 oper=$matchOperator");
                         $conditionMatches=true;
                         //This condition is met
                     }
                     else
                     {
-                        error_log("TIBO2 oper=$matchOperator");
+                     //   error_log("TIBO2 oper=$matchOperator");
                         $conditionMatches=false;
                     }
                 }

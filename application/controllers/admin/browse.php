@@ -357,7 +357,7 @@ class browse extends Survey_Common_Controller {
 		                    $phparray = json_decode($json[$fieldname]);
 		                    foreach($phparray as $metadata)
 		                    {
-		                        $path = dirname(getcwd())."/upload/surveys/".$surveyid."/files/";
+		                        $path = $CI->config->item('uploaddir')."/surveys/".$surveyid."/files/";
 		                        unlink($path.$metadata->filename); // delete the file
 		                    }
 		                }
@@ -431,7 +431,7 @@ class browse extends Survey_Common_Controller {
 		                }
 		            }
 		            // Now, zip all the files in the filelist
-		            $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
+		            $tmpdir = $CI->config->item('uploaddir')."/surveys/" . $surveyid . "/files/";
 
 		            $zip = new ZipArchive();
 		            $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
@@ -508,7 +508,7 @@ class browse extends Survey_Common_Controller {
 		        }
 
 		        // Now, zip all the files in the filelist
-		        $tmpdir = getcwd()."/../upload/surveys/" . $surveyid . "/files/";
+		        $tmpdir = $CI->config->item('uploaddir')."/surveys/" . $surveyid . "/files/";
 
 		        $zip = new ZipArchive();
 		        $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
@@ -555,8 +555,7 @@ class browse extends Survey_Common_Controller {
 		        {
 		            if ($phparray[$i]->name == $downloadindividualfile)
 		            {
-		                $dir = dirname(getcwd());
-		                $file = $dir."/upload/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
+		                $file = $CI->config->item('uploaddir')."/surveys/" . $surveyid . "/files/" . $phparray[$i]->filename;
 
 		                if (file_exists($file)) {
 		                    header('Content-Description: File Transfer');
@@ -904,7 +903,7 @@ class browse extends Survey_Common_Controller {
 		    if (!isset($start) || $start =='') {$start = 0;}
 
 		    //LETS COUNT THE DATA
-		    $dtquery = "SELECT count(*) FROM {$surveytimingstable} INNER JOIN {$surveytable} ON {$surveytimingstable}.id={$surveytable}.id WHERE submitdate IS NOT NULL ";
+		    $dtquery = "SELECT count(tid) FROM {$surveytimingstable} INNER JOIN {$surveytable} ON {$surveytimingstable}.id={$surveytable}.id WHERE submitdate IS NOT NULL ";
 
 		    $dtresult=db_execute_assoc($dtquery) or safe_die("Couldn't get response data<br />$dtquery<br />".$connect->ErrorMsg());
 		    $dtrow=$dtresult->row_array();
@@ -913,7 +912,7 @@ class browse extends Survey_Common_Controller {
 		    if ($limit > $dtcount) {$limit=$dtcount;}
 
 		    //NOW LETS SHOW THE DATA
-		    $dtquery = "SELECT * FROM $surveytimingstable INNER JOIN {$surveytable} ON {$surveytimingstable}.id={$surveytable}.id WHERE submitdate IS NOT NULL ORDER BY $surveytable.id";
+		    $dtquery = "SELECT t.* FROM {$surveytimingstable} t INNER JOIN {$surveytable} ON t.id={$surveytable}.id WHERE submitdate IS NOT NULL ORDER BY {$surveytable}.id";
 
 		    if ($order == "desc") {$dtquery .= " DESC";}
 
