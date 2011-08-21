@@ -1489,16 +1489,16 @@ class ExcelWriter extends Writer
     public function __construct($filename = null)
     {
     	$CI=& get_instance();
-    	$CI->load->library('admin/phpexcel/phpexcel');
+    	$CI->load->library('admin/pear/Spreadsheet/Excel/Writer');
         if (!empty($filename))
         {
-            $this->workbook = $CI->phpexcel;
+            $this->workbook = $CI->Writer;
             $this->outputToFile = true;
             $this->fileName = $filename;
         }
         else
         {
-            $this->workbook = $CI->phpexcel;
+            $this->workbook = $CI->Writer;
             $this->outputToFile = false;
         }
 
@@ -1509,11 +1509,16 @@ class ExcelWriter extends Writer
 
     protected function init(Survey $survey, $languageCode, FormattingOptions $options)
     {
-        header("Content-Disposition: attachment; filename=results-survey".$survey->id.".xls");
-        header("Content-type: application/vnd.ms-excel");
+        $this->$workbook->send('results-survey'.$survey->id.'.xls');
         $worksheetName = $survey->languageSettings[0]['surveyls_title'];
-        $sheet = $this->workbook->getActiveSheet();
-        $sheet->setTitle(substr($worksheetName, 0, 31));
+        $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
+
+        $this->workbook->setVersion(8);
+        if (!empty($tempdir)) {
+            $this->$workbook->setTempDir($tempdir);
+        }
+        $sheet =$this->workbook->addWorksheet($worksheetName); // do not translate/change this - the library does not support any special chars in sheet name
+        $sheet->setInputEncoding('utf-8');
         $this->currentSheet = $sheet;
     }
 
@@ -1524,8 +1529,7 @@ class ExcelWriter extends Writer
             $columnCounter = 0;
             foreach ($headers as $header)
             {
-                $this->currentSheet->setCellValueByColumnAndRow($columnCounter, $this->rowCounter,
-                  str_replace('?', '-', $this->excelEscape($header)));
+                $this->currentSheet->write($this->rowCounter,$columnCounter,str_replace('?', '-', $this->excelEscape($header)));
                 $columnCounter++;
             }
             $this->hasOutputHeader = true;
@@ -1534,8 +1538,7 @@ class ExcelWriter extends Writer
         $columnCounter = 0;
         foreach ($values as $value)
         {
-            $this->currentSheet->setCellValueByColumnAndRow($columnCounter, $this->rowCounter,
-              $this->excelEscape($value));
+            $this->currentSheet->write($this->rowCounter, $columnCounter, $this->excelEscape($value));
             $columnCounter++;
         }
         $this->rowCounter++;
@@ -1552,21 +1555,7 @@ class ExcelWriter extends Writer
 
     public function close()
     {
-        $objWriter = new PHPExcel_Writer_Excel5($this->workbook);
-        if ($this->outputToFile)
-        {
-            $sFileName = $this->fileName;
-            $objWriter->save($sFileName);
-        }
-        else
-        {
-            //FIXME For some reason we're not getting the values from the LIme Survey config files
-            $CI=& get_instance();
-            $sFileName = $CI->config->item("tempdir").DIRECTORY_SEPARATOR.'xls_'.rand();
-            $objWriter->save($sFileName);
-            readfile($sFileName);
-            unlink($sFileName);
-        }
+        $this->workbook->close();
         return $this->workbook;
     }
 }
