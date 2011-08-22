@@ -62,6 +62,9 @@ $route['admin/question/editquestion/(:num)/(:num)/(:num)'] = "admin/question/ind
 $route['admin/labels/newlabel'] = "admin/labels/index/newlabelset";
 $route['admin/labels/editlabel/(:num)'] = "admin/labels/index/editlabelset/$1";
 
+//optout
+$route['optout/(:num)/(:any)/(:any)'] = "optout/index/$1/$2/$3";
+
 //templates
 //$route['admin/templates/screenredirect/(:any)/(:any)/(:any)'] = "admin/templates/index/$1/$3/$2";
 //$route['admin/templates/fileredirect/(:any)/(:any)/(:any)'] = "admin/templates/index/$1/$2/$3";

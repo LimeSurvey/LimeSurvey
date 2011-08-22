@@ -13,14 +13,33 @@
  *
  */
  
+/**
+ * surveypermission
+ * 
+ * @package LimeSurvey_CI
+ * @copyright 2011
+ * @version $Id$
+ * @access public
+ */
 class surveypermission extends Survey_Common_Controller {
 
     
+    /**
+     * surveypermission::__construct()
+     * Constructor
+     * @return
+     */
     function __construct()
 	{
 		parent::__construct();
 	}
     
+    /**
+     * surveypermission::view()
+     * Load survey security screen.
+     * @param mixed $surveyid
+     * @return
+     */
     function view($surveyid)
     {
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
@@ -207,6 +226,12 @@ class surveypermission extends Survey_Common_Controller {
         
     }
     
+    /**
+     * surveypermission::addusergroup()
+     * Function responsible to add usergroup.
+     * @param mixed $surveyid
+     * @return
+     */
     function addusergroup($surveyid)
     {
         $action = $this->input->post('action');
@@ -294,6 +319,12 @@ class surveypermission extends Survey_Common_Controller {
     }
     
     
+    /**
+     * surveypermission::adduser()
+     * Function responsible to add user.
+     * @param mixed $surveyid
+     * @return
+     */
     function adduser($surveyid)
     {
         
@@ -370,6 +401,12 @@ class surveypermission extends Survey_Common_Controller {
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
+    /**
+     * surveypermission::set()
+     * Function responsible to set permissions to a user/usergroup.
+     * @param mixed $surveyid
+     * @return
+     */
     function set($surveyid)
     {
         $action = $this->input->post('action');
@@ -495,6 +532,12 @@ class surveypermission extends Survey_Common_Controller {
         
     }
     
+    /**
+     * surveypermission::delete()
+     * Function responsible to delete a user/usergroup.
+     * @param mixed $surveyid
+     * @return
+     */
     function delete($surveyid)
     {
         $action = $this->input->post('action');
@@ -554,6 +597,12 @@ class surveypermission extends Survey_Common_Controller {
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     
+    /**
+     * surveypermission::surveyright()
+     * Function responsible to process setting of permission of a user/usergroup.
+     * @param mixed $surveyid
+     * @return
+     */
     function surveyright($surveyid)
     {
         $action = $this->input->post('action');

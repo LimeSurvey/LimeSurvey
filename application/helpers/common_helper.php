@@ -2996,7 +2996,7 @@ function arraySearchByKey($needle, $haystack, $keyname, $maxanswers="") {
  * @param mixed $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
  * @return string  Text with replaced strings
  */
-function templatereplace($line, $replacements=array(),$redata)
+function templatereplace($line, $replacements=array(),$redata=array())
 {
     /**
     global $surveylist, $sitename, $clienttoken, $rooturl;
@@ -3733,7 +3733,7 @@ function templatereplace($line, $replacements=array(),$redata)
 
     if (strpos($line, "{REGISTERFORM}") !== false)
     {
-        $registerform="<form method='post' action='".$CI->config->item('publicurl')."/register.php'>\n";
+        $registerform="<form method='post' action='".site_url('register')."'>\n";
         if (!isset($_REQUEST['lang']))
         {
             $reglang = GetBaseLanguageFromSurveyID($surveyid);
