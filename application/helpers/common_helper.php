@@ -7790,6 +7790,32 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
         } // Enf if modified
     } // end while qentry
 
+    # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
+    $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from ".$CI->db->dbprefix."quota_languagesettings qls,".$CI->db->dbprefix."quota q WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{INSERTANS:".$oldsid."X%' OR quotals_url LIKE '%{INSERTANS:".$oldsid."X%')";
+    $res = db_execute_assoc($sql) or safe_die("Can't read quota table in transInsertAns ".$connect->ErrorMsg());     // Checked
+
+    foreach ($result->result_array() as $qentry)
+    {
+        $urldescription = $qentry['quotals_urldescrip'];
+        $endurl  = $qentry['quotals_url'];
+
+        foreach ($fieldnames as $sOldFieldname=>$sNewFieldname)
+        {
+            $pattern = "{INSERTANS:".$sOldFieldname."}";
+            $replacement = "{INSERTANS:".$sNewFieldname."}";
+            $urldescription=preg_replace('/'.$pattern.'/', $replacement, $urldescription);
+            $endurl=preg_replace('/'.$pattern.'/', $replacement, $endurl);
+        }
+
+        if (strcmp($urldescription,$qentry['quotals_urldescrip']) !=0  || (strcmp($endurl,$qentry['quotals_url']) !=0))
+        {
+            // Update Field
+            $sqlupdate = "UPDATE {$CI->db->dbprefix}quota_languagesettings SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE id={$qentry['quotals_id']}";
+            $updateres=db_execute_assoc($sqlupdate) or safe_die ("Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
+        } // Enf if modified
+    } // end while qentry
+
+
     $CI->load->model('groups_model');
 
     # translate 'description' INSERTANS tags in groups

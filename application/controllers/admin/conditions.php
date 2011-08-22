@@ -1882,7 +1882,6 @@ class conditions extends Survey_Common_Controller {
 
 		    self::_js_admin_includes($this->config->item("adminscripts").'conditions.js');
 		    self::_js_admin_includes($this->config->item("generalscripts").'jquery/lime-conditions-tabs.js');
-		    self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery-ui.js');
 
 		    if ($subaction == "editthiscondition" && isset($p_cid))
 		    {

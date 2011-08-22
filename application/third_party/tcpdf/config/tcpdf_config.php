@@ -94,7 +94,8 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	/**
 	 *images directory
 	 */
-	define ('K_PATH_IMAGES', K_PATH_MAIN.'images/');
+    $CI =& get_instance();
+    define ('K_PATH_IMAGES', $CI->config->item("imagedir").DIRECTORY_SEPARATOR);
 
 	/**
 	 * blank image

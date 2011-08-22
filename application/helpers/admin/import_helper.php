@@ -3456,6 +3456,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $newsid=GetNewSurveyID($oldsid);
         }
 
+        if ($dbversion<=143)
+        {
+            $insertdata['anonymized']=$insertdata['private'];
+            unset($insertdata['private']);
+            unset($insertdata['notification']);
+        }
         //Now insert the new SID and change some values
         $insertdata['sid']=$newsid;
         //Make sure it is not set active

@@ -12,6 +12,7 @@ CKEDITOR.editorConfig = function( config )
     config.skin = 'office2003';
     config.toolbarCanCollapse = false;
     config.resize_enabled = false;
+    config.autoParagraph = false;
 
     config.toolbar_popup =
     [

@@ -402,7 +402,7 @@ class browse extends Survey_Common_Controller {
 		        $downloadindividualfile = $_POST['downloadindividualfile'];
 		        $fieldname = $_POST['fieldname'];
 
-		        $query = "SELECT $fieldname FROM $surveytable WHERE id={$id}";
+		        $query = "SELECT ".db_quote_id($fieldname)." FROM {$surveytable} WHERE id={$id}";
 		        $result=db_execute_assoc($query);
 		        $row=$result->row_array();
 		        $phparray = json_decode(reset($row));
