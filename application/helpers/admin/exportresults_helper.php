@@ -1489,16 +1489,16 @@ class ExcelWriter extends Writer
     public function __construct($filename = null)
     {
     	$CI=& get_instance();
-    	$CI->load->library('admin/pear/Spreadsheet/Excel/Writer');
+    	$CI->load->library('admin/pear/Spreadsheet/Excel/Xlswriter');
         if (!empty($filename))
         {
-            $this->workbook = $CI->Writer;
+            $this->workbook = $CI->xlswriter;
             $this->outputToFile = true;
             $this->fileName = $filename;
         }
         else
         {
-            $this->workbook = $CI->Writer;
+            $this->workbook = $CI->xlswriter;
             $this->outputToFile = false;
         }
 
@@ -1509,7 +1509,7 @@ class ExcelWriter extends Writer
 
     protected function init(Survey $survey, $languageCode, FormattingOptions $options)
     {
-        $this->$workbook->send('results-survey'.$survey->id.'.xls');
+        $this->workbook->send('results-survey'.$survey->id.'.xls');
         $worksheetName = $survey->languageSettings[0]['surveyls_title'];
         $worksheetName=substr(str_replace(array('*', ':', '/', '\\', '?', '[', ']'),array(' '),$worksheetName),0,31); // Remove invalid characters
 

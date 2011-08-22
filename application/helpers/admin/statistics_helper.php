@@ -280,7 +280,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         /**
          * Initiate the Spreadsheet_Excel_Writer
          */
-        $CI->load->library('admin/pear/Spreadsheet/Excel/Writer');
+        $CI->load->library('admin/pear/Spreadsheet/Excel/Xlswriter');
         if($pdfOutput=='F')
         $workbook = new Spreadsheet_Excel_Writer($tempdir.'/statistic-survey'.$surveyid.'.xls');
         else

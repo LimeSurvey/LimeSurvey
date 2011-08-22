@@ -33,8 +33,8 @@
  */
 
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Parser.php';
-require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/BIFFwriter.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Parser.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'BIFFwriter.php';
 
 /**
  * Class for generating Excel Spreadsheets

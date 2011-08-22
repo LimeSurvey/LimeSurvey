@@ -20,8 +20,8 @@
 // $Id: PPS.php,v 1.5 2003/12/14 18:12:28 xnoguer Exp $
 
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-require_once($homedir.'/classes/pear/PEAR.php');
-require_once($homedir.'/classes/pear/OLE/OLE.php');
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'PEAR.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'OLE.php';
 
 /**
  * Class for creating PPS's for OLE containers

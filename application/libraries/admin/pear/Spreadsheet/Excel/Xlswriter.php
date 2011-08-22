@@ -31,9 +31,9 @@
  *    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-require_once $homedir.'/classes/pear/PEAR.php';
-require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Workbook.php';
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'PEAR.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'Spreadsheet'.DIRECTORY_SEPARATOR.'Excel'.DIRECTORY_SEPARATOR.'Writer'.DIRECTORY_SEPARATOR.'Workbook.php';
 
 /**
  * Class for writing Excel Spreadsheets. This class should change COMPLETELY.
@@ -43,7 +43,7 @@ require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Workbook.php';
  * @package  Spreadsheet_Excel_Writer
  */
 
-class Spreadsheet_Excel_Writer extends Spreadsheet_Excel_Writer_Workbook
+class Xlswriter extends Spreadsheet_Excel_Writer_Workbook
 {
     /**
      * The constructor. It just creates a Workbook
@@ -51,7 +51,7 @@ class Spreadsheet_Excel_Writer extends Spreadsheet_Excel_Writer_Workbook
      * @param string $filename The optional filename for the Workbook.
      * @return Spreadsheet_Excel_Writer_Workbook The Workbook created
      */
-    function Spreadsheet_Excel_Writer($filename = '')
+    function Xlswriter($filename = '')
     {
         $this->_filename = $filename;
         $this->Spreadsheet_Excel_Writer_Workbook($filename);

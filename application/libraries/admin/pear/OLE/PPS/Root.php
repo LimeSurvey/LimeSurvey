@@ -20,7 +20,8 @@
 // $Id: Root.php,v 1.7 2003/12/12 21:10:10 xnoguer Exp $
 
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-require_once ($homedir.'/classes/pear/OLE/PPS.php');
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'PPS.php';
+
 
 /**
  * Class for creating Root PPS's for OLE containers
@@ -175,7 +176,7 @@ class OLE_PPS_Root extends OLE_PPS
         $iCnt = count($raList);
         $iBdCnt = $this->_BIG_BLOCK_SIZE / OLE_PPS_SIZE;
         $iPPScnt = (floor($iCnt/$iBdCnt) + (($iCnt % $iBdCnt)? 1: 0));
-         
+
         return array($iSBDcnt, $iBBcnt, $iPPScnt);
     }
 
@@ -287,7 +288,7 @@ class OLE_PPS_Root extends OLE_PPS
     function _saveBigData($iStBlk, &$raList)
     {
         $FILE = $this->_FILEH_;
-         
+
         // cycle through PPS's
         for ($i = 0; $i < count($raList); $i++)
         {
@@ -346,7 +347,7 @@ class OLE_PPS_Root extends OLE_PPS
         $sRes = '';
         $FILE = $this->_FILEH_;
         $iSmBlk = 0;
-         
+
         for ($i = 0; $i < count($raList); $i++)
         {
             // Make SBD, small data string

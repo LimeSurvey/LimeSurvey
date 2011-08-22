@@ -33,12 +33,13 @@
  */
 
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Format.php';
-require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/BIFFwriter.php';
-require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Worksheet.php';
-require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Parser.php';
-require_once $homedir.'/classes/pear/OLE/PPS/Root.php';
-require_once $homedir.'/classes/pear/OLE/PPS/File.php';
+
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Format.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'BIFFwriter.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Worksheet.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Parser.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'OLE'.DIRECTORY_SEPARATOR.'PPS'.DIRECTORY_SEPARATOR.'Root.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'OLE'.DIRECTORY_SEPARATOR.'PPS'.DIRECTORY_SEPARATOR.'File.php';
 
 /**
  * Class for generating Excel Spreadsheets
