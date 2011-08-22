@@ -448,7 +448,20 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
                     }
                }
             });
-                if(rows == "")
+                if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))!='getParticipants_json')
+                {
+                    $('#selectableadd').selectable("enable");
+                    $('#all').show();
+                    if(rows == "")
+                    {
+                        $('#selected').hide();
+                    }
+                    else
+                    {
+                        $('#selected').show();
+                    }
+                }
+                else if(rows == "")
                 {
                     $('#selected').hide();
                     if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))=='getParticipants_json')
@@ -459,24 +472,23 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
                     }   
                                         
                 }
-                if(rows != "")
+                else if(rows != "")
                 {
+                    $('#selectableadd').selectable("enable");
                     if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))=='getParticipants_json')
                     {
+                            $('#selected').show();
                             $('#all').hide();
-                            $('#allingrid').css('margin-left','130px');
+                            
                     }
-                    
-                }
-                if(rows != "")
-                {
                     if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))!='getParticipants_json')
                     {
+                            $('#all').show();
                             $('#selected').show();
-                            $('#allingrid').css('margin-left','130px');
+                            
                     }
-                    
                 }
+                
                 var dialog_buttons={};
                 dialog_buttons[mapButton]=function(){
                     
@@ -528,13 +540,17 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
                        }
                   
                 }
-                //
+                
                };
                      
-               dialog_buttons[cancelBtn]=function(){    $(this).dialog("close");};
+               dialog_buttons[cancelBtn]=function(){    $(this).dialog("close");
+                   
+                   
+                   
+                };
                     /* End of building array containing button functions */
                     $("#addsurvey").dialog({
-                        height: 320,
+                        height: 350,
                         width: 450,
                         title : addsurvey,
             		modal: true,

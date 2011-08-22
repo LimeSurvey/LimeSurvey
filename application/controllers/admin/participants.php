@@ -58,13 +58,21 @@ function displayParticipants()
     $clang = $this->limesurvey_lang;
     $this->load->model('users_model');
     $this->load->model('participant_attribute_model');
-    $this->load->model('tobemergedlater_model');
+    $this->load->model('surveys_model');
     $this->load->model('participants_model');
     $getNames=$this->users_model->getSomeRecords(array('uid','full_name'));
     $attributes = $this->participant_attribute_model->getVisibleAttributes();
     $allattributes = $this->participant_attribute_model->getAllAttributes();
     $attributeValues =$this->participant_attribute_model->getAllAttributesValues();
-    $surveynames = $this->tobemergedlater_model->getSurveyNames();
+    if($this->session->userdata('USER_RIGHT_SUPERADMIN'))
+    {
+     $surveynames = $this->surveys_model->getALLSurveyNames();   
+    }
+    else
+    {
+        $surveynames = $this->surveys_model->getSurveyNames();
+    }
+    
     $data = array('names'=> $getNames,
                   'attributes' => $attributes,
                   'allattributes' => $allattributes,
@@ -144,7 +152,6 @@ function getShareInfo_json()
     { 
         $this->load->model('participants_model');
         $this->load->model('users_model');
-        $this->load->model('tobemergedlater_model');
         $records = $this->participants_model->getParticipantSharedAll();
         $data->page = 1;						
         $data->records =count($this->participants_model->getParticipantSharedAll());
@@ -164,7 +171,7 @@ function getShareInfo_json()
     {
         $this->load->model('participants_model');
         $this->load->model('users_model');
-        $this->load->model('tobemergedlater_model');
+        
         $records = $this->participants_model->getParticipantShared($this->session->userdata('loginID'));
         $data->page = 1;
         $data->records =count($this->participants_model->getParticipantShared($this->session->userdata('loginID')));
@@ -1175,7 +1182,7 @@ function editAttributevalue()
     $this->load->model('participant_attribute_model');
     if($this->input->post('oper')=="edit")
     {
-        $attributeid = split("_",$this->input->post('id'));
+        $attributeid = explode("_",$this->input->post('id'));
         if($this->input->post('attap')=="Y")
         {
          

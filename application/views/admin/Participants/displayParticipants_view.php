@@ -247,8 +247,8 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
                 
              ?>
         </p>
-        <p><?php echo $clang->gT("Redirect to token table after copy "); ?></p>
-        <p><?php $data = array(
+        <p><?php echo $clang->gT("Redirect to token table after copy "); ?>
+        <?php $data = array(
             'name'        => 'redirect',
             'id'          => 'redirect',
             'value'       => 'TRUE',
@@ -257,11 +257,11 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
             );
 
         echo form_checkbox($data); ?><input type="hidden" name="redirect" id="redirect" value='TRUE'></p>
-        <ol id='selectableadd' class='selectable' >
-                <li class='ui-widget-content' id='all' name='all'><?php echo $clang->gT("Filtered") ?></li>
-                <li class='ui-widget-content' id='allingrid' name='allingrid'  name='allingrid'><?php echo $clang->gT("All In the Grid") ?></li>
-                <li class='ui-widget-content' id='selected' name='Selected' style='width: 322px;'><?php echo $clang->gT("Manually Selected") ?></li>
-        </ol>
+        <center><ol id='selectableadd' class='selectable' >
+                <li class='ui-widget-content' id='all' name='all'><?php echo $clang->gT("all participants in current search") ?></li>
+                <li class='ui-widget-content' id='allingrid' name='allingrid'  name='allingrid'><?php echo $clang->gT("all participants") ?></li>
+                <li class='ui-widget-content' id='selected' name='selected'><?php echo $clang->gT("only the participants I have selected") ?></li>
+        </ol></center>
             </form>
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">

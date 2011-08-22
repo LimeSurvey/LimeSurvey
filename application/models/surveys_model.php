@@ -49,7 +49,25 @@ class Surveys_model extends CI_Model {
         $this->db->where($condition);
         return $this->db->update('surveys', $data);
     }
-
+    function getSurveyNames()
+    {
+        $this->db->select('surveyls_survey_id,surveyls_title');
+        $this->db->from('surveys_languagesettings');
+        $this->db->join('surveys','surveys_languagesettings.surveyls_survey_id = surveys.sid');           
+        $this->db->where('owner_id',$this->session->userdata('loginID')); 
+        //$this->db->where('usetokens','Y'); // Will be done later
+        $query=$this->db->get();
+        return $query->result_array();
+    }
+    function getALLSurveyNames()
+    {
+        $this->db->select('surveyls_survey_id,surveyls_title');
+        $this->db->from('surveys_languagesettings');
+        $this->db->join('surveys','surveys_languagesettings.surveyls_survey_id = surveys.sid');           
+        //$this->db->where('usetokens','Y'); // Will be done later
+        $query=$this->db->get();
+        return $query->result_array();
+    }
 
 
 }
