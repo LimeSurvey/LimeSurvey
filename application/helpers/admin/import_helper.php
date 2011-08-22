@@ -366,7 +366,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                     }
                 }
             }
-            if (isset($lsmatch) || ($_SESSION['USER_RIGHT_MANAGE_LABEL'] != 1))
+            if (isset($lsmatch) || ($CI->session->userdata('USER_RIGHT_MANAGE_LABEL') != 1))
             {
                 //There is a matching labelset or the user is not allowed to edit labels -
                 // So, we will delete this one and refer to the matched one.
@@ -2738,7 +2738,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
 
     // DO SURVEY_RIGHTS
-    GiveAllSurveyPermissions($_SESSION['loginID'],$newsid);
+    GiveAllSurveyPermissions($CI->session->userdata('loginID'),$newsid);
     $importresults['deniedcountls'] =0;
 
 
@@ -3127,16 +3127,18 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
                 $tablename=$dbprefix.'questions';
                 $query=$connect->GetInsertSQL($tablename,$questionrowdata); */
                 if (isset($questionrowdata['qid'])) db_switchIDInsert('questions',true);
-                $qres= $CI->answers_model->insertRecords($questionrowdata) or show_error("Error: Failed to insert subquestion <br />");
+                $CI->load->model('questions_model');
+                $qres= $CI->questions_model->insertRecords($questionrowdata) or show_error("Error: Failed to insert subquestion <br />");
                 //$qres = $connect->Execute($query) or safe_die ("Error: Failed to insert subquestion <br />{$query}<br />".$connect->ErrorMsg());
                 if (!isset($questionrowdata['qid']))
                 {
-                   $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$connect->Insert_ID("{$dbprefix}questions","qid");
+                   $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}questions","qid");
                 }
                 else
                 {
                     db_switchIDInsert('questions',false);
                 }
+                
                 $results['subquestions']++;
                 // also convert default values subquestions for multiple choice
                 if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='M' || $oldquestion['newtype']=='P'))
@@ -3347,7 +3349,11 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
                 $conditionrowdata["scenario"]=1;
             }
             $oldcqid=$conditionrowdata["cqid"];
-            $oldgid=array_search($connect->GetOne('select gid from '.db_table_name('questions').' where qid='.$aQIDReplacements[$conditionrowdata["cqid"]]),$aGIDReplacements);
+            $query = 'select gid from '.$CI->db->dbprefix.'questions where qid='.$aQIDReplacements[$conditionrowdata["cqid"]];
+            $res=db_execute_assoc($query);
+            $resrow = $res->row_array();
+            
+            $oldgid=array_search($resrow['gid'],$aGIDReplacements);
             $conditionrowdata["qid"]=$aQIDReplacements[$conditionrowdata["qid"]];
             $conditionrowdata["cqid"]=$aQIDReplacements[$conditionrowdata["cqid"]];
             $oldcfieldname=$conditionrowdata["cfieldname"];
@@ -3355,7 +3361,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
             //$tablename=$dbprefix.'conditions';
             $CI->load->model('conditions_model');
-            $conditioninsert = $connect->getInsertSQL($tablename,$conditionrowdata);
+            //$conditioninsert = $connect->getInsertSQL($tablename,$conditionrowdata);
             $result=$CI->conditions_model->insertRecords($conditionrowdata) or show_error("Couldn't insert condition<br />");
 
         }
