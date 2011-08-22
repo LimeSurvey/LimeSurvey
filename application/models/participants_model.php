@@ -31,7 +31,7 @@ function insertParticipant($data)
 function updateRow($data)
 {
     $this->db->where('participant_id',$data['participant_id']);
-	$this->db->update('participants',$data);
+    $this->db->update('participants',$data);
 }
 function deleteParticipantTokenAnswer($rows)
 {

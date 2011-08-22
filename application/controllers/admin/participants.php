@@ -975,7 +975,7 @@ function getAttribute_json()
     foreach($records as $row)
     {
         $data->rows[$i]['id']=$row['participant_id']."_".$row['attribute_id']; 
-        $data->rows[$i]['cell']=array("",$row['participant_id'],$row['attribute_type'],$row['attribute_name'],$row['value'],"Y");
+        $data->rows[$i]['cell']=array("",$row['participant_id'],$row['attribute_type'],$row['attribute_name'],$row['value']);
         if($row['attribute_type']=="DD")
         {
             $attvalues = $this->participant_attribute_model->getAttributesValues($row['attribute_id']);
@@ -1016,7 +1016,7 @@ function getAttribute_json()
         {
             
             $data->rows[$i]['id']=$this->uri->segment(4)."_".$row['attribute_id']; 
-            $data->rows[$i]['cell']=array("",$this->uri->segment(4),$row['attribute_type'],$row['attribute_name'],"","N");
+            $data->rows[$i]['cell']=array("",$this->uri->segment(4),$row['attribute_type'],$row['attribute_name'],"");
             if($row['attribute_type']=="DD")
             {
                 $attvalues = $this->participant_attribute_model->getAttributesValues($row['attribute_id']);
@@ -1182,18 +1182,9 @@ function editAttributevalue()
     $this->load->model('participant_attribute_model');
     if($this->input->post('oper')=="edit")
     {
-        $attributeid = explode("_",$this->input->post('id'));
-        if($this->input->post('attap')=="Y")
-        {
-         
+            $attributeid = explode("_",$this->input->post('id'));
             $data = array('participant_id' => $this->input->post('participant_id'),'attribute_id' => $attributeid[1],'value' => $this->input->post('attvalue'));
             $this->participant_attribute_model->editParticipantAttributeValue($data);
-        }
-        else
-        {
-            $data = array('participant_id' => $this->input->post('participant_id'),'attribute_id' => $attributeid[1],'value' => $this->input->post('attvalue'));
-            $this->participant_attribute_model->saveParticipantAttributeValue($data);
-        }
     }
 }
 function attributeMapCSV()
@@ -1211,7 +1202,7 @@ function attributeMapCSV()
         $this->session->set_userdata('summary',$data);
         self::_getAdminHeader();
         $clang = $this->limesurvey_lang;
-        $data = array('clang'=> $clang);
+        $data = array('clang'=> $clansg);
         $this->load->view('admin/Participants/participantsPanel_view',$data);
         $this->load->view('admin/Participants/uploadSummary_view',$data);
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
@@ -1511,7 +1502,7 @@ function uploadCSV()
         }
        unlink('tmp/uploads/'.basename($the_full_file_path));
        self::_getAdminHeader();
-       $clang = $this->limesurvey_lang;
+       //$clang = $this->limesurvey_lang;
        $this->session->set_userdata('recordcount',$recordcount-1);
        $this->session->set_userdata('duplicatelist',$duplicatelist);
        $this->session->set_userdata('mincriteria',$mincriteria);

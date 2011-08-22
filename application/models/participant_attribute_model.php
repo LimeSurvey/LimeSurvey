@@ -132,11 +132,6 @@ class participant_attribute_model extends CI_Model
     {
         $this->db->update('participant_attribute_values', $data, array('attribute_id' => $data['attribute_id'],'value_id'=>$data['value_id']));
     }
-    //saves the participant attribute value
-    function saveParticipantAttributeValue($data)
-    {
-       $query = $this->db->insert('participant_attribute',$data);
-    }
     function saveAttributeVisible($attid,$visiblecondition)
     {
     
@@ -151,9 +146,20 @@ class participant_attribute_model extends CI_Model
     }
     function editParticipantAttributeValue($data)
     {
-   	$this->db->where('participant_id', $data['participant_id']);
+        $this->db->where('participant_id', $data['participant_id']);
         $this->db->where('attribute_id', $data['attribute_id']);
-        $this->db->update('participant_attribute',$data); 
+        $query = $this->db->get('participant_attribute');
+        if($query->num_rows() == 0)
+        {
+            $this->db->insert('participant_attribute',$data); 
+        }
+        else
+        {
+            $this->db->where('participant_id', $data['participant_id']);
+            $this->db->where('attribute_id', $data['attribute_id']);
+            $this->db->update('participant_attribute',$data); 
+          }
+   	
     }
     function saveAttribute($data)
     {

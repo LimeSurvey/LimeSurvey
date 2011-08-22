@@ -157,15 +157,13 @@ ondblClickRow: function(id)
                 caption: "Participant's Attribute Information",
                 editable:true,
                 loadonce : true,
-                colNames: ['Actions','Participant ID','Attribute Type','Attribute Name','Attribute Value', 'Attribute Active for participant','Attribute Possible Values'],
+                colNames: ['Actions','Participant ID','Attribute Type','Attribute Name','Attribute Value','Attribute Possible Values'],
                 colModel: [ {name:'act',index:'act',width:55,align:'center',sortable:false,formatter:'actions',formatoptions : {keys:true,onEdit:function(id){ }}},
                             {name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
                             {name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
                             {name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
                             {name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
-                            {name:'attap',index:'attap', width:150, sorttype:"string",align:"center",hidden:true,editable:true},//attribute active for participan
                             {name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:true,hidden:true}],
-                          
                 rowNum:20,
                 pager: pager_id, 
                       gridComplete: function () {
