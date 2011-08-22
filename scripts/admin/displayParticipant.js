@@ -279,7 +279,6 @@ $("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Export to CSV
 }});
 
 $("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Full Search", buttonicon:'searchicon', onClickButton:function(){
-        
                 var dialog_buttons={};
                 dialog_buttons[searchBtn]=function(){
                 searchconditions="";
@@ -465,6 +464,15 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
                     if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))=='getParticipants_json')
                     {
                             $('#all').hide();
+                            $('#allingrid').css('margin-left','130px');
+                    }
+                    
+                }
+                if(rows != "")
+                {
+                    if(basename(jQuery('#displayparticipants').jqGrid('getGridParam', 'url'))!='getParticipants_json')
+                    {
+                            $('#selected').show();
                             $('#allingrid').css('margin-left','130px');
                     }
                     
