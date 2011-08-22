@@ -13,13 +13,13 @@ $(document).ready(function()
         hookEvent($(this).attr('id'),'mousewheel',noScroll);
     });
 
-	// Keypad/keyboard
+    // Keypad functions
     var kp = $("input.num-keypad");
     if(kp.length)
-	{
+	{ 
 		kp.keypad({
 			showAnim: 'fadeIn', keypadOnly: false,
-			onKeypress: function(key, value, inst) {
+			onKeypress: function(key, value, inst) { 
 				$(this).trigger('keyup');
 			}
 		});
@@ -40,13 +40,13 @@ $(document).ready(function()
 			    $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
 			    $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
 			    $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
-				onKeypress: function(key, value, inst) {
+				onKeypress: function(key, value, inst) { 
 					$(this).trigger('keyup');
 				}
 			});
     }
 
-	// Maps
+    // Maps
 	$(".location").each(function(index,element){
 		var question = $(element).attr('name');
 		var coordinates = $(element).val();
@@ -77,38 +77,38 @@ $(document).ready(function()
 		marker.setPosition(markerLatLng);
 		currentMap.panTo(markerLatLng);
 	});
+	
+    if ((typeof(autoArray) != "undefined")){
+        if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
+            var aListOfQuestions = autoArray.list;
 
-	if ((typeof(autoArray) != "undefined")){
-		if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
-			var aListOfQuestions = autoArray.list;
+            $(aListOfQuestions).each(function(index,element){
 
-			$(aListOfQuestions).each(function(index,element){
+                var elementInfo = autoArray[element];
+                var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
 
-				var elementInfo = autoArray[element];
-				var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
+                var aJSelectors = strJSelector.split(", ");
+                var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
 
-				var aJSelectors = strJSelector.split(", ");
-				var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
+                $(strJSelector).live('change',function(event){
 
-				$(strJSelector).live('change',function(event){
+                    if ($(strCheckedSelector).length == $(strJSelector).length){
 
-					if ($(strCheckedSelector).length == $(strJSelector).length){
+                        $("#answer"+elementInfo.focus).trigger('click');
 
-						$("#answer"+elementInfo.focus).trigger('click');
+                        eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
 
-						eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
+                        checkconditions($("#answer"+elementInfo.focus).val(),
+                                        $("#answer"+elementInfo.focus).attr("name"),
+                                        $("#answer"+elementInfo.focus).attr('type')
+                                    );
 
-						checkconditions($("#answer"+elementInfo.focus).val(),
-										$("#answer"+elementInfo.focus).attr("name"),
-										$("#answer"+elementInfo.focus).attr('type')
-									);
+                    }
+                });
 
-					}
-				});
-
-			});
-		}
-	}
+            });
+        }
+    }
 });
 
 gmaps = new Object;
@@ -138,19 +138,19 @@ function OSMapInitialize(question,lat,lng){
 
 // Initialize map
 function GMapsInitialize(question,lat,lng) {
-
+	
 	var name = question.substr(0,question.length - 2);
 	var latlng = new google.maps.LatLng(lat, lng);
-
+	
 	var mapOptions = {
 		zoom: zoom[name],
 		center: latlng,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
-
+	
 	var map = new google.maps.Map(document.getElementById("gmap_canvas_" + question), mapOptions);
 	gmaps[''+question] = map;
-
+    
 	var marker = new google.maps.Marker({
 		position: latlng,
 		draggable:true,
@@ -158,14 +158,14 @@ function GMapsInitialize(question,lat,lng) {
 		id: 'marker__'+question
 	});
 	gmaps['marker__'+question] = marker;
-
+	
 	google.maps.event.addListener(map, 'rightclick', function(event) {
 		marker.setPosition(event.latLng);
 		map.panTo(event.latLng);
 		geocodeAddress(name, event.latLng);
 		$("#answer"+question).val(Math.round(event.latLng.lat()*10000)/10000 + " " + Math.round(event.latLng.lng()*10000)/10000);
 	});
-
+	
 	google.maps.event.addListener(marker, 'dragend', function(event) {
 		//map.panTo(event.latLng);
 		geocodeAddress(name, event.latLng);
@@ -190,12 +190,12 @@ function resetMap(qID) {
 // Reverse geocoder
 function geocodeAddress(name, pos) {
 	var geocoder = new google.maps.Geocoder();
-
+	
 	var city  = '';
 	var state = '';
 	var country = '';
 	var postal = '';
-
+	
 	geocoder.geocode({
 		latLng: pos
 	}, function(results, status) {
@@ -214,7 +214,7 @@ function geocodeAddress(name, pos) {
 					postal = val.short_name;
 				}
 			});
-
+			
 			var location = (results[0].geometry.location);
 		}
 		getInfoToStore(name, pos.lat(), pos.lng(), city, state, country, postal);
@@ -223,7 +223,7 @@ function geocodeAddress(name, pos) {
 
 // Store address info
 function getInfoToStore(name, lat, lng, city, state, country, postal){
-
+    
 	var boycott = $("#boycott_"+name).val();
     // 2 - city; 3 - state; 4 - country; 5 - postal
     if (boycott.indexOf("2")!=-1)
@@ -234,7 +234,7 @@ function getInfoToStore(name, lat, lng, city, state, country, postal){
         country = '';
     if (boycott.indexOf("5")!=-1)
         postal = '';
-
+    
     $("#answer"+name).val(lat + ';' + lng + ';' + city + ';' + state + ';' + country + ';' + postal);
 }
 

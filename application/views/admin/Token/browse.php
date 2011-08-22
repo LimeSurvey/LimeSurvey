@@ -255,7 +255,7 @@
             <img src='<?php echo $imageurl;?>/blank.gif' height='16' width='16' alt='' />
             <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png' title='<?php
             echo $clang->gT("Delete the selected entries");?>' alt='<?php echo $clang->gT("Delete the selected entries");?>' onclick="if($('#tokenboxeschecked').val()){if (confirm('<?php echo $clang->gT("Are you sure you want to delete the selected entries?","js");?>')) {<?php
-            echo get2post(site_url("admin/tokens/delete/$surveyid/")."?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tokenids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}");?>}}else{alert('<?php echo $clang->gT("No tokens selected");?>');}"  />
+            echo get2post(site_url("admin/tokens/delete/$surveyid/")."?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tokenids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}");?>}}else{alert('<?php echo $clang->gT("No tokens selected",'js');?>');}"  />
 
         <?php }
 

@@ -384,161 +384,17 @@ class browse extends Survey_Common_Controller {
 		        // Download all files for all marked responses  - checked
 		        else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] === 'marked')
 		        {
-		            $fieldmap = createFieldMap($surveyid, 'full');
-
-		            $files = array();
-		            $filelist = array();
-		            foreach ($fieldmap as $field)
-		            {
-		                if ($field['type'] == "|" && $field['aid']!=='filecount')
-		                {
-		                    $filequestion[] = $field['fieldname'];
-		                }
-		            }
-
-		            $fields = createFieldMap($surveyid, 'full', false, false, $language);
-		            $initquery = "SELECT ";
-		            $count = 0;
-		            foreach ($filequestion as $question)
-		            {
-		                if ($count == 0)
-		                    $initquery .= " $question ";
-		                else
-		                    $initquery .= ", $question ";
-		                $count++;
-		            }
-
-		            $filecount = 0;
-		            foreach ($_POST['markedresponses'] as $iResponseID)
-		            {
-		                $iResponseID=(int)$iResponseID; // sanitize the value
-
-		                $query = $initquery." FROM $surveytable WHERE id={$iResponseID}";
-		                $filearray = db_execute_assoc($query) or safe_die("Could not download response<br />$query<br />".$connect->ErrorMsg());
-		                $metadata = array();
-		                foreach ($filearray->result_array() as $metadata)
-		                {
-		                    foreach ($metadata as $datai)
-		                    {
-		                        $phparray = json_decode($datai, true);
-		                        for ($i = 0; $i < count($phparray); $i++)
-		                        {
-		                            $filelist[$filecount]['filename'] = $phparray[$i]['filename'];
-		                            $filelist[$filecount]['name'] = rawurldecode($phparray[$i]['name']);
-		                            $filecount++;
-		                        }
-		                    }
-		                }
-		            }
 		            // Now, zip all the files in the filelist
-		            $tmpdir = $CI->config->item('uploaddir')."/surveys/" . $surveyid . "/files/";
-
-		            $zip = new ZipArchive();
-		            $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
-		            if (file_exists($tmpdir."/".$zipfilename))
-		                unlink($tmpdir."/".$zipfilename);
-
-		            if ($zip->open($tmpdir."/".$zipfilename, ZIPARCHIVE::CREATE) !== TRUE)
-		            {
-		                exit("Cannot Open <$zipfilename>\n");
-		            }
-
-		            foreach ($filelist as $file)
-		                $zip->addFile($tmpdir . "/" . $file['filename'], $file['name']);
-
-		            $zip->close();
-
-		            if (file_exists($tmpdir."/".$zipfilename)) {
-		                header('Content-Description: File Transfer');
-		                header('Content-Type: application/octet-stream');
-		                header('Content-Disposition: attachment; filename='.basename($zipfilename));
-		                header('Content-Transfer-Encoding: binary');
-		                header('Expires: 0');
-		                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		                header('Pragma: public');
-		                header('Content-Length: ' . filesize($tmpdir."/".$zipfilename));
-		                ob_clean();
-		                flush();
-		                readfile($tmpdir."/".$zipfilename);
-		                unlink($tmpdir."/".$zipfilename);
-		                exit;
-		            }
+                    $zipfilename = "Responses_for_survey_" . $surveyid . ".zip";
+                    $this->zipFiles($_POST['markedresponses'], $zipfilename);
 		        }
 		    }
 		    // Download all files for this entry - checked
 		    else if (isset($_POST['downloadfile']) && $_POST['downloadfile'] != '' && $_POST['downloadfile'] !== true)
 		    {
-		        $_POST['downloadfile'] = (int) $_POST['downloadfile'];
-		        $fieldmap = createFieldMap($surveyid, 'full');
-
-		        $files = array();
-		        $filelist = array();
-		        foreach ($fieldmap as $field)
-		        {
-		            if ($field['type'] == "|" && $field['aid']!=='filecount')
-		            {
-		                $filequestion[] = $field['fieldname'];
-		            }
-		        }
-		        $query = "SELECT ";
-		        $count = 0;
-		        foreach ($filequestion as $question)
-		        {
-		            if ($count == 0)
-		                $query .= " $question ";
-		            else
-		                $query .= ", $question ";
-		            $count++;
-		        }
-		        $query .= " FROM {$surveytable} WHERE id={$_POST['downloadfile']}";
-		        $filearray = db_execute_assoc($query) or safe_die("Could not download response<br />$query<br />".$connect->ErrorMsg());
-		        foreach ($filearray->result_array() as $metadata)
-		        {
-		            $filecount = 0;
-		            foreach ($metadata as $datai)
-		            {
-		                $phparray = json_decode($datai, true);
-		                for ($i = 0; isset($phparray[$i]); $i++)
-		                {
-		                    $filelist[$filecount]['filename'] = $phparray[$i]['filename'];
-		                    $filelist[$filecount]['name'] = rawurldecode($phparray[$i]['name']);
-		                    $filecount++;
-		                }
-		            }
-		        }
-
 		        // Now, zip all the files in the filelist
-		        $tmpdir = $CI->config->item('uploaddir')."/surveys/" . $surveyid . "/files/";
-
-		        $zip = new ZipArchive();
-		        $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
-		        if (file_exists($tmpdir ."/". $zipfilename))
-		            unlink($tmpdir . "/" . $zipfilename);
-
-		        if ($zip->open($tmpdir . "/" . $zipfilename, ZIPARCHIVE::CREATE) !== TRUE)
-		        {
-		            exit("Cannot Open <$zipfilename>\n");
-		        }
-
-		        foreach ($filelist as $file)
-		            $zip->addFile($tmpdir . "/" . $file['filename'], $file['name']);
-
-		        $zip->close();
-		        if (file_exists($tmpdir."/".$zipfilename)) {
-		            header('Content-Description: File Transfer');
-		            header('Content-Type: application/octet-stream');
-		            header('Content-Disposition: attachment; filename='.basename($zipfilename));
-		            header('Content-Transfer-Encoding: binary');
-		            header('Expires: 0');
-		            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		            header('Pragma: public');
-		            header('Content-Length: ' . filesize($tmpdir."/".$zipfilename));
-		            ob_clean();
-		            flush();
-		            readfile($tmpdir . "/" . $zipfilename);
-		            unlink($tmpdir . "/" . $zipfilename);
-		            exit;
-		        }
+                $zipfilename = "LS_Responses_for_" . $_POST['downloadfile'] . ".zip";
+                $this->zipFiles($_POST['downloadfile'], $zipfilename);
 		    }
 		    else if (isset($_POST['downloadindividualfile']) && $_POST['downloadindividualfile'] != '')
 		    {
@@ -1098,4 +954,88 @@ class browse extends Survey_Common_Controller {
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
 	}
+
+
+    /**
+     * Supply an array with the responseIds and all files will be added to the zip
+     * and it will be be spit out on success
+     *
+     * @param array $responseIds
+     * @return ZipArchive
+     */
+    function zipFiles($responseIds, $zipfilename) {
+        global $surveyid, $surveytable;
+
+        require_once('classes/pclzip/pclzip.lib.php');
+        $tmpdir = $CI->config->item('uploaddir'). "/surveys/" . $surveyid . "/files/";
+
+        $filelist = array();
+        $fieldmap = createFieldMap($surveyid, 'full');
+
+        foreach ($fieldmap as $field)
+        {
+            if ($field['type'] == "|" && $field['aid']!=='filecount')
+            {
+                $filequestion[] = $field['fieldname'];
+            }
+        }
+
+        $initquery = "SELECT " . implode(', ', $filequestion);
+
+        foreach ((array)$responseIds as $responseId)
+        {
+            $responseId=(int)$responseId; // sanitize the value
+
+            $query = $initquery . " FROM $surveytable WHERE id=$responseId";
+            $filearray = db_execute_assoc($query) or safe_die("Could not download response<br />$query<br />".$connect->ErrorMsg());
+            $metadata = array();
+            $filecount = 0;
+            while ($metadata = $filearray->FetchRow())
+            {
+                foreach ($metadata as $data)
+                {
+                    $phparray = json_decode($data, true);
+                    if (is_array($phparray)) {
+                        foreach($phparray as $file) {
+                            $filecount++;
+                            $file['responseid'] = $responseId;
+                            $file['name'] = rawurldecode($file['name']);
+                            $file['index'] = $filecount;
+                            /*
+                             * Now add the file to the archive, prefix files with responseid_index to keep them
+                             * unique. This way we can have 234_1_image1.gif, 234_2_image1.gif as it could be
+                             * files from a different source with the same name.
+                             */
+                            $filelist[] = array(PCLZIP_ATT_FILE_NAME          =>$tmpdir . $file['filename'],
+                                                PCLZIP_ATT_FILE_NEW_FULL_NAME =>sprintf("%05s_%02s_%s", $file['responseid'], $file['index'], $file['name']));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (count($filelist)>0) {
+            $zip = new PclZip($tmpdir . $zipfilename);
+            if ($zip->create($filelist)===0) {
+                //Oops something has gone wrong!
+            }
+
+            if (file_exists($tmpdir."/".$zipfilename)) {
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename='.basename($zipfilename));
+                header('Content-Transfer-Encoding: binary');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+                header('Content-Length: ' . filesize($tmpdir."/".$zipfilename));
+                ob_clean();
+                flush();
+                readfile($tmpdir . "/" . $zipfilename);
+                unlink($tmpdir . "/" . $zipfilename);
+                exit;
+            }
+        }
+    }
+
 }
