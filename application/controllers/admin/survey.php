@@ -1616,34 +1616,6 @@
         global $siteadminname,$siteadminemail;
         $clang = $this->limesurvey_lang;
 
-        /** $editsurvey = "<div id='tabs'><ul>
-        <li><a href='#general'>".$clang->gT("General")."</a></li>
-        <li><a href='#presentation'>".$clang->gT("Presentation & navigation")."</a></li>
-        <li><a href='#publication'>".$clang->gT("Publication & access control")."</a></li>
-        <li><a href='#notification'>".$clang->gT("Notification & data management")."</a></li>
-        <li><a href='#tokens'>".$clang->gT("Tokens")."</a></li>
-        <li><a href='#import'>".$clang->gT("Import")."</a></li>
-        <li><a href='#copy'>".$clang->gT("Copy")."</a></li>
-        </ul>
-        \n";
-        $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='../database/index/insertsurvey' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
-
-        // General & Contact TAB
-        $editsurvey .= "<div id='general'>\n";
-
-        // Survey Language
-        $editsurvey .= "<ul><li><label for='language' title='" . $clang->gT("This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey.") . "'><span class='annotationasterisk'>*</span>" . $clang->gT("Base language:") . "</label>\n"
-                            . "<select id='language' name='language'>\n";
-
-        foreach (getLanguageData () as $langkey2 => $langname) {
-            $editsurvey .= "<option value='" . $langkey2 . "'";
-            if ($this->config->item('defaultlang') == $langkey2) {
-                $editsurvey .= " selected='selected'";
-            }
-            $editsurvey .= ">" . $langname['description'] . "</option>\n";
-        }
-        $editsurvey .= "</select>\n";
-        */
         $condition = array('users_name' => $this->session->userdata('user'));
         $fieldstoselect = array('full_name', 'email');
         $this->load->model('users_model');
@@ -1735,80 +1707,11 @@
     {
         global $siteadminname,$siteadminemail;
         $clang = $this->limesurvey_lang;
-        /**
-        $editsurvey = "<div id='tabs'><ul>
-        <li><a href='#general'>".$clang->gT("General")."</a></li>
-        <li><a href='#presentation'>".$clang->gT("Presentation & navigation")."</a></li>
-        <li><a href='#publication'>".$clang->gT("Publication & access control")."</a></li>
-        <li><a href='#notification'>".$clang->gT("Notification & data management")."</a></li>
-        <li><a href='#tokens'>".$clang->gT("Tokens")."</a></li>
-        <li><a href='#resources'>".$clang->gT("Resources")."</a></li>
-        </ul>
-        \n";
-        $editsurvey .= "<form class='form30' name='addnewsurvey' id='addnewsurvey' action='../database/index/insertsurvey' method='post' onsubmit=\"alert('hi');return isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "');\" >\n";
-
-        // General & Contact TAB
-        $editsurvey .= "<div id='general'>\n";
-
-        // Base language
-        $editsurvey .= "<ul><li><label>" . $clang->gT("Base language:") . "</label>\n"
-        .GetLanguageNameFromCode($esrow['language'])
-        . "</li>\n"
-
-        // Additional languages listbox
-        . "<li><label for='additional_languages'>".$clang->gT("Additional Languages").":</label>\n"
-        . "<table><tr><td align='left'><select style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>";
-        $jsX=0;
-        $jsRemLang ="<script type=\"text/javascript\">
-                    var mylangs = new Array();
-                    standardtemplaterooturl='".$this->config->item('standardtemplaterooturl')."';
-                    templaterooturl='".$this->config->item('usertemplaterooturl')."'; \n";
-
-        foreach (GetAdditionalLanguagesFromSurveyID($surveyid) as $langname) {
-            if ($langname && $langname != $esrow['language']) { // base languag must not be shown here
-            $jsRemLang .="mylangs[$jsX] = \"$langname\"\n";
-            $editsurvey .= "<option id='".$langname."' value='".$langname."'";
-            $editsurvey .= ">".getLanguageNameFromCode($langname,false)."</option>\n";
-            $jsX++;
-            }
-        }
-        $jsRemLang .= "</script>\n";
-        $editsurvey .= $jsRemLang;
-        //  Add/Remove Buttons
-        $editsurvey .= "</select></td>"
-        . "<td align='left'><input type=\"button\" value=\"<< ".$clang->gT("Add")."\" onclick=\"DoAdd()\" id=\"AddBtn\" /><br /> <input type=\"button\" value=\"".$clang->gT("Remove")." >>\" onclick=\"DoRemove(0,'')\" id=\"RemoveBtn\"  /></td>\n"
-
-        // Available languages listbox
-        . "<td align='left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>";
-        $tempLang=GetAdditionalLanguagesFromSurveyID($surveyid);
-        foreach (getLanguageData () as $langkey2 => $langname) {
-            if ($langkey2 != $esrow['language'] && in_array($langkey2, $tempLang) == false) {  // base languag must not be shown here
-                $editsurvey .= "<option id='".$langkey2."' value='".$langkey2."'";
-                $editsurvey .= ">".$langname['description']."</option>\n";
-            }
-        }
-        $editsurvey .= "</select></td>"
-        . " </tr></table></li>\n";
-        // Administrator...
-        $editsurvey .= ""
-        . "<li><label for='admin'>".$clang->gT("Administrator:")."</label>\n"
-        . "<input type='text' size='50' id='admin' name='admin' value=\"{$esrow['admin']}\" /></li>\n"
-        . "<li><label for='adminemail'>".$clang->gT("Admin Email:")."</label>\n"
-        . "<input type='text' size='50' id='adminemail' name='adminemail' value=\"{$esrow['adminemail']}\" /></li>\n"
-        . "<li><label for='bounce_email'>".$clang->gT("Bounce Email:")."</label>\n"
-        . "<input type='text' size='50' id='bounce_email' name='bounce_email' value=\"{$esrow['bounce_email']}\" /></li>\n"
-        . "<li><label for='faxto'>".$clang->gT("Fax to:")."</label>\n"
-        . "<input type='text' size='50' id='faxto' name='faxto' value=\"{$esrow['faxto']}\" /></li></ul>\n";
-
-        // End General TAB
-        $editsurvey .= "</div>\n";
-        */
         $data['action'] = "editsurveysettings";
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
         $data['surveyid'] = $surveyid;
         return $this->load->view('admin/Survey/superview/superGeneralEditSurvey_view',$data, true);
-
     }
 
     /**

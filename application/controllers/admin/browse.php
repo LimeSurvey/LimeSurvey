@@ -374,11 +374,41 @@ class browse extends Survey_Common_Controller {
 		        // Delete the marked responses - checked
 		        if (isset($_POST['deleteanswer']) && $_POST['deleteanswer'] === 'marked')
 		        {
+                    $fieldmap = createFieldMap($surveyid);
+                    $fuqtquestions = array();
+                    // find all fuqt questions
+                    foreach ($fieldmap as $field)
+                    {
+                        if ($field['type'] == "|" && strpos($field['fieldname'], "_filecount") == 0)
+                            $fuqtquestions[] = $field['fieldname'];
+                    }
+
 		            foreach ($_POST['markedresponses'] as $iResponseID)
 		            {
 		                $iResponseID = (int)$iResponseID; // sanitize the value
-		            $query="delete FROM {$surveytable} where id={$iResponseID}";
-		            db_execute_assoc($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked
+
+                        if (!empty($fuqtquestions))
+                        {
+                            // find all responses (filenames) to the fuqt questions
+                            $query="SELECT " . implode(", ", $fuqtquestions) . " FROM $surveytable where id={$iResponseID}";
+                            $responses = db_execute_assoc($query) or safe_die("Could not fetch responses<br />$query<br />".$connect->ErrorMsg());
+
+                            foreach ($responses->result_array() as $json)
+                            {
+                                foreach ($fuqtquestions as $fieldname)
+                                {
+                                    $phparray = json_decode($json[$fieldname]);
+                                    foreach($phparray as $metadata)
+                                    {
+                                        $path = $CI->config->item('uploaddir')."/surveys/{$surveyid}/files/";
+                                        unlink($path.$metadata->filename); // delete the file
+                                    }
+                                }
+                            }
+                        }
+
+		                $query="delete FROM {$surveytable} where id={$iResponseID}";
+		                db_execute_assoc($query) or safe_die("Could not delete response<br />{$dtquery}<br />".$connect->ErrorMsg());  // checked
 		            }
 		        }
 		        // Download all files for all marked responses  - checked

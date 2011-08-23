@@ -232,9 +232,8 @@
         {
             if ($activated == "Y")
             { ?>
-                <a href='#'>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled"); ?> - <?php echo $clang->gT("This survey is currently active."); ?>'
-                name='AddNewGroup' /></a>
+                name='AddNewGroup' />
             <?php }
             else
             { ?>

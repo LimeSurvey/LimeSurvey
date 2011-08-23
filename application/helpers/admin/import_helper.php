@@ -3138,7 +3138,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
                 {
                     db_switchIDInsert('questions',false);
                 }
-                
+
                 $results['subquestions']++;
                 // also convert default values subquestions for multiple choice
                 if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='M' || $oldquestion['newtype']=='P'))
@@ -3352,7 +3352,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             $query = 'select gid from '.$CI->db->dbprefix.'questions where qid='.$aQIDReplacements[$conditionrowdata["cqid"]];
             $res=db_execute_assoc($query);
             $resrow = $res->row_array();
-            
+
             $oldgid=array_search($resrow['gid'],$aGIDReplacements);
             $conditionrowdata["qid"]=$aQIDReplacements[$conditionrowdata["qid"]];
             $conditionrowdata["cqid"]=$aQIDReplacements[$conditionrowdata["cqid"]];
@@ -3468,6 +3468,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             unset($insertdata['private']);
             unset($insertdata['notification']);
         }
+        $insertdata['startdate']=NULL;
         //Now insert the new SID and change some values
         $insertdata['sid']=$newsid;
         //Make sure it is not set active

@@ -31,9 +31,6 @@ $config['rootdir']            =   getcwd(); //dirname(__FILE__); // This is the 
 // Some IIS installations also require to use forward slashes instead of backslashes, e.g.  $rootDir="C:/Inetpub/wwwroot/limesurvey"!
 // If you use OS/2 this must be the complete rootdir with FORWARD slashes e.g.: $rootDir="c:/limesurvey";!
 
-$config['rootsymlinked']      =   0;  // if your root document dir is symlinked LimeSurvey might have problems to find out the dir
-// If you notice that labels are not being translated like "_ADMINISTRATION_" instead of "Administration"
-// then try setting this to 1 .
 
 // Site Info
 $config['sitename']           =   'LimeSurvey';     // The official name of the site (appears in the Window title)
@@ -44,7 +41,7 @@ $config['defaultpass']        =   'password';       // This is the default passw
 
 // If the user enters password incorrectly
 $config['maxLoginAttempt']    =   3;                // Lock them out after 3 attempts
-$config['timeOutTime']        =   60 * 30;          // Lock them out for 30 minutes.
+$config['timeOutTime']        =   60 * 10;          // Lock them out for 10 minutes.
 
 // Site Settings
 $config['lwcdropdowns']       =   'R';              // SHOW LISTS WITH COMMENT in Public Survey as Radio Buttons (R) or Dropdown List (L)

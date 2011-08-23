@@ -10,9 +10,9 @@
         <li><a href='#copy'><?php echo $clang->gT("Copy"); ?></a></li>
         <?php }
         elseif ($action == "editsurveysettings") { ?>
-        <li><a href='#resources'><?php echo $clang->gT("Resources"); ?></a></li>  
+        <li><a href='#resources'><?php echo $clang->gT("Resources"); ?></a></li>
         <?php } ?>
     </ul>
-    <form class='form30' name='addnewsurvey' id='addnewsurvey' action='<?php if ($action == "newsurvey") echo site_url("admin/database/index/insertsurvey"); if ($action == "editsurveysettings") echo site_url("admin/database/index/updatesurveysettings"); ?>' method='post' onsubmit="alert('hi');return isEmpty(document.getElementById('surveyls_title'), '<?php echo $clang->gT("Error: You have to enter a title for this survey.", 'js'); ?> ');" >
+    <form class='form30' name='addnewsurvey' id='addnewsurvey' action='<?php if ($action == "newsurvey") echo site_url("admin/database/index/insertsurvey"); if ($action == "editsurveysettings") echo site_url("admin/database/index/updatesurveysettings"); ?>' method='post' >
     <div id='general'>
-    <ul><li> 
+    <ul><li>

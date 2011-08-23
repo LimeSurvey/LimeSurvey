@@ -5214,7 +5214,7 @@ function questionAttributes($returnByName=false)
 	"types"=>"|",
     'category'=>$clang->gT('Other'),
     'sortorder'=>134,
-    "inputtype"=>"textarea",
+    "inputtype"=>"text",
     'default'=>"png, gif, doc, odt",
 	"help"=>$clang->gT("Allowed file types in comma separated format. e.g. pdf,doc,odt"),
 	"caption"=>$clang->gT("Allowed file types"));
@@ -6709,6 +6709,13 @@ function cleanTempDirectory()
             @unlink($dir.$file);
         }
     }
+    $dir=  $CI->config->item('tempdir').'/upload/';
+    $dp = opendir($dir) or die ('Could not open temporary directory');
+    while ($file = readdir($dp)) {
+        if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
+            @unlink($dir.$file);
+        }
+    }
     closedir($dp);
 }
 
@@ -7849,7 +7856,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
         if (strcmp($urldescription,$qentry['quotals_urldescrip']) !=0  || (strcmp($endurl,$qentry['quotals_url']) !=0))
         {
             // Update Field
-            $sqlupdate = "UPDATE {$CI->db->dbprefix}quota_languagesettings SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE id={$qentry['quotals_id']}";
+            $sqlupdate = "UPDATE {$CI->db->dbprefix}quota_languagesettings SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE quotals_id={$qentry['quotals_id']}";
             $updateres=db_execute_assoc($sqlupdate) or safe_die ("Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
         } // Enf if modified
     } // end while qentry
