@@ -132,6 +132,10 @@ class participant_attribute_model extends CI_Model
     {
         $this->db->update('participant_attribute_values', $data, array('attribute_id' => $data['attribute_id'],'value_id'=>$data['value_id']));
     }
+    function saveParticipantAttributeValue($data)
+    {
+        $this->db->insert('participant_attribute',$data);
+    }
     function saveAttributeVisible($attid,$visiblecondition)
     {
     

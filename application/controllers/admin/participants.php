@@ -381,47 +381,48 @@ function exporttocsvAll()
         if(!$query)
             return false;
         // Starting the PHPExcel library
-        $this->load->library('admin/phpexcel/PHPExcel');
-        $this->load->library('admin/phpexcel/PHPExcel/IOFactory');
-        $objPHPExcel = new PHPExcel();
-        $objPHPExcel->getProperties()->setTitle("export")->setDescription("none");
-        $objPHPExcel->setActiveSheetIndex(0);
+        //$this->load->library('admin/phpexcel/PHPExcel');
+        //$this->load->library('admin/phpexcel/PHPExcel/IOFactory');
+        $CI=& get_instance();
+        $CI->load->library('admin/pear/Spreadsheet/Excel/Xlswriter');
+        $this->workbook = $CI->xlswriter;
+        $this->outputToFile = true;
+        $this->rowCounter = 0;
+        $this->load->helper('date');
+        $this->fileName = 'central_'.now().'.csv';
+        $clang = $this->limesurvey_lang;        
+        $worksheetName = $clang->gT("Participants");
+        $this->workbook->send('central_'.now().'.csv');
+         $sheet =$this->workbook->addWorksheet($worksheetName); // do not translate/change this - the library does not support any special chars in sheet name
+         
+        $sheet->setInputEncoding('utf-8');
+        $this->currentSheet = $sheet;
+        
         // Field names in the first row
         $fields = array ('participant_id','firstname','lastname' ,'email' ,'language' ,'blacklisted','owner_uid' );
         $col = 0;
+        $this->hasOutputHeader = true;
         foreach ($fields as $field)
         {
-            $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, 1, $field);
+            $this->currentSheet->write($this->rowCounter,$col,$field);
             $col++;
         }
-             // Fetching the table data
-            $row = 2;
-            foreach($query as $field => $data)
-            {
-                $col = 0;
-                foreach ($fields as $field)
-                {
-                    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $data[$field]);
-                    $col++;
-                }
-                $row++;
-            }
-                   
+          // Fetching the table data
+        
             $attributenames = $this->participant_attribute_model->getAttributes();
             foreach($attributenames as $key=>$value)
             {
-                
-                $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, 1,$value['attribute_name']);
+                $this->currentSheet->write($this->rowCounter, $col,$value['attribute_name']);
                 $col++;
             }
             // Fetching the table data
-            $row = 2;
+            $this->rowCounter++;
             foreach($query as $field => $data)
             {
                 $col = 0;
                 foreach ($fields as $field)
                 {
-                    $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $data[$field]);
+                    $this->currentSheet->write($this->rowCounter, $col,$data[$field]);
                     $col++;
                 }
                 foreach($attributenames as $key=>$value)
@@ -429,23 +430,23 @@ function exporttocsvAll()
                     $answer=$this->participant_attribute_model->getAttributeValue($data['participant_id'],$value['attribute_id']);
                     if(isset($answer->value))
                     {
-                        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,$answer->value);
+                        $this->currentSheet->write($this->rowCounter, $col,$answer->value);
+                        
                     }
                     else
                     {
-                        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,"");
+                        $this->currentSheet->write($this->rowCounter, $col,"");
+                  
                     }
                     $col++;
                 }
-            $row++;
+                $this->rowCounter++;
             }
         
-$objPHPExcel->setActiveSheetIndex(0);
-$objWriter = new PHPExcel_Writer_CSV($objPHPExcel);
-header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment;filename="central_'.$this->session->userdata('full_name').'.csv"');
-header('Cache-Control: max-age=0');
-$objWriter->save('php://output');
+$this->workbook->close();
+return $this->workbook;
+
+
 
 }
 function getaddtosurveymsg()
@@ -634,8 +635,9 @@ function exporttocsv()
         }
 $objPHPExcel->setActiveSheetIndex(0);
 $objWriter = new PHPExcel_Writer_CSV($objPHPExcel);
+$this->load->helper('date');
 header('Content-Type: application/vnd.ms-excel');
-header('Content-Disposition: attachment;filename="central_'.$this->session->userdata('full_name').'.csv"');
+header('Content-Disposition: attachment;filename="central_'.now().'.csv"');
 header('Cache-Control: max-age=0');
 $objWriter->save('php://output');
         
@@ -1427,70 +1429,7 @@ function uploadCSV()
                               
                             }
                           }
-                         /* if(is_numeric($key) && in_array($key, $allowedfieldnames))
-                           {
-                              $alreadythere = $this->participant_attribute_model->getAttributeValue($writearray['participant_id'],$key);
-                              if(!isset($alreadythere->value))
-                                {
-                                    $getattType = $this->participant_attribute_model->getAttributeType($key);
-                                    if($getattType->attribute_type=='TB')
-                                    {
-                                           $attdata = array('participant_id'=>$writearray['participant_id'],
-                                                'attribute_id' => $key,
-                                                'value' => $value);
-                                    $this->participant_attribute_model->saveParticipantAttributeValue($attdata);
-                                   }
-
-                                    else if($getattType->attribute_type=='DP')
-                                    {
-                                    @$arr=explode(".",$value); // splitting the array
-                                    @$dd=intval($arr[0]); // first element of the array is month
-                                    @$mm=intval($arr[1]); // second element is date
-                                    @$yy=intval($arr[2]); // third element is year
-                                    if(checkdate($mm,$dd,$yy)){
-
-                                                $attdata = array('participant_id'=>$writearray['participant_id'],
-                                                'attribute_id' => $key,
-                                                'value' => $value   );
-                                                $this->participant_attribute_model->saveParticipantAttributeValue($attdata);
-
-                                         }
-                                    else{
-                                        if(!in_array($writearray['participant_id'],$invalidparticipantid))
-                                        {
-
-                                        $invalidattribute[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
-                                        $invalidparticipantid[] = $writearray['participant_id'];
-                                        }
-                                    }
-                                }
-                             else if($getattType->attribute_type=='DD')
-                             {
-                                 $getattval = $this->participant_attribute_model->getAttributesValues($key);
-                                 $values = array();
-                                 foreach($getattval as $val)
-                                 {
-                                     array_push($values, $val['value']);
-                                 }
-
-                                    if(in_array($value, $values))
-                                    {
-                                            $attdata = array('participant_id'=>$writearray['participant_id'],
-                                            'attribute_id' => $key,
-                                            'value' => $value   );
-                                            $this->participant_attribute_model->saveParticipantAttributeValue($attdata);
-
-                                    }
-                                    else
-                                    {
-                                        if(!in_array($writearray['participant_id'],$invalidparticipantid))
-                                        {$invalidattribute[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
-                                        $invalidparticipantid[] = $writearray['participant_id'];     }
-                                    }
-
-                             }
-                           }
-                          }*/
+       
                          }
                        }
                      $this->participants_model->insertParticipantCSV($writearray);
@@ -1501,9 +1440,7 @@ function uploadCSV()
            $recordcount++;
         }
        unlink('tmp/uploads/'.basename($the_full_file_path));
-       self::_getAdminHeader();
-       //$clang = $this->limesurvey_lang;
-       $this->session->set_userdata('recordcount',$recordcount-1);
+       /*       $this->session->set_userdata('recordcount',$recordcount-1);
        $this->session->set_userdata('duplicatelist',$duplicatelist);
        $this->session->set_userdata('mincriteria',$mincriteria);
        $this->session->set_userdata('imported',$imported);
@@ -1512,10 +1449,20 @@ function uploadCSV()
        $this->session->set_userdata('mandatory',$mandatory);
        $this->session->set_userdata('invalidattribute',$invalidattribute);
        $this->session->set_userdata('mandatory',$mandatory);
-       $this->session->set_userdata('invalidparticipantid',$invalidparticipantid);
-       
-       //$this->session->set_userdata('summary',$data);
-       //redirect('admin/participants/summaryview');
+       $this->session->set_userdata('invalidparticipantid',$invalidparticipantid);*/
+       $clang = $this->limesurvey_lang;
+       $data['clang']=$clang;
+       $data['recordcount'] = $recordcount-1;
+       $data['duplicatelist'] = $duplicatelist;
+       $data['mincriteria'] = $mincriteria;
+       $data['imported']= $imported;
+       $data['errorinupload'] = $errorinupload;
+       $data['invalidemaillist'] = $invalidemaillist;
+       $data['mandatory'] = $mandatory;
+       $data['invalidattribute']=$invalidattribute;
+       $data['mandatory']= $mandatory;
+       $data['invalidparticipantid'] = $invalidparticipantid;
+       $this->load->view('admin/Participants/uploadSummary_view',$data);
 }
 function summaryview()
 {

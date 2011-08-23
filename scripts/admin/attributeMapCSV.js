@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    
                 if(!$('#csvattribute').length ) {
 //                    alert("All the attributes are automatically mapped");
                 }
@@ -77,13 +78,28 @@ $(document).ready(function(){
                    $.each(newcurrentarray, function(index,value) { 
                         newcurrentarray[index] = value.substring(3);
                     });
+                    
+                       var dialog_buttons={};
+                      dialog_buttons[okBtn]=function(){
+                            $(location).attr('href',displayParticipants);
+                };
+
            $("#processing").dialog({
-	            height: 90,
-				width: 50,
-				modal: true
+	            height: 450,
+                    width: 700,
+                    modal: true,
+                    buttons: dialog_buttons,
+                    open: function(event, ui) { 
+                     $('#processing').parent().find("button").each(function() {
+                    if ($(this).text() == okBtn) {
+                    $(this).attr('disabled', true);}
+                    });
+
+
+                    }
 	            
 	        });
-                
+                 
         $("#processing").load(copyUrl, {
                         characterset: characterset,
                         seperatorused : seperator,
@@ -91,8 +107,13 @@ $(document).ready(function(){
                         newarray : newcurrentarray,
                         mappedarray : mappedarray
                         }, function(msg){ 
-                        $(location).attr('href',redUrl);
-                    });
+                        $('#processing').parent().find("button").each(function() {
+                        if ($(this).text() == okBtn) {
+                        $(this).attr('disabled', false);}
+                        }); 
+                        
+                
+            });
         }); 
         
 });
