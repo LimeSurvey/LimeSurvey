@@ -1910,7 +1910,7 @@ function tokens_export($surveyid)
 function cpdb_export($data,$filename)
 {
     
-    header("Content-Disposition: attachment; filename=central".$filename.".csv");
+    header("Content-Disposition: attachment; filename=".$filename.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: cache");
