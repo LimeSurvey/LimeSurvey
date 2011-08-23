@@ -648,6 +648,7 @@ class export extends Survey_Common_Controller {
 			$data['selectinc'] = $selectinc;
 			$data['selecthide'] = $selecthide;
 			$data['selectshow'] = $selectshow;
+            $data['filename'] = "survey_".$surveyid."_R_syntax_file.R";
 			$this->load->view("admin/Export/r_view",$data);
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
@@ -662,7 +663,7 @@ class export extends Survey_Common_Controller {
 
 		if  ($subaction=='dldata')
 		{
-		    header("Content-Disposition: attachment; filename=survey_".$surveyid."_data_file.csv");
+		    header("Content-Disposition: attachment; filename=survey_".$surveyid."_R_data_file.csv");
 		    header("Content-type: text/comma-separated-values; charset=UTF-8");
 		    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		    header("Pragma: public");
@@ -675,14 +676,14 @@ class export extends Survey_Common_Controller {
 
 		if  ($subaction=='dlstructure')
 		{
-		    header("Content-Disposition: attachment; filename=Surveydata_syntax.R");
+		    header("Content-Disposition: attachment; filename=survey_".$surveyid."_R_syntax_file.R");
 		    header("Content-type: application/download; charset=UTF-8");
 		    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		    header("Pragma: public");
 
 		  echo $headerComment;
 		  echo "data <- read.table(\"survey_".$surveyid
-		      ."_data_file.csv\", sep=\",\", quote = \"'\", "
+              ."_R_data_file.csv\", sep=\",\", quote = \"'\", "
 		      ."na.strings=c(\"\",\"\\\"\\\"\"), "
 		      ."stringsAsFactors=FALSE)\n\n";
 		//  echo "names(data) <- paste(\"V\",1:dim(data)[2],sep=\"\")\n\n";
