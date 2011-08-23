@@ -9,15 +9,15 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
- * 
- * 
+ *
+ *
+ *
  */
- 
+
  /**
   * register
-  * 
-  * @package LimeSurvey_CI
+  *
+  * @package LimeSurvey
   * @copyright 2011
   * @version $Id$
   * @access public
@@ -33,7 +33,7 @@
 	{
 		parent::__construct();
 	}
-    
+
     /**
      * register::index()
      * Process register form data and take appropriate action
@@ -41,7 +41,7 @@
      */
     function index()
     {
-        
+
         $surveyid=$this->input->post('sid');
         $postlang=$this->input->post('lang');
         if (!$surveyid)
@@ -49,7 +49,7 @@
             redirect();
         }
         $this->load->helper('database');
-        
+
         $usquery = "SELECT stg_value FROM ".$this->db->dbprefix."settings_global where stg_name='SessionName'";
         $usresult = db_execute_assoc($usquery,'',true);          //Checked
         if ($usresult->num_rows() > 0)
@@ -62,10 +62,10 @@
         {
             session_name("LimeSurveyRuntime-$surveyid");
         }
-        
+
         session_set_cookie_params(0,$relativeurl.'/');
         session_start();
-        
+
         // Get passed language from form, so that we dont loose this!
         if (!isset($postlang) || $postlang == "" || !$postlang )
         {
@@ -77,9 +77,9 @@
             $clang = $this->limesurvey_lang;
             $baselang = $postlang;
         }
-        
+
         $thissurvey=getSurveyInfo($surveyid,$baselang);
-        
+
         $register_errormsg = "";
         $_POST = $this->input->post();
         // Check the security question's answer
@@ -92,13 +92,13 @@
                 $register_errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
             }
         }
-        
+
         //Check that the email is a valid style address
         if (!validate_email($_POST['register_email']))
         {
             $register_errormsg .= $clang->gT("The email you used is not valid. Please try again.");
         }
-        
+
         if ($register_errormsg != "")
         {
             redirect();
@@ -115,7 +115,7 @@
             //include "index.php";
             //exit;
         }
-        
+
         $mayinsert = false;
         while ($mayinsert != true)
         {
@@ -124,12 +124,12 @@
             $ntresult = db_execute_assoc($ntquery); //Checked
             if (!$ntresult->num_rows()) {$mayinsert = true;}
         }
-        
+
         $postfirstname=sanitize_xss_string(strip_tags($_POST['register_firstname']));
         $postlastname=sanitize_xss_string(strip_tags($_POST['register_lastname']));
         /*$postattribute1=sanitize_xss_string(strip_tags(returnglobal('register_attribute1')));
          $postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2')));   */
-        
+
         //Insert new entry into tokens db
         $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
         . "(firstname, lastname, email, emailstatus, token)\n"
@@ -139,15 +139,15 @@
         $result = $connect->Execute($query, array($postfirstname,
         $postlastname,
         returnglobal('register_email'),
-                                                  'OK', 
+                                                  'OK',
         $newtoken)
-        
+
         //                             $postattribute1,   $postattribute2)
         ) or safe_die ($query."<br />".$connect->ErrorMsg());  //Checked - According to adodb docs the bound variables are quoted automatically
         */
         $tid=$this->db->insert_id(); //$connect->Insert_ID("{$dbprefix}tokens_$surveyid","tid");
-        
-        
+
+
         $fieldsarray["{ADMINNAME}"]=$thissurvey['adminname'];
         $fieldsarray["{ADMINEMAIL}"]=$thissurvey['adminemail'];
         $fieldsarray["{SURVEYNAME}"]=$thissurvey['name'];
@@ -155,13 +155,13 @@
         $fieldsarray["{FIRSTNAME}"]=$postfirstname;
         $fieldsarray["{LASTNAME}"]=$postlastname;
         $fieldsarray["{EXPIRY}"]=$thissurvey["expiry"];
-        
+
         $message=$thissurvey['email_register'];
         $subject=$thissurvey['email_register_subj'];
-        
-        
+
+
         $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-        
+
         if (getEmailFormat($surveyid) == 'html')
         {
             $useHtmlEmail = true;
@@ -176,12 +176,12 @@
             $fieldsarray["{SURVEYURL}"]=site_url(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken); //"$publicurl/index.php?lang=".$baselang."&sid=$surveyid&token=$newtoken";
             $fieldsarray["{OPTOUTURL}"]= site_url('optout/'.$surveyid.'/'.$baselang.'/'.$newtoken); //"$publicurl/optout.phplang=".$baselang."&sid=$surveyid&token=$newtoken";
         }
-        
+
         $message=ReplaceFields($message, $fieldsarray);
         $subject=ReplaceFields($subject, $fieldsarray);
-        
+
         $html=""; //Set variable
-        
+
         if (SendEmailMessage($message, $subject, $_POST['register_email'], $from, $sitename,$useHtmlEmail,getBounceEmail($surveyid)))
         {
             // TLR change to put date into sent
@@ -199,20 +199,20 @@
         {
             $html="Email Error";
         }
-        
+
         //PRINT COMPLETED PAGE
         if (!$thissurvey['template'])
         {
             $thistpl=sGetTemplatePath(validate_templatedir('default'));
-        } 
-        else 
+        }
+        else
         {
             $thistpl=sGetTemplatePath(validate_templatedir($thissurvey['template']));
         }
-        
+
         sendcacheheaders();
         doHeader();
-        
+
         foreach(file("$thistpl/startpage.pstpl") as $op)
         {
             echo templatereplace($op);
@@ -228,6 +228,5 @@
         }
         doFooter();
     }
-    
+
  }
-    

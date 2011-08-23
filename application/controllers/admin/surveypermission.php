@@ -12,18 +12,18 @@
  *
  *
  */
- 
+
 /**
  * surveypermission
- * 
- * @package LimeSurvey_CI
+ *
+ * @package LimeSurvey
  * @copyright 2011
  * @version $Id$
  * @access public
  */
 class surveypermission extends Survey_Common_Controller {
 
-    
+
     /**
      * surveypermission::__construct()
      * Constructor
@@ -33,7 +33,7 @@ class surveypermission extends Survey_Common_Controller {
 	{
 		parent::__construct();
 	}
-    
+
     /**
      * surveypermission::view()
      * Load survey security screen.
@@ -45,16 +45,16 @@ class surveypermission extends Survey_Common_Controller {
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-        
+
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);
         self::_surveybar($surveyid,NULL);
         self::_surveysummary($surveyid,'surveysecurity');
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
         $imageurl = $this->config->item('imageurl');
-        
+
         if(bHasSurveyPermission($surveyid,'survey','read'))
         {
             $aBaseSurveyPermissions=aGetBaseSurveyPermissions();
@@ -62,13 +62,13 @@ class surveypermission extends Survey_Common_Controller {
             self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
             self::_js_admin_includes(base_url().'scripts/admin/surveysecurity.js');
             //$js_admin_includes[]='scripts/surveysecurity.js';
-            
-            $query2 = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM ".$this->db->dbprefix."survey_permissions AS p INNER JOIN ".$this->db->dbprefix."users  AS u ON p.uid = u.uid 
-                       WHERE p.sid = {$surveyid} AND u.uid != ".$this->session->userdata('loginID') ." 
+
+            $query2 = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM ".$this->db->dbprefix."survey_permissions AS p INNER JOIN ".$this->db->dbprefix."users  AS u ON p.uid = u.uid
+                       WHERE p.sid = {$surveyid} AND u.uid != ".$this->session->userdata('loginID') ."
                         GROUP BY p.sid, p.uid, u.users_name, u.full_name
                        ORDER BY u.users_name";
             $result2 = db_execute_assoc($query2); //Checked
-    
+
             $surveysecurity ="<div class='header ui-widget-header'>".$clang->gT("Survey permissions")."</div>\n"
             . "<table class='surveysecurity'><thead>"
             . "<tr>\n"
@@ -81,24 +81,24 @@ class surveypermission extends Survey_Common_Controller {
                 $surveysecurity.="<th align=\"center\"><img src=\"{$imageurl}/{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
             }
             $surveysecurity .= "</tr></thead>\n";
-    
+
             // Foot first
-    
+
             if ($this->config->item('usercontrolSameGroupPolicy') == true)
             {
                 $authorizedGroupsList=getusergrouplist(NULL,'simplegidarray');
             }
-    
+
             $surveysecurity .= "<tbody>\n";
             if($result2->num_rows() > 0)
             {
-                
+
                 //	output users
                 $row = 0;
-                
+
                 foreach ($result2->result_array() as $PermissionRow)
                 {
-                    
+
                     $query3 = "SELECT a.ugid FROM ".$this->db->dbprefix."user_in_groups AS a RIGHT OUTER JOIN ".$this->db->dbprefix."users AS b ON a.uid = b.uid WHERE b.uid = ".$PermissionRow['uid'];
                     $result3 = db_execute_assoc($query3); //Checked
                     foreach ($result3->result_array() as $resul3row)
@@ -109,15 +109,15 @@ class surveypermission extends Survey_Common_Controller {
                             $group_ids[] = $resul3row['ugid'];
                         }
                     }
-    
+
                     if(isset($group_ids) && $group_ids[0] != NULL)
                     {
                         $group_ids_query = implode(" OR ugid=", $group_ids);
                         unset($group_ids);
-    
+
                         $query4 = "SELECT name FROM ".$this->db->dbprefix."user_groups WHERE ugid = ".$group_ids_query;
                         $result4 = db_execute_assoc($query4); //Checked
-    
+
                         foreach ($result4->result_array() as $resul4row)
                         {
                             $group_names[] = $resul4row['name'];
@@ -127,7 +127,7 @@ class surveypermission extends Survey_Common_Controller {
                     }
                     //                  else {break;} //TODO Commented by lemeur
                     $surveysecurity .= "<tr>\n";
-    
+
                     $surveysecurity .= "<td>\n";
                     $surveysecurity .= "<form style='display:inline;' method='post' action='".site_url('admin/surveypermission/set/'.$surveyid)."'>"
                     ."<input type='image' src='{$imageurl}/token_edit.png' title='".$clang->gT("Edit permissions")."' />"
@@ -141,12 +141,12 @@ class surveypermission extends Survey_Common_Controller {
                     ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
                     ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
                     ."</form>";
-    
-                    
+
+
                     $surveysecurity .= "</td>\n";
                     $surveysecurity .= "<td>{$PermissionRow['users_name']}</td>\n"
                     . "<td>";
-                     
+
                     if(isset($group_names) > 0)
                     {
                         $surveysecurity .= $group_names_query;
@@ -156,10 +156,10 @@ class surveypermission extends Survey_Common_Controller {
                         $surveysecurity .= "---";
                     }
                     unset($group_names);
-    
+
                     $surveysecurity .= "</td>\n"
                     . "<td>\n{$PermissionRow['full_name']}</td>\n";
-    
+
                     //Now show the permissions
                     foreach ($aBaseSurveyPermissions as $sPKey=>$aPDetails) {
                         unset($aPDetails['img']);
@@ -170,12 +170,12 @@ class surveypermission extends Survey_Common_Controller {
                         foreach ($aPDetails as $sPDetailKey=>$sPDetailValue)
                         {
                             if ($sPDetailValue && bHasSurveyPermission($surveyid,$sPKey,$sPDetailKey,$PermissionRow['uid']) && !($sPKey=='survey' && $sPDetailKey=='read')) $iCount++;
-                            if ($sPDetailValue) $iPermissionCount++; 
+                            if ($sPDetailValue) $iPermissionCount++;
                         }
                         if ($sPKey=='survey')  $iPermissionCount--;
                         if ($iCount==$iPermissionCount) {
                             $insert = "<div class=\"ui-icon ui-icon-check\">&nbsp;</div>";
-                        } 
+                        }
                         elseif ($iCount>0){
                             $insert = "<div class=\"ui-icon ui-icon-check mixed\">&nbsp;</div>";
                         }
@@ -185,14 +185,14 @@ class surveypermission extends Survey_Common_Controller {
                         }
                         $surveysecurity .= "<td align=\"center\">\n$insert\n</td>\n";
                     }
-    
+
                     $surveysecurity .= "</tr>\n";
                     $row++;
                 }
             } else {
                 $surveysecurity .= "<tr><td colspan='18'></td></tr>"; //fix error on empty table
             }
-            
+
             $surveysecurity .= "</tbody>\n"
             . "</table>\n"
             . "<form class='form44' action='".site_url('admin/surveypermission/adduser/'.$surveyid)."' method='post'><ul>\n"
@@ -209,23 +209,23 @@ class surveypermission extends Survey_Common_Controller {
             . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add User Group")."' onclick=\"if (document.getElementById('ugidselect').value == -1) {alert('".$clang->gT("Please select a user group first","js")."'); return false;}\" />"
             . "<input type='hidden' name='action' value='addusergroupsurveysecurity' />\n"
             . "</li></ul></form>";
-            
+
             $data['display'] = $surveysecurity;
             $this->load->view('survey_view',$data);
         }
         else
         {
             access_denied();
-            
+
         }
-        
+
         self::_loadEndScripts();
 
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
+
     }
-    
+
     /**
      * surveypermission::addusergroup()
      * Function responsible to add usergroup.
@@ -238,24 +238,24 @@ class surveypermission extends Survey_Common_Controller {
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-        
+
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);
         self::_surveybar($surveyid,NULL);
         self::_surveysummary($surveyid,'addsurveysecurity');
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
         $imageurl = $this->config->item('imageurl');
         $dbprefix = $this->db->dbprefix;
         $postusergroupid = $this->input->post('gid');
-        
-        
+
+
         if($action == "addusergroupsurveysecurity")
         {
             $addsummary = "<div class=\"header\">".$clang->gT("Add user group")."</div>\n";
             $addsummary .= "<div class=\"messagebox ui-corner-all\" >\n";
-        
+
             $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID');
             $result = db_execute_assoc($query); //Checked
             if( ($result->num_rows() > 0 && in_array($postusergroupid,getsurveyusergrouplist('simpleugidarray'))) || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
@@ -272,7 +272,7 @@ class surveypermission extends Survey_Common_Controller {
                             $isrresult = db_execute_assoc($isrquery); //Checked
                             if (!$isrresult) break;
                         }
-        
+
                         if($isrresult)
                         {
                             $addsummary .= "<div class=\"successheader\">".$clang->gT("User Group added.")."</div>\n";
@@ -314,11 +314,11 @@ class surveypermission extends Survey_Common_Controller {
 
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
-        
+
+
     }
-    
-    
+
+
     /**
      * surveypermission::adduser()
      * Function responsible to add user.
@@ -327,42 +327,42 @@ class surveypermission extends Survey_Common_Controller {
      */
     function adduser($surveyid)
     {
-        
+
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-        
+
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);
         self::_surveybar($surveyid,NULL);
         self::_surveysummary($surveyid,'addsurveysecurity');
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
         $imageurl = $this->config->item('imageurl');
         $dbprefix = $this->db->dbprefix;
         $postuserid = $this->input->post('uid');
-        
+
         if($action == "addsurveysecurity")
         {
             $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add User")."</div>\n";
             $addsummary .= "<div class=\"messagebox ui-corner-all\">\n";
-        
+
             $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID')." AND owner_id != ".$postuserid;
             $result = db_execute_assoc($query); //Checked
             if( ($result->num_rows() > 0 && in_array($postuserid,getuserlist('onlyuidarray'))) ||
             $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
             {
-        
+
                 if($postuserid > 0){
-        
+
                     $isrquery = "INSERT INTO {$dbprefix}survey_permissions (sid,uid,permission,read_p) VALUES ( {$surveyid}, {$postuserid}, 'survey', 1)";
                     $isrresult = db_execute_assoc($isrquery); //Checked
-        
+
                     if($isrresult)
                     {
-                        
+
                         $addsummary .= "<div class=\"successheader\">".$clang->gT("User added.")."</div>\n";
                         $addsummary .= "<br /><form method='post' action='".site_url('admin/surveypermission/set/'.$surveyid)."'>"
                         ."<input type='submit' value='".$clang->gT("Set survey permissions")."' />"
@@ -389,9 +389,9 @@ class surveypermission extends Survey_Common_Controller {
             {
                 access_denied();
             }
-            
+
             $addsummary .= "</div>\n";
-            
+
             $data['display'] = $addsummary;
             $this->load->view('survey_view',$data);
         }
@@ -400,7 +400,7 @@ class surveypermission extends Survey_Common_Controller {
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
+
     /**
      * surveypermission::set()
      * Function responsible to set permissions to a user/usergroup.
@@ -413,20 +413,20 @@ class surveypermission extends Survey_Common_Controller {
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-        
+
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);
         self::_surveybar($surveyid,NULL);
         self::_surveysummary($surveyid,'addsurveysecurity');
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
         $imageurl = $this->config->item('imageurl');
         $dbprefix = $this->db->dbprefix;
         $postuserid = $this->input->post('uid');
         $postusergroupid = $this->input->post('gid');
-        
-        if($action == "setsurveysecurity" || $action == "setusergroupsurveysecurity") 
+
+        if($action == "setsurveysecurity" || $action == "setusergroupsurveysecurity")
         {
             $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID');
             if ($action == "setsurveysecurity")
@@ -458,7 +458,7 @@ class surveypermission extends Survey_Common_Controller {
                 }
                 $usersummary .= "<br /><form action='".site_url('admin/surveypermission/surveyright/'.$surveyid)."' method='post'>\n"
                 . "<table style='margin:0 auto;' border='0' class='usersurveypermissions'><thead>\n";
-        
+
                 $usersummary .= ""
                 . "<tr><th></th><th align='center'>".$clang->gT("Permission")."</th>\n"
                 . "<th align='center'><input type='button' id='btnToggleAdvanced' value='&gt;&gt;' /></th>\n"
@@ -469,9 +469,9 @@ class surveypermission extends Survey_Common_Controller {
                 . "<th align='center' class='extended'>".$clang->gT("Import")."</th>\n"
                 . "<th align='center' class='extended'>".$clang->gT("Export")."</th>\n"
                 . "</tr></thead>\n";
-        
+
                 //content
-        
+
                 $aBasePermissions=aGetBaseSurveyPermissions();
                 $oddcolumn=false;
                 foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
@@ -484,28 +484,28 @@ class surveypermission extends Survey_Common_Controller {
                     {
                         if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) continue;
                         $usersummary .= "<td class='extended' align='center'>";
-                        
+
                         if ($CRUDValue)
                         {
-                            if (!($sPermissionKey=='survey' && $sCRUDKey=='read')) 
+                            if (!($sPermissionKey=='survey' && $sCRUDKey=='read'))
                             {
                                 $usersummary .= "<input type=\"checkbox\"  class=\"checkboxbtn\" name='perm_{$sPermissionKey}_{$sCRUDKey}' ";
                                 if($action=='setsurveysecurity' && bHasSurveyPermission( $surveyid,$sPermissionKey,$sCRUDKey,$postuserid)) {
                                     $usersummary .= ' checked="checked" ';
                                 }
-                                $usersummary .=" />";                    
+                                $usersummary .=" />";
                             }
                         }
                         $usersummary .= "</td>";
                     }
                     $usersummary .= "</tr>";
                 }
-        
+
                 $usersummary .= "\n</table>"
                 ."<p><input type='submit' value='".$clang->gT("Save Now")."' />"
                 ."<input type='hidden' name='perm_survey_read' value='1' />"
                 ."<input type='hidden' name='action' value='surveyrights' />";
-                
+
                 if ($action=='setsurveysecurity')
                 {
                     $usersummary .="<input type='hidden' name='uid' value='{$postuserid}' />";
@@ -515,7 +515,7 @@ class surveypermission extends Survey_Common_Controller {
                     $usersummary .="<input type='hidden' name='ugid' value='{$postusergroupid}' />";
                 }
                 $usersummary .= "</form>\n";
-                
+
                 $data['display'] = $usersummary;
                 $this->load->view('survey_view',$data);
             }
@@ -524,14 +524,14 @@ class surveypermission extends Survey_Common_Controller {
                 include("access_denied.php");
             }
         }
-        
+
         self::_loadEndScripts();
 
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
+
     }
-    
+
     /**
      * surveypermission::delete()
      * Function responsible to delete a user/usergroup.
@@ -544,12 +544,12 @@ class surveypermission extends Survey_Common_Controller {
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-        
+
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);
         self::_surveybar($surveyid,NULL);
         self::_surveysummary($surveyid,'addsurveysecurity');
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
         $imageurl = $this->config->item('imageurl');
@@ -557,12 +557,12 @@ class surveypermission extends Survey_Common_Controller {
         $postuserid = $this->input->post('uid');
         $postusergroupid = $this->input->post('gid');
         $_POST = $this->input->post();
-        
+
         if($action == "delsurveysecurity")
         {
             $addsummary = "<div class=\"header\">".$clang->gT("Deleting User")."</div>\n";
             $addsummary .= "<div class=\"messagebox\">\n";
-        
+
             $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID')." AND owner_id != ".$postuserid;
             $result = db_execute_assoc($query); //Checked
             if($result->num_rows() > 0 || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
@@ -571,7 +571,7 @@ class surveypermission extends Survey_Common_Controller {
                 {
                     $dquery="DELETE FROM ".$this->db->dbprefix."survey_permissions WHERE uid={$postuserid} AND sid={$surveyid}";	//	added by Dennis
                     $dresult=db_execute_assoc($dquery); //Checked
-        
+
                     $addsummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string($_POST['user'])."<br /><br />\n";
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
                 }
@@ -586,17 +586,17 @@ class surveypermission extends Survey_Common_Controller {
                 access_denied();
             }
             $addsummary .= "</div>\n";
-            
+
             $data['display'] = $addsummary;
             $this->load->view('survey_view',$data);
         }
-        
+
         self::_loadEndScripts();
 
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
+
     /**
      * surveypermission::surveyright()
      * Function responsible to process setting of permission of a user/usergroup.
@@ -609,12 +609,12 @@ class surveypermission extends Survey_Common_Controller {
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-        
+
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);
         self::_surveybar($surveyid,NULL);
         self::_surveysummary($surveyid,'addsurveysecurity');
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
         $imageurl = $this->config->item('imageurl');
@@ -622,12 +622,12 @@ class surveypermission extends Survey_Common_Controller {
         $postuserid = $this->input->post('uid');
         $postusergroupid = $this->input->post('gid');
         $_POST = $this->input->post();
-        
+
         if ($action == "surveyrights")
         {
             $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Edit survey permissions")."</div>\n";
             $addsummary .= "<div class='messagebox ui-corner-all'>\n";
-        
+
             if(isset($postuserid)){
                 $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid}";
                 if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
@@ -642,10 +642,10 @@ class surveypermission extends Survey_Common_Controller {
                     $query.=" AND owner_id = ".$this->session->userdata('loginID');
                 }
                 $res= db_execute_assoc($sQuery);
-                $resrow=$res->row_array(); 
+                $resrow=$res->row_array();
                 $iOwnerID=$resrow['owner_id']; //$connect->GetOne($sQuery);
             }
-            
+
             $aBaseSurveyPermissions=aGetBaseSurveyPermissions();
             $aPermissions=array();
             foreach ($aBaseSurveyPermissions as $sPermissionKey=>$aCRUDPermissions)
@@ -653,7 +653,7 @@ class surveypermission extends Survey_Common_Controller {
                 foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
                 {
                     if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) continue;
-                    
+
                     if ($CRUDValue)
                     {
                         if(isset($_POST["perm_{$sPermissionKey}_{$sCRUDKey}"])){
@@ -664,7 +664,7 @@ class surveypermission extends Survey_Common_Controller {
                             $aPermissions[$sPermissionKey][$sCRUDKey]=0;
                         }
                     }
-                }        
+                }
             }
             if (isset($postusergroupid) && $postusergroupid>0)
             {
@@ -690,19 +690,19 @@ class surveypermission extends Survey_Common_Controller {
                 {
                     $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to update survey permissions!")."</div>\n";
                 }
-                
+
             }
             $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/surveypermission/view/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
             $addsummary .= "</div>\n";
             $data['display'] = $addsummary;
             $this->load->view('survey_view',$data);
         }
-        
+
         self::_loadEndScripts();
 
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
+
     }
-    
+
 }

@@ -15,7 +15,7 @@
 /**
  * emailtemplates
  *
- * @package LimeSurvey_CI
+ * @package LimeSurvey
  * @copyright 2011
  * @version $Id$
  * @access public
