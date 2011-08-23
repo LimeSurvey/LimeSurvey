@@ -1906,3 +1906,29 @@ function tokens_export($surveyid)
     echo $tokenoutput;
     exit;
 }
+
+function cpdb_export($data,$filename)
+{
+    
+    header("Content-Disposition: attachment; filename=central".$filename.".csv");
+    header("Content-type: text/comma-separated-values; charset=UTF-8");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Pragma: cache");
+    $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
+    $CI =& get_instance();
+    
+    foreach($data as $key=>$value)
+    {   
+        foreach($value as $values)
+        {
+            $tokenoutput .= trim($values).',';
+            $tokenoutput .= ',';
+            $tokenoutput = substr($tokenoutput,0,-1); // remove last comma
+        
+        }
+        $tokenoutput .= "\n";
+        
+    }
+    echo $tokenoutput;
+    exit;
+}
