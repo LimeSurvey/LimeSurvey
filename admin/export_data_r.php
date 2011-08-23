@@ -106,6 +106,8 @@ if  (!isset($subaction))
     ."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
 	."</select></li>\n";
 
+    $filename = "survey_".$surveyid."_R_syntax_file.R";
+
     $exportroutput .= "<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='action' value='exportr' /></li>\n"
 	."<li><label for='dlstructure'>" . $clang->gT("Step 1:") . "</label><input type='submit' name='dlstructure' id='dlstructure' value='" . $clang->gT("Export R syntax file") . "'/></li>\n"
@@ -116,7 +118,7 @@ if  (!isset($subaction))
     ."<br/><ol style='margin:0 auto; font-size:8pt;'>"
     ."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
     ."<li>".$clang->gT("Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)").".</li>"
-    ."<li>".$clang->gT("digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window")."</li>"
+    ."<li>".sprintf($clang->gT("digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command window"), $filename)."</li>"
     ."</ol><br />"
     .$clang->gT("Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)\$variable.labels\"), like for foreign:read.spss.")
     ."</div>";
@@ -152,7 +154,7 @@ if  ($subaction=='dlstructure')
 
   echo $headerComment;
   echo "data <- read.table(\"survey_".$surveyid
-      ."_data_file.csv\", sep=\",\", quote = \"'\", "
+      ."_R_data_file.csv\", sep=\",\", quote = \"'\", "
       ."na.strings=c(\"\",\"\\\"\\\"\"), "
       ."stringsAsFactors=FALSE)\n\n";
 //  echo "names(data) <- paste(\"V\",1:dim(data)[2],sep=\"\")\n\n";
