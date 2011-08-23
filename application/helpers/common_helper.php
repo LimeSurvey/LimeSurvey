@@ -806,7 +806,9 @@ function get2post($url)
 {
 	$CI= &get_instance();
     $url = preg_replace('/&amp;/i','&',$url);
-    list($calledscript,$query) = explode('?',$url);
+    $stack = explode('?',$url);
+    $calledscript = array_shift($stack);
+    $query = array_shift($stack);
     $aqueryitems = explode('&',$query);
     $arrayParam = Array();
     $arrayVal = Array();
