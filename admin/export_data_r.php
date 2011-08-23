@@ -110,8 +110,8 @@ if  (!isset($subaction))
 	."<input type='hidden' name='action' value='exportr' /></li>\n"
 	."<li><label for='dlstructure'>" . $clang->gT("Step 1:") . "</label><input type='submit' name='dlstructure' id='dlstructure' value='" . $clang->gT("Export R syntax file") . "'/></li>\n"
 	."<li><label for='dldata'/>" . $clang->gT("Step 2:") . "</label><input type='submit' name='dldata' id='dldata' value='" . $clang->gT("Export .csv data file") . "'/></li></ul>\n"
-	."</form>\n" 
-    
+	."</form>\n"
+
     ."<p><div class='messagebox ui-corner-all'><div class='header ui-widget-header'>".$clang->gT("Instructions for the impatient")."</div>"
     ."<br/><ol style='margin:0 auto; font-size:8pt;'>"
     ."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
@@ -132,7 +132,7 @@ else
 
 if  ($subaction=='dldata')
 {
-    header("Content-Disposition: attachment; filename=survey_".$surveyid."_data_file.csv");
+    header("Content-Disposition: attachment; filename=survey_".$surveyid."_R_data_file.csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: public");
@@ -145,7 +145,7 @@ if  ($subaction=='dldata')
 
 if  ($subaction=='dlstructure')
 {
-    header("Content-Disposition: attachment; filename=Surveydata_syntax.R");
+    header("Content-Disposition: attachment; filename=survey_".$surveyid."_R_syntax_file.R");
     header("Content-type: application/download; charset=UTF-8");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: public");
