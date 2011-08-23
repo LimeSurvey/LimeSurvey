@@ -43,10 +43,10 @@ function PrepareEditorScript($load=false)
     $data['clang'] = $clang;
     $js_admin_includes[]=$CI->config->item('sCKEditorURL').'/ckeditor.js';
     $CI->config->set_item("js_admin_includes", $js_admin_includes);
-    
+
     if ($load == false)
     {
-        
+
         return $CI->load->view('admin/Survey/prepareEditorScript_view',$data,true);
     }
     else
@@ -59,7 +59,7 @@ function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$q
 {
     //global $CI->config->item('defaulthtmleditormode');
     //error_log("TIBO fieldtype=$fieldtype,fieldname=$fieldname,fieldtext=$fieldtext,surveyID=$surveyID,gID=$gID,qID=$qID,action=$action");
-    $CI =& get_instance(); 
+    $CI =& get_instance();
     $CI->load->helper('common');
     if ($CI->session->userdata('htmleditormode') &&
     $CI->session->userdata('htmleditormode') == 'none')
@@ -134,7 +134,7 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
     //global $clang, $this->config->item['sCKEditorURL'], $ckeditexpandtoolbar;//, $uploadurl;
-    $CI =& get_instance(); 
+    $CI =& get_instance();
     $htmlcode = '';
     $imgopts = '';
     $toolbarname = 'inline';
@@ -164,7 +164,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
     if ( $fieldtype == 'email-inv' ||
          $fieldtype == 'email-reg' ||
          $fieldtype == 'email-conf'||
-         $fieldtype == 'email-admin-conf'||
+         $fieldtype == 'email-admin-notification'||
          $fieldtype == 'email-admin-resp'||
          $fieldtype == 'email-rem' )
     {

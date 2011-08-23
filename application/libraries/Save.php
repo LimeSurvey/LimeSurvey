@@ -493,7 +493,7 @@ class Save {
 	                else if ($fieldexists['type']=='|' && strpos($fieldexists['fieldname'], "_filecount") === false)
 	                {
 	                    $fieldname = $fieldexists['fieldname'];
-	                    $target = "upload/surveys/". $thissurvey['sid'] ."/files/";
+	                    $target = $this->config->item("uploaddir")."/surveys/". $thissurvey['sid'] ."/files/";
 
 	                    $json = $_SESSION[$value];
 	                    $phparray = json_decode(stripslashes($json));
@@ -505,7 +505,6 @@ class Save {
                         {
 	                        // move files from temp to files directory
 	                        $tmp = "tmp/upload/";
-	                        $target = "upload/surveys/". $thissurvey['sid'] . "/files/";
 
 	                        for ($i = 0; $i < count($phparray); $i++)
 	                        {
@@ -822,11 +821,11 @@ class Save {
 		if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
 			if($CI->db->insert_id() > 0){	// means that the last operation was INSERT
 				$query = "INSERT INTO ".$CI->db->escape($thissurvey['tablename']."_timings") ." ("
-					 ."id, interviewTime)"
+					 ."id, interviewtime)"
 					 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime .")";
 			}else{	// UPDATE
 				$query = "UPDATE {$thissurvey['tablename']}_timings SET "
-					."interviewTime = interviewTime" ." + " .$passedTime
+					."interviewtime = interviewtime" ." + " .$passedTime
 					." WHERE id = " .$_SESSION['srid'];
 			}
 			db_execute_assoc($query);
@@ -837,11 +836,11 @@ class Save {
 		//saving the times
 		if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
 			$query = "INSERT INTO ".$CI->db->escape($thissurvey['tablename']."_timings") ." ("
-				 ."id, interviewTime, " .$CI->db->escape($setField) .")"
+				 ."id, interviewtime, " .$CI->db->escape($setField) .")"
 				 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime ."," .$passedTime.")";
 		}else{	// UPDATE
 			$query = "UPDATE {$thissurvey['tablename']}_timings SET "
-				."interviewTime = interviewTime" ." + " .$passedTime .","
+				."interviewtime = interviewtime" ." + " .$passedTime .","
 				.$CI->db->escape($setField) ." = " .$CI->db->escape($setField) ." + " .$passedTime
 				." WHERE id = " .$_SESSION['srid'];
 		}

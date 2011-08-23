@@ -18,7 +18,7 @@ class fck_LimeReplacementFields extends Admin_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	function index($fieldtype, $action, $surveyid=false, $gid=false, $qid=false)
 	{
 		$clang=$this->limesurvey_lang;
@@ -26,14 +26,14 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		{
 		    die ("Unauthenticated Access Forbiden");
 		}
-		
+
 		//$surveyid=returnglobal('sid');
 		//if (!isset($gid)) {$gid=returnglobal('gid');}
 		//if (!isset($qid)) {$qid=returnglobal('qid');}
 
 		//$InsertansUnsupportedtypes=Array('TEST-A','TEST-B','TEST-C','TEST-D');
 		$InsertansUnsupportedtypes=Array(); // Currently all question types are supported
-		
+
 		$replFields=Array();
 		$isInstertansEnabled=false;
 		/**
@@ -47,7 +47,7 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		. "\t});\n"
 		. "\n";
 		*/
-		
+
 		/**$limereplacementoutput="\n"
 		 . "if (! oEditor.FCKBrowserInfo.IsIE)\n"
 		 . "{\n"
@@ -58,13 +58,13 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		 . "\tinnertext = '' + dialog.EditorDocument.selection.createRange().text + '' ;\n"
 		 . "}\n";
 		 **/
-		
+
 		/*
 		$limereplacementoutput .= ""
 		. "\tvar eSelected = dialog.Selection.GetSelectedElement() ;\n"
 		. "\n";
 		*/
-		
+
 		/**
 		 $limereplacementoutput="\n"
 		 . "function LoadSelected()\n"
@@ -86,20 +86,20 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		. "else\n"
 		. "\teSelected == null ;\n"
 		. "\t}\n";
-		
+
 		$limereplacementoutput .= ""
 		. "\tfunction Ok()\n"
 		. "\t{\n"
 		. "var sValue = document.getElementById('cquestions').value ;\n"
-		
+
 		. "FCKLimeReplacementFieldss.Add( sValue ) ;\n"
 		. "return true ;\n"
 		. "\t}\n";
-		
+
 		$limereplacementoutput .= ""
 		. "\t</script>\n"
 		. "</head>\n";
-		
+
 		$limereplacementoutput .= "\t<body scroll=\"no\" style=\"OVERFLOW: hidden;\">\n"
 		. "<table height=\"100%\" cellSpacing=\"0\" cellPadding=\"0\" width=\"100%\" border=\"0\">\n"
 		. "\t<tr>\n"
@@ -114,8 +114,8 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		    case 'editdescription': // for translation
 		    case 'editwelcome': // for translation
 		    case 'editend': // for translation
-		        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
-		        $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
+		        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
+		        $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
 		        $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
 		        $attributes=GetTokenFieldsAndNames($surveyid,true);
 		        foreach ($attributes as $attributefield=>$attributedescription)
@@ -124,14 +124,44 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		        }
 		        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
 		        break;
-		
-		    case 'email-admin-conf':
-		    case 'email-admin-resp':
+
+            case 'email-admin-notification':
+                $replFields[]=array('RELOADURL',$clang->gT("Reload URL"));
+                $replFields[]=array('VIEWRESPONSEURL',$clang->gT("View response URL"));
+                $replFields[]=array('EDITRESPONSEURL',$clang->gT("Edit response URL"));
+                $replFields[]=array('STATISTICSURL',$clang->gT("Statistics URL"));
+                $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
+                $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
+                $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
+                $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
+                $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
+                $attributes=GetTokenFieldsAndNames($surveyid,true);
+                foreach ($attributes as $attributefield=>$attributedescription)
+                {
+                    $replFields[]=array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
+                }
+                $replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
+                $replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
+                break;
+   		    case 'email-admin-resp':
 		        $replFields[]=array('RELOADURL',$clang->gT("Reload URL"));
 		        $replFields[]=array('VIEWRESPONSEURL',$clang->gT("View response URL"));
 		        $replFields[]=array('EDITRESPONSEURL',$clang->gT("Edit response URL"));
 		        $replFields[]=array('STATISTICSURL',$clang->gT("Statistics URL"));
 		        $replFields[]=array('ANSWERTABLE',$clang->gT("Answers from this response"));
+                $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
+                $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
+                $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
+                $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
+                $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
+                $attributes=GetTokenFieldsAndNames($surveyid,true);
+                foreach ($attributes as $attributefield=>$attributedescription)
+                {
+                    $replFields[]=array(strtoupper($attributefield), sprintf($clang->gT("Token attribute: %s"),$attributedescription));
+                }
+                $replFields[]=array('ADMINNAME',$clang->gT("Name of the survey administrator"));
+                $replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
+                break;
 		    case 'email-inv':
 		    case 'email-rem':
 		        // these 2 fields are supported by email-inv and email-rem
@@ -140,8 +170,8 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		        $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
 		        $replFields[]=array('OPTOUTURL',$clang->gT("URL for a respondent to opt-out this survey"));
 		    case 'email-reg':
-		        $replFields[]=array('FIRSTNAME',$clang->gT("Firstname from token"));
-		        $replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
+		        $replFields[]=array('FIRSTNAME',$clang->gT("First name from token"));
+		        $replFields[]=array('LASTNAME',$clang->gT("Last name from token"));
 		        $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
 		        $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
 		        $attributes=GetTokenFieldsAndNames($surveyid,true);
@@ -154,11 +184,11 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		        $replFields[]=array('SURVEYURL',$clang->gT("URL of the survey"));
 		        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
 		        break;
-		
+
 		    case 'email-conf':
 		        $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
-		        $replFields[]=array('FIRSTNAME',$clang->gT("Firstname from token"));
-		        $replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
+		        $replFields[]=array('FIRSTNAME',$clang->gT("First name from token"));
+		        $replFields[]=array('LASTNAME',$clang->gT("Last name from token"));
 		        $replFields[]=array('SURVEYNAME',$clang->gT("Name of the survey"));
 		        $replFields[]=array('SURVEYDESCRIPTION',$clang->gT("Description of the survey"));
 		        $attributes=GetTokenFieldsAndNames($surveyid,true);
@@ -170,7 +200,7 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		        $replFields[]=array('ADMINEMAIL',$clang->gT("Email address of the survey administrator"));
 		        $replFields[]=array('SURVEYURL',$clang->gT("URL of the survey"));
 		        $replFields[]=array('EXPIRY',$clang->gT("Survey expiration date"));
-		
+
 		        // email-conf can accept insertans fields for non anonymous surveys
 		        if (isset($surveyid))
 		        {
@@ -181,7 +211,7 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		            }
 		        }
 		        break;
-		
+
 		    case 'group-desc':
 		    case 'question-text':
 		    case 'question-help':
@@ -189,12 +219,12 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		    case 'editgroup_desc': // for translation
 		    case 'editquestion': // for translation
 		    case 'editquestion_help': // for translation
-		        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("Firstname from token"));
-		        $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Lastname from token"));
+		        $replFields[]=array('TOKEN:FIRSTNAME',$clang->gT("First name from token"));
+		        $replFields[]=array('TOKEN:LASTNAME',$clang->gT("Last name from token"));
 		        $replFields[]=array('TOKEN:EMAIL',$clang->gT("Email from the token"));
-				$replFields[]=array('SID', $clang->gT("This question's Survey ID number"));
-				$replFields[]=array('GID', $clang->gT("This question's Group ID number"));
-				$replFields[]=array('QID', $clang->gT("This question's Question ID number"));
+				$replFields[]=array('SID', $clang->gT("This question's survey ID number"));
+				$replFields[]=array('GID', $clang->gT("This question's group ID number"));
+				$replFields[]=array('QID', $clang->gT("This question's question ID number"));
 				$replFields[]=array('SGQ', $clang->gT("This question's SGQA code"));
 		        $attributes=GetTokenFieldsAndNames($surveyid,true);
 		        foreach ($attributes as $attributefield=>$attributedescription)
@@ -213,17 +243,17 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		if ($isInstertansEnabled===true)
 		{
 		    if (empty($surveyid)) {safe_die("No SID provided.");}
-		
+
 		    //2: Get all other questions that occur before this question that are pre-determined answer types
 		    $fieldmap = createFieldMap($surveyid, 'full');
-		
+
 		    $surveyInfo = getSurveyInfo($surveyid);
 		    $surveyformat = $surveyInfo['format'];// S, G, A
 		    $prevquestion=null;
 		    $previouspagequestion = true;
 		    //Go through each question until we reach the current one
 		    //error_log(print_r($qrows,true));
-		    $questionlist=array();      
+		    $questionlist=array();
 		    foreach ($fieldmap as $field)
 		    {
 		        if (empty($field['qid'])) continue;
@@ -233,21 +263,21 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		            case 'addgroup':
 		                $AddQuestion=True;
 		                break;
-		
+
 		            case 'editgroup':
 		            case 'editgroup_desc':
 		            case 'translategroup':
 		                if (empty($gid)) {safe_die("No GID provided.");}
-		
+
 		                if ($field['gid'] == $gid)
 		                {
 		                    $AddQuestion=False;
 		                }
 		                break;
-		
+
 		            case 'addquestion':
 		                if (empty($gid)) {safe_die("No GID provided.");}
-		
+
 		                if ( !is_null($prevquestion) &&
 		                $prevquestion['gid'] == $gid &&
 		                $field['gid'] != $gid)
@@ -255,7 +285,7 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		                    $AddQuestion=False;
 		                }
 		                break;
-		
+
 		            case 'editanswer':
 		            case 'copyquestion':
 		            case 'editquestion':
@@ -263,7 +293,7 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		            case 'translateanswer':
 		                if (empty($gid)) {safe_die("No GID provided.");}
 		                if (empty($qid)) {safe_die("No QID provided.");}
-		
+
 		                if ($field['gid'] == $gid &&
 		                $field['qid'] == $qid)
 		                {
@@ -303,7 +333,7 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		            {
 		                $previouspagequestion = false;
 		            }
-		
+
 		            $questionlist[]=array_merge($field,Array( "previouspage" => $previouspagequestion));
 		            $prevquestion=$field;
 		        }
@@ -312,37 +342,37 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		            break;
 		        }
 		    }
-		
+
 		    $questionscount=count($questionlist);
-		
+
 		    if ($questionscount > 0)
 		    {
 		        foreach($questionlist as $rows)
 		        {
 		            $question = $rows['question'];
-		
+
 		            if (isset($rows['subquestion'])) $question = "[{$rows['subquestion']}] " . $question;
 		            if (isset($rows['subquestion1'])) $question = "[{$rows['subquestion1']}] " . $question;
 		            if (isset($rows['subquestion2'])) $question = "[{$rows['subquestion2']}] " . $question;
-		
+
 		            $shortquestion=$rows['title'].": ".FlattenText($question);
 		            $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['fieldname'],$rows['previouspage']);
 		        } //foreach questionlist
 		    } //if questionscount > 0
-		
+
 		    // Now I´ll add a hack to add the questions before as option
 		    // if they are date type
-		
+
 		}
-		
+
 		$data['countfields'] = count($replFields);
 		$data['replFields'] = $replFields;
 		$data['clang'] = $clang;
 		if(isset($cquestions)) { $data['cquestions'] = $cquestions; };
 		if(isset($surveyformat)) { $data['surveyformat'] = $surveyformat; };
-		
-		
+
+
 		$this->load->view("admin/fck_LimeReplacementFields",$data);
 	}
-	
+
 }

@@ -829,6 +829,39 @@ function get2post($url)
     return $callscript;
 }
 
+
+/**
+* This function calculates how much space is actually used by all files uploaded
+* using the File Upload question type
+*
+* @returns integer Actual space used in MB
+*/
+function fCalculateTotalFileUploadUsage(){
+    global $uploaddir;
+    $sQuery="select sid from ".db_table_name('surveys');
+    $oResult = db_execute_assoc($sQuery); //checked
+    $aRows = $oResult->GetRows();
+    $iTotalSize=0.0;
+    foreach ($aRows as $aRow)
+    {
+       $sFilesPath=$uploaddir.'/surveys/'.$aRow['sid'].'/files';
+       if (file_exists($sFilesPath))
+       {
+           $iTotalSize+=(float)iGetDirectorySize($sFilesPath);
+       }
+    }
+    return (float)$iTotalSize/1024/1024;
+}
+
+function iGetDirectorySize($directory) {
+    $size = 0;
+    foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file){
+        $size+=$file->getSize();
+    }
+    return $size;
+}
+
+
 /**
  * Gets number of groups inside a particular survey
  *
@@ -2943,7 +2976,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     //do something
     $fields = createFieldMap($surveyid, $style, $force_refresh, $questionid, $sQuestionLanguage);
-    $fieldmap['interviewTime']=array('fieldname'=>'interviewTime','type'=>'interview_time','sid'=>$surveyid, 'gid'=>'', 'qid'=>'', 'aid'=>'', 'question'=>$clang->gT('Total time'), 'title'=>'interviewTime');
+    $fieldmap['interviewtime']=array('fieldname'=>'interviewtime','type'=>'interview_time','sid'=>$surveyid, 'gid'=>'', 'qid'=>'', 'aid'=>'', 'question'=>$clang->gT('Total time'), 'title'=>'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
             // field for time spent on page
@@ -4531,7 +4564,7 @@ function questionAttributes($returnByName=false)
     // End Map Options
 
     $qattributes["hide_tip"]=array(
-    "types"=>"!KLMNOPRWZ",
+    "types"=>"!KLMNOPRSWZ",
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'singleselect',
@@ -6565,14 +6598,16 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
     $extra_attrs=GetAttributeFieldNames($surveyid);
     $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
     $basic_attrs_names=Array(
-    $clang->gT('First name'),
-    $clang->gT('Last name'),
-    $clang->gT('Email address'),
-    $clang->gT('Token code'),
-    $clang->gT('Language code'),
-    $clang->gT('Invitation sent date'),
-    $clang->gT('Last Reminder sent date'),
-    $clang->gT('Total numbers of sent reminders'));
+        $clang->gT('First name'),
+        $clang->gT('Last name'),
+        $clang->gT('Email address'),
+        $clang->gT('Token code'),
+        $clang->gT('Language code'),
+        $clang->gT('Invitation sent date'),
+        $clang->gT('Last Reminder sent date'),
+        $clang->gT('Total numbers of sent reminders'),
+        $clang->gT('Uses left')
+    );
 
     $thissurvey=getSurveyInfo($surveyid);
     $attdescriptiondata=!empty($thissurvey['attributedescriptions']) ? $thissurvey['attributedescriptions'] : "";

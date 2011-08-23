@@ -1372,8 +1372,8 @@ function SendSubmitNotifications()
     $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
     if (count($aEmailNotificationTo)>0)
     {
-        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,compact(array_keys(get_defined_vars())));
-        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,compact(array_keys(get_defined_vars())));
+        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,($thissurvey['anonymized'] == "Y"));
+        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,($thissurvey['anonymized'] == "Y"));
         foreach ($aEmailNotificationTo as $sRecipient)
         {
             if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
@@ -2072,7 +2072,7 @@ function buildsurveysession($surveyid)
 
     }
     // New: If no passthru variable is explicitely set, save the whole query_string - above method is obsolete and the new way should only be used
-    else
+    elseif (isset($_SERVER['QUERY_STRING']))
     {
         $_SESSION['ls_initialquerystr']=$_SERVER['QUERY_STRING'];
     }

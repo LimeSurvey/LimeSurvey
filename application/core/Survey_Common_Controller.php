@@ -12,7 +12,7 @@
  *
  *	$Id$
  */
- 
+
 /**
  * Survey Common Controller
  *
@@ -23,7 +23,7 @@
  * @author		LimeSurvey
  */
  class Survey_Common_Controller extends Admin_Controller {
- 
+
  	/**
 	 * Constructor
 	 */
@@ -31,8 +31,8 @@
 	{
 		parent::__construct();
 	}
-    
-    
+
+
     /**
 	 * Shows admin menu for question
 	 * @param int Survey id
@@ -42,11 +42,11 @@
 	 */
      function _questionbar($surveyid,$gid,$qid,$action)
      {
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        
+
         // TODO: check that surveyid is set and that so is $baselang
         //Show Question Details
     	//Count answer-options for this question
@@ -57,11 +57,11 @@
     	$sqrq= "SELECT * FROM ".$this->db->dbprefix."questions WHERE parent_qid=$qid AND language='".$baselang."'";
     	$sqrr= db_execute_assoc($sqrq); //Checked
     	$data['sqct'] = $sqct = $sqrr->num_rows();
-    	
+
         $qrquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE gid=$gid AND sid=$surveyid AND qid=$qid AND language='".$baselang."'";
         $qrresult = db_execute_assoc($qrquery); // or safe_die($qrquery."<br />".$connect->ErrorMsg()); //Checked
         $questionsummary = "<div class='menubar'>\n";
-    
+
         // Check if other questions in the Survey are dependent upon this question
         $condarray=GetQuestDepsForConditions($surveyid,"all","all",$qid,"by-targqid","outsidegroup");
         $this->load->model('surveys_model');
@@ -72,9 +72,9 @@
         $surveyinfo = array_map('FlattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $data['activated'] = $activated = $surveyinfo['active'];
-    
+
         // PREVIEW THIS QUESTION BUTTON
-    
+
         foreach ($qrresult->result_array() as $qrrow)
         {
             $qrrow = array_map('FlattenText', $qrrow);
@@ -99,13 +99,13 @@
                     . "title=\"".$clang->gTview("Preview This Question")."\">"
                     . "<img src='$imageurl/preview.png' title='' alt='".$clang->gT("Preview This Question")."' name='previewquestionimg' /></a>\n"
                     . "<img src='$imageurl/seperator.gif' alt=''  />\n"; */
-        
+
                     //
                     $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                     $baselang = GetBaseLanguageFromSurveyID($surveyid);
                     $tmp_survlangs[] = $baselang;
                     rsort($tmp_survlangs);
-    
+
                     // Test question Language Selection Popup
                     /**$surveysummary .="<div class=\"langpopup\" id=\"previewquestionpopup\">".$clang->gT("Please select a language:")."<ul>";
                     foreach ($tmp_survlangs as $tmp_lang)
@@ -115,14 +115,14 @@
                     $surveysummary .= "</ul></div>"; */
                 }
             }
-    
+
             // SEPARATOR
-    
+
     //        $questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='117' height='20'  />\n";
-    
-    
+
+
             // EDIT CURRENT QUESTION BUTTON
-    
+
             /**if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             {
                 $questionsummary .= ""
@@ -131,10 +131,10 @@
                 . " title=\"".$clang->gTview("Edit current question")."\">"
                 . "<img src='$imageurl/edit.png' alt='".$clang->gT("Edit Current Question")."' name='EditQuestion' /></a>\n" ;
             }
-    
-    
+
+
             // DELETE CURRENT QUESTION BUTTON
-    
+
             if ((($qct == 0 && $activated != "Y") || $activated != "Y") && bHasSurveyPermission($surveyid,'surveycontent','delete'))
             {
                 if (is_null($condarray))
@@ -153,22 +153,22 @@
                 }
             }
             else {$questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";}
-    
-    
+
+
             // EXPORT CURRENT QUESTION BUTTON
-    
+
             if(bHasSurveyPermission($surveyid,'surveycontent','export'))
             {
                 $questionsummary .= "<a href='$scriptname?action=exportstructureQuestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
                 . " title=\"".$clang->gTview("Export this question")."\" >"
                 . "<img src='$imageurl/dumpquestion.png' alt='".$clang->gT("Export this question")."' name='ExportQuestion' /></a>\n";
             }
-    
+
             $questionsummary .= "<img src='$imageurl/seperator.gif' alt='' />\n";
-    
-    
+
+
             // COPY CURRENT QUESTION BUTTON
-    
+
             if(bHasSurveyPermission($surveyid,'surveycontent','create'))
             {
                 if ($activated != "Y")
@@ -190,10 +190,10 @@
             {
                 $questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
             }
-    
-    
+
+
             // SET EXTENDED CONDITIONS FOR QUESTION BUTTON
-    
+
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             {
                 $questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid&amp;subaction=editconditionsform', '_top')\""
@@ -205,12 +205,12 @@
             {
                 $questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
             } */
-    
-    
+
+
             // EDIT SUBQUESTIONS FOR THIS QUESTION BUTTON
-    
+
             $data['qtypes'] = $qtypes=getqtypelist('','array');
-            
+
             /**if(bHasSurveyPermission($surveyid,'surveycontent','read'))
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
@@ -224,10 +224,10 @@
             {
                 $questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
             }
-    
-    
+
+
             // EDIT ANSWER OPTIONS FOR THIS QUESTION BUTTON
-    
+
             if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] >0)
             {
                 $questionsummary .=  "<a href='".$scriptname."?action=editansweroptions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
@@ -238,10 +238,10 @@
             {
                 $questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
             }
-    
-    
+
+
             // EDIT DEFAULT ANSWERS FOR THIS QUESTION BUTTON
-    
+
             if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             {
                 $questionsummary .=  "<a href='".$scriptname."?action=editdefaultvalues&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
@@ -313,10 +313,10 @@
                 . "<img src='$imageurl/answers_20.png' title='"
                 . $clang->gT("Edit answer options for this question")."' name='EditThisQuestionAnswers'/></span></td></tr>\n";
             }
-    
-    
+
+
             // EDIT SUBQUESTIONS FOR THIS QUESTION BUTTON
-    
+
             if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0)
             {
                $questionsummary .= "<tr ><td></td><td align='left'>"
@@ -325,7 +325,7 @@
                 . "<img src='$imageurl/subquestions_20.png' title='"
                 . $clang->gT("Edit subquestions for this question")."' name='EditThisQuestionAnswers' /></span></td></tr>\n";
             }
-    
+
             if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
             {
                 $questionsummary .= "<tr>"
@@ -358,14 +358,14 @@
                 $questionsummary .= "</td></tr>";
             }
             $questionsummary .= "</table>"; */
-            
+
             $questionsummary .= $this->load->view("admin/Survey/Question/questionbar_view",$data,true);
-        } 
+        }
         $finaldata['display'] = $questionsummary;
         $this->load->view('survey_view',$finaldata);
-        
+
      }
-    
+
     /**
 	 * Shows admin menu for question groups
 	 * @param int Survey id
@@ -373,11 +373,11 @@
 	 */
     function _questiongroupbar($surveyid,$gid,$qid=null,$action)
     {
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        
+
         // TODO: check that surveyid and thus baselang are always set here
         $sumquery4 = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND
     	gid=$gid AND language='".$baselang."'"; //Getting a count of questions for this survey
@@ -386,13 +386,13 @@
         $grpquery ="SELECT * FROM ".$this->db->dbprefix."groups WHERE gid=$gid AND
     	language='".$baselang."' ORDER BY ".$this->db->dbprefix."groups.group_order";
         $grpresult = db_execute_assoc($grpquery); //Checked
-        
+
         // Check if other questions/groups are dependent upon this group
         $condarray=GetGroupDepsForConditions($surveyid,"all",$gid,"by-targgid");
-    
+
         $groupsummary = "<div class='menubar'>\n"
         . "<div class='menubar-title ui-widget-header'>\n";
-        
+
         $this->load->model('surveys_model');
         //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
         $sumresult1 = $this->surveys_model->getDataOnSurvey($surveyid); //$sumquery1, 1) ; //Checked
@@ -401,25 +401,25 @@
         $surveyinfo = array_map('FlattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $data['activated'] = $activated = $surveyinfo['active'];
-        
+
         foreach ($grpresult->result_array() as $grow)
         {
             $grow = array_map('FlattenText', $grow);
             $data = array();
-            
+
             /**$groupsummary .= '<strong>'.$clang->gT("Question group").'</strong>&nbsp;'
             . "<span class='basic'>{$grow['group_name']} (".$clang->gT("ID").":$gid)</span>\n"
             . "</div>\n"
             . "<div class='menubar-main'>\n"
             . "<div class='menubar-left'>\n";
-    
-    
+
+
     //        // CREATE BLANK SPACE FOR IMAGINARY BUTTONS
     //
     //
             $groupsummary .= ""
             . "<img src='$imageurl/blank.gif' alt='' width='54' height='20'  />\n";
-    
+
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             {
                 $groupsummary .=  "<img src='$imageurl/seperator.gif' alt=''  />\n"
@@ -430,11 +430,11 @@
             else{
                 $groupsummary .=  "<img src='$imageurl/seperator.gif' alt=''  />\n";
             }
-    
-    
-    
+
+
+
             // EDIT CURRENT QUESTION GROUP BUTTON
-    
+
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             {
                 $groupsummary .=  "<img src='$imageurl/seperator.gif' alt=''  />\n"
@@ -442,10 +442,10 @@
                 . " title=\"".$clang->gTview("Edit current question group")."\">"
                 . "<img src='$imageurl/edit.png' alt='".$clang->gT("Edit current question group")."' name='EditGroup' /></a>\n" ;
             }
-    
-    
+
+
             // DELETE CURRENT QUESTION GROUP BUTTON
-    
+
             if (bHasSurveyPermission($surveyid,'surveycontent','delete'))
             {
                 if ((($sumcount4 == 0 && $activated != "Y") || $activated != "Y"))
@@ -470,20 +470,20 @@
                     $groupsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
                 }
             }
-    
-    
+
+
             // EXPORT QUESTION GROUP BUTTON
-    
+
             if(bHasSurveyPermission($surveyid,'surveycontent','export'))
             {
-    
+
                 $groupsummary .="<a href='$scriptname?action=exportstructureGroup&amp;sid=$surveyid&amp;gid=$gid' title=\"".$clang->gTview("Export this question group")."\" >"
                 . "<img src='$imageurl/dumpgroup.png' title='' alt='".$clang->gT("Export this question group")."' name='ExportGroup'  /></a>\n";
             }
-    
-    
+
+
             // CHANGE QUESTION ORDER BUTTON
-    
+
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             {
                 $groupsummary .= "<img src='$imageurl/seperator.gif' alt='' />\n";
@@ -499,25 +499,25 @@
                     $groupsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
                 }
             }
-    
+
             $groupsummary.= "</div>\n"
             . "<div class='menubar-right'>\n"
             . "<span class=\"boxcaption\">".$clang->gT("Questions").":</span><select class=\"listboxquestions\" name='qid' "
             . "onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">"
             . getQuestions($surveyid,$gid,$qid)
             . "</select>\n";
-    
-            
+
+
             */
                     // QUICK NAVIGATION TO PREVIOUS AND NEXT QUESTION
             // TODO: Fix functionality to previos and next question  buttons (Andrie)
-            
-            
-            
+
+
+
             $data['qid'] = $qid;
             //$data['qid'] = $qid = $this->config->item('qid');
             $data['QidPrev'] = $QidPrev = getQidPrevious($surveyid, $gid, $qid);
-            
+
             /**$groupsummary .= "<span class='arrow-wrapper'>";
             if ($QidPrev != "")
             {
@@ -532,11 +532,11 @@
                 . "<img src='{$imageurl}/previous_disabled_20.png' title='' alt='".$clang->gT("No previous question")."' "
                 ."name='noquestionprevious' />";
             }
-    
+
             */
-            
+
             $data['QidNext'] = $QidNext = getQidNext($surveyid, $gid, $qid);
-            
+
             /**
             if ($QidNext != "")
             {
@@ -552,11 +552,11 @@
                 ."name='noquestionnext' />";
             }
             $groupsummary .= "</span>";
-    
-    
-    
+
+
+
             // ADD NEW QUESTION TO GROUP BUTTON
-    
+
             if ($activated == "Y")
             {
                 $groupsummary .= "<a href='#'"
@@ -570,12 +570,12 @@
                 ."<img src='$imageurl/add.png' title='' alt='".$clang->gT("Add New Question to Group")."' " .
                 " name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
             }
-    
-    
+
+
             // Separator
-    
+
             $groupsummary .= "<img src='$imageurl/seperator.gif' alt=''  />";
-    
+
             $groupsummary.= "<img src='$imageurl/blank.gif' width='18' alt='' />"
             . "<input id='MinimizeGroupWindow' type='image' src='$imageurl/minus.gif' title='"
             . $clang->gT("Hide Details of this Group")."' alt='". $clang->gT("Hide Details of this Group")."' name='MinimizeGroupWindow' />\n";
@@ -594,8 +594,8 @@
             $groupsummary .="</div></div>\n"
             . "</div>\n"; */
             //  $groupsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
-            
-            if ($action=='editgroup'|| $action=='addquestion' || $action == 'viewquestion' || $action == "editdefaultvalues") 
+
+            if ($action=='editgroup'|| $action=='addquestion' || $action == 'viewquestion' || $action == "editdefaultvalues")
             {
                 $gshowstyle="style='display: none'";
             }
@@ -603,8 +603,8 @@
             {
                 $gshowstyle="";
             }
-            $data['gshowstyle'] = $gshowstyle; 
-            
+            $data['gshowstyle'] = $gshowstyle;
+
             /**
             $groupsummary .= "<table id='groupdetails' $gshowstyle ><tr ><td width='20%' align='right'><strong>"
             . $clang->gT("Title").":</strong></td>\n"
@@ -614,7 +614,7 @@
             . $clang->gT("Description:")."</strong></td>\n<td align='left'>";
             if (trim($grow['description'])!='') {$groupsummary .=$grow['description'];}
             $groupsummary .= "</td></tr>\n";
-    
+
             if (!is_null($condarray))
             {
                 $groupsummary .= "<tr><td align='right'><strong>"
@@ -631,7 +631,7 @@
                 }
                 $groupsummary .= "</td></tr>";
             } */
-            
+
             $data['surveyid'] = $surveyid;
             $data['gid'] = $gid;
             $data['grow'] = $grow;
@@ -641,11 +641,11 @@
             $groupsummary .= $this->load->view('admin/Survey/QuestionGroups/questiongroupbar_view',$data,true);
         }
         $groupsummary .= "\n</table>\n";
-        
+
         $finaldata['display'] = $groupsummary;
         $this->load->view('survey_view',$finaldata);
-        
-    } 
+
+    }
 
     /**
 	 * Shows admin menu for surveys
@@ -674,19 +674,19 @@
         $js_admin_includes[]=$this->config->item('adminscripts').'surveytoolbar.js';
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 		$this->config->set_item("css_admin_includes", $css_admin_includes);
-        $this->config->set_item("js_admin_includes", $js_admin_includes); 
-        
+        $this->config->set_item("js_admin_includes", $js_admin_includes);
+
 		//Parse data to send to view
 		$data['clang']=$clang;
 		$data['surveyinfo']=$surveyinfo;
 		$data['surveyid']=$surveyid;
-		
+
 		// ACTIVATE SURVEY BUTTON
 		$data['activated'] = ($activated=="Y") ? true : false;
 		$data['imageurl'] = $this->config->item('imageurl');
-		
+
         $condition = array('sid' => $surveyid, 'parent_qid' => 0, 'language' => $baselang);
-        $this->load->model('questions_model');      
+        $this->load->model('questions_model');
         //$sumquery3 =  "SELECT * FROM ".db_table_name('questions')." WHERE sid={$surveyid} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
         $sumresult3 = $this->questions_model->getAllRecords($condition); //$connect->Execute($sumquery3); //Checked
         $sumcount3 = $sumresult3->num_rows();
@@ -695,7 +695,7 @@
 		$data['candeactivate'] = bHasSurveyPermission($surveyid,'surveyactivation','update');
 		$data['expired'] = $surveyinfo['expires']!='' && ($surveyinfo['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $this->config->item('timeadjust')));
 		$data['notstarted'] = ($surveyinfo['startdate']!='') && ($surveyinfo['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $this->config->item('timeadjust')));
-		
+
         // Start of suckerfish menu
         // TEST BUTTON
   		if ($activated == "N")
@@ -707,16 +707,16 @@
             $data['icontext']=$clang->gT("Execute This Survey");
             $data['icontext2']=$clang->gTview("Execute This Survey");
         }
-		
+
         $data['baselang'] = GetBaseLanguageFromSurveyID($surveyid);
  		$data['onelanguage'] = (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0);
-		
+
 		$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$data['additionallanguages'] = $tmp_survlangs;
         $tmp_survlangs[] = $data['baselang'];
 		rsort($tmp_survlangs);
 		$data['languagelist'] = $tmp_survlangs;
-		
+
 		$data['hasadditionallanguages']=(count($data['additionallanguages']) > 0);
 
         // EDIT SURVEY TEXT ELEMENTS BUTTON
@@ -735,7 +735,7 @@
         // EDIT SURVEY TEXT ELEMENTS BUTTON
         // End if survey properties
 
-        // Tools menu item     
+        // Tools menu item
         // Delete survey item
         $data['surveydelete'] = bHasSurveyPermission($surveyid,'survey','delete');
         // Translate survey item
@@ -759,9 +759,9 @@
         $data['responsesread'] = bHasSurveyPermission($surveyid,'responses','read');
         // TOKEN MANAGEMENT BUTTON
 		$data['tokenmanagement'] = bHasSurveyPermission($surveyid,'surveysettings','update') || bHasSurveyPermission($surveyid,'tokens','read');
-        
+
         $data['gid'] = $gid ;// = $this->input->post('gid');
-        
+
         if (bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
             $data['permission']= true;
@@ -770,8 +770,8 @@
         {
             $data['gid'] = $gid =null;
             $qid=null;
-        } 
-        
+        }
+
         if (getgrouplistlang($gid, $baselang,$surveyid))
         {
             $data['groups']= getgrouplistlang($gid, $baselang,$surveyid);
@@ -780,15 +780,15 @@
         {
             $data['groups']= "<option>".$clang->gT("None")."</option>";
         }
-        
+
         $data['GidPrev'] = $GidPrev = getGidPrevious($surveyid, $gid);
-        
+
         $data['GidNext'] = $GidNext = getGidNext($surveyid, $gid);
         $data['activated'] = $activated;
-        
-        $this->load->view("admin/survey/surveybar",$data);
-		
-        
+
+        $this->load->view("admin/Survey/surveybar",$data);
+
+
         /**
          ////////////////////////////////////////////////////////////////////////
         // QUESTION GROUP TOOLBAR
@@ -897,10 +897,10 @@
         . "</div>\n"
         . "</div>\n";
         */
-        
-        
+
+
     }
-    
+
 	/**
 	 * Show survey summary
 	 * @param int Survey id
@@ -909,7 +909,7 @@
     function _surveysummary($surveyid,$action=null)
     {
         $clang = $this->limesurvey_lang;
-		
+
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
         $condition = array('sid' => $surveyid, 'language' => $baselang);
         $this->load->model('surveys_model');
@@ -920,19 +920,19 @@
         $surveyinfo = array_map('FlattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
         $activated = $surveyinfo['active'];
-		
+
 		$condition = array('sid' => $surveyid, 'parent_qid' => 0, 'language' => $baselang);
-        $this->load->model('questions_model');      
+        $this->load->model('questions_model');
         //$sumquery3 =  "SELECT * FROM ".db_table_name('questions')." WHERE sid={$surveyid} AND parent_qid=0 AND language='".$baselang."'"; //Getting a count of questions for this survey
         $sumresult3 = $this->questions_model->getAllRecords($condition); //$connect->Execute($sumquery3); //Checked
         $sumcount3 = $sumresult3->num_rows();
-        
+
 		$condition = array('sid' => $surveyid, 'language' => $baselang);
 		$this->load->model('groups_model');
 		//$sumquery2 = "SELECT * FROM ".db_table_name('groups')." WHERE sid={$surveyid} AND language='".$baselang."'"; //Getting a count of groups for this survey
 		$sumresult2 = $this->groups_model->getAllRecords($condition); //$connect->Execute($sumquery2); //Checked
 		$sumcount2 = $sumresult2->num_rows();
-        
+
         //SURVEY SUMMARY
 
         $aAdditionalLanguages = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -953,11 +953,11 @@
         if ($surveyinfo['usecookie'] == "Y") {$surveysummary2 .= $clang->gT("It uses cookies for access control.")."<br />\n";}
         if ($surveyinfo['allowregister'] == "Y") {$surveysummary2 .= $clang->gT("If tokens are used, the public may register for this survey")."<br />\n";}
         if ($surveyinfo['allowsave'] == "Y" && $surveyinfo['tokenanswerspersistence'] == 'N') {$surveysummary2 .= $clang->gT("Participants can save partially finished surveys")."<br />\n";}
-        if ($surveyinfo['emailnotificationto'] != '') 
+        if ($surveyinfo['emailnotificationto'] != '')
         {
             $surveysummary2 .= $clang->gT("Basic email notification is sent to:")." {$surveyinfo['emailnotificationto']}<br />\n";
         }
-        if ($surveyinfo['emailresponseto'] != '') 
+        if ($surveyinfo['emailresponseto'] != '')
         {
             $surveysummary2 .= $clang->gT("Detailed email notification with response data is sent to:")." {$surveyinfo['emailresponseto']}<br />\n";
         }
@@ -973,7 +973,7 @@
             . ">".$clang->gT("By Group")."</a>]";
             $surveysummary2 .= "</td></tr>\n";
         }
-        
+
         $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
         if (trim($surveyinfo['startdate'])!= '')
         {
@@ -991,7 +991,7 @@
         {
             $constructoritems = array($surveyinfo['expires'] , "Y-m-d H:i:s");
             $this->load->library('Date_Time_Converter',$constructoritems);
-            $datetimeobj = $this->date_time_converter; 
+            $datetimeobj = $this->date_time_converter;
             //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
             $data['expdate']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         }
@@ -1026,8 +1026,8 @@
         if ($first) $data['additionnalLanguages'] .= "</tr>";
 
         if ($surveyinfo['surveyls_urldescription']==""){$surveyinfo['surveyls_urldescription']=htmlspecialchars($surveyinfo['surveyls_url']);}
-                                          
-        if ($surveyinfo['surveyls_url']!="") 
+
+        if ($surveyinfo['surveyls_url']!="")
         {
             $data['endurl'] = " <a target='_blank' href=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\" title=\"".htmlspecialchars($surveyinfo['surveyls_url'])."\">{$surveyinfo['surveyls_urldescription']}</a>";
         }
@@ -1069,27 +1069,27 @@
         $data['hints']=$surveysummary2;
 
         //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
-        
+
         $data['tableusage'] = get_dbtableusage($surveyid);
-        
-        //$gid || $qid || 
-       
-        
+
+        //$gid || $qid ||
+
+
         if ($action=="deactivate"|| $action=="activate" || $action=="surveysecurity" || $action=="editdefaultvalues" || $action == "editemailtemplates"
         || $action=="surveyrights" || $action=="addsurveysecurity" || $action=="addusergroupsurveysecurity"
         || $action=="setsurveysecurity" ||  $action=="setusergroupsurveysecurity" || $action=="delsurveysecurity"
         || $action=="editsurveysettings"|| $action=="editsurveylocalesettings" || $action=="updatesurveysettingsandeditlocalesettings" || $action=="addgroup" || $action=="importgroup"
         || $action=="ordergroups" || $action=="deletesurvey" || $action=="resetsurveylogic"
-        || $action=="importsurveyresources" || $action=="translate"  || $action=="emailtemplates" 
+        || $action=="importsurveyresources" || $action=="translate"  || $action=="emailtemplates"
         || $action=="exportstructure" || $action=="quotas" || $action=="copysurvey" || $action=="viewgroup" || $action == "viewquestion") {$showstyle="style='display: none'";}
-        if (!isset($showstyle)) {$showstyle="";} 
+        if (!isset($showstyle)) {$showstyle="";}
         /**if ($gid) {$showstyle="style='display: none'";}
         if (!isset($showstyle)) {$showstyle="";} */
         $data['showstyle'] = $showstyle;
         $data['aAdditionalLanguages'] = $aAdditionalLanguages;
 		$this->load->view("admin/survey/surveysummary",$data);
     }
-    
+
 	/**
 	 * Browse Menu Bar
 	 */
@@ -1101,13 +1101,13 @@
 		$data['imageurl'] = $this->config->item("imageurl");
 		$data['clang'] = $this->limesurvey_lang;
 		$data['surveyid'] = $surveyid;
-		
+
 		$tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         $tmp_survlangs[] = $baselang;
         rsort($tmp_survlangs);
 		$data['tmp_survlangs'] = $tmp_survlangs;
-		
+
 	    $this->load->view("admin/browse/browsemenubar_view", $data);
 	}
 }

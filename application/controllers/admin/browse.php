@@ -886,8 +886,8 @@ class browse extends Survey_Common_Controller {
 			//interview Time statistics
 			$count=false;
 			//$survstats=substr($surveytableNq);
-			$queryAvg="SELECT AVG(timings.interviewTime) AS avg, COUNT(timings.id) AS count FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL";
-			$queryAll="SELECT timings.interviewTime FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL ORDER BY timings.interviewTime";
+			$queryAvg="SELECT AVG(timings.interviewtime) AS avg, COUNT(timings.id) AS count FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL";
+			$queryAll="SELECT timings.interviewtime FROM {$surveytableNq}_timings AS timings JOIN {$surveytable} AS surv ON timings.id=surv.id WHERE surv.submitdate IS NOT NULL ORDER BY timings.interviewtime";
 			$browseoutput .= '<table class="statisticssummary">';
 			if($result=db_execute_assoc($queryAvg)){
 
@@ -906,7 +906,7 @@ class browse extends Survey_Common_Controller {
 					foreach($result->result_array() as $row){
 
 						if($i==$middleval){
-							$median=$row['interviewTime'];
+							$median=$row['interviewtime'];
 							break;
 						}
 						$i++;
@@ -915,7 +915,7 @@ class browse extends Survey_Common_Controller {
 					foreach($result->result_array() as $row){
 						if($i==$middleval){
 							$nextrow=$result->row_array();
-							$median=($row['interviewTime']+$nextrow['interviewTime'])/2;
+							$median=($row['interviewtime']+$nextrow['interviewtime'])/2;
 							break;
 						}
 						$i++;

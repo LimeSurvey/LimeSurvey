@@ -10,11 +10,11 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  *
- * 
+ *
  */
 /**
  * emailtemplates
- * 
+ *
  * @package LimeSurvey_CI
  * @copyright 2011
  * @version $Id$
@@ -31,7 +31,7 @@ class emailtemplates extends Survey_Common_Controller {
 	{
 		parent::__construct();
 	}
-    
+
     /**
      * emailtemplates::edit()
      * Load edit email template screen.
@@ -43,7 +43,7 @@ class emailtemplates extends Survey_Common_Controller {
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-        
+
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);
         self::_surveybar($surveyid,NULL);
@@ -65,7 +65,7 @@ class emailtemplates extends Survey_Common_Controller {
         $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($grplangs,$baselang);
-    
+
         PrepareEditorScript(TRUE);
         // Inject necessary strings for Javascript functions
         $sHTMLOutput = "<script type='text/javascript'>
@@ -75,7 +75,7 @@ class emailtemplates extends Survey_Common_Controller {
         . "<form class='form30newtabs' id='emailtemplates' action='".site_url('admin/emailtemplates/update')."' method='post'>\n"
         . "<div id='tabs'><ul>";
         $surveyinfo=getSurveyInfo($surveyid);
-    
+
         foreach ($grplangs as $grouplang)
         {
             $sHTMLOutput.="<li><a href='#tab-{$grouplang}'>".getLanguageNameFromCode($grouplang,false);
@@ -96,7 +96,7 @@ class emailtemplates extends Survey_Common_Controller {
             if ($ishtml==true){
                 $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditional_nl2br($aDefaultTexts['admin_detailed_notification'],$ishtml);
             }
-    
+
             $sHTMLOutput .= "<div id='tab-{$grouplang}'>";
             $sHTMLOutput .= "<div class='tabsinner' id='tabsinner-{$grouplang}'>"
             ."<ul>"
@@ -107,7 +107,7 @@ class emailtemplates extends Survey_Common_Controller {
             ."<li><a href='#tab-{$grouplang}-admin-confirmation'>".$clang->gT("Basic admin notification")."</a></li>"
             ."<li><a href='#tab-{$grouplang}-admin-responses'>".$clang->gT("Detailed admin notification")."</a></li>"
             ."</ul>"
-    
+
             ."<div id='tab-{$grouplang}-admin-confirmation'>";
             $sHTMLOutput .= "<ul><li><label for='email_admin_notification_subj_{$grouplang}'>".$clang->gT("Admin confirmation email subject:")."</label>\n"
             . "<input type='text' size='80' name='email_admin_notification_subj_{$grouplang}' id='email_admin_notification_subj_{$grouplang}' value=\"{$esrow['email_admin_notification_subj']}\" />\n"
@@ -116,12 +116,12 @@ class emailtemplates extends Survey_Common_Controller {
             . "\t</li>\n";
             $sHTMLOutput .= "<li><label for='email_admin_notification_{$grouplang}'>".$clang->gT("Admin confirmation email body:")."</label>\n"
             . "<textarea cols='80' rows='20' name='email_admin_notification_{$grouplang}' id='email_admin_notification_{$grouplang}'>".htmlspecialchars($esrow['email_admin_notification'])."</textarea>\n"
-            . getEditor("email-admin-conf","email_admin_notification_{$grouplang}", "[".$clang->gT("Invitation email:", "js")."](".$grouplang.")",$surveyid,'','','editemailtemplates')
+            . getEditor("email-admin-notification","email_admin_notification_{$grouplang}", "[".$clang->gT("Admin notification email:", "js")."](".$grouplang.")",$surveyid,'','','editemailtemplates')
             . "<input type='hidden' name='email_admin_notification_default_{$grouplang}' id='email_admin_notification_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($aDefaultTexts['admin_notification'],$ishtml),ENT_QUOTES)."' />\n"
             . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_notification_{$grouplang}\",\"email_admin_notification_default_{$grouplang}\")' />\n"
             . "\t</li>\n";
             $sHTMLOutput .="</ul></div>"
-    
+
             ."<div id='tab-{$grouplang}-admin-responses'>";
             $sHTMLOutput .= "<ul><li><label for='email_admin_responses_subj_{$grouplang}'>".$clang->gT("Detailed admin notification subject:")."</label>\n"
             . "<input type='text' size='80' name='email_admin_responses_subj_{$grouplang}' id='email_admin_responses_subj_{$grouplang}' value=\"{$esrow['email_admin_responses_subj']}\" />\n"
@@ -135,7 +135,7 @@ class emailtemplates extends Survey_Common_Controller {
             . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_admin_responses_{$grouplang}\",\"email_admin_responses_default_{$grouplang}\")' />\n"
             . "\t</li>\n";
             $sHTMLOutput .="</ul></div>"
-    
+
             ."<div id='tab-{$grouplang}-invitation'>";
             $sHTMLOutput .= "<ul><li><label for='email_invite_subj_{$grouplang}'>".$clang->gT("Invitation email subject:")."</label>\n"
             . "<input type='text' size='80' name='email_invite_subj_{$grouplang}' id='email_invite_subj_{$grouplang}' value=\"{$esrow['surveyls_email_invite_subj']}\" />\n"
@@ -149,7 +149,7 @@ class emailtemplates extends Survey_Common_Controller {
             . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_invite_{$grouplang}\",\"email_invite_default_{$grouplang}\")' />\n"
             . "\t</li>\n";
             $sHTMLOutput .="</ul></div>"
-    
+
             ."<div id='tab-{$grouplang}-reminder'>";
             $sHTMLOutput .= "<ul><li><label for='email_remind_subj_{$grouplang}'>".$clang->gT("Reminder email subject:")."</label>\n"
             . "<input type='text' size='80' name='email_remind_subj_".$esrow['surveyls_language']."' id='email_remind_subj_{$grouplang}' value=\"{$esrow['surveyls_email_remind_subj']}\" />\n"
@@ -163,7 +163,7 @@ class emailtemplates extends Survey_Common_Controller {
             . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_remind_{$grouplang}\",\"email_remind_default_{$grouplang}\")' />\n"
             . "\t</li>\n";
             $sHTMLOutput .="</ul></div>"
-    
+
             ."<div id='tab-{$grouplang}-confirmation'>";
             $sHTMLOutput .= "<ul><li><label for='email_confirm_subj_{$grouplang}'>".$clang->gT("Confirmation email subject:")."</label>\n"
             . "<input type='text' size='80' name='email_confirm_subj_".$esrow['surveyls_language']."' id='email_confirm_subj_{$grouplang}' value=\"{$esrow['surveyls_email_confirm_subj']}\" />\n"
@@ -177,7 +177,7 @@ class emailtemplates extends Survey_Common_Controller {
             . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_{$grouplang}\",\"email_confirm_default_{$grouplang}\")' />\n"
             . "\t</li>\n";
             $sHTMLOutput .="</ul></div>"
-    
+
             ."<div id='tab-{$grouplang}-registration'>";
             $sHTMLOutput .= "<ul><li><label for='email_register_subj_{$grouplang}'>".$clang->gT("Public registration email subject:")."</label>\n"
             . "<input type='text' size='80' name='email_register_subj_".$esrow['surveyls_language']."' id='email_register_subj_{$grouplang}' value=\"{$esrow['surveyls_email_register_subj']}\" />\n"
@@ -191,7 +191,7 @@ class emailtemplates extends Survey_Common_Controller {
             . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
             . "\t</li></ul>";
             $sHTMLOutput .="</div>" // tab
-    
+
             ."</div>" // tabinner
             ."</div>"; // language tab
         }
@@ -202,7 +202,7 @@ class emailtemplates extends Survey_Common_Controller {
         . "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
         . "\t<input type='hidden' name='language' value=\"{$esrow['surveyls_language']}\" />\n"
         . "</form>";
-        
+
         $data['display'] = $sHTMLOutput;
         $this->load->view('survey_view',$data);
         self::_loadEndScripts();
@@ -210,7 +210,7 @@ class emailtemplates extends Survey_Common_Controller {
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-    
+
     /**
      * emailtemplates::update()
      * Function responsible to process any change in email template.
@@ -248,5 +248,5 @@ class emailtemplates extends Survey_Common_Controller {
         }
         redirect('admin/survey/view/'.$surveyid);
     }
-    
+
 }

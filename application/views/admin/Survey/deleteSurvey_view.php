@@ -19,11 +19,12 @@
         <div class='warningheader'><?php echo $clang->gT("Warning"); ?></div><br />
         <strong><?php echo $clang->gT("You are about to delete this survey"); ?> (<?php echo $surveyid; ?>)</strong><br /><br />
         <?php echo $clang->gT("This process will delete this survey, and all related groups, questions answers and conditions."); ?><br /><br />
+        <?php echo $clang->gT("It will also delete any resources/files that have been uploaded for this survey."); ?><br /><br />
         <?php echo $clang->gT("We recommend that before you delete this survey you export the entire survey from the main administration screen.");
 
         if (tableExists("survey_$surveyid"))
         { ?>
-            <br /><br /><?php echo $clang->gT("This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."); ?><br /><br />
+            <br /><br /><?php echo $clang->gT("This survey is active and a responses table exists. If you delete this survey, these responses (and files) will be deleted. We recommend that you export the responses before deleting this survey."); ?><br /><br />
         <?php }
 
         if (tableExists("tokens_$surveyid"))

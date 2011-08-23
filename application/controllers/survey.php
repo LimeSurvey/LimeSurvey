@@ -847,7 +847,7 @@ class survey extends LS_Controller {
 
 		                    foreach ($phparray as $metadata)
 		                    {
-		                        $target = "upload/surveys/".$surveyid."/files/";
+		                        $target = $this->config->item("uploaddir")."/surveys/".$surveyid."/files/";
 		                        // delete those files
 		                        unlink($target.$metadata->filename);
 		                    }

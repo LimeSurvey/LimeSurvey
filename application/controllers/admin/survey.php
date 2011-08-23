@@ -1012,6 +1012,8 @@
                 //$sdel = "DELETE FROM {$dbprefix}quota_members WHERE sid=$surveyid;";
                 //$sres = $connect->Execute($sdel);
                 $this->db->delete('quota_members', array('sid' => $surveyid));
+                rmdirr($this->config->item("uploaddir").'/surveys/'.$surveyid);
+
             }
             $this->load->view('admin/Survey/deleteSurvey_view',$data);
         }
