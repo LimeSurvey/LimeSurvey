@@ -815,7 +815,9 @@ function get2post($url)
 
     foreach ($aqueryitems as $queryitem)
     {
-        list($paramname, $value) = explode ('=', $queryitem);
+        $stack =  explode ('=', $queryitem);
+        $paramname = array_shift($stack);
+        $value = array_shift($stack);
         $arrayParam[] = "'".$paramname."'";
         $arrayVal[] = substr($value, 0, 9) != "document." ? "'".$value."'" : $value;
     }
