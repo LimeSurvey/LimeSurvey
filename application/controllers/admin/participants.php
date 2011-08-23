@@ -4,8 +4,10 @@
  */
 class participants extends Admin_Controller
 {
-/*
+/**
  * This function is responsible for loading the view 'participantsPanel'
+ * @param null
+ * @return Default cpdb page
 */
 function index()
 {
@@ -13,15 +15,16 @@ function index()
     $this->load->model('participant_attribute_model');
     $userid = $this->session->userdata('loginID');
     self::_getAdminHeader();
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) // if superadmin all the records in the cpdb will be displayed
     {
         $totalrecords = $this->participants_model->getParticipantCount();
     }
-    else
+    else                                                 // if not only the participants on which he has right on (shared and owned)
     {
        $totalrecords=$this->participants_model->getParticipantsOwnerCount($userid);
     }
-    $shared = $this->participants_model->getParticipantsSharedCount($userid);
+    // gets the count of participants, their attributes and other such details
+    $shared = $this->participants_model->getParticipantsSharedCount($userid); 
     $owned = $this->participants_model->getParticipantOwnedCount($userid);
     $blacklisted = $this->participants_model->getBlacklistedCount($userid);
     $attributecount = $this->participant_attribute_model->getAttributeCount();
@@ -33,12 +36,15 @@ function index()
                   'attributecount' => $attributecount,
                   'blacklisted' => $blacklisted
                   );    
+    // loads the participant panel and summary view
     $this->load->view('admin/Participants/participantsPanel_view',$data);
     $this->load->view('admin/Participants/summary_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
-/*
+/**
  * This function is responsible for loading the view 'importCSV'
+ * @param null
+ * @return import CSV view
 */
 function importCSV()
 {
@@ -49,8 +55,10 @@ function importCSV()
     $this->load->view('admin/Participants/importCSV_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
-/*
- * This function is responsible for loading the view 'displayParticipants'
+/**
+ * This function is responsible for loading the view 'displayParticipants' which contains the main grid
+ * @param null
+ * @return display participants view 
 */
 function displayParticipants()
 {
@@ -64,27 +72,31 @@ function displayParticipants()
     $attributes = $this->participant_attribute_model->getVisibleAttributes();
     $allattributes = $this->participant_attribute_model->getAllAttributes();
     $attributeValues =$this->participant_attribute_model->getAllAttributesValues();
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN'))
+    // loads the survey names to be shown in add to survey
+    if($this->session->userdata('USER_RIGHT_SUPERADMIN'))  // if user is superadmin, all survey names 
     {
      $surveynames = $this->surveys_model->getALLSurveyNames();   
     }
-    else
+    else                                                   // otherwise owned by him
     {
         $surveynames = $this->surveys_model->getSurveyNames();
     }
-    
+    // data to be passed to view 
     $data = array('names'=> $getNames,
                   'attributes' => $attributes,
                   'allattributes' => $allattributes,
                   'attributeValues' => $attributeValues,
                   'surveynames' =>$surveynames,
                   'clang'=> $clang );
+    // loads the participant panel view and display participant view
     $this->load->view('admin/Participants/participantsPanel_view',$data);
     $this->load->view('admin/Participants/displayParticipants_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
-/*
+/**
  * This function is responsible for loading the view 'blacklistControl'
+ * @param null
+ * @return blacklist control view
 */
 function blacklistControl()
 {
@@ -94,8 +106,10 @@ function blacklistControl()
     $this->load->view('admin/Participants/participantsPanel_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
-/*
+/**
  * This function is responsible for loading the view 'attributeControl'
+ * @param null
+ * @return attribute control view 
 */
 function attributeControl()
 {
@@ -107,8 +121,10 @@ function attributeControl()
     $this->load->view('admin/Participants/attributeControl_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
-/*
+/**
  * This function is responsible for loading the view 'userControl'
+ * @param null
+ * @return user control view
 */
 function userControl()
 {
@@ -120,19 +136,10 @@ function userControl()
     $this->load->view('admin/Participants/userControl_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
-/*
- * This function is responsible for loading the view 'userControl'
-*/
-function signupControl()
-{
-    self::_getAdminHeader();
-    $clang = $this->limesurvey_lang;
-    $data = array('clang'=> $clang);
-    $this->load->view('admin/Participants/participantsPanel_view',$data);
-    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-}
-/*
+/**
  * This function is responsible for loading the view 'sharePanel'
+ * @param null
+ * @return share panel view
 */
 function sharePanel()
 {
@@ -143,12 +150,16 @@ function sharePanel()
     $this->load->view('admin/Participants/sharePanel_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
-/*
+/**
  * This function sends the shared participant info to the share panel using JSON encoding
+ * This function is called after the share panel grid is loaded
+ * This function returns the json depending on the user logged in by checking it from the session
+ * @param it takes the session user data loginID
+ * @return JSON encoded string containg sharing information
  */
 function getShareInfo_json()
 {
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN'))
+    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) // If super administrator all the share info in the links table will be shown
     { 
         $this->load->model('participants_model');
         $this->load->model('users_model');
@@ -167,7 +178,7 @@ function getShareInfo_json()
         }
         echo json_encode($data); 
     }
-    else
+    else            // otherwise only the shared participants by that user 
     {
         $this->load->model('participants_model');
         $this->load->model('users_model');
@@ -187,56 +198,68 @@ function getShareInfo_json()
         echo json_encode($data);
     }
 }
-/*
- * This function is to recieve ajax call from the share Participant's panel
+/**
+ *  This function takes the edit call from the share panel, which either edits or deletes the share information
+ *  Basically takes the call on can_edit
+ *  @param takes parameters from post request 
+ *  @return NULL
  */
 function editShareInfo()
 {
     $operation = $_POST['oper'];
     $this->load->model('participant_shares_model');
     $this->load->model('users_model');
-    if($operation == 'del')
-        {
-            $this->participant_shares_model->deleteRow($_POST);
-        }
+    if($operation == 'del') // If operation is delete , it will delete, otherwise edit it
+    {
+        $this->participant_shares_model->deleteRow($_POST);
+    }
     $data = array( 'participant_id' => $this->input->post('participant_id'),
                    'can_edit' => $this->input->post('can_edit'),
                    'share_uid' => $this->input->post('share_uid'));
     $this->participant_shares_model->updateShare($data);
 }
+/**
+ * This funtion takes the delete call from the display participants and take appropriate action depending on the condition
+ * @param takes from post
+ * @return NULL
+ */
 function delParticipant()
 {
-    
     $this->load->model('participants_model');
     $selectoption = $this->input->post('selectedoption');
     $participant_id = $this->input->post('participant_id');
+    // Deletes from participants only
     if($selectoption=="po")
     {
       $this->participants_model->deleteParticipant($participant_id);
     }
+    // Deletes from central and token table
     elseif($selectoption=="ptt")
     {
        $this->participants_model->deleteParticipantToken($participant_id);
     }
+    // Deletes from central , token and assosiated responses as well
     else
     {
        $this->participants_model->deleteParticipantTokenAnswer($participant_id);
     }
-    
 }
-/*
+/**
  * This function is resposible for editing data on the jqGrid
+ * @param takes from post
+ * @return null
  */
 function editParticipant()
 {
     $operation = $_POST['oper'];
     $this->load->model('participants_model');
     $this->load->model('users_model');
-    //In case the uid is not editable, the current user is added in the uid
+    //In case the uid is not editable, then user id is not posted and hence the current user is added in the uid
     if($this->input->post('owner_uid')=='')
     {
         $oid=$this->session->userdata('loginID');
     }
+    //otherwise the one which is posted is added
     else
     {
         $oid = $_POST['owner_uid'];
@@ -249,6 +272,7 @@ function editParticipant()
     {
         $lang = $_POST['language'];
     }
+    // if edit it will update the row
     if($operation == 'edit')
     {
         $data = array(
@@ -261,6 +285,7 @@ function editParticipant()
         'owner_uid' => $oid);
         $this->participants_model->updateRow($data);
     }
+    // if add it will insert a new row
     elseif($operation == 'add')
     {
         $uuid = $this->gen_uuid();
@@ -274,161 +299,171 @@ function editParticipant()
         $this->participants_model->insertParticipant($data);
     }
 }
-/*
- * This function is responsible for storeing values in the user control to the database
+/**
+ * This function is sotres the user control setting to the database
+ * @param takes from post
+ * @return null
  */        
 function storeUserControlValues()
 {
     $this->load->model('users_model');
-	$this->load->model('settings_global_model');
-	$this->settings_global_model->updateSetting('userideditable',$_POST['userideditable']);
+    $this->load->model('settings_global_model');
+    $this->settings_global_model->updateSetting('userideditable',$_POST['userideditable']);
     redirect('admin/participants/userControl');
 }
+/**
+ * This function recieves an ajax call containing the participant id in the fourth segment of the url
+ * It fetches the links to get all the surveys with which a particular participant is assosiated with 
+ * @param from the uri segment
+ * @return json string cotaining all the links information to be displayed in the subgrid
+ */
 function getSurveyInfo_json()
 {
-        $this->load->model('survey_links_model');
-        $this->load->model('surveys_languagesettings_model');
-        $participantid = $this->uri->segment(4);
-        $records = $this->survey_links_model->getLinkInfo($participantid);
-        $data->page = 1;
-        $data->records = count ($this->survey_links_model->getLinkInfo($participantid)->result_array());
-        $data->total = ceil ($data->records /10 );
-        $i=0;
-        foreach($records->result() as $row)
-        {
-            $surveyname = $this->surveys_languagesettings_model->getSurveyNames($row->survey_id);
-            $data->rows[$i]['cell']=array($surveyname->row()->surveyls_title,"<a href=".site_url("admin/tokens/browse")."/".$row->survey_id.">".$row->survey_id,$row->token_id,$row->date_created);
-            $i++;
-        }
-        echo json_encode($data);
+    $this->load->model('survey_links_model');
+    $this->load->model('surveys_languagesettings_model');
+    $participantid = $this->uri->segment(4);
+    $records = $this->survey_links_model->getLinkInfo($participantid);
+    $data->page = 1;
+    $data->records = count ($this->survey_links_model->getLinkInfo($participantid)->result_array());
+    $data->total = ceil ($data->records /10 );
+    $i=0;
+    foreach($records->result() as $row)
+    {
+        $surveyname = $this->surveys_languagesettings_model->getSurveyNames($row->survey_id);
+        $data->rows[$i]['cell']=array($surveyname->row()->surveyls_title,"<a href=".site_url("admin/tokens/browse")."/".$row->survey_id.">".$row->survey_id,$row->token_id,$row->date_created);
+        $i++;
+    }
+    echo json_encode($data);
 }
+/**
+ * This function returns the count of the participants in the CSV and show it in the title of the modal box
+ * This is to give the user the hint to see the number of participants he is exporting
+ * @param takes the search condition using post
+ * @return the echo statement telling the number of participants exporting
+ */
 function exporttocsvcount()
 {
-        
-        $this->load->model('participants_model');
-        $searchconditionurl = $_POST['searchcondition'];
-        //$searchcondition = explode("/",$searchconditionurl);
-        $searchcondition = basename($searchconditionurl);
-        if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    $this->load->model('participants_model');
+    $searchconditionurl = $_POST['searchcondition'];
+    $searchcondition = basename($searchconditionurl);
+    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants in the cpdb are counted
+    {
+        if($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
-            if($searchcondition != 'getParticipants_json')
+            $condition = explode("||",$searchcondition);  
+            if(count($condition)==3)
             {
-              $condition = explode("||",$searchcondition);  
-               if(count($condition)==3)
-               {
-                    $query = $this-> participants_model->getParticipantsSearch($condition,0,0);
-               }
-               else
-               {
-                    $query = $this-> participants_model->getParticipantsSearchMultiple($condition,0,0);
-               }
+                $query = $this-> participants_model->getParticipantsSearch($condition,0,0);
             }
             else
             {
-                $table_name = 'participants';
-                $getquery = $this->db->get($table_name);
-                $query = $getquery->result_array();
+                $query = $this-> participants_model->getParticipantsSearchMultiple($condition,0,0);
             }
-            
         }
-        else
+        else // if no search criteria all the participants will be counted
         {
-            $userid = $this->session->userdata('loginID');
-            $query = $this->participants_model->getParticipantsOwner($userid);
+            $table_name = 'participants';
+            $getquery = $this->db->get($table_name);
+            $query = $getquery->result_array();
         }
-        $clang = $this->limesurvey_lang;        
-        echo sprintf($clang->gT("Export %s participant(s) to CSV  "),count($query));
+    }
+    else // If no search criteria
+    {
+        $userid = $this->session->userdata('loginID');
+        $query = $this->participants_model->getParticipantsOwner($userid);
+    }
+    $clang = $this->limesurvey_lang;        
+    echo sprintf($clang->gT("Export %s participant(s) to CSV  "),count($query));
 }
+/**
+ * This function returns the count of 
+ */
 function exporttocsvcountAll()
 {
-        $this->load->model('participants_model');
-       if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
-        {
-                $table_name = 'participants';
-                $getquery = $this->db->get($table_name);
-                $query = $getquery->result_array();
-        }
-        else
-        {
-            $userid = $this->session->userdata('loginID');
-            $query = $this->participants_model->getParticipantsOwner($userid);
-        }
-        $clang = $this->limesurvey_lang;        
-        if(count($query) > 0 )
-        {
-            echo sprintf($clang->gT("Export %s participant(s) to CSV  "),count($query));
-        }
-        else
-        {
-            echo count($query);
-        }
+    $this->load->model('participants_model');
+    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    {
+        $table_name = 'participants';
+        $getquery = $this->db->get($table_name);
+        $query = $getquery->result_array();
+    }
+    else
+    {
+        $userid = $this->session->userdata('loginID');
+        $query = $this->participants_model->getParticipantsOwner($userid);
+    }
+    $clang = $this->limesurvey_lang;        
+    if(count($query) > 0 )
+    {
+        echo sprintf($clang->gT("Export %s participant(s) to CSV  "),count($query));
+    }
+    else
+    {
+        echo count($query);
+    }
 }
 function exporttocsvAll()
 {
-        $this->load->helper("export");
-	$this->load->model('participant_attribute_model');
-        $this->load->model('participants_model');
-        if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
-        {
-                $table_name = 'participants';
-                $getquery = $this->db->get($table_name);
-                $query = $getquery->result_array();
-        }
-        else
-        {
-            $userid = $this->session->userdata('loginID');
-            $query = $this->participants_model->getParticipantsOwner($userid);
-        }
+    $this->load->helper("export");
+    $this->load->model('participant_attribute_model');
+    $this->load->model('participants_model');
+    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    {
+        $table_name = 'participants';
+        $getquery = $this->db->get($table_name);
+        $query = $getquery->result_array();
+    }
+    else
+    {
+        $userid = $this->session->userdata('loginID');
+        $query = $this->participants_model->getParticipantsOwner($userid);
+    }
+    if(!$query)
+       return false;
         
-        if(!$query)
-            return false;
-        
-        $fields = array ('participant_id','firstname','lastname' ,'email' ,'language' ,'blacklisted','owner_uid' );
-        $i = 0;
-        $outputarray = array();
-        $this->hasOutputHeader = true;
+    $fields = array ('participant_id','firstname','lastname' ,'email' ,'language' ,'blacklisted','owner_uid' );
+    $i = 0;
+    $outputarray = array();
+    $this->hasOutputHeader = true;
+    foreach ($fields as $field)
+    {
+        $outputarray[0][$i]=$field;
+        $i++;
+    }
+    $attributenames = $this->participant_attribute_model->getAttributes();
+    foreach($attributenames as $key=>$value)
+    {
+        $outputarray[0][$i]=$value['attribute_name'];
+        $i++;
+    }
+    // Fetching the table data
+    $i = 1;
+    $j = 0;
+    foreach($query as $field => $data)
+    {
         foreach ($fields as $field)
         {
-            $outputarray[0][$i]=$field;
-            $i++;
+            $outputarray[$i][$j]=$data[$field]; 
+            $j++;
         }
-        $attributenames = $this->participant_attribute_model->getAttributes();
         foreach($attributenames as $key=>$value)
         {
-            
-            $outputarray[0][$i]=$value['attribute_name'];
-            //$outputarray[0][$i]=$value;
-            $i++;
-        
-        }
-        // Fetching the table data
-        $i = 1;
-        $j = 0;
-        foreach($query as $field => $data)
-        {
-            foreach ($fields as $field)
+            $answer=$this->participant_attribute_model->getAttributeValue($data['participant_id'],$value['attribute_id']);
+            if(isset($answer->value))
             {
-               $outputarray[$i][$j]=$data[$field]; 
+                $outputarray[$i][$j]=$answer->value; 
                 $j++;
             }
-            foreach($attributenames as $key=>$value)
+            else
             {
-                $answer=$this->participant_attribute_model->getAttributeValue($data['participant_id'],$value['attribute_id']);
-                if(isset($answer->value))
-                {
-                    $outputarray[$i][$j]=$answer->value; 
-                    $j++;
-                }
-                else
-                {
-                    $outputarray[$i][$j]=""; 
-                    $j++;
-                }
-                
+                $outputarray[$i][$j]=""; 
+                $j++;
             }
-            $i++;
-        }    $this->load->helper('date');
-cpdb_export($outputarray,"central_".now());
+        }
+        $i++;
+    }    
+    $this->load->helper('date');
+    cpdb_export($outputarray,"central_".now());
 }
 function getaddtosurveymsg()
 {
@@ -464,12 +499,10 @@ function getaddtosurveymsg()
        echo sprintf($clang->gT("%s participant(s) are to be copied "),count($query->result_array()));
        
     }
- 
-    
 }
 function getSearchIDs()
 {
-     $this->load->model('participants_model');
+    $this->load->model('participants_model');
     $searchcondition = basename($this->input->post('searchcondition'));
     if($searchcondition != 'getParticipants_json')
     {
@@ -489,7 +522,7 @@ function getSearchIDs()
             $participantid  = $participantid.",".$value['participant_id'];
             
         }
-    echo $participantid;
+        echo $participantid;
     }
     else
     {
@@ -506,7 +539,6 @@ function getSearchIDs()
         foreach($query->result_array() as $key=>$value)
         {
             $participantid  = $participantid.",".$value['participant_id'];
-            
         }
     echo $participantid;
     }
@@ -514,25 +546,24 @@ function getSearchIDs()
 function exporttocsv()
 {
     $this->load->helper('export');
-        $this->load->model('participant_attribute_model');
-        $this->load->model('participants_model');
-        $searchconditionurl = $_POST['searchcondition'];
-        //$searchcondition = explode("/",$searchconditionurl);
-        $searchcondition = basename($searchconditionurl);
-        if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    $this->load->model('participant_attribute_model');
+    $this->load->model('participants_model');
+    $searchconditionurl = $_POST['searchcondition'];
+    $searchcondition = basename($searchconditionurl);
+    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    {
+        if($searchcondition != 'getParticipants_json')
         {
-            if($searchcondition != 'getParticipants_json')
+            $condition = explode("||",$searchcondition);  
+            if(count($condition)==3)
             {
-               $condition = explode("||",$searchcondition);  
-               if(count($condition)==3)
-               {
-                    $query = $this-> participants_model->getParticipantsSearch($condition,0,0);
-               }
-               else
-               {
-                    $query = $this-> participants_model->getParticipantsSearchMultiple($condition,0,0);
-               }
+                $query = $this-> participants_model->getParticipantsSearch($condition,0,0);
             }
+            else
+            {
+                $query = $this-> participants_model->getParticipantsSearchMultiple($condition,0,0);
+            }
+        }
             else
             {
                 $table_name = 'participants';
@@ -540,26 +571,25 @@ function exporttocsv()
                 $query = $getquery->result_array();
             }
             
-        }
-        else
-        {
-            $userid = $this->session->userdata('loginID');
-            $query = $this->participants_model->getParticipantsOwner($userid);
-        }
-        
-        if(!$query)
-            return false;
-        // Field names in the first row
-        $fields = array ('participant_id','firstname','lastname' ,'email' ,'language' ,'blacklisted','owner_uid' );
-        $i = 0;
-        $outputarray = array();
-        foreach ($fields as $field)
-        {
-            $outputarray[0][$i]=$field;
-            $i++;
-        }
-        if($this->uri->segment(4) == "null")
-        {
+    }
+    else
+    {
+        $userid = $this->session->userdata('loginID');
+        $query = $this->participants_model->getParticipantsOwner($userid);
+    }
+    if(!$query)
+    return false;
+    // Field names in the first row
+    $fields = array ('participant_id','firstname','lastname' ,'email' ,'language' ,'blacklisted','owner_uid' );
+    $i = 0;
+    $outputarray = array();
+    foreach ($fields as $field)
+    {
+        $outputarray[0][$i]=$field;
+        $i++;
+    }
+    if($this->uri->segment(4) == "null")
+    {
         // Fetching the table data        
         // Fetching the table data
         $i = 1;
@@ -568,32 +598,31 @@ function exporttocsv()
         {
             foreach ($fields as $field)
             {
-               $outputarray[$i][$j]=$data[$field]; 
+                $outputarray[$i][$j]=$data[$field]; 
                 $j++;
             }
             $i++;
          }
-          $this->load->helper('date');
-          cpdb_export($outputarray,"central_".now());
-        }
-        else
+         $this->load->helper('date');
+         cpdb_export($outputarray,"central_".now());
+    }
+    else
+    {
+        $attribute_id=explode(",",$this->uri->segment(4));
+        foreach($attribute_id as $key=>$value)
         {
-            $attribute_id=explode(",",$this->uri->segment(4));
-            foreach($attribute_id as $key=>$value)
-            {
-                $attributename = $this->participant_attribute_model->getAttributeName($value);
-                $outputarray[0][$i]=$attributename->attribute_name;
-                $i++;
-                
-            }
-            $i = 1;
-            $j = 0;
-            // Fetching the table data
-             foreach($query as $field => $data)
-            {
+            $attributename = $this->participant_attribute_model->getAttributeName($value);
+            $outputarray[0][$i]=$attributename->attribute_name;
+            $i++;
+        }
+        $i = 1;
+        $j = 0;
+        // Fetching the table data
+        foreach($query as $field => $data)
+        {
             foreach ($fields as $field)
             {
-               $outputarray[$i][$j]=$data[$field]; 
+                $outputarray[$i][$j]=$data[$field]; 
                 $j++;
             }
             foreach($attribute_id as $key=>$value)
@@ -609,14 +638,12 @@ function exporttocsv()
                     $outputarray[$i][$j]=""; 
                     $j++;
                 }
-                
             }
             $i++;
-            }
-            
-            $this->load->helper('date');
-          cpdb_export($outputarray,"central_".now());
         }
+        $this->load->helper('date');
+        cpdb_export($outputarray,"central_".now());
+    }
 }
 function getParticipantsResults_json()
 {
@@ -640,7 +667,6 @@ function getParticipantsResults_json()
             $data->page = $page;
             $data->records = count ($this->participants_model->getParticipantsSearch($condition,0,0));
             $data->total = ceil ($data->records /$limit );
-        
         }
         else
         {
@@ -649,11 +675,9 @@ function getParticipantsResults_json()
             $data->records = count ($this->participants_model->getParticipantsSearchMultiple($condition,0,0));
             $data->total = ceil ($data->records /$limit );
         }
-        
-     
         $i=0;
         foreach($records as $row=>$value)
-            {   
+        {   
             $username = $this->users_model->getName($value['owner_uid']);//for conversion of uid to human readable names
             $surveycount = $this->participants_model->getSurveyCount($value['participant_id']);
             $sortablearray[$i]=array($value['participant_id'],"true",$value['firstname'],$value['lastname'],$value['email'],$value['blacklisted'],$surveycount,$value['language'],$username->full_name);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is 
@@ -672,38 +696,40 @@ function getParticipantsResults_json()
             }
             $i++;
         }
-        function subval_sort($a,$subkey,$order) {
-            	foreach($a as $k=>$v) {
-        		$b[$k] = strtolower($v[$subkey]);
-        	}
-                if($order == "asc")
-                {
-                    asort($b,SORT_REGULAR);
-                }
-        	else
-                {
-                    arsort($b,SORT_REGULAR);
-                }
-        	foreach($b as $key=>$val) {
-        		$c[] = $a[$key];
-                }
-                return $c;
-            }
-            $indexsort = array_search($this->input->post('sidx'), $participantfields);
-            $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
-            $i=0;
-            $count = count($sortedarray[0]);
-            foreach($sortedarray as $key=>$value)
+        function subval_sort($a,$subkey,$order) 
+        {
+            foreach($a as $k=>$v) 
             {
-                $data->rows[$i]['id']=$value[0];   
-                $data->rows[$i]['cell'] = array();
-                for($j=0 ; $j < $count ; $j++)
-                {
-                    array_push($data->rows[$i]['cell'],$value[$j]);
-                }
-                $i++;
+                $b[$k] = strtolower($v[$subkey]);
             }
-            
+            if($order == "asc")
+            {
+                asort($b,SORT_REGULAR);
+            }
+            else
+            {
+                arsort($b,SORT_REGULAR);
+            }
+            foreach($b as $key=>$val) 
+            {
+                $c[] = $a[$key];
+            }
+            return $c;
+        }
+        $indexsort = array_search($this->input->post('sidx'), $participantfields);
+        $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
+        $i=0;
+        $count = count($sortedarray[0]);
+        foreach($sortedarray as $key=>$value)
+        {
+            $data->rows[$i]['id']=$value[0];   
+            $data->rows[$i]['cell'] = array();
+            for($j=0 ; $j < $count ; $j++)
+            {
+                array_push($data->rows[$i]['cell'],$value[$j]);
+            }
+            $i++;
+        }
         echo json_encode($data);
     }
     else // Only the owned and shared participants will be visible
@@ -714,10 +740,8 @@ function getParticipantsResults_json()
         $condition = explode("||",$searchcondition);        
         if(count($condition)==3)
         {
-            
             $records = $this-> participants_model->getParticipantsSearch($condition,$page,$limit);
             $data->page = $page;
-                 
         }
         else
         {
@@ -726,7 +750,7 @@ function getParticipantsResults_json()
         }
         $i=0;
         foreach($records as $row=>$value)
-            {
+        {
             if($this->participants_model->is_owner($value['participant_id']))
             {
                 $username = $this->users_model->getName($value['owner_uid']);//for conversion of uid to human readable names
@@ -748,43 +772,45 @@ function getParticipantsResults_json()
             $i++;
             }
         }
-        
-        function subval_sort($a,$subkey,$order) {
-            	foreach($a as $k=>$v) {
-        		$b[$k] = strtolower($v[$subkey]);
-        	}
-                if($order == "asc")
-                {
-                    asort($b,SORT_REGULAR);
-                }
-        	else
-                {
-                    arsort($b,SORT_REGULAR);
-                }
-        	foreach($b as $key=>$val) {
-        		$c[] = $a[$key];
-                }
-                return $c;
-            }
-            if(!empty($sortablearray))
+        function subval_sort($a,$subkey,$order) 
+        {
+            foreach($a as $k=>$v) 
             {
-                $data->records = count($sortablearray);
-                $data->total = ceil (count($sortablearray) /$limit );
-                $indexsort = array_search($this->input->post('sidx'), $participantfields);
-                $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
-                $i=0;
-                $count = count($sortedarray[0]);
-                foreach($sortedarray as $key=>$value)
-                {
-                    $data->rows[$i]['id']=$value[0];   
-                    $data->rows[$i]['cell'] = array();
-                    for($j=0 ; $j < $count ; $j++)
-                    {
-                        array_push($data->rows[$i]['cell'],$value[$j]);
-                    }
-                    $i++;
-                }
+                $b[$k] = strtolower($v[$subkey]);
             }
+            if($order == "asc")
+            {
+                asort($b,SORT_REGULAR);
+            }
+            else
+            {
+                arsort($b,SORT_REGULAR);
+            }
+            foreach($b as $key=>$val) 
+            {
+                $c[] = $a[$key];
+            }
+            return $c;
+        }   
+        if(!empty($sortablearray))
+        {
+            $data->records = count($sortablearray);
+            $data->total = ceil (count($sortablearray) /$limit );
+            $indexsort = array_search($this->input->post('sidx'), $participantfields);
+            $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
+            $i=0;
+            $count = count($sortedarray[0]);
+            foreach($sortedarray as $key=>$value)
+            {
+                $data->rows[$i]['id']=$value[0];   
+                $data->rows[$i]['cell'] = array();
+                for($j=0 ; $j < $count ; $j++)
+                {
+                    array_push($data->rows[$i]['cell'],$value[$j]);
+                }
+                $i++;
+            }
+        }
         echo json_encode($data);
     }
     
@@ -816,8 +842,6 @@ function getParticipants_json()
         $i=0;
         foreach($records->result() as $row)
         {   
-            //$data->rows[$i]['id']=$row->participant_id;
-            //$sortablearray[$i]['id']=$row->participant_id;
             $username = $this->users_model->getName($row->owner_uid);//for conversion of uid to human readable names
             $surveycount = $this->participants_model->getSurveyCount($row->participant_id);
             $sortablearray[$i]=array($row->participant_id,"true",$row->firstname,$row->lastname,$row->email,$row->blacklisted,$surveycount,$row->language ,$username->full_name);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is 
@@ -836,39 +860,41 @@ function getParticipants_json()
             }
             $i++;
         }
-         function subval_sort($a,$subkey,$order) {
-            	foreach($a as $k=>$v) {
-        		$b[$k] = strtolower($v[$subkey]);
-        	}
-                if($order == "asc")
-                {
-                    asort($b,SORT_REGULAR);
-                }
-        	else
-                {
-                    arsort($b,SORT_REGULAR);
-                }
-        	foreach($b as $key=>$val) {
-        		$c[] = $a[$key];
-                }
-                return $c;
-            }
-            $indexsort = array_search($this->input->post('sidx'), $participantfields);
-            $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
-            $i=0;
-            $count = count($sortedarray[0]);
-            foreach($sortedarray as $key=>$value)
+        function subval_sort($a,$subkey,$order) 
+        {
+            foreach($a as $k=>$v) 
             {
-                $data->rows[$i]['id']=$value[0];   
-                $data->rows[$i]['cell'] = array();
-                for($j=0 ; $j < $count ; $j++)
-                {
-                    array_push($data->rows[$i]['cell'],$value[$j]);
-                }
-                $i++;
+                $b[$k] = strtolower($v[$subkey]);
             }
-            
-          echo json_encode($data);
+            if($order == "asc")
+            {
+                asort($b,SORT_REGULAR);
+            }
+            else
+            {
+                arsort($b,SORT_REGULAR);
+            }
+            foreach($b as $key=>$val) 
+            {
+                $c[] = $a[$key];
+            }
+            return $c;
+        }
+        $indexsort = array_search($this->input->post('sidx'), $participantfields);
+        $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
+        $i=0;
+        $count = count($sortedarray[0]);
+        foreach($sortedarray as $key=>$value)
+        {
+            $data->rows[$i]['id']=$value[0];   
+            $data->rows[$i]['cell'] = array();
+            for($j=0 ; $j < $count ; $j++)
+            {
+                array_push($data->rows[$i]['cell'],$value[$j]);
+            }
+            $i++;
+        }
+        echo json_encode($data);
     }
     else // Only the owned and shared participants will be visible
     {
@@ -900,37 +926,40 @@ function getParticipants_json()
                 }
             $i++;
         }
-        function subval_sort($a,$subkey,$order) {
-            	foreach($a as $k=>$v) {
-        		$b[$k] = strtolower($v[$subkey]);
-        	}
-                if($order == "asc")
-                {
-                    asort($b,SORT_REGULAR);
-                }
-        	else
-                {
-                    arsort($b,SORT_REGULAR);
-                }
-        	foreach($b as $key=>$val) {
-        		$c[] = $a[$key];
-                }
-                return $c;
-            }
-            $indexsort = array_search($this->input->post('sidx'), $participantfields);
-            $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
-            $i=0;
-            $count = count($sortedarray[0]);
-            foreach($sortedarray as $key=>$value)
+        function subval_sort($a,$subkey,$order) 
+        {
+            foreach($a as $k=>$v) 
             {
-                $data->rows[$i]['id']=$value[0];   
-                $data->rows[$i]['cell'] = array();
-                for($j=0 ; $j < $count ; $j++)
-                {
-                    array_push($data->rows[$i]['cell'],$value[$j]);
-                }
-                $i++;
+                $b[$k] = strtolower($v[$subkey]);
             }
+            if($order == "asc")
+            {
+                asort($b,SORT_REGULAR);
+            }
+            else
+            {
+                arsort($b,SORT_REGULAR);
+            }
+            foreach($b as $key=>$val) 
+            {
+                $c[] = $a[$key];
+            }
+            return $c;
+        }
+        $indexsort = array_search($this->input->post('sidx'), $participantfields);
+        $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord')); 
+        $i=0;
+        $count = count($sortedarray[0]);
+        foreach($sortedarray as $key=>$value)
+        {
+            $data->rows[$i]['id']=$value[0];   
+            $data->rows[$i]['cell'] = array();
+            for($j=0 ; $j < $count ; $j++)
+            {
+                array_push($data->rows[$i]['cell'],$value[$j]);
+            }
+            $i++;
+        }
         echo json_encode($data);
     }
 }
@@ -1555,29 +1584,28 @@ function attributeMap()
     $i=0;
     $j=0;
     foreach($tokenattributefieldnames as $key=>$value)
+    {
+        if(is_numeric($value[10]))
         {
-            if(is_numeric($value[10]))
-            {
-                $selectedattribute[$i] = $value;
-                $i++;
-            }
-            else
-            {
-                array_push($alreadymappedattid,substr($value,15));
-                
-            }
+            $selectedattribute[$i] = $value;
+            $i++;
         }
+        else
+        {
+            array_push($alreadymappedattid,substr($value,15));
+        }
+    }
     foreach($attributes as $row)
+    {
+        if(!in_array($row['attribute_id'],$alreadymappedattid))
         {
-            if(!in_array($row['attribute_id'],$alreadymappedattid))
-            {
-                 $selectedcentralattribute[$row['attribute_id']] = $row['attribute_name'];
-            }
-            else
-            {
-                array_push($alreadymappedattname,$row['attribute_name']);
-            }
+            $selectedcentralattribute[$row['attribute_id']] = $row['attribute_name'];
         }
+        else
+        {
+            array_push($alreadymappedattname,$row['attribute_name']);
+        }
+    }
     $data = array('clang'=> $clang,
                   'selectedcentralattribute' => $selectedcentralattribute,
                   'selectedtokenattribute' => $selectedattribute,
@@ -1607,24 +1635,24 @@ function attributeMapToken()
     $i=0;
     $j=0;
     foreach($tokenattributefieldnames as $key=>$value)
+    {
+        if(is_numeric($key[10]))
         {
-            if(is_numeric($key[10]))
-            {
-               $selectedattribute[$value] = $key;
-            }
-            else
-            {
-                array_push($alreadymappedattid,substr($key,15));
-                array_push($alreadymappedattdisplay,$key);
-            }
+            $selectedattribute[$value] = $key;
         }
+        else
+        {
+            array_push($alreadymappedattid,substr($key,15));
+            array_push($alreadymappedattdisplay,$key);
+        }
+    }
     foreach($attributes as $row)
+    {
+        if(!in_array($row['attribute_id'],$alreadymappedattid))
         {
-            if(!in_array($row['attribute_id'],$alreadymappedattid))
-            {
-                 $selectedcentralattribute[$row['attribute_id']] = $row['attribute_name'];
-            }
+            $selectedcentralattribute[$row['attribute_id']] = $row['attribute_name'];
         }
+    }
     $data = array('clang'=> $clang,
                   'attribute' => $selectedcentralattribute,
                   'tokenattribute'=>$selectedattribute,
@@ -1637,57 +1665,52 @@ function mapCSVcancelled()
     unlink('tmp/uploads/'.basename($_POST['fullfilepath']));
 }
 function blacklistParticipant()
+{
+    $this->load->model('participants_model');
+    $participant_id = $this->uri->segment(4);
+    $survey_id = $this->uri->segment(5);
+    $clang = $this->limesurvey_lang;
+    if(!is_numeric($survey_id))
     {
-        $this->load->model('participants_model');
-        $participant_id = $this->uri->segment(4);
-        $survey_id = $this->uri->segment(5);
-        $clang = $this->limesurvey_lang;
-        if(!is_numeric($survey_id))
+        $blacklist = $this->uri->segment(5);
+        if($blacklist=='Y' || $blacklist =='N')
         {
-            $blacklist = $this->uri->segment(5);
-            if($blacklist=='Y' || $blacklist =='N')
-            {
-                $data = array('blacklisted' => $blacklist,'participant_id' => $participant_id );
-                $result = $this->participants_model->blacklistparticipantglobal($data);
-                $result['global'] = 1;
-                $result['clang'] = $clang;
-                $result['blacklist'] = $blacklist;
-                $this->load->view('admin/Participants/blacklist_view',$result);
-            }
-            else
-            {
-                $result['is_participant']=0;
-                $result['is_updated']=0;
-                $result['clang'] = $clang;
-                $this->load->view('admin/Participants/blacklist_view',$result);
-            }
+            $data = array('blacklisted' => $blacklist,'participant_id' => $participant_id );
+            $result = $this->participants_model->blacklistparticipantglobal($data);
+            $result['global'] = 1;
+            $result['clang'] = $clang;
+            $result['blacklist'] = $blacklist;
+            $this->load->view('admin/Participants/blacklist_view',$result);
         }
         else
         {
-            $blacklist = $this->uri->segment(6);
-            if( $blacklist=='Y' || $blacklist =='N')
-            {
-                $data = array('blacklisted' => $blacklist);
-                $result = $this->participants_model->blacklistparticipantlocal($data,$survey_id,$participant_id);$result['global'] = 1;
-                $result['clang'] = $clang;
-                $result['local'] = 1;
-                $result['blacklist'] = $blacklist;
-                $this->load->view('admin/Participants/blacklist_view',$result);
-                
-            }
-            else
-            {
-                $result['is_participant']=0;
-                $result['is_updated']=0;
-                $result['clang'] = $clang;
-                $this->load->view('admin/Participants/blacklist_view',$result);
-   
-            }
-            
+            $result['is_participant']=0;
+            $result['is_updated']=0;
+            $result['clang'] = $clang;
+            $this->load->view('admin/Participants/blacklist_view',$result);
         }
-           
-        
     }
+    else
+    {
+        $blacklist = $this->uri->segment(6);
+        if( $blacklist=='Y' || $blacklist =='N')
+        {
+            $data = array('blacklisted' => $blacklist);
+            $result = $this->participants_model->blacklistparticipantlocal($data,$survey_id,$participant_id);$result['global'] = 1;
+            $result['clang'] = $clang;
+            $result['local'] = 1;
+            $result['blacklist'] = $blacklist;
+            $this->load->view('admin/Participants/blacklist_view',$result);
+        }
+        else
+        {
+            $result['is_participant']=0;
+            $result['is_updated']=0;
+            $result['clang'] = $clang;
+            $this->load->view('admin/Participants/blacklist_view',$result);
+        }
+    }
+}
 function saveVisible()
 {
     $this->load->model('participant_attribute_model');

@@ -42,7 +42,10 @@ else
 $j=1;
 $lang = '{"name":"language", "index":"language", "sorttype":"string", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{"value":"';
 $getlangvalues = getLanguageData();
-$lname[0]=$this->session->userdata('adminlang').":".$getlangvalues[$this->session->userdata('adminlang')]['description'];
+if($this->session->userdata('adminlang')!='auto')
+{
+    $lname[0]=$this->session->userdata('adminlang').":".$getlangvalues[$this->session->userdata('adminlang')]['description'];
+}
 foreach ($getlangvalues as $keycode => $keydesc) {
                 if($this->session->userdata('adminlang')!=$keycode)
                 {
