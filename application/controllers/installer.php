@@ -59,7 +59,7 @@ class Installer extends CI_Controller {
     {
         if (!file_exists($this->config->item('rootdir').'/tmp/sample_installer_file.txt'))
         {
-            show_error("Installation has been done already.");
+            show_error('Installation has been done already.');
             exit();
         }
 
@@ -76,64 +76,48 @@ class Installer extends CI_Controller {
     {
 
         switch($step){
-            case "license" :
+            case 'license' :
             {
 
-                // $data array contain all the information required by view.
-                $data['title']="License";
-                $data['descp']="GNU General Public License:";
-                $data['classesForStep']=array("on","off","off","off","off");
-                $data['progressValue']=0;
+                // $aData array contain all the information required by view.
+                $aData['title']='License';
+                $aData['descp']='GNU General Public License:';
+                $aData['classesForStep']=array('on','off','off','off','off');
+                $aData['progressValue']=0;
 
-                $this->load->view('installer/license_view',$data);
+                $this->load->view('installer/license_view',$aData);
                 break;
             }
-            // time to check few writing permissions and optional settings.
+            // time to check a few writing permissions and optional settings.
             case 0:
             {
-                //check user checked the checkbox. if yes,save the status
-                if ($this->input->post('accept'))
-                {
-
-                    $statusdata = array(
-                        'license'  => 'TRUE'
-                    );
-                    $this->session->set_userdata($statusdata);
-                }
-                //if the staus is false, redirect to license view
-                $status=$this->session->userdata('license');
-                if(!$status) {
-                redirect(site_url('installer/install/license'));
-                }
                 //usual data required by view
-                $data['title']="Pre-installation check";
-                $data['descp']="Pre-installation check for LimeSurvey ".$this->config->item('versionnumber');
-                $data['classesForStep']=array("off","on","off","off","off");
-                $data['progressValue']=20;
-                $data['phpVersion'] = phpversion();
+                $aData['title']='Pre-installation check';
+                $aData['descp']='Pre-installation check for LimeSurvey '.$this->config->item('versionnumber');
+                $aData['classesForStep']=array('off','on','off','off','off');
+                $aData['progressValue']=20;
+                $aData['phpVersion'] = phpversion();
                 // variable storing next button link.initially null
-                $data['next']="";
+                $aData['next']='';
 
                 //proceed variable check if all requirements are true. If any of them is false, proceed is set false.
-                $proceed = true; //lets be optimistic!
+                $bProceed = true; //lets be optimistic!
 
                 //  version check
-                $ver = explode( '.', PHP_VERSION );
-                $ver_num = $ver[0] . $ver[1] . $ver[2];
-
-                if ($ver_num < 500)
+                if (version_compare(PHP_VERSION, '5.1.6', '<'))
                 {
-                    $proceed=false;
+                    $bProceed=false;
+                    $aData['verror'] = true;
                 }
 
 
                 //mbstring library check
                 if ( function_exists('mb_convert_encoding') )
-                $data['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
+                $aData['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
                 else
                 {
-                    $data['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
-                    $proceed=false;
+                    $aData['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
+                    $bProceed=false;
                 }
 
                 //directory permissions checking
@@ -141,97 +125,97 @@ class Installer extends CI_Controller {
 
                 if (file_exists($this->config->item('rootdir')))
                 {
-                    $data['directoryPresent'] = "Found";
+                    $aData['directoryPresent'] = "Found";
                     //echo octal_permissions(fileperms($rootdir)) ;
                     //if( octal_permissions(fileperms($rootdir))>=666 )
                     if (is_writable($this->config->item('rootdir')))
-                    $data['directoryWritable'] = "Writable";
+                    $aData['directoryWritable'] = "Writable";
                     else
                     {
-                        $data['directoryWritable'] = "Unwritable";
-                        $data['derror'] = true;
-                        $proceed=false;
+                        $aData['directoryWritable'] = "Unwritable";
+                        $aData['derror'] = true;
+                        $bProceed=false;
                     }
 
                 }
                 else
                 {
-                    $data['directoryPresent'] = "Not Found";
-                    $data['directoryWritable'] = "";
-                    $data['derror'] = true;
-                    $proceed=false;
+                    $aData['directoryPresent'] = "Not Found";
+                    $aData['directoryWritable'] = "";
+                    $aData['derror'] = true;
+                    $bProceed=false;
                 }
                 // tmp directory check
 
                 if (file_exists($this->config->item('rootdir').'/tmp/'))
                 {
-                    $data['tmpdirPresent'] = "Found";
+                    $aData['tmpdirPresent'] = "Found";
                     //echo octal_permissions(fileperms($rootdir."/tmp/"));
                     //if( octal_permissions(fileperms($rootdir."/tmp/"))>=666 )
                     if (is_writable($this->config->item('rootdir').'/tmp/'))
-                    $data['tmpdirWritable'] = "Writable";
+                    $aData['tmpdirWritable'] = "Writable";
                     else
                     {
-                        $data['tmpdirWritable'] = "Unwritable";
-                        $data['terror'] = true;
-                        $proceed=false;
+                        $aData['tmpdirWritable'] = "Unwritable";
+                        $aData['terror'] = true;
+                        $bProceed=false;
                     }
 
                 }
                 else
                 {
-                    $data['tmpdirPresent'] = "Not Found";
-                    $data['tmpdirWritable'] = "";
-                    $data['terror'] = true;
-                    $proceed=false;
+                    $aData['tmpdirPresent'] = "Not Found";
+                    $aData['tmpdirWritable'] = "";
+                    $aData['terror'] = true;
+                    $bProceed=false;
                 }
                 // templates directory check
 
                 if (file_exists($this->config->item('rootdir').'/templates/'))
                 {
-                    $data['templatedirPresent'] = "Found";
+                    $aData['templatedirPresent'] = "Found";
                     //echo octal_permissions(fileperms($rootdir."/template/"));
                     //if( octal_permissions(fileperms($rootdir."/template/"))>=666 )
                     if (is_writable($this->config->item('rootdir').'/templates/'))
-                    $data['templatedirWritable'] = "Writable";
+                    $aData['templatedirWritable'] = "Writable";
                     else
                     {
-                        $data['templatedirWritable'] = "Unwritable";
-                        $data['tperror'] = true;
-                        $proceed=false;
+                        $aData['templatedirWritable'] = "Unwritable";
+                        $aData['tperror'] = true;
+                        $bProceed=false;
                     }
 
                 }
                 else
                 {
-                    $data['templatedirPresent'] = "Not Found";
-                    $data['templatedirWritable'] = "";
-                    $data['tperror'] = true;
-                    $proceed=false;
+                    $aData['templatedirPresent'] = "Not Found";
+                    $aData['templatedirWritable'] = "";
+                    $aData['tperror'] = true;
+                    $bProceed=false;
                 }
                 //upload directory check
 
                 if (file_exists($this->config->item('rootdir').'/upload/'))
                 {
-                    $data['uploaddirPresent'] = "Found";
+                    $aData['uploaddirPresent'] = "Found";
                     //echo octal_permissions(fileperms($rootdir."/upload/"));
                     //if( octal_permissions(fileperms($rootdir."/upload/"))>=666 )
                     if (is_writable($this->config->item('rootdir').'/upload/'))
-                    $data['uploaddirWritable'] = "Writable";
+                    $aData['uploaddirWritable'] = "Writable";
                     else
                     {
-                        $data['uploaddirWritable'] = "Unwritable";
-                        $data['uerror'] = true;
-                        $proceed=false;
+                        $aData['uploaddirWritable'] = "Unwritable";
+                        $aData['uerror'] = true;
+                        $bProceed=false;
                     }
 
                 }
                 else
                 {
-                    $data['uploaddirPresent'] = "Not Found";
-                    $data['uploaddirWritable'] = "";
-                    $data['uerror'] = true;
-                    $proceed=false;
+                    $aData['uploaddirPresent'] = "Not Found";
+                    $aData['uploaddirWritable'] = "";
+                    $aData['uerror'] = true;
+                    $bProceed=false;
                 }
 
                 //optional settings check
@@ -239,24 +223,24 @@ class Installer extends CI_Controller {
                 $gdArray = gd_info();
 
                 if ( $gdArray["FreeType Support"] )
-                $data['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
+                $aData['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
                 else
-                $data['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
+                $aData['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
                 //ldap library check
                 if ( function_exists('ldap_connect') )
-                $data['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
+                $aData['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
                 else
-                $data['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
+                $aData['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
                 //php zip library check
                 if ( function_exists('zip_open') )
-                $data['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
+                $aData['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
                 else
-                $data['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
+                $aData['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
                 //zlib php library check
                 if ( function_exists('zlib_get_coding_type') )
-                $data['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
+                $aData['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
                 else
-                $data['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
+                $aData['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
 
 
 
@@ -266,16 +250,16 @@ class Installer extends CI_Controller {
 
 
                 //after all check, if flag value is true, show next button and sabe step2 status.
-                if ($proceed)
+                if ($bProceed)
                 {
-                    $data['next']=TRUE;
-                    $statusdata = array(
+                    $aData['next']=TRUE;
+                    $aStatusdata = array(
                         'step2'  => 'TRUE'
                     );
-                    $this->session->set_userdata($statusdata);
+                    $this->session->set_userdata($aStatusdata);
                 }
 
-                $this->load->view('installer/precheck_view',$data);
+                $this->load->view('installer/precheck_view',$aData);
                 break;
             }
             // Configure database screen
@@ -284,16 +268,16 @@ class Installer extends CI_Controller {
                 //check if user has completed step2
                 $status=$this->session->userdata('step2');
                 if(!$status) {
-                redirect(site_url('installer/install/license'));
+                    redirect(site_url('installer/install/license'));
                 }
 
                 //usual data required by view
-                $data['title']="Database configuration";
-                $data['descp']="Connection settings:";
-                $data['classesForStep']=array("off","off","on","off","off");
-                $data['progressValue']=40;
+                $aData['title']="Database configuration";
+                $aData['descp']="Connection settings:";
+                $aData['classesForStep']=array("off","off","on","off","off");
+                $aData['progressValue']=40;
                 // errorConnection store text to be displayed if connection with DB fail
-                $data['errorConnection']="";
+                $aData['errorConnection']="";
 
                 //load form validation library and helpers necessary.
                 $this->load->helper('form');
@@ -317,7 +301,7 @@ class Installer extends CI_Controller {
                 //run validation, if it fails, load the view again else proceed to next step.
                 if ($this->form_validation->run() == FALSE)
                 {
-                    $this->load->view('installer/dbconfig_view',$data);
+                    $this->load->view('installer/dbconfig_view',$aData);
                 }
                 else
                 {
@@ -409,237 +393,128 @@ class Installer extends CI_Controller {
                     $dbdata .= '$config[\'dbdriver\'] = $db[\'default\'][\'dbdriver\']; ' . "\n" . "\n" */
                     //       . "/* End of file database.php */ ". "\n"
                     //        . "/* Location: ./application/config/database.php */ ";
-                    /**
-                    if (is_writable(APPPATH . 'config/database.php'))
+
+                    $_POST = $this->input->post();
+                    $sDatabasePort='default';
+                    $sAdodbType=$_POST['dbType'];
+                    if ($sAdodbType=='postgre')
                     {
-                        write_file(APPPATH . 'config/database.php', $dbdata);
+                        $sAdodbType='postgres';
+                    }
+                    $connect=ADONewConnection($sAdodbType);
+                    if (strpos($_POST['dbLocation'],':')!==false)
+                    {
+                        $sDatabasePort=substr($_POST['dbLocation'],strpos($_POST['dbLocation'],':')+1);
+                        $sDatabaseLocation=substr($_POST['dbLocation'],0,strpos($_POST['dbLocation'],':')-1);
                     }
                     else
                     {
-                        header('refresh:5;url='.site_url("installer/install/0"));
-                        echo "<b>directory not writable</b><br/>";
-                        echo 'You\'ll be redirected in about 5 secs. If not, click '.anchor("installer/install/0","here").'.';
+                        $sDatabaseLocation=$_POST['dbLocation'];
                     }
-                    */
-                    $_POST = $this->input->post();
-                    $databaseport='default';
-                    $databasepersistent=true;
-                    $dbhost='';
-                    $connect=ADONewConnection($_POST['dbType']);
-
+                    $sADODBHost=$sDatabaseLocation;
                     //check connection
-                    /**
-                    $dsn = $this->input->post('dbType').'://'.$_POST['dbUser'].":".$_POST['dbPwd'].'@'.$_POST['dbLocation'].'/'.$_POST['dbName']; //.'?char_set=utf8&dbcollat=utf8_general_ci&cache_on=true&cachedir=\'\'';
-                    //'dbdriver://username:password@hostname/database?char_set=utf8&dbcollat=utf8_general_ci&cache_on=true&cachedir=/path/to/cache';
-echo "hello<br/>".$dsn;
-                    var_dump($this->load->database($dsn));
-                    exit(); */
                     switch ($_POST['dbType'])
                     {
-                        case "postgres":
-                        case "mysqli":
-                        case "mysql": if ($databaseport!="default") {$dbhost= $_POST['dbLocation'].":$databaseport";}
-                        else {$dbhost=$_POST['dbLocation'];}
+                        case 'postgre':
+                        case 'mysqli':
+                        case 'mysql': if ($sDatabasePort!='default') {$sADODBHost= $sDatabaseLocation.':'.$sDatabasePort;}
                         break;
-                        case "mssql_n":
-                        case "mssqlnative":
-                        case "mssql": if ($databaseport!="default") {$dbhost= $_POST['dbLocation'].",$databaseport";}
-                        else {$dbhost=$_POST['dbLocation'];}
+                        case 'mssql': if ($sDatabasePort!='default') {$sADODBHost= $sDatabaseLocation.','.$sDatabasePort;}
                         break;
-                        case "odbc": $dbhost="Driver={SQL Server};Server=".$_POST['dbLocation'].";Database=".$_POST['dbName'];
-                        break;
-
-                        default: safe_die("Unknown database type");
-                    }
-                    /**
-                    if (!$connection_db)
-                    {
-                        //usual data required by view
-                        $newdata['title']="Database configuration";
-                        $newdata['descp']="Connection settings:";
-                        $newdata['classesForStep']=array("off","off","on","off","off");
-                        $newdata['progressValue']=40;
-                        $newdata['errorConnection'] ='<b>Try again! Connection with database failed.</b>';
-                        $this->load->view('installer/dbconfig_view',$newdata);
-
-                    }
-                    else
-                    {
-
+                        default: die("Unknown database type");
                     }
 
-                    $database_exists =false;
-                    $_POST = $this->input->post();
-                    switch ($this->input->post('dbType'))
-                    {
-                        case "postgres": $database_exists = @pg_connect("host=".$_POST['dbLocation']." port=$databaseport dbname=".$_POST['dbName']);
-                        break;
-                        case "mysqli":
-                        case "mysql": if ($databaseport!="default") {$dbhost= $_POST['dbLocation'].":$databaseport";}
-                        else {$dbhost=$_POST['dbLocation'];}
-                        $link = @mysql_connect($dbhost, $_POST['dbUser'], $_POST['dbPwd']);
-                        $database_exists = mysql_select_db($_POST['dbName'],$link);
-                        break;
-                        case "mssql_n":
-                        case "mssqlnative":
-                        case "mssql": if ($databaseport!="default") {$dbhost= $_POST['dbLocation'].",$databaseport";}
-                        else {$dbhost=$_POST['dbLocation'];}
-                        $link = @mssql_connect($dbhost, $_POST['dbUser'], $_POST['dbPwd']);
-                        $database_exists = mssql_select_db($_POST['dbName'], $link);
-                        break;
-                        case "odbc_mssql": $dbhost="Driver={SQL Server};Server=".$_POST['dbLocation'].";Database=".$_POST['dbName'];
-                        $database_exists = @odbc_connect($dbhost, $_POST['dbUser'], $_POST['dbPwd']);
-                        break;
-
-                        default: safe_die("Unknown database type");
-                    }
-
-                    //$this->load->dbutil();
-                    //$database_exists = $this->dbutil->database_exists($this->input->post('dbName'));
-
-                    if (!$database_exists)
-                    {
-
-                            $statusdata = array(
-                            'databaseDontExist'  => 'TRUE'
-                            );
-                            $this->session->set_userdata($statusdata);
-
-                            $values['adminoutputText'].= "\t<tr bgcolor='#efefef'><td align='center'>\n"
-                            ."<strong>"."Database doesn't exist!"."</strong><br /><br />\n"
-                            ."The database you specified does not exist."."<br />\n"
-                            ."LimeSurvey can attempt to create this database for you."."<br /><br />\n"
-                            ."Your selected database name is:"."<strong>".$this->input->post('dbName')."</strong><br />\n"
-                            ."</center>\n" ;
-
-                            $values['adminoutputForm']="<form action='".base_url()."index.php/installer/createdb/' method='post'><input type='submit' value='"
-                            ."Create Database"."' /></form>";
-                    }
-                    */
-
-
-                    $database_exists =false;
-                    $connection_db = false;
+                    $bDBExists = false;
+                    $bDBConnectionWorks = false;
                     // Now try connecting to the database
-                    if ($databasepersistent==true)
+                    if (@$connect->Connect($sADODBHost, $_POST['dbUser'], $_POST['dbPwd'], $_POST['dbName']))
                     {
-                        if (@$connect->PConnect($dbhost, $_POST['dbUser'], $_POST['dbPwd'], $_POST['dbName']))
+                        $bDBExists = true;
+                        $bDBConnectionWorks = true;
+                    }
+                    else {
+                        // If that doesn't work try connection without database-name
+                        $connect->database = '';
+
+                        if (!@$connect->Connect($dbhost, $_POST['dbUser'], $_POST['dbPwd']))
                         {
-                            $database_exists = TRUE;
-                            $connection_db=true;
+                            $bDBConnectionWorks=false;
                         }
-                        else {
-                            // If that doesnt work try connection without database-name
-                            $connect->database = '';
-                            if (!@$connect->PConnect($dbhost, $_POST['dbUser'], $_POST['dbPwd']))
-                            {
-                                $connection_db=false;
-
-                            }
-                            else{
-                                $connection_db=true;
-                            }
-
+                        else{
+                            $bDBConnectionWorks=true;
                         }
                     }
-                    else
-                    {
-                        if (@$connect->Connect($dbhost, $_POST['dbUser'], $_POST['dbPwd'], $_POST['dbName']))
-                        {
-                            $database_exists = TRUE;
-                            $connection_db=true;
-
-                        }
-                        else {
-                            // If that doesnt work try connection without database-name
-                            $connect->database = '';
-
-                            if (!@$connect->Connect($dbhost, $_POST['dbUser'], $_POST['dbPwd']))
-                            {
-                                $connection_db=false;
-                            }
-                            else{
-                                $connection_db=true;
-                            }
-                        }
-                    }
-
-
-
 
                     //if connection with database fail
-                    if (!$connection_db)
+                    if (!$bDBConnectionWorks)
                     {
-                        $data['errorConnection'] ='<b>Try again! Connection with database failed.</b>';
-                        $this->load->view('installer/dbconfig_view',$data);
+                        $aData['errorConnection'] ='<b>Try again! Connection with database failed.</b>';
+                        $this->load->view('installer/dbconfig_view',$aData);
                     }
                     else
                     {
 
                         //saving the form data
-                        $statusdata = array(
+                        $aStatusdata = array(
                             //'step2'  => 'TRUE',
 
                             'dbname' => $this->input->post('dbName'),
                             'databasetype' => $this->input->post('dbType'),
-                            'dblocation' => $dbhost,
+                            'dblocation' => $this->input->post('dbLocation'),
                             'dbpwd' => $this->input->post('dbPwd'),
                             'dbuser' => $this->input->post('dbUser'),
                             'dbprefix' => $this->input->post('dbPrefix')
                             );
-                        $this->session->set_userdata($statusdata);
+                        $this->session->set_userdata($aStatusdata);
 
                          //check if table exists or not
+                        $sTestTablename = 'surveys';
+                        $bTablesDoNotExist=false;
 
-                        //static $tablelist;
-                        $tablename = 'surveys';
-                        $tablesdontexist=false; //!$this->db->table_exists($tablename); //false;
+                        $aTableList = $connect->MetaTables();
 
-                        if (!isset($tablelist)) $tablelist = $connect->MetaTables();
-
-                        if ($tablelist==false)
+                        if ($aTableList==false)
                         {
-                            $tablesdontexist = true;
+                            $bTablesDoNotExist = true;
 
                         }
                         else
                         {
-                            $proceed=false;
+                            $bProceed=false;
 
-                            foreach ($tablelist as $tbl)
+                            foreach ($aTableList as $sTable)
                             {
-                                if (self::_db_quote_id($tbl,$this->input->post('dbType')) == self::_db_table_name($tablename,$_POST['dbPrefix'],$_POST['dbType']))
+                                if (self::_db_quote_id($sTable,$this->input->post('dbType')) == self::_db_table_name($sTestTablename,$_POST['dbPrefix'],$_POST['dbType']))
                                 {
 
-                                    $proceed=true;
+                                    $bProceed=true;
                                     break;
                                 }
                             }
-                            if ($proceed)
-                            $tablesdontexist = false;
+                            if ($bProceed)
+                            $bTablesDoNotExist = false;
                             else
-                            $tablesdontexist = true;
+                            $bTablesDoNotExist = true;
                         }
 
 
                         // AdoDB seems to be defaulting to ADODB_FETCH_NUM and we want to be sure that the right default mode is set
-
                         $connect->SetFetchMode(ADODB_FETCH_ASSOC);
 
-                        $dbexistsbutempty=($database_exists && $tablesdontexist);
+                        $dbexistsbutempty=($bDBExists && $bTablesDoNotExist);
 
                         //store them in session
-                        $this->session->set_userdata(array('databaseexist' => $database_exists, 'tablesexist' => !$tablesdontexist));
+                        $this->session->set_userdata(array('databaseexist' => $bDBExists, 'tablesexist' => !$bTablesDoNotExist));
 
                         // If database is up to date, redirect to Optional Configuration screen.
-                        if ($database_exists && !$tablesdontexist)
+                        if ($bDBExists && !$bTablesDoNotExist)
                         {
 
-                            $statusdata = array(
+                            $aStatusdata = array(
                             'optconfig_message' => 'The database you specified is up to date.',
                             'step3'  => TRUE
                             );
-                            $this->session->set_userdata($statusdata);
+                            $this->session->set_userdata($aStatusdata);
                             redirect(site_url("installer/loadOptView"));
                         }
 
@@ -669,8 +544,8 @@ echo "hello<br/>".$dsn;
                         //checking just in case
                         if (is_writable($rootdir))
                         {
-                            $data = '<?php $databasetype = \''.$_POST['dbType'].'\'; $databaselocation = \''.$_POST['dbLocation'].'\'; $databasename = \''.$_POST['dbName'].'\'; $databaseuser = \''.$_POST['dbUser'].'\'; $databasepass = \''.$_POST['dbPwd'].'\'; $dbprefix = \''.$_POST['dbPrefix'].'\'; $rootdir = dirname(__FILE__); $rooturl = "http://{$_SERVER[\'HTTP_HOST\']}/limesurvey" ; $defaultuser = \'admin\' ; $defaultpass = \'password\' ; $debug = 0; ?>';
-                            write_file('../config.php',$data,"w+");
+                            $aData = '<?php $databasetype = \''.$_POST['dbType'].'\'; $databaselocation = \''.$_POST['dbLocation'].'\'; $databasename = \''.$_POST['dbName'].'\'; $databaseuser = \''.$_POST['dbUser'].'\'; $databasepass = \''.$_POST['dbPwd'].'\'; $dbprefix = \''.$_POST['dbPrefix'].'\'; $rootdir = dirname(__FILE__); $rooturl = "http://{$_SERVER[\'HTTP_HOST\']}/limesurvey" ; $defaultuser = \'admin\' ; $defaultpass = \'password\' ; $debug = 0; ?>';
+                            write_file('../config.php',$aData,"w+");
                         }
                         else
                         {
@@ -679,7 +554,7 @@ echo "hello<br/>".$dsn;
                             echo 'You\'ll be redirected in about 5 secs. If not, click <a href="$rootdir/installation/index.php/installer/install/0">here</a>.';
                         }
                         */
-                        //$data array won't work here. changing the name
+                        //$aData array won't work here. changing the name
                         $values['title']="Database settings";
                         $values['descp']="Database settings";
                         $values['classesForStep']=array("off","off","off","on","off");
@@ -693,12 +568,12 @@ echo "hello<br/>".$dsn;
 
 
                         //if DB exist, check if its empty or up to date. if not, tell user LS can create it.
-                        if (!$database_exists)
+                        if (!$bDBExists)
                         {
-                            $statusdata = array(
+                            $aStatusdata = array(
                             'databaseDontExist'  => 'TRUE'
                             );
-                            $this->session->set_userdata($statusdata);
+                            $this->session->set_userdata($aStatusdata);
 
                             $values['adminoutputText'].= "\t<tr bgcolor='#efefef'><td align='center'>\n"
                             ."<strong>"."Database doesn't exist!"."</strong><br /><br />\n"
@@ -714,11 +589,11 @@ echo "hello<br/>".$dsn;
                         }
                         elseif ($dbexistsbutempty ) //&& !(returnglobal('createdbstep2')==$clang->gT("Populate Database")))
                         {
-                            $statusdata = array(
+                            $aStatusdata = array(
                             'populatedatabase'  => 'TRUE'
 
                             );
-                            $this->session->set_userdata($statusdata);
+                            $this->session->set_userdata($aStatusdata);
 
                             $connect->database = $this->input->post('dbName');
                             $connect->Execute("USE DATABASE `".$this->input->post('dbName')."`");
@@ -764,19 +639,19 @@ echo "hello<br/>".$dsn;
                 self::_writeAutoloadfile();
                 //self::_writeConfigfile();
                 // confirmation message to be displayed
-                $data['confirmation']= sprintf("Database <b>%s</b> has been successfully populated.",$this->session->userdata('dbname'));
-                $data['title']="Optional settings";
-                $data['descp']="Optional settings to give you a head start";
-                $data['classesForStep']=array("off","off","off","off","on");
-                $data['progressValue']=80;
+                $aData['confirmation']= sprintf("Database <b>%s</b> has been successfully populated.",$this->session->userdata('dbname'));
+                $aData['title']="Optional settings";
+                $aData['descp']="Optional settings to give you a head start";
+                $aData['classesForStep']=array("off","off","off","off","on");
+                $aData['progressValue']=80;
 
-                $statusdata = array(
+                $aStatusdata = array(
                             'optional'  => 'TRUE'
 
                 );
                 $this->load->helper('surveytranslator');
-                $this->session->set_userdata($statusdata);
-                $this->load->view('installer/optconfig_view',$data);
+                $this->session->set_userdata($aStatusdata);
+                $this->load->view('installer/optconfig_view',$aData);
                 break;
             }
 
@@ -901,8 +776,12 @@ echo "hello<br/>".$dsn;
 
 
             $dbname = $this->session->userdata('dbname');
-            $databasetype = $this->session->userdata('databasetype');
-            $connect=ADONewConnection($databasetype);
+            $sAdodbType = $this->session->userdata('databasetype');
+            if ($sAdodbType=='postgre')
+            {
+                $sAdodbType='postgres';
+            }
+            $connect=ADONewConnection($sAdodbType);
 
             //require_once($rootdir."/classes/core/sha256.php");
             //require_once($rootdir."/classes/core/surveytranslator.php");
@@ -911,12 +790,12 @@ echo "hello<br/>".$dsn;
                 //checking DB Connection
                 if (!$connect->Connect($this->session->userdata('dblocation'), $this->session->userdata('dbuser'), $this->session->userdata('dbpwd'),$dbname))
                 {
-                    $data['errorConnection'] ='<b>Try again! Connection with database failed.</b><br/><b>Reason</b>:'.$connect->ErrorMsg().'<br/>';
-                    $data['title']="Database configuration";
-                    $data['descp']="Connection settings:";
-                    $data['classesForStep']=array("off","off","on","off","off");
-                    $data['progressValue']=40;
-                    $this->load->view('dbconfig_view',$data);
+                    $aData['errorConnection'] ='<b>Try again! Connection with database failed.</b><br/><b>Reason</b>:'.$connect->ErrorMsg().'<br/>';
+                    $aData['title']="Database configuration";
+                    $aData['descp']="Connection settings:";
+                    $aData['classesForStep']=array("off","off","on","off","off");
+                    $aData['progressValue']=40;
+                    $this->load->view('dbconfig_view',$aData);
                 }
                 else
                 {
@@ -944,7 +823,7 @@ echo "hello<br/>".$dsn;
                 $this->db->insert('users', $insertdata);
                 */
                     //finding dbtype and inserting new data
-                    $createdbtype=$databasetype;
+                    $createdbtype=$sAdodbType;
                     if ($databasetype=='mysql' || $databasetype=='mysqli') {
                     $createdbtype='mysql';
                     }
@@ -1012,11 +891,11 @@ echo "hello<br/>".$dsn;
         else
         {
             // if passwords don't match, redirect to proper link.
-            $statusdata = array(
+            $aStatusdata = array(
                             //'step2'  => 'TRUE',
                             'optconfig_message' => 'Password don\'t match.'
                             );
-            $this->session->set_userdata($statusdata);
+            $this->session->set_userdata($aStatusdata);
             redirect(site_url('installer/loadOptView'));
 
         }
@@ -1043,18 +922,18 @@ echo "hello<br/>".$dsn;
         self::_writeAutoloadfile();
 
         $this->load->helper('surveytranslator');
-        $data['confirmation']="<b>".$this->session->userdata('optconfig_message')."</b><br/>";
-        $data['title']="Optional settings";
-        $data['descp']="Optional settings to give you a head start";
-        $data['classesForStep']=array("off","off","off","off","on");
-        $data['progressValue']=80;
+        $aData['confirmation']="<b>".$this->session->userdata('optconfig_message')."</b><br/>";
+        $aData['title']="Optional settings";
+        $aData['descp']="Optional settings to give you a head start";
+        $aData['classesForStep']=array("off","off","off","off","on");
+        $aData['progressValue']=80;
 
-        $statusdata = array(
+        $aStatusdata = array(
             'optional'  => TRUE
 
         );
-        $this->session->set_userdata($statusdata);
-        $this->load->view('installer/optconfig_view',$data);
+        $this->session->set_userdata($aStatusdata);
+        $this->load->view('installer/optconfig_view',$aData);
 
     }
 
@@ -1075,18 +954,23 @@ echo "hello<br/>".$dsn;
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
-        $databasetype = $this->session->userdata('databasetype');
-        $connect=ADONewConnection($databasetype);
+        $sAdodbType = $this->session->userdata('databasetype');
+        if ($sAdodbType=='postgre')
+        {
+            $sAdodbType='postgres';
+        }
+
+        $connect=ADONewConnection($sAdodbType);
 
         //checking DB Connection
         if (!$connect->Connect($this->session->userdata('dblocation'), $this->session->userdata('dbuser'), $this->session->userdata('dbpwd')))
         {
-            $data['errorConnection'] ='<b>Try again! Connection with database failed.</b><br/><b>Reason</b>:'.$connect->ErrorMsg().'<br/>';
-            $data['title']="Database configuration";
-            $data['descp']="Connection settings:";
-            $data['classesForStep']=array("off","off","on","off","off");
-            $data['progressValue']=40;
-            $this->load->view('dbconfig_view',$data);
+            $aData['errorConnection'] ='<b>Try again! Connection with database failed.</b><br/><b>Reason</b>:'.$connect->ErrorMsg().'<br/>';
+            $aData['title']="Database configuration";
+            $aData['descp']="Connection settings:";
+            $aData['classesForStep']=array("off","off","on","off","off");
+            $aData['progressValue']=40;
+            $this->load->view('dbconfig_view',$aData);
         }
         else
         {
@@ -1109,11 +993,11 @@ echo "hello<br/>".$dsn;
             {
                 $connect->database = $dbname;
                 $connect->Execute("USE DATABASE `$dbname`");
-                $statusdata = array(
+                $aStatusdata = array(
                                 'populatedatabase'  => 'TRUE'
 
                                 );
-                $this->session->set_userdata($statusdata);
+                $this->session->set_userdata($aStatusdata);
                 $this->session->set_userdata(array('databaseexist' => TRUE));
                 $values['adminoutputText']="<tr bgcolor='#efefef'><td colspan='2' align='center'> <br />";
                 $values['adminoutputText'] .= "<strong><font class='successtitle'>\n";
@@ -1126,12 +1010,12 @@ echo "hello<br/>".$dsn;
             }
             else
             {
-                $data['errorConnection'] ='<b>Try again! Connection with database failed.</b>';
-                $data['title']="Database configuration";
-                $data['descp']="Connection settings:";
-                $data['classesForStep']=array("off","off","on","off","off");
-                $data['progressValue']=40;
-                $this->load->view('installer/dbconfig_view',$data);
+                $aData['errorConnection'] ='<b>Try again! Connection with database failed.</b>';
+                $aData['title']="Database configuration";
+                $aData['descp']="Connection settings:";
+                $aData['classesForStep']=array("off","off","on","off","off");
+                $aData['progressValue']=40;
+                $this->load->view('installer/dbconfig_view',$aData);
 
             }
 
@@ -1160,36 +1044,40 @@ echo "hello<br/>".$dsn;
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
-        $databasetype = $this->session->userdata('databasetype');
 
-        $connect=ADONewConnection($databasetype);
+        $sAdodbType=$this->session->userdata('databasetype');
+        if ($sAdodbType=='postgre')
+        {
+            $sAdodbType='postgres';
+        }
+
+        $connect=ADONewConnection($sAdodbType);
 
 
         //checking DB Connection
         if (!$connect->Connect($this->session->userdata('dblocation'), $this->session->userdata('dbuser'), $this->session->userdata('dbpwd'),$dbname))
         {
-            $data['errorConnection'] ='<b>Try again! Connection with database failed.</b><br/><b>Reason</b>:'.$connect->ErrorMsg().'<br/>';
-            $data['title']="Database configuration";
-            $data['descp']="Connection settings:";
-            $data['classesForStep']=array("off","off","on","off","off");
-            $data['progressValue']=40;
-            $this->load->view('dbconfig_view',$data);
+            $aData['errorConnection'] ='<b>Try again! Connection with database failed.</b><br/><b>Reason</b>:'.$connect->ErrorMsg().'<br/>';
+            $aData['title']="Database configuration";
+            $aData['descp']="Connection settings:";
+            $aData['classesForStep']=array("off","off","on","off","off");
+            $aData['progressValue']=40;
+            $this->load->view('dbconfig_view',$aData);
         }
         else
         {
 
-            $createdbtype=$databasetype;
+            $createdbtype=$this->session->userdata('databasetype');
 
-            if ($databasetype=='mysql' || $databasetype=='mysqli') {
+            if ($createdbtype=='mysql' || $createdbtype=='mysqli') {
                 $connect->Execute("ALTER DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
                 $createdbtype='mysql';
             }
-            if ($createdbtype=='mssql' || $createdbtype=='odbc' || $createdbtype=='odbtp') $createdbtype='mssql';
-            if($createdbtype=='postgres' && $connect->pgVersion=='9')
+            if ($createdbtype=='mssql' || $createdbtype=='odbc') $createdbtype='mssql';
+            if($createdbtype=='postgre' && $connect->pgVersion=='9')
             {
                 $connect->execute("ALTER DATABASE {$dbname} SET bytea_output='escape';");
             }
-            if($createdbtype=='mssqlnative') $createdbtype='mssqlnative';
 
             if (self::_modify_database($this->config->item('rootdir').'/installer/sql/create-'.$createdbtype.'.sql'))
             {
@@ -1197,13 +1085,13 @@ echo "hello<br/>".$dsn;
                 //$data1['adminoutput'] .= sprintf("Database `%s` has been successfully populated.",$dbname)."</font></strong></font><br /><br />\n";
                 //$data1['adminoutput'] .= "<input type='submit' value='Main Admin Screen' onclick=''>";
                 $this->session->set_userdata(array('tablesexist' => TRUE));
-                $statusdata = array(
+                $aStatusdata = array(
                             //'step2'  => 'TRUE',
                             'step3'  => TRUE
                             );
 
                 $this->session->unset_userdata('populatedatabase');
-                $this->session->set_userdata($statusdata);
+                $this->session->set_userdata($aStatusdata);
                 redirect(site_url('installer/install/2'));
 
             }
@@ -1248,19 +1136,23 @@ echo "hello<br/>".$dsn;
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
-        $databasetype = $this->session->userdata('databasetype');
-        $connect=ADONewConnection($databasetype);
+        $sAdodbType=$this->session->userdata('databasetype');
+        if ($sAdodbType=='postgre')
+        {
+            $sAdodbType='postgres';
+        }
+        $connect=ADONewConnection($sAdodbType);
 
 
         //checking DB Connection
         if (!$connect->Connect($this->session->userdata('dblocation'), $this->session->userdata('dbuser'), $this->session->userdata('dbpwd'),$dbname))
         {
-            $data['errorConnection'] ='<b>Try again! Connection with database failed.</b><br/><b>Reason</b>:'.$connect->ErrorMsg().'<br/>';
-            $data['title']="Database configuration";
-            $data['descp']="Connection settings:";
-            $data['classesForStep']=array("off","off","on","off","off");
-            $data['progressValue']=40;
-            $this->load->view('dbconfig_view',$data);
+            $aData['errorConnection'] ='<b>Try again! Connection with database failed.</b><br/><b>Reason</b>:'.$connect->ErrorMsg().'<br/>';
+            $aData['title']="Database configuration";
+            $aData['descp']="Connection settings:";
+            $aData['classesForStep']=array("off","off","on","off","off");
+            $aData['progressValue']=40;
+            $this->load->view('dbconfig_view',$aData);
         }
         else
         {
@@ -1323,7 +1215,7 @@ echo "hello<br/>".$dsn;
                         $command = str_replace('$sessionname', 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID(), $command);
                         $command = str_replace('$databasetabletype', $databasetabletype, $command);
 
-                        if (! self::_db_execute_num($command)) {  //Checked
+                        if (! $connect->execute($command)) {  //Checked
                             $command=htmlspecialchars($command);
                             $modifyoutput .="<br />"."Executing.....".$command."<font color='#FF0000'>..."."Failed! Reason: ".$connect->ErrorMsg()."</font>";
                             $success = false;
@@ -1513,26 +1405,7 @@ echo "hello<br/>".$dsn;
         return $sid;
     }
 
-    /**
-     * Installer::_db_execute_num()
-     * Function to execute database queries and return normal array(not assosciative one!).
-     * @param mixed $sql
-     * @param bool $inputarr
-     * @return
-     */
-    function _db_execute_num($sql,$inputarr=false)
-    {
-        //include(dirname(__FILE__).'/../../../config-sample.php');
-        require_once(APPPATH.'third_party/adodb/adodb.inc.php');
-        $dbname = $this->session->userdata('dbname');
-        $databasetype = $this->session->userdata('databasetype');
-        $connect=ADONewConnection($databasetype);;
-        $connect->Connect($this->session->userdata('dblocation'), $this->session->userdata('dbuser'), $this->session->userdata('dbpwd'),$dbname);
 
-        $connect->SetFetchMode(ADODB_FETCH_NUM);
-        $dataset=$connect->Execute($sql,$inputarr);  //Checked
-        return $dataset;
-    }
 
     /**
      * Installer::_db_quote_id()

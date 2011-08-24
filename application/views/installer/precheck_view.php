@@ -48,8 +48,9 @@
 </tr>
 <tr>
 <td style="width: 209px;">PHP version</td>
-<td align="center" style="width: 225px;">5.1.2 or later</td>
-<td align="center" style="width: 225px;"><?php echo $phpVersion ; ?></td>
+<td align="center" style="width: 225px;">5.1.6 or later</td>
+<td align="center" style="width: 225px;"><?php if (isset($verror) && $verror) { ?><span style='font-weight:bold; color: red'>Outdated: <?php echo $phpVersion; ?></span></b>
+<?php } else { ?><?php echo $phpVersion ; ?> <?php } ?></td>
 </tr>
 <tr>
 <td style="width: 209px;">mbstring library</td>
@@ -106,6 +107,7 @@
 <td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.gif" /></td>
 <td align="center" style="width: 225px;"><?php echo $zipPresent ; ?></td>
 </tr>
+<tr>
 <td style="width: 209px;">PHP zlib library</td>
 <td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.gif" /></td>
 <td align="center" style="width: 225px;"><?php echo $zlibPresent ; ?></td>

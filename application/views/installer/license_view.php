@@ -1,16 +1,4 @@
 <?php $this->load->view("installer/header_view",array('progressValue' => $progressValue)); ?>
-<script type="text/javascript">
-    function changecbStatus() {
-		  
-          document.formcheck.accept.checked=(! document.formcheck.accept.checked);
-          if (document.getElementById("cbStatus").checked == false) {
-                $('#next').hide('slow');
-                alert("You need to accept license terms and conditions to proceed further.")
-            } else {
-                $('#next').show('fast');
-            }
-		}
-  </script>
 
 
 <div class="container_6">
@@ -69,19 +57,18 @@
 <div class="grid_2">&nbsp;</div>
 <div class="grid_4 demo">
 <br/>
+<form action="<?php echo site_url("installer/install/0"); ?>" method="post" style="width: 300px;" name="formcheck">
 <table style="width: 694px;">
 <tbody>
 <tr>
-<td align="left" style="width: 300px;"><form action="<?php echo site_url("installer/install/0"); ?>" method="post" style="width: 300px;" name="formcheck">
-<input type="checkbox" name="accept" id="cbStatus" checked="checked" /><span onclick="changecbStatus();">I accept the license terms above.</span></td>
 <td align="center" style="width: 800px;"></td>
 <td align="right" style="width: 190px;">
-<div id="next" style="font-size:11px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" value="Next" /></div>
-</form>
+<div id="next" style="font-size:11px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  type="submit" value="Next" /></div>
 </td>
 </tr>
 </tbody>
 </table>
+</form>
 </div>
 </div>
 <?php $this->load->view("installer/footer_view"); ?>

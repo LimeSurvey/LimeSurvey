@@ -59,10 +59,10 @@ If you are using MS SQL Server as your database system, <b>create an empty datab
 </td>
 <td style="width: 224px;" align="right">
 <select name="dbType" style="width: 147px;">
-<option value="mysqli" <?php echo set_select('dbType', 'mysqli',TRUE); ?>  >mysqli</option>
-<option value="mysql" <?php echo set_select('dbType', 'mysql'); ?> >mysql</option>
-<option value="mssql" <?php echo set_select('dbType', 'mssql'); ?>  >mssql</option>
-<option value="postgres" <?php echo set_select('dbType', 'postgre'); ?>  >postgres</option>
+<option value="mysqli" <?php echo set_select('dbType', 'mysqli',TRUE); ?>  >MySQL</option>
+<option value="mysql" <?php echo set_select('dbType', 'mysql'); ?> >MySQL (old driver)</option>
+<option value="mssql" <?php echo set_select('dbType', 'mssql'); ?>  >Microsoft SQL Server</option>
+<option value="postgre" <?php echo set_select('dbType', 'postgre'); ?>  >PostgreSQL</option>
 </select>
 </td>
 </tr>
