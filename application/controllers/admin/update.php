@@ -30,7 +30,15 @@ class update extends Admin_Controller {
 	 */
 	function __construct()
 	{
-		parent::__construct();
+		LS_Controller::__construct();
+		
+		if (!$this->session->userdata("adminlang") || $this->session->userdata("adminlang")=='')
+		{
+			$this->session->set_userdata("adminlang",$this->config->item("defaultlang"));
+		}
+
+        $this->load->library('Limesurvey_lang',array("langcode"=>$this->session->userdata("adminlang")));
+		
         session_start();
 	}
 

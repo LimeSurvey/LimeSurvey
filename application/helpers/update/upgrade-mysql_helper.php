@@ -119,7 +119,7 @@ function db_upgrade($oldversion) {
   							`action` int(2) default NULL,
   							`active` int(1) NOT NULL default '1',
   							PRIMARY KEY  (`id`)
-							)  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+							)   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","CREATE TABLE `prefix_quota_members` (
    		 				   `id` int(11) NOT NULL auto_increment,
 						   `sid` int(11) default NULL,
@@ -128,7 +128,7 @@ function db_upgrade($oldversion) {
   						   `code` varchar(5) collate utf8_unicode_ci default NULL,
   						   PRIMARY KEY  (`id`),
   						   UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
-						   )   ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+						   )    CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
 
         // Rename Norwegian language code from NO to NB
         $oldnewlanguages=array('no'=>'nb');
@@ -168,12 +168,12 @@ function db_upgrade($oldversion) {
 						   `folder` varchar(255) NOT NULL,
 						   `use` int(1) NOT NULL,
 						   PRIMARY KEY  (`uid`,`folder`)
-						   ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+						   )  CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","CREATE TABLE `prefix_templates` (
 						   `folder` varchar(255) NOT NULL,
 						   `creator` int(11) NOT NULL,
 						   PRIMARY KEY  (`folder`)
-						   ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+						   )  CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
 
         //123
         modify_database("","ALTER TABLE `prefix_conditions` CHANGE `value` `value` VARCHAR(255) NOT NULL default ''"); echo $modifyoutput; flush();ob_flush();
@@ -298,7 +298,7 @@ function db_upgrade($oldversion) {
 										 `quotals_url` varchar(255),
 										 `quotals_urldescrip` varchar(255),
 										 PRIMARY KEY (`quotals_id`)
-										 )  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+										 )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","UPDATE `prefix_settings_global` SET `stg_value`='136' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
     if ($oldversion < 137) //New Quota Functions
@@ -360,7 +360,7 @@ function db_upgrade($oldversion) {
                               `specialtype` varchar(20) NOT NULL default '',
                               `defaultvalue` text,
                               PRIMARY KEY  (`qid` , `scale_id`, `language`, `specialtype`, `sqid` )
-                            ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+                            )  CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
 
         // -Move all 'answers' that are subquestions to the questions table
         // -Move all 'labels' that are answers to the answers table
@@ -380,7 +380,7 @@ function db_upgrade($oldversion) {
                               sessdata LONGTEXT,
                               PRIMARY KEY ( sesskey ) ,
                               INDEX sess2_expiry( expiry ),
-                              INDEX sess2_expireref( expireref )) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();   
+                              INDEX sess2_expireref( expireref ))  CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();   
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
 
         
@@ -420,7 +420,7 @@ function db_upgrade($oldversion) {
                                 `import_p` tinyint(1) NOT NULL default '0',
                                 `export_p` tinyint(1) NOT NULL default '0',
                                 PRIMARY KEY (sid, uid, permission)
-                            ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+                            )  CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
                             
 		upgrade_surveypermissions_table145();
         
@@ -571,7 +571,7 @@ function db_upgrade($oldversion) {
                               `last_attempt` varchar(20) NOT NULL,
                               `number_attempts` int(11) NOT NULL,
                               PRIMARY KEY (`id`)
-                            ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+                            )  CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
         upgrade_token_tables145();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='145' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }

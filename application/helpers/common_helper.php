@@ -7908,14 +7908,14 @@ function modify_database($sqlfile='', $sqlstring='')
                 $command .= $line;
                 $command = str_replace('prefix_', $CI->db->dbprefix, $command); // Table prefixes
                 $command = str_replace('$defaultuser', $CI->config->item('defaultuser'), $command);
-                $command = str_replace('$defaultpass', $CI->sha256->hashing($defaultpass), $command);
+                $command = str_replace('$defaultpass', $CI->sha256->hashing($CI->config->item('defaultpass')), $command);
                 $command = str_replace('$siteadminname', $siteadminname, $command);
                 $command = str_replace('$siteadminemail', $siteadminemail, $command);
                 $command = str_replace('$defaultlang', $CI->config->item('defaultlang'), $command);
                 $command = str_replace('$sessionname', 'ls'.sRandomChars(20,'123456789'), $command);
-                $command = str_replace('$databasetabletype', $CI->db->dbdatabasetabletype, $command);
+                $command = str_replace('$databasetabletype', $CI->db->dbdriver, $command);
 
-                if (! db_execute_assosc($command)) {  //Checked
+                if (! db_execute_assoc($command)) {  //Checked
                     $command=htmlspecialchars($command);
                     $modifyoutput .="<br />".sprintf($clang->gT("SQL command failed: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'></span><br/>");
                     $success = false;
