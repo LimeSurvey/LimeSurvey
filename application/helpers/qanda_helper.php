@@ -6395,7 +6395,7 @@ function do_array($ia)
        {
            $myfname = $ia[1].$ansrow['title'];
            $trbc = alternation($trbc , 'row');
-           $answertext=answer_replace($ansrow['question']);
+           $answertext=$ansrow['question'];
             $answertextsave=$answertext;
            if (strpos($answertext,'|'))
            {
@@ -7983,22 +7983,5 @@ function do_array_dual($ia)
     }
     return array($answer, $inputnames);
 }
-
-
-
-
-// ---------------------------------------------------------------
-function answer_replace($text)
-{
-    while (strpos($text, "{INSERTANS:") !== false)
-    {
-        $replace=substr($text, strpos($text, "{INSERTANS:"), strpos($text, "}", strpos($text, "{INSERTANS:"))-strpos($text, "{INSERTANS:")+1);
-        $replace2=substr($replace, 11, strpos($replace, "}", strpos($replace, "{INSERTANS:"))-11);
-        $replace3=retrieve_Answer($replace2, $_SESSION['dateformats']['phpdate']);
-        $text=str_replace($replace, $replace3, $text);
-    } //while
-    return $text;
-}
-
 
 // Closing PHP tag intentionally left out - yes, it is okay

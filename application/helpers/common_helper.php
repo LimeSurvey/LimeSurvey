@@ -8225,6 +8225,89 @@ function  bDoesImportarraySupportsLanguage($csvarray,$idkeysarray,$langfieldnum,
     }
 }
 
+/** This function checks to see if there is an answer saved in the survey session
+ * data that matches the $code. If it does, it returns that data.
+ * It is used when building a questions text to allow incorporating the answer
+ * to an earlier question into the text of a later question.
+ * IE: Q1: What is your name? [Jason]
+ *     Q2: Hi [Jason] how are you ?
+ * This function is called from the retriveAnswers function.
+ *
+ * @param mixed $code
+ * @param mixed $phpdateformat  The date format in which any dates are shown
+ * @return mixed returns the answerText from session variable corresponding to a question code
+ */
+function retrieve_Answer($surveyid, $code, $phpdateformat=null)
+{
+    //This function checks to see if there is an answer saved in the survey session
+    //data that matches the $code. If it does, it returns that data.
+    //It is used when building a questions text to allow incorporating the answer
+    //to an earlier question into the text of a later question.
+    //IE: Q1: What is your name? [Jason]
+    //    Q2: Hi [Jason] how are you ?
+    //This function is called from the retriveAnswers function.
+    $CI =& get_instance();
+    $CI->load->helper('database');
+    $clang = $CI->limesurvey_lang;
+
+    //Find question details
+    if (isset($_SESSION[$code]))
+    {
+        $questiondetails=getsidgidqidaidtype($code);
+        //the getsidgidqidaidtype function is in common.php and returns
+        //a SurveyID, GroupID, QuestionID and an Answer code
+        //extracted from a "fieldname" - ie: 1X2X3a
+        // also returns question type
+
+        if ($questiondetails['type'] == "M" ||
+        $questiondetails['type'] == "P")
+        {
+            $query="SELECT * FROM ".$CI->db->dbprefix."questions WHERE parent_qid='".$questiondetails['qid']."' AND language='".$_SESSION['s_lang']."'";
+            $result=db_execute_assoc($query) or safe_die("Error getting answer<br />$query<br />");
+            foreach ($result->result_array() as  $row)
+            {
+                if (isset($_SESSION[$code.$row['title']]) && $_SESSION[$code.$row['title']] == "Y")
+                {
+                    $returns[] = $row['question'];
+                }
+                elseif (isset($_SESSION[$code]) && $_SESSION[$code] == "Y" && $questiondetails['aid']==$row['title'])
+                {
+                    return $row['question'];
+                }
+            }
+            if (isset($_SESSION[$code."other"]) && $_SESSION[$code."other"])
+            {
+                $returns[]=$_SESSION[$code."other"];
+            }
+            if (isset($returns))
+            {
+                $return=implode(", ", $returns);
+                if (strpos($return, ","))
+                {
+                    $return=substr_replace($return, " &", strrpos($return, ","), 1);
+                }
+            }
+            else
+            {
+                $return=$clang->gT("No answer");
+            }
+        }
+        elseif (!$_SESSION[$code] && $_SESSION[$code] !=0)
+        {
+            $return=$clang->gT("No answer");
+        }
+        else
+        {
+            $return=getextendedanswer($surveyid, NULL, $code, $_SESSION[$code], 'INSERTANS');
+        }
+    }
+    else
+    {
+        $return=$clang->gT("Error") . "($code)";
+    }
+    return html_escape($return);
+}
+
 /**
 * Retrieve a HTML <OPTION> list of survey admin users
 *

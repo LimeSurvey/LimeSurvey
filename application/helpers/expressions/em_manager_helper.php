@@ -237,8 +237,7 @@ class LimeExpressionManager {
             if (isset($_SESSION[$code]))
             {
                 $codeValue = $_SESSION[$code];
-//                $displayValue= retrieve_Answer($code, $_SESSION['dateformats']['phpdate']);   // TODO - undefined in _ci
-                $displayValue='Undefined';
+                $displayValue= retrieve_Answer($surveyid, $code);
             }
             else
             {

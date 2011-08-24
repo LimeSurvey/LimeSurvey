@@ -528,7 +528,7 @@ class Save {
 	                    // if the files have not been saved already,
 	                    // move the files from tmp to the files folder
 
-                        $tmp = $this->config->item('tempdir').'/upload/';
+                        $tmp = $CI->config->item('tempdir').'/upload/';
                         if (!is_null($phparray) && count($phparray) > 0 && file_exists($tmp.$phparray[0]->filename))
 	                    {
 
