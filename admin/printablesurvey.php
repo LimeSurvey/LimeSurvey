@@ -389,6 +389,8 @@ while ($degrow = $degresult->FetchRow())
     ,'QUESTIONS' => '' // templated formatted content if $question is appended to this at the end of processing each question.
     );
 
+    // A group can have only hidden questions. In that case you don't want to see the group's header/description either.
+    $bGroupHasVisibleQuestions = false;
 
     if(isset($_POST['printableexport'])){$pdf->titleintopdf($degrow['group_name'],$degrow['description']);}
 
@@ -413,6 +415,8 @@ while ($degrow = $degresult->FetchRow())
             {
                 continue;
             }
+            $bGroupHasVisibleQuestions = true;
+
             //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
 
             $printablesurveyoutput = '';
@@ -1829,7 +1833,10 @@ while ($degrow = $degresult->FetchRow())
             $group['QUESTIONS'] .= populate_template( 'question' , $question);
 
         }
-        $survey_output['GROUPS'] .= populate_template( 'group' , $group );
+        if ($bGroupHasVisibleQuestions)
+        {
+            $survey_output['GROUPS'] .= populate_template( 'group' , $group );
+        }
 }
 
 $survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));

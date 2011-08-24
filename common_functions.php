@@ -7553,6 +7553,14 @@ function aGetFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode)
     $oldqid = 0;
     foreach ($aFieldMap as $sKey=>$fname)
     {
+        if (!empty($fname['qid']))
+        {
+            $attributes = getQuestionAttributes($fname['qid']);
+            if (getQuestionAttributeValue($attributes, 'hidden') == 1)
+            {
+                continue;
+            }
+        }
         $question = $fname['question'];
         $subquestion='';
         if (isset($fname['gid']) && !empty($fname['gid'])) {
