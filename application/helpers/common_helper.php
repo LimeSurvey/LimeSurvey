@@ -5007,6 +5007,7 @@ function killSession()  //added by Dennis
         setcookie(session_name(), '', time()-3600, $CookieInfo['path'], $CookieInfo['domain'], $CookieInfo['secure']);
     }
     unset($_COOKIE[session_name()]);
+    $_SESSION = $CI->session->userdata;
     foreach ($_SESSION as $key =>$value)
     {
         //echo $key." = ".$value."<br />";
