@@ -136,15 +136,6 @@ class Installer extends CI_Controller {
                     $proceed=false;
                 }
 
-                //mysql php library check
-                if ( function_exists('mysql_connect') )
-                $data['mysqlphpPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
-                else
-                {
-                    $data['mysqlphpPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
-                    $proceed=false;
-                }
-
                 //directory permissions checking
                 // root directory file check
 

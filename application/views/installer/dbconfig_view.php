@@ -41,7 +41,7 @@
 <!-- <form action="<?php echo base_url()."index.php/installer/process" ; ?>" method="post"> -->
 <!-- <?php echo validation_errors(); ?> -->
 <br /><b>&nbsp; Note: All fields marked with (*) are required.</b>
-<br /> 
+<br />
 <!--
 <fieldset class="content-table">
 <legend class="content-table-heading">Do It Yourself</legend>
@@ -57,15 +57,12 @@ If you are using MS SQL Server as your database system, <b>create an empty datab
 <td style="width: 428px;"> <b>Database type * </b><br />
 <div class="description-field">This is the database type. </div>
 </td>
-<td style="width: 224px;" align="right"> 
+<td style="width: 224px;" align="right">
 <select name="dbType" style="width: 147px;">
-<option value="mysql" <?php echo set_select('dbType', 'mysql', TRUE); ?> >mysql</option>
-<option value="mysqli" <?php echo set_select('dbType', 'mysqli'); ?>  >mysqli</option>
-<option value="odbc" <?php echo set_select('dbType', 'odbc'); ?>  >odbc</option>
+<option value="mysqli" <?php echo set_select('dbType', 'mysqli',TRUE); ?>  >mysqli</option>
+<option value="mysql" <?php echo set_select('dbType', 'mysql'); ?> >mysql</option>
 <option value="mssql" <?php echo set_select('dbType', 'mssql'); ?>  >mssql</option>
-<option value="postgres" <?php echo set_select('dbType', 'postgres'); ?>  >postgres</option>
-<option value="sqlite" <?php echo set_select('dbType', 'sqlite'); ?>  >sqlite</option>
-<option value="oci8" <?php echo set_select('dbType', 'oci8'); ?>  >oci8</option>
+<option value="postgres" <?php echo set_select('dbType', 'postgre'); ?>  >postgres</option>
 </select>
 </td>
 </tr>
@@ -108,7 +105,7 @@ If you are using MS SQL Server as your database system, <b>create an empty datab
 <tr>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
-</tr> 
+</tr>
 <tr>
 
 <td colspan="2"> <div class="demo"><table style="width: 662px; background: #ffffff;">

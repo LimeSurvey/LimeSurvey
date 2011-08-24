@@ -48,7 +48,7 @@
 </tr>
 <tr>
 <td style="width: 209px;">PHP version</td>
-<td align="center" style="width: 225px;">5.0 or later</td>
+<td align="center" style="width: 225px;">5.1.2 or later</td>
 <td align="center" style="width: 225px;"><?php echo $phpVersion ; ?></td>
 </tr>
 <tr>
@@ -61,11 +61,6 @@
 <td align="center" style="width: 225px;">Found,Writable</td>
 <td align="center" style="width: 225px;"><?php if (isset($derror) && $derror) { ?><b><font color="red"><?php echo $directoryPresent ; if ($directoryWritable) echo ",$directoryWritable" ; ?></font></b>
 <?php } else { ?><?php echo $directoryPresent ; if ($directoryWritable) echo ",$directoryWritable" ; ?> <?php } ?></td>
-</tr>
-<tr>
-<td style="width: 209x;">mysql php library</td>
-<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.gif" /></td>
-<td align="center" style="width: 225px;"><?php echo $mysqlphpPresent ; ?></td>
 </tr>
 <tr>
 <td style="width: 209px;">/tmp directory</td>
