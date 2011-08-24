@@ -17,6 +17,7 @@ class LS_Controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+        self::_checkinstallation();	
 		self::_init();
 	}
 	
@@ -24,7 +25,7 @@ class LS_Controller extends CI_Controller {
 	{
 		
         $this->load->helper("common");
-				
+		
 		// Check for most necessary requirements
 		// Now check for PHP & db version
 		// Do not localize/translate this!
@@ -126,7 +127,7 @@ class LS_Controller extends CI_Controller {
 		//$setfont = "<font size='2' face='verdana'>";
 		//$singleborderstyle = "style='border: 1px solid #111111'";
 		
-		self::_checkinstallation();
+		
 		
 	}
 
