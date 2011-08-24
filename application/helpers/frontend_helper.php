@@ -2104,10 +2104,13 @@ function buildsurveysession($surveyid)
     // Fix totalquestions by substracting Test Display questions
     $sNoOfTextDisplayQuestions=(int) reset(db_execute_assoc("SELECT count(*)\n"
         ." FROM ".$CI->db->dbprefix('questions')
-        ." WHERE type='X'\n"
+        ." WHERE type in ('X','*')\n"
         ." AND sid={$surveyid}"
         ." AND language='".$_SESSION['s_lang']."'"
         ." AND parent_qid=0")->row_array());
+
+    $_SESSION['therearexquestions'] = $totalquestions - $sNoOfTextDisplayQuestions; // must be global for THEREAREXQUESTIONS replacement field to work
+
     return $totalquestions-$sNoOfTextDisplayQuestions;
 
 }

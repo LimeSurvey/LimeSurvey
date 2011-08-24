@@ -53,7 +53,7 @@ class CheckIntegrity extends Admin_Controller {
 
         self::_getAdminHeader();
         self::_showadminmenu();
-        $this->load->view('admin/checkintegrity_view', $data);
+        $this->load->view('admin/checkintegrity_view');
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
 }

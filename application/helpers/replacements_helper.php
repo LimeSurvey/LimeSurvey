@@ -34,8 +34,8 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
         }
 	}
 
-	$showXquestions = $CI->config->item("showXquestions");  // XXX redundant?
-	$showgroupinfo = $CI->config->item("showgroupinfo");    // XXX redundant?
+	$showXquestions = $CI->config->item("showXquestions"); 
+	$showgroupinfo = $CI->config->item("showgroupinfo");
 
     if (file_exists($line))
     {
