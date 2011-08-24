@@ -353,11 +353,11 @@ function exporttocsvcount()
             $condition = explode("||",$searchcondition);  
             if(count($condition)==3)
             {
-                $query = $this-> participants_model->getParticipantsSearch($condition,0,0);
+                $query = $this->participants_model->getParticipantsSearch($condition,0,0);
             }
             else
             {
-                $query = $this-> participants_model->getParticipantsSearchMultiple($condition,0,0);
+                $query = $this->participants_model->getParticipantsSearchMultiple($condition,0,0);
             }
         }
         else // if no search criteria all the participants will be counted
@@ -367,7 +367,7 @@ function exporttocsvcount()
             $query = $getquery->result_array();
         }
     }
-    else // If no search criteria
+    else // If no search criteria it will simply return the number of participants 
     {
         $userid = $this->session->userdata('loginID');
         $query = $this->participants_model->getParticipantsOwner($userid);
@@ -376,61 +376,68 @@ function exporttocsvcount()
     echo sprintf($clang->gT("Export %s participant(s) to CSV  "),count($query));
 }
 /**
- * This function returns the count of 
+ * This function returns the count of participants when using the export all button on the top
+ * @param uses post data to get the user id
+ * @return the echo statement telling the number of participants exporting
  */
 function exporttocsvcountAll()
 {
     $this->load->model('participants_model');
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants in the central table will be counted
     {
         $table_name = 'participants';
         $getquery = $this->db->get($table_name);
         $query = $getquery->result_array();
     }
-    else
+    else // otherwise only the participants on which the logged in user has the rights
     {
         $userid = $this->session->userdata('loginID');
         $query = $this->participants_model->getParticipantsOwner($userid);
     }
     $clang = $this->limesurvey_lang;        
-    if(count($query) > 0 )
+    if(count($query) > 0 ) // If count is greater than 0 it will show the message
     {
         echo sprintf($clang->gT("Export %s participant(s) to CSV  "),count($query));
     }
-    else
+    else // else it will return a numeric count which will tell that there is no participant to be exported
     {
         echo count($query);
     }
 }
+/**
+ * This function is responsible to export all the participants in the central table
+ * @param get user id from the session variable
+ * @return Exported CSV file
+ */
 function exporttocsvAll()
 {
-    $this->load->helper("export");
-    $this->load->model('participant_attribute_model');
+    $this->load->helper("export");  // loads the export helper
+    $this->load->model('participant_attribute_model'); 
     $this->load->model('participants_model');
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be exported
     {
         $table_name = 'participants';
         $getquery = $this->db->get($table_name);
         $query = $getquery->result_array();
     }
-    else
+    else // otherwise only the ones over which the user has rights on
     {
         $userid = $this->session->userdata('loginID');
         $query = $this->participants_model->getParticipantsOwner($userid);
     }
     if(!$query)
        return false;
-        
+    // These are the consistent fields that will be exported
     $fields = array ('participant_id','firstname','lastname' ,'email' ,'language' ,'blacklisted','owner_uid' );
     $i = 0;
     $outputarray = array();
-    $this->hasOutputHeader = true;
     foreach ($fields as $field)
     {
-        $outputarray[0][$i]=$field;
+        $outputarray[0][$i]=$field; // The fields are being added to the index 0 of the array to be written to the header of the csv file
         $i++;
     }
     $attributenames = $this->participant_attribute_model->getAttributes();
+    // Attribute names are being added to the index 0 of the array
     foreach($attributenames as $key=>$value)
     {
         $outputarray[0][$i]=$value['attribute_name'];
@@ -439,52 +446,67 @@ function exporttocsvAll()
     // Fetching the table data
     $i = 1;
     $j = 0;
+    // Read through the query result and add it to the array
+    // Please not it will give only basic field in the central database
     foreach($query as $field => $data)
     {
         foreach ($fields as $field)
         {
             $outputarray[$i][$j]=$data[$field]; 
+            //increment the column
             $j++;
         }
+        // it will iterate through the additional attributes that the user has choosen to export and will fetch the values
+        // that are to be exported to the CSV file
         foreach($attributenames as $key=>$value)
         {
             $answer=$this->participant_attribute_model->getAttributeValue($data['participant_id'],$value['attribute_id']);
             if(isset($answer->value))
-            {
+            { // if the attribute value is there for that attribute and the user then it will written to the array
                 $outputarray[$i][$j]=$answer->value; 
+                //increment the column
                 $j++;
             }
             else
-            {
+            { // otherwise blank value will be written to the array
                 $outputarray[$i][$j]=""; 
+                //increment the column
                 $j++;
             }
         }
+        // increment the row
         $i++;
     }    
+    // Load the helper and pass the array to be written to a CSV file
     $this->load->helper('date');
     cpdb_export($outputarray,"central_".now());
 }
+/**
+ * This function is similar to export to all message where it counts the number to participants to be copied
+ * and echo them to be displayed in modal box header
+ * @param $_POST['searchcondition']
+ * @return echo string containing the number of the participants that are to be copied to the survey
+ */
 function getaddtosurveymsg()
 {
     $this->load->model('participants_model');
     $searchcondition = basename($this->input->post('searchcondition'));
-    if($searchcondition != 'getParticipants_json')
+    if($searchcondition != 'getParticipants_json') // If there is a search condition in the url of the jqGrid 
     {
         $participantid = "";
         $condition = explode("||",$searchcondition);  
-        if(count($condition)==3)
+        if(count($condition)==3) // If there is no and condition , if the count is equal to 3 that means only one condition
         {
             $query = $this->participants_model->getParticipantsSearch($condition,0,0);
         }
-        else
+        else  // if there are 'and' and 'or' condition in the condition the count is to be greater than 3
         {
             $query = $this->participants_model->getParticipantsSearchMultiple($condition,0,0);
         }
         $clang = $this->limesurvey_lang;
         echo sprintf($clang->gT("%s participant(s) are to be copied "),count($query));
    }
-    else
+    else // if there is no search condition the participants will be counted on the basis of who is logged in 
     {
         $participantid = "";
         if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
@@ -495,11 +517,14 @@ function getaddtosurveymsg()
         {
             $query = $this->participants_model->getParticipantsOwner($this->session->userdata('loginID'));
         }
-        $clang = $this->limesurvey_lang;
-       echo sprintf($clang->gT("%s participant(s) are to be copied "),count($query->result_array()));
+        $clang = $this->limesurvey_lang; 
+        echo sprintf($clang->gT("%s participant(s) are to be copied "),count($query->result_array()));
        
     }
 }
+/**
+ * This function is used for getting the id's 
+ */
 function getSearchIDs()
 {
     $this->load->model('participants_model');

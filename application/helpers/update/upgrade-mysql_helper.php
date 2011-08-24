@@ -588,6 +588,65 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_users` ADD `questionselectormode` VARCHAR( 7 )NOT NULL DEFAULT 'default' AFTER `templateeditormode`"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='147' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }   
+    if ($oldversion < 148)
+    {
+        modify_database("","ALTER TABLE `prefix_users` ADD `participant_panel` tinyint(1) NOT NULL default '1'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","CREATE TABLE `prefix_participants` (`participant_id` varchar(50) NOT NULL,
+                                                                `firstname` varchar(40) default NULL,
+                                                                `lastname` varchar(40) default NULL,
+                                                                `email` varchar(80) collate utf8_unicode_ci default NULL,
+                                                                `language` varchar(40) default NULL,
+                                                                `blacklisted` varchar(1) NOT NULL,
+                                                                `owner_uid` int(20) NOT NULL ,
+                                                                PRIMARY KEY  (`participant_id`)
+                                                                )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+                                                
+        modify_database("","CREATE TABLE `prefix_participant_attribute` (
+        `participant_id` varchar(50) NOT NULL,
+        `attribute_id` int(11) NOT NULL,
+        `value` varchar(50) NOT NULL,
+        PRIMARY KEY  (`participant_id`,`attribute_id`)
+        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+
+                                                          
+        modify_database("","CREATE TABLE `prefix_participant_attribute_names` (
+        `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
+        `attribute_type` varchar(4) NOT NULL,
+        `visible` char(5) NOT NULL,
+        PRIMARY KEY  (`attribute_id`)
+        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+        
+        modify_database("","CREATE TABLE `prefix_participant_attribute_names_lang` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `attribute_id` int(11) NOT NULL,
+        `attribute_name` varchar(30) NOT NULL,
+        `lang` varchar(20) NOT NULL,
+        PRIMARY KEY  (`id`)
+)   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+        
+        modify_database("","CREATE TABLE `prefix_participant_attribute_values` (
+        `attribute_id` int(11) NOT NULL,
+        `value_id` int(11) NOT NULL AUTO_INCREMENT,
+        `value` varchar(20) NOT NULL,
+        PRIMARY KEY  (`value_id`,`attribute_id`)
+        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+        
+        modify_database("","CREATE TABLE `prefix_participant_shares` (
+        `participant_id` varchar(50) NOT NULL,
+        `share_uid` int(11) NOT NULL,
+        `date_added` datetime NOT NULL,
+        `can_edit` varchar(5) NOT NULL
+        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+ 
+        modify_database("","CREATE TABLE `prefix_survey_links` (
+        `participant_id` varchar(50) NOT NULL,
+        `token_id` int(11) NOT NULL,
+        `survey_id` int(11) NOT NULL,
+        `date_created` datetime NOT NULL,
+        PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
+        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+        modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
 }

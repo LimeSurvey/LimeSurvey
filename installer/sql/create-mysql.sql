@@ -399,7 +399,7 @@ CREATE TABLE `prefix_participants` (
   `firstname` varchar(40) NOT NULL,
   `lastname` varchar(40) NOT NULL,
   `email` varchar(80) NOT NULL,
-  `language` varchar(2) NOT NULL,
+  `language` varchar(20) NOT NULL,
   `blacklisted` varchar(1) NOT NULL,
   `owner_uid` int(20) NOT NULL,
   PRIMARY KEY  (`participant_id`)

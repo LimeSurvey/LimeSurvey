@@ -311,6 +311,66 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE prefix_users ADD questionselectormode character varying(7) NOT NULL DEFAULT 'default'"); echo $modifyoutput; flush();ob_flush();    
         modify_database("", "UPDATE prefix_settings_global SET stg_value='147' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }    
+    if ($oldversion < 148)
+    {
+        modify_database("","CREATE TABLE prefix_participants (
+        participant_id VARCHAR( 50 ) NOT NULL,
+        firstname VARCHAR( 40 ) NOT NULL,
+        lastname VARCHAR( 40 ) NOT NULL,
+        email VARCHAR( 80 ) NOT NULL,
+        language VARCHAR( 2 ) NOT NULL,
+        blacklisted VARCHAR( 1 ) NOT NULL,
+        owner_uid integer NOT NULL,
+        PRIMARY KEY (participant_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+        
+        modify_database("","CREATE TABLE prefix_participant_attribute (
+        participant_id VARCHAR( 50 ) NOT NULL,
+        attribute_id integer NOT NULL,
+        value integer NOT NULL,
+        PRIMARY KEY (participant_id,attribute_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+        
+        modify_database("","CREATE TABLE prefix_participant_attribute_names (
+        attribute_id integer NOT NULL AUTO_INCREMENT,
+        attribute_type VARCHAR( 30 ) NOT NULL,
+        visible CHAR( 5 ) NOT NULL,
+        PRIMARY KEY (attribute_type,attribute_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+        
+        modify_database("","CREATE TABLE prefix_participant_attribute_names_lang (
+        id integer NOT NULL AUTO_INCREMENT,
+        attribute_id integer NOT NULL,
+        attribute_name VARCHAR( 30 ) NOT NULL,
+        lang CHAR( 20 ) NOT NULL,
+        PRIMARY KEY (lang,attribute_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+        
+        modify_database("","CREATE TABLE prefix_participant_attribute_values (
+        attribute_id integer NOT NULL,
+        value_id integer NOT NULL AUTO_INCREMENT,
+        value VARCHAR( 20 ) NOT NULL,
+        PRIMARY KEY (attribute_id,value_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+        
+        modify_database("","CREATE TABLE prefix_participant_shares (
+        participant_id VARCHAR( 50 ) NOT NULL,
+        shared_uid integer NOT NULL,
+        date_added date NOT NULL,
+        can_edit VARCHAR( 5 ) NOT NULL
+        );"); echo $modifyoutput; flush();ob_flush();
+        
+        modify_database("","CREATE TABLE prefix_survey_links (
+        participant_id VARCHAR( 50 ) NOT NULL,
+        token_id integer NOT NULL,
+        survey_id integer NOT NULL,
+        date_created date NOT NULL,
+        PRIMARY KEY (participant_id,token_id,survey_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","ALTER TABLE prefix_user ADD participant_panel integer NOT NULL default '1'"); echo $modifyoutput; flush();ob_flush();
+                modify_database("", "UPDATE prefix_settings_global SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+        
+    }
 
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
