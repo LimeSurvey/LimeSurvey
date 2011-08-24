@@ -12,7 +12,7 @@
 			foreach (getlanguagedata(true) as $langkey=>$languagekind)
             {
 				//The following conditional statements select the browser language in the language drop down box and echoes the other options.
-                ?>
+					?>
                 <option value='<?php echo $langkey; ?>'><?php echo $languagekind['nativedescription']." - ".$languagekind['description']; ?></option>
                 <?php
             }

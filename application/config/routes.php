@@ -62,6 +62,10 @@ $route['admin/question/editquestion/(:num)/(:num)/(:num)'] = "admin/question/ind
 $route['admin/labels/newlabel'] = "admin/labels/index/newlabelset";
 $route['admin/labels/editlabel/(:num)'] = "admin/labels/index/editlabelset/$1";
 
+//TMSWhite:  Expression Manager tests
+$route['admin/expressions'] = "admin/expressions/index";
+$route['admin/expressions/test'] = "admin/expressions/index";
+
 //optout
 $route['optout/(:num)/(:any)/(:any)'] = "optout/index/$1/$2/$3";
 

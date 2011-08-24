@@ -79,9 +79,9 @@ $config['maxemails']          = 50;               // The maximum number of email
 
 // $sessionlifetime sets how long until a survey session expires in seconds
 //$sessionlifetime    =  3600;
-// $sessionhandler can be either 'file' or 'db'. (default: 'file').
-// Generally you don't want to change that unless you are using LimeSurvey on load-balanced servers
-//$sessionhandler     =  'file';
+// $sessionhandler can be either 'file' or 'db'. (default: 'file'). 
+// Generally you don't want to change that unless you are using LimeSurvey on load-balanced servers   
+//$sessionhandler     =  'file';   
 
 
 
@@ -318,13 +318,13 @@ $config['standard_templates_readonly'] =  true;
 
 /**
  * When this settings is true/1 (default = false/0) then the printable survey option will show a reference
- * to the "lime_survey_12345" table which stores the survey answers.
+ * to the "lime_survey_12345" table which stores the survey answers. 
  * It will show a code like "12345X22X333name":
  * 12345 = surveyID
  * 22 = groupID
  * 333 = questionID
  * name = answer code (only shown for certain question types
- *
+ * 
  * This code will be shown in front of each question and in front of each answer option at the printable survey.
  * It can be used as a data analysis code book for querying data from the main response table.
  */
@@ -449,7 +449,7 @@ $config['showqnumcode'] = 'choose';
  * to the http part of your normal LimeSurvey URL.
  *	e.g. https://your.domain.org/limesurvey/admin/admin.php
  * If LimeSurvey comes up as normal, then everything is fine. If you
- * get a page not found error or permission denied error then
+ * get a page not found error or permission denied error then 
  */
 $config['force_ssl'] = ''; // DO not turn on unless you are sure your server supports SSL/HTTPS
 
@@ -460,7 +460,7 @@ $config['force_ssl'] = ''; // DO not turn on unless you are sure your server sup
  * server doesn't have HTTPS enabled, the only way to turn it off is
  * by changing a value in the database directly. This allows you to
  * force HTTPS off while you change the global settings for Force Secure.
- *
+ * 
  *     false = do nothing;
  *     true = override $force_ssl=on;
  *
@@ -495,7 +495,7 @@ $config['iFileUploadTotalSpaceMB']= 0;
 //if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='' && $_SERVER['HTTPS']!='off')
 //{
 //       $rooturl=str_replace('http://', 'https://', $rooturl);
-//}
+//}  
 //-----------------------------------------------------
 
 // === Advanced Setup
@@ -528,7 +528,7 @@ $config['tempdir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."tmp
 $config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
-$config['usertemplaterootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
+$config['usertemplaterootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates    
 
 $config['sCKEditorURL']            = base_url()."/scripts/admin/ckeditor.36";
 $config['ckeditexpandtoolbar']     = true; // defines if the CKeditor toolbar should be opened by default

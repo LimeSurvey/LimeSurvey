@@ -75,8 +75,8 @@
           'title' => 'Attribute Control',
           'width' => 50,
           'height' => 35,
-          'style' => 'margin-left:0px',
-          'style' => 'margin-right:1px'
+           'style' => 'margin-left:0px',
+            'style' => 'margin-right:1px'
           );
         $sharepanel = array(
           'src' => 'images/share.png',

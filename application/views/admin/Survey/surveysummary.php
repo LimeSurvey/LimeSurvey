@@ -21,12 +21,22 @@
         } ?>
 		</td>
 	</tr>
+    <?php
+        // TMSWhite
+        LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
+    ?>
     <tr>
     	<td align='right' valign='top'>
     		<strong><?php echo $clang->gT("Description:");?></strong>
     	</td>
     	<td align='left'>
-        	<?php if (trim($surveyinfo['surveyls_description'])!='') {echo " {$surveyinfo['surveyls_description']}";} ;?>
+        	<?php
+                // TMSWhite
+                if (trim($surveyinfo['surveyls_description'])!='') {
+                    templatereplace($surveyinfo['surveyls_description']);
+                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                    } ;
+                    ?>
         </td>
 	</tr>
 	<tr>
@@ -34,7 +44,11 @@
 			<strong><?php echo $clang->gT("Welcome:");?></strong>
 		</td>
         <td align='left'>
-        	<?php echo $surveyinfo['surveyls_welcometext'];?>
+        	<?php
+                // TMSWhite
+                templatereplace($surveyinfo['surveyls_welcometext']);
+                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+            ?>
         </td>
 	</tr>
     <tr>

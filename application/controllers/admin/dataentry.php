@@ -71,15 +71,15 @@
     function vvimport($surveyid)
     {
         self::_getAdminHeader();
-
+        
         if(bHasSurveyPermission($surveyid,'responses','create'))
         {
-
+            
             $subaction = $this->input->post('subaction');
             $clang = $this->limesurvey_lang;
             $dbprefix = $this->db->dbprefix;
             $this->load->helper('database');
-
+            
             $encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
             ,"ascii"=>$clang->gT("US ASCII")
             ,"auto"=>$clang->gT("Automatic")
@@ -117,14 +117,14 @@
             ,"ucs2"=>$clang->gT("UCS-2 Unicode")
             ,"ujis"=>$clang->gT("EUC-JP Japanese")
             ,"utf8"=>$clang->gT("UTF-8 Unicode"));
-
+            
             $_POST = $this->input->post();
             if (isset($_POST['vvcharset']) && $_POST['vvcharset'])  //sanitize charset - if encoding is not found sanitize to 'utf8' which is the default for vvexport
             {
                 $uploadcharset=$_POST['vvcharset'];
                 if (!array_key_exists($uploadcharset,$encodingsarray)) {$uploadcharset='utf8';}
             }
-
+            
             if ($subaction != "upload")
             {
                 asort($encodingsarray);
@@ -135,7 +135,7 @@
                     if ($charset=='utf8') {$charsetsout.=" selected ='selected'";}
                     $charsetsout.=">$title ($charset)</option>";
                 }
-
+            
                 //Make sure that the survey is active
                 if (tableExists("survey_$surveyid"))
                 {
@@ -143,11 +143,11 @@
                     browsemenubar($clang->gT("Import VV file"),$surveyid,TRUE).
             		$vvoutput = "<div class='header ui-widget-header'>".$clang->gT("Import a VV survey file")."</div>
             		<form id='vvexport' enctype='multipart/form-data' method='post' action='".site_url('admin/dataentry/vvimport/'.$surveyid)."'>
-            		<ul>
+            		<ul>		
             		<li><label for='the_file'>".$clang->gT("File:")."</label><input type='file' size=50 id='the_file' name='the_file' /></li>
             		<li><label for='sid'>".$clang->gT("Survey ID:")."</label><input type='text' size=10 id='sid' name='sid' value='$surveyid' readonly='readonly' /></li>
             		<li><label for='noid'>".$clang->gT("Exclude record IDs?")."</label><input type='checkbox' id='noid' name='noid' value='noid' checked=checked onchange='form.insertmethod.disabled=this.checked;' /></li>
-
+            
             		<li><label for='insertmethod'>".$clang->gT("When an imported record matches an existing record ID:")."</label><select id='insertmethod' name='insert' disabled='disabled'>
                     <option value='ignore' selected='selected'>".$clang->gT("Report and skip the new record.")."</option>
                     <option value='renumber'>".$clang->gT("Renumber the new record.")."</option>
@@ -161,27 +161,27 @@
             		<input type='hidden' name='action' value='vvimport' />
             		<input type='hidden' name='subaction' value='upload' />
             		</form><br />";
-
-
+                    
+                    
                 }
                 else
                 {
                     $vvoutput .= "<br /><div class='messagebox'>
                     <div class='header'>".$clang->gT("Import a VV response data file")."</div>
                     <div class='warningheader'>".$clang->gT("Cannot import the VVExport file.")."</div>
-                    ".("This survey is not active. You must activate the survey before attempting to import a VVexport file.")."<br /><br />
+            		".("This survey is not active. You must activate the survey before attempting to import a VVexport file.")."<br /><br />
                     [<a href='$scriptname?sid=4'>".$clang->gT("Return to survey administration")."</a>]
                     </div>";
                 }
-
-
+            
+                
             }
             else
             {
                 $vvoutput = "<br /><div class='messagebox'>
                     <div class='header'>".$clang->gT("Import a VV response data file")."</div>";
                 $the_full_file_path = $this->config->item('tempdir') . "/" . $_FILES['the_file']['name'];
-
+            
                 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
                 {
                     $vvoutput .= "<div class='warningheader'>".$clang->gT("Error")."</div>\n";
@@ -192,7 +192,7 @@
                     return;
                 }
                 // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
-
+            
                 $vvoutput .= "<div class='successtitle'>".$clang->gT("Success")."</div>\n";
                 $vvoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
                 $vvoutput .= $clang->gT("Reading file..")."<br />\n";
@@ -203,31 +203,31 @@
                     $bigarray[] = @mb_convert_encoding($buffer,"UTF-8",$uploadcharset);
                 }
                 fclose($handle);
-
+            
                 $surveytable = "{$dbprefix}survey_$surveyid";
-
+            
                 unlink($the_full_file_path); //delete the uploaded file
                 unset($bigarray[0]); //delete the first line
-
+            
                 $fieldnames=explode("\t", trim($bigarray[1]));
-
+            
                 $fieldcount=count($fieldnames)-1;
                 while (trim($fieldnames[$fieldcount]) == "" && $fieldcount > -1) // get rid of blank entries
                 {
                     unset($fieldnames[$fieldcount]);
                     $fieldcount--;
                 }
-
+            
                 //$realfieldnames = array_values($connect->MetaColumnNames($surveytable, true));
                 $realfieldnames = array_values($this->db->list_fields($surveytable));
-
+                
                 if ($noid == "noid") {unset($realfieldnames[0]);}
                 if ($finalized == "notfinalized") {unset($realfieldnames[1]);}
                 unset($bigarray[1]); //delete the second line
-
+            
                 //	$vvoutput .= "<tr><td valign='top'><strong>Import Fields:<pre>"; print_r($fieldnames); $vvoutput .= "</pre></td>";
                 //	$vvoutput .= "<td valign='top'><strong>Actual Fields:<pre>"; print_r($realfieldnames); $vvoutput .= '</pre></td></tr>';
-
+            
                 //See if any fields in the import file don't exist in the active survey
                 $missing = array_diff($fieldnames, $realfieldnames);
                 if (is_array($missing) && count($missing) > 0)
@@ -246,7 +246,7 @@
                 $importcount=0;
                 $recordcount=0;
                 $fieldnames=array_map('db_quote_id',$fieldnames);
-
+            
                 //now find out which fields are datefields, these have to be null if the imported string is empty
                 $fieldmap=createFieldMap($surveyid);
                 $datefields=array();
@@ -306,7 +306,7 @@
                         $fieldvalues=array_map('db_quoteall',$fieldvalues);
                         $fieldvalues=str_replace(db_quoteall('{question_not_shown}'),'NULL',$fieldvalues);
                         $fielddata=($fieldnames===array() && $fieldvalues===array() ? array() : array_combine($fieldnames, $fieldvalues));
-
+            
                         foreach ($datefields as $datefield)
                         {
                             /**
@@ -315,13 +315,13 @@
                                 unset($fielddata[db_quote_id($datefield)]);
                             }
                             */
-
+                            
                             if ($fielddata["'".$datefield."'"]=='')
                             {
                                 unset($fielddata["'".$datefield."'"]);
                             }
                         }
-
+            
                         foreach ($numericfields as $numericfield)
                         {
                             if ($fielddata["'".$numericfield."'"]=='')
@@ -331,7 +331,7 @@
                         }
                         if (isset($fielddata['submitdate']) && $fielddata['submitdate']=='NULL') unset ($fielddata['submitdate']);
                         if ($fielddata['lastpage']=='') $fielddata['lastpage']='0';
-
+            
                         $recordexists=false;
                         if (isset($fielddata['[id]']))
                         {
@@ -360,19 +360,19 @@
                             db_switchIDInsert("survey_$surveyid",true);
                         }
                         // try again, without the 'id' field.
-
+            
                         $insert = "INSERT INTO $surveytable\n";
                         $insert .= "(".implode(", ", array_keys($fielddata)).")\n";
                         $insert .= "VALUES\n";
                         $insert .= "('".implode("', '", array_values($fielddata))."')\n";
                         $result = db_execute_assoc($insert);
-
+            
                         if (isset($fielddata['id']))
                         {
                             db_switchIDInsert("survey_$surveyid",false);
                         }
-
-
+            
+            
                         if (!$result)
                         {
                             $vvoutput .= "<div class='warningheader'>\n$insert"
@@ -383,11 +383,11 @@
                         {
                             $importcount++;
                         }
-
-
+            
+            
                     }
                 }
-
+            
                 if ($noid == "noid" || $insertstyle == "renumber")
                 {
                     $vvoutput .= "<br /><i><strong><font color='red'>".$clang->gT("Important Note:")."<br />".$clang->gT("Do NOT refresh this page, as this will import the file again and produce duplicates")."</font></strong></i><br /><br />";
@@ -396,18 +396,18 @@
                 $vvoutput .= "[<a href='".site_url('admin/browse/'.$surveyid)."'>".$clang->gT("Browse Responses")."</a>]";
                 $vvoutput .= "</div><br />&nbsp;";
             }
-
+            
             $data['display'] = $vvoutput;
             $this->load->view('survey_view',$data);
-
+            
         }
         self::_loadEndScripts();
-
-
+                
+                
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
+        
     }
-
+    
     /**
      * dataentry::import()
      * Function responsible to import responses from old survey table(s).
@@ -421,16 +421,16 @@
         {
             //if (!isset($surveyid)) $surveyid = $this->input->post('sid');
             if (!isset($oldtable)) $oldtable = $this->input->post('oldtable');
-
+            
             $subaction = $this->input->post('subaction');
             $clang = $this->limesurvey_lang;
             $dbprefix = $this->db->dbprefix;
             $this->load->helper('database');
-
+            
             if (!$subaction == "import")
             {
                 // show UI for choosing old table
-
+                
                 $query = db_select_tables_like("{$dbprefix}old\_survey\_%");
                 $result = db_execute_assoc($query) or show_error("Error:<br />$query<br />");
                 if ($result->num_rows() > 0)
@@ -441,13 +441,13 @@
                 $countActive = $resultActive->num_fields();
                 if ($resultActive->num_rows() > 0)
                 $resultActive = array_values($resultActive);
-
+            
                 foreach ($result->result_array() as $row)
                 {
                     $queryCheckColumnsOld = "SELECT * FROM {$row[0]} ";
-
+            
                     $resultOld = db_execute_assoc($queryCheckColumnsOld) or show_error("Error:<br />$query<br />");
-
+            
                     if($countActive== $resultOld->num_fields())
                     {
                         $optionElements .= "\t\t\t<option value='{$row[0]}'>{$row[0]}</option>\n";
@@ -460,7 +460,7 @@
             		<div class='header ui-widget-header'>
             			".$clang->gT("Import responses from a deactivated survey table")."
             		</div>
-                    <form id='personalsettings' method='post'>
+                    <form id='personalsettings' method='post'>        
             		<ul>
             		 <li><label for='spansurveyid'>".$clang->gT("Target survey ID:")."</label>
             		 <span id='spansurveyid'> $surveyid<input type='hidden' value='$surveyid' name='sid'></span>
@@ -498,33 +498,33 @@
                 /*
                  * TODO:
                  * - mysql fit machen
-                 * -- quotes für mysql beachten --> `
+                 * -- quotes für mysql beachten --> ` 
                  * - warnmeldung mehrsprachig
                  * - testen
                  */
                 //	if($databasetype=="postgres")
                 //	{
                 $activetable = "{$dbprefix}survey_$surveyid";
-
+            
                 //Fields we don't want to import
                 $dontimportfields = array(
             		 //,'otherfield'
                 );
-
-
-                //$aFieldsOldTable=array_values($connect->MetaColumnNames($oldtable, true));
-                //$aFieldsNewTable=array_values($connect->MetaColumnNames($activetable, true));
-
-                $aFieldsOldTable=array_values($this->db->list_fields($oldtable));
-                $aFieldsNewTable=array_values($this->db->list_fields($activetable));
-
+            
+            
+                //$aFieldsOldTable=array_values($connect->MetaColumnNames($oldtable, true)); 
+                //$aFieldsNewTable=array_values($connect->MetaColumnNames($activetable, true)); 
+                
+                $aFieldsOldTable=array_values($this->db->list_fields($oldtable)); 
+                $aFieldsNewTable=array_values($this->db->list_fields($activetable)); 
+            
                 // Only import fields where the fieldnames are matching
                 $aValidFields=array_intersect($aFieldsOldTable,$aFieldsNewTable);
-
+            
                 // Only import fields not being in the $dontimportfields array
                 $aValidFields=array_diff($aValidFields,$dontimportfields);
-
-
+            
+            
                 $queryOldValues = "SELECT ".implode(", ",$aValidFields)." FROM {$oldtable} ";
                 $resultOldValues = db_execute_assoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
                 $iRecordCount=$resultOldValues->num_rows();
@@ -533,27 +533,27 @@
                 {
                     $iOldID=$row['id'];
                     unset($row['id']);
-
+            
                     $sInsertSQL=$connect->GetInsertSQL($activetable,$row);
                     $result = $connect->Execute($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                     $aSRIDConversions[$iOldID]=$connect->Insert_ID();
                     }
-
-                $this->session->set_userdata('flashmessage', sprintf($clang->gT("%s old response(s) were successfully imported."),$iRecordCount));
-
+            
+                $this->session->set_userdata('flashmessage', sprintf($clang->gT("%s old response(s) were successfully imported."),$iRecordCount));               
+            
                 $sOldTimingsTable=substr($oldtable,0,strrpos($oldtable,'_')).'_timings'.substr($oldtable,strrpos($oldtable,'_'));
                 $sNewTimingsTable=$dbprefix.$surveyid."_timings";
                 if (tableExists(sStripDBPrefix($sOldTimingsTable)) && tableExists(sStripDBPrefix($sNewTimingsTable)) && returnglobal('importtimings')=='Y')
                 {
                    // Import timings
-                    //$aFieldsOldTimingTable=array_values($connect->MetaColumnNames($sOldTimingsTable, true));
-                    //$aFieldsNewTimingTable=array_values($connect->MetaColumnNames($sNewTimingsTable, true));
-
-                    $aFieldsOldTimingTable=array_values($this->db->list_fields($sOldTimingsTable));
+                    //$aFieldsOldTimingTable=array_values($connect->MetaColumnNames($sOldTimingsTable, true)); 
+                    //$aFieldsNewTimingTable=array_values($connect->MetaColumnNames($sNewTimingsTable, true)); 
+                    
+                    $aFieldsOldTimingTable=array_values($this->db->list_fields($sOldTimingsTable)); 
                     $aFieldsNewTimingTable=array_values($this->db->list_fields($sNewTimingsTable));
-
+                    
                     $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
-
+            
                     $queryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {$sOldTimingsTable} ";
                 $resultOldValues = db_execute_assoc($queryOldValues) or show_error("Error:<br />$queryOldValues<br />");
                     $iRecordCountT=$resultOldValues->num_rows();
@@ -562,27 +562,27 @@
                 {
                         if (isset($aSRIDConversions[$row['id']]))
                     {
-                            $row['id']=$aSRIDConversions[$row['id']];
+                            $row['id']=$aSRIDConversions[$row['id']];   
                         }
                         else continue;
                         $sInsertSQL=$connect->GetInsertSQL($sNewTimingsTable,$row);
                         $result = $connect->Execute($sInsertSQL) or show_error("Error:<br />$sInsertSQL<br />");
                     }
-                    $this->session->set_userdata('flashmessage', sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT));
-
+                    $this->session->set_userdata('flashmessage', sprintf($clang->gT("%s old response(s) and according timings were successfully imported."),$iRecordCount,$iRecordCountT));               
+            
                 }
                 $importoldresponsesoutput = browsemenubar($clang->gT("Quick statistics"),$surveyid,TRUE);
             }
-
-
+            
+            
         }
-
+        
         self::_loadEndScripts();
-
-
+                
+                
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
-
+    
     /**
      * dataentry::editdata()
      * Edit dataentry.

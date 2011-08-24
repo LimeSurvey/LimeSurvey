@@ -8,7 +8,7 @@ $(function() {
     $('.upload').click(function(e) {
         e.preventDefault();
         var $this = $(this);
-
+        
         var show_title   = getQueryVariable('show_title', this.href);
         var show_comment = getQueryVariable('show_comment', this.href);
         var pos          = getQueryVariable('pos', this.href);
@@ -22,7 +22,7 @@ $(function() {
                             $('iframe#uploader').remove();
                         }
                     };
-
+        
         var horizontalPadding = 30;
         var verticalPadding = 20;
         $('#uploader').dialog('destroy'); // destroy the old modal dialog
@@ -42,10 +42,10 @@ $(function() {
                 closeOnEscape: false,
                 beforeclose: function() {
                         var pass; if(document.getElementById('uploader').contentDocument) {    if(document.getElementById('uploader').contentDocument.defaultView)    {       /*Firefox*/     pass=document.getElementById('uploader').contentDocument.defaultView.saveAndExit(fieldname,show_title,show_comment,pos);    }else{       /*IE8*/       pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos);    } }else{    /*IE6*/    pass=document.getElementById('uploader').contentWindow.saveAndExit(fieldname,show_title,show_comment,pos); }
-                            if (pass) {
-                                $(this).dialog('destroy');
-                                $('iframe#uploader').remove();
-                            }
+                        if (pass) {
+                            $(this).dialog('destroy');
+                            $('iframe#uploader').remove();
+                        }
                         else {
                             $(this).dialog('destroy');
                             $('iframe#uploader').remove();
@@ -162,7 +162,7 @@ function displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show
 function copyJSON(jsonstring, filecount, fieldname, show_title, show_comment, pos) {
     $('#'+fieldname).val(jsonstring);
     $('#'+fieldname+'_filecount').val(filecount);
-
+    
     displayUploadedFiles(jsonstring, filecount, fieldname, show_title, show_comment, pos);
 }
 

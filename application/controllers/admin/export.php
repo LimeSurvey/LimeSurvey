@@ -347,6 +347,8 @@ class export extends Survey_Common_Controller {
 		':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
 		';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
 		'|'=>Array('name'=>'File upload','size'=>1,'SPSStype'=>'A'),
+            // TMSWhite:  Equation
+        '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
 		);
 
 		$filterstate = incompleteAnsFilterstate();
@@ -615,6 +617,8 @@ class export extends Survey_Common_Controller {
 		'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
 		':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
 		';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
+            //  TMSWhite:  Equation
+        '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
 		);
 
 		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -925,19 +929,19 @@ class export extends Survey_Common_Controller {
                     }
                     else
                     {
-		                $value=trim($row[$field]);
-		                // sunscreen for the value. necessary for the beach.
-		                // careful about the order of these arrays:
-		                // lbrace has to be substituted *first*
-		                $value=str_replace(array("{",
-					    "\n",
-					    "\r",
-					    "\t"),
-		                array("{lbrace}",
-					    "{newline}",
-					    "{cr}",
-					    "{tab}"),
-		                $value);
+		            $value=trim($row[$field]);
+		            // sunscreen for the value. necessary for the beach.
+		            // careful about the order of these arrays:
+		            // lbrace has to be substituted *first*
+		            $value=str_replace(array("{",
+					"\n",
+					"\r",
+					"\t"),
+		            array("{lbrace}",
+					"{newline}",
+					"{cr}",
+					"{tab}"),
+		            $value);
                     }
 		            // one last tweak: excel likes to quote values when it
 		            // exports as tab-delimited (esp if value contains a comma,

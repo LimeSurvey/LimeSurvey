@@ -673,7 +673,7 @@ class Survey
             default:
 
                     $fullAnswer .= $answerCode;
-        }
+                }
 
         return $fullAnswer;
     }

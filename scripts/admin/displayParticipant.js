@@ -170,7 +170,7 @@ ondblClickRow: function(id)
                       $('div.ui-inline-del').html('');
                       $('div.ui-inline-edit').html('');
                   },
-                  
+                     
                 ondblClickRow: function(id,subgrid_id){
                 var parid = id.split('_');             
                 var participant_id = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'participant_id');    
@@ -426,21 +426,21 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
                                         function(data) {
                                         $('#addsurvey').dialog('option', 'title', data);
 
-                                        }   );
+		    });
                                 selected = "search";
-                    }
+                }
                     else if(ui.selected.id == "allingrid")
                     {
                         $.post(getaddtosurveymsg, { searchcondition: 'getParticipants_json'},
                                         function(data) {
                                         $('#addsurvey').dialog('option', 'title', data);
-
+    
                                         }   
                                     );
                               selected = "all";
                     }
-                    else
-                    {
+        else
+        {   
                         $('#addsurvey').dialog('option', 'title', rows.length+" participants are to be copied");
                         selected = "rows";
                     }
@@ -487,27 +487,27 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
                     }
                 }
                 
-                var dialog_buttons={};
-                dialog_buttons[mapButton]=function(){
+                    var dialog_buttons={};
+                    dialog_buttons[mapButton]=function(){
                     
                 
-                var survey_id=$('#survey_id').val();
-                var redirect ="";
-                if(survey_id=="")
-                {
-                      alert(selectSurvey);
-                }
+                    var survey_id=$('#survey_id').val();
+                    var redirect ="";
+                    if(survey_id=="")
+                    {
+                        alert(selectSurvey);
+                    }
         
-                else
-                {
-                   if(jQuery('#redirect').is(":checked")) 
-                   {
-                       redirect = "redirect";                               
-                   }
-                   else
-                   {
+                    else
+                    {
+                        if(jQuery('#redirect').is(":checked")) 
+                        {
+                            redirect = "redirect";                               
+                        }
+                        else
+                        {
                             redirect = "";
-                   }
+                        }
                    if(selected == "search")
                        {
                            $.post(getSearchIDs, { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam','url')},
@@ -517,7 +517,7 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
                                 $("#addsurvey").submit(); 
                              });
                                         
-                       }
+                    }
                    else if(selected == "all")
                        {
                                 $.post(getSearchIDs, { searchcondition: 'getParticipants_json'},
@@ -539,19 +539,19 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
                   
                 }
                 
-               };
+                    };
                      
                dialog_buttons[cancelBtn]=function(){    $(this).dialog("close");
                    
                    
                    
-                };
+                    };
                     /* End of building array containing button functions */
                     $("#addsurvey").dialog({
                         height: 350,
                         width: 450,
                         title : addsurvey,
-            		modal: true,
+            			modal: true,
                         open: function(event, ui) {
                               if(selected == "all")
                               {
@@ -560,7 +560,7 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
                                         $('#addsurvey').dialog('option', 'title', data);
 
                                         });
-                              }
+       }
                         
                         },
                         
@@ -569,8 +569,8 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
             
                             
              
-                  if (!($("#survey_id").length > 0)) {
-                $('#addsurvey').html(addpartErrorMsg);
+  if (!($("#survey_id").length > 0)) {
+     $('#addsurvey').html(addpartErrorMsg);
 } 
 });
 });

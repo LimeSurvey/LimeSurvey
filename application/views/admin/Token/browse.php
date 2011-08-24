@@ -157,7 +157,7 @@
 	        $datetimeobj = new Date_Time_Converter($brow['validuntil'] , "Y-m-d H:i:s");
 	        $brow['validuntil']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
 	    };
-
+	
 	    if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
 		?>
 	    <tr class='<?php echo $bgc;?>'>
@@ -214,9 +214,9 @@
                     <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png' title='<?php
                     echo $clang->gT("Delete token entry");?>' alt='<?php echo $clang->gT("Delete token entry");?>' onclick="if (confirm('<?php echo $clang->gT("Are you sure you want to delete this entry?","js");?> (<?php echo $brow['tid'];?>)')) {<?php echo get2post(site_url("admin/tokens/delete/$surveyid/".$brow['tid']."?order=1"));?>}"  />
                 <?php }
-
+                
 	            if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
-	            {
+	            { 
 	                // Get response Id
 	                //$query="SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE token='{$brow['token']}' ORDER BY id desc";
 	                //$result=db_execute_num($query) or safe_die ("<br />Could not find token!<br />\n" .$connect->ErrorMsg());
@@ -228,10 +228,10 @@
 	                { ?>
 	                    <input type='image' src='<?php echo $imageurl;?>/token_viewanswer.png' style='height: 16; width: 16px;' onclick="window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')" title='<?php
 	                    echo $clang->gT("View/Update last response");?>' alt='<?php echo $clang->gT("View/Update last response");?>' />
-	                <?php }
+	                <?php } 
 	            }
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='' && bHasSurveyPermission($surveyid, 'tokens','update'))
-	            { ?>
+	            { ?> 
 	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_invite.png' title='<?php
 	                echo $clang->gT("Send invitation email to this entry");?>' alt='<?php echo $clang->gT("Send invitation email to this entry");?>' onclick="<?php echo get2post(site_url("admin/tokens/email/$surveyid/")."?tid=".$brow['tid']);?>" />
 	            <?php }
@@ -256,9 +256,9 @@
             <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png' title='<?php
             echo $clang->gT("Delete the selected entries");?>' alt='<?php echo $clang->gT("Delete the selected entries");?>' onclick="if($('#tokenboxeschecked').val()){if (confirm('<?php echo $clang->gT("Are you sure you want to delete the selected entries?","js");?>')) {<?php
             echo get2post(site_url("admin/tokens/delete/$surveyid/")."?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tokenids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}");?>}}else{alert('<?php echo $clang->gT("No tokens selected",'js');?>');}"  />
-
+            
         <?php }
-
+        
         if (bHasSurveyPermission($surveyid, 'tokens','update'))
         { ?>
             &nbsp;
@@ -353,9 +353,9 @@ myform.submit();
                            echo "<option value='".$key."'>".$value."</option>";
                         }
                }
-
+            
              ?>
          </select>
         </p>
-
+       
 </div>

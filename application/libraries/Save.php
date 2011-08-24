@@ -54,19 +54,19 @@
  */
 
 class Save {
-
-	function run($args) {
+	
+	function run($args) {	
 		extract($args);
 		$CI =& get_instance();
 		$_POST = $CI->input->post();
-
+		
 		//First, save the posted data to session
 		//Doing this ensures that answers on the current page are saved as well.
 		//CONVERT POSTED ANSWERS TO SESSION VARIABLES
 		if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
 		{
 		    $postedfieldnames=explode("|", $_POST['fieldnames']);
-
+		
 		    // Remove invalid fieldnames from fieldnames array
 		    for($x=count($postedfieldnames)-1;$x>=0;$x--)
 		    {
@@ -74,11 +74,11 @@ class Save {
 		        {
 		            array_remval($postedfieldnames[$x],$postedfieldnames);
 		        }
-
+		         
 		    }
 		    $_POST['fieldnames']=implode("|",$postedfieldnames);
-
-
+		
+		
 		    foreach ($postedfieldnames as $pf)
 		    {
 		        if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
@@ -90,7 +90,29 @@ class Save {
 		{
 		    $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
 		}
-
+        // TMSWhite
+        //CHECK FOR RELEVANCE RESULTS
+        $aIrrelevant = array();
+        $aRelevance = array();
+        foreach ($_POST as $key=>$value) {
+            if (preg_match('/^relevance\d+$/',$key)) {
+                $aRelevance[substr($key,9)] = $value;
+                if ($value!='1') {
+                    if (isset($_POST[$key . 'codes'])) {
+                        $aIrrelevant = array_merge($aIrrelevant,explode('|',$_POST[$key . 'codes']));
+                    }
+                }
+            }
+        }
+        $_SESSION['irrelevantCodes'] = array_unique($aIrrelevant);
+        if (!isset($_SESSION['relevanceStatus'])) {
+            $_SESSION['relevanceStatus'] = array();
+        }
+        foreach ($aRelevance as $key=>$value)
+        {
+            $_SESSION['relevanceStatus'][$key] = $value;
+        }
+		
 		//Check to see if we should set a submitdate or not
 		// this depends on the move, and on quesitons checks
 		if (isset($move) && $move == "movesubmit")
@@ -99,7 +121,7 @@ class Save {
 		    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 		    $notvalidated=aCheckInput($surveyid, $move,$backok);
 		    $filenotvalidated = checkUploadedFileValidity($surveyid, $move, $backok);
-
+		
 		    if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) && (!is_array($filenotvalidated) || count($filenotvalidated) == 0))
 		    {
 		        $bFinalizeThisAnswer = true;
@@ -113,17 +135,17 @@ class Save {
 		{
 		    $bFinalizeThisAnswer = false;
 		}
-
+		
 		// SAVE if on page with questions or on submit page
 		if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
 		{
-		    if ($thissurvey['active'] == "Y")
+		    if ($thissurvey['active'] == "Y") 
 		    {
 		        $bQuotaMatched=false;
 		        $aQuotas=check_quota('return',$surveyid);
 		        if ($aQuotas !== false)
 		        {
-		        if ($aQuotas!=false)
+		        if ($aQuotas!=false)  
 		        {
 		            foreach ($aQuotas as $aQuota)
 		            {
@@ -131,9 +153,9 @@ class Save {
 		            }
 		        }
 		        }
-		            if ($bQuotaMatched) $bFinalizeThisAnswer=false;
-		        }
-
+		            if ($bQuotaMatched) $bFinalizeThisAnswer=false;        
+		        }  
+		    
 		    if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
 		    {
 		        // SAVE DATA TO SURVEY_X RECORD
@@ -158,9 +180,9 @@ class Save {
 		                echo submitfailed();
 		            }
 		        }
-		        if ($bQuotaMatched)
+		        if ($bQuotaMatched) 
 		        {
-		            check_quota('enforce',$surveyid);
+		            check_quota('enforce',$surveyid);                    
 		    }
 		    }
 		    elseif (isset($move))
@@ -185,15 +207,15 @@ class Save {
 		                }
 		            }
 		        }
-
-
+		
+		
 		    }
 		    if ($thissurvey['savetimings']=="Y" && $thissurvey['active'] == "Y")
 		    {
 				set_answer_time();
 		}
 		}
-
+		
 		// CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
 		if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' button on SAVE FORM
 		{
@@ -210,7 +232,7 @@ class Save {
 		        $_SESSION['scid'] = 0;		// If not active set to a dummy value to save form does not continue to show.
 		    }
 		}
-
+	
 	// DISPLAY SAVE FORM
 	// Displays even if not active just to show how it would look when active (for testing purposes)
 	// Show 'SAVE FORM' only when click the 'Save so far' button the first time
@@ -218,20 +240,20 @@ class Save {
 	{
 	    if($thissurvey['tokenanswerspersistence'] != 'Y')
 	    {
-	        showsaveform();
+	        $this->showsaveform();
 	    }
 	    else
 	    {
-	    	$flashmessage = savedsilent();
+	    	$flashmessage = $this->savedsilent();
 	    };
 	}
 	elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_SESSION['scid']) )   //update the saved step only
 	{
 	    db_execute_assoc("update ".$CI->db->dbprefix("saved_control")." set saved_thisstep=".$CI->db->escape($thisstep)." where scid=".$_SESSION['scid']);  // Checked
 	}
-
+	
 	}
-
+	
 	function showsaveform()
 	{
 	    //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
@@ -250,7 +272,7 @@ class Save {
 	    ."\t}\n"
 	    ."\t//-->\n"
 	    ."\t</script>\n\n";
-
+	
 	    echo "<form method='post' action='$relativeurl/index.php'>\n";
 	    //PRESENT OPTIONS SCREEN
 	    if (isset($errormsg) && $errormsg != "")
@@ -267,7 +289,7 @@ class Save {
 	    echo "<input type='hidden' name='token' value='",$clienttoken,"' />\n";
 	    echo "<input type='hidden' name='saveprompt' value='Y' />\n";
 	    echo "</form>";
-
+	
 	    foreach(file("$thistpl/endpage.pstpl") as $op)
 	    {
 	        echo templatereplace($op);
@@ -275,9 +297,9 @@ class Save {
 	    echo "</html>\n";
 	    exit;
 	}
-
-
-
+	
+	
+	
 	function savedcontrol()
 	{
 	    //This data will be saved to the "saved_control" table with one row per response.
@@ -292,9 +314,9 @@ class Save {
 	    // - "fieldname" which is the fieldname of the saved response
 	    // - "value" which is the value of the response
 	    //We start by generating the first 5 values which are consistent for all rows.
-
+	
 	    global $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep;
-
+	
 	    //Check that the required fields have been completed.
 	    $errormsg="";
 	    if (!isset($_POST['savename']) || !$_POST['savename']) {$errormsg.=$clang->gT("You must supply a name for this saved session.")."<br />\n";}
@@ -311,7 +333,7 @@ class Save {
 	            $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
 	        }
 	    }
-
+	
 	    if ($errormsg)
 	    {
 	        return;
@@ -360,8 +382,8 @@ class Save {
 			"saved_thisstep"=>$thisstep,
 			"status"=>"S",
 			"saved_date"=>$today);
-
-
+	
+	
 	        if (db_execute_assoc($CI->db->insert_string("{$dbprefix}saved_control", $scdata)))   // Checked
 	        {
 	            $scid = $CI->db->insert_id();
@@ -371,10 +393,10 @@ class Save {
 	        {
 	            safe_die("Unable to insert record into saved_control table.<br /><br />");
 	        }
-
+	
 	        $_SESSION['holdname']=$_POST['savename']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output
 	        $_SESSION['holdpass']=$_POST['savepass']; //Session variable used to load answers every page.  Unsafe - so it has to be taken care of on output
-
+	
 	        //Email if needed
 	        if (isset($_POST['saveemail']) )
 	        {
@@ -387,7 +409,7 @@ class Save {
 	                $message.=$clang->gT("Password","unescaped").": ".$_POST['savepass']."\n\n";
 	                $message.=$clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped").":\n";
 	                $message.=$publicurl."/index.php?sid=$surveyid&loadall=reload&scid=".$scid."&loadname=".urlencode($_POST['savename'])."&loadpass=".urlencode($_POST['savepass']);
-
+	
 	                if ($clienttoken){$message.="&token=".$clienttoken;}
 	                $from="{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
 	                if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
@@ -403,7 +425,7 @@ class Save {
 	        return  $clang->gT('Your survey was successfully saved.');
 	    }
 	}
-
+	
 	/**
 	 * savesilent() saves survey responses when the "Resume later" button
 	 * is press but has no interaction. i.e. it does not ask for email,
@@ -419,14 +441,14 @@ class Save {
 	    $tokenentryquery = 'SELECT * from '.$dbprefix.'tokens_'.$surveyid.' WHERE token=\''.sanitize_paranoid_string($clienttoken).'\';';
 	    $tokenentryresult = db_execute_assoc($tokenentryquery);
 	    $tokenentryarray = $tokenentryresult->row_array();
-
+	
 	    $from = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
 	    $to = $tokenentryarray['firstname'].' '.$tokenentryarray['lastname'].' <'.$tokenentryarray['email'].'>';
 	    $subject = $clang->gT("Saved Survey Details") . " - " . $thissurvey['name'];
 	    $message = $clang->gT("Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey.","unescaped")."\n\n";
 	    $message .= $clang->gT("Reload your survey by clicking on the following link (or pasting it into your browser):","unescaped").":\n";
 	    $language = $tokenentryarray['language'];
-
+	
 	    if($modrewrite)
 	    {
 	        $message .= "\n\n$publicurl/$surveyid/lang-$language/tk-$clienttoken";
@@ -445,26 +467,31 @@ class Save {
 	    };
 	    return  $clang->gT('Your survey was successfully saved.');
 	}
-
-
+	
+	
 	//FUNCTIONS USED WHEN SUBMITTING RESULTS:
 	function createinsertquery($surveyid, $move, $thissurvey, $thisstep, $postedfieldnames, $bFinalizeThisAnswer)
 	{
-
+	
 		$CI =& get_instance();
 		$_POST = $CI->input->post();
 	    global $deletenonvalues, $thistpl;
-
+	    
 		$clang = $CI->limesurvey_lang;
 		$timeadjust = $CI->config->item("timeadjust");
 
 	    $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
-
+	
 	    if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
 	    {
 	        $inserts=array_unique($_SESSION['insertarray']);
-
+	        
 	        $colnames_hidden=Array();
+            // TMSWhite
+            // Add irrelevant columns to list of hidden fields
+            if (isset($_SESSION['irrelevantCodes'])) {
+                $colnames_hidden = array_merge($colnames_hidden,$_SESSION['irrelevantCodes']);
+            }            
 	        foreach ($inserts as $value)
 	        {
 	            //Work out if the field actually exists in this survey
@@ -478,7 +505,10 @@ class Save {
 	                //If deletenonvalues is ON, delete any values that shouldn't exist
 	                // we only do this at stubmit time so that we don't delete default values
 	                // morover, doing this only once reduces the perfomance impact
-	                if ($move == "movesubmit" && $deletenonvalues==1 && !checkconfield($value))
+                    // TMSWhite: Equation type
+                    // Never blank out result for Equation question type, even though it is hidden
+
+                    if ($move == "movesubmit" && $deletenonvalues==1 && $fieldexists['type']!='*' && !checkconfield($value))
 	                {
 	                    $values[]='NULL';
 	                    $colnames_hidden[]=$value;
@@ -489,27 +519,27 @@ class Save {
 	                    // therefore if no date was chosen in a date question the insert value has to be NULL
 	                    $values[]='NULL';
 	                }
-
+	
 	                else if ($fieldexists['type']=='|' && strpos($fieldexists['fieldname'], "_filecount") === false)
 	                {
 	                    $fieldname = $fieldexists['fieldname'];
 	                    $target = $this->config->item("uploaddir")."/surveys/". $thissurvey['sid'] ."/files/";
-
+	
 	                    $json = $_SESSION[$value];
 	                    $phparray = json_decode(stripslashes($json));
-
+	
 	                    // if the files have not been saved already,
 	                    // move the files from tmp to the files folder
-
+	                    
                         $tmp = $this->config->item('tempdir').'/upload/';
                         if (!is_null($phparray) && count($phparray) > 0 && file_exists($tmp.$phparray[0]->filename))
-                        {
-
+	                    {
+	    
 	                        for ($i = 0; $i < count($phparray); $i++)
 	                        {
 	                            if (!rename($tmp . $phparray[$i]->filename, $target . $phparray[$i]->filename))
 	                                echo "Error Moving file to its destination";
-
+	
 	                            $_SESSION[$value] = json_encode($phparray);
 	                        }
 	                    }
@@ -518,19 +548,19 @@ class Save {
 	                    // update uses $_POST for saving responses
 	                    $_POST[$value] = $_SESSION[$value];
 	                }
-
+	
 	                else
 	                {
 	                    // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
-	                    if ($fieldexists['type']=='!' && $fieldmap[$value]['aid']=='other' && isset($_POST[substr($value,0,strlen($value)-5)]) && $_POST[substr($value,0,strlen($value)-5)]!='-oth-')
+	                    if ($fieldexists['type']=='!' && $fieldmap[$value]['aid']=='other' && isset($_POST[substr($value,0,strlen($value)-5)]) && $_POST[substr($value,0,strlen($value)-5)]!='-oth-') 
 	                    {
-	                         $_SESSION[$value]='';
+	                         $_SESSION[$value]='';                               
 	                    }
-
+	                    
 	                    elseif ($fieldexists['type']=='N' || $fieldexists['type']=='K') //sanitize numerical fields
 	                    {
 	                        $_SESSION[$value]=sanitize_float($_SESSION[$value]);
-
+	                        
 	                    }
 	                    elseif ($fieldexists['type']=='D' && is_array($postedfieldnames) && in_array($value,$postedfieldnames))
 	                    {
@@ -544,14 +574,14 @@ class Save {
 	                }
 	            }
 	        }
-
+	                
 	        if ($thissurvey['datestamp'] == "Y")
 	        {
 	            $_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
-
+	
 	        }
-
-
+	
+	
 	        // First compute the submitdate
 	        if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
 	        {
@@ -564,20 +594,20 @@ class Save {
 	        {
 	            $mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
 	        }
-
+	
 	        // CHECK TO SEE IF ROW ALREADY EXISTS
 	        // srid (=Survey Record ID ) is set when the there were already answers saved for that survey
 	        if (!isset($_SESSION['srid']))
 	        {
 	            //Prepare row insertion
-
-
+	
+	
 	            if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
 	            {
 	                echo submitfailed();
 	                exit;
 	            }
-
+	
 	            // INSERT NEW ROW
 	            $query = "INSERT INTO ".$CI->db->_escape_identifiers($thissurvey['tablename'])."\n"
 	            ."(".implode(', ', array_map('db_quote_id',$colnames));
@@ -665,7 +695,7 @@ class Save {
 	                {
 	                    $hiddenfields=Array();
 	                }
-
+	
 	                $fields=$postedfieldnames;
 	                $fields=array_unique($fields);
 	                $fields=array_diff($fields,$hiddenfields); // Do not take fields that are hidden
@@ -706,8 +736,8 @@ class Save {
 	                    }
 	                }
 	                }
-
-
+	
+	
 	                $query .= "WHERE id=" . $_SESSION['srid'];
 	                $query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause
 	            }
@@ -740,7 +770,7 @@ class Save {
 	        exit;
 	    }
 	}
-
+	
 	// submitanswer sets the submitdate
 	// Only used by question.php and group.php if next pages
 	// should not display due to conditions and generally used by survey.php
@@ -754,7 +784,7 @@ class Save {
 		$CI = &get_instance();
 		$clang = $CI->limesurvey_lang;
 		$timeadjust = $CI->config->item('timeadjust');
-
+	
 	    if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
 	    {
 	        // In case of anonymized responses survey with no datestamp
@@ -766,7 +796,7 @@ class Save {
 	    {
 	        $mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
 	    }
-
+	
 	    $query = "";
 	    if (isset($move) && ($move == "movesubmit") && ($thissurvey['active'] == "Y"))
 	    {
@@ -783,11 +813,11 @@ class Save {
 	        $query .= " submitdate = ". $CI->db->escape(date("Y-m-d H:i:s", strtotime($mysubmitdate)));
 	        $query .= " WHERE id=" . $_SESSION['srid'];
 	    }
-
+	
 	    $result=db_execute_assoc($query);    // Checked
 	    return $result;
 	}
-
+	
 	function array_remval($val, &$arr)
 	{
 	    $array_remval = $arr;
@@ -799,7 +829,7 @@ class Save {
 	    }
 	    return $array_remval;
 	}
-
+	
 	/**
 	 * This functions saves the answer time for question/group and whole survey.
 	 * [ It compares current time with the time in $_POST['start_time'] ]
@@ -814,7 +844,7 @@ class Save {
 	        $setField = $_POST['lastanswer'];
 	    }
 		$passedTime = round(microtime(true) - $_POST['start_time'],2);
-
+	
 		if(!isset($setField))
 			$setField = $_POST['lastgroup'];
 		if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
@@ -830,7 +860,7 @@ class Save {
 			db_execute_assoc($query);
 			return;
 		}
-
+		
 		$setField .= "time";
 		//saving the times
 		if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
@@ -840,7 +870,7 @@ class Save {
 		}else{	// UPDATE
 			$query = "UPDATE {$thissurvey['tablename']}_timings SET "
 				."interviewtime = interviewtime" ." + " .$passedTime .","
-				.$CI->db->escape($setField) ." = " .$CI->db->escape($setField) ." + " .$passedTime
+				.$CI->db->escape($setField) ." = " .$CI->db->escape($setField) ." + " .$passedTime 
 				." WHERE id = " .$_SESSION['srid'];
 		}
 		db_execute_assoc($query);

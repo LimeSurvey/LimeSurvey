@@ -178,10 +178,20 @@
             } ?>
             </td></tr>
             <tr><td align='right' valign='top'><strong>
-            <?php echo $clang->gT("Question:"); ?></strong></td><td align='left'><?php echo $qrrow['question']; ?></td></tr>
+            <?php echo $clang->gT("Question:"); ?></strong></td><td align='left'>
+            <?php
+                // TMSWhite - plus line above
+                templatereplace($qrrow['question']);
+                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                ?></td></tr>
             <tr><td align='right' valign='top'><strong>
             <?php echo $clang->gT("Help:"); ?></strong></td><td align='left'>
-            <?php if (trim($qrrow['help'])!=''){ echo $qrrow['help'];} ?>
+            <?php
+                // TMSWhite - plus line above
+                if (trim($qrrow['help'])!=''){
+                    templatereplace($qrrow['help']);
+                    LimeExpressionManager::GetLastPrettyPrintExpression();
+                    } ?>
             </td></tr>
             <?php if ($qrrow['preg'])
             { ?>
@@ -255,4 +265,28 @@
                 <?php } ?>
                 </td></tr>
             <?php } ?>
+            <?php
+                // TMSWhite
+                $questionAttributes = getQuestionAttributes($qid, $qrrow['type']);
+                if (!is_null($questionAttributes['relevance']))
+                {
+                    $relevance = $questionAttributes['relevance'];
+                    if ($relevance !== '' && $relevance !== '1' && $relevance !== '0')
+                    {
+                        LimeExpressionManager::ProcessString("{" . $relevance . "}");    // tests Relevance equation so can pretty-print it
+                        $rel2show = LimeExpressionManager::GetLastPrettyPrintExpression();
+                    }
+                    else
+                    {
+                        $rel2show = $relevance;
+                    }
+                    $questionsummary = "<tr>"
+                    . "<td align='right' valign='top'><strong>"
+                    . $clang->gT("Relevance:")."</strong></td>\n"
+                    . "<td align='left'>";
+                    $questionsummary .= $rel2show;
+                    $questionsummary .= "</td></tr>\n";
+                }
+                echo $questionsummary;
+            ?>
             </table>

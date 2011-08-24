@@ -10334,7 +10334,7 @@ class TCPDF {
 		$oid = $this->_newobj();
 		$out = '<<';
         
-        if (!$this->empty_string($this->title)) {
+		if (!$this->empty_string($this->title)) {
 			// The document's title.
 			$out .= ' /Title '.$this->_textstring($this->title, $oid);
 		}

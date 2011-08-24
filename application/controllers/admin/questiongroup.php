@@ -33,7 +33,7 @@
 	{
 		parent::__construct();
 	}
-    
+
     /**
      * questiongroup::import()
      * Function responsible to import a question group.
@@ -54,7 +54,7 @@
         {
             $importgroup = "<div class='header ui-widget-header'>".$clang->gT("Import question group")."</div>\n";
             $importgroup .= "<div class='messagebox ui-corner-all'>\n";
-            
+
             $sFullFilepath = $this->config->item('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
             $aPathInfo = pathinfo($sFullFilepath);
             $sExtension = $aPathInfo['extension'];

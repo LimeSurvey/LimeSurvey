@@ -44,7 +44,7 @@ $lang = '{"name":"language", "index":"language", "sorttype":"string", "sortable"
 $getlangvalues = getLanguageData();
 if($this->session->userdata('adminlang')!='auto')
 {
-    $lname[0]=$this->session->userdata('adminlang').":".$getlangvalues[$this->session->userdata('adminlang')]['description'];
+$lname[0]=$this->session->userdata('adminlang').":".$getlangvalues[$this->session->userdata('adminlang')]['description'];
 }
 foreach ($getlangvalues as $keycode => $keydesc) {
                 if($this->session->userdata('adminlang')!=$keycode)
@@ -181,7 +181,7 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
 
 </div>
 <br>
-<table id="displayparticipants"  ></table> <div id="pager"></div>
+<table id="displayparticipants"></table> <div id="pager"></div>
 <p><input type="button" name="share" id="share" value="Share" /><input type="button" name="addtosurvey" id="addtosurvey" value="Add to Survey" />
 </p>
 </table>

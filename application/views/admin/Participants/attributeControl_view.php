@@ -14,7 +14,7 @@
     <div class='header ui-widget-header'>
     <strong><?php echo $clang->gT("Attribute Control"); ?> </strong></div>
     <?php
-       $attribute = array('class' => 'form44');
+        $attribute = array('class' => 'form44');
         echo form_open('/admin/participants/storeAttributes',$attribute);?>
         <br></br>
         <ul><li><table id='atttable'class='hovertable'>

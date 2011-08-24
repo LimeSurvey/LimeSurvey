@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- *
+ * 
  * $Id$
- *
+ * 
  */
 
 /**
@@ -23,7 +23,7 @@
  * @subpackage	Backend
  */
 class assessments extends Survey_Common_Controller {
-
+    
 	/**
 	 * Constructor
 	 */
@@ -31,7 +31,7 @@ class assessments extends Survey_Common_Controller {
 	{
 		parent::__construct();
 	}
-
+	
 	/**
 	 * Shows Assessment Controller page
 	 */
@@ -55,13 +55,13 @@ class assessments extends Survey_Common_Controller {
 		if (bHasSurveyPermission($surveyid, 'assessments','read'))
 		{
 			$clang=$this->limesurvey_lang;
-
-
+			
+		    
 			if ($surveyid == "") {
 				show_error($clang->gT("No SID Provided"));
 				exit;
 			}
-
+		
 			$assessments=$this->assessments_model->getAssessments($surveyid);
 			//$assessmentsoutput.= "<pre>";print_r($assessments);echo "</pre>";
 			$groups=$this->groups_model->getGroups($surveyid);
@@ -74,7 +74,7 @@ class assessments extends Survey_Common_Controller {
 			$actiontitle=$clang->gT("Add");
 			$actionvalue="assessmentadd";
 			$thisid="";
-
+		
 			if ($action == "assessmentedit" && bHasSurveyPermission($surveyid, 'assessments','update')) {
 				$this->load->helper("database");
 				$query = "SELECT * FROM ".$this->db->dbprefix('assessments')." WHERE id=".sanitize_int($_POST['id'])." and language='$baselang'";
@@ -89,12 +89,12 @@ class assessments extends Survey_Common_Controller {
 			}
 			//$assessmentsoutput.= "<pre>"; print_r($edits); $assessmentsoutput.= "</pre>";
 			//PRESENT THE PAGE
-
+			
 			$surveyinfo=getSurveyInfo($surveyid);
 
 			self::_js_admin_includes($this->config->item("adminscripts").'assessments.js');
 			self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery.tablesorter.min.js');
-
+					
 			$data['clang']=$clang;
 			$data['surveyinfo']=$surveyinfo;
 			$data['imageurl'] = $this->config->item('imageurl');
@@ -111,14 +111,14 @@ class assessments extends Survey_Common_Controller {
 			if(isset($editdata)) $data['editdata']=$editdata;
 			$data['thisid']=$thisid;
 			$data['groups']=$groups;
-
+			
 			self::_getAdminHeader();
 			$this->load->view("admin/assessments_view",$data);
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
+		
 
 		}
-
+				
 	}
 
 	/**
@@ -135,7 +135,7 @@ class assessments extends Survey_Common_Controller {
 		    foreach ($assessmentlangs as $assessmentlang)
 		    {
 		        if (!isset($_POST['gid'])) $_POST['gid']=0;
-
+		
 		        $datarray=array(
 		        'sid' => $surveyid,
 		        'scope' => $_POST['scope'],
@@ -145,12 +145,12 @@ class assessments extends Survey_Common_Controller {
 		        'name' => $_POST['name_'.$assessmentlang],
 		        'language' => $assessmentlang,
 		        'message' => $_POST['assessmentmessage_'.$assessmentlang]);
-
+		
 		        if ($first==false)
 		        {
 		            $datarray['id']=$aid;
 		        }
-
+		
 				$this->assessments_model->insertRecords($datarray);
 		        //$query = $connect->GetInsertSQL($inserttable, $datarray, get_magic_quotes_gpc());
 		        //$result=$connect->Execute($query) or safe_die("Error inserting<br />$query<br />".$connect->ErrorMsg());
@@ -178,10 +178,10 @@ class assessments extends Survey_Common_Controller {
 		    //    require_once("../classes/inputfilter/class.inputfilter_clean.php");
 		    //    $myFilter = new InputFilter('','',1,1,1);
 		    //}
-			$assessmentlangs=$this->config->item("assessmentlangs");
+			$assessmentlangs=$this->config->item("assessmentlangs");		
 		    foreach ($assessmentlangs as $assessmentlang)
 		    {
-
+		
 		        if (!isset($_POST['gid'])) $_POST['gid']=0;
 		        //if ($filterxsshtml)
 		        //{
@@ -204,5 +204,5 @@ class assessments extends Survey_Common_Controller {
 			$this->assessments_model->dropRecord($id);
 		}
 	}
-
+	
 }

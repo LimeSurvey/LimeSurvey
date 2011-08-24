@@ -14,11 +14,11 @@
  */
 
 class Question_format {
-
+ 	
  	function run($args) {
-
+ 		
 		global $surveyid, $thissurvey, $totalquestions;
-
+ 		
 		extract($args);
 		$CI =& get_instance();
 		//$_SESSION = $CI->session->userdata;
@@ -26,15 +26,15 @@ class Question_format {
 		$publicurl = base_url();
 		$_POST = $CI->input->post();
 		$allowmandbackwards = $CI->config->item("allowmandbackwards");
-
-
+		
+		
 		//Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
-
+				
 		if (!isset($_SESSION['step'])) {$_SESSION['step']=0;}
 		if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 		if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
 		$_SESSION['prevstep']=$_SESSION['step'];
-
+		
 		//Move current step
 		if (isset($move) && $move == "moveprev" && ($thissurvey['allowprev']=='Y' || $thissurvey['allowjumps']=='Y') && $_SESSION['step'] > 0) {$_SESSION['step'] = $thisstep-1;}
 		if (isset($move) && $move == "movenext")
@@ -48,13 +48,13 @@ class Question_format {
 		    if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep'])))
 		        $_SESSION['step'] = $move;
 		}
-
-
+		
+		
 		// We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
 		// Previously we used to keep the session and redirect the user to the
 		// submit page.
 		//if (isset($_SESSION['finished'])) {$move="movesubmit"; }
-
+		
 		//CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 		//First, see if we are moving backwards or doing a Save so far, and its OK not to check:
 		if ($allowmandbackwards==1 && (
@@ -67,17 +67,17 @@ class Question_format {
 		{
 		    $backok="N";
 		}
-
+		
 		//Now, we check mandatory questions if necessary
 		//CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 		$notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
-
+		
 		//CHECK INPUT
 		$notvalidated=aCheckInput($surveyid, $move, $backok);
-
+		
 		// CHECK UPLOADED FILES
 		$filenotvalidated = checkUploadedFileValidity($surveyid, $move, $backok);
-
+		
 		//SEE IF $surveyid EXISTS ####################################################################
 		if ($surveyexists <1)
 		{
@@ -91,7 +91,7 @@ class Question_format {
 		    doFooter();
 		    exit;
 		}
-
+		
 		//RUN THIS IF THIS IS THE FIRST TIME
 		if (!$_SESSION['step'])
 		{
@@ -104,22 +104,22 @@ class Question_format {
 		        exit;
 		    }
 		}
-
+		
 		//******************************************************************************************************
 		//PRESENT SURVEY
 		//******************************************************************************************************
-
+		
 		//GET GROUP DETAILS
-
+		
 		if ($_SESSION['step'] == "0") {$currentquestion=$_SESSION['step'];}
 		else {$currentquestion=$_SESSION['step']-1;}
-
+		
 		$ia=$_SESSION['fieldarray'][$currentquestion];
-
+		
 		$ia[]=$_SESSION['step'];
-
+		
 		list($newgroup, $gid, $groupname, $groupdescription, $gl)=self::_checkIfNewGroup($ia);
-
+		
 		// MANAGE CONDITIONAL QUESTIONS AND HIDDEN QUESTIONS
 		$qidattributes=getQuestionAttributes($ia[0]);
 		if ($qidattributes===false)  // Question was deleted
@@ -128,8 +128,8 @@ class Question_format {
 		}
 		$conditionforthisquestion=$ia[7];
 		$questionsSkipped=0;
-
-
+		
+		
 		while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET; IF HIDDEN MOVE TO NEXT
 		{
 		    // this is a while, not an IF because if we skip the question we loop on the next question, see below
@@ -171,19 +171,19 @@ class Question_format {
 		        {
                     if ($currentquestion > 0)
                     {
-                        $currentquestion--; // if we reach -1, this means we must go back to first page
+		            $currentquestion--; // if we reach -1, this means we must go back to first page
                         if(isset($_SESSION['fieldarray'][$currentquestion]))
-                        {
+		            {
                             $ia=$_SESSION['fieldarray'][$currentquestion];
                         }
-                        $_SESSION['step']--;
-                    }
+		                $_SESSION['step']--;
+		            }
                     else
-                    {
-                        $_SESSION['step']=0;
-                        display_first_page();
-                        exit;
-                    }
+		            {
+		                $_SESSION['step']=0;
+		                display_first_page();
+		                exit;
+		            }
 		        }
 		        // because we skip this question, we need to loop on the same condition 'check-block'
 		        //  with the new question (we have overwritten $ia)
@@ -191,14 +191,14 @@ class Question_format {
 		        $qidattributes=getQuestionAttributes($ia[0]);
 		    }
 		} // End of while conditionforthisquestion=="Y"
-
+		
 		//Setup an inverted fieldnamesInfo for quick lookup of field answers.
 		$aFieldnamesInfoInv = aArrayInvert($_SESSION['fieldnamesInfo']);
 		if ($_SESSION['step'] > $_SESSION['maxstep'])
 		{
 		    $_SESSION['maxstep'] = $_SESSION['step'];
 		}
-
+		
 		//SUBMIT
 		if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered)  && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
 		{
@@ -211,8 +211,8 @@ class Question_format {
 		        }
 		        //        $_SESSION['refurl'] = $_SESSION['refurl'];
 		    }
-
-
+		
+		
 		    //COMMIT CHANGES TO DATABASE
 		    if ($thissurvey['active'] != "Y")
 		    {
@@ -222,33 +222,33 @@ class Question_format {
 		            $assessments = doAssessment($surveyid);
 		        }
 		        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
-
+		
 		        if($thissurvey['printanswers'] != 'Y')
 		        {
 		            killSession();
 		        }
-
+		
 		        sendcacheheaders();
 		        doHeader();
 		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
-
+		
 		        //Check for assessments
 		        if ($thissurvey['assessments']== "Y" && $assessments)
 		        {
 		            echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		        }
-
+		
 		        $completed = $thissurvey['surveyls_endtext'];
 		        $completed .= "<br /><strong><font size='2' color='red'>".$clang->gT("Did Not Save")."</font></strong><br /><br />\n\n";
 		        $completed .= $clang->gT("Your survey responses have not been recorded. This survey is not yet active.")."<br /><br />\n";
-
+		
 		        if ($thissurvey['printanswers'] == 'Y')
 		        {
 		            // ClearAll link is only relevant for survey with printanswers enabled
 		            // in other cases the session is cleared at submit time
 		            $completed .= "<a href='{$publicurl}/index.php?sid=$surveyid&amp;move=clearall'>".$clang->gT("Clear Responses")."</a><br /><br />\n";
 		        }
-
+		
 		    }
 		    else //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
 		    {
@@ -257,15 +257,15 @@ class Question_format {
 		            $cookiename="PHPSID".returnglobal('sid')."STATUS";
 		            setcookie("$cookiename", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days
 		        }
-
+		
 		        //Before doing the "templatereplace()" function, check the $thissurvey['url']
 		        //field for limereplace stuff, and do transformations!
 		        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
 		        $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
-
+		
 		        $content='';
 		        $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
-
+		
 		        //Check for assessments
 		        if ($thissurvey['assessments']== "Y")
 		        {
@@ -275,8 +275,8 @@ class Question_format {
 		                $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		            }
 		        }
-
-
+		
+		
 		        if (FlattenText($thissurvey['surveyls_endtext'])=='')
 		        {
 		            $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
@@ -286,7 +286,7 @@ class Question_format {
 		        {
 		            $completed = $thissurvey['surveyls_endtext'];
 		        }
-
+		
 		        // Link to Print Answer Preview  **********
 		        if ($thissurvey['printanswers']=='Y')
 		        {
@@ -296,9 +296,9 @@ class Question_format {
 		            ."</a><br />\n";
 		        }
 		        //*****************************************
-
+		
 		        if ($thissurvey['publicstatistics']=='Y' && $thissurvey['printanswers']=='Y') {$completed .='<br />'.$clang->gT("or");}
-
+		
 		        // Link to Public statistics  **********
 		        if ($thissurvey['publicstatistics']=='Y')
 		        {
@@ -308,20 +308,20 @@ class Question_format {
 		            ."</a><br />\n";
 		        }
 		        //*****************************************
-
-
+		
+		
 		        //Update the token if needed and send a confirmation email
 		        if (isset($clienttoken) && $clienttoken)
 		        {
 		            submittokens();
 		        }
-
+		
 		        //Send notification to survey administrator
 		        SendSubmitNotifications();
-
+		
 		        $_SESSION['finished']=true;
 		        $_SESSION['sid']=$surveyid;
-
+		
 		        if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
 		        {
 		            //Automatically redirect the page to the "url" setting for the survey
@@ -331,30 +331,30 @@ class Question_format {
 		            $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
 		            $url=str_replace("{SID}", $surveyid, $url);              // to activate the SID in the END URL
 		            $url=str_replace("{LANG}", $clang->getlangcode(), $url); // to activate the LANG in the END URL
-
+		
 		            header("Location: {$url}");
 		        }
-
+		
 		        //if($thissurvey['printanswers'] != 'Y' && $thissurvey['usecookie'] != 'Y' && $tokensexist !=1)
 		        if($thissurvey['printanswers'] != 'Y')
 		        {
 		            killSession();
 		        }
-
+		
 		        doHeader();
 		        if (isset($content)) {echo $content;}
-
+		
 		    }
-
+		
 		    echo templatereplace(file_get_contents("$thistpl/completed.pstpl"),array(),compact(array_keys(get_defined_vars())));
-
+		
 		    echo "\n<br />\n";
 		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		    doFooter();
 		    exit;
 		}
-
-
+		
+		
 		if ($questionsSkipped == 0 && $newgroup == "Y" && isset($move) && $move == "moveprev" && (isset($_POST['grpdesc']) && $_POST['grpdesc']=="Y")) //a small trick to manage moving backwards from a group description
 		{
 		    //This does not work properly in all instances.
@@ -362,9 +362,9 @@ class Question_format {
 		    $ia=$_SESSION['fieldarray'][$currentquestion];
 		    $_SESSION['step']++;
 		}
-
+		
 		list($newgroup, $gid, $groupname, $groupdescription, $gl)=self::_checkIfNewGroup($ia);
-
+		
 		//Check if current page is for group description only
 		$bIsGroupDescrPage = false;
 		if ($newgroup == "Y" && trim($groupdescription)!='' &&
@@ -377,9 +377,9 @@ class Question_format {
 		    //  - in this case answers' inputnames mustn't be added to filednames hidden input
 		    $bIsGroupDescrPage = true;
 		}
-
-
-
+		
+		
+		
 		//require_once("qanda.php");
 		$CI->load->helper("qanda");
 		setNoAnswerMode($thissurvey);
@@ -389,7 +389,7 @@ class Question_format {
 		$conmandatoryfns=array();
 		$conditions=array();
 		$inputnames=array();
-
+		
 		list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 		if ($plus_qanda)
 		{
@@ -402,25 +402,25 @@ class Question_format {
 		    // Add answers' inputnames to $inputnames unless this is a group description page
 		    $inputnames = addtoarray_single($inputnames, $plus_inputnames);
 		}
-
+		
 		//Display the "mandatory" popup if necessary
 		if (isset($notanswered) && $notanswered!=false)
 		{
 		    list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
 		}
-
+		
 		//Display the "validation" popup if necessary
 		if (isset($notvalidated))
 		{
 		    list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
 		}
-
+		
 		// Display the "file not valid" popup if necessary
 		if (isset($filenotvalidated))
 		{
 		    list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
 		}
-
+		
 		//Get list of mandatory questions
 		list($plusman, $pluscon)=create_mandatorylist($ia);
 		if ($plusman !== null)
@@ -442,22 +442,22 @@ class Question_format {
 		    $conditions = addtoarray_single($conditions, $plus_conditions);
 		}
 		//------------------------END DEVELOPMENT OF QUESTION
-
+		
 		if ($thissurvey['showprogress'] == 'Y')
 		{
 		    $percentcomplete = makegraph($_SESSION['step'], $_SESSION['totalsteps']);
 		}
-
+		
 		//READ TEMPLATES, INSERT DATA AND PRESENT PAGE
 		sendcacheheaders();
 		doHeader();
-
+		
 		if (isset($popup)) {echo $popup;}
 		if (isset($vpopup)) {echo $vpopup;}
 		if (isset($fpopup)) {echo $fpopup;}
-
+		
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
-
+		
 		//ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
 		if ($_SESSION['step'] != $_SESSION['prevstep'] ||
 		    (isset($_SESSION['stepno']) && $_SESSION['stepno'] % 2))
@@ -471,10 +471,10 @@ class Question_format {
 		        . "</script>\n";
 		    }
 		}
-
+		
 		echo "\n<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
         echo sDefaultSubmitHandler();
-        
+		
 		//PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 		echo "\n\n<!-- INPUT NAMES -->\n";
 		echo "\t<input type='hidden' name='fieldnames' value='";
@@ -482,7 +482,7 @@ class Question_format {
 		echo "' id='fieldnames'  />\n";
 		echo "\n\n<!-- START THE SURVEY -->\n";
 		echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),compact(array_keys(get_defined_vars())));
-
+		
 		if ($bIsGroupDescrPage)
 		{
 		    $presentinggroupdescription = "yes";
@@ -490,13 +490,13 @@ class Question_format {
 		    echo "\t<input type='hidden' name='grpdesc' value='Y' id='grpdesc' />\n";
 		    echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		    echo "\n";
-
+		
 		    //if ($groupdescription)
 		    //{
 		    echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		    //}
 		    echo "\n";
-
+		
 		    echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
 		    echo "\t<script type='text/javascript'>\n";
 		    echo "\t<!--\n";
@@ -511,7 +511,7 @@ class Question_format {
 		    echo "\n\n<!-- END THE GROUP -->\n";
 		    echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		    echo "\n";
-
+		
 		    $_SESSION['step']--;
 		}
 		else
@@ -523,7 +523,7 @@ class Question_format {
 		    //	}
 		    echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		    echo "\n";
-
+		
 		    echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n";
 		    echo "\t<script type='text/javascript'>\n";
 		    echo "\t<!--\n";
@@ -535,26 +535,26 @@ class Question_format {
 		    echo "\t}\n";
 		    echo "\t//-->\n";
 		    echo "\t</script>\n\n";
-
+		
 		    //Display the "mandatory" message on page if necessary
 		    if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
 		    {
 		        echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
 		    }
-
+		
 		    //Display the "validation" message on page if necessary
 		    if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
 		    {
 		        echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
 		    }
-
+		
 		    // Display the File Validation message on page if necessary
 		    if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true)
 		    {
 		        echo "<p><span class='errormandatory'>". $clang->gT("One or more uploaded files do not satisfy the criteria") . "</span></p>";
 		    }
-
-
+		
+		
 		    echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
 		    if (is_array($qanda))
 		    {
@@ -562,7 +562,7 @@ class Question_format {
 		        {
 					echo "<input type='hidden' name='lastanswer' value='$qa[7]' id='lastanswer' />\n";
 		            $q_class = question_class($qa[8]); // render question class (see common.php)
-
+		
 		            if ($qa[9] == 'Y')
 		            {
 		                $man_class = ' mandatory';
@@ -571,7 +571,7 @@ class Question_format {
 		            {
 		                $man_class = '';
 		            }
-
+		
 		            // Fixed by lemeur: can't rely on javascript checkconditions with
 		            // question-by-question display to hide/show conditionnal questions
 		            // as conditions are evaluated with php code
@@ -580,7 +580,7 @@ class Question_format {
 		            // condition eval in php)
 		            //			if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
 		            if ($conditionforthisquestion != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
-
+		
 		            $question= $qa[0];
 		            //===================================================================
 		            // The following four variables offer the templating system the
@@ -594,9 +594,9 @@ class Question_format {
 		            //===================================================================
 		            $answer=$qa[1];
 		            $help=$qa[2];
-
+		
 		            $question_template = file_get_contents($thistpl.'/question.pstpl');
-
+		
 		            if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )
 		            {
 		                // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
@@ -621,26 +621,26 @@ class Question_format {
 		    echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		    echo "\n";
 		}
-
+		
 		$navigator = surveymover();
-
+		
 		echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
 		echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		echo "\n";
-
+		
 		if ($thissurvey['active'] != "Y")
 		{
 		    echo "<p style='text-align:center' class='error'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";
 		}
-
+		
 		echo "\n";
-
+		
 		if($thissurvey['allowjumps']=='Y' && !$bIsGroupDescrPage)
 		{
 		    echo "\n\n<!-- PRESENT THE INDEX -->\n";
-
+		
 		    $iLastGrp = null;
-
+		
 		    echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
 		    for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
 		    {
@@ -648,10 +648,10 @@ class Question_format {
 		        $qidattributes=getQuestionAttributes($ia[0], $ia[4]);
 		        if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
 		            continue;
-
+		
 		        $sText = FlattenText($ia[3]);
 		        $bAnsw = bCheckQuestionForAnswer($ia[1], $aFieldnamesInfoInv);
-
+		
 		        if($iLastGrp != $ia[5])
 		        {
 		            $iLastGrp = $ia[5];
@@ -664,24 +664,24 @@ class Question_format {
 		                }
 		            }
 		        }
-
+		
 		        ++$v;
-
+		
 		        $class = ($n == $_SESSION['step'] - 1? 'current': ($bAnsw? 'answer': 'missing'));
 		        if($v % 2) $class .= " odd";
-
+		
 		        $s = $n + 1;
 		        echo "<div class=\"row $class\" onclick=\"javascript:document.limesurvey.move.value = '$s'; document.limesurvey.submit();\"><span class=\"hdr\">$v</span><span title=\"$sText\">$sText</span></div>";
 		    }
-
+		
 		    if($_SESSION['maxstep'] == $_SESSION['totalsteps'])
 		    {
 		        echo "<input class='submit' type='submit' accesskey='l' onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" value=' "
 		            . $clang->gT("Submit")." ' name='move2' />\n";
 		    }
-
+		
 		    echo '</div></div>';
-
+		
 		    echo "<script type=\"text/javascript\">\n"
 		    . "  $(\".outerframe\").addClass(\"withindex\");\n"
 		    . "  var idx = $(\"#index\");\n"
@@ -690,7 +690,7 @@ class Question_format {
 		    . "</script>\n";
 		    echo "\n";
 		}
-
+		
 		if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
 		{
 		    //if conditions exist, create hidden inputs for 'previously' answered questions
@@ -704,8 +704,8 @@ class Question_format {
 		        }
 		    }
 		}
-
-
+		
+		
 		//SOME STUFF FOR MANDATORY QUESTIONS
 		if (remove_nulls_from_array($mandatorys) && $newgroup != "Y")
 		{
@@ -727,10 +727,10 @@ class Question_format {
 		    $conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
 		    echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
 		}
-
+		
 		echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
 		echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
-		echo "<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n";
+		echo "<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n";    
 		if(!isset($token)) $token = "";
 		echo "<input type='hidden' name='token' value='$token' id='token' />\n";
 		echo "<input type='hidden' name='lastgroupname' value='".htmlspecialchars(strip_tags($groupname),ENT_QUOTES,'UTF-8')."' id='lastgroupname' />\n";
@@ -741,7 +741,7 @@ class Question_format {
 		//}
 		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		doFooter();
-
+		
 	}
 
 	function _checkIfNewGroup($ia)

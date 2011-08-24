@@ -15,7 +15,7 @@
  */
 
 
- /**
+/**
 * This function imports an old-school question group file (*.csv,*.sql)
 *
 * @param mixed $sFullFilepath Full file patch to the import file
@@ -3476,7 +3476,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         //Set current user to be the owner
         $insertdata['owner_id']=$CI->session->userdata('loginID');
         //Change creation date to import date
-
+        
         $insertdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $CI->config->item('timeadjust')));
 
         if ($insertdata['expires'] == '')
@@ -3509,7 +3509,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $CI->load->model('surveys_languagesettings_model');
     foreach ($xml->surveys_languagesettings->rows->row as $row)
     {
-
+        
         $insertdata=array();
         foreach ($row as $key=>$value)
         {
@@ -3888,17 +3888,17 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $results['quotals']++;
         }
     }
-
-
-
+    
+    
+    
     // Set survey rights
     GiveAllSurveyPermissions($CI->session->userdata('loginID'),$newsid);
     if ($bTranslateInsertansTags)
     {
-
+        
         $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
         TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
-
+        
     }
 
     return $results;

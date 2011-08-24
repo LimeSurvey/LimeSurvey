@@ -15,7 +15,7 @@
 function browsemenubar($title='',$surveyid=null,$load=false)
 {
     //$surveyid; //$sumrows5, $surrows; //$CI->config->item('scriptname'), $CI->config->item('imageurl'), $CI->config->item('homeurl'),
-    $CI =& get_instance();
+    $CI =& get_instance(); 
     $CI->load->helper('common');
     $lang = array('fr');
 		//$lang = array($this->config->item('defaultlang'));
@@ -37,7 +37,7 @@ function browsemenubar($title='',$surveyid=null,$load=false)
     . "<img src='".$CI->config->item('imageurl')."/blank.gif' alt='' width='11' />\n"
     . "<img src='".$CI->config->item('imageurl')."/seperator.gif' alt='' />\n";
     //Show summary information
-
+    
     if (bHasSurveyPermission($surveyid,'responses','read'))
     {
         $browsemenubar.= "<a href='".site_url('admin/browse/'.$surveyid)."' title=\"".$clang->gTview("Show summary information")."\" >"
@@ -72,9 +72,9 @@ function browsemenubar($title='',$surveyid=null,$load=false)
         $browsemenubar .= "<a href='".site_url('admin/browse/'.$surveyid.'/50/desc')."'" .
                         " title=\"".$clang->gTview("Display Last 50 Responses")."\" >" .
                         "<img name='ViewLast' src='".$CI->config->item('imageurl')."/viewlast.png' alt='".$clang->gT("Display Last 50 Responses")."' /></a>\n";
-
+                    
     }
-
+    
     // Data entry
     if (bHasSurveyPermission($surveyid,'responses','create'))
     {
@@ -94,52 +94,52 @@ function browsemenubar($title='',$surveyid=null,$load=false)
             $browsemenubar .= "<a href='".site_url('admin/browse/'.$surveyid.'time')."' "
             ."title=\"".$clang->gTview("Get time statistics from these responses")."\" >"
             ."<img name='timeStatistics' src='".$CI->config->item('imageurl')."/timeStatistics.png' alt='".$clang->gT("Get time statistics from these responses")."' /></a>\n";
-        }
+        }    
     }
     $browsemenubar .= "<img src='".$CI->config->item('imageurl')."/seperator.gif' alt='' />\n";
 
-    if (bHasSurveyPermission($surveyid,'responses','export'))
+    if (bHasSurveyPermission($surveyid,'responses','export'))         
     {
         // Export to application
         $browsemenubar .= "<a href='".$CI->config->item('scriptname')."?action=exportresults&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to application")."\" >"
         . "<img name='Export' src='".$CI->config->item('imageurl')."/export.png' "
         . "alt='".$clang->gT("Export results to application")."' /></a>\n"
-
+        
         // Export to SPSS
         . "<a href='".$CI->config->item('scriptname')."?action=exportspss&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to a SPSS/PASW command file")."\" >"
         . "<img src='".$CI->config->item('imageurl')."/exportspss.png' "
         . "alt='". $clang->gT("Export results to a SPSS/PASW command file")."' /></a>\n"
-
+        
         // Export to R
         . "<a href='".$CI->config->item('scriptname')."?action=exportr&amp;sid=$surveyid' title=\"".$clang->gTview("Export results to a R data file")."\" >"
         . "<img src='".$CI->config->item('imageurl')."/exportr.png' "
         . "alt='". $clang->gT("Export results to a R data file")."' /></a>\n";
     }
     //Import old response table
-    if (bHasSurveyPermission($surveyid,'responses','create'))
+    if (bHasSurveyPermission($surveyid,'responses','create'))  
     {
         $browsemenubar .= "<a href='".site_url('admin/dataentry/import/'.$surveyid)."' title=\"".$clang->gTview("Import responses from a deactivated survey table")."\" >"
         . "<img name='ImportOldResponses' src='".$CI->config->item('imageurl')."/importold.png' alt='".$clang->gT("Import responses from a deactivated survey table")."' /></a>\n";
-    }
+    }       
 
     $browsemenubar .= "<img src='".$CI->config->item('imageurl')."/seperator.gif' alt='' />\n";
 
     //browse saved responses
-    if (bHasSurveyPermission($surveyid,'responses','read'))
+    if (bHasSurveyPermission($surveyid,'responses','read'))  
     {
         $browsemenubar .= "<a href='".site_url('admin/saved/view/'.$surveyid)."' title=\"".$clang->gTview("View Saved but not submitted Responses")."\" >"
         . "<img src='".$CI->config->item('imageurl')."/saved.png' title='' alt='".$clang->gT("View Saved but not submitted Responses")."' name='BrowseSaved' /></a>\n";
     }
 
     //Import VV
-    if (bHasSurveyPermission($surveyid,'responses','import'))
-    {
+    if (bHasSurveyPermission($surveyid,'responses','import'))  
+    {    
         $browsemenubar .= "<a href='".site_url('admin/dataentry/vvimport/'.$surveyid)."' title=\"".$clang->gTview("Import a VV survey file")."\" >"
         . "<img src='".$CI->config->item('imageurl')."/importvv.png' alt='".$clang->gT("Import a VV survey file")."' /></a>\n";
     }
 
     //Export VV
-    if (bHasSurveyPermission($surveyid,'responses','export'))
+    if (bHasSurveyPermission($surveyid,'responses','export'))   
     {
         $browsemenubar .= "<a href='".$CI->config->item('scriptname')."?action=vvexport&amp;sid=$surveyid' title=\"".$clang->gTview("Export a VV survey file")."\" >"
         ."<img src='".$CI->config->item('imageurl')."/exportvv.png' title='' alt='".$clang->gT("Export a VV survey file")."' /></a>\n";
@@ -154,10 +154,10 @@ function browsemenubar($title='',$surveyid=null,$load=false)
     $browsemenubar .= "</div>\n"
     . "\t</div>\n"
     . "</div>\n";
-
+   
     if ($load)
     {
-
+        
         $data['display'] = $browsemenubar;
         $CI->load->view('survey_view',$data);
     }
@@ -165,7 +165,7 @@ function browsemenubar($title='',$surveyid=null,$load=false)
     {
         return $browsemenubar;
     }
-
+    
 }
 
 //LAST LINE LEFT BLANK

@@ -33,7 +33,7 @@
 	{
 		parent::__construct();
 	}
-
+    
     /**
      * templates::upload()
      * function responsible to import a template archive.
@@ -42,22 +42,22 @@
     function upload()
     {
         $clang = $this->limesurvey_lang;
-
+        
         self::_js_admin_includes(base_url().'scripts/admin/templates.js');
-
+        
         self::_getAdminHeader();
         self::_initialise('default','welcome', 'startpage.pstpl',FALSE);
         $lid = $this->input->post('lid');
         $action = $this->input->post('action');
-
-
-
+        
+        
+        
         if ($action == 'templateupload')
         {
             $basedestdir = $this->config->item('publicdir')."/upload/surveys";
             $importtemplateoutput = "<div class='header ui-widget-header'>".$clang->gT("Import template")."</div>\n";
             $importtemplateoutput .= "<div class='messagebox ui-corner-all'>";
-
+            
             if ($this->config->item('demoModeOnly') === true)
             {
                 $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
@@ -67,7 +67,7 @@
                 show_error($importtemplateoutput);
                 return;
             }
-
+        
             //require("classes/phpzip/phpzip.inc.php");
             $this->load->library('admin/Phpzip');
             //$the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
@@ -80,7 +80,7 @@
             $basedestdir = $this->config->item('usertemplaterootdir');
             $newdir=str_replace('.','',self::_strip_ext(sanitize_paranoid_string($_FILES['the_file']['name'])));
             $destdir=$basedestdir.'/'.$newdir.'/';
-
+        
             if (!is_writeable($basedestdir))
             {
                 $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
@@ -90,7 +90,7 @@
                 show_error($importtemplateoutput);
                 return;
             }
-
+            
             if (!is_dir($destdir))
             {
                 mkdir($destdir);
@@ -104,17 +104,17 @@
                 show_error($importtemplateoutput);
                 return;
             }
-
+        
             $aImportedFilesInfo=array();
             $aErrorFilesInfo=array();
-
-
+        
+        
             if (is_file($zipfile))
             {
                 $importtemplateoutput .= "<div class=\"successheader\">".$clang->gT("Success")."</div><br />\n";
                 $importtemplateoutput .= $clang->gT("File upload succeeded.")."<br /><br />\n";
                 $importtemplateoutput .= $clang->gT("Reading file..")."<br /><br />\n";
-
+                
                 if ($z->extract($extractdir,$zipfile) != 'OK')
                 {
                     $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
@@ -124,10 +124,10 @@
                     show_error($importtemplateoutput);
                     return;
                 }
-
+        
                 $ErrorListHeader = "";
                 $ImportListHeader = "";
-
+        
                 // now read tempdir and copy authorized files only
                 $dh = opendir($extractdir);
                 while($direntry = readdir($dh))
@@ -146,7 +146,7 @@
                                         "status" => $clang->gT("Copy failed")
                                     );
                                     unlink($extractdir."/".$direntry);
-
+        
                                 }
                                 else
                                 {
@@ -157,7 +157,7 @@
                                     unlink($extractdir."/".$direntry);
                                 }
                             }
-
+        
                             else
                             { // Extension forbidden
                                 $aErrorFilesInfo[]=Array(
@@ -169,14 +169,14 @@
                         } // end if is_file
                     } // end if ! . or ..
                 } // end while read dir
-
-
+        
+        
                 //Delete the temporary file
                 unlink($zipfile);
                 closedir($dh);
                 //Delete temporary folder
                 rmdir($extractdir);
-
+        
                 // display summary
                 $okfiles = 0;
                 $errfiles= 0;
@@ -196,7 +196,7 @@
                     $importtemplateoutput .= "</div>\n";
                     show_error($importtemplateoutput);
                     return;
-
+        
                 }
                 elseif (count($aErrorFilesInfo)>0 && count($aImportedFilesInfo)>0)
                 {
@@ -214,7 +214,7 @@
                     $errfiles = count($aErrorFilesInfo);
                     $ErrorListHeader .= "<br /><strong><u>".$clang->gT("Error Files List").":</u></strong><br />\n";
                 }
-
+        
                 $importtemplateoutput .= "<strong>".$clang->gT("Imported template files for")."</strong> $lid<br /><br />\n";
                 $importtemplateoutput .= "<div class=\"".$statusClass."\">".$status."</div><br />\n";
                 $importtemplateoutput .= "<strong><u>".$clang->gT("Resources Import Summary")."</u></strong><br />\n";
@@ -250,21 +250,21 @@
             }
             $importtemplateoutput .= "<input type='submit' value='".$clang->gT("Open imported template")."' onclick=\"window.open('".site_url('admin/templates/view/startpage.pstpl/welcome/'.$newdir)."', '_top')\"/>\n";
             $importtemplateoutput .= "</div>\n";
-
+            
             $idata['display'] = $importtemplateoutput;
             $this->load->view('survey_view',$idata);
-
+            
         }
         else
         {
-
+            
             $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) {this.form.submit();}'";
             if (!function_exists("zip_open"))
             {
                 $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
             }
             $templatesoutput= "<div class='header ui-widget-header'>".$clang->gT("Uploaded template file") ."</div>\n";
-
+    
 
             $templatesoutput.= "\t<form enctype='multipart/form-data' id='importtemplate' name='importtemplate' action='".site_url('admin/templates/upload')."' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
                             . "\t<input type='hidden' name='lid' value='$lid' />\n"
@@ -277,31 +277,31 @@
             $data['display'] = $templatesoutput;
             $this->load->view('survey_view',$data);
         }
-
-
-
+        
+        
+        
         self::_loadEndScripts();
-
-
+                
+                
 	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
-
+        
+        
     }
-
+    
     //---------------------
     // Comes from http://fr2.php.net/tempnam
     function _tempdir($dir, $prefix='', $mode=0700)
     {
         if (substr($dir, -1) != '/') $dir .= '/';
-
+    
         do
         {
             $path = $dir.$prefix.mt_rand(0, 9999999);
         } while (!mkdir($path, $mode));
-
+    
         return $path;
     }
-
+    
     /**
      * Strips file extension
      *
@@ -317,8 +317,8 @@
         }
         return $name;
     }
-
-
+    
+    
     /**
      * templates::view()
      * Load default view screen of template controller.
@@ -1090,7 +1090,7 @@
         		 ,'file_valid_message' => ''
         		 ,'essentials' => 'id="question2"'
         		 ,'class' => 'text-long'
-        		 ,'man_class' => ' mandatory'
+        		 ,'man_class' => 'mandatory'
         		 ,'input_error_class' => ''
         		 ,'number' => '2'
         		 );

@@ -923,7 +923,7 @@
             self::_showadminmenu(false);
         }
         else{
-            self::_showadminmenu($surveyid);
+        self::_showadminmenu($surveyid);
         }
         if (!$this->input->post('deleteok')) self::_surveybar($this->input->post('sid'));
 

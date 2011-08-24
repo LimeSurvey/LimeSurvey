@@ -175,7 +175,11 @@
             <?php echo $grow['group_name']; ?> (<?php echo $grow['gid']; ?>)</td></tr>
             <tr><td valign='top' align='right'><strong>
             <?php echo $clang->gT("Description:"); ?></strong></td><td align='left'>
-            <?php if (trim($grow['description'])!='') { echo $grow['description'];} ?>
+            <?php if (trim($grow['description'])!='') {
+                // TMSWhite - plus line above
+                templatereplace($grow['description']);
+                echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                } ?>
             </td></tr>
 
             <?php if (!is_null($condarray))

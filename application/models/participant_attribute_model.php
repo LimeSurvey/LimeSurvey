@@ -150,7 +150,7 @@ class participant_attribute_model extends CI_Model
     }
     function editParticipantAttributeValue($data)
     {
-        $this->db->where('participant_id', $data['participant_id']);
+   	$this->db->where('participant_id', $data['participant_id']);
         $this->db->where('attribute_id', $data['attribute_id']);
         $query = $this->db->get('participant_attribute');
         if($query->num_rows() == 0)
@@ -161,8 +161,8 @@ class participant_attribute_model extends CI_Model
         {
             $this->db->where('participant_id', $data['participant_id']);
             $this->db->where('attribute_id', $data['attribute_id']);
-            $this->db->update('participant_attribute',$data); 
-          }
+        $this->db->update('participant_attribute',$data); 
+    }
    	
     }
     function saveAttribute($data)

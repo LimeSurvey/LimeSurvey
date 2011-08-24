@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- *
+ * 
  * $Id$
- *
+ * 
  */
 
 /**
@@ -23,7 +23,7 @@
  * @subpackage	Backend
  */
 class translate extends Admin_Controller {
-
+    
 	/**
 	 * Constructor
 	 */
@@ -31,13 +31,13 @@ class translate extends Admin_Controller {
 	{
 		parent::__construct();
 	}
-
+	
 	public function _remap($method, $params = array())
 	{
 		array_unshift($params, $method);
 	    return call_user_func_array(array($this, "action"), $params);
 	}
-
+	
 	function action($surveyid=null, $tolang="")
 	{
 		$action=returnglobal('action');
@@ -52,12 +52,12 @@ class translate extends Admin_Controller {
 		$_POST = $this->input->post();
 		$this->load->helper("database");
 
-
-
+		
+		
 		//  $js_admin_includes[]= $homeurl.'/scripts/translation.js';
-
+		
 		// TODO need to do some validation here on surveyid
-
+		
 		$surveyinfo=getSurveyInfo($surveyid);
 		if (isset($_POST['tolang']))
 		{
@@ -68,33 +68,33 @@ class translate extends Admin_Controller {
 		    $tmp_langs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		    $tolang = $tmp_langs[0];
 		}
-
+		
 		$actionvalue = "";
 		if(isset($_POST['actionvalue'])) {$actionvalue = $_POST['actionvalue'];}
 		//  if(isset($_GET['actionvalue'])) {$actionvalue = $_GET['actionvalue'];}
-
-
+		
+		
 		$survey_title = $surveyinfo['name'];
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
 		$this->load->helper("surveytranslator");
 		$supportedLanguages = getLanguageData(false);
-
-
-
+		
+		
+		
 		$baselangdesc = $supportedLanguages[$baselang]['description'];
 		if($tolang != "")
-		{
+		{  
 		    $tolangdesc = $supportedLanguages[$tolang]['description'];
 		}
-
+		
 		self::_getAdminHeader();
 		$data = array("surveyid" => $surveyid, "survey_title" => $survey_title, "tolang" => $tolang, "clang" => $clang);
 		$this->load->view("admin/translate/translateheader_view", $data);
-
+		  
 		//  $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
 		//  $tab_names=array("title", "description", "invitation", "reminder");
 		$tab_names=array("title", "welcome", "group", "question", "subquestion", "answer", "emailinvite", "emailreminder", "emailconfirmation", "emailregistration");
-
+		
 		if ($tolang != "" && $actionvalue=="translateSave")
 		// Saves translated values to database
 		{
@@ -107,7 +107,7 @@ class translate extends Admin_Controller {
 		      if ($type2 != "")
 		      {
 		        $tab_names_full[] = $type2;
-		      }
+		      }  
 		    }
 		    foreach($tab_names_full as $type)
 		    {
@@ -140,13 +140,13 @@ class translate extends Admin_Controller {
 		    } // end foreach
 		    $actionvalue = "";
 		} // end if
-
-
-
+		
+		
+		
 		if ($tolang != "")
 		// Display tabs with fields to translate, as well as input fields for translated values
 		{
-
+		
 			$data['tab_names'] = $tab_names;
 			$data['baselang'] = $baselang;
 			$this->load->view("admin/translate/translateformheader_view", $data);
@@ -155,7 +155,7 @@ class translate extends Admin_Controller {
 		    foreach($tab_names as $type)
 		    {
 		      $amTypeOptions = self::setupTranslateFields($surveyid, $type, $tolang, $baselang);
-
+		
 		      $type2 = $amTypeOptions["associated"];
 		      if ($type2 != "")
 		      {
@@ -172,7 +172,7 @@ class translate extends Admin_Controller {
 		        $i = 0;
 		        $evenRow = FALSE;
 		        $all_fields_empty = TRUE;
-
+		
 		        $querybase = $amTypeOptions["querybase"];
 		        $resultbase = db_execute_assoc($querybase);
 		        if ($associated)
@@ -180,7 +180,7 @@ class translate extends Admin_Controller {
 		          $querybase2 = $amTypeOptions2["querybase"];
 		          $resultbase2 = db_execute_assoc($querybase2);
 		        }
-
+		
 		        $queryto = $amTypeOptions["queryto"];
 		        $resultto = db_execute_assoc($queryto);
 		        if ($associated)
@@ -188,7 +188,7 @@ class translate extends Admin_Controller {
 		          $queryto2 = $amTypeOptions2["queryto"];
 		          $resultto2 = db_execute_assoc($queryto2);
 		        }
-
+		
 				$data['baselangdesc'] = $baselangdesc;
 				$data['tolangdesc'] = $tolangdesc;
 				$data['type'] = $type;
@@ -196,34 +196,34 @@ class translate extends Admin_Controller {
 		        foreach ($resultbase->result_array() as $rowfrom)
 		        {
 		          $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
-
+		
 		          if ($associated)
 		          {
 		            $rowfrom2 = $resultbase2->row_array();
 		            $textfrom2 = htmlspecialchars_decode($rowfrom2[$amTypeOptions2["dbColumn"]]);
 		          }
-
+		
 		          $gid = NULL;
 		          if($amTypeOptions["gid"]==TRUE) $gid = $rowfrom['gid'];
-
+		
 		          $qid = NULL;
 		          if($amTypeOptions["qid"]==TRUE) $qid = $rowfrom['qid'];
-
+		
 		          $rowto  = $resultto->row_array();
 		          $textto = $rowto[$amTypeOptions["dbColumn"]];
-
+		
 		          if ($associated)
 		          {
 		            $rowto2  = $resultto2->row_array();
 		            $textto2 = $rowto2[$amTypeOptions2["dbColumn"]];
 		          }
-
+				
 		          if (strlen(trim((string)$textfrom)) > 0)
 		          {
 		            $all_fields_empty = FALSE;
 		            $evenRow = !($evenRow);
 		          }
-
+				  
 				  $data['textfrom'] = $textfrom;
 				  $data['textfrom2'] = $textfrom2;
 				  $data['textto'] = $textto;
@@ -248,9 +248,9 @@ class translate extends Admin_Controller {
 		    // Submit button
 			$this->load->view("admin/translate/translatefooter_view", $data);
 		} // end if
-		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));		
 	}
-
+	
 	/**
 	 * menuItem() creates a menu item with text and image in the admin screen menus
 	 * @param string $menuText
@@ -267,7 +267,7 @@ class translate extends Admin_Controller {
 	      ."<img src='".$this->config->item("imageurl")."/blank.gif' alt='' width='11'  />\n";
 	  return $menu;
 	}
-
+	
 	/**
 	 * menuSeparator() creates a separator bar in the admin screen menus
 	 * @global string $imageurl
@@ -278,11 +278,11 @@ class translate extends Admin_Controller {
 	  global $imageurl;
 	  return ("<img src='".$this->config->item("imageurl")."/seperator.gif' alt='' />\n");
 	}
-
+	
 	/**
 	 * showTranslateAdminmenu() creates the main menu options for the survey translation page
 	 * @param string $surveyid The survey ID
-	 * @param string $survey_title
+	 * @param string $survey_title 
 	 * @param string $tolang
 	 * @param string $activated
 	 * @param string $scriptname
@@ -294,41 +294,41 @@ class translate extends Admin_Controller {
 	   global $publicurl;
 	   $imageurl = $this->config->item("imageurl");
 	   $clang = $this->limesurvey_lang;
-
+	
 	  $baselang = GetBaseLanguageFromSurveyID($surveyid);
 	  $supportedLanguages = getLanguageData(false);
 	  $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
-
+	
 	  $adminmenu = ""
 	    ."<div class='menubar'>\n"
 	      ."<div class='menubar-title ui-widget-header'>\n"
 	        ."<strong>".$clang->gT("Translate survey").": $survey_title</strong>\n"
 	      ."</div>\n" // class menubar-title
 	      ."<div class='menubar-main'>\n";
-
-
+	
+	
 	  $adminmenu .= ""
 	    ."<div class='menubar-left'>\n";
-
+	
 	// Return to survey administration button
 	  $adminmenu .= self::menuItem($clang->gT("Return to survey administration"),
 	          $clang->gTview("Return to survey administration"),
 	          "Administration", "home.png", site_url("admin/survey/view/$surveyid/"));
-
+	
 	  // Separator
 	  $adminmenu .= self::menuSeparator();
-
+	  
 	  // Test / execute survey button
-
+	
 	  if ($tolang != "")
 	  {
 	    $sumquery1 = "SELECT * FROM ".$this->db->dbprefix('surveys')." inner join ".$this->db->dbprefix('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
 	    $sumresult1 = db_select_limit_assoc($sumquery1, 1) ; //Checked
 	    $surveyinfo = $sumresult1->row_array();
-
+	
 	    $surveyinfo = array_map('FlattenText', $surveyinfo);
 	    $activated = $surveyinfo['active'];
-
+	
 	    if ($activated == "N")
 	    {
 	        $menutext=$clang->gT("Test This Survey");
@@ -350,7 +350,7 @@ class translate extends Admin_Controller {
 	      . "title=\"".$icontext2."\" accesskey='d'>"
 	      . "<img  src='$imageurl/do.png' alt='$icontext' />"
 	      . "</a>\n";
-
+	
 	      $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	      $tmp_survlangs[] = $baselang;
 	      rsort($tmp_survlangs);
@@ -366,11 +366,11 @@ class translate extends Admin_Controller {
 	      $adminmenu .= "</ul></div>";
 	    }
 	  }
-
+	
 	  // End of survey-bar-left
 	  $adminmenu .= "</div>";
-
-
+	
+	
 	  // Survey language list
 	  $selected = "";
 	  if (!isset($tolang))
@@ -398,16 +398,16 @@ class translate extends Admin_Controller {
 	          $adminmenu .= ""
 	        ."</select>\n"
 	      ."</div>\n"; // End of menubar-right
-
+	
 	  $adminmenu .= ""
 	    ."</div>\n";
 	  $adminmenu .= ""
 	    ."</div>\n";
-
+	
 	  return($adminmenu);
 	}
-
-
+	
+	
 	/**
 	 * setupTranslateFields() creates a customised array with database query
 	 * information for use by survey translation
@@ -421,12 +421,12 @@ class translate extends Admin_Controller {
 	 * @param string $id2 An index variable used in the database select and update query
 	 * @return array
 	 */
-
+	
 	function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id2="", $new="")
 	{
 	  global $dbprefix;
 	  $clang=$this->limesurvey_lang;
-
+	  
 	  switch ( $type )
 	  {
 	    case 'title':
@@ -454,7 +454,7 @@ class translate extends Admin_Controller {
 	        "associated" => "description"
 	      );
 	      break;
-
+	
 	    case 'description':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * "
@@ -480,7 +480,7 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	    case 'welcome':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * "
@@ -506,7 +506,7 @@ class translate extends Admin_Controller {
 	        "associated" => "end"
 	      );
 	      break;
-
+	
 	    case 'end':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * "
@@ -532,7 +532,7 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	    case 'group':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * "
@@ -561,7 +561,7 @@ class translate extends Admin_Controller {
 	        "associated" => "group_desc"
 	      );
 	      break;
-
+	
 	    case 'group_desc':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * "
@@ -590,7 +590,7 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	//    case 'label':
 	//      $amTypeOptions = array(
 	//        "querybase" => "SELECT * "
@@ -612,7 +612,7 @@ class translate extends Admin_Controller {
 	//        "description" => $clang->gT("Label sets")
 	//      );
 	//      break;
-
+	
 	    case 'question':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * "
@@ -644,7 +644,7 @@ class translate extends Admin_Controller {
 	        "associated" => "question_help"
 	      );
 	      break;
-
+	
 	    case 'question_help':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * "
@@ -676,7 +676,7 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	    case 'subquestion':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * "
@@ -705,7 +705,7 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	    case 'answer':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT ".$this->db->dbprefix('answers').".*, ".$this->db->dbprefix('questions').".gid "
@@ -738,7 +738,7 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	    case 'emailinvite':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
@@ -760,7 +760,7 @@ class translate extends Admin_Controller {
 	        "associated" => "emailinvitebody"
 	      );
 	      break;
-
+	
 	    case 'emailinvitebody':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
@@ -782,7 +782,7 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	    case 'emailreminder':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
@@ -804,7 +804,7 @@ class translate extends Admin_Controller {
 	        "associated" => "emailreminderbody"
 	      );
 	      break;
-
+	
 	    case 'emailreminderbody':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
@@ -826,7 +826,7 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	    case 'emailconfirmation':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
@@ -848,7 +848,7 @@ class translate extends Admin_Controller {
 	        "associated" => "emailconfirmationbody"
 	      );
 	      break;
-
+	
 	    case 'emailconfirmationbody':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
@@ -870,7 +870,7 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	    case 'emailregistration':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
@@ -892,7 +892,7 @@ class translate extends Admin_Controller {
 	        "associated" => "emailregistrationbody"
 	      );
 	      break;
-
+	
 	    case 'emailregistrationbody':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
@@ -914,7 +914,7 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	    case 'email_confirm':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
@@ -936,7 +936,7 @@ class translate extends Admin_Controller {
 	        "associated" => "email_confirmbody"
 	      );
 	      break;
-
+	
 	    case 'email_confirmbody':
 	      $amTypeOptions = array(
 	        "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
@@ -958,12 +958,12 @@ class translate extends Admin_Controller {
 	        "associated" => ""
 	      );
 	      break;
-
+	
 	  }
 	  return($amTypeOptions);
 	}
-
-
+	
+	
 	/**
 	 * displayTranslateFieldsHeader() Formats and displays header of translation fields table
 	 * @param string $baselangdesc The source translation language, e.g. "English"
@@ -981,8 +981,8 @@ class translate extends Admin_Controller {
 	      . "</tr>\n";
 	  return($translateoutput);
 	}
-
-
+	
+	
 	/**
 	 * displayTranslateFieldsFooter() Formats and displays footer of translation fields table
 	 * @return string $translateoutput
@@ -993,8 +993,8 @@ class translate extends Admin_Controller {
 	    . "</table>\n";
 	  return($translateoutput);
 	}
-
-
+	
+	
 	/**
 	 * displayTranslateFields() Formats and displays translation fields (base language as well as to language)
 	 * @global $dbprefix, $clang;
@@ -1012,10 +1012,10 @@ class translate extends Admin_Controller {
 	 * @param boolean $evenRow True for even rows, false for odd rows
 	 * @return string $translateoutput
 	 */
-
+	
 	function displayTranslateFields($surveyid, $gid, $qid, $type, $amTypeOptions,
 	        $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow)
-
+	
 	{
 	  $translateoutput = "";
 	  if ($evenRow)
@@ -1030,8 +1030,8 @@ class translate extends Admin_Controller {
 	  if ($amTypeOptions["id1"] != "") $value1 = $rowfrom[$amTypeOptions["id1"]];
 	  $value2 = "";
 	  if ($amTypeOptions["id2"] != "") $value2 = $rowfrom[$amTypeOptions["id2"]];
-
-
+	
+	
 	  // Display text in original language
 	  // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
 	  $translateoutput .= ""
@@ -1045,7 +1045,7 @@ class translate extends Admin_Controller {
 	        ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
 	      $translateoutput .= "<textarea cols='80' rows='".($nrows)."' "
 	        ." name='{$type}_newvalue_{$i}' >".htmlspecialchars($textto)."</textarea>\n";
-
+	
 	      if ($amTypeOptions["HTMLeditorDisplay"]=="Inline")
 	      {
 	        $translateoutput .= ""
@@ -1060,7 +1060,7 @@ class translate extends Admin_Controller {
 	  . "</tr>\n";
 	  return($translateoutput);
 	}
-
+	
 	/**
 	 * calc_nrows($subject) calculates the vertical size of textbox for survey translation.
 	 * The function adds the number of line breaks <br /> to the number of times a string wrap occurs.
@@ -1075,9 +1075,9 @@ class translate extends Admin_Controller {
 	  //$pattern = "/\n/";
 	  $pattern = '[(<br..?>)|(/\n/)]';
 	  $nrows_newline = preg_match_all($pattern, $subject, $matches);
-
+	
 	  $nrows_char = ceil(strlen((string)$subject)/80);
-
+	
 	  return $nrows_newline + $nrows_char;
 	}
 
@@ -1091,21 +1091,21 @@ class translate extends Admin_Controller {
 		$sBaselang   = $this->input->post('baselang');
 		$sTolang     = $this->input->post('tolang');
 		$sToconvert  = $this->input->post('text');
-
+		
 		$aSearch     = array('zh-Hans','zh-Hant-HK','zh-Hant-TW',
 		                     'nl-informal','de-informal','it-formal','pt-BR','es-MX','nb','nn');
 		$aReplace    = array('zh-CN','zh-TW','zh-TW','nl','de','it','pt','es','no','no');
-
+		
 		$sTolang  = str_replace($aSearch,$aReplace,$sTolang);
-
+		
 		try {
-
+		    
 			$this->load->library('admin/gtranslate/GTranslate','gtranslate');
 			$objGt         = $this->gtranslate;
 
 		    // Gtranslate requires you to run function named XXLANG_to_XXLANG
 		    $sProcedure       = $sBaselang."_to_".$sTolang;
-
+		
 		    // Replace {TEXT} with <TEXT>. Text within <> act as a placeholder and are
 		    // not translated by Google Translate
 		    $sToNewconvert  = preg_replace("/\{(\w+)\}/", "<$1>",$sToconvert);
@@ -1118,16 +1118,16 @@ class translate extends Admin_Controller {
 		    if (!$bDoNotConvertBack)
 		        $sConverted  = preg_replace("/\<(\w+)\>/", '{$1}',$sConverted);
 		    $sConverted  = html_entity_decode(stripcslashes($sConverted));
-
+		
 		    $aOutput = array(
 		        'error'     =>  false,
 		        'baselang'  =>  $sBaselang,
 		        'tolang'    =>  $sTolang,
 		        'converted' =>  $sConverted
 		    );
-
+		    
 		}   catch (GTranslateException $ge){
-
+		
 		    // Get the error message and build the ouput array
 		    $sError  = $ge->getMessage();
 		    $aOutput = array(
@@ -1136,9 +1136,9 @@ class translate extends Admin_Controller {
 		        'tolang'    =>  $sTolang,
 		        'error'     =>  $sError
 		    );
-
+		
 		}
-
+		
 		return json_encode($aOutput). "\n";
 	}
 }

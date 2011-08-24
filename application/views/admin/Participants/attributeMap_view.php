@@ -19,7 +19,7 @@
                 }
             var copyUrl = "<?php echo site_url("admin/participants/addToTokenattmap");?>";
             var participant_id = "<?php echo $participant_id; ?>";   
-         </script>
+        </script>
   </head>
 <body>
 <div class='header ui-widget-header'><strong><?php echo $count ?></strong></div>

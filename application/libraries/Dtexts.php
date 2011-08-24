@@ -10,28 +10,12 @@ class Dtexts
 	 * @param $text
 	 * @return String
 	 */
-	public static function run($text)
+    // TMSWhite
+	public static function run($text,$questionNum=NULL)
 	{
-		//include_once('dFunctions/dFunctionInterface.php');
-		$CI =& get_instance();
-        preg_match_all('|\{([^{}]+)\}|i',$text,$functions);
-		foreach($functions[1] as $id=>$str)
-		{
-			$data=explode(':',$str);
-			$funcName=array_shift($data);
-			try
-			{
-				//$func = dTexts::loadFunction($funcName);
-				$CI->load->helper('dTexts/dFunction'.$funcName);
-                $className='dFunction'.$funcName;
-                $func = new $classname();
-                $newStr = $func->run($data);
-				$text = str_replace($functions[0][$id],$newStr,$text);
-			}
-			catch(Exception $e)
-			{
-				//TODO: logging
-			}
+        return LimeExpressionManager::ProcessString($text,$questionNum,NULL,true);
+	}
+}
 		}
 		return $text;
 	}

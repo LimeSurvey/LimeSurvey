@@ -31,7 +31,7 @@ function insertParticipant($data)
 function updateRow($data)
 {
     $this->db->where('participant_id',$data['participant_id']);
-    $this->db->update('participants',$data);
+	$this->db->update('participants',$data);
 }
 function deleteParticipantTokenAnswer($rows)
 {
@@ -155,7 +155,7 @@ function getParticipantsSearchMultiple($condition,$page,$limit)
    $tobedonelater =array();
    $this->load->library('subquery');
    $start = $limit*$page - $limit;
-  $this->db->from('participants');
+   $this->db->from('participants');
    $con= count($condition);
    while($i < $con){      
    if($i<3){
@@ -482,7 +482,7 @@ function getParticipantsSearchMultiple($condition,$page,$limit)
     }
     if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get();
+    $data= $this->db->get();
                   }
                   else
                   {
@@ -534,7 +534,7 @@ function getParticipantsSearchMultiple($condition,$page,$limit)
     }
     if($page == 0 && $limit == 0)
     {
-        $data = $this->db->get();
+    $data=$this->db->get();
     }
     else
     {
@@ -554,7 +554,7 @@ function getParticipantsSearchMultiple($condition,$page,$limit)
     
 }
 function is_owner($participant_id)
-{
+{  
     $userid=$this->session->userdata('loginID');
     $this->db->select('participant_id');
     $this->db->where('participant_id',$participant_id);
@@ -585,7 +585,7 @@ function getParticipantsSearch($condition,$page,$limit)
               $resultarray = array();
               if($page == 0 && $limit == 0)
               {
-                $data = $this->db->get('participants');
+              $data = $this->db->get('participants');
               }
                   else
               {
@@ -604,18 +604,18 @@ function getParticipantsSearch($condition,$page,$limit)
               foreach($resultarray as $key=>$value)
               {
                   
-              }
+          }
           }
           else if($condition[0]=='owner_name')
           {
-                $this->db->select('uid');
+                     $this->db->select('uid');
                 $this->db->where('full_name',$condition[2]);
                 $userid = $this->db->get('users');
                 $uid = $userid->row();
                 $this->db->where('owner_uid',$uid->uid);
                 if($page == 0 && $limit == 0)
                 {
-                    $data = $this->db->get('participants');
+                $data=$this->db->get('participants');
                 }
                 else
                 {
@@ -632,7 +632,7 @@ function getParticipantsSearch($condition,$page,$limit)
                 $this->db->where('participant_attribute.value',$condition[2]);
                 if($page == 0 && $limit == 0)
                 {
-                    $data = $this->db->get();
+                $data=$this->db->get();
                 }
                 else
                 {
@@ -646,13 +646,13 @@ function getParticipantsSearch($condition,$page,$limit)
             $this->db->where($condition[0],$condition[2]);
             if($page == 0 && $limit == 0)
               {
-                $data = $this->db->get('participants');
+            $data=$this->db->get('participants');
               }
               else
               {
                   $data = $this->db->get('participants',$limit,$start);
               }   
-             return $data->result_array();
+            return $data->result_array();
           }
         }
         else if($condition[1]=='contains')
@@ -663,7 +663,7 @@ function getParticipantsSearch($condition,$page,$limit)
               $resultarray = array();
               if($page == 0 && $limit == 0)
               {
-                $data = $this->db->get('participants');
+              $data = $this->db->get('participants');
               }
               else
               {
@@ -693,7 +693,7 @@ function getParticipantsSearch($condition,$page,$limit)
                 $this->db->order_by("lastname", "asc"); 
                 if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+                $data=$this->db->get('participants');
                   }
                   else
                   {
@@ -710,7 +710,7 @@ function getParticipantsSearch($condition,$page,$limit)
                 $this->db->like('participant_attribute.value',$condition[2]);
                 if($page == 0 && $limit == 0)
                 {
-                    $data = $this->db->get();
+                $data=$this->db->get();
                 }
                 else
                 {
@@ -724,7 +724,7 @@ function getParticipantsSearch($condition,$page,$limit)
                 $this->db->like($condition[0],$condition[2]); 
                 if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+                $data=$this->db->get('participants');
                   }
                   else
                   {
@@ -742,7 +742,7 @@ function getParticipantsSearch($condition,$page,$limit)
               
               if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+              $data = $this->db->get('participants');
                   }
                   else
                   {
@@ -770,7 +770,7 @@ function getParticipantsSearch($condition,$page,$limit)
                 $this->db->where('owner_uid',$uid->uid);
                 if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+                $data=$this->db->get('participants');
                   }
                   else
                   {
@@ -801,7 +801,7 @@ function getParticipantsSearch($condition,$page,$limit)
             $this->db->where_not_in($condition[0],$condition[2]);
             if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+            $data=$this->db->get('participants');
                   }
                   else
                   {
@@ -818,7 +818,7 @@ function getParticipantsSearch($condition,$page,$limit)
               $this->db->order_by("lastname", "asc"); 
               if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+              $data = $this->db->get('participants');
                   }
                   else
                   {
@@ -845,7 +845,7 @@ function getParticipantsSearch($condition,$page,$limit)
                 $this->db->where('owner_uid',$uid->uid);
                 if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+                $data=$this->db->get('participants');
                   }
                   else
                   {
@@ -876,7 +876,7 @@ function getParticipantsSearch($condition,$page,$limit)
             $this->db->not_like($condition[0],$condition[2]);
             if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+            $data=$this->db->get('participants');
                   }
                   else
                   {
@@ -892,7 +892,7 @@ function getParticipantsSearch($condition,$page,$limit)
               $resultarray = array();
               if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+              $data = $this->db->get('participants');
                   }
                   else
                   {
@@ -920,7 +920,7 @@ function getParticipantsSearch($condition,$page,$limit)
                 $this->db->order_by("lastname", "asc"); 
                 if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+                $data=$this->db->get('participants');
                   }
                   else
                   {
@@ -952,7 +952,7 @@ function getParticipantsSearch($condition,$page,$limit)
             $this->db->order_by("lastname", "asc"); 
             if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+            $data=$this->db->get('participants');
                   }
                   else
                   {
@@ -969,7 +969,7 @@ function getParticipantsSearch($condition,$page,$limit)
               
               if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+              $data = $this->db->get('participants');
                   }
                   else
                   {
@@ -998,7 +998,7 @@ function getParticipantsSearch($condition,$page,$limit)
                 
                 if($page == 0 && $limit == 0)
                   {
-                    $data = $this->db->get('participants');
+                $data=$this->db->get('participants');
                   }
                   else
                   {
@@ -1022,14 +1022,14 @@ function getParticipantsSearch($condition,$page,$limit)
                 $this->db->limit($limit,$start);
                 $data = $this->db->get('participants');
               }   
-              return $data->result_array();
+                return $data->result_array();
           }
           else
           {
             $this->db->where($condition[0].' <',$condition[2]); 
             if($page == 0 && $limit == 0)
             {
-                $data = $this->db->get('participants');
+            $data=$this->db->get('participants');
             }
             else
             {
