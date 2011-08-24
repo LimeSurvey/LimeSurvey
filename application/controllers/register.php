@@ -117,9 +117,21 @@
         }
 
         $mayinsert = false;
+
+    	// Get the survey settings for token length
+    	$this->load->model("surveys_model");
+    	$tlresult = $this->surveys_model->getSomeRecords(array("tokenlength"),array("sid"=>$surveyid));
+    	$tlrow = $tlresult->row_array();
+    	$tokenlength = $tlrow['tokenlength'];
+    	//if tokenlength is not set or there are other problems use the default value (15)
+    	if(!isset($tokenlength) || $tokenlength == '')
+    	{
+    		$tokenlength = 15;
+    	}
+
         while ($mayinsert != true)
         {
-            $newtoken = sRandomChars(15);
+            $newtoken = sRandomChars($tokenlength);
             $ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
             $ntresult = db_execute_assoc($ntquery); //Checked
             if (!$ntresult->num_rows()) {$mayinsert = true;}
