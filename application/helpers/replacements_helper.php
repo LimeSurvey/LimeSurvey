@@ -13,7 +13,6 @@
  * @param questionNum - needed to support dynamic JavaScript-based tailoring within questions
  * @return string  Text with replaced strings
  */
-// TMSWhite - all replacements functions
 function templatereplace($line, $replacements=array(),$redata=array(), $anonymized=false, $questionNum=NULL)
 {
     $CI =& get_instance();

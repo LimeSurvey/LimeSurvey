@@ -176,7 +176,6 @@
             <tr><td valign='top' align='right'><strong>
             <?php echo $clang->gT("Description:"); ?></strong></td><td align='left'>
             <?php if (trim($grow['description'])!='') {
-                // TMSWhite - plus line above
                 templatereplace($grow['description']);
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                 } ?>

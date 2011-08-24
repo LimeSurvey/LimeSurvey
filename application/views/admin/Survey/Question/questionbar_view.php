@@ -180,14 +180,12 @@
             <tr><td align='right' valign='top'><strong>
             <?php echo $clang->gT("Question:"); ?></strong></td><td align='left'>
             <?php
-                // TMSWhite - plus line above
                 templatereplace($qrrow['question']);
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                 ?></td></tr>
             <tr><td align='right' valign='top'><strong>
             <?php echo $clang->gT("Help:"); ?></strong></td><td align='left'>
             <?php
-                // TMSWhite - plus line above
                 if (trim($qrrow['help'])!=''){
                     templatereplace($qrrow['help']);
                     LimeExpressionManager::GetLastPrettyPrintExpression();
@@ -266,7 +264,6 @@
                 </td></tr>
             <?php } ?>
             <?php
-                // TMSWhite
                 $questionAttributes = getQuestionAttributes($qid, $qrrow['type']);
                 if (!is_null($questionAttributes['relevance']))
                 {

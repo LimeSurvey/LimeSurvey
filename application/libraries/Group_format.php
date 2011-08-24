@@ -124,7 +124,6 @@ class Group_format {
 				
 		    if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 		    {
-                // TMSWhite - next line
 		        while(isset($_SESSION['grouplist'][$_SESSION['step']-1]) && checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0],($thissurvey['anonymized']!='N'),$thissurvey['sid']) === false)
 		        {
 		            if ($_SESSION['prevstep'] > $_SESSION['step'])
@@ -409,7 +408,6 @@ class Group_format {
 		$qtypesarray = array();
 		
 		$qnumber = 0;
-        // TMSWhite - 3 lines
         //This re-starts the group, after checking relevance, so get consistent and unduplcated set of replacement functions
         LimeExpressionManager::StartProcessingPage();
         LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
@@ -427,7 +425,6 @@ class Group_format {
 		        }
 		    	
                 $qidattributes=getQuestionAttributes($ia[0]);
-                // TMSWhite - equation
                 if ($ia[4] != '*' && ($qidattributes===false || $qidattributes['hidden']==1)) {
                     // Should we really skip the question here, maybe the result won't be stored if we do that
                     // don't want to skip Equation type, otherwise mandatory hidden will prevent result from being available and stored.
@@ -571,7 +568,6 @@ class Group_format {
 		    $array_filterXqs = getArrayFilterExcludesForGroup($surveyid,$gid);
 		    $array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, $gid);
 		}
-		// TMSWhite
 		print <<<END
 			function noop_checkconditions(value, name, type)
 			{
@@ -610,7 +606,6 @@ END;
 		    {
 		        $endzone="";
 		    }
-            // TMSWhite
 		    print <<<END
 		        if (type == 'radio' || type == 'select-one')
 		        {
@@ -1293,7 +1288,6 @@ END;
 		        }
 		
 		        if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
-                // TMSWhite - through '*' block
                 // Hide Equations of attribute set to always hide them, yet unlike other questions, do include the answer fields.
                 $eqnAttributes = getQuestionAttributes($qa[4], $qa[8]);
                 $hidden = (isset($eqnAttributes['hidden']) ? $eqnAttributes['hidden'] : 0);
@@ -1333,7 +1327,6 @@ END;
 			<!-- NEW QUESTION -->
 						<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
 		';
-                    // TMSWhite: templatereplace extra params
 		            echo templatereplace($question_template,array(),compact(array_keys(get_defined_vars())),false,$qa[4]);
 		            echo '
 						</div>
@@ -1341,7 +1334,6 @@ END;
 		        }
 		        else
 		        {
-		            // TMSWhite: templatereplace extra params
                     echo templatereplace($question_template,array(),compact(array_keys(get_defined_vars())),false,$qa[4]);
 		        };
 		    }
@@ -1353,7 +1345,6 @@ END;
 		echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		echo "\n";
 
-        // TMSWhite
         LimeExpressionManager::FinishProcessingGroup();
         LimeExpressionManager::FinishProcessingPage();
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
@@ -1379,7 +1370,6 @@ END;
 		        for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
 		        {
 		            $g = $_SESSION['grouplist'][$n];
-                    // TMSWhite - checkgroupfordisplay
 		            if(!checkgroupfordisplay($g[0],($thissurvey['anonymized']!="N"),$thissurvey['sid']))
 		                continue;
 		

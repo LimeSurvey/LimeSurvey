@@ -261,7 +261,6 @@
 		$inputnames=array();
 		$groupUnconditionnalQuestionsCount=array();
 
-        // TMSWhite
         LimeExpressionManager::StartProcessingPage(true,true);  // means that all variables are on the same page
 
 		global $gl;
@@ -271,7 +270,6 @@
 		    $groupUnconditionnalQuestionsCount[$gid]=0;
 		    $qnumber = 0;
 
-            // TMSWhite
             LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
 
 		    foreach ($_SESSION['fieldarray'] as $ia)
@@ -281,7 +279,6 @@
 		        if ($ia[5] == $gid)
 		        {
 		            $qidattributes=getQuestionAttributes($ia[0]);
-                    // TMSWhite - through $ia[4] != '*' line
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
 
                     LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$ia[0],$ia[2],$ia[4],$hidden);
@@ -346,7 +343,6 @@
 		            }
 		        }
 		    }
-            // TMSWhite
             LimeExpressionManager::FinishProcessingGroup();
 		}
 		
@@ -404,7 +400,6 @@ END;
 END;
 		
 		}
-		// TMSWhite
 		print <<<END
 			function noop_checkconditions(value, name, type)
 			{
@@ -444,7 +439,6 @@ END;
 		        $endzone="";
 		    }
 
-            // TMSWhite
 		    print <<<END
                 if (type == 'radio' || type == 'select-one')
                 {
@@ -977,7 +971,6 @@ END;
 		    echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		    echo "\n";
 
-            // TMSWhite
             LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
 		
 		    if ($groupdescription)
@@ -1059,7 +1052,6 @@ END;
 		    echo "\n\n</div>\n";
 		    echo "\n";
 
-            // TMSWhite
             LimeExpressionManager::FinishProcessingGroup();
 		}
 		
@@ -1107,7 +1099,6 @@ END;
 		    echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
 		}
 
-        // TMSWhite
         LimeExpressionManager::FinishProcessingPage();
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 		

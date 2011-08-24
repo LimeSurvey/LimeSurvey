@@ -276,7 +276,6 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
                'hasdefaultvalues'=>0,
                'assessable'=>0,
                'answerscales'=>0),
-        // TMSWhite
     "*"=>array('description'=>$clang->gT("Equation"),
                'group'=>$group['MaskQuestions'],
                'subquestions'=>0,
@@ -1027,7 +1026,6 @@ function question_class($input)
         case ':': return 'array-multi-flexi';   //  ARRAY (Multi Flexi) 1 to 10
         case ";": return 'array-multi-flexi-text';
         case "1": return 'array-flexible-duel-scale'; //    Array dual scale
-            // TMSWhite
         case "*": return 'equation';    // Equation
         default:  return 'generic_question';    //  Should have a default fallback
     };
@@ -3609,7 +3607,6 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Hide the tip that is normally shown with a question'),
     "caption"=>$clang->gT('Hide tip'));
 
-    // TMSWhite - Equation
     $qattributes['hidden']=array(
     'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Display'),
@@ -3844,7 +3841,6 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT("Replaces the label of the 'Other:' answer option with a custom text"),
     "caption"=>$clang->gT("Label for 'Other:' option"));
 
-    // TMSWhite - Equation
     $qattributes["page_break"]=array(
     "types"=>"15ABCDEFGHKLMNOPQRSTUWXYZ!:;|*",
     'category'=>$clang->gT('Other'),
@@ -3864,7 +3860,6 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Add a prefix to the answer field'),
     "caption"=>$clang->gT('Answer prefix'));
 
-    // TMSWhite - Equation
     $qattributes["public_statistics"]=array(
     "types"=>"15ABCEFGHKLMNOPRWYZ!:*",
     'category'=>$clang->gT('Other'),
@@ -3889,7 +3884,6 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
 
-    // TMSWhite
     $qattributes['relevance']=array(
     'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Display'),
@@ -4024,7 +4018,6 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Use dropdown boxes instead of list of radio buttons'),
     "caption"=>$clang->gT('Use dropdown boxes'));
 
-    // TMSWhite - Equation
     $qattributes["scale_export"]=array(
     "types"=>"CEFGHLMOPWYZ1!:*",
     'category'=>$clang->gT('Other'),

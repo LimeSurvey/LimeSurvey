@@ -288,7 +288,6 @@ function makelanguagechanger()
     }
 }
 
-// TMSWhite - added 2 extra parameters
 function checkgroupfordisplay($gid,$anonymized,$surveyid)
 {
     //This function checks all the questions in a group to see if they have
@@ -301,7 +300,6 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
 
     $countQuestionsInThisGroup=0;
     $countConditionalQuestionsInThisGroup=0;
-    // TMSWhite
     $countQuestionsWithRelevanceIntThisGroup=0;
 
     // Initialize LimeExpressionManager for this group - this ensures that values from prior pages are available for assessing relevance on this page
@@ -316,7 +314,6 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
         {
             // Check if this question is hidden
             $qidattributes=getQuestionAttributes($ia[0]);
-            // TMSWhite:  don't hide equations
             if ($qidattributes!==false && ($qidattributes['hidden']==0 || $ia[4]=='*'))
             {
                 $countQuestionsInThisGroup++;
@@ -326,7 +323,6 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
                     $countConditionalQuestionsInThisGroup++;
                     $QuestionsWithConditions[]=$ia; //Create an array containing all the conditional questions
                 }
-                // TMSWhite
                 if (isset($qidattributes['relevance']) && ($qidattributes['relevance'] != 1))
                 {
                     $countQuestionsWithRelevanceIntThisGroup++;
@@ -339,7 +335,6 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
     {
         return false;
     }
-    // TMSWhite
     elseif ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($QuestionsWithConditions)
             && ($countQuestionsInThisGroup != $countQuestionsWithRelevanceIntThisGroup || !isset($QuestionsWithRelevance)))
     {
@@ -360,7 +355,6 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
                 return true;
             }
         }
-        // TMSWhite
         if (isset($QuestionsWithRelevance)) {
             foreach ($QuestionsWithRelevance as $relevance)
             {
@@ -1399,7 +1393,6 @@ function SendSubmitNotifications()
     $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
     if (count($aEmailNotificationTo)>0)
     {
-        // TMSWhite: templaterelace extra params
         $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,compact(array_keys(get_defined_vars())),($thissurvey['anonymized'] == "Y"));
         $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,compact(array_keys(get_defined_vars())),($thissurvey['anonymized'] == "Y"));
         foreach ($aEmailNotificationTo as $sRecipient)
@@ -1416,7 +1409,6 @@ function SendSubmitNotifications()
 
     if (count($aEmailResponseTo)>0)
     {
-        // TMSWhite: templaterelace extra params
         $sMessage=templatereplace($thissurvey['email_admin_responses'],$aReplacementVars,compact(array_keys(get_defined_vars())),($thissurvey['anonymized'] == "Y"));
         $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars,compact(array_keys(get_defined_vars())),($thissurvey['anonymized'] == "Y"));
         foreach ($aEmailResponseTo as $sRecipient)

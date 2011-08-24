@@ -90,7 +90,6 @@ class Save {
 		{
 		    $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
 		}
-        // TMSWhite
         //CHECK FOR RELEVANCE RESULTS
         $aIrrelevant = array();
         $aRelevance = array();
@@ -487,7 +486,6 @@ class Save {
 	        $inserts=array_unique($_SESSION['insertarray']);
 
 	        $colnames_hidden=Array();
-            // TMSWhite
             // Add irrelevant columns to list of hidden fields
             if (isset($_SESSION['irrelevantCodes'])) {
                 $colnames_hidden = array_merge($colnames_hidden,$_SESSION['irrelevantCodes']);
@@ -505,7 +503,6 @@ class Save {
 	                //If deletenonvalues is ON, delete any values that shouldn't exist
 	                // we only do this at stubmit time so that we don't delete default values
 	                // morover, doing this only once reduces the perfomance impact
-                    // TMSWhite: Equation type
                     // Never blank out result for Equation question type, even though it is hidden
 
                     if ($move == "movesubmit" && $deletenonvalues==1 && $fieldexists['type']!='*' && !checkconfield($value))
@@ -523,7 +520,7 @@ class Save {
 	                else if ($fieldexists['type']=='|' && strpos($fieldexists['fieldname'], "_filecount") === false)
 	                {
 	                    $fieldname = $fieldexists['fieldname'];
-	                    $target = $this->config->item("uploaddir")."/surveys/". $thissurvey['sid'] ."/files/";
+	                    $target = $CI->config->item("uploaddir")."/surveys/". $thissurvey['sid'] ."/files/";
 
 	                    $json = $_SESSION[$value];
 	                    $phparray = json_decode(stripslashes($json));

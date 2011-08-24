@@ -16,7 +16,6 @@
  */
 
 //require_once('em_functions_helper.php');
-// TMSWhite:  Core Expression Manager - renamed to follow Code Igniter naming conventions
 
 class ExpressionManager {
     // These three variables are effectively static once constructed

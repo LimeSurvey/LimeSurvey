@@ -1,6 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-// TMSWhite:  Expression Manager tests
 class Expressions extends Admin_Controller {
 	function __construct()
 	{

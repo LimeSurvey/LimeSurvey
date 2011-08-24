@@ -402,7 +402,6 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                     $createsurvey .= " VARCHAR(36)";
                 }
                 break;
-            // TMSWhite
             case '*': // Equation
                 $createsurvey .= " TEXT";
                 break;

@@ -22,7 +22,6 @@
 		</td>
 	</tr>
     <?php
-        // TMSWhite
         LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
     ?>
     <tr>
@@ -31,7 +30,6 @@
     	</td>
     	<td align='left'>
         	<?php
-                // TMSWhite
                 if (trim($surveyinfo['surveyls_description'])!='') {
                     templatereplace($surveyinfo['surveyls_description']);
                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
@@ -45,7 +43,6 @@
 		</td>
         <td align='left'>
         	<?php
-                // TMSWhite
                 templatereplace($surveyinfo['surveyls_welcometext']);
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
             ?>

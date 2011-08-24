@@ -563,7 +563,6 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     $qtitle=$ia[3];
     //Replace INSERTANS statements with previously provided answers;
     $CI->load->library("Dtexts");
-    // TMSWhite:  Dtexts extra param
     $qtitle=Dtexts::run($qtitle,$ia[0]);
 
 
@@ -790,7 +789,6 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
         case '1': //Array (Flexible Labels) dual scale
             $values=do_array_dual($ia);
             break;
-        // TMSWhite
         case '*': // Equation
             $values=do_equation($ia);
             break;
@@ -1191,7 +1189,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 	<input type='hidden' name='".$timersessionname."' id='".$timersessionname."' value='".$time_limit."' />\n";
     if($thissurvey['timercount'] < 2)
     {
-        // TMSWhite - add space after curly braces in JavaScript to avoid processing by Expression Manager
+        // EM - add space after curly braces in JavaScript to avoid processing by Expression Manager
         $output .="
     <script type='text/javascript'>
 	<!--
@@ -1207,7 +1205,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 		};
 	//-->
 	</script>";
-        // TMSWhite - add space after curly braces in JavaScript to avoid processing by Expression Manager
+        // EM - add space after curly braces in JavaScript to avoid processing by Expression Manager
         $output .= "
     <script type='text/javascript'>
 	<!--\n
@@ -1368,7 +1366,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 						    if(document.getElementById('moveprevbtn').disabled==true && '$disable_prev' > 0) document.getElementById('moveprevbtn').disabled=false;
 						}
 						freezeFrame(disable);
-                        // TMSWhite - add space after curly braces in JavaScript to avoid processing by Expression Manager
+                        // EM - add space after curly braces in JavaScript to avoid processing by Expression Manager
 						this.onsubmit=function() { subcookiejar.crumble('limesurvey_timers', timersessionname);};
 						break;
 					default: //Warn and move on
@@ -1663,7 +1661,6 @@ function do_boilerplate($ia)
     return array($answer, $inputnames);
 }
 
-// TMSWhite
 function do_equation($ia)
 {
     $answer='<input type="hidden" name="'.$ia[1].'" id="java'.$ia[1].'" value=""/>';
@@ -3044,7 +3041,7 @@ function do_ranking($ia)
     $maxselectlength=0;
     $choicelist = "<select size=\"$anscount\" name=\"CHOICES_{$ia[0]}\" ";
     if (isset($choicewidth)) {$choicelist.=$choicewidth;}
-    // TMSWhite - add space after curly braces in JavaScript to avoid processing by Expression Manager
+    // EM - add space after curly braces in JavaScript to avoid processing by Expression Manager
     $choicelist .= " id=\"CHOICES_{$ia[0]}\" onclick=\"if (this.options.length>0 && this.selectedIndex<0) { this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
 
         foreach ($answers as $ans)
@@ -3532,7 +3529,7 @@ function do_multiplechoice($ia)
     $answer .= $wrapper['whole-end'];
     if ( $maxansw > 0 )
     {
-        // TMSWhite - add space after curly braces in JavaScript to avoid processing by Expression Manager
+        // EM - add space after curly braces in JavaScript to avoid processing by Expression Manager
         $maxanswscript .= "\tif (count > max)\n"
         . "{\n"
         . "alert('".sprintf($clang->gT("Please choose at most %d answer(s) for question \"%s\"","js"), $maxansw, trim(javascript_escape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');\n"
@@ -4100,7 +4097,7 @@ function do_file_upload($ia)
                             if (i != 1)
                                 jsonstring += ", ";
 
-                            // TMSWhite - add space after curly braces in JavaScript to avoid processing by Expression Manager
+                            // EM - add space after curly braces in JavaScript to avoid processing by Expression Manager
                             if ($("#answer'.$ia[1].'_"+i).val() != "")
                                 jsonstring += "{ ';
 
@@ -5553,7 +5550,6 @@ function do_array_5point($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
 
-        // TMSWhite: dtexts extra param
         $answertext=dTexts::run($ansrow['question'],$ansrow['qid']);
         if (strpos($answertext,'|')) {$answertext=substr($answertext,0,strpos($answertext,'|'));}
 
@@ -5591,7 +5587,6 @@ function do_array_5point($ia)
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
         }
 
-        // TMSWhite: dTexts extra param
         $answertext2=dTexts::run($ansrow['question'],$ansrow['qid']);
         if (strpos($answertext2,'|'))
         {
@@ -5713,7 +5708,6 @@ function do_array_10point($ia)
     foreach ($ansresult->result_array() as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
-        // TMSWhite: dTexts extra param
         $answertext=dTexts::run($ansrow['question'],$ansrow['qid']);
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
          containing a list of unanswered questions, the current question must be in the array,
@@ -5856,7 +5850,6 @@ function do_array_yesnouncertain($ia)
         foreach($ansresult->result_array() as $ansrow)
         {
             $myfname = $ia[1].$ansrow['title'];
-            // TMSWhite: dTexts extra param
             $answertext=dTexts::run($ansrow['question'],$ansrow['qid']);
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
              containing a list of unanswered questions, the current question must be in the array,
@@ -6016,7 +6009,6 @@ function do_array_increasesamedecrease($ia)
     foreach($ansresult->result_array() as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
-        // TMSWhite: dTexts extra param
         $answertext=dTexts::run($ansrow['question'],$ansrow['qid']);
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
          containing a list of unanswered questions, the current question must be in the array,
@@ -6257,7 +6249,6 @@ function do_array($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            // TMSWhite: dTexts extra param
             $answertext=dTexts::run($ansrow['question'],$ansrow['qid']);
             $answertextsave=$answertext;
             if (strpos($answertext,'|'))
@@ -6744,7 +6735,6 @@ function do_array_multitext($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            // TMSWhite: dTexts extra param
             $answertext=dTexts::run($ansrow['question'],$ansrow['qid']);
             $answertextsave=$answertext;
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
@@ -7042,7 +7032,6 @@ function do_array_multiflexi($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            // TMSWhite: dTexts extra param
             $answertext=dTexts::run($ansrow['question'],$ansrow['qid']);
             $answertextsave=$answertext;
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
@@ -7265,7 +7254,6 @@ function do_arraycolumns($ia)
             foreach($ansresult->result_array() as $ansrow)
             {
                 $anscode[]=$ansrow['title'];
-                // TMSWhite: dTexts extra param
                 $answers[]=dTexts::run($ansrow['question'],$ansrow['qid']);
             }
             $trbc = '';
@@ -7610,7 +7598,6 @@ function do_array_dual($ia)
             }
 
             $trbc = alternation($trbc , 'row');
-            // TMSWhite: dTexts extra param
             $answertext=dTexts::run($ansrow['question'],$ansrow['qid']);
             $answertextsave=$answertext;
 
@@ -7857,12 +7844,10 @@ function do_array_dual($ia)
 
                 if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "" || $_SESSION[$myfname1] == "") )
                 {
-                    // TMSWhite: dTexts extra param
                     $answertext="<span class='errormandatory'>".dTexts::run($ansrow['question'],$ansrow['qid'])."</span>";
                 }
                 else
                 {
-                    // TMSWhite: dTexts extra param
                     $answertext=dTexts::run($ansrow['question'],$ansrow['qid']);
                 }
 

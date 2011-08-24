@@ -70,7 +70,6 @@
         if ($sumresult1->num_rows()==0){die('Invalid survey id');} //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->row_array();
 
-        // TMSWhite
         LimeExpressionManager::StartProcessingPage();
         LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
 
