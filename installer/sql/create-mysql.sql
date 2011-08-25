@@ -400,7 +400,7 @@ CREATE TABLE `prefix_participants` (
   `lastname` varchar(40) NOT NULL,
   `email` varchar(80) NOT NULL,
   `language` varchar(20) NOT NULL,
-  `blacklisted` varchar(1) NOT NULL,
+  `blacklisted` char(1) NOT NULL,
   `owner_uid` int(20) NOT NULL,
   PRIMARY KEY  (`participant_id`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -436,10 +436,10 @@ CREATE TABLE `prefix_participant_attribute_names` (
 -- Table structure for table participant_attribute_names_values
 -- 
 CREATE TABLE `prefix_participant_attribute_values` (
-  `attribute_id` int(11) NOT NULL,
   `value_id` int(11) NOT NULL AUTO_INCREMENT,
+  `attribute_id` int(11) NOT NULL,
   `value` varchar(20) NOT NULL,
-  PRIMARY KEY  (`value_id`,`attribute_id`)
+  PRIMARY KEY  ( `value_id`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table participant_shares
