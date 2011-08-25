@@ -2001,7 +2001,7 @@ function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
             {
                 $qidattributes = getQuestionAttributes($fields['qid']);
                 $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $surveyid);
-                $value = DateTime::createFromFormat("Y-m-d H:i:s", $value)->format($dateformatdetails['phpdate']);
+                $value=convertDateTimeFormat($value,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
             }
             break;
             case "L":

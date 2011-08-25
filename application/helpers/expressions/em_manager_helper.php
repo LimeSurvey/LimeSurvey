@@ -300,7 +300,7 @@ class LimeExpressionManager {
 
             $varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
                 . "'jsName':'" . $jsVarName
-                . "','code':'" . $codeValue
+                . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES,'UTF-8')
 //                . "','shown':'" . $displayValue
 //                . "','question':'" . $question
                 . "','qid':'" . $questionNum
@@ -779,7 +779,7 @@ class LimeExpressionManager {
             foreach ($undeclaredJsVars as $jsVar)
             {
                 // TODO - is different type needed for text?  Or process value to striphtml?
-                $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar . "' value='" . htmlspecialchars($undeclaredVal[$jsVar]) . "'/>\n";
+                $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar . "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES,'UTF-8') . "'/>\n";
             }
         }
         sort($qidList,SORT_NUMERIC);
@@ -814,12 +814,12 @@ class LimeExpressionManager {
     static function UnitTestProcessStringContainingExpressions()
     {
         $vars = array(
-'name' => array('codeValue'=>'Sergei', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
+'name' => array('codeValue'=>'"<Sergei>\'', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
 'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
 'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
 'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
 // Constants
-'INSERTANS:61764X1X1'   => array('codeValue'=> 'Sergei', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y'),
+'INSERTANS:61764X1X1'   => array('codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y'),
 'INSERTANS:61764X1X2'   => array('codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y'),
 'INSERTANS:61764X1X3'   => array('codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'INSERTANS:61764X1X4'   => array('codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
@@ -867,20 +867,25 @@ EOST;
         $alltests[] = 'This line has a hidden script: <script type="text/javascript" language="Javascript">' . $javascript1 . '</script>';
         $alltests[] = 'This line has a hidden script: <script type="text/javascript" language="Javascript">' . $javascript2 . '</script>';
 
+        LimeExpressionManager::StartProcessingPage();
+        LimeExpressionManager::StartProcessingGroup(1);
+
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
-        $em->StartProcessingGroup();
-
+//        $em->StartProcessingGroup();
         $em->RegisterVarnamesUsingMerge($vars);
 
-        print '<table border="1"><tr><th>Test</th><th>Result</th><th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
+        print '<table border="1"><tr><th>Test</th><th>Result</th></tr>';    // <th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
         for ($i=0;$i<count($alltests);++$i)
         {
             $test = $alltests[$i];
-            $result = $em->sProcessStringContainingExpressions($test,$i,2,1);
-            $prettyPrint = $em->GetLastPrettyPrintExpression();
+            $result = LimeExpressionManager::ProcessString($test, $i, NULL, false, 1, 1);
+//            $result = $em->sProcessStringContainingExpressions($test,$i,2,1);
+            $prettyPrint = LimeExpressionManager::GetLastPrettyPrintExpression();
+//            $prettyPrint = $em->GetLastPrettyPrintExpression();
             print "<tr><td>" . $prettyPrint . "</td>\n";
             print "<td>" . $result . "</td>\n";
+            /*
             $varsUsed = $em->getAllVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
                 $varDesc = array();
@@ -893,15 +898,22 @@ EOST;
             else {
                 print "<td>&nbsp;</td>\n";
             }
+             */
             print "</tr>\n";
         }
         print '</table>';
+        LimeExpressionManager::FinishProcessingGroup();
+        LimeExpressionManager::FinishProcessingPage();
+        print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
     }
 
     static function UnitTestRelevance()
     {
         // Tests:  varName~relevance~inputType~message
         $tests = <<<EOT
+junk~1~text~Enter "junk" here to test XSS - will show below
+info~1~expr~{info='Can strings have embedded <tags> like <html>, or even unbalanced "quotes, \'single quoted strings\', or entities without terminal semicolons like &amp and  &lt?'}
+info2~1~message~Here is a messy string: {info}<br/>Here is the "junk" you entered: {junk}
 name~1~text~What is your name?
 age~1~text~How old are you?
 badage~1~expr~{badage=((age<16) || (age>80))}

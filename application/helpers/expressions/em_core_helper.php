@@ -1139,7 +1139,7 @@ class ExpressionManager {
             {
                 case 'DQ_STRING':
                 case 'SQ_STRING':
-                    $stringParts[] = "'" . addslashes($token[0]) . "'";
+                    $stringParts[] = "'" . htmlspecialchars($token[0],ENT_QUOTES,'UTF-8') . "'";
                     break;
                 case 'SGQA':
                 case 'WORD':
@@ -1193,7 +1193,7 @@ class ExpressionManager {
                         }
                         else
                         {
-                            $stringParts[] = is_numeric($varInfo['codeValue']) ? $varInfo['codeValue'] : ("'" . addslashes($varInfo['codeValue']) . "'");
+                            $stringParts[] = is_numeric($varInfo['codeValue']) ? $varInfo['codeValue'] : ("'" . htmlspecialchars($varInfo['codeValue'],ENT_QUOTES,'UTF-8') . "'");
                         }
                     }
                     break;
@@ -1202,7 +1202,7 @@ class ExpressionManager {
                     $stringParts[] = $token[0];
                     break;
                 case 'NUMBER':
-                    $stringParts[] = is_numeric($token[0]) ? $token[0] : ("'" . addslashes($token[0]) . "'");
+                    $stringParts[] = is_numeric($token[0]) ? $token[0] : ("'" . $token[0] . "'");
                     break;
                 case 'COMMA':
                     $stringParts[] = $token[0] . ' ';
@@ -1347,13 +1347,13 @@ class ExpressionManager {
                 case 'DQ_STRING':
 //                    $messages[] = 'STRING';
                     $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: gray'>\"";
-                    $stringParts[] = addslashes($token[0]);
+                    $stringParts[] = htmlspecialchars($token[0],ENT_QUOTES,'UTF-8');
                     $stringParts[] = "\"</span>";
                     break;
                 case 'SQ_STRING':
 //                    $messages[] = 'STRING';
                     $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: gray'>'";
-                    $stringParts[] = addslashes($token[0]);
+                    $stringParts[] = htmlspecialchars($token[0],ENT_QUOTES,'UTF-8');
                     $stringParts[] = "'</span>";
                     break;
                 case 'SGQA':
@@ -1381,7 +1381,7 @@ class ExpressionManager {
                                 $messages[] = $varInfo['jsName'];
                             }
                             if (strlen(trim($varInfo['codeValue'])) > 0) {
-                                $messages[] = 'value=' . htmlspecialchars($varInfo['codeValue'],ENT_QUOTES);
+                                $messages[] = 'value=' . htmlspecialchars($varInfo['codeValue'],ENT_QUOTES,'UTF-8');
                             }
                             $stringParts[] = "<span title='". implode('; ',$messages) . "' style='color: #a0522d; font-weight: bold'>";
                             $stringParts[] = $token[0];
@@ -1393,7 +1393,7 @@ class ExpressionManager {
                                 $messages[] = $varInfo['jsName'];
                             }
                             if (strlen(trim($varInfo['codeValue'])) > 0) {
-                                $messages[] = 'value=' . htmlspecialchars($varInfo['codeValue'],ENT_QUOTES);
+                                $messages[] = 'value=' . htmlspecialchars($varInfo['codeValue'],ENT_QUOTES,'UTF-8');
                             }
                             $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: #228b22; font-weight: bold'>";
                             $stringParts[] = $token[0];
@@ -1724,7 +1724,7 @@ class ExpressionManager {
                 if (count($jsVarsUsed) > 0)
                 {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
-                    $resolvedParts[] = "<span id='" . $idName . "' name='" . $idName . "'>" . $resolvedPart . "</span>";
+                    $resolvedParts[] = "<span id='" . $idName . "' name='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,"UTF-8") . "</span>";
                     $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
                         'questionNum' => $questionNum,
@@ -2165,7 +2165,7 @@ EOD;
 'ANSWER' => array('codeValue'=>'value for {ANSWER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'ASSESSMENTS' => array('codeValue'=>'value for {ASSESSMENTS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'ASSESSMENT_CURRENT_TOTAL' => array('codeValue'=>'value for {ASSESSMENT_CURRENT_TOTAL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ASSESSMENT_HEADING' => array('codeValue'=>'value for {ASSESSMENT_HEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'ASSESSMENT_HEADING' => array('codeValue'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'CHECKJAVASCRIPT' => array('codeValue'=>'value for {CHECKJAVASCRIPT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'CLEARALL' => array('codeValue'=>'value for {CLEARALL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'CLOSEWINDOW' => array('codeValue'=>'value for {CLOSEWINDOW}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
@@ -2204,12 +2204,12 @@ EOD;
 'PRIVACY' => array('codeValue'=>'value for {PRIVACY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'QID' => array('codeValue'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'QUESTIONHELPPLAINTEXT' => array('codeValue'=>'value for {QUESTIONHELPPLAINTEXT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTIONHELP' => array('codeValue'=>'value for {QUESTIONHELP}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTIONHELP' => array('codeValue'=>'"can single quoted strings" . \'contain nested \'quoted sections\'?', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'QUESTION_CLASS' => array('codeValue'=>'value for {QUESTION_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'QUESTION_CODE' => array('codeValue'=>'value for {QUESTION_CODE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'QUESTION_ESSENTIALS' => array('codeValue'=>'value for {QUESTION_ESSENTIALS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'QUESTION_FILE_VALID_MESSAGE' => array('codeValue'=>'value for {QUESTION_FILE_VALID_MESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_HELP' => array('codeValue'=>'value for {QUESTION_HELP}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'QUESTION_HELP' => array('codeValue'=>'Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'QUESTION_INPUT_ERROR_CLASS' => array('codeValue'=>'value for {QUESTION_INPUT_ERROR_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'QUESTION_MANDATORY' => array('codeValue'=>'value for {QUESTION_MANDATORY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'QUESTION_MAN_CLASS' => array('codeValue'=>'value for {QUESTION_MAN_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
@@ -2350,7 +2350,9 @@ NULL~++a
 NULL~--b
 value for {INSERTANS:123X45X67}~INSERTANS:123X45X67
 value for {QID}~QID
-value for {ASSESSMENT_HEADING}~ASSESSMENT_HEADING
+"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~ASSESSMENT_HEADING
+"can single quoted strings" . 'contain nested 'quoted sections'?~QUESTIONHELP
+Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?~QUESTION_HELP
 value for {TOKEN:FIRSTNAME}~TOKEN:FIRSTNAME
 value for {THEREAREXQUESTIONS}~THEREAREXQUESTIONS
 5~q5pointChoice.code
@@ -2403,7 +2405,7 @@ NULL~max()
 5~strlen(hi)
 I love LimeSurvey~str_replace('like','love','I like LimeSurvey')
 2~strpos('I like LimeSurvey','like')
-Hi there!~d='<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>'
+<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>~d='<span id="d" style="border-style: solid; border-width: 2px; border-color: green">Hi there!</span>'
 Hi there!~c=strip_tags(d)
 Hi there!~c
 +,-,*,/,!,,,and,&&,or,||,gt,>,lt,<,ge,>=,le,<=,eq,==,ne,!=~implode(',','+','-','*','/','!',',','and','&&','or','||','gt','>','lt','<','ge','>=','le','<=','eq','==','ne','!=')
@@ -2479,8 +2481,7 @@ EOD;
             $LEMalias2varName[] = "'" . $jsVarName . "':{'jsName':'" . $jsVarName . "'}";
             $LEMvarNameAttr[] = "'" . $jsVarName .  "': {"
                 . "'jsName':'" . $jsVarName
-                . "','code':'" . $value
-                . "','shown':'" . $value
+                . "','code':'" . htmlspecialchars(preg_replace("/[[:space:]]/",' ',$value),ENT_QUOTES,'UTF-8')
                 . "','question':'"
                 . "','qid':'" . $i . "'}";
         }
@@ -2501,19 +2502,20 @@ EOD;
             $resultStatus = 'ok';
             $status = $em->Evaluate($expr);
             $result = $em->GetResult();
-            $valToShow = $result;
+            $valToShow = htmlspecialchars($result,ENT_QUOTES,'UTF-8');
+            $expectedToShow = htmlspecialchars($expectedResult,ENT_QUOTES,'UTF-8');
             print "<tr>";
             print "<td>" . $em->GetPrettyPrintString() . "</td>\n";
             if (is_null($result)) {
                 $valToShow = "NULL";
             }
             print '<td>' . $valToShow . "</td>\n";
-            if ($valToShow != $expectedResult)
+            if ($valToShow != $expectedToShow)
             {
                 $resultStatus = 'error';
             }
-            print "<td class='" . $resultStatus . "'>" . $expectedResult . "</td>\n";
-            print "<td>" . $em->GetJavascriptTestforExpression($expectedResult) . "&nbsp;</td>\n";
+            print "<td class='" . $resultStatus . "'>" . $expectedToShow . "</td>\n";
+            print "<td>" . $em->GetJavascriptTestforExpression($expectedToShow) . "&nbsp;</td>\n";
             $varsUsed = $em->GetVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
                 $varDesc = array();

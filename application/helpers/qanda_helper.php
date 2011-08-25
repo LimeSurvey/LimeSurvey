@@ -2056,7 +2056,7 @@ function do_date($ia)
         // Format the date  for output
         if (trim($_SESSION[$ia[1]])!='')
         {
-            $dateoutput = DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION[$ia[1]])->format($dateformatdetails['phpdate']);
+            $dateoutput = convertDateTimeFormat($_SESSION[$ia[1]], "Y-m-d H:i:s", $dateformatdetails['phpdate']);
         }
         else
         {
@@ -2814,8 +2814,8 @@ function do_listwithcomment($ia)
         $answer .= '</textarea>
 </p>
 
-<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]."\" value=\"".$_SESSION[$ia[1]]."\" />
-";
+<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" />
+';
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';
     }
@@ -2870,7 +2870,7 @@ function do_listwithcomment($ia)
             $answer .= str_replace("\\", "", $_SESSION[$fname2]);
         }
         $answer .= '</textarea>
-	<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1]." value=\"{$_SESSION[$ia[1]]}\" />\n</p>\n";
+	<input class="radio" type="hidden" name="java'.$ia[1].'" id="java'.$ia[1].'" value="'.$_SESSION[$ia[1]].'" /></p>';
         $inputnames[]=$ia[1];
         $inputnames[]=$ia[1].'comment';
     }
@@ -3013,7 +3013,7 @@ function do_ranking($ia)
         }
         $ranklist .= "\t<tr><td class=\"position\">&nbsp;<label for='RANK_{$ia[0]}$i'>"
         ."$i:&nbsp;</label></td><td class=\"item\"><input class=\"text\" type=\"text\" name=\"RANK_{$ia[0]}$i\" id=\"RANK_{$ia[0]}$i\"";
-        if (isset($_SESSION[$myfname]))
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] && isset($thistext))
         {
             $ranklist .= " value='";
             $ranklist .= htmlspecialchars($thistext, ENT_QUOTES);
@@ -3022,7 +3022,7 @@ function do_ranking($ia)
         $ranklist .= " onfocus=\"this.blur()\" />\n";
         $ranklist .= "<input type=\"hidden\" name=\"$myfname\" id=\"fvalue_{$ia[0]}$i\" value='";
         $chosen[]=""; //create array
-        if (isset($_SESSION[$myfname]))
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] && isset($thiscode) && isset($thistext))
         {
             $ranklist .= $thiscode;
             $chosen[]=array($thiscode, $thistext);
@@ -3767,7 +3767,7 @@ function do_multiplechoice_withcomments($ia)
         . "\t<input class=\"checkbox\" type=\"checkbox\" name=\"$myfname\" id=\"answer$myfname\" value=\"Y\"";
 
         /* If the question has already been ticked, check the checkbox */
-        if ($_SESSION[$myfname])
+        if (isset($_SESSION[$myfname]))
         {
             if ($_SESSION[$myfname] == 'Y')
             {
@@ -3782,7 +3782,7 @@ function do_multiplechoice_withcomments($ia)
         if ($minansw > 0) {$minanswscript .= "\tif (document.getElementById('answer".$myfname."').checked) { count += 1; }\n";}
 
         $answer_main .= "<input type='hidden' name='java$myfname' id='java$myfname' value='";
-        if ($_SESSION[$myfname])
+        if (isset($_SESSION[$myfname]))
         {
             $answer_main .= $_SESSION[$myfname];
         }
@@ -3796,7 +3796,6 @@ function do_multiplechoice_withcomments($ia)
 
         . "\t</li>\n";
 
-
         $fn++;
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
@@ -3808,7 +3807,7 @@ function do_multiplechoice_withcomments($ia)
         $anscount = $anscount + 2;
         $answer_main .= "\t<li class=\"other\">\n<span class=\"option\">\n"
         . "\t<label for=\"answer$myfname\" class=\"answertext\">\n".$othertext."\n<input class=\"text other ".$kpclass."\" $numbersonly type=\"text\" name=\"$myfname\" id=\"answer$myfname\" title=\"".$clang->gT('Other').'" size="10"';
-        if ($_SESSION[$myfname])
+        if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
         {
             $answer_main .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
         }
@@ -3818,7 +3817,6 @@ function do_multiplechoice_withcomments($ia)
         . "<span class=\"comment\">\n\t<label for=\"answer$myfname2\" class=\"answer-comment\">\n"
         . '
 				<input class="text '.$kpclass.'" type="text" size="40" name="'.$myfname2.'" id="answer'.$myfname2.'" title="'.$clang->gT('Make a comment on your choice here:').'" value="';
-
 
         if (isset($_SESSION[$myfname2])) {$answer_main .= htmlspecialchars($_SESSION[$myfname2],ENT_QUOTES);}
         // --> START NEW FEATURE - SAVE
@@ -3849,7 +3847,6 @@ function do_multiplechoice_withcomments($ia)
         }
 
         $answer_main .= "\t</label>\n</span>\n\t</li>\n";
-
 
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
@@ -4041,10 +4038,7 @@ function do_file_upload($ia)
              returnTxt: '" . $clang->gT('Return to survey') . "'
             };
     </script>\n";
-    if ($pos)
-        $answer .= "<script type='text/javascript' src='../scripts/modaldialog.js'></script>";
-                            else
-        $answer .= "<script type='text/javascript' src='scripts/modaldialog.js'></script>";
+    $answer .= "<script type='text/javascript' src='".base_url()."/scripts/modaldialog.js'></script>";
 
     // Modal dialog
     $answer .= $uploadbutton;
@@ -5786,7 +5780,8 @@ function do_array_yesnouncertain($ia)
 
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);	//Checked
-    $qrow = $qresult->result_array(); $other = $qrow['other'];
+    $qrow = $qresult->result_array(); 
+    $other = isset($qrow['other']) ? $qrow['other'] : '';
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
     {
@@ -7260,7 +7255,12 @@ function do_arraycolumns($ia)
             $odd_even = '';
             foreach ($answers as $ld)
             {
-                $myfname = $ia[1].$ansrow['code'];
+                if (isset($ansrow['code'])) {
+                    $myfname = $ia[1].$ansrow['code'];
+                }
+                else {
+                    $myfname = $ia[1];
+                }
                 $trbc = alternation($trbc , 'row');
                 /* Check if this item has not been answered: the 'notanswered' variable must be an array,
                  containing a list of unanswered questions, the current question must be in the array,

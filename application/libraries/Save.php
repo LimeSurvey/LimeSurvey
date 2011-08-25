@@ -201,7 +201,7 @@ class Save {
 		                {
 		                    $qidattributes = getQuestionAttributes($fieldexists['qid']);
 		                    $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
-		                    $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdetails['phpdate']);
+//		                    $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdetails['phpdate']);
 		                    $_SESSION[$value] = $CI->db->escape(date("Y-m-d H:i:s", strtotime($_SESSION[$value])));
 		                }
 		            }

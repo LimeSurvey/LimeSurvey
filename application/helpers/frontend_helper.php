@@ -930,13 +930,13 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                                 {
                                     if (isset($append) && $append)
                                     {
-                                        $filenotvalidated[$field."_file_".$i] .= sprintf($clang->gT("Sorry, only %s extensions are allowed !"),$validation['allowed_filetypes']);
+                                        $filenotvalidated[$field."_file_".$i] .= sprintf($clang->gT("Sorry, only %s extensions are allowed!"),$validation['allowed_filetypes']);
                                         unset($append);
                                     }
                                     else
                                     {
                                         $filenotvalidated = array();
-                                        $filenotvalidated[$field."_file_".$i] .= sprintf($clang->gT("Sorry, only %s extensions are allowed !"),$validation['allowed_filetypes']);
+                                        $filenotvalidated[$field."_file_".$i] .= sprintf($clang->gT("Sorry, only %s extensions are allowed!"),$validation['allowed_filetypes']);
                                     }
                                 }
                             }
@@ -945,10 +945,10 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                     else
                         $filecount = 0;
 
-                    if ($filecount < $validation['min_num_of_files'])
+                    if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'])
                     {
                         $filenotvalidated = array();
-                        $filenotvalidated[$field] = $clang->gT("The minimum number of files have not been uploaded");
+                        $filenotvalidated[$field] = $clang->gT("The minimum number of files has not been uploaded.");
                     }
                 }
             }
