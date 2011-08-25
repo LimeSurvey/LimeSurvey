@@ -508,7 +508,6 @@ function db_upgrade($oldversion) {
                            PRIMARY KEY  ([attribute_id],[attribute_type])
 			   );");echo $modifyoutput; flush();ob_flush();
        modify_database("","CREATE TABLE [prefix_participant_attribute_names_lang] (
-                           [id] int(11) NOT NULL AUTO_INCREMENT,
                            [attribute_id] int(11) NOT NULL,
                            [attribute_name] varchar(30) NOT NULL,
                            [lang] varchar(20) NOT NULL,
@@ -518,19 +517,21 @@ function db_upgrade($oldversion) {
                           [attribute_id] int(11) NOT NULL,
                           [value_id] int(11) NOT NULL AUTO_INCREMENT,
                           [value] varchar(20) NOT NULL,
-                          PRIMARY KEY  ([attribute_id],[value_id])
+                          PRIMARY KEY  ([value_id])
                           ); ");echo $modifyoutput; flush();ob_flush();
        modify_database("","CREATE TABLE [prefix_participant_shares] (
                           [participant_id] varchar(50) NOT NULL,
                           [shared_uid] int(11) NOT NULL,
                           [date_added] datetime,
-                          [can_edit] varchar(5) NOT NULL                                                  
+                          [can_edit] varchar(5) NOT NULL,
+                          PRIMARY KEY  ([participant_id],[shared_uid])
                           ); ");echo $modifyoutput; flush();ob_flush();
       modify_database("","CREATE TABLE [prefix_survey_links] (
                           [participant_id] varchar(50) NOT NULL,
                           [token_id] int(11) NOT NULL,
                           [survey_id] int(11) NOT NULL,
-                          [date_created] datetime
+                          [date_created] datetime,
+                          PRIMARY KEY  ([participant_id],[token_id],[survey_id])
                           ); ");echo $modifyoutput; flush();ob_flush();
      modify_database("","ALTER TABLE [prefix_users] ADD [participant_panel] int(1) DEFAULT '1'"); echo $modifyoutput; flush();ob_flush();
              modify_database("", "UPDATE [prefix_settings_global] SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();

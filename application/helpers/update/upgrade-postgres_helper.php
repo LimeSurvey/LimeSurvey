@@ -350,14 +350,15 @@ function db_upgrade($oldversion) {
         attribute_id integer NOT NULL,
         value_id integer NOT NULL AUTO_INCREMENT,
         value VARCHAR( 20 ) NOT NULL,
-        PRIMARY KEY (attribute_id,value_id)
+        PRIMARY KEY (value_id)
         );"); echo $modifyoutput; flush();ob_flush();
         
         modify_database("","CREATE TABLE prefix_participant_shares (
         participant_id VARCHAR( 50 ) NOT NULL,
         shared_uid integer NOT NULL,
         date_added date NOT NULL,
-        can_edit VARCHAR( 5 ) NOT NULL
+        can_edit VARCHAR( 5 ) NOT NULL,
+        PRIMARY KEY (lang,attribute_id)
         );"); echo $modifyoutput; flush();ob_flush();
         
         modify_database("","CREATE TABLE prefix_survey_links (

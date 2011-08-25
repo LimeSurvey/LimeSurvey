@@ -417,11 +417,10 @@ CREATE TABLE `prefix_participant_attribute` (
 -- Table structure for table participant_attribute_names_lang
 -- 
 CREATE TABLE `prefix_participant_attribute_names_lang` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_id` int(11) NOT NULL,
   `attribute_name` varchar(30) NOT NULL,
   `lang` varchar(20) NOT NULL,
-   PRIMARY KEY  (`id`)
+   PRIMARY KEY  (`attribute_id`,`lang`)
  ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table participant_attribute_names
@@ -430,7 +429,7 @@ CREATE TABLE `prefix_participant_attribute_names` (
   `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
   `attribute_type` varchar(4) NOT NULL,
   `visible` char(5) NOT NULL,
-  PRIMARY KEY  (`attribute_id`)
+  PRIMARY KEY  (`attribute_id`,`attribute_type`)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table participant_attribute_names_values
@@ -448,7 +447,8 @@ CREATE TABLE `prefix_participant_shares` (
   `participant_id` varchar(50) NOT NULL,
   `share_uid` int(11) NOT NULL,
   `date_added` datetime NOT NULL,
-  `can_edit` varchar(5) NOT NULL
+  `can_edit` varchar(5) NOT NULL,
+  PRIMARY KEY  (`participant_id`,`share_uid`)
  ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table survey_links

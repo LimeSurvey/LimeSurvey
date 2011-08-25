@@ -410,7 +410,8 @@ CREATE TABLE prefix_participants (
   "email" character varying( 80 ) NOT NULL,
   "language" character varying( 2 ) NOT NULL,
   "blacklisted" character( 1 ) NOT NULL,
-  "owner_uid" integer NOT NULL
+  "owner_uid" integer NOT NULL,
+  PRIMARY KEY (participant_id)
 );
 
 
@@ -434,8 +435,6 @@ CREATE TABLE prefix_participant_attribute_names (
   "visible" character varying( 5 ) NOT NULL,
   CONSTRAINT prefix_participant_attribute_names_pkey PRIMARY KEY (attribute_id, attribute_type)
 );
-
-
 -- 
 -- Table structure for table participant_attribute_lang
 --   
@@ -445,8 +444,6 @@ CREATE TABLE prefix_participant_attribute_names_lang (
   "attribute_name" character varying( 30 ) NOT NULL,
   "lang" character varying( 20 ) NOT NULL
 );
-
-
 -- 
 -- Table structure for table participant_attribute_values
 --   
@@ -455,8 +452,6 @@ CREATE TABLE prefix_participant_attribute_values (
   "attribute_id" integer NOT NULL,
   "value" character varying( 20 ) NOT NULL
 );
-
-
 -- 
 -- Table structure for table participant_shares
 --   

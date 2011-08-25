@@ -439,6 +439,15 @@ CREATE TABLE [prefix_participant_attribute] (
                                                   PRIMARY KEY  ([participant_id],[attribute_id])
 						  );						  
 --
+-- Table structure for table participant attribute names lang
+--
+CREATE TABLE [prefix_participant_attribute_names_lang] (    
+                                                  [attribute_id] int(11) NOT NULL,
+                                                  [attribute_name] varchar(30) NOT NULL,
+                                                  [lang] varchar(20) NOT NULL,
+                                                  PRIMARY KEY  ([attribute_id],[lang])
+						  );						  
+--
 -- Table structure for table participant attribute names
 --
 CREATE TABLE [prefix_participant_attribute_names] (
@@ -447,16 +456,7 @@ CREATE TABLE [prefix_participant_attribute_names] (
                                                   [visible] char(5) NOT NULL,
                                                   PRIMARY KEY  ([attribute_id],[attribute_type])
 						  );						  
---
--- Table structure for table participant attribute names lang
---
-CREATE TABLE [prefix_participant_attribute_names_lang] (
-                                                  [id] int(11) NOT NULL AUTO_INCREMENT,
-						  [attribute_id] int(11) NOT NULL,
-                                                  [attribute_name] varchar(30) NOT NULL,
-                                                  [lang] varchar(20) NOT NULL,
-                                                  PRIMARY KEY  ([attribute_id],[lang])
-						  );						  
+
 --
 -- Table structure for table participant attribute values
 --
@@ -464,7 +464,7 @@ CREATE TABLE [prefix_participant_attribute_values] (
                                			  [attribute_id] int(11) NOT NULL,
                                                   [value_id] int(11) NOT NULL AUTO_INCREMENT,
                                                   [value] varchar(20) NOT NULL,
-                                                  PRIMARY KEY  ([attribute_id],[value_id])
+                                                  PRIMARY KEY  ([value_id])
 						  );						  
 --
 -- Table structure for table participant shares
@@ -473,7 +473,8 @@ CREATE TABLE [prefix_participant_shares] (
                                                   [participant_id] varchar(50) NOT NULL,
                                			  [shared_uid] int(11) NOT NULL,
                                                   [date_added] datetime,
-                                                  [can_edit] varchar(5) NOT NULL                                                  
+                                                  [can_edit] varchar(5) NOT NULL,
+                                                  PRIMARY KEY  ([participant_id],[shared_uid])                                                  
 						  );						  
 --
 -- Table structure for table survey links
@@ -482,7 +483,8 @@ CREATE TABLE [prefix_survey_links] (
                                                   [participant_id] varchar(50) NOT NULL,
                                			  [token_id] int(11) NOT NULL,
                                                   [survey_id] int(11) NOT NULL,
-                                                  [date_created] datetime
+                                                  [date_created] datetime,
+                                                  PRIMARY KEY  ([participant_id],[token_id],[survey_id])                                                  
 						  );						  
 
 

@@ -613,29 +613,29 @@ function db_upgrade($oldversion) {
         `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
         `attribute_type` varchar(4) NOT NULL,
         `visible` char(5) NOT NULL,
-        PRIMARY KEY  (`attribute_id`)
+        PRIMARY KEY  (`attribute_id`,`attribute_type`)
         )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
         
         modify_database("","CREATE TABLE `prefix_participant_attribute_names_lang` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
         `attribute_id` int(11) NOT NULL,
         `attribute_name` varchar(30) NOT NULL,
         `lang` varchar(20) NOT NULL,
-        PRIMARY KEY  (`id`)
+        PRIMARY KEY  (`attribute_id`,`lang`)
 )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
         
         modify_database("","CREATE TABLE `prefix_participant_attribute_values` (
         `attribute_id` int(11) NOT NULL,
         `value_id` int(11) NOT NULL AUTO_INCREMENT,
         `value` varchar(20) NOT NULL,
-        PRIMARY KEY  (`value_id`,`attribute_id`)
+        PRIMARY KEY  (`value_id`)
         )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
         
         modify_database("","CREATE TABLE `prefix_participant_shares` (
         `participant_id` varchar(50) NOT NULL,
         `share_uid` int(11) NOT NULL,
         `date_added` datetime NOT NULL,
-        `can_edit` varchar(5) NOT NULL
+        `can_edit` varchar(5) NOT NULL,
+        PRIMARY KEY  (`participant_id`,`share_uid`)
         )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
  
         modify_database("","CREATE TABLE `prefix_survey_links` (
