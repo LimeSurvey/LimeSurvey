@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$CI =& get_instance(); 
+$CI =& get_instance();
 
 // Number fetch mode not supported by CI.
 /**
@@ -34,9 +34,9 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
     else
     {
         $dataset=$CI->db->query($sql);
-        
+
     }
-    
+
     if (!$silent && !$dataset)  {safe_die('Error executing query in db_execute_assoc:'.$sql);}
     return $dataset;
 }
@@ -126,7 +126,7 @@ function db_quote_id($id)
         case "odbc_mssql" :
             return "[".$id."]";
             break;
-        case "postgres":
+        case "postgre":
             return "\"".$id."\"";
             break;
         default:
@@ -182,7 +182,7 @@ function db_table_name_nq($name)
 */
 /**
  *  Return a sql statement for finding LIKE named tables
- *  Be aware that you have to escape underscor chars by using a backslash 
+ *  Be aware that you have to escape underscor chars by using a backslash
  * otherwise you might get table names returned you don't want
  *
  * @param mixed $table
@@ -195,12 +195,10 @@ function db_select_tables_like($table)
         case 'mysqli':
         case 'mysql' :
             return "SHOW TABLES LIKE '$table'";
-        case 'odbtp' :
-        case 'mssql_n' :
-        case 'mssqlnative':
-        case 'odbc_mssql' :
+        case 'mssql' :
+        case 'odbc' :
             return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
-        case 'postgres' :
+        case 'postgre' :
             $table=str_replace('\\','\\\\',$table);
             return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
         default: safe_die ("Couldn't create 'select tables like' query for connection type 'databaseType'");

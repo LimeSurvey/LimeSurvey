@@ -401,7 +401,7 @@
                 //$tdeactivatequery = db_rename_table(db_table_name_nq($toldtable) ,db_table_name_nq($tnewtable));
                 $tdeactivateresult = db_rename_table($toldtable ,$tnewtable) or die ("Couldn't deactivate tokens table because:<br /><br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
 
-                if ($this->db->dbdriver=='postgres')
+                if ($this->db->dbdriver=='postgre')
                 {
                     // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
                     //$deactivatequery = db_rename_table(db_table_name_nq($toldtable).'_tid_seq',db_table_name_nq($tnewtable).'_tid_seq');
@@ -457,7 +457,7 @@
             //$deactivatequery = db_rename_table($oldtable,$newtable);
             $deactivateresult = db_rename_table($oldtable,$newtable) or die ("Couldn't make backup of the survey table. Please try again. <br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
 
-            if ($this->db->dbdriver=='postgres')
+            if ($this->db->dbdriver=='postgre')
             {
                 // If you deactivate a postgres table you have to rename the according sequence too and alter the id field to point to the changed sequence
                 //$deactivatequery = db_rename_table($oldtable.'_id_seq',$newtable.'_id_seq');

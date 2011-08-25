@@ -6800,7 +6800,7 @@ function checkquestionfordisplay($qid, $gid=null)
 function sStripDBPrefix($sTableName)
 {
     //global $dbprefix;
-    global $CI; 
+    global $CI;
     $dbprefix = $CI->db->dbprefix;
     return substr($sTableName,strlen($dbprefix));
 }
@@ -8144,11 +8144,11 @@ function get_dbtableusage($surveyid){
 
         $size_limit = 65535;
     }
-    elseif ($arrCols['dbtype'] == 'postgres'){
+    elseif ($arrCols['dbtype'] == 'postgre'){
         $hard_limit = 1600;
         $size_limit = 0;
     }
-    elseif (($arrCols['dbtype'] == 'mssqlnative')||($arrCols['dbtype'] == 'odbtp')||($arrCols['dbtype'] == 'mssql_n')){
+    elseif ($arrCols['dbtype'] == 'mssql'){
         $hard_limit = 1024;
         $size_limit = 0;
     }

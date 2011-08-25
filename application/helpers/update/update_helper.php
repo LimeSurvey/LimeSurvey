@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id: update.php 10323 2011-06-22 15:33:54Z dionet $
- * 
+ *
  */
 
 /**
@@ -31,7 +31,7 @@ function CheckForDBUpgrades($subaction = null)
 	$standardtemplaterootdir = $CI->config->item('standardtemplaterootdir');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
-        if(isset($subaction) && $subaction=="continue") 
+        if(isset($subaction) && $subaction=="continue")
         {
         	require_once(APPPATH.'third_party/adodb/adodb.inc.php');
 			connectadodb();
@@ -63,14 +63,14 @@ function ShowDBUpgradeNotice() {
 	echo '<div class="messagebox">';
     echo "<div class='header'>".$clang->gT('Database upgrade').'</div><p>';
     echo $clang->gT('Please verify the following information before continuing with the database upgrade:').'<ul>';
-    echo "<li><b>" .$clang->gT('Database type') . ":</b> " . $CI->db->dbdriver . "</li>"; 
-    echo "<li><b>" .$clang->gT('Database name') . ":</b> " . $CI->db->database . "</li>"; 
-    echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . $CI->db->dbprefix . "</li>";   
-    echo "<li><b>" .$clang->gT('Site name') . ":</b> " . $CI->config->item("sitename") . "</li>";   
-    echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . site_url() . "</li>"; 
+    echo "<li><b>" .$clang->gT('Database type') . ":</b> " . $CI->db->dbdriver . "</li>";
+    echo "<li><b>" .$clang->gT('Database name') . ":</b> " . $CI->db->database . "</li>";
+    echo "<li><b>" .$clang->gT('Table prefix') . ":</b> " . $CI->db->dbprefix . "</li>";
+    echo "<li><b>" .$clang->gT('Site name') . ":</b> " . $CI->config->item("sitename") . "</li>";
+    echo "<li><b>" .$clang->gT('Root URL') . ":</b> " . site_url() . "</li>";
     echo '</ul>';
     echo "<br />";
-    echo "<a href='".site_url("admin/update/db/continue")."'>" . $clang->gT('Click here to continue') . "</a>";  
+    echo "<a href='".site_url("admin/update/db/continue")."'>" . $clang->gT('Click here to continue') . "</a>";
     echo "<br />";
 	echo '</div>';
 }
@@ -79,6 +79,7 @@ function connectadodb() {
 	global $connect;
 	$CI =& get_instance();
 	$databasetype = $CI->db->dbdriver;
+    if ($databasetype=='postgre') $databasetype='postgres';
 	$databaselocation = (empty ($CI->db->hostname)) ? "localhost" : $CI->db->hostname;
 	$databaseport = (empty ($CI->db->port)) ? "default" : $CI->db->port;
 	$databaseuser = $CI->db->username;
@@ -100,7 +101,7 @@ function connectadodb() {
 	    break;
 	    case "odbc_mssql": $dbhost="Driver={SQL Server};Server=$databaselocation;Database=".$databasename;
 	    break;
-	
+
 	    default: safe_die("Unknown database type");
 	}
 	// Now try connecting to the database

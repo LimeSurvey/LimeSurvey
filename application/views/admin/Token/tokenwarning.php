@@ -5,30 +5,30 @@
         <div class='warningheader'><?php echo $clang->gT("Warning");?></div>
         <br /><strong><?php echo $clang->gT("Tokens have not been initialised for this survey.");?></strong><br /><br />
         <?php if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
-        { 
+        {
             echo $clang->gT("If you initialise tokens for this survey then this survey will only be accessible to users who provide a token either manually or by URL.");
             ?><br /><br />
 
             <?php if ($thissurvey['anonymized'] == 'Y')
-            { 
+            {
                 echo $clang->gT("Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.");
                 ?><br /><br />
-            <?php } 
+            <?php }
 			echo $clang->gT("Do you want to create a token table for this survey?");
 			?>
             <br /><br />
             <input type='submit' value='<?php echo $clang->gT("Initialise tokens");?>' onclick="<?php echo get2post(site_url("admin/tokens/index/$surveyid")."?action=tokens&amp;sid=$surveyid&amp;createtable=Y");?>" />
             <input type='submit' value='<?php echo $clang->gT("No, thanks.");?>' onclick="window.open('<?php echo site_url("admin/survey/view/$surveyid");?>', '_top')" /></div>
-        <?php } 
+        <?php }
         else
-        { 
+        {
             echo $clang->gT("You don't have the permission to activate tokens.");?>
             <input type='submit' value='<?php echo $clang->gT("Back to main menu");?>' onclick="window.open('<?php echo site_url("admin/survey/view/$surveyid");?>', '_top')" /></div>
 
         <?php }
-        
+
         // Do not offer old postgres token tables for restore since these are having an issue with missing index
-        if ($tcount>0 && $databasetype!='postgres' && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
+        if ($tcount>0 && $databasetype!='postgre' && bHasSurveyPermission($surveyid, 'surveyactivation','update'))
         { ?>
             <br /><div class='header ui-widget-header'><?php echo $clang->gT("Restore options");?></div>
             <div class='messagebox ui-corner-all'>

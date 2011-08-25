@@ -1421,13 +1421,11 @@ class Installer extends CI_Controller {
             case "mysql" :
                 return "`".$id."`";
                 break;
-            case "mssql_n" :
             case "mssql" :
-            case "mssqlnative" :
             case "odbc" :
                 return "[".$id."]";
                 break;
-            case "postgres":
+            case "postgre":
                 return "\"".$id."\"";
                 break;
             default:
