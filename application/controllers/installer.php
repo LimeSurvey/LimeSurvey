@@ -823,37 +823,19 @@ class Installer extends CI_Controller {
                 $this->db->insert('users', $insertdata);
                 */
                     //finding dbtype and inserting new data
-                    $createdbtype=$sAdodbType;
-                    if ($databasetype=='mysql' || $databasetype=='mysqli') {
-                    $createdbtype='mysql';
-                    }
-                    if ($createdbtype=='mssql' || $createdbtype=='odbc' || $createdbtype=='odbtp') $createdbtype='mssql';
-                    if($createdbtype=='mssqlnative') $createdbtype='mssqlnative';
-                    //$defaultpass=SHA256::hashing($defaultpass);
-
-                    switch ($createdbtype) {
-
-                        case "mysql":
-                        {
+                    $databasetype=$this->session->userdata('databasetype');
+                    switch ($databasetype){
+                        case 'mysql':
+                        case 'mysqli':
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`, `create_user` , `delete_user` , `superadmin` , `configurator` , `manage_template` , `manage_label`) VALUES (\''.$defaultuser.'\', \''.$defaultpass.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
                             break;
-                        }
-                        case "mssqlnative":
-                        {
+                        case 'mssql':
+                        case 'odbc':
                             $connect->Execute('INSERT INTO ['.$this->session->userdata("dbprefix").'users] ([users_name], [password], [full_name], [parent_id], [lang] ,[email], [create_survey], [create_user] , [delete_user] , [superadmin] , [configurator] , [manage_template] , [manage_label]) VALUES (\''.$defaultuser.'\', \''.$defaultpass.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
                             break;
-                        }
-                        case "mssql":
-                        {
-                            $connect->Execute('INSERT INTO ['.$this->session->userdata("dbprefix").'users] ([users_name], [password], [full_name], [parent_id], [lang] ,[email], [create_survey], [create_user] , [delete_user] , [superadmin] , [configurator] , [manage_template] , [manage_label]) VALUES (\''.$defaultuser.'\', \''.$defaultpass.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
-                            break;
-                        }
-                        case "postgres":
-                        {
+                        case 'postgres':
                             $connect->Execute('INSERT INTO '.$this->session->userdata("dbprefix").'users (users_name, "password", full_name, parent_id, lang ,email, create_survey, create_user , delete_user , superadmin , configurator , manage_template , manage_label, htmleditormode) VALUES (\''.$defaultuser.'\', \''.$defaultpass.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1,\'default\')');
                             break;
-                        }
-
                     }
 
                     // if successfully data is inserted, notify user to login and redirect to proper link
@@ -864,10 +846,10 @@ class Installer extends CI_Controller {
                     $this->session->set_userdata('deletedirectories' , TRUE);
                     $newdata = array();
                     //DELETE SAMPLE INSTALLER FILE. If we can't, notify user of the same.
-                    if (is_writable($this->config->item('rootdir').'/tmp/sample_installer-file.txt'))
+                    if (is_writable($this->config->item('rootdir').DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sample_installer_file.txt'))
                     {
                         $this->load->helper('file');
-                        delete_files($this->config->item('rootdir').'/tmp/sample_installer_file.txt',TRUE);
+                        delete_files($this->config->item('rootdir').DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sample_installer_file.txt');
                         //show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
                         //exit();
                     }
@@ -976,15 +958,13 @@ class Installer extends CI_Controller {
         {
 
             $values['adminoutputForm']='';
-            switch ($databasetype)
+            switch ($this->session->userdata('databasetype'))
             {
                 case 'mysqli':
                 case 'mysql': $createDb=$connect->Execute("CREATE DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci");
                 break;
                 case 'mssql':
-                case 'odbc':
-                case 'mssqlnative':
-                case 'odbtp': $createDb=$connect->Execute("CREATE DATABASE [$dbname];");
+                case 'odbc':  $createDb=$connect->Execute("CREATE DATABASE [$dbname];");
                 break;
                 default: $createDb=$connect->Execute("CREATE DATABASE $dbname");
             }
@@ -1078,8 +1058,8 @@ class Installer extends CI_Controller {
             {
                 $connect->execute("ALTER DATABASE {$dbname} SET bytea_output='escape';");
             }
-
-            if (self::_modify_database($this->config->item('rootdir').'/installer/sql/create-'.$createdbtype.'.sql'))
+            $sErrors=self::_modify_database($this->config->item('rootdir').'/installer/sql/create-'.$createdbtype.'.sql');
+            if ($sErrors=='')
             {
                 //$data1['adminoutput'] = '';
                 //$data1['adminoutput'] .= sprintf("Database `%s` has been successfully populated.",$dbname)."</font></strong></font><br /><br />\n";
@@ -1087,7 +1067,8 @@ class Installer extends CI_Controller {
                 $this->session->set_userdata(array('tablesexist' => TRUE));
                 $aStatusdata = array(
                             //'step2'  => 'TRUE',
-                            'step3'  => TRUE
+                            'step3'  => TRUE,
+                            'confirmation'=> sprintf("Database <b>%s</b> has been successfully populated.",$this->session->userdata('dbname'))
                             );
 
                 $this->session->unset_userdata('populatedatabase');
@@ -1097,12 +1078,15 @@ class Installer extends CI_Controller {
             }
             else
             {
-                $values['adminoutput'] = "Error";
-                $values['title']="Database settings";
-                $values['descp']="Database settings";
-                $values['classesForStep']=array("off","off","off","on","off");
-                $values['progressValue']=60;
-                $this->load->view('installer/dbsettings_view',$values);
+                $aStatusdata = array(
+                            //'step2'  => 'TRUE',
+                            'step3'  => TRUE,
+                            'confirmation'=>'Database was populated but there were errors:<p>'.$sErrors
+                            );
+                $this->session->set_userdata(array('tablesexist' => TRUE));
+                $this->session->set_userdata($aStatusdata);
+                $this->session->unset_userdata('populatedatabase');
+                redirect(site_url('installer/install/2'));
             }
 
         }
@@ -1116,7 +1100,7 @@ class Installer extends CI_Controller {
      * Function that actually modify the database. Read $sqlfile and execute it.
      * @param string $sqlfile
      * @param string $sqlstring
-     * @return
+     * @return  Empty string if everything was okay - otherwise the error messages
      */
     function _modify_database($sqlfile='', $sqlstring='')
     {
@@ -1161,7 +1145,6 @@ class Installer extends CI_Controller {
             //require_once($rootdir."/classes/core/sanitize.php");
             $this->load->library('admin/sha256','sha256');
             $defaultpass=$this->sha256->hashing($defaultpass);
-            $success = true;  // Let's be optimistic
             $modifyoutput='';
             /**
             $this->load->dbforge();
@@ -1217,13 +1200,11 @@ class Installer extends CI_Controller {
 
                         if (! $connect->execute($command)) {  //Checked
                             $command=htmlspecialchars($command);
-                            $modifyoutput .="<br />"."Executing.....".$command."<font color='#FF0000'>..."."Failed! Reason: ".$connect->ErrorMsg()."</font>";
-                            $success = false;
+                            $modifyoutput .="<br />"."Executing: ".$command."<font color='#FF0000'> Failed! Reason: ".$connect->ErrorMsg()."</font>";
                         }
                         else
                         {
                             $command=htmlspecialchars($command);
-                            $modifyoutput .=". ";
                         }
 
                         $command = '';
@@ -1233,7 +1214,7 @@ class Installer extends CI_Controller {
                 }
             }
 
-            return $success;
+            return $modifyoutput;
         }
 
     }
@@ -1251,14 +1232,25 @@ class Installer extends CI_Controller {
                     //write variables in database.php
                             $this->load->helper('file');
 
+                            if (strpos($this->session->userdata('dblocation'),':')!==false)
+                            {
+                                $sDatabasePort=substr($_POST['dbLocation'],strpos($this->session->userdata('dblocation'),':')+1);
+                                $sDatabaseLocation=substr($_POST['dbLocation'],0,strpos($this->session->userdata('dblocation'),':')-1);
+                            }
+                            else
+                            {
+                                $sDatabaseLocation=$this->session->userdata('dblocation');
+                            }
+
+
                             $dbvalues = array(
-                                        'hostname' => $this->session->userdata('dblocation'),
+                                        'hostname' => $sDatabaseLocation,
                                         'username' => $this->session->userdata('dbuser'),
                                         'password' => $this->session->userdata('dbpwd'),
                                         'database' => $this->session->userdata('dbname'),
                                         'dbdriver' => $this->session->userdata('databasetype'),
                                         'dbprefix' => $this->session->userdata('dbprefix'),
-                                        'pconnect' => 'TRUE',
+                                        'pconnect' => 'FALSE',
                                         'db_debug' => 'TRUE',
                                         'cache_on' => 'FALSE',
                                         'cachedir' => '',
@@ -1267,10 +1259,12 @@ class Installer extends CI_Controller {
                                         'swap_pre' => '',
                                         'autoinit' => 'TRUE',
                                         'stricton' => 'FALSE',
-                                        'port' => 'default',
                                         'databasetabletype' => 'myISAM'
-
                             );
+                            if (isset($sDatabasePort))
+                            {
+                                $dbvalues['port']=$sDatabasePort;
+                            }
 
                             $dbdata = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); " ."\n"
                                     ."/*"."\n"
