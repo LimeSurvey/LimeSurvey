@@ -77,6 +77,19 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+
+Changes from 1.91+ (build 10746) to 1.91+ (build 10859)
+-Fixed #5414: export to application (R) filenames are not consistent (mennodekker)
+-Fixed issue: Token registration system was not checking survey settings for token length, defaulting to 15. Fixed. (jcleeland)
+-Fixed issue: Incorrect class name quotation. (maziminke)
+-Fixed issue #5383: Keyboard-less operation doesn't work for all input fields (tpartner)
+-Fixed issue #5399: Cannot add conditions after certain point in the survey (c_schmitz)
+-Fixed issue #5402: Actually hide questions in Printable Survey if they have attribute 'hidden' - patch kindly provided by ronvdburg (c_schmitz)
+-Fixed issue #5403: Actually hide questions in Print Answers if they have attribute 'hidden' - patch kindly provided by ronvdburg (c_schmitz)
+-Fixed issue #5411: Quick translation does not work if contents contains double quotes (c_schmitz)
+-Fixed issue #5425: Remove obsolete library code for tabpane (Fix of previous commit) (mot3)
+-Fixed issue #5425: Remove obsolete library code for tabpane (mot3)
+
 Changes from 1.91+ (build 10695) to 1.91+ (build 10746)
 #Updated translation: German (c_schmitz)
 #Updated translation: German (informal) (c_schmitz)
