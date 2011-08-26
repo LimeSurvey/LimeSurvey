@@ -42,6 +42,7 @@ class Group_format {
 		
 		if ($previewgrp)
 		{
+            $totalquestions = buildsurveysession($surveyid);
 			$_SESSION['prevstep'] = 1;
 			$_SESSION['maxstep'] = 0;
 		}
