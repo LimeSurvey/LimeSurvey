@@ -3,7 +3,6 @@
 <head>
 <?php echo $meta;?>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<script type="text/javascript" src="<?php echo $this->config->item('adminscripts');?>tabpane/js/tabpane.js"></script>
 <script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery.js"></script>
 <script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery.qtip.js"></script>
@@ -32,20 +31,20 @@
 <?php } ?>
 <?php if(isset($flashmessage)) { ?>
 <div id="flashmessage" style="display:none;">
- 
+
         <div id="themeroller" class="ui-state-highlight ui-corner-all">
         <!-- close link -->
         <a class="ui-notify-close" href="#">
             <span class="ui-icon ui-icon-close" style="float:right"></span>
         </a>
- 
+
         <!-- alert icon -->
         <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-info"></span>
- 
+
         <h1></h1>
         <p><?php echo $flashmessage; ?></p>
     </div>
- 
+
     <!-- other templates here, maybe.. -->
 </div>
 <?php } ?>

@@ -14,7 +14,7 @@ class LimeExpressionManager {
     private $em;    // Expression Manager
     private $groupRelevanceInfo;
     private $groupNum;
-    private $debugLEM = true;   // set this to false to turn off debugging
+    private $debugLEM = false;   // set this to false to turn off debugging
     private $debugLEMonlyVars = true;   //set this to true to only show log replacements of questions (e.g. no tokens or templates)
     private $knownVars;
     private $pageRelevanceInfo;
@@ -25,9 +25,9 @@ class LimeExpressionManager {
     private $jsVar2qid; // reverse mapping of JavaScript Variable name to Question
     private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
     private $varNameAttr;   // JavaScript array of mappings of canonical JavaScript variable name to key attributes.
-    
+
     // A private constructor; prevents direct creation of object
-    private function __construct() 
+    private function __construct()
     {
         $this->em = new ExpressionManager();
     }
@@ -41,7 +41,7 @@ class LimeExpressionManager {
         }
         return self::$instance;
     }
-    
+
     // Prevent users to clone the instance
     public function __clone()
     {
@@ -419,7 +419,7 @@ class LimeExpressionManager {
             $debugLog_html .= "</table>";
             file_put_contents('/tmp/LimeExpressionManager-page.html',$debugLog_html);
         }
-        
+
         $this->knownVars = $knownVars;
         $this->qid2code = $qid2code;
         $this->jsVar2qid = $jsVar2qid;
@@ -797,7 +797,7 @@ class LimeExpressionManager {
                 $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' name='relevance" . $qid . "codes' value='" . $lem->qid2code[$qid] . "'/>\n";
             }
         }
-        
+
         return implode('',$jsParts);
     }
 

@@ -410,8 +410,7 @@ CREATE TABLE prefix_participants (
   "email" character varying( 80 ) NOT NULL,
   "language" character varying( 2 ) NOT NULL,
   "blacklisted" character( 1 ) NOT NULL,
-  "owner_uid" integer NOT NULL,
-  PRIMARY KEY (participant_id)
+  "owner_uid" integer NOT NULL
 );
 
 
