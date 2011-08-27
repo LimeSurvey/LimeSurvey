@@ -78,8 +78,7 @@ if ($demoModeOnly === false &&
 
 }
 
-
-function __autoload($class) {
+function kcfinder_autoload($class) {
     if ($class == "uploader")
         require "core/uploader.php";
     elseif ($class == "browser")
@@ -91,5 +90,7 @@ function __autoload($class) {
     elseif (file_exists("lib/helper_$class.php"))
         require "lib/helper_$class.php";
 }
+
+spl_autoload_register('kcfinder_autoload');
 
 ?>

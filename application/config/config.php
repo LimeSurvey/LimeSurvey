@@ -362,13 +362,16 @@ $config['proxy_ips'] = '';
 |  Auto-load Super Controllers
 |--------------------------------------------------------------------------
 */
-if (!function_exists('__autoload'))
+if (!function_exists('limesurvey_config_autoloader'))
 {
-	function __autoload($class) {
-		if(strpos($class, 'CI_') !== 0) {
-			@include_once (APPPATH . 'core/' . $class . EXT);
-		}
+	function limesurvey_config_autoloader($class) {
+	    if (0 === strpos($class, 'CI_'))
+	        return;
+	    if (file_exists($file = APPPATH.'core/'.$class.'.php'))
+	        require $file;
 	}
+
+	spl_autoload_register('limesurvey_config_autoloader');
 }
 
 /* End of file config.php */
