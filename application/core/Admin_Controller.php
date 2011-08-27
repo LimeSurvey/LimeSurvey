@@ -248,7 +248,7 @@ class Admin_Controller extends LS_Controller {
 			$data['flashmessage'] = $this->session->userdata('flashmessage');
 			$this->session->unset_userdata('flashmessage');
 	    }
-	   	return $this->load->view("admin/Super/header",$data, $return);
+	   	return $this->load->view("admin/super/header",$data, $return);
 	}
 	
 	/**
@@ -286,7 +286,7 @@ class Admin_Controller extends LS_Controller {
 	    	$data['js_admin_includes'] = array_unique($this->config->item("js_admin_includes"));
 	    }
 	    
-		return $this->load->view("admin/Super/footer",$data, $return);
+		return $this->load->view("admin/super/footer",$data, $return);
 	}
 	
 	/**
@@ -352,7 +352,7 @@ class Admin_Controller extends LS_Controller {
 		
 		//self::_getAdminHeader();
 		//self::_showadminmenu();
-		$this->load->view('admin/Super/messagebox', $data);
+		$this->load->view('admin/super/messagebox', $data);
 		//self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));		
 	}
 	
@@ -382,7 +382,7 @@ class Admin_Controller extends LS_Controller {
 		$data['updatebuild'] = $this->config->item("updatebuild");
 		$data['surveyid'] = $surveyid;
 		
-	    $this->load->view("admin/Super/adminmenu",$data);
+	    $this->load->view("admin/super/adminmenu",$data);
 
 	}
 	

@@ -173,7 +173,7 @@
                 $data['surveyid'] = $surveyid;
                 $data['action'] = $action;
                 $data['grplangs'] = $grplangs;
-                $this->load->view('admin/Survey/QuestionGroups/addGroup_view',$data);
+                $this->load->view('admin/survey/QuestionGroups/addGroup_view',$data);
 
                 /**
                 $newgroupoutput = PrepareEditorScript();
@@ -383,7 +383,7 @@
                 $data['gid'] = $gid;
                 $data['esrow'] = $esrow;
                 $data['i'] = 0;
-                $tab_content[0] = $this->load->view('admin/Survey/QuestionGroups/editGroup_view',$data,true);/**"<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n")
+                $tab_content[0] = $this->load->view('admin/survey/QuestionGroups/editGroup_view',$data,true);/**"<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n")
                     . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
                     . "\t</span></div>\n"
                     . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
@@ -403,7 +403,7 @@
                     $data['gid'] = $gid;
                     $data['esrow'] = $esrow;
 
-                    $tab_content[$i] = $this->load->view('admin/Survey/QuestionGroups/editGroup_view',$data,true); /**"<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n"
+                    $tab_content[$i] = $this->load->view('admin/survey/QuestionGroups/editGroup_view',$data,true); /**"<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n"
                         . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
                         . "\t</span></div>\n"
                         . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"

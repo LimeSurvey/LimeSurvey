@@ -2282,7 +2282,7 @@
             $data['surveyid'] = $surveyid;
             $data['blang'] = $blang;
 
-            $this->load->view("admin/DataEntry/caption_view",$data);
+            $this->load->view("admin/dataentry/caption_view",$data);
 
             $this->load->helper('database');
 
@@ -3413,7 +3413,7 @@
                     //$dataentryoutput .= "\t</tr>\n";
                     //$dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
 
-                    $dataentryoutput .= $this->load->view("admin/DataEntry/content_view",$cdata,TRUE);
+                    $dataentryoutput .= $this->load->view("admin/dataentry/content_view",$cdata,TRUE);
                 }
             }
 
@@ -3543,7 +3543,7 @@
 
             */
 
-            $this->load->view("admin/DataEntry/active_html_view",$adata);
+            $this->load->view("admin/dataentry/active_html_view",$adata);
 
         }
 

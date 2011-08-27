@@ -586,7 +586,7 @@
         $data['editfile'] = $editfile;
         $data['screenname'] = $screenname;
 
-        $this->load->view("admin/Templates/templateeditorbar_view",$data);
+        $this->load->view("admin/templates/templateeditorbar_view",$data);
 
     }
 
@@ -610,7 +610,7 @@
         $data['templatename'] = $templatename;
         $data['usertemplaterootdir'] = $this->config->item('usertemplaterootdir');
 
-        $this->load->view("admin/Templates/templatebar_view",$data);
+        $this->load->view("admin/templates/templatebar_view",$data);
 
     }
 
@@ -685,7 +685,7 @@
         $data['otherfiles'] = $otherfiles;
         $data['tempurl'] = $tempurl;
 
-        $this->load->view("admin/Templates/templatesummary_view",$data);
+        $this->load->view("admin/templates/templatesummary_view",$data);
 
     }
 

@@ -387,7 +387,7 @@
             $data['dbprefix'] = $this->db->dbprefix;
             $data['step1'] = true;
             self::_surveybar($surveyid);
-            $this->load->view('admin/Survey/deactivateSurvey_view',$data);
+            $this->load->view('admin/survey/deactivateSurvey_view',$data);
         }
 
         else
@@ -514,7 +514,7 @@
             $data['surveyid'] = $surveyid;
             $data['newtable'] = $newtable;
             self::_surveybar($surveyid);
-            $this->load->view('admin/Survey/deactivateSurvey_view',$data);
+            $this->load->view('admin/survey/deactivateSurvey_view',$data);
 
         }
 
@@ -575,7 +575,7 @@
             $data['failedgroupcheck'] = $failedgroupcheck;
 
 
-            $this->load->view("admin/Survey/activateSurvey_view",$data);
+            $this->load->view("admin/survey/activateSurvey_view",$data);
             //IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
             /**if ((isset($failedcheck) && $failedcheck) || (isset($failedgroupcheck) && $failedgroupcheck))
             {
@@ -887,7 +887,7 @@
     		$listsurveys.="</tbody>";
     		$listsurveys.="</table><br />" ;
             $data['clang'] = $clang;
-            $this->load->view('admin/Survey/listSurveys_view',$data);
+            $this->load->view('admin/survey/listSurveys_view',$data);
 
 
         }
@@ -1015,7 +1015,7 @@
                 rmdirr($this->config->item("uploaddir").'/surveys/'.$surveyid);
 
             }
-            $this->load->view('admin/Survey/deleteSurvey_view',$data);
+            $this->load->view('admin/survey/deleteSurvey_view',$data);
         }
         else {
             //include('access_denied.php');
@@ -1079,7 +1079,7 @@
                 $data['surveyid'] = $surveyid;
                 $data['action'] = "editsurveylocalesettings";
 
-                $tab_content[$i] = $this->load->view('admin/Survey/editLocalSettings_view',$data,true);
+                $tab_content[$i] = $this->load->view('admin/survey/editLocalSettings_view',$data,true);
 
                 /**
                 $tab_content[$i] = "<ul>\n"
@@ -1693,7 +1693,7 @@
             $data['action'] = "newsurvey";
             $data['clang'] = $clang;
             $data['owner'] = $owner;
-            return $this->load->view('admin/Survey/superview/superGeneralNewSurvey_view',$data, true);
+            return $this->load->view('admin/survey/superview/superGeneralNewSurvey_view',$data, true);
     }
 
     /**
@@ -1711,7 +1711,7 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
         $data['surveyid'] = $surveyid;
-        return $this->load->view('admin/Survey/superview/superGeneralEditSurvey_view',$data, true);
+        return $this->load->view('admin/survey/superview/superGeneralEditSurvey_view',$data, true);
     }
 
     /**
@@ -2064,7 +2064,7 @@
         $data['showXquestions'] = $showXquestions;
         $data['showgroupinfo'] = $showgroupinfo;
         $data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/Survey/superview/superPresentation_view',$data, true);
+        return $this->load->view('admin/survey/superview/superPresentation_view',$data, true);
 
     }
 
@@ -2230,7 +2230,7 @@
         $data['expires'] = $expires;
         //$data['showgroupinfo'] = $showgroupinfo;
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/Survey/superview/superPublication_view',$data, true);
+        return $this->load->view('admin/survey/superview/superPublication_view',$data, true);
 
     }
 
@@ -2464,7 +2464,7 @@
         $data['esrow'] = $esrow;
 
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/Survey/superview/superNotification_view',$data, true);
+        return $this->load->view('admin/survey/superview/superNotification_view',$data, true);
 
     }
 
@@ -2507,7 +2507,7 @@
         $data['esrow'] = $esrow;
 
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/Survey/superview/superTokens_view',$data, true);
+        return $this->load->view('admin/survey/superview/superTokens_view',$data, true);
     }
 
     /**
@@ -2541,7 +2541,7 @@
         //$data['esrow'] = $esrow;
 
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/Survey/superview/superImport_view',$data, true);
+        return $this->load->view('admin/survey/superview/superImport_view',$data, true);
     }
 
     /**
@@ -2588,7 +2588,7 @@
         //$data['esrow'] = $esrow;
 
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/Survey/superview/superCopy_view',$data, true);
+        return $this->load->view('admin/survey/superview/superCopy_view',$data, true);
     }
 
 
@@ -2638,7 +2638,7 @@
         $data['disabledIfNoResources'] = $disabledIfNoResources;
         $dqata['sCKEditorURL'] = $sCKEditorURL;
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/Survey/superview/superResourceManagement_view',$data, true);
+        return $this->load->view('admin/survey/superview/superResourceManagement_view',$data, true);
 
     }
 

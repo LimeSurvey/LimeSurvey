@@ -1690,7 +1690,7 @@ class statistics extends Survey_Common_Controller {
 		}	//end if -> show summary results
 		
 		$data['output'] = $statisticsoutput;
-		$this->load->view("admin/Export/statistics_view",$data);
+		$this->load->view("admin/export/statistics_view",$data);
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
 	}

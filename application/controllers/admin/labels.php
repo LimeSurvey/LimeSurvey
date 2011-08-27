@@ -488,7 +488,7 @@
             $labelsoutput .= "</div>";
 
             */
-            $this->load->view('admin/Labels/editlabel_view',$data);
+            $this->load->view('admin/labels/editlabel_view',$data);
 
         }
 
@@ -535,7 +535,7 @@
                     $data['lid'] = $lid;
                     $data['clang'] = $clang;
                     $data['row'] = $result->row_array();
-                    $this->load->view("admin/Labels/labelbar_view",$data);
+                    $this->load->view("admin/labels/labelbar_view",$data);
                 }
                 /**
                 foreach ($result->result_array() as $row)
@@ -804,7 +804,7 @@
         self::_js_admin_includes(base_url().'scripts/admin/labels.js');
 		$data['clang'] = $this->limesurvey_lang;
         $data['labelsets'] = getlabelsets();
-		$this->load->view('admin/Labels/exportmulti_view', $data);
+		$this->load->view('admin/labels/exportmulti_view', $data);
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 	}
 
@@ -819,7 +819,7 @@
         $data['clang'] = $this->limesurvey_lang;
         $data['lid'] = $lid;
         $data['labelsets'] = getlabelsets();
-        $this->load->view("admin/Labels/labelsetsbar_view",$data);
+        $this->load->view("admin/labels/labelsetsbar_view",$data);
 
     }
 

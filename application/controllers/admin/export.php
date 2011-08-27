@@ -47,7 +47,7 @@ class export extends Survey_Common_Controller {
 			self::_getAdminHeader();
 	    	self::_showadminmenu($surveyid);
 	    	self::_surveybar($surveyid);
-	    	$this->load->view("admin/Export/survey_view");
+	    	$this->load->view("admin/export/survey_view");
 	        self::_loadEndScripts();
 	    	self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
@@ -107,7 +107,7 @@ class export extends Survey_Common_Controller {
 	    	self::_showadminmenu($surveyid);
 	    	self::_surveybar($surveyid,$gid);
 	    	self::_questiongroupbar($surveyid,$gid,null,"exportstructureGroup");
-	    	$this->load->view("admin/Export/group_view", array("surveyid" => $surveyid, "gid" => $gid));
+	    	$this->load->view("admin/export/group_view", array("surveyid" => $surveyid, "gid" => $gid));
 	        self::_loadEndScripts();
 	    	self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
@@ -132,7 +132,7 @@ class export extends Survey_Common_Controller {
 	    	self::_showadminmenu($surveyid);
 	    	self::_surveybar($surveyid,$gid);
 	    	self::_questiongroupbar($surveyid,$gid,$qid,"exportstructureGroup");
-	    	$this->load->view("admin/Export/question_view", array("surveyid" => $surveyid, "gid" => $gid, "qid" =>$qid));
+	    	$this->load->view("admin/export/question_view", array("surveyid" => $surveyid, "gid" => $gid, "qid" =>$qid));
 	        self::_loadEndScripts();
 	    	self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
@@ -218,7 +218,7 @@ class export extends Survey_Common_Controller {
 
 			$data['clang'] = $clang;
 			$data['max_datasets'] = $max_datasets;
-			$this->load->view("admin/Export/exportresults_view", $data);
+			$this->load->view("admin/export/exportresults_view", $data);
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		    return;
 		}
@@ -405,7 +405,7 @@ class export extends Survey_Common_Controller {
 			$data['selecthide'] = $selecthide;
 			$data['selectshow'] = $selectshow;
 			$data['spssver'] = $spssver;
-			$this->load->view("admin/Export/spss_view",$data);
+			$this->load->view("admin/export/spss_view",$data);
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
 		} else {
@@ -651,7 +651,7 @@ class export extends Survey_Common_Controller {
 			$data['selecthide'] = $selecthide;
 			$data['selectshow'] = $selectshow;
             $data['filename'] = "survey_".$surveyid."_R_syntax_file.R";
-			$this->load->view("admin/Export/r_view",$data);
+			$this->load->view("admin/export/r_view",$data);
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
 		else
@@ -870,7 +870,7 @@ class export extends Survey_Common_Controller {
 			$data['selectinc'] = $selectinc;
 			$data['selecthide'] = $selecthide;
 			$data['selectshow'] = $selectshow;
-			$this->load->view("admin/Export/vv_view",$data);
+			$this->load->view("admin/export/vv_view",$data);
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
 		elseif (isset($surveyid) && $surveyid)

@@ -363,7 +363,7 @@
             }
             $questionsummary .= "</table>"; */
             
-            $questionsummary .= $this->load->view("admin/Survey/Question/questionbar_view",$data,true);
+            $questionsummary .= $this->load->view("admin/survey/Question/questionbar_view",$data,true);
         } 
         $finaldata['display'] = $questionsummary;
         $this->load->view('survey_view',$finaldata);
@@ -642,7 +642,7 @@
             $data['clang'] = $clang;
             $data['condarray'] = $condarray;
             $data['sumcount4'] = $sumcount4;
-            $groupsummary .= $this->load->view('admin/Survey/QuestionGroups/questiongroupbar_view',$data,true);
+            $groupsummary .= $this->load->view('admin/survey/QuestionGroups/questiongroupbar_view',$data,true);
         }
         $groupsummary .= "\n</table>\n";
         
@@ -790,7 +790,7 @@
         $data['GidNext'] = $GidNext = getGidNext($surveyid, $gid);
         $data['activated'] = $activated;
         
-        $this->load->view("admin/Survey/surveybar",$data);
+        $this->load->view("admin/survey/surveybar",$data);
 		
         
         /**

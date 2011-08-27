@@ -47,11 +47,11 @@ function PrepareEditorScript($load=false)
     if ($load == false)
     {
         
-        return $CI->load->view('admin/Survey/prepareEditorScript_view',$data,true);
+        return $CI->load->view('admin/survey/prepareEditorScript_view',$data,true);
     }
     else
     {
-        $CI->load->view('admin/Survey/prepareEditorScript_view',$data);
+        $CI->load->view('admin/survey/prepareEditorScript_view',$data);
     }
 }
 

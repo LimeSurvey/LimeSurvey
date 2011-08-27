@@ -150,7 +150,7 @@ class Usergroups extends Admin_Controller {
             $crow = $result->row_array();
 
             $data['clang'] = $clang;
-            $this->load->view("admin/UserGroup/mailUserGroup_view",$data);
+            $this->load->view("admin/usergroup/mailUserGroup_view",$data);
         }
 
         self::_loadEndScripts();
@@ -325,7 +325,7 @@ class Usergroups extends Admin_Controller {
             }
             else
             {
-                $this->load->view("admin/UserGroup/addUserGroup_view",$data);
+                $this->load->view("admin/usergroup/addUserGroup_view",$data);
             }
 
 
@@ -412,7 +412,7 @@ class Usergroups extends Admin_Controller {
                 $esrow = $result->row_array();
                 $data['esrow'] = $esrow;
                 $data['ugid'] = $ugid;
-                $this->load->view("admin/UserGroup/editUserGroup_view",$data);
+                $this->load->view("admin/usergroup/editUserGroup_view",$data);
             }
 
 
@@ -593,7 +593,7 @@ class Usergroups extends Admin_Controller {
         $data['ugid'] = $ugid;
 
 
-        $this->load->view('admin/UserGroup/usergroupbar_view',$data);
+        $this->load->view('admin/usergroup/usergroupbar_view',$data);
     }
 
     /**

@@ -135,7 +135,7 @@
             $data['clang'] = $clang;
             $data['surveyid'] = $surveyid;
 
-            $this->load->view('admin/Saved/savedlist_view',$data);
+            $this->load->view('admin/saved/savedlist_view',$data);
         }
     }
 

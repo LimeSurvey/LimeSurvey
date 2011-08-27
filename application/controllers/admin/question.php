@@ -469,7 +469,7 @@
         $surveyinfo = array_map('FlattenText', $surveyinfo);
         $assessmentvisible=($surveyinfo['assessments']=='Y' && $qtypes[$qtype]['assessable']==1);
         $data['assessmentvisible'] = $assessmentvisible;
-        $this->load->view('admin/Survey/Question/answerOptions_view',$data);
+        $this->load->view('admin/survey/Question/answerOptions_view',$data);
 
         /**
         // Insert some Javascript variables
@@ -968,7 +968,7 @@
         $vasummary .= "</div></form>";
         */
 
-        $this->load->view('admin/Survey/Question/subQuestion_view',$data);
+        $this->load->view('admin/survey/Question/subQuestion_view',$data);
     }
 
 
@@ -1374,7 +1374,7 @@
             $editquestion .= questionjavascript($eqrow['type']); */
             $data['qid'] = $qid;
 
-            $this->load->view("admin/Survey/Question/editQuestion_view",$data);
+            $this->load->view("admin/survey/Question/editQuestion_view",$data);
             self::_questionJavascript($eqrow['type']);
 
 
@@ -1471,7 +1471,7 @@
         return $newquestionoutput;
         */
 
-        $this->load->view('admin/Survey/Question/questionJavascript_view',array('type' => $type));
+        $this->load->view('admin/survey/Question/questionJavascript_view',array('type' => $type));
     }
 
 
