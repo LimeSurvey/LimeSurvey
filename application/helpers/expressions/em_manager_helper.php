@@ -300,7 +300,7 @@ class LimeExpressionManager {
 
             $varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
                 . "'jsName':'" . $jsVarName
-                . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES,'UTF-8')
+                . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
 //                . "','shown':'" . $displayValue
 //                . "','question':'" . $question
                 . "','qid':'" . $questionNum
@@ -457,7 +457,7 @@ class LimeExpressionManager {
             }
             $em->RegisterVarnamesUsingMerge($replaceArray);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
         }
-        $result = $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string),(is_null($questionNum) ? 0 : $questionNum), $numRecursionLevels, $whichPrettyPrintIteration);
+        $result = $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string,ENT_QUOTES),(is_null($questionNum) ? 0 : $questionNum), $numRecursionLevels, $whichPrettyPrintIteration);
 
         if ($lem->debugLEM)
         {
@@ -500,7 +500,7 @@ class LimeExpressionManager {
             return true;
         }
         $em = $lem->em;
-        $result = $em->ProcessBooleanExpression(htmlspecialchars_decode($eqn));
+        $result = $em->ProcessBooleanExpression(htmlspecialchars_decode($eqn,ENT_QUOTES));
         $jsVars = $em->GetJSVarsUsed();
         $relevanceVars = implode('|',$em->GetJSVarsUsed());
         $relevanceJS = $lem->em->GetJavaScriptEquivalentOfExpression();
@@ -779,7 +779,7 @@ class LimeExpressionManager {
             foreach ($undeclaredJsVars as $jsVar)
             {
                 // TODO - is different type needed for text?  Or process value to striphtml?
-                $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar . "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES,'UTF-8') . "'/>\n";
+                $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar . "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
             }
         }
         sort($qidList,SORT_NUMERIC);
@@ -910,9 +910,9 @@ EOST;
     static function UnitTestRelevance()
     {
         // Tests:  varName~relevance~inputType~message
+//info~1~expr~{info='Can strings have embedded <tags> like <html>, or even unbalanced "quotes, \'single quoted strings\', or entities without terminal semicolons like &amp and  &lt?'}
         $tests = <<<EOT
 junk~1~text~Enter "junk" here to test XSS - will show below
-info~1~expr~{info='Can strings have embedded <tags> like <html>, or even unbalanced "quotes, \'single quoted strings\', or entities without terminal semicolons like &amp and  &lt?'}
 info2~1~message~Here is a messy string: {info}<br/>Here is the "junk" you entered: {junk}
 name~1~text~What is your name?
 age~1~text~How old are you?
@@ -963,7 +963,7 @@ EOT;
         {
             $testArg = $testArgs[$i];
             $var = $testArg[0];
-            LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1]),$i,$var);
+            LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1],ENT_QUOTES),$i,$var);
             $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
             $jsVarName='java_' . $testArg[0];
