@@ -93,7 +93,7 @@ class Authentication extends Admin_Controller {
 				$data['clang']=$this->limesurvey_lang;
 				
 				parent::_getAdminHeader();
-				$this->load->view('admin/Authentication/error', $data);
+				$this->load->view('admin/authentication/error', $data);
 				parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
 			}
 		}
@@ -124,7 +124,7 @@ class Authentication extends Admin_Controller {
 			$data['clang'] = $this->limesurvey_lang;
 			
 			parent::_getAdminHeader();
-			$this->load->view('admin/Authentication/forgotpassword', $data);
+			$this->load->view('admin/authentication/forgotpassword', $data);
 			parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
 		else
@@ -144,7 +144,7 @@ class Authentication extends Admin_Controller {
 				$data['clang']=$this->limesurvey_lang;
 				
 				parent::_getAdminHeader();
-				$this->load->view('admin/Authentication/error', $data);
+				$this->load->view('admin/authentication/error', $data);
 				parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
 				
             }
@@ -175,7 +175,7 @@ class Authentication extends Admin_Controller {
 					$data['message'] = "<br />".$clang->gT("Username").": {$fields['users_name']}<br />".$clang->gT("Email").": {$emailaddr}<br />
 					<br />".$clang->gT("An email with your login data was sent to you.");
 					parent::_getAdminHeader();
-					$this->load->view('admin/Authentication/message', $data);
+					$this->load->view('admin/authentication/message', $data);
 					parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
                 }
                 else
@@ -184,7 +184,7 @@ class Authentication extends Admin_Controller {
 					$data['clang'] = $clang;
 					$data['message'] = "<br />".str_replace("{EMAIL}", $emailaddr, $tmp) . "<br />";
 					parent::_getAdminHeader();
-					$this->load->view('admin/Authentication/message', $data);
+					$this->load->view('admin/authentication/message', $data);
 					parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
 					
                 }
@@ -227,7 +227,7 @@ class Authentication extends Admin_Controller {
 		}
 		
 		parent::_getAdminHeader();
-		$this->load->view('admin/Authentication/login', $data);
+		$this->load->view('admin/authentication/login', $data);
 		parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
 		
 	}
@@ -265,7 +265,7 @@ class Authentication extends Admin_Controller {
 				$data['clang']=$clang;
 				
 				parent::_getAdminHeader();
-				$this->load->view('admin/Authentication/error', $data);
+				$this->load->view('admin/authentication/error', $data);
 				parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
             }
 
@@ -365,7 +365,7 @@ class Authentication extends Admin_Controller {
 					$data['clang']=$clang;
 					
 					parent::_getAdminHeader();
-					$this->load->view('admin/Authentication/error', $data);
+					$this->load->view('admin/authentication/error', $data);
 					parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
 	            }
             }
