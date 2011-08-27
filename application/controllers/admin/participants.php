@@ -37,8 +37,8 @@ function index()
                   'blacklisted' => $blacklisted
                   );    
     // loads the participant panel and summary view
-    $this->load->view('admin/Participants/participantsPanel_view',$data);
-    $this->load->view('admin/Participants/summary_view',$data);
+    $this->load->view('admin/participants/participantsPanel_view',$data);
+    $this->load->view('admin/participants/summary_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
 /**
@@ -51,8 +51,8 @@ function importCSV()
     self::_getAdminHeader();
     $clang = $this->limesurvey_lang;
     $data = array('clang'=> $clang);
-    $this->load->view('admin/Participants/participantsPanel_view',$data);
-    $this->load->view('admin/Participants/importCSV_view',$data);
+    $this->load->view('admin/participants/participantsPanel_view',$data);
+    $this->load->view('admin/participants/importCSV_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
 /**
@@ -89,8 +89,8 @@ function displayParticipants()
                   'surveynames' =>$surveynames,
                   'clang'=> $clang );
     // loads the participant panel view and display participant view
-    $this->load->view('admin/Participants/participantsPanel_view',$data);
-    $this->load->view('admin/Participants/displayParticipants_view',$data);
+    $this->load->view('admin/participants/participantsPanel_view',$data);
+    $this->load->view('admin/participants/displayParticipants_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
 /**
@@ -103,7 +103,7 @@ function blacklistControl()
     self::_getAdminHeader();
     $clang = $this->limesurvey_lang;
     $data = array('clang'=> $clang);
-    $this->load->view('admin/Participants/participantsPanel_view',$data);
+    $this->load->view('admin/participants/participantsPanel_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
 /**
@@ -117,8 +117,8 @@ function attributeControl()
     $clang = $this->limesurvey_lang;
     $this->load->model('participant_attribute_model');
     $data = array('clang'=> $clang,'result'=>$this->participant_attribute_model->getAttributes());
-    $this->load->view('admin/Participants/participantsPanel_view',$data);
-    $this->load->view('admin/Participants/attributeControl_view',$data);
+    $this->load->view('admin/participants/participantsPanel_view',$data);
+    $this->load->view('admin/participants/attributeControl_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
 /**
@@ -132,8 +132,8 @@ function userControl()
     $clang = $this->limesurvey_lang;
     $data = array('clang'=> $clang,
                   'userideditable'=>$this->config->item("userideditable"));
-    $this->load->view('admin/Participants/participantsPanel_view',$data);
-    $this->load->view('admin/Participants/userControl_view',$data);
+    $this->load->view('admin/participants/participantsPanel_view',$data);
+    $this->load->view('admin/participants/userControl_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
 /**
@@ -146,8 +146,8 @@ function sharePanel()
     self::_getAdminHeader();
     $clang = $this->limesurvey_lang;
     $data = array('clang'=> $clang);
-    $this->load->view('admin/Participants/participantsPanel_view',$data);
-    $this->load->view('admin/Participants/sharePanel_view',$data);
+    $this->load->view('admin/participants/participantsPanel_view',$data);
+    $this->load->view('admin/participants/sharePanel_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
 /**
@@ -523,51 +523,60 @@ function getaddtosurveymsg()
     }
 }
 /**
- * This function is used for getting the id's 
+ * This function is used for getting the id's of participants to be copied to the indivisual survey
+ * @param : $_POST['searchcondition']
+ * @return : echoes the participant id returned using the search id
  */
 function getSearchIDs()
 {
     $this->load->model('participants_model');
-    $searchcondition = basename($this->input->post('searchcondition'));
-    if($searchcondition != 'getParticipants_json')
+    $searchcondition = basename($this->input->post('searchcondition')); // get the search condition from the URL
+    if($searchcondition != 'getParticipants_json') // if there is a search condition present
     {
         $participantid = "";
-        $condition = explode("||",$searchcondition);  
-        
-        if(count($condition)==3)
+        $condition = explode("||",$searchcondition);  // explode the condition to teh array
+        // format for the condition is field||condition||value
+        if(count($condition)==3) // if count is 3 , then it's a single search
         {
             $query = $this->participants_model->getParticipantsSearch($condition,0,0);
         }
-        else
+        else// if count is more than 3 , then it's a multiple search
         {
             $query = $this->participants_model->getParticipantsSearchMultiple($condition,0,0);
         }
-        foreach($query as $key=>$value)
+        foreach($query as $key=>$value) 
         {
-            $participantid  = $participantid.",".$value['participant_id'];
+            $participantid  = $participantid.",".$value['participant_id']; // combine the participant id's in an string
             
         }
-        echo $participantid;
+        echo $participantid; //echo the participant id's
     }
-    else
+    else// if no search condition
     {
-        $participantid = "";
+        $participantid = ""; // initiallise the participant id to blank
         if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
         {
-            $query = $this->participants_model->getParticipantswithoutlimit();
+            $query = $this->participants_model->getParticipantswithoutlimit(); // get all the participant id if it is a super admin
         }
-        else
+        else // get participants on which the user has right on
         {
             $query = $this->participants_model->getParticipantsOwner($this->session->userdata('loginID'));
         }
         
         foreach($query->result_array() as $key=>$value)
         {
-            $participantid  = $participantid.",".$value['participant_id'];
+            $participantid  = $participantid.",".$value['participant_id']; // combine the participant id's in an string
         }
-    echo $participantid;
+    echo $participantid; //echo the participant id's
     }
 }
+/**
+ * This function is responsible for reading the CSV file line by line, check for duplicate participants
+ * invalid participants and invalid attributes and copy them to the central table
+ * This function is also responsible for creation of new attribute and mapping of old attribute to attribute in csv
+ * @param $_POST['searchcondition']
+ * @return summary of the csv upload
+ */
 function exporttocsv()
 {
     $this->load->helper('export');
@@ -577,29 +586,29 @@ function exporttocsv()
     $searchcondition = basename($searchconditionurl);
     if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
     {
-        if($searchcondition != 'getParticipants_json')
+        if($searchcondition != 'getParticipants_json') // If there is a search condition then only does participants are exported
         {
             $condition = explode("||",$searchcondition);  
-            if(count($condition)==3)
+            if(count($condition)==3) // Single search
             {
                 $query = $this-> participants_model->getParticipantsSearch($condition,0,0);
             }
-            else
+            else //combined search
             {
                 $query = $this-> participants_model->getParticipantsSearchMultiple($condition,0,0);
             }
+        } // else all the participants in the central table will be exported since it's superadmin
+        else
+        {
+            $table_name = 'participants';
+            $getquery = $this->db->get($table_name);
+            $query = $getquery->result_array();
         }
-            else
-            {
-                $table_name = 'participants';
-                $getquery = $this->db->get($table_name);
-                $query = $getquery->result_array();
-            }
             
     }
     else
     {
-        $userid = $this->session->userdata('loginID');
+        $userid = $this->session->userdata('loginID'); // else only the 
         $query = $this->participants_model->getParticipantsOwner($userid);
     }
     if(!$query)
@@ -607,16 +616,14 @@ function exporttocsv()
     // Field names in the first row
     $fields = array ('participant_id','firstname','lastname' ,'email' ,'language' ,'blacklisted','owner_uid' );
     $i = 0;
-    $outputarray = array();
+    $outputarray = array();// The array to be passed to the export helper to be written to a csv file
     foreach ($fields as $field)
     {
-        $outputarray[0][$i]=$field;
+        $outputarray[0][$i]=$field;//fields written to output array
         $i++;
     }
     if($this->uri->segment(4) == "null")
     {
-        // Fetching the table data        
-        // Fetching the table data
         $i = 1;
         $j = 0;
         foreach($query as $field => $data)
@@ -1110,8 +1117,8 @@ function viewAttribute()
                   'attributenames' => $attributenames,
                   'clang'=> $clang);
     self::_getAdminHeader();
-    $this->load->view('admin/Participants/participantsPanel_view',$data);
-    $this->load->view('admin/Participants/viewAttribute_view',$data);
+    $this->load->view('admin/participants/participantsPanel_view',$data);
+    $this->load->view('admin/participants/viewAttribute_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
 /*
@@ -1235,8 +1242,8 @@ function attributeMapCSV()
         self::_getAdminHeader();
         $clang = $this->limesurvey_lang;
         $data = array('clang'=> $clang);
-        $this->load->view('admin/Participants/participantsPanel_view',$data);
-        $this->load->view('admin/Participants/uploadSummary_view',$data);
+        $this->load->view('admin/participants/participantsPanel_view',$data);
+        $this->load->view('admin/participants/uploadSummary_view',$data);
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
     else
@@ -1269,7 +1276,7 @@ function attributeMapCSV()
                       'fullfilepath' => $the_full_file_path,
                       'linecount' => $linecount-1
                 );
-        $this->load->view('admin/Participants/attributeMapCSV_view',$data);
+        $this->load->view('admin/participants/attributeMapCSV_view',$data);
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
 }
@@ -1492,15 +1499,15 @@ function uploadCSV()
        $data['invalidattribute']=$invalidattribute;
        $data['mandatory']= $mandatory;
        $data['invalidparticipantid'] = $invalidparticipantid;
-       $this->load->view('admin/Participants/uploadSummary_view',$data);
+       $this->load->view('admin/participants/uploadSummary_view',$data);
 }
 function summaryview()
 {
     self::_getAdminHeader();
     $clang = $this->limesurvey_lang;
     $data = array('clang' => $clang);
-    $this->load->view('admin/Participants/participantsPanel_view',$data);
-    $this->load->view('admin/Participants/uploadSummary_view',$data);
+    $this->load->view('admin/participants/participantsPanel_view',$data);
+    $this->load->view('admin/participants/uploadSummary_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));    
 }
 /*
@@ -1639,7 +1646,7 @@ function attributeMap()
                   'redirect' => $redirect,
                   'participant_id'=>$participant_id,
                   'count' => $count);
-    $this->load->view('admin/Participants/attributeMap_view',$data);
+    $this->load->view('admin/participants/attributeMap_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
 /*
@@ -1682,7 +1689,7 @@ function attributeMapToken()
                   'attribute' => $selectedcentralattribute,
                   'tokenattribute'=>$selectedattribute,
                   'alreadymappedattributename' => $alreadymappedattdisplay );
-    $this->load->view('admin/Participants/attributeMapToken_view',$data);
+    $this->load->view('admin/participants/attributeMapToken_view',$data);
     self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 }
 function mapCSVcancelled()
@@ -1705,14 +1712,14 @@ function blacklistParticipant()
             $result['global'] = 1;
             $result['clang'] = $clang;
             $result['blacklist'] = $blacklist;
-            $this->load->view('admin/Participants/blacklist_view',$result);
+            $this->load->view('admin/participants/blacklist_view',$result);
         }
         else
         {
             $result['is_participant']=0;
             $result['is_updated']=0;
             $result['clang'] = $clang;
-            $this->load->view('admin/Participants/blacklist_view',$result);
+            $this->load->view('admin/participants/blacklist_view',$result);
         }
     }
     else
@@ -1725,14 +1732,14 @@ function blacklistParticipant()
             $result['clang'] = $clang;
             $result['local'] = 1;
             $result['blacklist'] = $blacklist;
-            $this->load->view('admin/Participants/blacklist_view',$result);
+            $this->load->view('admin/participants/blacklist_view',$result);
         }
         else
         {
             $result['is_participant']=0;
             $result['is_updated']=0;
             $result['clang'] = $clang;
-            $this->load->view('admin/Participants/blacklist_view',$result);
+            $this->load->view('admin/participants/blacklist_view',$result);
         }
     }
 }
