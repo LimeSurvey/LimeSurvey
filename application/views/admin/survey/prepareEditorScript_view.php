@@ -28,7 +28,32 @@
     document.getElementsByName(fieldname)[0].className='readonly';
     document.getElementById(controlidena).style.display='none';
     document.getElementById(controliddis).style.display='';
-    popup = window.open('"<?php echo $this->config->item('homeurl'); ?>/htmleditor-popup.php?fieldname='+fieldname+'&fieldtext='+fieldtext+'&fieldtype='+fieldtype+'&action='+action+'&sid='+sid+'&gid='+gid+'&qid='+qid+'&lang="<?php echo $clang->getlangcode(); ?>','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
+    
+    if (fieldname == '')
+    fieldname='0';
+    
+    if (fieldtext == '')
+    fieldtext='0';
+    
+    if (fieldtype == '')
+    fieldtype='0';
+    
+    if (action == '')
+    action='0';
+    
+    if (sid == '')
+    sid='0';
+    
+    if (gid == '')
+    gid='0';
+    
+    if (qid == '')
+    qid='0';
+    
+    
+    
+    popup = window.open('<?php echo site_url('admin/htmleditor_pop/index'); ?>/'+fieldname+'/'+fieldtext+'/'+fieldtype+'/'+action+'/'+sid+'/'+gid+'/'+qid+'/<?php echo $clang->getlangcode(); ?>','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
+    
     editorwindowsHash[fieldname] = popup;
     }
     else
