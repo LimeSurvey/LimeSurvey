@@ -62,7 +62,6 @@ class Installer extends CI_Controller {
             show_error('Installation has been done already.');
             exit();
         }
-
     }
 
 
@@ -113,10 +112,10 @@ class Installer extends CI_Controller {
 
                 //mbstring library check
                 if ( function_exists('mb_convert_encoding') )
-                $aData['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
+                $aData['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" alt=\"Check\" />";
                 else
                 {
-                    $aData['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
+                    $aData['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" alt=\"Check\" />";
                     $bProceed=false;
                 }
 
@@ -221,26 +220,29 @@ class Installer extends CI_Controller {
                 //optional settings check
                 //gd library check
                 $gdArray = gd_info();
+                
+                // FIXME output code belongs into view
+                // FIXME provide array structure instead of variable names
 
                 if ( $gdArray["FreeType Support"] )
-                $aData['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
+                $aData['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" alt=\"Check\" />";
                 else
-                $aData['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
+                $aData['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" alt=\"Check\" />";
                 //ldap library check
                 if ( function_exists('ldap_connect') )
-                $aData['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
+                $aData['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" alt=\"Check\" />";
                 else
-                $aData['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
+                $aData['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" alt=\"Check\" />";
                 //php zip library check
                 if ( function_exists('zip_open') )
-                $aData['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
+                $aData['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" alt=\"Check\" />";
                 else
-                $aData['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
+                $aData['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" alt=\"Check\" />";
                 //zlib php library check
                 if ( function_exists('zlib_get_coding_type') )
-                $aData['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" />";
+                $aData['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" alt=\"Check\" />";
                 else
-                $aData['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" />";
+                $aData['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" alt=\"Check\" />";
 
 
 
