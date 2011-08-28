@@ -62,25 +62,16 @@
 <td align="right">
 
 <select id='surveylang' name='surveylang' style='width:156px;'>
-
 <?php
-			
-			foreach (getlanguagedata(true,true) as $langkey=>$languagekind)
-            {
-				if ($langkey=="en")
-				{
-					?>
-					<option value='<?php echo $langkey; ?>' selected='yes'><?php echo $languagekind['nativedescription']." - ".$languagekind['description']; ?></option>
-					<?php
-				}
-				else
-				{
-                ?>
-                <option value='<?php echo $langkey; ?>'><?php echo $languagekind['nativedescription']." - ".$languagekind['description']; ?></option>
-                <?php
-            }
-				
-            }
+    $langauges = getlanguagedata(true,true);
+    foreach($langauges as $langkey => $languagekind)
+    {
+        $selected = $langkey === 'en';
+        $value = $langkey;
+        $label = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
+        echo '<option value="', htmlspecialchars($langkey), '"', $selected ? ' selected="selected"' : '', ">",
+            $label, '</option>', "\n";
+    }
 ?>
 </select>
 <!--<input type="text" name="surveylang" value="en"/>  -->
@@ -91,15 +82,19 @@
 <td>&nbsp;</td>
 </tr>
 <tr>
-<td colspan="2"> <div class="demo"><table style="font-size:11px; width: 640px; background: #ffffff;">
-<tbody>
-<tr>
-<td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Previous" onclick="javascript: window.open('<?php echo site_url("installer/install/license"); ?>', '_top')" /></td>
-<td align="center" style="width: 227px;"></td>
-<td align="right" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="Next" /></td>
-</tr>
-</tbody>
-</table></td>
+<td colspan="2">
+ <div class="demo">
+  <table style="font-size:11px; width: 640px; background: #ffffff;">
+   <tbody>
+    <tr>
+     <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Previous" onclick="javascript: window.open('<?php echo site_url("installer/install/license"); ?>', '_top')" /></td>
+     <td align="center" style="width: 227px;"></td>
+     <td align="right" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="Next" /></td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+</td>
 </tr>
 </table>
 </fieldset>
