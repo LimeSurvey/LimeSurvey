@@ -15,6 +15,8 @@
 
 /**
  * Installer
+ * 
+ * FIXME output code belongs into view
  *
  * @package LimeSurvey
  * @author Shubham Sachdeva
@@ -63,7 +65,120 @@ class Installer extends CI_Controller {
             exit();
         }
     }
+    
+    /**
+     * check requirements
+     * 
+     * @param array $data return theme variables
+     * @return bool requirements met
+     */
+    private function _check_requirements(&$data)
+    {
+        // proceed variable check if all requirements are true. If any of them is false, proceed is set false.
+        $bProceed = true; //lets be optimistic!
+        
+        /**
+         * check image HTML template
+         * 
+         * @param bool $result
+         */
+        function check_HTML_image($result)
+        {
+            $label = array('wrong', 'right');
+            return sprintf('<img src="%sinstaller/images/tick-%s.png" alt="Check" />', base_url(), $label[$result]);
+        }
 
+        /**
+         * check for a specific PHPFunction, return HTML image
+         * 
+         * @param string $function
+         * @param string $image return
+         * @return bool result
+         */
+        function check_PHPFunction($function, &$image)
+        {
+            $result = function_exists($function);            
+            $image = check_HTML_image($result);
+            return $result;                    
+        }        
+        
+        /**
+         * check if path exists and is writeable, returns via parameters by reference
+         * 
+         * @param string $path
+         * @param string $data to manipulate
+         * @param string $base key for data manipulation
+         * @param string $keyError key for error data
+         * @return bool result of check (that it is writeable which implies existance)
+         */
+        function check_PathWriteable($path, &$data, $base, $keyError)
+        {
+            $result = false;
+            $data[$base.'Present'] = 'Not Found';
+            $data[$base.'Writable'] = '';
+            if (file_exists($path))
+            {
+                $data[$base.'Present'] = 'Found';
+                if (is_writable($path))
+                {
+                    $data[$base.'Writable'] = 'Writable';
+                    $result = true;
+                }
+                else
+                {
+                    $data[$base.'Writable'] = 'Unwritable';
+                }
+            }
+            $result || $data[$keyError] = true;
+
+            return $result;
+        }
+        
+        //  version check
+        if (version_compare(PHP_VERSION, '5.1.6', '<'))
+            $bProceed = !$data['verror'] = true;
+            
+        // mbstring library check
+        if (!check_PHPFunction('mb_convert_encoding', $image))
+            $bProceed = false;
+        $data['mbstringPresent'] = $image;             
+
+        // directory permissions checking
+        
+        // root directory file check
+        if (!check_PathWriteable($this->config->item('rootdir'), $data, 'directory', 'derror') )
+            $bProceed = false;
+        
+        // tmp directory check
+        if (!check_PathWriteable($this->config->item('rootdir').'/tmp/', $data, 'tmpdir', 'terror') )
+            $bProceed = false;
+        
+            
+        // templates directory check
+        if (!check_PathWriteable($this->config->item('rootdir').'/templates/', $data, 'templatedir', 'tperror') )
+            $bProceed = false;
+        
+        //upload directory check
+        if (!check_PathWriteable($this->config->item('rootdir').'/upload/', $data, 'uploaddir', 'uerror') )
+            $bProceed = false;
+        
+        //optional settings check
+        //gd library check
+
+        $data['gdPresent'] = check_HTML_image(array_key_exists('FreeType Support', gd_info()));
+        
+        
+        // ldap library check
+        check_PHPFunction('ldap_connect', $data['ldapPresent']);                
+        
+        // php zip library check
+        check_PHPFunction('zip_open', $data['zipPresent']);
+        
+        // zlib php library check
+        check_PHPFunction('zlib_get_coding_type', $data['zlibPresent']);
+                
+        return $bProceed;
+    }
 
     /**
      * Installer::install()
@@ -99,159 +214,9 @@ class Installer extends CI_Controller {
                 // variable storing next button link.initially null
                 $aData['next']='';
 
-                //proceed variable check if all requirements are true. If any of them is false, proceed is set false.
-                $bProceed = true; //lets be optimistic!
+                $bProceed = $this->_check_requirements($aData);
 
-                //  version check
-                if (version_compare(PHP_VERSION, '5.1.6', '<'))
-                {
-                    $bProceed=false;
-                    $aData['verror'] = true;
-                }
-
-
-                //mbstring library check
-                if ( function_exists('mb_convert_encoding') )
-                $aData['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" alt=\"Check\" />";
-                else
-                {
-                    $aData['mbstringPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" alt=\"Check\" />";
-                    $bProceed=false;
-                }
-
-                //directory permissions checking
-                // root directory file check
-
-                if (file_exists($this->config->item('rootdir')))
-                {
-                    $aData['directoryPresent'] = "Found";
-                    //echo octal_permissions(fileperms($rootdir)) ;
-                    //if( octal_permissions(fileperms($rootdir))>=666 )
-                    if (is_writable($this->config->item('rootdir')))
-                    $aData['directoryWritable'] = "Writable";
-                    else
-                    {
-                        $aData['directoryWritable'] = "Unwritable";
-                        $aData['derror'] = true;
-                        $bProceed=false;
-                    }
-
-                }
-                else
-                {
-                    $aData['directoryPresent'] = "Not Found";
-                    $aData['directoryWritable'] = "";
-                    $aData['derror'] = true;
-                    $bProceed=false;
-                }
-                // tmp directory check
-
-                if (file_exists($this->config->item('rootdir').'/tmp/'))
-                {
-                    $aData['tmpdirPresent'] = "Found";
-                    //echo octal_permissions(fileperms($rootdir."/tmp/"));
-                    //if( octal_permissions(fileperms($rootdir."/tmp/"))>=666 )
-                    if (is_writable($this->config->item('rootdir').'/tmp/'))
-                    $aData['tmpdirWritable'] = "Writable";
-                    else
-                    {
-                        $aData['tmpdirWritable'] = "Unwritable";
-                        $aData['terror'] = true;
-                        $bProceed=false;
-                    }
-
-                }
-                else
-                {
-                    $aData['tmpdirPresent'] = "Not Found";
-                    $aData['tmpdirWritable'] = "";
-                    $aData['terror'] = true;
-                    $bProceed=false;
-                }
-                // templates directory check
-
-                if (file_exists($this->config->item('rootdir').'/templates/'))
-                {
-                    $aData['templatedirPresent'] = "Found";
-                    //echo octal_permissions(fileperms($rootdir."/template/"));
-                    //if( octal_permissions(fileperms($rootdir."/template/"))>=666 )
-                    if (is_writable($this->config->item('rootdir').'/templates/'))
-                    $aData['templatedirWritable'] = "Writable";
-                    else
-                    {
-                        $aData['templatedirWritable'] = "Unwritable";
-                        $aData['tperror'] = true;
-                        $bProceed=false;
-                    }
-
-                }
-                else
-                {
-                    $aData['templatedirPresent'] = "Not Found";
-                    $aData['templatedirWritable'] = "";
-                    $aData['tperror'] = true;
-                    $bProceed=false;
-                }
-                //upload directory check
-
-                if (file_exists($this->config->item('rootdir').'/upload/'))
-                {
-                    $aData['uploaddirPresent'] = "Found";
-                    //echo octal_permissions(fileperms($rootdir."/upload/"));
-                    //if( octal_permissions(fileperms($rootdir."/upload/"))>=666 )
-                    if (is_writable($this->config->item('rootdir').'/upload/'))
-                    $aData['uploaddirWritable'] = "Writable";
-                    else
-                    {
-                        $aData['uploaddirWritable'] = "Unwritable";
-                        $aData['uerror'] = true;
-                        $bProceed=false;
-                    }
-
-                }
-                else
-                {
-                    $aData['uploaddirPresent'] = "Not Found";
-                    $aData['uploaddirWritable'] = "";
-                    $aData['uerror'] = true;
-                    $bProceed=false;
-                }
-
-                //optional settings check
-                //gd library check
-                $gdArray = gd_info();
-                
-                // FIXME output code belongs into view
-                // FIXME provide array structure instead of variable names
-
-                if ( $gdArray["FreeType Support"] )
-                $aData['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" alt=\"Check\" />";
-                else
-                $aData['gdPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" alt=\"Check\" />";
-                //ldap library check
-                if ( function_exists('ldap_connect') )
-                $aData['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" alt=\"Check\" />";
-                else
-                $aData['ldapPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" alt=\"Check\" />";
-                //php zip library check
-                if ( function_exists('zip_open') )
-                $aData['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" alt=\"Check\" />";
-                else
-                $aData['zipPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" alt=\"Check\" />";
-                //zlib php library check
-                if ( function_exists('zlib_get_coding_type') )
-                $aData['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-right.gif\" alt=\"Check\" />";
-                else
-                $aData['zlibPresent'] = "<img src=\"".base_url()."installer/images/tick-wrong.png\" alt=\"Check\" />";
-
-
-
-
-
-
-
-
-                //after all check, if flag value is true, show next button and sabe step2 status.
+                // after all check, if flag value is true, show next button and sabe step2 status.
                 if ($bProceed)
                 {
                     $aData['next']=TRUE;

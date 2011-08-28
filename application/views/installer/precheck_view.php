@@ -33,7 +33,7 @@
 </tr>
 <tr>
 <td style="width: 209px;">mbstring library</td>
-<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.gif" alt="Check" /></td>
+<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.png" alt="Check" /></td>
 <td align="center" style="width: 225px;"><?php echo $mbstringPresent ; ?></td>
 </tr>
 <tr>
@@ -73,22 +73,22 @@
 </tr>
 <tr>
 <td style="width: 209px;">GD library</td>
-<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.gif" alt="Check" /></td>
+<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.png" alt="Check" /></td>
 <td align="center" style="width: 225px;"><?php echo $gdPresent ; ?></td>
 </tr>
 <tr>
 <td style="width: 209px;">LDAP library</td>
-<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.gif" alt="Check" /></td>
+<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.png" alt="Check" /></td>
 <td align="center" style="width: 225px;"><?php echo $ldapPresent ; ?></td>
 </tr>
 <tr>
 <td style="width: 209px;">PHP zip library</td>
-<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.gif" alt="Check" /></td>
+<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.png" alt="Check" /></td>
 <td align="center" style="width: 225px;"><?php echo $zipPresent ; ?></td>
 </tr>
 <tr>
 <td style="width: 209px;">PHP zlib library</td>
-<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.gif" alt="Check" /></td>
+<td align="center" style="width: 225px;"><img src="<?php echo base_url(); ?>installer/images/tick-right.png" alt="Check" /></td>
 <td align="center" style="width: 225px;"><?php echo $zlibPresent ; ?></td>
 </tr>
 
