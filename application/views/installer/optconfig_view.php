@@ -1,5 +1,7 @@
 <?php $this->load->view("installer/header_view",array('progressValue' => $progressValue)); ?>
 
+<form action="<?php echo base_url().'index.php/installer/optional'; ?>" method="post">
+
 <div class="container_6">
 
 <?php $this->load->view('installer/sidebar_view', array(
@@ -21,7 +23,6 @@
 &nbsp;You can leave these settings blank and change them later
 <br />
 
-<form action="<?php echo base_url().'index.php/installer/optional'; ?>" method="post">
 <fieldset class="content-table">
 <legend class="content-table-heading">Optional settings</legend>
 <table style="width: 640px;">
@@ -74,49 +75,36 @@
     }
 ?>
 </select>
-<!--<input type="text" name="surveylang" value="en"/>  -->
 </td>
 </tr>
 <tr>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
-</tr>
-<tr>
-<td colspan="2">
- <div class="demo">
-  <table style="font-size:11px; width: 640px; background: #ffffff;">
-   <tbody>
-    <tr>
-     <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Previous" onclick="javascript: window.open('<?php echo site_url("installer/install/license"); ?>', '_top')" /></td>
-     <td align="center" style="width: 227px;"></td>
-     <td align="right" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="Next" /></td>
-    </tr>
-   </tbody>
-  </table>
- </div>
-</td>
 </tr>
 </table>
 </fieldset>
-</form>
 
 </div>
 </div>
 </div>
-<!--
-<div class="container_5">
+
+<div class="container_6">
 <div class="grid_2">&nbsp;</div>
-<div class="grid_3 demo">
-<br/>
-<table style="width: 570px;">
-<tbody>
-<tr>
-<td align="left" style="width: 190px;"><a href="<?php echo base_url(); ?>index.php/installer/install/license"> Previous </a></td>
-<td align="center" style="width: 190px;"></td>
-<td align="right" style="width: 190px;"><a href="<?php echo base_url(); ?>index.php/installer/install/0"> Next </a></td>
-</tr>
-</tbody>
-</table>
+<div class="grid_4 demo">
+ <br/>
+ <table style="font-size:11px; width: 694px; background: #ffffff;">
+  <tbody>
+   <tr>
+    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Previous" onclick="javascript: window.open('<?php echo site_url("installer/install/1"); ?>', '_top')" /></td>
+    <td align="center" style="width: 227px;"></td>
+    <td align="right" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="Next" /></td>
+   </tr>
+  </tbody>
+ </table>
 </div>
-</div> -->
+</div>
+
+
+
+</form>
 <?php $this->load->view("installer/footer_view"); ?>

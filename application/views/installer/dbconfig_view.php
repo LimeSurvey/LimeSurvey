@@ -1,5 +1,7 @@
 <?php $this->load->view("installer/header_view",array('progressValue' => $progressValue)); ?>
 
+<?php echo form_open('installer/install/1'); ?>
+
 <div class="container_6">
 
 <?php $this->load->view('installer/sidebar_view', array(
@@ -19,7 +21,7 @@
 <br /><b>&nbsp; Note: All fields marked with (*) are required.</b>
 <br />
 
-<?php echo form_open('installer/install/1'); ?>
+
  <fieldset class="content-table">
   <legend class="content-table-heading">Database configuration</legend>
   <table style="width: 672px;">
@@ -83,28 +85,29 @@
     <td>&nbsp;</td>
     <td>&nbsp;</td>
    </tr>
-   <tr>
-    <td colspan="2">
-     <div class="demo">
-      <table style="width: 662px; background: #ffffff;">
-       <tbody>
-        <tr>
-         <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Previous" onclick="javascript: window.open('<?php echo site_url("installer/install/0"); ?>', '_top')" /></td>
-         <td align="center" style="width: 227px;"></td>
-         <td align="right" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" value="Next" /></td>
-        </tr>
-       </tbody>
-      </table>
-     </div>
-    </td>
-   </tr>
   </table>
  </fieldset>
+
+</div>
+</div>
+</div>
+
+<div class="container_6">
+<div class="grid_2">&nbsp;</div>
+<div class="grid_4 demo">
+ <br/>
+ <table style="width: 694px; background: #ffffff;">
+  <tbody>
+   <tr>
+    <td align="left" style="width: 33%;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Previous" onclick="javascript: window.open('<?php echo site_url("installer/install/0"); ?>', '_top')" /></td>
+    <td align="center" style="width: 34%;"></td>
+    <td align="right" style="width: 33%;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="submit" value="Next" /></td>
+   </tr>
+  </tbody>
+ </table>
+</div>
+</div>
+
 </form>
-
-
-</div>
-</div>
-</div>
 
 <?php $this->load->view("installer/footer_view"); ?>

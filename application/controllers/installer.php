@@ -335,8 +335,6 @@ class Installer extends CI_Controller {
 
                         //saving the form data
                         $aStatusdata = array(
-                            //'step2'  => 'TRUE',
-
                             'dbname' => $this->input->post('dbName'),
                             'databasetype' => $this->input->post('dbType'),
                             'dblocation' => $this->input->post('dbLocation'),
@@ -441,10 +439,8 @@ class Installer extends CI_Controller {
 
                             $values['adminoutputText'].= "\t<tr bgcolor='#efefef'><td align='center'>\n"
                             ."<strong>"."Database doesn't exist!"."</strong><br /><br />\n"
-                            ."The database you specified does not exist."."<br />\n"
-                            ."LimeSurvey can attempt to create this database for you."."<br /><br />\n"
-                            ."Your selected database name is:"."<strong>".$this->input->post('dbName')."</strong><br />\n"
-                            ."</center>\n" ;
+                            ."The database you specified does not exist:<br /><br />\n<strong>".$this->input->post('dbName')."</strong><br /><br />\n"
+                            ."LimeSurvey can attempt to create this database for you."."<br /><br />\n";
 
                             $values['adminoutputForm']="<form action='".site_url("installer/createdb")."' method='post'><input type='submit' value='"
                             ."Create Database"."' class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' /></form>";
@@ -461,12 +457,14 @@ class Installer extends CI_Controller {
 
                             $connect->database = $this->input->post('dbName');
                             $connect->Execute("USE DATABASE `".$this->input->post('dbName')."`");
-                            $values['adminoutputText'].= "\t<tr bgcolor='#efefef'><td colspan='2' align='center'>\n";
-                            $values['adminoutputText'].= "<br /><strong><font class='successtitle'>\n";
-                            $values['adminoutputText'].= sprintf('A database named "%s" already exists.',$this->input->post('dbName'))."</font></strong></font><br /><br />\n";
-                            $values['adminoutputText'].= "Do you want to populate that database now by creating the necessary tables?<br /><br />";
-                            $values['adminoutputForm'].= "<form method='post' action='".base_url()."index.php/installer/populatedb/'>";
-                            $values['adminoutputForm'].= "<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='Populate Database'></form>";
+                            $values['adminoutputText'].= "\t<tr bgcolor='#efefef'><td colspan='2' align='center'><br />\n"
+                            ."<font class='successtitle'><strong>\n"
+                            .sprintf('A database named "%s" already exists.',$this->input->post('dbName'))."</strong></font><br /><br />\n"
+                            ."Do you want to populate that database now by creating the necessary tables?<br /><br />";
+
+                            $values['adminoutputForm']= "<form method='post' action='".base_url()."index.php/installer/populatedb/'>"
+                            ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='Populate Database' />"
+                            ."</form>";
                         }
                         elseif (!$dbexistsbutempty)
                         {
@@ -769,12 +767,12 @@ class Installer extends CI_Controller {
                                 );
                 $this->session->set_userdata($aStatusdata);
                 $this->session->set_userdata(array('databaseexist' => TRUE));
-                $values['adminoutputText']="<tr bgcolor='#efefef'><td colspan='2' align='center'> <br />";
-                $values['adminoutputText'] .= "<strong><font class='successtitle'>\n";
-                $values['adminoutputText'] .= "Database has been created.</strong></font><br /><br />\n";
-                $values['adminoutputText'] .= "Please click below to populate the database<br /><br />\n";
-                $values['adminoutputForm'] .= "<form method='post' action='".site_url('installer/populatedb')."'>";
-                $values['adminoutputForm'] .= "<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='Populate Database' ></form>";
+                $values['adminoutputText']="<tr bgcolor='#efefef'><td colspan='2' align='center'> <br />"
+                ."<strong><font class='successtitle'>\n"
+                ."Database has been created.</font></strong><br /><br />\n"
+                ."Please click below to populate the database<br /><br />\n"
+                ."<form method='post' action='".site_url('installer/populatedb')."'>"
+                ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='Populate Database' /></form>";
 
                 $this->session->unset_userdata('databaseDontExist');
             }
