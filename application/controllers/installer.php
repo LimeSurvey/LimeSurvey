@@ -97,11 +97,11 @@ class Installer extends CI_Controller {
          */
         function check_PHPFunction($function, &$image)
         {
-            $result = function_exists($function);            
+            $result = function_exists($function);
             $image = check_HTML_image($result);
-            return $result;                    
-        }        
-        
+            return $result;
+        }
+
         /**
          * check if path exists and is writeable, returns via parameters by reference
          * 
@@ -133,50 +133,47 @@ class Installer extends CI_Controller {
 
             return $result;
         }
-        
+
         //  version check
         if (version_compare(PHP_VERSION, '5.1.6', '<'))
             $bProceed = !$data['verror'] = true;
-            
-        // mbstring library check
-        if (!check_PHPFunction('mb_convert_encoding', $image))
-            $bProceed = false;
-        $data['mbstringPresent'] = $image;             
 
-        // directory permissions checking
-        
+        // mbstring library check
+        if (!check_PHPFunction('mb_convert_encoding', $data['mbstringPresent']))
+            $bProceed = false;
+
+        // ** directory permissions checking **
+
         // root directory file check
         if (!check_PathWriteable($this->config->item('rootdir'), $data, 'directory', 'derror') )
             $bProceed = false;
-        
+
         // tmp directory check
         if (!check_PathWriteable($this->config->item('rootdir').'/tmp/', $data, 'tmpdir', 'terror') )
             $bProceed = false;
-        
-            
+
         // templates directory check
         if (!check_PathWriteable($this->config->item('rootdir').'/templates/', $data, 'templatedir', 'tperror') )
             $bProceed = false;
-        
+
         //upload directory check
         if (!check_PathWriteable($this->config->item('rootdir').'/upload/', $data, 'uploaddir', 'uerror') )
             $bProceed = false;
-        
-        //optional settings check
-        //gd library check
 
+        // ** optional settings check **
+
+        // gd library check
         $data['gdPresent'] = check_HTML_image(array_key_exists('FreeType Support', gd_info()));
-        
-        
+
         // ldap library check
-        check_PHPFunction('ldap_connect', $data['ldapPresent']);                
-        
+        check_PHPFunction('ldap_connect', $data['ldapPresent']);
+
         // php zip library check
         check_PHPFunction('zip_open', $data['zipPresent']);
-        
+
         // zlib php library check
         check_PHPFunction('zlib_get_coding_type', $data['zlibPresent']);
-                
+
         return $bProceed;
     }
 
