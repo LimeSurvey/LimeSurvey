@@ -15,7 +15,7 @@
 
 /**
  * Installer
- * 
+ *
  * FIXME output code belongs into view
  *
  * @package LimeSurvey
@@ -65,10 +65,10 @@ class Installer extends CI_Controller {
             exit();
         }
     }
-    
+
     /**
      * check requirements
-     * 
+     *
      * @param array $data return theme variables
      * @return bool requirements met
      */
@@ -76,10 +76,10 @@ class Installer extends CI_Controller {
     {
         // proceed variable check if all requirements are true. If any of them is false, proceed is set false.
         $bProceed = true; //lets be optimistic!
-        
+
         /**
          * check image HTML template
-         * 
+         *
          * @param bool $result
          */
         function check_HTML_image($result)
@@ -90,7 +90,7 @@ class Installer extends CI_Controller {
 
         /**
          * check for a specific PHPFunction, return HTML image
-         * 
+         *
          * @param string $function
          * @param string $image return
          * @return bool result
@@ -104,7 +104,7 @@ class Installer extends CI_Controller {
 
         /**
          * check if path exists and is writeable, returns via parameters by reference
-         * 
+         *
          * @param string $path
          * @param string $data to manipulate
          * @param string $base key for data manipulation
@@ -273,91 +273,6 @@ class Installer extends CI_Controller {
                     //to establish connection withh different DB.
                     require_once(APPPATH.'third_party/adodb/adodb.inc.php');
                     //lets assume
-
-
-                    //write variables in database.php
-                    //$this->load->helper('file');
-                    /**
-                    $dbvalues = array(
-                                'hostname' => $this->input->post('dbLocation'),
-                                'username' => $this->input->post('dbUser'),
-                                'password' => $this->input->post('dbPwd'),
-                                'database' => $this->input->post('dbName'),
-                                'dbdriver' => $this->input->post('dbType'),
-                                'dbprefix' => $this->input->post('dbPrefix'),
-                                'pconnect' => 'TRUE',
-                                'db_debug' => 'TRUE',
-                                'cache_on' => 'FALSE',
-                                'cachedir' => '',
-                                'char_set' => 'utf8',
-                                'dbcollat' => 'utf8_general_ci',
-                                'swap_pre' => '',
-                                'autoinit' => 'TRUE',
-                                'stricton' => 'FALSE',
-                                'port' => 'default',
-                                'databasetabletype' => 'myISAM'
-
-                    );
-
-                    $dbdata = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); " ."\n"
-                            ."/*"."\n"
-                            ." | -------------------------------------------------------------------"."\n"
-                            ." | DATABASE CONNECTIVITY SETTINGS"."\n"
-                            ." | ------------------------------------------------------------------- "."\n"
-                            ." | This file will contain the settings needed to access your database."."\n"
-                            ." | "."\n"
-                            ." | For complete instructions please consult the 'Database Connection' "."\n"
-                            ." | page of the User Guide. "."\n"
-                            ." | "."\n"
-                            ." | ------------------------------------------------------------------- "."\n"
-                            ." | EXPLANATION OF VARIABLES "."\n"
-                            ." | ------------------------------------------------------------------- "."\n"
-                            ." | "."\n"
-                            ." |	['hostname'] The hostname of your database server. "."\n"
-                            ." |	['username'] The username used to connect to the database "."\n"
-                            ." |	['password'] The password used to connect to the database "."\n"
-                            ." |	['database'] The name of the database you want to connect to "."\n"
-                            ." |	['dbdriver'] The database type. ie: mysql.  Currently supported: "."\n"
-                            ." 				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8 "."\n"
-                            ." |	['dbprefix'] You can add an optional prefix, which will be added "."\n"
-                            ." |				 to the table name when using the  Active Record class "."\n"
-                            ." |	['pconnect'] TRUE/FALSE - Whether to use a persistent connection "."\n"
-                            ." |	['db_debug'] TRUE/FALSE - Whether database errors should be displayed. "."\n"
-                            ." |	['cache_on'] TRUE/FALSE - Enables/disables query caching "."\n"
-                            ." |	['cachedir'] The path to the folder where cache files should be stored "."\n"
-                            ." |	['char_set'] The character set used in communicating with the database "."\n"
-                            ." |	['dbcollat'] The character collation used in communicating with the database "."\n"
-                            ." |	['swap_pre'] A default table prefix that should be swapped with the dbprefix "."\n"
-                            ." |	['autoinit'] Whether or not to automatically initialize the database. "."\n"
-                            ." |	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections "."\n"
-                            ." |							- good for ensuring strict SQL while developing "."\n"
-                            ." | "."\n"
-                            .' | The $active_group'." variable lets you choose which connection group to "."\n"
-                            ." | make active.  By default there is only one group (the 'default' group). "."\n"
-                            ." | "."\n"
-                            .' | The $active_record'." variables lets you determine whether or not to load "."\n"
-                            ." | the active record class "."\n" */
-                          //  ." */ "."\n"
-                           /** ." "."\n"
-                            .'$active_group = \'default\'; '."\n"
-                            .'$active_record = TRUE; '."\n"
-                            ." "."\n" ;
-                    foreach ($dbvalues as $key=>$value)
-                    {
-                        if ($value == 'FALSE' || $value == 'TRUE')
-                        {
-                            $dbdata .= '$db[\'default\'][\'' . $key . '\'] = '. $value.';'."\n" ;
-                        }
-                        else
-                        {
-                            $dbdata .= '$db[\'default\'][\'' . $key . '\'] = \''. $value.'\';'."\n" ;
-                        }
-
-                    }
-                    $dbdata .= '$config[\'dbdriver\'] = $db[\'default\'][\'dbdriver\']; ' . "\n" . "\n" */
-                    //       . "/* End of file database.php */ ". "\n"
-                    //        . "/* Location: ./application/config/database.php */ ";
-
                     $_POST = $this->input->post();
                     $sDatabasePort='default';
                     $sAdodbType=$_POST['dbType'];
@@ -503,21 +418,6 @@ class Installer extends CI_Controller {
                             @$connect->Execute('SET QUOTED_IDENTIFIER ON;');     //Checked
                         }
 
-                        /**
-                        //writing config.php
-                        //checking just in case
-                        if (is_writable($rootdir))
-                        {
-                            $aData = '<?php $databasetype = \''.$_POST['dbType'].'\'; $databaselocation = \''.$_POST['dbLocation'].'\'; $databasename = \''.$_POST['dbName'].'\'; $databaseuser = \''.$_POST['dbUser'].'\'; $databasepass = \''.$_POST['dbPwd'].'\'; $dbprefix = \''.$_POST['dbPrefix'].'\'; $rootdir = dirname(__FILE__); $rooturl = "http://{$_SERVER[\'HTTP_HOST\']}/limesurvey" ; $defaultuser = \'admin\' ; $defaultpass = \'password\' ; $debug = 0; ?>';
-                            write_file('../config.php',$aData,"w+");
-                        }
-                        else
-                        {
-                            header( "refresh:5;url=$rootdir/installation/index.php/installer/install/0" );
-                            echo "<b>directory not writable</b><br/>";
-                            echo 'You\'ll be redirected in about 5 secs. If not, click <a href="$rootdir/installation/index.php/installer/install/0">here</a>.';
-                        }
-                        */
                         //$aData array won't work here. changing the name
                         $values['title']="Database settings";
                         $values['descp']="Database settings";
@@ -620,80 +520,6 @@ class Installer extends CI_Controller {
             }
 
         }
-
-    }
-
-    /**
-     * Installer::deletefiles()
-     * delete installer files at end of installation.
-     * @return
-     */
-    function deletefiles()
-    {
-        $status=$this->session->userdata('deletedirectories');
-        if(!$status) {
-            redirect(site_url('installer/install/license'));
-        }
-        $this->load->helper('file');
-        $text = '';
-        /**
-        if (is_writable($this->config->item('rootdir').'/installer'))
-        {
-            delete_files($this->config->item('rootdir').'/installer/', TRUE);
-            //show_error("Installation Directory(\"".$this->config->item('rootdir')."/installer\") is present. Remove/Rename it to proceed further.");
-            //exit();
-        }
-        else
-        {
-            $text = "Couldn't delete Installation Directory(".$this->config->item('rootdir')."/installer) ";
-        }
-
-        if (is_writable(APPPATH . 'controllers/installer.php'))
-        {
-            delete_files(APPPATH . 'controllers/installer.php');
-            //show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
-            //exit();
-        }
-        else
-        {
-            if ($text != '')
-            {
-                $text .= ", script of installation(".APPPATH . "controllers/installer.php) ";
-            }
-            else
-            {
-                $text = "Couldn't delete script of installation(".APPPATH . "controllers/installer.php) ";
-            }
-        }
-
-        if (is_writable(APPPATH . 'views/installer'))
-        {
-            delete_files(APPPATH . 'views/installer', TRUE);
-            //show_error("Script of installation (\"".APPPATH . "controllers/installer.php\") is present. Remove/Rename it to proceed further.");
-            //exit();
-        }
-        else
-        {
-            if ($text != '')
-            {
-                $text .= "and installer views(".APPPATH . "views/installer) .";
-            }
-            else
-            {
-                $text = "Couldn't delete installer views(".APPPATH . "views/installer) .";
-            }
-        }
-        */
-
-        header('refresh:5;url='.site_url("installer/install/0"));
-        /**
-        if ($text != '')
-        {
-           echo "<b>".$text."</b><br/>You can remove them manually later on. <br/>";
-        }
-        */
-
-        echo 'You\'ll be redirected in about 5 secs. If not, click '.anchor("admin","here").'.';
 
     }
 
