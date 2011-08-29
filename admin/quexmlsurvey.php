@@ -88,9 +88,11 @@ header('Content-Type: application/zip');
 header('Content-Transfer-Encoding: binary');
 header('Content-Disposition: attachment; filename="quexmlpdf_' . $qid . '_' . $surveyprintlang . '.zip"'); 
 $len = filesize($zipfile);
-header("Content-Length: $len;\n");
+header("Content-Length: $len");
 header("Pragma: public");
 // load the file to send:
+ob_clean();
+flush();
 readfile($zipfile);
 unlink($zipfile);
 
