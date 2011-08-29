@@ -87,7 +87,6 @@ Changes from 1.91+ (build 10746) to 1.91+ (build 10859)
 -Fixed issue #5402: Actually hide questions in Printable Survey if they have attribute 'hidden' - patch kindly provided by ronvdburg (c_schmitz)
 -Fixed issue #5403: Actually hide questions in Print Answers if they have attribute 'hidden' - patch kindly provided by ronvdburg (c_schmitz)
 -Fixed issue #5411: Quick translation does not work if contents contains double quotes (c_schmitz)
--Fixed issue #5425: Remove obsolete library code for tabpane (Fix of previous commit) (mot3)
 -Fixed issue #5425: Remove obsolete library code for tabpane (mot3)
 
 Changes from 1.91+ (build 10695) to 1.91+ (build 10746)

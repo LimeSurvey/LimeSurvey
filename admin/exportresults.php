@@ -1102,7 +1102,33 @@ if ($type=='xls')
 }
 else if($type=='pdf')
 {
-    $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","D");
+
+    if (preg_match("/MSIE/i", $_SERVER["HTTP_USER_AGENT"]))
+    {
+        /*
+         *  $dateiname = $InternalReferenceNumber.'.pdf';
+         $pdf->Output($dateiname, 'F');
+         header('Content-type: application/pdf');
+         header('Content-Disposition: attachment; filename="'.basename($dateiname).'"');
+         readfile($dateiname);
+         */
+
+        header("Content-type: application/pdf");
+        header("Content-Transfer-Encoding: binary");
+
+
+        header("Content-Disposition: Attachment; filename=\"". $sExportFileName ."-".$surveyid.".pdf\"");
+
+        $pdf->Output($tempdir.'/'.$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
+        header("Content-Length: ". filesize($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf"));
+        readfile($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf");
+        unlink($tempdir.'/'.$sExportFileName."-".$surveyid.".pdf");
+
+    }
+    else
+    {
+            $pdf->Output($clang->gT($surveyname)."-".$surveyid.".pdf","D");
+    }
 }
 else
 {
