@@ -1072,7 +1072,7 @@ class Database extends Admin_Controller {
 
 
                 $insertarray=array( 'sid'=>$surveyid,
-                                    'owner_id'=>$this->session->userdata['loginID'],
+                                    'owner_id'=>$this->session->userdata('loginID'),
                                     'admin'=>$this->input->post('admin'),
                                     'active'=>'N',
                                     'expires'=>$expires,
