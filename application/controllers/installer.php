@@ -549,6 +549,9 @@ class Installer extends CI_Controller {
             $siteadminemail = $this->input->post('adminEmail');
 
             //if any of the field was left blank, replace it with default.
+            //FIXME doing the following leads to a problem. this action could make use of the
+            //      form helper like the database step (@see install())
+            //      problem: two empty passwords are accepted.
             if ($defaultuser=='')
             $defaultuser  = "admin";
             if ($defaultpass=='')
