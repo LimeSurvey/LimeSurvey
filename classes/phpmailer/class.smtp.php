@@ -341,6 +341,10 @@ class SMTP {
             echo "SMTP -> FROM SERVER:" . $rply . $this->CRLF . '<br />';
         }
 
+        if($code == 250) {
+            $rply = $this->get_lines();
+            $code = substr($rply,0,3);
+        }
         if($code != 354) {
             $this->error =
             array("error" => "DATA command not accepted from server",
