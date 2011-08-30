@@ -18,7 +18,7 @@ and open the template in the editor.
         </style>
         <title>ExpressionManager:  Unit Test Core Evaluator</title>
     </head>
-    <body>
+    <body onload="recompute()">
 <script type="text/javascript" src="<?php echo base_url() . '/scripts/admin/expressions/em_javascript.js'; ?>"></script>
         <?php
             ExpressionManager::UnitTestEvaluator();

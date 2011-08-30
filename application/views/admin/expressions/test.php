@@ -12,6 +12,10 @@ and open the template in the editor.
         <table border="1">
             <tr><th>Test</th><th>Description</th></tr>
             <tr>
+                <td><a href="<?php echo site_url("admin/expressions/test/functions");?>">Available Functions</a></td>
+                <td>Show the list of functions available within Expression Manager.</td>
+            </tr>
+            <tr>
                 <td><a href="<?php echo site_url("admin/expressions/test/tokenizer");?>">Tokenizer</a></td>
                 <td>Demonstrates that ExpressionManager properly detects and categorizes tokens (e.g. variables, string, functions, operators)</td>
             </tr>
