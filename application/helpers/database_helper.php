@@ -2,26 +2,7 @@
 
 $CI =& get_instance();
 
-// Number fetch mode not supported by CI.
-/**
-function &db_execute_num($sql,$inputarr=false)
-{
-    global $connect;
 
-    $connect->SetFetchMode(ADODB_FETCH_NUM);
-    $dataset=$connect->Execute($sql,$inputarr);  //Checked
-    return $dataset;
-}
-
-function &db_select_limit_num($sql,$numrows=-1,$offset=-1,$inputarr=false)
-{
-    global $connect;
-
-    $connect->SetFetchMode(ADODB_FETCH_NUM);
-    $dataset=$connect->SelectLimit($sql,$numrows,$offset,$inputarr=false) or safe_die($sql);
-    return $dataset;
-}
-*/
 function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
     //global $connect;
