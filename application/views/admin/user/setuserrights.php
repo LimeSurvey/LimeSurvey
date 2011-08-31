@@ -1,5 +1,5 @@
 <form method='post' action='<?php echo site_url("admin/user/userrights");?>'>
-	
+
 <table width='100%' border='0'>
 <tr>
 <td colspan='8' class='header ui-widget-header' align='center'>
@@ -10,20 +10,20 @@
 <?php // HERE WE LIST FOR USER RIGHTS YOU CAN SET TO a USER
 // YOU CAN ONLY SET AT MOST THE RIGHTS YOU have yourself
 $userlist = getuserlist();
-foreach ($userlist as $usr) { 
+foreach ($userlist as $usr) {
     if ($usr['uid'] == $postuserid) {
-        $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, participant_panel,manage_template, manage_label FROM ".$this->db->dbprefix("users")." WHERE uid=".$this->session->userdata['loginID'];	//		added by Dennis
+        $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, participant_panel,manage_template, manage_label FROM ".$this->db->dbprefix("users")." WHERE uid=".$this->session->userdata('loginID');	//		added by Dennis
         $sresult = db_select_limit_assoc($squery); //Checked
         $parent = $sresult->row_array();
-        
+
         // Initial SuperAdmin has parent_id == 0
         $adminquery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE parent_id=0";
         $adminresult = db_select_limit_assoc($adminquery, 1);
         $row=$adminresult->row_array();
 		?>
-		
+
         <tr>
-         
+
         <?php // Only Initial SuperAdmin can give SuperAdmin rights
         if($row['uid'] == $this->session->userdata('loginID'))
         { // RENAMED AS SUPERADMIN
@@ -53,7 +53,7 @@ foreach ($userlist as $usr) {
         </tr>
         <tr>
 
-        <?php  
+        <?php
         //// Only Initial SuperAdmmin can give SuperAdmin right
         if($row['uid'] ==  $this->session->userdata('loginID')) {
             echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"superadmin\" id=\"superadmin\" value=\"superadmin\"";
