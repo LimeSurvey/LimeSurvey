@@ -14,14 +14,14 @@
  */
 
 /**
- * Exception Handler as a Hook 
- * 
+ * Exception Handler as a Hook
+ *
  * @author mot
  */
 class ExceptionHook
 {
     private $previousHandler;
-    
+
     public function SetExceptionHandler()
     {
         $this->previousHandler = set_exception_handler(array($this, 'ExceptionHandler'));
@@ -32,17 +32,17 @@ class ExceptionHook
         $class = get_class($exception);
         $message = $exception->getMessage();
         $file = $exception->getFile();
-        $line = $exception->getLine();      
-                
-        $error = sprintf("Uncaught exception '%s' with message '%s'", $class, $message);        
-        
+        $line = $exception->getLine();
+
+        $error = sprintf("Uncaught exception '%s' with message '%s'", $class, $message);
+
         // give CI a chance to handle the error (display message, logging)
         _exception_handler(E_ERROR, $error, $file, $line);
-        
+
         // bubble up if necessary
         if ($this->previousHandler)
             $this->previousHandler($exception);
-        
+
         // let PHP handle the rest.
         throw $exception;
     }
