@@ -637,7 +637,7 @@ class Installer extends CI_Controller {
                     $this->session->set_userdata('deletedirectories' , TRUE);
                     $newdata = array();
                     //DELETE SAMPLE INSTALLER FILE. If we can't, notify user of the same.
-                    $installer_file = $this->config->item('rootdir').DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'sample_installer_file.txt';
+                    $installer_file = $this->config->item('rootdir').'/tmp/sample_installer_file.txt';
                     if (is_writable($installer_file))
                     {
                         rename($installer_file, $installer_file.'.removed');
