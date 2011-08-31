@@ -18,7 +18,7 @@
 <div style="-moz-border-radius:15px; border-radius:15px;" >
 <p>&nbsp;<?php echo $descp; ?></p>
 <hr />
-<iframe src="<?php echo base_url(); ?>LICENSE.php" style="height: 268px; width: 694px; border-width: 0px;"> </iframe>
+<iframe src="<?php echo base_url(); ?>COPYING" style="height: 268px; width: 694px; border-width: 0px;"> </iframe>
 
 <br /><br />
 </div>
