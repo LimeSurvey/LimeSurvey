@@ -522,15 +522,30 @@ if ( ! function_exists('url_title'))
  * For very fine grained control over headers, you could use the Output
  * Library's set_header() function.
  *
+ * This function shuts the script down, so returns nothing at all.
+ *
  * @access	public
  * @param	string	the URL
  * @param	string	the method: location or redirect
- * @return	string
  */
 if ( ! function_exists('redirect'))
 {
-	function redirect($uri = '', $method = 'location', $http_response_code = 302)
+	function redirect($uri = '', $method = 'location', $http_response_code = NULL)
 	{
+
+		if (NULL === $http_response_code)
+		{
+			$is_http11_post =
+			(
+				isset ($_SERVER['REQUEST_METHOD'])
+				&& 'POST' === $_SERVER['REQUEST_METHOD']
+				&& isset ($_SERVER['SERVER_PROTOCOL'])
+				&& 'HTTP/1.1' === $_SERVER['SERVER_PROTOCOL']
+			);
+
+			$http_response_code = $is_http11_post ? 303 : 302;
+		}
+
 		if ( ! preg_match('#^https?://#i', $uri))
 		{
 			$uri = site_url($uri);
