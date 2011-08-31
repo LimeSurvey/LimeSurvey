@@ -103,23 +103,23 @@ class Installer extends CI_Controller {
         }
 
         /**
-         * check if path exists and is writeable, returns via parameters by reference
+         * check if directory exists and is writeable, returns via parameters by reference
          *
-         * @param string $path
+         * @param string $directory to check
          * @param string $data to manipulate
          * @param string $base key for data manipulation
          * @param string $keyError key for error data
          * @return bool result of check (that it is writeable which implies existance)
          */
-        function check_PathWriteable($path, &$data, $base, $keyError)
+        function check_PathWriteable($directory, &$data, $base, $keyError)
         {
             $result = false;
             $data[$base.'Present'] = 'Not Found';
             $data[$base.'Writable'] = '';
-            if (file_exists($path))
+            if (is_dir($directory))
             {
                 $data[$base.'Present'] = 'Found';
-                if (is_writable($path))
+                if (is_writable($directory))
                 {
                     $data[$base.'Writable'] = 'Writable';
                     $result = true;
