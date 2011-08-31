@@ -62,3 +62,9 @@
     
 }
 
+hr {
+    background: none repeat scroll 0 0 #D2E0F2;
+    border: 0 none;
+    height: 1px;
+    width: 95%;
+}
