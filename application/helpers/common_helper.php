@@ -4983,32 +4983,6 @@ function killSession()  //added by Dennis
 {
 	global $CI;
 	$CI->session->sess_destroy();
-
-    // making dummy session variable check to destroy session completely!
-    if($CI->session->userdata('loginID'))
-    $CI->session->unset_userdata('loginID');
-
-	//This is necessary for frontend:
-
-    // Delete the Session Cookie
-    $CookieInfo = session_get_cookie_params();
-    if ( (empty($CookieInfo['domain'])) && (empty($CookieInfo['secure'])) ) {
-        setcookie(session_name(), '', time()-3600, $CookieInfo['path']);
-    } elseif (empty($CookieInfo['secure'])) {
-        setcookie(session_name(), '', time()-3600, $CookieInfo['path'], $CookieInfo['domain']);
-    } else {
-        setcookie(session_name(), '', time()-3600, $CookieInfo['path'], $CookieInfo['domain'], $CookieInfo['secure']);
-    }
-    unset($_COOKIE[session_name()]);
-    $_SESSION = $CI->session->userdata;
-    foreach ($_SESSION as $key =>$value)
-    {
-        //echo $key." = ".$value."<br />";
-        unset($_SESSION[$key]);
-    }
-    $_SESSION = array(); // redundant with previous lines
-    session_unset();
-    @session_destroy();
 }
 
 function CSVEscape($str)

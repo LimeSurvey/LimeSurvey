@@ -1032,6 +1032,15 @@ class CI_Loader {
 			}
 		}
 
+		// Autoload drivers
+		if (isset($autoload['drivers']))
+		{
+			foreach ($autoload['drivers'] as $item)
+			{
+				$this->driver($item);
+			}
+		}
+
 		// Autoload models
 		if (isset($autoload['model']))
 		{

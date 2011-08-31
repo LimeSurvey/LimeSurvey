@@ -52,7 +52,7 @@ $autoload['packages'] = array(APPPATH.'third_party');
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('session');
+$autoload['libraries'] = array();
 
 
 /*
@@ -97,6 +97,19 @@ $autoload['config'] = array('version', 'lsconfig', 'email');
 */
 
 $autoload['language'] = array();
+
+
+/*
+| -------------------------------------------------------------------
+|  Auto-load Drivers
+| -------------------------------------------------------------------
+| Prototype:
+|
+|	$autoload['model'] = array('driver1', 'driver2');
+|
+*/
+
+$autoload['drivers'] = array('session');
 
 
 /*

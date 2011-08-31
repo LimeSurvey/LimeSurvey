@@ -245,7 +245,9 @@ $config['encryption_key'] = '6990f870a883f574408c9634f3dd1d49';
 | 'sess_time_to_update'		= how many seconds between CI refreshing Session Information
 |
 */
-$config['sess_cookie_name']		= 'ci_session';
+// NOTE: limesurvey uses PHP native sessions and handles cookie names by that
+//       commented by intend.
+// $config['sess_cookie_name']		= 'ci_session';
 $config['sess_expiration']		= 3600;
 $config['sess_expire_on_close']	= FALSE;
 $config['sess_encrypt_cookie']	= TRUE; // was FALSE earlier
