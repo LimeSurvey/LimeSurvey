@@ -496,7 +496,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'browse')
     {
-        if(bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read'))
+        if(bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read') || bHasSurveyPermission($surveyid,'responses','export'))
         {
             include('browse.php');
         }

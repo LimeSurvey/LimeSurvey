@@ -432,7 +432,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         $surveysummary .= "<li><a href='#'><img src='{$imageurl}/responses.png' name='Responses' alt='".$clang->gT("Responses")."' /></a><ul>\n";
 
         //browse responses menu item
-        if (bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read'))
+        if (bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read') || bHasSurveyPermission($surveyid,'responses','export'))
         {
             if ($activated == "Y")
             {
