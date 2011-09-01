@@ -39,7 +39,6 @@ class update extends Admin_Controller {
 
         $this->load->library('Limesurvey_lang',array("langcode"=>$this->session->userdata("adminlang")));
 		
-        session_start();
 	}
 
 	/**
