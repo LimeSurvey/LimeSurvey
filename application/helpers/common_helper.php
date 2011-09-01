@@ -512,8 +512,14 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
         //        WHERE sid={$iSID} AND uid = {$iUID}
         //        and permission=".db_quoteall($sPermission); //Getting rights for this survey
         $bPermission = $query->row_array(); //$connect->GetOne($sSQL);
-        if ($bPermission==0 || is_null($bPermission)) $bPermission=false;
-        if ($bPermission==1) $bPermission=true;
+        if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
+        {
+            $bPermission=false;
+        }
+        else
+        {
+            $bPermission=true;
+        }
         $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]=$bPermission;
     }
 	    $CI->config->set_item("aSurveyPermissionCache", $aSurveyPermissionCache);

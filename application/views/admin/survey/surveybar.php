@@ -150,7 +150,7 @@
 		   		</ul></li>
 		   		<li><a href='#'><img src='<?php echo $imageurl;?>/responses.png' name='Responses' alt='<?php echo $clang->gT("Responses");?>' /></a><ul>
 		   		<?php if($respstatsread) {
-		   			if($canactivate) { ?>
+		   			if($activated) { ?>
 		            <li><a href='<?php echo site_url("admin/browse/$surveyid/");?>' >
 		            <img src='<?php echo $imageurl;?>/browse_30.png' name='BrowseSurveyResults' /> <?php echo $clang->gT("Responses & statistics");?></a></li>
 		        <?php } else { ?>
@@ -159,7 +159,7 @@
 		   		<?php }
 				} ?>
 		   		<?php if($responsescreate) {
-		   			if($canactivate) { ?>
+		   			if($activated) { ?>
 		            <li><a href='<?php echo site_url("admin/dataentry/view/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/dataentry_30.png' /> <?php echo $clang->gT("Data entry screen");?></a></li>
 		        <?php } else { ?>
@@ -168,7 +168,7 @@
 		   		<?php }
 				} ?>
 				<?php if($responsesread) {
-		   			if($canactivate) { ?>
+		   			if($activated) { ?>
 		            <li><a href='<?php echo site_url("admin/saved/view/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/saved_30.png' name='BrowseSaved' /> <?php echo $clang->gT("Partial (saved) responses");?></a></li>
 		        <?php } else { ?>
@@ -192,38 +192,38 @@
 
          <?php echo $groups; ?>
              </select>
+
+            <span class='arrow-wrapper'>
+            <?php if ($GidPrev != "")
+            { ?>
+                <a href='<?php echo site_url("admin/survey/view/$surveyid/$GidPrev"); ?>'>
+                <img src='<?php echo $this->config->item('imageurl'); ?>/previous_20.png' title='' alt='<?php echo $clang->gT("Previous question group"); ?>'
+                name='questiongroupprevious' /> </a>
+            <?php }
+            else
+            { ?>
+
+                <img src='<?php echo $this->config->item('imageurl'); ?>/previous_disabled_20.png' title='' alt='<?php echo $clang->gT("No previous question group"); ?>'
+                name='noquestiongroupprevious' />
+            <?php }
+
+
+            if ($GidNext != "")
+            { ?>
+
+
+                <a href='<?php echo site_url("admin/survey/view/$surveyid/$GidNext"); ?>'>
+                <img src='<?php echo $this->config->item('imageurl'); ?>/next_20.png' title='' alt='<?php echo $clang->gT("Next question group"); ?>'
+                name='questiongroupnext' /> </a>
+            <?php }
+            else
+            { ?>
+
+                <img src='<?php echo $this->config->item('imageurl'); ?>/next_disabled_20.png' title='' alt='<?php echo $clang->gT("No next question group"); ?>'
+                name='noquestiongroupnext' />
+            <?php } ?>
+		     </span>
         <?php } ?>
-
-        <span class='arrow-wrapper'>
-        <?php if ($GidPrev != "")
-        { ?>
-            <a href='<?php echo site_url("admin/survey/view/$surveyid/$GidPrev"); ?>'>
-            <img src='<?php echo $this->config->item('imageurl'); ?>/previous_20.png' title='' alt='<?php echo $clang->gT("Previous question group"); ?>'
-            name='questiongroupprevious' /> </a>
-        <?php }
-        else
-        { ?>
-
-            <img src='<?php echo $this->config->item('imageurl'); ?>/previous_disabled_20.png' title='' alt='<?php echo $clang->gT("No previous question group"); ?>'
-            name='noquestiongroupprevious' />
-        <?php }
-
-
-        if ($GidNext != "")
-        { ?>
-
-
-            <a href='<?php echo site_url("admin/survey/view/$surveyid/$GidNext"); ?>'>
-            <img src='<?php echo $this->config->item('imageurl'); ?>/next_20.png' title='' alt='<?php echo $clang->gT("Next question group"); ?>'
-            name='questiongroupnext' /> </a>
-        <?php }
-        else
-        { ?>
-
-            <img src='<?php echo $this->config->item('imageurl'); ?>/next_disabled_20.png' title='' alt='<?php echo $clang->gT("No next question group"); ?>'
-            name='noquestiongroupnext' />
-        <?php } ?>
-		 </span>
 
 
 
