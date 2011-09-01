@@ -17,8 +17,8 @@ class LS_Controller extends CI_Controller {
     function __construct()
     {
         parent::__construct();
-        self::_checkinstallation();
-        self::_init();
+        $this->_checkinstallation();
+        $this->_init();
     }
 
     /**
@@ -26,7 +26,7 @@ class LS_Controller extends CI_Controller {
      *
      * Will exit the script if not.
      */
-    function _checkinstallation()
+    private function _checkinstallation()
     {
         $file_name = '/tmp/sample_installer_file.txt';
         $installer_file = $this->config->item('rootdir').$file_name;
@@ -39,7 +39,7 @@ class LS_Controller extends CI_Controller {
         }
     }
 
-	function _init()
+	private function _init()
 	{
 
         $this->load->helper("common");
