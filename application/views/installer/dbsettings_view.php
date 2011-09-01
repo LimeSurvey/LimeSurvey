@@ -24,13 +24,14 @@
             <strong>LimeSurvey Setup</strong></font>
         </td>
     </tr>
-<?php if (isset($adminoutputText))echo $adminoutputText; ?>
+<?php if (isset($adminoutputText)) echo $adminoutputText; ?>
         </td>
     </tr>
 </table><br />
 </div>
 </div>
 </div>
+<div class="clear"></div>
 <div class="container_6">
 <div class="grid_2">&nbsp;</div>
 <div class="grid_4 demo">

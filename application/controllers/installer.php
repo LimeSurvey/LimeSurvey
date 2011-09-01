@@ -765,17 +765,16 @@ class Installer extends CI_Controller {
                 $connect->database = $dbname;
                 $connect->Execute("USE DATABASE `$dbname`");
                 $aStatusdata = array(
-                                'populatedatabase'  => 'TRUE'
-
-                                );
+                    'populatedatabase'  => 'TRUE',
+                    'databaseexist' => TRUE
+                );
                 $this->session->set_userdata($aStatusdata);
-                $this->session->set_userdata(array('databaseexist' => TRUE));
                 $values['adminoutputText']="<tr bgcolor='#efefef'><td colspan='2' align='center'> <br />"
-                ."<strong><font class='successtitle'>\n"
-                ."Database has been created.</font></strong><br /><br />\n"
-                ."Please click below to populate the database<br /><br />\n"
-                ."<form method='post' action='".site_url('installer/populatedb')."'>"
-                ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='Populate Database' /></form>";
+                    ."<strong><font class='successtitle'>\n"
+                    ."Database has been created.</font></strong><br /><br />\n"
+                    ."Please continue with populating the database.<br /><br />\n";
+                $values['adminoutputForm'] = "<form method='post' action='".site_url('installer/populatedb')."'>"
+                    ."<input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type='submit' name='createdbstep2' value='Populate Database' /></form>";
 
                 $this->session->unset_userdata('databaseDontExist');
             }
