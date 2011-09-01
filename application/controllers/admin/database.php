@@ -673,7 +673,7 @@ class Database extends Admin_Controller {
                         */
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['title']=fix_FCKeditor_text($_POST['title']);
-
+                        $this->load->model('questions_model');
                         foreach ($questlangs as $qlang)
                         {
                             /**if ($filterxsshtml)
@@ -694,13 +694,23 @@ class Database extends Admin_Controller {
                             if (isset($qlang) && $qlang != "")
                             { // ToDo: Sanitize the POST variables !
 
-
-
+                                $udata = array(
+                                        'type' => $_POST['type'],
+                                        'title' => $_POST['title'],
+                                        'question' => $_POST['question_'.$qlang],
+                                        'preg' => $_POST['preg'],
+                                        'help' => $_POST['help_'.$qlang],
+                                        'gid' => $gid,
+                                        'other' => $_POST['other'],
+                                        'mandatory' => $_POST['mandatory']
+                                
+                                        );
+                                /*
                                 $uqquery = "UPDATE ".$this->db->dbprefix."questions SET type='".$_POST['type']."', title='".$_POST['title']."', "
                                 . "question='".$_POST['question_'.$qlang]."', preg='".$_POST['preg']."', help='".$_POST['help_'.$qlang]."', "
                                 . "gid='".$gid."', other='".$_POST['other']."', "
                                 . "mandatory='".$_POST['mandatory']."'";
-
+                                */
                                 if ($oldgid!=$gid)
                                 {
 
@@ -710,21 +720,24 @@ class Database extends Admin_Controller {
                                         // insert question at the end of the destination group
                                         // this prevent breaking conditions if the target qid is in the dest group
                                         $insertorder = getMaxquestionorder($gid) + 1;
-                                        $uqquery .=', question_order='.$insertorder.' ';
+                                        $udata = array_merge($udata,array('question_order' => $insertorder));
+                                        //$uqquery .=', question_order='.$insertorder.' ';
                                     }
                                     else
                                     {
                                         // Moving question to a 'lower' group
                                         // insert question at the beginning of the destination group
                                         shiftorderQuestions($surveyid,$gid,1); // makes 1 spare room for new question at top of dest group
+                                        $udata = array_merge($udata,array('question_order' => 0));
                                         $uqquery .=', question_order=0 ';
                                     }
                                 }
-                                $uqquery.= "WHERE sid='".$surveyid."' AND qid='".$qid."' AND language='{$qlang}'";
-                                $uqresult = db_execute_assoc($uqquery); // or safe_die ("Error Update Question: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
+                                //$uqquery.= "WHERE sid='".$surveyid."' AND qid='".$qid."' AND language='{$qlang}'";
+                                $condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
+                                $uqresult = $this->questions_model->update($udata,$condn); //($uqquery); // or safe_die ("Error Update Question: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked)
                                 if (!$uqresult)
                                 {
-                                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n".$connect->ErrorMsg()."\")\n //-->\n</script>\n";
+                                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
                                 }
 
 

@@ -118,7 +118,7 @@ class Questions_model extends CI_Model {
 			$this->db->where($condition);	
 		}
 		
-		$this->db->update('questions', $data);
+		return $this->db->update('questions', $data);
 		
 	}
     

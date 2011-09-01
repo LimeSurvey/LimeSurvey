@@ -433,8 +433,10 @@
         $result = db_execute_assoc($query);// or safe_die($connect->ErrorMsg()); //Checked
         $anscount = $result->num_rows();
         $row=$result->row_array();
+        if ($result->num_rows > 0)
         $maxsortorder=$row['sortorder']+1;
-
+        else
+        $maxsortorder=1;
         $data['clang'] = $this->limesurvey_lang;
         $data['surveyid'] = $surveyid;
         $data['gid'] = $gid;
