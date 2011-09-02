@@ -2609,6 +2609,8 @@ function buildsurveysession()
 
             echo '</div>'.templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
             doFooter();
+            unset($_SESSION['srid']);
+
             exit;
         }
     }
