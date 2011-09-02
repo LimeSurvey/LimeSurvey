@@ -61,7 +61,7 @@ class Installer extends CI_Controller {
     {
         if (!file_exists($this->config->item('rootdir').'/tmp/sample_installer_file.txt'))
         {
-            show_error('Installation has been done already.');
+            show_error('Installation has been done already.', 500, 'Installer disabled.');
             exit();
         }
     }
@@ -290,17 +290,27 @@ class Installer extends CI_Controller {
                     {
                         $sDatabaseLocation=$_POST['dbLocation'];
                     }
-                    $sADODBHost=$sDatabaseLocation;
+                    $sADODBHost = $sDatabaseLocation;
+                    $databasetype = $_POST['dbType'];
                     //check connection
-                    switch ($_POST['dbType'])
+                    switch ($databasetype)
                     {
                         case 'postgre':
                         case 'mysqli':
-                        case 'mysql': if ($sDatabasePort!='default') {$sADODBHost= $sDatabaseLocation.':'.$sDatabasePort;}
+                        case 'mysql':
+                            if ($sDatabasePort != 'default')
+                            {
+                                $sADODBHost = $sDatabaseLocation.':'.$sDatabasePort;
+                            }
                         break;
-                        case 'mssql': if ($sDatabasePort!='default') {$sADODBHost= $sDatabaseLocation.','.$sDatabasePort;}
+                        case 'mssql':
+                            if ($sDatabasePort != 'default')
+                            {
+                                $sADODBHost = $sDatabaseLocation.','.$sDatabasePort;
+                            }
                         break;
-                        default: die("Unknown database type");
+                        default:
+                            throw new Exception(sprintf('Unknown database type "%s".', $databasetype));
                     }
 
                     $bDBExists = false;
@@ -311,17 +321,11 @@ class Installer extends CI_Controller {
                         $bDBExists = true;
                         $bDBConnectionWorks = true;
                     }
-                    else {
+                    else
+                    {
                         // If that doesn't work try connection without database-name
                         $connect->database = '';
-
-                        if (!@$connect->Connect($dbhost, $_POST['dbUser'], $_POST['dbPwd']))
-                        {
-                            $bDBConnectionWorks=false;
-                        }
-                        else{
-                            $bDBConnectionWorks=true;
-                        }
+                        $bDBConnectionWorks = (bool) @$connect->Connect($dbhost, $_POST['dbUser'], $_POST['dbPwd']);
                     }
 
                     //if connection with database fail
@@ -332,7 +336,6 @@ class Installer extends CI_Controller {
                     }
                     else
                     {
-
                         //saving the form data
                         $aStatusdata = array(
                             'dbname' => $this->input->post('dbName'),
@@ -539,7 +542,9 @@ class Installer extends CI_Controller {
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
 
         //check if passwords match , input class take care of any xss filetring or sql injection
-        if ($this->input->post('adminLoginPwd') == $this->input->post('confirmPwd'))
+        $adminLoginPwd = $this->input->post('adminLoginPwd');
+        $confirmPwd = $this->input->post('confirmPwd');
+        if (!empty($adminLoginPwd) && $adminLoginPwd == $confirmPwd)
         {
 
             $defaultuser = $this->input->post('adminLoginName');
@@ -552,19 +557,11 @@ class Installer extends CI_Controller {
             //FIXME doing the following leads to a problem. this action could make use of the
             //      form helper like the database step (@see install())
             //      problem: two empty passwords are accepted.
-            if ($defaultuser=='')
-            $defaultuser  = "admin";
-            if ($defaultpass=='')
-            $defaultpass  = "password";
-            if ($siteadminname=='')
-            $siteadminname  = "Your Name";
-            if ($defaultlang=='')
-            $defaultlang  = "en";
-            if ($siteadminemail=='')
-            $siteadminemail  = "your-email@example.net";
-
-            $adminpwd = $defaultpass;
-
+            if ($defaultuser == '') $defaultuser  = "admin";
+            if ($defaultpass == '') $defaultpass  = "password";
+            if ($siteadminname == '') $siteadminname  = "Your Name";
+            if ($defaultlang == '') $defaultlang  = "en";
+            if ($siteadminemail == '') $siteadminemail  = "your-email@example.net";
 
             $dbname = $this->session->userdata('dbname');
             $sAdodbType = $this->session->userdata('databasetype');
@@ -591,7 +588,7 @@ class Installer extends CI_Controller {
                 else
                 {
                 $this->load->library('admin/sha256','sha256');
-                $defaultpass=$this->sha256->hashing($defaultpass);
+                $password_hash = $this->sha256->hashing($defaultpass);
                 /**
                 $insertdata = array(
                               'users_name' => $defaultuser,
@@ -607,26 +604,30 @@ class Installer extends CI_Controller {
                               'configurator' => 1,
                               'manage_template' => 1,
                               'manage_label' => 1
-
-
                 );
-
                 $this->db->insert('users', $insertdata);
                 */
                     //finding dbtype and inserting new data
-                    $databasetype=$this->session->userdata('databasetype');
+                    $databasetype = $this->session->userdata('databasetype');
                     switch ($databasetype){
                         case 'mysql':
                         case 'mysqli':
-                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`, `create_user` , `delete_user` , `superadmin` , `configurator` , `manage_template` , `manage_label`) VALUES (\''.$defaultuser.'\', \''.$defaultpass.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`, `create_user` , `delete_user` , `superadmin` , `configurator` , `manage_template` , `manage_label`) VALUES (\''.$defaultuser.'\', \''.$password_hash.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
                             break;
                         case 'mssql':
                         case 'odbc':
-                            $connect->Execute('INSERT INTO ['.$this->session->userdata("dbprefix").'users] ([users_name], [password], [full_name], [parent_id], [lang] ,[email], [create_survey], [create_user] , [delete_user] , [superadmin] , [configurator] , [manage_template] , [manage_label]) VALUES (\''.$defaultuser.'\', \''.$defaultpass.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
+                            $connect->Execute('INSERT INTO ['.$this->session->userdata("dbprefix").'users] ([users_name], [password], [full_name], [parent_id], [lang] ,[email], [create_survey], [create_user] , [delete_user] , [superadmin] , [configurator] , [manage_template] , [manage_label]) VALUES (\''.$defaultuser.'\', \''.$password_hash.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
                             break;
                         case 'postgres':
-                            $connect->Execute('INSERT INTO '.$this->session->userdata("dbprefix").'users (users_name, "password", full_name, parent_id, lang ,email, create_survey, create_user , delete_user , superadmin , configurator , manage_template , manage_label, htmleditormode) VALUES (\''.$defaultuser.'\', \''.$defaultpass.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1,\'default\')');
+                            $connect->Execute('INSERT INTO '.$this->session->userdata("dbprefix").'users (users_name, "password", full_name, parent_id, lang ,email, create_survey, create_user , delete_user , superadmin , configurator , manage_template , manage_label, htmleditormode) VALUES (\''.$defaultuser.'\', \''.$password_hash.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1,\'default\')');
                             break;
+                        default:
+                            throw new Exception(sprintf('Unkown database type "%s".', $databasetype));
+                    }
+                    // only continue if we're error free otherwise setup is broken.
+                    if ($error_number = $connect->ErrorNo())
+                    {
+                        throw new Exception(sprintf('Could not create admin user (%d): %s.', $error_number, $connect->ErrorMsg()));
                     }
 
                     // if successfully data is inserted, notify user to login and redirect to proper link
@@ -654,7 +655,7 @@ class Installer extends CI_Controller {
                     $newdata['classesForStep']=array("off","off","off","off","off");
                     $newdata['progressValue']=100;
                     $newdata['user']=$defaultuser;
-                    $newdata['pwd']=$adminpwd;
+                    $newdata['pwd']=$defaultpass;
 
                     $this->load->view('installer/success_view',$newdata);
 
@@ -836,19 +837,30 @@ class Installer extends CI_Controller {
         }
         else
         {
-
-            $createdbtype=$this->session->userdata('databasetype');
-
-            if ($createdbtype=='mysql' || $createdbtype=='mysqli') {
-                $connect->Execute("ALTER DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
-                $createdbtype='mysql';
-            }
-            if ($createdbtype=='mssql' || $createdbtype=='odbc') $createdbtype='mssql';
-            if($createdbtype=='postgre' && $connect->pgVersion=='9')
+            $databasetype = $this->session->userdata('databasetype');
+            switch ($databasetype)
             {
-                $connect->execute("ALTER DATABASE {$dbname} SET bytea_output='escape';");
+                case 'mysql':
+                case 'mysqli':
+                    $connect->Execute("ALTER DATABASE `$dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;");
+                    $sql_file = 'mysql';
+                    break;
+                case 'mssql':
+                case 'odbc':
+                    $sql_file = 'mssql';
+                    break;
+                case 'postgre':
+                    if ($connect->pgVersion == '9')
+                    {
+                        $connect->execute("ALTER DATABASE {$dbname} SET bytea_output='escape';");
+                    }
+                    $sql_file = 'postgre';
+                    break;
+                default:
+                    throw new Exception(sprintf('Unkown database type "%s".', $databasetype));
             }
-            $sErrors=self::_modify_database($this->config->item('rootdir').'/installer/sql/create-'.$createdbtype.'.sql');
+
+            $sErrors = self::_modify_database($this->config->item('rootdir').'/installer/sql/create-'.$sql_file.'.sql');
             if ($sErrors=='')
             {
                 //$data1['adminoutput'] = '';
