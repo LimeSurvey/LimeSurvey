@@ -1730,6 +1730,7 @@ function buildsurveysession($surveyid)
         // IF CAPTCHA ANSWER IS NOT CORRECT
         else if (!isset($move) || is_null($move))
         {
+            unset($_SESSION['srid']);
             $gettoken = $clienttoken;
             sendcacheheaders();
             doHeader();
