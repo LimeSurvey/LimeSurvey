@@ -853,13 +853,15 @@ GetReferringUrl();
 if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
 {
     // load previous answers if any (dataentry with nosubmit)
-    $srquery="SELECT id FROM {$thissurvey['tablename']}"
-    . " WHERE {$thissurvey['tablename']}.token='".db_quote($token)."'\n";
+    $srquery="SELECT id,submitdate FROM {$thissurvey['tablename']}"
+    . " WHERE {$thissurvey['tablename']}.token='".db_quote($token)."' order by id desc";
 
-    $result = $connect->GetOne($srquery);
-    if ($result !== false && !is_null($result))
+    $result = db_select_limit_assoc($srquery,1);
+    if ($result->RecordCount()>0)
     {
-        $_SESSION['srid'] = $result;
+        $row=$result->FetchRow();
+        if($row['submitdate']=='' || ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
+        $_SESSION['srid'] = $row['id'];
     }
     buildsurveysession();
     loadanswers();
