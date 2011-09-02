@@ -518,12 +518,3 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 INSERT INTO prefix_settings_global VALUES ('DBVersion', '148');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
-
---
--- Create admin user
---
-INSERT INTO prefix_users(
-            users_name, "password", full_name, parent_id, lang, email, 
-            create_survey, create_user, participant_panel, delete_user, superadmin, configurator, 
-            manage_template, manage_label,htmleditormode)
-            VALUES ('$defaultuser', '$defaultpass', '$siteadminname', 0, '$defaultlang', '$siteadminemail',1,1,1,1,1,1,1,1,'default');
