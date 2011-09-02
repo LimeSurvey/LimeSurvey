@@ -33,7 +33,7 @@ class Phpzip
             {
                 foreach($filelist as $filename)
                 {
-                    if (is_file($filename))
+                    if (is_file($filename) && basename($filename)!='.htaccess')
                     {
                         $fd = fopen ($filename, "r");
                         $content = @fread ($fd, filesize ($filename));
