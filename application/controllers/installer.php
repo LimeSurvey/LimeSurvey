@@ -1000,7 +1000,7 @@ class Installer extends CI_Controller {
                         $command = str_replace('$sessionname', 'ls'.self::_getRandomID().self::_getRandomID().self::_getRandomID(), $command);
                         $command = str_replace('$databasetabletype', $databasetabletype, $command);
 
-                        if (! $connect->execute($command)) {  //Checked
+                        if (! $connect->execute($command)) {  //Checked //FIXME check for errorNo() != 0 instead.
                             $command=htmlspecialchars($command);
                             $modifyoutput .="<br />"."Executing: ".$command."<font color='#FF0000'> Failed! Reason: ".$connect->ErrorMsg()."</font>";
                         }
