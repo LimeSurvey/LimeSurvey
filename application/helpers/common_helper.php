@@ -2414,6 +2414,14 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["id"]['group_name']="";
     }
 
+    $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'type'=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+    if ($style == "full")
+    {
+        $fieldmap["submitdate"]['title']="";
+        $fieldmap["submitdate"]['question']=$clang->gT("Date submitted");
+        $fieldmap["submitdate"]['group_name']="";
+    }
+
     $fieldmap["lastpage"]=array("fieldname"=>"lastpage", 'sid'=>$surveyid, 'type'=>"lastpage", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
     {
@@ -2451,15 +2459,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         if ($prow['datestamp'] == "Y")
         {
-
-            $fieldmap["submitdate"]=array("fieldname"=>"submitdate", 'type'=>"submitdate", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["submitdate"]['title']="";
-                $fieldmap["submitdate"]['question']=$clang->gT("Date submitted");
-                $fieldmap["submitdate"]['group_name']="";
-            }
-
             $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
                                     'type'=>"datestamp",
                                     'sid'=>$surveyid,

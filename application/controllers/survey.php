@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id: survey.php 10433 2011-07-06 14:18:45Z dionet $
- * 
+ *
  */
 
 class survey extends LS_Controller {
@@ -20,7 +20,7 @@ class survey extends LS_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	public function _remap($method, $params = array())
 	{
 		array_unshift($params, $method);
@@ -32,10 +32,10 @@ class survey extends LS_Controller {
 		global $surveyid, $thistpl, $totalquestions;
     	global $thissurvey, $thisstep;
     	global $clienttoken;
-		
+
 
 		//Replace $_GET:
-		$arg_list = func_get_args();		
+		$arg_list = func_get_args();
 		if($arg_list[0]==__CLASS__) array_shift($arg_list);
 		if(count($arg_list)%2 == 0) {
 		    for ($i = 0; $i < count($arg_list); $i+=2) {
@@ -43,14 +43,14 @@ class survey extends LS_Controller {
 				$param[$arg_list[$i]] = $arg_list[$i+1];
 		    }
 		}
-		
+
 		@ini_set('session.gc_maxlifetime', $sessionlifetime);
-		
+
 		//Load helpers, libraries and config vars
 		$this->load->helper("database");
 		$this->load->helper("frontend");
 		$this->load->helper("surveytranslator");
-		
+
 		$publicdir = $this->config->item("publicurl");
 		$relativeurl = $this->config->item("relativeurl");
 		$defaultlang = $this->config->item("defaultlang");
@@ -59,12 +59,12 @@ class survey extends LS_Controller {
 		$sitename = $this->config->item("sitename");
 		$standardtemplaterootdir = $this->config->item("standardtemplaterootdir");
 		$dbprefix = $this->db->dbprefix;
-		
+
 		$this->load->library("Dtexts");
-		
+
 		$_POST=$this->input->post();
 		//$_SESSION=$this->session->userdata;
-			
+
 		$surveyid = isset($param['sid']) ? $param['sid'] : returnglobal('sid');
 		$loadname= isset($param['loadname']) ? $param['loadname'] : returnglobal('loadname');
 		$loadpass= isset($param['loadpass']) ? $param['loadpass'] : returnglobal('loadpass');
@@ -72,28 +72,28 @@ class survey extends LS_Controller {
 		$thisstep= isset($param['thisstep']) ? $param['thisstep'] : returnglobal('thisstep');
 		$move = isset($param['move']) ? sanitize_paranoid_string($param['move']) : sanitize_paranoid_string(returnglobal('move'));
 		$clienttoken= isset($param['token']) ? sanitize_token($param['token']) : sanitize_token(returnglobal('token'));
-		
+
 		if(!isset($param['action']))
 			$param['action'] = isset($_POST['action']) ? $_POST['action'] : null;
 		if(!isset($param['newtest']))
 			$param['newtest'] = isset($_POST['newtest']) ? $_POST['newtest'] : null;
 		if(!isset($param['gid']))
 			$param['gid'] = isset($_POST['gid']) ? $_POST['gid'] : null;
-		
+
 		if (!isset($thisstep))
 		{
 		    $thisstep = "";
 		}
-		
+
 		//This next line ensures that the $surveyid value is never anything but a number.
 		$surveyid=sanitize_int($surveyid);
-		
+
 		//DEFAULT SETTINGS FOR TEMPLATES
 		if (!$publicdir)
 		{
 		    $publicdir=".";
 		}
-		
+
 		// Compute the Session name
 		// Session name is based:
 		// * on this specific limesurvey installation (Value SessionName in DB)
@@ -120,11 +120,11 @@ class survey extends LS_Controller {
 		session_set_cookie_params(0,$relativeurl);
 		if (!isset($_SESSION) || empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
 			@session_start();
-		
+
 		// First check if survey is active
 		// if not: copy some vars from the admin session
 		// to a new user session
-		
+
 		if ($surveyid)
 		{
 		    $issurveyactive=false;
@@ -142,7 +142,7 @@ class survey extends LS_Controller {
 		        $surveyexists=false;
 		    }
 		}
-		
+
 		if ($clienttoken != '' && isset($_SESSION['token']) &&
 		$clienttoken != $_SESSION['token'])
 		{
@@ -155,10 +155,10 @@ class survey extends LS_Controller {
 		    //header("Location: $rooturl/index.php?" .$_SERVER['QUERY_STRING']);
 		    sendcacheheaders();
 		    doHeader();
-			
+
 			//Template variables
 			$vars = compact(array_keys(get_defined_vars()));
-		
+
 			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$vars);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
@@ -167,12 +167,12 @@ class survey extends LS_Controller {
 		    ."\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
 		    ."\t</p>\n"
 		    ."\t</div>\n";
-		
+
 			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$vars);
 		    doFooter();
 		    exit;
 		}
-		
+
 		if (isset($_SESSION['finished']) && $_SESSION['finished'] === true)
 		{
 		    $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -184,10 +184,10 @@ class survey extends LS_Controller {
 		    //header("Location: " .$this->config->site_url()."/".$this->uri->uri_string());
 		    sendcacheheaders();
 		    doHeader();
-			
+
 			//Template variables
 			$vars = compact(array_keys(get_defined_vars()));
-		
+
 			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$vars);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
@@ -196,7 +196,7 @@ class survey extends LS_Controller {
 		    ."\t".$clang->gT("Please wait to begin with a new session.")."<br /><br />\n"
 		    ."\t</p>\n"
 		    ."\t</div>\n";
-		
+
 			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$vars);
 		    doFooter();
 		    exit;
@@ -217,7 +217,7 @@ class survey extends LS_Controller {
 		        ."\t".$this->limesurvey_lang->gT("We are sorry but you don't have permissions to do this.")."<br /><br />\n");
 			}
 		}
-		    	
+
 		if (($surveyid &&
 		$issurveyactive===false && $surveyexists &&
 		isset ($surveyPreview_require_Auth) &&
@@ -230,7 +230,7 @@ class survey extends LS_Controller {
 		    {
 		        // Store initial session name
 		        $initial_session_name=session_name();
-		
+
 		        // One way (not implemented here) would be to start the
 		        // user session from a duplicate of the admin session
 		        // - destroy the new session
@@ -239,7 +239,7 @@ class survey extends LS_Controller {
 		        // - change used session name to default
 		        // - open new session (takes admin session id)
 		        // - regenerate brand new session id for this session
-		
+
 		        // The solution implemented here is to copy some
 		        // fields from the admin session to the new session
 		        // - first destroy the new (empty) user session
@@ -249,7 +249,7 @@ class survey extends LS_Controller {
 		        // - destroy the duplicated admin session
 		        // - start a brand new user session
 		        // - copy interresting values in this user session
-		
+
 		        @session_destroy();	// make it silent because for
 		        // some strange reasons it fails sometimes
 		        // which is not a problem
@@ -265,14 +265,14 @@ class survey extends LS_Controller {
 		            session_name("LimeSurveyAdmin");
 		        }
 		        session_start(); // Loads Admin Session
-		
+
 		        $previewright=false;
 		        $savesessionvars=Array();
 		        if (isset($_SESSION['loginID']))
 		        {
 		            $rightquery="SELECT uid FROM {$dbprefix}survey_permissions WHERE sid=".$this->db->escape($surveyid)." AND uid = ".$this->db->escape($_SESSION['loginID'].' group by uid');
 		            $rightresult = db_execute_assoc($rightquery);      //Checked
-		
+
 		            // Currently it is enough to be listed in the survey
 		            // user operator list to get preview access
 		            if ($rightresult->num_rows() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
@@ -283,7 +283,7 @@ class survey extends LS_Controller {
 		                $savesessionvars["user"]=$_SESSION['user'];
 		            }
 		        }
-		
+
 		        // change session name and id
 		        // then delete this new session
 		        // ==> the original admin session remains valid
@@ -298,7 +298,7 @@ class survey extends LS_Controller {
 		            safe_die("Error Regenerating Session Id");
 		        }
 		        @session_destroy();
-		
+
 		        // start new session
 		        @session_start();
 		        // regenerate id so that the header geenrated by previous
@@ -312,7 +312,7 @@ class survey extends LS_Controller {
 		        {
 		            safe_die("Error Regenerating Session Id");
 		        }
-		
+
 		        if ( $previewright === true)
 		        {
 		            foreach ($savesessionvars as $sesskey => $sessval)
@@ -325,7 +325,7 @@ class survey extends LS_Controller {
 		    { // already authorized
 		        $previewright = true;
 		    }
-		    
+
 		    if ($previewright === false)
 		    {
 		        // print an error message
@@ -340,9 +340,9 @@ class survey extends LS_Controller {
 		        //A nice exit
 		        sendcacheheaders();
 		        doHeader();
-				
+
 				$vars = compact(array_keys(get_defined_vars()));
-		
+
 				echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$vars);
 		        echo "\t<div id='wrapper'>\n"
 		        ."\t<p id='tokenmessage'>\n"
@@ -351,7 +351,7 @@ class survey extends LS_Controller {
 		        ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,encodeEmail($siteadminemail))."<br /><br />\n"
 		        ."\t</p>\n"
 		        ."\t</div>\n";
-		
+
 				echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$vars);
 		        doFooter();
 		        exit;
@@ -376,9 +376,9 @@ class survey extends LS_Controller {
 		    //A nice exit
 		    sendcacheheaders();
 		    doHeader();
-			
+
 			$vars = compact(array_keys(get_defined_vars()));
-		
+
 			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$vars);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
@@ -388,19 +388,19 @@ class survey extends LS_Controller {
 		    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$siteadminname,$siteadminemail)."<br /><br />\n"
 		    ."\t</p>\n"
 		    ."\t</div>\n";
-		
+
 			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$vars);
 		    doFooter();
 		    exit;
 		};
-		
+
 		// Set the language of the survey, either from POST, GET parameter of session var
 		if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the language question
 		{
 		    $templang = sanitize_languagecode($_POST['lang']);
 		    $clang = SetSurveyLanguage( $surveyid, $templang);
 		    UpdateSessionGroupList($surveyid, $templang);  // to refresh the language strings in the group list session variable
-		    
+
 		    UpdateFieldArray();        // to refresh question titles and question text
 		}
 		else
@@ -411,7 +411,7 @@ class survey extends LS_Controller {
 		    UpdateSessionGroupList($surveyid, $templang);  // to refresh the language strings in the group list session variable
 		    UpdateFieldArray();        // to refresh question titles and question text
 		}
-		
+
 		if (isset($_SESSION['s_lang']))
 		{
 		    $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
@@ -425,13 +425,13 @@ class survey extends LS_Controller {
 		{
 		    $baselang=$defaultlang;
 		}
-		
+
 		if (isset($param['embedded_inc']))
 		{
 		    safe_die('You cannot start this script directly');
 		}
-		
-		
+
+
 		//CHECK FOR REQUIRED INFORMATION (sid)
 		if (!$surveyid)
 		{
@@ -452,11 +452,11 @@ class survey extends LS_Controller {
 		    $languagechanger = makelanguagechanger();
 		    //Find out if there are any publicly available surveys
 		    $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
-			          FROM ".$this->db->dbprefix('surveys')." AS a 
-					  INNER JOIN ".$this->db->dbprefix('surveys_languagesettings')." AS b 
-					  ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) 
-					  WHERE surveyls_survey_id=a.sid 
-					  AND surveyls_language=a.language 
+			          FROM ".$this->db->dbprefix('surveys')." AS a
+					  INNER JOIN ".$this->db->dbprefix('surveys_languagesettings')." AS b
+					  ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
+					  WHERE surveyls_survey_id=a.sid
+					  AND surveyls_language=a.language
 		              AND surveyls_language='$baselang'
 					  AND a.active='Y'
 					  AND a.listpublic='Y'
@@ -490,10 +490,10 @@ class survey extends LS_Controller {
 		            "listheading"=>$clang->gT("The following surveys are available:"),
 		            "list"=>implode("\n",$list),
 		    );
-		
+
 		    $thissurvey['name']=$sitename;
 		    $thissurvey['templatedir']=$defaulttemplate;
-			
+
 		    $data['thissurvey'] = $thissurvey;
 	        //$data['privacy'] = $privacy;
 	        $data['surveylist'] = $surveylist;
@@ -503,43 +503,43 @@ class survey extends LS_Controller {
 	        $data['templatename'] = $defaulttemplate;
 			$data['sitename'] = $sitename;
 			$data['languagechanger'] = $languagechanger;
-		
+
 		    //A nice exit
 		    sendcacheheaders();
 		    doHeader();
 			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"),array(),$data);
-		
+
 			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl"),array(),$data);
-		
+
 			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"),array(),$data);
 		    doFooter();
 		    exit;
 		}
-		
+
 		// Get token
 		if (!isset($token))
 		{
 		    $token=$clienttoken;
 		}
-		
+
 		//GET BASIC INFORMATION ABOUT THIS SURVEY
 		$totalBoilerplatequestions =0;
 		$thissurvey=getSurveyInfo($surveyid, $_SESSION['s_lang']);
-		
+
 		if (isset($param['newtest']) && $param['newtest'] == "Y")
 		{
             //Removes any existing timer cookies so timers will start again
 		    setcookie ("limesurvey_timers", "", time() - 3600);
 		}
-		
-		
-		
+
+
+
 		//SEE IF SURVEY USES TOKENS AND GROUP TOKENS
 		$i = 0; //$tokensexist = 0;
 		if ($surveyexists == 1 && tableExists('tokens_'.$thissurvey['sid']))
 		{
 		    $tokensexist = 1;
-		      
+
 		}
 		else
 		{
@@ -548,11 +548,11 @@ class survey extends LS_Controller {
 		    unset($param['token']);
 		    unset($token);
 		    unset($clienttoken);
-		}    
-		
-		
-		
-		
+		}
+
+
+
+
 		//SET THE TEMPLATE DIRECTORY
 		if (!$thissurvey['templatedir'])
 		{
@@ -562,18 +562,18 @@ class survey extends LS_Controller {
 		{
 		    $thistpl=sGetTemplatePath($thissurvey['templatedir']);
 		}
-		
-		
+
+
 		$timeadjust = $this->config->item("timeadjust");
 		//MAKE SURE SURVEY HASN'T EXPIRED
 		if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>$thissurvey['expiry'] && $thissurvey['active']!='N')
 		{
-		        
+
 		    sendcacheheaders();
 		    doHeader();
-		
+
 			$vars = compact(array_keys(get_defined_vars()));
-		
+
 			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
@@ -581,18 +581,18 @@ class survey extends LS_Controller {
 		    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".<br /><br />\n"
 			."\t</p>\n"
 		    ."\t</div>\n";
-		
+
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
 		    doFooter();
 		    exit;
 		}
-		
+
 		//MAKE SURE SURVEY IS ALREADY VALID
 		if ($thissurvey['startdate']!='' and  date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)<$thissurvey['startdate'] && $thissurvey['active']!='N')
 		{
 		    sendcacheheaders();
 		    doHeader();
-			
+
 			$vars = compact(array_keys(get_defined_vars()));
 
 		    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
@@ -602,12 +602,12 @@ class survey extends LS_Controller {
 		    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail']).".<br /><br />\n"
 		    ."\t</p>\n"
 		    ."\t</div>\n";
-		
+
 		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
 		    doFooter();
 		    exit;
 		}
-		
+
 		//CHECK FOR PREVIOUSLY COMPLETED COOKIE
 		//If cookies are being used, and this survey has been completed, a cookie called "PHPSID[sid]STATUS" will exist (ie: SID6STATUS) and will have a value of "COMPLETE"
 		$cookiename="PHPSID".returnglobal('sid')."STATUS";
@@ -617,7 +617,7 @@ class survey extends LS_Controller {
 		    doHeader();
 
 			$vars = compact(array_keys(get_defined_vars()));
-		
+
 			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
@@ -626,24 +626,24 @@ class survey extends LS_Controller {
 		    ."\t".sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])."\n"
 		    ."\t</p>\n"
 		    ."\t</div>\n";
-		
+
 			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
 		    doFooter();
 		    exit;
 		}
-		
-		
+
+
 		//CHECK IF SURVEY ID DETAILS HAVE CHANGED
 		if (isset($_SESSION['oldsid']))
 		{
 		    $oldsid=$_SESSION['oldsid'];
 		}
-		
+
 		if (!isset($oldsid))
 		{
 		    $_SESSION['oldsid'] = $surveyid;
 		}
-		
+
 		if (isset($oldsid) && $oldsid && $oldsid != $surveyid)
 		{
 		    $savesessionvars=Array();
@@ -660,9 +660,9 @@ class survey extends LS_Controller {
 		        $_SESSION[$sesskey]=$sessval;
 		    }
 		}
-		
-		
-		
+
+
+
 		if (isset($_GET['loadall']) && $_GET['loadall'] == "reload")
 		{
 		    if (returnglobal('loadname') && returnglobal('loadpass'))
@@ -670,7 +670,7 @@ class survey extends LS_Controller {
 		        $_POST['loadall']="reload";
 		    }
 		}
-		
+
 		//LOAD SAVED SURVEY
 		if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
 		{
@@ -685,7 +685,7 @@ class survey extends LS_Controller {
 		    {
 		        $errormsg .= $clang->gT("You did not provide a password")."<br />\n";
 		    }
-		
+
 		    // if security question answer is incorrect
 		    // Not called if scid is set in GET params (when using email save/reload reminder URL)
 		    if (function_exists("ImageCreate") && captcha_enabled('saveandloadscreen',$thissurvey['usecaptcha']))
@@ -698,19 +698,19 @@ class survey extends LS_Controller {
 		            $errormsg .= $clang->gT("The answer to the security question is incorrect.")."<br />\n";
 		        }
 		    }
-		
+
 		    // Load session before loading the values from the saved data
 		    if (isset($_GET['loadall']))
 		    {
 		        buildsurveysession();
 		    }
-		
+
 		    $_SESSION['holdname']=$loadname; //Session variable used to load answers every page.
 		    $_SESSION['holdpass']=$loadpass; //Session variable used to load answers every page.
-		
+
 		    if ($errormsg == "") loadanswers();
 		    $move = "movenext";
-		
+
 		    if ($errormsg)
 		    {
 		        $_POST['loadall'] = $clang->gT("Load Unfinished Survey");
@@ -723,8 +723,8 @@ class survey extends LS_Controller {
 		    $this->load->library("load_answers");
 			$this->load_answers->run($vars);
 		}
-		
-		
+
+
 		//Check if TOKEN is used for EVERY PAGE
 		//This function fixes a bug where users able to submit two surveys/votes
 		//by checking that the token has not been used at each page displayed.
@@ -752,7 +752,7 @@ class survey extends LS_Controller {
 		        //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
 				$vars = compact(array_keys(get_defined_vars()));
-				
+
 		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
 		        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$vars);
 		        echo "\t<div id='wrapper'>\n"
@@ -764,7 +764,7 @@ class survey extends LS_Controller {
 		        ."{$thissurvey['adminemail']}</a>)")."\n"
 		        ."\t</p>\n"
 		        ."\t</div>\n";
-				
+
 		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
 			    killSession();
 		        doFooter();
@@ -773,7 +773,7 @@ class survey extends LS_Controller {
 		}
 		if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'tokens_'.$surveyid)) //check if token is in a valid time frame
 		{
-		
+
 			// check also if it is allowed to change survey after completion
 			if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
 		        $tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token='".$this->db->escape($token)."' ";
@@ -788,9 +788,9 @@ class survey extends LS_Controller {
 		        sendcacheheaders();
 		        doHeader();
 		        //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
-		        
+
 				$vars = compact(array_keys(get_defined_vars()));
-				
+
 		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
 		        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$vars);
 		        echo "\t<div id='wrapper'>\n"
@@ -802,16 +802,16 @@ class survey extends LS_Controller {
 		        ."{$thissurvey['adminemail']}</a>)")."\n"
 		        ."\t</p>\n"
 		        ."\t</div>\n";
-				
+
 		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
 		        doFooter();
 			    killSession();
 		        exit;
 		    }
 		}
-		
-		
-		
+
+
+
 		//Clear session and remove the incomplete response if requested.
 		if (isset($move) && $move == "clearall")
 		{
@@ -828,7 +828,7 @@ class survey extends LS_Controller {
 		                $qid[] = $field['fieldname'];
 		            }
 		        }
-		
+
 		        // if yes, extract the response json to those questions
 		        if (isset($qid))
 		        {
@@ -841,10 +841,10 @@ class survey extends LS_Controller {
 		                    $json = $row[$question];
 		                    if ($json == "" || $json == NULL)
 		                        continue;
-		                    
+
 		                    // decode them
 		                    $phparray = json_decode($json);
-		                    
+
 		                    foreach ($phparray as $metadata)
 		                    {
 		                        $target = $this->config->item("uploaddir")."/surveys/".$surveyid."/files/";
@@ -855,11 +855,11 @@ class survey extends LS_Controller {
 		            }
 		        }
 		        // done deleting uploaded files
-		        
-		
+
+
 		        // delete the response but only if not already completed
 		        db_execute_assoc('DELETE FROM '.$this->db->dbprefix('survey_'.$surveyid).' WHERE id='.$_SESSION['srid']." AND submitdate IS NULL");
-		
+
 		        // also delete a record from saved_control when there is one
 		        db_execute_assoc('DELETE FROM '.$this->db->dbprefix('saved_control'). ' WHERE srid='.$_SESSION['srid'].' AND sid='.$surveyid);
 		    }
@@ -883,15 +883,15 @@ class survey extends LS_Controller {
 		    ."\t}\n"
 		    ."\t//-->\n"
 		    ."\t</script>\n\n";
-		
+
 		    //Present the clear all page using clearall.pstpl template
 		    echo templatereplace(file_get_contents("$thistpl/clearall.pstpl"),array(),$vars);
-		
+
 		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
 		    doFooter();
 		    exit;
 		}
-		
+
 		if (isset($param['newtest']) && $param['newtest'] == "Y")
 		{
 		    $savesessionvars=Array();
@@ -911,7 +911,7 @@ class survey extends LS_Controller {
 		    setcookie($cookiename, "INCOMPLETE", time()-120);
 		    //echo "Reset Cookie!";
 		}
-		
+
 		//Check to see if a refering URL has been captured.
 		GetReferringUrl();
 		// Let's do this only if
@@ -926,17 +926,19 @@ class survey extends LS_Controller {
 
 		    // load previous answers if any (dataentry with nosubmit)
 		    $srquery="SELECT id FROM {$thissurvey['tablename']}"
-		    . " WHERE {$thissurvey['tablename']}.token='".$this->db->escape($token)."'\n";
-		
-		    $result = reset(db_execute_assoc($srquery)->row_array());
-		    if ($result !== false && !is_null($result))
-		    {
-		        $_SESSION['srid'] = $result;
+		    . " WHERE {$thissurvey['tablename']}.token='".$this->db->escape($token)."' order by id desc";
+
+            $result = db_select_limit_assoc($srquery,1);
+            if ($result->num_rows()>0)
+            {
+                $row=reset($result->result_array());
+                if($row['submitdate']=='' || ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
+                    $_SESSION['srid'] = $row['id'];
 		    }
 		    buildsurveysession();
 		    loadanswers();
 		}
-		
+
 		// SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
 		if (isset($move) || isset($_POST['saveprompt']))
 		{
@@ -944,25 +946,25 @@ class survey extends LS_Controller {
 			//save.php
 		    $this->load->library("Save");
 			$this->save->run($args);
-		    
+
 		    // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
-		    if ($thissurvey['active'] == "Y" && 
+		    if ($thissurvey['active'] == "Y" &&
 		            ( $thissurvey['allowsave'] == "Y" || $thissurvey['tokenanswerspersistence'] == "Y") )
 		    {
 		        loadanswers();
 		    }
 		}
-		
+
 		if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'previewgroup')){
 		        $thissurvey['format'] = 'G';
 		        buildsurveysession();
 		}
-		
+
 		sendcacheheaders();
-		
+
 		//Send local variables to the appropriate survey type
 		$args = compact(array_keys(get_defined_vars()));
-		
+
 		//CALL APPROPRIATE SCRIPT
 		switch ($thissurvey['format'])
 		{
@@ -985,7 +987,7 @@ class survey extends LS_Controller {
 		        $this->load->library("Question_format");
 				$this->question_format->run($args);
 		}
-		
+
 		if (isset($_POST['saveall']) || isset($flashmessage))
 		{
 		    echo "<script language='JavaScript'> $(document).ready( function() {alert('".$clang->gT("Your responses were successfully saved.","js")."');}) </script>";
