@@ -281,32 +281,7 @@ class printanswers extends LS_Controller {
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
             $sExportFileName=sanitize_filename($surveyname);
-            if (preg_match("/MSIE/i", $_SERVER["HTTP_USER_AGENT"]))
-            {
-                /*
-                 *  $dateiname = $InternalReferenceNumber.'.pdf';
-                 $pdf->Output($dateiname, 'F');
-                 header('Content-type: application/pdf');
-                 header('Content-Disposition: attachment; filename="'.basename($dateiname).'"');
-                 readfile($dateiname);
-                 */
-
-                header("Content-type: application/pdf");
-                header("Content-Transfer-Encoding: binary");
-
-
-                header("Content-Disposition: Attachment; filename=\"". $sExportFileName ."-".$surveyid.".pdf\"");
-
-     			$this->pdf->Output($this->config->item('tempdir').'/'.$clang->gT($surveyname)."-".$surveyid.".pdf", "F");
-        		header("Content-Length: ". filesize($this->config->item('tempdir').'/'.$sExportFileName."-".$surveyid.".pdf"));
-        		readfile($this->config->item('tempdir').'/'.$sExportFileName."-".$surveyid.".pdf");
-        		unlink($this->config->item('tempdir').'/'.$sExportFileName."-".$surveyid.".pdf");
-
-            }
-            else
-            {
-        			$this->pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
-            }
+   			$this->pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
         }
 
 
