@@ -484,7 +484,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         . "\t<input type='hidden' name='action' value='importlabelresources' />\n"
         . "\t<ul style='list-style-type:none; text-align:center'>\n"
         . "\t\t<li><label>&nbsp;</label>\n"
-        . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"$sCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\"  /></li>\n"
+        . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"{$homeurl}/scripts/kcfinder/browse.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\"  /></li>\n"
         . "\t\t<li><label>&nbsp;</label>\n"
         . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\"  /></li>\n"
         . "\t\t<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"
