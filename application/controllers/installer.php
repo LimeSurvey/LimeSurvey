@@ -34,7 +34,6 @@ class Installer extends CI_Controller {
 	{
         parent::__construct();
         self::_checkInstallation();
-        //need to write unique encryption key before we can use session data.
 	}
 
 	/**
