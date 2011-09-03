@@ -31,7 +31,6 @@ class Installer extends CI_Controller {
      */
     private $dbTasks;
 
-
     /**
      * Installer::__construct()
      * Constructor
@@ -41,8 +40,6 @@ class Installer extends CI_Controller {
 	{
         parent::__construct();
         self::_checkInstallation();
-        //need to write unique encryption key before we can use session data.
-        self::_writeConfigfile();
         require_once(APPPATH.'libraries/LS/LS.php');
         $this->dbTasks = new LS_Installer_DbTasks;
         $this->dbTasks->test();
