@@ -25,9 +25,6 @@
  * @access public
  */
 class Installer extends CI_Controller {
-
-
-
     /**
      * Installer::__construct()
      * Constructor
@@ -38,7 +35,6 @@ class Installer extends CI_Controller {
         parent::__construct();
         self::_checkInstallation();
         //need to write unique encryption key before we can use session data.
-        self::_writeConfigfile();
 	}
 
 	/**
@@ -1161,28 +1157,6 @@ class Installer extends CI_Controller {
         }
 
     }
-
-    /**
-     * Installer::_writeConfigfile()
-     * Function to write session encryption key in APPPATH.'application/config/config.php'
-     * @return
-     */
-    function _writeConfigfile()
-    {
-        if ($this->session->userdata('databaseexist') && $this->session->userdata('tablesexist'))
-        {
-
-            $this->load->helper('file');
-
-            $string = read_file(APPPATH . 'config/config.php');
-            $this->load->helper('string');
-            $string = str_replace('$config[\'encryption_key\'] = \'encryption_key\';','$config[\'encryption_key\'] = \''.random_string("unique").'\';', $string);
-            write_file(APPPATH . 'config/config.php', $string);
-        }
-
-    }
-
-
 
     /**
      * Installer::_getRandomID()
