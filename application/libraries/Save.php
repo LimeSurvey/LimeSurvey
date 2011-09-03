@@ -474,10 +474,11 @@ class Save {
 
 		$CI =& get_instance();
 		$_POST = $CI->input->post();
-	    global $deletenonvalues, $thistpl;
+	    global $thistpl;
 
 		$clang = $CI->limesurvey_lang;
 		$timeadjust = $CI->config->item("timeadjust");
+        $deletenonvalues = $CI->config->item("deletenonvalues");
 
 	    $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
 
