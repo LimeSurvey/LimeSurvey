@@ -14,8 +14,7 @@ class LimeExpressionManager {
     private $em;    // Expression Manager
     private $groupRelevanceInfo;
     private $groupNum;
-    private $debugLEM = false;   // set this to false to turn off debugging
-    private $debugLEMonlyVars = true;   //set this to true to only show log replacements of questions (e.g. no tokens or templates)
+    private $debugLEM = true;   // set this to false to turn off debugging
     private $knownVars;
     private $pageRelevanceInfo;
     private $pageTailorInfo;
@@ -25,6 +24,8 @@ class LimeExpressionManager {
     private $jsVar2qid; // reverse mapping of JavaScript Variable name to Question
     private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
     private $varNameAttr;   // JavaScript array of mappings of canonical JavaScript variable name to key attributes.
+    private $pageTailoringLog;  // Debug log of tailorings done on this page
+    private $surveyLogicFile;   // Shows current configuration and data from most recent $fieldmap
 
     // A private constructor; prevents direct creation of object
     private function __construct()
@@ -59,34 +60,23 @@ class LimeExpressionManager {
 
     public function setVariableAndTokenMappingsForExpressionManager($forceRefresh=false,$anonymized=false,$allOnOnePage=false,$surveyid=NULL)
     {
-//        $surveyid = returnglobal('sid');
-
-        //checks to see if fieldmap has already been built for this page.
-//        if (isset($globalfieldmap[$surveyid]['expMgr_varMap'][$clang->langcode])&& !$forceRefresh) {
-//            return false;   // means the mappings have already been set and don't need to be re-created
-//        }
-
+        // TODO - this is called multiple times per page - can it be reduced to once per page?
         $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
         if (!isset($fieldmap)) {
             return false; // implies an error occurred
         }
 
-        $sgqaMap = array();  // mapping of SGQA to Value
-        $knownVars = array();   // mapping of VarName to Value
-        $debugLog = array();    // array of mappings among values to confirm their accuracy
-        $qid2code = array();    // List of codes for each question - needed to know which to NULL if a question is irrelevant
-        $jsVar2qid = array();
-        $alias2varName = array();
-        $varNameAttr = array();
-        /*
-        if ($this->debugLEM)
-        {
-            file_put_contents('/tmp/LimeExpressionManager_fieldmap.html', print_r($fieldmap,TRUE));
-        }
-         */
+        $this->knownVars = array();   // mapping of VarName to Value
+        $this->debugLog = array();    // array of mappings among values to confirm their accuracy
+        $this->qid2code = array();    // List of codes for each question - needed to know which to NULL if a question is irrelevant
+        $this->jsVar2qid = array();
+        $this->alias2varName = array();
+        $this->varNameAttr = array();
+
         foreach($fieldmap as $fielddata)
         {
             $code = $fielddata['fieldname'];
+            $type = $fielddata['type'];
             if (!preg_match('#^\d+X\d+X\d+#',$code))
             {
                 continue;   // not an SGQA value
@@ -101,7 +91,7 @@ class LimeExpressionManager {
             $relevance = (isset($questionAttributes['relevance'])) ? $questionAttributes['relevance'] : 1;
 
             // Create list of codes associated with each question
-            $codeList = (isset($qid2code[$questionNum]) ? $qid2code[$questionNum] : '');
+            $codeList = (isset($this->qid2code[$questionNum]) ? $this->qid2code[$questionNum] : '');
             if ($codeList == '')
             {
                 $codeList = $code;
@@ -110,7 +100,7 @@ class LimeExpressionManager {
             {
                 $codeList .= '|' . $code;
             }
-            $qid2code[$questionNum] = $codeList;
+            $this->qid2code[$questionNum] = $codeList;
 
             // Check off-page relevance status
             if (isset($_SESSION['relevanceStatus'])) {
@@ -118,6 +108,18 @@ class LimeExpressionManager {
             }
             else {
                 $relStatus = 1;
+            }
+
+            $readWrite = 'N';
+            if (isset($_SESSION[$code]))
+            {
+                $codeValue = $_SESSION[$code];
+                $displayValue= retrieve_Answer($surveyid, $code);
+            }
+            else
+            {
+                $codeValue = '';
+                $displayValue = '';
             }
 
             switch($fielddata['type'])
@@ -213,9 +215,13 @@ class LimeExpressionManager {
                     $jsVarName = 'java' . $code;
                     break;
                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    // Don't want to use the one that ends in 'comment'
-                    $goodcode = preg_replace("/^(.*?)(comment)?$/","$1",$code);
-                    $jsVarName = 'java' . $goodcode;
+                    if (preg_match("/comment$/", $code)) {
+                        $jsVarName = 'java' . $code;
+                        $varName = $varName . ".comment";
+                    }
+                    else {
+                        $jsVarName = 'java' . $code;
+                    }
                     break;
                 case '|': //File Upload
                     // Only want the use the one that ends in '_filecount'
@@ -233,103 +239,7 @@ class LimeExpressionManager {
                     }
                     break;
             }
-            $readWrite = 'N';
-            if (isset($_SESSION[$code]))
-            {
-                $codeValue = $_SESSION[$code];
-                $displayValue= retrieve_Answer($surveyid, $code);
-            }
-            else
-            {
-                $codeValue = '';
-                $displayValue = '';
-            }
-            // Set mappings of variable names to needed attributes
-            $varInfo_Code = array(
-                'codeValue'=>$codeValue,
-                'jsName'=>$jsVarName,
-                'readWrite'=>$readWrite,
-                'isOnCurrentPage'=>$isOnCurrentPage,
-                'displayValue'=>$displayValue,
-                'question'=>$question,
-                'relevance'=>$relevance,
-                'relevanceNum'=>'relevance' . $questionNum,
-                'relevanceStatus'=>$relStatus,
-                );
-            $varInfo_DisplayVal = array(
-                'codeValue'=>$displayValue,
-                'jsName'=>'',
-                'readWrite'=>'N',
-                'isOnCurrentPage'=>$isOnCurrentPage,
-                'relevanceNum'=>'relevance' . $questionNum,
-                'relevanceStatus'=>$relStatus,
-                );
-            $varInfo_Question = array(
-                'codeValue'=>$question,
-                'jsName'=>'',
-                'readWrite'=>'N',
-                'isOnCurrentPage'=>$isOnCurrentPage,
-                'relevanceNum'=>'relevance' . $questionNum,
-                'relevanceStatus'=>$relStatus,
-                );
-            $varInfo_NAOK = array(
-                'codeValue'=>$codeValue,
-                'jsName'=>$jsVarName . '.NAOK',
-                'readWrite'=>$readWrite,
-                'isOnCurrentPage'=>$isOnCurrentPage,
-                'displayValue'=>$displayValue,
-                'question'=>$question,
-                'relevance'=>'1',
-                'relevanceNum'=>'',
-                'relevanceStatus'=>'1',
-                );
-            $knownVars[$varName] = $varInfo_Code;
-            $knownVars[$varName . '.shown'] = $varInfo_DisplayVal;
-            $knownVars[$varName . '.question']= $varInfo_Question;
-            $knownVars['INSERTANS:' . $code] = $varInfo_DisplayVal;
-            $knownVars[$varName . '.NAOK'] = $varInfo_NAOK;
-
-            $jsVar2qid[$jsVarName] = $questionNum;
-
-            // Create JavaScript arrays
-            $alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':{'jsName':'" . $jsVarName . "'}");
-            $alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':{'jsName':'" . $jsVarName . "'}");
-//            $alias2varName['INSERTANS:'.$code] = array('jsName'=>$jsVarName, 'jsPart'=> "'INSERTANS:" . $code . "':{'jsName':'" . $jsVarName . "'}");
-//            $alias2varName[$varName . '.NAOK'] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . ".NAOK':{'jsName':'" . $jsVarName . ".NAOK'}");
-
-
-            $varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
-                . "'jsName':'" . $jsVarName
-                . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
-//                . "','shown':'" . $displayValue
-//                . "','question':'" . $question
-                . "','qid':'" . $questionNum
-                . "'}";
-/*
-            $varNameAttr[$jsVarName . '.NAOK'] = "'" . $jsVarName . ".NAOK':{"
-                . "'jsName':'" . $jsVarName . '.NAOK'
-                . "','code':'" . $codeValue
-//                . "','shown':'" . $displayValue
-//                . "','question':'" . $question
-                . "','qid':''}";
- */
-
-            if ($this->debugLEM)
-            {
-                $debugLog[] = array(
-                    'code' => $code,
-                    'type' => $fielddata['type'],
-                    'varname' => $varName,
-                    'jsName' => $jsVarName,
-                    'question' => $question,
-                    'codeValue' => ($codeValue=='') ? '&nbsp;' : $codeValue,
-                    'displayValue' => ($displayValue=='') ? '&nbsp;' : $displayValue,
-                    'readWrite' => $readWrite,
-                    'isOnCurrentPage' => $isOnCurrentPage,
-                    'relevance' => $relevance,
-                    );
-            }
-
+            $this->SetVariableAttributes($type, $varName, $code, $codeValue, $jsVarName, $readWrite, $isOnCurrentPage, $displayValue, $question, $relevance, $questionNum, $relStatus);
         }
 
         // Now set tokens
@@ -351,7 +261,7 @@ class LimeExpressionManager {
                     $val = $_SESSION['thistoken'][$tokenkey];
                 }
                 $key = "TOKEN:" . strtoupper($tokenkey);
-                $knownVars[$key] = array(
+                $this->knownVars[$key] = array(
                     'codeValue'=>$val,
                     'jsName'=>'',
                     'readWrite'=>'N',
@@ -362,7 +272,7 @@ class LimeExpressionManager {
 
                 if ($this->debugLEM)
                 {
-                    $debugLog[] = array(
+                    $this->debugLog[] = array(
                         'code' => $key,
                         'type' => '&nbsp;',
                         'varname' => '&nbsp;',
@@ -388,13 +298,13 @@ class LimeExpressionManager {
                     'relevanceNum'=>'',
                     'relevanceStatus'=>'1',
                     );
-            $knownVars['TOKEN:FIRSTNAME'] = $blankVal;
-            $knownVars['TOKEN:LASTNAME'] = $blankVal;
-            $knownVars['TOKEN:EMAIL'] = $blankVal;
-            $knownVars['TOKEN:USESLEFT'] = $blankVal;
+            $this->knownVars['TOKEN:FIRSTNAME'] = $blankVal;
+            $this->knownVars['TOKEN:LASTNAME'] = $blankVal;
+            $this->knownVars['TOKEN:EMAIL'] = $blankVal;
+            $this->knownVars['TOKEN:USESLEFT'] = $blankVal;
             for ($i=1;$i<=100;++$i) // TODO - is there a way to know  how many attributes are set?  Looks like max is 100
             {
-                $knownVars['TOKEN:ATTRIBUTE_' . $i] = $blankVal;
+                $this->knownVars['TOKEN:ATTRIBUTE_' . $i] = $blankVal;
             }
         }
 
@@ -402,7 +312,7 @@ class LimeExpressionManager {
         {
             $debugLog_html = "<table border='1'>";
             $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>CodeVal</th><th>DisplayVal</th><th>JSname</th><th>Writable?</th><th>Set On This Page?</th><th>Relevance</th><th>Question</th></tr>";
-            foreach ($debugLog as $t)
+            foreach ($this->debugLog as $t)
             {
                 $debugLog_html .= "<tr><td>" . $t['code']
                     . "</td><td>" . $t['type']
@@ -417,16 +327,101 @@ class LimeExpressionManager {
                     . "</td></tr>";
             }
             $debugLog_html .= "</table>";
-            file_put_contents('/tmp/LimeExpressionManager-page.html',$debugLog_html);
+            $this->surveyLogicFile = $debugLog_html;
         }
 
-        $this->knownVars = $knownVars;
-        $this->qid2code = $qid2code;
-        $this->jsVar2qid = $jsVar2qid;
-        $this->alias2varName = $alias2varName;
-        $this->varNameAttr = $varNameAttr;
-
         return true;
+    }
+
+    /**
+     *
+     * @param <type> $type
+     * @param <type> $varName
+     * @param <type> $code
+     * @param <type> $codeValue
+     * @param <type> $jsVarName
+     * @param <type> $readWrite
+     * @param <type> $isOnCurrentPage
+     * @param <type> $displayValue
+     * @param <type> $question
+     * @param <type> $relevance
+     * @param <type> $questionNum
+     * @param <type> $relStatus
+     */
+    private function SetVariableAttributes($type, $varName, $code, $codeValue, $jsVarName, $readWrite, $isOnCurrentPage, $displayValue, $question, $relevance, $questionNum, $relStatus)
+    {
+        // Set mappings of variable names to needed attributes
+        $varInfo_Code = array(
+            'codeValue'=>$codeValue,
+            'jsName'=>$jsVarName,
+            'readWrite'=>$readWrite,
+            'isOnCurrentPage'=>$isOnCurrentPage,
+            'displayValue'=>$displayValue,
+            'question'=>$question,
+            'relevance'=>$relevance,
+            'relevanceNum'=>'relevance' . $questionNum,
+            'relevanceStatus'=>$relStatus,
+            );
+        $varInfo_DisplayVal = array(
+            'codeValue'=>$displayValue,
+            'jsName'=>'',
+            'readWrite'=>'N',
+            'isOnCurrentPage'=>$isOnCurrentPage,
+            'relevanceNum'=>'relevance' . $questionNum,
+            'relevanceStatus'=>$relStatus,
+            );
+        $varInfo_Question = array(
+            'codeValue'=>$question,
+            'jsName'=>'',
+            'readWrite'=>'N',
+            'isOnCurrentPage'=>$isOnCurrentPage,
+            'relevanceNum'=>'relevance' . $questionNum,
+            'relevanceStatus'=>$relStatus,
+            );
+        $varInfo_NAOK = array(
+            'codeValue'=>$codeValue,
+            'jsName'=>$jsVarName . '.NAOK',
+            'readWrite'=>$readWrite,
+            'isOnCurrentPage'=>$isOnCurrentPage,
+            'displayValue'=>$displayValue,
+            'question'=>$question,
+            'relevance'=>'1',
+            'relevanceNum'=>'',
+            'relevanceStatus'=>'1',
+            );
+        $this->knownVars[$varName] = $varInfo_Code;
+        $this->knownVars[$varName . '.shown'] = $varInfo_DisplayVal;
+        $this->knownVars[$varName . '.question']= $varInfo_Question;
+        $this->knownVars['INSERTANS:' . $code] = $varInfo_DisplayVal;
+        $this->knownVars[$varName . '.NAOK'] = $varInfo_NAOK;
+
+        $this->jsVar2qid[$jsVarName] = $questionNum;
+
+        // Create JavaScript arrays
+        $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':{'jsName':'" . $jsVarName . "'}");
+        $this->alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':{'jsName':'" . $jsVarName . "'}");
+
+        $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
+            . "'jsName':'" . $jsVarName
+            . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
+            . "','qid':'" . $questionNum
+            . "'}";
+
+        if ($this->debugLEM)
+        {
+            $this->debugLog[] = array(
+                'code' => $code,
+                'type' => $type,
+                'varname' => $varName,
+                'jsName' => $jsVarName,
+                'question' => $question,
+                'codeValue' => ($codeValue=='') ? '&nbsp;' : $codeValue,
+                'displayValue' => ($displayValue=='') ? '&nbsp;' : $displayValue,
+                'readWrite' => $readWrite,
+                'isOnCurrentPage' => $isOnCurrentPage,
+                'relevance' => $relevance,
+                );
+        }
     }
 
     /**
@@ -461,14 +456,10 @@ class LimeExpressionManager {
 
         if ($lem->debugLEM)
         {
-            if ($lem->debugLEMonlyVars)
-            {
                 $varsUsed = $em->GetJSVarsUsed();
                 if (is_array($varsUsed) and count($varsUsed) > 0) {
-                    $debugLog_html = '<tr><td>' . $lem->groupNum . '</td><td>' . $string . '</td><td>' . $em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
-                    file_put_contents('/tmp/LimeExpressionManager-Debug-ThisPage.html',$debugLog_html,FILE_APPEND);
+                    $lem->pageTailoringLog .= '<tr><td>' . $lem->groupNum . '</td><td>' . $string . '</td><td>' . $em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
                 }
-            }
         }
 
         return $result;
@@ -537,11 +528,12 @@ class LimeExpressionManager {
         $lem->alias2varName=array();
         $lem->varNameAttr=array();
         $lem->allOnOnePage=$allOnOnePage;
+        $lem->pageTailoringLog='';
+        $lem->surveyLogicFile='';
 
         if ($debug && $lem->debugLEM)
         {
-            $debugLog_html = '<tr><th>Group</th><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
-            file_put_contents('/tmp/LimeExpressionManager-Debug-ThisPage.html',$debugLog_html); // replace the value
+            $lem->pageTailoringLog .= '<tr><th>Group</th><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
         }
     }
 
@@ -578,7 +570,25 @@ class LimeExpressionManager {
 
     static function FinishProcessingPage()
     {
+        $lem = LimeExpressionManager::singleton();
+        $_SESSION['EM_pageTailoringLog'] = $lem->pageTailoringLog;
+        $_SESSION['EM_surveyLogicFile'] = $lem->surveyLogicFile;
+    }
 
+    static function ShowLogicFile()
+    {
+        if (isset($_SESSION['EM_surveyLogicFile'])) {
+            return $_SESSION['EM_surveyLogicFile'];
+        }
+        return '';
+    }
+
+    static function ShowPageTailorings()
+    {
+        if (isset($_SESSION['EM_pageTailoringLog'])) {
+            return $_SESSION['EM_pageTailoringLog'];
+        }
+        return '';
     }
 
     /*

@@ -10,7 +10,7 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-            include('/tmp/LimeExpressionManager-page.html');
+            echo LimeExpressionManager::ShowLogicFile();
         ?>
     </body>
 </html>

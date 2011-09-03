@@ -11,7 +11,7 @@ and open the template in the editor.
     <body>
         <table border='1'>
             <?php
-                include('/tmp/LimeExpressionManager-Debug-ThisPage.html');
+                echo LimeExpressionManager::ShowPageTailorings();
             ?>
         </table>
     </body>

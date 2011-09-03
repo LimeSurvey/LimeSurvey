@@ -47,6 +47,9 @@ function getDateFormatData($format=0)
         11=>array ('phpdate' => 'm/d/Y', 'jsdate' => 'mm/dd/yy',  'dateformat' => 'mm/dd/yyyy')
     );
 
+    if ($format > 11) {
+        $format = 11;   // TODO - what should default be?
+    }
     if ($format >0)
     {
         return $dateformats[$format];

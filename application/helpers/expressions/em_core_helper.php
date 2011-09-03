@@ -2090,8 +2090,8 @@ EOD;
         $em = new ExpressionManager();
         $output = "<h3>Functions Available within Expression Manager</h3>\n";
         $output .= "<table border='1'><tr><th>Function</th><th>Meaning</th><th>Syntax</th><th>Reference</th></tr>\n";
-        foreach ($em->amValidFunctions as $func) {
-            $output .= "<tr><td>" . $func[0] . "</td><td>" . $func[2] . "</td><td>" . $func[3] . "</td><td><a href='" . $func[4] . "'>" . $func[4] . "</a>&nbsp;</td></tr>\n";
+        foreach ($em->amValidFunctions as $name => $func) {
+            $output .= "<tr><td>" . $name . "</td><td>" . $func[2] . "</td><td>" . $func[3] . "</td><td><a href='" . $func[4] . "'>" . $func[4] . "</a>&nbsp;</td></tr>\n";
         }
         $output .= "</table>\n";
         return $output;
