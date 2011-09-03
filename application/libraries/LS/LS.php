@@ -11,15 +11,15 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  * $Id$
- * 
+ *
  * LS Library bootstrap file, work in progress.
- * 
+ *
  * Currently requires require_once to use the library.
  */
 
 /**
  * LS Library autoloader
- * 
+ *
  * @param string $class
  */
 function LS_autoload($class)
@@ -28,9 +28,21 @@ function LS_autoload($class)
     $separator = '_';
     if (0 !== strpos($class, $namespace.$separator))
         return;
-        
+    // @todo currently whitelisting prefixes, current CI library prefix 'LS' nocks here too often.
+    $match = false;
+    foreach(array('LS_Exception', 'LS_Installer_') as $prefix)
+    {
+        if (0 === strpos($class, $prefix))
+        {
+            $match = true;
+            break;
+        }
+    }
+    if (!$match)
+        return;
+    
     $translated = str_replace($separator, DIRECTORY_SEPARATOR, $class);
-    $libpath = dirname(dirname(__FILE__)); 
+    $libpath = dirname(dirname(__FILE__));
     $file = $libpath.DIRECTORY_SEPARATOR.$translated.'.php';
 
     require $file; # provoke fatal error if file does not exists.

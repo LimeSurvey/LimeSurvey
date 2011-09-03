@@ -31,11 +31,11 @@
      <div class="description-field">This is the database type. </div>
     </td>
     <td style="width: 224px;" align="right">
-     <select name="dbType" style="width: 147px;">
-      <option value="mysqli" <?php echo set_select('dbType', 'mysqli',TRUE); ?>  >MySQL</option>
-      <option value="mysql" <?php echo set_select('dbType', 'mysql'); ?> >MySQL (old driver)</option>
-      <option value="mssql" <?php echo set_select('dbType', 'mssql'); ?>  >Microsoft SQL Server</option>
-      <option value="postgre" <?php echo set_select('dbType', 'postgre'); ?>  >PostgreSQL</option>
+     <select name="dbtype" style="width: 147px;">
+      <option value="mysqli" <?php echo set_select('dbtype', 'mysqli',TRUE); ?>  >MySQL</option>
+      <option value="mysql" <?php echo set_select('dbtype', 'mysql'); ?> >MySQL (old driver)</option>
+      <option value="mssql" <?php echo set_select('dbtype', 'mssql'); ?>  >Microsoft SQL Server</option>
+      <option value="postgre" <?php echo set_select('dbtype', 'postgres'); ?>  >PostgreSQL</option>
      </select>
     </td>
     </tr>
@@ -44,42 +44,42 @@
       <b>Database Location *</b> <br />
       <div class="description-field">Set this to the IP/net location of your database server. In most cases "<b>localhost</b>" will work. </div>
      </td>
-     <td style="width: 224px;" align="right"><input name="dbLocation" value="<?php echo set_value('dbLocation'); ?>" type="text" /><?php echo "<br/>".form_error('dbLocation'); ?></td>
+     <td style="width: 224px;" align="right"><input name="dblocation" value="<?php echo set_value('dblocation'); ?>" type="text" /><?php echo "<br/>".form_error('dblocation'); ?></td>
     </tr>
     <tr>
      <td style="width: 428px;">
       <b>Database Name *</b> <br />
       <div class="description-field">If you provide an existing database name make sure the database does not contain old tables of LimeSurvey.</div>
      </td>
-     <td style="width: 224px;" align="right"><input name="dbName" value="<?php echo set_value('dbName'); ?>" type="text" /><?php echo "<br/>".form_error('dbName'); ?></td>
+     <td style="width: 224px;" align="right"><input name="dbname" value="<?php echo set_value('dbname'); ?>" type="text" /><?php echo "<br/>".form_error('dbname'); ?></td>
     </tr>
     <tr>
      <td style="width: 428px;">
       <b>Database User *</b> <br />
       <div class="description-field">Your Database server user name. In most cases "<b>root</b>" will work.</div>
     </td>
-    <td style="width: 224px;" align="right"><input name="dbUser" value="<?php echo set_value('dbUser'); ?>" type="text" /><?php echo "<br/>".form_error('dbUser'); ?></td>
+    <td style="width: 224px;" align="right"><input name="dbuser" value="<?php echo set_value('dbuser'); ?>" type="text" /><?php echo "<br/>".form_error('dbuser'); ?></td>
    </tr>
    <tr>
     <td style="width: 428px;">
      <b>Database Password</b> <br />
      <div class="description-field">Your Database server password.</div>
     </td>
-    <td style="width: 224px;" align="right"><input name="dbPwd" value="" type="password" /><?php echo "<br/>".form_error('dbPwd'); ?></td>
+    <td style="width: 224px;" align="right"><input name="dbpwd" value="" type="password" /><?php echo "<br/>".form_error('dbpwd'); ?></td>
    </tr>
    <tr>
     <td style="width: 428px;">
      <b>Confirm Password</b> <br />
      <div class="description-field">Confirm your database server password.</div>
     </td>
-    <td style="width: 224px;" align="right"><input name="dbConfirmPwd" value="" type="password" /><?php echo "<br/>".form_error('dbConfirmPwd'); ?></td>
+    <td style="width: 224px;" align="right"><input name="dbconfirmpwd" value="" type="password" /><?php echo "<br/>".form_error('dbconfirmpwd'); ?></td>
    </tr>
    <tr>
     <td style="width: 428px;">
      <b>Database Prefix</b> <br />
      <div class="description-field">If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.</div>
     </td>
-    <td style="width: 224px;" align="right"><input name="dbPrefix" value="<?php echo set_value('dbPrefix','lime_'); ?>" type="text" /></td>
+    <td style="width: 224px;" align="right"><input name="dbprefix" value="<?php echo set_value('dbprefix','lime_'); ?>" type="text" /></td>
    </tr>
    <tr>
     <td>&nbsp;</td>
