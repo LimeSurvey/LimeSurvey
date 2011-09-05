@@ -4003,18 +4003,6 @@ function do_multipleshorttext($ia)
                 $maxsize=65525;
             }
 
-            //some JS to check max possible input
-            $answer = "<script type='text/javascript'>
-               <!--
-               function textLimit(field, maxlen) {
-                if (document.getElementById(field).value.length > maxlen)
-                document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
-                }
-               //-->
-               </script>\n";
-
-
-
             while ($ansrow = $ansresult->FetchRow())
             {
                 $myfname = $ia[1].$ansrow['title'];
@@ -4028,7 +4016,7 @@ function do_multipleshorttext($ia)
                 . "<label for=\"answer$myfname\">{$ansrow['question']}</label>\n"
                 . "\t<span>\n".$prefix."\n".'
 				<textarea class="textarea '.$kpclass.'" name="'.$myfname.'" id="answer'.$myfname.'"
-				rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$myfname.'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
+				rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$myfname.'\', '.$maxsize.');" onkeyup="textLimit(\'answer'.$myfname.'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
 
                 if($label_width < strlen(trim(strip_tags($ansrow['question']))))
                 {
@@ -4080,7 +4068,7 @@ function do_multipleshorttext($ia)
         }
     }
 
-    $answer .= "<ul>\n".$answer_main."</ul>\n";
+    $answer = "<ul>\n".$answer_main."</ul>\n";
 
     return array($answer, $inputnames);
 }
@@ -4763,22 +4751,11 @@ function do_shortfreetext($ia)
             $tiwidth=40;
         }
 
-
-        //some JS to check max possible input
-        $answer = "<script type='text/javascript'>
-               <!--
-               function textLimit(field, maxlen) {
-                if (document.getElementById(field).value.length > maxlen)
-                document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
-                }
-               //-->
-               </script>\n";
-
         //NEW: textarea instead of input=text field
 
         // --> START NEW FEATURE - SAVE
-        $answer .= '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
-        .'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
+        $answer = '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" '
+        .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type);" '.$numbersonly.'>';
         // --> END NEW FEATURE - SAVE
 
         if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
@@ -4953,20 +4930,9 @@ function do_longfreetext($ia)
     }
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
-
-    $answer = "<script type='text/javascript'>
-               <!--
-               function textLimit(field, maxlen) {
-                if (document.getElementById(field).value.length > maxlen)
-                document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
-                }
-               //-->
-               </script>\n";
-
-
     // --> START NEW FEATURE - SAVE
-    $answer .= '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
-    .'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)">';
+    $answer = '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+    .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)">';
     // --> END NEW FEATURE - SAVE
 
     if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
@@ -5043,24 +5009,10 @@ function do_hugefreetext($ia)
     }
     // <-- END ENHANCEMENT - TEXT INPUT WIDTH
 
-    $answer = "<script type='text/javascript'>
-               <!--
-               function textLimit(field, maxlen) {
-                if (document.getElementById(field).value.length > maxlen)
-                document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
-                }
-               //-->
-               </script>\n";
-    // --> START ENHANCEMENT - DISPLAY ROWS
-    // --> START ENHANCEMENT - TEXT INPUT WIDTH
-
     // --> START NEW FEATURE - SAVE
-    $answer .= '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
-    .'rows="'.$drows.'" cols="'.$tiwidth.'" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)">';
+    $answer = '<textarea class="textarea '.$kpclass.'" name="'.$ia[1].'" id="answer'.$ia[1].'" alt="'.$clang->gT('Answer').'" '
+    .'rows="'.$drows.'" cols="'.$tiwidth.'" maxlength="'.$maxsize.'" onchange="textLimit(\'answer'.$ia[1].'\', '.$maxsize.');" onkeyup="textLimit(\'answer'.$ia[1].'\', '.$maxsize.'); '.$checkconditionFunction.'(this.value, this.name, this.type)">';
     // --> END NEW FEATURE - SAVE
-
-    // <-- END ENHANCEMENT - TEXT INPUT WIDTH
-    // <-- END ENHANCEMENT - DISPLAY ROWS
 
     if ($_SESSION[$ia[1]]) {$answer .= str_replace("\\", "", $_SESSION[$ia[1]]);}
 
