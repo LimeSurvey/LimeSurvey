@@ -921,3 +921,10 @@ function array_dual_dd_checkconditions(value, name, type, rank, condfunction)
    }
     condfunction(value, name, type);
 }
+
+// Maxlength for textareas
+function textLimit(field, maxlen) { 
+	if (document.getElementById(field).value.length > maxlen) {
+		document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
+	}
+}
