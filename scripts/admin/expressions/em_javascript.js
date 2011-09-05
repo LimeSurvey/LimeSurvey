@@ -172,7 +172,16 @@ function LEMeq(a,b)
  */
 function LEMval(alias)
 {
-    jsName = LEMalias2varName[alias].jsName;
+    // first find out whether it is using a suffix
+    var str = new String(alias);
+    var varName = alias;
+    var suffix = '';
+    if (str.match(/\.(question|shown|NAOK|code|qid|type|mandatory|relevance)$/)) {
+        varName = str.replace(/\.(question|shown|NAOK|code|qid|type|mandatory|relevance)$/,'')
+        suffix = str.replace(/^(.+)\./,'');
+    }
+
+    jsName = LEMalias2varName[varName];
     attr = LEMvarNameAttr[jsName];
     if (attr.qid!='') {
         if (document.getElementById('relevance' + attr.qid).value!=='1'){
@@ -180,15 +189,34 @@ function LEMval(alias)
         }
     }
     // values should always be stored encoded with htmlspecialchars()
-    value = htmlspecialchars_decode(document.getElementById(attr.jsName).value);
-    if (isNaN(value)) {
-        if (value==='false') {
-            return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
+    switch (suffix) {
+        case 'qid':
+            return attr.qid;
+        case 'question':
+            return attr.question;
+        case 'code':
+            return attr.code;
+        case 'type':
+            return attr.type;
+        case 'mandatory':
+            return attr.mandatory;
+        case 'relevance':
+            return attr.relevance;
+        case 'shown':
+            // need access to all possible shown values for this, so just show code value for now
+        case 'NAOK':
+        default: {
+            value = htmlspecialchars_decode(document.getElementById(attr.jsName).value);
+            if (isNaN(value)) {
+                if (value==='false') {
+                    return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
+                }
+                return value;
+            }
+            else {
+                return +value;  // convert it to numeric return type
+            }                
         }
-        return value;
-    }
-    else {
-        return +value;  // convert it to numeric return type
     }
 }
 
@@ -258,7 +286,13 @@ function LEManyNA()
 {
     for (i=0;i<arguments.length;++i) {
         var arg = arguments[i];
-        jsName = LEMalias2varName[arg].jsName;
+        if (typeof LEMalias2varName[arg] === 'undefined') {
+            continue;   // default is OK (e.g. for questions with dot notation suffix
+        }
+        jsName = LEMalias2varName[arg];
+        if (typeof LEMvarNameAttr[jsName] === 'undefined') {
+            continue;   // default is OK (e.g. for questions with dot notation suffix
+        }
         attr = LEMvarNameAttr[jsName];
         if (attr.qid!='') {
             if (document.getElementById('relevance' + attr.qid).value!=='1'){

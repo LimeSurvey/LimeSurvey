@@ -81,6 +81,7 @@ class LimeExpressionManager {
             {
                 continue;   // not an SGQA value
             }
+            $mandatory = $fielddata['mandatory'];
             $fieldNameParts = explode('X',$code);
             $groupNum = $fieldNameParts[1];
             $isOnCurrentPage = ($allOnOnePage || ($groupNum != NULL && $groupNum == $this->groupNum)) ? 'Y' : 'N';
@@ -239,7 +240,7 @@ class LimeExpressionManager {
                     }
                     break;
             }
-            $this->SetVariableAttributes($type, $varName, $code, $codeValue, $jsVarName, $readWrite, $isOnCurrentPage, $displayValue, $question, $relevance, $questionNum, $relStatus);
+            $this->SetVariableAttributes($type, $varName, $code, $codeValue, $jsVarName, $readWrite, $isOnCurrentPage, $displayValue, $question, $relevance, $questionNum, $relStatus,  $mandatory);
         }
 
         // Now set tokens
@@ -347,8 +348,9 @@ class LimeExpressionManager {
      * @param <type> $relevance
      * @param <type> $questionNum
      * @param <type> $relStatus
+     * @param <type> $mandatory
      */
-    private function SetVariableAttributes($type, $varName, $code, $codeValue, $jsVarName, $readWrite, $isOnCurrentPage, $displayValue, $question, $relevance, $questionNum, $relStatus)
+    private function SetVariableAttributes($type, $varName, $code, $codeValue, $jsVarName, $readWrite, $isOnCurrentPage, $displayValue, $question, $relevance, $questionNum, $relStatus, $mandatory)
     {
         // Set mappings of variable names to needed attributes
         $varInfo_Code = array(
@@ -398,13 +400,19 @@ class LimeExpressionManager {
         $this->jsVar2qid[$jsVarName] = $questionNum;
 
         // Create JavaScript arrays
-        $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':{'jsName':'" . $jsVarName . "'}");
-        $this->alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':{'jsName':'" . $jsVarName . "'}");
+        $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'");
+        $this->alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
+        $this->alias2varName[$code] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $code . "':'" . $jsVarName . "'");
+        $this->alias2varName['INSERTANS:' . $code] = array('jsName'=>$jsVarName, 'jsPart' => "'INSERTANS:" . $code . "':'" . $jsVarName . "'");
 
         $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
             . "'jsName':'" . $jsVarName
             . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
-            . "','qid':'" . $questionNum
+            . "','qid':" . $questionNum
+            . ",'mandatory':'" . $mandatory
+            . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
+            . "','type':'" . $type
+            . "','relevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES)
             . "'}";
 
         if ($this->debugLEM)
@@ -737,7 +745,6 @@ class LimeExpressionManager {
                         $neededAliases[] = $value['jsPart'];
                     }
                 }
-                $found = array_search($jsVar,$lem->alias2varName);
             }
             $neededCanonical = array_unique($neededCanonical);
             foreach ($neededCanonical as $nc)
@@ -984,19 +991,12 @@ EOT;
                 'type' => $testArg[2],
                 'question' => $question,
             );
-            $alias2varName[$var] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $var . "':{'jsName':'" . $jsVarName . "'}");
-            $alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':{'jsName':'" . $jsVarName . "'}");
-//            $alias2varName[$var . '.NAOK'] = array('jsName'=>$jsVarName . '.NAOK', 'jsPart' => "'" . $var . ".NAOK':{'jsName':'" . $jsVarName . ".NAOK'}");
-//            $alias2varName[$jsVarName . '.NAOK'] = array('jsName'=>$jsVarName . '.NAOK', 'jsPart' => "'" . $jsVarName . ".NAOK':{'jsName':'" . $jsVarName . ".NAOK'}");
+            $alias2varName[$var] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $var . "':'" . $jsVarName . "'");
+            $alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
             $varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
                 . "'jsName':'" . $jsVarName
                 . "','qid':'" . $i
-                . "'}";
-            /*
-            $varNameAttr[$jsVarName . '.NAOK'] = "'" . $jsVarName . ".NAOK':{"
-                . "'jsName':'" . $jsVarName
-                . "','qid':''}";
-             */
+            . "'}";
         }
         $lem->alias2varName = $alias2varName;
         $lem->varNameAttr = $varNameAttr;

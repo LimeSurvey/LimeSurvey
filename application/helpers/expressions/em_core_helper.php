@@ -2479,13 +2479,12 @@ EOD;
             print "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1' onchange='recompute()'/>\n";
             print "<input type='hidden' name='" . $jsVarName . "' id='" . $jsVarName . "' value='" . $value . "'/>\n";
             print "</td></tr>\n";
-            $LEMalias2varName[] = "'" . substr($jsVarName,5) . "':{'jsName':'" . $jsVarName . "'}";
-            $LEMalias2varName[] = "'" . $jsVarName . "':{'jsName':'" . $jsVarName . "'}";
+            $LEMalias2varName[] = "'" . substr($jsVarName,5) . "':'" . $jsVarName . "'";
+            $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
             $LEMvarNameAttr[] = "'" . $jsVarName .  "': {"
                 . "'jsName':'" . $jsVarName
                 . "','code':'" . htmlspecialchars(preg_replace("/[[:space:]]/",' ',$value),ENT_QUOTES)
-//                . "','question':'"
-                . "','qid':'" . $i . "'}";
+                . "','qid':" . $i . "}";
         }
         print "</table>\n";
 
