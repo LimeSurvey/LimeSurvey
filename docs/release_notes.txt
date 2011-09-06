@@ -78,6 +78,25 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.91+ (build 10859) to 1.91+ (build 10951)
+#Updated translation: Croatian (idobraca)
+#Updated translation: Dutch by Han Velthuis (c_schmitz)
+#Updated translation: Dutch informal by Han Velthuis (c_schmitz)
+#Updated translation: French (c_schmitz)
+-Fixed issue #05401: large and huge free text max characters not respected on mouse-based paste events (tpartner)
+-Fixed issue #5400: QueXML export on Windows Server (IIS) (azammitdcarf)
+-Fixed issue #5413: Non admin-user cannot export to SPSS or R (c_schmitz)
+-Fixed issue #5430: Docblock added. (mot3)
+-Fixed issue #5430: JSON.php / Services_JSON has license inside docblock already. (mot3)
+-Fixed issue #5432: Exporting responses to PDF fails when using IE (c_schmitz)
+-Fixed issue #5432: Option to export responses to PDF by participant fails when using IE (c_schmitz)
+-Fixed issue #5434: If Captcha is used and token persistence is enabled the returning participant starts at the beginning of the survey instead of the last page submitted (c_schmitz)
+-Fixed issue #5439: {TOKEN:ATTRIBUTE_1} is not replaced everywhere (c_schmitz)
+-Fixed issue #5443: Survey is starting on the last question group when usen token answer persistences and usesleft (c_schmitz)
+-Fixed issue #5444: Browse uploaded resources unavailable (c_schmitz)
+-Fixed issue #5445: File .htaccess include in the resources export file (c_schmitz)
+-Fixed issue: Some SMTP gates not correctly confirming email acceptance causing the SMTP send seemingly to fail while the mail was correctly sent (c_schmitz)
+
 Changes from 1.91+ (build 10746) to 1.91+ (build 10859)
 -Fixed #5414: export to application (R) filenames are not consistent (mennodekker)
 -Fixed issue: Token registration system was not checking survey settings for token length, defaulting to 15. Fixed. (jcleeland)
