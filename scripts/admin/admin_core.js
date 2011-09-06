@@ -339,7 +339,7 @@ function updatequestionattributes()
         $('#advancedquestionsettings').html('');
         var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
         if (selected_value==undefined) selected_value = $("#question_type").val();
-        $('#advancedquestionsettings').load('../../ajaxquestionattributes',{qid:$('#qid').val(),
+        $('#advancedquestionsettings').load(attr_url,{qid:$('#qid').val(),
                                                                                    question_type:selected_value,
                                                                                    sid:$('#sid').val()
                                                                                   }, function(){

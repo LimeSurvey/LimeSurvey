@@ -1,5 +1,10 @@
+<script type='text/javascript'> 
+var attr_url = "<?php echo site_url('admin/question/ajaxquestionattributes'); ?>"; 
+</script>
 <?php PrepareEditorScript(true); ?>
+
 <script type='text/javascript'><?php echo $qTypeOutput; ?></script>
+
 <div class='header ui-widget-header'>
 <?php if (!$adding) { ?>
     <?php echo $clang->gT("Edit question"); ?>
