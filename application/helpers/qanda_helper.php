@@ -4014,23 +4014,23 @@ function do_file_upload($ia)
     {
         $_SESSION['preview'] = 1 ;
         $questgrppreview = 1;   // Preview is launched from Question or group level
-        $scriptloc = '../uploader.php';
+        $scriptloc = site_url('uploader/');
     }
     else if ($thissurvey['active'] != "Y")
     {
         $_SESSION['preview'] = 1;
         $questgrppreview = 0;
-        $scriptloc = 'uploader.php';
+        $scriptloc = site_url('uploader/');
     }
     else
     {
         $_SESSION['preview'] = 0;
         $questgrppreview = 0;
-        $scriptloc = 'uploader.php';
+        $scriptloc = site_url('uploader/');
     }
 
-    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}?sid={$surveyid}&amp;fieldname={$ia[1]}&amp;qid={$ia[0]}&amp;preview="
-    ."{$questgrppreview}&amp;show_title={$qidattributes['show_title']}&amp;show_comment={$qidattributes['show_comment']}&amp;pos=".($pos?1:0)."'>" .$clang->gT('Upload files'). "</a></h2><br /><br />";
+    $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}/sid/{$surveyid}/fieldname/{$ia[1]}/qid/{$ia[0]}/preview/"
+    ."{$questgrppreview}/show_title/{$qidattributes['show_title']}/show_comment/{$qidattributes['show_comment']}/pos/".($pos?1:0)."/'>" .$clang->gT('Upload files'). "</a></h2><br /><br />";
 
     $answer =  "<script type='text/javascript'>
         var translt = {

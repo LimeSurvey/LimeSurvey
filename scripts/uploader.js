@@ -51,7 +51,7 @@ $(document).ready(function(){
     var button = $('#button1'), interval;
 
     new AjaxUpload(button, {
-        action: 'upload.php?sid='+surveyid+'&preview='+questgrppreview+'&fieldname='+fieldname,
+        action: uploadurl + '/sid/'+surveyid+'/preview/'+questgrppreview+'/fieldname/'+fieldname+'/',
         name: 'uploadfile',
         data: {
             valid_extensions : $('#'+fieldname+'_allowed_filetypes').val(),
@@ -135,7 +135,7 @@ $(document).ready(function(){
 
                 // If the file is not an image, use a placeholder
                 if (isValueInArray(image_extensions, metadata.ext))
-                    previewblock += "<img src='uploader.php?filegetcontents="+decodeURIComponent(metadata.filename)+"' height='60px' />";
+                    previewblock += "<img src='"+uploadurl+"/filegetcontents/"+decodeURIComponent(metadata.filename)+"' height='60px' />";
                 else
                     previewblock += "<img src='images/placeholder.png' height='60px' />";
 

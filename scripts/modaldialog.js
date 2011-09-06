@@ -88,12 +88,12 @@ $(function() {
 });
 
 function getQueryVariable(variable, url) {
-    var query = url.split("?");
-    var vars = query[1].split("&");
+    //var query = url.split("?");
+    var vars = url.split("/");
     for (var i=0;i<vars.length;i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] == variable) {
-        return pair[1];
+        //var pair = vars[i].split("=");
+        if (vars[i] == variable) {
+        return vars[i+1];
         }
     }
     return null;
