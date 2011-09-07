@@ -1504,7 +1504,7 @@ function getuserlist($outputformat='fullinfoarray')
             // also Postgres does like this one better
             $uquery = " SELECT * FROM ".$CI->db->dbprefix."users where uid in
                         (SELECT u.uid FROM ".$CI->db->dbprefix."users AS u,
-                        ".$CI->db->dbprefix."user_in_groups AS ga ,".$CI->db->dbprefix."'user_in_groups AS gb
+                        ".$CI->db->dbprefix."user_in_groups AS ga ,".$CI->db->dbprefix."user_in_groups AS gb
                         WHERE u.uid=$myuid
                         OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) )
                         GROUP BY u.uid)";
@@ -1525,7 +1525,7 @@ function getuserlist($outputformat='fullinfoarray')
     if ($uresult->num_rows()==0)
     //user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
     {
-        $uquery = "SELECT u.* FROM ".$CI->db->dbprefix."'users AS u WHERE u.uid=".$myuid;
+        $uquery = "SELECT u.* FROM ".$CI->db->dbprefix."users AS u WHERE u.uid=".$myuid;
         $uresult = db_execute_assoc($uquery);//Checked
     }
 
