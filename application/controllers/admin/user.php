@@ -53,6 +53,7 @@ class user extends Survey_Common_Controller {
 	        $query=$this->surveys_model->getSomeRecords(array("count(*)"),array("owner_id"=>$usrhimself['uid']));
 			$noofsurveys=$query->row_array();
 			$noofsurveys=$noofsurveys["count(*)"];
+			$data['noofsurveys'] = $noofsurveys;
 	    }
 
 	    if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) {
@@ -79,7 +80,7 @@ class user extends Survey_Common_Controller {
 			$noofsurveyslist[$i]=$noofsurveyslist[$i]["count(*)"];
 	    }
 
-		$data['noofsurveys'] = $noofsurveys;
+		
 		$data['clang']=$this->limesurvey_lang;
 		$data['imageurl']=$this->config->item("imageurl");
 		$data['noofsurveyslist']=$noofsurveyslist;
