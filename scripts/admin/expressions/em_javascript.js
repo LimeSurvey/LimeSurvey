@@ -1,5 +1,6 @@
-/* Core JavaScript functions needed by ExpressionManager */
-// TMSWhite: Javascript needed by Expression  Manager
+/* Core JavaScript functions needed by ExpressionManager
+ * @author Thomas M. White
+ */
 
 function LEMpi()
 {
@@ -175,38 +176,50 @@ function LEMval(alias)
     // first find out whether it is using a suffix
     var str = new String(alias);
     var varName = alias;
-    var suffix = '';
-    if (str.match(/\.(question|shown|NAOK|code|qid|type|mandatory|relevance)$/)) {
-        varName = str.replace(/\.(question|shown|NAOK|code|qid|type|mandatory|relevance)$/,'')
+    var suffix = 'code';    // the default
+    if (str.match(/\.(codeValue|code|displayValue|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type)$/)) {
+        varName = str.replace(/\.(codeValue|code|displayValue|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type)$/,'')
         suffix = str.replace(/^(.+)\./,'');
     }
 
     jsName = LEMalias2varName[varName];
     attr = LEMvarNameAttr[jsName];
-    if (attr.qid!='') {
+    if ((suffix == 'code' || suffix == 'codeValue' || suffix == 'displayValue' || suffix == 'shown' || suffix == 'NAOK') && attr.qid!='') {
         if (document.getElementById('relevance' + attr.qid).value!=='1'){
             return '';
         }
     }
     // values should always be stored encoded with htmlspecialchars()
     switch (suffix) {
+        case 'displayValue':
+        case 'shown':
+            return htmlspecialchars_decode(attr.shown);
+        case 'qid':
+            return attr.qid;
+        case 'mandatory':
+            return attr.mandatory;
         case 'qid':
             return attr.qid;
         case 'question':
-            return attr.question;
-        case 'code':
-            return attr.code;
+            return htmlspecialchars_decode(attr.question);
+        case 'readWrite':
+            return attr.readWrite;
+        case 'relevance':
+            return htmlspecialchars_decode(attr.relevance);
+        case 'relevanceNum':
+            return attr.qid;
+        case 'relevanceStatus':
+            return document.getElementById('relevance' + attr.qid).value;
         case 'type':
             return attr.type;
-        case 'mandatory':
-            return attr.mandatory;
-        case 'relevance':
-            return attr.relevance;
-        case 'shown':
-            // need access to all possible shown values for this, so just show code value for now
+        case 'code':
+        case 'codeValue':
         case 'NAOK':
-        default: {
+        {
             value = htmlspecialchars_decode(document.getElementById(attr.jsName).value);
+            if (value === '') {
+                return '';
+            }
             if (isNaN(value)) {
                 if (value==='false') {
                     return '';  // so Boolean operations will treat it as false. In JavaScript, Boolean("false") is true since "false" is not a zero-length string
@@ -215,8 +228,10 @@ function LEMval(alias)
             }
             else {
                 return +value;  // convert it to numeric return type
-            }                
+            }
         }
+        default:
+            return 'Unknown Attribute: ' . suffix;
     }
 }
 
@@ -286,6 +301,9 @@ function LEManyNA()
 {
     for (i=0;i<arguments.length;++i) {
         var arg = arguments[i];
+        if (arg.match(/\.NAOK$/)) {
+            continue;
+        }
         if (typeof LEMalias2varName[arg] === 'undefined') {
             continue;   // default is OK (e.g. for questions with dot notation suffix
         }

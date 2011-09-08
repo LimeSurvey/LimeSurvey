@@ -13,9 +13,10 @@
  * @author Thomas M. White (TMSWhite)
  */
 
-//require_once('em_functions_helper.php');
-
 class ExpressionManager {
+    // These are the allowable suffixes for variables - each represents an attribute of a variable.
+    private static $regex_var_attr = 'codeValue|code|displayValue|isOnCurrentPage|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type';
+
     // These three variables are effectively static once constructed
     private $sExpressionRegex;
     private $asTokenType;
@@ -45,8 +46,6 @@ class ExpressionManager {
 
     function __construct()
     {
-        global $exprmgr_functions;  // so can access variables from ExpressionManagerFunctions.php
-
         // List of token-matching regular expressions
         $regex_dq_string = '(?<!\\\\)".*?(?<!\\\\)"';
         $regex_sq_string = '(?<!\\\\)\'.*?(?<!\\\\)\'';
@@ -59,8 +58,8 @@ class ExpressionManager {
         $regex_binary = '[+*/-]';
         $regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
         $regex_assign = '=|\+=|-=|\*=|/=';
-        $regex_sgqa = '[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[12]?';
-        $regex_word = '[A-Z][A-Z0-9_]*:?[A-Z0-9_]*\.?[A-Z0-9_]*\.?[A-Z0-9_]*\.?[A-Z0-9_]*';
+        $regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[12]?';
+        $regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$regex_var_attr . '))?';
         $regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $regex_andor = '\band\b|\bor\b|&&|\|\|';
 
@@ -69,7 +68,7 @@ class ExpressionManager {
                 '(?<!\\\\)(?<!\n|\r|\r\n|\s)' . '}' . ')#';
 
 
-        // asTokenRegex and t_tokey_type must be kept in sync  (same number and order)
+        // asTokenRegex and asTokenType must be kept in sync  (same number and order)
         $asTokenRegex = array(
             $regex_dq_string,
             $regex_sq_string,
@@ -118,6 +117,7 @@ class ExpressionManager {
         // Each allowed function is a mapping from local name to external name + number of arguments
         // Functions can have a list of serveral allowable #s of arguments.
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
+        // -2 means that at least one argument is required.  -3 means at least two arguments are required, etc.
         $this->amValidFunctions = array(
 'abs' => array('abs', 'Math.abs', 'Absolute value', 'number abs(number)', 'http://www.php.net/manual/en/function.checkdate.php', 1),
 'acos' => array('acos', 'Math.acos', 'Arc cosine', 'number acos(number)', 'http://www.php.net/manual/en/function.acos.php', 1),
@@ -192,11 +192,6 @@ class ExpressionManager {
         );
 
         $this->amVars = array();
-//
-//        if (isset($exprmgr_functions) && is_array($exprmgr_functions) && count($exprmgr_functions) > 0)
-//        {
-//            $this->amValidFunctions = array_merge($this->amValidFunctions, $exprmgr_functions);
-//        }
     }
 
     /**
@@ -454,15 +449,10 @@ class ExpressionManager {
                     if ($this->isValidVariable($token[0]))
                     {
                         $this->varsUsed[] = $token[0];  // add this variable to list of those used in this equation
-                        if (isset($this->amVars[$token[0]]['relevanceStatus'])) {
-                            $relStatus = $this->amVars[$token[0]]['relevanceStatus'];
-                        }
-                        else {
-                            $relStatus = 1;   // default
-                        }
+                        $relStatus = $this->GetVarAttribute($token[0],'relevanceStatus',1);
                         if ($relStatus==1)
                         {
-                            $result = array($this->amVars[$token[0]]['codeValue'],$token[1],'NUMBER');
+                            $result = array($this->GetVarAttribute($token[0],NULL,0),$token[1],'NUMBER');
                         }
                         else
                         {
@@ -975,9 +965,9 @@ class ExpressionManager {
         $jsNames = array();
         foreach ($names as $name)
         {
-            if (isset($this->amVars[$name]['jsName']) && $this->amVars[$name]['jsName'] != '')
-            {
-                $jsNames[] = $this->amVars[$name]['jsName'];
+            $val = $this->GetVarAttribute($name,'jsName','');
+            if ($val != '') {
+                $jsNames[] = $val;
             }
         }
         return array_unique($jsNames);
@@ -999,9 +989,9 @@ class ExpressionManager {
         $jsNames = array();
         foreach ($names as $name)
         {
-            if (isset($this->amVars[$name]['jsName']) && $this->amVars[$name]['jsName'] != '')
-            {
-                $jsNames[] = $this->amVars[$name]['jsName'];
+            $val = $this->GetVarAttribute($name,'jsName','');
+            if ($val != '') {
+                $jsNames[] = $val;
             }
         }
         return array_unique($jsNames);
@@ -1014,11 +1004,7 @@ class ExpressionManager {
      */
     public function GetJsVarFor($name)
     {
-        if (isset($this->amVars[$name]) && isset($this->amVars[$name]['jsName']))
-        {
-            return $this->amVars[$name]['jsName'];
-        }
-        return '';
+        return $this->GetVarAttribute($name,'jsName','');
     }
 
     /**
@@ -1089,45 +1075,30 @@ class ExpressionManager {
                     }
                     elseif ($i+1<$numTokens && $tokens[$i+1][2] == 'ASSIGN')
                     {
-                        $varInfo = $this->GetVarInfo($token[0]);
-                        $jsName = $varInfo['jsName'];
-                        $relevanceNum = (isset($varInfo['relevanceNum']) ? $varInfo['relevanceNum'] : '');
+                        $jsName = $this->GetVarAttribute($token[0],'jsName','');
+                        $relevanceNum = $this->GetVarAttribute($token[0],'relevanceNum','');
                         $stringParts[] = "document.getElementById('" . $jsName . "').value";
                         if ($tokens[$i+1][0] == '+=')
                         {
                             // Javascript does concatenation unless both left and right side are numbers, so refactor the equation
-                            if (preg_match("/^.*\.NAOK$/",$token[0]))
-                            {
-                                $varName = preg_replace("/^(.*)\.NAOK$/", "$1", $token[0]);
-                            }
-                            else
-                            {
-                                $varName = $token[0];
-                            }
+                            $varName = $this->GetVarAttribute($token[0],'varName',$token[0]);
                             $stringParts[] = " = LEMval('" . $varName . "') + ";
                             ++$i;
                         }
                     }
                     else
                     {
-                        $varInfo = $this->GetVarInfo($token[0]);
-                        $jsName = $varInfo['jsName'];
-                        $relevanceNum = (isset($varInfo['relevanceNum']) ? $varInfo['relevanceNum'] : '');
+                        $jsName = $this->GetVarAttribute($token[0],'jsName','');
+                        $relevanceNum = $this->GetVarAttribute($token[0],'relevanceNum','');
+                        $codeValue = $this->GetVarAttribute($token[0],'code','');
                         if ($jsName != '')
                         {
-                            if (preg_match("/^.*\.NAOK$/",$token[0]))
-                            {
-                                $varName = preg_replace("/^(.*)\.NAOK$/", "$1", $token[0]);
-                            }
-                            else
-                            {
-                                $varName = $token[0];
-                            }
+                            $varName = $this->GetVarAttribute($token[0],'varName',$token[0]);
                             $stringParts[] = "LEMval('" . $varName . "') ";
                         }
                         else
                         {
-                            $stringParts[] = is_numeric($varInfo['codeValue']) ? $varInfo['codeValue'] : ("'" . addcslashes($varInfo['codeValue'],"'") . "'"); // htmlspecialchars($varInfo['codeValue'],ENT_QUOTES,'UTF-8',false) . "'");
+                            $stringParts[] = is_numeric($codeValue) ? $codeValue : ("'" . addcslashes($codeValue,"'") . "'"); // htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false) . "'");
                         }
                     }
                     break;
@@ -1160,7 +1131,7 @@ class ExpressionManager {
         }
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
         $nonNAvarsUsed = array();
-        foreach ($this->GetJsVarsUsed() as $var)
+        foreach ($this->GetVarsUsed() as $var)    // this function wants to see the NAOK suffix
         {
             if (!preg_match("/^.*\.NAOK$/", $var))
             {
@@ -1277,21 +1248,18 @@ class ExpressionManager {
             switch ($token[2])
             {
                 case 'DQ_STRING':
-//                    $messages[] = 'STRING';
                     $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: gray'>\"";
                     $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "\"</span>";
                     break;
                 case 'SQ_STRING':
-//                    $messages[] = 'STRING';
                     $stringParts[] = "<span title='" . implode('; ',$messages) . "' style='color: gray'>'";
                     $stringParts[] = $token[0]; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "'</span>";
                     break;
                 case 'SGQA':
-//                    $messages[] = 'SGQA Identifier';
-                    $varInfo = $this->GetVarInfo($token[0]);
-                    $messages[] = 'value=' . htmlspecialchars($varInfo['codeValue'],ENT_QUOTES,'UTF-8',false);
+                    $codeValue = $this->GetVarAttribute($token[0], 'displayValue', '');
+                    $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
                     $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: #4C88BE; font-weight: bold'>";
                     $stringParts[] = $token[0];
                     $stringParts[] = "</span>";
@@ -1300,7 +1268,6 @@ class ExpressionManager {
                     if ($i+1<$numTokens && $tokens[$i+1][2] == 'LP')
                     {
                         // then word is a function name
-//                        $messages[] = 'Function';
                         if ($this->isValidFunction($token[0])) {
                             $funcInfo = $this->amValidFunctions[$token[0]];
                             $messages[] = $funcInfo[2];
@@ -1312,15 +1279,17 @@ class ExpressionManager {
                     }
                     else
                     {
-                        $varInfo = $this->GetVarInfo($token[0]);
-                        if (isset($varInfo['isOnCurrentPage']) && $varInfo['isOnCurrentPage']=='Y')
+                        $isOnCurrentPage = $this->GetVarAttribute($token[0],'isOnCurrentPage','N');
+                        $jsName = $this->GetVarAttribute($token[0],'jsName','');
+                        $codeValue = $this->GetVarAttribute($token[0],'codeValue','');
+                        if ($isOnCurrentPage=='Y')
                         {
                             $messages[] = 'Variable that is set on current page';
-                            if (strlen(trim($varInfo['jsName'])) > 0) {
-                                $messages[] = $varInfo['jsName'];
+                            if ($jsName != '') {
+                                $messages[] = $jsName;
                             }
-                            if (strlen(trim($varInfo['codeValue'])) > 0) {
-                                $messages[] = 'value=' . htmlspecialchars($varInfo['codeValue'],ENT_QUOTES,'UTF-8',false); 
+                            if ($codeValue != '') {
+                                $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
                             }
                             $stringParts[] = "<span title='". implode('; ',$messages) . "' style='color: #a0522d; font-weight: bold'>";
                             $stringParts[] = $token[0];
@@ -1328,11 +1297,11 @@ class ExpressionManager {
                         }
                         else
                         {
-                            if (strlen(trim($varInfo['jsName'])) > 0) {
-                                $messages[] = $varInfo['jsName'];
+                            if ($jsName != '') {
+                                $messages[] = $jsName;
                             }
-                            if (strlen(trim($varInfo['codeValue'])) > 0) {
-                                $messages[] = 'value=' . htmlspecialchars($varInfo['codeValue'],ENT_QUOTES,'UTF-8',false); 
+                            if ($codeValue != '') {
+                                $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
                             }
                             $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: #228b22; font-weight: bold'>";
                             $stringParts[] = $token[0];
@@ -1366,96 +1335,54 @@ class ExpressionManager {
     }
 
     /**
-     * Return an array of human-readable errors (message, offending token, offset of offending token within equation)
-     * @return array
-     */
-    public function GetReadableErrors()
-    {
-        // Try to color code the equation
-        // Surround whole message with a span, so can add ToolTip of generic error messages
-        // Surround each identifiable error with a span so can color code it and attach its own ToolTip (e.g. unknown function or variable name)
-        if (count($this->errs) == 0) {
-            return '';
-        }
-        usort($this->errs,"cmpErrorTokens");    // sort errors in order of occurence in string
-        $parts = array();
-        $curpos = 0;
-        $generalErrs = array();
-        foreach ($this->errs as $err)
-        {
-            $token = $err[1];
-            if (is_null($token)) {
-                if (strlen($err[0]) > 0) {
-                    $generalErrs[] = $err[0];
-                }
-                continue;
-            }
-            $pos = $token[1];
-            if ($token[2] == 'DQ_STRING')
-            {
-                $tok = '"' . addslashes($token[0]) . '"';
-            }
-            elseif ($token[2] == 'SQ_STRING')
-            {
-                $tok = "'" . addslashes($token[0]) . "'";
-            }
-            else
-            {
-                $tok =$token[0];
-            }
-            if (!is_numeric($pos)) {
-                if (strlen($err[0]) > 0) {
-                    $generalErrs[] = $err[0];
-                }
-                continue;
-            }
-            $parts[]= array(
-                'OkString' => substr($this->expr,$curpos,($pos-$curpos)),
-                'BadString' => $tok,
-                'msg' => $err[0]
-                );
-            $curpos = $pos + strlen($tok);
-        }
-        if ($curpos < strlen($this->expr)) {
-            $parts[] = array(
-                'OkString' => substr($this->expr, $curpos, strlen($this->expr) - $curpos),
-                'BadString' => '',
-                'msg' => ''
-            );
-        }
-        $msg = '';
-        $errSpecificStyle= "style='border-style: solid; border-width: 2px; border-color: red;'";
-        $errGeneralStyle = "style='background-color: #eee8aa;'";
-        foreach ($parts as $part)
-        {
-            $msg .= $part['OkString'];
-            if (isset($part['BadString']) && strlen($part['BadString']) > 0)
-            {
-                if (strlen($part['msg']) > 0) {
-                    $msg .= "<span title='" . $part['msg'] . "' " . $errSpecificStyle . ">" . $part['BadString'] . "</span>";
-                }
-                else {
-                    $msg .= "<span " . $errSpecificStyle . ">" . $part['BadString'] . "</span>";
-                }
-            }
-        }
-        $extraErrs = implode("; ", $generalErrs);
-        $msg = "<span title='" . $extraErrs . "' " . $errGeneralStyle . ">" . $msg . "</span>";
-        return $msg;
-    }
-    
-    /**
      * Get information about the variable, including JavaScript name, read-write status, and whether set on current page.
      * @param <type> $varname
      * @return <type>
      */
-    public function GetVarInfo($varname)
+    public function GetVarAttribute($name,$attr,$default)
     {
-        if (isset($this->amVars[$varname]))
+        $args = explode(".", $name);
+        $varName = $args[0];
+        if (!isset($this->amVars[$varName]))
         {
-            return $this->amVars[$varname];
+//            echo 'UNDEFINED VARIABLE: ' . $varName;
+            return $default;    // and throw error?
         }
-        return NULL;
+        $var = $this->amVars[$varName];
+        if (is_null($attr))
+        {
+            // then use the requested attribute, if any
+            // TODO: adjust this for INSERTANS?
+            $attr = (count($args)==2) ? $args[1] : 'code';
+        }
+        switch ($attr)
+        {
+            case 'varName': 
+                return $name;
+            case 'code':
+            case 'codeValue':
+            case 'NAOK':
+                // TODO: check relevance first for non-NAOK?
+                return (isset($var['codeValue'])) ? $var['codeValue'] : $default;
+            case 'isOnCurrentPage':
+            case 'jsName':
+            case 'mandatory':
+            case 'qid':
+            case 'question':
+            case 'readWrite':
+            case 'relevance':
+            case 'relevanceNum':
+            case 'relevanceStatus':
+            case 'type':
+                return (isset($var[$attr])) ? $var[$attr] : $default;
+            case 'displayValue':
+            case 'shown':
+                return (isset($var['displayValue'])) ? $var['displayValue'] : $default;
+            default:
+                echo 'UNDEFINED ATTRIBUTE: ' . $attr;
+                return $default;
+        }
+        return $default;    // and throw and error?
     }
 
     /**
@@ -1553,7 +1480,8 @@ class ExpressionManager {
      */
     private function isValidVariable($name)
     {
-        return array_key_exists($name,$this->amVars);
+        $varName = preg_replace("/^(.*?)(?:\.(?:" . ExpressionManager::$regex_var_attr . "))?$/", "$1", $name);
+        return array_key_exists($varName,$this->amVars);
     }
 
     /**
@@ -1563,8 +1491,7 @@ class ExpressionManager {
      */
     private function isWritableVariable($name)
     {
-        $var = $this->amVars[$name];
-        return ($var['readWrite'] == 'Y');
+        return ($this->GetVarAttribute($name, 'readWrite', 'N') == 'Y');
     }
     
     /**
@@ -1652,7 +1579,6 @@ class ExpressionManager {
                 else
                 {
                     // show original and errors in-line
-//                    $resolvedParts[] = $this->GetReadableErrors();
                     $resolvedPart = $this->GetPrettyPrintString();
                 }
                 $jsVarsUsed = $this->GetJsVarsUsed();
@@ -1663,8 +1589,8 @@ class ExpressionManager {
                 if (count($jsVarsUsed) > 0)
                 {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
-//                    $resolvedParts[] = "<span id='" . $idName . "' name='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
-                    $resolvedParts[] = "<span id='" . $idName . "' name='" . $idName . "'>" . $resolvedPart . "</span>";
+//                    $resolvedParts[] = "<span id='" . $idName . "'>" . htmlspecialchars($resolvedPart,ENT_QUOTES,'UTF-8',false) . "</span>"; // TODO - encode within SPAN?
+                    $resolvedParts[] = "<span id='" . $idName . "'>" . $resolvedPart . "</span>";
                     $this->substitutionVars[$idName] = 1;
                     $this->substitutionInfo[] = array(
                         'questionNum' => $questionNum,
@@ -2066,6 +1992,7 @@ EOD;
         Assign:  = += -= *= /=
         SGQA:  1X6X12 1X6X12ber1 1X6X12ber1_lab1 3583X84X249
         Errors: Apt # 10C; (2 > 0) ? 'hi' : 'there'; array[30]; >>> <<< /* this is not a comment */ // neither is this
+        Words:  q5pointChoice q5pointChoice.bogus q5pointChoice.code q5pointChoice.mandatory q5pointChoice.NAOK q5pointChoice.qid q5pointChoice.question q5pointChoice.relevance q5pointChoice.shown q5pointChoice.type
 EOD;
 
         $em = new ExpressionManager();
@@ -2103,7 +2030,6 @@ EOD;
     
     static function UnitTestEvaluator()
     {
-//        global $exprmgr_extraVars, $exprmgr_extraTests; // so can access variables from ExpressionManagerFunctions.php
         // Some test cases for Evaluator
         $vars = array(
 'one' => array('codeValue'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
@@ -2146,9 +2072,9 @@ EOD;
 'GID' => array('codeValue'=>'value for {GID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'GROUPDESCRIPTION' => array('codeValue'=>'value for {GROUPDESCRIPTION}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'GROUPNAME' => array('codeValue'=>'value for {GROUPNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:123X45X67' => array('codeValue'=>'value for {INSERTANS:123X45X67}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:123X45X67ber' => array('codeValue'=>'value for {INSERTANS:123X45X67ber}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:123X45X67ber_01a' => array('codeValue'=>'value for {INSERTANS:123X45X67ber_01a}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:123X45X67' => array('displayValue'=>'value for {INSERTANS:123X45X67}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:123X45X67ber' => array('displayValue'=>'value for {INSERTANS:123X45X67ber}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:123X45X67ber_01a' => array('displayValue'=>'value for {INSERTANS:123X45X67ber_01a}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'LANGUAGECHANGER' => array('codeValue'=>'value for {LANGUAGECHANGER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'LANGUAGE' => array('codeValue'=>'value for {LANGUAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'LANG' => array('codeValue'=>'value for {LANG}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
@@ -2229,10 +2155,8 @@ EOD;
 // also include SGQA values and read-only variable attributes
 '12X34X56'  => array('codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 '12X3X5lab1_ber'    => array('codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'q5pointChoice.code'    => array('codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'q5pointChoice.value'   => array('codeValue'=> 'Father', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'qArrayNumbers.ls1.min.code'    => array('codeValue'=> 7, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'qArrayNumbers.ls1.min.value' => array('codeValue'=> 'I love LimeSurvey', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'q5pointChoice'    => array('codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>12),
+'qArrayNumbers_ls1_min'    => array('codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6),
 '12X3X5lab1_ber#2'  => array('codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
         );
 
@@ -2240,6 +2164,16 @@ EOD;
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
+3~q5pointChoice.code
+Father~q5pointChoice.shown
+5~q5pointChoice.type
+(question for q5pointChoice)~q5pointChoice.question
+1~q5pointChoice.relevance
+4~q5pointChoice.NAOK + 1
+NULL~q5pointChoice.bogus
+12~q5pointChoice.qid
+7~qArrayNumbers_ls1_min.code
+I love LimeSurvey~qArrayNumbers_ls1_min.shown
 6~max(five,(one + (two * four)- three))
 6~max((one + (two * four)- three))
 212~5 + max(1,(2+3),(4 + (5 + 6)),((7 + 8) + 9),((10 + 11), 12),(13 + (14 * 15) - 16))
@@ -2323,10 +2257,6 @@ value for {QID}~QID
 Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?~QUESTION_HELP
 value for {TOKEN:FIRSTNAME}~TOKEN:FIRSTNAME
 value for {THEREAREXQUESTIONS}~THEREAREXQUESTIONS
-5~q5pointChoice.code
-Father~q5pointChoice.value
-7~qArrayNumbers.ls1.min.code
-I love LimeSurvey~qArrayNumbers.ls1.min.value
 15~12X3X5lab1_ber#2
 NULL~*
 NULL~three +
@@ -2436,65 +2366,10 @@ EOD;
 
         $em = new ExpressionManager();
         $em->RegisterVarnamesUsingMerge($vars);
-//
-//        if (isset($exprmgr_extraVars) && is_array($exprmgr_extraVars) and count($exprmgr_extraVars) > 0)
-//        {
-//            $em->RegisterVarnamesUsingMerge($exprmgr_extraVars);
-//        }
-//        if (isset($exprmgr_extraTests) && is_string($exprmgr_extraTests))
-//        {
-//            $tests .= "\n" . $exprmgr_extraTests;
-//        }
 
-        // Find all variables used on this page
         $allJsVarnamesUsed = array();
-        foreach(explode("\n",$tests) as $test)
-        {
-            $values = explode("~",$test);
-            $expectedResult = array_shift($values);
-            $expr = implode("~",$values);
-            $status = $em->Evaluate($expr,false);   // test the equation without actually running it
-            if ($status)
-            {
-                $allJsVarnamesUsed = array_merge($allJsVarnamesUsed,$em->GetJsVarsUsed());
-            }
-        }
-        $allJsVarnamesUsed = array_unique($allJsVarnamesUsed);
-        asort($allJsVarnamesUsed);
-        print "<h3>Change some Relevance values to 0 to see how it affects computations</h3>\n";
-        print '<table border="1"><tr><th>#</th><th>JsVarname</th><th>Starting Value</th><th>Relevance</th></tr>';
-        $i=0;
-        $LEMvarNameAttr=array();
-        $LEMalias2varName=array();
-        foreach ($allJsVarnamesUsed as $jsVarName)
-        {
-            ++$i;
-            print "<tr><td>" .  $i . "</td><td>" . $jsVarName;
-            foreach($em->amVars as $k => $v) {
-                if ($v['jsName'] == $jsVarName)
-                {
-                    $value = $v['codeValue'];
-                }
-            }
-            print "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1' onchange='recompute()'/>\n";
-            print "<input type='hidden' name='" . $jsVarName . "' id='" . $jsVarName . "' value='" . $value . "'/>\n";
-            print "</td></tr>\n";
-            $LEMalias2varName[] = "'" . substr($jsVarName,5) . "':'" . $jsVarName . "'";
-            $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
-            $LEMvarNameAttr[] = "'" . $jsVarName .  "': {"
-                . "'jsName':'" . $jsVarName
-                . "','code':'" . htmlspecialchars(preg_replace("/[[:space:]]/",' ',$value),ENT_QUOTES)
-                . "','qid':" . $i . "}";
-        }
-        print "</table>\n";
-
-        print "<script type='text/javascript'>\n";
-        print "<!--\n";
-        print "var LEMalias2varName= {". implode(",\n", $LEMalias2varName) ."};\n";
-        print "var LEMvarNameAttr= {" . implode(",\n", $LEMvarNameAttr) . "};\n";
-        print "//-->\n</script>\n";
-
-        print '<table border="1"><tr><th>Expression</th><th>PHP Result</th><th>Expected</th><th>JavaScript Result</th><th>VarNames</th><th>JavaScript Eqn</th></tr>';
+        $body = '';
+        $body .= '<table border="1"><tr><th>Expression</th><th>PHP Result</th><th>Expected</th><th>JavaScript Result</th><th>VarNames</th><th>JavaScript Eqn</th></tr>';
         $i=0;
         $javaScript = array();
         foreach(explode("\n",$tests)as $test)
@@ -2505,11 +2380,15 @@ EOD;
             $expr = implode("~",$values);
             $resultStatus = 'ok';
             $status = $em->Evaluate($expr);
+            if ($status)
+            {
+                $allJsVarnamesUsed = array_merge($allJsVarnamesUsed,$em->GetJsVarsUsed());
+            }
             $result = $em->GetResult();
             $valToShow = $result;   // htmlspecialchars($result,ENT_QUOTES,'UTF-8',false);
             $expectedToShow = $expectedResult; // htmlspecialchars($expectedResult,ENT_QUOTES,'UTF-8',false);
-            print "<tr>";
-            print "<td>" . $em->GetPrettyPrintString() . "</td>\n";
+            $body .= "<tr>";
+            $body .= "<td>" . $em->GetPrettyPrintString() . "</td>\n";
             if (is_null($result)) {
                 $valToShow = "NULL";
             }
@@ -2517,39 +2396,95 @@ EOD;
             {
                 $resultStatus = 'error';
             }
-            print "<td class='" . $resultStatus . "'>" . $valToShow . "</td>\n";
-            print '<td>' . $expectedToShow . "</td>\n";
+            $body .= "<td class='" . $resultStatus . "'>" . $valToShow . "</td>\n";
+            $body .= '<td>' . $expectedToShow . "</td>\n";
             $javaScript[] = $em->GetJavascriptTestforExpression($expectedToShow, $i);
-            print "<td id='test_" . $i . "'>&nbsp;</td>\n";
+            $body .= "<td id='test_" . $i . "'>&nbsp;</td>\n";
             $varsUsed = $em->GetVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
                 $varDesc = array();
                 foreach ($varsUsed as $v) {
-                    $varInfo = $em->GetVarInfo($v);
                     $varDesc[] = $v;
                 }
-                print '<td>' . implode(',<br/>', $varDesc) . "</td>\n";
+                $body .= '<td>' . implode(',<br/>', $varDesc) . "</td>\n";
             }
             else {
-                print "<td>&nbsp;</td>\n";
+                $body .= "<td>&nbsp;</td>\n";
             }
             $jsEqn = $em->GetJavaScriptEquivalentOfExpression();
             if ($jsEqn == '')
             {
-                print "<td>&nbsp;</td>\n";
+                $body .= "<td>&nbsp;</td>\n";
             }
             else
             {
-                print '<td>' . $jsEqn . "</td>\n";
+                $body .= '<td>' . $jsEqn . "</td>\n";
             }
-            print '</tr>';
+            $body .= '</tr>';
         }
-        print '</table>';
-        print "<script type='text/javascript'>\n";
-        print "<!--\n";
-        print "function recompute() {\n";
-        print implode("\n",$javaScript);
-        print "}\n//-->\n</script>\n";
+        $body .= '</table>';
+        $body .= "<script type='text/javascript'>\n";
+        $body .= "<!--\n";
+        $body .= "function recompute() {\n";
+        $body .= implode("\n",$javaScript);
+        $body .= "}\n//-->\n</script>\n";
+        
+        $allJsVarnamesUsed = array_unique($allJsVarnamesUsed);
+        asort($allJsVarnamesUsed);
+        $pre = '';
+        $pre .= "<h3>Change some Relevance values to 0 to see how it affects computations</h3>\n";
+        $pre .= '<table border="1"><tr><th>#</th><th>JsVarname</th><th>Starting Value</th><th>Relevance</th></tr>';
+        $i=0;
+        $LEMvarNameAttr=array();
+        $LEMalias2varName=array();
+        foreach ($allJsVarnamesUsed as $jsVarName)
+        {
+            ++$i;
+            $pre .= "<tr><td>" .  $i . "</td><td>" . $jsVarName;
+            foreach($em->amVars as $k => $v) {
+                if ($v['jsName'] == $jsVarName)
+                {
+                    $value = $v['codeValue'];
+                }
+            }
+            $pre .= "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1' onchange='recompute()'/>\n";
+            $pre .= "<input type='hidden' id='" . $jsVarName . "' value='" . $value . "'/>\n";
+            $pre .= "</td></tr>\n";
+            $LEMalias2varName[] = "'" . substr($jsVarName,5) . "':'" . $jsVarName . "'";
+            $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
+            $attrInfo = "'" . $jsVarName .  "': {'jsName':'" . $jsVarName . "'";
+
+            // populate this from $em->amVars - cheat, knowing that the jsVaraName will be java_xxxx
+            $varInfo = $em->amVars[substr($jsVarName,5)];
+            foreach ($varInfo as $k=>$v) {
+                if ($k == 'codeValue') {
+                    continue;   // will access it from hidden node
+//                    $k = 'code';
+//                    $v = htmlspecialchars(preg_replace("/[[:space:]]/",' ',$v),ENT_QUOTES);
+                }
+               if ($k == 'displayValue') {
+                    $k = 'shown';
+                    $v = htmlspecialchars(preg_replace("/[[:space:]]/",' ',$v),ENT_QUOTES);
+                }
+                if ($k == 'jsName') {
+                    continue;   // since already set
+                }
+                $attrInfo .= ", '" . $k . "':'" . $v . "'";
+
+            }
+            $attrInfo .= ",'qid':" . $i . "}";
+            $LEMvarNameAttr[] = $attrInfo;
+        }
+        $pre .= "</table>\n";
+
+        $pre .= "<script type='text/javascript'>\n";
+        $pre .= "<!--\n";
+        $pre .= "var LEMalias2varName= {". implode(",\n", $LEMalias2varName) ."};\n";
+        $pre .= "var LEMvarNameAttr= {" . implode(",\n", $LEMvarNameAttr) . "};\n";
+        $pre .= "//-->\n</script>\n";
+
+        print $pre;
+        print $body;
     }
 }
 

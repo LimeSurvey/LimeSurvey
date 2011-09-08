@@ -6,7 +6,6 @@
  *
  * @author Thomas M. White
  */
-// TMSWhite:  LimeSurvey extensions to core Expression Manager - renamed to follow CI naming conventions
 include_once('em_core_helper.php');
 
 class LimeExpressionManager {
@@ -19,7 +18,6 @@ class LimeExpressionManager {
     private $pageRelevanceInfo;
     private $pageTailorInfo;
     private $allOnOnePage=false;    // internally set to true for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
-    private $resetFunctions;
     private $qid2code;  // array of mappings of Question # to list of SGQA codes used within it
     private $jsVar2qid; // reverse mapping of JavaScript Variable name to Question
     private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
@@ -144,8 +142,8 @@ class LimeExpressionManager {
                     $question = $fielddata['question'];
                     break;
                 case '1': //Array (Flexible Labels) dual scale
-                    $varName = $fielddata['title'] . '.' . $fielddata['aid'] . '.' . $fielddata['scale_id'];
-                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . ': ' . $fielddata['scale'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];
+                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
@@ -158,13 +156,13 @@ class LimeExpressionManager {
                 case 'P': //Multiple choice with comments checkbox + text
                 case 'Q': //MULTIPLE SHORT TEXT
                 case 'R': //RANKING STYLE
-                    $varName = $fielddata['title'] . '.' . $fielddata['aid'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                     break;
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
-                    $varName = $fielddata['title'] . '.' . $fielddata['aid'];
-                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . ': ' . $fielddata['subquestion2'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
+                    $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                     break;
             }
             switch($fielddata['type'])
@@ -218,7 +216,7 @@ class LimeExpressionManager {
                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
                     if (preg_match("/comment$/", $code)) {
                         $jsVarName = 'java' . $code;
-                        $varName = $varName . ".comment";
+                        $varName = $varName . "_comment";
                     }
                     else {
                         $jsVarName = 'java' . $code;
@@ -360,42 +358,13 @@ class LimeExpressionManager {
             'isOnCurrentPage'=>$isOnCurrentPage,
             'displayValue'=>$displayValue,
             'question'=>$question,
+            'qid'=>$questionNum,
             'relevance'=>$relevance,
             'relevanceNum'=>'relevance' . $questionNum,
             'relevanceStatus'=>$relStatus,
             );
-        $varInfo_DisplayVal = array(
-            'codeValue'=>$displayValue,
-            'jsName'=>'',
-            'readWrite'=>'N',
-            'isOnCurrentPage'=>$isOnCurrentPage,
-            'relevanceNum'=>'relevance' . $questionNum,
-            'relevanceStatus'=>$relStatus,
-            );
-        $varInfo_Question = array(
-            'codeValue'=>$question,
-            'jsName'=>'',
-            'readWrite'=>'N',
-            'isOnCurrentPage'=>$isOnCurrentPage,
-            'relevanceNum'=>'relevance' . $questionNum,
-            'relevanceStatus'=>$relStatus,
-            );
-        $varInfo_NAOK = array(
-            'codeValue'=>$codeValue,
-            'jsName'=>$jsVarName . '.NAOK',
-            'readWrite'=>$readWrite,
-            'isOnCurrentPage'=>$isOnCurrentPage,
-            'displayValue'=>$displayValue,
-            'question'=>$question,
-            'relevance'=>'1',
-            'relevanceNum'=>'',
-            'relevanceStatus'=>'1',
-            );
         $this->knownVars[$varName] = $varInfo_Code;
-        $this->knownVars[$varName . '.shown'] = $varInfo_DisplayVal;
-        $this->knownVars[$varName . '.question']= $varInfo_Question;
-        $this->knownVars['INSERTANS:' . $code] = $varInfo_DisplayVal;
-        $this->knownVars[$varName . '.NAOK'] = $varInfo_NAOK;
+        $this->knownVars['INSERTANS:' . $code] = $varInfo_Code; // $varInfo_DisplayVal;
 
         $this->jsVar2qid[$jsVarName] = $questionNum;
 
@@ -407,12 +376,13 @@ class LimeExpressionManager {
 
         $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
             . "'jsName':'" . $jsVarName
-            . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
+//            . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
             . "','qid':" . $questionNum
             . ",'mandatory':'" . $mandatory
             . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
             . "','type':'" . $type
             . "','relevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES)
+            . "','shown':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$displayValue),ENT_QUOTES)
             . "'}";
 
         if ($this->debugLEM)
@@ -532,7 +502,6 @@ class LimeExpressionManager {
         $lem = LimeExpressionManager::singleton();
         $lem->pageRelevanceInfo=array();
         $lem->pageTailorInfo=array();
-        $lem->resetFunctions=array();
         $lem->alias2varName=array();
         $lem->varNameAttr=array();
         $lem->allOnOnePage=$allOnOnePage;
@@ -547,8 +516,6 @@ class LimeExpressionManager {
 
     static function StartProcessingGroup($groupNum=NULL,$anonymized=false,$surveyid=NULL)
     {
-//        $surveyid = returnglobal('sid');
-
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
         $em->StartProcessingGroup();
@@ -561,7 +528,6 @@ class LimeExpressionManager {
             if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager(true,$anonymized,$lem->allOnOnePage,$surveyid))
             {
                 // means that some values changed, so need to update what was registered to ExpressionManager
-//                $em->RegisterVarnamesUsingReplace($lem->knownVars);
                 $em->RegisterVarnamesUsingMerge($lem->knownVars);
             }
         }
@@ -695,16 +661,6 @@ class LimeExpressionManager {
                 $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                 $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
                 $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
-                // Which variable needs to be blanked?  Depends on the type of question
-                if (isset($lem->resetFunctions[$arg['qid']]))
-                {
-                    $jsParts[] = "  reset_question_" . $arg['qid'] . "();\n";
-                }
-                else
-                {
-                    // Function hasn't been defined yet
-//                    $jsParts[] = "  try { reset_question_" . $arg['qid'] . "(); } catch (e) { }\n";
-                }
                 $jsParts[] = "}\n";
 
                 $vars = explode('|',$arg['relevanceVars']);
@@ -717,11 +673,6 @@ class LimeExpressionManager {
         $jsParts[] = "}\n";
 
         $allJsVarsUsed = array_unique($allJsVarsUsed);
-
-        foreach($lem->resetFunctions as $resetFn)
-        {
-            $jsParts[] = $resetFn;
-        }
 
         // Add JavaScript Mapping Arrays
         if (isset($lem->alias2varName) && count($lem->alias2varName) > 0)
@@ -796,7 +747,8 @@ class LimeExpressionManager {
             foreach ($undeclaredJsVars as $jsVar)
             {
                 // TODO - is different type needed for text?  Or process value to striphtml?
-                $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar . "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                if ($jsVar == '') continue;
+                $jsParts[] = "<input type='hidden' id='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
             }
         }
         sort($qidList,SORT_NUMERIC);
@@ -808,21 +760,14 @@ class LimeExpressionManager {
             else {
                 $relStatus = 1;
             }
-            $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid . "' value='" . $relStatus . "'/>\n";
+            $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' value='" . $relStatus . "'/>\n";
             if (isset($lem->qid2code[$qid]))
             {
-                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' name='relevance" . $qid . "codes' value='" . $lem->qid2code[$qid] . "'/>\n";
+                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' value='" . $lem->qid2code[$qid] . "'/>\n";
             }
         }
 
         return implode('',$jsParts);
-    }
-
-    static function SetResetFunction($questionNum, $functionContents)
-    {
-        $lem = LimeExpressionManager::singleton();
-        $fn = "function reset_question_" . $questionNum . "() {\n" . $functionContents . "\n}\n";
-        $lem->resetFunctions[$questionNum] = $fn;
     }
 
     /**
@@ -889,7 +834,6 @@ EOST;
 
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
-//        $em->StartProcessingGroup();
         $em->RegisterVarnamesUsingMerge($vars);
 
         print '<table border="1"><tr><th>Test</th><th>Result</th></tr>';    // <th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
@@ -897,25 +841,9 @@ EOST;
         {
             $test = $alltests[$i];
             $result = LimeExpressionManager::ProcessString($test, $i, NULL, false, 1, 1);
-//            $result = $em->sProcessStringContainingExpressions($test,$i,2,1);
             $prettyPrint = LimeExpressionManager::GetLastPrettyPrintExpression();
-//            $prettyPrint = $em->GetLastPrettyPrintExpression();
             print "<tr><td>" . $prettyPrint . "</td>\n";
             print "<td>" . $result . "</td>\n";
-            /*
-            $varsUsed = $em->getAllVarsUsed();
-            if (is_array($varsUsed) and count($varsUsed) > 0) {
-                $varDesc = array();
-                foreach ($varsUsed as $v) {
-                    $varInfo = $em->GetVarInfo($v);
-                    $varDesc[] = $v . '(' . $varInfo['jsName'] . ',' . $varInfo['readWrite'] . ',' . $varInfo['isOnCurrentPage'] . ')';
-                }
-                print '<td>' . implode(',<br/>', $varDesc) . "</td>\n";
-            }
-            else {
-                print "<td>&nbsp;</td>\n";
-            }
-             */
             print "</tr>\n";
         }
         print '</table>';
@@ -959,7 +887,6 @@ EOT;
         {
             $args = explode("~",$test);
             $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'relevanceNum'=>'relevance' . $i++, 'relevanceStatus'=>'1');
-            $varsNAOK[$args[0] . '.NAOK'] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0] . '.NAOK', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'relevanceNum'=>'', 'relevanceStatus'=>'1');
             $varSeq[] = $args[0];
             $testArgs[] = $args;
         }
@@ -971,7 +898,6 @@ EOT;
         $lem = LimeExpressionManager::singleton();
         $em = $lem->em;
         $em->RegisterVarnamesUsingMerge($vars);
-        $em->RegisterVarnamesUsingMerge($varsNAOK);
 
         // collect relevance
         $alias2varName = array();
@@ -1014,8 +940,8 @@ EOT;
             if ($arg['type'] == 'expr')
             {
                 // Hack for testing purposes - rather than using LimeSurvey internals to store the results of equations, process them via a hidden <div>
-                print "<div style='display: none' name='hack_" . $arg['name'] . "' id='hack_" . $arg['name'] . "'>" . $arg['question'];
-                print "<input type='hidden' name='" . $arg['name'] . "' id='" . $arg['name'] . "' value=''/></div>\n";
+                print "<div style='display: none' id='hack_" . $arg['name'] . "'>" . $arg['question'];
+                print "<input type='hidden' id='" . $arg['name'] . "' value=''/></div>\n";
             }
             else {
                 print "<table border='1' width='100%'>\n<tr>\n<td>[Q" . $arg['num'] . "] " . $arg['question'] . "</td>\n";
@@ -1023,23 +949,14 @@ EOT;
                 {
                     case 'yesno':
                     case 'text':
-                        print "<td><input type='text' name='" . $arg['name'] . "' id='" . $arg['name'] . "' value='' onchange='ExprMgr_process_relevance_and_tailoring()'/></td>\n";
+                        print "<td><input type='text' id='" . $arg['name'] . "' value='' onchange='ExprMgr_process_relevance_and_tailoring()'/></td>\n";
                         break;
                     case 'message':
-                        print "<input type='hidden' name='" . $arg['name'] . "' id='" . $arg['name'] . "' value=''/>\n";
+                        print "<input type='hidden' id='" . $arg['name'] . "' value=''/>\n";
                         break;
                 }
                 print "</tr>\n</table>\n";
             }
-            /*
-            // Placeholder for function to explicitly reset the GUI widget and NULL the stored value
-            print "<script type='text/javascript'>\n<!--\n";
-            print "function reset_question_" . $arg['num'] . "() {\n";
-            print "\tdocument.getElementById('" . $arg['name'] . "').value='';\n";
-            print "\tdocument.getElementByid('display" . $arg['num'] . "').value='on';\n";
-            print "}\n";
-            print "// -->\n</script>\n";
-             */
             print "</div>\n";
         }
         print "</table>";
