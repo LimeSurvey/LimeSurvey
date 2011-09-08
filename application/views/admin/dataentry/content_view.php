@@ -7,10 +7,14 @@
 <td class='data-entry-small-text' valign='top' width='1%'><?php echo $deqrow['title']; ?></td>
 <td valign='top' align='right' width='30%'>
                     <?php if ($deqrow['mandatory']=="Y") //question is mandatory
+                        // TODO - should be mandatory AND relevant
                     { ?>
                         <font color='red'>*</font>
                     <?php } ?>
-                    <strong><?php echo FlattenText($deqrow['question']); ?></strong></td>
+                    <strong><?php
+//                    echo FlattenText($deqrow['question']);
+                        echo $deqrow['question'];   // don't flatten if want to use EM.  However, may not be worth it as want dynamic relevance and question changes
+                    ?></strong></td>
                     <td valign='top'  align='left' style='padding-left: 20px'>
                     
                     <?php if ($deqrow['help'])
@@ -29,7 +33,7 @@
                             </select>
                             <?php break;
                         case "D": //DATE 
-                            $qidattributes = getQuestionAttributes($deqrow['qid'], $deqrow['type']);
+//                            $qidattributes = getQuestionAttributes($deqrow['qid'], $deqrow['type']);
                             $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
                             if(bCanShowDatePicker($dateformatdetails))
                             {
@@ -72,7 +76,7 @@
                             <?php foreach ($dearesult->result_array() as $dearow)
                             { 
                                 // first scale
-                                $delquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=0 ORDER BY sortorder, code";
+                                $delquery = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=0 ORDER BY sortorder, code";
                                 $delresult = db_execute_assoc($delquery); ?>
                                 <tr><td><?php echo $dearow['question']; ?></td><td>
                                 <select name='<?php echo $fieldname.$dearow['title']; ?>#0'>
@@ -82,7 +86,7 @@
                                     <option value='<?php echo $delrow['code']; ?>'><?php echo $delrow['answer']; ?></option>
                                 <?php } ?>
                                 </select></td>
-                                <?php $delquery = "SELECT * FROM ".db_table_name("answers")." WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=1 ORDER BY sortorder, code";
+                                <?php $delquery = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' and scale_id=1 ORDER BY sortorder, code";
                                 $delresult = db_execute_assoc($delquery); ?>
                                 <td>
                                 <select name='<?php echo $fieldname.$dearow['title']; ?>#1'>
@@ -455,7 +459,7 @@
                             <?php break; 
                         case "E": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             ?> <table>
-                            <?php foreach ($mearesult->reult_array() as $mearow)
+                            <?php foreach ($mearesult->result_array() as $mearow)
                             { ?>
                                 <tr>
                                 <td align='right'><?php echo $mearow['question']; ?></td>

@@ -498,7 +498,7 @@
                 /*
                  * TODO:
                  * - mysql fit machen
-                 * -- quotes für mysql beachten --> `
+                 * -- quotes fï¿½r mysql beachten --> `
                  * - warnmeldung mehrsprachig
                  * - testen
                  */
@@ -2282,6 +2282,8 @@
             $data['surveyid'] = $surveyid;
             $data['blang'] = $blang;
 
+            LimeExpressionManager::StartProcessingPage(true,true);  // means that all variables are on the same page
+
             $this->load->view("admin/dataentry/caption_view",$data);
 
             $this->load->helper('database');
@@ -2294,6 +2296,8 @@
             $dataentryoutput = '';
             foreach ($degresult->result_array() as $degrow)
             {
+                LimeExpressionManager::StartProcessingGroup($degrow['gid'],($thissurvey['anonymized']!="N"),$surveyid);
+
                 $deqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
                 $deqresult = db_execute_assoc($deqquery);
                 $dataentryoutput .= "\t<tr>\n"
@@ -2311,6 +2315,12 @@
 
                 foreach ($deqrows as $deqrow)
                 {
+                    $qidattributes = getQuestionAttributes($deqrow['qid'], $deqrow['type']);
+                    $cdata['qidattributes'] = $qidattributes;
+                    $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
+                    // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
+                    LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$deqrow['qid'],NULL,$deqrow['type'],$hidden);
+                    
                     //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
                     $explanation = ""; //reset conditions explanation
                     $s=0;
@@ -2618,7 +2628,7 @@
 
                         case "L": //LIST drop-down/radio-button list
                         case "!":
-                            $qidattributes=getQuestionAttributes($deqrow['qid']);
+//                            $qidattributes=getQuestionAttributes($deqrow['qid']);
                             if ($deqrow['type']=='!' && trim($qidattributes['category_separator'])!='')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
@@ -2679,7 +2689,7 @@
                             if ($defexists=="") {$dataentryoutput .= "<option selected='selected' value=''>".$blang->gT("Please choose")."..</option>\n".$datatemp;}
                             else {$dataentryoutput .=$datatemp;}
 
-                            $oquery="SELECT other FROM ".db_table_name("questions")." WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
+                            $oquery="SELECT other FROM ".$this->db->dbprefix."questions WHERE qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}'";
                             $oresult=db_execute_assoc($oquery) or safe_die("Couldn't get other for list question<br />");
                             foreach($oresult->result_array() as $orow)
                             {
@@ -2707,7 +2717,8 @@
                             $dearesult = db_execute_assoc($deaquery);
                             //$dataentryoutput .= "\t<select name='$fieldname'>\n";
                             $datatemp='';
-                            while ($dearow = $dearesult->FetchRow())
+                            foreach ($dearesult->result_array() as $dearow)
+//                            while ($dearow = $dearesult->FetchRow())
                             {
                                 $datatemp .= "<option value='{$dearow['code']}'";
                                 //if ($dearow['default_value'] == "Y") {$datatemp .= " selected='selected'"; $defexists = "Y";}
@@ -2904,7 +2915,7 @@
                             unset($answers);
                             break;
                         case "M": //Multiple choice checkbox (Quite tricky really!)
-                            $qidattributes=getQuestionAttributes($deqrow['qid']);
+//                            $qidattributes=getQuestionAttributes($deqrow['qid']);
                             if (trim($qidattributes['display_columns'])!='')
                             {
                                 $dcols=$qidattributes['display_columns'];
@@ -3022,7 +3033,7 @@
                             */
                             break;
                         case "|":
-                            $qidattributes = getQuestionAttributes($deqrow['qid']);
+//                            $qidattributes = getQuestionAttributes($deqrow['qid']);
                             $cdata['qidattributes'] = $qidattributes;
                             /**
                             // JS to update the json string
@@ -3213,7 +3224,7 @@
                             */
                             break;
                         case ":": //ARRAY (Multi Flexi)
-                            $qidattributes=getQuestionAttributes($deqrow['qid']);
+//                            $qidattributes=getQuestionAttributes($deqrow['qid']);
                             if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) =='') {
                                 $maxvalue=$qidattributes['multiflexible_max'];
                                 $minvalue=1;
@@ -3391,7 +3402,7 @@
                                 $dataentryoutput .= "<option value=''>".$blang->gT("Please choose")."..</option>\n";
                                 */
 
-                                $fquery = "SELECT * FROM answers WHERE qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY sortorder, code";
+                                $fquery = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid={$deqrow['qid']} and language='{$sDataEntryLanguage}' ORDER BY sortorder, code";
                                 $fresult = db_execute_assoc($fquery);
                                 $cdata['fresult'] = $fresult;
                                 /**
@@ -3413,9 +3424,15 @@
                     //$dataentryoutput .= "\t</tr>\n";
                     //$dataentryoutput .= "\t<tr class='data-entry-separator'><td colspan='3'></td></tr>\n";
 
-                    $dataentryoutput .= $this->load->view("admin/dataentry/content_view",$cdata,TRUE);
+                    $cdata['sDataEntryLanguage'] = $sDataEntryLanguage;
+                    $viewdata = $this->load->view("admin/dataentry/content_view",$cdata,TRUE);
+                    $viewdata_em = LimeExpressionManager::ProcessString($viewdata, $deqrow['qid'], NULL, false, 1, 1);
+                    $dataentryoutput .= $viewdata_em;
                 }
+                LimeExpressionManager::FinishProcessingGroup();
             }
+            LimeExpressionManager::FinishProcessingPage();
+            $dataentryoutput .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
             $sdata['display'] = $dataentryoutput;
             $this->load->view("survey_view",$sdata);
