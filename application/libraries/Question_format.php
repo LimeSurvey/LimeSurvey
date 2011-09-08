@@ -54,7 +54,8 @@ class Question_format {
 		// Previously we used to keep the session and redirect the user to the
 		// submit page.
 		//if (isset($_SESSION['finished'])) {$move="movesubmit"; }
-		
+
+        // TODO - also check relevance
 		//CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 		//First, see if we are moving backwards or doing a Save so far, and its OK not to check:
 		if ($allowmandbackwards==1 && (
@@ -110,7 +111,7 @@ class Question_format {
 		//******************************************************************************************************
 		
 		//GET GROUP DETAILS
-		
+
 		if ($_SESSION['step'] == "0") {$currentquestion=$_SESSION['step'];}
 		else {$currentquestion=$_SESSION['step']-1;}
 		
@@ -128,7 +129,18 @@ class Question_format {
 		}
 		$conditionforthisquestion=$ia[7];
 		$questionsSkipped=0;
-		
+
+        LimeExpressionManager::StartProcessingPage();
+        LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
+        // Skip questions that are irrelevant
+        if (isset($qidattributes['relevance']))
+        {
+            $relevant = LimeExpressionManager::ProcessRelevance($qidattributes['relevance']);
+            if (!$relevant) {
+                // TODO skip the question - need more elegant solution
+                echo 'IRRELEVANT QUESTION!';
+            }
+        }
 		
 		while ($conditionforthisquestion == "Y" || $qidattributes['hidden']==1) //IF CONDITIONAL, CHECK IF CONDITIONS ARE MET; IF HIDDEN MOVE TO NEXT
 		{
@@ -389,7 +401,7 @@ class Question_format {
 		$conmandatoryfns=array();
 		$conditions=array();
 		$inputnames=array();
-		
+	
 		list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
 		if ($plus_qanda)
 		{
@@ -621,6 +633,9 @@ class Question_format {
 		    echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),compact(array_keys(get_defined_vars())));
 		    echo "\n";
 		}
+        LimeExpressionManager::FinishProcessingGroup();
+        LimeExpressionManager::FinishProcessingPage();
+        echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 		
 		$navigator = surveymover();
 		
