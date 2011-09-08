@@ -748,7 +748,7 @@ class LimeExpressionManager {
             {
                 // TODO - is different type needed for text?  Or process value to striphtml?
                 if ($jsVar == '') continue;
-                $jsParts[] = "<input type='hidden' id='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
             }
         }
         sort($qidList,SORT_NUMERIC);
@@ -760,10 +760,10 @@ class LimeExpressionManager {
             else {
                 $relStatus = 1;
             }
-            $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' value='" . $relStatus . "'/>\n";
+            $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid .  "' value='" . $relStatus . "'/>\n";
             if (isset($lem->qid2code[$qid]))
             {
-                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' value='" . $lem->qid2code[$qid] . "'/>\n";
+                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid . "codes' value='" . $lem->qid2code[$qid] . "'/>\n";
             }
         }
 
@@ -934,14 +934,14 @@ EOT;
         print "<table border='1'><tr><td>";
         foreach ($argInfo as $arg)
         {
-            print "<input type='hidden' id='display" . $arg['num'] . "' value='on'/>\n";    // set all as  On by default - relevance processing will blank them as needed
-            print "<input type='hidden' id='relevance" . $arg['num'] . "' value='1'/>\n";    // set all as  On by default - relevance processing will blank them as needed
+            print "<input type='hidden' id='display" . $arg['num'] . "' name='" . $arg['num'] .  "' value='on'/>\n";    // set all as  On by default - relevance processing will blank them as needed
+            print "<input type='hidden' id='relevance" . $arg['num'] . "' name='" . $arg['num'] . "' value='1'/>\n";    // set all as  On by default - relevance processing will blank them as needed
             print "<div id='question" . $arg['num'] . "'>\n";
             if ($arg['type'] == 'expr')
             {
                 // Hack for testing purposes - rather than using LimeSurvey internals to store the results of equations, process them via a hidden <div>
                 print "<div style='display: none' id='hack_" . $arg['name'] . "'>" . $arg['question'];
-                print "<input type='hidden' id='" . $arg['name'] . "' value=''/></div>\n";
+                print "<input type='hidden' id='" . $arg['name'] . "' name='" . $arg['name'] . "' value=''/></div>\n";
             }
             else {
                 print "<table border='1' width='100%'>\n<tr>\n<td>[Q" . $arg['num'] . "] " . $arg['question'] . "</td>\n";
@@ -952,7 +952,7 @@ EOT;
                         print "<td><input type='text' id='" . $arg['name'] . "' value='' onchange='ExprMgr_process_relevance_and_tailoring()'/></td>\n";
                         break;
                     case 'message':
-                        print "<input type='hidden' id='" . $arg['name'] . "' value=''/>\n";
+                        print "<input type='hidden' id='" . $arg['name'] . "' name='" . $arg['name'] . "' value=''/>\n";
                         break;
                 }
                 print "</tr>\n</table>\n";
