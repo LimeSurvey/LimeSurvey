@@ -34,6 +34,6 @@ body {
 </style>
 <!--[if lt IE 7]>
 <script language="JavaScript">
-    jQuery.ready(function(){correctPNG();});
+    jQuery.ready(function(){ correctPNG(); });
 </script>
 <![endif]-->
