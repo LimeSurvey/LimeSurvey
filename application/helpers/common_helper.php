@@ -6151,6 +6151,9 @@ function aGetFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode)
 
     $aResultTable=array();
 
+    // Filter out irrelevant questions
+    $relevanceStatus = $_SESSION['relevanceStatus'];
+
     $oldgid = 0;
     $oldqid = 0;
     foreach ($aFieldMap as $sKey=>$fname)
@@ -6165,28 +6168,35 @@ function aGetFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode)
                 $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
             }
         }
-        if (isset($fname['qid']) && !empty($fname['qid']))
+        if (isset($fname['qid']))
         {
-            if ($oldqid !== $fname['qid'])
+            $qid = $fname['qid'];
+            if (isset($relevanceStatus[$qid]) && $relevanceStatus[$qid] != 1) {
+                continue;   // skip irrelevant questions
+            }
+            if (!empty($fname['qid']))
             {
-                $oldqid = $fname['qid'];
-                if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
+                if ($oldqid !== $fname['qid'])
                 {
-                    $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
-                }
-                else
-                {
-                    $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
-                    $aResultTable[$fname['fieldname']]=array($question,'',$answer);
-                    continue;
+                    $oldqid = $fname['qid'];
+                    if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
+                    {
+                        $aResultTable['qid_'.$fname['sid'].'X'.$fname['gid'].'X'.$fname['qid']]=array($fname['question'],'','');
+                    }
+                    else
+                    {
+                        $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
+                        $aResultTable[$fname['fieldname']]=array($question,'',$answer);
+                        continue;
+                    }
                 }
             }
-        }
-        else
-        {
-            $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
-            $aResultTable[$fname['fieldname']]=array($question,'',$answer);
-            continue;
+            else
+            {
+                $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
+                $aResultTable[$fname['fieldname']]=array($question,'',$answer);
+                continue;
+            }
         }
         if (isset($fname['subquestion']))
         $subquestion = "{$fname['subquestion']}";

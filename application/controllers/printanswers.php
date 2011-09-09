@@ -134,10 +134,10 @@ class printanswers extends LS_Controller {
          ."fieldarray ". $_SESSION['fieldarray']."<br />";
          ."holdname". $_SESSION['holdname'];
 
-         print " limit ". $limit."<br />"; //afficher les 50 derniéres réponses par ex. (pas nécessaire)
+         print " limit ". $limit."<br />"; //afficher les 50 derniï¿½res rï¿½ponses par ex. (pas nï¿½cessaire)
          print " surveyid ".$surveyid."<br />"; //sid
-         print " id ".$id."<br />"; //identifiant de la réponses
-         print " order ". $order ."<br />"; //ordre de tri (pas nécessaire)
+         print " id ".$id."<br />"; //identifiant de la rï¿½ponses
+         print " order ". $order ."<br />"; //ordre de tri (pas nï¿½cessaire)
          print " this survey ". $thissurvey['tablename'];
          };   */
 
@@ -213,6 +213,9 @@ class printanswers extends LS_Controller {
         }
         $printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
 
+        LimeExpressionManager::StartProcessingPage(true,true);  // means that all variables are on the same page
+        // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
+        LimeExpressionManager::StartProcessingGroup(1,($thissurvey['anonymized']!="N"),$surveyid);
 
         $aFullResponseTable=aGetFullResponseTable($surveyid,$id,$language);
 
@@ -284,6 +287,9 @@ class printanswers extends LS_Controller {
    			$this->pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
         }
 
+        LimeExpressionManager::FinishProcessingGroup();
+        LimeExpressionManager::FinishProcessingPage();
+        // Note, don't need to output JavaScript for print answers.
 
         //Display the page with user answers
         if(!$printableexport)
