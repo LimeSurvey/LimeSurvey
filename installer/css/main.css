@@ -3,7 +3,7 @@
     color: #000000 !important;
     font-weight: bold;
     font-size: 15px;
-    line-height: 2.6em;
+    line-height: 1.6em;
     font-family: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
 }
 
@@ -11,7 +11,7 @@
     font: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
     color: #A7A7A7;
     font-size: 15px;
-    line-height: 2.6em;
+    line-height: 1.6em;
     font-family: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
 }
 
@@ -31,7 +31,6 @@
 }
 
 .table {
-    background: none repeat scroll 0% 0% rgb(247, 247, 247); 
     border-radius: 5px;
     -moz-border-radius: 5px 5px 5px 5px;
     
@@ -58,7 +57,7 @@
 }
 
 .description-field {
-    font-size: 9px;
+    font-size: 10px;
     
 }
 
@@ -66,5 +65,5 @@ hr {
     background: none repeat scroll 0 0 #D2E0F2;
     border: 0 none;
     height: 1px;
-    width: 95%;
+    width: 100%;
 }

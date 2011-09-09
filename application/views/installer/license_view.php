@@ -1,4 +1,7 @@
-<?php $this->load->view("installer/header_view", array('progressValue' => $progressValue)); ?>
+<?php
+$clang = &get_instance()->limesurvey_lang;
+$this->load->view("installer/header_view", array('progressValue' => $progressValue));
+?>
 
 <div class="container_6">
 
@@ -19,8 +22,8 @@
 <p>&nbsp;<?php echo $descp; ?></p>
 <hr />
 <iframe src="<?php echo base_url(); ?>COPYING" style="height: 268px; width: 694px; border-width: 0px;"> </iframe>
+<hr />
 
-<br /><br />
 </div>
 </div>
 
@@ -30,14 +33,13 @@
 <div class="grid_4 demo">
 <br/>
 <form action="<?php echo site_url("installer/install/0"); ?>" method="post" style="width: 300px;" name="formcheck">
-<table style="width: 694px;">
+<table style="font-size:11px; width: 694px; background: #ffffff;">
 <tbody>
-<tr>
-<td align="center" style="width: 800px;"></td>
-<td align="right" style="width: 190px;">
-<div id="next" style="font-size:11px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  type="submit" value="Next" /></div>
-</td>
-</tr>
+   <tr>
+    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT("Previous"); ?>" onclick="javascript: window.open('<?php echo site_url("installer/install/1"); ?>', '_top')" /></td>
+    <td align="center" style="width: 227px;"></td>
+    <td align="right" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  type="submit" value="<?php echo $clang->gT('Next'); ?>" /></td>
+   </tr>
 </tbody>
 </table>
 </form>

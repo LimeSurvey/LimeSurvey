@@ -19,15 +19,15 @@
 
 <?php if (isset($error) && $error) { ?>
 <font color="red">
-LimeSurvey tried to delete the following file but couldn't succeed. You'll have to do it manually else you won't be able to use the admin board.<br />
-This is a security precaution.</font><br />
-File path : "<?php echo $this->config->item('rootdir').'/tmp/sample_installer_file.txt'; ?>".
+<?php echo $clang->gT("LimeSurvey tried to delete the following file but couldn't succeed. You will have to remove the file or else you will not be able to log in."); ?><br />
+</font><br />
+<?php echo $clang->gT("File path:");?> "<?php echo $this->config->item('rootdir').'/tmp/sample_installer_file.txt'; ?>".
 <br /><br />
 <?php } ?>
 
-<b> Administrator credentials :</b><br />
-Username : <?php echo $user; ?> <br />
-Password : <?php echo $pwd; ?>
+<b> <?php echo $clang->gT("Administrator credentials"); ?>:</b><br /><br />
+<?php echo $clang->gT("Username"); ?>: <?php echo $user; ?> <br />
+<?php echo $clang->gT("Password"); ?>: <?php echo $pwd; ?>
 <br /><br />
 </div>
 </div>

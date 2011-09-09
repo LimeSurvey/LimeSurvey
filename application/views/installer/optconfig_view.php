@@ -1,4 +1,7 @@
-<?php $this->load->view("installer/header_view",array('progressValue' => $progressValue)); ?>
+<?php
+$clang = &get_instance()->limesurvey_lang;
+$this->load->view("installer/header_view",array('progressValue' => $progressValue));
+?>
 
 <form action="<?php echo base_url().'index.php/installer/optional'; ?>" method="post">
 
@@ -12,53 +15,53 @@
 
 <div class="grid_4 table">
 
-<p class="title">&nbsp;<?php echo $title; ?></p>
+<p class="title"><?php echo $title; ?></p>
 
 
 
 <div style="-moz-border-radius:15px; border-radius:15px;" >
-<p>&nbsp;<?php echo $descp; ?></p>
+<p><?php echo $descp; ?></p>
 <hr />
-&nbsp;<?php echo $confirmation; ?><br />
-&nbsp;You can leave these settings blank and change them later
+<?php echo $confirmation; ?><br />
+<?php echo $clang->gT("You can leave these settings blank and change them later"); ?>
 <br />
 
 <fieldset class="content-table">
-<legend class="content-table-heading">Optional settings</legend>
-<table style="width: 640px;">
+<legend class="content-table-heading"><?php echo $clang->gT("Optional settings"); ?></legend>
+<table style="width: 640px; font-size:14px;">
 <tr>
-<td><b>Admin Login Name</b><br />
-<div class="description-field">This will be the userid by which admin of board will login.</div>
+<td><b><?php echo $clang->gT("Admin Login Name"); ?></b><br />
+<div class="description-field"><?php echo $clang->gT("This will be the userid by which admin of board will login."); ?></div>
 </td>
 <td align="right"><input type="text" name="adminLoginName"/></td>
 </tr>
 <tr>
-<td><b>Admin Login Password</b><br />
-<div class="description-field">This will be the password of admin user.</div>
+<td><b><?php echo $clang->gT("Admin Login Password"); ?></b><br />
+<div class="description-field"><?php echo $clang->gT("This will be the password of admin user."); ?></div>
 </td>
 <td align="right" ><input type="password" name="adminLoginPwd"/></td>
 </tr>
 <tr>
-<td><b>Confirm Password</b><br />
-<div class="description-field">Confirm your admin password.</div>
+<td><b><?php echo $clang->gT("Confirm Password"); ?></b><br />
+<div class="description-field"><?php echo $clang->gT("Confirm your admin password."); ?></div>
 </td>
 <td align="right"><input type="password" name="confirmPwd"/></td>
 </tr>
 <tr>
-<td><b>Site Name </b><br />
-<div class="description-field">This name will appear in the survey list overview and in the administration header.</div>
+<td><b><?php echo $clang->gT("Site Name"); ?></b><br />
+<div class="description-field"><?php echo $clang->gT("This name will appear in the survey list overview and in the administration header."); ?></div>
 </td>
 <td align="right"><input type="text" name="siteName"/></td>
 </tr>
 <tr>
-<td><b>Admin Email</b><br />
-<div class="description-field">This is the default email address of the site administrator and used for system messages and contact options.</div>
+<td><b><?php echo $clang->gT("Admin Email"); ?></b><br />
+<div class="description-field"><?php echo $clang->gT("This is the default email address of the site administrator and used for system messages and contact options."); ?></div>
 </td>
 <td align="right"><input type="text" name="adminEmail"/></td>
 </tr>
 <tr>
-<td><b>Default Language</b><br />
-<div class="description-field">This will be your default language. Select "<b>en</b>" without double quotes for english.</div>
+<td><b><?php echo $clang->gT("Default Language"); ?></b><br />
+<div class="description-field"><?php echo $clang->gT("This will be your default language."); ?></div>
 </td>
 <td align="right">
 
@@ -95,9 +98,9 @@
  <table style="font-size:11px; width: 694px; background: #ffffff;">
   <tbody>
    <tr>
-    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="Previous" onclick="javascript: window.open('<?php echo site_url("installer/install/1"); ?>', '_top')" /></td>
+    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT("Previous"); ?>" onclick="javascript: window.open('<?php echo site_url("installer/install/1"); ?>', '_top')" /></td>
     <td align="center" style="width: 227px;"></td>
-    <td align="right" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="Next" /></td>
+    <td align="right" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="<?php echo $clang->gT("Next"); ?>" /></td>
    </tr>
   </tbody>
  </table>

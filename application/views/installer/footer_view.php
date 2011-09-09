@@ -2,7 +2,12 @@
 &nbsp;
 </div>
 <div class="container_6">
-<div class="grid_6" style="-moz-border-radius:15px; border-radius:15px; background: none repeat scroll 0 0 #EEEEEE;"><center><img src="<?php echo base_url(); ?>installer/images/poweredby.png" alt="Powered by LimeSurvey" /></center></div>
+<div class="grid_6">
+    <center>
+        <br />
+        <img src="<?php echo base_url(); ?>installer/images/poweredby.png" alt="Powered by LimeSurvey" />
+    </center>
+</div>
 
 </div>
 
