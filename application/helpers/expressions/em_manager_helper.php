@@ -670,6 +670,7 @@ class LimeExpressionManager {
                 }
             }
         }
+        $jsParts[] = "\nLEMsetTabIndexes(); // Move focus to next visible element\n";
         $jsParts[] = "}\n";
 
         $allJsVarsUsed = array_unique($allJsVarsUsed);

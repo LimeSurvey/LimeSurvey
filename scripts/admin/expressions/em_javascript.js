@@ -321,6 +321,38 @@ function LEManyNA()
     return false;
 }
 
+function  LEMsetTabIndexes()
+{
+    if (typeof tabIndexesSet == 'undefined') {
+        $(':input[type!=hidden]').each(function(index){
+            $(this).attr('tabindex',index);
+            $(this).bind('keydown',function(e) {
+                if (e.keyCode == 9) {
+                    ExprMgr_process_relevance_and_tailoring();
+                    LEMmoveNextTabIndex();
+                    e.preventDefault();
+                    return false;
+                }
+            })
+        })	// MUST DO THIS FIRST
+        tabIndexesSet = true;
+        $('[tabindex=0]').focus();
+    }
+}
+
+function LEMmoveNextTabIndex()
+{
+	var currentIndex = document.activeElement.tabIndex;
+	var els = $('div[id^=question]').has('[tabindex]:gt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').toArray();
+    for (i=0;i<els.length;++i) {
+        var el = els[i];
+        if (el.tabIndex > currentIndex) {
+            $(el).focus();
+            return el.tabIndex;
+        }
+    }
+}
+
 /* Functions from phpjs.org */
 
 function is_bool (mixed_var) {
