@@ -1,16 +1,17 @@
 <?php if ( ! defined('BASEPATH')) die('No direct script access allowed');
 
 class Question_attributes_model extends CI_Model {
-	
+
 	function getAllRecords($condition=FALSE)
 	{
 		if ($condition != FALSE)
 		{
-			$this->db->where($condition);	
+			$this->db->where($condition);
 		}
-		
+
+        $this->db->order_by('attribute');
 		$data = $this->db->get('question_attributes');
-		
+
 		return $data;
 	}
 
@@ -22,17 +23,18 @@ class Question_attributes_model extends CI_Model {
 		}
 		if ($condition != FALSE)
 		{
-			$this->db->where($condition);	
+			$this->db->where($condition);
 		}
-		
+
+        $this->db->order_by('attribute');
 		$data = $this->db->get('question_attributes');
-		
+
 		return $data;
 	}
-    
+
     function insertRecords($data)
     {
-        
+
         return $this->db->insert('question_attributes',$data);
     }
 

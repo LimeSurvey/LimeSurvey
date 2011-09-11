@@ -123,6 +123,7 @@ CREATE TABLE [prefix_question_attributes] (
   [qid] INT NOT NULL default '0',
   [attribute] VARCHAR(50) default NULL,
   [value] varchar(max) default NULL,
+  [language] VARCHAR(20) default NULL,
   PRIMARY KEY  ([qaid])
 ) 
 ;

@@ -115,6 +115,7 @@ CREATE TABLE prefix_question_attributes (
     qid integer DEFAULT 0 NOT NULL,
     attribute character varying(50),
     value text NULL,
+    "language" character varying(20),
     CONSTRAINT prefix_question_attributes_pkey PRIMARY KEY (qaid)    
 );
 

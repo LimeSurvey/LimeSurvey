@@ -380,11 +380,11 @@ function db_upgrade($oldversion) {
                               sessdata LONGTEXT,
                               PRIMARY KEY ( sesskey ) ,
                               INDEX sess2_expiry( expiry ),
-                              INDEX sess2_expireref( expireref ))  CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();   
+                              INDEX sess2_expireref( expireref ))  CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='143' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
 
-        
-        
+
+
 
 
     }
@@ -421,32 +421,32 @@ function db_upgrade($oldversion) {
                                 `export_p` tinyint(1) NOT NULL default '0',
                                 PRIMARY KEY (sid, uid, permission)
                             )  CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
-                            
+
 		upgrade_surveypermissions_table145();
-        
+
         // drop the old survey rights table
         modify_database("", "DROP TABLE `prefix_surveys_rights`"); echo $modifyoutput; flush();ob_flush();
-        
+
         // Add new fields for email templates
-        modify_database("", "ALTER TABLE `prefix_surveys_languagesettings` ADD 
-                             (`email_admin_notification_subj`  VARCHAR(255) NULL,    
-                              `email_admin_notification` TEXT NULL,        
-                              `email_admin_responses_subj` VARCHAR(255) NULL,    
+        modify_database("", "ALTER TABLE `prefix_surveys_languagesettings` ADD
+                             (`email_admin_notification_subj`  VARCHAR(255) NULL,
+                              `email_admin_notification` TEXT NULL,
+                              `email_admin_responses_subj` VARCHAR(255) NULL,
                               `email_admin_responses` TEXT NULL)");
-        
+
         //Add index to questions table to speed up subquestions
-        modify_database("", "create INDEX parent_qid_idx on prefix_questions( parent_qid );"); echo $modifyoutput; flush();ob_flush();   
-        
-                   
+        modify_database("", "create INDEX parent_qid_idx on prefix_questions( parent_qid );"); echo $modifyoutput; flush();ob_flush();
+
+
         modify_database("", "ALTER TABLE `prefix_surveys` ADD `emailnotificationto` text DEFAULT NULL AFTER `emailresponseto`"); echo $modifyoutput; flush();ob_flush();
-        upgrade_survey_table145();                                           
+        upgrade_survey_table145();
         modify_database("", "ALTER TABLE `prefix_surveys` DROP COLUMN `notification`"); echo $modifyoutput; flush();ob_flush();
-                   
+
         modify_database("","ALTER TABLE `prefix_conditions` CHANGE `method` `method` CHAR( 5 ) NOT NULL default '';"); echo $modifyoutput; flush();ob_flush();
         modify_database("","UPDATE `prefix_surveys` set `private`='N' where `private` is NULL;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_surveys` CHANGE `private` `anonymized` char(1) collate utf8_unicode_ci NOT NULL default 'N';"); echo $modifyoutput; flush();ob_flush();
-        
-        
+
+
         //now we clean up things that were not properly set in previous DB upgrades
 
         modify_database("","UPDATE `prefix_answers` SET `answer`='' where `answer` is null;"); echo $modifyoutput; flush();ob_flush();
@@ -463,14 +463,14 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE `prefix_assessments` CHANGE `minimum` `minimum` varchar(50) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();ob_flush();
         modify_database("","UPDATE `prefix_assessments` SET `maximum`='' where `maximum` is null;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_assessments` CHANGE `maximum` `maximum` varchar(50) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();ob_flush();
-        
+
         modify_database("","ALTER TABLE `prefix_assessments` CHANGE `id` `id` int(11) NOT NULL;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_assessments` DROP PRIMARY KEY;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_assessments` ADD PRIMARY KEY (`id`,`language`);"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_assessments` CHANGE `id` `id` int(11) NOT NULL auto_increment;"); echo $modifyoutput; flush();ob_flush();
 
         modify_database("","ALTER TABLE `prefix_conditions` CHANGE `cfieldname` `cfieldname` varchar(50) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();ob_flush();
-                                                                                                                  
+
         modify_database("","ALTER TABLE `prefix_defaultvalues` CHANGE `specialtype` `specialtype` varchar(20) collate utf8_unicode_ci NOT NULL default '' AFTER `qid`;"); echo $modifyoutput; flush();ob_flush();
 
         modify_database("","UPDATE `prefix_groups` SET `group_name`='' where `group_name` is null;"); echo $modifyoutput; flush();ob_flush();
@@ -479,7 +479,7 @@ function db_upgrade($oldversion) {
         modify_database("","UPDATE `prefix_labels` SET `code`='' where `code` is null;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_labels` CHANGE `code` `code` varchar(5) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_labels` CHANGE `language` `language` varchar(20) collate utf8_unicode_ci NOT NULL default 'en' AFTER `assessment_value`;"); echo $modifyoutput; flush();ob_flush();
-        
+
         modify_database("","UPDATE `prefix_labelsets` SET `label_name`='' WHERE `label_name` is null;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_labelsets` CHANGE `label_name` `label_name` varchar(100) collate utf8_unicode_ci NOT NULL default '';"); echo $modifyoutput; flush();ob_flush();
 
@@ -514,7 +514,7 @@ function db_upgrade($oldversion) {
 
         modify_database("","UPDATE `prefix_settings_global` SET `stg_value`='' where `stg_value` is null;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_settings_global` CHANGE `stg_value` `stg_value` varchar(255) collate utf8_unicode_ci NOT NULL default ''"); echo $modifyoutput; flush();ob_flush();
-        
+
         modify_database("","ALTER TABLE `prefix_surveys` CHANGE `admin` `admin` varchar(50) collate utf8_unicode_ci default NULL"); echo $modifyoutput; flush();ob_flush();
         modify_database("","UPDATE `prefix_surveys` SET `active`='N' where `active` is null;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_surveys` CHANGE `active` `active` char(1) collate utf8_unicode_ci NOT NULL default 'N';"); echo $modifyoutput; flush();ob_flush();
@@ -554,11 +554,11 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE `prefix_users` CHANGE `superadmin` `superadmin` tinyint(1) NOT NULL default '0' AFTER `delete_user`"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_users` CHANGE `htmleditormode` `htmleditormode` varchar(7) collate utf8_unicode_ci default 'default'"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_users` CHANGE `dateformat` `dateformat` int(10) unsigned NOT NULL default '1'"); echo $modifyoutput; flush();ob_flush();
-        modify_database("","ALTER TABLE `prefix_users` DROP INDEX `email`;"); 
+        modify_database("","ALTER TABLE `prefix_users` DROP INDEX `email`;");
 
         modify_database("","UPDATE `prefix_user_groups` SET `name`='' where `name` is null;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_user_groups` CHANGE `name` `name` varchar(20) collate utf8_unicode_ci NOT NULL"); echo $modifyoutput; flush();ob_flush();
-        
+
         modify_database("","UPDATE `prefix_user_groups` SET `description`='' where `description` is null;"); echo $modifyoutput; flush();ob_flush();
         modify_database("","ALTER TABLE `prefix_user_groups` CHANGE `description` `description` text collate utf8_unicode_ci NOT NULL"); echo $modifyoutput; flush();ob_flush();
 
@@ -587,7 +587,7 @@ function db_upgrade($oldversion) {
         modify_database("", "ALTER TABLE `prefix_users` ADD `templateeditormode` VARCHAR( 7 )NOT NULL DEFAULT 'default' AFTER `htmleditormode`"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "ALTER TABLE `prefix_users` ADD `questionselectormode` VARCHAR( 7 )NOT NULL DEFAULT 'default' AFTER `templateeditormode`"); echo $modifyoutput; flush();ob_flush();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='147' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
-    }   
+    }
     if ($oldversion < 148)
     {
         modify_database("","ALTER TABLE `prefix_users` ADD `participant_panel` tinyint(1) NOT NULL default '1'"); echo $modifyoutput; flush();ob_flush();
@@ -600,7 +600,7 @@ function db_upgrade($oldversion) {
                                                                 `owner_uid` int(20) NOT NULL ,
                                                                 PRIMARY KEY  (`participant_id`)
                                                                 )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
-                                                
+
         modify_database("","CREATE TABLE `prefix_participant_attribute` (
         `participant_id` varchar(50) NOT NULL,
         `attribute_id` int(11) NOT NULL,
@@ -608,28 +608,28 @@ function db_upgrade($oldversion) {
         PRIMARY KEY  (`participant_id`,`attribute_id`)
         )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
 
-                                                          
+
         modify_database("","CREATE TABLE `prefix_participant_attribute_names` (
         `attribute_id` int(11) NOT NULL AUTO_INCREMENT,
         `attribute_type` varchar(4) NOT NULL,
         `visible` char(5) NOT NULL,
         PRIMARY KEY  (`attribute_id`,`attribute_type`)
         )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
-        
+
         modify_database("","CREATE TABLE `prefix_participant_attribute_names_lang` (
         `attribute_id` int(11) NOT NULL,
         `attribute_name` varchar(30) NOT NULL,
         `lang` varchar(20) NOT NULL,
         PRIMARY KEY  (`attribute_id`,`lang`)
-)   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
-        
+        )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+
         modify_database("","CREATE TABLE `prefix_participant_attribute_values` (
         `attribute_id` int(11) NOT NULL,
         `value_id` int(11) NOT NULL AUTO_INCREMENT,
         `value` varchar(20) NOT NULL,
         PRIMARY KEY  (`value_id`)
         )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
-        
+
         modify_database("","CREATE TABLE `prefix_participant_shares` (
         `participant_id` varchar(50) NOT NULL,
         `share_uid` int(11) NOT NULL,
@@ -637,7 +637,7 @@ function db_upgrade($oldversion) {
         `can_edit` varchar(5) NOT NULL,
         PRIMARY KEY  (`participant_id`,`share_uid`)
         )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
- 
+
         modify_database("","CREATE TABLE `prefix_survey_links` (
         `participant_id` varchar(50) NOT NULL,
         `token_id` int(11) NOT NULL,
@@ -645,6 +645,10 @@ function db_upgrade($oldversion) {
         `date_created` datetime NOT NULL,
         PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
         )   CHARACTER SET utf8 COLLATE utf8_unicode_ci;"); echo $modifyoutput; flush();ob_flush();
+
+        // add question_attributes field to assessment table
+        modify_database("","ALTER TABLE `prefix_question_attributes` ADD `language` varchar(20)"); echo $modifyoutput; flush();ob_flush();
+
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
@@ -867,7 +871,7 @@ function upgrade_tables143()
     }
 
     // Convert answers to subquestions
-    
+
     $answerquery = "select a.*, q.sid, q.gid, q.type from {$dbprefix}answers a,{$dbprefix}questions q where a.qid=q.qid and a.language=q.language and q.type in ('1','A','B','C','E','F','H','K',';',':','M','P','Q')";
     $answerresult = db_execute_assoc($answerquery);
     if (!$answerresult) {return "Database Error";}
@@ -875,7 +879,7 @@ function upgrade_tables143()
     {
         while ( $row = $answerresult->FetchRow() )
         {
-            
+
             $insertarray=array();
             if (isset($aQIDReplacements[$row['qid'].'_'.$row['code']]))
             {
@@ -894,7 +898,7 @@ function upgrade_tables143()
             modify_database("",$query); echo $modifyoutput; flush();ob_flush();
             if (!isset($insertarray['qid']))
             {
-               $aQIDReplacements[$row['qid'].'_'.$row['code']]=$connect->Insert_ID("{$dbprefix}questions","qid"); 
+               $aQIDReplacements[$row['qid'].'_'.$row['code']]=$connect->Insert_ID("{$dbprefix}questions","qid");
                $iSaveSQID=$aQIDReplacements[$row['qid'].'_'.$row['code']];
             }
             else
@@ -974,8 +978,8 @@ function upgrade_tables143()
                 modify_database("",$query); echo $modifyoutput; flush();ob_flush();
                 if (isset($insertarray['qid']))
                 {
-                   $aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']=$connect->Insert_ID("{$dbprefix}questions","qid"); 
-                }                
+                   $aQIDReplacements[$row['qid'].'_'.$lrow['code'].'_1']=$connect->Insert_ID("{$dbprefix}questions","qid");
+                }
             }
         }
     }
@@ -986,7 +990,7 @@ function upgrade_tables143()
     modify_database("",$updatequery); echo $modifyoutput; flush();ob_flush();
     $updatequery = "update {$dbprefix}questions set type='L' where type='Z'";
     modify_database("",$updatequery); echo $modifyoutput; flush();ob_flush();
-    
+
     // Now move all non-standard templates to the /upload dir
     global $usertemplaterootdir, $standardtemplates,$standardtemplaterootdir;
 

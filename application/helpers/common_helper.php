@@ -3279,7 +3279,7 @@ function getQuestionAttributes($qid, $type='')
     }
     $setattributes=array();
     $qid=sanitize_int($qid);
-    $fields = array('attribute', 'value');
+    $fields = array('attribute', 'value', 'language');
     $condition = "qid = $qid";
     $CI->load->model('question_attributes_model');
     //$query = "SELECT attribute, value FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
@@ -3287,7 +3287,13 @@ function getQuestionAttributes($qid, $type='')
     $setattributes=array();
     foreach ($result->result_array() as $row)
     {
-        $setattributes[$row['attribute']]=$row['value'];
+        if (is_empty($row['language']))
+        {
+           $setattributes[$row['attribute']]=$row['value'];
+        }
+        else{
+           $setattributes[$row['attribute']][$row['language']]=$row['value'];
+        }
     }
     //echo "<pre>";print_r($qid_attributes);echo "</pre>";
     $qid_attributes=array_merge($defaultattributes,$setattributes);
@@ -3301,13 +3307,18 @@ function getQuestionAttributes($qid, $type='')
  * @author: lemeur
  * @param $questionAttributeArray
  * @param $attributeName
+ * @param $language string Optional: The language if the particualr attributes is localizable
  * @return string
  */
-function getQuestionAttributeValue($questionAttributeArray, $attributeName)
+function getQuestionAttributeValue($questionAttributeArray, $attributeName, $language='')
 {
-    if (isset($questionAttributeArray[$attributeName]))
+    if ($language=='' && isset($questionAttributeArray[$attributeName]))
     {
         return $questionAttributeArray[$attributeName];
+    }
+    elseif ($language!='' && isset($questionAttributeArray[$attributeName][$language]))
+    {
+        return $questionAttributeArray[$attributeName][$language];
     }
     else
     {
@@ -3445,6 +3456,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Display'),
     'sortorder'=>112,
     'inputtype'=>'text',
+    'i18n'=>true,
     "help"=>$clang->gT('Prefix|Suffix for dropdown lists'),
     "caption"=>$clang->gT('Dropdown prefix/suffix'));
 
@@ -3461,6 +3473,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Display'),
     'sortorder'=>110,
     'inputtype'=>'text',
+    'i18n'=>true,
     "help"=>$clang->gT('Enter a header text for the first scale'),
     "caption"=>$clang->gT('Header for first scale'));
 
@@ -3469,6 +3482,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Display'),
     'sortorder'=>111,
     'inputtype'=>'text',
+    'i18n'=>true,
     "help"=>$clang->gT('Enter a header text for the second scale'),
     "caption"=>$clang->gT('Header for second scale'));
 
@@ -3844,6 +3858,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Display'),
     'sortorder'=>100,
     'inputtype'=>'text',
+    'i18n'=>true,
     "help"=>$clang->gT("Replaces the label of the 'Other:' answer option with a custom text"),
     "caption"=>$clang->gT("Label for 'Other:' option"));
 
@@ -3863,6 +3878,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Display'),
     'sortorder'=>10,
     'inputtype'=>'text',
+    'i18n'=>true,
     "help"=>$clang->gT('Add a prefix to the answer field'),
     "caption"=>$clang->gT('Answer prefix'));
 
@@ -4002,6 +4018,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Display'),
     'sortorder'=>11,
     'inputtype'=>'text',
+    'i18n'=>true,
     "help"=>$clang->gT('Add a suffix to the answer field'),
     "caption"=>$clang->gT('Answer suffix'));
 
@@ -4083,6 +4100,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Timer'),
     'sortorder'=>98,
     "inputtype"=>"textarea",
+    'i18n'=>true,
 	"help"=>$clang->gT("The text message that displays in the countdown timer during the countdown"),
 	"caption"=>$clang->gT("Time limit countdown message"));
 
@@ -4107,6 +4125,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Timer'),
     'sortorder'=>104,
     "inputtype"=>"textarea",
+    'i18n'=>true,
     "help"=>$clang->gT("The message to display when the time limit has expired (a default message will display if this setting is left blank)"),
     "caption"=>$clang->gT("Time limit expiry message"));
 
@@ -4123,6 +4142,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Timer'),
     'sortorder'=>108,
     "inputtype"=>"integer",
+    'i18n'=>true,
     "help"=>$clang->gT("Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
     "caption"=>$clang->gT("1st time limit warning message timer"));
 
@@ -4139,6 +4159,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Timer'),
     'sortorder'=>112,
     "inputtype"=>"textarea",
+    'i18n'=>true,
     "help"=>$clang->gT("The message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
     "caption"=>$clang->gT("1st time limit warning message"));
 
@@ -4171,6 +4192,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Timer'),
     'sortorder'=>120,
     "inputtype"=>"textarea",
+    'i18n'=>true,
 	"help"=>$clang->gT("The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"),
 	"caption"=>$clang->gT("2nd time limit warning message"));
 

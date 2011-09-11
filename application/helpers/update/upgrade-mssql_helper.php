@@ -534,6 +534,9 @@ function db_upgrade($oldversion) {
             PRIMARY KEY  ([participant_id],[token_id],[survey_id])
             );");echo $modifyoutput; flush();ob_flush();
         modify_database("", "ALTER TABLE [prefix_users] ADD [participant_panel] int NOT NULL default '1'"); echo $modifyoutput; flush();ob_flush();
+        // Add language field to question_attributes table
+        modify_database("","ALTER TABLE [prefix_question_attributes] ADD [language] varchar(20)"); echo $modifyoutput; flush();ob_flush();
+
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';

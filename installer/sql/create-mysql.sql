@@ -107,6 +107,7 @@ CREATE TABLE `prefix_question_attributes` (
   `qid` int(11) NOT NULL default '0',
   `attribute` varchar(50) default NULL,
   `value` text default NULL,
+  `language` varchar(20) default NULL,
   PRIMARY KEY  (`qaid`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
