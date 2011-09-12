@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id: update.php 10323 2011-06-22 15:33:54Z dionet $
- * 
+ *
  */
 list(,$updaterversion)=explode(' ','$Rev: 588887976 $');  // this is updated by subversion so don't change this string
 
@@ -30,7 +30,7 @@ class update extends Admin_Controller {
 	 */
 	function __construct()
 	{
-		LS_Controller::__construct();
+		parent::__construct();
 		
 		if (!$this->session->userdata("adminlang") || $this->session->userdata("adminlang")=='')
 		{
@@ -404,12 +404,12 @@ class update extends Admin_Controller {
 	        //$byteswritten=file_put_contents($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql',completedump());
 			$this->load->dbutil();
 	        $this->load->helper("string");
-			if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoModeOnly') != true) {  
+			if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoModeOnly') != true) {
 	            $tables = $this->db->list_tables();
 	            foreach ($tables as $table)
 	            {
 	               if ($this->db->dbprefix==substr($table, 0, strlen($this->db->dbprefix)))
-	               {              
+	               {
 	                    $lstables[] = $table;
 	               }
 	            }
@@ -418,16 +418,16 @@ class update extends Admin_Controller {
 	            $prefs = array(
 	                'format'      => 'zip',             // gzip, zip, txt
 	                   // File name - NEEDED ONLY WITH ZIP FILES
-	                'filename'    => $sfilename,  
-	                'tables'      => $lstables, 
+	                'filename'    => $sfilename,
+	                'tables'      => $lstables,
 	                'add_drop'    => TRUE,              // Whether to add DROP TABLE statements to backup file
 	                'add_insert'  => TRUE,              // Whether to add INSERT data to backup file
 	                'newline'     => "\n"               // Newline character used in backup file
 	              );
-	            $this->dbutil->backup($prefs);  
-	            $backup =& $this->dbutil->backup();  
+	            $this->dbutil->backup($prefs);
+	            $backup =& $this->dbutil->backup();
 	            $this->load->helper('file');
-	            write_file($tempdir.'/'.$sfilename.".gz", $backup); 
+	            write_file($tempdir.'/'.$sfilename.".gz", $backup);
 	        }
 	           echo "<span class='successtitle'>".$clang->gT('DB backup created:')." ".htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql').'</span><br /><br />';
 	    }
@@ -713,20 +713,20 @@ class update extends Admin_Controller {
 	/**
 	 * Update database
 	 */
-	function db($subaction = null) 
+	function db($subaction = null)
 	{
 		$clang = $this->limesurvey_lang;
 	    $this->load->helper("update/update");
 		echo self::_getAdminHeader(false, true);
-	    if(isset($subaction) && $subaction=="continue") 
-	    {   
+	    if(isset($subaction) && $subaction=="continue")
+	    {
 	        echo CheckForDBUpgrades($subaction);
-	        updatecheck();                     
-	    }        
+	        updatecheck();
+	    }
 	    else
-	    {   
+	    {
 	        echo  CheckForDBUpgrades();
-	    }        
+	    }
 		echo self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"), true);
 	}
 

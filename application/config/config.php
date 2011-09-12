@@ -107,7 +107,7 @@ $config['enable_hooks'] = TRUE;
 | http://codeigniter.com/user_guide/general/creating_libraries.html
 |
 */
-$config['subclass_prefix'] = 'LS_';
+$config['subclass_prefix'] = 'LSCI_';
 
 
 /*
@@ -366,14 +366,14 @@ $config['proxy_ips'] = '';
 */
 if (!function_exists('limesurvey_config_autoloader'))
 {
-	function limesurvey_config_autoloader($class) {
-	    if (0 === strpos($class, 'CI_'))
-	        return;
-	    if (file_exists($file = APPPATH.'core/'.$class.'.php'))
-	        require $file;
-	}
+    function limesurvey_config_autoloader($class) {
+        if (0 === strpos($class, 'CI_'))
+            return;
+        if (file_exists($file = APPPATH.'core/'.$class.'.php'))
+            require $file;
+    }
 
-	spl_autoload_register('limesurvey_config_autoloader');
+    spl_autoload_register('limesurvey_config_autoloader');
 }
 
 /* End of file config.php */

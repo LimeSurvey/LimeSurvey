@@ -12,7 +12,7 @@
  *
  *	$Id$
  */
-class LS_Controller extends CI_Controller {
+class LSCI_Controller extends CI_Controller {
 
     function __construct()
     {

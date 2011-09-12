@@ -22,7 +22,7 @@
   * @version $Id$
   * @access public
   */
- class optout extends LS_Controller {
+ class optout extends LSCI_Controller {
 
 	/**
 	 * optout::__construct()

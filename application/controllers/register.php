@@ -22,7 +22,7 @@
   * @version $Id$
   * @access public
   */
- class register extends LS_Controller {
+ class register extends LSCI_Controller {
 
 	/**
 	 * register::__construct()

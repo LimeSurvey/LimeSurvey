@@ -12,7 +12,7 @@
  *
  *	$Id$
  */
-class Admin_Controller extends LS_Controller {
+class Admin_Controller extends LSCI_Controller {
 	function __construct()
 	{
 		parent::__construct();
@@ -29,7 +29,7 @@ class Admin_Controller extends LS_Controller {
 		//if ($sourcefrom == "admin")
 		//{
 		//    require_once($homedir.'/admin_functions.php');
-		//} 
+		//}
         
         $updatelastcheck = '';
         
@@ -111,7 +111,7 @@ class Admin_Controller extends LS_Controller {
 	/**
 	 * Load and set session vars
 	 */
-	function _sessioncontrol() 
+	function _sessioncontrol()
 	{
 		//Session is initialized by CodeIgniter
 			
@@ -201,7 +201,7 @@ class Admin_Controller extends LS_Controller {
 			$this->session->set_userdata("adminlang",$this->config->item("defaultlang"));
 		}
 		
-		$data['adminlang']=$this->session->userdata("adminlang");		
+		$data['adminlang']=$this->session->userdata("adminlang");
 		//$data['admin'] = getLanguageRTL;
 		$data['test'] = "t";
 		$data['languageRTL']="";
@@ -302,7 +302,7 @@ class Admin_Controller extends LS_Controller {
 	    if($query->num_rows() > 0)
 	    {
 	        //$fields = $sresult->FetchRow();
-			$fields = $query->row_array(); 
+			$fields = $query->row_array();
 	        $this->session->set_userdata('USER_RIGHT_CREATE_SURVEY', $fields['create_survey']);
                 $this->session->set_userdata('USER_RIGHT_PARTICIPANT_PANEL', $fields['participant_panel']);
 	        $this->session->set_userdata('USER_RIGHT_CONFIGURATOR', $fields['configurator']);
@@ -353,7 +353,7 @@ class Admin_Controller extends LS_Controller {
 		//self::_getAdminHeader();
 		//self::_showadminmenu();
 		$this->load->view('admin/super/messagebox', $data);
-		//self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));		
+		//self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 	}
 	
 	/**
@@ -397,7 +397,7 @@ class Admin_Controller extends LS_Controller {
     {
         if (!$this->session->userdata('metaHeader')) {
             $this->session->set_userdata('metaHeader','');
-        } 
+        }
         //$adminoutput = getAdminHeader($_SESSION['metaHeader']).$adminoutput;  // All future output is written into this and then outputted at the end of file
         $this->session->unset_userdata('metaHeader');
         //$adminoutput.= "</div>\n";

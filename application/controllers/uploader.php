@@ -9,12 +9,12 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id: survey.php 10433 2011-07-06 14:18:45Z dionet $
- * 
+ *
  */
 
-class uploader extends LS_Controller {
+class uploader extends LSCI_Controller {
 
 	function __construct()
 	{
@@ -30,7 +30,7 @@ class uploader extends LS_Controller {
 	function action()
 	{
 		//Replace $param:
-		$arg_list = func_get_args();		
+		$arg_list = func_get_args();
 		if($arg_list[0]==__CLASS__) array_shift($arg_list);
 		if(count($arg_list)%2 == 0) {
 		    for ($i = 0; $i < count($arg_list); $i+=2) {
@@ -56,7 +56,7 @@ class uploader extends LS_Controller {
 		    }
 		    readfile($sFileDir.$sFileName);
 		    exit();
-		}	
+		}
 			
 		if (!isset($surveyid))
 		{

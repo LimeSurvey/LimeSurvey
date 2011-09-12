@@ -22,7 +22,7 @@
  * @version $Id$
  * @access public
  */
-class printanswers extends LS_Controller {
+class printanswers extends LSCI_Controller {
 
 	/**
 	 * printanswers::__construct()
@@ -134,10 +134,10 @@ class printanswers extends LS_Controller {
          ."fieldarray ". $_SESSION['fieldarray']."<br />";
          ."holdname". $_SESSION['holdname'];
 
-         print " limit ". $limit."<br />"; //afficher les 50 derni�res r�ponses par ex. (pas n�cessaire)
+         print " limit ". $limit."<br />"; //afficher les 50 dernieres reponses par ex. (pas necessaire)
          print " surveyid ".$surveyid."<br />"; //sid
-         print " id ".$id."<br />"; //identifiant de la r�ponses
-         print " order ". $order ."<br />"; //ordre de tri (pas n�cessaire)
+         print " id ".$id."<br />"; //identifiant de la reponses
+         print " order ". $order ."<br />"; //ordre de tri (pas necessaire)
          print " this survey ". $thissurvey['tablename'];
          };   */
 

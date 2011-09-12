@@ -27,7 +27,7 @@
  * See http://docs.limesurvey.org/tiki-index.php?page=Question+attributes#public_statistics
  */
 
-class statistics_user extends LS_Controller {
+class statistics_user extends LSCI_Controller {
 
 	function __construct()
 	{
