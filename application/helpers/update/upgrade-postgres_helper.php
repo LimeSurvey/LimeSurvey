@@ -371,6 +371,7 @@ function db_upgrade($oldversion) {
         modify_database("","ALTER TABLE prefix_user ADD participant_panel integer NOT NULL default '1'"); echo $modifyoutput; flush();ob_flush();
         // add language field to question_attributes table
         modify_database("","ALTER TABLE prefix_question_attributes ADD language character varying(20)"); echo $modifyoutput; flush();ob_flush();
+        upgrade_question_attributes148();
 
         modify_database("", "UPDATE prefix_settings_global SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
 

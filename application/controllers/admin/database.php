@@ -577,28 +577,57 @@ class Database extends Admin_Controller {
             }
             $attsql.='1=1';
             db_execute_assoc($attsql); // or safe_die ("Couldn't delete obsolete question attributes<br />".$attsql."<br />".$connect->ErrorMsg()); // Checked
+            $aLanguages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
 
 
             //now save all valid attributes
             $validAttributes=$qattributes[$_POST['type']];
             foreach ($validAttributes as $validAttribute)
             {
-                if (isset($_POST[$validAttribute['name']]))
+                if ($validAttribute['i18n'])
                 {
-                    $query = "select qaid from ".$this->db->dbprefix."question_attributes
-                              WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
-                    $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
-                    if ($result->Recordcount()>0)
+                   foreach ($aLanguages as $sLanguage)
+                   {
+                        if (isset($_POST[$validAttribute['name'].'_'.$sLanguage]))
+                        {
+                            $value=$this->db->escape($_POST[$validAttribute['name'].'_'.$sLanguage]);
+                            $query = "select qaid from ".$this->db->dbprefix."question_attributes
+                                      WHERE attribute='".$validAttribute['name']."' AND qid={$qid} AND language='{$sLanguage}'";
+                            $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                            if ($result->num_rows()>0)
+                            {
+                                $query = "UPDATE ".$this->db->dbprefix."question_attributes
+                                          SET value=".$value." and language=NULL WHERE attribute='".$validAttribute['name']."' AND qid={$qid} AND language='{$sLanguage}'";
+                                $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                            }
+                            else
+                            {
+                                $query = "INSERT into ".$this->db->dbprefix."question_attributes
+                                          (qid, value, attribute, language) values ({$qid},{$value},'{$validAttribute['name']}','{$sLanguage}')";
+                                $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                            }
+                        }
+                   }
+                }
+                else
+                {
+                    if (isset($_POST[$validAttribute['name']]))
                     {
-                        $query = "UPDATE ".$this->db->dbprefix."question_attributes
-                                  SET value='".$_POST[$validAttribute['name']]."' WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
-                        $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
-                    }
-                    else
-                    {
-                        $query = "INSERT into ".$this->db->dbprefix."question_attributes
-                                  (qid, value, attribute) values ($qid,'".$_POST[$validAttribute['name']]."','{$validAttribute['name']}')";
+                        $query = "select qaid from ".$this->db->dbprefix."question_attributes
+                                  WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                         $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                        if ($result->num_rows()>0)
+                        {
+                            $query = "UPDATE ".$this->db->dbprefix."question_attributes
+                                      SET value='".$_POST[$validAttribute['name']]."' and language=NULL WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                            $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                        }
+                        else
+                        {
+                            $query = "INSERT into ".$this->db->dbprefix."question_attributes
+                                      (qid, value, attribute) values ($qid,'".$_POST[$validAttribute['name']]."','{$validAttribute['name']}')";
+                            $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                        }
                     }
                 }
             }
@@ -703,7 +732,7 @@ class Database extends Admin_Controller {
                                         'gid' => $gid,
                                         'other' => $_POST['other'],
                                         'mandatory' => $_POST['mandatory']
-                                
+
                                         );
                                 /*
                                 $uqquery = "UPDATE ".$this->db->dbprefix."questions SET type='".$_POST['type']."', title='".$_POST['title']."', "

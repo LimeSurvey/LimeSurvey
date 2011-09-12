@@ -3247,19 +3247,20 @@ function getQuestionAttributes($qid, $type='')
     if (isset($cache[$qid])) {
         return $cache[$qid];
     }
-    if ($type=='')  // If type is not given find it out
+    $CI->load->model('questions_model');
+    //$query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid and parent_qid=0 group by type";
+    $result = $CI->questions_model->getSomeRecords(array('type','sid'),array('qid'=>$qid)) or safe_die("Error finding question attributes");  //Checked
+    $row=$result->row_array();
+    if ($row===false) // Question was deleted while running the survey
     {
-        $CI->load->model('questions_model');
-        //$query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid and parent_qid=0 group by type";
-        $result = $CI->questions_model->getQuestionType($qid) or safe_die("Error finding question attributes");  //Checked
-        $row=$result->row_array();
-        if ($row===false) // Question was deleted while running the survey
-        {
-            $cache[$qid]=false;
-            return false;
-        }
-        $type=$row['type'];
+        $cache[$qid]=false;
+        return false;
     }
+    $type=$row['type'];
+    $surveyid=$row['sid'];
+
+   $languages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
+
 
     //Now read available attributes, make sure we do this only once per request to save
     //processing cycles and memory
@@ -3287,7 +3288,7 @@ function getQuestionAttributes($qid, $type='')
     $setattributes=array();
     foreach ($result->result_array() as $row)
     {
-        if (is_empty($row['language']))
+        if (empty($row['language']))
         {
            $setattributes[$row['attribute']]=$row['value'];
         }
@@ -4310,6 +4311,7 @@ function questionAttributes($returnByName=false)
                                                             "inputtype"=>$qvalue['inputtype'],
                                                             "category"=>$qvalue['category'],
                                                             "sortorder"=>$qvalue['sortorder'],
+                                                            "i18n"=>isset($qvalue['i18n'])?$qvalue['i18n']:false,
                                                             "readonly"=>isset($qvalue['readonly_when_active'])?$qvalue['readonly_when_active']:false,
                                                             "options"=>isset($qvalue['options'])?$qvalue['options']:'',
                                                             "default"=>isset($qvalue['default'])?$qvalue['default']:'',

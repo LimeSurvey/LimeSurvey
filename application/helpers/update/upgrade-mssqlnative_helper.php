@@ -486,15 +486,15 @@ function db_upgrade($oldversion) {
     if ($oldversion < 148)
     {
         modify_database("","CREATE TABLE [prefix_participants] (
-                            [participant_id] varchar(50) NOT NULL,
-                            [firstname] varchar(40) NOT NULL,
-			    [lastname] varchar(40) NOT NULL,
-                            [email] varchar(80) NOT NULL,
-                            [language] varchar(2) NOT NULL,
-                            [blacklisted] varchar(80) NOT NULL,
-                            [owner_uid] int(20) NOT NULL,
-                            PRIMARY KEY  ([participant_id])
-                            );");echo $modifyoutput; flush();ob_flush();
+            [participant_id] varchar(50) NOT NULL,
+            [firstname] varchar(40) NOT NULL,
+            [lastname] varchar(40) NOT NULL,
+            [email] varchar(80) NOT NULL,
+            [language] varchar(2) NOT NULL,
+            [blacklisted] varchar(1) NOT NULL,
+            [owner_uid] int(20) NOT NULL,
+            PRIMARY KEY  ([participant_id])
+            );");echo $modifyoutput; flush();ob_flush();
        modify_database("","CREATE TABLE [prefix_participant_attribute] (
                             [participant_id] varchar(50) NOT NULL,
                             [attribute_id] int(11) NOT NULL,
@@ -503,7 +503,7 @@ function db_upgrade($oldversion) {
                             );");echo $modifyoutput; flush();ob_flush();
        modify_database("","CREATE TABLE [prefix_participant_attribute_names] (
 			   [attribute_id] int(11) NOT NULL AUTO_INCREMENT,
-                           [attribute_type] varchar(30) NOT NULL,
+            [attribute_type] varchar(4) NOT NULL,
                            [visible] char(5) NOT NULL,
                            PRIMARY KEY  ([attribute_id],[attribute_type])
 			   );");echo $modifyoutput; flush();ob_flush();
@@ -521,10 +521,10 @@ function db_upgrade($oldversion) {
                           ); ");echo $modifyoutput; flush();ob_flush();
        modify_database("","CREATE TABLE [prefix_participant_shares] (
                           [participant_id] varchar(50) NOT NULL,
-                          [shared_uid] int(11) NOT NULL,
+            [share_uid] int(11) NOT NULL,
                           [date_added] datetime,
-                          [can_edit] varchar(5) NOT NULL,
-                          PRIMARY KEY  ([participant_id],[shared_uid])
+            [can_edit] text NOT NULL,
+            PRIMARY KEY  ([participant_id],[share_uid])
                           ); ");echo $modifyoutput; flush();ob_flush();
       modify_database("","CREATE TABLE [prefix_survey_links] (
                           [participant_id] varchar(50) NOT NULL,
@@ -533,12 +533,13 @@ function db_upgrade($oldversion) {
                           [date_created] datetime,
                           PRIMARY KEY  ([participant_id],[token_id],[survey_id])
                           ); ");echo $modifyoutput; flush();ob_flush();
-        modify_database("","ALTER TABLE [prefix_users] ADD [participant_panel] int(1) DEFAULT '1'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("", "ALTER TABLE [prefix_users] ADD [participant_panel] int NOT NULL default '1'"); echo $modifyoutput; flush();ob_flush();
+
         // Add language field to question_attributes table
         modify_database("","ALTER TABLE [prefix_question_attributes] ADD [language] varchar(20)"); echo $modifyoutput; flush();ob_flush();
+        upgrade_question_attributes148();
 
         modify_database("", "UPDATE [prefix_settings_global] SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
-
     }
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
   	return true;

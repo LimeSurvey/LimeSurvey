@@ -45,8 +45,8 @@
         $surveyid = $this->input->post('sid');
         $gid = $this->input->post('gid');
         $clang = $this->limesurvey_lang;
-        
-        
+
+
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
 
@@ -55,22 +55,22 @@
         self::_surveybar($surveyid,$gid);
         self::_surveysummary($surveyid,"viewquestion");
         self::_questiongroupbar($surveyid,$gid,NULL,"viewgroup");
-        
+
         if ($action == 'importquestion')
         {
-            
+
             $importquestion = "<div class='header ui-widget-header'>".$clang->gT("Import Question")."</div>\n";
             $importquestion .= "<div class='messagebox ui-corner-all'>\n";
-            
+
             $sFullFilepath = $this->config->item('tempdir'). DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
             $aPathInfo = pathinfo($sFullFilepath);
-            $sExtension = $aPathInfo['extension'];  
-            
+            $sExtension = $aPathInfo['extension'];
+
             if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
             {
                 $fatalerror = sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$this->config->item('tempdir'));
             }
-            
+
             // validate that we have a SID and GID
             if (!$surveyid)
             {
@@ -80,7 +80,7 @@
             //{
             //   $surveyid=returnglobal('sid');
             //}
-            
+
             if (!$gid)
             {
                 $fatalerror .= $clang->gT("No GID (Group) has been provided. Cannot import question");
@@ -90,7 +90,7 @@
             {
                 $postgid=returnglobal('gid');
             }*/
-            
+
             if (isset($fatalerror))
             {
                 $importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
@@ -101,7 +101,7 @@
                 show_error($importquestion);
                 return;
             }
-            
+
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
             $importquestion .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n"
             .$clang->gT("File upload succeeded.")."<br /><br />\n"
@@ -117,7 +117,7 @@
             }
             else show_error('Unknown file extension');
             FixLanguageConsistency($surveyid);
-            
+
             if (isset($aImportResults['fatalerror']))
             {
                     $importquestion .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
@@ -128,7 +128,7 @@
                     show_error($importquestion);
                     return;
             }
-            
+
             $importquestion .= "<div class='successheader'>".$clang->gT("Success")."</div><br />\n"
             ."<strong><u>".$clang->gT("Question import summary")."</u></strong><br />\n"
             ."<ul style=\"text-align:left;\">\n"
@@ -140,24 +140,24 @@
             }
             $importquestion.="\t<li>".$clang->gT("Question attributes:").$aImportResults['question_attributes']."</li>"
             ."</ul>\n";
-            
+
             $importquestion .= "<strong>".$clang->gT("Question import is complete.")."</strong><br />&nbsp;\n";
             $importquestion .= "<input type='submit' value='".$clang->gT("Go to question")."' onclick=\"window.open('".site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$aImportResults['newqid'])."', '_top')\" />\n";
             $importquestion .= "</div><br />\n";
-            
+
             unlink($sFullFilepath);
-            
+
             $data['display'] = $importquestion;
             $this->load->view('survey_view',$data);
         }
-        
+
         self::_loadEndScripts();
 
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
+
     }
-    
+
     /**
      * question::editdefaultvalues()
      * Load edit default values of a question screen
@@ -178,11 +178,11 @@
         self::_questiongroupbar($surveyid,$gid,$qid,"editdefaultvalues");
 
         self::_questionbar($surveyid,$gid,$qid,"editdefaultvalues");
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
         $this->load->helper('surveytranslator');
-        
+
         $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($questlangs,$baselang);
@@ -190,11 +190,11 @@
         $res = db_execute_assoc($query);
         $questionrow=$res->row_array(); //$connect->GetRow("SELECT type, other, title, question, same_default FROM ".db_table_name('questions')." WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='$baselang'");)
         $qtproperties=getqtypelist('','array');
-    
-        $editdefvalues="<div class='header ui-widget-header'>".$clang->gT('Edit default answer values')."</div> "   
+
+        $editdefvalues="<div class='header ui-widget-header'>".$clang->gT('Edit default answer values')."</div> "
         . '<div class="tab-pane" id="tab-pane-editdefaultvalues-'.$surveyid.'">'
         . "<form class='form30' id='frmdefaultvalues' name='frmdefaultvalues' action='".site_url('admin/database/index')."' method='post'>\n";
-        
+
         foreach ($questlangs as $language)
         {
             $editdefvalues .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false).'</h2>';
@@ -216,7 +216,7 @@
                     $query = "SELECT defaultvalue FROM ".$this->db->dbprefix."defaultvalues WHERE qid=$qid AND specialtype='' and scale_id={$scale_id} AND language='{$language}'";
                     $res = db_execute_assoc($query);
                     $defaultvalue=$res->row_array(); //$connect->GetOne("SELECT defaultvalue FROM ".$this->db->dbprefix."defaultvalues WHERE qid=$qid AND specialtype='' and scale_id={$scale_id} AND language='{$language}'");
-                    
+
                     $editdefvalues.="<select name='defaultanswerscale_{$scale_id}_{$language}' id='defaultanswerscale_{$scale_id}_{$language}'>";
                     $editdefvalues.="<option value='' ";
                     if (is_null($defaultvalue)) {
@@ -224,8 +224,8 @@
                     }
                     $editdefvalues.=">".$clang->gT('<No default value>')."</option>";
                     $answerquery = "SELECT code, answer FROM ".$this->db->dbprefix."answers WHERE qid=$qid and language='$language' order by sortorder";
-                    $answerresult = db_execute_assoc($answerquery);  
-                    foreach ($answerresult->result_array() as $answer)     
+                    $answerresult = db_execute_assoc($answerquery);
+                    foreach ($answerresult->result_array() as $answer)
                     {
                         $editdefvalues.="<option ";
                         if ($answer['code']==$defaultvalue)
@@ -233,7 +233,7 @@
                             $editdefvalues.= " selected='selected' ";
                         }
                         $editdefvalues.="value='{$answer['code']}'>{$answer['answer']}</option>";
-                    }       
+                    }
                     $editdefvalues.="</select></li> ";
                     if ($questionrow['other']=='Y')
                     {
@@ -245,7 +245,7 @@
                     }
                 }
             }
-            
+
             // If there are subquestions and no answerscales
             if ($qtproperties[$questionrow['type']]['answerscales']==0 && $qtproperties[$questionrow['type']]['subquestions']>0)
             {
@@ -261,10 +261,10 @@
                     if ($questionrow['type']=='M' || $questionrow['type']=='P')
                     {
                         $options=array(''=>$clang->gT('<No default value>'),'Y'=>$clang->gT('Checked'));
-                    } 
+                    }
                     $editdefvalues.="<ul>";
-                    
-                    foreach ($sqresult->result_array() as $aSubquestion)                   
+
+                    foreach ($sqresult->result_array() as $aSubquestion)
                     {
                         $defaultvalue=$connect->GetOne("SELECT defaultvalue FROM ".$this->db->dbprefix."defaultvalues WHERE qid=$qid AND specialtype='' and sqid={$aSubquestion['qid']} and scale_id={$scale_id} AND language='{$language}'");
                         $editdefvalues.="<li><label for='defaultanswerscale_{$scale_id}_{$language}_{$aSubquestion['qid']}'>{$aSubquestion['title']}: ".FlattenText($aSubquestion['question'])."</label>";
@@ -293,22 +293,22 @@
             }
                 $editdefvalues.="</ul> ";
                 $editdefvalues.="</div> "; // Closing page
-            }       
+            }
         $editdefvalues.="</div> "; // Closing pane
         $editdefvalues.="<input type='hidden' id='action' name='action' value='updatedefaultvalues'> "
             . "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
             . "\t<input type='hidden' id='gid' name='gid' value='$gid' /></p>\n"
             . "\t<input type='hidden' id='qid' name='qid' value='$qid' />";
         $editdefvalues.="<p><input type='submit' value='".$clang->gT('Save')."'/></form>";
-        
+
         $data['display'] = $editdefvalues;
         $this->load->view('survey_view',$data);
-        
+
         self::_loadEndScripts();
 
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-        
+
     }
 
     /**
@@ -1792,6 +1792,7 @@
     function ajaxquestionattributes()
     {
         $surveyid = $this->input->post("sid");
+        $languages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
         $qid = $this->input->post("qid");
         $thissurvey=getSurveyInfo($surveyid);
         $type=$this->input->post('question_type');
@@ -1799,7 +1800,6 @@
         {
             $attributesettings=getQuestionAttributes($qid);
         }
-
         $availableattributes=questionAttributes();
         if (isset($availableattributes[$type]))
         {
@@ -1808,14 +1808,7 @@
             $currentfieldset='';
             foreach ($availableattributes[$type] as $qa)
             {
-                if (isset($attributesettings[$qa['name']]))
-                {
-                    $value=$attributesettings[$qa['name']];
-                }
-                else
-                {
-                    $value=$qa['default'];
-                }
+
                 if ($currentfieldset!=$qa['category'])
                 {
                     if ($currentfieldset!='')
@@ -1826,38 +1819,69 @@
                     $ajaxoutput.="<legend>{$qa['category']}</legend>\n<ul>";
                     $currentfieldset=$qa['category'];
                 }
-
-                $ajaxoutput .= "<li>"
-                ."<label for='{$qa['name']}' title='".$qa['help']."'>".$qa['caption']."</label>";
-
-                if (isset($qa['readonly']) && $qa['readonly']==true && $thissurvey['active']=='Y')
+                foreach ($languages as $language)
                 {
-                    $ajaxoutput .= "$value";
-                }
-                else
-                {
-                    switch ($qa['inputtype']){
-                        case 'singleselect':    $ajaxoutput .="<select id='{$qa['name']}' name='{$qa['name']}'>";
-                        foreach($qa['options'] as $optionvalue=>$optiontext)
+
+                    if ($qa['i18n']==false)
+                    {
+                        if (isset($attributesettings[$qa['name']]))
                         {
-                            $ajaxoutput .="<option value='$optionvalue' ";
-                            if ($value==$optionvalue)
-                            {
-                                $ajaxoutput .=" selected='selected' ";
-                            }
-                            $ajaxoutput .=">$optiontext</option>";
+                            $value=$attributesettings[$qa['name']];
                         }
-                        $ajaxoutput .="</select>";
-                        break;
-                        case 'text':    $ajaxoutput .="<input type='text' id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
-                        break;
-                        case 'integer': $ajaxoutput .="<input type='text' id='{$qa['name']}' name='{$qa['name']}' value='$value' />";
-                        break;
-                        case 'textarea':$ajaxoutput .= "<textarea id='{$qa['name']}' name='{$qa['name']}'>$value</textarea>";
-                        break;
+                        else
+                        {
+                            $value=$qa['default'];
+                        }
+                        $sFieldName =$qa['name'];
                     }
+                    else  // $qa['i18n'] == true
+                    {
+                            if (isset($attributesettings[$qa['name']][$language]))
+                            {
+                                $value=$attributesettings[$qa['name']][$language];
+                            }
+                            else
+                            {
+                                $value=$qa['default'];
+                            }
+                            $sFieldName =$qa['name'].'_'.$language;
+                    }
+
+                    $ajaxoutput .= "<li>"
+                    ."<label for='{$sFieldName}' title='".$qa['help']."'>".$qa['caption'];
+                    if ($qa['i18n']==true)  $ajaxoutput .=" ($language)";
+                    $ajaxoutput.="</label>";
+
+                    if (isset($qa['readonly']) && $qa['readonly']==true && $thissurvey['active']=='Y')
+                    {
+                        $ajaxoutput .= "$value";
+                    }
+                    else
+                    {
+                        switch ($qa['inputtype']){
+                            case 'singleselect':    $ajaxoutput .="<select id='{$sFieldName}' name='{$sFieldName}'>";
+                            foreach($qa['options'] as $optionvalue=>$optiontext)
+                            {
+                                $ajaxoutput .="<option value='{$optionvalue}' ";
+                                if ($value==$optionvalue)
+                                {
+                                    $ajaxoutput .=" selected='selected' ";
+                                }
+                                $ajaxoutput .=">{$optiontext}</option>";
+                            }
+                            $ajaxoutput .="</select>";
+                            break;
+                            case 'text':    $ajaxoutput .="<input type='text' id='{$sFieldName}' name='{$sFieldName}' value='{$value}' />";
+                            break;
+                            case 'integer': $ajaxoutput .="<input type='text' id='{$sFieldName}' name='{$sFieldName}' value='{$value}' />";
+                            break;
+                            case 'textarea':$ajaxoutput .= "<textarea id='{$sFieldName}' name='{$sFieldName}'>{$value}</textarea>";
+                            break;
+                        }
+                    }
+                    $ajaxoutput .="</li>\n";
+                    if ($qa['i18n']==false) break;
                 }
-                $ajaxoutput .="</li>\n";
             }
             $ajaxoutput .= "</ul></fieldset>";
 			echo $ajaxoutput;

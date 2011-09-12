@@ -932,9 +932,9 @@ function mandatory_message($ia)
                     if ($qrow['other']=='Y')
                     {
                         $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
-                        if (trim($qidattributes['other_replace_text'])!='')
+                        if (trim($qidattributes['other_replace_text'][$_SESSION['s_lang']])!='')
                         {
-                            $othertext=$qidattributes['other_replace_text'];
+                            $othertext=$qidattributes['other_replace_text'][$_SESSION['s_lang']];
                         }
                         else
                         {
@@ -1124,14 +1124,14 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
     $disable_prev=trim($qidattributes['time_limit_disable_prev']) != '' ? $qidattributes['time_limit_disable_prev'] : 0;
     $time_limit_action=trim($qidattributes['time_limit_action']) != '' ? $qidattributes['time_limit_action'] : 1;
     $time_limit_message_delay=trim($qidattributes['time_limit_message_delay']) != '' ? $qidattributes['time_limit_message_delay']*1000 : 1000;
-    $time_limit_message=trim($qidattributes['time_limit_message']) != '' ? htmlspecialchars($qidattributes['time_limit_message'], ENT_QUOTES) : $clang->gT("Your time to answer this question has expired");
+    $time_limit_message=trim($qidattributes['time_limit_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($qidattributes['time_limit_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has expired");
     $time_limit_warning=trim($qidattributes['time_limit_warning']) != '' ? $qidattributes['time_limit_warning'] : 0;
     $time_limit_warning_2=trim($qidattributes['time_limit_warning_2']) != '' ? $qidattributes['time_limit_warning_2'] : 0;
-    $time_limit_countdown_message=trim($qidattributes['time_limit_countdown_message']) != '' ? htmlspecialchars($qidattributes['time_limit_countdown_message'], ENT_QUOTES) : $clang->gT("Time remaining");
-    $time_limit_warning_message=trim($qidattributes['time_limit_warning_message']) != '' ? htmlspecialchars($qidattributes['time_limit_warning_message'], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_countdown_message=trim($qidattributes['time_limit_countdown_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($qidattributes['time_limit_countdown_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Time remaining");
+    $time_limit_warning_message=trim($qidattributes['time_limit_warning_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($qidattributes['time_limit_warning_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
     $time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning'> </div>", $time_limit_warning_message);
     $time_limit_warning_display_time=trim($qidattributes['time_limit_warning_display_time']) != '' ? $qidattributes['time_limit_warning_display_time']+1 : 0;
-    $time_limit_warning_2_message=trim($qidattributes['time_limit_warning_2_message']) != '' ? htmlspecialchars($qidattributes['time_limit_warning_2_message'], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_warning_2_message=trim($qidattributes['time_limit_warning_2_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($qidattributes['time_limit_warning_2_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
     $time_limit_warning_2_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning_2'> </div>", $time_limit_warning_2_message);
     $time_limit_warning_2_display_time=trim($qidattributes['time_limit_warning_2_display_time']) != '' ? $qidattributes['time_limit_warning_2_display_time']+1 : 0;
     $time_limit_message_style=trim($qidattributes['time_limit_message_style']) != '' ? $qidattributes['time_limit_message_style'] : "position: absolute;
@@ -2170,9 +2170,9 @@ function do_list_dropdown($ia)
     }
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
-    if (trim($qidattributes['other_replace_text'])!='')
+    if (trim($qidattributes['other_replace_text'][$_SESSION['s_lang']])!='')
     {
-        $othertext=$qidattributes['other_replace_text'];
+        $othertext=$qidattributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
@@ -2502,9 +2502,9 @@ function do_list_radio($ia)
         $dcols= 1;
     }
 
-    if (trim($qidattributes['other_replace_text'])!='')
+    if (trim($qidattributes['other_replace_text'][$_SESSION['s_lang']])!='')
     {
-        $othertext=$qidattributes['other_replace_text'];
+        $othertext=$qidattributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
@@ -3172,9 +3172,9 @@ function do_multiplechoice($ia)
 
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
 
-    if (trim($qidattributes['other_replace_text'])!='')
+    if (trim($qidattributes['other_replace_text'][$_SESSION['s_lang']])!='')
     {
-        $othertext=$qidattributes['other_replace_text'];
+        $othertext=$qidattributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
@@ -3676,9 +3676,9 @@ function do_multiplechoice_withcomments($ia)
         $numbersonly = '';
     }
 
-    if (trim($qidattributes['other_replace_text'])!='')
+    if (trim($qidattributes['other_replace_text'][$_SESSION['s_lang']])!='')
     {
-        $othertext=$qidattributes['other_replace_text'];
+        $othertext=$qidattributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
@@ -4168,16 +4168,16 @@ function do_multipleshorttext($ia)
         $tiwidth=20;
     }
 
-    if (trim($qidattributes['prefix'])!='') {
-        $prefix=$qidattributes['prefix'];
+    if (trim($qidattributes['prefix'][$_SESSION['s_lang']])!='') {
+        $prefix=$qidattributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
 
-    if (trim($qidattributes['suffix'])!='') {
-        $suffix=$qidattributes['suffix'];
+    if (trim($qidattributes['suffix'][$_SESSION['s_lang']])!='') {
+        $suffix=$qidattributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
@@ -4380,16 +4380,16 @@ function do_multiplenumeric($ia)
         $max_num_value = 0;
     }
 
-    if (trim($qidattributes['prefix'])!='') {
-        $prefix=$qidattributes['prefix'];
+    if (trim($qidattributes['prefix'][$_SESSION['s_lang']])!='') {
+        $prefix=$qidattributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
 
-    if (trim($qidattributes['suffix'])!='') {
-        $suffix=$qidattributes['suffix'];
+    if (trim($qidattributes['suffix'][$_SESSION['s_lang']])!='') {
+        $suffix=$qidattributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
@@ -4823,15 +4823,15 @@ function do_numerical($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
-    if (trim($qidattributes['prefix'])!='') {
-        $prefix=$qidattributes['prefix'];
+    if (trim($qidattributes['prefix'][$_SESSION['s_lang']])!='') {
+        $prefix=$qidattributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
-    if (trim($qidattributes['suffix'])!='') {
-        $suffix=$qidattributes['suffix'];
+    if (trim($qidattributes['suffix'][$_SESSION['s_lang']])!='') {
+        $suffix=$qidattributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
@@ -4945,15 +4945,15 @@ function do_shortfreetext($ia)
     {
         $tiwidth=50;
     }
-    if (trim($qidattributes['prefix'])!='') {
-        $prefix=$qidattributes['prefix'];
+    if (trim($qidattributes['prefix'][$_SESSION['s_lang']])!='') {
+        $prefix=$qidattributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
-    if (trim($qidattributes['suffix'])!='') {
-        $suffix=$qidattributes['suffix'];
+    if (trim($qidattributes['suffix'][$_SESSION['s_lang']])!='') {
+        $suffix=$qidattributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
@@ -5731,7 +5731,7 @@ function do_array_yesnouncertain($ia)
 
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);	//Checked
-    $qrow = $qresult->result_array(); 
+    $qrow = $qresult->result_array();
     $other = isset($qrow['other']) ? $qrow['other'] : '';
     $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
     if (trim($qidattributes['answer_width'])!='')
@@ -7330,17 +7330,17 @@ function do_array_dual($ia)
         $useDropdownLayout = false;
     }
 
-    if (trim($qidattributes['dualscale_headerA'])!='') {
-        $leftheader= $clang->gT($qidattributes['dualscale_headerA']);
+    if (trim($qidattributes['dualscale_headerA'][$_SESSION['s_lang']])!='') {
+        $leftheader= $clang->gT($qidattributes['dualscale_headerA'][$_SESSION['s_lang']]);
     }
     else
     {
         $leftheader ='';
     }
 
-    if (trim($qidattributes['dualscale_headerB'])!='')
+    if (trim($qidattributes['dualscale_headerB'][$_SESSION['s_lang']])!='')
     {
-        $rightheader= $clang->gT($qidattributes['dualscale_headerB']);
+        $rightheader= $clang->gT($qidattributes['dualscale_headerB'][$_SESSION['s_lang']]);
     }
     else {
         $rightheader ='';
@@ -7720,8 +7720,8 @@ function do_array_dual($ia)
 
             // Get attributes for Headers and Prefix/Suffix
 
-            if (trim($qidattributes['dropdown_prepostfix'])!='') {
-                list ($ddprefix, $ddsuffix) =explode("|",$qidattributes['dropdown_prepostfix']);
+            if (trim($qidattributes['dropdown_prepostfix'][$_SESSION['s_lang']])!='') {
+                list ($ddprefix, $ddsuffix) =explode("|",$qidattributes['dropdown_prepostfix'][$_SESSION['s_lang']]);
                 $ddprefix = $ddprefix;
                 $ddsuffix = $ddsuffix;
             }
