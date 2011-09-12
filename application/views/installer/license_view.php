@@ -36,7 +36,7 @@ $this->load->view("installer/header_view", array('progressValue' => $progressVal
 <table style="font-size:11px; width: 694px; background: #ffffff;">
 <tbody>
    <tr>
-    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT("Previous"); ?>" onclick="javascript: window.open('<?php echo site_url("installer/install/1"); ?>', '_top')" /></td>
+    <td align="left" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" type="button" value="<?php echo $clang->gT("Previous"); ?>" onclick="javascript: window.open('<?php echo site_url("installer/install/welcome"); ?>', '_top')" /></td>
     <td align="center" style="width: 227px;"></td>
     <td align="right" style="width: 227px;"><input class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  type="submit" value="<?php echo $clang->gT('Next'); ?>" /></td>
    </tr>

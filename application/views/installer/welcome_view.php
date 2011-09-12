@@ -43,7 +43,7 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
             $label, '</option>', "\n";
     }
 ?>
-</select>   
+</select>
 </table>
 </fieldset>
 
@@ -59,8 +59,8 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
   <tbody>
    <tr>
     <td align="left" style="width: 227px;">&nbsp;</td>
-    <td align="center" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="<?php echo $clang->gT('Start Installation'); ?>" /></td>
-    <td align="right" style="width: 227px;">&nbsp;</td>
+    <td align="center" style="width: 227px;">&nbsp;</td>
+    <td align="right" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="<?php echo $clang->gT('Start Installation'); ?>" /></td>
    </tr>
   </tbody>
  </table>
