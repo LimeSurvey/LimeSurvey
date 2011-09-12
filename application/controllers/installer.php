@@ -797,11 +797,7 @@ class Installer extends CI_Controller {
         $aData['classesForStep']=array('off','off','off','off','off','on');
         $aData['progressValue']=80;
 
-        $aStatusdata = array(
-            'optional'  => TRUE
-
-        );
-        $this->session->set_userdata($aStatusdata);
+        $this->session->set_userdata('optional', TRUE);
         $this->load->view('installer/optconfig_view',$aData);
 
     }
