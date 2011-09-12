@@ -1422,12 +1422,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 if (isset($aQIDReplacements[$insertdata['cqid']]))
                 {
+                    $oldcqid = $insertdata['cqid']; //Save for cfield transformation
                     $insertdata['cqid']=$aQIDReplacements[$insertdata['cqid']]; // remap the qid
                 }
                 else continue; // a problem with this answer record -> don't consider
 
                 list($oldcsid, $oldcgid, $oldqidanscode) = explode("X",$insertdata["cfieldname"],3);
-
                 // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
                 if (!isset($aGIDReplacements[$oldcgid]))
                     continue;
@@ -1440,11 +1440,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 if (preg_match("/^\+/",$oldcsid))
                 {
-                    $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                    $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldcqid));
                 }
                 else
                 {
-                    $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                    $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldcqid));
                 }
             }
             else
