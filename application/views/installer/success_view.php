@@ -1,4 +1,7 @@
-<?php $this->load->view("installer/header_view",array('progressValue' => $progressValue)); ?>
+<?php
+$clang = &get_instance()->limesurvey_lang;
+$this->load->view("installer/header_view",array('progressValue' => $progressValue));
+?>
 
 <div class="container_6">
 
