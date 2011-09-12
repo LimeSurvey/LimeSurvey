@@ -136,7 +136,7 @@ if(isset($showsgqacode) && $showsgqacode == true)
 }
 else
 {
-	$surveyname = "";
+	$surveyname = $surveyname;
 }
 
 $survey_output = array(
@@ -493,7 +493,7 @@ while ($degrow = $degresult->FetchRow())
                         {
                             $explanation .= $clang->gT("Answer was")." ";
                         }
-                    	$explanation .= " ".$distinctrow['value'];
+                    	$explanation .= " `".$distinctrow['value']."`";
                     }
                     if(!$distinctrow['cqid']) { // cqid == 0  ==> token attribute match
                         $tokenData = GetTokenFieldsAndNames($surveyid);
@@ -531,7 +531,7 @@ while ($degrow = $degresult->FetchRow())
                         {
                             $explanation .= $clang->gT("is")." ";
                         }
-                        $answer_section = $distinctrow['value'];
+                        $explanation .= " `".$distinctrow['value']."`";
                     }
 
                     $conquery="SELECT cid, cqid, q.title,\n"
