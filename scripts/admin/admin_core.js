@@ -324,11 +324,11 @@ function getToolTip(type){
     if (multiple > 0){
         returnval = '';
         for(i=1;i<=multiple;i++){
-            returnval = returnval + "<img src='../images/screenshots/"+code+i+".png' /><br /><br />";
+            returnval = returnval + "<img src='" + imgurl + "/screenshots/"+code+i+".png' /><br /><br />";
         }
         return returnval;
     }
-    return "<img src='../images/screenshots/"+code+".png' />";
+    return "<img src='" + imgurl + "/screenshots/"+code+".png' />";
 }
 
 //We have form validation and other stuff..

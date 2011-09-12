@@ -1,5 +1,6 @@
 <script type='text/javascript'> 
 var attr_url = "<?php echo site_url('admin/question/ajaxquestionattributes'); ?>"; 
+var imgurl = '<?php echo $this->config->item('imageurl'); ?>';
 </script>
 <?php PrepareEditorScript(true); ?>
 
