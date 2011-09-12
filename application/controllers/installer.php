@@ -37,25 +37,25 @@ class Installer extends CI_Controller {
      * @return
      */
     function __construct()
-	{
+    {
         parent::__construct();
         self::_checkInstallation();
         require_once(APPPATH.'libraries/LS/LS.php');
         $this->dbTasks = new LS_Installer_DbTasks;
-		$lang = $this->session->userdata('installerLang');
-		if (!$lang)
-		{
-			$lang = "en";
-		}
-		$this->load->library('Limesurvey_lang',array($lang));
-	}
+        $lang = $this->session->userdata('installerLang');
+        if (!$lang)
+        {
+            $lang = "en";
+        }
+        $this->load->library('Limesurvey_lang',array($lang));
+    }
 
-	/**
-	 * Installer::index()
-	 *
-	 * @return
-	 */
-	function index()
+    /**
+     * Installer::index()
+     *
+     * @return
+     */
+    function index()
     {
         // redirect to license screen
         redirect(site_url('installer/install/welcome'));
@@ -63,7 +63,9 @@ class Installer extends CI_Controller {
 
     /**
      * Installer::_checkInstallation()
-     * check if installation should proceed further or not. (Based on existance of 'sample_installer_file.txt' file.)
+     *
+     * Based on existance of 'sample_installer_file.txt' file, check if installation should
+     * proceed further or not.
      * @return
      */
     function _checkInstallation()
@@ -110,25 +112,37 @@ class Installer extends CI_Controller {
             $image = check_HTML_image($result);
             return $result;
         }
+        
 
         /**
-         * check if directory exists and is writeable, returns via parameters by reference
+         * check if file or directory exists and is writeable, returns via parameters by reference
          *
-         * @param string $directory to check
+         * @param string $path file or directory to check
+         * @param int $type 0:undefined (invalid), 1:file, 2:directory
          * @param string $data to manipulate
          * @param string $base key for data manipulation
          * @param string $keyError key for error data
          * @return bool result of check (that it is writeable which implies existance)
          */
-        function check_PathWriteable($directory, &$data, $base, $keyError)
+        function check_PathWriteable($path, $type, &$data, $base, $keyError)
         {
             $result = false;
             $data[$base.'Present'] = 'Not Found';
             $data[$base.'Writable'] = '';
-            if (is_dir($directory) || is_file($directory))
+            switch($type) {
+                case 1:
+                    $exists = is_file($path);
+                    break;
+                case 2:
+                    $exists = is_dir($path);
+                    break;
+                default:
+                    throw new Exception('Invalid type given.');
+            }
+            if ($exists)
             {
                 $data[$base.'Present'] = 'Found';
-                if (is_writable($directory))
+                if (is_writable($path))
                 {
                     $data[$base.'Writable'] = 'Writable';
                     $result = true;
@@ -143,6 +157,34 @@ class Installer extends CI_Controller {
             return $result;
         }
 
+        /**
+         * check if file exists and is writeable, returns via parameters by reference
+         *
+         * @param string $file to check
+         * @param string $data to manipulate
+         * @param string $base key for data manipulation
+         * @param string $keyError key for error data
+         * @return bool result of check (that it is writeable which implies existance)
+         */
+        function check_FileWriteable($file, &$data, $base, $keyError)
+        {
+            return check_PathWriteable($file, 1, $data, $base, $keyError);
+        }
+
+            /**
+         * check if directory exists and is writeable, returns via parameters by reference
+         *
+         * @param string $directory to check
+         * @param string $data to manipulate
+         * @param string $base key for data manipulation
+         * @param string $keyError key for error data
+         * @return bool result of check (that it is writeable which implies existance)
+         */
+        function check_DirectoryWriteable($directory, &$data, $base, $keyError)
+        {
+            return check_PathWriteable($directory, 2, $data, $base, $keyError);
+        }
+
         //  version check
         if (version_compare(PHP_VERSION, '5.1.6', '<'))
             $bProceed = !$data['verror'] = true;
@@ -151,26 +193,26 @@ class Installer extends CI_Controller {
         if (!check_PHPFunction('mb_convert_encoding', $data['mbstringPresent']))
             $bProceed = false;
 
-        // ** directory permissions checking **
+        // ** file and directory permissions checking **
 
         // database file
-        if (!check_PathWriteable($this->config->item('rootdir').'/application/config/database.php', $data, 'database', 'derror') )
+        if (!check_FileWriteable($this->config->item('rootdir').'/application/config/database.php', $data, 'database', 'derror') )
             $bProceed = false;
 
         // autoload file
-        if (!check_PathWriteable($this->config->item('rootdir').'/application/config/autoload.php', $data, 'autoload', 'derror') )
+        if (!check_FileWriteable($this->config->item('rootdir').'/application/config/autoload.php', $data, 'autoload', 'derror') )
             $bProceed = false;
 
         // tmp directory check
-        if (!check_PathWriteable($this->config->item('rootdir').'/tmp/', $data, 'tmpdir', 'terror') )
+        if (!check_DirectoryWriteable($this->config->item('rootdir').'/tmp/', $data, 'tmpdir', 'terror') )
             $bProceed = false;
 
         // templates directory check
-        if (!check_PathWriteable($this->config->item('rootdir').'/templates/', $data, 'templatedir', 'tperror') )
+        if (!check_DirectoryWriteable($this->config->item('rootdir').'/templates/', $data, 'templatedir', 'tperror') )
             $bProceed = false;
 
         //upload directory check
-        if (!check_PathWriteable($this->config->item('rootdir').'/upload/', $data, 'uploaddir', 'uerror') )
+        if (!check_DirectoryWriteable($this->config->item('rootdir').'/upload/', $data, 'uploaddir', 'uerror') )
             $bProceed = false;
 
         // ** optional settings check **
@@ -195,24 +237,24 @@ class Installer extends CI_Controller {
      */
     private function stepWelcome()
     {
-		$clang = $this->limesurvey_lang;
+        $clang = $this->limesurvey_lang;
         // $aData array contain all the information required by view.
         $aData['title']=$clang->gT('Welcome');
         $aData['descp']=$clang->gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
         $aData['classesForStep']=array('on','off','off','off','off','off');
         $aData['progressValue']=0; // TODO
 
-		$this->load->helper('surveytranslator');
+        $this->load->helper('surveytranslator');
 
         $this->load->view('installer/welcome_view',$aData);
     }
-	
+
     /**
      * display license
      */
     private function stepLicense()
     {
-		$clang = $this->limesurvey_lang;
+        $clang = $this->limesurvey_lang;
         // $aData array contain all the information required by view.
         $aData['title']=$clang->gT('License');
         $aData['descp']=$clang->gT('GNU General Public License:');
@@ -227,7 +269,7 @@ class Installer extends CI_Controller {
      */
     private function stepPreInstallationCheck()
     {
-		$clang = $this->limesurvey_lang;
+        $clang = $this->limesurvey_lang;
         //usual data required by view
         $aData['title']=$clang->gT('Pre-installation check');
         $aData['descp']=$clang->gT('Pre-installation check for LimeSurvey ').$this->config->item('versionnumber');
@@ -257,7 +299,7 @@ class Installer extends CI_Controller {
      */
     private function stepDatabaseConfiguration()
     {
-		$clang = $this->limesurvey_lang;
+        $clang = $this->limesurvey_lang;
         // usual data required by view
         $aData['title']=$clang->gT('Database configuration');
         $aData['descp']=$clang->gT('Please enter the database settings you want to use for LimeSurvey:');
@@ -286,7 +328,6 @@ class Installer extends CI_Controller {
         //run validation, if it fails, load the view again else proceed to next step.
         if ($this->form_validation->run() == FALSE)
         {
-            //echo 'invalid';
             $this->load->view('installer/dbconfig_view',$aData);
         }
         else
@@ -507,7 +548,7 @@ class Installer extends CI_Controller {
      */
     private function stepOptionalConfiguration()
     {
-		$clang = $this->limesurvey_lang;
+        $clang = $this->limesurvey_lang;
         $this->_writeDatabaseFile();
         $this->_writeAutoloadfile();
 
@@ -537,10 +578,10 @@ class Installer extends CI_Controller {
     {
         switch($step)
         {
-			case 'welcome':
-				$this->stepWelcome();
-				break;
-			
+            case 'welcome':
+                $this->stepWelcome();
+                break;
+            
             case 'license':
                 $this->stepLicense();
                 break;
@@ -576,13 +617,12 @@ class Installer extends CI_Controller {
      * Changes the installer's language after welcome view
      * @return
      */
-	function language()
-	{
-		$lang = $this->input->post('installerLang');
-		$langdata = array('installerLang'=>$lang);
-		$this->session->set_userdata($langdata);
-		redirect(site_url('installer/install/license'));
-	}
+    function language()
+    {
+        $lang = $this->input->post('installerLang');
+        $this->session->set_userdata('installerLang', $lang);
+        redirect(site_url('installer/install/license'));
+    }
 
     // this function does the processing of optional view form.
     /**
@@ -598,8 +638,8 @@ class Installer extends CI_Controller {
             redirect(site_url('installer/install/license'));
         }
 
-		$clang = $this->limesurvey_lang;
-		
+        $clang = $this->limesurvey_lang;
+        
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
 
@@ -748,9 +788,9 @@ class Installer extends CI_Controller {
         self::_writeDatabaseFile();
         self::_writeAutoloadfile();
 
-		$clang = $this->limesurvey_lang;
+        $clang = $this->limesurvey_lang;
         $this->load->helper('surveytranslator');
-		
+        
         $aData['confirmation']="<b>".$this->session->userdata('optconfig_message')."</b><br/>";
         $aData['title']=$clang->gT("Optional settings");
         $aData['descp']=$clang->gT("Optional settings to give you a head start");
@@ -780,8 +820,8 @@ class Installer extends CI_Controller {
             redirect(site_url('installer/install/license'));
         }
 
-		$clang = $this->limesurvey_lang;
-		
+        $clang = $this->limesurvey_lang;
+        
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
@@ -868,10 +908,10 @@ class Installer extends CI_Controller {
         {
             redirect(site_url('installer/install/license'));
         }
-		
-		$clang = $this->limesurvey_lang;
         
-		//include(dirname(__FILE__).'/../../../config-sample.php');
+        $clang = $this->limesurvey_lang;
+        
+        //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
         $sAdodbType = $this->session->userdata('dbtype');
@@ -961,7 +1001,7 @@ class Installer extends CI_Controller {
      */
     function _modify_database($sqlfile='', $sqlstring='')
     {
-		$clang = $this->limesurvey_lang;
+        $clang = $this->limesurvey_lang;
         $dbprefix = $this->session->userdata('dbprefix');
         $defaultuser = "admin";
         $defaultpass = "password";
@@ -1056,109 +1096,109 @@ class Installer extends CI_Controller {
      */
     function _writeDatabaseFile()
     {
-		$clang = $this->limesurvey_lang;
+        $clang = $this->limesurvey_lang;
         //write database.php if database exists and has been populated.
-		if ($this->session->userdata('databaseexist') && $this->session->userdata('tablesexist'))
-		{
-			//write variables in database.php
-			$this->load->helper('file');
+        if ($this->session->userdata('databaseexist') && $this->session->userdata('tablesexist'))
+        {
+            //write variables in database.php
+            $this->load->helper('file');
 
-			$dblocation = $this->session->userdata('dblocation');
-			list($sDatabaseLocation, $sDatabasePort) = LS_Installer_DbTasks::getHostParts($dblocation);
+            $dblocation = $this->session->userdata('dblocation');
+            list($sDatabaseLocation, $sDatabasePort) = LS_Installer_DbTasks::getHostParts($dblocation);
 
-			$dbvalues = array(
-						'hostname' => $sDatabaseLocation,
-						'username' => $this->session->userdata('dbuser'),
-						'password' => $this->session->userdata('dbpwd'),
-						'database' => $this->session->userdata('dbname'),
-						'dbdriver' => $this->session->userdata('dbtype'),
-						'dbprefix' => $this->session->userdata('dbprefix'),
-						'pconnect' => 'FALSE',
-						'db_debug' => 'TRUE',
-						'cache_on' => 'FALSE',
-						'cachedir' => '',
-						'char_set' => 'utf8',
-						'dbcollat' => 'utf8_general_ci',
-						'swap_pre' => '',
-						'autoinit' => 'TRUE',
-						'stricton' => 'FALSE',
-						'databasetabletype' => 'myISAM'
-			);
-			if (isset($sDatabasePort))
-			{
-				$dbvalues['port']=$sDatabasePort;
-			}
+            $dbvalues = array(
+                        'hostname' => $sDatabaseLocation,
+                        'username' => $this->session->userdata('dbuser'),
+                        'password' => $this->session->userdata('dbpwd'),
+                        'database' => $this->session->userdata('dbname'),
+                        'dbdriver' => $this->session->userdata('dbtype'),
+                        'dbprefix' => $this->session->userdata('dbprefix'),
+                        'pconnect' => 'FALSE',
+                        'db_debug' => 'TRUE',
+                        'cache_on' => 'FALSE',
+                        'cachedir' => '',
+                        'char_set' => 'utf8',
+                        'dbcollat' => 'utf8_general_ci',
+                        'swap_pre' => '',
+                        'autoinit' => 'TRUE',
+                        'stricton' => 'FALSE',
+                        'databasetabletype' => 'myISAM'
+            );
+            if (isset($sDatabasePort))
+            {
+                $dbvalues['port']=$sDatabasePort;
+            }
 
-			$dbdata = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); " ."\n"
-					."/*"."\n"
-					." | -------------------------------------------------------------------"."\n"
-					." | DATABASE CONNECTIVITY SETTINGS"."\n"
-					." | ------------------------------------------------------------------- "."\n"
-					." | This file will contain the settings needed to access your database."."\n"
-					." | "."\n"
-					." | For complete instructions please consult the 'Database Connection' "."\n"
-					." | page of the User Guide. "."\n"
-					." | "."\n"
-					." | ------------------------------------------------------------------- "."\n"
-					." | EXPLANATION OF VARIABLES "."\n"
-					." | ------------------------------------------------------------------- "."\n"
-					." | "."\n"
-					." |	['hostname'] The hostname of your database server. "."\n"
-					." |	['username'] The username used to connect to the database "."\n"
-					." |	['password'] The password used to connect to the database "."\n"
-					." |	['database'] The name of the database you want to connect to "."\n"
-					." |	['dbdriver'] The database type. ie: mysql.  Currently supported: "."\n"
-					." 				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8 "."\n"
-					." |	['dbprefix'] You can add an optional prefix, which will be added "."\n"
-					." |				 to the table name when using the  Active Record class "."\n"
-					." |	['pconnect'] TRUE/FALSE - Whether to use a persistent connection "."\n"
-					." |	['db_debug'] TRUE/FALSE - Whether database errors should be displayed. "."\n"
-					." |	['cache_on'] TRUE/FALSE - Enables/disables query caching "."\n"
-					." |	['cachedir'] The path to the folder where cache files should be stored "."\n"
-					." |	['char_set'] The character set used in communicating with the database "."\n"
-					." |	['dbcollat'] The character collation used in communicating with the database "."\n"
-					." |	['swap_pre'] A default table prefix that should be swapped with the dbprefix "."\n"
-					." |	['autoinit'] Whether or not to automatically initialize the database. "."\n"
-					." |	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections "."\n"
-					." |							- good for ensuring strict SQL while developing "."\n"
-					." | "."\n"
-					.' | The $active_group'." variable lets you choose which connection group to "."\n"
-					." | make active.  By default there is only one group (the 'default' group). "."\n"
-					." | "."\n"
-					.' | The $active_record'." variables lets you determine whether or not to load "."\n"
-					." | the active record class "."\n"
-					." */ "."\n"
-					." "."\n"
-					.'$active_group = \'default\'; '."\n"
-					.'$active_record = TRUE; '."\n"
-					." "."\n" ;
-			foreach ($dbvalues as $key=>$value)
-			{
-				if ($value == 'FALSE' || $value == 'TRUE')
-				{
-					$dbdata .= '$db[\'default\'][\'' . $key . '\'] = '. $value.';'."\n" ;
-				}
-				else
-				{
-					$dbdata .= '$db[\'default\'][\'' . $key . '\'] = \''. $value.'\';'."\n" ;
-				}
+            $dbdata = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); " ."\n"
+                    ."/*"."\n"
+                    ." | -------------------------------------------------------------------"."\n"
+                    ." | DATABASE CONNECTIVITY SETTINGS"."\n"
+                    ." | ------------------------------------------------------------------- "."\n"
+                    ." | This file will contain the settings needed to access your database."."\n"
+                    ." | "."\n"
+                    ." | For complete instructions please consult the 'Database Connection' "."\n"
+                    ." | page of the User Guide. "."\n"
+                    ." | "."\n"
+                    ." | ------------------------------------------------------------------- "."\n"
+                    ." | EXPLANATION OF VARIABLES "."\n"
+                    ." | ------------------------------------------------------------------- "."\n"
+                    ." | "."\n"
+                    ." |	['hostname'] The hostname of your database server. "."\n"
+                    ." |	['username'] The username used to connect to the database "."\n"
+                    ." |	['password'] The password used to connect to the database "."\n"
+                    ." |	['database'] The name of the database you want to connect to "."\n"
+                    ." |	['dbdriver'] The database type. ie: mysql.  Currently supported: "."\n"
+                    ." |				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8 "."\n"
+                    ." |	['dbprefix'] You can add an optional prefix, which will be added "."\n"
+                    ." |				 to the table name when using the  Active Record class "."\n"
+                    ." |	['pconnect'] TRUE/FALSE - Whether to use a persistent connection "."\n"
+                    ." |	['db_debug'] TRUE/FALSE - Whether database errors should be displayed. "."\n"
+                    ." |	['cache_on'] TRUE/FALSE - Enables/disables query caching "."\n"
+                    ." |	['cachedir'] The path to the folder where cache files should be stored "."\n"
+                    ." |	['char_set'] The character set used in communicating with the database "."\n"
+                    ." |	['dbcollat'] The character collation used in communicating with the database "."\n"
+                    ." |	['swap_pre'] A default table prefix that should be swapped with the dbprefix "."\n"
+                    ." |	['autoinit'] Whether or not to automatically initialize the database. "."\n"
+                    ." |	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections "."\n"
+                    ." |							- good for ensuring strict SQL while developing "."\n"
+                    ." | "."\n"
+                    .' | The $active_group'." variable lets you choose which connection group to "."\n"
+                    ." | make active.  By default there is only one group (the 'default' group). "."\n"
+                    ." | "."\n"
+                    .' | The $active_record'." variables lets you determine whether or not to load "."\n"
+                    ." | the active record class "."\n"
+                    ." */ "."\n"
+                    ." "."\n"
+                    .'$active_group = \'default\'; '."\n"
+                    .'$active_record = TRUE; '."\n"
+                    ." "."\n" ;
+            foreach ($dbvalues as $key=>$value)
+            {
+                if ($value == 'FALSE' || $value == 'TRUE')
+                {
+                    $dbdata .= '$db[\'default\'][\'' . $key . '\'] = '. $value.';'."\n" ;
+                }
+                else
+                {
+                    $dbdata .= '$db[\'default\'][\'' . $key . '\'] = \''. $value.'\';'."\n" ;
+                }
 
-			}
-			$dbdata .= '$config[\'dbdriver\'] = $db[\'default\'][\'dbdriver\']; ' . "\n" . "\n"
-				   . "/* End of file database.php */ ". "\n"
-					. "/* Location: ./application/config/database.php */ ";
+            }
+            $dbdata .= '$config[\'dbdriver\'] = $db[\'default\'][\'dbdriver\']; ' . "\n" . "\n"
+                   . "/* End of file database.php */ ". "\n"
+                    . "/* Location: ./application/config/database.php */ ";
 
-			if (is_writable(APPPATH . 'config/database.php'))
-			{
-				write_file(APPPATH . 'config/database.php', $dbdata);
-			}
-			else
-			{
-				header('refresh:5;url='.site_url("installer/install/0"));
-				echo "<b>".$clang->gT("Directory is not writable")."</b><br/>";
-				echo $clang->gT('You will be redirected in about 5 secs. If not, click ').anchor("installer/install/0",$clang->gT("here")).'.';
-			}
-		}
+            if (is_writable(APPPATH . 'config/database.php'))
+            {
+                write_file(APPPATH . 'config/database.php', $dbdata);
+            }
+            else
+            {
+                header('refresh:5;url='.site_url("installer/install/0"));
+                echo "<b>".$clang->gT("Directory is not writable")."</b><br/>";
+                echo $clang->gT('You will be redirected in about 5 secs. If not, click ').anchor("installer/install/0",$clang->gT("here")).'.';
+            }
+        }
     }
 
     /**
