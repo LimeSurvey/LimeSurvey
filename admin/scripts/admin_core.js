@@ -47,9 +47,7 @@ $(document).ready(function(){
                                 target: 'bottomRight'}
                         },
                show: {effect: { length:50}},
- 			   hide: { when: 'mouseout' },
- 			   api: { onRender: function() {$(this.options.hide.when.target).bind('click', this.hide);}}
-
+ 			   hide: { when: 'mouseout' }
                });
         }
     });    
