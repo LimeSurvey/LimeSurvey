@@ -105,10 +105,13 @@
                     . "<img src='$imageurl/seperator.gif' alt=''  />\n"; */
 
                     //
+                    $this->load->helper('surveytranslator');
                     $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                     $baselang = GetBaseLanguageFromSurveyID($surveyid);
                     $tmp_survlangs[] = $baselang;
                     rsort($tmp_survlangs);
+                    $data['tmp_survlangs'] = $tmp_survlangs;
+                    //$data['surveyid'] = $surveyid;
 
                     // Test question Language Selection Popup
                     /**$surveysummary .="<div class=\"langpopup\" id=\"previewquestionpopup\">".$clang->gT("Please select a language:")."<ul>";
@@ -362,7 +365,7 @@
                 $questionsummary .= "</td></tr>";
             }
             $questionsummary .= "</table>"; */
-
+            
             $questionsummary .= $this->load->view("admin/survey/Question/questionbar_view",$data,true);
         }
         $finaldata['display'] = $questionsummary;
@@ -1093,6 +1096,7 @@
         $data['showstyle'] = $showstyle;
         $data['aAdditionalLanguages'] = $aAdditionalLanguages;
 		$this->load->view("admin/survey/surveysummary",$data);
+        
     }
 
 	/**

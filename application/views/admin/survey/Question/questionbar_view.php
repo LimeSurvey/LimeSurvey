@@ -1,3 +1,11 @@
+<?php if (isset($tmp_survlangs)) { ?>
+    <div class="langpopup" id="previewquestionpopup"><?php echo $clang->gT("Please select a language:"); ?><ul>
+    <?php foreach ($tmp_survlangs as $tmp_lang) 
+    { ?>
+        <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo site_url("admin/question/preview/".$surveyid."/".$qid."/".$tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
+    <?php } ?>
+    </ul></div>
+<?php } ?> 
 <div class='menubar-title ui-widget-header'>
             <strong><?php echo $clang->gT("Question"); ?></strong> <span class='basic'><?php echo $qrrow['question']; ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
             </div>

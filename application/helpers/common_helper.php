@@ -3280,12 +3280,14 @@ function getQuestionAttributes($qid, $type='')
     }
     $setattributes=array();
     $qid=sanitize_int($qid);
-    $fields = array('attribute', 'value', 'language');
+    //$fields = array('attribute', 'value', 'language');
+    $fields = array('attribute', 'value');
     $condition = "qid = $qid";
     $CI->load->model('question_attributes_model');
     //$query = "SELECT attribute, value FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
     $result = $CI->question_attributes_model->getSomeRecords($fields,$condition) or safe_die("Error finding question attributes");  //Checked)
     $setattributes=array();
+    
     foreach ($result->result_array() as $row)
     {
         if (empty($row['language']))
