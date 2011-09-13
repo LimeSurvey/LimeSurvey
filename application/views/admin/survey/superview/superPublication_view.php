@@ -1,9 +1,9 @@
 <div id='publication'><ul>
 
-             
+
             <li><label for='public'><?php echo $clang->gT("List survey publicly:"); ?></label>
             <select id='public' name='public'>"
-            <option value='Y' 
+            <option value='Y'
         <?php if (!isset($esrow['listpublic']) || !$esrow['listpublic'] || $esrow['listpublic'] == "Y") { ?>
               selected='selected'
         <?php } ?>
@@ -15,32 +15,6 @@
              ><?php echo $clang->gT("No"); ?></option>
             </select>
             </li>
-
-            
-             <li><label for='allowregister'><?php echo $clang->gT("Allow public registration?"); ?></label>
-            <select id='allowregister' name='allowregister'>
-            <option value='Y'
-        <?php if ($esrow['allowregister'] == "Y") { ?>
-              selected='selected'
-        <?php } ?>
-             ><?php echo $clang->gT("Yes"); ?></option>
-            <option value='N'
-        <?php if ($esrow['allowregister'] != "Y") { ?>
-              selected='selected'
-        <?php } ?>
-             ><?php echo $clang->gT("No"); ?></option>
-            </select></li>
-
-            <!--
-            $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
-            $startdate='';
-        if (trim($esrow['startdate']) != '') {
-                $items = array($esrow['startdate'] , "Y-m-d H:i:s");
-                $this->load->library('Date_Time_Converter',$items);
-                $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
-                $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-            } -->
-
              <li><label for='startdate'><?php echo $clang->gT("Start date/time:"); ?></label>
             <input type='text' class='popupdatetime' id='startdate' size='20' name='startdate' value="<?php echo $startdate; ?>" /></li>
 
@@ -55,7 +29,7 @@
              <li><label for='expires'><?php echo $clang->gT("Expiry date/time:"); ?></label>
              <input type='text' class='popupdatetime' id='expires' size='20' name='expires' value="<?php echo $expires; ?>" /></li>
 
-            
+
              <li><label for=''><?php echo $clang->gT("Set cookie to prevent repeated participation?"); ?></label>
             <select name='usecookie'>
             <option value='Y'
@@ -71,7 +45,7 @@
              </select>
              </li>
 
-            
+
              <li><label for=''><?php echo $clang->gT("Use CAPTCHA for"); ?>:</label>
              <select name='usecaptcha'>
              <option value='A'
@@ -87,7 +61,7 @@
              ><?php echo $clang->gT("Survey Access"); ?> / <?php echo $clang->gT("Registration"); ?> / ---------</option>
             <option value='C'
         <?php if ($esrow['usecaptcha'] == "C") { ?>
-              selected='selected' 
+              selected='selected'
         <?php } ?>
 
              ><?php echo $clang->gT("Survey Access"); ?> / ------------ / <?php echo $clang->gT("Save & Load"); ?></option>
@@ -121,22 +95,4 @@
              >------------- / ------------ / ---------</option>
             </select></li>
 
-            
-             <li><label for=''><?php echo $clang->gT("Use HTML format for token emails?"); ?></label>
-            <select name='htmlemail' onchange="alert('<?php echo $clang->gT("If you switch email mode, you'll have to review your email templates to fit the new format","js"); ?>');">
-            <option value='Y'
-        <?php if ($esrow['htmlemail'] == "Y") { ?>
-              selected='selected'
-        <?php } ?>
-             ><?php echo $clang->gT("Yes"); ?></option>
-            <option value='N'
-        <?php if ($esrow['htmlemail'] == "N") { ?>
-              selected='selected'
-        <?php } ?>
-
-             ><?php echo $clang->gT("No"); ?></option>
-            </select></li>
-
-            
              </ul></div>
-        
