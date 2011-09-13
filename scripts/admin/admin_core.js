@@ -257,18 +257,22 @@ $(document).ready(function(){
            else
                $(objToUpdate).html(old_owner);
 
-	    $(objToUpdate).html($(objToUpdate).html() + '(<a id="ownername_edit_69173" translate_to='+translate_to+' class="ownername_edit" href="#">'+initial_text+'</a>)' );
+        $(objToUpdate).html($(objToUpdate).html() + '(<a id="ownername_edit_69173" translate_to='+translate_to+' class="ownername_edit" href="#">'+initial_text+'</a>)' );
        });
     });
 
-    if ($("#question_type").length > 0 && $("#question_type").attr('type')!='hidden'){
+    if ($("#question_type").not('.none').length > 0 && $("#question_type").attr('type')!='hidden'){
         $("#question_type").msDropDown({onInit:qTypeDropdownInit});
 
         $("#question_type").change(function(event){
            var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
            OtherSelection(selected_value);
-	});
+        });
     }
+    $("#question_type.none").change(function(event){
+        var selected_value = $("#question_type").val();
+        OtherSelection(selected_value);
+    });
 
 
 
