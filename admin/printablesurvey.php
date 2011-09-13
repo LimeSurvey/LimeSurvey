@@ -442,7 +442,7 @@ while ($degrow = $degresult->FetchRow())
                             FROM ".db_table_name("conditions")."
                             WHERE  ".db_table_name("conditions").".qid={$deqrow['qid']}
                                 AND ".db_table_name("conditions").".scenario={$scenariorow['scenario']}
-                            group by cqid, method, cfieldname, value
+                            group by cqid, method
                             ORDER BY cqid";
                 $distinctresult=db_execute_assoc($distinctquery);
                 //Loop through each condition for a particular scenario.
