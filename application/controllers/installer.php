@@ -112,7 +112,7 @@ class Installer extends CI_Controller {
             $image = check_HTML_image($result);
             return $result;
         }
-        
+
 
         /**
          * check if file or directory exists and is writeable, returns via parameters by reference
@@ -231,7 +231,7 @@ class Installer extends CI_Controller {
 
         return $bProceed;
     }
-    
+
     /**
      * display welcome and language selection
      */
@@ -263,7 +263,7 @@ class Installer extends CI_Controller {
 
         $this->load->view('installer/license_view',$aData);
     }
-    
+
     /**
      * check a few writing permissions and optional settings
      */
@@ -293,7 +293,7 @@ class Installer extends CI_Controller {
 
         $this->load->view('installer/precheck_view',$aData);
     }
-    
+
     /**
      * Configure database screen
      */
@@ -336,7 +336,7 @@ class Installer extends CI_Controller {
             require_once(APPPATH.'third_party/adodb/adodb.inc.php');
             //lets assume
             $_POST = $this->input->post();
-            
+
             $sAdodbType=$_POST['dbtype'];
             if ($sAdodbType=='postgre')
             {
@@ -542,7 +542,7 @@ class Installer extends CI_Controller {
             }
         }
     }
-    
+
     /**
      * Optional settings screen
      */
@@ -553,7 +553,7 @@ class Installer extends CI_Controller {
         $this->_writeAutoloadfile();
 
         // confirmation message to be displayed
-        $aData['confirmation']= sprintf($clang->gT("Database <b>%s</b> has been successfully populated."),$this->session->userdata('dbname'));
+        $aData['confirmation']= sprintf($clang->gT("Database <b>%s</b> has been successfully populated.", 'unescaped'),$this->session->userdata('dbname'));
         $aData['title']="Optional settings";
         $aData['descp']="Optional settings to give you a head start";
         $aData['classesForStep']=array('off','off','off','off','off','on');
@@ -563,7 +563,7 @@ class Installer extends CI_Controller {
             'optional'  => 'TRUE'
         );
         $this->session->set_userdata($aStatusdata);
-        
+
         $this->load->helper('surveytranslator'); // FIXME for what?
         $this->load->view('installer/optconfig_view', $aData);
     }
@@ -581,7 +581,7 @@ class Installer extends CI_Controller {
             case 'welcome':
                 $this->stepWelcome();
                 break;
-            
+
             case 'license':
                 $this->stepLicense();
                 break;
@@ -639,7 +639,7 @@ class Installer extends CI_Controller {
         }
 
         $clang = $this->limesurvey_lang;
-        
+
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
 
@@ -790,7 +790,7 @@ class Installer extends CI_Controller {
 
         $clang = $this->limesurvey_lang;
         $this->load->helper('surveytranslator');
-        
+
         $aData['confirmation']="<b>".$this->session->userdata('optconfig_message')."</b><br/>";
         $aData['title']=$clang->gT("Optional settings");
         $aData['descp']=$clang->gT("Optional settings to give you a head start");
@@ -817,7 +817,7 @@ class Installer extends CI_Controller {
         }
 
         $clang = $this->limesurvey_lang;
-        
+
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
@@ -904,9 +904,9 @@ class Installer extends CI_Controller {
         {
             redirect(site_url('installer/install/license'));
         }
-        
+
         $clang = $this->limesurvey_lang;
-        
+
         //include(dirname(__FILE__).'/../../../config-sample.php');
         require_once(APPPATH.'third_party/adodb/adodb.inc.php');
         $dbname = $this->session->userdata('dbname');
@@ -1011,10 +1011,10 @@ class Installer extends CI_Controller {
         foreach($db_config as $key => &$value)
             $value = $this->session->userdata($key);
         unset($value);
-        
+
         $connected = $this->dbTasks->testConnection($db_config);
         $connect = $this->dbTasks->getConnection();
-        
+
         if (false == $connected)
         {
             $aData['errorConnection'] = sprintf('<b>'.$clang->gT('Try again! Connection with database failed.').'</b><br/><b>'.$clang->gT("Reason").'</b>:%s<br/>', $this->dbTasks->getConnection()->ErrorMsg());
