@@ -553,7 +553,8 @@ class Installer extends CI_Controller {
         $this->_writeAutoloadfile();
 
         // confirmation message to be displayed
-        $aData['confirmation']= sprintf($clang->gT("Database <b>%s</b> has been successfully populated.", 'unescaped'),$this->session->userdata('dbname'));
+        $aData['confirmation']= $clang->gT("Database %s has been successfully populated.");
+        $aData['dbname']= $this->session->userdata('dbname');
         $aData['title']="Optional settings";
         $aData['descp']="Optional settings to give you a head start";
         $aData['classesForStep']=array('off','off','off','off','off','on');
