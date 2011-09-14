@@ -113,7 +113,6 @@ class Installer extends CI_Controller {
             return $result;
         }
 
-
         /**
          * check if file or directory exists and is writeable, returns via parameters by reference
          *
@@ -455,7 +454,7 @@ class Installer extends CI_Controller {
                 {
 
                     $aStatusdata = array(
-                    'optconfig_message' => $clang->gT('The database you specified is up to date.'),
+                    'optconfig_message' => sprintf('<b>%s</b>', $clang->gT('The database you specified is up to date.')),
                     'step3'  => TRUE
                     );
                     $this->session->set_userdata($aStatusdata);
@@ -548,22 +547,19 @@ class Installer extends CI_Controller {
      */
     private function stepOptionalConfiguration()
     {
-        $clang = $this->limesurvey_lang;
         $this->_writeDatabaseFile();
         $this->_writeAutoloadfile();
 
+        $clang = $this->limesurvey_lang;
+
         // confirmation message to be displayed
-        $aData['confirmation']= $clang->gT("Database %s has been successfully populated.");
-        $aData['dbname']= $this->session->userdata('dbname');
-        $aData['title']="Optional settings";
-        $aData['descp']="Optional settings to give you a head start";
+        $aData['confirmation']=$this->session->userdata('optconfig_message');
+        $aData['title']=$clang->gT("Optional settings");
+        $aData['descp']=$clang->gT("Optional settings to give you a head start");
         $aData['classesForStep']=array('off','off','off','off','off','on');
         $aData['progressValue']=80;
 
-        $aStatusdata = array(
-            'optional'  => 'TRUE'
-        );
-        $this->session->set_userdata($aStatusdata);
+        $this->session->set_userdata('optional', TRUE);
 
         $this->load->helper('surveytranslator'); // FIXME for what?
         $this->load->view('installer/optconfig_view', $aData);
@@ -606,6 +602,8 @@ class Installer extends CI_Controller {
                 {
                     redirect(site_url('installer/install/1'));
                 }
+                $message = sprintf($clang->gT("Database %s has been successfully populated."), sprintf('<b>%s<b>', $this->session->userdata('dbname')));
+                $this->session->set_userdata('optconfig_message', $message);
                 $this->stepOptionalConfiguration();
                 break;
         }
@@ -787,11 +785,7 @@ class Installer extends CI_Controller {
         else
         {
             // if passwords don't match, redirect to proper link.
-            $aStatusdata = array(
-                            //'step2'  => 'TRUE',
-                            'optconfig_message' => $clang->gT("Passwords don't match.")
-                            );
-            $this->session->set_userdata($aStatusdata);
+            $this->session->set_userdata('optconfig_message', sprintf('<b>%s</b>', $clang->gT("Passwords don't match.")));
             redirect(site_url('installer/loadOptView'));
 
         }
@@ -808,20 +802,22 @@ class Installer extends CI_Controller {
             redirect(site_url('installer/install/license'));
         }
 
-        self::_writeDatabaseFile();
-        self::_writeAutoloadfile();
+        $this->_writeDatabaseFile();
+        $this->_writeAutoloadfile();
 
         $clang = $this->limesurvey_lang;
-        $this->load->helper('surveytranslator');
 
-        $aData['confirmation']="<b>".$this->session->userdata('optconfig_message')."</b><br/>";
+        // confirmation message to be displayed
+        $aData['confirmation']=$this->session->userdata('optconfig_message');
         $aData['title']=$clang->gT("Optional settings");
         $aData['descp']=$clang->gT("Optional settings to give you a head start");
         $aData['classesForStep']=array('off','off','off','off','off','on');
         $aData['progressValue']=80;
 
         $this->session->set_userdata('optional', TRUE);
-        $this->load->view('installer/optconfig_view',$aData);
+
+        $this->load->helper('surveytranslator'); // FIXME for what?
+        $this->load->view('installer/optconfig_view', $aData);
 
     }
 

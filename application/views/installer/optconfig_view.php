@@ -22,7 +22,7 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 <div style="-moz-border-radius:15px; border-radius:15px;" >
 <p><?php echo $descp; ?></p>
 <hr />
-<?php printf($confirmation,'<b>'.$dbname.'</b>'); ?><br />
+<?php $confirmation; ?><br />
 <?php echo $clang->gT("You can leave these settings blank and change them later"); ?>
 <br />
 
