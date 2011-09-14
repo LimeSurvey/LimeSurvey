@@ -3,7 +3,7 @@ $clang = &get_instance()->limesurvey_lang;
 $this->load->view("installer/header_view",array('progressValue' => $progressValue));
 ?>
 
-<form action="<?php echo base_url().'index.php/installer/language'; ?>" method="post">
+<form action="<?php echo $this->config->site_url('installer/language'); ?>" method="post">
 
 <div class="container_6">
 

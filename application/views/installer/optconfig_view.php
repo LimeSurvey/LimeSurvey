@@ -3,7 +3,7 @@ $clang = &get_instance()->limesurvey_lang;
 $this->load->view("installer/header_view",array('progressValue' => $progressValue));
 ?>
 
-<form action="<?php echo base_url().'index.php/installer/optional'; ?>" method="post">
+<form action="<?php echo $this->config->site_url('installer/optional'); ?>" method="post">
 
 <div class="container_6">
 
@@ -50,7 +50,7 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 <tr>
 <td><b><?php echo $clang->gT("Administrator Name"); ?></b><br />
 <div class="description-field"><?php echo $clang->gT("This is the default name of the site administrator and used for system messages and contact options."); ?></div>
-</td> 
+</td>
 <td align="right"><input type="text" name="adminName"/></td>
 </tr>
 <tr>
@@ -62,7 +62,7 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 <tr>
 <td><b><?php echo $clang->gT("Site Name"); ?></b><br />
 <div class="description-field"><?php echo $clang->gT("This name will appear in the survey list overview and in the administration header."); ?></div>
-</td> 
+</td>
 <td align="right"><input type="text" name="siteName"/></td>
 </tr>
 <tr>
