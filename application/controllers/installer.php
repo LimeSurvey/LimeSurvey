@@ -722,6 +722,7 @@ class Installer extends CI_Controller {
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global` (`stg_name`,`stg_value`) VALUES (\'siteadminname\', \''.$siteadminname.'\')');
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global` (`stg_name`,`stg_value`) VALUES (\'siteadminemail\', \''.$siteadminemail.'\')');
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global` (`stg_name`,`stg_value`) VALUES (\'siteadminbounce\', \''.$siteadminemail.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global` (`stg_name`,`stg_value`) VALUES (\'defaultlang\', \''.$defaultlang.'\')');
                             break;
                         case 'mssql':
                         case 'odbc':
@@ -731,6 +732,7 @@ class Installer extends CI_Controller {
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'siteadminname\', \''.$siteadminname.'\')');
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'siteadminemail\', \''.$siteadminemail.'\')');
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'siteadminbounce\', \''.$siteadminemail.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'defaultlang\', \''.$defaultlang.'\')');
                             break;
                         case 'postgres':
                             $connect->Execute('INSERT INTO '.$this->session->userdata("dbprefix").'users (users_name, "password", full_name, parent_id, lang ,email, create_survey, create_user , delete_user , superadmin , configurator , manage_template , manage_label, htmleditormode) VALUES (\''.$defaultuser.'\', \''.$password_hash.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1,\'default\')');
@@ -739,6 +741,7 @@ class Installer extends CI_Controller {
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global (stg_name,stg_value) VALUES (\'siteadminname\', \''.$siteadminname.'\')');
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'siteadminemail\', \''.$siteadminemail.'\')');
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'siteadminbounce\', \''.$siteadminemail.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'defaultlang\', \''.$defaultlang.'\')');
                             break;
                         default:
                             throw new Exception(sprintf('Unkown database type "%s".', $dbtype));
