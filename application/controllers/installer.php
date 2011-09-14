@@ -652,9 +652,11 @@ class Installer extends CI_Controller {
 
             $defaultuser = $this->input->post('adminLoginName');
             $defaultpass = $this->input->post('adminLoginPwd');
-            $siteadminname = $this->input->post('siteName');
-            $defaultlang = $this->input->post('surveylang');
+            $siteadminname = $this->input->post('adminName');
             $siteadminemail = $this->input->post('adminEmail');
+            $sitename = $this->input->post('siteName');
+            $defaultlang = $this->input->post('surveylang');
+
 
             //if any of the field was left blank, replace it with default.
             //FIXME doing the following leads to a problem. this action could make use of the
@@ -663,8 +665,10 @@ class Installer extends CI_Controller {
             if ($defaultuser == '') $defaultuser  = "admin";
             if ($defaultpass == '') $defaultpass  = "password";
             if ($siteadminname == '') $siteadminname  = "Your Name";
-            if ($defaultlang == '') $defaultlang  = "en";
             if ($siteadminemail == '') $siteadminemail  = "your-email@example.net";
+            if ($sitename == '') $sitename  = "LimeSurvey";
+            if ($defaultlang == '') $defaultlang  = "en";
+
 
             $dbname = $this->session->userdata('dbname');
             $sAdodbType = $this->session->userdata('dbtype');
@@ -713,13 +717,28 @@ class Installer extends CI_Controller {
                         case 'mysql':
                         case 'mysqli':
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`, `create_user` , `delete_user` , `superadmin` , `configurator` , `manage_template` , `manage_label`) VALUES (\''.$defaultuser.'\', \''.$password_hash.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
+                            // Default global settings
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global` (`stg_name`,`stg_value`) VALUES (\'sitename\', \''.$sitename.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global` (`stg_name`,`stg_value`) VALUES (\'siteadminname\', \''.$siteadminname.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global` (`stg_name`,`stg_value`) VALUES (\'siteadminemail\', \''.$siteadminemail.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global` (`stg_name`,`stg_value`) VALUES (\'siteadminbounce\', \''.$siteadminemail.'\')');
                             break;
                         case 'mssql':
                         case 'odbc':
                             $connect->Execute('INSERT INTO ['.$this->session->userdata("dbprefix").'users] ([users_name], [password], [full_name], [parent_id], [lang] ,[email], [create_survey], [create_user] , [delete_user] , [superadmin] , [configurator] , [manage_template] , [manage_label]) VALUES (\''.$defaultuser.'\', \''.$password_hash.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
+                            // Default global settings
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'sitename\', \''.$sitename.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'siteadminname\', \''.$siteadminname.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'siteadminemail\', \''.$siteadminemail.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'siteadminbounce\', \''.$siteadminemail.'\')');
                             break;
                         case 'postgres':
                             $connect->Execute('INSERT INTO '.$this->session->userdata("dbprefix").'users (users_name, "password", full_name, parent_id, lang ,email, create_survey, create_user , delete_user , superadmin , configurator , manage_template , manage_label, htmleditormode) VALUES (\''.$defaultuser.'\', \''.$password_hash.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1,\'default\')');
+                            // Default global settings
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global (stg_name,stg_value) VALUES (\'sitename\', \''.$sitename.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global (stg_name,stg_value) VALUES (\'siteadminname\', \''.$siteadminname.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'siteadminemail\', \''.$siteadminemail.'\')');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global] ([stg_name],[stg_value]) VALUES (\'siteadminbounce\', \''.$siteadminemail.'\')');
                             break;
                         default:
                             throw new Exception(sprintf('Unkown database type "%s".', $dbtype));

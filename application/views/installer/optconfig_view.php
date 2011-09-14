@@ -48,16 +48,22 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 <td align="right"><input type="password" name="confirmPwd"/></td>
 </tr>
 <tr>
-<td><b><?php echo $clang->gT("Site Name"); ?></b><br />
-<div class="description-field"><?php echo $clang->gT("This name will appear in the survey list overview and in the administration header."); ?></div>
-</td>
-<td align="right"><input type="text" name="siteName"/></td>
+<td><b><?php echo $clang->gT("Administrator Name"); ?></b><br />
+<div class="description-field"><?php echo $clang->gT("This is the default name of the site administrator and used for system messages and contact options."); ?></div>
+</td> 
+<td align="right"><input type="text" name="adminName"/></td>
 </tr>
 <tr>
-<td><b><?php echo $clang->gT("Admin Email"); ?></b><br />
-<div class="description-field"><?php echo $clang->gT("This is the default email address of the site administrator and used for system messages and contact options."); ?></div>
+<td><b><?php echo $clang->gT("Administrator Email"); ?></b><br />
+<div class="description-field"><?php echo $clang->gT("This is the default email address of the site administrator and used for system messages, contact options and default bounce email."); ?></div>
 </td>
 <td align="right"><input type="text" name="adminEmail"/></td>
+</tr>
+<tr>
+<td><b><?php echo $clang->gT("Site Name"); ?></b><br />
+<div class="description-field"><?php echo $clang->gT("This name will appear in the survey list overview and in the administration header."); ?></div>
+</td> 
+<td align="right"><input type="text" name="siteName"/></td>
 </tr>
 <tr>
 <td><b><?php echo $clang->gT("Default Language"); ?></b><br />
