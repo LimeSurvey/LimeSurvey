@@ -11,7 +11,7 @@
 		<form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='<?php echo site_url("admin/globalsettings");?>' method='post'>
 		<div id='overview'>
 			<?php echo $checksettings;?>
-			
+
             <br /></p><div class='header ui-widget-header'><?php echo $clang->gT("Updates");?></div><ul>
             <li><label for='updatecheckperiod'><?php echo $clang->gT("Check for updates:");?></label>
             <select name='updatecheckperiod' id='updatecheckperiod'>
@@ -31,8 +31,8 @@
             <?php if ($thisupdatecheckperiod==30) { echo "selected='selected'";} ?>
             ><?php echo $clang->gT("Every month");?></option>
             </select>&nbsp;<input type='button' onclick="window.open('<?php echo site_url("admin/globalsettings/updatecheck");?>', '_top')" value='<?php echo $clang->gT("Check now");?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck);?></span></li></ul><p>
-            
-            <?php	
+
+            <?php
             if (isset($updateavailable) && $updateavailable==1)
             { ?>
                 <span style="font-weight: bold;"><?php echo sprintf($clang->gT('There is a LimeSurvey update available: Version %s'),$updateversion."($updatebuild)");?></span><br />
@@ -48,7 +48,7 @@
             	echo $clang->gT('There is currently no newer LimeSurvey version available.');
             } ?>
             </p></div>
-            
+
             <div id='general'>
             <ul>
             <li><label for='sitename'><?php echo $clang->gT("Site name:").(($this->config->item("demoModeOnly")==true)?'*':'');?></label>
@@ -70,9 +70,9 @@
 
             $thisdefaulttemplate=getGlobalSetting('defaulttemplate');
             $templatenames=array_keys(gettemplatelist());
-			
+
             ?>
-            
+
             <li><label for="defaulttemplate"><?php echo $clang->gT("Default template:");?></label>
             <select name="defaulttemplate" id="defaulttemplate">
             <?php
@@ -136,12 +136,12 @@
             <li><label for='googleMapsAPIKey'><?php echo $clang->gT("Google Maps API key:");?></label>
             <input type='text' size='35' id='googleMapsAPIKey' name='googleMapsAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('googleMapsAPIKey'));?>" /></li>
             </ul></div>
-            
+
 
             <div id='email'><ul>
 			<li><label for='siteadminemail'><?php echo $clang->gT("Default site admin email:");?></label>
             <input type='text' size='50' id='siteadminemail' name='siteadminemail' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminemail'));?>" /></li>
- 
+
             <li><label for='siteadminname'><?php echo $clang->gT("Administrator name:");?></label>
             <input type='text' size='50' id='siteadminname' name='siteadminname' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminname'));?>" /><br /><br /></li>
             <li><label for='emailmethod'><?php echo $clang->gT("Email method:");?></label>
@@ -179,22 +179,22 @@
             </select></li>
             <li><label for='emailsmtpdebug'><?php echo $clang->gT("SMTP debug mode:");?></label>
             <select id='emailsmtpdebug' name='emailsmtpdebug'>
-            <option value=''";
+            <option value=''
             <?php if (getGlobalSetting('emailsmtpdebug')=='0') { echo "selected='selected'";} ?>
             ><?php echo $clang->gT("Off");?></option>
-            <option value='1'";
+            <option value='1'
             <?php if (getGlobalSetting('emailsmtpdebug')=='1' || getGlobalSetting('emailsmtpssl')==1) { echo "selected='selected'";} ?>
             ><?php echo $clang->gT("On errors");?></option>
-            <option value='2'";
+            <option value='2'
             <?php if (getGlobalSetting('emailsmtpdebug')=='2' || getGlobalSetting('emailsmtpssl')==1) { echo "selected='selected'";} ?>
             ><?php echo $clang->gT("Always");?></option>
             </select><br />&nbsp;</li>
             <li><label for='maxemails'><?php echo $clang->gT("Email batch size:");?></label>
             <input type='text' size='5' id='maxemails' name='maxemails' value="<?php echo htmlspecialchars(getGlobalSetting('maxemails'));?>" /></li>
             </ul>
-            
+
 			</div>
-			
+
             <div id='bounce'><ul>
             <li><label for='siteadminbounce'><?php echo $clang->gT("Default site bounce email:");?></label>
             <input type='text' size='50' id='siteadminbounce' name='siteadminbounce' value="<?php echo htmlspecialchars(getGlobalSetting('siteadminbounce'));?>" /></li>
@@ -258,7 +258,7 @@
             </select></li>
 
             <?php $thisusercontrolSameGroupPolicy=getGlobalSetting('usercontrolSameGroupPolicy'); ?>
-            <li><label for='usercontrolSameGroupPolicy'><?php echo $clang->gT("Group member can only see own group:");?></label>
+            <li><label for='usercontrolSameGroupPolicy'><?php $clang->eT("Group member can only see own group:");?></label>
             <select id='usercontrolSameGroupPolicy' name='usercontrolSameGroupPolicy'>
             <option value='1'
             <?php if ( $thisusercontrolSameGroupPolicy == true) { echo " selected='selected'";}?>
@@ -278,7 +278,7 @@
 	    switch($thisforce_ssl)
 	    {
 	    	case 'on':
-		    $warning_force_ssl = '&nbsp;';                            
+		    $warning_force_ssl = '&nbsp;';
 		    break;
 		case 'off':
 		case 'neither':
@@ -290,23 +290,23 @@
 	    $$this_opt = ' selected="selected"';
 	    ?><li><label for="force_ssl"><?php echo $clang->gT('Force HTTPS:');?></label>
 	    <select name="force_ssl" id="force_ssl">
-            <option value="on" <?php echo $opt_force_ssl_on;?>><?php echo $clang->gT('On');?></option>
-            <option value="off" <?php echo $opt_force_ssl_off;?>><?php echo $clang->gT('Off');?></option>
-            <option value="neither" <?php echo $opt_force_ssl_neither;?>><?php echo $clang->gT('Don\'t force on or off');?></option>
+            <option value="on" <?php echo $opt_force_ssl_on;?>><?php $clang->eT('On');?></option>
+            <option value="off" <?php echo $opt_force_ssl_off;?>><?php $clang->eT('Off');?></option>
+            <option value="neither" <?php echo $opt_force_ssl_neither;?>><?php $clang->eT("Don't force on or off");?></option>
 	    </select></li>
 	    <li><span style='font-size:0.7em;'><?php echo $warning_force_ssl;?></span></li>
 	    <?php unset($thisforce_ssl,$opt_force_ssl_on,$opt_force_ssl_off,$opt_force_ssl_neither,$warning_force_ssl,$this_opt); ?>
         </ul></div>
-        
+
         <div id='presentation'><ul>
         <?php $shownoanswer=getGlobalSetting('shownoanswer');
 	    $sel_na = array( 0 => '' , 1 => '' , 2 => '');
 	    $sel_na[$shownoanswer] = ' selected="selected"'; ?>
-        <li><label for='shownoanswer'><?php echo $clang->gT("Show 'no answer' option for non-mandatory questions:");?></label>
+        <li><label for='shownoanswer'><?php $clang->eT("Show 'no answer' option for non-mandatory questions:");?></label>
         <select id='shownoanswer' name='shownoanswer'>
-        <option value=\"1\"{$sel_na[1]}><?php echo $clang->gT('Yes');?></option>
-        <option value=\"0\"{$sel_na[0]}><?php echo $clang->gT('No');?></option>
-        <option value=\"2\"{$sel_na[2]}><?php echo $clang->gT('Survey admin can choose');?></option>
+        <option value="1" <?php echo $sel_na[1];?> ><?php $clang->eT('Yes');?></option>
+        <option value="0" <?php echo $sel_na[0];?> ><?php $clang->eT('No');?></option>
+        <option value="2" <?php echo $sel_na[2];?> ><?php $clang->eT('Survey admin can choose');?></option>
         </select></li>
 
         <?php $thisrepeatheadings=getGlobalSetting('repeatheadings');?>
@@ -329,7 +329,7 @@
             <option value="hide"<?php echo $sel_xq['hide'];?>><?php echo $clang->gT('No');?></option>
             <option value="choose"<?php echo $sel_xq['choose'];?>><?php echo $clang->gT('Survey admin can choose');?></option>
             </select></li>
-	    <?php unset($set_xq,$sel_xq); 
+	    <?php unset($set_xq,$sel_xq);
             $set_gri=getGlobalSetting('showgroupinfo');
 	    $sel_gri = array( 'both' => '' , 'choose' =>'' , 'description' => '' , 'name' => '' , 'none' => '' );
 	    $sel_gri[$set_gri] = ' selected="selected"';
