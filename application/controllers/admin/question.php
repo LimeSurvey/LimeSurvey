@@ -721,9 +721,10 @@
             // check that there are subquestions for every language supported by the survey
             foreach ($anslangs as $language)
             {
-                foreach ($subquestiondata as $row)
+                foreach ($subquestiondata->result_array() as $row)
                 {
-                    $sQuery = "SELECT count(*) AS countall FROM ".$this->db->dbprefix."questions WHERE parent_qid={$qid} AND language='{$language}' AND qid={$row['qid']} and scale_id={$iScale}";
+                    
+                    $sQuery = "SELECT count(*) AS countall FROM ".$this->db->dbprefix."questions WHERE parent_qid={$qid} AND language='{$language}' AND qid={$row['qid']} AND scale_id={$iScale}";
                     $res = db_execute_assoc($sQuery);
                     $resrow = $res->row_array();
                     $qrow = $resrow['countall']; //$connect->GetOne($sQuery); //Checked
