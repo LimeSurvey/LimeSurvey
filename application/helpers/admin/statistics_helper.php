@@ -85,7 +85,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	$tempurl = $CI->config->item("tempurl");
 	$clang = $CI->limesurvey_lang;
 	$dbprefix = $CI->db->dbprefix;
-
     $fieldmap=createFieldMap($surveyid, "full");
 
     if (is_null($statlangcode))
@@ -2128,7 +2127,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
 
                         //check if aggregated results should be shown
-                        elseif (isset($showaggregateddata) && $showaggregateddata == 1)
+                        elseif (isset($CI->config->item('showaggregateddata')) && $CI->config->item('showaggregateddata') == 1)
                         {
                             if(!isset($showheadline) || $showheadline != false)
                             {
@@ -2219,7 +2218,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //text for answer column is always needed
                             $fname="$al[1] ($al[0])";
 
-                            //these question types get special treatment by $showaggregateddata
+                            //these question types get special treatment by $CI->config->item('showaggregateddata')
                             if($qtype == "5" || $qtype == "A")
                             {
                                 //put non-edited data in here because $row will be edited later
@@ -2363,7 +2362,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 if (($qtype != "M") and ($qtype != "P"))
                 {
                     //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
-                    //if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset($showaggregateddata) && $showaggregateddata == 0))
+                    //if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset($CI->config->item('showaggregateddata')) && $CI->config->item('showaggregateddata') == 0))
                     // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
                     // showaggreagated data is set and set to 1
                     if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") )
@@ -2505,8 +2504,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                                 $gdata[$i] = 0;
 
-                                //check if we have to adjust ouput due to $showaggregateddata setting
-                                if(isset($showaggregateddata) && $showaggregateddata == 1 && ($qtype == "5" || $qtype == "A"))
+                                //check if we have to adjust ouput due to $CI->config->item('showaggregateddata') setting
+                                if(isset($CI->config->item('showaggregateddata')) && $CI->config->item('showaggregateddata') == 1 && ($qtype == "5" || $qtype == "A"))
                                 {
                                     $statisticsoutput .= "\t\t</td>";
                                 }
@@ -2527,7 +2526,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     else
                     {
                         //check if data should be aggregated
-                        if(isset($showaggregateddata) && $showaggregateddata == 1 && ($qtype == "5" || $qtype == "A"))
+                        if(isset($CI->config->item('showaggregateddata')) && $CI->config->item('showaggregateddata') == 1 && ($qtype == "5" || $qtype == "A"))
                         {
                             //mark that we have done soemthing special here
                             $aggregated = true;
@@ -2932,7 +2931,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }	//end while
 
                 //only show additional values when this setting is enabled
-                if(isset($showaggregateddata) && $showaggregateddata == 1 )
+                if(isset($CI->config->item('showaggregateddata')) && $CI->config->item('showaggregateddata') == 1 )
                 {
                     //it's only useful to calculate standard deviation and arithmetic means for question types
                     //5 = 5 Point Scale
