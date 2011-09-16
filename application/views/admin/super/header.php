@@ -35,13 +35,11 @@
         <div id="themeroller" class="ui-state-highlight ui-corner-all">
         <!-- close link -->
         <a class="ui-notify-close" href="#">
-            <span class="ui-icon ui-icon-close" style="float:right"></span>
+            <span class="ui-icon ui-icon-close" style="float:right">&nbsp;</span>
         </a>
 
         <!-- alert icon -->
-        <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-info"></span>
-
-        <h1></h1>
+        <span style="float:left; margin:2px 5px 0 0;" class="ui-icon ui-icon-info">&nbsp;</span>
         <p><?php echo $flashmessage; ?></p>
     </div>
 
