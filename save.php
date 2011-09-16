@@ -616,7 +616,7 @@ function createinsertquery()
             $query .= ", '".$_SESSION['s_lang']."'";
             if ($thissurvey['refurl'] == "Y")
             {
-                $query .= ", '".$_SESSION['refurl']."'";
+                $query .= ", '".db_quote($_SESSION['refurl'])."'";
             }
             if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
             {
