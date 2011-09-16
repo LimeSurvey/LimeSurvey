@@ -643,7 +643,7 @@ class Save {
 	            $query .= ", '".$_SESSION['s_lang']."'";
 	            if ($thissurvey['refurl'] == "Y")
 	            {
-	                $query .= ", '".$_SESSION['refurl']."'";
+	                $query .= ", '".$CI->db->escape($_SESSION['refurl'])."'";
 	            }
 	            if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
 	            {
