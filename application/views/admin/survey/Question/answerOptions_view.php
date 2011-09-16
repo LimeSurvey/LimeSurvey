@@ -24,7 +24,7 @@
         var sAssessmentValue='<?php echo $clang->gT('Assessment value','js'); ?>';
         var duplicateanswercode='<?php echo $clang->gT('Error: You are trying to use duplicate answer codes.','js'); ?>';
         var langs='<?php echo implode(';',$anslangs); ?>';
-        var ci_path='<?php echo $this->config->item('imageurl'); ?>';
+        var ci_path="<?php echo $this->config->item('imageurl'); ?>";
     </script>
     <?php foreach ($anslangs as $anslang)
         { ?>
@@ -63,10 +63,13 @@
                 </tr></thead>
                 <tbody align='center'>
                 <?php $alternate=true;
+                
+                
 
                 $query = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
                 $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
                 $anscount = $result->num_rows();
+                
                 foreach ($result->result_array() as $row)
                 {
                     $row['code'] = htmlspecialchars($row['code']);

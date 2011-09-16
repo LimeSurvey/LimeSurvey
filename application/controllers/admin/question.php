@@ -394,7 +394,11 @@
         {
             foreach ($anslangs as $language)
             {
-                $iAnswerCount = $connect->GetOne("SELECT count(*) as num_ans  FROM ".$this->db->dbprefix."answers WHERE qid=$qid AND scale_id=$i AND language='".$language."'");
+                
+                $resultcount = db_execute_assoc("SELECT count(*) as num_ans  FROM ".$this->db->dbprefix."answers WHERE qid=$qid AND scale_id=$i AND language='".$language."'");
+                $rowcount = $resultcount->row_array();
+                $iAnswerCount = $rowcount['num_ans'];
+                
                 if ($iAnswerCount == 0)   // means that no record for the language exists in the answers table
                 {
                     $qquery = "INSERT INTO ".$this->db->dbprefix."answers (qid,code,answer,sortorder,language,scale_id, assessment_value) (SELECT qid,code,answer,sortorder, '".$language."','$i', assessment_value FROM ".$this->db->dbprefix."answers WHERE qid=$qid AND scale_id=$i AND language='".$baselang."')";
