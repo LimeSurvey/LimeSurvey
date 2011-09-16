@@ -79,7 +79,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     //$allfields ="";
     global $connect, $dbprefix, $clang,
     $rooturl, $rootdir, $homedir, $homeurl, $tempdir, $tempurl, $scriptname, $imagedir,
-    $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize;
+    $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize, $showaggregateddata;
 
     $fieldmap=createFieldMap($surveyid, "full");
 
