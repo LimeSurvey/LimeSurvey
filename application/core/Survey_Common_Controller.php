@@ -365,7 +365,7 @@
                 $questionsummary .= "</td></tr>";
             }
             $questionsummary .= "</table>"; */
-            
+
             $questionsummary .= $this->load->view("admin/survey/Question/questionbar_view",$data,true);
         }
         $finaldata['display'] = $questionsummary;
@@ -1078,7 +1078,11 @@
 
         //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
 
-        $data['tableusage'] = get_dbtableusage($surveyid);
+//        $data['tableusage'] = get_dbtableusage($surveyid);
+// ToDo: Table usage is calculated on every menu display which is too slow with bug surveys.
+// Needs to be moved to a database field and only updated if there are question/subquestions added/removed (it's currently also not functional due to the port)
+//
+        $data['tableusage'] = false;
 
         //$gid || $qid ||
 
@@ -1096,7 +1100,7 @@
         $data['showstyle'] = $showstyle;
         $data['aAdditionalLanguages'] = $aAdditionalLanguages;
 		$this->load->view("admin/survey/surveysummary",$data);
-        
+
     }
 
 	/**

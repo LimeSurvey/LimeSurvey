@@ -1798,7 +1798,7 @@
         $type=$this->input->post('question_type');
         if ($qid != "undefined")
         {
-            $attributesettings=getQuestionAttributes($qid);
+            $attributesettings=getQuestionAttributes($qid, $type);
         }
         $availableattributes=questionAttributes();
         if (isset($availableattributes[$type]))

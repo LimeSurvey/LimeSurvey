@@ -86,7 +86,7 @@ class LimeExpressionManager {
 
             $questionId = $fieldNameParts[2];
             $questionNum = $fielddata['qid'];
-            $questionAttributes = getQuestionAttributes($questionId,$fielddata['type']);
+            $questionAttributes = getQuestionAttributes($questionNum,$fielddata['type']);
             $relevance = (isset($questionAttributes['relevance'])) ? $questionAttributes['relevance'] : 1;
 
             // Create list of codes associated with each question

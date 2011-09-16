@@ -3287,7 +3287,7 @@ function getQuestionAttributes($qid, $type='')
     //$query = "SELECT attribute, value FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
     $result = $CI->question_attributes_model->getSomeRecords($fields,$condition) or safe_die("Error finding question attributes");  //Checked)
     $setattributes=array();
-    
+
     foreach ($result->result_array() as $row)
     {
         if (empty($row['language']))
@@ -8147,7 +8147,7 @@ function get_dbtableusage($surveyid){
                 break;
         }
     }
-    if ($arrCols['dbtype'] == 'mysql'){
+    if ($arrCols['dbtype'] == 'mysql' || $arrCols['dbtype'] == 'mysqli'){
         if ($arrCols['dbengine']=='myISAM'){
             $hard_limit = 4096;
         }

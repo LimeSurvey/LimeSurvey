@@ -146,7 +146,7 @@
     	</td>
     </tr>
     <?php if ($tableusage != false){
-            if ($tableusage['dbtype']=='mysql'){
+            if ($tableusage['dbtype']=='mysql' || $tableusage['dbtype']=='mysqli'){
                 $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
                 $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2); ?>
                 <tr><td align='right' valign='top'><strong><?php echo $clang->gT("Table Column Usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>

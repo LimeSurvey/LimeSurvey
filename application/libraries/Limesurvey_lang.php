@@ -12,8 +12,8 @@
  *
  * $Id: language.php 9648 2011-01-07 13:06:39Z c_schmitz $
  *
- * 
- * 
+ *
+ *
 
 
  Wrapper to use phpgettext as a class and omit having an english translation
@@ -33,17 +33,17 @@ class Limesurvey_lang {
     function limesurvey_lang($params = array()){
 		if(empty($params))
 			trigger_error('langcode param is undefined ', E_USER_WARNING);
-		$langcode=reset($params);	
-		
+		$langcode=reset($params);
+
 		$CI =& get_instance();
         $CI->load->helper('sanitize');
-        
+
         $langcode[0]=sanitize_languagecode($langcode);
-        
+
         $streamer = new FileReader(getcwd().'/locale/'.$langcode.'/LC_MESSAGES/'.$langcode.'.mo');
 
         $this->gettextclass = new gettext_reader($streamer);
-        
+
         $this->langcode = $langcode;
     }
 
@@ -64,11 +64,11 @@ class Limesurvey_lang {
             return '';
         }
     }
-    
+
 
     /**
     * This function translates plural strings to their according language
-    * 
+    *
     * @param $single $string The single form of the string to translate
     * @param $plural $string The plural form to translate
     * @param $number $integer Depending on the number of items the right plural form is taken
@@ -113,12 +113,23 @@ class Limesurvey_lang {
             }
         }
     }
-    
-    
+
+    /**
+    * This function does the same as gT but instead of returning it outputs the string right away
+    *
+    * @param string $string The string to translate
+    * @param mixed $escapemode Different uses require the string to be escaped accordinlgy. Possible values are 'html'(default),'js' and 'unescaped'
+    */
+    function eT($string, $escapemode = 'html')
+    {
+       echo $this->gT($string,$escapemode);
+    }
+
+
 
     /**
     * This function translates strings to their according language
-    * 
+    *
     * @param string $string The string to translate
     * @param mixed $escapemode Different uses require the string to be escaped accordinlgy. Possible values are 'html'(default),'js' and 'unescaped'
     * @return string Translated string
@@ -128,7 +139,7 @@ class Limesurvey_lang {
         if ($this->gettextclass)
         {
             $basestring=str_replace('&lsquo;','\'',$this->gettextclass->translate($string));
-            
+
             switch ($escapemode)
             {
                 case 'html':
@@ -162,12 +173,12 @@ class Limesurvey_lang {
             }
         }
     }
-    
+
     function html_escape($str) {
-    // escape newline characters, too, in case we put a value from
-    // a TEXTAREA  into an <input type="hidden"> value attribute.
-    return str_replace(array("\x0A","\x0D"),array("&#10;","&#13;"),
-    htmlspecialchars( $str, ENT_QUOTES ));
+        // escape newline characters, too, in case we put a value from
+        // a TEXTAREA  into an <input type="hidden"> value attribute.
+        return str_replace(array("\x0A","\x0D"),array("&#10;","&#13;"),
+        htmlspecialchars( $str, ENT_QUOTES ));
     }
 
     // make a string safe to include in a JavaScript String parameter.
