@@ -394,11 +394,11 @@
         {
             foreach ($anslangs as $language)
             {
-                
+
                 $resultcount = db_execute_assoc("SELECT count(*) as num_ans  FROM ".$this->db->dbprefix."answers WHERE qid=$qid AND scale_id=$i AND language='".$language."'");
                 $rowcount = $resultcount->row_array();
                 $iAnswerCount = $rowcount['num_ans'];
-                
+
                 if ($iAnswerCount == 0)   // means that no record for the language exists in the answers table
                 {
                     $qquery = "INSERT INTO ".$this->db->dbprefix."answers (qid,code,answer,sortorder,language,scale_id, assessment_value) (SELECT qid,code,answer,sortorder, '".$language."','$i', assessment_value FROM ".$this->db->dbprefix."answers WHERE qid=$qid AND scale_id=$i AND language='".$baselang."')";
@@ -727,7 +727,7 @@
             {
                 foreach ($subquestiondata->result_array() as $row)
                 {
-                    
+
                     $sQuery = "SELECT count(*) AS countall FROM ".$this->db->dbprefix."questions WHERE parent_qid={$qid} AND language='{$language}' AND qid={$row['qid']} AND scale_id={$iScale}";
                     $res = db_execute_assoc($sQuery);
                     $resrow = $res->row_array();
@@ -1789,6 +1789,7 @@
 
     }
 
+
     /**
      * question::ajaxquestionattributes()
      *
@@ -1803,7 +1804,7 @@
         $type=$this->input->post('question_type');
         if ($qid != "undefined")
         {
-            $attributesettings=getQuestionAttributes($qid, $type);
+            $attributesettings=getQuestionAttributeValues($qid, $type);
         }
         $availableattributes=questionAttributes();
         if (isset($availableattributes[$type]))

@@ -47,7 +47,6 @@
         $this->load->helper('database');
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
-        // TODO: check that surveyid is set and that so is $baselang
         //Show Question Details
     	//Count answer-options for this question
         $qrq = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid=$qid AND language='".$baselang."' ORDER BY sortorder, answer";
@@ -65,8 +64,7 @@
         // Check if other questions in the Survey are dependent upon this question
         $condarray=GetQuestDepsForConditions($surveyid,"all","all",$qid,"by-targqid","outsidegroup");
         $this->load->model('surveys_model');
-        //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
-        $sumresult1 = $this->surveys_model->getDataOnSurvey($surveyid); //$sumquery1, 1) ; //Checked
+        $sumresult1 = $this->surveys_model->getDataOnSurvey($surveyid);
         if ($sumresult1->num_rows()==0){die('Invalid survey id');} //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->row_array();
 
@@ -74,203 +72,27 @@
 //        LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
 
         $surveyinfo = array_map('FlattenText', $surveyinfo);
-        //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
-        $data['activated'] = $activated = $surveyinfo['active'];
+        $data['activated'] = $surveyinfo['active'];
 
-        // PREVIEW THIS QUESTION BUTTON
-
+        $this->load->model('questions_model');
         foreach ($qrresult->result_array() as $qrrow)
         {
             $qrrow = array_map('FlattenText', $qrrow);
-            //$qrrow = array_map('htmlspecialchars', $qrrow);
-            /**$questionsummary .= "<div class='menubar-title ui-widget-header'>\n"
-            . "<strong>". $clang->gT("Question")."</strong> <span class='basic'>{$qrrow['question']} (".$clang->gT("ID").":$qid)</span>\n"
-            . "</div>\n"
-            . "<div class='menubar-main'>\n"
-            . "<div class='menubar-left'>\n"
-            . "<img src='$imageurl/blank.gif' alt='' width='55' height='20' />\n"
-            . "<img src='$imageurl/seperator.gif' alt='' />\n"; */
             if(bHasSurveyPermission($surveyid,'surveycontent','read'))
             {
                 if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
                 {
-                    /*$questionsummary .= "<a href=\"#\" accesskey='q' onclick=\"window.open('$scriptname?action=previewquestion&amp;sid=$surveyid&amp;qid=$qid', '_blank')\""
-                    . "title=\"".$clang->gTview("Preview This Question")."\">"
-                    . "<img src='$imageurl/preview.png' alt='".$clang->gT("Preview This Question")."' name='previewquestionimg' /></a>\n"
-                    . "<img src='$imageurl/seperator.gif' alt='' />\n"; */
                 } else {
-                    /**$questionsummary .= "<a href=\"#\" accesskey='q' id='previewquestion'"
-                    . "title=\"".$clang->gTview("Preview This Question")."\">"
-                    . "<img src='$imageurl/preview.png' title='' alt='".$clang->gT("Preview This Question")."' name='previewquestionimg' /></a>\n"
-                    . "<img src='$imageurl/seperator.gif' alt=''  />\n"; */
-
-                    //
                     $this->load->helper('surveytranslator');
                     $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                     $baselang = GetBaseLanguageFromSurveyID($surveyid);
                     $tmp_survlangs[] = $baselang;
                     rsort($tmp_survlangs);
                     $data['tmp_survlangs'] = $tmp_survlangs;
-                    //$data['surveyid'] = $surveyid;
 
-                    // Test question Language Selection Popup
-                    /**$surveysummary .="<div class=\"langpopup\" id=\"previewquestionpopup\">".$clang->gT("Please select a language:")."<ul>";
-                    foreach ($tmp_survlangs as $tmp_lang)
-                    {
-                        $surveysummary .= "<li><a target='_blank' onclick=\"$('#previewquestion').qtip('hide');\" href='{$scriptname}?action=previewquestion&amp;sid={$surveyid}&amp;qid={$qid}&amp;lang={$tmp_lang}' accesskey='d'>".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
-                    }
-                    $surveysummary .= "</ul></div>"; */
                 }
             }
-
-            // SEPARATOR
-
-    //        $questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='117' height='20'  />\n";
-
-
-            // EDIT CURRENT QUESTION BUTTON
-
-            /**if(bHasSurveyPermission($surveyid,'surveycontent','update'))
-            {
-                $questionsummary .= ""
-    //            ."<img src='$imageurl/seperator.gif' alt='' />\n"
-                . "<a href='$scriptname?action=editquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
-                . " title=\"".$clang->gTview("Edit current question")."\">"
-                . "<img src='$imageurl/edit.png' alt='".$clang->gT("Edit Current Question")."' name='EditQuestion' /></a>\n" ;
-            }
-
-
-            // DELETE CURRENT QUESTION BUTTON
-
-            if ((($qct == 0 && $activated != "Y") || $activated != "Y") && bHasSurveyPermission($surveyid,'surveycontent','delete'))
-            {
-                if (is_null($condarray))
-                {
-                    $questionsummary .= "<a href='#'" .
-    				"onclick=\"if (confirm('".$clang->gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js")."')) {".get2post("$scriptname?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid")."}\">"
-    				. "<img src='$imageurl/delete.png' name='DeleteWholeQuestion' alt='".$clang->gT("Delete current question")."' "
-    				. "border='0' hspace='0' /></a>\n";
-                }
-                else
-                {
-                    $questionsummary .= "<a href='$scriptname?sid=$surveyid&amp;gid=$gid&amp;qid=$qid'" .
-    				"onclick=\"alert('".$clang->gT("It's impossible to delete this question because there is at least one question having a condition on it.","js")."')\""
-    				. "title=\"".$clang->gTview("Disabled - Delete current question")."\">"
-    				. "<img src='$imageurl/delete_disabled.png' name='DeleteWholeQuestion' alt='".$clang->gT("Disabled - Delete current question")."' /></a>\n";
-                }
-            }
-            else {$questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";}
-
-
-            // EXPORT CURRENT QUESTION BUTTON
-
-            if(bHasSurveyPermission($surveyid,'surveycontent','export'))
-            {
-                $questionsummary .= "<a href='$scriptname?action=exportstructureQuestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
-                . " title=\"".$clang->gTview("Export this question")."\" >"
-                . "<img src='$imageurl/dumpquestion.png' alt='".$clang->gT("Export this question")."' name='ExportQuestion' /></a>\n";
-            }
-
-            $questionsummary .= "<img src='$imageurl/seperator.gif' alt='' />\n";
-
-
-            // COPY CURRENT QUESTION BUTTON
-
-            if(bHasSurveyPermission($surveyid,'surveycontent','create'))
-            {
-                if ($activated != "Y")
-                {
-                    $questionsummary .= "<a href='$scriptname?action=copyquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
-                    . " title=\"".$clang->gTview("Copy Current Question")."\" >"
-                    . "<img src='$imageurl/copy.png'  alt='".$clang->gT("Copy Current Question")."' name='CopyQuestion' /></a>\n"
-                    . "<img src='$imageurl/seperator.gif' alt='' />\n";
-                }
-                else
-                {
-                    $questionsummary .= "<a href='#' title=\"".$clang->gTview("Copy Current Question")."\" "
-                    . "onclick=\"alert('".$clang->gT("You can't copy a question if the survey is active.","js")."')\">"
-                    . "<img src='$imageurl/copy_disabled.png' alt='".$clang->gT("Copy Current Question")."' name='CopyQuestion' /></a>\n"
-                    . "<img src='$imageurl/seperator.gif' alt='' />\n";
-                }
-            }
-            else
-            {
-                $questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
-            }
-
-
-            // SET EXTENDED CONDITIONS FOR QUESTION BUTTON
-
-            if(bHasSurveyPermission($surveyid,'surveycontent','update'))
-            {
-                $questionsummary .= "<a href='#' onclick=\"window.open('$scriptname?action=conditions&amp;sid=$surveyid&amp;qid=$qid&amp;gid=$gid&amp;subaction=editconditionsform', '_top')\""
-                . " title=\"".$clang->gTview("Set/view conditions for this question")."\">"
-                . "<img src='$imageurl/conditions.png' alt='".$clang->gT("Set conditions for this question")."'  name='SetQuestionConditions' /></a>\n"
-                . "<img src='$imageurl/seperator.gif' alt='' />\n";
-            }
-            else
-            {
-                $questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
-            } */
-
-
-            // EDIT SUBQUESTIONS FOR THIS QUESTION BUTTON
-
             $data['qtypes'] = $qtypes=getqtypelist('','array');
-
-            /**if(bHasSurveyPermission($surveyid,'surveycontent','read'))
-            {
-                if ($qtypes[$qrrow['type']]['subquestions'] >0)
-                {
-                    $questionsummary .=  "<a href='".$scriptname."?action=editsubquestions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
-                    ."title=\"".$clang->gTview("Edit subquestions for this question")."\">"
-                    ."<img src='$imageurl/subquestions.png' alt='".$clang->gT("Edit subquestions for this question")."' name='EditSubquestions' /></a>\n" ;
-                }
-            }
-            else
-            {
-                $questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
-            }
-
-
-            // EDIT ANSWER OPTIONS FOR THIS QUESTION BUTTON
-
-            if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] >0)
-            {
-                $questionsummary .=  "<a href='".$scriptname."?action=editansweroptions&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
-                ."title=\"".$clang->gTview("Edit answer options for this question")."\">"
-                ."<img src='$imageurl/answers.png' alt='".$clang->gT("Edit answer options for this question")."' name='EdtAnswerOptions' /></a>\n" ;
-            }
-            else
-            {
-                $questionsummary .= "<img src='$imageurl/blank.gif' alt='' width='40' />\n";
-            }
-
-
-            // EDIT DEFAULT ANSWERS FOR THIS QUESTION BUTTON
-
-            if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
-            {
-                $questionsummary .=  "<a href='".$scriptname."?action=editdefaultvalues&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid'"
-                ."title=\"".$clang->gTview("Edit default answers for this question")."\">"
-                ."<img src='$imageurl/defaultanswers.png' alt='".$clang->gT("Edit default answers for this question")."' name='EdtAnswerOptions' /></a>\n" ;
-            }
-            $questionsummary .= "</div>\n"
-            . "<div class='menubar-right'>\n"
-            . "<input type='image' src='$imageurl/minus.gif' title='"
-            . $clang->gT("Hide Details of this Question")."'  alt='". $clang->gT("Hide Details of this Question")."' name='MinimiseQuestionWindow' "
-            . "onclick='document.getElementById(\"questiondetails\").style.display=\"none\";' />\n"
-            . "<input type='image' src='$imageurl/plus.gif' title='"
-            . $clang->gT("Show Details of this Question")."'  alt='". $clang->gT("Show Details of this Question")."' name='MaximiseQuestionWindow' "
-            . "onclick='document.getElementById(\"questiondetails\").style.display=\"\";' />\n"
-            . "<input type='image' src='$imageurl/close.gif' title='"
-            . $clang->gT("Close this Question")."' alt='". $clang->gT("Close this Question")."' name='CloseQuestionWindow' "
-            . "onclick=\"window.open('$scriptname?sid=$surveyid&amp;gid=$gid', '_top')\" />\n"
-            . "</div>\n"
-            . "</div>\n"
-            . "</div>\n";
-            $questionsummary .= "<p style='margin:0;font-size:1px;line-height:1px;height:1px;'>&nbsp;</p>"; //CSS Firefox 2 transition fix
-            */
             if ($action=='editansweroptions' || $action =="editsubquestions" || $action =="editquestion" || $action =="editdefaultvalues" || $action =="copyquestion")
             {
                 $qshowstyle = "style='display: none'";
@@ -286,92 +108,28 @@
             $data['gid'] = $gid;
             $data['clang'] = $clang;
             $data['qrrow'] = $qrrow;
-            /**
-            $questionsummary .= "<table  id='questiondetails' $qshowstyle><tr><td width='20%' align='right'><strong>"
-            . $clang->gT("Code:")."</strong></td>\n"
-            . "<td align='left'>{$qrrow['title']}";
-            if ($qrrow['type'] != "X")
+            $data['baselang'] = $baselang;
+            $AttributesWithValues=$this->questions_model->getAdvancedSettingsWithValues($qid, $qrrow['type'], $surveyid, $baselang);
+            $DisplayArray=array();
+            foreach ($AttributesWithValues as $aAttribute)
             {
-                if ($qrrow['mandatory'] == "Y") {$questionsummary .= ": (<i>".$clang->gT("Mandatory Question")."</i>)";}
-                else {$questionsummary .= ": (<i>".$clang->gT("Optional Question")."</i>)";}
-            }
-            $questionsummary .= "</td></tr>\n"
-            . "<tr><td align='right' valign='top'><strong>"
-            . $clang->gT("Question:")."</strong></td>\n<td align='left'>".$qrrow['question']."</td></tr>\n"
-            . "<tr><td align='right' valign='top'><strong>"
-            . $clang->gT("Help:")."</strong></td>\n<td align='left'>";
-            if (trim($qrrow['help'])!=''){$questionsummary .= $qrrow['help'];}
-            $questionsummary .= "</td></tr>\n";
-            if ($qrrow['preg'])
-            {
-                $questionsummary .= "<tr ><td align='right' valign='top'><strong>"
-                . $clang->gT("Validation:")."</strong></td>\n<td align='left'>{$qrrow['preg']}"
-                . "</td></tr>\n";
-            }
-            $qtypes = getqtypelist("", "array"); //qtypes = array(type code=>type description)
-            $questionsummary .= "<tr><td align='right' valign='top'><strong>"
-            .$clang->gT("Type:")."</strong></td>\n<td align='left'>{$qtypes[$qrrow['type']]['description']}";
-            $questionsummary .="</td></tr>\n";
-            if ($qct == 0 && $qtypes[$qrrow['type']]['answerscales'] >0)
-            {
-                $questionsummary .= "<tr ><td></td><td align='left'>"
-                . "<span class='statusentryhighlight'>"
-                . $clang->gT("Warning").": <a href='{$scriptname}?sid={$surveyid}&amp;gid={$gid}&amp;qid={$qid}&amp;action=editansweroptions'>". $clang->gT("You need to add answer options to this question")." "
-                . "<img src='$imageurl/answers_20.png' title='"
-                . $clang->gT("Edit answer options for this question")."' name='EditThisQuestionAnswers'/></span></td></tr>\n";
-            }
-
-
-            // EDIT SUBQUESTIONS FOR THIS QUESTION BUTTON
-
-            if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0)
-            {
-               $questionsummary .= "<tr ><td></td><td align='left'>"
-                . "<span class='statusentryhighlight'>"
-                . $clang->gT("Warning").": <a href='{$scriptname}?sid={$surveyid}&amp;gid={$gid}&amp;qid={$qid}&amp;action=editsubquestions'>". $clang->gT("You need to add subquestions to this question")." "
-                . "<img src='$imageurl/subquestions_20.png' title='"
-                . $clang->gT("Edit subquestions for this question")."' name='EditThisQuestionAnswers' /></span></td></tr>\n";
-            }
-
-            if ($qrrow['type'] == "M" or $qrrow['type'] == "P")
-            {
-                $questionsummary .= "<tr>"
-                . "<td align='right' valign='top'><strong>"
-                . $clang->gT("Option 'Other':")."</strong></td>\n"
-                . "<td align='left'>";
-                $questionsummary .= ($qrrow['other'] == "Y") ? ($clang->gT("Yes")) : ($clang->gT("No")) ;
-                $questionsummary .= "</td></tr>\n";
-            }
-            if (isset($qrrow['mandatory']) and ($qrrow['type'] != "X") and ($qrrow['type'] != "|"))
-            {
-                $questionsummary .= "<tr>"
-                . "<td align='right' valign='top'><strong>"
-                . $clang->gT("Mandatory:")."</strong></td>\n"
-                . "<td align='left'>";
-                $questionsummary .= ($qrrow['mandatory'] == "Y") ? ($clang->gT("Yes")) : ($clang->gT("No")) ;
-                $questionsummary .= "</td></tr>\n";
-            }
-            if (!is_null($condarray))
-            {
-                $questionsummary .= "<tr>"
-                . "<td align='right' valign='top'><strong>"
-                . $clang->gT("Other questions having conditions on this question:")
-                . "</strong></td>\n<td align='left' valign='bottom'>\n";
-                foreach ($condarray[$qid] as $depqid => $depcid)
+                if (($aAttribute['i18n']==false && isset($aAttribute['value']) && $aAttribute['value']!=$aAttribute['default']) || ($aAttribute['i18n']==true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang]!=$aAttribute['default']))
                 {
-                    $listcid=implode("-",$depcid);
-                    $questionsummary .= " <a href='#' onclick=\"window.open('admin.php?sid=".$surveyid."&amp;qid=".$depqid."&amp;action=conditions&amp;markcid=".$listcid."','_top')\">[QID: ".$depqid."]</a>";
+                    if ($aAttribute['inputtype']=='singleselect')
+                    {
+                        $aAttribute['value']=$aAttribute['options'][$aAttribute['value']];
+                    }
+                    $DisplayArray[]=$aAttribute;
                 }
-                $questionsummary .= "</td></tr>";
             }
-            $questionsummary .= "</table>"; */
+            $data['advancedsettings']=$DisplayArray;
 
             $questionsummary .= $this->load->view("admin/survey/Question/questionbar_view",$data,true);
         }
         $finaldata['display'] = $questionsummary;
         $this->load->view('survey_view',$finaldata);
-
      }
+
 
     /**
 	 * Shows admin menu for question groups
@@ -524,23 +282,6 @@
             $data['qid'] = $qid;
             //$data['qid'] = $qid = $this->config->item('qid');
             $data['QidPrev'] = $QidPrev = getQidPrevious($surveyid, $gid, $qid);
-
-            /**$groupsummary .= "<span class='arrow-wrapper'>";
-            if ($QidPrev != "")
-            {
-              $groupsummary .= ""
-                . "<a href='{$scriptname}?sid=$surveyid&amp;gid=$gid&amp;qid=$QidPrev'>"
-                . "<img src='{$imageurl}/previous_20.png' title='' alt='".$clang->gT("Previous question")."' "
-                ."name='questiongroupprevious'/></a>";
-            }
-            else
-            {
-              $groupsummary .= ""
-                . "<img src='{$imageurl}/previous_disabled_20.png' title='' alt='".$clang->gT("No previous question")."' "
-                ."name='noquestionprevious' />";
-            }
-
-            */
 
             $data['QidNext'] = $QidNext = getQidNext($surveyid, $gid, $qid);
 
@@ -979,7 +720,6 @@
             . " [<a href='#' "
             . "onclick=\"if (confirm('".$clang->gT("Are you sure you want regenerate the question codes?","js")."')) {".get2post(base_url()."?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup")."}\" "
             . ">".$clang->gT("By Group")."</a>]";
-            $surveysummary2 .= "</td></tr>\n";
         }
 
         $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));

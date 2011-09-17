@@ -33,7 +33,7 @@
                             </select>
                             <?php break;
                         case "D": //DATE 
-//                            $qidattributes = getQuestionAttributes($deqrow['qid'], $deqrow['type']);
+//                            $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
                             $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
                             if(bCanShowDatePicker($dateformatdetails))
                             {

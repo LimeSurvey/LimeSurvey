@@ -122,7 +122,7 @@ class Question_format {
 		list($newgroup, $gid, $groupname, $groupdescription, $gl)=self::_checkIfNewGroup($ia);
 		
 		// MANAGE CONDITIONAL QUESTIONS AND HIDDEN QUESTIONS
-		$qidattributes=getQuestionAttributes($ia[0]);
+		$qidattributes=getQuestionAttributeValues($ia[0]);
 		if ($qidattributes===false)  // Question was deleted
 		{
 		    $qidattributes['hidden']==1;    //Workaround to skip the question if it was deleted while the survey is running in test mode
@@ -200,7 +200,7 @@ class Question_format {
 		        // because we skip this question, we need to loop on the same condition 'check-block'
 		        //  with the new question (we have overwritten $ia)
 		        $conditionforthisquestion=$ia[7];
-		        $qidattributes=getQuestionAttributes($ia[0]);
+		        $qidattributes=getQuestionAttributeValues($ia[0]);
 		    }
 		} // End of while conditionforthisquestion=="Y"
 		
@@ -660,7 +660,7 @@ class Question_format {
 		    for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
 		    {
 		        $ia = $_SESSION['fieldarray'][$n];
-		        $qidattributes=getQuestionAttributes($ia[0], $ia[4]);
+		        $qidattributes=getQuestionAttributeValues($ia[0], $ia[4]);
 		        if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
 		            continue;
 		

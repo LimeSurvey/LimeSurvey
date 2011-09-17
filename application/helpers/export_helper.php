@@ -201,7 +201,7 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
     } elseif ($field['LStype'] == ':') {
         $displayvaluelabel = 0;
         //Get the labels that could apply!
-        if (is_null($qidattributes)) $qidattributes=getQuestionAttributes($field["qid"], $field['LStype']);
+        if (is_null($qidattributes)) $qidattributes=getQuestionAttributeValues($field["qid"], $field['LStype']);
         if (trim($qidattributes['multiflexible_max'])!='') {
             $maxvalue=$qidattributes['multiflexible_max'];
         } else {
@@ -401,7 +401,7 @@ function spss_fieldmap($prefix = 'V') {
                 //Get default scale for this type
                 if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
                 //But allow override
-                $aQuestionAttribs = getQuestionAttributes($qid,$ftype);
+                $aQuestionAttribs = getQuestionAttributeValues($qid,$ftype);
                 if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
             }
 

@@ -1,3 +1,4 @@
+ 
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
@@ -123,7 +124,7 @@ class uploader extends LSCI_Controller {
 		    $fieldname = $_POST['fieldname'];
 		    $aFieldMap=createFieldMap($surveyid);
 		    if (!isset($aFieldMap[$fieldname])) die();
-		    $aAttributes=getQuestionAttributes($aFieldMap[$fieldname]['qid'],$aFieldMap[$fieldname]['type']);
+		    $aAttributes=getQuestionAttributeValues($aFieldMap[$fieldname]['qid'],$aFieldMap[$fieldname]['type']);
 		
 		    $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
 		    $valid_extensions_array = array_map('trim',$valid_extensions_array);
@@ -282,7 +283,7 @@ class uploader extends LSCI_Controller {
 		
 		$fn = $param['fieldname'];
 		$qid = $param['qid'];
-		$qidattributes=getQuestionAttributes($qid);
+		$qidattributes=getQuestionAttributeValues($qid);
 		
 		$body = '
 		        <div id="notice"></div>

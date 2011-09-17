@@ -201,7 +201,7 @@ class browse extends Survey_Common_Controller {
 		        {
 		            if ($field['aid']!=='filecount')
 		            {
-		                $qidattributes=getQuestionAttributes($field['qid']);
+		                $qidattributes=getQuestionAttributeValues($field['qid']);
 		
 		                for ($i = 0; $i < $field['max_files']; $i++)
 		                {
@@ -508,7 +508,7 @@ class browse extends Survey_Common_Controller {
 		        {
 		            if ($fielddetails['aid']!=='filecount')
 		            {
-		                $qidattributes=getQuestionAttributes($fielddetails['qid']);
+		                $qidattributes=getQuestionAttributeValues($fielddetails['qid']);
 		                
 		                for ($i = 0; $i < $fielddetails['max_files']; $i++)
 		                {

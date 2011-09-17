@@ -199,7 +199,7 @@ class Save {
 		            {
 		                if ($fieldexists['type']=='D' && isset($_POST[$value]))  // convert the date to the right DB Format
 		                {
-		                    $qidattributes = getQuestionAttributes($fieldexists['qid']);
+		                    $qidattributes = getQuestionAttributeValues($fieldexists['qid']);
 		                    $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
 //		                    $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdetails['phpdate']);
 		                    $_SESSION[$value] = $CI->db->escape(date("Y-m-d H:i:s", strtotime($_SESSION[$value])));
@@ -563,7 +563,7 @@ class Save {
 	                    elseif ($fieldexists['type']=='D' && is_array($postedfieldnames) && in_array($value,$postedfieldnames))
 	                    {
 	                        // convert the date to the right DB Format but only if it was posted
-	                        $qidattributes = getQuestionAttributes($fieldexists['qid']);
+	                        $qidattributes = getQuestionAttributeValues($fieldexists['qid']);
 	                        $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
 	                        $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdetails['phpdate']);
 	                        $_SESSION[$value] = $CI->db->escape(date("Y-m-d H:i:s", strtotime($_SESSION[$value])));
@@ -721,7 +721,7 @@ class Save {
 	                            }
 	                            elseif ($fieldinfo['type']=='D')  // convert the date to the right DB Format
 	                            {
-	                                $qidattributes = getQuestionAttributes($fieldinfo['qid']);
+	                                $qidattributes = getQuestionAttributeValues($fieldinfo['qid']);
 	                                $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
 	                               // $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdetails['phpdate']);
 	                                $qfield = $CI->db->escape(date("Y-m-d H:i:s", strtotime($_POST[$field])));

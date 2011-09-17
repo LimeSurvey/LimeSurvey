@@ -691,7 +691,7 @@ class conditions extends Survey_Common_Controller {
 		        { // Multiflexi
 
 		            //Get question attribute for $canswers
-		            $qidattributes=getQuestionAttributes($rows['qid'], $rows['type']);
+		            $qidattributes=getQuestionAttributeValues($rows['qid'], $rows['type']);
 		            if (isset($qidattributes['multiflexible_max']) && trim($qidattributes['multiflexible_max'])!='') {
 		                $maxvalue=$qidattributes['multiflexible_max'];
 		            } else {
@@ -773,7 +773,7 @@ class conditions extends Survey_Common_Controller {
 
 		            foreach ($aresult->result_array() as $arows)
 		            {
-		                $attr = getQuestionAttributes($rows['qid']);
+		                $attr = getQuestionAttributeValues($rows['qid']);
 		                $label1 = isset($attr['dualscale_headerA']) ? $attr['dualscale_headerA'] : 'Label1';
 		                $label2 = isset($attr['dualscale_headerB']) ? $attr['dualscale_headerB'] : 'Label2';
 		                $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label1]";

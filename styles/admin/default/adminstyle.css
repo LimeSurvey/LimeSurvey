@@ -57,7 +57,7 @@ th, p, div {
 fieldset {
     padding:0 6px 0px 6px;
     margin: 3px;
-    border-color:#D2E0F2 #8195BA #8195BA #D2E0F2;  
+    border-color:#D2E0F2 #8195BA #8195BA #D2E0F2;
     border-style: solid;
     border-width: 1px;
 }
@@ -84,10 +84,10 @@ table.statisticstable {
     margin: 2px auto;
 }
 
-table.statisticstable span {   
+table.statisticstable span {
      font-weight:bold;
 }
-    
+
 span.basic {
     color: #1d2d45;
 }
@@ -96,25 +96,25 @@ span.basic {
     vertical-align: top;
 }
 
-/* Start menubar */  
+/* Start menubar */
 div.menubar {
     background-color: #EEF6FF;
     clear:left;
     padding:0;
     margin:3px auto 3px auto;
     width: 99.5%;
-    min-height: 60px;    
+    min-height: 60px;
 }
 
 .menubar-main {
     background-color: #EEF6FF;
-    width: 99.6%;   
+    width: 99.6%;
     float: left;
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
     border-style: solid;
     border-width: 1px;
-    padding:0 0.2%;           
-    min-height: 43px;    
+    padding:0 0.2%;
+    min-height: 43px;
 
 }
 
@@ -155,7 +155,7 @@ div.menubar {
         font-size:10px;
         font-weight:bold;
         color:#ee0000 !important;
-        text-decoration: underline !important; 
+        text-decoration: underline !important;
 }
 
 .menubar-left {
@@ -165,14 +165,14 @@ div.menubar {
     clear: none;
     margin: 0;
     padding: 0;
-      
+
 }
 
 .menubar-right {
     background-color: #EEF6FF;
     float: right;
     line-height: 1em;
-    white-space: nowrap;    
+    white-space: nowrap;
 }
 
 .menubar select {
@@ -201,7 +201,7 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
 	margin: 0;
 }
 
-/* END menubar CSS */    
+/* END menubar CSS */
 
 #surveydetails, #groupdetails, #questiondetails {
     background-color: #FFF;
@@ -214,16 +214,19 @@ html>body .menubar-right .arrow-wrapper { /* For real browsers */
     clear:left;
 }
 
-#surveydetails td:first-child, 
-#groupdetails td:first-child, 
+#surveydetails td:first-child,
+#groupdetails td:first-child,
 #questiondetails td:first-child {
-    width:20%;   
+    width:25%;
+    font-weight:bold;
+    text-align:right;
+
 }
 
-#surveydetails td+td, 
-#groupdetails td+td, 
+#surveydetails td+td,
+#groupdetails td+td,
 #questiondetails td+td {
-    text-align:left;    
+    text-align:left;
 }
 
 .outlinetable {
@@ -275,7 +278,7 @@ input, select, button {
     font: 10px verdana, arial, sans-serif;
 }
 
-/* Uncomment these styles if you are using a system theme with a dark background 
+/* Uncomment these styles if you are using a system theme with a dark background
 and are having difficulty seeing text in inputs, textareas and dropdown selects. */
 /*
 input,
@@ -421,7 +424,7 @@ span.settingcaption {
 .movableList {
     padding-left: 0;
     width: 60em;
-    margin:0 auto;    
+    margin:0 auto;
 }
 
 .movableNode {
@@ -443,7 +446,7 @@ span.settingcaption {
     font-weight:bold;
      padding-left:1.2em;
      line-height:1.5em;
-    margin-top:0.5em; 
+    margin-top:0.5em;
 }
 
 li.cancellink
@@ -495,22 +498,22 @@ th.admincell {
 .header_statistics {
     height:21px;
     padding:1px;
-    padding-left:42px; 
+    padding-left:42px;
 }
 
-.btnaddanswer, 
+.btnaddanswer,
 .btndelanswer,
 .header_statistics img {
-    cursor:pointer;   
+    cursor:pointer;
 }
-    
+
 img.handle {
-    cursor:move;   
+    cursor:move;
 }
 
 .header_small {
     margin-top:2px;
-    font-size: 11px; 
+    font-size: 11px;
 }
 
 div.settingcaption{
@@ -542,11 +545,11 @@ a:link, a:visited {
 
 table.alertbox {
     width: 450px;
-    margin-left:auto; 
+    margin-left:auto;
     margin-right:auto;
     border: 1px solid;
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
-    text-align: left;  
+    text-align: left;
 }
 
 .menubar tr {
@@ -571,12 +574,12 @@ a.optoutemail {
 /* Browse response css */
 
 .browsetable {
-    border: 1px solid;  
+    border: 1px solid;
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
     clear:left;
 }
 
-.browsetable tr:hover { 
+.browsetable tr:hover {
     background-color: #C5D0F2;
 }
 .browsetable td span.content{
@@ -594,7 +597,7 @@ a.optoutemail {
 .addquotaanswer,
 .edituser,
 .users,
-.assessmentlist,   
+.assessmentlist,
 .listsurveys,
 .surveysecurity {
     text-align:center;
@@ -609,7 +612,7 @@ a.optoutemail {
 
 .users
 {
-    width:80%;     
+    width:80%;
 }
 
 .listsurveys
@@ -632,13 +635,13 @@ a.optoutemail {
 .surveysecurity th,
 .users th,
 .listsurveys th {
-    background-color: #D2E0F2;     
+    background-color: #D2E0F2;
     font-size:0.8em;
     padding:2px 14px 2px 10px;
 }
 
 .browsetable th {
-    background-color: #D2E0F2;     
+    background-color: #D2E0F2;
     font-size:9pt;
     padding:2px;
     text-align: center;
@@ -647,13 +650,13 @@ a.optoutemail {
 
 .browsetable td {
     font-size:8pt;
-    padding:1px 2px; 
-    text-align: center;          
+    padding:1px 2px;
+    text-align: center;
 }
 
 .browsetable tfoot td {
-    text-align: left;          
-    background-color: #D2E0F2;     
+    text-align: left;
+    background-color: #D2E0F2;
     padding:4px;
 }
 
@@ -661,7 +664,7 @@ a.optoutemail {
 .surveysecurity td,
 .listsurveys td {
     font-size:0.8em;
-    padding:2px 6px; 
+    padding:2px 6px;
 }
 
 .users td input
@@ -691,7 +694,7 @@ a.optoutemail {
 
 .answertable th:first-child {
     text-align:right;
-}   
+}
 
 #languagetabs {
     width:60%;
@@ -703,11 +706,11 @@ a.optoutemail {
 }
 
 .badtokenlist {
-    width: 400px; 
+    width: 400px;
     background-color: #FFF;
     border: 1px solid #CCC;
-    height: 50px; 
-    overflow: auto; 
+    height: 50px;
+    overflow: auto;
     text-align: left;
     margin-bottom: 0px;
     font-size: 8pt
@@ -716,7 +719,7 @@ a.optoutemail {
 .browsetokens
 {
     margin: 5px 2px;
-    border: 1px solid;  
+    border: 1px solid;
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
     clear: left;
 }
@@ -728,7 +731,7 @@ a.optoutemail {
     font-size:12px;
     background-color:#D2E0F2;
     color: #1D2D45;
-    vertical-align:top;    
+    vertical-align:top;
 }
 
 .browsetokens tr {
@@ -752,7 +755,7 @@ a.optoutemail {
 .browsetokens td:first-child {
     text-align:right;
    padding-right: 3px;
-}   
+}
 
 .tokensummary tr:first-child {
  font-weight:bold;
@@ -871,7 +874,7 @@ table.statisticstable, table.statisticssummary {
 
 .statisticssummary th, .statisticssummary td, .statisticstable td {
     padding:3px 10px;
-    
+
 }
 
 .statisticstable tr {
@@ -891,20 +894,20 @@ table.statisticstable, table.statisticssummary {
     background:#D2E0F2;
     text-align:center;
 }
-                   
-#personalsettings label {  
-    float: left;  
-    width: 20em;  
-    margin-right: 0.5em;  
+
+#personalsettings label {
+    float: left;
+    width: 20em;
+    margin-right: 0.5em;
     text-align: right;
     font-weight: bold;
 }
 
-#personalsettings li {  
+#personalsettings li {
     list-style-type: none;
     padding-bottom:5px;
 }
-    
+
 form#personalsettings {
   width:750px;
   margin:0 auto;
@@ -912,57 +915,57 @@ form#personalsettings {
 
 div.messagebox {
     width: 550px;
-    margin:10px auto; 
+    margin:10px auto;
     border: 1px solid;
     border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
     background-color: #F8F8FF;
     text-align: center;
-    padding:10px;  
+    padding:10px;
 }
 
 div.messagebox .header{
-    padding:10px;  
+    padding:10px;
 }
 
 div.successheader{
     font-weight:bold;
     color:#008000;
-    background-color: #C0FFC0;   
+    background-color: #C0FFC0;
     margin: 5px 0;
-    padding:2px;  
+    padding:2px;
 }
 div.errorheader{
     font-weight:bold;
     color:#800000;
-    background-color: #FFC0C0;   
+    background-color: #FFC0C0;
     margin: 5px 0;
-    padding:2px;  
+    padding:2px;
 }
 div.warningheader{
     font-weight:bold;
     color:#808000;
-    background-color: #FFC0C0;   
+    background-color: #FFC0C0;
     margin: 5px 0;
-    padding:2px;  
+    padding:2px;
 }
 div.partialheader{
     font-weight:bold;
     color: #CC3300;
-    background-color: #FF9900;   
+    background-color: #FF9900;
     margin: 5px 0;
-    padding:2px;  
+    padding:2px;
 }
 
 div.messagebox .warningheader {
     font-weight:bold;
     color:#ee0000;
-    background-color: #ffeeee;   
+    background-color: #ffeeee;
     margin: 5px 0;
-    padding:2px;  
+    padding:2px;
 }
 
 /* Conditions designer interface */
-      
+
 .condition-tbl-row {
     width: 100%;
     float: left;
@@ -977,7 +980,7 @@ div.messagebox .warningheader {
     padding: 0;
     margin: 0;
 }
-      
+
 .condition-tbl-left {
     width: 24%;
     float: left;
@@ -985,14 +988,14 @@ div.messagebox .warningheader {
     text-align: right;
     font-weight: bold;
 }
-      
+
 .condition-tbl-right {
     width: 74%;
     float: left;
     padding: 10px 0 0 0;
     text-align: left;
 }
-      
+
 .condition-tbl-full {
     width: 100%;
     clear: both;
@@ -1011,11 +1014,11 @@ div.messagebox .warningheader {
 
 .tabs-nav select,
 .tabs-nav textarea{
-    font-family: verdana; 
-    font-size: 10px; 
-    width: 100%; 
+    font-family: verdana;
+    font-size: 10px;
+    width: 100%;
 }
-      
+
 .conditiontbl td {
     text-align:left;
 }
@@ -1064,10 +1067,10 @@ div.messagebox .warningheader {
 }
 
 textarea.updater-changelog {
-    width:800px; 
-    height:300px; 
-    background-color:#fff; 
-    font-family:Monospace; 
+    width:800px;
+    height:300px;
+    background-color:#fff;
+    font-family:Monospace;
     font-size:11px;
 }
 
@@ -1075,49 +1078,49 @@ textarea.updater-changelog {
 .movableNode select {
     max-width:200px;
 }
-   
-.form44 li label:first-child, 
+
+.form44 li label:first-child,
 #exportspss li label:first-child,
-#importtemplate li label:first-child,            
-#tokenimport li label:first-child,            
-#statistics_general_filter li label:first-child,            
-#vvexport li label:first-child,            
+#importtemplate li label:first-child,
+#tokenimport li label:first-child,
+#statistics_general_filter li label:first-child,
+#vvexport li label:first-child,
 #importlabels li label:first-child,
-#exportdialog li label:first-child, 
-#frmeditquestion li label:first-child, 
+#exportdialog li label:first-child,
+#frmeditquestion li label:first-child,
 #importquestion li label:first-child,
 #bouncesettings li label:first-child,
 #importquestion li label:first-child {
     width: 44%;
     text-align: right;
     margin-right: 0.5em;
-    float: left;      
+    float: left;
     font-weight: bold;
     color: #1d2d45;
 }
-         
+
 #loginform li label:first-child {
     width: 39%;
     text-align: right;
     margin-right: 0.5em;
-    float: left;      
+    float: left;
     font-weight: bold;
     color: #1d2d45;
-}        
+}
 
 .form30newtabs li label:first-child,
 .form30 li label:first-child {
     width: 30%;
     text-align: right;
     margin-right: 0.5em;
-    float: left;      
+    float: left;
     font-weight: bold;
     color: #121A28;
 }
 
 .form30 table {
     width: auto;
-    float: left;      
+    float: left;
 }
 
 .form30newtabs div div div div li{
@@ -1146,7 +1149,7 @@ textarea.updater-changelog {
 #sendreminder li,
 #sendinvitation li,
 #edittoken li,
-#exportdialog li,       
+#exportdialog li,
 #addnewsurvey li,
 #newquestiongroup li,
 #importsurvey li,
@@ -1156,7 +1159,7 @@ textarea.updater-changelog {
 #importsurveyresources li,
 #labelsetform li,
 #bouncesettings li,
-#exportspss li{  
+#exportspss li{
     list-style-type: none;
     clear:left;
     padding-bottom:5px;
@@ -1167,8 +1170,8 @@ textarea.updater-changelog {
 #frmeditquestion li,
 #importquestion li {
     list-style-type: none;
-    clear:left;    
-    padding-bottom:7px;   
+    clear:left;
+    padding-bottom:7px;
 }
 
 #forgotpassword input#user, #forgotpassword input#email
@@ -1186,7 +1189,7 @@ div.loader {
 }
 
 #wrapper {
-     background-color:#f8f8ff;     
+     background-color:#f8f8ff;
      width:100%;
      padding:1px 0px;
 }
@@ -1198,7 +1201,7 @@ div.loader {
 
 #emailtemplates .ui-tabs-panel iframe,
 #frmeditgroup .ui-tabs-panel iframe,
-#frmcopyquestion .tab-page iframe,   
+#frmcopyquestion .tab-page iframe,
 #sendreminder .tab-page iframe,
 #newquestiongroup .ui-tabs-panel iframe,
 #sendinvitation .ui-tabs-panel iframe,
@@ -1213,7 +1216,7 @@ div.loader {
 
 #editsurvey td {
 
-} 
+}
 
 
 #help
@@ -1274,7 +1277,7 @@ div.right {
  width:300px;
 }
 
-.wrap2columns { 
+.wrap2columns {
 width:600px;
 margin:0 auto;
 }
@@ -1338,26 +1341,26 @@ clear:both;
 
 .filtertable  {
     background:#EEF6FF;
-    text-align:center; 
-    margin:5px 15px;   
+    text-align:center;
+    margin:5px 15px;
     border:1px #fff solid;
     padding:3px 10px;
 }
 
 .filtertable td {
     padding:3px 10px 7px 10px;
-    border-right:1px #fff solid;  
-    border-bottom:1px #fff solid;  
+    border-right:1px #fff solid;
+    border-bottom:1px #fff solid;
     vertical-align: top;
-        border-collapse:collapse !important;     
+        border-collapse:collapse !important;
 }
 
 .filtertable td:last-child {
-    border-left:0px #D2E0F2 solid;  
+    border-left:0px #D2E0F2 solid;
 }
 
 .filtertable tr:last-child td {
-    border-top:0px #D2E0F2 solid;          
+    border-top:0px #D2E0F2 solid;
 }
 
 .filtertable span {
@@ -1371,13 +1374,13 @@ clear:both;
 
 .limebutton
 {
-   outline: 0; 
-   margin:1px 4px 1px 0; 
-   padding: 1px 1em; 
-   text-decoration:none !important; 
-   cursor:pointer; 
-   text-align: center; 
-   zoom: 1; 
+   outline: 0;
+   margin:1px 4px 1px 0;
+   padding: 1px 1em;
+   text-decoration:none !important;
+   cursor:pointer;
+   text-align: center;
+   zoom: 1;
 }
 
 #emailtemplates .ui-tabs-panel .limebutton {
@@ -1385,7 +1388,7 @@ clear:both;
 }
 
 table.limetable thead th{
-    background-color: #D2E0F2;     
+    background-color: #D2E0F2;
     font-size:8pt;
     padding:2px 14px 2px 10px;
 }
@@ -1414,7 +1417,7 @@ table.limetable tbody tr.highlight {
     width:10%;
 }
 
-thead th 
+thead th
 {
     background-color:#E1E7EF;
 }
@@ -1432,11 +1435,11 @@ thead th
 }
 
 
-.ui-notify { 
-    width:350px; 
-    position:fixed; 
-    top:35px; 
-    left:50%;   
+.ui-notify {
+    width:350px;
+    position:fixed;
+    top:35px;
+    left:50%;
     margin-left: -175px;
 }
 

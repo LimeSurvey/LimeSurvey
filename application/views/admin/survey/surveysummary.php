@@ -1,7 +1,7 @@
 <table <?php echo $showstyle; ?> id='surveydetails'>
 	<tr>
 		<td align='right' valign='top' width='15%'>
-			<strong><?php echo $clang->gT("Title");?>:</strong>
+			<strong><?php $clang->eT("Title");?>:</strong>
 		</td>
 		<td align='left' class='settingentryhighlight'>
 			<strong><?php echo $surveyinfo['surveyls_title']." (".$clang->gT("ID")." ".$surveyinfo['sid'].")";?></strong>
@@ -26,7 +26,7 @@
     ?>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Description:");?></strong>
+    		<strong><?php $clang->eT("Description:");?></strong>
     	</td>
     	<td align='left'>
         	<?php
@@ -100,7 +100,7 @@
     </tr>
     <tr>
     	<td align='right' valign='top'>
-    		<strong><?php echo $clang->gT("Additional Languages");?></strong>
+    		<strong><?php $clang->eT("Additional languages:");?></strong>
     	</td>
     		<?php echo $additionnalLanguages;?>
     <tr>

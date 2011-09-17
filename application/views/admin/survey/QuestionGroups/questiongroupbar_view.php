@@ -99,7 +99,7 @@
 
                 <a href='<?php echo site_url("admin/survey/view/".$surveyid."/".$gid."/".$QidPrev); ?>'>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/previous_20.png' title='' alt='<?php echo $clang->gT("Previous question"); ?>'
-                name='questiongroupprevious'/></a>
+                name='questionprevious'/></a>
             <?php }
             else
             { ?>

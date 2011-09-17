@@ -1,11 +1,11 @@
 <?php if (isset($tmp_survlangs)) { ?>
     <div class="langpopup" id="previewquestionpopup"><?php echo $clang->gT("Please select a language:"); ?><ul>
-    <?php foreach ($tmp_survlangs as $tmp_lang) 
+    <?php foreach ($tmp_survlangs as $tmp_lang)
     { ?>
         <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo site_url("admin/question/preview/".$surveyid."/".$qid."/".$tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
     <?php } ?>
     </ul></div>
-<?php } ?> 
+<?php } ?>
 <div class='menubar-title ui-widget-header'>
             <strong><?php echo $clang->gT("Question"); ?></strong> <span class='basic'><?php echo $qrrow['question']; ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
             </div>
@@ -270,28 +270,39 @@
                      <a href='#' onclick="window.open('admin.php?sid=<?php echo $surveyid; ?>&amp;qid=<?php echo $depqid; ?>&amp;action=conditions&amp;markcid=<?php echo $listcid; ?>','_top')">[QID: <?php echo $depqid; ?>]</a>
                 <?php } ?>
                 </td></tr>
-            <?php } ?>
-            <?php
-                $questionAttributes = getQuestionAttributes($qid, $qrrow['type']);
-                if (!is_null($questionAttributes['relevance']))
+            <?php }
+            $sCurrentCategory='';
+            foreach ($advancedsettings as $aAdvancedSetting)
+            {
+                if ($sCurrentCategory!=$aAdvancedSetting['category'])
                 {
-                    $relevance = $questionAttributes['relevance'];
-                    if ($relevance !== '' && $relevance !== '1' && $relevance !== '0')
-                    {
-                        LimeExpressionManager::ProcessString("{" . $relevance . "}");    // tests Relevance equation so can pretty-print it
-                        $rel2show = LimeExpressionManager::GetLastPrettyPrintExpression();
-                    }
-                    else
-                    {
-                        $rel2show = $relevance;
-                    }
-                    $questionsummary = "<tr>"
-                    . "<td align='right' valign='top'><strong>"
-                    . $clang->gT("Relevance:")."</strong></td>\n"
-                    . "<td align='left'>";
-                    $questionsummary .= $rel2show;
-                    $questionsummary .= "</td></tr>\n";
+                    ?>
+                    <tr>
+                    <td><?php echo $aAdvancedSetting['category']; ?></td><td></td>
+                    </tr>
+                    <?php
+                    $sCurrentCategory=$aAdvancedSetting['category'];
                 }
-                echo $questionsummary;
-            ?>
+                ?>
+               <tr>
+                   <td><?php echo $aAdvancedSetting['caption'];?>:</td>
+                   <td><?php
+                    if ($aAdvancedSetting['name']=='relevance')
+                    {
+                        $sRelevance = $aAdvancedSetting['value'];
+                        if ($sRelevance !== '' && $sRelevance !== '1' && $sRelevance !== '0')
+                        {
+                            LimeExpressionManager::ProcessString("{" . $sRelevance . "}");    // tests Relevance equation so can pretty-print it
+                            $aAdvancedSetting['value']= LimeExpressionManager::GetLastPrettyPrintExpression();
+                        }
+                        else
+                        {
+                            $aAdvancedSetting['value'] = $sRelevance;
+                        }
+                    }
+                    if ($aAdvancedSetting['i18n']==false)  echo $aAdvancedSetting['value']; else echo $aAdvancedSetting[$baselang]['value']?>
+                    </td>
+               </tr>
+            <?php
+            }?>
             </table>

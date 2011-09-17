@@ -743,7 +743,7 @@
                     //$dataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
                     if(isset($fname['qid']) && isset($fname['type']))
                     {
-                        $qidattributes = getQuestionAttributes($fname['qid'], $fname['type']);
+                        $qidattributes = getQuestionAttributeValues($fname['qid'], $fname['type']);
                     }
                     switch ($fname['type'])
                     {
@@ -827,7 +827,7 @@
                             break;
                         case "L": //LIST drop-down
                         case "!": //List (Radio)
-                            $qidattributes=getQuestionAttributes($fname['qid']);
+                            $qidattributes=getQuestionAttributeValues($fname['qid']);
                             if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
@@ -1095,7 +1095,7 @@
                             break;
 
                         case "M": //Multiple choice checkbox
-                            $qidattributes=getQuestionAttributes($fname['qid']);
+                            $qidattributes=getQuestionAttributeValues($fname['qid']);
                             if (trim($qidattributes['display_columns'])!='')
                             {
                                 $dcols=$qidattributes['display_columns'];
@@ -1194,7 +1194,7 @@
                             if ($fname['aid']!=='filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0))
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
-                                $qAttributes = getQuestionAttributes($fname['qid']);
+                                $qAttributes = getQuestionAttributeValues($fname['qid']);
 
                                 for ($i = 0; $i < $idrow[$fname['fieldname']]['max_files'], isset($metadata[$i]); $i++)
                                 {
@@ -1400,7 +1400,7 @@
                             $dataentryoutput .= "</table>\n";
                             break;
                         case ":": //ARRAY (Multi Flexi) (Numbers)
-                            $qidattributes=getQuestionAttributes($fname['qid']);
+                            $qidattributes=getQuestionAttributeValues($fname['qid']);
                             if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
                                 $maxvalue=$qidattributes['multiflexible_max'];
                                 $minvalue=1;
@@ -1684,7 +1684,7 @@
                         }
                         else
                         {
-                            $qidattributes = getQuestionAttributes($irow['qid'], $irow['type']);
+                            $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
                             $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
 
                             $items = array($thisvalue,$dateformatdetails['phpdate']);
@@ -1977,7 +1977,7 @@
                             }
                             elseif ($irow['type'] == 'D')
                             {
-                                $qidattributes = getQuestionAttributes($irow['qid'], $irow['type']);
+                                $qidattributes = getQuestionAttributeValues($irow['qid'], $irow['type']);
                                 $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
                                 $items = array($_POST[$fieldname],$dateformatdetails['phpdate']);
                                 $this->load->library('Date_Time_Converter',$items);
@@ -2315,7 +2315,7 @@
 
                 foreach ($deqrows as $deqrow)
                 {
-                    $qidattributes = getQuestionAttributes($deqrow['qid'], $deqrow['type']);
+                    $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
@@ -2528,7 +2528,7 @@
                             $dataentryoutput .= "\t</select>\n";
                             break;
                         case "D": //DATE
-                            $qidattributes = getQuestionAttributes($deqrow['qid'], $deqrow['type']);
+                            $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
                             $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
                             if(bCanShowDatePicker($dateformatdetails))
                             {
@@ -2628,7 +2628,7 @@
 
                         case "L": //LIST drop-down/radio-button list
                         case "!":
-//                            $qidattributes=getQuestionAttributes($deqrow['qid']);
+//                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
                             if ($deqrow['type']=='!' && trim($qidattributes['category_separator'])!='')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
@@ -2915,7 +2915,7 @@
                             unset($answers);
                             break;
                         case "M": //Multiple choice checkbox (Quite tricky really!)
-//                            $qidattributes=getQuestionAttributes($deqrow['qid']);
+//                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
                             if (trim($qidattributes['display_columns'])!='')
                             {
                                 $dcols=$qidattributes['display_columns'];
@@ -3033,7 +3033,7 @@
                             */
                             break;
                         case "|":
-//                            $qidattributes = getQuestionAttributes($deqrow['qid']);
+//                            $qidattributes = getQuestionAttributeValues($deqrow['qid']);
                             $cdata['qidattributes'] = $qidattributes;
                             /**
                             // JS to update the json string
@@ -3224,7 +3224,7 @@
                             */
                             break;
                         case ":": //ARRAY (Multi Flexi)
-//                            $qidattributes=getQuestionAttributes($deqrow['qid']);
+//                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
                             if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) =='') {
                                 $maxvalue=$qidattributes['multiflexible_max'];
                                 $minvalue=1;

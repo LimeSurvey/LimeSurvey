@@ -278,7 +278,7 @@
 			$ia[9] = $qnumber; // incremental question count;
 		        if ($ia[5] == $gid)
 		        {
-		            $qidattributes=getQuestionAttributes($ia[0]);
+		            $qidattributes=getQuestionAttributeValues($ia[0]);
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
 
                     LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$ia[0],$ia[2],$ia[4],$hidden);
@@ -637,7 +637,7 @@ END;
 		                    $q2type=$qtypesarray[$sgq_from_sgqa];
 		                    $idname2 = retrieveJSidname(Array('',$qid_from_sgq,$comparedfieldname[1],'Y',$q2type,$sgq_from_sgqa));
 		                    /***
-		                    $cqidattributes = getQuestionAttributes($cd[1]);
+		                    $cqidattributes = getQuestionAttributeValues($cd[1]);
 		
 		                    if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
 		                    { // Numerical questions
@@ -696,7 +696,7 @@ END;
 		                    }
 		                    else
 		                    {
-		                        $cqidattributes = getQuestionAttributes($cd[1]);
+		                        $cqidattributes = getQuestionAttributeValues($cd[1]);
 		                        //if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
 		                        if (in_array($cd[6],array("<","<=",">",">=")))
 		                        { // Numerical comparizons

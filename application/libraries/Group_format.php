@@ -425,7 +425,7 @@ class Group_format {
 		        	continue;
 		        }
 		    	
-                $qidattributes=getQuestionAttributes($ia[0]);
+                $qidattributes=getQuestionAttributeValues($ia[0]);
                 if ($ia[4] != '*' && ($qidattributes===false || $qidattributes['hidden']==1)) {
                     // Should we really skip the question here, maybe the result won't be stored if we do that
                     // don't want to skip Equation type, otherwise mandatory hidden will prevent result from being available and stored.
@@ -876,7 +876,7 @@ END;
 		                    $newjava .= "( $JSsourceElt != null && $JSsourceVal != '') && ";
 		
 		                    $newjava .= "( document.getElementById('$idname2') != null && document.getElementById('$idname2').value != '') && ";
-		                    $cqidattributes = getQuestionAttributes($cd[1]);
+		                    $cqidattributes = getQuestionAttributeValues($cd[1]);
 		                    //if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
 		                    if (in_array($cd[6],array("<","<=",">",">=")))
 		                    { // Numerical comparizons
@@ -970,7 +970,7 @@ END;
 		                    }
 		                    else
 		                    {
-		                        $cqidattributes = getQuestionAttributes($cd[1]);
+		                        $cqidattributes = getQuestionAttributeValues($cd[1]);
 		                        //if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['numbers_only']==1))
 		                        if (in_array($cd[6],array("<","<=",">",">=")))
 		                        { // Numerical comparizons
@@ -1290,7 +1290,7 @@ END;
 		
 		        if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
                 // Hide Equations of attribute set to always hide them, yet unlike other questions, do include the answer fields.
-                $eqnAttributes = getQuestionAttributes($qa[4], $qa[8]);
+                $eqnAttributes = getQuestionAttributeValues($qa[4], $qa[8]);
                 $hidden = (isset($eqnAttributes['hidden']) ? $eqnAttributes['hidden'] : 0);
                 // Want to make the question invisible and have save.php blank out the value if it is irrelevant
                 if (isset($eqnAttributes['relevance']) && !LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance'],$qa[4],$qa[5],$qa[8],$hidden))
@@ -1382,7 +1382,7 @@ END;
 		                if($ia[5] != $g[0])
 		                    continue;
 		
-		                $qidattributes=getQuestionAttributes($ia[0], $ia[4]);
+		                $qidattributes=getQuestionAttributeValues($ia[0], $ia[4]);
 		                if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
 		                    continue;
 		

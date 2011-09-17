@@ -1672,7 +1672,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
 
                     case ":": //Array (Multiple Flexi) (Numbers)
-                        $qidattributes=getQuestionAttributes($qiqid);
+                        $qidattributes=getQuestionAttributeValues($qiqid);
                         if (trim($qidattributes['multiflexible_max'])!='') {
                             $maxvalue=$qidattributes['multiflexible_max'];
                         }
@@ -1780,7 +1780,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         $sSubquestion=FlattenText($connect->GetOne($sSubquestionQuery));
 
                         //get question attributes
-                        $qidattributes=getQuestionAttributes($qqid);
+                        $qidattributes=getQuestionAttributeValues($qqid);
 
                         //check last character -> label 1
                         if (substr($rt,-1,1) == 0)

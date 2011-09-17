@@ -2005,7 +2005,7 @@ function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
         {
             case 'D': if (trim($value)!='')
             {
-                $qidattributes = getQuestionAttributes($fields['qid']);
+                $qidattributes = getQuestionAttributeValues($fields['qid']);
                 $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $surveyid);
                 $value=convertDateTimeFormat($value,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
             }
@@ -3238,7 +3238,7 @@ function buildLabelSetCheckSumArray()
  * @param $type optional The question type - saves a DB query if you provide it
  * @return array{attribute=>value , attribute=>value} or false if the question ID does not exist (anymore)
  */
-function getQuestionAttributes($qid, $type='')
+function getQuestionAttributeValues($qid, $type='')
 {
     global $CI;
     static $cache = array();
@@ -3915,10 +3915,10 @@ function questionAttributes($returnByName=false)
     'sortorder'=>1,
     'inputtype'=>'text',
     'default'=>'1',
-    'help'=>$clang->gT('The Relevance Equation determines whether a question should be shown (if true) or hiddden and marked as Not Applicable (if false).'
-            . '  The Relevance equation can be as complex as you like, using any combination of mathematical operators, nested parentheses,'
+    'help'=>$clang->gT('The relevance equation determines whether a question should be shown (if true) or hiddden and marked as Not Applicable (if false).'
+            . '  The relevance equation can be as complex as you like, using any combination of mathematical operators, nested parentheses,'
             . ' any variable or token that has already been set, and any of more than 50 functions.  It is parsed by the ExpressionManager.'),
-    'caption'=>$clang->gT('Relevance Equation'));
+    'caption'=>$clang->gT('Relevance equation'));
 
     $qattributes["parent_order"]=array(
     "types"=>"!ABCEFHKLMOPQRWZ1:;",
@@ -4607,7 +4607,7 @@ function getArrayFiltersForGroup($surveyid,$gid)
     $grows2 = $grows;
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
-        $qresult = getQuestionAttributes($qrow['qid']);
+        $qresult = getQuestionAttributeValues($qrow['qid']);
         if (isset($qresult['array_filter'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -4660,7 +4660,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
         $qidtotitle[$qrow['qid']]=$qrow['title'];
-        $qresult = getQuestionAttributes($qrow['qid'],$qrow['type']);
+        $qresult = getQuestionAttributeValues($qrow['qid'],$qrow['type']);
         if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -4753,7 +4753,7 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
     $grows2 = $grows;
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
-        $qresult = getQuestionAttributes($qrow['qid'],$qrow['type']);
+        $qresult = getQuestionAttributeValues($qrow['qid'],$qrow['type']);
         if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -4807,7 +4807,7 @@ function getArrayFiltersForQuestion($qid)
     $qid=sanitize_int($qid);
     if (isset($cache[$qid])) return $cache[$qid];
 
-    $attributes = getQuestionAttributes($qid);
+    $attributes = getQuestionAttributeValues($qid);
     if (isset($attributes['array_filter']) && $CI->session->userdata('fieldarray')) {
         $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
         foreach ($CI->session->userdata('fieldarray') as $fields)
@@ -4884,7 +4884,7 @@ function getArrayFiltersOutGroup($qid)
     // TODO: Check list_filter values to make sure questions are previous?
     global $CI, $surveyid, $gid; //$dbprefix;
     $qid=sanitize_int($qid);
-    $attributes = getQuestionAttributes($qid);
+    $attributes = getQuestionAttributeValues($qid);
     if (isset($attributes['array_filter'])) // We Found a array_filter attribute
     {
         $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -4910,7 +4910,7 @@ function getArrayFiltersExcludesOutGroup($qid)
     // TODO: Check list_filter values to make sure questions are previous?
     global $CI, $surveyid, $gid; //$dbprefix;
     $qid=sanitize_int($qid);
-    $attributes = getQuestionAttributes($qid);
+    $attributes = getQuestionAttributeValues($qid);
     if (isset($attributes['array_filter_exclude'])) // We Found a array_filter attribute
     {
         $val = $attributes['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -4946,7 +4946,7 @@ function getArrayFilterExcludesForQuestion($qid)
 
     if (isset($cache[$qid])) return $cache[$qid];
 
-    $attributes = getQuestionAttributes($qid);
+    $attributes = getQuestionAttributeValues($qid);
     $excludevals=array();
     if (isset($attributes['array_filter_exclude'])) // We Found a array_filter_exclude attribute
     {

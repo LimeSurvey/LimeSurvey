@@ -313,7 +313,7 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
 
         {
             // Check if this question is hidden
-            $qidattributes=getQuestionAttributes($ia[0]);
+            $qidattributes=getQuestionAttributeValues($ia[0]);
             if ($qidattributes!==false && ($qidattributes['hidden']==0 || $ia[4]=='*'))
             {
                 $countQuestionsInThisGroup++;
@@ -631,7 +631,7 @@ function checkconfield($value)
 
     if ($value_qid != 0)
     { // not token masterFieldname
-        $value_qa=getQuestionAttributes($value_qid,$value_type);
+        $value_qa=getQuestionAttributeValues($value_qid,$value_type);
     }
     if ($fieldisdisplayed === true && isset($value_qa) && (
     (isset($value_qa['array_filter'])  && trim($value_qa['array_filter']) != '') ||
@@ -1009,7 +1009,7 @@ function aCheckInput($surveyid, $move,$backok=null)
                     }
 
                     // check for other question attributes
-                    $qidattributes=getQuestionAttributes($fieldinfo['qid'],$fieldinfo['type']);
+                    $qidattributes=getQuestionAttributeValues($fieldinfo['qid'],$fieldinfo['type']);
 
                     if ($fieldinfo['type'] == 'N')
                     {
@@ -2274,7 +2274,7 @@ function doAssessment($surveyid, $returndataonly=false)
                                 {
                                     if ($_SESSION[$field['fieldname']] == "Y")     // for Multiple choice type questions
                                     {
-                                        $aAttributes=getQuestionAttributes($field['qid'],$field['type']);
+                                        $aAttributes=getQuestionAttributeValues($field['qid'],$field['type']);
                                         $fieldmap[$field['fieldname']]['assessment_value']=(int)$aAttributes['assessment_value'];
                                         $total=$total+$usrow['assessment_value'];
                                     }

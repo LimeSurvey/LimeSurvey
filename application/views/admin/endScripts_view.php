@@ -1,4 +1,3 @@
-</div>
 <script type="text/javascript">
         <!--
         for(i=0; i<document.forms.length; i++)
@@ -9,7 +8,7 @@
         el.value = '<?php echo $checksessionpost; ?>';
         document.forms[i].appendChild(el);
         }
-        
+
         function addHiddenElement(theform,thename,thevalue)
         {
         var myel = document.createElement('input');
@@ -19,7 +18,7 @@
         myel.value = thevalue;
         return myel;
         }
-        
+
         function sendPost(myaction,checkcode,arrayparam,arrayval)
         {
         var myform = document.createElement('form');
@@ -33,6 +32,6 @@
         addHiddenElement(myform,'checksessionbypost',checkcode)
         myform.submit();
         }
-        
+
         //-->
 </script>
