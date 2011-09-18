@@ -273,33 +273,10 @@
             <?php }
             $sCurrentCategory='';
             foreach ($advancedsettings as $aAdvancedSetting)
-            {
-                if ($sCurrentCategory!=$aAdvancedSetting['category'])
-                {
-                    ?>
-                    <tr>
-                    <td><?php echo $aAdvancedSetting['category']; ?></td><td></td>
-                    </tr>
-                    <?php
-                    $sCurrentCategory=$aAdvancedSetting['category'];
-                }
-                ?>
-               <tr>
+            {?>
+                <tr>
                    <td><?php echo $aAdvancedSetting['caption'];?>:</td>
                    <td><?php
-                    if ($aAdvancedSetting['name']=='relevance')
-                    {
-                        $sRelevance = $aAdvancedSetting['value'];
-                        if ($sRelevance !== '' && $sRelevance !== '1' && $sRelevance !== '0')
-                        {
-                            LimeExpressionManager::ProcessString("{" . $sRelevance . "}");    // tests Relevance equation so can pretty-print it
-                            $aAdvancedSetting['value']= LimeExpressionManager::GetLastPrettyPrintExpression();
-                        }
-                        else
-                        {
-                            $aAdvancedSetting['value'] = $sRelevance;
-                        }
-                    }
                     if ($aAdvancedSetting['i18n']==false)  echo $aAdvancedSetting['value']; else echo $aAdvancedSetting[$baselang]['value']?>
                     </td>
                </tr>

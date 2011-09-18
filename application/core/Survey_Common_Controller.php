@@ -119,6 +119,15 @@
                     {
                         $aAttribute['value']=$aAttribute['options'][$aAttribute['value']];
                     }
+                    if ($aAttribute['name']=='relevance')
+                    {
+                        $sRelevance = $aAttribute['value'];
+                        if ($sRelevance !== '' && $sRelevance !== '1' && $sRelevance !== '0')
+                        {
+                            LimeExpressionManager::ProcessString("{" . $sRelevance . "}");    // tests Relevance equation so can pretty-print it
+                            $aAttribute['value']= LimeExpressionManager::GetLastPrettyPrintExpression();
+                        }
+                    }
                     $DisplayArray[]=$aAttribute;
                 }
             }
