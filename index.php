@@ -1132,7 +1132,6 @@ function makelanguagechanger()
         $lang = GetBaseLanguageFromSurveyID($surveyid);
 
         $htmlcode ="<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
-        $htmlcode .= "<option value=\"$relativeurl/index.php?sid=". $surveyid ."&amp;lang=". $lang ."$tokenparam\">".getLanguageNameFromCode($lang,false)."</option>\n";
         $sAddToURL = "";
         $sTargetURL = "$relativeurl/index.php";
         if ($previewgrp){
