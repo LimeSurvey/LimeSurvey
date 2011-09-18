@@ -1792,106 +1792,65 @@
 
     /**
      * question::ajaxquestionattributes()
+     * This function prepares the data for the advanced question attributes view
      *
-     * @return
      */
     function ajaxquestionattributes()
     {
+        $this->load->model('questions_model');
         $surveyid = $this->input->post("sid");
-        $languages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
         $qid = $this->input->post("qid");
-        $thissurvey=getSurveyInfo($surveyid);
         $type=$this->input->post('question_type');
-        if ($qid != "undefined")
+
+        $aLanguages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
+        $thissurvey=getSurveyInfo($surveyid);
+        if ($qid != "undefined") // question already exists
         {
-            $attributesettings=getQuestionAttributeValues($qid, $type);
+            //$attributesettings=getQuestionAttributeValues($qid, $type);
+            $aAttributesWithValues=$this->questions_model->getAdvancedSettingsWithValues($qid, $type, $surveyid);
         }
-        $availableattributes=questionAttributes();
-        if (isset($availableattributes[$type]))
+        else //  question is just created
         {
-            uasort($availableattributes[$type],'CategorySort');
-            $ajaxoutput = '';
-            $currentfieldset='';
-            foreach ($availableattributes[$type] as $qa)
+            $aAttributesWithValues=questionAttributes();
+            if (!isset($aAttributesWithValues[$type])) die('Invalid question type');
+            $aAttributesWithValues=$aAttributesWithValues[$type];
+        }
+        uasort($aAttributesWithValues,'CategorySort');
+
+        $aAttributesPrepared=array();
+        foreach ($aAttributesWithValues as $iKey=>$aAttribute)
+        {
+            if ($aAttribute['i18n']==false)
             {
-
-                if ($currentfieldset!=$qa['category'])
+                 $aAttributesPrepared[]=$aAttribute;
+            }
+            else  // $qa['i18n'] == true
+            {
+                foreach($aLanguages as $sLanguage)
                 {
-                    if ($currentfieldset!='')
+                    $aAttributeModified=$aAttribute;
+                    $aAttributeModified['name']=$aAttributeModified['name'].'_'.$sLanguage;
+                    $aAttributeModified['language']=$sLanguage;
+                    if ($aAttributeModified['readonly']==true && $thissurvey['active']=='N')
                     {
-                        $ajaxoutput.='</ul></fieldset>';
+                        $aAttributeModified['readonly']==false;
                     }
-                    $ajaxoutput.="<fieldset>\n";
-                    $ajaxoutput.="<legend>{$qa['category']}</legend>\n<ul>";
-                    $currentfieldset=$qa['category'];
-                }
-                foreach ($languages as $language)
-                {
-
-                    if ($qa['i18n']==false)
+                    if (isset($aAttributeModified[$sLanguage]['value']))
                     {
-                        if (isset($attributesettings[$qa['name']]))
-                        {
-                            $value=$attributesettings[$qa['name']];
-                        }
-                        else
-                        {
-                            $value=$qa['default'];
-                        }
-                        $sFieldName =$qa['name'];
-                    }
-                    else  // $qa['i18n'] == true
-                    {
-                            if (isset($attributesettings[$qa['name']][$language]))
-                            {
-                                $value=$attributesettings[$qa['name']][$language];
-                            }
-                            else
-                            {
-                                $value=$qa['default'];
-                            }
-                            $sFieldName =$qa['name'].'_'.$language;
-                    }
-
-                    $ajaxoutput .= "<li>"
-                    ."<label for='{$sFieldName}' title='".$qa['help']."'>".$qa['caption'];
-                    if ($qa['i18n']==true)  $ajaxoutput .=" ($language)";
-                    $ajaxoutput.="</label>";
-
-                    if (isset($qa['readonly']) && $qa['readonly']==true && $thissurvey['active']=='Y')
-                    {
-                        $ajaxoutput .= "$value";
+                        $aAttributeModified['value']=$aAttributeModified[$sLanguage]['value'];
                     }
                     else
                     {
-                        switch ($qa['inputtype']){
-                            case 'singleselect':    $ajaxoutput .="<select id='{$sFieldName}' name='{$sFieldName}'>";
-                            foreach($qa['options'] as $optionvalue=>$optiontext)
-                            {
-                                $ajaxoutput .="<option value='{$optionvalue}' ";
-                                if ($value==$optionvalue)
-                                {
-                                    $ajaxoutput .=" selected='selected' ";
-                                }
-                                $ajaxoutput .=">{$optiontext}</option>";
-                            }
-                            $ajaxoutput .="</select>";
-                            break;
-                            case 'text':    $ajaxoutput .="<input type='text' id='{$sFieldName}' name='{$sFieldName}' value='{$value}' />";
-                            break;
-                            case 'integer': $ajaxoutput .="<input type='text' id='{$sFieldName}' name='{$sFieldName}' value='{$value}' />";
-                            break;
-                            case 'textarea':$ajaxoutput .= "<textarea id='{$sFieldName}' name='{$sFieldName}'>{$value}</textarea>";
-                            break;
-                        }
+                        $aAttributeModified['value']=$aAttributeModified['default'];
                     }
-                    $ajaxoutput .="</li>\n";
-                    if ($qa['i18n']==false) break;
+                    $aAttributesPrepared[]=$aAttributeModified;
                 }
             }
-            $ajaxoutput .= "</ul></fieldset>";
-			echo $ajaxoutput;
         }
+
+
+        $aData['attributedata']=$aAttributesPrepared;
+        $this->load->view('admin/survey/Question/advanced_settings_view',$aData);
     }
 
     /**

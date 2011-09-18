@@ -109,9 +109,9 @@
             $data['clang'] = $clang;
             $data['qrrow'] = $qrrow;
             $data['baselang'] = $baselang;
-            $AttributesWithValues=$this->questions_model->getAdvancedSettingsWithValues($qid, $qrrow['type'], $surveyid, $baselang);
+            $aAttributesWithValues=$this->questions_model->getAdvancedSettingsWithValues($qid, $qrrow['type'], $surveyid, $baselang);
             $DisplayArray=array();
-            foreach ($AttributesWithValues as $aAttribute)
+            foreach ($aAttributesWithValues as $aAttribute)
             {
                 if (($aAttribute['i18n']==false && isset($aAttribute['value']) && $aAttribute['value']!=$aAttribute['default']) || ($aAttribute['i18n']==true && isset($aAttribute['value'][$baselang]) && $aAttribute['value'][$baselang]!=$aAttribute['default']))
                 {
