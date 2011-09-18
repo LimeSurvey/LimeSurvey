@@ -1502,16 +1502,17 @@ function getuserlist($outputformat='fullinfoarray')
             // List users from same group as me + all my childs
             // a subselect is used here because MSSQL does not like to group by text
             // also Postgres does like this one better
-            $uquery = " SELECT * FROM ".$CI->db->dbprefix."users where uid in
-                        (SELECT u.uid FROM ".$CI->db->dbprefix."users AS u,
-                        ".$CI->db->dbprefix."user_in_groups AS ga ,".$CI->db->dbprefix."user_in_groups AS gb
-                        WHERE u.uid=$myuid
-                        OR (ga.ugid=gb.ugid AND ( (gb.uid=$myuid AND u.uid=ga.uid) OR (u.parent_id=$myuid) ) )
-                        GROUP BY u.uid)";
+            $uquery = " SELECT * from ".$CI->db->dbprefix."users where uid in (
+                          SELECT uid from ".$CI->db->dbprefix."user_in_groups where ugid in (
+                            SELECT ugid from ".$CI->db->dbprefix."user_in_groups where uid=$myuid
+                          )
+                        )
+                        UNION
+                        SELECT * from ".$CI->db->dbprefix."users where users.parent_id=$myuid";
         }
         else
         {
-            return Array(); // Or die maybe
+            return array(); // Or die maybe
         }
 
     }
