@@ -3233,7 +3233,7 @@ function buildLabelSetCheckSumArray()
 
 /**
  *
- * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
+ * Returns a flat array with all saved question attributes for the question only (and the qid we gave it)!
  * @author: c_schmitz
  * @param $qid The question ID
  * @param $type optional The question type - saves a DB query if you provide it
@@ -3249,7 +3249,6 @@ function getQuestionAttributeValues($qid, $type='')
         return $cache[$qid];
     }
     $CI->load->model('questions_model');
-    //$query = "SELECT type FROM ".db_table_name('questions')." WHERE qid=$qid and parent_qid=0 group by type";
     $result = $CI->questions_model->getSomeRecords(array('type','sid'),array('qid'=>$qid)) or safe_die("Error finding question attributes");  //Checked
     $row=$result->row_array();
     if ($row===false) // Question was deleted while running the survey
@@ -3260,7 +3259,7 @@ function getQuestionAttributeValues($qid, $type='')
     $type=$row['type'];
     $surveyid=$row['sid'];
 
-   $languages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
+   $aLanguages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
 
 
     //Now read available attributes, make sure we do this only once per request to save
@@ -3277,29 +3276,36 @@ function getQuestionAttributeValues($qid, $type='')
     }
 
     foreach($availableattributes as $attribute){
-        $defaultattributes[$attribute['name']]=$attribute['default'];
+        if ($attribute['i18n']){
+            foreach ($aLanguages as $sLanguage)
+            {
+                $defaultattributes[$attribute['name']][$sLanguage]=$attribute['default'];
+            }
+        }
+        else
+        {
+            $defaultattributes[$attribute['name']]=$attribute['default'];
+        }
     }
     $setattributes=array();
     $qid=sanitize_int($qid);
-    //$fields = array('attribute', 'value', 'language');
-    $fields = array('attribute', 'value');
+    $fields = array('attribute', 'value', 'language');
     $condition = "qid = $qid";
     $CI->load->model('question_attributes_model');
-    //$query = "SELECT attribute, value FROM ".db_table_name('question_attributes')." WHERE qid=$qid";
     $result = $CI->question_attributes_model->getSomeRecords($fields,$condition) or safe_die("Error finding question attributes");  //Checked)
     $setattributes=array();
 
     foreach ($result->result_array() as $row)
     {
-        if (empty($row['language']))
+        if (!isset($availableattributes[$row['attribute']])) continue; // Sort out attribuets not belonging to this question type
+        if (!($availableattributes[$row['attribute']]['i18n']))
         {
            $setattributes[$row['attribute']]=$row['value'];
         }
-        else{
+        elseif($row['language']!=''){
            $setattributes[$row['attribute']][$row['language']]=$row['value'];
         }
     }
-    //echo "<pre>";print_r($qid_attributes);echo "</pre>";
     $qid_attributes=array_merge($defaultattributes,$setattributes);
     $cache[$qid]=$qid_attributes;
     return $qid_attributes;
@@ -4310,7 +4316,7 @@ function questionAttributes($returnByName=false)
         {
             for ($i=0; $i<=strlen($qvalue['types'])-1; $i++)
             {
-                $qat[substr($qvalue['types'], $i, 1)][]=array("name"=>$qname,
+                $qat[substr($qvalue['types'], $i, 1)][$qname]=array("name"=>$qname,
                                                             "inputtype"=>$qvalue['inputtype'],
                                                             "category"=>$qvalue['category'],
                                                             "sortorder"=>$qvalue['sortorder'],
@@ -5920,13 +5926,13 @@ function sGetTemplatePath($sTemplateName)
         {
             return $CI->config->item("usertemplaterootdir").'/'.$sTemplateName;
         }
-        elseif (file_exists($CI->config->item("usertemplaterootdir").'/'.$defaulttemplate))
+        elseif (file_exists($CI->config->item("usertemplaterootdir").'/'.$CI->config->item('defaulttemplate')))
         {
-            return $CI->config->item("usertemplaterootdir").'/'.$defaulttemplate;
+            return $CI->config->item("usertemplaterootdir").'/'.$CI->config->item('defaulttemplate');
         }
-        elseif (file_exists($CI->config->item("standardtemplaterootdir").'/'.$defaulttemplate))
+        elseif (file_exists($CI->config->item("standardtemplaterootdir").'/'.$CI->config->item('defaulttemplate')))
         {
-            return $CI->config->item("standardtemplaterootdir").'/'.$defaulttemplate;
+            return $CI->config->item("standardtemplaterootdir").'/'.$CI->config->item('defaulttemplate');
         }
         else
         {

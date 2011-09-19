@@ -1,6 +1,6 @@
 <?php
 
-$config['versionnumber'] = "1.92CI";
+$config['versionnumber'] = "2.0alpha";
 $config['dbversionnumber'] = 148;
 $config['buildnumber'] = '';
 
