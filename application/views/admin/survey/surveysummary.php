@@ -21,9 +21,6 @@
         } ?>
 		</td>
 	</tr>
-    <?php // commented out - this can't be right
-        // LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
-    ?>
     <tr>
     	<td align='right' valign='top'>
     		<strong><?php $clang->eT("Description:");?></strong>

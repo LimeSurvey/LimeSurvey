@@ -254,6 +254,7 @@ function retrieveJSidname($cd,$currentgid=null)
     return $idname;
 }
 
+// TODO - also address Relevance
 function create_mandatorylist($ia)
 {
     //Checks current question and returns required mandatory arrays if required
@@ -889,6 +890,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     return array($qanda, $inputnames);
 }
 
+// TODO - check relevance too
 function mandatory_message($ia)
 {
     //This function checks to see if this question is mandatory and
@@ -3477,7 +3479,7 @@ function do_multiplechoice($ia)
         {
             $answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
         }
-        $answer .= " onkeyup='$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#answer{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) {\$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\");} $numbersonly ".$callmaxanswscriptcheckbox."' />";
+        $answer .= " onkeyup='$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#answer{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\");} $numbersonly ".$callmaxanswscriptcheckbox."' />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         if ($maxansw > 0)

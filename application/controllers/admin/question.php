@@ -1910,6 +1910,10 @@
 		7 => 'N',
 		8 => 'N' ); // ia[8] is usedinconditions
 
+        // This is needed to properly detect and color code EM syntax errors
+        LimeExpressionManager::StartProcessingPage();
+        LimeExpressionManager::StartProcessingGroup($qrows['gid'],false,$surveyid);  // loads list of replacement values available for this group
+
 		$answers = retrieveAnswers($ia);
 
 		if (!$thissurvey['template'])
@@ -1986,6 +1990,11 @@
 		$content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),$vars).$dummy_js;
 		$content .= '<p>&nbsp;</form>';
 		$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
+
+        // if want to  include Javascript in question preview, uncomment these.  However, Group level preview is probably adequate
+//        LimeExpressionManager::FinishProcessingGroup();
+//        LimeExpressionManager::FinishProcessingPage();
+//        echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
 		echo $content;
 		echo "</html>\n";

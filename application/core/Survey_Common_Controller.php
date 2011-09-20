@@ -395,6 +395,13 @@
             $data['clang'] = $clang;
             $data['condarray'] = $condarray;
             $data['sumcount4'] = $sumcount4;
+
+            if (!($action == 'addquestion'))
+            {
+                // This is needed to properly color-code content if it contains replacements
+                LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
+            }
+
             $groupsummary .= $this->load->view('admin/survey/QuestionGroups/questiongroupbar_view',$data,true);
         }
         $groupsummary .= "\n</table>\n";
