@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey German language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-12 17:23+0100\n"
-"PO-Revision-Date: 2011-09-12 17:24+0100\n"
+"PO-Revision-Date: 2011-09-20 12:38+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2654,7 +2654,7 @@ msgstr "Wenn Sie irgendeine Ihrer Antworten nochmals überprüfen oder ändern w
 #: d:\web\xampp\htdocs\limesurvey/uploader.php:98
 #, php-format
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
-msgstr "Wenn Sie möchten, könenn Sie %s weitere Datei(en) hochladen - oder zur Umfrage zurückkehren."
+msgstr "Wenn Sie möchten, können Sie %s weitere Datei(en) hochladen - oder zur Umfrage zurückkehren."
 
 #: d:\web\xampp\htdocs\limesurvey/admin/activate_functions.php:471
 msgid "Initialise tokens"

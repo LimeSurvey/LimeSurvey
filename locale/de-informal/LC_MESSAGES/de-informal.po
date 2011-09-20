@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey German Informal language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-12 17:24+0100\n"
-"PO-Revision-Date: 2011-09-12 17:25+0100\n"
+"POT-Creation-Date: 2011-09-20 12:39+0100\n"
+"PO-Revision-Date: 2011-09-20 12:39+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Carsten Schmitz <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -106,11 +106,11 @@ msgstr "Erlaubte Dateitypen per Komma getrennt, z.B. pdf,doc,odt"
 msgid "Always hide this question"
 msgstr "Diese Frage immer verstecken"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2263
+#: d:\web\xampp\htdocs\limesurvey/index.php:2262
 msgid "An error occurred saving a response to survey id"
 msgstr "Beim Speichern Deines Fragebogen-Zugangsschlüssels ist ein Fehler aufgetreten."
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2255
+#: d:\web\xampp\htdocs\limesurvey/index.php:2254
 msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Ein unerwarteter Fehler ist aufgetreten. Deine Antworten können leider nicht gespeichert werden."
 
@@ -355,13 +355,13 @@ msgstr "Spalten"
 msgid "Comment"
 msgstr "Kommentar"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2364
-#: d:\web\xampp\htdocs\limesurvey/index.php:2439
-#: d:\web\xampp\htdocs\limesurvey/index.php:2606
+#: d:\web\xampp\htdocs\limesurvey/index.php:2363
+#: d:\web\xampp\htdocs\limesurvey/index.php:2438
+#: d:\web\xampp\htdocs\limesurvey/index.php:2605
 msgid "Continue"
 msgstr "Weiter"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2264
+#: d:\web\xampp\htdocs\limesurvey/index.php:2263
 msgid "DATA TO BE ENTERED"
 msgstr "EINZUGEBENDE DATEN"
 
@@ -416,7 +416,7 @@ msgid "Detailed email notification with result codes"
 msgstr "Ausführliche Bestätigung per E-Mail mit Ergebnissen."
 
 #: d:\web\xampp\htdocs\limesurvey/group.php:184
-#: d:\web\xampp\htdocs\limesurvey/index.php:2254
+#: d:\web\xampp\htdocs\limesurvey/index.php:2253
 #: d:\web\xampp\htdocs\limesurvey/question.php:230
 msgid "Did Not Save"
 msgstr "Wurde nicht gespeichert"
@@ -514,7 +514,7 @@ msgstr "Kategorie Trenner"
 msgid "ERROR"
 msgstr "FEHLER"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2271
+#: d:\web\xampp\htdocs\limesurvey/index.php:2270
 msgid "ERROR MESSAGE"
 msgstr "FEHLERMELDUNG"
 
@@ -568,7 +568,7 @@ msgstr "Gleich Summenwert"
 msgid "Error"
 msgstr "Fehler"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2273
+#: d:\web\xampp\htdocs\limesurvey/index.php:2272
 msgid "Error saving results"
 msgstr "Fehler beim Speichern der Ergebnisse"
 
@@ -636,9 +636,9 @@ msgstr "Vorname"
 
 #: d:\web\xampp\htdocs\limesurvey/index.php:695
 #: d:\web\xampp\htdocs\limesurvey/index.php:731
-#: d:\web\xampp\htdocs\limesurvey/index.php:2478
-#: d:\web\xampp\htdocs\limesurvey/index.php:2522
-#: d:\web\xampp\htdocs\limesurvey/index.php:2713
+#: d:\web\xampp\htdocs\limesurvey/index.php:2477
+#: d:\web\xampp\htdocs\limesurvey/index.php:2521
+#: d:\web\xampp\htdocs\limesurvey/index.php:2712
 #, php-format
 msgid "For further information please contact %s"
 msgstr "Bitte kontaktiere %s für weitere Informationen"
@@ -717,8 +717,8 @@ msgstr "Wenn der Teilnehmer alle Optionen markieren, entmarkiere alle und markie
 msgid "If you choose '%s' you must provide a description."
 msgstr "Wenn Du '%s' wählst, musst Du eine Beschreibung angeben."
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2405
-#: d:\web\xampp\htdocs\limesurvey/index.php:2562
+#: d:\web\xampp\htdocs\limesurvey/index.php:2404
+#: d:\web\xampp\htdocs\limesurvey/index.php:2561
 msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Falls Du ein Schlüsselwort erhalten hast, gebe es bitte in das unten stehende Feld ein und klicke auf 'Weiter'."
 
@@ -1038,9 +1038,9 @@ msgstr "Mehrfachauswahl mit Kommentar"
 msgid "Multiple numeric inputs sum must equal this value"
 msgstr "Summe der numerischen Eingabe muss gleich diesem Wert sein"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2968
-#: d:\web\xampp\htdocs\limesurvey/index.php:2974
-#: d:\web\xampp\htdocs\limesurvey/index.php:2979
+#: d:\web\xampp\htdocs\limesurvey/index.php:2967
+#: d:\web\xampp\htdocs\limesurvey/index.php:2973
+#: d:\web\xampp\htdocs\limesurvey/index.php:2978
 msgid "Next"
 msgstr "Weiter"
 
@@ -1342,11 +1342,11 @@ msgstr "Bitte auswählen.."
 msgid "Please complete all parts"
 msgstr "Bitte beantworte alle Bereiche innerhalb der Fragen."
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2335
+#: d:\web\xampp\htdocs\limesurvey/index.php:2334
 msgid "Please confirm access to survey by answering the security question below and click continue."
 msgstr "Bitte bestätige den Zugang zur Umfrage, indem Du die Sicherheitsfrage unten beantwortest und auf Weiter klickst."
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2581
+#: d:\web\xampp\htdocs\limesurvey/index.php:2580
 msgid "Please confirm the token by answering the security question below and click continue."
 msgstr "Bitte bestätige den Zugangsschlüssel, indem Du die Sicherheitsfrage unten beantwortest und auf Weiter klickst."
 
@@ -1402,8 +1402,8 @@ msgstr "Zeige Antworten in zufälliger Reihenfolge"
 msgid "Present as text input boxes instead of dropdown lists"
 msgstr "Zeige als Texteingabefelder anstatt von Auswahlboxen"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2962
-#: d:\web\xampp\htdocs\limesurvey/index.php:3383
+#: d:\web\xampp\htdocs\limesurvey/index.php:2961
+#: d:\web\xampp\htdocs\limesurvey/index.php:3382
 msgid "Previous"
 msgstr "Zurück"
 
@@ -1505,7 +1505,7 @@ msgstr "SMTP Debug Ausgabe:"
 msgid "SPSS export scale type"
 msgstr "SPSS Export Skalentyp"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2269
+#: d:\web\xampp\htdocs\limesurvey/index.php:2268
 msgid "SQL CODE THAT FAILED"
 msgstr "FEHLERHAFTE SQL ANWEISUNG"
 
@@ -1553,12 +1553,12 @@ msgstr "Skala 1"
 msgid "Scale 2"
 msgstr "Skala 2"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2435
-#: d:\web\xampp\htdocs\limesurvey/index.php:2603
+#: d:\web\xampp\htdocs\limesurvey/index.php:2434
+#: d:\web\xampp\htdocs\limesurvey/index.php:2602
 msgid "Security Question"
 msgstr "Sicherheitsfrage"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2359
+#: d:\web\xampp\htdocs\limesurvey/index.php:2358
 msgid "Security question:"
 msgstr "Sicherheitsfrage"
 
@@ -1653,13 +1653,13 @@ msgstr "Schieberegler Minimalwert"
 msgid "Slider starts at the middle position"
 msgstr "Schieberegler startet in der Mittelposition"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:1775
-#: d:\web\xampp\htdocs\limesurvey/index.php:1781
+#: d:\web\xampp\htdocs\limesurvey/index.php:1774
+#: d:\web\xampp\htdocs\limesurvey/index.php:1780
 #, php-format
 msgid "Sorry, only %s extensions are allowed!"
 msgstr "Leider sind nur die Erweiterungen %s erlaubt!"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:1762
+#: d:\web\xampp\htdocs\limesurvey/index.php:1761
 #, php-format
 msgid "Sorry, the uploaded file (%s) is larger than the allowed filesize of %s KB."
 msgstr "Leider ist die hochgeladene Datei (%s) größer als die erlaubte Größe von %s KB."
@@ -1707,7 +1707,7 @@ msgid "Store the state?"
 msgstr "Bundesland speichern?"
 
 #: d:\web\xampp\htdocs\limesurvey/group.php:1351
-#: d:\web\xampp\htdocs\limesurvey/index.php:2984
+#: d:\web\xampp\htdocs\limesurvey/index.php:2983
 #: d:\web\xampp\htdocs\limesurvey/question.php:666
 msgid "Submit"
 msgstr "Absenden"
@@ -1786,8 +1786,8 @@ msgid "The answer options will be distributed across the number of columns set h
 msgstr "Die Antwortoptionen werden gleichmässig über die hier gesetzte Anzahl von Spalten verteilt."
 
 #: d:\web\xampp\htdocs\limesurvey/index.php:635
-#: d:\web\xampp\htdocs\limesurvey/index.php:2332
-#: d:\web\xampp\htdocs\limesurvey/index.php:2554
+#: d:\web\xampp\htdocs\limesurvey/index.php:2331
+#: d:\web\xampp\htdocs\limesurvey/index.php:2553
 msgid "The answer to the security question is incorrect."
 msgstr "Die Antwort auf die Sicherheitsfrage ist falsch."
 
@@ -1807,7 +1807,7 @@ msgstr "Die zweite anzuzeigende 'Zeitlimitablauf-Nachricht' (wenn Du dieses Feld
 msgid "The message to display when the time limit has expired (a default message will display if this setting is left blank)"
 msgstr "Die anzuzeigende Nachricht, wenn das Zeitlimit abgelaufen ist (eine Standardnachricht wird gezeigt, wenn diese Einstellung leer gelassen wird)"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:1793
+#: d:\web\xampp\htdocs\limesurvey/index.php:1792
 msgid "The minimum number of files has not been uploaded."
 msgstr "Die Minimalanzahlen an Dateien wurde noch nicht hochgeladen."
 
@@ -1824,8 +1824,8 @@ msgid "The text message that displays in the countdown timer during the countdow
 msgstr "Die Textnachricht, die im Countdown-Zähler während des Countdown erscheint"
 
 #: d:\web\xampp\htdocs\limesurvey/index.php:694
-#: d:\web\xampp\htdocs\limesurvey/index.php:2477
-#: d:\web\xampp\htdocs\limesurvey/index.php:2521
+#: d:\web\xampp\htdocs\limesurvey/index.php:2476
+#: d:\web\xampp\htdocs\limesurvey/index.php:2520
 msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Das von Dir angegebene Schlüsselwort ist entweder ungültig oder wurde bereits verwendet."
 
@@ -1842,10 +1842,10 @@ msgid "There is no matching saved survey"
 msgstr "Es gibt keine entsprechende Unmfrage."
 
 #: d:\web\xampp\htdocs\limesurvey/index.php:693
-#: d:\web\xampp\htdocs\limesurvey/index.php:2404
-#: d:\web\xampp\htdocs\limesurvey/index.php:2476
-#: d:\web\xampp\htdocs\limesurvey/index.php:2520
-#: d:\web\xampp\htdocs\limesurvey/index.php:2557
+#: d:\web\xampp\htdocs\limesurvey/index.php:2403
+#: d:\web\xampp\htdocs\limesurvey/index.php:2475
+#: d:\web\xampp\htdocs\limesurvey/index.php:2519
+#: d:\web\xampp\htdocs\limesurvey/index.php:2556
 msgid "This is a controlled survey. You need a valid token to participate."
 msgstr "Um an dieser Umfrage teilzunehmen, benötigst Du einen passenden Zugangsschlüssel."
 
@@ -1861,12 +1861,12 @@ msgstr "Diese Frage muss korrekt beantwortet werden."
 msgid "This survey does not seem to exist."
 msgstr "Diese Umfrage scheint nicht zu existieren."
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2712
+#: d:\web\xampp\htdocs\limesurvey/index.php:2711
 msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "Für diese Umfrage wurden noch keine Fragen angelegt. Sie kann weder getestet noch abgeschlossen werden."
 
 #: d:\web\xampp\htdocs\limesurvey/group.php:1305
-#: d:\web\xampp\htdocs\limesurvey/index.php:3500
+#: d:\web\xampp\htdocs\limesurvey/index.php:3499
 #: d:\web\xampp\htdocs\limesurvey/question.php:619
 msgid "This survey is currently not active. You will not be able to save your responses."
 msgstr "Diese Umfrage ist momentan nicht aktiv.Du wirst sie nicht abschließen können."
@@ -1940,8 +1940,8 @@ msgid "Timer"
 msgstr "Timer"
 
 #: d:\web\xampp\htdocs\limesurvey/common_functions.php:2289
-#: d:\web\xampp\htdocs\limesurvey/index.php:2410
-#: d:\web\xampp\htdocs\limesurvey/index.php:2577
+#: d:\web\xampp\htdocs\limesurvey/index.php:2409
+#: d:\web\xampp\htdocs\limesurvey/index.php:2576
 msgid "Token"
 msgstr "Schlüsselwort"
 
@@ -1953,7 +1953,7 @@ msgstr "Zugangsschlüssel"
 msgid "Token mismatch"
 msgstr "Unterschiedliche Zugangsschlüssel"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2595
+#: d:\web\xampp\htdocs\limesurvey/index.php:2594
 msgid "Token:"
 msgstr "Zugangsschlüssel:"
 
@@ -1988,7 +1988,7 @@ msgstr "Gesamtzeit"
 msgid "Total: "
 msgstr "Gesamt:"
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2281
+#: d:\web\xampp\htdocs\limesurvey/index.php:2280
 msgid "Try to submit again"
 msgstr "Versuche erneut die Daten abzusenden"
 
@@ -2202,7 +2202,7 @@ msgstr "Deine Antwort"
 msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
 msgstr "Dein Browser meldet, daß vorher eine Umfrage schon damit ausgefüllt wurde. Die Sitzung wird nun zurückgesetzt, damit du die Umfrage neu starten kannst."
 
-#: d:\web\xampp\htdocs\limesurvey/index.php:2258
+#: d:\web\xampp\htdocs\limesurvey/index.php:2257
 msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
 msgstr "Deine Antworten sind nicht verloren gegangen. Du wurden per eMail an den Administrator dieser Umfrage geschickt und werden zu einem späteren Zeitpunkt manuell in die Datenbank eingepflegt."
 
@@ -2653,7 +2653,7 @@ msgstr "Wenn Du irgendeine Deiner Antworten nochmals überprüfen oder ändern w
 #: d:\web\xampp\htdocs\limesurvey/uploader.php:98
 #, php-format
 msgid "If you wish, you may upload %s more file(s); else you may return back to survey."
-msgstr "Wenn Du möchtest, kannst du %s weitere Datei(en) hochladen - oder zur Umfrage zurückkehren."
+msgstr "Wenn Du möchtest, kannst Du %s weitere Datei(en) hochladen - oder zur Umfrage zurückkehren."
 
 #: d:\web\xampp\htdocs\limesurvey/admin/activate_functions.php:471
 msgid "Initialise tokens"
