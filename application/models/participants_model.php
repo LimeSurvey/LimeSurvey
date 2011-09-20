@@ -1309,11 +1309,13 @@ function copyToCentral($surveyid,$newarr,$mapped)
 }
 function copytosurveyatt($surveyid,$mapped,$newcreate,$participantid)
 {
-    
     $duplicate=0;
     $sucessfull=0;
     $participantid = explode(",",$participantid);
-    $participantid = array_slice($participantid,1); 
+    if($participantid[0]=="")
+    {
+        $participantid = array_slice($participantid,1); 
+    }
     $number2add=sanitize_int(count($newcreate));
     $tokenfieldnames = array_values($this->db->list_fields("tokens_$surveyid"));
     $tokenattributefieldnames=array_filter($tokenfieldnames,'filterforattributes');
