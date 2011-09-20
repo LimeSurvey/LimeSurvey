@@ -149,12 +149,13 @@ class Questions_model extends CI_Model {
     /**
     * This function returns an array of the advanced attributes for the particular question including their values set in the database
     *
-    * @param mixed $iQuestionID  The question ID
+    * @param mixed $iQuestionID  The question ID - if 0 then all settings will use the default value
     * @param mixed $sQuestionType  The question type
     * @param mixed $sLanguage  If you give a language then only the attributes for that language are returned
     */
     function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType , $iSurveyID, $sLanguage=null)
     {
+
         if (is_null($sLanguage))
         {
             $aLanguages=array_merge(array(GetBaseLanguageFromSurveyID($iSurveyID)),GetAdditionalLanguagesFromSurveyID($iSurveyID));
@@ -163,7 +164,9 @@ class Questions_model extends CI_Model {
         {
             $aLanguages=array($sLanguage);
         }
-        $aAttributeValues=getQuestionAttributeValues($iQuestionID, $sQuestionType);
+        if ($iQuestionID!=0) {
+            $aAttributeValues=getQuestionAttributeValues($iQuestionID, $sQuestionType);
+        }
         $aAttributeNames=questionAttributes();
         $aAttributeNames=$aAttributeNames[$sQuestionType];
         uasort($aAttributeNames,'CategorySort');

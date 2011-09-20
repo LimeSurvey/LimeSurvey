@@ -32,7 +32,7 @@
             <?php
         }
 		?>
-                                                </form><br /></p>
-                                                <script type='text/javascript'>
-                                                  document.getElementById('user').focus();
-                                               </script>
+        </form><br />
+        <script type='text/javascript'>
+          document.getElementById('user').focus();
+       </script>

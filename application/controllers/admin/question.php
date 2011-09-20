@@ -713,7 +713,6 @@
         {
             $sQuery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE parent_qid={$qid} AND language='{$baselang}' and scale_id={$iScale}";
             $subquestiondata=db_execute_assoc($sQuery); //$connect->GetArray($sQuery);
-            //if (count($subquestiondata)==0)
             if ($subquestiondata->num_rows() == 0)
             {
                     $sQuery = "INSERT INTO ".$this->db->dbprefix."questions (sid,gid,parent_qid,title,question,question_order,language,scale_id)
@@ -746,19 +745,7 @@
 
 
         array_unshift($anslangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $anslangs
-        /**
-        $vasummary = "\n<script type='text/javascript'>
-                          var languagecount=".count($anslangs).";\n
-                          var newansweroption_text='".$clang->gT('New answer option','js')."';
-                          var strcode='".$clang->gT('Code','js')."';
-                          var strlabel='".$clang->gT('Label','js')."';
-                          var strCantDeleteLastAnswer='".$clang->gT('You cannot delete the last subquestion.','js')."';
-                          var lsbrowsertitle='".$clang->gT('Label set browser','js')."';
-                          var quickaddtitle='".$clang->gT('Quick-add subquestions','js')."';
-                          var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate subquestion codes.','js')."';
-                          var langs='".implode(';',$anslangs)."';</script>\n";
 
-        */
         //delete the subquestions in languages not supported by the survey
         $qquery = "SELECT DISTINCT language FROM ".$this->db->dbprefix."questions WHERE (parent_qid = $qid) AND (language NOT IN ('".implode("','",$anslangs)."'))";
         $qresult = db_execute_assoc($qquery); //Checked
@@ -786,7 +773,6 @@
         }
         $this->load->helper('admin/htmleditor_helper');
         // Print Key Control JavaScript
-        //$vasummary .= PrepareEditorScript();
 
         $query = "SELECT question_order FROM ".$this->db->dbprefix."questions WHERE parent_qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY question_order desc";
         $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
@@ -794,24 +780,7 @@
         $row=$result->row_array();
         $data['row'] = $row;
         $maxsortorder=$row['question_order']+1;
-        /**
-        $vasummary .= "<div class='header ui-widget-header'>\n"
-        .$clang->gT("Edit subquestions")
-        ."</div>\n"
-        ."<form id='editsubquestionsform' name='editsubquestionsform' method='post' action='$scriptname'onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate answer codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
-        . "<input type='hidden' name='sid' value='$surveyid' />\n"
-        . "<input type='hidden' name='gid' value='$gid' />\n"
-        . "<input type='hidden' name='qid' value='$qid' />\n"
-        . "<input type='hidden' id='action' name='action' value='updatesubquestions' />\n"
-        . "<input type='hidden' id='sortorder' name='sortorder' value='' />\n"
-        . "<input type='hidden' id='deletedqids' name='deletedqids' value='' />\n";
-        $vasummary .= "<div class='tab-pane' id='tab-pane-assessments-$surveyid'>";
 
-        $first=true;
-        $sortorderids='';
-        $codeids='';
-        */
-        //$vasummary .= "<div id='xToolbar'></div>\n";
 
         // the following line decides if the assessment input fields are visible or not
         // for some question types the assessment values is set in the label set instead of the answers
@@ -833,147 +802,7 @@
         $data['qid'] = $qid;
         $data['anslangs'] = $anslangs;
         $data['maxsortorder'] = $maxsortorder;
-        /**
-        foreach ($anslangs as $anslang)
-        {
-            $vasummary .= "<div class='tab-page' id='tabpage_$anslang'>"
-            ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
-            if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
-            $vasummary .= "</h2>";
 
-            for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
-            {
-                $position=0;
-                if ($scalecount>1)
-                {
-                    if ($scale_id==0)
-                    {
-                        $vasummary .="<div class='header ui-widget-header'>\n".$clang->gT("Y-Scale")."</div>";
-                    }
-                    else
-                    {
-                        $vasummary .="<div class='header ui-widget-header'>\n".$clang->gT("X-Scale")."</div>";
-                    }
-                }
-                $query = "SELECT * FROM ".$this->db->dbprefix."questions WHERE parent_qid='{$qid}' AND language='{$anslang}' AND scale_id={$scale_id} ORDER BY question_order, title";
-                $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
-                $anscount = $result->num_rows();
-                $vasummary .="<table class='answertable' id='answertable_{$anslang}_{$scale_id}' align='center'>\n"
-                ."<thead>"
-                ."<tr><th>&nbsp;</th>\n"
-                ."<th align='right'>".$clang->gT("Code")."</th>\n"
-                ."<th align='center'>".$clang->gT("Subquestion")."</th>\n";
-                if ($activated != 'Y' && $first)
-                {
-                    $vasummary .="<th align='center'>".$clang->gT("Action")."</th>\n";
-                }
-                $vasummary .="</tr></thead>"
-                ."<tbody align='center'>";
-                $alternate=false;
-                while ($row=$result->FetchRow())
-                {
-                    $row['title'] = htmlspecialchars($row['title']);
-                    $row['question']=htmlspecialchars($row['question']);
-
-                    if ($first) {$codeids=$codeids.' '.$row['question_order'];}
-
-                    $vasummary .= "<tr id='row_{$row['language']}_{$row['qid']}_{$row['scale_id']}'";
-                    if ($alternate==true)
-                    {
-                        $vasummary.=' class="highlight" ';
-                        $alternate=false;
-                    }
-                    else
-                    {
-                        $alternate=true;
-                    }
-
-                    $vasummary .=" ><td align='right'>\n";
-
-                    if ($activated == 'Y' ) // if activated
-                    {
-                        $vasummary .= "&nbsp;</td><td><input type='hidden' name='code_{$row['qid']}_{$row['scale_id']}' value=\"{$row['title']}\" maxlength='5' size='5'"
-                        ." />{$row['title']}";
-                    }
-                    elseif ($activated != 'Y' && $first) // If survey is decactivated
-                    {
-                        $vasummary .= "<img class='handle' src='$imageurl/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_{$row['qid']}_{$row['scale_id']}' name='oldcode_{$row['qid']}_{$row['scale_id']}' value=\"{$row['title']}\" /><input type='text' id='code_{$row['qid']}_{$row['scale_id']}' class='code' name='code_{$row['qid']}_{$row['scale_id']}' value=\"{$row['title']}\" maxlength='5' size='5'"
-                        ." onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
-                        ." />";
-
-                    }
-                    else
-                    {
-                        $vasummary .= "</td><td>{$row['title']}";
-
-                    }
-                    //      <img class='handle' src='$imageurl/handle.png' /></td><td>
-                    $vasummary .= "</td><td>\n"
-                    ."<input type='text' size='100' id='answer_{$row['language']}_{$row['qid']}_{$row['scale_id']}' name='answer_{$row['language']}_{$row['qid']}_{$row['scale_id']}' value=\"{$row['question']}\" onkeypress=\" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$anslang').click(); return false;}\" />\n"
-                    . getEditor("editanswer","answer_".$row['language']."_".$row['qid']."_{$row['scale_id']}", "[".$clang->gT("Subquestion:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer')
-                    ."</td>\n"
-                    ."<td>\n";
-
-                    // Deactivate delete button for active surveys
-                    if ($activated != 'Y' && $first)
-                    {
-                        $vasummary.="<img src='$imageurl/addanswer.png' class='btnaddanswer' />";
-                        $vasummary.="<img src='$imageurl/deleteanswer.png' class='btndelanswer' />";
-                    }
-
-                    $vasummary .= "</td></tr>\n";
-                    $position++;
-                }
-                ++$anscount;
-                $vasummary .= "</tbody></table>\n";
-                $disabled='';
-                if ($activated == 'Y')
-                {
-                    $disabled="disabled='disabled'";
-                }
-                $vasummary .= "<button class='btnlsbrowser' id='btnlsbrowser_{$scale_id}' $disabled type='button'>".$clang->gT('Predefined label sets...')."</button>";
-                $vasummary .= "<button class='btnquickadd' id='btnquickadd_{$scale_id}' $disabled type='button'>".$clang->gT('Quick add...')."</button>";
-                if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1){
-                    $vasummary .= "<button class='bthsaveaslabel' id='bthsaveaslabel_{$scale_id}' $disabled type='button'>".$clang->gT('Save as label set')."</button>";
-                }
-
-            }
-
-            $first=false;
-            $vasummary .= "</div>";
-        }
-
-
-        // Label set browser
-    //                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
-        $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left; width:260px;'>
-                          <label for='labelsets'>".$clang->gT('Available label sets:')."</label>
-                          <br /><select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
-                          <br /><button id='btnlsreplace' type='button'>".$clang->gT('Replace')."</button>
-                          <button id='btnlsinsert' type='button'>".$clang->gT('Add')."</button>
-                          <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>
-                       <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";
-        $vasummary .= "<div id='quickadd' style='display:none;'><div style='float:left;'>
-                          <label for='quickadd'>".$clang->gT('Enter your subquestions:')."</label>
-                          <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.')."' rows='30' style='width:570px;'></textarea>
-                          <br /><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
-                          <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
-                          <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>
-                       </div> ";
-        $vasummary .= "<p>"
-        ."<input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save changes")."' />\n";
-        $position=sprintf("%05d", $position);
-        if ($activated == 'Y')
-        {
-            $vasummary .= "<p>\n"
-            ."<font color='red' size='1'><i><strong>"
-            .$clang->gT("Warning")."</strong>: ".$clang->gT("You cannot add/remove subquestions or edit their codes because the survey is active.")."</i></font>\n"
-            ."</td>\n"
-            ."</tr>\n";
-        }
-
-        $vasummary .= "</div></form>";
-        */
 
         $this->load->view('admin/survey/Question/subQuestion_view',$data);
     }
@@ -1069,10 +898,6 @@
                 $eqresult = db_execute_assoc($eqquery);
             }
 
-
-
-            //$editquestion = PrepareEditorScript();
-
             $qtypelist=getqtypelist('','array');
             $qDescToCode = 'qDescToCode = {';
             $qCodeToInfo = 'qCodeToInfo = {';
@@ -1082,11 +907,7 @@
             }
             $data['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
 
-            /**$editquestion .= "<script type='text/javascript'>\n{$qTypeOutput}\n</script>\n<div class='header ui-widget-header'>";
-            if (!$adding) {$editquestion .=$clang->gT("Edit question");} else {$editquestion .=$clang->gT("Add a new question");};
-            $editquestion .= "</div>\n";
 
-        	*/
             if (!$adding)
             {
                 $eqrow = $eqresult->row_array();  // there should be only one datarow, therefore we don't need a 'while' construct here.
@@ -1110,45 +931,7 @@
             $data['surveyid'] = $surveyid;
             $data['gid'] = $gid;
 
-            /**
-           $editquestion .= "<div id='tabs'><ul>";
 
-
-
-        	$editquestion .= '<li><a href="#'.$eqrow['language'].'">'.getLanguageNameFromCode($eqrow['language'],false);
-            $editquestion .= '('.$clang->gT("Base language").')';
-        	$editquestion .= "</a></li>\n";
-            if (!$adding) {
-        	$addlanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
-                foreach  ($addlanguages as $addlanguage)
-                {
-        		$editquestion .= '<li><a href="#'.$addlanguage.'">'.getLanguageNameFromCode($addlanguage,false);
-        	$editquestion .= "</a></li>\n";
-        		}
-        		}
-        		$editquestion .= "\n</ul>\n";
-        		$editquestion .=  "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n";
-
-
-            $editquestion .= '<div id="'.$eqrow['language'].'">';
-            $eqrow  = array_map('htmlspecialchars', $eqrow);
-            $editquestion .= "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Code:")."</span>\n"
-            . "<span class='settingentry'><input type='text' size='20' maxlength='20'  id='title' name='title' value=\"{$eqrow['title']}\" />\n"
-            . "\t</span></div>\n";
-            $editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
-            . "<span class='settingentry'><textarea cols='50' rows='4' name='question_{$eqrow['language']}'>{$eqrow['question']}</textarea>\n"
-            . getEditor("question-text","question_".$eqrow['language'], "[".$clang->gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action)
-            . "\t</span></div>\n"
-            . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
-            . "<span class='settingentry'><textarea cols='50' rows='4' name='help_{$eqrow['language']}'>{$eqrow['help']}</textarea>\n"
-            . getEditor("question-help","help_".$eqrow['language'], "[".$clang->gT("Help:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action)
-            . "\t</span></div>\n"
-            . "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
-            . "<span class='settingentry'>&nbsp;\n"
-            . "\t</span></div>\n";
-            $editquestion .= '&nbsp;</div>';
-
-            */
             if (!$adding)
             {
                 $aqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language != '{$baselang}'";
@@ -1157,55 +940,12 @@
             }
             $data['clang'] = $clang;
             $data['action'] = $action;
-                /**while (!$aqresult->EOF)
-                {
-                    $aqrow = $aqresult->FetchRow();
-                    $editquestion .= '<div id="'.$aqrow['language'].'">';
-                    $aqrow  = array_map('htmlspecialchars', $aqrow);
-                    $editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
-                    . "<span class='settingentry'><textarea cols='50' rows='4' name='question_{$aqrow['language']}'>{$aqrow['question']}</textarea>\n"
-                    . getEditor("question-text","question_".$aqrow['language'], "[".$clang->gT("Question:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action)
-                    . "\t</span></div>\n"
-                    . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
-                    . "<span class='settingentry'><textarea cols='50' rows='4' name='help_{$aqrow['language']}'>{$aqrow['help']}</textarea>\n"
-                    . getEditor("question-help","help_".$aqrow['language'], "[".$clang->gT("Help:", "js")."](".$aqrow['language'].")",$surveyid,$gid,$qid,$action)
-                    . "\t</span></div>\n";
-                    $editquestion .= '</div>';
-                }
-            }
-            else
-            {
-                $addlanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
-                foreach  ($addlanguages as $addlanguage)
-                {
-                    $editquestion .= '<div id="'.$addlanguage.'">';
-                    $editquestion .= '</h2>';
-                    $editquestion .=  "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Question:")."</span>\n"
-                    . "<span class='settingentry'><textarea cols='50' rows='4' name='question_{$addlanguage}'></textarea>\n"
-                    . getEditor("question-text","question_".$addlanguage, "[".$clang->gT("Question:", "js")."](".$addlanguage.")",$surveyid,$gid,$qid,$action)
-                    . "\t</span></div>\n"
-                    . "\t<div class='settingrow'><span class='settingcaption'>".$clang->gT("Help:")."</span>\n"
-                    . "<span class='settingentry'><textarea cols='50' rows='4' name='help_{$addlanguage}'></textarea>\n"
-                    . getEditor("question-help","help_".$addlanguage, "[".$clang->gT("Help:", "js")."](".$addlanguage.")",$surveyid,$gid,$qid,$action)
-                    . "\t</span></div>\n"
-                    . "\t<div class='settingrow'><span class='settingcaption'>&nbsp;</span>\n"
-                    . "<span class='settingentry'>&nbsp;\n"
-                    . "\t</span></div>\n";
-                    $editquestion .= '</div>';
-                }
-            }
 
-
-            //question type:
-            $editquestion .= "\t<div id='questionbottom'><ul>\n"
-            . "<li><label for='question_type'>".$clang->gT("Question Type:")."</label>\n"; */
             $this->load->model('surveys_model');
-            //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
             $sumresult1 = $this->surveys_model->getDataOnSurvey($surveyid); //$sumquery1, 1) ; //Checked
             if ($sumresult1->num_rows()==0){die('Invalid survey id');} //  if surveyid is invalid then die to prevent errors at a later time
             $surveyinfo = $sumresult1->row_array();
             $surveyinfo = array_map('FlattenText', $surveyinfo);
-            //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
             $data['activated'] = $activated = $surveyinfo['active'];
 
 
@@ -1236,58 +976,7 @@
             {
                 $qattributes=array();
             }
-            /**
-            if ($activated != "Y")
-            {
-                $editquestion .= "\t<li>\n"
-                . "\t<label for='gid'>".$clang->gT("Question group:")."</label>\n"
-                . "<select name='gid' id='gid'>\n"
-                . getgrouplist3($eqrow['gid'])
-                . "\t\t</select></li>\n";
-            }
-            else
-            {
-                $editquestion .= "\t<li>\n"
-                . "\t<label>".$clang->gT("Question group:")."</label>\n"
-                . getgroupname($eqrow['gid'])." - ".$clang->gT("Cannot be changed (survey is active)")."\n"
-                . "\t<input type='hidden' name='gid' value='{$eqrow['gid']}' />"
-                . "</li>\n";
-            }
-            $editquestion .= "\t<li id='OtherSelection'>\n"
-            . "<label>".$clang->gT("Option 'Other':")."</label>\n";
 
-            if ($activated != "Y")
-            {
-                $editquestion .= "<label for='OY'>".$clang->gT("Yes")."</label><input id='OY' type='radio' class='radiobtn' name='other' value='Y'";
-                if ($eqrow['other'] == "Y") {$editquestion .= " checked";}
-                $editquestion .= " />&nbsp;&nbsp;\n"
-                . "\t<label for='ON'>".$clang->gT("No")."</label><input id='ON' type='radio' class='radiobtn' name='other' value='N'";
-                if ($eqrow['other'] == "N" || $eqrow['other'] == "" ) {$editquestion .= " checked='checked'";}
-                $editquestion .= " />\n";
-            }
-            else
-            {
-                $editquestion .= " [{$eqrow['other']}] - ".$clang->gT("Cannot be changed (survey is active)")."\n"
-                . "\t<input type='hidden' name='other' value=\"{$eqrow['other']}\" />\n";
-            }
-            $editquestion .= "\t</li>\n";
-
-            $editquestion .= "\t<li id='MandatorySelection'>\n"
-            . "<label>".$clang->gT("Mandatory:")."</label>\n"
-            . "\t<label for='MY'>".$clang->gT("Yes")."</label><input id='MY' type='radio' class='radiobtn' name='mandatory' value='Y'";
-            if ($eqrow['mandatory'] == "Y") {$editquestion .= " checked='checked'";}
-            $editquestion .= " />&nbsp;&nbsp;\n"
-            . "\t<label for='MN'>".$clang->gT("No")."</label><input id='MN' type='radio' class='radiobtn' name='mandatory' value='N'";
-            if ($eqrow['mandatory'] != "Y") {$editquestion .= " checked='checked'";}
-            $editquestion .= " />\n"
-            . "</li>\n";
-
-            $editquestion .= "\t<li id='Validation'>\n"
-            . "<label for='preg'>".$clang->gT("Validation:")."</label>\n"
-            . "<input type='text' id='preg' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
-            . "\t</li>";
-
-        */
             if ($adding)
             {
 
@@ -1297,88 +986,7 @@
                 $oqresult = db_execute_assoc($oqquery);
                 $data['oqresult'] = $oqresult;
             }
-                /**
-                if ($oqresult->RecordCount())
-                {
-                    // select questionposition
-                    $editquestion .= "\t<li>\n"
-                    . "<label for='questionposition'>".$clang->gT("Position:")."</label>\n"
-                    . "\t<select name='questionposition' id='questionposition'>\n"
-                    . "<option value=''>".$clang->gT("At end")."</option>\n"
-                    . "<option value='0'>".$clang->gT("At beginning")."</option>\n";
-                    while ($oq = $oqresult->FetchRow())
-                    {
-                        //Bug Fix: add 1 to question_order
-                        $question_order_plus_one = $oq['question_order']+1;
-                        $editquestion .= "<option value='".$question_order_plus_one."'>".$clang->gT("After").": ".$oq['title']."</option>\n";
-                    }
-                    $editquestion .= "\t</select>\n"
-                    . "</li>\n";
-                }
-                else
-                {
-                    $editquestion .= "<input type='hidden' name='questionposition' value='' />";
-                }
-            }
 
-            $editquestion .="</ul>\n";
-            $editquestion .= '<p><a id="showadvancedattributes">'.$clang->gT("Show advanced settings").'</a><a id="hideadvancedattributes" style="display:none;">'.$clang->gT("Hide advanced settings").'</a></p>'
-            .'<div id="advancedquestionsettingswrapper" style="display:none;">'
-            .'<div class="loader">'.$clang->gT("Loading...").'</div>'
-            .'<div id="advancedquestionsettings"></div>'
-            .'</div>'
-            ."<p><input type='submit' value='".$clang->gT("Save")."' />";
-
-            if ($adding)
-            {
-                $editquestion .="\t<input type='hidden' name='action' value='insertquestion' />\n";
-            }
-            else
-            {
-                $editquestion .= "\t<input type='hidden' name='action' value='updatequestion' />\n"
-                . "\t<input type='hidden' id='qid' name='qid' value='$qid' />";
-            }
-            $editquestion .= "\t<input type='hidden' id='sid' name='sid' value='$surveyid' /></p>\n"
-            . "</div></form></div>\n";
-
-
-
-            if ($adding)
-            {
-                // Import dialogue
-
-                if (bHasSurveyPermission($surveyid,'surveycontent','import'))
-                {
-                    $editquestion .= "<br /><div class='header ui-widget-header'>".$clang->gT("...or import a question")."</div>\n"
-                    . "\t<form enctype='multipart/form-data' id='importquestion' name='importquestion' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-                    . "<ul>\n"
-                    . "\t<li>\n"
-                    . "\t<label for='the_file'>".$clang->gT("Select LimeSurvey question file (*.lsq/*.csv)").":</label>\n"
-                    . "\t<input name='the_file' id='the_file' type=\"file\" size=\"50\" />\n"
-                    . "\t</li>\n"
-                    . "\t<li>\n"
-                    . "\t<label for='translinksfields'>".$clang->gT("Convert resource links?")."</label>\n"
-                    . "\t<input name='translinksfields' id='translinksfields' type='checkbox' checked='checked'/>\n"
-                    . "\t</li>\n"
-                    . "</ul>\n"
-                    . "<p>\n"
-                    . "<input type='submit' value='".$clang->gT("Import Question")."' />\n"
-                    . "<input type='hidden' name='action' value='importquestion' />\n"
-                    . "<input type='hidden' name='sid' value='$surveyid' />\n"
-                    . "<input type='hidden' name='gid' value='$gid' />\n"
-                    ."</form>\n\n";
-
-                }
-
-                $editquestion .= "<script type='text/javascript'>\n"
-                ."<!--\n"
-                ."document.getElementById('title').focus();\n"
-                ."//-->\n"
-                ."</script>\n";
-
-            }
-
-            $editquestion .= questionjavascript($eqrow['type']); */
             $data['qid'] = $qid;
 
             $this->load->view("admin/survey/Question/editQuestion_view",$data);
@@ -1407,77 +1015,6 @@
      */
     function _questionjavascript($type)
     {
-        /**
-         $newquestionoutput = "<script type='text/javascript'>\n"
-        ."if (navigator.userAgent.indexOf(\"Gecko\") != -1)\n"
-        ."window.addEventListener(\"load\", init_gecko_select_hack, false);\n";
-        $jc=0;
-        $newquestionoutput .= "\tvar qtypes = new Array();\n";
-        $newquestionoutput .= "\tvar qnames = new Array();\n\n";
-        $newquestionoutput .= "\tvar qhelp = new Array();\n\n";
-        $newquestionoutput .= "\tvar qcaption = new Array();\n\n";
-
-        //The following javascript turns on and off (hides/displays) various fields when the questiontype is changed
-        $newquestionoutput .="\nfunction OtherSelection(QuestionType)\n"
-        . "\t{\n"
-        . "if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}\n"
-        . "\tif (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')\n"
-        . "{\n"
-        . "document.getElementById('OtherSelection').style.display = '';\n"
-        . "document.getElementById('Validation').style.display = 'none';\n"
-        . "document.getElementById('MandatorySelection').style.display='';\n"
-        . "}\n"
-        . "\telse if (QuestionType == 'W' || QuestionType == 'Z')\n"
-        . "{\n"
-        . "document.getElementById('OtherSelection').style.display = '';\n"
-        . "document.getElementById('Validation').style.display = 'none';\n"
-        . "document.getElementById('MandatorySelection').style.display='';\n"
-        . "}\n"
-        . "\telse if (QuestionType == '|')\n"
-        . "{\n"
-        . "document.getElementById('OtherSelection').style.display = 'none';\n"
-        . "document.getElementById('Validation').style.display = 'none';\n"
-        . "document.getElementById('MandatorySelection').style.display='none';\n"
-        . "}\n"
-        . "\telse if (QuestionType == 'F' || QuestionType == 'H' || QuestionType == ':' || QuestionType == ';')\n"
-        . "{\n"
-        . "document.getElementById('OtherSelection').style.display = 'none';\n"
-        . "document.getElementById('Validation').style.display = 'none';\n"
-        . "document.getElementById('MandatorySelection').style.display='';\n"
-        . "}\n"
-        . "\telse if (QuestionType == '1')\n"
-        . "{\n"
-        . "document.getElementById('OtherSelection').style.display = 'none';\n"
-        . "document.getElementById('Validation').style.display = 'none';\n"
-        . "document.getElementById('MandatorySelection').style.display='';\n"
-        . "}\n"
-        . "\telse if (QuestionType == 'S' || QuestionType == 'T' || QuestionType == 'U' || QuestionType == 'N' || QuestionType=='' || QuestionType=='K')\n"
-        . "{\n"
-        . "document.getElementById('Validation').style.display = '';\n"
-        . "document.getElementById('OtherSelection').style.display ='none';\n"
-        . "if (document.getElementById('ON'))  {document.getElementById('ON').checked = true;}\n"
-        . "document.getElementById('MandatorySelection').style.display='';\n"
-        . "}\n"
-        . "\telse if (QuestionType == 'X')\n"
-        . "{\n"
-        . "document.getElementById('Validation').style.display = 'none';\n"
-        . "document.getElementById('OtherSelection').style.display ='none';\n"
-        . "document.getElementById('MandatorySelection').style.display='none';\n"
-        . "}\n"
-        . "\telse\n"
-        . "{\n"
-        . "document.getElementById('OtherSelection').style.display = 'none';\n"
-        . "if (document.getElementById('ON'))  {document.getElementById('ON').checked = true;}\n"
-        . "document.getElementById('Validation').style.display = 'none';\n"
-        . "document.getElementById('MandatorySelection').style.display='';\n"
-        . "}\n"
-        . "\t}\n"
-        . "\tOtherSelection('$type');\n"
-        . "</script>\n";
-
-        return $newquestionoutput;
-        */
-
         $this->load->view('admin/survey/Question/questionJavascript_view',array('type' => $type));
     }
 
@@ -1799,22 +1336,12 @@
     {
         $this->load->model('questions_model');
         $surveyid = $this->input->post("sid");
-        $qid = $this->input->post("qid");
+        $qid = (int)$this->input->post("qid");
         $type=$this->input->post('question_type');
 
         $aLanguages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
         $thissurvey=getSurveyInfo($surveyid);
-        if ($qid != "undefined") // question already exists
-        {
-            //$attributesettings=getQuestionAttributeValues($qid, $type);
-            $aAttributesWithValues=$this->questions_model->getAdvancedSettingsWithValues($qid, $type, $surveyid);
-        }
-        else //  question is just created
-        {
-            $aAttributesWithValues=questionAttributes();
-            if (!isset($aAttributesWithValues[$type])) die('Invalid question type');
-            $aAttributesWithValues=$aAttributesWithValues[$type];
-        }
+        $aAttributesWithValues=$this->questions_model->getAdvancedSettingsWithValues($qid, $type, $surveyid);
         uasort($aAttributesWithValues,'CategorySort');
 
         $aAttributesPrepared=array();

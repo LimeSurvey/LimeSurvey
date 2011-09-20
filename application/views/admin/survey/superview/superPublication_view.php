@@ -1,8 +1,8 @@
 <div id='publication'><ul>
 
 
-            <li><label for='public'><?php echo $clang->gT("List survey publicly:"); ?></label>
-            <select id='public' name='public'>"
+            <li><label for='public'><?php echo $clang->gT("List survey publicly:");?></label>
+            <select id='public' name='public'>
             <option value='Y'
         <?php if (!isset($esrow['listpublic']) || !$esrow['listpublic'] || $esrow['listpublic'] == "Y") { ?>
               selected='selected'
@@ -30,7 +30,7 @@
              <input type='text' class='popupdatetime' id='expires' size='20' name='expires' value="<?php echo $expires; ?>" /></li>
 
 
-             <li><label for=''><?php echo $clang->gT("Set cookie to prevent repeated participation?"); ?></label>
+             <li><label for='usecookie'><?php echo $clang->gT("Set cookie to prevent repeated participation?"); ?></label>
             <select name='usecookie'>
             <option value='Y'
         <?php if ($esrow['usecookie'] == "Y") { ?>
@@ -39,7 +39,7 @@
              ><?php echo $clang->gT("Yes"); ?></option>
             <option value='N'
         <?php if ($esrow['usecookie'] != "Y") { ?>
-              selected='selected'";
+              selected='selected'
         <?php } ?>
              ><?php echo $clang->gT("No"); ?></option>
              </select>

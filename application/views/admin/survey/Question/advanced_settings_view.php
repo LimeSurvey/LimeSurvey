@@ -6,7 +6,7 @@
         {
             if ($currentfieldset!='')
             {?>
-                </ul></fieldset>'; <?php
+                </ul></fieldset><?php
             }
             $currentfieldset=$aAttribute['category'];
             ?>
@@ -45,7 +45,7 @@
                     case 'integer':?> <input type='text' id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>' value='<?php echo $aAttribute['value'];?>' />
                     <?php
                     break;
-                    case 'textarea':?> <textarea id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>'><?php echo $aAttribute['value'];?>' </textarea>
+                    case 'textarea':?> <textarea id='<?php echo $aAttribute['name'];?>' name='<?php echo $aAttribute['name'];?>'><?php echo $aAttribute['value'];?></textarea>
                     <?php
                     break;
                 }

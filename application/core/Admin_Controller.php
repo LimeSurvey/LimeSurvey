@@ -17,30 +17,30 @@ class Admin_Controller extends LSCI_Controller {
 	{
 		parent::__construct();
 		self::_init();
-        
+
 	}
-	
+
 	/**
 	 * Load Controller
 	 */
 	function _init()
 	{
-		
+
 		//if ($sourcefrom == "admin")
 		//{
 		//    require_once($homedir.'/admin_functions.php');
 		//}
-        
+
         $updatelastcheck = '';
-        
+
 		//Admin menus and standards
 		//IF THIS IS AN ADMIN SCRIPT, RUN THE SESSIONCONTROL SCRIPT
 	    //include($homedir."/sessioncontrol.php");
 	    self::_sessioncontrol();
-		
+
 		//SET LANGUAGE DIRECTORY
 		// Check if the DB is up to date
-        
+
 		If (tableExists('surveys'))
 		{
 		    $usrow = getGlobalSetting('DBVersion');
@@ -48,30 +48,30 @@ class Admin_Controller extends LSCI_Controller {
 				redirect('/admin/update/db', 'refresh');
 		    }
 		}
-		
+
 	    $langdir=$this->config->item("publicurl")."/locale/".$this->session->userdata('adminlang')."/help";
 	    $langdirlocal=$this->config->item("rootdir")."/locale/".$this->session->userdata('adminlang')."/help";
-	
+
 	    if (!is_dir($langdirlocal))  // is_dir only works on local dirs
 	    {
 	        $langdir=$this->config->item("publicurl")."/locale/en/help"; //default to english if there is no matching language dir
 	    }
 
-			
+
 		if ($this->config->item('buildnumber') != "" && $this->config->item('updatecheckperiod')>0 && $updatelastcheck<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-".$this->config->item('updatecheckperiod')." days"))
 		{
-		    
+
             updatecheck();
 		}
-		
-		
+
+
 		//require_once('htmleditor-functions.php');
 		//@ini_set('session.gc_maxlifetime', $sessionlifetime);     Might cause problems in client??
-	
+
 		// Reset FileManagerContext
 		//$_SESSION['FileManagerContext']='';
 		$this->session->unset_userdata("FileManagerContext");
-	
+
 		if (!$this->config->item("surveyid")) {$this->config->set_item("surveyid", returnglobal('sid'));}         //SurveyID
 		if (!$this->config->item("ugid")) {$this->config->set_item("ugid", returnglobal('ugid'));}                //Usergroup-ID
 		if (!$this->config->item("gid")) {$this->config->set_item("gid", returnglobal('gid'));}                   //GroupID
@@ -81,7 +81,7 @@ class Admin_Controller extends LSCI_Controller {
 		if (!$this->config->item("action")) {$this->config->set_item("action", returnglobal('action'));}          //Desired action
 		if (!$this->config->item("subaction")) {$this->config->set_item("subaction", returnglobal('subaction'));} //Desired subaction
 		if (!$this->config->item("editedaction")) {$this->config->set_item("editedaction", returnglobal('editedaction'));} // for html editor integration
-		
+
 		/*
 		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}         //SurveyID
 		if (!isset($ugid)) {$ugid=returnglobal('ugid');}                //Usergroup-ID
@@ -93,19 +93,19 @@ class Admin_Controller extends LSCI_Controller {
 		if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 		if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 		*/
-		
+
 		self::_logincheck();
-		
+
 		/*if ( $action == 'CSRFwarn')
 		{
 		    include('access_denied.php');
 		}
-		
+
 		if ( $action == 'FakeGET')
 		{
 		    include('access_denied.php');
 		}*/
-		
+
 	}
 
 	/**
@@ -114,7 +114,7 @@ class Admin_Controller extends LSCI_Controller {
 	function _sessioncontrol()
 	{
 		//Session is initialized by CodeIgniter
-			
+
 		//LANGUAGE ISSUES
 		// if changelang is called from the login page, then there is no userId
 		//  ==> thus we just change the login form lang: no user profile update
@@ -128,12 +128,12 @@ class Admin_Controller extends LSCI_Controller {
 		//{
 		//    $_SESSION['adminlang']=$defaultlang;
 		//}
-		
+
 		if (!$this->session->userdata("adminlang") || $this->session->userdata("adminlang")=='')
 		{
 			$this->session->set_userdata("adminlang",$this->config->item("defaultlang"));
 		}
-		
+
 		// Construct the language class, and set the language.
 		//if (isset($_REQUEST['rootdir'])) {die('You cannot start this script directly');}
 		//require_once($rootdir.'/classes/core/language.php');
@@ -141,13 +141,13 @@ class Admin_Controller extends LSCI_Controller {
 
         $this->load->library('Limesurvey_lang',array("langcode"=>$this->session->userdata("adminlang")));
 		//Load with $clang = $CI->limesurvey_lang;
-		
+
 		if($this->session->userdata("loginID")) {self::_GetSessionUserRights($this->session->userdata("loginID"));}
-		
+
 		// check that requests that modify the DB are using POST
 		// and not GET requests
 		// Not Applicable for CodeIgniter
-		
+
 		//CSRF Protection
 		/*if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 		returnglobal('action') != 'login' &&
@@ -169,19 +169,19 @@ class Admin_Controller extends LSCI_Controller {
 		        //include("access_denied.php");
 		    }
 		}*/
-				
-		
+
+
 	}
-	
+
 	/**
 	 * Authentication checks
 	 */
 	function _logincheck()
 	{
 		//from login_check.php
-		
+
 		//One Time Password
-		
+
 		//Not logged in?
 		//echo $this->router->class;
 		if(!$this->session->userdata("loginID") && $this->router->class != "authentication")
@@ -190,7 +190,7 @@ class Admin_Controller extends LSCI_Controller {
 		}
 
 	}
-	
+
 	/**
 	* Prints Admin Header
 	*/
@@ -200,7 +200,7 @@ class Admin_Controller extends LSCI_Controller {
 		{
 			$this->session->set_userdata("adminlang",$this->config->item("defaultlang"));
 		}
-		
+
 		$data['adminlang']=$this->session->userdata("adminlang");
 		//$data['admin'] = getLanguageRTL;
 		$data['test'] = "t";
@@ -212,13 +212,13 @@ class Admin_Controller extends LSCI_Controller {
 	        $data['languageRTL'] = " dir=\"rtl\" ";
 			$data['styleRTL']="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/".$this->config->item("admintheme")."/adminstyle-rtl.css\" />\n";
 	    }
-		
+
    		$data['meta']="";
         if ($meta)
 	    {
 	        $data['meta']=$meta;
 	    }
-		
+
 		$data['baseurl']=base_url();
 		$data['datepickerlang']="";
 	    if ($this->session->userdata("adminlang")!='en')
@@ -227,20 +227,20 @@ class Admin_Controller extends LSCI_Controller {
 	    }
 		$data['sitename'] = $this->config->item("sitename");
 		$data['admintheme'] = $this->config->item("admintheme");
-	
-		
+
+
 		if($this->config->item("css_admin_includes"))
 	    {
 	    	$data['css_admin_includes'] = array_unique($this->config->item("css_admin_includes"));
 	    }
-		
+
 		$data['firebug'] = use_firebug();
-		
+
 	    if ($this->session->userdata('dateformat'))
 	    {
 	        $data['formatdata']=getDateFormatData($this->session->userdata('dateformat'));
 	    }
-	
+
 	    // Prepare flashmessage
 	    if ($this->session->userdata('flashmessage') && $this->session->userdata('flashmessage')!='')
 	    {
@@ -250,7 +250,7 @@ class Admin_Controller extends LSCI_Controller {
 	    }
 	   	return $this->load->view("admin/super/header",$data, $return);
 	}
-	
+
 	/**
 	 * Prints Admin Footer
 	 */
@@ -258,17 +258,17 @@ class Admin_Controller extends LSCI_Controller {
 	{
 	    //global $js_admin_includes, $homeurl;
 	    //global $versionnumber, $buildnumber, $setfont, $imageurl, $clang;
-	
+
 		$clang = $this->limesurvey_lang;
 		$data['clang'] = $clang;
-		
+
 		$data['versionnumber'] = $this->config->item("versionnumber");
-	
+
 		$data['buildtext']="";
 		if($this->config->item("buildnumber")!="") {
 			$data['buildtext']="Build ".$this->config->item("buildnumber");
 		}
-	
+
 	    //If user is not logged in, don't print the version number information in the footer.
 	    $data['versiontitle']=$clang->gT('Version');
 	    if(!$this->session->userdata('loginID'))
@@ -277,18 +277,18 @@ class Admin_Controller extends LSCI_Controller {
 	        $data['versiontitle']="";
 			$data['buildtext']="";
 	    }
-	
+
 		$data['imageurl']= $this->config->item("imageurl");
 		$data['url']=$url;
-			   
+
 	    if($this->config->item("js_admin_includes"))
 	    {
 	    	$data['js_admin_includes'] = array_unique($this->config->item("js_admin_includes"));
 	    }
-	    
+
 		return $this->load->view("admin/super/footer",$data, $return);
 	}
-	
+
 	/**
 	 * Set Session User Rights
 	 */
@@ -312,12 +312,12 @@ class Admin_Controller extends LSCI_Controller {
 	        $this->session->set_userdata('USER_RIGHT_MANAGE_TEMPLATE', $fields['manage_template']);
 	        $this->session->set_userdata('USER_RIGHT_MANAGE_LABEL', $fields['manage_label']);
 	    }
-	
+
 	    // SuperAdmins
 	    // * original superadmin with uid=1 unless manually changed and defined
 	    //   in config-defaults.php
 	    // * or any user having USER_RIGHT_SUPERADMIN right
-	
+
 	    // Let's check if I am the Initial SuperAdmin
 	    //$adminquery = "SELECT uid FROM {$dbprefix}users WHERE parent_id=0";
 	    //$adminresult = db_select_limit_assoc($adminquery, 1);
@@ -332,7 +332,7 @@ class Admin_Controller extends LSCI_Controller {
 	    {
 	        $initialSuperadmin=false;
 	    }
-	
+
 	    if ( $initialSuperadmin === true)
 	    {
 	        $this->session->set_userdata('USER_RIGHT_SUPERADMIN', 1);
@@ -349,13 +349,13 @@ class Admin_Controller extends LSCI_Controller {
 		$data['title']=$title;
 		$data['message']=$message;
 		$data['class']=$class;
-		
+
 		//self::_getAdminHeader();
 		//self::_showadminmenu();
 		$this->load->view('admin/super/messagebox', $data);
 		//self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 	}
-	
+
 	/**
 	 * _showadminmenu() function returns html text for the administration button bar
 	 *
@@ -372,27 +372,35 @@ class Admin_Controller extends LSCI_Controller {
 
 		$clang=$this->limesurvey_lang;
 		$data['clang']=$this->limesurvey_lang;
-		
+
 	    if  ($this->session->userdata('pw_notify') && $this->config->item("debug")<2)  {
 			$this->session->set_userdata('flashmessage',$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again."));
 		}
-		
+
 		$data['showupdate'] = ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 && $this->config->item("updatelastcheck")>0 && $this->config->item("updateavailable")==1);
 		$data['updateversion'] = $this->config->item("updateversion");
 		$data['updatebuild'] = $this->config->item("updatebuild");
 		$data['surveyid'] = $surveyid;
-		
+
 	    $this->load->view("admin/super/adminmenu",$data);
 
 	}
-	
-	function _js_admin_includes($include)
+
+	function _css_admin_includes($include)
 	{
-		$js_admin_includes = $this->config->item("js_admin_includes");
-		$js_admin_includes[] = $include;
-		$this->config->set_item("js_admin_includes", $js_admin_includes);
+		$css_admin_includes = $this->config->item("css_admin_includes");
+		$css_admin_includes[] = $include;
+		$this->config->set_item("css_admin_includes", $css_admin_includes);
 	}
-    
+
+    function _js_admin_includes($include)
+    {
+        $js_admin_includes = $this->config->item("js_admin_includes");
+        $js_admin_includes[] = $include;
+        $this->config->set_item("js_admin_includes", $js_admin_includes);
+    }
+
+
     function _loadEndScripts()
     {
         if (!$this->session->userdata('metaHeader')) {
@@ -408,7 +416,7 @@ class Admin_Controller extends LSCI_Controller {
         }
         $data['checksessionpost'] = $this->session->userdata('checksessionpost');
         return $this->load->view('admin/endScripts_view',$data);
-        
+
     }
 
 }

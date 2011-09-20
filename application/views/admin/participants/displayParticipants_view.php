@@ -75,17 +75,17 @@ else
 /* Build the javasript variables to pass to the jqGrid */
 ?>
 <script type="text/javascript">
-var spTitle = "<?php echo $clang->gT("Sharing Participants..."); ?>";
+var spTitle = "<?php echo $clang->gT("Sharing participants..."); ?>";
 var spAddBtn = "<?php echo $clang->gT("Share the selected participants"); ?>";
 var sfNoUser = "<?php echo $clang->gT("No other user in the system"); ?>";
-var addpartTitle = "<?php echo $clang->gT("Add Participant to Survey"); ?>";
+var addpartTitle = "<?php echo $clang->gT("Add participant to Survey"); ?>";
 var addpartErrorMsg = "<?php echo $clang->gT("Either you don't own a survey or it doesn't have token table"); ?>";
 var mapButton = "<?php echo $clang->gT("Next") ?>";
 var error = "<?php echo $clang->gT("Error") ?>";
-var addsurvey = "<?php echo $clang->gT("Add to Survey") ?>";
+var addsurvey = "<?php echo $clang->gT("Add to survey") ?>";
 var exportcsv = "<?php echo $clang->gT("Export CSV") ?>";
 var nooptionselected = "<?php echo $clang->gT("Please choose either of the options") ?>";
-var removecondition = "<?php echo $clang->gT("Remove Condition") ?>";
+var removecondition = "<?php echo $clang->gT("Remove condition") ?>";
 var selectSurvey = "<?php echo $clang->gT("Please select a survey to add participants to"); ?>";
 var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
 var exportBtn = "<?php echo $clang->gT("Export") ?>";
@@ -137,9 +137,9 @@ var colModels = '[{"name":"participant_id", "index":"participant_id", "width":10
 <title></title>
 </head>
 <body>
-    
+
 <div id ="search" style="display:none">
-<?php 
+<?php
 $optionsearch = array( '' => 'Select One',
                       'firstname' => 'First Name',
                       'lastname' => 'Last Name',
@@ -247,7 +247,7 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
                         }
                         echo form_dropdown('survey_id',$option,NULL,'id="survey_id"');
                 }
-                
+
              ?>
         </p>
         <p><?php echo $clang->gT("Redirect to token table after copy "); ?>

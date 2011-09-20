@@ -5960,13 +5960,13 @@ function sGetTemplateURL($sTemplateName)
         {
             return $CI->config->item("usertemplaterooturl").'/'.$sTemplateName;
         }
-        elseif (file_exists($CI->config->item("usertemplaterootdir").'/'.$defaulttemplate))
+        elseif (file_exists($CI->config->item("usertemplaterootdir").'/'.$CI->config->item('defaulttemplate')))
         {
-            return $CI->config->item("usertemplaterooturl").'/'.$defaulttemplate;
+            return $CI->config->item("usertemplaterooturl").'/'.$CI->config->item('defaulttemplate');
         }
-        elseif (file_exists($CI->config->item("standardtemplaterootdir").'/'.$defaulttemplate))
+        elseif (file_exists($CI->config->item("standardtemplaterootdir").'/'.$CI->config->item('defaulttemplate')))
         {
-            return $CI->config->item("standardtemplaterooturl").'/'.$defaulttemplate;
+            return $CI->config->item("standardtemplaterooturl").'/'.$CI->config->item('defaulttemplate');
         }
         else
         {

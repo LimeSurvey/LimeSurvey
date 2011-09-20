@@ -202,9 +202,9 @@ CREATE TABLE `prefix_saved_control` (
 -- Table structure for table templates_sessions
 -- 
 CREATE TABLE `prefix_sessions`(
-      sesskey VARCHAR( 64 ) NOT NULL DEFAULT '',
+      sesskey varchar( 64 ) NOT NULL DEFAULT '',
         expiry DATETIME NOT NULL ,
-      expireref VARCHAR( 250 ) DEFAULT '',
+      expireref varchar( 250 ) DEFAULT '',
       created DATETIME NOT NULL ,
       modified DATETIME NOT NULL ,
       sessdata LONGTEXT,
@@ -272,11 +272,11 @@ CREATE TABLE `prefix_surveys` (
   `showqnumcode` char(1) default 'X',
   `bouncetime` bigint(20),    
   `bounceprocessing` varchar(1) default 'N',
-  `bounceaccounttype` VARCHAR(4),
-  `bounceaccounthost` VARCHAR(200),
-  `bounceaccountpass` VARCHAR(100),
-  `bounceaccountencryption` VARCHAR(3),
-  `bounceaccountuser` VARCHAR(200),
+  `bounceaccounttype` varchar(4),
+  `bounceaccounthost` varchar(200),
+  `bounceaccountpass` varchar(100),
+  `bounceaccountencryption` varchar(3),
+  `bounceaccountuser` varchar(200),
   `showwelcome` char(1) default 'Y',
   `showprogress` char(1) default 'Y',
   `allowjumps` char(1) default 'N',
@@ -292,25 +292,25 @@ CREATE TABLE `prefix_surveys` (
 -- 
 CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_survey_id` INT UNSIGNED NOT NULL DEFAULT 0,
-  `surveyls_language` VARCHAR(45) NULL DEFAULT 'en',
-  `surveyls_title` VARCHAR(200) NOT NULL,
+  `surveyls_language` varchar(45) NULL DEFAULT 'en',
+  `surveyls_title` varchar(200) NOT NULL,
   `surveyls_description` TEXT NULL,
   `surveyls_welcometext` TEXT NULL,
   `surveyls_endtext` TEXT NULL,
-  `surveyls_url` VARCHAR(255) NULL,
-  `surveyls_urldescription` VARCHAR(255) NULL,
-  `surveyls_email_invite_subj` VARCHAR(255) NULL,
+  `surveyls_url` varchar(255) NULL,
+  `surveyls_urldescription` varchar(255) NULL,
+  `surveyls_email_invite_subj` varchar(255) NULL,
   `surveyls_email_invite` TEXT NULL,
-  `surveyls_email_remind_subj` VARCHAR(255) NULL,
+  `surveyls_email_remind_subj` varchar(255) NULL,
   `surveyls_email_remind` TEXT NULL,
-  `surveyls_email_register_subj` VARCHAR(255) NULL,
+  `surveyls_email_register_subj` varchar(255) NULL,
   `surveyls_email_register` TEXT NULL,
-  `surveyls_email_confirm_subj` VARCHAR(255) NULL,
+  `surveyls_email_confirm_subj` varchar(255) NULL,
   `surveyls_email_confirm` TEXT NULL,
   `surveyls_dateformat` INT UNSIGNED NOT NULL DEFAULT 1,
-  `email_admin_notification_subj`  VARCHAR(255) NULL,    
+  `email_admin_notification_subj`  varchar(255) NULL,    
   `email_admin_notification` TEXT NULL,        
-  `email_admin_responses_subj` VARCHAR(255) NULL,    
+  `email_admin_responses_subj` varchar(255) NULL,    
   `email_admin_responses` TEXT NULL,        
   `surveyls_numberformat` INT NOT NULL DEFAULT 0,
   
@@ -334,6 +334,15 @@ CREATE TABLE `prefix_survey_permissions` (
 	PRIMARY KEY (sid, uid, permission)
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+
+
+CREATE TABLE `prefix_survey_url_parameters` (
+	`id` int(10) NOT NULL AUTO_INCREMENT,
+	`sid` int(10) NOT NULL,
+	`parameter` varchar(50) NOT NULL,
+	`targetqid` int(10) NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- 
 -- Table structure for table user_groups
@@ -367,14 +376,14 @@ CREATE TABLE `prefix_users` (
   `parent_id` int(10) unsigned NOT NULL,
   `lang` varchar(20),
   `email` varchar(320),
-  `create_survey` tinyint(1) NOT NULL default '0',
-  `create_user` tinyint(1) NOT NULL default '0',
-  `participant_panel` tinyint(1) NOT NULL default '0',
-  `delete_user` tinyint(1) NOT NULL default '0',
-  `superadmin` tinyint(1) NOT NULL default '0',
-  `configurator` tinyint(1) NOT NULL default '0',
-  `manage_template` tinyint(1) NOT NULL default '0',
-  `manage_label` tinyint(1) NOT NULL default '0',
+  `create_survey` TINYINT(1) NOT NULL default '0',
+  `create_user` TINYINT(1) NOT NULL default '0',
+  `participant_panel` TINYINT(1) NOT NULL default '0',
+  `delete_user` TINYINT(1) NOT NULL default '0',
+  `superadmin` TINYINT(1) NOT NULL default '0',
+  `configurator` TINYINT(1) NOT NULL default '0',
+  `manage_template` TINYINT(1) NOT NULL default '0',
+  `manage_label` TINYINT(1) NOT NULL default '0',
   `htmleditormode` varchar(7) default 'default',
   `templateeditormode` varchar(7) default 'default',
   `questionselectormode` varchar(7) default 'default',
