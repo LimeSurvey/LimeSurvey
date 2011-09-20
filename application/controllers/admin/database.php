@@ -597,7 +597,7 @@ class Database extends Admin_Controller {
                             if ($result->num_rows()>0)
                             {
                                 $query = "UPDATE ".$this->db->dbprefix."question_attributes
-                                          SET value=".$value." and language=NULL WHERE attribute='".$validAttribute['name']."' AND qid={$qid} AND language='{$sLanguage}'";
+                                          SET value=".$value." WHERE attribute='".$validAttribute['name']."' AND qid={$qid} AND language='{$sLanguage}'";
                                 $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                             }
                             else
@@ -619,7 +619,7 @@ class Database extends Admin_Controller {
                         if ($result->num_rows()>0)
                         {
                             $query = "UPDATE ".$this->db->dbprefix."question_attributes
-                                      SET value='".$_POST[$validAttribute['name']]."' and language=NULL WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                                      SET value='".$_POST[$validAttribute['name']]."',language=NULL WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                             $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                         }
                         else

@@ -21,14 +21,14 @@ var imgurl = '<?php echo $this->config->item('imageurl'); ?>';
         	<li><a href="#<?php echo $eqrow['language']; ?>"><?php echo getLanguageNameFromCode($eqrow['language'],false); ?>
             (<?php $clang->eT("Base language"); ?>)
         	</a></li>
-            <?php if (!$adding) {
+            <?php
         	$addlanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
                 foreach  ($addlanguages as $addlanguage)
                 { ?>
         		<li><a href="#<?php echo $addlanguage; ?>"><?php echo getLanguageNameFromCode($addlanguage,false); ?>
         	</a></li>
         		<?php }
-        		} ?>
+        		 ?>
         		</ul>
         		<form name='frmeditquestion' id='frmeditquestion' action='<?php echo site_url("admin/database/index"); ?>' method='post' onsubmit="return isEmpty(document.getElementById('title'), '<?php $clang->eT("Error: You have to enter a question code.",'js'); ?>');">
 
@@ -77,7 +77,6 @@ var imgurl = '<?php echo $this->config->item('imageurl'); ?>';
                 foreach  ($addlanguages as $addlanguage)
                 { ?>
                     <div id="<?php echo $addlanguage; ?>">
-                    </h2>
                     <div class='settingrow'><span class='settingcaption'><?php $clang->eT("Question:"); ?></span>
                     <span class='settingentry'><textarea cols='50' rows='4' name='question_<?php echo $addlanguage; ?>'></textarea>
                     <?php echo getEditor("question-text","question_".$addlanguage, "[".$clang->gT("Question:", "js")."](".$addlanguage.")",$surveyid,$gid,$qid,$action); ?>
@@ -86,15 +85,9 @@ var imgurl = '<?php echo $this->config->item('imageurl'); ?>';
                     <span class='settingentry'><textarea cols='50' rows='4' name='help_<?php echo $addlanguage; ?>'></textarea>
                     <?php echo getEditor("question-help","help_".$addlanguage, "[".$clang->gT("Help:", "js")."](".$addlanguage.")",$surveyid,$gid,$qid,$action); ?>
                     </span></div>
-                    <div class='settingrow'><span class='settingcaption'>&nbsp;</span>
-                    <span class='settingentry'>&nbsp;
-                    </span></div>
                     </div>
                 <?php }
             } ?>
-
-
-
             <div id='questionbottom'><ul>
             <li><label for='question_type'><?php $clang->eT("Question Type:"); ?></label>
             <?php if ($activated != "Y")
