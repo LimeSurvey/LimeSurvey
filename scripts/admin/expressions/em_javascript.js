@@ -321,15 +321,18 @@ function LEManyNA()
     return false;
 }
 
+/** Set the tabIndex for all potentially visible form elements, and capture the TAB and SHIFT-TAB keys so can
+ * control navigation when elements appear and disappear.
+ */
 function  LEMsetTabIndexes()
 {
     if (typeof tabIndexesSet == 'undefined') {
-        $(':input[type!=hidden]').each(function(index){
+        $(':input[type!=hidden][id!=runonce]').each(function(index){
             $(this).attr('tabindex',index);
             $(this).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
                     ExprMgr_process_relevance_and_tailoring();
-                    LEMmoveNextTabIndex();
+                    LEMmoveNextTabIndex(e.shiftKey);
                     e.preventDefault();
                     return false;
                 }
@@ -340,16 +343,41 @@ function  LEMsetTabIndexes()
     }
 }
 
-function LEMmoveNextTabIndex()
+/**
+ * TAB or SHIFT-TAB to the next (prev) relevant form element.
+ */
+function LEMmoveNextTabIndex(prev)
 {
 	var currentIndex = document.activeElement.tabIndex;
-	var els = $('div[id^=question]').has('[tabindex]:gt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').toArray();
-    for (i=0;i<els.length;++i) {
-        var el = els[i];
-        if (el.tabIndex > currentIndex) {
-            $(el).focus();
-            return el.tabIndex;
+    var els, el;
+    try {
+        if (prev) {
+            els= $('div[id^=question]').has('[tabindex]:lt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').add('input[type=button]:enabled,input[type=submit]:enabled').toArray();
+            for (i=els.length-1;i>=0;--i) {
+                el = els[i];
+                if (el.tabIndex < currentIndex) {
+                    $(el).focus();
+                    return;
+                }
+            }
+            $('[tabindex=' + els[els.length-1].tabIndex + ']').focus();
+            return;
         }
+        else {
+            els= $('div[id^=question]').has('[tabindex]:gt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').add('input[type=button]:enabled,input[type=submit]:enabled').toArray();
+            for (i=0;i<els.length;++i) {
+                el = els[i];
+                if (el.tabIndex > currentIndex) {
+                    $(el).focus();
+                    return;
+                }
+            }
+            // if no match, wrap around to beginnning
+            $('[tabindex=0]').focus();
+            return;
+        }
+    } catch (e)  {
+        return;
     }
 }
 
