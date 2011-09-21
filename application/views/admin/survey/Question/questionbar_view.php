@@ -196,7 +196,7 @@
             <?php
                 if (trim($qrrow['help'])!=''){
                     templatereplace($qrrow['help']);
-                    LimeExpressionManager::GetLastPrettyPrintExpression();
+                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
                     } ?>
             </td></tr>
             <?php if ($qrrow['preg'])

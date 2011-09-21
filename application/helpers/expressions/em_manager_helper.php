@@ -764,7 +764,7 @@ class LimeExpressionManager {
             $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid .  "' value='" . $relStatus . "'/>\n";
             if (isset($lem->qid2code[$qid]))
             {
-                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid . "codes' value='" . $lem->qid2code[$qid] . "'/>\n";
+                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' name='relevance" . $qid . "codes' value='" . $lem->qid2code[$qid] . "'/>\n";
             }
         }
 

@@ -1952,10 +1952,19 @@ class ExpressionManager {
     static function UnitTestStringSplitter()
     {
        $tests = <<<EOD
-"this is a string that contains {something in curly braces)"
+"this is a string that contains {something in curly brace}"
 This example has escaped curly braces like \{this is not an equation\}
 Should the parser check for unmatched { opening curly braces?
 What about for unmatched } closing curly braces?
+What if there is a { space after the opening brace?}
+What about a {space before the closing brace }?
+What about an { expression nested {within a string} that has white space after the opening brace}?
+Can {expressions contain 'single' or "double" quoted strings}?
+[img src="images/mine_{Q1}.png"/]
+[img src="images/mine_" + {Q1} + ".png"/]
+[img src={implode('','"images/mine_',Q1,'.png"')}/]
+[img src="images/mine_{if(Q1=="Y",'yes','no')}.png"/]
+[img src="images/mine_{if(Q1=="Y",'sq with {nested braces}',"dq with {nested braces}")}.png"/]
 {name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.
 Since you have more {if((INSERT61764X1X3 > INSERT61764X1X4),'children','pets')} than you do {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')}, do you feel that the {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')} are at a disadvantage?
 EOD;
