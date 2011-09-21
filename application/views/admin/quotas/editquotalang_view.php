@@ -1,7 +1,4 @@
-<div class="tab-page">
-			  	 	 <h2 class="tab"><?php echo GetLanguageNameFromCode($lang,false);
-if ($lang==$baselang) {echo '('.$clang->gT("Base language").')';} ?>
-</h2>
+<div class="tabpage_<?php echo $lang; ?>">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
 			<tr>
 				<td valign="top">

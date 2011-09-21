@@ -192,13 +192,19 @@
         $qtproperties=getqtypelist('','array');
 
         $editdefvalues="<div class='header ui-widget-header'>".$clang->gT('Edit default answer values')."</div> "
-        . '<div class="tab-pane" id="tab-pane-editdefaultvalues-'.$surveyid.'">'
-        . "<form class='form30' id='frmdefaultvalues' name='frmdefaultvalues' action='".site_url('admin/database/index')."' method='post'>\n";
+        . '<div id="tabs">'
+        . "<form class='form30' id='frmdefaultvalues' name='frmdefaultvalues' action='".site_url('admin/database/index')."' method='post'>\n"
+        ." <ul>";
+        foreach ($questlangs as $language)
+        {
+            $editdefvalues .= "<li> <a href='#df_{$language}'>".getLanguageNameFromCode($language,false).'</li>';
+        }
+        $editdefvalues .='</ul>';
+
 
         foreach ($questlangs as $language)
         {
-            $editdefvalues .= '<div class="tab-page"> <h2 class="tab">'.getLanguageNameFromCode($language,false).'</h2>';
-            $editdefvalues.="<ul> ";
+            $editdefvalues.="<div id='df_{$language}'><ul> ";
             // If there are answerscales
             if ($qtproperties[$questionrow['type']]['answerscales']>0)
             {
@@ -430,8 +436,6 @@
             }
         }
         $this->load->helper('admin/htmleditor');
-        // Print Key Control JavaScript
-        //$vasummary = PrepareEditorScript();
 
         $query = "SELECT sortorder FROM ".$this->db->dbprefix."answers WHERE qid='{$qid}' AND language='".GetBaseLanguageFromSurveyID($surveyid)."' ORDER BY sortorder desc";
         $result = db_execute_assoc($query);// or safe_die($connect->ErrorMsg()); //Checked
@@ -448,27 +452,8 @@
         $data['anslangs'] = $anslangs;
         $data['scalecount'] = $scalecount;
 
-
-
-        /**
-        $vasummary .= "<div class='header ui-widget-header'>\n"
-        .$clang->gT("Edit answer options")
-        ."</div>\n"
-        ."<form id='editanswersform' name='editanswersform' method='post' action='$scriptname'>\n"
-        . "<input type='hidden' name='sid' value='$surveyid' />\n"
-        . "<input type='hidden' name='gid' value='$gid' />\n"
-        . "<input type='hidden' name='qid' value='$qid' />\n"
-        . "<input type='hidden' name='action' value='updateansweroptions' />\n"
-        . "<input type='hidden' name='sortorder' value='' />\n";
-        $vasummary .= "<div class='tab-pane' id='tab-pane-answers-$surveyid'>";
-        */
-        //$first=true;
-
-        //$vasummary .= "<div id='xToolbar'></div>\n";
-
         // the following line decides if the assessment input fields are visible or not
         $this->load->model('surveys_model');
-        //$sumquery1 = "SELECT * FROM ".db_table_name('surveys')." inner join ".db_table_name('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
         $sumresult1 = $this->surveys_model->getDataOnSurvey($surveyid); //$sumquery1, 1) ; //Checked
         if ($sumresult1->num_rows()==0){die('Invalid survey id');} //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->row_array();
@@ -477,166 +462,7 @@
         $data['assessmentvisible'] = $assessmentvisible;
         $this->load->view('admin/survey/Question/answerOptions_view',$data);
 
-        /**
-        // Insert some Javascript variables
-        $surveysummary .= "\n<script type='text/javascript'>
-                              var languagecount=".count($anslangs).";\n
-                              var scalecount=".$scalecount.";
-                              var assessmentvisible=".($assessmentvisible?'true':'false').";
-                              var newansweroption_text='".$clang->gT('New answer option','js')."';
-                              var strcode='".$clang->gT('Code','js')."';
-                              var strlabel='".$clang->gT('Label','js')."';
-                              var strCantDeleteLastAnswer='".$clang->gT('You cannot delete the last answer option.','js')."';
-                              var lsbrowsertitle='".$clang->gT('Label set browser','js')."';
-                              var quickaddtitle='".$clang->gT('Quick-add answers','js')."';
-                              var sAssessmentValue='".$clang->gT('Assessment value','js')."';
-                              var duplicateanswercode='".$clang->gT('Error: You are trying to use duplicate answer codes.','js')."';
-                              var langs='".implode(';',$anslangs)."';</script>\n";
 
-        foreach ($anslangs as $anslang)
-        {
-            $vasummary .= "<div class='tab-page' id='tabpage_$anslang'>"
-            ."<h2 class='tab'>".getLanguageNameFromCode($anslang, false);
-            if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) {$vasummary .= '('.$clang->gT("Base Language").')';}
-
-            $vasummary .= "</h2>";
-
-            for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
-            {
-                $position=0;
-                if ($scalecount>1)
-                {
-                    $vasummary.="<div class='header ui-widget-header' style='margin-top:5px;'>".sprintf($clang->gT("Answer scale %s"),$scale_id+1)."</div>";
-                }
-
-
-                $vasummary .= "<table class='answertable' id='answers_{$anslang}_$scale_id' align='center' >\n"
-                ."<thead>"
-                ."<tr>\n"
-                ."<th align='right'>&nbsp;</th>\n"
-                ."<th align='center'>".$clang->gT("Code")."</th>\n";
-                if ($assessmentvisible)
-                {
-                    $vasummary .="<th align='center'>".$clang->gT("Assessment value");
-                }
-                else
-                {
-                    $vasummary .="<th style='display:none;'>&nbsp;";
-                }
-
-                $vasummary .= "</th>\n"
-                ."<th align='center'>".$clang->gT("Answer option")."</th>\n"
-                ."<th align='center'>".$clang->gT("Actions")."</th>\n"
-                ."</tr></thead>"
-                ."<tbody align='center'>";
-                $alternate=true;
-
-                $query = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
-                $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg()); //Checked
-                $anscount = $result->RecordCount();
-                while ($row=$result->FetchRow())
-                {
-                    $row['code'] = htmlspecialchars($row['code']);
-                    $row['answer']=htmlspecialchars($row['answer']);
-
-                    $vasummary .= "<tr class='row_$position ";
-                    if ($alternate==true)
-                    {
-                        $vasummary.='highlight';
-                    }
-                    $alternate=!$alternate;
-
-                    $vasummary .=" '><td align='right'>\n";
-
-                    if ($first)
-                    {
-                        $vasummary .= "<img class='handle' src='$imageurl/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_{$position}_{$scale_id}' name='oldcode_{$position}_{$scale_id}' value=\"{$row['code']}\" /><input type='text' class='code' id='code_{$position}_{$scale_id}' name='code_{$position}_{$scale_id}' value=\"{$row['code']}\" maxlength='5' size='5'"
-                        ." onkeypress=\"return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')\""
-                        ." />";
-                    }
-                    else
-                    {
-                        $vasummary .= "&nbsp;</td><td>{$row['code']}";
-
-                    }
-
-                    $vasummary .= "</td>\n"
-                    ."<td\n";
-
-                    if ($assessmentvisible && $first)
-                    {
-                        $vasummary .= "><input type='text' class='assessment' id='assessment_{$position}_{$scale_id}' name='assessment_{$position}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
-                        ." onkeypress=\"return goodchars(event,'-1234567890')\""
-                        ." />";
-                    }
-                    elseif ( $first)
-                    {
-                        $vasummary .= " style='display:none;'><input type='hidden' class='assessment' id='assessment_{$position}_{$scale_id}' name='assessment_{$position}_{$scale_id}' value=\"{$row['assessment_value']}\" maxlength='5' size='5'"
-                        ." onkeypress=\"return goodchars(event,'-1234567890')\""
-                        ." />";
-                    }
-                    elseif ($assessmentvisible)
-                    {
-                        $vasummary .= '>'.$row['assessment_value'];
-                    }
-                    else
-                    {
-                        $vasummary .= " style='display:none;'>";
-                    }
-
-                    $vasummary .= "</td><td>\n"
-                    ."<input type='text' class='answer' id='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' name='answer_{$row['language']}_{$row['sortorder']}_{$scale_id}' size='100' value=\"{$row['answer']}\" />\n"
-                    . getEditor("editanswer","answer_".$row['language']."_{$row['sortorder']}_{$scale_id}", "[".$clang->gT("Answer:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer');
-
-                    // Deactivate delete button for active surveys
-                    $vasummary.="</td><td><img src='$imageurl/addanswer.png' class='btnaddanswer' />";
-                    $vasummary.="<img src='$imageurl/deleteanswer.png' class='btndelanswer' />";
-
-                    $vasummary .= "</td></tr>\n";
-                    $position++;
-                }
-                $vasummary .='</table><br />';
-                if ($first)
-                {
-                    $vasummary .=  "<input type='hidden' id='answercount_{$scale_id}' name='answercount_{$scale_id}' value='$anscount' />\n";
-                }
-                $vasummary .= "<button id='btnlsbrowser_{$scale_id}' class='btnlsbrowser' type='button'>".$clang->gT('Predefined label sets...')."</button>";
-                $vasummary .= "<button id='btnquickadd_{$scale_id}' class='btnquickadd' type='button'>".$clang->gT('Quick add...')."</button>";
-
-                if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL'] == 1){
-                    $vasummary .= "<button class='bthsaveaslabel' id='bthsaveaslabel_{$scale_id}' type='button'>".$clang->gT('Save as label set')."</button>";
-
-                    }
-            }
-
-            $position=sprintf("%05d", $position);
-
-            $first=false;
-            $vasummary .= "</div>";
-        }
-
-        // Label set browser
-    //                      <br/><input type='checkbox' checked='checked' id='languagefilter' /><label for='languagefilter'>".$clang->gT('Match language')."</label>
-        $vasummary .= "<div id='labelsetbrowser' style='display:none;'><div style='float:left;width:260px;'>
-                          <label for='labelsets'>".$clang->gT('Available label sets:')."</label>
-                          <br /><select id='labelsets' size='10' style='width:250px;'><option>&nbsp;</option></select>
-                          <br /><button id='btnlsreplace' type='button'>".$clang->gT('Replace')."</button>
-                          <button id='btnlsinsert' type='button'>".$clang->gT('Add')."</button>
-                          <button id='btncancel' type='button'>".$clang->gT('Cancel')."</button></div>
-
-                       <div id='labelsetpreview' style='float:right;width:500px;'></div></div> ";
-        $vasummary .= "<div id='quickadd' style='display:none;'><div style='float:left;'>
-                          <label for='quickadd'>".$clang->gT('Enter your answers:')."</label>
-                          <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.')."' rows='30' style='width:570px;'></textarea>
-                          <br /><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
-                          <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
-                          <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>
-                       </div> ";
-        // Save button
-        $vasummary .= "<p><input type='submit' id='saveallbtn_$anslang' name='method' value='".$clang->gT("Save changes")."' />\n";
-        $vasummary .= "</div></form>";
-
-*/
 
 
 
@@ -956,21 +782,7 @@
             	if ($this->session->userdata('questionselectormode')=='none'){$selectormodeclass='none';}
                 $data['selectormodeclass'] = $selectormodeclass;
             }
-                /**$editquestion .= "<select id='question_type' style='margin-bottom:5px' name='type' class='{$selectormodeclass}'"
-                . ">\n"
-                . getqtypelist($eqrow['type'],'group')
-                . "</select>\n";
-            }
-            else
-            {
-                $qtypelist=getqtypelist('','array');
-                $editquestion .= "{$qtypelist[$eqrow['type']]['description']} - ".$clang->gT("Cannot be changed (survey is active)")."\n"
-                . "<input type='hidden' name='type' id='question_type' value='{$eqrow['type']}' />\n";
-            }
 
-            $editquestion  .="\t</li>\n";
-
-            */
             if (!$adding) {$qattributes=questionAttributes();}
             else
             {
@@ -1295,8 +1107,6 @@
                 $result = db_execute_assoc($sql);
                 $row = $result->row_array();
                 $gid = $row['gid'];
-
-                //$gid = $connect->GetOne(); // Checked
 
                 //see if there are any conditions/attributes/answers/defaultvalues for this question, and delete them now as well
                 db_execute_assoc("DELETE FROM ".$this->db->dbprefix."conditions WHERE qid={$qid}");    // Checked

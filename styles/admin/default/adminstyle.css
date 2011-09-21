@@ -1201,8 +1201,8 @@ div.loader {
 
 #emailtemplates .ui-tabs-panel iframe,
 #frmeditgroup .ui-tabs-panel iframe,
-#frmcopyquestion .tab-page iframe,
-#sendreminder .tab-page iframe,
+#frmcopyquestion .ui-tabs-panel iframe,
+#sendreminder .ui-tabs-panel iframe,
 #newquestiongroup .ui-tabs-panel iframe,
 #sendinvitation .ui-tabs-panel iframe,
 #addnewsurvey .ui-tabs-panel iframe {
@@ -1251,15 +1251,6 @@ background-color: #8195BA;
 #tokensearch input, #tokenrange input, #browseresults input{
     vertical-align:middle;
     margin-left: 2px;
-}
-
-.tab-page {
-    border-color:#D2E0F2 #8195BA #8195BA #D2E0F2 !important;
-}
-
-.tab-pane {
-    margin:0 0.25%;
-    width:99.5% !important;
 }
 
 #questionbottom {

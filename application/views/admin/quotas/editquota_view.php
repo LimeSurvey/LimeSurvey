@@ -39,4 +39,4 @@
 			</td>
 		</tr>
 	</table>
-	<div class="tab-pane" id="tab-pane-quota-<?php echo $surveyid;?>">
+	<div id="tabs">

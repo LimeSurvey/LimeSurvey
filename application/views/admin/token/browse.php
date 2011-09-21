@@ -1,36 +1,36 @@
 	<div class='menubar'><div class='menubar-title ui-widget-header'><span style='font-weight:bold;'>
-    <?php echo $clang->gT("Data view control");?></span></div>
+    <?php $clang->eT("Data view control");?></span></div>
 	<div class='menubar-main'>
     <div class='menubar-left'>
     <?php if (bHasSurveyPermission($surveyid,'tokens','update'))
     {
         if($thissurvey['bounceprocessing']=='N')
         { ?>
-            <img src='<?php echo $imageurl;?>/bounce_disabled.png' alt='<?php echo $clang->gT("You have selected not to use any bounce settings");?>' align='left' />
+            <img src='<?php echo $imageurl;?>/bounce_disabled.png' alt='<?php $clang->eT("You have selected not to use any bounce settings");?>' align='left' />
        <?php }
         else
         { ?>
-            <img src='<?php echo $imageurl;?>/bounce.png' id='bounceprocessing' alt='<?php echo $clang->gT("Bounce processing");?>' align='left' />
+            <img src='<?php echo $imageurl;?>/bounce.png' id='bounceprocessing' alt='<?php $clang->eT("Bounce processing");?>' align='left' />
       <?php  } ?>
         <img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' hspace='0' align='left' />
    <?php  } ?>
     <a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/0/$order/".urlencode($searchstring));?>'
-    title='<?php echo $clang->gTview("Show start...");?>'>
-    <img name='DBeginButton' align='left' src='<?php echo $imageurl;?>/databegin.png' alt='<?php echo $clang->gT("Show start...");?>' /></a>
+    title='<?php $clang->eTview("Show start...");?>'>
+    <img name='DBeginButton' align='left' src='<?php echo $imageurl;?>/databegin.png' alt='<?php $clang->eT("Show start...");?>' /></a>
     <a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$last/$order/".urlencode($searchstring));?>'
-	title='<?php echo $clang->gTview("Show previous...");?>'>
-	<img name='DBackButton' align='left' src='<?php echo $imageurl;?>/databack.png' alt='<?php echo $clang->gT("Show previous...");?>' /></a>
+	title='<?php $clang->eTview("Show previous...");?>'>
+	<img name='DBackButton' align='left' src='<?php echo $imageurl;?>/databack.png' alt='<?php $clang->eT("Show previous...");?>' /></a>
 	<img src='<?php echo $imageurl;?>/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />
 	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$next/$order/".urlencode($searchstring));?>'
-	title='<?php echo $clang->gTview("Show next...");?>'>
-	<img name='DForwardButton' align='left' src='<?php echo $imageurl;?>/dataforward.png' alt='<?php echo $clang->gT("Show next...");?>' /></a>
+	title='<?php $clang->eTview("Show next...");?>'>
+	<img name='DForwardButton' align='left' src='<?php echo $imageurl;?>/dataforward.png' alt='<?php $clang->eT("Show next...");?>' /></a>
 	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$end/$order/".urlencode($searchstring));?>'
-	title='<?php echo $clang->gTview("Show last...");?>'>
-	<img name='DEndButton' align='left'  src='<?php echo $imageurl;?>/dataend.png' alt='<?php echo $clang->gT("Show last...");?>' /></a>
+	title='<?php $clang->eTview("Show last...");?>'>
+	<img name='DEndButton' align='left'  src='<?php echo $imageurl;?>/dataend.png' alt='<?php $clang->eT("Show last...");?>' /></a>
 	<img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' hspace='0' align='left' />
     <form id='tokensearch' method='post' action='<?php echo site_url("admin/tokens/browse/$surveyid");?>'>
 	<input type='text' name='searchstring' value='<?php echo htmlspecialchars($searchstring,ENT_QUOTES,'utf-8');?>' />
-	<input type='submit' value='<?php echo $clang->gT("Search");?>' />
+	<input type='submit' value='<?php $clang->eT("Search");?>' />
 	<input type='hidden' name='order' value='<?php echo $order;?>' />
 	<input type='hidden' name='subaction' value='search' />
 	<input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
@@ -38,9 +38,9 @@
 	<form id='tokenrange' method='post' action='<?php echo site_url("admin/tokens/browse/$surveyid");?>'>
 	<img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' />
 	<font size='1' face='verdana'>
-	&nbsp;<label for='limit'><?php echo $clang->gT("Records displayed:");?></label> <input type='text' size='4' value='<?php echo $limit;?>' id='limit' name='limit' />
-	&nbsp;&nbsp;<label for='start'><?php echo $clang->gT("Starting from:");?></label> <input type='text' size='4' value='<?php echo $start;?>'  id='start' name='start' />
-	&nbsp;<input type='submit' value='<?php echo $clang->gT("Show");?>' />
+	&nbsp;<label for='limit'><?php $clang->eT("Records displayed:");?></label> <input type='text' size='4' value='<?php echo $limit;?>' id='limit' name='limit' />
+	&nbsp;&nbsp;<label for='start'><?php $clang->eT("Starting from:");?></label> <input type='text' size='4' value='<?php echo $start;?>'  id='start' name='start' />
+	&nbsp;<input type='submit' value='<?php $clang->eT("Show");?>' />
 	</font>
 	<input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
 	<input type='hidden' name='action' value='tokens' />
@@ -55,67 +55,67 @@
 	<th><input type='checkbox' id='tokencheckboxtoggle' /></th>
 	<th align='left' >
 	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/tid/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ");?>ID' alt='<?php echo $clang->gT("Sort by: ");?>ID' border='0' align='left' hspace='0' /></a>ID</th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ");?>ID' alt='<?php $clang->eT("Sort by: ");?>ID' border='0' align='left' hspace='0' /></a>ID</th>
 
-	<th align='left'  ><?php echo $clang->gT("Actions");?></th>
+	<th align='left'  ><?php $clang->eT("Actions");?></th>
 	<th align='left'  >
 	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/firstname/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("First name");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("First name");?>' border='0' align='left' /></a>
-	<?php echo $clang->gT("First name");?></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("First name");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("First name");?>' border='0' align='left' /></a>
+	<?php $clang->eT("First name");?></th>
 
 	<th align='left'><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/lastname/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Last name");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Last name");?>' border='0' align='left' /></a>
-	<?php echo $clang->gT("Last name");?></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Last name");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Last name");?>' border='0' align='left' /></a>
+	<?php $clang->eT("Last name");?></th>
 
 	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/email/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Email address");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Email address");?>' border='0' align='left' /></a>
-	<?php echo $clang->gT("Email address");?></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Email address");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Email address");?>' border='0' align='left' /></a>
+	<?php $clang->eT("Email address");?></th>
 
 	<th align='left'  >
 	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/emailstatus/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Email status");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Email status");?>' border='0' align='left' /></a>
-	<?php echo $clang->gT("Email status");?></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Email status");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Email status");?>' border='0' align='left' /></a>
+	<?php $clang->eT("Email status");?></th>
 
 	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/token/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Token");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Token");?>' border='0' align='left' /></a>
-	<?php echo $clang->gT("Token");?></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Token");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Token");?>' border='0' align='left' /></a>
+	<?php $clang->eT("Token");?></th>
 
 	<th align='left'  >
 	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/language/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Language");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Language");?>' border='0' align='left' /></a>
-	<?php echo $clang->gT("Language");?></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Language");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Language");?>' border='0' align='left' /></a>
+	<?php $clang->eT("Language");?></th>
 
 	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/sent%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Invitation sent?");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Invitation sent?");?>' border='0' align='left' /></a>
-	<?php echo $clang->gT("Invitation sent?");?></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Invitation sent?");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Invitation sent?");?>' border='0' align='left' /></a>
+	<?php $clang->eT("Invitation sent?");?></th>
 
 
 	<th align='left'  >
 	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/remindersent%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Reminder sent?");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Reminder sent?");?>' border='0' align='left' /></a>
-	<span><?php echo $clang->gT("Reminder sent?");?></span></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Reminder sent?");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Reminder sent?");?>' border='0' align='left' /></a>
+	<span><?php $clang->eT("Reminder sent?");?></span></th>
 
 	<th align='left'>
 	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/remindercount%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Reminder count");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Reminder count");?>' border='0' align='left' /></a>
-	<span><?php echo $clang->gT("Reminder count");?></span></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Reminder count");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Reminder count");?>' border='0' align='left' /></a>
+	<span><?php $clang->eT("Reminder count");?></span></th>
 
 	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/completed%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Completed?");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Completed?");?>' border='0' align='left' /></a>
-	<?php echo $clang->gT("Completed?");?></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Completed?");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Completed?");?>' border='0' align='left' /></a>
+	<?php $clang->eT("Completed?");?></th>
 
 	<th align='left'  >
 	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/usesleft%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Uses left");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Uses left");?>' border='0' align='left' /></a>
-	<span><?php echo $clang->gT("Uses left");?></span></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Uses left");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Uses left");?>' border='0' align='left' /></a>
+	<span><?php $clang->eT("Uses left");?></span></th>
 
 	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/validfrom%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Valid from");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Valid from");?>' border='0' align='left' /></a>
-	<?php echo $clang->gT("Valid from");?></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Valid from");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Valid from");?>' border='0' align='left' /></a>
+	<?php $clang->eT("Valid from");?></th>
 
 	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/validuntil%20desc/".urlencode($searchstring));?>'>
-	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php echo $clang->gT("Sort by: ").$clang->gT("Valid until");?>' alt='<?php echo $clang->gT("Sort by: ").$clang->gT("Valid until");?>' border='0' align='left' /></a>
-	<?php echo $clang->gT("Valid until");?></th>
+	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Valid until");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Valid until");?>' border='0' align='left' /></a>
+	<?php $clang->eT("Valid until");?></th>
 
 	<?php $attrfieldnames=GetTokenFieldsAndNames($surveyid,true);
 	foreach ($attrfieldnames as $attr_name=>$attr_translation)
@@ -157,7 +157,7 @@
 	        $datetimeobj = new Date_Time_Converter($brow['validuntil'] , "Y-m-d H:i:s");
 	        $brow['validuntil']=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
 	    };
-	
+
 	    if ($bgc == "evenrow") {$bgc = "oddrow";} else {$bgc = "evenrow";}
 		?>
 	    <tr class='<?php echo $bgc;?>'>
@@ -171,13 +171,13 @@
 	            if ($brow['emailstatus']!='OptOut')
 	            { ?>
 	                <td>
-	                <a href="#" class='invalidemail' title='<?php echo $clang->gT('Invalid email address:').htmlspecialchars($brow['emailstatus']);?>' >
+	                <a href="#" class='invalidemail' title='<?php $clang->eT('Invalid email address:').htmlspecialchars($brow['emailstatus']);?>' >
 	                <?php echo $brow[$tokenfieldname]?></a></td>
 	            <?php }
 	            else
 	            { ?>
 	                <td>
-	                <a href="#" class='optoutemail' title='<?php echo $clang->gT('This participant opted out of this survey.');?>' >
+	                <a href="#" class='optoutemail' title='<?php $clang->eT('This participant opted out of this survey.');?>' >
 	                <?php echo $brow[$tokenfieldname];?></a></td>
 	            <?php }
 	        }
@@ -200,23 +200,23 @@
 	                if (($brow['completed'] == "N" || $brow['completed'] == "") &&$brow['token'])
 	                {
 	                    $toklang = ($brow['language'] == '') ? $baselanguage : $brow['language']; ?>
-	                    <input style='height: 16px; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/do_16.png'  title='<?php echo $clang->gT("Do Survey");?>'  alt= '<?php echo $clang->gT("Do Survey"); ?>' onclick="window.open('{$publicurl}/index.php?sid={$surveyid}&amp;lang={$toklang}&amp;token=trim($brow['.token.'])', '_blank')\" />
+	                    <input style='height: 16px; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/do_16.png'  title='<?php $clang->eT("Do survey");?>'  alt= '<?php $clang->eT("Do survey"); ?>' onclick="window.open('<?php echo site_url("survey/sid/{$surveyid}/lang/{$toklang}/token/{$brow['token']}");?>', '_blank')" />
 	                <?php }
 	                else
 	                { ?>
 	                    <img src='<?php echo $imageurl;?>/blank.gif' height='16' alt='' width='16'/>
 	                <?php }
-	                ?><input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_edit.png' title='<?php
-	                echo $clang->gT("Edit token entry");?>' alt='<?php echo $clang->gT("Edit token entry");?>' onclick="window.open('<?php echo site_url("admin/tokens/edit/$surveyid/".$brow['tid']);?>', '_top')" />
+	                ?><input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_edit.png'
+                       title='<?php $clang->eT("Edit token entry");?>' alt='<?php $clang->eT("Edit token entry");?>' onclick="window.open('<?php echo site_url("admin/tokens/edit/$surveyid/".$brow['tid']);?>', '_top')" />
 	            <?php }
                 if (bHasSurveyPermission($surveyid, 'tokens','delete'))
                 { ?>
-                    <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png' title='<?php
-                    echo $clang->gT("Delete token entry");?>' alt='<?php echo $clang->gT("Delete token entry");?>' onclick="if (confirm('<?php echo $clang->gT("Are you sure you want to delete this entry?","js");?> (<?php echo $brow['tid'];?>)')) {<?php echo get2post(site_url("admin/tokens/delete/$surveyid/".$brow['tid']."?order=1"));?>}"  />
+                    <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png'
+                    title='<?php $clang->eT("Delete token entry");?>' alt='<?php $clang->eT("Delete token entry");?>' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js");?> (<?php echo $brow['tid'];?>)')) {<?php echo get2post(site_url("admin/tokens/delete/$surveyid/".$brow['tid']."?order=1"));?>}"  />
                 <?php }
-                
+
 	            if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
-	            { 
+	            {
 	                // Get response Id
 	                //$query="SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE token='{$brow['token']}' ORDER BY id desc";
 	                //$result=db_execute_num($query) or safe_die ("<br />Could not find token!<br />\n" .$connect->ErrorMsg());
@@ -226,19 +226,19 @@
 	                // UPDATE button to the tokens display in the MPID Actions column
 	                if  ($id)
 	                { ?>
-	                    <input type='image' src='<?php echo $imageurl;?>/token_viewanswer.png' style='height: 16; width: 16px;' onclick="window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')" title='<?php
-	                    echo $clang->gT("View/Update last response");?>' alt='<?php echo $clang->gT("View/Update last response");?>' />
-	                <?php } 
+	                    <input type='image' src='<?php echo $imageurl;?>/token_viewanswer.png' style='height: 16; width: 16px;' onclick="window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')"
+                        title='<?php $clang->eT("View/Update last response");?>' alt='<?php $clang->eT("View/Update last response");?>' />
+	                <?php }
 	            }
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] == "N" && trim($brow['email'])!='' && bHasSurveyPermission($surveyid, 'tokens','update'))
-	            { ?> 
-	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_invite.png' title='<?php
-	                echo $clang->gT("Send invitation email to this entry");?>' alt='<?php echo $clang->gT("Send invitation email to this entry");?>' onclick="<?php echo get2post(site_url("admin/tokens/email/$surveyid/")."?tid=".$brow['tid']);?>" />
+	            { ?>
+	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_invite.png'
+                    title='<?php $clang->eT("Send invitation email to this entry");?>' alt='<?php $clang->eT("Send invitation email to this entry");?>' onclick="<?php echo get2post(site_url("admin/tokens/email/$surveyid/")."?tid=".$brow['tid']);?>" />
 	            <?php }
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
 	            { ?>
-	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_remind.png' title='<?php
-	                 echo $clang->gT("Send reminder email to this entry");?>' alt='<?php echo $clang->gT("Send reminder email to this entry");?>' onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/")."?tid=".$brow['tid']);?>" />
+	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_remind.png'
+                    title='<?php $clang->eT("Send reminder email to this entry");?>' alt='<?php $clang->eT("Send reminder email to this entry");?>' onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/")."?tid=".$brow['tid']);?>" />
 	           <?php } ?>
   	            </td>
 	       <?php }
@@ -253,26 +253,24 @@
         if (bHasSurveyPermission($surveyid, 'tokens','delete'))
         { ?>
             <img src='<?php echo $imageurl;?>/blank.gif' height='16' width='16' alt='' />
-            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png' title='<?php
-            echo $clang->gT("Delete the selected entries");?>' alt='<?php echo $clang->gT("Delete the selected entries");?>' onclick="if($('#tokenboxeschecked').val()){if (confirm('<?php echo $clang->gT("Are you sure you want to delete the selected entries?","js");?>')) {<?php
-            echo get2post(site_url("admin/tokens/delete/$surveyid/")."?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tokenids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}");?>}}else{alert('<?php echo $clang->gT("No tokens selected",'js');?>');}"  />
-            
+            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png'
+            title='<?php $clang->eT("Delete the selected entries");?>' alt='<?php $clang->eT("Delete the selected entries");?>'
+            onclick="if($('#tokenboxeschecked').val()){if (confirm('<?php $clang->eT("Are you sure you want to delete the selected entries?","js");?>')) {<?php echo get2post(site_url("admin/tokens/delete/$surveyid/")."?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tokenids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}");?>}}else{alert('<?php $clang->eT("No tokens selected",'js');?>');}"  />
+
         <?php }
-        
+
         if (bHasSurveyPermission($surveyid, 'tokens','update'))
         { ?>
             &nbsp;
-            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_invite.png' title='<?php
-            echo $clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)");
-            ?>' alt='<?php
-            echo $clang->gT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)");
-            ?>' onclick="<?php echo get2post(site_url("admin/tokens/email/$surveyid/tids")."?tokenids=document.getElementById('tokenboxeschecked').value");?>" />
+            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_invite.png'
+            title='<?php $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)");?>'
+            alt='<?php $clang->eT("Send invitation emails to the selected entries (if they have not yet been sent an invitation email)");?>'
+            onclick="<?php echo get2post(site_url("admin/tokens/email/$surveyid/tids")."?tokenids=document.getElementById('tokenboxeschecked').value");?>" />
             &nbsp;
-            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_remind.png' title='<?php
-            echo $clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)");
-            ?>' alt='<?php
-            echo $clang->gT("Send reminder email to the selected entries (if they have already received the invitation email)");
-           ?>' onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/tids")."?tokenids=document.getElementById('tokenboxeschecked').value");?>" />
+            <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_remind.png'
+            title='<?php $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)");?>'
+            alt='<?php $clang->eT("Send reminder email to the selected entries (if they have already received the invitation email)");?>'
+            onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/tids")."?tokenids=document.getElementById('tokenboxeschecked').value");?>" />
         <?php } ?>
         <input type='hidden' id='tokenboxeschecked' value='' onchange='alert(this.value)' />
 	    </td>
@@ -282,15 +280,15 @@
 ?>
 	</table>
 <!-- Code for central Participants database -->
-        <p><input type='button' name='addtocpdb' id='addtocpdb' value='Add Participants to Central Database'/><br />
+    <p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br />
 <!-- End of Code for central Participants database -->
 <script type="text/javascript">
-var cancelBtn = "<?php echo $clang->gT("Cancel") ?>";
-var okBtn = "<?php echo $clang->gT("OK") ?>";
+var cancelBtn = "<?php $clang->eT("Cancel") ?>";
+var okBtn = "<?php $clang->eT("OK") ?>";
 var survey_id = "<?php echo $this->uri->segment(4); ?>";
 var addtocpdbUrl = "<?php echo site_url("admin/participants/addToCentral"); ?>";
-var addpartAddBtn = "<?php echo $clang->gT("Add to CPDB") ?>";
-var addpartTitle = "<?php echo $clang->gT('Add Participant to CPDB'); ?>";
+var addpartAddBtn = "<?php $clang->eT("Add to CPDB") ?>";
+var addpartTitle = "<?php $clang->eT('Add participant to CPDB'); ?>";
 var attMapUrl = "<?php echo site_url("admin/participants/attributeMapToken");?>";
 var postUrl = "<?php echo site_url("admin/participants/setSession"); ?>";
 <!--
@@ -331,18 +329,18 @@ myform.submit();
 <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/jquery.multiselect.css" ?>" />
 <script src="<?php echo $this->config->item('adminscripts')."tokentocpdb.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.min.js" ?>" type="text/javascript"></script>
-<div id="norowselected" title="<?php echo $clang->gT("Error") ?>" style="display:none">
+<div id="norowselected" title="<?php $clang->eT("Error") ?>" style="display:none">
             <p>
-                <?php echo $clang->gT("Please select at least one participant to be added"); ?>
+                <?php $clang->eT("Please select at least one participant to be added"); ?>
             </p>
         </div>
 <?php $ajaxloader = array('src' => 'images/ajax-loader.gif',
                           'alt' => 'Ajax Loader',
                           'title' => 'Ajax Loader'); ?>
- <div id="processing" title="<?php echo $clang->gT("Processing .....") ?>" style="display:none">
+ <div id="processing" title="<?php $clang->eT("Processing .....") ?>" style="display:none">
 <?php echo img($ajaxloader); ?>
 <div id="addcpdb" title="addsurvey" style="display:none">
-  <p><?php echo $clang->gT("Please select the attributes that are to be added to the central database"); ?></p>
+  <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
         <p>
            <select id="attributeid" name="attributeid" multiple="multiple">
             <?php
@@ -353,9 +351,10 @@ myform.submit();
                            echo "<option value='".$key."'>".$value."</option>";
                         }
                }
-            
+
              ?>
          </select>
         </p>
-       
+
+</div>
 </div>

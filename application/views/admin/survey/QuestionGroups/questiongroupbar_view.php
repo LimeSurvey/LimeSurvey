@@ -189,9 +189,9 @@
                 <?php foreach ($condarray[$gid] as $depgid => $deprow)
                 {
                     foreach ($deprow['conditions'] as $depqid => $depcid)
-                    { ?>
+                    {
 
-                        $listcid=implode("-",$depcid);
+                        $listcid=implode("-",$depcid);?>
                         <a href='#' onclick="window.open('admin.php?sid=<?php echo $surveyid; ?>&amp;gid=<?php echo $depgid; ?>&amp;qid=<?php echo $depqid; ?>&amp;action=conditions&amp;markcid=<?php echo implode("-",$depcid); ?>','_top')">[QID: <?php echo $depqid; ?>]</a>
                     <?php }
                 } ?>

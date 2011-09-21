@@ -21,13 +21,16 @@
 			<input id="autoload_url" name="autoload_url" type="checkbox" value="1" />
 		</li>
 </ul>
-    <div class="tab-pane" id="tab-pane-quota-<?php echo $surveyid;?>">
-    	
+    <div id="tabs"><ul>
 <?php foreach ($langs as $lang) { ?>
-		<div class="tab-page">
-				  	 	 <h2 class="tab"><?php echo GetLanguageNameFromCode($lang,false);
-    if ($lang==$baselang) {echo '('.$clang->gT("Base language").')';} ;?>
-    </h2>
+        <li><a href="#tabpage_<?php echo $lang ?>"><?php echo GetLanguageNameFromCode($lang,false);
+    if ($lang==$baselang) {echo '('.$clang->gT("Base language").')';} ;?></li>
+    <?php } ?>
+    </ul>
+
+
+<?php foreach ($langs as $lang) { ?>
+		<div id="tabpage_<?php echo $lang ?>">
 			<ul>
   				<li>
   					<label for="quotals_message_<?php echo $lang;?>"><?php echo $clang->gT("Quota message");?>:</label>

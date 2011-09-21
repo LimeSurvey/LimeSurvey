@@ -65,6 +65,16 @@ class Limesurvey_lang {
         }
     }
 
+    function eTview($string, $escapemode = 'html')
+    {
+        global $addTitleToLinks;
+        if ( $addTitleToLinks === true)
+        {
+            $this->eT($string, $escapemode = 'html');
+        }
+    }
+
+
 
     /**
     * This function translates plural strings to their according language

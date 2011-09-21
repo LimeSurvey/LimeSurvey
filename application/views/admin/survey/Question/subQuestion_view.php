@@ -38,7 +38,7 @@ $codeids='';
 
         <?php foreach ($anslangs as $anslang)
         { ?>
-            <div id='tabpage_<?php echo $anslang; ?>'>
+            <div id='tabpage_<?php echo $anslang; ?>' class='tab-page'>
             <?php for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
             {
                 $position=0;
