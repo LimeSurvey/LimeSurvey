@@ -1,0 +1,1208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+<head>
+<title>Tab Pane (WebFX)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script type="text/javascript" src="local/webfxlayout.js"></script>
+<script type="text/javascript" src="local/webfxapi.js"></script>
+<script type="text/javascript" src="js/tabpane.js"></script>
+<link type="text/css" rel="StyleSheet" href="css/tab.webfx.css" />
+
+<style type="text/css">
+.dynamic-tab-pane-control .tab-page {
+  height: 500px;
+  width: 558px;
+  overflow: auto;
+}
+
+.dynamic-tab-pane-control .tab-page .dynamic-tab-pane-control .tab-page
+  {
+  height: 100px;
+}
+
+form {
+  margin: 0;
+  padding: 0;
+}
+
+/* over ride styles from webfxlayout */
+.dynamic-tab-pane-control.tab-pane {
+  margin: 10px;
+  width: 580px;
+}
+
+.dynamic-tab-pane-control h2 {
+  text-align: center;
+  width: auto;
+}
+
+.dynamic-tab-pane-control h2 a {
+  display: inline;
+  width: auto;
+}
+
+.dynamic-tab-pane-control a:hover {
+  background: transparent;
+}
+
+.dynamic-tab-pane-control .tab-page h2 {
+  text-align: left;
+}
+</style>
+
+<script type="text/javascript">
+//<![CDATA[
+
+var tabPane;
+
+function showArticleTab( sName ) {
+	if (typeof tabPane != "undefined" ) {
+
+		switch ( sName ) {
+
+			case "main":
+				tabPane.setSelectedIndex( 0 );
+				break;
+
+			case "usage":
+				tabPane.setSelectedIndex( 1 );
+				break;
+
+			case "api":
+				tabPane.setSelectedIndex( 2 );
+				break;
+
+			case "implementation":
+				tabPane.setSelectedIndex( 3 );
+				break;
+
+			case "looknfeel":
+				tabPane.setSelectedIndex( 4 );
+				break;
+		}
+	}
+}
+
+// help tips
+htDom = "Document Object Model 1 is a standard developed by the W3C.<br />" +
+		"<a href=\"http://www.w3.org/DOM/\" target=\"_blank\">http://www.w3.org/DOM/</a>";
+
+//]]>
+</script>
+
+</head>
+<body>
+<!-- WebFX Layout Include -->
+<script type="text/javascript">
+
+var articleMenu= new WebFXMenu;
+articleMenu.left  = 384;
+articleMenu.top   = 86;
+articleMenu.width = 140;
+articleMenu.add(new WebFXMenuItem("Tab Pane", "javascript:showArticleTab( \"main\" )"));
+articleMenu.add(new WebFXMenuItem("Usage", "javascript:showArticleTab( \"usage\" )"));
+articleMenu.add(new WebFXMenuItem("API", "javascript:showArticleTab( \"api\" )"));
+articleMenu.add(new WebFXMenuItem("Implementation", "javascript:showArticleTab( \"implementation\" )"));
+articleMenu.add(new WebFXMenuItem("Look &amp; Feel", "javascript:showArticleTab( \"looknfeel\" )"));
+articleMenu.add(new WebFXMenuItem("Demo", "demo.html"));
+articleMenu.add(new WebFXMenuSeparator);
+articleMenu.add(new WebFXMenuItem("Download", "http://webfx.eae.net/download/tabpane102.zip"));
+webfxMenuBar.add(new WebFXMenuButton("Article Menu", null, null, articleMenu));
+
+webfxLayout.writeTitle("Tab Pane");
+webfxLayout.writeMenu();
+webfxLayout.writeDesignedByEdger();
+
+</script>
+<div class="webfx-main-body"><!-- end WebFX Layout Includes -->
+
+<p><span class="date">2002-02-17</span>: Original version posted.<br />
+<span class="date">2003-03-03</span>: 1.02 - Fixes IE memory leakage.<br />
+<span class="date">2006-05-26</span>: Changed license to Apache Software
+License 2.0.<br />
+</p>
+
+<!-- begin tab pane -->
+<div class="tab-pane" id="article-tab"><script
+	type="text/javascript">
+tabPane = new WebFXTabPane( document.getElementById( "article-tab" ), true );
+</script> <!-- begin intro page -->
+<div class="tab-page" id="intro-page">
+<h2 class="tab">Introduction</h2>
+
+<script type="text/javascript">
+tabPane.addTabPage( document.getElementById( "intro-page" ) );
+</script>
+
+<p>You might remember that we used to have a pretty good tab strip
+control here at WebFX a long time ago. This control was removed when we
+redesigned the site with the argument that we should fix it to work in
+Mozilla. Now, more than three years later we finally got down and
+created a tab pane control that we think is a worthy replacement.</p>
+
+<p>This Tab Pane control is fairly similar to the tab system Tim
+Scarfe created for <a href="http://www.developer-x.com">developer-x.com</a>
+and the basic idea is the same. That idea is to be able to use a normal
+XHTML document structure and if the browser supports <a class="helpLink"
+	href="?" onclick="showHelpTip(event, htDom); return false">DOM
+level 1</a> then the structure of the elements is slightly adjusted and a
+the <code>className</code> is changed for the tab pane container so that
+the css rules specially defined for the tab are applied.</p>
+
+<p>The Tab Pane has support for persistence using cookies so that
+you can navigate between pages without having to reselect the selected
+tab for all your tab panes in your document. The look and feel is
+entirely decided by CSS so it is fairly easy to create the look and feel
+you need for your web application. As of this writing there are three
+different styles available; Luna, Windows Classic and the WebFX look and
+feel that this pane is currently using. See the <a href="demo.html">demo</a>
+page for the look and feel of the other two.</p>
+
+</div>
+<!-- end intro page --> <!-- begin usage page -->
+<div class="tab-page" id="usage-page">
+<h2 class="tab">Usage</h2>
+
+<script type="text/javascript">
+tabPane.addTabPage( document.getElementById( "usage-page" ) );
+</script>
+
+<h3>Include the Files</h3>
+
+<p>To use the tab pane you should include two files. One JavaScript
+file and on css file.</p>
+
+<pre>
+&lt;script type="text/javascript" src="<a href="js/tabpane.js">js/tabpane.js</a>"&gt;&lt;/script&gt;
+&lt;link type="text/css" rel="StyleSheet" href="<a
+	href="css/tab.webfx.css">css/tab.webfx.css</a>" /&gt;
+</pre>
+
+<h3>The XHTML Structure</h3>
+
+<p>The basic structure for the tab pane consists of an element with
+the class name <code>tab-pane</code> that in turn contains elements with
+the class names <code>tab-page</code>. The tab page element should
+contain <strong>one</strong> element with the class name <code>tab</code>.
+This last one should preferably be a header of some kind in case the
+browser does not support DOM1 and therefore will leave the structure
+intact. The other two elements can be almost anything but a <code>div</code>
+element is good because it usually does not change the rendering.</p>
+
+<p>Below is the code for a simple tab pane with the tab pages.</p>
+
+<pre>
+&lt;div class="tab-pane" id="tab-pane-1"&gt;
+
+   &lt;div class="tab-page"&gt;
+      &lt;h2 class="tab"&gt;General&lt;/h2&gt;
+
+      This is text of tab 1. This is text of tab 1.
+      This is text of tab 1. This is text of tab 1.
+
+   &lt;/div&gt;
+
+   &lt;div class="tab-page"&gt;
+      &lt;h2 class="tab"&gt;Privacy&lt;/h2&gt;
+
+      This is text of tab 2. This is text of tab 2.
+      This is text of tab 2. This is text of tab 2.
+
+   &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+<p>Notice that the <code>id</code> is not needed unless two or more
+tab panes are present in the same document and you are using the
+persistence feature.</p>
+
+<h3>Initialization</h3>
+
+<p>The code above is a complete working tab pane. You do not have to
+add any more js code but there are a few good reasons why you would want
+to do this. If no js code is added all the tab panes in the document are
+initialized when the document is loaded. If you have lots of text and/or
+images this will take quite some time and the layout of the page will
+feel <em>jerky</em>. A better way is to call the function <code>setupAllTabs</code>
+after all your XHTML has been defined. This works much better but if you
+have a lot of text this is not optional either because the browser might
+render some of the text before the entire tab structure is available.</p>
+
+<pre>
+      ...
+   &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- tab pane closed --&gt;
+
+&lt;script type="text/javascript"&gt;
+setupAllTabs();
+&lt;/script&gt;
+</pre>
+
+<p>The best way to go is to create as much as possible as soon as
+possible. This involves adding calls to js after the tab pane is opened
+and as soon as every page is opened.</p>
+
+<pre>
+&lt;div class="tab-pane" id="tab-pane-1"&gt;
+
+&lt;script type="text/javascript"&gt;
+var tabPane1 = new WebFXTabPane( document.getElementById( "tab-pane-1" ) );
+&lt;/script&gt;
+
+   &lt;div class="tab-page" id="tab-page-1"&gt;
+      &lt;h2 class="tab"&gt;General&lt;/h2&gt;
+
+      &lt;script type="text/javascript"&gt;
+      tabPane1.addTabPage( document.getElementById( "tab-page-1" ) );
+      &lt;/script&gt;
+
+      This is text of tab 1. This is text of tab 1.
+      This is text of tab 1. This is text of tab 1.
+
+   &lt;/div&gt;
+
+   &lt;div class="tab-page" id="tab-page-2"&gt;
+      &lt;h2 class="tab"&gt;Privacy&lt;/h2&gt;
+
+      &lt;script type="text/javascript"&gt;
+      tabPane1.addTabPage( document.getElementById( "tab-page-2" ) );
+      &lt;/script&gt;
+
+      This is text of tab 2. This is text of tab 2.
+      This is text of tab 2. This is text of tab 2.
+
+   &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+<p>The code for this is, as you can see, not half as nice and you
+should decide from time to time if you really need this. In most web
+applications (especially intranet apps) this is not needed because the
+amount of data inside each tab page is limited (or added later).</p>
+
+<p>One thing to note about this last method is that some browser
+have trouble changing the content model during the page load (noticeably
+Konqueror).</p>
+
+</div>
+<!-- end usage tab --> <!-- begin api tab -->
+<div class="tab-page" id="api-page">
+<h2 class="tab">API</h2>
+
+<script type="text/javascript">
+tabPane.addTabPage( document.getElementById( "api-page" ) );
+</script> <!--
+Generated using api.xsl version 20020217
+--> <!-- Start main output -->
+<h2>WebFXTabPane</h2>
+<p>This is the class representing a tab pane.</p>
+<h3>Syntax</h3>
+<p><code> new WebFXTabPane(<span class="methodArgument">oElement</span>&nbsp;[,
+<span class="methodArgument">bUseCookie</span>])</code></p>
+<h3>Parameters</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Type</td>
+			<td>Descripton</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>oElement</code></td>
+			<td><code>HTMLElement</code></td>
+			<td>The html element that represents the tab pane</td>
+		</tr>
+		<tr>
+			<td><code>bUseCookie</code></td>
+			<td><code>Boolean</code></td>
+			<td><span class="optional">Optional.</span> If this is set to
+			true then the selected tab is persisted. <span
+				class="defaultSentence"> The default value is <code>true</code>.
+			</span></td>
+		</tr>
+	</tbody>
+</table>
+<h3>Static Methods</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">setCookie</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code><span class="object">object</span>.setCookie(<span
+				class="methodArgument">sName</span>, <span class="methodArgument">sValue</span>&nbsp;[,
+			<span class="methodArgument">nDays</span>])</code></p>
+			<h4>Arguments</h4>
+			<table>
+				<thead>
+					<tr>
+						<td>Name</td>
+						<td>Type</td>
+						<td>Descripton</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>sName</code></td>
+						<td><code>String</code></td>
+						<td>The name of the cookie</td>
+					</tr>
+					<tr>
+						<td><code>sValue</code></td>
+						<td><code>String</code></td>
+						<td>The value of the cookie</td>
+					</tr>
+					<tr>
+						<td><code>nDays</code></td>
+						<td><code>Number</code></td>
+						<td><span class="optional">Optional.</span> The number of
+						days to store the cookie</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>Return Type</h4>
+			<p><code>void</code></p>
+			</div>
+			</div>
+			</td>
+			<td>Sets a cookie</td>
+		</tr>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">getCookie</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code><span class="object">object</span>.getCookie(<span
+				class="methodArgument">sName</span>)</code></p>
+			<h4>Arguments</h4>
+			<table>
+				<thead>
+					<tr>
+						<td>Name</td>
+						<td>Type</td>
+						<td>Descripton</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>sName</code></td>
+						<td><code>String</code></td>
+						<td>The name of the cookie</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>Return Type</h4>
+			<p><code>String</code></p>
+			</div>
+			</div>
+			</td>
+			<td>Retrieves a cookie by name</td>
+		</tr>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">removeCookie</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code><span class="object">object</span>.removeCookie(<span
+				class="methodArgument">sName</span>)</code></p>
+			<h4>Arguments</h4>
+			<table>
+				<thead>
+					<tr>
+						<td>Name</td>
+						<td>Type</td>
+						<td>Descripton</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>sName</code></td>
+						<td><code>String</code></td>
+						<td>The name of the cookie to remove</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>Return Type</h4>
+			<p><code>void</code></p>
+			</div>
+			</div>
+			</td>
+			<td>Removes a cookie by name</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Static Fields</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Type</td>
+			<td>Descripton</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="3">None.</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Methods</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">addTabPage</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code><span class="object">object</span>.addTabPage(<span
+				class="methodArgument">oElement</span>)</code></p>
+			<h4>Arguments</h4>
+			<table>
+				<thead>
+					<tr>
+						<td>Name</td>
+						<td>Type</td>
+						<td>Descripton</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>oElement</code></td>
+						<td><code>HTMLElement</code></td>
+						<td>The html element that represents the tab page</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>Return Type</h4>
+			<p><code>WebFXTabPage</code></p>
+			</div>
+			</div>
+			</td>
+			<td>Adds a tab page by passing an html element</td>
+		</tr>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">getSelectedIndex</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code><span class="object">object</span>.getSelectedIndex()</code></p>
+			<h4>Arguments</h4>
+			<p>No Arguments.</p>
+			<h4>Return Type</h4>
+			<p><code>Number</code></p>
+			</div>
+			</div>
+			</td>
+			<td>The index of the selected tab page</td>
+		</tr>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">setSelectedIndex</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code><span class="object">object</span>.setSelectedIndex(<span
+				class="methodArgument">n</span>)</code></p>
+			<h4>Arguments</h4>
+			<table>
+				<thead>
+					<tr>
+						<td>Name</td>
+						<td>Type</td>
+						<td>Descripton</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>n</code></td>
+						<td><code>Number</code></td>
+						<td>The index of the tab page to select</td>
+					</tr>
+				</tbody>
+			</table>
+			<h4>Return Type</h4>
+			<p><code>void</code></p>
+			</div>
+			</div>
+			</td>
+			<td>Sets the selected tab page by index</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Fields</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Type</td>
+			<td>Descripton</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>classNameTag</code></td>
+			<td><code>String</code></td>
+			<td>This string is added to the class name to tag the tab pane
+			as beeing created</td>
+		</tr>
+		<tr>
+			<td><code>element</code></td>
+			<td><code>HTMLElement</code></td>
+			<td><span class="readOnly">Read only.</span>The html element
+			being that represents the tab pane</td>
+		</tr>
+		<tr>
+			<td><code>pages</code></td>
+			<td><code>WebFXTabPages[]</code></td>
+			<td><span class="readOnly">Read only.</span>An array containing
+			the tab pages</td>
+		</tr>
+		<tr>
+			<td><code>selectedIndex</code></td>
+			<td><code>Number</code></td>
+			<td><span class="readOnly">Read only.</span>The index of the
+			selected tab page</td>
+		</tr>
+		<tr>
+			<td><code>tabRow</code></td>
+			<td><code>HTMLElement</code></td>
+			<td><span class="readOnly">Read only.</span>The html element
+			that encloses all tabs</td>
+		</tr>
+		<tr>
+			<td><code>useCookie</code></td>
+			<td><code>Boolean</code></td>
+			<td>Is used to decide if the selected tab page index should be
+			persisted using a cookie.</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Remarks</h3>
+<p>None.</p>
+<h2>WebFXTabPage</h2>
+<p>This is the class representing a tab page.</p>
+<h3>Syntax</h3>
+<p><code> new WebFXTabPage(<span class="methodArgument">oElement</span>,
+<span class="methodArgument">oTabPane</span>, <span
+	class="methodArgument">nIndex</span>)</code></p>
+<h3>Parameters</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Type</td>
+			<td>Descripton</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>oElement</code></td>
+			<td><code>HTMLElement</code></td>
+			<td>The html element that represents the tab page</td>
+		</tr>
+		<tr>
+			<td><code>oTabPane</code></td>
+			<td><code>WebFXTabPane</code></td>
+			<td>The tab pane to add the page to</td>
+		</tr>
+		<tr>
+			<td><code>nIndex</code></td>
+			<td><code>Number</code></td>
+			<td>The index of the tab page</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Static Methods</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="2">None.</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Static Fields</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Type</td>
+			<td>Descripton</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="3">None.</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Methods</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">hide</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code><span class="object">object</span>.hide()</code></p>
+			<h4>Arguments</h4>
+			<p>No Arguments.</p>
+			<h4>Return Type</h4>
+			<p><code>void</code></p>
+			</div>
+			</div>
+			</td>
+			<td>Hides the tab page</td>
+		</tr>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">select</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code><span class="object">object</span>.select()</code></p>
+			<h4>Arguments</h4>
+			<p>No Arguments.</p>
+			<h4>Return Type</h4>
+			<p><code>void</code></p>
+			</div>
+			</div>
+			</td>
+			<td>Selects the tab page</td>
+		</tr>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">show</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code><span class="object">object</span>.show()</code></p>
+			<h4>Arguments</h4>
+			<p>No Arguments.</p>
+			<h4>Return Type</h4>
+			<p><code>void</code></p>
+			</div>
+			</div>
+			</td>
+			<td>Makes the tab page visible</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Fields</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Type</td>
+			<td>Descripton</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>element</code></td>
+			<td><code>HTMLElement</code></td>
+			<td><span class="readOnly">Read only.</span>The html element
+			being used as the page</td>
+		</tr>
+		<tr>
+			<td><code>index</code></td>
+			<td><code>Number</code></td>
+			<td><span class="readOnly">Read only.</span> The index of the
+			tab page in the tab pane pages array.</td>
+		</tr>
+		<tr>
+			<td><code>tab</code></td>
+			<td><code>HTMLElement</code></td>
+			<td><span class="readOnly">Read only.</span>The html element
+			being used as the tab.</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Remarks</h3>
+<p>Do not use this constructor manually. Use addTabPage of the
+WebFXTabPane class instead.</p>
+<h2>Globals</h2>
+<h3>Functions</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Description</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">hasSupport</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code>hasSupport()</code></p>
+			<h4>Arguments</h4>
+			<p>No Arguments.</p>
+			<h4>Return Type</h4>
+			<p><code>Boolean</code></p>
+			</div>
+			</div>
+			</td>
+			<td>Returns whether the browser is supported or not</td>
+		</tr>
+		<tr>
+			<td><a class="helpLink" href="javascript://"
+				onclick="toggleMethodArguments( event, this ); return false;">setupAllTabs</a>
+			<div class="methodContainer">
+			<div class="methodInfo">
+			<h4>Syntax</h4>
+			<p><code>setupAllTabs()</code></p>
+			<h4>Arguments</h4>
+			<p>No Arguments.</p>
+			<h4>Return Type</h4>
+			<p><code>void</code></p>
+			</div>
+			</div>
+			</td>
+			<td>Initializes all tab panes and tab pages that have not been
+			initialized already.</td>
+		</tr>
+	</tbody>
+</table>
+<h3>Objects</h3>
+<table>
+	<thead>
+		<tr>
+			<td>Name</td>
+			<td>Type</td>
+			<td>Descripton</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="3">None.</td>
+		</tr>
+	</tbody>
+</table>
+<!-- end main output --></div>
+<!-- end api tab --> <!-- begin implementation tab -->
+<div class="tab-page" id="implementation-page">
+<h2 class="tab">Implementation</h2>
+
+<script type="text/javascript">
+tabPane.addTabPage( document.getElementById( "implementation-page" ) );
+</script>
+
+<h3>Check for support</h3>
+
+<p>The way to check the browser whether it support a certain feature
+in the DOM is to use the method <code>document.implementation.hasFeature</code>.
+However since IE5.5 supports all the features that this script needs but
+it does not support this way of checking for support we have to add a
+separate check for IE55.</p>
+
+<pre>
+function hasSupport() {
+
+   if (typeof hasSupport.support != "undefined")
+      return hasSupport.support;
+
+   var ie55 = /msie 5\.[56789]/i.test( navigator.userAgent );
+
+   hasSupport.support = ( typeof document.implementation != "undefined" &amp;&amp;
+         document.implementation.hasFeature( "html", "1.0" ) || ie55 )
+
+   // IE55 has a serious DOM1 bug... Patch it!
+   if ( ie55 ) {
+      document._getElementsByTagName = document.getElementsByTagName;
+      document.getElementsByTagName = function ( sTagName ) {
+         if ( sTagName == "*" )
+            return document.all;
+         else
+            return document._getElementsByTagName( sTagName );
+      };
+   }
+
+   return hasSupport.support;
+}
+</pre>
+
+<p>As you can see in the code above IE55 has a bug an therefore we
+also patch that. Too many people are still using IE55 to just ignore it.</p>
+
+<h3>WebFXTabPane</h3>
+
+<p>The constructor for the tab pane creates the <code>tabRow</code>
+div that is used to place all the actual tabs in. It also checks the
+cookie state so that the selected tab can be persisted. Besides from
+this it sets up some properties needed to keep track of the states. Last
+but not least it checks the <code>childNodes</code> of the element and
+adds the found tab pages.</p>
+
+<pre>
+function WebFXTabPane( el, bUseCookie ) {
+   if ( !hasSupport() || el == null ) return;
+
+   this.element = el;
+   this.element.tabPane = this;
+   this.pages = [];
+   this.selectedIndex = null;
+   this.useCookie = bUseCookie != null ? bUseCookie : true;
+
+   // add class name tag to class name
+   this.element.className = this.classNameTag + " " + this.element.className;
+
+   // add tab row
+   this.tabRow = document.createElement( "div" );
+   this.tabRow.className = "tab-row";
+   el.insertBefore( this.tabRow, el.firstChild );
+
+   var tabIndex = 0;
+   if ( this.useCookie ) {
+      tabIndex = Number( WebFXTabPane.getCookie( "webfxtab_" + this.element.id ) );
+      if ( isNaN( tabIndex ) )
+         tabIndex = 0;
+   }
+   this.selectedIndex = tabIndex;
+
+   // loop through child nodes and add them
+   var cs = el.childNodes;
+   var n;
+   for (var i = 0; i &lt; cs.length; i++) {
+      if (cs[i].nodeType == 1 &amp;&amp; cs[i].className == "tab-page") {
+         this.addTabPage( cs[i] );
+      }
+   }
+}
+</pre>
+
+<p>There are a few methods added to the <code>WebFXTabPane</code>
+class and one of the more important ones is the method <code>addTabPage</code>.
+This method takes the element that represents the tab page and uses that
+to create a <code>WebFXTabPage</code> object that is added to the <code>pages</code>
+array. Once the tab page has been added it also checks if this page is
+the selected one and if it is it shows it.</p>
+
+<pre>
+WebFXTabPane.prototype = {
+
+   ...
+
+   addTabPage:   function ( oElement ) {
+      if ( !hasSupport() ) return;
+
+      if ( oElement.tabPage == this )   // already added
+         return oElement.tabPage;
+
+      var n = this.pages.length;
+      var tp = this.pages[n] = new WebFXTabPage( oElement, this, n );
+      tp.tabPane = this;
+
+      // move the tab out of the box
+      this.tabRow.appendChild( tp.tab );
+
+      if ( n == this.selectedIndex )
+         tp.show();
+      else
+         tp.hide();
+
+      return tp;
+   }
+};
+</pre>
+
+<h3>WebFXTabPage</h3>
+
+<p>This class is used to keep track of the actual tab page. Once
+created it moves the tab element to the <code>tabRow</code> of the tab
+pane. It also adds an anchor around the text so that the user can use
+the keyboard to activate the tabs.</p>
+
+<pre>
+function WebFXTabPage( el, tabPane, nIndex ) {
+   if ( !hasSupport() || el == null ) return;
+
+   this.element = el;
+   this.element.tabPage = this;
+   this.index = nIndex;
+
+   var cs = el.childNodes;
+   for (var i = 0; i &lt; cs.length; i++) {
+      if (cs[i].nodeType == 1 &amp;&amp; cs[i].className == "tab") {
+         this.tab = cs[i];
+         break;
+      }
+   }
+
+   // insert a tag around content to support keyboard navigation
+   var a = document.createElement( "A" );
+   a.href = "javascript:void 0;";
+   while ( this.tab.hasChildNodes() )
+      a.appendChild( this.tab.firstChild );
+   this.tab.appendChild( a );
+
+   // hook up events, using DOM0
+   var oThis = this;
+   this.tab.onclick = function () { oThis.select(); };
+   this.tab.onmouseover = function () { WebFXTabPage.tabOver( oThis ); };
+   this.tab.onmouseout = function () { WebFXTabPage.tabOut( oThis ); };
+}
+</pre>
+
+<h3>Initialization</h3>
+
+<p>The initialization uses the global function <code>setupAllTabs</code>
+that goes through all elements and checks their class names and if the
+class names match the classes used by the tab pane controls it checks
+whether this element belongs to an uninitialized control and in that
+case it initializes it now.</p>
+
+<pre>
+function setupAllTabs() {
+   if ( !hasSupport() ) return;
+
+   var all = document.getElementsByTagName( "*" );
+   var l = all.length;
+   var tabPaneRe = /tab\-pane/;
+   var tabPageRe = /tab\-page/;
+   var cn, el;
+   var parentTabPane;
+
+   for ( var i = 0; i &lt; l; i++ ) {
+      el = all[i]
+      cn = el.className;
+
+      // no className
+      if ( cn == "" ) continue;
+
+      // uninitiated tab pane
+      if ( tabPaneRe.test( cn ) &amp;&amp; !el.tabPane )
+         new WebFXTabPane( el );
+
+      // unitiated tab page wit a valid tab pane parent
+      else if ( tabPageRe.test( cn ) &amp;&amp; !el.tabPage &amp;&amp;
+               tabPaneRe.test( el.parentNode.className ) ) {
+         el.parentNode.tabPane.addTabPage( el );
+      }
+   }
+}
+</pre>
+
+<p>This function can be called manually at any time but the script
+makes hooks to the <code>load</code> event for the window. This is done
+using DOM level 2 events if available. If not we test if it supports the
+IE5 way of attaching events and last we fall back on classic way of
+setting events.</p>
+
+<pre>
+// DOM2
+if ( typeof window.addEventListener != "undefined" )
+   window.addEventListener( "load", setupAllTabs, false );
+
+// IE
+else if ( typeof window.attachEvent != "undefined" )
+   window.attachEvent( "onload", setupAllTabs );
+
+else {
+   if ( window.onload != null ) {
+      var oldOnload = window.onload;
+      window.onload = function ( e ) {
+         oldOnload( e );
+         setupAllTabs();
+      };
+   }
+   else
+      window.onload = setupAllTabs;
+}
+</pre></div>
+<!-- end implementation tab --> <!-- begin look and feel tab -->
+<div class="tab-page" id="look-page">
+<h2 class="tab">Look &amp; Feel</h2>
+
+<script type="text/javascript">
+tabPane.addTabPage( document.getElementById( "look-page" ) );
+</script>
+
+
+<h3>The structure</h3>
+
+<p>To be able to change the look and feel one needs to understand
+the structure of the tab pane. When the original XHTML source tree is
+transformed into the tab pane the class name of the element representing
+the tab pane is tagged with the property <code>classNameTag</code>. The
+default tag is <code>dynamic-tab-pane-control</code> and therefore all
+your css rules should take this into account. If you want different look
+on different tab panes in the same document this tag can be changed to
+make the css rules easier to set up.</p>
+
+<pre>
+&lt;div class="dynamic-tab-pane-control tab-pane" id="tab-pane-1"&gt;
+   &lt;div class="tab-row"&gt;
+      &lt;h2 class="tab selected"&gt;&lt;a ... &gt;General&lt;/a&gt;&lt;/h2&gt;
+      &lt;h2 class="tab hover"&gt;&lt;a ... &gt;Privacy&lt;/a&gt;&lt;/h2&gt;
+   &lt;/div&gt;
+   &lt;div class="tab-page"&gt;
+
+      This is text of tab 1. This is text of tab 1.
+      This is text of tab 1. This is text of tab 1.
+
+   &lt;/div&gt;
+
+   &lt;div class="tab-page"&gt;
+
+      This is text of tab 2. This is text of tab 2.
+      This is text of tab 2. This is text of tab 2.
+
+   &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+
+<p>The selected tab will have the class name <code>tab
+selected</code> and the tab that the mouse hovers over will have the class name
+<code>tab hover</code>. If the selected tab is hovered it will have the
+class name <code>tab selected hover</code>. These rules allow you to
+differentiate the look of tabs between the different states.</p>
+
+<h3>The CSS Rules</h3>
+
+<p>Here we will walk through the <a href="css/tab.winclassic.css">Windows
+Classic css file</a>. First we set the width and position of the tab pane to
+prevent a few rendering bugs in IE6.</p>
+
+<pre>
+.dynamic-tab-pane-control.tab-pane {
+   position:        relative;
+   width:           100%;
+}
+
+.dynamic-tab-pane-control .tab-row {
+   z-index:         1;
+   white-space:     nowrap;
+}
+</pre>
+
+<p>Then we setup the css for the tab. Notice how the position is set
+to relative to allow the top position to be slightly changed and to
+allow the z-index property to be changed to position the tabs below the
+tab pages.</p>
+
+<pre>
+.dynamic-tab-pane-control .tab-row .tab {
+   font:            Menu;
+   cursor:          Default;
+   display:         inline;
+   margin:          1px -2px 1px 2px;
+   float:           left;
+   padding:         2px 5px 3px 5px;
+   background:      ThreeDFace;
+   border:          1px solid;
+   border-color:    ThreeDHighlight ThreeDDarkShadow
+                    ThreeDDarkShadow ThreeDHighlight;
+   border-bottom:   0;
+   z-index:         1;
+   position:        relative;
+   top:             0;
+}
+</pre>
+
+<p>For the selected tab we set the z-index to 3 to put it above the
+tab pages. We also move it a little and change some other properties to
+make it look more like the classic window tab control.</p>
+
+<pre>
+.dynamic-tab-pane-control .tab-row .tab.selected {
+   border-bottom:   0;
+   z-index:         3;
+   padding:         2px 6px 5px 7px;
+   margin:          1px -3px -2px 0px;
+   top:             -2px;
+}
+</pre>
+
+<p>Then we override the text properties on the tabs as well as for
+the <code>.hover</code> rule.</p>
+
+<pre>
+.dynamic-tab-pane-control .tab-row .tab a {
+   font:            Menu;
+   color:           WindowText;
+   text-decoration: none;
+   cursor:          default;
+}
+
+.dynamic-tab-pane-control .tab-row .hover a {
+   color:           blue;
+}
+</pre>
+
+<p>Then we set the z-index for the tab pages to 2 so that it will be
+shown above tabs but below the selected tab. We also set the borders and
+and a few other properties.</p>
+
+<pre>
+.dynamic-tab-pane-control .tab-page {
+   clear:           both;
+   border:          1px solid;
+   border-color:    ThreeDHighlight ThreeDDarkShadow
+                    ThreeDDarkShadow ThreeDHighlight;
+   background:      ThreeDFace;
+   z-index:         2;
+   position:        relative;
+   top:             -2px;
+   color:           WindowText;
+   font:            MessageBox;
+   font:            Message-Box;
+   padding:         10px;
+}
+</pre></div>
+<!-- end look and feel tab --></div>
+<!-- end tab pane -->
+
+
+<p><a href="javascript:showArticleTab( 'main' )">Tab Pane</a><br />
+<a href="javascript:showArticleTab( 'usage' )">Usage</a><br />
+<a href="javascript:showArticleTab( 'api' )">API</a><br />
+<a href="javascript:showArticleTab( 'implementation' )">Implementation</a><br />
+<a href="javascript:showArticleTab( 'looknfeel' )">Look &amp; Feel</a><br />
+<a href="demo.html">Demo</a><br />
+<a href="http://webfx.eae.net/download/tabpane102.zip">Download</a></p>
+
+<p class="author">Author: Erik Arvidsson</p>
+
+<!-- end webfx-main-body --></div>
+
+</body>
+</html>

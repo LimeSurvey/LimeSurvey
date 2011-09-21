@@ -1,6 +1,7 @@
 //$Id$    
 
 $(document).ready(function(){
+    setupAllTabs();
     if(typeof(userdateformat) !== 'undefined') 
     {
         $(".popupdate").datepicker({ dateFormat: userdateformat,  

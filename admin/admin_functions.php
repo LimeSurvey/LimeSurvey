@@ -335,7 +335,8 @@ function getAdminHeader($meta=false)
     {
         $strAdminHeader.=$meta;
     }
-    $strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n"
+    $strAdminHeader.="<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n";
+    $strAdminHeader.= "<script type=\"text/javascript\" src=\"{$homeurl}/scripts/tabpane/js/tabpane.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery-ui.js\"></script>\n"
     . "<script type=\"text/javascript\" src=\"{$rooturl}/scripts/jquery/jquery.qtip.js\"></script>\n"
