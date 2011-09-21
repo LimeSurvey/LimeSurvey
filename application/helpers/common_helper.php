@@ -7992,14 +7992,11 @@ function getlabelsets($languages=null)
 
 function getHeader($meta = false)
 {
-    global $embedded, $surveyid; //, $rooturl,$defaultlang, $js_header_includes, $css_header_includes;
+    global $embedded, $surveyid;
 
     $CI =& get_instance();
     $CI->load->helper('surveytranslator');
     $clang = $CI->limesurvey_lang;
-
-    //$js_header_includes = array_unique($CI->config->item("js_admin_includes"));
-    //$css_header_includes = array_unique($CI->config->item("css_admin_includes"));
 
     if ($CI->session->userdata('s_lang'))
     {

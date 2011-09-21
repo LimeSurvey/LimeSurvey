@@ -215,7 +215,7 @@
                 <span class='statusentryhighlight'>
                 <?php echo $clang->gT("Warning"); ?>: <a href='<?php echo site_url('admin/question/answeroptions/'.$surveyid."/".$gid."/".$qid); ?>'><?php echo $clang->gT("You need to add answer options to this question"); ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/answers_20.png' title='
-                <?php echo $clang->gT("Edit answer options for this question"); ?>' name='EditThisQuestionAnswers'/></span></td></tr>
+                <?php echo $clang->gT("Edit answer options for this question"); ?>' name='EditThisQuestionAnswers'/></a></span></td></tr>
             <?php }
 
 
@@ -225,7 +225,7 @@
                 <span class='statusentryhighlight'>
                 <?php echo $clang->gT("Warning"); ?>: <a href='<?php echo site_url('admin/question/subquestions/'.$surveyid."/".$gid."/".$qid); ?>'><?php echo $clang->gT("You need to add subquestions to this question"); ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/subquestions_20.png' title='
-                <?php echo $clang->gT("Edit subquestions for this question"); ?>' name='EditThisQuestionAnswers' /></span></td></tr>
+                <?php echo $clang->gT("Edit subquestions for this question"); ?>' name='EditThisQuestionAnswers' /></a></span></td></tr>
             <?php }
 
             if ($qrrow['type'] == "M" or $qrrow['type'] == "P")

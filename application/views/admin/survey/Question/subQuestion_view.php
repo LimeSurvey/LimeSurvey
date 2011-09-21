@@ -21,23 +21,26 @@
 <input type='hidden' id='action' name='action' value='updatesubquestions' />
 <input type='hidden' id='sortorder' name='sortorder' value='' />
 <input type='hidden' id='deletedqids' name='deletedqids' value='' />
-<div class='tab-pane' id='tab-pane-assessments-<?php echo $surveyid; ?>'>
+<div id='tabs'>
+<ul>
+    <?php foreach ($anslangs as $anslang)
+    { ?>
+        <li><a href='#tabpage_<?php echo $anslang; ?>'><?php echo getLanguageNameFromCode($anslang, false); ?>
+        <?php if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) { ?> (<?php echo $clang->gT("Base Language"); ?>) <?php } ?></a>
+        </li>
+    <?php } ?>
+</ul>
 <?php
 $first=true;
 $sortorderids='';
 $codeids='';
 ?>
-<div id='xToolbar'>
-</div>
+
         <?php foreach ($anslangs as $anslang)
         { ?>
-            <div class='tab-page' id='tabpage_<?php echo $anslang; ?>'>
-            <h2 class='tab'><?php echo getLanguageNameFromCode($anslang, false); ?>
-            <?php if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) { ?> (<?php echo $clang->gT("Base Language"); ?>) <?php } ?>
-            </h2>
-    
+            <div id='tabpage_<?php echo $anslang; ?>'>
             <?php for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
-            { 
+            {
                 $position=0;
                 if ($scalecount>1)
                 {
@@ -45,13 +48,13 @@ $codeids='';
                     { ?>
                         <div class='header ui-widget-header'>
                             <?php echo $clang->gT("Y-Scale"); ?></div>
-                    <?php } 
+                    <?php }
                     else
                     { ?>
                         <div class='header ui-widget-header'>
                         <?php echo $clang->gT("X-Scale"); ?></div>
                     <?php }
-                } 
+                }
                 $query = "SELECT * FROM ".$this->db->dbprefix."questions WHERE parent_qid='{$qid}' AND language='{$anslang}' AND scale_id={$scale_id} ORDER BY question_order, title";
                 $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
                 $anscount = $result->num_rows();
@@ -69,16 +72,16 @@ $codeids='';
                 <tbody align='center'>
                 <?php $alternate=false;
                 foreach ($result->result_array() as $row)
-                { 
+                {
                     $row['title'] = htmlspecialchars($row['title']);
                     $row['question']=htmlspecialchars($row['question']);
-    
+
                     if ($first) {$codeids=$codeids.' '.$row['question_order'];}
                     ?>
                     <tr id='row_<?php echo $row['language']; ?>_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>'
                     <?php if ($alternate==true)
                     { ?>
-                         class="highlight" 
+                         class="highlight"
                         <?php $alternate=false;
                     }
                     else
@@ -87,7 +90,7 @@ $codeids='';
                     }
                     ?>
                      ><td align='right'>
-    
+
                     <?php if ($activated == 'Y' ) // if activated
                     { ?>
                         &nbsp;</td><td><input type='hidden' name='code_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['title']; ?>" maxlength='5' size='5'
@@ -98,27 +101,27 @@ $codeids='';
                         <img class='handle' src='<?php echo $this->config->item('imageurl')?>/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' name='oldcode_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['title']; ?>" /><input type='text' id='code_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' class='code' name='code_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['title']; ?>" maxlength='5' size='5'
                          onkeypress=" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')"
                          />
-    
+
                     <?php }
                     else
                     { ?>
                         </td><td><?php echo $row['title']; ?>
-    
+
                     <?php } ?>
-                    
+
                     </td><td>
                     <input type='text' size='100' id='answer_<?php echo $row['language']; ?>_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' name='answer_<?php echo $row['language']; ?>_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['question']; ?>" onkeypress=" if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
                     <?php echo  getEditor("editanswer","answer_".$row['language']."_".$row['qid']."_{$row['scale_id']}", "[".$clang->gT("Subquestion:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
                     </td>
                     <td>
-    
-                    
+
+
                     <?php if ($activated != 'Y' && $first)
                     { ?>
                         <img src='<?php echo $this->config->item('imageurl')?>/addanswer.png' class='btnaddanswer' />
                         <img src='<?php echo $this->config->item('imageurl')?>/deleteanswer.png' class='btndelanswer' />
                     <?php } ?>
-    
+
                     </td></tr>
                     <?php $position++;
                 }
@@ -126,7 +129,7 @@ $codeids='';
                 </tbody></table>
                 <?php $disabled='';
                 if ($activated == 'Y')
-                { 
+                {
                     $disabled="disabled='disabled'";
                 } ?>
                 <button class='btnlsbrowser' id='btnlsbrowser_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php echo $clang->gT('Predefined label sets...'); ?></button>
@@ -134,9 +137,9 @@ $codeids='';
                 <?php if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_LABEL') == 1){ ?>
                     <button class='bthsaveaslabel' id='bthsaveaslabel_<?php echo $scale_id; ?>' <?php echo $disabled; ?> type='button'><?php echo $clang->gT('Save as label set'); ?></button>
                 <?php } ?>
-    
+
             <?php }
-    
+
             $first=false; ?>
             </div>
         <?php } ?>
@@ -150,7 +153,7 @@ $codeids='';
     </div>
     <div id='labelsetpreview' style='float:right;width:500px;'>
     </div>
-</div> 
+</div>
 <div id='quickadd' style='display:none;'>
     <div style='float:left;'>
         <label for='quickadd'><?php echo $clang->gT('Enter your subquestions:'); ?></label>
@@ -159,7 +162,7 @@ $codeids='';
         <button id='btnqainsert' type='button'><?php echo $clang->gT('Add'); ?></button>
         <button id='btnqacancel' type='button'><?php echo $clang->gT('Cancel'); ?></button>
     </div>
-</div> 
+</div>
 <p>
     <input type='submit' id='saveallbtn_<?php echo $anslang; ?>' name='method' value='<?php echo $clang->gT("Save changes"); ?>' />
         <?php $position=sprintf("%05d", $position); ?>
@@ -171,6 +174,6 @@ $codeids='';
             </td>
             </tr>
         <?php } ?>
-    
+
 </div>
 </form>

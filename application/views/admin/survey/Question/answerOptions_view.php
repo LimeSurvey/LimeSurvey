@@ -8,31 +8,35 @@
 <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
 <input type='hidden' name='action' value='updateansweroptions' />
 <input type='hidden' name='sortorder' value='' />
-<div class='tab-pane' id='tab-pane-answers-<?php echo $surveyid; ?>'>
 <?php $first=true; ?>
-    <div id='xToolbar'></div>
-    <script type='text/javascript'>
-        var languagecount=<?php echo count($anslangs); ?>;
-        var scalecount=<?php echo $scalecount; ?>;
-        var assessmentvisible=<?php echo $assessmentvisible?'true':'false'; ?>;
-        var newansweroption_text='<?php echo $clang->gT('New answer option','js'); ?>';
-        var strcode='<?php echo $clang->gT('Code','js'); ?>';
-        var strlabel='<?php echo $clang->gT('Label','js'); ?>';
-        var strCantDeleteLastAnswer='<?php echo $clang->gT('You cannot delete the last answer option.','js'); ?>';
-        var lsbrowsertitle='<?php echo $clang->gT('Label set browser','js'); ?>';
-        var quickaddtitle='<?php echo $clang->gT('Quick-add answers','js'); ?>';
-        var sAssessmentValue='<?php echo $clang->gT('Assessment value','js'); ?>';
-        var duplicateanswercode='<?php echo $clang->gT('Error: You are trying to use duplicate answer codes.','js'); ?>';
-        var langs='<?php echo implode(';',$anslangs); ?>';
-        var ci_path="<?php echo $this->config->item('imageurl'); ?>";
-    </script>
+<script type='text/javascript'>
+    var languagecount=<?php echo count($anslangs); ?>;
+    var scalecount=<?php echo $scalecount; ?>;
+    var assessmentvisible=<?php echo $assessmentvisible?'true':'false'; ?>;
+    var newansweroption_text='<?php echo $clang->gT('New answer option','js'); ?>';
+    var strcode='<?php echo $clang->gT('Code','js'); ?>';
+    var strlabel='<?php echo $clang->gT('Label','js'); ?>';
+    var strCantDeleteLastAnswer='<?php echo $clang->gT('You cannot delete the last answer option.','js'); ?>';
+    var lsbrowsertitle='<?php echo $clang->gT('Label set browser','js'); ?>';
+    var quickaddtitle='<?php echo $clang->gT('Quick-add answers','js'); ?>';
+    var sAssessmentValue='<?php echo $clang->gT('Assessment value','js'); ?>';
+    var duplicateanswercode='<?php echo $clang->gT('Error: You are trying to use duplicate answer codes.','js'); ?>';
+    var langs='<?php echo implode(';',$anslangs); ?>';
+    var ci_path="<?php echo $this->config->item('imageurl'); ?>";
+</script>
+<div id='tabs'>
+<ul>
+    <?php foreach ($anslangs as $anslang)
+    { ?>
+        <li><a href='#tabpage_<?php echo $anslang; ?>'><?php echo getLanguageNameFromCode($anslang, false); ?>
+        <?php if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) { ?> (<?php echo $clang->gT("Base Language"); ?>) <?php } ?></a>
+        </li>
+    <?php } ?>
+</ul>
+
     <?php foreach ($anslangs as $anslang)
         { ?>
-            <div class='tab-page' id='tabpage_<?php echo $anslang; ?>'>
-            <h2 class='tab'><?php echo getLanguageNameFromCode($anslang, false); ?>
-            <?php if ($anslang==GetBaseLanguageFromSurveyID($surveyid)) { ?>(<?php echo $clang->gT("Base Language"); ?>) <?php } ?>
-
-            </h2>
+            <div id='tabpage_<?php echo $anslang; ?>'>
 
             <?php for ($scale_id = 0; $scale_id < $scalecount; $scale_id++)
             {
@@ -63,13 +67,13 @@
                 </tr></thead>
                 <tbody align='center'>
                 <?php $alternate=true;
-                
-                
+
+
 
                 $query = "SELECT * FROM ".$this->db->dbprefix."answers WHERE qid='{$qid}' AND language='{$anslang}' and scale_id=$scale_id ORDER BY sortorder, code";
                 $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
                 $anscount = $result->num_rows();
-                
+
                 foreach ($result->result_array() as $row)
                 {
                     $row['code'] = htmlspecialchars($row['code']);
