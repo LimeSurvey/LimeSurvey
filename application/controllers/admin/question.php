@@ -197,7 +197,7 @@
         ." <ul>";
         foreach ($questlangs as $language)
         {
-            $editdefvalues .= "<li> <a href='#df_{$language}'>".getLanguageNameFromCode($language,false).'</li>';
+            $editdefvalues .= "<li> <a href='#df_{$language}'>".getLanguageNameFromCode($language,false).'</a></li>';
         }
         $editdefvalues .='</ul>';
 

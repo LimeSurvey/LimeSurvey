@@ -64,12 +64,7 @@ class Admin_Controller extends LSCI_Controller {
             updatecheck();
 		}
 
-
-		//require_once('htmleditor-functions.php');
-		//@ini_set('session.gc_maxlifetime', $sessionlifetime);     Might cause problems in client??
-
 		// Reset FileManagerContext
-		//$_SESSION['FileManagerContext']='';
 		$this->session->unset_userdata("FileManagerContext");
 
 		if (!$this->config->item("surveyid")) {$this->config->set_item("surveyid", returnglobal('sid'));}         //SurveyID

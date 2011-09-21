@@ -129,8 +129,8 @@
             <?php if ( $thisaddTitleToLinks == false) { echo "selected='selected'";} ?>
             ><?php echo $clang->gT("Off");?></option>
             </select></li>
-            <li><label for='sessionlifetime'><?php echo $clang->gT("Session lifetime (seconds):");?></label>
-            <input type='text' size='10' id='sessionlifetime' name='sessionlifetime' value="<?php echo htmlspecialchars(getGlobalSetting('sessionlifetime'));?>" /></li>
+            <li><label for='sess_expiration'><?php echo $clang->gT("Session lifetime (seconds):");?></label>
+            <input type='text' size='10' id='sess_expiration' name='sess_expiration' value="<?php echo htmlspecialchars(getGlobalSetting('sess_expiration'));?>" /></li>
             <li><label for='ipInfoDbAPIKey'><?php echo $clang->gT("IP Info DB API Key:");?></label>
             <input type='text' size='35' id='ipInfoDbAPIKey' name='ipInfoDbAPIKey' value="<?php echo htmlspecialchars(getGlobalSetting('ipInfoDbAPIKey'));?>" /></li>
             <li><label for='googleMapsAPIKey'><?php echo $clang->gT("Google Maps API key:");?></label>

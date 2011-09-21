@@ -74,17 +74,6 @@ $config['showpopups']         =   1;                // Show popup messages if ma
 
 $config['maxemails']          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
-
-// Session options
-
-// $sessionlifetime sets how long until a survey session expires in seconds
-//$sessionlifetime    =  3600;
-// $sessionhandler can be either 'file' or 'db'. (default: 'file').
-// Generally you don't want to change that unless you are using LimeSurvey on load-balanced servers
-//$sessionhandler     =  'file';
-
-
-
 // Support for Fancy URLs
 //
 // This new feature makes survey URLs more readable

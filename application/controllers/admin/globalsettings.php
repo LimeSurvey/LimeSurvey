@@ -29,14 +29,14 @@ class GlobalSettings extends Admin_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	function index()
 	{
 		if($this->session->userdata('USER_RIGHT_CONFIGURATOR') == 1)
         {
 			if($this->input->post("action"))
 			{
-				self::_savesettings();	
+				self::_savesettings();
 			}
 			self::_display();
 		}
@@ -45,7 +45,7 @@ class GlobalSettings extends Admin_Controller {
            //include("access_denied.php");
         }
 	}
-	
+
 	function showphpinfo()
 	{
 		if($this->session->userdata('USER_RIGHT_CONFIGURATOR') == 1)
@@ -53,14 +53,14 @@ class GlobalSettings extends Admin_Controller {
 			phpinfo();
 		}
 	}
-	
+
 	function _display()
 	{
 
 		$clang = $this->limesurvey_lang;
-		
+
 		self::_js_admin_includes(base_url()."scripts/admin/globalsettings.js");
-			
+
 		$data['title']="hi";
 		$data['message']="message";
 		$data['checksettings'] = self::_checksettings();
@@ -68,14 +68,14 @@ class GlobalSettings extends Admin_Controller {
 		$data['updatelastcheck'] = $this->config->item("updatelastcheck");
 		$data['updateavailable'] = $this->config->item("updateavailable");
 		$data['updateinfo'] = $this->config->item("updateinfo");
-						
+
 		self::_getAdminHeader();
 		self::_showadminmenu();
 		$this->load->view('admin/globalsettings', $data);
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
 	}
-		
+
 	function _savesettings()
 	{
 	    $clang = $this->limesurvey_lang;
@@ -105,7 +105,7 @@ class GlobalSettings extends Admin_Controller {
 	      	    setGlobalSetting('bounceaccounttype',strip_tags(returnglobal('bounceaccounttype')));
 	            setGlobalSetting('bounceencryption',strip_tags(returnglobal('bounceencryption')));
 	            setGlobalSetting('bounceaccountuser',strip_tags(returnglobal('bounceaccountuser')));
-	       
+
 		    if (returnglobal('bounceaccountpass')!='enteredpassword')
 	            {
 	                setGlobalSetting('bounceaccountpass',strip_tags(returnglobal('bounceaccountpass')));
@@ -124,11 +124,11 @@ class GlobalSettings extends Admin_Controller {
 	            $repeatheadingstemp=(int)($this->input->post('repeatheadings'));
 	            if ($repeatheadingstemp==0)  $repeatheadingstemp=25;
 	            setGlobalSetting('repeatheadings',$repeatheadingstemp);
-	
+
 	            setGlobalSetting('maxemails',sanitize_int($maxemails));
-	            $sessionlifetimetemp=(int)($this->input->post('sessionlifetime'));
-	            if ($sessionlifetimetemp==0)  $sessionlifetimetemp=3600;
-	            setGlobalSetting('sessionlifetime',$sessionlifetimetemp);
+	            $iSessionExpirationTime=(int)($this->input->post('sess_expiration'));
+	            if ($iSessionExpirationTime==0)  $iSessionExpirationTime=3600;
+	            setGlobalSetting('sess_expiration',$iSessionExpirationTime);
 	            setGlobalSetting('ipInfoDbAPIKey',$this->input->post('ipInfoDbAPIKey'));
 	            setGlobalSetting('googleMapsAPIKey',$this->input->post('googleMapsAPIKey'));
 	            setGlobalSetting('force_ssl',$this->input->post('force_ssl'));
@@ -138,7 +138,7 @@ class GlobalSettings extends Admin_Controller {
 	            setGlobalSetting('timeadjust',$savetime);
 	            setGlobalSetting('usepdfexport',strip_tags($this->input->post('usepdfexport')));
 	            setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($this->input->post('usercontrolSameGroupPolicy')));
-	
+
 	            $this->session->set_userdata('flashmessage',$clang->gT("Global settings were saved."));
 	        }
 	    }
@@ -151,10 +151,10 @@ class GlobalSettings extends Admin_Controller {
 	    //GET NUMBER OF SURVEYS
 	    $this->load->model(("surveys_model"));
 	    $this->load->model(("users_model"));
-		
+
 		$databasename = $this->db->database;
-		//var_dump($databasename);	
-			
+		//var_dump($databasename);
+
 	    //$query = "SELECT count(sid) FROM ".db_table_name('surveys');
 		$query = $this->surveys_model->getSomeRecords(array("count(sid)"));
 	    //$surveycount=$connect->GetOne($query);   //Checked
@@ -173,10 +173,10 @@ class GlobalSettings extends Admin_Controller {
 	    $usercount=$query->row_array();
 		$usercount=$usercount['count(users_name)'];
 		//var_dump($usercount);
-			
+
 	    if ($activesurveycount==false) $activesurveycount=0;
 	    if ($surveycount==false) $surveycount=0;
-	
+
 	    $tablelist = $this->db->list_tables();
 	    foreach ($tablelist as $table)
 	    {
@@ -193,7 +193,7 @@ class GlobalSettings extends Admin_Controller {
 	            $oldresultslist[]=$table;
 	        }
 	    }
-		
+
 	    if(isset($oldresultslist) && is_array($oldresultslist))
 	    {$deactivatedsurveys=count($oldresultslist);} else {$deactivatedsurveys=0;}
 	    if(isset($oldtokenlist) && is_array($oldtokenlist))
@@ -212,7 +212,7 @@ class GlobalSettings extends Admin_Controller {
 	    . "<tr>\n"
 	    . "<th align='right'>".$clang->gT("Surveys").":</th><td>$surveycount</td>\n"
 	    . "</tr>\n"
-	    . "<tr>\n"                                               
+	    . "<tr>\n"
 	    . "<th align='right'>".$clang->gT("Active surveys").":</th><td>$activesurveycount</td>\n"
 	    . "</tr>\n"
 	    . "<tr>\n"

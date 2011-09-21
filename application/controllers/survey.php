@@ -33,7 +33,6 @@ class survey extends LSCI_Controller {
     	global $thissurvey, $thisstep;
     	global $clienttoken;
 
-
 		//Replace $_GET:
 		$arg_list = func_get_args();
 		if($arg_list[0]==__CLASS__) array_shift($arg_list);
@@ -44,7 +43,7 @@ class survey extends LSCI_Controller {
 		    }
 		}
 
-		@ini_set('session.gc_maxlifetime', $sessionlifetime);
+		@ini_set('session.gc_maxlifetime', $this->config->item('sess_expiration'));
 
 		//Load helpers, libraries and config vars
 		$this->load->helper("database");
@@ -98,19 +97,16 @@ class survey extends LSCI_Controller {
 		// Session name is based:
 		// * on this specific limesurvey installation (Value SessionName in DB)
 		// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
-		$usquery = "SELECT stg_value FROM ".$this->db->dbprefix("settings_global")." where stg_name='SessionName'";
-		$usresult = db_execute_assoc($usquery,'',true);          //Checked
-		if ($usresult)
+		$sSessionname=getGlobalSetting('SessionName');
+		if ($sSessionname!='')
 		{
-		    $usrow = $usresult->row_array();
-		    $stg_SessionName=$usrow['stg_value'];
 		    if ($surveyid)
 		    {
-		        @session_name($stg_SessionName.'-runtime-'.$surveyid);
+		        @session_name($sSessionname.'-runtime-'.$surveyid);
 		    }
 		    else
 		    {
-		        @session_name($stg_SessionName.'-runtime-publicportal');
+		        @session_name($sSessionname.'-runtime-publicportal');
 		    }
 		}
 		else
