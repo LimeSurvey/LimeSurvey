@@ -332,10 +332,10 @@ function setman_ranking($ia)
     $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, answer";
     $ansresult = db_execute_assoc($ansquery);  //Checked
     $anscount = $ansresult->num_rows();
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if (trim($qidattributes['max_answers'])!='') {
-        $max_answers = $qidattributes['max_answers'];
+    if (trim($aQuestionAttributes['max_answers'])!='') {
+        $max_answers = $aQuestionAttributes['max_answers'];
     }
     else
     {
@@ -410,11 +410,11 @@ function setman_multiflex($ia)
         $lset[]=$ans2row;
     }
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     foreach ($ansresult->result_array() as $ansrow)
     {
         //Don't add to mandatory list if the row is filtered out with the array_filter option
-        if (trim($qidattributes['array_filter'])!='')
+        if (trim($aQuestionAttributes['array_filter'])!='')
         {
             //This particular one may not be mandatory if it's hidden
             $selected = getArrayFiltersForQuestion($ia[0]);
@@ -432,7 +432,7 @@ function setman_multiflex($ia)
                 }
             }
         }
-        elseif (trim($qidattributes['array_filter_exclude'])!='')
+        elseif (trim($aQuestionAttributes['array_filter_exclude'])!='')
         {
             //This particular one may not be mandatory if it's hidden
             $selected = getArrayFilterExcludesForQuestion($ia[0]);
@@ -576,8 +576,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     //A bit of housekeeping to stop PHP Notices
     $answer = "";
     if (!isset($_SESSION[$ia[1]])) {$_SESSION[$ia[1]] = "";}
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    //echo "<pre>";print_r($qidattributes);echo "</pre>";
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    //echo "<pre>";print_r($aQuestionAttributes);echo "</pre>";
     //Create the question/answer html
 
     // Previously in limesurvey, it was virtually impossible to control how the start of questions were formatted.
@@ -613,7 +613,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             break;
         case 'L': //LIST drop-down/radio-button list
             $values = do_list_radio($ia);
-            if ($qidattributes['hide_tip']==0)
+            if ($aQuestionAttributes['hide_tip']==0)
             {
                 $qtitle .= "<br />\n<span class=\"questionhelp\">"
                 . $clang->gT('Choose one of the following answers').'</span>';
@@ -622,7 +622,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             break;
         case '!': //List - dropdown
             $values=do_list_dropdown($ia);
-            if ($qidattributes['hide_tip']==0)
+            if ($aQuestionAttributes['hide_tip']==0)
             {
                 $qtitle .= "<br />\n<span class=\"questionhelp\">"
                 . $clang->gT('Choose one of the following answers').'</span>';
@@ -631,7 +631,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             break;
         case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
             $values=do_listwithcomment($ia);
-            if (count($values[1]) > 1 && $qidattributes['hide_tip']==0)
+            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
             {
                 $qtitle .= "<br />\n<span class=\"questionhelp\">"
                 . $clang->gT('Choose one of the following answers').'</span>';
@@ -640,23 +640,23 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             break;
         case 'R': //RANKING STYLE
             $values=do_ranking($ia);
-            if (count($values[1]) > 1 && $qidattributes['hide_tip']==0)
+            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
             {
                 $question_text['help'] = $clang->gT("Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item.");
-                if (trim($qidattributes['min_answers'])!='')
+                if (trim($aQuestionAttributes['min_answers'])!='')
                 {
                     $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . sprintf($clang->ngT("Check at least %d item","Check at least %d items",$qidattributes['min_answers']),$qidattributes['min_answers'])."</span>";
-                    $question_text['help'] .=' '.sprintf($clang->ngT("Check at least %d item","Check at least %d items",$qidattributes['min_answers']),$qidattributes['min_answers']);
+                    . sprintf($clang->ngT("Check at least %d item","Check at least %d items",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers'])."</span>";
+                    $question_text['help'] .=' '.sprintf($clang->ngT("Check at least %d item","Check at least %d items",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers']);
                 }
             }
             break;
         case 'M': //Multiple choice checkbox
             $values=do_multiplechoice($ia);
-            if (count($values[1]) > 1 && $qidattributes['hide_tip']==0)
+            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
             {
-                $maxansw=trim($qidattributes['max_answers']);
-                $minansw=trim($qidattributes['min_answers']);
+                $maxansw=trim($aQuestionAttributes['max_answers']);
+                $minansw=trim($aQuestionAttributes['min_answers']);
                 if (!($maxansw || $minansw))
                 {
                     $qtitle .= "<br />\n<span class=\"questionhelp\">"
@@ -696,10 +696,10 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             break;
         case 'P': //Multiple choice with comments checkbox + text
             $values=do_multiplechoice_withcomments($ia);
-            if (count($values[1]) > 1 && $qidattributes['hide_tip']==0)
+            if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
             {
-                $maxansw=trim($qidattributes["max_answers"]);
-                $minansw=trim($qidattributes["min_answers"]);
+                $maxansw=trim($aQuestionAttributes["max_answers"]);
+                $minansw=trim($aQuestionAttributes["min_answers"]);
                 if (!($maxansw || $minansw))
                 {
                     $qtitle .= "<br />\n<span class=\"questionhelp\">"
@@ -729,13 +729,13 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             break;
         case '|': //File Upload
             $values=do_file_upload($ia);
-            if ($qidattributes['min_num_of_files'] != 0)
+            if ($aQuestionAttributes['min_num_of_files'] != 0)
             {
-                if (trim($qidattributes['min_num_of_files']) != 0)
+                if (trim($aQuestionAttributes['min_num_of_files']) != 0)
                 {
                     $qtitle .= "<br />\n<span class = \"questionhelp\">"
-                    .sprintf($clang->gT("At least %d files must be uploaded for this question"), $qidattributes['min_num_of_files'])."<span>";
-                    $question_text['help'] .= ' '.sprintf($clang->gT("At least %d files must be uploaded for this question"), $qidattributes['min_num_of_files']);
+                    .sprintf($clang->gT("At least %d files must be uploaded for this question"), $aQuestionAttributes['min_num_of_files'])."<span>";
+                    $question_text['help'] .= ' '.sprintf($clang->gT("At least %d files must be uploaded for this question"), $aQuestionAttributes['min_num_of_files']);
                 }
             }
             break;
@@ -933,10 +933,10 @@ function mandatory_message($ia)
                     $qrow = $qresult->row_array();
                     if ($qrow['other']=='Y')
                     {
-                        $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
-                        if (trim($qidattributes['other_replace_text'][$_SESSION['s_lang']])!='')
+                        $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+                        if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']])!='')
                         {
-                            $othertext=$qidattributes['other_replace_text'][$_SESSION['s_lang']];
+                            $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']];
                         }
                         else
                         {
@@ -1091,7 +1091,7 @@ function file_validation_popup($ia, $filenotvalidated = null)
         return false;
 }
 
-function return_timer_script($qidattributes, $ia, $disable=null) {
+function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
     global $thissurvey;
 	$CI =& get_instance();
 	$clang = $CI->limesurvey_lang;
@@ -1120,23 +1120,23 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
         }
     }
 
-    $time_limit=$qidattributes['time_limit'];
+    $time_limit=$aQuestionAttributes['time_limit'];
 
-    $disable_next=trim($qidattributes['time_limit_disable_next']) != '' ? $qidattributes['time_limit_disable_next'] : 0;
-    $disable_prev=trim($qidattributes['time_limit_disable_prev']) != '' ? $qidattributes['time_limit_disable_prev'] : 0;
-    $time_limit_action=trim($qidattributes['time_limit_action']) != '' ? $qidattributes['time_limit_action'] : 1;
-    $time_limit_message_delay=trim($qidattributes['time_limit_message_delay']) != '' ? $qidattributes['time_limit_message_delay']*1000 : 1000;
-    $time_limit_message=trim($qidattributes['time_limit_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($qidattributes['time_limit_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has expired");
-    $time_limit_warning=trim($qidattributes['time_limit_warning']) != '' ? $qidattributes['time_limit_warning'] : 0;
-    $time_limit_warning_2=trim($qidattributes['time_limit_warning_2']) != '' ? $qidattributes['time_limit_warning_2'] : 0;
-    $time_limit_countdown_message=trim($qidattributes['time_limit_countdown_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($qidattributes['time_limit_countdown_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Time remaining");
-    $time_limit_warning_message=trim($qidattributes['time_limit_warning_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($qidattributes['time_limit_warning_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $disable_next=trim($aQuestionAttributes['time_limit_disable_next']) != '' ? $aQuestionAttributes['time_limit_disable_next'] : 0;
+    $disable_prev=trim($aQuestionAttributes['time_limit_disable_prev']) != '' ? $aQuestionAttributes['time_limit_disable_prev'] : 0;
+    $time_limit_action=trim($aQuestionAttributes['time_limit_action']) != '' ? $aQuestionAttributes['time_limit_action'] : 1;
+    $time_limit_message_delay=trim($aQuestionAttributes['time_limit_message_delay']) != '' ? $aQuestionAttributes['time_limit_message_delay']*1000 : 1000;
+    $time_limit_message=trim($aQuestionAttributes['time_limit_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has expired");
+    $time_limit_warning=trim($aQuestionAttributes['time_limit_warning']) != '' ? $aQuestionAttributes['time_limit_warning'] : 0;
+    $time_limit_warning_2=trim($aQuestionAttributes['time_limit_warning_2']) != '' ? $aQuestionAttributes['time_limit_warning_2'] : 0;
+    $time_limit_countdown_message=trim($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_countdown_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Time remaining");
+    $time_limit_warning_message=trim($aQuestionAttributes['time_limit_warning_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
     $time_limit_warning_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning'> </div>", $time_limit_warning_message);
-    $time_limit_warning_display_time=trim($qidattributes['time_limit_warning_display_time']) != '' ? $qidattributes['time_limit_warning_display_time']+1 : 0;
-    $time_limit_warning_2_message=trim($qidattributes['time_limit_warning_2_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($qidattributes['time_limit_warning_2_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
+    $time_limit_warning_display_time=trim($aQuestionAttributes['time_limit_warning_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_display_time']+1 : 0;
+    $time_limit_warning_2_message=trim($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['s_lang']]) != '' ? htmlspecialchars($aQuestionAttributes['time_limit_warning_2_message'][$_SESSION['s_lang']], ENT_QUOTES) : $clang->gT("Your time to answer this question has nearly expired. You have {TIME} remaining.");
     $time_limit_warning_2_message=str_replace("{TIME}", "<div style='display: inline' id='LS_question".$ia[0]."_Warning_2'> </div>", $time_limit_warning_2_message);
-    $time_limit_warning_2_display_time=trim($qidattributes['time_limit_warning_2_display_time']) != '' ? $qidattributes['time_limit_warning_2_display_time']+1 : 0;
-    $time_limit_message_style=trim($qidattributes['time_limit_message_style']) != '' ? $qidattributes['time_limit_message_style'] : "position: absolute;
+    $time_limit_warning_2_display_time=trim($aQuestionAttributes['time_limit_warning_2_display_time']) != '' ? $aQuestionAttributes['time_limit_warning_2_display_time']+1 : 0;
+    $time_limit_message_style=trim($aQuestionAttributes['time_limit_message_style']) != '' ? $aQuestionAttributes['time_limit_message_style'] : "position: absolute;
         top: 10px;
         left: 35%;
         width: 30%;
@@ -1148,7 +1148,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 		text-align: center;
         overflow: auto;";
     $time_limit_message_style.="\n		display: none;"; //Important to hide time limit message at start
-    $time_limit_warning_style=trim($qidattributes['time_limit_warning_style']) != '' ? $qidattributes['time_limit_warning_style'] : "position: absolute;
+    $time_limit_warning_style=trim($aQuestionAttributes['time_limit_warning_style']) != '' ? $aQuestionAttributes['time_limit_warning_style'] : "position: absolute;
         top: 10px;
         left: 35%;
         width: 30%;
@@ -1160,7 +1160,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 		text-align: center;
         overflow: auto;";
     $time_limit_warning_style.="\n		display: none;"; //Important to hide time limit warning at the start
-    $time_limit_warning_2_style=trim($qidattributes['time_limit_warning_2_style']) != '' ? $qidattributes['time_limit_warning_2_style'] : "position: absolute;
+    $time_limit_warning_2_style=trim($aQuestionAttributes['time_limit_warning_2_style']) != '' ? $aQuestionAttributes['time_limit_warning_2_style'] : "position: absolute;
         top: 10px;
         left: 35%;
         width: 30%;
@@ -1172,7 +1172,7 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
 		text-align: center;
         overflow: auto;";
     $time_limit_warning_2_style.="\n		display: none;"; //Important to hide time limit warning at the start
-    $time_limit_timer_style=trim($qidattributes['time_limit_timer_style']) != '' ? $qidattributes['time_limit_timer_style'] : "position: relative;
+    $time_limit_timer_style=trim($aQuestionAttributes['time_limit_timer_style']) != '' ? $aQuestionAttributes['time_limit_timer_style'] : "position: relative;
 		width: 150px;
 		margin-left: auto;
 		margin-right: auto;
@@ -1401,16 +1401,16 @@ function return_timer_script($qidattributes, $ia, $disable=null) {
     return $output;
 }
 
-function return_array_filter_selected($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null)
+function return_array_filter_selected($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null)
 // function which returns TRUE if the given $ansrow contains a row which is selected, ie, not filtered out in previous answer
 {
 	$filter_select = TRUE;
 	if
     (
-    (trim($qidattributes['array_filter'])!='' && 		// The array filter attribute is set
+    (trim($aQuestionAttributes['array_filter'])!='' && 		// The array filter attribute is set
     $thissurvey['format'] == 'S'						// and the survey is being presented in question-by-question mode
     ) || 												// OR
-    (trim($qidattributes['array_filter'])!='' && 		// The array filter attribute is set
+    (trim($aQuestionAttributes['array_filter'])!='' && 		// The array filter attribute is set
     $thissurvey['format'] == 'G' && 					// and the survey is being presented in group-by-group mode
     getArrayFiltersOutGroup($ia[0]) == true			// and the source question for the array filter is in a different group than this question
     )
@@ -1429,12 +1429,12 @@ function return_array_filter_selected($ia, $qidattributes, $thissurvey, $ansrow,
 	}
 
 	if
-    (isset($qidattributes['array_filter_exclude']) &&
+    (isset($aQuestionAttributes['array_filter_exclude']) &&
 	(
-    (trim($qidattributes['array_filter_exclude'])!='' &&
+    (trim($aQuestionAttributes['array_filter_exclude'])!='' &&
     $thissurvey['format'] == 'S'
     ) ||
-    (trim($qidattributes['array_filter_exclude'])!='' &&
+    (trim($aQuestionAttributes['array_filter_exclude'])!='' &&
     $thissurvey['format'] == 'G' &&
     getArrayFiltersExcludesOutGroup($ia[0]) == true
     )
@@ -1455,17 +1455,17 @@ function return_array_filter_selected($ia, $qidattributes, $thissurvey, $ansrow,
 	return $filter_select;
 }
 
-function return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
+function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     /* We're just going to work out whether to do the include or exclude version of the function at this point */
-    if(isset($qidattributes['array_filter_exclude']) && trim($qidattributes['array_filter_exclude']) != '') {
-        list($html2body, $hiddenfield) = return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method, $class);
+    if(isset($aQuestionAttributes['array_filter_exclude']) && trim($aQuestionAttributes['array_filter_exclude']) != '') {
+        list($html2body, $hiddenfield) = return_array_filter_exclude_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method, $class);
     } else {
-        list($html2body, $hiddenfield) = return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method, $class);
+        list($html2body, $hiddenfield) = return_array_filter_include_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc, $valuename, $method, $class);
     }
     return array($html2body, $hiddenfield);
 }
 
-function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
+function return_array_filter_include_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     /* DO ARRAY_FILTER ATTRIBUTE
      We set the $hiddenfield for each answer, and the value of this is available to java to let javascripts
      know whether each answer is currently being displayed. $htmltbody2 determines whether the answer row
@@ -1478,11 +1478,11 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
     $htmltbody2 = '';
     $hiddenfield= '';
     if  (
-    (trim($qidattributes['array_filter'])!='' && 	// the array_filter attribute is set
+    (trim($aQuestionAttributes['array_filter'])!='' && 	// the array_filter attribute is set
     $thissurvey['format'] == 'G' && 				// and the survey is being presented group by group
     getArrayFiltersOutGroup($ia[0]) == false		// and the source question is in the same group (ie displayed on same page)
     ) ||											// OR
-    (trim($qidattributes['array_filter'])!='' &&	// the array_filter attribute is set
+    (trim($aQuestionAttributes['array_filter'])!='' &&	// the array_filter attribute is set
     $thissurvey['format'] == 'A'					// and the survey is being presented all on one page
     )
     )
@@ -1499,10 +1499,10 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
         }
     } else if
     (
-    (trim($qidattributes['array_filter'])!='' && 		// The array filter attribute is set
+    (trim($aQuestionAttributes['array_filter'])!='' && 		// The array filter attribute is set
     $thissurvey['format'] == 'S'						// and the survey is being presented in question-by-question mode
     ) || 												// OR
-    (trim($qidattributes['array_filter'])!='' && 		// The array filter attribute is set
+    (trim($aQuestionAttributes['array_filter'])!='' && 		// The array filter attribute is set
     $thissurvey['format'] == 'G' && 					// and the survey is being presented in group-by-group mode
     getArrayFiltersOutGroup($ia[0]) == true			// and the source question for the array filter is in a different group than this question
     )
@@ -1557,7 +1557,7 @@ function return_array_filter_include_strings($ia, $qidattributes, $thissurvey, $
     return array($htmltbody2, $hiddenfield);
 }
 
-function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
+function return_array_filter_exclude_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     /* DO ARRAY_FILTER_EXCLUDE ATTRIBUTE
      We set the $hiddenfield for each answer, and the value of this is available to java to let javascripts
      know whether each answer is currently being displayed. $htmltbody2 determines whether the answer row
@@ -1567,11 +1567,11 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
     $htmltbody2 = '';
     $hiddenfield= '';
     if  (
-    (trim($qidattributes['array_filter_exclude'])!='' && 	// the array_filter attribute is set
+    (trim($aQuestionAttributes['array_filter_exclude'])!='' && 	// the array_filter attribute is set
     $thissurvey['format'] == 'G' && 						// and the survey is being presented group by group
     getArrayFiltersExcludesOutGroup($ia[0]) == false		// and this question _is_ in the current group for the array filter (ie it's on the same page)
     ) ||													// OR
-    (trim($qidattributes['array_filter_exclude'])!='' &&	// the array_filter attribute is set
+    (trim($aQuestionAttributes['array_filter_exclude'])!='' &&	// the array_filter attribute is set
     $thissurvey['format'] == 'A'							// and the survey is being presented all on one page
     )
     )
@@ -1586,10 +1586,10 @@ function return_array_filter_exclude_strings($ia, $qidattributes, $thissurvey, $
         }
     } else if
     (
-    (trim($qidattributes['array_filter_exclude'])!='' &&
+    (trim($aQuestionAttributes['array_filter_exclude'])!='' &&
     $thissurvey['format'] == 'S'
     ) ||
-    (trim($qidattributes['array_filter_exclude'])!='' &&
+    (trim($aQuestionAttributes['array_filter_exclude'])!='' &&
     $thissurvey['format'] == 'G' &&
     getArrayFiltersExcludesOutGroup($ia[0]) == true
     )
@@ -1648,13 +1648,13 @@ define('SELECTED' , ' selected="selected"' , true);
 function do_boilerplate($ia)
 {
     global $js_header_includes;
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $answer='';
 
-    if (trim($qidattributes['time_limit'])!='')
+    if (trim($aQuestionAttributes['time_limit'])!='')
     {
         $js_header_includes[] = '/scripts/coookies.js';
-        $answer .= return_timer_script($qidattributes, $ia);
+        $answer .= return_timer_script($aQuestionAttributes, $ia);
     }
 
     $answer .= '<input type="hidden" name="'.$ia[1].'" id="answer'.$ia[1].'" value="" />';
@@ -1688,8 +1688,8 @@ function do_5pointchoice($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    //print_r($qidattributes);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    //print_r($aQuestionAttributes);
 	$id = 'slider'.time().rand(0,100);
     $answer = "\n<ul id=\"{$id}\">\n";
     for ($fp=1; $fp<=5; $fp++)
@@ -1714,7 +1714,7 @@ function do_5pointchoice($ia)
     }
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"".$_SESSION[$ia[1]]."\" />\n";
     $inputnames[]=$ia[1];
-    if($qidattributes['slider_rating']==1){
+    if($aQuestionAttributes['slider_rating']==1){
     	$css_header_includes[]= '/admin/scripts/rating/jquery.rating.css';
     	$js_header_includes[]='/admin/scripts/rating/jquery.rating.js';
     	$answer.='<br/><center><div id="'.$id.'div"><input type="radio" id="stars1" name="stars" class="'.$id.'st" value="1"/><input type="radio" id="stars2" name="stars" class="'.$id.'st" value="2"/><input type="radio" name="stars" id="stars3" class="'.$id.'st" value="3"/><input type="radio" id="stars4" name="stars" class="'.$id.'st" value="4"/><input type="radio" name="stars" id="stars5" class="'.$id.'st" value="5"/></div></center><br/>';
@@ -1742,7 +1742,7 @@ function do_5pointchoice($ia)
 			";
     }
 
-    if($qidattributes['slider_rating']==2){
+    if($aQuestionAttributes['slider_rating']==2){
 	    if(!isset($_SESSION[$ia[1]]) OR $_SESSION[$ia[1]]==''){
 	    	$value=1;
 	    }else{
@@ -1807,7 +1807,7 @@ function do_date($ia)
 	$CI =& get_instance();
 	$clang = $CI->limesurvey_lang;
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
     $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
 
@@ -1821,9 +1821,9 @@ function do_date($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $dateformatdetails = aGetDateFormatDataForQid($qidattributes, $thissurvey);
+    $dateformatdetails = aGetDateFormatDataForQid($aQuestionAttributes, $thissurvey);
 
-    if (trim($qidattributes['dropdown_dates'])!=0) {
+    if (trim($aQuestionAttributes['dropdown_dates'])!=0) {
         if (!empty($_SESSION[$ia[1]]))
         {
             $datetimeobj = getdate(DateTime::createFromFormat("Y-m-d H:i:s", $_SESSION[$ia[1]])->getTimeStamp());
@@ -1840,9 +1840,9 @@ function do_date($ia)
             $currentminute='';
         }
 
-        if (trim($qidattributes['dropdown_dates_minute_step'])!=0)
+        if (trim($aQuestionAttributes['dropdown_dates_minute_step'])!=0)
         {
-            $iMinuteStep = trim($qidattributes['dropdown_dates_minute_step']);
+            $iMinuteStep = trim($aQuestionAttributes['dropdown_dates_minute_step']);
         }
         else
         {
@@ -1878,7 +1878,7 @@ function do_date($ia)
                 case 'm':   $answer .= ' <select id="month'.$ia[1].'" class="month">
                                             <option value="">'.$clang->gT('Month')."</option>\n";
                 $format = ($datepart == 'n'? "%d": "%02d");
-                switch(trim($qidattributes['dropdown_dates_month_style']))
+                switch(trim($aQuestionAttributes['dropdown_dates_month_style']))
                 {
                     case 1: // full month names
                     $montharray=array(
@@ -1946,18 +1946,18 @@ function do_date($ia)
                  * yearmin = Minimum year value for dropdown list, if not set default is 1900
                  * yearmax = Maximum year value for dropdown list, if not set default is 2020
                  */
-                if (trim($qidattributes['dropdown_dates_year_min'])!='')
+                if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='')
                 {
-                    $yearmin = $qidattributes['dropdown_dates_year_min'];
+                    $yearmin = $aQuestionAttributes['dropdown_dates_year_min'];
                 }
                 else
                 {
                     $yearmin = 1970;
                 }
 
-                if (trim($qidattributes['dropdown_dates_year_max'])!='')
+                if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='')
                 {
-                    $yearmax = $qidattributes['dropdown_dates_year_max'];
+                    $yearmax = $aQuestionAttributes['dropdown_dates_year_max'];
                 }
                 else
                 {
@@ -1970,7 +1970,7 @@ function do_date($ia)
                     $yearmax = 2020;
                 }
 
-                if ($qidattributes['reverse']==1)
+                if ($aQuestionAttributes['reverse']==1)
                 {
                     $tmp = $yearmin;
                     $yearmin = $yearmax;
@@ -2065,16 +2065,16 @@ function do_date($ia)
             $dateoutput='';
         }
 
-        if (trim($qidattributes['dropdown_dates_year_min'])!='') {
-            $minyear=$qidattributes['dropdown_dates_year_min'];
+        if (trim($aQuestionAttributes['dropdown_dates_year_min'])!='') {
+            $minyear=$aQuestionAttributes['dropdown_dates_year_min'];
         }
         else
         {
             $minyear='1980';
         }
 
-        if (trim($qidattributes['dropdown_dates_year_max'])!='') {
-            $maxyear=$qidattributes['dropdown_dates_year_max'];
+        if (trim($aQuestionAttributes['dropdown_dates_year_max'])!='') {
+            $maxyear=$aQuestionAttributes['dropdown_dates_year_max'];
         }
         else
         {
@@ -2157,7 +2157,7 @@ function do_language($ia)
 // ---------------------------------------------------------------
 function do_list_dropdown($ia)
 {
-    global $dropdownthreshold, $lwcdropdowns;
+    global $dropdownthreshold;
     $CI =& get_instance();
     $dbprefix = $CI->db->dbprefix;
 	$clang = $CI->limesurvey_lang;
@@ -2170,20 +2170,20 @@ function do_list_dropdown($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if (trim($qidattributes['other_replace_text'][$_SESSION['s_lang']])!='')
+    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']])!='')
     {
-        $othertext=$qidattributes['other_replace_text'][$_SESSION['s_lang']];
+        $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
         $othertext=$clang->gT('Other:');
     }
 
-    if (trim($qidattributes['category_separator'])!='')
+    if (trim($aQuestionAttributes['category_separator'])!='')
     {
-        $optCategorySeparator = $qidattributes['category_separator'];
+        $optCategorySeparator = $aQuestionAttributes['category_separator'];
     }
 
 
@@ -2196,12 +2196,12 @@ function do_list_dropdown($ia)
     $row = $result->row_array(); $other = $row['other'];
 
     //question attribute random order set?
-    if ($qidattributes['random_order']==1)
+    if ($aQuestionAttributes['random_order']==1)
     {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
     }
     //question attribute alphasort set?
-    elseif ($qidattributes['alphasort']==1)
+    elseif ($aQuestionAttributes['alphasort']==1)
     {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
     }
@@ -2373,7 +2373,7 @@ function do_list_dropdown($ia)
     }
 
     $checkotherscript = "";
-    if (isset($other) && $other == 'Y' && $qidattributes['other_comment_mandatory']==1)
+    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
     {
         $checkotherscript = "\n<script type='text/javascript'>\n"
         . "\t<!--\n"
@@ -2412,7 +2412,7 @@ function do_list_dropdown($ia)
 // ---------------------------------------------------------------
 function do_list_radio($ia)
 {
-    global $dropdownthreshold, $lwcdropdowns;
+    global $dropdownthreshold;
     global $thissurvey;
 	$CI =& get_instance();
     $dbprefix = $CI->db->dbprefix;
@@ -2437,7 +2437,7 @@ function do_list_radio($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
     $query = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' ";
     $result = db_execute_assoc($query);  //Checked
@@ -2447,11 +2447,11 @@ function do_list_radio($ia)
     }
 
     //question attribute random order set?
-    if ($qidattributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
     }
-    elseif ($qidattributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
+    elseif ($aQuestionAttributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
         $_SESSION['answer_order'][$ia[0]]=$ansresult;
@@ -2462,7 +2462,7 @@ function do_list_radio($ia)
     }
 
     //question attribute alphasort set?
-    elseif ($qidattributes['alphasort']==1)
+    elseif ($aQuestionAttributes['alphasort']==1)
     {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
@@ -2477,9 +2477,9 @@ function do_list_radio($ia)
 
     $anscount = count($ansresult);
 
-    if (trim($qidattributes['parent_order'])!='')
+    if (trim($aQuestionAttributes['parent_order'])!='')
     {
-        $iParentQID=(int) $qidattributes['parent_order'];
+        $iParentQID=(int) $aQuestionAttributes['parent_order'];
         $aResult=array();
         foreach ($sessionao[$iParentQID] as $aOrigRow)
         {
@@ -2496,17 +2496,17 @@ function do_list_radio($ia)
     }
 
 
-    if (trim($qidattributes['display_columns'])!='') {
-        $dcols = $qidattributes['display_columns'];
+    if (trim($aQuestionAttributes['display_columns'])!='') {
+        $dcols = $aQuestionAttributes['display_columns'];
     }
     else
     {
         $dcols= 1;
     }
 
-    if (trim($qidattributes['other_replace_text'][$_SESSION['s_lang']])!='')
+    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']])!='')
     {
-        $othertext=$qidattributes['other_replace_text'][$_SESSION['s_lang']];
+        $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
@@ -2534,7 +2534,7 @@ function do_list_radio($ia)
             $check_ans = CHECKED;
         }
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
 
         if($wrapper['item-start'] == "\t<li>\n")
         {
@@ -2571,7 +2571,7 @@ function do_list_radio($ia)
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
 
-        if ($qidattributes['other_numbers_only']==1)
+        if ($aQuestionAttributes['other_numbers_only']==1)
         {
             $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeperator.'\')"';
         }
@@ -2600,7 +2600,7 @@ function do_list_radio($ia)
             $answer_other = ' value=""';
         }
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $thisfieldname, $trbc, $myfname, "li", "other");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $thisfieldname, $trbc, $myfname, "li", "other");
 
         if($wrapper['item-start-other'] == "\t<li class=\"other\">\n")
         {
@@ -2674,7 +2674,7 @@ function do_list_radio($ia)
 
     $checkotherscript = "";
 
-    if (isset($other) && $other == 'Y' && $qidattributes['other_comment_mandatory']==1)
+    if (isset($other) && $other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1)
     {
         $checkotherscript = "<script type='text/javascript'>\n"
         . "\t<!--\n"
@@ -2707,7 +2707,7 @@ function do_list_radio($ia)
 // ---------------------------------------------------------------
 function do_listwithcomment($ia)
 {
-    global $maxoptionsize, $dropdownthreshold, $lwcdropdowns, $thissurvey;
+    global $maxoptionsize, $dropdownthreshold, $thissurvey;
 	$CI =& get_instance();
     $dbprefix = $CI->db->dbprefix;
 	$clang = $CI->limesurvey_lang;
@@ -2733,15 +2733,15 @@ function do_listwithcomment($ia)
 
     $answer = '';
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     if (!isset($maxoptionsize)) {$maxoptionsize=35;}
 
     //question attribute random order set?
-    if ($qidattributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
     }
     //question attribute alphasort set?
-    elseif ($qidattributes['alphasort']==1)
+    elseif ($aQuestionAttributes['alphasort']==1)
     {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY answer";
     }
@@ -2757,7 +2757,7 @@ function do_listwithcomment($ia)
 
     $hint_comment = $clang->gT('Please enter your comment here');
 
-    if ($lwcdropdowns == 'R' && $anscount <= $dropdownthreshold)
+    if ($aQuestionAttributes['use_dropdown'] == 0 && $anscount <= $dropdownthreshold)
     {
         $answer .= '<div class="list">
 	                    <ul>
@@ -2901,18 +2901,18 @@ function do_ranking($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $answer="";
-    if ($qidattributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
     }
     $ansresult = db_execute_assoc($ansquery);   //Checked
     $anscount= $ansresult->num_rows();
-    if (trim($qidattributes["max_answers"])!='')
+    if (trim($aQuestionAttributes["max_answers"])!='')
     {
-        $max_answers=trim($qidattributes["max_answers"]);
+        $max_answers=trim($aQuestionAttributes["max_answers"]);
     } else {
         $max_answers=$anscount;
     }
@@ -3083,9 +3083,9 @@ function do_ranking($ia)
     . "</tr>\n"
     . "\t</table>\n";
 
-    if (trim($qidattributes["min_answers"])!='')
+    if (trim($aQuestionAttributes["min_answers"])!='')
     {
-        $minansw=trim($qidattributes["min_answers"]);
+        $minansw=trim($aQuestionAttributes["min_answers"]);
         if(!isset($showpopups) || $showpopups == 0)
         {
             $answer .= "<div id='rankingminanswarning{$ia[0]}' style='display: none; color: red' class='errormandatory'>"
@@ -3172,27 +3172,27 @@ function do_multiplechoice($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if (trim($qidattributes['other_replace_text'][$_SESSION['s_lang']])!='')
+    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']])!='')
     {
-        $othertext=$qidattributes['other_replace_text'][$_SESSION['s_lang']];
+        $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
         $othertext=$clang->gT('Other:');
     }
 
-    if (trim($qidattributes['display_columns'])!='')
+    if (trim($aQuestionAttributes['display_columns'])!='')
     {
-        $dcols = $qidattributes['display_columns'];
+        $dcols = $aQuestionAttributes['display_columns'];
     }
     else
     {
         $dcols = 1;
     }
 
-    if ($qidattributes['other_numbers_only']==1)
+    if ($aQuestionAttributes['other_numbers_only']==1)
     {
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator= $sSeperator['seperator'];
@@ -3209,16 +3209,16 @@ function do_multiplechoice($ia)
     $callmaxanswscriptother = '';
     $maxanswscript = '';
 
-    $exclude_all_others_auto = trim($qidattributes["exclude_all_others_auto"]);
+    $exclude_all_others_auto = trim($aQuestionAttributes["exclude_all_others_auto"]);
 
     if ($exclude_all_others_auto=='1'){
         $autoArray['list'][]=$ia[1];
         $autoArray[$ia[1]]['parent'] = $ia[1];
     }
 
-    if (trim($qidattributes['exclude_all_others'])!='')
+    if (trim($aQuestionAttributes['exclude_all_others'])!='')
     {
-        $excludeallothers=explode(';',trim($qidattributes['exclude_all_others']));
+        $excludeallothers=explode(';',trim($aQuestionAttributes['exclude_all_others']));
         $excludeallotherscript = "
 		<script type='text/javascript'>
 		<!--
@@ -3233,9 +3233,9 @@ function do_multiplechoice($ia)
     }
 
 
-    if (((int)$qidattributes['max_answers']>0) && $exclude_all_others_auto=='0')
+    if (((int)$aQuestionAttributes['max_answers']>0) && $exclude_all_others_auto=='0')
     {
-        $maxansw=$qidattributes['max_answers'];
+        $maxansw=$aQuestionAttributes['max_answers'];
         $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
         $callmaxanswscriptother = "onkeyup='limitmaxansw_{$ia[0]}(this)'";
         $maxanswscript = "\t<script type='text/javascript'>\n"
@@ -3252,9 +3252,9 @@ function do_multiplechoice($ia)
     $minansw=0;
     $minanswscript = "";
 
-    if ((int)$qidattributes['min_answers']>0)
+    if ((int)$aQuestionAttributes['min_answers']>0)
     {
-        $minansw=trim($qidattributes["min_answers"]);
+        $minansw=trim($aQuestionAttributes["min_answers"]);
         $minanswscript = "<script type='text/javascript'>\n"
         . "\t<!--\n"
         . "oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
@@ -3268,11 +3268,11 @@ function do_multiplechoice($ia)
     $qresult = db_execute_assoc($qquery);     //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
-    if ($qidattributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
     }
-    elseif ($qidattributes['random_order']==2 && !isset($_SESSION["answer_order"][$ia[0]])) {
+    elseif ($aQuestionAttributes['random_order']==2 && !isset($_SESSION["answer_order"][$ia[0]])) {
         $ansquery = "SELECT * FROM ".$CI->db->dbprefix('questions')." WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
         $_SESSION["answer_order"]=$ansresult;
@@ -3289,14 +3289,14 @@ function do_multiplechoice($ia)
 
     $anscount = count($ansresult);
 
-    if (trim($qidattributes['exclude_all_others'])!='' && $qidattributes['random_order']==1)
+    if (trim($aQuestionAttributes['exclude_all_others'])!='' && $aQuestionAttributes['random_order']==1)
     {
         //if  exclude_all_others is set then the related answer should keep its position at all times
         //thats why we have to re-position it if it has been randomized
         $position=0;
         foreach ($ansresult as $answer)
         {
-            if ((trim($qidattributes['exclude_all_others']) != '')  &&    ($answer['title']==trim($qidattributes['exclude_all_others'])))
+            if ((trim($aQuestionAttributes['exclude_all_others']) != '')  &&    ($answer['title']==trim($aQuestionAttributes['exclude_all_others'])))
             {
                 if ($position==$answer['question_order']-1) break; //already in the right position
                 $tmp  = array_splice($ansresult, $position, 1);
@@ -3333,8 +3333,8 @@ function do_multiplechoice($ia)
         $myfname = $ia[1].$ansrow['title'];
 
         if ($exclude_all_others_auto==1){
-            if ($ansrow['title']==trim($qidattributes['exclude_all_others'])){
-                $autoArray[$ia[1]]['focus'] = $ia[1].trim($qidattributes['exclude_all_others']);
+            if ($ansrow['title']==trim($aQuestionAttributes['exclude_all_others'])){
+                $autoArray[$ia[1]]['focus'] = $ia[1].trim($aQuestionAttributes['exclude_all_others']);
             }
             else{
                 $autoArray[$ia[1]]['children'][] = $myfname;
@@ -3343,7 +3343,7 @@ function do_multiplechoice($ia)
 
         $trbc='';
         /* Check for array_filter */
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
 
         if($wrapper['item-start'] == "\t<li>\n")
         {
@@ -3440,7 +3440,7 @@ function do_multiplechoice($ia)
     if ($other == 'Y')
     {
         $myfname = $ia[1].'other';
-		list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li");
+		list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li");
         if(count($excludeallothers) > 0)
         {
             $excludeallotherscripton .= "thiselt=document.getElementById('answer{$ia[1]}othercbox');\n"
@@ -3665,9 +3665,9 @@ function do_multiplechoice_withcomments($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if ($qidattributes['other_numbers_only']==1)
+    if ($aQuestionAttributes['other_numbers_only']==1)
     {
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
@@ -3678,9 +3678,9 @@ function do_multiplechoice_withcomments($ia)
         $numbersonly = '';
     }
 
-    if (trim($qidattributes['other_replace_text'][$_SESSION['s_lang']])!='')
+    if (trim($aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']])!='')
     {
-        $othertext=$qidattributes['other_replace_text'][$_SESSION['s_lang']];
+        $othertext=$aQuestionAttributes['other_replace_text'][$_SESSION['s_lang']];
     }
     else
     {
@@ -3692,8 +3692,8 @@ function do_multiplechoice_withcomments($ia)
     $callmaxanswscriptcheckbox2 = '';
     $callmaxanswscriptother = '';
     $maxanswscript = '';
-    if (trim($qidattributes['max_answers'])!='') {
-        $maxansw=$qidattributes['max_answers'];
+    if (trim($aQuestionAttributes['max_answers'])!='') {
+        $maxansw=$aQuestionAttributes['max_answers'];
         $callmaxanswscriptcheckbox = "limitmaxansw_{$ia[0]}(this);";
         $callmaxanswscriptcheckbox2= "limitmaxansw_{$ia[0]}";
         $callmaxanswscriptother = "onkeyup=\"limitmaxansw_{$ia[0]}(this)\"";
@@ -3710,9 +3710,9 @@ function do_multiplechoice_withcomments($ia)
     // Check if the min_answers attribute is set
     $minansw=0;
     $minanswscript = "";
-    if (trim($qidattributes["min_answers"])!='')
+    if (trim($aQuestionAttributes["min_answers"])!='')
     {
-        $minansw=trim($qidattributes["min_answers"]);
+        $minansw=trim($aQuestionAttributes["min_answers"]);
         $minanswscript = "<script type='text/javascript'>\n"
         . "\t<!--\n"
         . "oldonsubmit_{$ia[0]} = document.limesurvey.onsubmit;\n"
@@ -3725,7 +3725,7 @@ function do_multiplechoice_withcomments($ia)
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."' and parent_qid=0";
     $qresult = db_execute_assoc($qquery);     //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
-    if ($qidattributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     } else {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
@@ -3752,7 +3752,7 @@ function do_multiplechoice_withcomments($ia)
         $trbc='';
         /* Check for array_filter */
 
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname, "li");
 
         if($label_width < strlen(trim(strip_tags($ansrow['question']))))
         {
@@ -3826,7 +3826,7 @@ function do_multiplechoice_withcomments($ia)
 
         if ($maxansw > 0)
         {
-            if ($qidattributes['other_comment_mandatory']==1)
+            if ($aQuestionAttributes['other_comment_mandatory']==1)
             {
                 $maxanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
             }
@@ -3838,7 +3838,7 @@ function do_multiplechoice_withcomments($ia)
 
         if ($minansw > 0)
         {
-            if ($qidattributes['other_comment_mandatory']==1)
+            if ($aQuestionAttributes['other_comment_mandatory']==1)
             {
                 $minanswscript .= "\tif (document.getElementById('answer".$myfname."').value != '' && document.getElementById('answer".$myfname2."').value != '') { count += 1; }\n";
             }
@@ -3902,8 +3902,8 @@ function do_multiplechoice_withcomments($ia)
     }
 
     $checkotherscript = "";
-    //if ($other == 'Y' && $qidattributes['other_comment_mandatory']==1) //TIBO
-    if ($other == 'Y' && $qidattributes['other_comment_mandatory']==1) //TIBO
+    //if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
+    if ($other == 'Y' && $aQuestionAttributes['other_comment_mandatory']==1) //TIBO
     {
         // Multiple choice with 'other' is a specific case as the checkbox isn't recorded into DB
         // this means that if it is cehcked We must force the end-user to enter text in the input
@@ -3949,26 +3949,26 @@ function do_file_upload($ia)
     else
         $checkconditionFunction = "noop_checkconditions";
 
-   	$qidattributes=getQuestionAttributeValues($ia[0]);
+   	$aQuestionAttributes=getQuestionAttributeValues($ia[0]);
 
     // Fetch question attributes
-    if (trim($qidattributes['max_num_of_files'])!='')
-        $_SESSION['maxfiles']=$qidattributes['max_num_of_files'];
+    if (trim($aQuestionAttributes['max_num_of_files'])!='')
+        $_SESSION['maxfiles']=$aQuestionAttributes['max_num_of_files'];
 
-    if (trim($qidattributes['min_num_of_files'])!='')
-        $_SESSION['minfiles']=$qidattributes['min_num_of_files'];
+    if (trim($aQuestionAttributes['min_num_of_files'])!='')
+        $_SESSION['minfiles']=$aQuestionAttributes['min_num_of_files'];
 
-    if (trim($qidattributes['max_filesize'])!='')
-        $_SESSION['maxfilesize']=$qidattributes['max_filesize'];
+    if (trim($aQuestionAttributes['max_filesize'])!='')
+        $_SESSION['maxfilesize']=$aQuestionAttributes['max_filesize'];
 
-    if (trim($qidattributes['allowed_filetypes'])!='')
-        $_SESSION['allowed_filetypes']=$qidattributes['allowed_filetypes'];
+    if (trim($aQuestionAttributes['allowed_filetypes'])!='')
+        $_SESSION['allowed_filetypes']=$aQuestionAttributes['allowed_filetypes'];
 
-    if (trim($qidattributes['show_title'])!='')
-        $_SESSION['show_title'] = $qidattributes['show_title'];
+    if (trim($aQuestionAttributes['show_title'])!='')
+        $_SESSION['show_title'] = $aQuestionAttributes['show_title'];
 
-    if (trim($qidattributes['show_comment'])!='')
-        $_SESSION['show_comment'] = $qidattributes['show_comment'];
+    if (trim($aQuestionAttributes['show_comment'])!='')
+        $_SESSION['show_comment'] = $aQuestionAttributes['show_comment'];
 
     $_SESSION['fieldname'] = $ia[1];
     // Basic uploader
@@ -4032,7 +4032,7 @@ function do_file_upload($ia)
     }
 
     $uploadbutton = "<h2><a id='upload_".$ia[1]."' class='upload' href='{$scriptloc}/sid/{$surveyid}/fieldname/{$ia[1]}/qid/{$ia[0]}/preview/"
-    ."{$questgrppreview}/show_title/{$qidattributes['show_title']}/show_comment/{$qidattributes['show_comment']}/pos/".($pos?1:0)."/'>" .$clang->gT('Upload files'). "</a></h2><br /><br />";
+    ."{$questgrppreview}/show_title/{$aQuestionAttributes['show_title']}/show_comment/{$aQuestionAttributes['show_comment']}/pos/".($pos?1:0)."/'>" .$clang->gT('Upload files'). "</a></h2><br /><br />";
 
     $answer =  "<script type='text/javascript'>
         var translt = {
@@ -4072,8 +4072,8 @@ function do_file_upload($ia)
                         var fieldname = "'.$ia[1].'";
                         var filecount = $("#"+fieldname+"_filecount").val();
                         var json = $("#"+fieldname).val();
-                        var show_title = "'.$qidattributes["show_title"].'";
-                        var show_comment = "'.$qidattributes["show_comment"].'";
+                        var show_title = "'.$aQuestionAttributes["show_title"].'";
+                        var show_comment = "'.$aQuestionAttributes["show_comment"].'";
                         var pos = "'.($pos ? 1 : 0).'";
                         displayUploadedFiles(json, filecount, fieldname, show_title, show_comment, pos);
                     });
@@ -4141,9 +4141,9 @@ function do_multipleshorttext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
     $answer='';
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if ($qidattributes['numbers_only']==1)
+    if ($aQuestionAttributes['numbers_only']==1)
     {
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
@@ -4153,33 +4153,33 @@ function do_multipleshorttext($ia)
     {
         $numbersonly = '';
     }
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        $maxsize=$aQuestionAttributes['maximum_chars'];
     }
     else
     {
         $maxsize=255;
     }
-    if (trim($qidattributes['text_input_width'])!='')
+    if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$qidattributes['text_input_width'];
+        $tiwidth=$aQuestionAttributes['text_input_width'];
     }
     else
     {
         $tiwidth=20;
     }
 
-    if (trim($qidattributes['prefix'][$_SESSION['s_lang']])!='') {
-        $prefix=$qidattributes['prefix'][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']])!='') {
+        $prefix=$aQuestionAttributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
 
-    if (trim($qidattributes['suffix'][$_SESSION['s_lang']])!='') {
-        $suffix=$qidattributes['suffix'][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']])!='') {
+        $suffix=$aQuestionAttributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
@@ -4196,7 +4196,7 @@ function do_multipleshorttext($ia)
         $kpclass = "";
     }
 
-    if ($qidattributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
@@ -4220,10 +4220,10 @@ function do_multipleshorttext($ia)
     }
     else
     {
-        if (trim($qidattributes['display_rows'])!='')
+        if (trim($aQuestionAttributes['display_rows'])!='')
         {
             //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
-            $drows=$qidattributes['display_rows'];
+            $drows=$aQuestionAttributes['display_rows'];
 
             //extend maximum chars if this is set to short text default of 255
             if($maxsize == 255)
@@ -4318,15 +4318,15 @@ function do_multiplenumeric($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $answer='';
     $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
     $sSeperator = $sSeperator['seperator'];
     //Must turn on the "numbers only javascript"
     $numbersonly = 'onkeypress="inputField = event.srcElement ? event.srcElement : event.target || event.currentTarget; if (inputField.value.indexOf(\''.$sSeperator.'\')>0 && String.fromCharCode(getkey(event))==\''.$sSeperator.'\') return false; return goodchars(event,\'0123456789'.$sSeperator.'\')"';
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        $maxsize=$aQuestionAttributes['maximum_chars'];
     }
     else
     {
@@ -4334,14 +4334,14 @@ function do_multiplenumeric($ia)
     }
 
     //EQUALS VALUE
-    if (trim($qidattributes['equals_num_value'])!=''){
-        $equals_num_value=$qidattributes['equals_num_value'];
+    if (trim($aQuestionAttributes['equals_num_value'])!=''){
+        $equals_num_value=$aQuestionAttributes['equals_num_value'];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
         $calculateValue[]=3;
     }
-    elseif (trim($qidattributes['num_value_equals_sgqa'])!='' && isset($_SESSION[$qidattributes['num_value_equals_sgqa']]))
+    elseif (trim($aQuestionAttributes['num_value_equals_sgqa'])!='' && isset($_SESSION[$aQuestionAttributes['num_value_equals_sgqa']]))
     {
-        $equals_num_value=$_SESSION[$qidattributes['num_value_equals_sgqa']];
+        $equals_num_value=$_SESSION[$aQuestionAttributes['num_value_equals_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(3)';
         $calculateValue[]=3;
     }
@@ -4351,13 +4351,13 @@ function do_multiplenumeric($ia)
     }
 
     //MIN VALUE
-    if (trim($qidattributes['min_num_value'])!=''){
-        $min_num_value=$qidattributes['min_num_value'];
+    if (trim($aQuestionAttributes['min_num_value'])!=''){
+        $min_num_value=$aQuestionAttributes['min_num_value'];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
         $calculateValue[]=2;
     }
-    elseif (trim($qidattributes['min_num_value_sgqa'])!='' && isset($_SESSION[$qidattributes['min_num_value_sgqa']])){
-        $min_num_value=$_SESSION[$qidattributes['min_num_value_sgqa']];
+    elseif (trim($aQuestionAttributes['min_num_value_sgqa'])!='' && isset($_SESSION[$aQuestionAttributes['min_num_value_sgqa']])){
+        $min_num_value=$_SESSION[$aQuestionAttributes['min_num_value_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(2)';
         $calculateValue[]=2;
     }
@@ -4367,13 +4367,13 @@ function do_multiplenumeric($ia)
     }
 
     //MAX VALUE
-    if (trim($qidattributes['max_num_value'])!=''){
-        $max_num_value = $qidattributes['max_num_value'];
+    if (trim($aQuestionAttributes['max_num_value'])!=''){
+        $max_num_value = $aQuestionAttributes['max_num_value'];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(1)';
         $calculateValue[]=1;
     }
-    elseif (trim($qidattributes['max_num_value_sgqa'])!='' && isset($_SESSION[$qidattributes['max_num_value_sgqa']])){
-        $max_num_value = $_SESSION[$qidattributes['max_num_value_sgqa']];
+    elseif (trim($aQuestionAttributes['max_num_value_sgqa'])!='' && isset($_SESSION[$aQuestionAttributes['max_num_value_sgqa']])){
+        $max_num_value = $_SESSION[$aQuestionAttributes['max_num_value_sgqa']];
         $numbersonlyonblur[]='calculateValue'.$ia[1].'(1)';
         $calculateValue[]=1;
     }
@@ -4382,16 +4382,16 @@ function do_multiplenumeric($ia)
         $max_num_value = 0;
     }
 
-    if (trim($qidattributes['prefix'][$_SESSION['s_lang']])!='') {
-        $prefix=$qidattributes['prefix'][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']])!='') {
+        $prefix=$aQuestionAttributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
 
-    if (trim($qidattributes['suffix'][$_SESSION['s_lang']])!='') {
-        $suffix=$qidattributes['suffix'][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']])!='') {
+        $suffix=$aQuestionAttributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
@@ -4418,26 +4418,26 @@ function do_multiplenumeric($ia)
         $numbersonly_slider = '';
     }
 
-    if (trim($qidattributes['text_input_width'])!='')
+    if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$qidattributes['text_input_width'];
+        $tiwidth=$aQuestionAttributes['text_input_width'];
     }
     else
     {
         $tiwidth=10;
     }
-    if ($qidattributes['slider_layout']==1)
+    if ($aQuestionAttributes['slider_layout']==1)
     {
         $slider_layout=true;
         $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
 
 
-        if (trim($qidattributes['slider_accuracy'])!='')
+        if (trim($aQuestionAttributes['slider_accuracy'])!='')
         {
             //$slider_divisor = 1 / $slider_accuracy['value'];
-            $decimnumber = strlen($qidattributes['slider_accuracy']) - strpos($qidattributes['slider_accuracy'],'.') -1;
+            $decimnumber = strlen($aQuestionAttributes['slider_accuracy']) - strpos($aQuestionAttributes['slider_accuracy'],'.') -1;
             $slider_divisor = pow(10,$decimnumber);
-            $slider_stepping = $qidattributes['slider_accuracy'] * $slider_divisor;
+            $slider_stepping = $aQuestionAttributes['slider_accuracy'] * $slider_divisor;
             //	error_log('acc='.$slider_accuracy['value']." div=$slider_divisor stepping=$slider_stepping");
         }
         else
@@ -4446,35 +4446,35 @@ function do_multiplenumeric($ia)
             $slider_stepping = 1;
         }
 
-        if (trim($qidattributes['slider_min'])!='')
+        if (trim($aQuestionAttributes['slider_min'])!='')
         {
-            $slider_mintext = $qidattributes['slider_min'];
-            $slider_min = $qidattributes['slider_min'] * $slider_divisor;
+            $slider_mintext = $aQuestionAttributes['slider_min'];
+            $slider_min = $aQuestionAttributes['slider_min'] * $slider_divisor;
         }
         else
         {
             $slider_mintext = 0;
             $slider_min = 0;
         }
-        if (trim($qidattributes['slider_max'])!='')
+        if (trim($aQuestionAttributes['slider_max'])!='')
         {
-            $slider_maxtext = $qidattributes['slider_max'];
-            $slider_max = $qidattributes['slider_max'] * $slider_divisor;
+            $slider_maxtext = $aQuestionAttributes['slider_max'];
+            $slider_max = $aQuestionAttributes['slider_max'] * $slider_divisor;
         }
         else
         {
             $slider_maxtext = "100";
             $slider_max = 100 * $slider_divisor;
         }
-        if (trim($qidattributes['slider_default'])!='')
+        if (trim($aQuestionAttributes['slider_default'])!='')
         {
-            $slider_default = $qidattributes['slider_default'];
+            $slider_default = $aQuestionAttributes['slider_default'];
         }
         else
         {
             $slider_default = '';
         }
-        if ($slider_default == '' && $qidattributes['slider_middlestart']==1)
+        if ($slider_default == '' && $aQuestionAttributes['slider_middlestart']==1)
         {
             $slider_middlestart = intval(($slider_max + $slider_min)/2);
         }
@@ -4483,9 +4483,9 @@ function do_multiplenumeric($ia)
             $slider_middlestart = '';
         }
 
-        if (trim($qidattributes['slider_separator'])!='')
+        if (trim($aQuestionAttributes['slider_separator'])!='')
         {
-            $slider_separator = $qidattributes['slider_separator'];
+            $slider_separator = $aQuestionAttributes['slider_separator'];
         }
         else
         {
@@ -4496,13 +4496,13 @@ function do_multiplenumeric($ia)
     {
         $slider_layout = false;
     }
-    $hidetip=$qidattributes['hide_tip'];
+    $hidetip=$aQuestionAttributes['hide_tip'];
     if ($slider_layout === true) // auto hide tip when using sliders
     {
         $hidetip=1;
     }
 
-    if ($qidattributes['random_order']==1)
+    if ($aQuestionAttributes['random_order']==1)
     {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0]  AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
@@ -4591,7 +4591,7 @@ function do_multiplenumeric($ia)
             else
             {
 
-                if ($qidattributes['slider_showminmax']==1)
+                if ($aQuestionAttributes['slider_showminmax']==1)
                 {
                     //$slider_showmin=$slider_min;
                     $slider_showmin= "\t<div id=\"slider-left-$myfname\" class=\"slider_showmin\">$slider_mintext</div>\n";
@@ -4824,24 +4824,24 @@ function do_numerical($ia)
     {
         $checkconditionFunction = "noop_checkconditions";
     }
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    if (trim($qidattributes['prefix'][$_SESSION['s_lang']])!='') {
-        $prefix=$qidattributes['prefix'][$_SESSION['s_lang']];
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']])!='') {
+        $prefix=$aQuestionAttributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
-    if (trim($qidattributes['suffix'][$_SESSION['s_lang']])!='') {
-        $suffix=$qidattributes['suffix'][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']])!='') {
+        $suffix=$aQuestionAttributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
         $suffix = '';
     }
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        $maxsize=$aQuestionAttributes['maximum_chars'];
         if ($maxsize>20)
         {
             $maxsize=20;
@@ -4851,16 +4851,16 @@ function do_numerical($ia)
     {
         $maxsize=20;  // The field length for numerical fields is 20
     }
-    if (trim($qidattributes['text_input_width'])!='')
+    if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$qidattributes['text_input_width'];
+        $tiwidth=$aQuestionAttributes['text_input_width'];
     }
     else
     {
         $tiwidth=10;
     }
 
-    if (trim($qidattributes['num_value_int_only'])==1)
+    if (trim($aQuestionAttributes['num_value_int_only'])==1)
     {
         $acomma="";
     }
@@ -4887,7 +4887,7 @@ function do_numerical($ia)
     $answer = "<p class=\"question\">\n\t$prefix\n\t<input class=\"text $kpclass\" type=\"text\" size=\"$tiwidth\" name=\"$ia[1]\" "
     . "id=\"answer{$ia[1]}\" value=\"".$_SESSION[$ia[1]]."\" alt=\"".$clang->gT('Answer')."\" onkeypress=\"return goodchars(event,'-0123456789{$acomma}')\" onchange='$checkconditionFunction(this.value, this.name, this.type)'"
     . "maxlength=\"{$maxsize}\" />\n\t{$suffix}\n</p>\n";
-    if ($qidattributes['hide_tip']==0)
+    if ($aQuestionAttributes['hide_tip']==0)
     {
         $answer .= "<p class=\"tip\">".$clang->gT('Only numbers may be entered in this field')."</p>\n";
     }
@@ -4919,9 +4919,9 @@ function do_shortfreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if ($qidattributes['numbers_only']==1)
+    if ($aQuestionAttributes['numbers_only']==1)
     {
         $sSeperator = getRadixPointData($thissurvey['surveyls_numberformat']);
         $sSeperator = $sSeperator['seperator'];
@@ -4931,31 +4931,31 @@ function do_shortfreetext($ia)
     {
         $numbersonly = '';
     }
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        $maxsize=$aQuestionAttributes['maximum_chars'];
     }
     else
     {
         $maxsize=255;
     }
-    if (trim($qidattributes['text_input_width'])!='')
+    if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$qidattributes['text_input_width'];
+        $tiwidth=$aQuestionAttributes['text_input_width'];
     }
     else
     {
         $tiwidth=50;
     }
-    if (trim($qidattributes['prefix'][$_SESSION['s_lang']])!='') {
-        $prefix=$qidattributes['prefix'][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['prefix'][$_SESSION['s_lang']])!='') {
+        $prefix=$aQuestionAttributes['prefix'][$_SESSION['s_lang']];
     }
     else
     {
         $prefix = '';
     }
-    if (trim($qidattributes['suffix'][$_SESSION['s_lang']])!='') {
-        $suffix=$qidattributes['suffix'][$_SESSION['s_lang']];
+    if (trim($aQuestionAttributes['suffix'][$_SESSION['s_lang']])!='') {
+        $suffix=$aQuestionAttributes['suffix'][$_SESSION['s_lang']];
     }
     else
     {
@@ -4970,10 +4970,10 @@ function do_shortfreetext($ia)
     {
         $kpclass = "";
     }
-    if (trim($qidattributes['display_rows'])!='')
+    if (trim($aQuestionAttributes['display_rows'])!='')
     {
         //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
-        $drows=$qidattributes['display_rows'];
+        $drows=$aQuestionAttributes['display_rows'];
 
         //extend maximum chars if this is set to short text default of 255
         if($maxsize == 255)
@@ -4999,9 +4999,9 @@ function do_shortfreetext($ia)
 
         $answer .= "</textarea>\n";
     }
-    elseif((int)($qidattributes['location_mapservice'])!=0){
+    elseif((int)($aQuestionAttributes['location_mapservice'])!=0){
 
-        $mapservice = $qidattributes['location_mapservice'];
+        $mapservice = $aQuestionAttributes['location_mapservice'];
         $currentLocation = $_SESSION[$ia[1]];
         $currentLatLong = null;
 
@@ -5014,12 +5014,12 @@ function do_shortfreetext($ia)
             $currentLatLong = array($currentLatLong[0],$currentLatLong[1]);
         }
         else{
-            if ((int)($qidattributes['location_nodefaultfromip'])==0)
+            if ((int)($aQuestionAttributes['location_nodefaultfromip'])==0)
                 $currentLatLong = getLatLongFromIp(get_current_ip_address());
             if (!isset($currentLatLong) || $currentLatLong==false){
                 $floatLat = 0;
                 $floatLng = 0;
-                $LatLong = explode(" ",trim($qidattributes['location_defaultcoordinates']));
+                $LatLong = explode(" ",trim($aQuestionAttributes['location_defaultcoordinates']));
 
                 if (isset($LatLong[0]) && isset($LatLong[1])){
                     $floatLat = $LatLong[0];
@@ -5031,19 +5031,19 @@ function do_shortfreetext($ia)
         }
         // 2 - city; 3 - state; 4 - country; 5 - postal
         $strBuild = "";
-        if ($qidattributes['location_city'])
+        if ($aQuestionAttributes['location_city'])
             $strBuild .= "2";
-        if ($qidattributes['location_state'])
+        if ($aQuestionAttributes['location_state'])
             $strBuild .= "3";
-        if ($qidattributes['location_country'])
+        if ($aQuestionAttributes['location_country'])
             $strBuild .= "4";
-        if ($qidattributes['location_postal'])
+        if ($aQuestionAttributes['location_postal'])
             $strBuild .= "5";
 
         $currentLocation = $currentLatLong[0] . " " . $currentLatLong[1];
         $answer = "
         	<script type=\"text/javascript\">
-        		zoom['$ia[1]'] = {$qidattributes['location_mapzoom']};
+        		zoom['$ia[1]'] = {$aQuestionAttributes['location_mapzoom']};
         	</script>
             <p class=\"question\">
             <input type=\"hidden\" name=\"$ia[1]\" id=\"answer$ia[1]\" value=\"".$_SESSION[$myfname]."\">
@@ -5056,17 +5056,17 @@ function do_shortfreetext($ia)
             <input type=\"hidden\" name=\"boycott_$ia[1]\" id=\"boycott_$ia[1]\"
                 value = \"{$strBuild}\" >
             <input type=\"hidden\" name=\"mapservice_$ia[1]\" id=\"mapservice_$ia[1]\"
-                class=\"mapservice\" value = \"{$qidattributes['location_mapservice']}\" >
-            <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$qidattributes['location_mapwidth']}px; height: {$qidattributes['location_mapheight']}px\"></div>";
+                class=\"mapservice\" value = \"{$aQuestionAttributes['location_mapservice']}\" >
+            <div id=\"gmap_canvas_$ia[1]_c\" style=\"width: {$aQuestionAttributes['location_mapwidth']}px; height: {$aQuestionAttributes['location_mapheight']}px\"></div>";
 
-        if ($qidattributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
+        if ($aQuestionAttributes['location_mapservice']==1 && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
             $js_header_includes[] = "https://maps.googleapis.com/maps/api/js?sensor=false";
-        else if ($qidattributes['location_mapservice']==1)
+        else if ($aQuestionAttributes['location_mapservice']==1)
             $js_header_includes[] = "http://maps.googleapis.com/maps/api/js?sensor=false";
-        elseif ($qidattributes['location_mapservice']==2)
+        elseif ($aQuestionAttributes['location_mapservice']==2)
             $js_header_includes[] = "http://www.openlayers.org/api/OpenLayers.js";
 
-	    if (isset($qidattributes['hide_tip']) && $qidattributes['hide_tip']==0)
+	    if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
             {
                 $answer .= "<br />\n<span class=\"questionhelp\">"
                 . $clang->gT('Drag and drop the pin to the desired location. You may also right click on the map to move the pin.').'</span>';
@@ -5084,10 +5084,10 @@ function do_shortfreetext($ia)
     }
 
 
-    if (trim($qidattributes['time_limit'])!='')
+    if (trim($aQuestionAttributes['time_limit'])!='')
     {
 		$js_header_includes[] = '/scripts/coookies.js';
-        $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
+        $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
     $inputnames[]=$ia[1];
@@ -5139,11 +5139,11 @@ function do_longfreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-   	$qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+   	$aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        $maxsize=$aQuestionAttributes['maximum_chars'];
     }
     else
     {
@@ -5151,9 +5151,9 @@ function do_longfreetext($ia)
     }
 
     // --> START ENHANCEMENT - DISPLAY ROWS
-    if (trim($qidattributes['display_rows'])!='')
+    if (trim($aQuestionAttributes['display_rows'])!='')
     {
-        $drows=$qidattributes['display_rows'];
+        $drows=$aQuestionAttributes['display_rows'];
     }
     else
     {
@@ -5162,9 +5162,9 @@ function do_longfreetext($ia)
     // <-- END ENHANCEMENT - DISPLAY ROWS
 
     // --> START ENHANCEMENT - TEXT INPUT WIDTH
-    if (trim($qidattributes['text_input_width'])!='')
+    if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$qidattributes['text_input_width'];
+        $tiwidth=$aQuestionAttributes['text_input_width'];
     }
     else
     {
@@ -5181,10 +5181,10 @@ function do_longfreetext($ia)
 
     $answer .= "</textarea>\n";
 
-    if (trim($qidattributes['time_limit'])!='')
+    if (trim($aQuestionAttributes['time_limit'])!='')
     {
 		$js_header_includes[] = '/scripts/coookies.js';
-        $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
+        $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
     $inputnames[]=$ia[1];
@@ -5220,11 +5220,11 @@ function do_hugefreetext($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        $maxsize=$aQuestionAttributes['maximum_chars'];
     }
     else
     {
@@ -5232,9 +5232,9 @@ function do_hugefreetext($ia)
     }
 
     // --> START ENHANCEMENT - DISPLAY ROWS
-    if (trim($qidattributes['display_rows'])!='')
+    if (trim($aQuestionAttributes['display_rows'])!='')
     {
-        $drows=$qidattributes['display_rows'];
+        $drows=$aQuestionAttributes['display_rows'];
     }
     else
     {
@@ -5243,9 +5243,9 @@ function do_hugefreetext($ia)
     // <-- END ENHANCEMENT - DISPLAY ROWS
 
     // --> START ENHANCEMENT - TEXT INPUT WIDTH
-    if (trim($qidattributes['text_input_width'])!='')
+    if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $tiwidth=$qidattributes['text_input_width'];
+        $tiwidth=$aQuestionAttributes['text_input_width'];
     }
     else
     {
@@ -5261,10 +5261,10 @@ function do_hugefreetext($ia)
 
     $answer .= "</textarea>\n";
 
-    if (trim($qidattributes['time_limit']) != '')
+    if (trim($aQuestionAttributes['time_limit']) != '')
     {
 		$js_header_includes[] = '/scripts/coookies.js';
-        $answer .= return_timer_script($qidattributes, $ia, "answer".$ia[1]);
+        $answer .= return_timer_script($aQuestionAttributes, $ia, "answer".$ia[1]);
     }
 
     $inputnames[]=$ia[1];
@@ -5344,7 +5344,7 @@ function do_gender($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
     $answer = "<ul>\n"
     . "\t<li>\n"
@@ -5423,11 +5423,11 @@ function do_array_5point($ia)
     }
 
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if (trim($qidattributes['answer_width'])!='')
+    if (trim($aQuestionAttributes['answer_width'])!='')
     {
-        $answerwidth=$qidattributes['answer_width'];
+        $answerwidth=$aQuestionAttributes['answer_width'];
     }
     else
     {
@@ -5448,7 +5448,7 @@ function do_array_5point($ia)
     // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
 
 
-    if ($qidattributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
@@ -5510,7 +5510,7 @@ function do_array_5point($ia)
         $trbc = alternation($trbc , 'row');
 
         // Get array_filter stuff
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
         $answer_t_content .= $htmltbody2;
 
@@ -5596,10 +5596,10 @@ function do_array_10point($ia)
     $qresult = db_execute_assoc($qquery);      //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    if (trim($qidattributes['answer_width'])!='')
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    if (trim($aQuestionAttributes['answer_width'])!='')
     {
-        $answerwidth=$qidattributes['answer_width'];
+        $answerwidth=$aQuestionAttributes['answer_width'];
     }
     else
     {
@@ -5612,7 +5612,7 @@ function do_array_10point($ia)
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
-    if ($qidattributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
@@ -5665,7 +5665,7 @@ function do_array_10point($ia)
         $trbc = alternation($trbc , 'row');
 
         //Get array filter stuff
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
         $answer_t_content .= $htmltbody2;
 
@@ -5735,10 +5735,10 @@ function do_array_yesnouncertain($ia)
     $qresult = db_execute_assoc($qquery);	//Checked
     $qrow = $qresult->result_array();
     $other = isset($qrow['other']) ? $qrow['other'] : '';
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    if (trim($qidattributes['answer_width'])!='')
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    if (trim($aQuestionAttributes['answer_width'])!='')
     {
-        $answerwidth=$qidattributes['answer_width'];
+        $answerwidth=$aQuestionAttributes['answer_width'];
     }
     else
     {
@@ -5751,7 +5751,7 @@ function do_array_yesnouncertain($ia)
     }
     $cellwidth = round((( 100 - $answerwidth ) / $cellwidth) , 1); // convert number of columns to percentage of table width
 
-    if ($qidattributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
@@ -5808,7 +5808,7 @@ function do_array_yesnouncertain($ia)
             $trbc = alternation($trbc , 'row');
 
             // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
             $answer_t_content .= $htmltbody2;
 
@@ -5892,10 +5892,10 @@ function do_array_increasesamedecrease($ia)
 
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);   //Checked
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    if (trim($qidattributes['answer_width'])!='')
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    if (trim($aQuestionAttributes['answer_width'])!='')
     {
-        $answerwidth=$qidattributes['answer_width'];
+        $answerwidth=$aQuestionAttributes['answer_width'];
     }
     else
     {
@@ -5912,7 +5912,7 @@ function do_array_increasesamedecrease($ia)
     {
         $other = $qrow['other'];
     }
-    if ($qidattributes['random_order']==1) {
+    if ($aQuestionAttributes['random_order']==1) {
         $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
     }
     else
@@ -5969,7 +5969,7 @@ function do_array_increasesamedecrease($ia)
         $trbc = alternation($trbc , 'row');
 
         // Get array_filter stuff
-        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+        list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
         $answer_body .= $htmltbody2;
 
@@ -6069,10 +6069,10 @@ function do_array($ia)
     $qrow = $qresult->row_array(); $other = $qrow['other'];
     $lquery = "SELECT * FROM {$dbprefix}answers WHERE qid={$ia[0]} AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, code";
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    if (trim($qidattributes['answer_width'])!='')
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    if (trim($aQuestionAttributes['answer_width'])!='')
     {
-        $answerwidth=$qidattributes['answer_width'];
+        $answerwidth=$aQuestionAttributes['answer_width'];
     }
     else
     {
@@ -6080,7 +6080,7 @@ function do_array($ia)
     }
     $columnswidth=100-$answerwidth;
 
-   if ($qidattributes['use_dropdown'] == 1)
+   if ($aQuestionAttributes['use_dropdown'] == 1)
    {
        $useDropdownLayout = true;
    }
@@ -6105,11 +6105,11 @@ function do_array($ia)
         if ($ansresult->num_rows()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
 
-        if ($qidattributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
             $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
         }
-        elseif ($qidattributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
+        elseif ($aQuestionAttributes['random_order']==2 && !isset($_SESSION['answer_order'][$ia[0]])) {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
             $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
             $sessionao[$ia[0]]=$ansresult;
@@ -6125,9 +6125,9 @@ function do_array($ia)
             $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
         }
 
-        if (trim($qidattributes['parent_order']!=''))
+        if (trim($aQuestionAttributes['parent_order']!=''))
         {
-            $iParentQID=(int) $qidattributes['parent_order'];
+            $iParentQID=(int) $aQuestionAttributes['parent_order'];
             $aResult=array();
             foreach ($sessionao[$iParentQID] as $aOrigRow)
             {
@@ -6213,8 +6213,8 @@ function do_array($ia)
                 $answertext = '<span class="errormandatory">'.$answertext.'</span>';
             }
             // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
-            $row_selected = return_array_filter_selected($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+            $row_selected = return_array_filter_selected($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 			if($row_selected)
 			{
 				$trbc = alternation($trbc , 'row');
@@ -6311,7 +6311,7 @@ function do_array($ia)
        $ansresult = db_execute_assoc($ansquery);  //Checked
        if ($ansresult->num_rows()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
        // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($qidattributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
@@ -6359,7 +6359,7 @@ function do_array($ia)
                $answertext = '<span class="errormandatory">'.$answertext.'</span>';
            }
            // Get array_filter stuff
-           list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+           list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
            $answer .= $htmltbody2;
 
            $answer .= "<tr class=\"$trbc\">\n"
@@ -6466,9 +6466,9 @@ function do_array_multitext($ia)
     $qresult = db_execute_assoc($qquery);
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    $show_grand = $qidattributes['show_grand_total'];
+    $show_grand = $aQuestionAttributes['show_grand_total'];
     $totals_class = '';
     $num_class = '';
     $show_totals = '';
@@ -6482,13 +6482,13 @@ function do_array_multitext($ia)
     $q_table_id_HTML = '';
     $numbersonly = '';
 
-    if ($qidattributes['numbers_only']==1)
+    if ($aQuestionAttributes['numbers_only']==1)
     {
         $q_table_id = 'totals_'.$ia[0];
 	$q_table_id_HTML = ' id="'.$q_table_id.'"';
 //	$numbersonly = 'onkeypress="return goodchars(event,\'-0123456789.\')"';
         $num_class = ' numbers-only';
-	switch ($qidattributes['show_totals'])
+	switch ($aQuestionAttributes['show_totals'])
 	{
 	    case 'R':
 	        $totals_class = $show_totals = 'row';
@@ -6560,7 +6560,7 @@ function do_array_multitext($ia)
  	if(!empty($totals_class))
  	{
  	    $totals_class = ' show-totals '.$totals_class;
-	    if($qidattributes['show_grand_total'])
+	    if($aQuestionAttributes['show_grand_total'])
 	    {
 	        $totals_class .= ' grand';
 		$show_grand = true;
@@ -6571,17 +6571,17 @@ function do_array_multitext($ia)
     {
         $numbersonly = '';
     };
-    if (trim($qidattributes['answer_width'])!='')
+    if (trim($aQuestionAttributes['answer_width'])!='')
     {
-        $answerwidth=$qidattributes['answer_width'];
+        $answerwidth=$aQuestionAttributes['answer_width'];
     }
     else
     {
         $answerwidth=20;
     };
-    if (trim($qidattributes['text_input_width'])!='')
+    if (trim($aQuestionAttributes['text_input_width'])!='')
     {
-        $inputwidth=$qidattributes['text_input_width'];
+        $inputwidth=$aQuestionAttributes['text_input_width'];
     }
     else
     {
@@ -6620,7 +6620,7 @@ function do_array_multitext($ia)
             $right_exists=false;
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($qidattributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
@@ -6707,7 +6707,7 @@ function do_array_multitext($ia)
             }
 
             // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
             $answer .= $htmltbody2;
 
@@ -6803,36 +6803,36 @@ function do_array_multiflexi($ia)
     $qresult = db_execute_assoc($qquery);
     $qrow = $qresult->row_array(); $other = $qrow['other'];
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
-        $maxvalue=$qidattributes['multiflexible_max'];
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    if (trim($aQuestionAttributes['multiflexible_max'])!='' && trim($aQuestionAttributes['multiflexible_min']) ==''){
+        $maxvalue=$aQuestionAttributes['multiflexible_max'];
         if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
     }
-    if (trim($qidattributes['multiflexible_min'])!='' && trim($qidattributes['multiflexible_max']) ==''){
-        $minvalue=$qidattributes['multiflexible_min'];
-        $maxvalue=$qidattributes['multiflexible_min'] + 10;
+    if (trim($aQuestionAttributes['multiflexible_min'])!='' && trim($aQuestionAttributes['multiflexible_max']) ==''){
+        $minvalue=$aQuestionAttributes['multiflexible_min'];
+        $maxvalue=$aQuestionAttributes['multiflexible_min'] + 10;
     }
-    if (trim($qidattributes['multiflexible_min'])=='' && trim($qidattributes['multiflexible_max']) ==''){
+    if (trim($aQuestionAttributes['multiflexible_min'])=='' && trim($aQuestionAttributes['multiflexible_max']) ==''){
         if(isset($minvalue['value']) && $minvalue['value'] == 0) {$minvalue = 0;} else {$minvalue=1;}
         $maxvalue=10;
     }
-    if (trim($qidattributes['multiflexible_min']) !='' && trim($qidattributes['multiflexible_max']) !=''){
-        if($qidattributes['multiflexible_min'] < $qidattributes['multiflexible_max']){
-            $minvalue=$qidattributes['multiflexible_min'];
-            $maxvalue=$qidattributes['multiflexible_max'];
+    if (trim($aQuestionAttributes['multiflexible_min']) !='' && trim($aQuestionAttributes['multiflexible_max']) !=''){
+        if($aQuestionAttributes['multiflexible_min'] < $aQuestionAttributes['multiflexible_max']){
+            $minvalue=$aQuestionAttributes['multiflexible_min'];
+            $maxvalue=$aQuestionAttributes['multiflexible_max'];
         }
     }
 
-    if (trim($qidattributes['multiflexible_step'])!='' && $qidattributes['multiflexible_step'] > 0)
+    if (trim($aQuestionAttributes['multiflexible_step'])!='' && $aQuestionAttributes['multiflexible_step'] > 0)
     {
-        $stepvalue=$qidattributes['multiflexible_step'];
+        $stepvalue=$aQuestionAttributes['multiflexible_step'];
     }
     else
     {
         $stepvalue=1;
     }
 
-    if($qidattributes['reverse']==1)
+    if($aQuestionAttributes['reverse']==1)
     {
         $tmp = $minvalue;
         $minvalue = $maxvalue;
@@ -6846,7 +6846,7 @@ function do_array_multiflexi($ia)
     }
 
     $checkboxlayout=false;
-    if ($qidattributes['multiflexible_checkbox']!=0)
+    if ($aQuestionAttributes['multiflexible_checkbox']!=0)
     {
         $minvalue=0;
         $maxvalue=1;
@@ -6854,14 +6854,14 @@ function do_array_multiflexi($ia)
     }
 
     $inputboxlayout=false;
-    if ($qidattributes['input_boxes']!=0)
+    if ($aQuestionAttributes['input_boxes']!=0)
     {
         $inputboxlayout=true;
     }
 
-    if (trim($qidattributes['maximum_chars'])!='')
+    if (trim($aQuestionAttributes['maximum_chars'])!='')
     {
-        $maxsize=$qidattributes['maximum_chars'];
+        $maxsize=$aQuestionAttributes['maximum_chars'];
     }
     else
     {
@@ -6878,9 +6878,9 @@ function do_array_multiflexi($ia)
         $kpclass = "";
     }
 
-    if (trim($qidattributes['answer_width'])!='')
+    if (trim($aQuestionAttributes['answer_width'])!='')
     {
-        $answerwidth=$qidattributes['answer_width'];
+        $answerwidth=$aQuestionAttributes['answer_width'];
     }
     else
     {
@@ -6907,7 +6907,7 @@ function do_array_multiflexi($ia)
         $ansresult = db_execute_assoc($ansquery);
         if ($ansresult->num_rows()>0) {$right_exists=true;$answerwidth=$answerwidth/2;} else {$right_exists=false;}
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($qidattributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
@@ -6915,9 +6915,9 @@ function do_array_multiflexi($ia)
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY question_order";
         }
         $ansresult = db_execute_assoc($ansquery)->result_array();  //Checked
-        if (trim($qidattributes['parent_order']!=''))
+        if (trim($aQuestionAttributes['parent_order']!=''))
         {
-            $iParentQID=(int) $qidattributes['parent_order'];
+            $iParentQID=(int) $aQuestionAttributes['parent_order'];
             $aResult=array();
 			$sessionao = $_SESSION['answer_order'];
             foreach ($sessionao[$iParentQID] as $aOrigRow)
@@ -7004,7 +7004,7 @@ function do_array_multiflexi($ia)
             }
 
             // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname, $trbc, $myfname);
 
             $answer .= $htmltbody2;
 
@@ -7152,7 +7152,7 @@ function do_arraycolumns($ia)
         $checkconditionFunction = "noop_checkconditions";
     }
 
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
     $qquery = "SELECT other FROM {$dbprefix}questions WHERE qid=".$ia[0]." AND language='".$_SESSION['s_lang']."'";
     $qresult = db_execute_assoc($qquery);    //Checked
     $qrow = $qresult->row_array(); $other = $qrow['other'];
@@ -7172,7 +7172,7 @@ function do_arraycolumns($ia)
             $labelans[]=$clang->gT('No answer');
             $labels[]=array('answer'=>$clang->gT('No answer'), 'code'=>'');
         }
-        if ($qidattributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
         else
@@ -7321,9 +7321,9 @@ function do_array_dual($ia)
     $other = reset(db_execute_assoc($qquery)->row_array());    //Checked
     $lquery =  "SELECT * FROM {$dbprefix}answers WHERE scale_id=0 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
     $lquery1 = "SELECT * FROM {$dbprefix}answers WHERE scale_id=1 AND qid={$ia[0]} AND language='".$_SESSION['s_lang']."' ORDER BY sortorder, code";
-    $qidattributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
 
-    if ($qidattributes['use_dropdown']==1)
+    if ($aQuestionAttributes['use_dropdown']==1)
     {
         $useDropdownLayout = true;
     }
@@ -7332,17 +7332,17 @@ function do_array_dual($ia)
         $useDropdownLayout = false;
     }
 
-    if (trim($qidattributes['dualscale_headerA'][$_SESSION['s_lang']])!='') {
-        $leftheader= $clang->gT($qidattributes['dualscale_headerA'][$_SESSION['s_lang']]);
+    if (trim($aQuestionAttributes['dualscale_headerA'][$_SESSION['s_lang']])!='') {
+        $leftheader= $clang->gT($aQuestionAttributes['dualscale_headerA'][$_SESSION['s_lang']]);
     }
     else
     {
         $leftheader ='';
     }
 
-    if (trim($qidattributes['dualscale_headerB'][$_SESSION['s_lang']])!='')
+    if (trim($aQuestionAttributes['dualscale_headerB'][$_SESSION['s_lang']])!='')
     {
-        $rightheader= $clang->gT($qidattributes['dualscale_headerB'][$_SESSION['s_lang']]);
+        $rightheader= $clang->gT($aQuestionAttributes['dualscale_headerB'][$_SESSION['s_lang']]);
     }
     else {
         $rightheader ='';
@@ -7352,9 +7352,9 @@ function do_array_dual($ia)
     if ($useDropdownLayout === false && $lresult->num_rows() > 0)
     {
 
-        if (trim($qidattributes['answer_width'])!='')
+        if (trim($aQuestionAttributes['answer_width'])!='')
         {
-            $answerwidth=$qidattributes['answer_width'];
+            $answerwidth=$aQuestionAttributes['answer_width'];
         }
         else
         {
@@ -7394,7 +7394,7 @@ function do_array_dual($ia)
             $right_exists=false;
         }
         // $right_exists is a flag to find out if there are any right hand answer parts. If there arent we can leave out the right td column
-        if ($qidattributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
         }
         else
@@ -7567,7 +7567,7 @@ function do_array_dual($ia)
             }
 
             // Get array_filter stuff
-            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $myfname0, $trbc, $myfname);
+            list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $myfname0, $trbc, $myfname);
 
             $answer .= $htmltbody2;
 
@@ -7672,9 +7672,9 @@ function do_array_dual($ia)
     elseif ($useDropdownLayout === true && $lresult->num_rows() > 0)
     {
 
-        if (trim($qidattributes['answer_width'])!='')
+        if (trim($aQuestionAttributes['answer_width'])!='')
         {
-            $answerwidth=$qidattributes['answer_width'];
+            $answerwidth=$aQuestionAttributes['answer_width'];
         } else {
             $answerwidth=20;
         }
@@ -7686,7 +7686,7 @@ function do_array_dual($ia)
         // Get Answers
 
         //question atribute random_order set?
-        if ($qidattributes['random_order']==1) {
+        if ($aQuestionAttributes['random_order']==1) {
             $ansquery = "SELECT * FROM {$dbprefix}questions WHERE parent_qid=$ia[0] and scale_id=0 AND language='".$_SESSION['s_lang']."' ORDER BY ".db_random();
         }
 
@@ -7722,8 +7722,8 @@ function do_array_dual($ia)
 
             // Get attributes for Headers and Prefix/Suffix
 
-            if (trim($qidattributes['dropdown_prepostfix'][$_SESSION['s_lang']])!='') {
-                list ($ddprefix, $ddsuffix) =explode("|",$qidattributes['dropdown_prepostfix'][$_SESSION['s_lang']]);
+            if (trim($aQuestionAttributes['dropdown_prepostfix'][$_SESSION['s_lang']])!='') {
+                list ($ddprefix, $ddsuffix) =explode("|",$aQuestionAttributes['dropdown_prepostfix'][$_SESSION['s_lang']]);
                 $ddprefix = $ddprefix;
                 $ddsuffix = $ddsuffix;
             }
@@ -7732,8 +7732,8 @@ function do_array_dual($ia)
                 $ddprefix ='';
                 $ddsuffix='';
             }
-            if (trim($qidattributes['dropdown_separators'])!='') {
-                list ($postanswSep, $interddSep) =explode('|',$qidattributes['dropdown_separators']);
+            if (trim($aQuestionAttributes['dropdown_separators'])!='') {
+                list ($postanswSep, $interddSep) =explode('|',$aQuestionAttributes['dropdown_separators']);
                 $postanswSep = $postanswSep;
                 $interddSep = $interddSep;
             }
@@ -7807,7 +7807,7 @@ function do_array_dual($ia)
                 $trbc = alternation($trbc , 'row');
 
                 // Get array_filter stuff
-                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, $ansrow, $rowname, $trbc, $myfname);
+                list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc, $myfname);
 
                 $answer .= $htmltbody2;
 

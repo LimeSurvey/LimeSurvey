@@ -4041,15 +4041,15 @@ function questionAttributes($returnByName=false)
     "caption"=>$clang->gT('Input box width'));
 
     $qattributes["use_dropdown"]=array(
-    "types"=>"1F",
+    "types"=>"1FO",
     'category'=>$clang->gT('Display'),
     'sortorder'=>112,
     'inputtype'=>'singleselect',
     'options'=>array(0=>$clang->gT('No'),
     1=>$clang->gT('Yes')),
     'default'=>0,
-    "help"=>$clang->gT('Use dropdown boxes instead of list of radio buttons'),
-    "caption"=>$clang->gT('Use dropdown boxes'));
+    "help"=>$clang->gT('Present dropdown control(s) instead of list of radio buttons'),
+    "caption"=>$clang->gT('Use dropdown presentation'));
 
     $qattributes["scale_export"]=array(
     "types"=>"CEFGHLMOPWYZ1!:*",
