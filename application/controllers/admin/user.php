@@ -57,11 +57,8 @@ class user extends Survey_Common_Controller {
 	    }
 
 	    if(isset($usrhimself['parent_id']) && $usrhimself['parent_id']!=0) {
-	        //$uquery = "SELECT users_name FROM ".db_table_name('users')." WHERE uid=".$usrhimself['parent_id'];
-	        //$uresult = db_execute_assoc($uquery); //Checked
 	        $uresult = $this->users_model->getSomeRecords(array("users_name"),array("uid"=>$usrhimself['parent_id']));
 	        $srow = $uresult->row_array();
-                //$usersummary .= "<td align='center'><strong>{$srow['users_name']}</strong></td>\n";
 	    }
 
 		$data['usrhimself']=$usrhimself;
@@ -74,13 +71,12 @@ class user extends Survey_Common_Controller {
 	    //This loops through for each user and checks the amount of surveys against them.
 	    for($i=1;$i<=count($usr_arr);$i++)
 	    {
-	        //$noofsurveyslist[$i]=$connect->GetOne('Select count(*) from '.db_table_name('surveys').' where owner_id='.$usr_arr[$i]['uid']);
 	        $query=$this->surveys_model->getSomeRecords(array("count(*)"),array("owner_id"=>$usr_arr[$i]['uid']));
 			$noofsurveyslist[$i]=$query->row_array();
 			$noofsurveyslist[$i]=$noofsurveyslist[$i]["count(*)"];
 	    }
 
-		
+
 		$data['clang']=$this->limesurvey_lang;
 		$data['imageurl']=$this->config->item("imageurl");
 		$data['noofsurveyslist']=$noofsurveyslist;
@@ -112,20 +108,15 @@ class user extends Survey_Common_Controller {
 	    if(!validate_email($new_email))
 	    {
 	        $valid_email = false;
-	        //$addsummary .= "<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The email address is not valid.")."<br />\n";
 			self::_showMessageBox($clang->gT("Failed to add user"),"<br />\n" . " " . $clang->gT("The email address is not valid.")."<br />\n",$class='warningheader');
 	    }
 	    if(empty($new_user))
 	    {
-	        //if($valid_email) $addsummary .= "<br /><strong>".$clang->gT("Failed to add user")."</strong><br />\n" . " ";
-	        //$addsummary .= $clang->gT("A username was not supplied or the username is invalid.")."<br />\n";
 			self::_showMessageBox($clang->gT("Failed to add user"),"<br />\n" . " " . $clang->gT("A username was not supplied or the username is invalid.")."<br />\n",$class='warningheader');
 	    }
 	    elseif($valid_email)
 	    {
 	        $new_pass = createPassword();
-	        //$uquery = "INSERT INTO {$dbprefix}users (users_name, password,full_name,parent_id,lang,email,create_survey,create_user,delete_user,superadmin,configurator,manage_template,manage_label)
-	        //           VALUES ('".db_quote($new_user)."', '".SHA256::hashing($new_pass)."', '".db_quote($new_full_name)."', {$_SESSION['loginID']}, 'auto', '".db_quote($new_email)."',0,0,0,0,0,0,0)";
 	        $uresult = $this->users_model->insert($new_user, $new_pass,$new_full_name,$this->session->userdata('loginID'),$new_email);
 
 	        if($uresult)
@@ -190,14 +181,13 @@ class user extends Survey_Common_Controller {
 	            ."<input type='hidden' name='user' value='{$new_user}'>"
 	            ."<input type='hidden' name='uid' value='{$newqid}'>"
 	            ."</form>";
-				self::_showMessageBox("",$addsummary);
+				self::_showMessageBox($clang->gT("Add user"),$addsummary);
 
 	        }
 	        else{
 	            $addsummary .= "<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
 	        }
 	    }
-	   //  $addsummary .= "<p><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/></div>\n";
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 	}
 
@@ -218,10 +208,6 @@ class user extends Survey_Common_Controller {
 		$action=$this->input->post("action");
 		$this->load->helper("database");
 
-		//if (($action == "deluser" || $action == "finaldeluser") && ($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_DELETE_USER'] ))
-	    //$addsummary = "<div class=\"header\">".$clang->gT("Deleting user")."</div>\n";
-	    //$addsummary .= "<div class=\"messagebox\">\n";
-
 	    // CAN'T DELETE ORIGINAL SUPERADMIN
 	    // Initial SuperAdmin has parent_id == 0
 	    $adminquery = "SELECT uid FROM ".$this->db->dbprefix('users')." WHERE parent_id=0";
@@ -232,7 +218,6 @@ class user extends Survey_Common_Controller {
 		$postuser = $this->input->post("user");
 	    if($row['uid'] == $postuserid)	// it's the original superadmin !!!
 	    {
-	        //$addsummary .= "<div class=\"warningheader\">".$clang->gT("Initial Superadmin cannot be deleted!")."</div>\n";
 			self::_showMessageBox($clang->gT("Initial Superadmin cannot be deleted!"),"","warningheader");
 	    }
 	    else
@@ -307,7 +292,7 @@ class user extends Survey_Common_Controller {
 	                        $sTransferred_to = self::_getUserNameFromUid($transfer_surveys_to);
 	                        $addsummary .= sprintf($clang->gT("All of the user's surveys were transferred to %s."),$sTransferred_to);
 	                    }
-	                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+	                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 						self::_showMessageBox("",$addsummary);
 	                }
 	                else
@@ -345,7 +330,7 @@ class user extends Survey_Common_Controller {
 	        else
 	        {
 	            $addsummary = "<div class=\"warningheader\">".$clang->gT("Could not delete user. User was not supplied.")."</div>\n";
-	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 				self::_showMessageBox("",$addsummary);
 	        }
 	    }
@@ -405,9 +390,7 @@ class user extends Survey_Common_Controller {
 		$postemail = $this->input->post("email");
 		$postuserid = $this->input->post("uid");
 		$postfull_name = $this->input->post("full_name");
-	    $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Editing user")."</div>\n";
-	    $addsummary .= "<div class=\"messagebox\">\n";
-
+        $addsummary='';
 	    $squery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE uid=$postuserid AND parent_id=".$this->session->userdata('loginID');
 	    $sresult = db_select_limit_assoc($squery); //Checked
 	    $sresultcount = $sresult->num_rows();
@@ -469,15 +452,14 @@ class user extends Survey_Common_Controller {
 	        }
 	        if($failed)
 	        {
-	            $addsummary .= "<br /><form method='post' action='$scriptname'>"
+	            $addsummary .= "<br /><form method='post' action='".site_url('admin/user/modifyuser')."'>"
 	            ."<input type='submit' value='".$clang->gT("Back")."'>"
-	            ."<input type='hidden' name='action' value='modifyuser'>"
 	            ."<input type='hidden' name='uid' value='{$postuserid}'>"
 	            ."</form>";
 	        }
 	        else
 	        {
-	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 	        }
 	    }
 	    else
@@ -486,8 +468,7 @@ class user extends Survey_Common_Controller {
 	    }
 		self::_getAdminHeader();
 		self::_showadminmenu();
-	    $addsummary .= "</div>\n";
-		self::_showMessageBox("",$addsummary);
+		self::_showMessageBox($clang->gT("Editing user"),$addsummary);
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
 	}
@@ -576,7 +557,7 @@ class user extends Survey_Common_Controller {
 
 	            if ($postuserid<>1) setuserrights($postuserid, $rights);
 	            $addsummary .= "<div class=\"successheader\">".$clang->gT("User permissions were updated successfully.")."</div>\n";
-	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 	        }
 	        elseif ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
 	        {
@@ -617,7 +598,7 @@ class user extends Survey_Common_Controller {
 
 	            setuserrights($postuserid, $rights);
 	            $addsummary .= "<div class=\"successheader\">".$clang->gT("User permissions were updated successfully.")."</div>\n";
-	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 	        }
 	        else
 	        {
@@ -627,7 +608,7 @@ class user extends Survey_Common_Controller {
 	    else
 	    {
 	        $addsummary .= "<div class=\"warningheader\">".$clang->gT("You are not allowed to change your own permissions!")."</div>\n";
-	        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+	        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 	    }
 	    $addsummary .= "</div>\n";
 		self::_getAdminHeader();
@@ -692,13 +673,13 @@ class user extends Survey_Common_Controller {
 	        if ($uresult)
 	        {
 	            $addsummary .= "<div class=\"successheader\">".$clang->gT("Template permissions were updated successfully.")."</div>\n";
-	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 	        }
 	        else
 	        {
 	            $addsummary .= "<div class=\"warningheader\">".$clang->gT("Error")."</div>\n";
 	            $addsummary .= "<br />".$clang->gT("Error while updating usertemplates.")."<br />\n";
-	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('$scriptname?action=editusers', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+	            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
 	        }
 	    }
 	    else
@@ -723,11 +704,8 @@ class user extends Survey_Common_Controller {
 		if($this->input->post("action"))
 		{
 		    $_POST  = $this->input->post();
-		    //$uquery = "UPDATE {$dbprefix}users SET lang='{$_POST['lang']}', dateformat='{$_POST['dateformat']}', htmleditormode= '{$_POST['htmleditormode']}', questionselectormode= '{$_POST['questionselectormode']}', templateeditormode= '{$_POST['templateeditormode']}'
-		    //           WHERE uid={$_SESSION['loginID']}";
 			$data = array(	'lang' =>$_POST['lang'], 'dateformat'=>$_POST['dateformat'], 'htmleditormode'=>$_POST['htmleditormode'],
 							'questionselectormode'=> $_POST['questionselectormode'], 'templateeditormode'=> $_POST['templateeditormode']);
-		    //$uresult = $connect->Execute($uquery)  or safe_die ($isrquery."<br />".$connect->ErrorMsg());  // Checked
 		    $uresult = $this->users_model->update($this->session->userdata("loginID"),$data);
 		    $this->session->set_userdata('adminlang', $_POST['lang']);
 		    $this->session->set_userdata('htmleditormode', $_POST['htmleditormode']);
@@ -736,7 +714,6 @@ class user extends Survey_Common_Controller {
 		    $this->session->set_userdata('dateformat', $_POST['dateformat']);
 		    $this->session->set_userdata('flashmessage', $clang->gT("Your personal settings were successfully saved."));
 		}
-		//$sSavedLanguage=$connect->GetOne("select lang from ".db_table_name('users')." where uid={$_SESSION['loginID']}");
 		$query = $this->users_model->getSomeRecords(array("lang"),array("uid"=>$this->session->userdata("loginID")));
 		$data['sSavedLanguage']=reset($query->row_array());
 

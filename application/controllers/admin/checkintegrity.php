@@ -80,6 +80,7 @@ class CheckIntegrity extends Admin_Controller {
 
     function fixintegrity()
     {
+        $aData=array();
         $aPostData=$this->input->post();
         $sDBPrefix=$this->db->dbprefix;
         $clang = $this->limesurvey_lang;
@@ -183,6 +184,24 @@ class CheckIntegrity extends Admin_Controller {
                 $aData['messages'][]= sprintf($clang->gT("Deleting groups: %u groups deleted"), count($aDelete['groups']));
             }
 
+            if (isset($aDelete['orphansurveytables']))
+            {
+                foreach($aDelete['orphansurveytables'] as $aSurveyTable)
+                {
+                    $this->dbforge->drop_table($aSurveyTable['table']);
+                    $aData['messages'][]= $clang->gT("Deleting orphan survey table:").' '.$aSurveyTable['table'];
+                }
+            }
+
+            if (isset($aDelete['orphantokentables']))
+            {
+                foreach($aDelete['orphantokentables'] as $aTokenTable)
+                {
+                    $this->dbforge->drop_table($aTokenTable['table']);
+                    $aData['messages'][]= $clang->gT("Deleting orphan token table:").' '.$aTokenTable['table'];
+                }
+            }
+
             self::_getAdminHeader();
             self::_showadminmenu();
             $this->load->view('admin/checkintegrity/fix_view',$aData);
@@ -200,12 +219,12 @@ class CheckIntegrity extends Admin_Controller {
     {
         $clang = $this->limesurvey_lang;
         $aDelete=array();
+        $this->load->helper('database');
+        $this->load->dbforge();
 
         /*** Plainly delete survey permissions if the survey or user does not exist ***/
         $this->db->query("delete FROM {$this->db->dbprefix('survey_permissions')} where sid not in (select sid from {$this->db->dbprefix('surveys')})");
         $this->db->query("delete FROM {$this->db->dbprefix('survey_permissions')} where uid not in (select uid from {$this->db->dbprefix('users')})");
-        $this->load->helper('database');
-        $this->load->dbforge();
 
         /*** Check for active survey tables with missing survey entry and rename them ***/
         $sDBPrefix=$this->db->dbprefix;
@@ -214,7 +233,7 @@ class CheckIntegrity extends Admin_Controller {
         foreach ($aResult->result_array() as $aRow)
         {
            $sTableName=substr(reset($aRow),strlen($sDBPrefix));
-           if ($sTableName=='survey_permissions' || $sTableName=='survey_links') continue;
+           if ($sTableName=='survey_permissions' || $sTableName=='survey_links' || $sTableName=='survey_url_parameters') continue;
            $iSurveyID=substr($sTableName,strpos($sTableName,'_')+1);
            $sQuery="SELECT sid FROM {$sDBPrefix}surveys WHERE sid='{$iSurveyID}'";
            $oResult=$this->db->query($sQuery) or safe_die ("Couldn't check questions table for qids<br />$qquery<br />");
@@ -245,7 +264,7 @@ class CheckIntegrity extends Admin_Controller {
         $aResult =$this->db->query($sQuery) or safe_die("Couldn't get list of conditions from database<br />$sQuery<br />");
         foreach ($aResult->result_array() as $aRow)
         {
-           $sTableName=substr($aRow,strlen($sDBPrefix));
+           $sTableName=substr(reset($aRow),strlen($sDBPrefix));
            $iSurveyID=substr($sTableName,strpos($sTableName,'_')+1);
            $sQuery="SELECT sid FROM {$sDBPrefix}surveys WHERE sid='{$iSurveyID}'";
            $oResult=$this->db->query($sQuery) or safe_die ("Couldn't check questions table for qids<br />$qquery<br />");
