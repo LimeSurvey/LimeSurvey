@@ -25,4 +25,4 @@
 		</div>
 	</div>
 <div id="title"><h2 id="surveytitle" class="wrapper">{SURVEYNAME}</h2></div>
-	<div id="content">
+	<div id="content" class="outerframe">
