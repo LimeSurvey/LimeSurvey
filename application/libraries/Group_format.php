@@ -109,6 +109,7 @@ class Group_format {
 		
 		    //Now, we check mandatory questions if necessary
 		    //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
+            // TODO - Modify this to ensure that irrelevant mandatories are not required
 		    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 		
 		    //CHECK INPUT
@@ -590,7 +591,7 @@ class Group_format {
                         document.getElementById(hiddenformname).value='';
                     }
                 }
-                ExprMgr_process_relevance_and_tailoring();
+                ExprMgr_process_relevance_and_tailoring('onchange');
 			}
 		
 			function checkconditions(value, name, type)
@@ -626,7 +627,7 @@ END;
 				        document.getElementById(hiddenformname).value='';
 		            }
 		        }
-                ExprMgr_process_relevance_and_tailoring();
+                ExprMgr_process_relevance_and_tailoring('onchange');
 		
 END;
 		    $java="";
@@ -1246,6 +1247,7 @@ END;
 		echo "\n";
 		
 		//Display the "mandatory" message on page if necessary
+        // TODO - also check relevance
 		if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
 		{
 		    echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
@@ -1435,6 +1437,7 @@ END;
 		        }
 		    }
 		    //SOME STUFF FOR MANDATORY QUESTIONS
+            // TODO - what must be done vis-a-vis relevance?
 		    if (remove_nulls_from_array($mandatorys))
 		    {
 		        $mandatory=implode("|", remove_nulls_from_array($mandatorys));

@@ -580,7 +580,10 @@ class LimeExpressionManager {
         $allJsVarsUsed=array();
         $jsParts[] = '<script type="text/javascript" src="' . base_url() . '/scripts/admin/expressions/em_javascript.js"></script>';
         $jsParts[] = "<script type='text/javascript'>\n<!--\n";
-        $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(){\n";
+        $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
+        $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\nreturn;\n}\n";
+        $jsParts[] = "if (evt_type == 'onchange' && (typeof last_evt_type != 'undefined' && last_evt_type == 'keydown') && (typeof target_tabIndex != 'undefined' && target_tabIndex == document.activeElement.tabIndex)) {\nreturn;\n}\n";
+        $jsParts[] = "last_evt_type = evt_type;\n\n";
 
         // flatten relevance array, keeping proper order
 
@@ -670,7 +673,6 @@ class LimeExpressionManager {
                 }
             }
         }
-        $jsParts[] = "\nLEMsetTabIndexes(); // Move focus to next visible element\n";
         $jsParts[] = "}\n";
 
         $allJsVarsUsed = array_unique($allJsVarsUsed);
@@ -777,10 +779,13 @@ class LimeExpressionManager {
     static function UnitTestProcessStringContainingExpressions()
     {
         $vars = array(
-'name' => array('codeValue'=>'"<Sergei>\'', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
+//'name' => array('codeValue'=>'"<Sergei>\'', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
+'name' => array('codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y'),
+'surname' => array('codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
 'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
-'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
-'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
+'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'3'),
+'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'gender' => array('codeValue'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'shown'=>'Male'),
 // Constants
 'INSERTANS:61764X1X1'   => array('codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y'),
 'INSERTANS:61764X1X2'   => array('codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y'),
@@ -790,20 +795,27 @@ class LimeExpressionManager {
         );
 
         $tests = <<<EOD
-{name}
-{age}
-{numKids}
-{numPets}
-{INSERTANS:61764X1X1}
-{INSERTANS:61764X1X2}
-{INSERTANS:61764X1X3}
-{INSERTANS:61764X1X4}
-{TOKEN:ATTRIBUTE_1}
-{name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.
-Since you have more {if((numKids > numPets),'children','pets')} than you do {if((numKids > numPets),'pets','children')}, do you feel that the {if((numKids > numPets),'pets','children')} are at a disadvantage?
+<b>Here is an example of OK syntax with tooltips</b><br/>Hello {if(gender=='M','Mr.','Mrs.')} {surname}, it is now {date('g:i a',time())}.  Do you know where your {sum(numPets,numKids)} chidren and pets are?
+<b>Here are common errors so you can see the tooltips</b><br/>Unknown Function:  {iff(numPets>numKids,1,2)}<br/>Unknown Variable: {sum(age,num_pets,numKids)}<br/>Wrong # parameters: {sprintf(),if(1,2),date()}<br/>Assign read-only-vars:{TOKEN:ATTRIBUTE_1+=10,name='Sally'}<br/>Unbalanced parentheses: {pow(3,4},{(pow(3,4)},{pow(3,4))}
+<b>Here is some of the unsupported syntax</b><br/>No support for '++', '--', '%',';': {min(++age, --age,age % 2);}<br/>Nor '|', '&', '^': {(sum(2 | 3,3 & 4,5 ^ 6)}}<br/>Nor arrays: {name[2], name['mine']}
+<b>Values:</b><br/>name={name}; surname={surname}<br/>gender={gender}; age={age}; numPets={numPets}<br/>numKids=INSERTANS:61764X1X3={numKids}={INSERTANS:61764X1X3}<br/>TOKEN:ATTRIBUTE_1={TOKEN:ATTRIBUTE_1}
+<b>Question Attributes:</b><br/>numKids.question={numKids.question}; Question#={numKids.qid}; .relevance={numKids.relevance}
+<b>Math:</b><br/>5+7={5+7}; 2*pi={2*pi()}; sin(pi/2)={sin(pi()/2)}; max(age,numKids,numPets)={max(age,numKids,numPets)}
+<b>Text Processing:</b><br/>{str_replace('like','love','I like LimeSurvey')}<br/>{ucwords('hi there')}, {name}<br/>{implode('--',name,'this is','a convenient way','way to','concatenate strings')}
+<b>Dates:</b><br/>{name}, the current date/time is: {date('F j, Y, g:i a',time())}
+<b>Conditional:</b><br/>Hello, {if(gender=='M','Mr.','Mrs.')} {surname}, may I call you {name}?
+<b>Tailored Paragraph:</b><br/>{name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.<p>Since you have more {if((numKids > numPets),'children','pets')} than you do {if((numKids > numPets),'pets','children')}, do you feel that the {if((numKids > numPets),'pets','children')} are at a disadvantage?</p>
+<b>EM processes within strings:</b><br/>Here is your picture [img src='images/users_{name}_{surname}.jpg' alt='{if(gender=='M','Mr.','Mrs.')} {name} {surname}'/];
+<b>EM doesn't process curly braces like these:</b><br/>{name}, { this is not an expression}<br/>{nor is this }, { nor  this }<br/>\{nor this\},{this\},\{or this }
+<b>Inline JavaScipt that forgot to add spaces after curly brace</b><br/>[script type="text/javascript" language="Javascript"] var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') {document.write('BOSSES');}[/script]
+<b>Unknown/Misspelled Variables, Functions, and Operators</b><br/>{if(sex=='M','Mr.','Mrs.')} {surname}, next year you will be {age++} years old.
+<b>Warns if use = instead of == or perform value assignments</b><br>Hello, {if(gender='M','Mr.','Mrs.')} {surname}, next year you will be {age+=1} years old.
+<b>Wrong number of arguments for functions:</b><br/>{if(gender=='M','Mr.','Mrs.','Other')} {surname}, sum(age,numKids,numPets)={sum(age,numKids,numPets,)}
+<b>Mismatched parentheses</b><br/>pow(3,4)={pow(3,4)}<br/>but these are wrong: {pow(3,4}, {(pow(3,4)}, {pow(3,4))}
+<b>Unsupported syntax</b><br/>No support for '++', '--', '%',';': {min(++age, --age, age % 2);}<br/>Nor '|', '&', '^':  {(sum(2 | 3, 3 & 4, 5 ^ 6)}}<br/>Nor arrays:  {name[2], name['mine']}
+<b>Invalid assignments</b><br/>Assign values to equations or strings:  {(3 + 4)=5}, {'hi'='there'}<br/>Assign read-only vars:  {TOKEN:ATTRIBUTE_1='boss'}, {name='Sally'}
 {INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
 Since you have more {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'children','pets')} than you do {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')}, do you feel that the {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')} are at a disadvantage?
-{name2}, you said that you are {age + 5)} years old, and that you have {abs(numKids) -} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.
 {INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children','kiddies')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
 This line should throw errors since the curly-brace enclosed functions do not have linefeeds after them (and before the closing curly brace): var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') { document.write('BOSSES') } else { document.write('WORKERS') }
 This line has a script section, but if you look at the source, you will see that it has errors: <script type="text/javascript" language="Javascript">var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') {document.write('BOSSES')} else {document.write('WORKERS')} </script>.
@@ -857,9 +869,9 @@ EOST;
     {
         // Tests:  varName~relevance~inputType~message
 //info~1~expr~{info='Can strings have embedded <tags> like <html>, or even unbalanced "quotes, \'single quoted strings\', or entities without terminal semicolons like &amp and  &lt?'}
-        $tests = <<<EOT
-junk~1~text~Enter "junk" here to test XSS - will show below
-info2~1~message~Here is a messy string: {info}<br/>Here is the "junk" you entered: {junk}
+//junk~1~text~Enter "junk" here to test XSS - will show below
+//info2~1~message~Here is a messy string: {info}<br/>Here is the "junk" you entered: {junk}
+$tests = <<<EOT
 name~1~text~What is your name?
 age~1~text~How old are you?
 badage~1~expr~{badage=((age<16) || (age>80))}
@@ -907,7 +919,7 @@ EOT;
         {
             $testArg = $testArgs[$i];
             $var = $testArg[0];
-            LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1],ENT_QUOTES),$i,$var);
+            $rel = LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1],ENT_QUOTES),$i,$var);
             $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
             $jsVarName='java_' . $testArg[0];
@@ -917,6 +929,8 @@ EOT;
                 'name' => $jsVarName,
                 'type' => $testArg[2],
                 'question' => $question,
+                'relevance' => $testArg[1],
+                'relevanceStatus' => $rel
             );
             $alias2varName[$var] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $var . "':'" . $jsVarName . "'");
             $alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
@@ -935,9 +949,10 @@ EOT;
         print "<table border='1'><tr><td>";
         foreach ($argInfo as $arg)
         {
-            print "<input type='hidden' id='display" . $arg['num'] . "' name='" . $arg['num'] .  "' value='on'/>\n";    // set all as  On by default - relevance processing will blank them as needed
-            print "<input type='hidden' id='relevance" . $arg['num'] . "' name='" . $arg['num'] . "' value='1'/>\n";    // set all as  On by default - relevance processing will blank them as needed
-            print "<div id='question" . $arg['num'] . "'>\n";
+            $rel = $arg['relevanceStatus'];
+            print "<div id='question" . $arg['num'] . (($rel) ? "'" : "' style='display: none'") . ">\n";
+            print "<input type='hidden' id='display" . $arg['num'] . "' name='" . $arg['num'] .  "' value='" . (($rel) ? 'on' : '') . "'/>\n";
+            print "<input type='hidden' id='relevance" . $arg['num'] . "' name='" . $arg['num'] . "' value='" . $rel . "'/>\n";
             if ($arg['type'] == 'expr')
             {
                 // Hack for testing purposes - rather than using LimeSurvey internals to store the results of equations, process them via a hidden <div>
@@ -950,7 +965,7 @@ EOT;
                 {
                     case 'yesno':
                     case 'text':
-                        print "<td><input type='text' id='" . $arg['name'] . "' value='' onchange='ExprMgr_process_relevance_and_tailoring()'/></td>\n";
+                        print "<td><input type='text' id='" . $arg['name'] . "' value='' onchange='ExprMgr_process_relevance_and_tailoring(\"onchange\")'/></td>\n";
                         break;
                     case 'message':
                         print "<input type='hidden' id='" . $arg['name'] . "' name='" . $arg['name'] . "' value=''/>\n";

@@ -39,7 +39,7 @@
 		// submit page.
 		//if (isset($_SESSION['finished'])) {$move="movesubmit"; }
 		
-		
+		// TODO - also check relevance
 		//CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 		//CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 		$notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys($move));
@@ -421,7 +421,7 @@ END;
                         document.getElementById(hiddenformname).value='';
                     }
                 }
-                ExprMgr_process_relevance_and_tailoring();
+                ExprMgr_process_relevance_and_tailoring('onchange');
 			}
 		
 			function checkconditions(value, name, type)
@@ -458,7 +458,7 @@ END;
                         document.getElementById(hiddenformname).value='';
                     }
                 }
-                ExprMgr_process_relevance_and_tailoring();
+                ExprMgr_process_relevance_and_tailoring('onchange');
 END;
 		    $java="";
 		    $cqcount=1;
@@ -1077,6 +1077,7 @@ END;
 		        }
 		    }
 		}
+        // TODO - also check relevance
 		//SOME STUFF FOR MANDATORY QUESTIONS
 		if (remove_nulls_from_array($mandatorys))
 		{
