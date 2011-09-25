@@ -517,7 +517,7 @@ $config['tempdir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."tmp
 $config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
-$config['usertemplaterootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
+$config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 
 $config['sCKEditorURL']            = base_url()."/scripts/admin/ckeditor.36";
 $config['ckeditexpandtoolbar']     = true; // defines if the CKeditor toolbar should be opened by default

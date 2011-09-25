@@ -122,13 +122,13 @@
 		            <img src='<?php echo $imageurl;?>/export_30.png' /> <?php echo $clang->gT("Export survey");?></a></li>
 		   		<?php } ?>
 		   		<?php if($onelanguage) { ?>
-		            <li><a href='<?php echo site_url("admin/showprintablesurvey/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/printablesurvey/index/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' /> <?php echo $clang->gT("Printable version");?></a></li>
 		        <?php } else { ?>
-		            <li><a href='<?php echo site_url("admin/showprintablesurvey/index/$surveyid");?>' >
+		            <li><a href='<?php echo site_url("admin/printablesurvey/index/$surveyid");?>' >
 		            <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' /> <?php echo $clang->gT("Printable version");?></a><ul>
 		            <?php foreach ($languagelist as $tmp_lang) { ?>
-		                <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/showprintablesurvey/index/$surveyid/$tmp_lang");?>'>
+		                <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/printablesurvey/index/$surveyid/$tmp_lang");?>'>
 		                <img src='<?php echo $imageurl;?>/print_30.png' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
 		            <?php } ?>
 		            </ul></li>
