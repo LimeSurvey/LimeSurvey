@@ -75,7 +75,7 @@ class tokens extends Survey_Common_Controller {
 		}
 		
         $surveyprivate = $thissurvey['anonymized'];
-        		
+        $data['surveyprivate'] = $surveyprivate;
 		// CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
 		$tokenexists=tableExists('tokens_'.$surveyid);
 		if (!$tokenexists) //If no tokens table exists
@@ -174,6 +174,7 @@ class tokens extends Survey_Common_Controller {
 		$data['limit']=$limit;
 		$data['start']=$start;
 		$data['order']=$order;
+		$data['surveyprivate'] = $data['thissurvey']['anonymized'];
 		
 		self::_getAdminHeader();
 		$this->load->view("admin/token/tokenbar",$data);

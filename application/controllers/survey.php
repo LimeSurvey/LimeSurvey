@@ -31,7 +31,7 @@ class survey extends LSCI_Controller {
 	{
 		global $surveyid, $thistpl, $totalquestions;
     	global $thissurvey, $thisstep;
-    	global $clienttoken;
+    	global $clienttoken, $tokensexist, $token;
 
 		//Replace $_GET:
 		$arg_list = func_get_args();
@@ -731,15 +731,15 @@ class survey extends LSCI_Controller {
 			isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist($dbprefix.'tokens_'.$surveyid))
 		{
 			//check if tokens actually haven't been already used
-			$areTokensUsed = usedTokens($this->db->escape(trim(strip_tags(returnglobal('token')))));
+			$areTokensUsed = usedTokens(trim(strip_tags(returnglobal('token'))));
 			// check if token actually does exist
 			// check also if it is allowed to change survey after completion
 			if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-		    	$tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token='".$this->db->escape($token)."' ";
+		    	$tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$this->db->escape($token)." ";
 			} else {
-		    	$tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token='".$this->db->escape($token)."' AND (completed = 'N' or completed='')";
+		    	$tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$this->db->escape($token)." AND (completed = 'N' or completed='')";
 		    }
-		    $tkresult = db_execute_num($tkquery); //Checked
+		    $tkresult = db_execute_assoc($tkquery); //Checked
 		    $tokendata = $tkresult->row_array();
 		    if ($tkresult->num_rows()==0 || $areTokensUsed)
 		    {
@@ -769,17 +769,16 @@ class survey extends LSCI_Controller {
 		}
 		if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($dbprefix.'tokens_'.$surveyid)) //check if token is in a valid time frame
 		{
-
 			// check also if it is allowed to change survey after completion
 			if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-		        $tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token='".$this->db->escape($token)."' ";
+		        $tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$this->db->escape($token)." ";
 		    } else {
-		        $tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token='".$this->db->escape($token)."' AND (completed = 'N' or completed='')";
+		        $tkquery = "SELECT * FROM ".$this->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$this->db->escape($token)." AND (completed = 'N' or completed='')";
 		    }
 		    $tkresult = db_execute_assoc($tkquery); //Checked
 		    $tokendata = $tkresult->row_array();
-		    if ((trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
-		    (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
+		    if (isset($tokendata['validfrom']) && (trim($tokendata['validfrom'])!='' && $tokendata['validfrom']>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)) ||
+		    isset($tokendata['validuntil']) && (trim($tokendata['validuntil'])!='' && $tokendata['validuntil']<date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)))
 		    {
 		        sendcacheheaders();
 		        doHeader();

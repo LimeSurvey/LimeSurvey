@@ -6049,7 +6049,7 @@ function usedTokens($token)
 
     $utresult = true;
 	$CI->load->model('Tokens_dynamic_model');
-	$query=$CI->Tokens_dynamic_model->getSomeRecords("tid, usesleft", $surveyid, array("token"=>$token));
+	$query=$CI->Tokens_dynamic_model->getSomeRecords(array("tid, usesleft"), $surveyid, array("token"=>$token));
 
     //$query = "SELECT tid, usesleft from {$dbprefix}tokens_$surveyid WHERE token=".db_quoteall($token);
     //$result=db_execute_assoc($query,null,true);

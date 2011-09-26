@@ -218,15 +218,15 @@
 	            if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
 	            {
 	                // Get response Id
-	                //$query="SELECT id FROM ".db_table_name('survey_'.$surveyid)." WHERE token='{$brow['token']}' ORDER BY id desc";
+	                $this->load->helper("database");
+	                $query=db_execute_assoc("SELECT id FROM ".$this->db->dbprefix('survey_'.$surveyid)." WHERE token='{$brow['token']}' ORDER BY id desc");
 	                //$result=db_execute_num($query) or safe_die ("<br />Could not find token!<br />\n" .$connect->ErrorMsg());
-					$this->load->model("survey_dynamic_model");
-					$query = $this->survey_dynamic_model->getSomeRecords(array("id"),$surveyid,array("token"=>$brow['token']),"id desc");
-	                list($id) = $query->row_array();
+					//Not working: $query = $this->Surveys_dynamic_model->getSomeRecords(array("id"),$surveyid,array("token"=>$brow['token']),"id desc");
+	                $id = reset($query->row_array());
 	                // UPDATE button to the tokens display in the MPID Actions column
 	                if  ($id)
 	                { ?>
-	                    <input type='image' src='<?php echo $imageurl;?>/token_viewanswer.png' style='height: 16; width: 16px;' onclick="window.open('$scriptname?action=browse&amp;sid=$surveyid&amp;subaction=id&amp;id=$id', '_top')"
+	                    <input type='image' src='<?php echo $imageurl;?>/token_viewanswer.png' style='height: 16; width: 16px;' onclick="window.open('<?php echo site_url("admin/browse/$surveyid/id/".$id);?>', '_top')"
                         title='<?php $clang->eT("View/Update last response");?>' alt='<?php $clang->eT("View/Update last response");?>' />
 	                <?php }
 	            }

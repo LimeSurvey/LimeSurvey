@@ -1143,7 +1143,7 @@ function submittokens($quotaexit=false)
     $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
 
     // check how many uses the token has left
-    $usesquery = "SELECT usesleft FROM {$dbprefix}tokens_$surveyid WHERE token='".db_quote($clienttoken)."'";
+    $usesquery = "SELECT usesleft FROM {$dbprefix}tokens_$surveyid WHERE token=".$CI->db->escape($clienttoken);
     $usesresult = db_execute_assoc($usesquery);
     $usesrow = $usesresult->row_array();
     if (isset($usesrow)) { $usesleft = $usesrow['usesleft']; }
@@ -1175,17 +1175,17 @@ function submittokens($quotaexit=false)
 			$utquery .= "SET usesleft=usesleft-1\n";
 		}
     }
-    $utquery .= "WHERE token='".db_quote($clienttoken)."'";
+    $utquery .= "WHERE token=".$CI->db->escape($clienttoken)."";
 
     $utresult = db_execute_assoc($utquery) or safe_die ("Couldn't update tokens table!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
 
     if ($quotaexit==false)
     {
         // TLR change to put date into sent and completed
-        $cnfquery = "SELECT * FROM ".$CI->db->dbprefix("tokens_$surveyid")." WHERE token='".db_quote($clienttoken)."' AND completed!='N' AND completed!=''";
+        $cnfquery = "SELECT * FROM ".$CI->db->dbprefix("tokens_$surveyid")." WHERE token=".$CI->db->escape($clienttoken)." AND completed!='N' AND completed!=''";
 
         $cnfresult = db_execute_assoc($cnfquery);       //Checked
-        $cnfrow = row_array();
+        $cnfrow = $cnfresult->row_array();
         if (isset($cnfrow))
         {
             $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
@@ -1527,7 +1527,7 @@ function buildsurveysession($surveyid)
             }
 
             echo "<p class='captcha'>".$clang->gT("Please confirm access to survey by answering the security question below and click continue.")."</p>
-			        <form class='captcha' method='get' action='{$publicurl}/index.php'>
+			        <form class='captcha' method='post' action='".site_url("$surveyid")."'>
 			        <table align='center'>
 				        <tr>
 					        <td align='right' valign='middle'>
@@ -1566,9 +1566,8 @@ function buildsurveysession($surveyid)
     }
 
     //BEFORE BUILDING A NEW SESSION FOR THIS SURVEY, LET'S CHECK TO MAKE SURE THE SURVEY SHOULD PROCEED!
-
     // TOKEN REQUIRED BUT NO TOKEN PROVIDED
-    if ($tokensexist == 1 && !returnglobal('token'))
+    if ($tokensexist == 1 && !$clienttoken)
     {
 
         if ($thissurvey['nokeyboard']=='Y')
@@ -1599,7 +1598,7 @@ function buildsurveysession($surveyid)
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br />";
             echo $clang->gT("If you have been issued a token, please enter it in the box below and click continue.")."</p>
             <script type='text/javascript'>var focus_element='#token';</script>
-	        <form id='tokenform' method='get' action='{$publicurl}/index.php'>
+	        <form id='tokenform' method='post' action='".site_url("$surveyid")."'>
                 <ul>
                 <li>
             <label for='token'>".$clang->gT("Token")."</label><input class='text $kpclass' id='token' type='text' name='token' />";
@@ -1643,22 +1642,22 @@ function buildsurveysession($surveyid)
     }
     // TOKENS REQUIRED, A TOKEN PROVIDED
     // SURVEY WITH NO NEED TO USE CAPTCHA
-    elseif ($tokensexist == 1 && returnglobal('token') &&
+    elseif ($tokensexist == 1 && $clienttoken &&
     !captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
 
         //check if tokens actually haven't been already used
-		$areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
+		$areTokensUsed = usedTokens(trim(strip_tags($clienttoken)));
         //check if token actually does exist
 	    // check also if it is allowed to change survey after completion
 		if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
-          $tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' ";
+          $tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$CI->db->escape(trim(strip_tags($clienttoken)))." ";
 		} else {
-        	$tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token='".db_quote(trim(strip_tags(returnglobal('token'))))."' AND (completed = 'N' or completed='')";
+        	$tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token=".$CI->db->escape(trim(strip_tags($clienttoken)))." AND (completed = 'N' or completed='')";
 		}
 
-        $tkresult = db_execute_num($tkquery);    //Checked
-        list($tkexist) = $tkresult->row_array();
+        $tkresult = db_execute_assoc($tkquery);    //Checked
+        $tkexist = reset($tkresult->row_array());
         if (!$tkexist || $areTokensUsed)
         {
             //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
@@ -1682,7 +1681,7 @@ function buildsurveysession($surveyid)
     }
     // TOKENS REQUIRED, A TOKEN PROVIDED
     // SURVEY CAPTCHA REQUIRED
-    elseif ($tokensexist == 1 && returnglobal('token') && captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
+    elseif ($tokensexist == 1 && $clienttoken && captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
     {
 
         // IF CAPTCHA ANSWER IS CORRECT
@@ -1691,15 +1690,15 @@ function buildsurveysession($surveyid)
         $loadsecurity == $_SESSION['secanswer'])
         {
             //check if tokens actually haven't been already used
-            $areTokensUsed = usedTokens(db_quote(trim(strip_tags(returnglobal('token')))));
+            $areTokensUsed = usedTokens(trim(strip_tags($clienttoken)));
             //check if token actually does exist
             if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {
-                $tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token='".db_quote(trim(sanitize_xss_string(strip_tags(returnglobal('token')))))."'";
+                $tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token='".$this->db->escape(trim(sanitize_xss_string(strip_tags($clienttoken))))."'";
             }
             else
             {
-                $tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token='".db_quote(trim(sanitize_xss_string(strip_tags(returnglobal('token')))))."' AND (completed = 'N' or completed='')";
+                $tkquery = "SELECT COUNT(*) FROM ".$CI->db->dbprefix('tokens_'.$surveyid)." WHERE token='".$this->db->escape(trim(sanitize_xss_string(strip_tags($clienttoken))))."' AND (completed = 'N' or completed='')";
             }
             $tkresult = db_execute_assoc($tkquery);     //Checked
             list($tkexist) = $tkresult->row_array();

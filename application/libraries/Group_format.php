@@ -17,7 +17,7 @@ class Group_format {
  	
  	function run($args) {
  		
-		global $surveyid, $thissurvey, $totalquestions;
+		global $surveyid, $thissurvey, $totalquestions, $token;
  
 
 
