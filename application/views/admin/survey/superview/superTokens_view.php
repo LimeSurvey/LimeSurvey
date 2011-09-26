@@ -17,13 +17,11 @@
         }
         //--></script></label>
 
-    <?php if ($esrow['active'] == "Y") { ?>
-
-            \n
-    <?php    if ($esrow['anonymized'] == "N") { ?>
-            <?php echo $clang->gT("This survey is NOT anonymous."); ?>
+  <?php if ($esrow['active'] == "Y") {
+            if ($esrow['anonymized'] == "N") { ?>
+            <?php echo $clang->gT("Responses to this survey are NOT anonymized."); ?>
         <?php } else {
-            echo $clang->gT("Answers to this survey are anonymized.");
+            echo $clang->gT("Responses to this survey are anonymized.");
         } ?>
              <font size='1' color='red'>&nbsp;(<?php echo $clang->gT("Cannot be changed"); ?>)
             </font>
@@ -44,7 +42,7 @@
         <?php } ?>
         </li>
         <li>
-             <label for=''><?php echo $clang->gT("Allow editing answers after completion?"); ?></label>
+             <label for=''><?php echo $clang->gT("Allow editing responses after completion?"); ?></label>
              <select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange="javascript: if (document.getElementById('private').value == 'Y') {alert('<?php echo $clang->gT("This option can't be set if Anonymous answers are used","js"); ?>'); this.value='N';}">
              <option value='Y'
             <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>

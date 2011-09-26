@@ -16,7 +16,6 @@
 
              <li><label for='datestamp'><?php echo $clang->gT("Date Stamp?"); ?></label>
         <?php if ($esrow['active'] == "Y") { ?>
-                 \n
             <?php if ($esrow['datestamp'] != "Y") {
                 echo $clang->gT("Responses will not be date stamped.");
             } else {
@@ -45,7 +44,6 @@
              <li><label for=''><?php echo $clang->gT("Save IP Address?"); ?></label>
 
         <?php if ($esrow['active'] == "Y") { ?>
-                 \n
           <?php  if ($esrow['ipaddr'] != "Y") {
                  echo $clang->gT("Responses will not have the IP address logged.");
             } else {
@@ -75,13 +73,12 @@
              <li><label for=''><?php echo $clang->gT("Save referrer URL?"); ?></label>
 
         <?php if ($esrow['active'] == "Y") { ?>
-                 \n
           <?php  if ($esrow['refurl'] != "Y") {
                 echo $clang->gT("Responses will not have their referring URL logged.");
             } else {
                 echo $clang->gT("Responses will have their referring URL logged.");
             } ?>
-                 <font size='1' color='red'>&nbsp;(<?php echo $clang->gT("Cannot be changed"); ?>)"
+                 <font size='1' color='red'>&nbsp;(<?php echo $clang->gT("Cannot be changed"); ?>)
                  </font>
                  <input type='hidden' name='refurl' value='<?php echo $esrow['refurl']; ?>' />
         <?php } else { ?>
@@ -100,6 +97,27 @@
             <?php } ?>
              </li>
 
+         <li><label for='savetimings'><?php echo $clang->gT("Save timings?"); ?></label>
+        <?php if ($esrow['active']=="Y")
+        { ?>
+           <?php if ($esrow['savetimings'] != "Y") {  echo $clang->gT("Timings will not be saved.");}
+            else { $clang->gT("Timings will be saved.");} ?>
+             <font size='1' color='red'>&nbsp;(<?php echo $clang->gT("Cannot be changed"); ?>)
+             </font>
+             <input type='hidden' name='savetimings' value='<?php echo $esrow['savetimings']; ?>' />
+        <?php }
+        else
+        { ?>
+             <select id='savetimings' name='savetimings'>
+             <option value='Y'
+            <?php if (!isset($esrow['savetimings']) || !$esrow['savetimings'] || $esrow['savetimings'] == "Y") { ?> selected='selected' <?php } ?>
+             ><?php echo $clang->gT("Yes"); ?></option>
+            <option value='N'
+            <?php if (isset($esrow['savetimings']) && $esrow['savetimings'] == "N") { ?>  selected='selected' <?php } ?>
+             ><?php echo $clang->gT("No"); ?></option>
+            </select>
+            </li>
+        <?php } ?>
 
 
              <li><label for=''><?php echo $clang->gT("Enable assessment mode?"); ?></label>
@@ -116,28 +134,6 @@
          ><?php echo $clang->gT("No"); ?></option>
         </select></li>
 
-         <li><label for='savetimings'><?php echo $clang->gT("Save timings?"); ?></label>
-        <?php if ($esrow['active']=="Y")
-        { ?>
-             \n
-           <?php if ($esrow['savetimings'] != "Y") {  echo $clang->gT("Timings will not be saved.");}
-            else { $clang->gT("Timings will be saved.");} ?>
-             <font size='1' color='red'>&nbsp;(<?php echo $clang->gT("Cannot be changed"); ?>)
-             </font>
-             <input type='hidden' name='savetimings' value='<?php echo $esrow['savetimings']; ?>' />
-		<?php }
-		else
-        { ?>
-			 <select id='savetimings' name='savetimings'>
-			 <option value='Y'
-			<?php if (!isset($esrow['savetimings']) || !$esrow['savetimings'] || $esrow['savetimings'] == "Y") { ?> selected='selected' <?php } ?>
-			 ><?php echo $clang->gT("Yes"); ?></option>
-			<option value='N'
-			<?php if (isset($esrow['savetimings']) && $esrow['savetimings'] == "N") { ?>  selected='selected' <?php } ?>
-			 ><?php echo $clang->gT("No"); ?></option>
-			</select>
-			</li>
-		<?php } ?>
 
          <li><label for='allowsave'><?php echo $clang->gT("Participant may save and resume later?"); ?></label>
          <select id='allowsave' name='allowsave'>
