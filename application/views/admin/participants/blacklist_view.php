@@ -1,5 +1,3 @@
-<html>
-<head>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js"?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/start/jquery-ui.css" ?>" />
@@ -11,7 +9,7 @@ progress-graph .zero, progress-graph .graph, progress-graph .cent { display: non
 <script src="<?php echo base_url()."templates/default/template.js"?>" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url()."templates/default/favicon.ico" ?>" />
 <script src="<?php echo $this->config->item('generalscripts')."scripts/survey_runtime.js" ?>" type="text/javascript"></script>
-</head>
+
 <body class="default lang-en groupbygroup">
 <div class="outerframe">
 <table class="innerframe">
@@ -111,5 +109,3 @@ else
 ?>
 </p>
 </div>
-</body>
-</html>

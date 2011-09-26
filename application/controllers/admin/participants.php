@@ -62,6 +62,12 @@ function importCSV()
 */
 function displayParticipants()
 {
+    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/css/jquery.multiselect.css";
+    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/css/jquery.multiselect.filter.css";
+    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/displayParticipants.css";
+    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css";
+    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css";
+    $this->config->set_item("css_admin_includes", $css_admin_includes);
     self::_getAdminHeader();
     $clang = $this->limesurvey_lang;
     $this->load->model('users_model');
@@ -113,6 +119,9 @@ function blacklistControl()
 */
 function attributeControl()
 {
+    
+    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/participants.css";
+    $this->config->set_item("css_admin_includes", $css_admin_includes);
     self::_getAdminHeader();
     $clang = $this->limesurvey_lang;
     $this->load->model('participant_attribute_model');
@@ -143,6 +152,9 @@ function userControl()
 */
 function sharePanel()
 {
+    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css";
+    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css";
+    $this->config->set_item("css_admin_includes", $css_admin_includes);
     self::_getAdminHeader();
     $clang = $this->limesurvey_lang;
     $aData = array('clang'=> $clang);
@@ -215,7 +227,7 @@ function editShareInfo()
     }
     $aData = array( 'participant_id' => $this->input->post('participant_id'),
                    'can_edit' => $this->input->post('can_edit'),
-                   'share_uid' => $this->input->post('share_uid'));
+                   'share_uid' => $this->input->post('shared_uid'));
     $this->participant_shares_model->updateShare($aData);
 }
 /**
@@ -1116,6 +1128,9 @@ function viewAttribute()
                   'attributevalues' => $attributevalues,
                   'attributenames' => $attributenames,
                   'clang'=> $clang);
+    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/participants.css";
+    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/viewAttribute.css";
+    $this->config->set_item("css_admin_includes", $css_admin_includes);
     self::_getAdminHeader();
     $this->load->view('admin/participants/participantsPanel_view',$aData);
     $this->load->view('admin/participants/viewAttribute_view',$aData);
@@ -1599,6 +1614,8 @@ function addToTokenattmap()
  */
 function attributeMap()
 {
+    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/attributeMap.css";
+    $this->config->set_item("css_admin_includes", $css_admin_includes);
     self::_getAdminHeader();
     $clang = $this->limesurvey_lang;
     $surveyid = $this->input->post('survey_id');

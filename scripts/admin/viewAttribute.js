@@ -1,8 +1,4 @@
 $(document).ready(function() {
-    
-    //$('#langdata').find('English').remove();
-//
-
 $.each(removeitem, function(index, value) { 
   $("select#langdata option[value='"+value+"']").remove();
 });
@@ -17,7 +13,7 @@ $.each(removeitem, function(index, value) {
                
            }
         });
-         $("#add").click(function(){
+         $("#addsign").click(function(){
          var lang = $("#langdata").val();
          if(lang != "")
             {

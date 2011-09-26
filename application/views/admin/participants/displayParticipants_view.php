@@ -1,22 +1,10 @@
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/adminstyle.css" ?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/start/jquery-ui.css" ?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/jquery.multiselect.css" ?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('generalscripts')."jquery/css/jquery.multiselect.filter.css" ?>" />
-<link rel="stylesheet" type="text/css" href="<?php echo $this->config->item('styleurl')."admin/default/displayParticipants.css" ?>" />
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css" ?>" />
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css" ?>" />
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js"?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.ui.datepicker.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.ui.core.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.min.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.filter.min.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.ui.selectable.min.js" ?>" type="text/javascript"></script>
-
 <?php
 /* If there are any attributes to display as extra columns in the jqGrid, iterate through them */
 
@@ -95,7 +83,7 @@ var noRowSelected = "<?php echo $clang->gT("You have no row selected") ?>";
 var deletefrompanel = "<?php echo $clang->gT("Delete participant(s) from central participants panel only") ?>";
 var deletefrompanelandtoken = "<?php echo $clang->gT("Delete participant(s) from central panel and tokens tables") ?>";
 var deletefrompaneltokenandresponse = "<?php echo $clang->gT("Delete participant(s) from central panel, tokens tables and all associated responses") ?>";
-var deleteMsg = "<br>"+deletefrompanelmsg+"<br><br><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
+var deleteMsg = "<br/>"+deletefrompanelmsg+"<br/><br/><center><ol id='selectable' class='selectable' ><li class='ui-widget-content' id='po'>"+deletefrompanel+"</li><li class='ui-widget-content' id='ptt'>"+deletefrompanelandtoken+"</li><li class='ui-widget-content' id='ptta'>"+deletefrompaneltokenandresponse+"</li></ol></center>";
 var searchBtn = "<?php echo $clang->gT("Search") ?>";
 var shareMsg = "<?php echo $clang->gT("You can see and edit settings for shared participant in share panel.") ?>"; //PLEASE REVIEW
 var jsonUrl = "<?php echo site_url("admin/participants/getParticipants_json");?>";
@@ -126,6 +114,7 @@ var colModels = '[{"name":"participant_id", "index":"participant_id", "width":10
     colModels += '{"name":"email", "index":"email","align":"center","width":300, "sorttype":"string", "sortable": true, "editable":true},';
     colModels += '{"name":"blacklisted", "index":"blacklisted","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true, "edittype":"checkbox", "editoptions":{"value":"Y:N"}},';
     colModels += '{"name":"surveys", "index":"surveys","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":false},';
+
 <?php
     $colModels  ="colModels += '".implode(",';\n colModels += '",$langNames).",";
     $colModels .= implode(",';\n colModels += '", $uidNames)."]';";
@@ -133,11 +122,6 @@ var colModels = '[{"name":"participant_id", "index":"participant_id", "width":10
 ?>
 </script>
 <script src="<?php echo $this->config->item('generalscripts')."admin/displayParticipant.js" ?>" type="text/javascript"></script>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title></title>
-</head>
-<body>
-
 <div id ="search" style="display:none">
 <?php
 $optionsearch = array( '' => 'Select One',
@@ -176,11 +160,11 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
 <td><img src=<?php echo base_url()."images/plus.png" ?>  id="addbutton" style="margin-bottom:4px"></td>
 </tr>
 </table>
-<br>
+<br/>
 
 
 </div>
-<br>
+<br/>
 <table id="displayparticipants"></table> <div id="pager"></div>
 <p><input type="button" name="share" id="share" value="Share" /><input type="button" name="addtosurvey" id="addtosurvey" value="Add to Survey" />
 </p>
@@ -261,19 +245,19 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
 
         echo form_checkbox($data); ?><input type="hidden" name="redirect" id="redirect" value='TRUE'></p>
         <center><ol id='selectableadd' class='selectable' >
-                <li class='ui-widget-content' id='all' name='all'><?php echo $clang->gT("all participants in current search") ?></li>
-                <li class='ui-widget-content' id='allingrid' name='allingrid'  name='allingrid'><?php echo $clang->gT("all participants") ?></li>
-                <li class='ui-widget-content' id='selected' name='selected'><?php echo $clang->gT("only the participants I have selected") ?></li>
+                <li class='ui-widget-content' id='all'><?php echo $clang->gT("all participants in current search") ?></li>
+                <li class='ui-widget-content' id='allingrid'><?php echo $clang->gT("all participants") ?></li>
+                <li class='ui-widget-content' id='selected'><?php echo $clang->gT("only the participants I have selected") ?></li>
         </ol></center>
             </form>
 </div>
 <div id="notauthorised" title="notauthorised" style="display:none">
 	<p>
 	<?php echo $clang->gT("This is shared participant and you are not authorised to edit it"); ?></p>
-    <p>
+    
 </div>
 <div id="exportcsv" title="exportcsv" style="display:none">
-    <?php echo $clang->gT("Select the attribute to be exported"); ?></p>
+    <?php echo $clang->gT("Select the attribute to be exported"); ?><br/><br/>   
      <select id="attributes" name="attributes" multiple="multiple">
         <?php
             foreach($allattributes as $key=>$value)
@@ -283,5 +267,3 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
         ?>
     </select>
 </div>
-</body>
-</html>
