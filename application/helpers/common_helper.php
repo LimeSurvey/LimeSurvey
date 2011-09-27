@@ -1842,26 +1842,32 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 /**
 * This function returns POST/REQUEST vars, for some vars like SID and others they are also sanitized
 * CI don't support GET parameters'
+*
 * @param mixed $stringname
+* @param mixed $urlParam
 */
-function returnglobal($stringname)
+function returnglobal($stringname, $urlParam = null)
 {
     $CI = & get_instance();
     $CI->load->config('lsconfig');
     $useWebserverAuth = $CI->config->item('useWebserverAuth');
-    if ((isset($useWebserverAuth) && $useWebserverAuth === true) || $stringname=='sid') // don't read SID from a Cookie
-    {
-        if ($CI->input->get_post($stringname)) $urlParam = $CI->input->get_post($stringname);
-        //if ($this->input->cookie('stringname')) $urlParam = $this->input->cookie('stringname');
-    }
-    elseif ($CI->input->get_post($stringname) )
-    {
-        $urlParam = $CI->input->get_post($stringname);
-    }
-    elseif ($CI->input->cookie($stringname))
-    {
-        $urlParam = $CI->input->cookie($stringname);
-    }
+	
+	if(!isset($urlParam))
+	{
+	    if ((isset($useWebserverAuth) && $useWebserverAuth === true) || $stringname=='sid') // don't read SID from a Cookie
+	    {
+	        if ($CI->input->get_post($stringname)) $urlParam = $CI->input->get_post($stringname);
+	        //if ($this->input->cookie('stringname')) $urlParam = $this->input->cookie('stringname');
+	    }
+	    elseif ($CI->input->get_post($stringname) )
+	    {
+	        $urlParam = $CI->input->get_post($stringname);
+	    }
+	    elseif ($CI->input->cookie($stringname))
+	    {
+	        $urlParam = $CI->input->cookie($stringname);
+	    }
+	}
 
     if (isset($urlParam))
     {
