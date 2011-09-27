@@ -500,7 +500,7 @@ th.admincell {
     padding:1px;
     padding-left:42px;
 }
-
+ 
 .btnaddanswer,
 .btndelanswer,
 .header_statistics img {
@@ -1447,4 +1447,8 @@ div.translate {
 
 #translateform textarea:focus{
   outline: blue solid thin;
+}
+#gbox_urlparams
+{
+    margin:0 auto;
 }

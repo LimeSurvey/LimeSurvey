@@ -1241,9 +1241,11 @@
             redirect("admin");
         }
 
-        self::_js_admin_includes($this->config->item('generalscripts').'/admin/surveysettings.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'/jquery/jqGrid/js/jquery.jqGrid.min.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
         self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
+        self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
         self::_getAdminHeader();
 		self::_showadminmenu($surveyid);;
         if (!is_null($surveyid))
@@ -1619,11 +1621,18 @@
     {
         $this->load->model('survey_url_parameters_model');
         $oResult=$this->survey_url_parameters_model->getParametersForSurvey($surveyid);
+        $i=0;
+        foreach ($oResult->result_array() as $oRow)
+        {
+            $data->rows[$i]['id']=$oRow['id'];
+            $data->rows[$i]['cell']=array_values($oRow);
+            $i++;
+
+        }
 
         $data->page = 1;
         $data->records = $oResult->num_rows();
         $data->total = 1;
-        $data->rows=$oResult->result_object();
 
         echo json_encode($data);
     }

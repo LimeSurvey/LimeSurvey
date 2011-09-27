@@ -4,19 +4,42 @@ $(document).ready(function(){
     $("#template").change(templatechange);
     $("#template").keyup(templatechange);
     $("#copysurveyform").submit(copysurvey);
-  /*  $("#urlparams").jqGrid({ url:jsonUrl,
+    $("#urlparams").jqGrid({ url:jsonUrl,
         datatype: "json",
-        colNames:['','Parameter','Destination'],
-        colModel:[ {name:'id',index:'id', width:0},
+        colNames:['Actions','','','Parameter','','','Target question'],
+        colModel:[ {name:'act',index:'act', width:65,sortable:false},
+                   {name:'id',index:'id', hidden:true},
+                   {name:'sid',index:'sid', hidden:true},
                    {name:'parameter',index:'parameter', width:120},
-                   {name:'targetqid',index:'targetqid', width:200} ],
+                   {name:'targetqid',index:'targetqid', hidden:true},
+                   {name:'targetsqid',index:'targetsqid', hidden:true},
+                   {name:'title',index:'title', width:300}
+                   ],
         sortname: 'parameter',
+        pager: '#pagerurlparams',
+        loadonce: true,
+        hidegrid: false,
+        pginput: false,
+        pgbuttons: false,
         viewrecords: true,
-        sortorder: "desc",
-        multiselect: false,
-        emptyrecords : 'No params configures',
-         autowidth: true,
-        caption: "URL parameters" });*/
+        sortorder: "asc",
+        editurl: jsonUrl, // this is dummy existing url
+        emptyrecords : "No parameters defined.",
+        caption: "URL parameters",
+        gridComplete: function(){   var ids = jQuery("#urlparams").jqGrid('getDataIDs');
+                                    for(var i=0;i < ids.length;i++)
+                                    {
+                                        var cl = ids[i];
+                                        be = "<image style='cursor:pointer;' src='"+imageUrl+"/token_edit.png' value='E' onclick=\"jQuery('#urlparams').editRow('"+cl+"');\" />";
+                                        de = "<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm('Are you sure you want to delete this URL parameter?')) jQuery('#urlparams').delRowData("+cl+");\" />";
+                                        jQuery("#urlparams").jqGrid('setRowData',ids[i],{act:be+de});
+                                    }
+        }
+    }).navGrid('#pagerurlparams',{del:false,
+                                    edit:false,
+                                    refresh:false,
+                                    search:false}, {});
+
 });
 
 function templatechange()
