@@ -4372,6 +4372,8 @@ function do_multiplenumeric($ia)
                     $slider_showmax='';
                 }
 
+                $js_header_includes[] = '/scripts/jquery/lime-slider.js';
+
                 if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')
                 {
                     $slider_startvalue = $_SESSION[$myfname] * $slider_divisor;
@@ -4406,7 +4408,7 @@ function do_multiplenumeric($ia)
                 .  $slider_showmin
                 . "<div class=\"slider_callout\" id=\"slider-callout-$myfname\"></div>\n"
                 . "<div class=\"ui-slider-handle\" id=\"slider-handle-$myfname\"></div>\n";
-                $answer_main .="<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
+                $answer_main .= "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
                 if (isset($_SESSION[$myfname]))
                 {
                     $answer_main .= $_SESSION[$myfname];
@@ -4415,13 +4417,14 @@ function do_multiplenumeric($ia)
                 {
                     $answer_main .= $slider_default;
                 }
-                $answer_main .= "\"/>\n";
                 $answer_main .=  $slider_showmax
                 . "\t</div>"
-                . "</div>$sliderright\n"
-                . "\t</li>\n";
+                . "</div>$sliderright\n";
+                $answer_main .= "\"/>\n";
+                $answer_main .=   "\t</li>\n";
             }
 
+            //			$answer .= "\t</tr>\n";
 
             $fn++;
             $inputnames[]=$myfname;
@@ -4455,11 +4458,6 @@ function do_multiplenumeric($ia)
             $answer_main.=$answer_computed;
         }
         $answer .= $question_tip."<ul>\n".$answer_main."</ul>\n";
-        if($slider_layout){
-        $answer .= "<script type='text/javascript' src='/scripts/jquery/lime-slider.js'></script>";
-        }
-        
-        }
     }
     //just added these here so its easy to change in one place
     $errorClass = 'tip problem';
