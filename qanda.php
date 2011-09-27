@@ -4417,10 +4417,10 @@ function do_multiplenumeric($ia)
                 {
                     $answer_main .= $slider_default;
                 }
+                $answer_main .= "\"/>\n";
                 $answer_main .=  $slider_showmax
                 . "\t</div>"
                 . "</div>$sliderright\n";
-                $answer_main .= "\"/>\n";
                 $answer_main .=   "\t</li>\n";
             }
 
