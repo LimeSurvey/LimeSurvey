@@ -32,6 +32,9 @@ ul#surveylist li{
 
 .wrapper,#content{text-align:right;}
 
+.asterisk {padding-right:0;padding-left:1em;}
+.qnumcode{padding-right:0;padding-left:1em;}
+
 table.question tbody th.answertext,table.question tbody th.arraycaptionright{text-align:left;}
 table.question tbody th.answertextleft{text-align:right;}
 

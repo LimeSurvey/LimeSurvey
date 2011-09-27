@@ -619,6 +619,12 @@ select {
 	font-weight: bold;
 }
 
+.asterisk {display:none}
+.mandatory .asterisk {display:inline;}
+.asterisk {padding-right:1em;}
+.showqnumcode-X .qnumcode {
+	display:none;
+}
 /* -------------------------------------------------
    START: Question styles  ------------------------- */
   /* =====================================
@@ -1246,9 +1252,12 @@ td.statsImageholder {
 }
 
 /* Question Index */
-.outerframe.withindex {
+.withindex .outerframe{
   margin-left: 1em;
   margin-right: 26em;
+}
+.allinone .outerframe{
+  margin:0;
 }
 
 #index {

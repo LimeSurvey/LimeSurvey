@@ -76,11 +76,20 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
     // surveyformat
     if (isset($thissurvey['format']))
     {
-        $surveyformat = str_replace(array("A","S","G"),array("allinone","questionbyquestion","groupbygroup"),$thissurvey['format']);
+        $surveyformat = str_replace(array("A", "S", "G"), array("allinone", "questionbyquestion", "groupbygroup"), $thissurvey['format']);
     }
     else
     {
         $surveyformat = "";
+    }
+    if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y"){
+        $surveyformat .= " withindex";
+    }
+    if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y"){
+        $surveyformat .= " showprogress";
+    }
+    if (isset($thissurvey['showqnumcode'])){
+        $surveyformat .= " showqnumcode-".$thissurvey['showqnumcode'];
     }
     // real survey contact
     if (isset($surveylist) && isset($surveylist['contact']))

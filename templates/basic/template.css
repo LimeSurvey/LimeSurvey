@@ -43,16 +43,21 @@ td.tenpoint {
 .bd {
   background-color: #ddd;
 }
-
+.asterisk {display:none}
+.mandatory .asterisk {display:inline;}
 .asterisk {
   color: red;
   font-size: 9pt;
   font-family: verdana;
+  padding-right:1em;
 }
 
 span.qnumcode {
 	font-style:italic;
 }	
+.showqnumcode-X .qnumcode {
+	display:none;
+}
 
 .questionhelp {
   font-size: 10px;
@@ -941,9 +946,12 @@ div.questionTitle {
 }
 
 /* Question Index */
-.outerframe.withindex {
+.withindex .outerframe{
   margin-left: 1em;
   margin-right: 26em;
+}
+.allinone .outerframe{
+  margin:0;
 }
 
 #index {

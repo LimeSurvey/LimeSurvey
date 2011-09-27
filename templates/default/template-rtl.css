@@ -2,6 +2,9 @@
 .answertext,.answer {
   text-align: right;
 }
+.asterisk {
+  padding-left:1em;padding-right:0;
+}
 
 .boilerplate td td,.numeric td td,.choice-5-pt-radio td td,.yes-no td td,.gender td td,.date td td,.numeric-multi td td,.numeric td td,.list-with-comment td td,.list-dropdown-flexible td td,.ranking td td,.numeric-multi td td,.language td td,.multiple-opt-comments td td,.multiple-short-txt td td,.text-short td td,.text-long td td,.text-huge td td,.numeric-multi td td,.array-5-pt td,.array-10-pt td,.array-yes-uncertain-no td,.array-increase-same-decrease td,.array-flexible-row td,.array-flexible-column td,.array-multi-flexi td,.array-multi-flexi-text td,.array-flexible-duel-scale td
   {
