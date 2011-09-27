@@ -109,6 +109,10 @@ $(document).ready(function()
             });
         }
     }
+// #index
+    var idx = $("#index");
+    var row = $("#index .row.current");
+    idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
 });
 
 gmaps = new Object;

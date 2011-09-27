@@ -126,10 +126,13 @@ a:link,a:visited {
   margin: 5px;
 }
 
+.asterisk {display:none}
+.mandatory .asterisk {display:inline;}
 .asterisk {
   color: red;
   font-size: 9px;
   font-family: verdana;
+  padding-right:1em;
 }
 
 .hide {
@@ -202,6 +205,9 @@ a:link,a:visited {
 span.questionhelp {
 }
 
+.showqnumcode-X .qnumcode {
+	display:none;
+}
 span.qnumcode {
 	font-style:italic;
 }
@@ -1280,9 +1286,12 @@ div.questionTitle {
 }
 
 /* Question Index */
-.outerframe.withindex {
+.withindex .outerframe {
   margin-left: 1em;
   margin-right: 26em;
+}
+.allinone .outerframe{
+  margin:0;
 }
 
 #index {
