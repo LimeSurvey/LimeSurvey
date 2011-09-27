@@ -19,7 +19,7 @@ $(document).ready(function(){
 	// call the init slider routine for each element of the .multinum-slider class
 	$(".multinum-slider").each(function(i,e) {
 		var basename = e.id.substr(10);
-		
+		$('#answer'+basename).hide();
 		$(this).prev('label').addClass('slider-label'); //3796 TP - add a class to the labels in slider questions to facilitate styling
 
 		//$("#slider-"+basename).addClass('ui-slider-2');
