@@ -4158,7 +4158,6 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Timer'),
     'sortorder'=>108,
     "inputtype"=>"integer",
-    'i18n'=>true,
     "help"=>$clang->gT("Display a 'time limit warning' when there are this many seconds remaining in the countdown (warning will not display if left blank)"),
     "caption"=>$clang->gT("1st time limit warning message timer"));
 
