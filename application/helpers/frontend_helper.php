@@ -944,7 +944,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
                     else
                         $filecount = 0;
 
-                    if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'])
+                    if (isset($validation['min_num_of_files']) && $filecount < $validation['min_num_of_files'] && checkquestionfordisplay($fieldmap[$field]['qid']))
                     {
                         $filenotvalidated = array();
                         $filenotvalidated[$field] = $clang->gT("The minimum number of files has not been uploaded.");
