@@ -82,7 +82,7 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
     {
         $surveyformat = "";
     }
-    if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y"){
+    if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y" && $surveyformat!="allinone" && (isset($_SESSION['step']) && $_SESSION['step']>0)){
         $surveyformat .= " withindex";
     }
     if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y"){
