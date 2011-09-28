@@ -31,7 +31,7 @@
 
 
              <li><label for='usecookie'><?php echo $clang->gT("Set cookie to prevent repeated participation?"); ?></label>
-            <select name='usecookie'>
+            <select name='usecookie' id='usecookie'>
             <option value='Y'
         <?php if ($esrow['usecookie'] == "Y") { ?>
               selected='selected'
@@ -46,8 +46,8 @@
              </li>
 
 
-             <li><label for=''><?php echo $clang->gT("Use CAPTCHA for"); ?>:</label>
-             <select name='usecaptcha'>
+             <li><label for='usecaptcha'><?php echo $clang->gT("Use CAPTCHA for"); ?>:</label>
+             <select name='usecaptcha' id='usecaptcha'>
              <option value='A'
         <?php if ($esrow['usecaptcha'] == "A") { ?>
               selected='selected'
@@ -95,4 +95,4 @@
              >------------- / ------------ / ---------</option>
             </select></li>
 
-             </ul></div>
+        </ul></div>

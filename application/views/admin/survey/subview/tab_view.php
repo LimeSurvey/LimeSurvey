@@ -15,5 +15,3 @@
         <?php } ?>
     </ul>
     <form class='form30' name='addnewsurvey' id='addnewsurvey' action='<?php if ($action == "newsurvey") echo site_url("admin/database/index/insertsurvey"); if ($action == "editsurveysettings") echo site_url("admin/database/index/updatesurveysettings"); ?>' method='post' >
-    <div id='general'>
-    <ul><li>

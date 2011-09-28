@@ -50,9 +50,6 @@ $route['(:num)'] = "survey/sid/$1";
 //Admin Routes
 $route['admin'] = "admin/index";
 
-//survey
-$route['admin/survey/newsurvey'] = "admin/survey/index/newsurvey";
-$route['admin/survey/editsurveysettings/(:num)'] = "admin/survey/index/editsurveysettings/$1";
 
 //question
 $route['admin/question/newquestion/(:num)/(:num)'] = "admin/question/index/addquestion/$1/$2";

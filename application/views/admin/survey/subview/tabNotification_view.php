@@ -41,7 +41,7 @@
              </li>
 
 
-             <li><label for=''><?php echo $clang->gT("Save IP Address?"); ?></label>
+             <li><label for='ipaddr'><?php echo $clang->gT("Save IP Address?"); ?></label>
 
         <?php if ($esrow['active'] == "Y") { ?>
           <?php  if ($esrow['ipaddr'] != "Y") {
@@ -53,7 +53,7 @@
                 </font>
                  <input type='hidden' name='ipaddr' value='<?php echo $esrow['ipaddr']; ?>' />
         <?php } else { ?>
-                 <select name='ipaddr'>
+                 <select name='ipaddr' id='ipaddr'>
                  <option value='Y'
             <?php if ($esrow['ipaddr'] == "Y") { ?>
                   selected='selected'
@@ -70,7 +70,7 @@
              </li>
 
 
-             <li><label for=''><?php echo $clang->gT("Save referrer URL?"); ?></label>
+             <li><label for='refurl'><?php echo $clang->gT("Save referrer URL?"); ?></label>
 
         <?php if ($esrow['active'] == "Y") { ?>
           <?php  if ($esrow['refurl'] != "Y") {
@@ -82,7 +82,7 @@
                  </font>
                  <input type='hidden' name='refurl' value='<?php echo $esrow['refurl']; ?>' />
         <?php } else { ?>
-                 <select name='refurl'>
+                 <select name='refurl' id='refurl'>
                  <option value='Y'
             <?php if ($esrow['refurl'] == "Y") { ?>
                   selected='selected'
@@ -120,7 +120,7 @@
         <?php } ?>
 
 
-             <li><label for=''><?php echo $clang->gT("Enable assessment mode?"); ?></label>
+             <li><label for='assessments'><?php echo $clang->gT("Enable assessment mode?"); ?></label>
              <select id='assessments' name='assessments'>
              <option value='Y'
         <?php if ($esrow['assessments'] == "Y") { ?>

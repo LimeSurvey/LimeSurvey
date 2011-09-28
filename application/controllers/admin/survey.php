@@ -35,6 +35,96 @@
 	}
 
     /**
+    * This function prepares the view for a new survey
+    *
+    */
+    function newsurvey()
+    {
+        if(!bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+        {
+            die();
+        }
+
+        self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
+        self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
+        self::_getAdminHeader();
+        self::_showadminmenu();;
+        $this->load->helper('surveytranslator');
+        $clang = $this->limesurvey_lang;
+
+        $esrow = self::_fetchSurveyInfo('newsurvey');
+        $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
+        $this->load->helper('admin/htmleditor');
+
+        $data = self::_generalTabNewSurvey();
+        $data['esrow']=$esrow;
+
+        $data = array_merge($data,self::_tabPresentationNavigation($esrow));
+        $data = array_merge($data,self::_tabPublicationAccess($esrow));
+        $data = array_merge($data,self::_tabNotificationDataManagement($esrow));
+        $data = array_merge($data,self::_tabTokens($esrow));
+
+        $this->load->view('admin/survey/newSurvey_view',$data);
+        self::_loadEndScripts();
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    }
+
+    /**
+    * This function prepares the view for editing a survey
+    *
+    */
+
+    function editsurveysettings($surveyid)
+    {
+        $surveyid=(int)$surveyid;
+        if (is_null($surveyid) || !$surveyid)
+        {
+            die();
+        }
+
+        if(!bHasSurveyPermission($surveyid,'surveysettings','read') && !bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+        {
+            die();
+        }
+
+        self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
+        self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
+        self::_getAdminHeader();
+        self::_showadminmenu($surveyid);;
+        self::_surveybar($surveyid);
+
+        $this->load->helper('surveytranslator');
+        $clang = $this->limesurvey_lang;
+
+        $esrow = array();
+        $editsurvey = '';
+        $esrow = self::_fetchSurveyInfo('editsurvey',$surveyid);
+        $data['esrow']=$esrow;
+
+        $data = self::_generalTabEditSurvey($surveyid,$esrow);
+        $data = array_merge($data,self::_tabPresentationNavigation($esrow));
+        $data = array_merge($data,self::_tabPublicationAccess($esrow));
+        $data = array_merge($data,self::_tabNotificationDataManagement($esrow));
+        $data = array_merge($data,self::_tabTokens($esrow));
+        $data = array_merge($data,self::_tabPanelIntegration($esrow));
+        $data = array_merge($data,self::_tabResourceManagement($surveyid));
+
+        //echo $editsurvey;
+        $data['display'] = $editsurvey;
+        $data['action'] = "editsurveysettings";
+        $this->load->view('admin/survey/editSurvey_view',$data);
+        self::_loadEndScripts();
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+
+    }
+
+    /**
      * survey::importsurveyresources()
      * Function responsible to import survey reasources.
      * @return
@@ -1234,105 +1324,6 @@
      */
     function index($action,$surveyid=null)
     {
-        //global $surveyid;
-
-        if (!isset($action))
-        {
-            redirect("admin");
-        }
-
-        self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
-        self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
-        self::_getAdminHeader();
-		self::_showadminmenu($surveyid);;
-        if (!is_null($surveyid))
-        self::_surveybar($surveyid);
-
-        if(!bHasSurveyPermission($surveyid,'surveysettings','read') && !bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
-        {
-            //include("access_denied.php");
-        }
-        $this->load->helper('surveytranslator');
-        $clang = $this->limesurvey_lang;
-
-        $esrow = array();
-        $editsurvey = '';
-        if ($action == "newsurvey") {
-            $esrow = self::_fetchSurveyInfo('newsurvey');
-            $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
-            $this->load->helper('admin/htmleditor');
-            $editsurvey = PrepareEditorScript();
-
-            $editsurvey .= "";
-            $editsurvey .="<script type=\"text/javascript\">
-                        standardtemplaterooturl='".$this->config->item('standardtemplaterooturl')."';
-                        templaterooturl='".$this->config->item('usertemplaterooturl')."'; \n";
-            $editsurvey .= "</script>\n";
-
-        // header
-        $editsurvey .= "<div class='header ui-widget-header'>" . $clang->gT("Create, import, or copy survey") . "</div>\n";
-        } elseif ($action == "editsurveysettings") {
-            $esrow = self::_fetchSurveyInfo('editsurvey',$surveyid);
-            // header
-            $editsurvey .= "<div class='header ui-widget-header'>".$clang->gT("Edit survey settings")."</div>\n";
-        }
-        if ($action == "newsurvey") {
-            $editsurvey .= self::_generalTabNewSurvey();
-        } elseif ($action == "editsurveysettings") {
-            $editsurvey .= self::_generalTabEditSurvey($surveyid,$esrow);
-        }
-
-        $editsurvey .= self::_tabPresentationNavigation($esrow);
-        $editsurvey .= self::_tabPublicationAccess($esrow);
-        $editsurvey .= self::_tabNotificationDataManagement($esrow);
-        $editsurvey .= self::_tabTokens($esrow);
-
-        if ($action == "newsurvey") {
-            $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='insertsurvey' />\n";
-            //$this->session->set_userdata(array('action' => 'insertsurvey'));
-        } elseif ($action == "editsurveysettings") {
-            $editsurvey .= self::_tabPanelIntegration($esrow);
-            $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />\n"
-            . "<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
-            . "<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
-            . "<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n";
-        }
-        $editsurvey .= "</form>";
-        if ($action == "newsurvey") {
-            $editsurvey .= self::_tabImport($surveyid);
-            $editsurvey .= self::_tabCopy($surveyid);
-        } elseif ($action == "editsurveysettings") {
-            $editsurvey .= self::_tabResourceManagement($surveyid);
-        }
-
-
-        // End TAB pane
-        $editsurvey .= "</div>\n";
-
-
-        if ($action == "newsurvey") {
-            $cond = "if (isEmpty(document.getElementById('surveyls_title'), '" . $clang->gT("Error: You have to enter a title for this survey.", 'js') . "'))";
-            $editsurvey .= "<p><button onclick=\"$cond {document.getElementById('addnewsurvey').submit();}\" class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
-        } elseif ($action == "editsurveysettings") {
-            $cond = "if (UpdateLanguageIDs(mylangs,'" . $clang->gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js") . "'))";
-            if (bHasSurveyPermission($surveyid,'surveysettings','update'))
-            {
-                $editsurvey .= "<p><button onclick=\"$cond {document.getElementById('addnewsurvey').submit();}\" class='standardbtn' >" . $clang->gT("Save") . "</button></p>\n";
-            }
-            if (bHasSurveyPermission($surveyid,'surveylocale','read'))
-            {
-                $editsurvey .= "<p><button onclick=\"$cond {document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; document.getElementById('addnewsurvey').submit();}\" class='standardbtn' >" . $clang->gT("Save & edit survey text elements") . " >></button></p>\n";
-            }
-        }
-
-        //echo $editsurvey;
-        $data['display'] = $editsurvey;
-        $this->load->view('survey_view',$data);
-        self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -1381,6 +1372,7 @@
             $esrow['showwelcome']              = 'Y';
             $esrow['emailresponseto']          = '';
             $esrow['assessments']              = 'N';
+            $esrow['navigationdelay']          = 0;
         } elseif ($action == 'editsurvey') {
             $condition = array('sid' => $surveyid);
             $this->load->model('surveys_model');
@@ -1427,7 +1419,7 @@
         $data['action'] = "newsurvey";
         $data['clang'] = $clang;
         $data['owner'] = $owner;
-        return $this->load->view('admin/survey/subview/tabGeneralNewSurvey_view',$data, true);
+        return $data;
     }
 
     /**
@@ -1445,7 +1437,7 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
         $data['surveyid'] = $surveyid;
-        return $this->load->view('admin/survey/subview/tabGeneralEditSurvey_view',$data, true);
+        return $data;
     }
 
     /**
@@ -1459,11 +1451,6 @@
         $clang = $this->limesurvey_lang;
         global $showXquestions,$showgroupinfo,$showqnumcode;
 
-        if (!isset($esrow['navigationdelay']))
-        {
-            $esrow['navigationdelay']=0;
-        }
-
         $this->load->helper('globalsettings');
 
         $shownoanswer = getGlobalSetting('shownoanswer')?getGlobalSetting('shownoanswer'):'Y';
@@ -1474,7 +1461,7 @@
         $data['showXquestions'] = $showXquestions;
         $data['showgroupinfo'] = $showgroupinfo;
         $data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/subview/tabPresentation_view',$data, true);
+        return $data;
 
     }
 
@@ -1507,7 +1494,7 @@
         $data['esrow'] = $esrow;
         $data['startdate'] = $startdate;
         $data['expires'] = $expires;
-        return $this->load->view('admin/survey/subview/tabPublication_view',$data, true);
+        return $data;
     }
 
     /**
@@ -1523,7 +1510,7 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
 
-        return $this->load->view('admin/survey/subview/tabNotification_view',$data, true);
+        return $data;
 
     }
 
@@ -1540,17 +1527,13 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
 
-        return $this->load->view('admin/survey/subview/tabTokens_view',$data, true);
+        return $data;
     }
 
     function _tabPanelIntegration($esrow)
     {
-        $clang = $this->limesurvey_lang;
-
-        $data['clang'] = $clang;
-        $data['esrow'] = $esrow;
-
-        return $this->load->view('admin/survey/subview/tabPanelIntegration_view',$data, true);
+        $data=array();
+        return $data;
     }
 
 
@@ -1560,13 +1543,10 @@
      * @param mixed $surveyid
      * @return
      */
-    function _tabImport($surveyid)
+    function _tabImport()
     {
-        $clang = $this->limesurvey_lang;
-
-        $data['clang'] = $clang;
-        $data['surveyid'] = $surveyid;
-        return $this->load->view('admin/survey/subview/tabImport_view',$data, true);
+        $data=array();
+        return $data;
     }
 
     /**
@@ -1575,14 +1555,10 @@
      * @param mixed $surveyid
      * @return
      */
-    function _tabCopy($surveyid)
+    function _tabCopy()
     {
-        $clang = $this->limesurvey_lang;
-
-        $data['clang'] = $clang;
-        $data['surveyid'] = $surveyid;
-
-        return $this->load->view('admin/survey/subview/tabCopy_view',$data, true);
+        $data=array();
+        return $data;
     }
 
 
@@ -1612,7 +1588,7 @@
         $data['disabledIfNoResources'] = $disabledIfNoResources;
         $dqata['sCKEditorURL'] = $sCKEditorURL;
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/subview/tabResourceManagement_view',$data, true);
+        return $data;
 
     }
 

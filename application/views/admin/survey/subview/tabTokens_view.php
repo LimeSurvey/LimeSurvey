@@ -1,6 +1,6 @@
 <div id='tokens'><ul>
 
-         <li><label for=''><?php echo $clang->gT("Anonymized responses?"); ?>
+         <li><label for='anonymized'><?php echo $clang->gT("Anonymized responses?"); ?>
 
         <script type="text/javascript"><!--
         function alertPrivacy()
@@ -42,7 +42,7 @@
         <?php } ?>
         </li>
         <li>
-             <label for=''><?php echo $clang->gT("Allow editing responses after completion?"); ?></label>
+             <label for='alloweditaftercompletion'><?php echo $clang->gT("Allow editing responses after completion?"); ?></label>
              <select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange="javascript: if (document.getElementById('private').value == 'Y') {alert('<?php echo $clang->gT("This option can't be set if Anonymous answers are used","js"); ?>'); this.value='N';}">
              <option value='Y'
             <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
@@ -55,7 +55,7 @@
             </select>
         </li>
          <li>
-             <label for=''><?php echo $clang->gT("Enable token-based response persistence?"); ?></label>
+             <label for='tokenanswerspersistence'><?php echo $clang->gT("Enable token-based response persistence?"); ?></label>
              <select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange="javascript: if (document.getElementById('anonymized').value == 'Y') {alert('<?php echo $clang->gT("This option can't be set if the `Anonymized responses` option is active.","js"); ?>'); this.value='N';}">
              <option value='Y'
             <?php if ($esrow['tokenanswerspersistence'] == "Y") { ?>
@@ -84,8 +84,8 @@
         </li>
 
          <li>
-             <label for=''><?php echo $clang->gT("Use HTML format for token emails?"); ?></label>
-            <select name='htmlemail' onchange="alert('<?php echo $clang->gT("If you switch email mode, you'll have to review your email templates to fit the new format","js"); ?>');">
+             <label for='htmlemail'><?php echo $clang->gT("Use HTML format for token emails?"); ?></label>
+            <select name='htmlemail' id='htmlemail' onchange="alert('<?php echo $clang->gT("If you switch email mode, you'll have to review your email templates to fit the new format","js"); ?>');">
             <option value='Y'
         <?php if ($esrow['htmlemail'] == "Y") { ?>
               selected='selected'
