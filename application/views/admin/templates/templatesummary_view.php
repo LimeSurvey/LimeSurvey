@@ -27,10 +27,7 @@
                                         } ?>                                           
                                         </textarea>
                  <script type="text/javascript">
-                 var textarea = document.getElementById('changes'); 
-                 var uiOptions = { path : '<?php echo base_url(); ?>scripts/admin/codemirror_ui/js/', searchMode : 'inline', buttons : ['undo','redo','jump','reindent','about'] }
-                 var codeMirrorOptions = { mode: "javascript" }
-                 var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	
+                    var codemirropath = '<?php echo base_url(); ?>scripts/admin/codemirror_ui/js/';
                  </script>
                                        <br />
                                         <?php if (is_writable($templates[$templatename])) { ?>

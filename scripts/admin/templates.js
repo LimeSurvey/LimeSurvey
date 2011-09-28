@@ -2,17 +2,14 @@
 // based on TTabs from http://interface.eyecon.ro/
 
 $(document).ready(function(){
-    /* if($("#changes.full").length > 0) {
-        editAreaLoader.init({
-            language: adminlanguage,
-            id : "changes"        // textarea id
-            ,syntax: highlighter            // syntax to be uses for highgliting
-            ,font_size: 8
-            ,allow_toggle: false
-            ,word_wrap: true
-            ,start_highlight: true        // to display with highlight mode on start-up
-        });
-    } */
+// activate codemirror
+		$('#changes').not('.none').each(function(index) {
+		               var textarea = $(this).get(0) ; 
+		               var uiOptions = { path : codemirropath, searchMode : 'inline', buttons : ['undo','redo','jump','reindent','about'] }
+		               var codeMirrorOptions = { mode: "javascript" }
+		               var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);
+		});
+		
     $('#iphone').click(function(){
       $('#previewiframe').css("width", "320px");
       $('#previewiframe').css("height", "396px");
