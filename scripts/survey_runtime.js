@@ -109,7 +109,8 @@ $(document).ready(function()
             });
         }
     }
-// #index ???
+// #index
+$("#index").parents(".outerframe").addClass("withindex");
     if ($("#index").size() && $("#index .row.current").size()){
         var idx = $("#index");
         var row = $("#index .row.current");
