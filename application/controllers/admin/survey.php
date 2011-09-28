@@ -1289,12 +1289,12 @@
         $editsurvey .= self::_tabPublicationAccess($esrow);
         $editsurvey .= self::_tabNotificationDataManagement($esrow);
         $editsurvey .= self::_tabTokens($esrow);
-        $editsurvey .= self::_tabPanelIntegration($esrow);
 
         if ($action == "newsurvey") {
             $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='insertsurvey' />\n";
             //$this->session->set_userdata(array('action' => 'insertsurvey'));
         } elseif ($action == "editsurveysettings") {
+            $editsurvey .= self::_tabPanelIntegration($esrow);
             $editsurvey .= "<input type='hidden' id='surveysettingsaction' name='action' value='updatesurveysettings' />\n"
             . "<input type='hidden' name='sid' value=\"{$esrow['sid']}\" />\n"
             . "<input type='hidden' name='languageids' id='languageids' value=\"{$esrow['additional_languages']}\" />\n"
@@ -1427,7 +1427,7 @@
         $data['action'] = "newsurvey";
         $data['clang'] = $clang;
         $data['owner'] = $owner;
-        return $this->load->view('admin/survey/superview/superGeneralNewSurvey_view',$data, true);
+        return $this->load->view('admin/survey/subview/tabGeneralNewSurvey_view',$data, true);
     }
 
     /**
@@ -1445,7 +1445,7 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
         $data['surveyid'] = $surveyid;
-        return $this->load->view('admin/survey/superview/superGeneralEditSurvey_view',$data, true);
+        return $this->load->view('admin/survey/subview/tabGeneralEditSurvey_view',$data, true);
     }
 
     /**
@@ -1474,7 +1474,7 @@
         $data['showXquestions'] = $showXquestions;
         $data['showgroupinfo'] = $showgroupinfo;
         $data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/superview/superPresentation_view',$data, true);
+        return $this->load->view('admin/survey/subview/tabPresentation_view',$data, true);
 
     }
 
@@ -1507,7 +1507,7 @@
         $data['esrow'] = $esrow;
         $data['startdate'] = $startdate;
         $data['expires'] = $expires;
-        return $this->load->view('admin/survey/superview/superPublication_view',$data, true);
+        return $this->load->view('admin/survey/subview/tabPublication_view',$data, true);
     }
 
     /**
@@ -1523,7 +1523,7 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
 
-        return $this->load->view('admin/survey/superview/superNotification_view',$data, true);
+        return $this->load->view('admin/survey/subview/tabNotification_view',$data, true);
 
     }
 
@@ -1540,7 +1540,7 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
 
-        return $this->load->view('admin/survey/superview/superTokens_view',$data, true);
+        return $this->load->view('admin/survey/subview/tabTokens_view',$data, true);
     }
 
     function _tabPanelIntegration($esrow)
@@ -1550,7 +1550,7 @@
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
 
-        return $this->load->view('admin/survey/superview/superPanelIntegration_view',$data, true);
+        return $this->load->view('admin/survey/subview/tabPanelIntegration_view',$data, true);
     }
 
 
@@ -1566,7 +1566,7 @@
 
         $data['clang'] = $clang;
         $data['surveyid'] = $surveyid;
-        return $this->load->view('admin/survey/superview/superImport_view',$data, true);
+        return $this->load->view('admin/survey/subview/tabImport_view',$data, true);
     }
 
     /**
@@ -1582,7 +1582,7 @@
         $data['clang'] = $clang;
         $data['surveyid'] = $surveyid;
 
-        return $this->load->view('admin/survey/superview/superCopy_view',$data, true);
+        return $this->load->view('admin/survey/subview/tabCopy_view',$data, true);
     }
 
 
@@ -1612,7 +1612,7 @@
         $data['disabledIfNoResources'] = $disabledIfNoResources;
         $dqata['sCKEditorURL'] = $sCKEditorURL;
         //$data['showqnumcode'] = $showqnumcode;
-        return $this->load->view('admin/survey/superview/superResourceManagement_view',$data, true);
+        return $this->load->view('admin/survey/subview/tabResourceManagement_view',$data, true);
 
     }
 

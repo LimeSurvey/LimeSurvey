@@ -204,7 +204,7 @@
             if (!($action == 'addquestion'))
             {
                 // This is needed to properly color-code content if it contains replacements
-                LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
+                //LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
             }
 
             $groupsummary .= $this->load->view('admin/survey/QuestionGroups/questiongroupbar_view',$data,true);
