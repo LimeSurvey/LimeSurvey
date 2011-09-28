@@ -33,6 +33,7 @@
  */
 
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
+if (!isset($homedir)) die();
 require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Format.php';
 require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/BIFFwriter.php';
 require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Worksheet.php';

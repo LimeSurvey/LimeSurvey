@@ -20,6 +20,8 @@
 //// errors are ok, but warnings have nothing to say (in this case, sometimes warnings are useful!)
 //ini_set("error_reporting", "E_ALL & ~E_WARNING");
 
+die('Test client is deactivated for security reasons. Open lsrc.testclient.php and comment this line to activate the test client.');
+
 include_once("lsrc.client.php");
 /**
  * initiate the testclient object

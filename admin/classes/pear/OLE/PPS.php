@@ -20,6 +20,7 @@
 // $Id: PPS.php,v 1.5 2003/12/14 18:12:28 xnoguer Exp $
 
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
+if (!isset($homedir)) die();
 require_once($homedir.'/classes/pear/PEAR.php');
 require_once($homedir.'/classes/pear/OLE/OLE.php');
 

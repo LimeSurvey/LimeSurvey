@@ -17,7 +17,7 @@
 /**
  * Include the main libraries
  */
-require_once('xmlrpc.inc');
+@require_once('xmlrpc.inc') OR die();
 if (!defined('ADODB_DIR')) require_once('adodb.inc.php');
 
 /**
