@@ -64,9 +64,9 @@ function templatereplace($line, $replacements=array(), $anonymized=false)
     {
         $surveyformat = "";
     }
-    if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y" && $surveyformat!="allinone" && (isset($_SESSION['step']) && $_SESSION['step']>0)){
+    /*if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y" && $surveyformat!="allinone" && (isset($_SESSION['step']) && $_SESSION['step']>0)){
         $surveyformat .= " withindex";
-    }
+    }*/
     if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y"){
         $surveyformat .= " showprogress";
     }

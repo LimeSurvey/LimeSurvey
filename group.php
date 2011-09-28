@@ -1352,6 +1352,14 @@ if (!$previewgrp){
         }
 
         echo '</div></div>';
+        /* Can be replaced by php or in global js */
+         echo "<script type=\"text/javascript\">\n" 	 
+         . "  $(\".outerframe\").addClass(\"withindex\");\n" 	 
+         . "  var idx = $(\"#index\");\n" 	 
+         . "  var row = $(\"#index .row.current\");\n" 	 
+         . "  idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);\n" 	 
+         . "</script>\n"; 	 
+         echo "\n";
     }
 
     echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging

@@ -1065,13 +1065,11 @@ td.statsImageholder {
 }
 
 /* Question Index */
-.withindex .outerframe{
+.outerframe.withindex,.withindex .outerframe{
   margin-left: 1em;
   margin-right: 26em;
 }
-.allinone .outerframe{
-  margin:0;
-}
+.allinone .withindex{margin:0}
 
 #index {
   position: absolute;

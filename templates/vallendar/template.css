@@ -1065,7 +1065,7 @@ table.statisticstable strong {
 }
 
 /* Question Index */
-.withindex .outerframe{
+.outerframe.withindex, .withindex .outerframe{
   margin-left: 1em;
   margin-right: 26em;
 }
