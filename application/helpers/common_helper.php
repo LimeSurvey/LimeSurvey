@@ -1613,8 +1613,6 @@ function getSurveyInfo($surveyid, $languagecode='')
         if (!isset($thissurvey['adminemail'])) {$thissurvey['adminemail']=$siteadminemail;}
         if (!isset($thissurvey['urldescrip']) ||
         $thissurvey['urldescrip'] == '' ) {$thissurvey['urldescrip']=$thissurvey['surveyls_url'];}
-        $thissurvey['passthrulabel']=$CI->session->userdata('passthrulabel') ? $CI->session->userdata('passthrulabel') : "";
-        $thissurvey['passthruvalue']=$CI->session->userdata('passthruvalue') ? $CI->session->userdata('passthruvalue') : "";
     }
 
     //not sure this should be here... ToDo: Find a better place
@@ -1851,7 +1849,7 @@ function returnglobal($stringname, $urlParam = null)
     $CI = & get_instance();
     $CI->load->config('lsconfig');
     $useWebserverAuth = $CI->config->item('useWebserverAuth');
-	
+
 	if(!isset($urlParam))
 	{
 	    if ((isset($useWebserverAuth) && $useWebserverAuth === true) || $stringname=='sid') // don't read SID from a Cookie
@@ -2852,7 +2850,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];
                     $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
-                    //$fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
                     $fieldmap[$fieldname]['group_name']=$arow['group_name'];
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
@@ -2868,7 +2865,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
                 if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+                                            'type'=>$arow['type'],
+                                            'sid'=>$surveyid,
+                                            'gid'=>$arow['gid'],
+                                            'qid'=>$arow['qid'],
+                                            'aid'=>$abrow['title'],
+                                            'sqid'=>$abrow['qid']);
                 if ($style == "full")
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];

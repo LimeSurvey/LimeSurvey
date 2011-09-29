@@ -2079,26 +2079,38 @@ function buildsurveysession($surveyid)
 
     $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
 
-    // Check if the current survey language is set - if not set it
-    // this way it can be changed later (for example by a special question type)
     //Check if a passthru label and value have been included in the query url
-    if(isset($_GET['passthru']) && $_GET['passthru'] != "")
+    $CI->load->model('survey_url_parameters_model');
+    $oResult=$CI->survey_url_parameters_model->getParametersForSurvey($surveyid);
+    foreach($oResult->result_array() as $aRow)
     {
-        if(isset($_GET[$_GET['passthru']]) && $_GET[$_GET['passthru']] != "")
+        DebugBreak();
+        if(isset($_GET[$aRow['parameter']]))
         {
-            $_SESSION['passthrulabel']=$_GET['passthru'];
-            $_SESSION['passthruvalue']=$_GET[$_GET['passthru']];
+            $_SESSION['urlparams'][$aRow['parameter']]=$_GET[$aRow['parameter']];
+            if ($aRow['targetqid']!='')
+            {
+                foreach ($fieldmap as $sFieldname=>$aField)
+                {
+                   if ($aRow['targetsqid']!='')
+                   {
+                       if ($aField['qid']==$aRow['targetqid'] && $aField['sqid']==$aRow['targetsqid'])
+                       {
+                           $_SESSION[$sFieldname]=$_GET[$aRow['parameter']];
+                       }
+                   }
+                   else
+                   {
+                       if ($aField['qid']==$aRow['targetqid'])
+                       {
+                           $_SESSION[$sFieldname]=$_GET[$aRow['parameter']];
+                       }
+                   }
+                }
+
+            }
         }
-
     }
-    // New: If no passthru variable is explicitely set, save the whole query_string - above method is obsolete and the new way should only be used
-    elseif (isset($_SERVER['QUERY_STRING']))
-    {
-        $_SESSION['ls_initialquerystr']=$_SERVER['QUERY_STRING'];
-    }
-    // END NEW
-
-    //$CI->session->userdata = $_SESSION;
 
     // Fix totalquestions by substracting Test Display questions
     $sNoOfTextDisplayQuestions=(int) reset(db_execute_assoc("SELECT count(*)\n"

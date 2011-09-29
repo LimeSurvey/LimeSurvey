@@ -34,7 +34,7 @@ if (bHasSurveyPermission($surveyid,'surveysettings','update'))
             <li><label for='targetquestion'><?php $clang->eT('Target (sub-)question:'); ?></label><select name='targetquestion' id='targetquestion' size='1' />
             <option value=''><?php $clang->eT('(No target question)'); ?></option>
             <?php foreach ($questions as $question){?>
-               <option value='<?php echo $question['qid'].'-'.$question['sqid'];?>'><?php echo $question['title'].': '.ellipsize(FlattenText($question['question'],true),40,.75);
+               <option value='<?php echo $question['qid'].'-'.$question['sqid'];?>'><?php echo $question['title'].': '.ellipsize(FlattenText($question['question'],true),43,.70);
                if ($question['sqquestion']!='')
                {
                     echo ' - '.ellipsize(FlattenText($question['sqquestion'],true),30,.75);

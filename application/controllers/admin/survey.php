@@ -119,7 +119,7 @@
 
         //echo $editsurvey;
         $this->load->model('questions_model');
-        $oResult=$this->questions_model->getQuestionsWithSubQuestions($surveyid,$esrow['language'],"questions.type = 'T' ");
+        $oResult=$this->questions_model->getQuestionsWithSubQuestions($surveyid,$esrow['language'],"({$this->db->dbprefix}questions.type = 'T'  OR  {$this->db->dbprefix}questions.type = 'Q'  OR  {$this->db->dbprefix}questions.type = 'T' OR {$this->db->dbprefix}questions.type = 'S')");
         $data['questions']=$oResult->result_array();
 //        var_dump($data['questions']);
         $data['display'] = $editsurvey;
@@ -1598,7 +1598,7 @@
         foreach ($oResult->result_array() as $oRow)
         {
             $data->rows[$i]['id']=$oRow['id'];
-            $oRow['title']= $oRow['title'].': '.ellipsize(FlattenText($oRow['question'],true),40,.75);
+            $oRow['title']= $oRow['title'].': '.ellipsize(FlattenText($oRow['question'],true),43,.70);
             if ($oRow['sqquestion']!='')
             {
                 echo ' - '.ellipsize(FlattenText($oRow['sqquestion'],true),30,.75);

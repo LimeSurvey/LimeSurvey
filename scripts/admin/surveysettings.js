@@ -63,6 +63,12 @@ function PostParameterGrid()
 
 function saveParameter()
 {
+    sParamname=$.trim($('#paramname').val());
+    if (sParamname=='' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname=='sid' || sParamname=='newtest' || sParamname=='token' || sParamname=='lang')
+    {
+        alert ('You have to enter a valid parameter name.');
+        return;
+    }
     $("#dlgEditParameter").dialog("close");
     sIDs=$("#targetquestion").val();
     aIDs=sIDs.split('-');
@@ -75,14 +81,14 @@ function saveParameter()
                                                     +"<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm('Are you sure you want to delete this URL parameter?')) jQuery('#urlparams').delRowData('"+sGUID+"');\" />",
                                                 id:sGUID,
                                                 sid:$('#id').val(),
-                                                parameter:$('#paramname').val(),
+                                                parameter:sParamname,
                                                 targetqid:sTargetQID,
                                                 targetsqid:sTargetSQID,
                                                 title:$("#targetquestion option:selected").text()});
     }
     else
     {
-        jQuery("#urlparams").setRowData($("#dlgEditParameter").data('rowid'),{  parameter:$('#paramname').val(),
+        jQuery("#urlparams").setRowData($("#dlgEditParameter").data('rowid'),{  parameter:sParamname,
                                                                                 targetqid:sTargetQID,
                                                                                 targetsqid:sTargetSQID,
                                                                                 title:$("#targetquestion option:selected").text()

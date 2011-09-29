@@ -58,8 +58,8 @@ class Questions_model extends CI_Model {
     {
 
         $this->db->select('questions.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, groups.*',FALSE);
-        $this->db->join('questions q', 'q.parent_qid = questions.qid','LEFT');
-        $this->db->join('groups', 'groups.gid = questions.gid');
+        $this->db->join('questions q', "q.parent_qid = questions.qid AND q.language = {$this->db->dbprefix}questions.language",'LEFT');
+        $this->db->join('groups', "groups.gid = questions.gid  AND {$this->db->dbprefix}questions.language = {$this->db->dbprefix}groups.language");
         $this->db->where('questions.sid',$iSurveyID);
         $this->db->where('questions.language',$sLanguage);
         $this->db->where('questions.parent_qid',0);

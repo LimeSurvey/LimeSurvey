@@ -34,7 +34,7 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
         }
 	}
 
-	$showXquestions = $CI->config->item("showXquestions"); 
+	$showXquestions = $CI->config->item("showXquestions");
 	$showgroupinfo = $CI->config->item("showgroupinfo");
 
     if (file_exists($line))
@@ -271,7 +271,7 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
     else
     {
         $_linkreplace='';
-    }    
+    }
 
     if (isset($surveyid)) {
         $_clearall = "<input type='button' name='clearallbtn' value='" . $clang->gT("Exit and Clear Survey") . "' class='clearall' "
@@ -295,7 +295,7 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
     {
         $_datestamp = '-';
     }
-    
+
     if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
     {
         // Find out if the user has any saved data
@@ -686,8 +686,8 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 
 
 /**
- * passthruReplace() takes a string and looks for {PASSTHRULABEL}, {PASSTHRUVALUE} and {PASSTHRU:myarg} variables
- *  which it then substitutes for passthru data sent in the initial URL and stored
+ * passthruReplace() takes a string and looks for {PASSTHRU:myarg} variables
+ *  which it then substitutes for parameter data sent in the initial URL and stored
  *  in the session array containing responses
  *
  * @param mixed $line   string - the string to iterate, and then return
@@ -697,10 +697,6 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
  */
 function PassthruReplace($line, $thissurvey)
 {
-    $line=str_replace("{PASSTHRULABEL}", $thissurvey['passthrulabel'], $line);
-    $line=str_replace("{PASSTHRUVALUE}", $thissurvey['passthruvalue'], $line);
-
-    //  Replacement for variable passthru argument like {PASSTHRU:myarg}
     while (strpos($line,"{PASSTHRU:") !== false)
     {
         $p1 = strpos($line,"{PASSTHRU:"); // startposition
@@ -711,25 +707,12 @@ function PassthruReplace($line, $thissurvey)
         $arg=substr($line,$p2,$p3-$p2); // extract the arg to passthru (like "myarg")
 
         // lookup for the fitting arg
-        $qstring = $_SESSION['ls_initialquerystr']; // get initial query_string
-
-        parse_str($qstring, $keyvalue); // split into key and value
-        $match = 0; // prevent an endless loop if there is no arg in url
-        foreach ($keyvalue as $key=>$value) // lookup loop
+        $sValue='';
+        if (isset($_SESSION['urlparams'][$arg]))
         {
-            if ($key == $arg) // if match
-            {
-                $line=str_replace($cmd, $arg . "=" . $value, $line); // replace
-                $match = 1;
-                break;
-            }
-
+            $sValue=urlencode($_SESSION['urlparams'][$arg]);
         }
-
-        if ($match == 0)
-        {
-            $line=str_replace($cmd, $arg . "=", $line); // clears "{PASSTHRU:myarg} to "myarg=" if there was no myarg in calling url
-        }
+        $line=str_replace($cmd, $sValue, $line); // replace
     }
 
     return $line;

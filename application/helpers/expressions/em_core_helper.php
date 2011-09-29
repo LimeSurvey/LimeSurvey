@@ -113,7 +113,7 @@ class ExpressionManager {
         $this->asCategorizeTokensRegex = preg_replace("#^(.*)$#","#^$1$#i",$asTokenRegex);
         $this->asCategorizeTokensRegex[] = '/.+/';
         $this->asTokenType[] = 'OTHER';
-        
+
         // Each allowed function is a mapping from local name to external name + number of arguments
         // Functions can have a list of serveral allowable #s of arguments.
         // If the value is -1, the function must have a least one argument but can have an unlimited number of them
@@ -477,7 +477,7 @@ class ExpressionManager {
                 break;
         }
     }
-    
+
     /**
      * Process "a == b", "a eq b", "a != b", "a ne b"
      * @return boolean - true if success, false if any error occurred
@@ -592,7 +592,7 @@ class ExpressionManager {
             return false;
         }
 
-        while (++$this->pos < $this->count) {  
+        while (++$this->pos < $this->count) {
             $token = $this->tokens[$this->pos];
             if ($token[2] == 'RP')
             {
@@ -653,7 +653,7 @@ class ExpressionManager {
         $params = array();  // will just store array of values, not tokens
         while ($this->pos + 1 < $this->count)
         {
-            $token3 = $this->tokens[$this->pos + 1];  
+            $token3 = $this->tokens[$this->pos + 1];
             if (count($params) > 0)
             {
                 // should have COMMA or RP
@@ -706,7 +706,7 @@ class ExpressionManager {
      * Process "a && b" or "a and b"
      * @return boolean - true if success, false if any error occurred
      */
-    
+
     private function EvaluateLogicalAndExpression()
     {
         if (!$this->EvaluateEqualityExpression())
@@ -786,7 +786,7 @@ class ExpressionManager {
      * Process "a op b" where op in (*,/)
      * @return boolean - true if success, false if any error occurred
      */
-    
+
     private function EvaluateMultiplicativeExpression()
     {
         if (!$this->EvaluateUnaryExpression())
@@ -830,7 +830,7 @@ class ExpressionManager {
         }
         return true;
     }
-    
+
     /**
      * Process expressions including functions and parenthesized blocks
      * @return boolean - true if success, false if any error occurred
@@ -1168,7 +1168,7 @@ class ExpressionManager {
         $jsParts[] = "document.getElementById('test_" . $num . "').innerHTML=val;\n";
         $jsParts[] = "document.getElementById('test_" . $num . "').className=klass;\n";
         return implode('',$jsParts);
-        
+
     }
 
     /**
@@ -1357,7 +1357,7 @@ class ExpressionManager {
         }
         switch ($attr)
         {
-            case 'varName': 
+            case 'varName':
                 return $name;
             case 'code':
             case 'codeValue':
@@ -1493,7 +1493,7 @@ class ExpressionManager {
     {
         return ($this->GetVarAttribute($name, 'readWrite', 'N') == 'Y');
     }
-    
+
     /**
      * Process an expression and return its boolean value
      * @param <type> $expr
@@ -1776,8 +1776,8 @@ class ExpressionManager {
      * 'newfunc' => array('my_func_script', 1,3)
      * where 'newfunc' is the name of an allowable function wihtin the  expression, 'my_func_script' is the registered PHP function name,
      * and 1,3 are the list of  allowable numbers of paremeters (so my_func() can take 1 or 3 parameters.
-     * 
-     * @param array $functions 
+     *
+     * @param array $functions
      */
 
     public function RegisterFunctions(array $functions) {
@@ -2015,10 +2015,10 @@ EOD;
             print '</code><hr/>';
         }
     }
-    
+
     /**
      * Show a table of allowable Expression Manager functions
-     * @return string 
+     * @return string
      */
 
     static function ShowAllowableFunctions()
@@ -2036,7 +2036,7 @@ EOD;
     /**
      * Unit test the Evaluator, allowing for passing in of extra functions, variables, and tests
      */
-    
+
     static function UnitTestEvaluator()
     {
         // Some test cases for Evaluator
@@ -2099,8 +2099,6 @@ EOD;
 'NULL' => array('codeValue'=>'value for {NULL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'NUMBEROFQUESTIONS' => array('codeValue'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'OPTOUTURL' => array('codeValue'=>'value for {OPTOUTURL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'PASSTHRULABEL' => array('codeValue'=>'value for {PASSTHRULABEL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'PASSTHRUVALUE' => array('codeValue'=>'value for {PASSTHRUVALUE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'PERCENTCOMPLETE' => array('codeValue'=>'value for {PERCENTCOMPLETE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'PERC' => array('codeValue'=>'value for {PERC}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'PRIVACYMESSAGE' => array('codeValue'=>'value for {PRIVACYMESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
@@ -2437,7 +2435,7 @@ EOD;
         $body .= "function recompute() {\n";
         $body .= implode("\n",$javaScript);
         $body .= "}\n//-->\n</script>\n";
-        
+
         $allJsVarnamesUsed = array_unique($allJsVarnamesUsed);
         asort($allJsVarnamesUsed);
         $pre = '';
