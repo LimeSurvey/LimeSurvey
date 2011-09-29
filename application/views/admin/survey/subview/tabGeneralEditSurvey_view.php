@@ -21,9 +21,11 @@
                <?php }
             }
             $jsRemLang .= "</script>";
-            echo $jsRemLang; ?>
+            ?>
 
-            </select></td>
+            </select>
+            <?php echo $jsRemLang; ?>
+            </td>
             <td align='left'><input type="button" value="<< <?php echo $clang->gT("Add"); ?>" onclick="DoAdd()" id="AddBtn" /><br /> <input type="button" value="<?php echo $clang->gT("Remove"); ?> >>" onclick="DoRemove(0,'')" id="RemoveBtn"  /></td>
 
 

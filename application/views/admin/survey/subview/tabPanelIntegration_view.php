@@ -6,5 +6,6 @@
 
         <table id="urlparams" style='margin:0 auto;'></table>
         <div id="pagerurlparams"></div>
+        <input type='hidden' id='allurlparams' name='allurlparams' value='' />
 
 </div>

@@ -1374,6 +1374,20 @@ class Database extends Admin_Controller {
 
             //$sql = "SELECT * FROM ".$this->db->dbprefix."surveys WHERE sid={$postsid}";  // We are using $dbrepfix here instead of db_table_name on purpose because GetUpdateSQL doesn't work correclty on Postfres with a quoted table name
             //$rs = db_execute_assoc($sql); // Checked
+
+            $aURLParams=json_decode($this->input->post('allurlparams'),true);
+            $this->load->model('survey_url_parameters_model');
+            $this->survey_url_parameters_model->deleteRecords(array('sid'=>$surveyid));
+            foreach($aURLParams as $aURLParam)
+            {
+                unset($aURLParam['act']);
+                unset($aURLParam['title']);
+                unset($aURLParam['id']);
+                if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=null;
+                if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=null;
+                $aURLParam['sid']=$surveyid;
+                $this->survey_url_parameters_model->insertRecord($aURLParam);
+            }
             $updatearray= array('admin'=> $this->input->post('admin'),
                                 'expires'=>$expires,
                                 'adminemail'=> $this->input->post('adminemail'),

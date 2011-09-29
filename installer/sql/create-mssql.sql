@@ -349,6 +349,18 @@ CREATE TABLE [prefix_survey_permissions] (
 
            
 -- 
+-- Table structure for table survey_url_parameters
+--
+CREATE TABLE prefix_survey_url_parameters (
+	[id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, 
+	[sid] INT NOT NULL,
+	[parameter] VARCHAR(50) NOT NULL,
+	[targetqid] INT NULL,
+	[targetsqid] INT NULL
+);           
+ 
+           
+-- 
 -- Table structure for table user_groups
 -- 
 CREATE TABLE [prefix_user_groups] (
@@ -356,8 +368,7 @@ CREATE TABLE [prefix_user_groups] (
 	[name] VARCHAR(20) NOT NULL UNIQUE,
 	[description] TEXT NOT NULL default '',
 	[owner_id] INT NOT NULL  
-) 
-;
+);
 
 
 -- 

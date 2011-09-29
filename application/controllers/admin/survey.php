@@ -93,12 +93,14 @@
         self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
         self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
         self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jquery.json.min.js');
         self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
         self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);;
         self::_surveybar($surveyid);
 
+        $this->load->helper('text');
         $this->load->helper('surveytranslator');
         $clang = $this->limesurvey_lang;
 
@@ -116,12 +118,15 @@
         $data = array_merge($data,self::_tabResourceManagement($surveyid));
 
         //echo $editsurvey;
+        $this->load->model('questions_model');
+        $oResult=$this->questions_model->getQuestionsWithSubQuestions($surveyid,$esrow['language'],"questions.type = 'T' ");
+        $data['questions']=$oResult->result_array();
+//        var_dump($data['questions']);
         $data['display'] = $editsurvey;
         $data['action'] = "editsurveysettings";
         $this->load->view('admin/survey/editSurvey_view',$data);
         self::_loadEndScripts();
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
     }
 
     /**
@@ -935,6 +940,8 @@
                 $this->db->delete('survey_permissions', array('sid' => $surveyid));
                 $this->db->delete('saved_control', array('sid' => $surveyid));
                 $this->db->delete('surveys', array('sid' => $surveyid));
+                $this->load->model('survey_url_parameters_model');
+                $this->survey_url_parameters_model->deleteRecords(array('sid'=>$surveyid));
 
                 $sdel = "DELETE ".$this->db->dbprefix."quota_languagesettings FROM ".$this->db->dbprefix."quota_languagesettings, ".$this->db->dbprefix."quota WHERE ".$this->db->dbprefix."quota_languagesettings.quotals_quota_id=".$this->db->dbprefix."quota.id and sid=$surveyid";
                 $sres = db_execute_assoc($sdel);
@@ -957,7 +964,7 @@
     }
 
     /**
-     * survey::editlocalsettings()
+     * survey::editlocalesettings()
      * Load editing of local settings of a survey screen.
      * @param mixed $surveyid
      * @return
@@ -1315,17 +1322,6 @@
 
     }
 
-    /**
-     * survey::index()
-     * Load edit/new survey screen.
-     * @param mixed $action
-     * @param mixed $surveyid
-     * @return
-     */
-    function index($action,$surveyid=null)
-    {
-
-    }
 
 
     /**
@@ -1596,14 +1592,23 @@
     function getUrlParamsJSON($surveyid)
     {
         $this->load->model('survey_url_parameters_model');
+        $this->load->helper('text');
         $oResult=$this->survey_url_parameters_model->getParametersForSurvey($surveyid);
         $i=0;
         foreach ($oResult->result_array() as $oRow)
         {
             $data->rows[$i]['id']=$oRow['id'];
+            $oRow['title']= $oRow['title'].': '.ellipsize(FlattenText($oRow['question'],true),40,.75);
+            if ($oRow['sqquestion']!='')
+            {
+                echo ' - '.ellipsize(FlattenText($oRow['sqquestion'],true),30,.75);
+            }
+            unset($oRow['sqquestion']);
+            unset($oRow['sqtitle']);
+            unset($oRow['question']);
+
             $data->rows[$i]['cell']=array_values($oRow);
             $i++;
-
         }
 
         $data->page = 1;

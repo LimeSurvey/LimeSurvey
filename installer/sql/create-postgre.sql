@@ -342,6 +342,16 @@ CREATE TABLE prefix_survey_permissions (
     CONSTRAINT prefix_survey_permissions_pkey PRIMARY KEY (sid,uid,permission)    
 );
 
+-- 
+-- Table structure for table survey_url_parameters
+--
+CREATE TABLE prefix_survey_url_parameters (
+	id serial PRIMARY KEY NOT NULL,
+	sid integer NOT NULL,
+	parameter character varying(50) NOT NULL,
+	targetqid integer NULL,
+	targetsqid integer NULL
+);
 
 -- 
 -- Table structure for table user_groups

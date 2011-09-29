@@ -54,6 +54,26 @@ class Questions_model extends CI_Model {
 		return $data;
     }
 
+    function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition=FALSE)
+    {
+
+        $this->db->select('questions.*, q.qid as sqid, q.title as sqtitle,  q.question as sqquestion, groups.*',FALSE);
+        $this->db->join('questions q', 'q.parent_qid = questions.qid','LEFT');
+        $this->db->join('groups', 'groups.gid = questions.gid');
+        $this->db->where('questions.sid',$iSurveyID);
+        $this->db->where('questions.language',$sLanguage);
+        $this->db->where('questions.parent_qid',0);
+        if ($sCondition != FALSE)
+        {
+            $this->db->where($sCondition);
+        }
+        $this->db->order_by("groups.group_order","asc");
+        $this->db->order_by("questions.question_order","asc");
+        $data = $this->db->get('questions');
+
+        return $data;
+    }
+
     function getQuestionID($sid,$gid,$language)
     {
         $this->db->select('qid');
