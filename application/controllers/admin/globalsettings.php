@@ -146,7 +146,6 @@ class GlobalSettings extends Admin_Controller {
 
 	function _checksettings()
 	{
-	    global $databasename;
 		$clang = $this->limesurvey_lang;
 	    //GET NUMBER OF SURVEYS
 	    $this->load->model(("surveys_model"));

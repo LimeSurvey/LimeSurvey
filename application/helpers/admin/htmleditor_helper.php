@@ -35,8 +35,6 @@ function sTranslateLangCode2CK($sLanguageCode){
 
 function PrepareEditorScript($load=false)
 {
-    //global $clang; //, $imageurl, $homeurl, $js_admin_includes;
-    //global $this->config->item['sCKEditorURL'];
     $CI =& get_instance();
     $js_admin_includes = $CI->config->item("js_admin_includes");
     $clang = $CI->limesurvey_lang;
@@ -57,7 +55,6 @@ function PrepareEditorScript($load=false)
 
 function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    //global $CI->config->item('defaulthtmleditormode');
     //error_log("TIBO fieldtype=$fieldtype,fieldname=$fieldname,fieldtext=$fieldtext,surveyID=$surveyID,gID=$gID,qID=$qID,action=$action");
     $CI =& get_instance(); 
     $CI->load->helper('common');
@@ -108,7 +105,7 @@ function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$q
 
 function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    $CI =& get_instance(); //global $clang; //, $imageurl, $homeurl;
+    $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
     $htmlcode = '';
     $imgopts = '';
@@ -133,7 +130,6 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    //global $clang, $this->config->item['sCKEditorURL'], $ckeditexpandtoolbar;//, $uploadurl;
     $CI =& get_instance(); 
     $htmlcode = '';
     $imgopts = '';

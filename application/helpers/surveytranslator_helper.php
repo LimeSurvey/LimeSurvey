@@ -192,7 +192,6 @@ function aGetDateFormatDataForQid($aQidAttributes, $mThisSurvey)
  */
 function aGetDateFormatForSid($surveyid, $languagecode='')
 {
-    //global $connect;
     $CI =& get_instance();
     $CI->load->model('surveys_languagesettings_model');
     if (!isset($languagecode) || $languagecode=='')

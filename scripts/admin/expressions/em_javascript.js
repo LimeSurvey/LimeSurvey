@@ -331,7 +331,7 @@ function  LEMsetTabIndexes()
             $(this).attr('tabindex',index);
             $(this).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
-                    ExprMgr_process_relevance_and_tailoring();
+                    ExprMgr_process_relevance_and_tailoring(e.type);
                     LEMmoveNextTabIndex(e.shiftKey);
                     e.preventDefault();
                     return false;
@@ -357,6 +357,7 @@ function LEMmoveNextTabIndex(prev)
                 el = els[i];
                 if (el.tabIndex < currentIndex) {
                     $(el).focus();
+                    target_tabIndex =  el.tabIndex;
                     return;
                 }
             }
@@ -369,11 +370,13 @@ function LEMmoveNextTabIndex(prev)
                 el = els[i];
                 if (el.tabIndex > currentIndex) {
                     $(el).focus();
+                    target_tabIndex =  el.tabIndex;
                     return;
                 }
             }
             // if no match, wrap around to beginnning
             $('[tabindex=0]').focus();
+            target_tabIndex =  0;
             return;
         }
     } catch (e)  {

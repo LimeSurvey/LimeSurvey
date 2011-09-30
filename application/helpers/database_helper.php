@@ -5,8 +5,7 @@ $CI =& get_instance();
 
 function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
-    //global $connect;
-    global $CI;
+	$CI = &get_instance();
     //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
     if($inputarr)
     {
@@ -24,8 +23,7 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 
 function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
 {
-    //global $connect;
-    global $CI;
+	$CI = &get_instance();
     //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
     if ($numrows)
     {
@@ -60,8 +58,7 @@ function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieon
  */
 function &db_select_column($sql)
 {
-    //global $connect;
-    global $CI;
+	$CI = &get_instance();
     //$connect->SetFetchMode(ADODB_FETCH_NUM);
     $dataset=$CI->db->query($sql);
     $fields = $dataset->list_fields();
@@ -117,8 +114,7 @@ function db_quote_id($id)
 
 function db_random()
 {
-    //global $connect,$databasetype;
-    global $CI;
+	$CI = &get_instance();
     if ($CI->db->dbdriver == 'odbc_mssql' || $CI->db->dbdriver == 'mssql_n' || $CI->db->dbdriver == 'odbtp')  {$srandom='NEWID()';}
     else {$srandom= 0 + lcg_value()*(abs(1));}
     return $srandom;
@@ -170,8 +166,7 @@ function db_table_name_nq($name)
  */
 function db_select_tables_like($table)
 {
-    //global $databasetype;
-    global $CI;
+	$CI = &get_instance();
     switch ($CI->db->dbdriver) {
         case 'mysqli':
         case 'mysql' :
@@ -194,7 +189,7 @@ function db_select_tables_like($table)
  */
 function db_tables_exist($table)
 {
-    global $CI;
+	$CI = &get_instance();
     return $CI->db->table_exists($table);
     /**global $connect;
 

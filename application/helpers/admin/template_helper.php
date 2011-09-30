@@ -54,7 +54,6 @@ function textarea_encode($html_code)
 
                                //Load this editfile
 function filetext($templatename,$templatefile,$templates) {
-    //global $templates;
     $sFileName=$templates[$templatename].'/'.$templatefile;
     if (file_exists($sFileName))
     {
@@ -68,8 +67,6 @@ function filetext($templatename,$templatefile,$templates) {
 
 function makegraph($currentstep, $total)
 {
-    //global $thissurvey;
-    //global $publicurl, $clang;
     $CI = &get_instance();
     $CI->load->helper('surveytranslator');
 	$clang = $CI->limesurvey_lang;

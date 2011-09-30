@@ -606,8 +606,6 @@ class Usergroups extends Admin_Controller {
      */
     function _updateusergroup($name, $description, $ugid)
     {
-        //global $dbprefix, $scriptname, $connect;
-
         $this->load->helper('database');
         $uquery = "UPDATE ".$this->db->dbprefix."user_groups SET name = '$name', description = '$description' WHERE ugid =$ugid";
         // TODO
@@ -620,9 +618,6 @@ class Usergroups extends Admin_Controller {
      * @return
      */
     function _refreshtemplates() {
-        //global $connect ;
-        //global $dbprefix ;
-
         $this->load->helper('database');
         $template_a = gettemplatelist();
     	foreach ($template_a as $tp=>$fullpath) {
@@ -658,8 +653,6 @@ class Usergroups extends Admin_Controller {
      * @return
      */
     function _addUserGroupInDB($group_name, $group_description) {
-        //global $connect;
-
         $this->load->helper('database');
         //$iquery = "INSERT INTO ".$this->db->dbprefix."user_groups (name, description, owner_id) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
         $data = array(

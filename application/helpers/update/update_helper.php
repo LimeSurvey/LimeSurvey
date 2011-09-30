@@ -20,8 +20,7 @@
  */
 function CheckForDBUpgrades($subaction = null)
 {
-    //global $dbprefix, $dbversionnumber, $clang;
-    global $modifyoutput, $dbprefix, $usertemplaterootdir, $standardtemplaterootdir, $clang, $connect;
+    global $connect;
     $CI =& get_instance();
 	$clang = $CI->limesurvey_lang;
 	$dbversionnumber = $CI->config->item('dbversionnumber');
@@ -53,7 +52,6 @@ function CheckForDBUpgrades($subaction = null)
 }
 
 function ShowDBUpgradeNotice() {
-    //global $databasetype, $dbprefix, $databasename, $sitename, $rooturl,$clang;
     $error=false;
 	    $CI =& get_instance();
 	$clang = $CI->limesurvey_lang;

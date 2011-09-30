@@ -25,6 +25,7 @@ class Group_format {
 		$CI =& get_instance();
         $CI->load->helper('frontend');
 		$dbprefix = $CI->db->dbprefix;
+        $publicurl = $CI->config->item('publicurl');
 
 		$_POST = $CI->input->post();
 		$allowmandbackwards = $CI->config->item("allowmandbackwards");

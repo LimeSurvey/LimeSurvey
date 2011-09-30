@@ -16,9 +16,6 @@
 
 /**
  * fixes the numbering of questions
- * @global $dbprefix $dbprefix
- * @global $connect $connect
- * @global $clang $clang
  * @param <type> $fixnumbering
  */
 function fixNumbering($fixnumbering)
@@ -28,7 +25,6 @@ function fixNumbering($fixnumbering)
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
 
-    //global $dbprefix, $connect, $clang;
      //Fix a question id - requires renumbering a question
     $oldqid = $fixnumbering;
     $query = "SELECT qid FROM ".$CI->db->dbprefix."questions ORDER BY qid DESC";
@@ -70,14 +66,10 @@ function fixNumbering($fixnumbering)
 }
 /**
  * checks consistency of groups
- * @global  $dbprefix
- * @global  $connect
- * @global  $clang
  * @return <type>
  */
 function checkGroup($postsid)
 {
-    //global $dbprefix, $connect, $clang;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -100,16 +92,12 @@ function checkGroup($postsid)
 }
 /**
  * checks questions in a survey for consistency
- * @global <type> $dbprefix
- * @global <type> $connect
- * @global <type> $clang
  * @param <type> $postsid
  * @param <type> $surveyid
  * @return array $faildcheck
  */
 function checkQuestions($postsid, $surveyid, $qtypes)
 {
-    //global $dbprefix, $connect, $clang;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -270,9 +258,6 @@ function checkQuestions($postsid, $surveyid, $qtypes)
 }
 /**
  * Function to activate a survey
- * @global $dbprefix $dbprefix
- * @global $connect $connect
- * @global $clang $clang
  * @param int $postsid
  * @param int $surveyid
  * @return string
@@ -281,8 +266,6 @@ function checkQuestions($postsid, $surveyid, $qtypes)
 
 function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = false)
 {
-    //global $dbprefix, $connect, $clang, $CI->db->dbdriver,$databasetabletype;
-
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;

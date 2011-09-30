@@ -311,7 +311,6 @@ class export extends Survey_Common_Controller {
 	 */
 	function exportspss($surveyi, $subaction = null)
 	{
-		global $surveyid, $dbprefix;
 		$surveyid = (int) $surveyi;
 		$dbprefix = $this->db->dbprefix;
 		$clang = $this->limesurvey_lang;
@@ -575,7 +574,6 @@ class export extends Survey_Common_Controller {
 	 */
 	function exportr($surveyi, $subaction = null)
 	{
-		global $surveyid, $dbprefix;
 		$surveyid = (int) $surveyi;
 		$dbprefix = $this->db->dbprefix;
 		$clang = $this->limesurvey_lang;
@@ -832,7 +830,6 @@ class export extends Survey_Common_Controller {
 
 	function vvexport($surveyi, $subaction = null)
 	{
-		global $surveyid, $dbprefix;
 		$surveyid = (int) $surveyi;
 		$dbprefix = $this->db->dbprefix;
 		//Exports all responses to a survey in special "Verified Voting" format.
@@ -975,7 +972,6 @@ class export extends Survey_Common_Controller {
 	 */
 	function showquexmlsurvey($surveyid, $lang = null)
 	{
-		global $tempdir;
 		$tempdir = $this->config->item("tempdir");
 
 		// Set the language of the survey, either from GET parameter of session var

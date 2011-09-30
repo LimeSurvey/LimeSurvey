@@ -23,7 +23,6 @@ injectglobalsettings();
 
 function injectglobalsettings()
 {
-    //global $connect;
 	$CI =& get_instance();
 	
     //$registry = SettingsStorage::getInstance();
@@ -42,7 +41,6 @@ function injectglobalsettings()
         //foreach  ($dbvaluearray as $setting)
         foreach ($query->result_array() as $setting)
         {
-            //global $$setting['stg_name'];
             if (isset($CI->config->config[$setting['stg_name']]))
             {
                 //$$setting['stg_name']=$setting['stg_value'];
@@ -56,7 +54,6 @@ function injectglobalsettings()
 
 function getGlobalSetting($settingname)
 {
-    //global $connect, $$settingname;
 	$CI =& get_instance();
     //$registry = SettingsStorage::getInstance();
 	

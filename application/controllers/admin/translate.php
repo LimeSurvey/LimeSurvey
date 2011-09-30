@@ -254,7 +254,6 @@ class translate extends Admin_Controller {
 	/**
 	 * menuItem() creates a menu item with text and image in the admin screen menus
 	 * @param string $menuText
-	 * @global string $clang, $imageurl
 	 * @return string
 	 */
 	function menuItem($menuText, $jsMenuText, $menuImageText, $menuImageFile, $scriptname)
@@ -270,12 +269,10 @@ class translate extends Admin_Controller {
 	
 	/**
 	 * menuSeparator() creates a separator bar in the admin screen menus
-	 * @global string $imageurl
 	 * @return string
 	 */
 	function menuSeparator()
 	{
-	  global $imageurl;
 	  return ("<img src='".$this->config->item("imageurl")."/seperator.gif' alt='' />\n");
 	}
 	
@@ -286,14 +283,13 @@ class translate extends Admin_Controller {
 	 * @param string $tolang
 	 * @param string $activated
 	 * @param string $scriptname
-	 * @global string $imageurl, $clang, $publicurl
 	 * @return string
 	 */
 	  function showTranslateAdminmenu($surveyid, $survey_title, $tolang)
 	{
-	   global $publicurl;
 	   $imageurl = $this->config->item("imageurl");
 	   $clang = $this->limesurvey_lang;
+       $publicurl = $this->config->item('publicurl');
 	
 	  $baselang = GetBaseLanguageFromSurveyID($surveyid);
 	  $supportedLanguages = getLanguageData(false);
@@ -411,7 +407,6 @@ class translate extends Admin_Controller {
 	/**
 	 * setupTranslateFields() creates a customised array with database query
 	 * information for use by survey translation
-	 * @global $dbprefix, $clang;
 	 * @param string $surveyid Survey id
 	 * @param string $type Type of database field that is being translated, e.g. title, question, etc.
 	 * @param string $baselang The source translation language code, e.g. "En"
@@ -424,8 +419,8 @@ class translate extends Admin_Controller {
 	
 	function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id2="", $new="")
 	{
-	  global $dbprefix;
 	  $clang=$this->limesurvey_lang;
+      $dbprefix = $this->db->dbprefix;
 	  
 	  switch ( $type )
 	  {
@@ -997,7 +992,6 @@ class translate extends Admin_Controller {
 	
 	/**
 	 * displayTranslateFields() Formats and displays translation fields (base language as well as to language)
-	 * @global $dbprefix, $clang;
 	 * @param string $surveyid Survey id
 	 * @param string $gid Group id
 	 * @param string $qid Question id

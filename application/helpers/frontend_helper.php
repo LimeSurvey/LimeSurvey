@@ -774,6 +774,7 @@ function checkconditionalmandatorys($move, $backok=null)
 	$_POST = $CI->input->post();
 	//$_SESSION = $CI->session->userdata;
 
+    // TODO - also check whether relevance set?
     if ((isset($_POST['conmandatory']) && $_POST['conmandatory']) && (!isset($backok) || $backok != "Y")) //Mandatory conditional questions that should only be checked if the conditions for displaying that question are met
 
     {

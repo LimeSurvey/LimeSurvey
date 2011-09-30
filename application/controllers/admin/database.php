@@ -44,7 +44,6 @@ class Database extends Admin_Controller {
     function index($action=null)
     {
 
-        //global $clang;
         $clang = $this->limesurvey_lang;
         $postsid=returnglobal('sid');
         $postgid=returnglobal('gid');
@@ -1588,7 +1587,6 @@ class Database extends Admin_Controller {
     */
     function _Updatedefaultvalues($qid,$sqid,$scale_id,$specialtype,$language,$defaultvalue,$ispost)
     {
-       //global $connect;
        $this->load->helper('database');
        if ($defaultvalue=='')  // Remove the default value if it is empty
        {
@@ -1713,7 +1711,6 @@ class Database extends Admin_Controller {
     */
     function _SetSurveyPermissions($iUserID, $iSurveyID, $aPermissions)
     {
-        //global $connect, $surveyid;
         $iUserID=sanitize_int($iUserID);
         $condition = array('sid' => $iSurveyID, 'uid' => $iUserID);
         $this->load->model('survey_permissions_model');

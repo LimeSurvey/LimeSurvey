@@ -120,7 +120,6 @@
      */
     function _showSavedList($surveyid)
     {
-        //global $dbprefix, $connect, $clang, $savedsurveyoutput, $scriptname, $imageurl, $surrows;
         $this->load->helper('database');
 
         $query = "SELECT scid, srid, identifier, ip, saved_date, email, access_code\n"
@@ -150,7 +149,6 @@
      */
     function _savedmenubar($surveyid)
     {
-        //global $surveyid, $scriptname, $imageurl, $clang;
         //BROWSE MENU BAR
         $clang = $this->limesurvey_lang;
         if (!isset($surveyoptions)) {$surveyoptions="";}

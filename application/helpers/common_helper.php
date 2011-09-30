@@ -27,7 +27,6 @@ $CI->load->helper('sanitize');
 
 function aGetBaseSurveyPermissions()
 {
-    //global $clang;
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
 
@@ -70,9 +69,6 @@ function aComparePermission($aPermissionA,$aPermissionB)
  * getqtypelist() Returns list of question types available in LimeSurvey. Edit this if you are adding a new
  *    question type
  *
- * @global string $publicurl
- * @global string $sourcefrom
- *
  * @param string $SelectedCode Value of the Question Type (defaults to "T")
  * @param string $ReturnType Type of output from this function (defaults to selector)
  *
@@ -87,7 +83,6 @@ function aComparePermission($aPermissionA,$aPermissionB)
  */
 function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 {
-    global $sourcefrom;
     $CI =& get_instance();
     $publicurl = $CI->config->item('publicurl');
     $clang = $CI->limesurvey_lang;
@@ -344,18 +339,11 @@ function isStandardTemplate($sTemplateName)
  *
  * @param mixed $returnarray   boolean - if set to true an array instead of an HTML option list is given back
  *
- * @global string $surveyid
- * @global string $dbprefix
- * @global string $scriptname
- * @global string $connect
- * @global string $clang
- *
  * @return string This string is returned containing <option></option> formatted list of existing surveys
  *
  */
 function getsurveylist($returnarray=false,$returnwithouturl=false, $surveyid=false)
 {
-   //global $surveyid, $clang, $timeadjust,$CI;
     static $cached = null;
 	$CI = &get_instance();
 
@@ -542,9 +530,6 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
  */
 function bHasGlobalPermission($sPermission)
 {
-    //global $dbprefix, $connect;
-    //global $aSurveyGlobalPermissionCache;
-
     $CI=& get_instance();
     //$aSurveyPermissionCache = $CI->config->item("aSurveyPermissionCache");
 
@@ -564,7 +549,6 @@ function bHasGlobalPermission($sPermission)
 
 function gettemplatelist()
 {
-    //global $usertemplaterootdir, $standardtemplates,$standardtemplaterootdir;
     $CI= &get_instance();
 	$usertemplaterootdir=$CI->config->item("usertemplaterootdir");
 	$standardtemplaterootdir=$CI->config->item("standardtemplaterootdir");
@@ -602,15 +586,10 @@ function gettemplatelist()
 /**
  * getQuestions() queries the database for an list of all questions matching the current survey and group id
  *
- * @global string $surveyid
- * @global string $gid
- * @global string $selectedqid
- *
  * @return This string is returned containing <option></option> formatted list of questions in the current survey and group
  */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
-    //global $clang,$CI;
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
     $CI->load->config('lsconfig');
@@ -657,7 +636,6 @@ function getQuestions($surveyid,$gid,$selectedqid)
  */
 function getGidPrevious($surveyid, $gid)
 {
-    //global $CI, $clang;
     $CI =& get_instance();
     $clang =  $CI->limesurvey_lang;
 
@@ -697,7 +675,6 @@ function getGidPrevious($surveyid, $gid)
  */
 function getQidPrevious($surveyid, $gid, $qid)
 {
-    //global $CI, $clang;
    /* $CI =& get_instance();
     $CI->load->helper("database");
     //$clang =  $CI->limesurvey_lang;
@@ -751,7 +728,6 @@ var_dump($qrows);*/
  */
 function getGidNext($surveyid, $gid)
 {
-    //global $CI, $clang;
     $CI =& get_instance();
     $clang =  $CI->limesurvey_lang;
     if (!$surveyid) {$surveyid=returnglobal('sid');}
@@ -788,7 +764,6 @@ function getGidNext($surveyid, $gid)
  */
 function getQidNext($surveyid, $gid, $qid)
 {
-    //global $CI, $clang;
     $CI= &get_instance();
     $CI->load->helper("database");
     $clang = $CI->limesurvey_lang;
@@ -901,7 +876,6 @@ function getGroupSum($surveyid, $lang)
  */
 function getQuestionSum($surveyid, $groupid)
 {
-    //global $surveyid,$CI ;
     $CI= &get_instance();
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('questions_model');
@@ -922,11 +896,10 @@ function getQuestionSum($surveyid, $groupid)
  * getMaxgrouporder($surveyid) queries the database for the maximum sortorder of a group and returns the next higher one.
  *
  * @param mixed $surveyid
- * @global string $surveyid
  */
 function getMaxgrouporder($surveyid)
 {
-    global $CI ; //$surveyid,
+    $CI =& get_instance();
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('groups_model');
     //$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
@@ -951,7 +924,7 @@ function getMaxgrouporder($surveyid)
  */
 function getGroupOrder($surveyid,$gid)
 {
-    global $CI;
+    $CI =& get_instance();
     $CI->load->model('groups_model');
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
 
@@ -969,11 +942,10 @@ function getGroupOrder($surveyid,$gid)
 /**
  * getMaxquestionorder($gid) queries the database for the maximum sortorder of a question.
  *
- * @global string $surveyid
  */
 function getMaxquestionorder($gid,$surveyid)
 {
-    global $CI;
+    $CI =& get_instance();
     $gid=sanitize_int($gid);
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('questions_model');
@@ -1301,7 +1273,6 @@ function longest_string( $new_string , $longest_length )
  */
 function getNotificationlist($notificationcode)
 {
-    //global $clang;
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
     $ntypes = array(
@@ -1323,9 +1294,6 @@ function getNotificationlist($notificationcode)
 /**
  * getgrouplist() queries the database for a list of all groups matching the current survey sid
  *
- * @global string $surveyid
- * @global string $dbprefix
- * @global string $scriptname
  *
  * @param string $gid - the currently selected gid/group
  *
@@ -1333,7 +1301,6 @@ function getNotificationlist($notificationcode)
  */
 function getgrouplist($gid,$surveyid)
 {
-    //global $surveyid, $CI, $clang;
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
     $surveyid = $CI->config->item('sid');
@@ -1365,7 +1332,6 @@ function getgrouplist($gid,$surveyid)
 
 function getgrouplist2($gid,$surveyid)
 {
-    //global $surveyid;
     $CI =& get_instance();
     //$clang = $CI->limesurvey_lang;
     $groupselecter = "";
@@ -1426,8 +1392,8 @@ function getgrouplist3($gid,$surveyid)
  */
 function getgroupname($gid)
 {
-    global $surveyid,$CI;
-    if (!$surveyid) {$surveyid=returnglobal('sid');}
+    $CI =& get_instance();
+    $surveyid=returnglobal('sid');
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     //$gidquery = "SELECT group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' and gid=$gid";
     $CI->load->model('groups_model');
@@ -1448,7 +1414,6 @@ function getgroupname($gid)
  */
 function getgrouplistlang($gid, $language,$surveyid)
 {
-    //global $surveyid;
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
 
@@ -1572,7 +1537,8 @@ function getuserlist($outputformat='fullinfoarray')
  */
 function getSurveyInfo($surveyid, $languagecode='')
 {
-    global $CI, $siteadminname, $siteadminemail, $languagechanger;
+    global $siteadminname, $siteadminemail, $languagechanger;
+    $CI =& get_instance();
     $surveyid=sanitize_int($surveyid);
     $languagecode=sanitize_languagecode($languagecode);
     $thissurvey=false;
@@ -1745,7 +1711,7 @@ function StandardSort($a, $b)
 
 function fixsortorderAnswers($qid,$surveyid=null) //Function rewrites the sortorder for a group of answers
 {
-    global $CI;
+    $CI =& get_instance();
     $qid=sanitize_int($qid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
@@ -1769,7 +1735,7 @@ function fixsortorderAnswers($qid,$surveyid=null) //Function rewrites the sortor
  */
 function fixsortorderQuestions($groupid, $surveyid) //Function rewrites the sortorder for questions
 {
-    global $CI;
+    $CI =& get_instance();
     $gid = sanitize_int($groupid);
     $surveyid = sanitize_int($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -1789,12 +1755,12 @@ function fixsortorderQuestions($groupid, $surveyid) //Function rewrites the sort
 
 function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortorder for questions
 {
-    global $CI, $surveyid;
+    $CI =& get_instance();
     $sid=sanitize_int($sid);
     $gid=sanitize_int($gid);
     $shiftvalue=sanitize_int($shiftvalue);
 
-    $baselang = GetBaseLanguageFromSurveyID($surveyid);
+    $baselang = GetBaseLanguageFromSurveyID($sid);
 
     $CI->load->model('questions_model');
     $CI->questions_model->updateQuestionOrder($gid,$baselang,$shiftvalue);
@@ -1811,7 +1777,7 @@ function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortor
 
 function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
 {
-    global $CI;
+    $CI = &get_instance();
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('groups_model');
     $CI->groups_model->updateGroupOrder($surveyid,$baselang);
@@ -1827,7 +1793,8 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
 
 function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
 {
-    global $CI, $surveyid;
+	$CI = &get_instance();
+	$surveyid = $CI->config->item('sid');
     $qid=sanitize_int($qid);
     $oldgid=sanitize_int($oldgid);
     $newgid=sanitize_int($newgid);
@@ -1921,7 +1888,7 @@ function getsidgidqidaidtype($fieldcode)
 {
     // use simple parsing to get {sid}, {gid}
     // and what may be {qid} or {qid}{aid} combination
-    global $CI;
+	$CI = &get_instance();
     list($fsid, $fgid, $fqid) = explode('X', $fieldcode);
     $fsid=sanitize_int($fsid);
     $fgid=sanitize_int($fgid);
@@ -1985,7 +1952,7 @@ function getsidgidqidaidtype($fieldcode)
 function getextendedanswer($surveyid, $action, $fieldcode, $value, $format='')
 {
 
-    global $CI;
+	$CI = &get_instance();
 	$clang = $CI->limesurvey_lang;
 
     // use Survey base language if s_lang isn't set in _SESSION (when browsing answers)
@@ -2366,7 +2333,7 @@ function strip_comments($comment, $email, $replace=''){
 
 function validate_templatedir($templatename)
 {
-    global $CI;
+	$CI = &get_instance();
     $CI->load->config('lsconfig');
     $usertemplaterootdir = $CI->config->item('usertemplaterootdir');
     $standardtemplaterootdir = $CI->config->item('standardtemplaterootdir');
@@ -3079,8 +3046,7 @@ function setuserrights($uid, $rights)
 function getSavedCount($surveyid)
 {
 
-    global $CI;
-
+	$CI = &get_instance();
     $surveyid=(int)$surveyid;
 
     $CI->load->model('saved_control_model');
@@ -3125,7 +3091,7 @@ function GetBaseLanguageFromSurveyID($surveyid)
 function GetAdditionalLanguagesFromSurveyID($surveyid)
 {
     static $cache = array();
-    global $CI;
+	$CI = &get_instance();
     $surveyid=sanitize_int($surveyid);
     if (!isset($cache[$surveyid])) {
         $fields = array('additional_languages');
@@ -3156,9 +3122,7 @@ function GetAdditionalLanguagesFromSurveyID($surveyid)
 // If null or 0 is given for $surveyid then the default language from config-defaults.php is returned
 function SetSurveyLanguage($surveyid, $language)
 {
-    //$CI =& get_instance();
-    //$clang = $CI->limesurvey_lang;
-    global $CI;
+	$CI = &get_instance();
     $surveyid=sanitize_int($surveyid);
     //$CI->load->config('lsconfig');
     $defaultlang = $CI->config->item('defaultlang');
@@ -3209,7 +3173,7 @@ function SetSurveyLanguage($surveyid, $language)
 
 function buildLabelSetCheckSumArray()
 {
-    global $CI;
+	$CI = &get_instance();
     // BUILD CHECKSUMS FOR ALL EXISTING LABEL SETS
     $CI->load->model('labelsets_model');
 
@@ -3250,7 +3214,7 @@ function buildLabelSetCheckSumArray()
  */
 function getQuestionAttributeValues($qid, $type='')
 {
-    global $CI;
+	$CI = &get_instance();
     static $cache = array();
     static $availableattributesarr = null;
 
@@ -3352,7 +3316,6 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName, $lan
  */
 function questionAttributes($returnByName=false)
 {
-    //global $clang,$CI;
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
     //For each question attribute include a key:
@@ -4356,7 +4319,7 @@ function CategorySort($a, $b)
 // make sure the given string (which comes from a POST or GET variable)
 // is safe to use in MySQL.  This does nothing if gpc_magic_quotes is on.
 function auto_escape($str) {
-    global $CI; //$connect;
+	$CI = &get_instance();
     if (!get_magic_quotes_gpc()) {
         return $CI->db->escape($str);
     }
@@ -4593,15 +4556,11 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
 
 /**
  * getArrayFiltersForGroup() queries the database and produces a list of array_filter questions and targets with in the same group
- * @global string $surveyid
- * @global string $gid
- * @global string $dbprefix
  * @return returns an nested array which contains arrays with the keys: question id (qid), question manditory, target type (type), and list_filter id (fid)
  */
 function getArrayFiltersForGroup($surveyid,$gid)
 {
     // TODO: Check list_filter values to make sure questions are previous?
-    //global $dbprefix;
     $surveyid=sanitize_int($surveyid);
     $gid=sanitize_int($gid);
     // Get All Questions in Current Group
@@ -4643,15 +4602,10 @@ function getArrayFiltersForGroup($surveyid,$gid)
 
 /**
  * getArrayFilterExcludesCascadesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
- * @global string $surveyid
- * @global string $gid
- * @global string $output - expects 'qid' or 'title'
- * @global string $dbprefix
  * @return returns a keyed nested array, keyed by the qid of the question, containing cascade information
  */
 function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid")
 {
-    //global $dbprefix;
     $surveyid=sanitize_int($surveyid);
     $gid=sanitize_int($gid);
 
@@ -4739,15 +4693,12 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 
 /**
  * getArrayFilterExcludesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
- * @global string $surveyid
- * @global string $gid
- * @global string $dbprefix
  * @return returns an nested array which contains arrays with the keys: question id (qid), question manditory, target type (type), and list_filter id (fid)
  */
 function getArrayFilterExcludesForGroup($surveyid,$gid)
 {
     // TODO: Check list_filter values to make sure questions are previous?
-    global $CI; //$dbprefix;
+	$CI = &get_instance();
     $surveyid=sanitize_int($surveyid);
     $gid=sanitize_int($gid);
     // Get All Questions in Current Group
@@ -4808,9 +4759,6 @@ function getArrayFilterExcludesForGroup($surveyid,$gid)
 
 /**
  * getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
- * @global string $surveyid
- * @global string $gid
- * @global string $dbprefix
  * @return returns an array of codes that were selected else returns false
  */
 function getArrayFiltersForQuestion($qid)
@@ -4818,7 +4766,7 @@ function getArrayFiltersForQuestion($qid)
     static $cache = array();
 
     // TODO: Check list_filter values to make sure questions are previous?
-    global $CI; //$surveyid, $dbprefix;
+	$CI = &get_instance();
     $qid=sanitize_int($qid);
     if (isset($cache[$qid])) return $cache[$qid];
 
@@ -4866,12 +4814,10 @@ function getArrayFiltersForQuestion($qid)
 
 /**
  * getGroupsByQuestion($surveyid)
- * @global string $surveyid
  * @return returns a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
  */
 function getGroupsByQuestion($surveyid) {
-    global $CI; //#surveyid, $dbprefix;
-
+	$CI = &get_instance();
     $output=array();
 
     $surveyid=sanitize_int($surveyid);
@@ -4891,13 +4837,15 @@ function getGroupsByQuestion($surveyid) {
 
 /**
  * getArrayFiltersForGroup($qid) finds out if a question is in the current group or not for array filter
- * @global string $qid
  * @return returns true if its not in currect group and false if it is..
  */
 function getArrayFiltersOutGroup($qid)
 {
     // TODO: Check list_filter values to make sure questions are previous?
-    global $CI, $surveyid, $gid; //$dbprefix;
+    global $gid;
+	$CI = &get_instance();
+	$surveyid = $CI->config->item('sid');
+
     $qid=sanitize_int($qid);
     $attributes = getQuestionAttributeValues($qid);
     if (isset($attributes['array_filter'])) // We Found a array_filter attribute
@@ -4917,13 +4865,15 @@ function getArrayFiltersOutGroup($qid)
 
 /**
  * getArrayFiltersExcludesOutGroup($qid) finds out if a question is in the current group or not for array filter exclude
- * @global string $qid
  * @return returns true if its not in currect group and false if it is..
  */
 function getArrayFiltersExcludesOutGroup($qid)
 {
     // TODO: Check list_filter values to make sure questions are previous?
-    global $CI, $surveyid, $gid; //$dbprefix;
+    global $gid;
+	$CI = &get_instance();
+	$surveyid = $CI->config->item('sid');
+
     $qid=sanitize_int($qid);
     $attributes = getQuestionAttributeValues($qid);
     if (isset($attributes['array_filter_exclude'])) // We Found a array_filter attribute
@@ -4942,9 +4892,6 @@ function getArrayFiltersExcludesOutGroup($qid)
 
 /**
  * getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
- * @global string $surveyid
- * @global string $gid
- * @global string $dbprefix
  * @return returns an array of codes that were selected else returns false
  */
 function getArrayFilterExcludesForQuestion($qid)
@@ -4956,7 +4903,7 @@ function getArrayFilterExcludesForQuestion($qid)
 	$dbprefix = $CI->db->dbprefix;
 
     // TODO: Check list_filter values to make sure questions are previous?
-    global $surveyid;
+	$surveyid = $CI->config->item('sid');
     $qid=sanitize_int($qid);
 
     if (isset($cache[$qid])) return $cache[$qid];
@@ -5028,7 +4975,7 @@ function getArrayFilterExcludesForQuestion($qid)
  */
 function killSession()  //added by Dennis
 {
-	global $CI;
+	$CI = &get_instance();
 	$CI->session->sess_destroy();
 }
 
@@ -5060,7 +5007,7 @@ function createPassword()
 
 function languageDropdown($surveyid,$selected)
 {
-    global $CI; //$homeurl;
+	$CI = &get_instance();
     $homeurl = $CI->config->item('homeurl');
     $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -5327,8 +5274,7 @@ function getEmailFormat($surveyid)
 
 // Check if user has manage rights for a template
 function hasTemplateManageRights($userid, $templatefolder) {
-    global $CI; //$connect;
-    //global $dbprefix;
+	$CI = &get_instance();
     $userid=sanitize_int($userid);
     $templatefolder=sanitize_paranoid_string($templatefolder);
 	//$query = "SELECT ".db_quote_id('use')." FROM {$dbprefix}templates_rights WHERE uid=".$userid." AND folder LIKE '".$templatefolder."'";
@@ -5390,7 +5336,7 @@ function getNextCode($sourcecode)
  */
 function translink($type, $oldid, $newid, $text)
 {
-    global $CI; //$relativeurl;
+	$CI = &get_instance();
     if ($CI->input->post('translinksfields') === false)
     {
         return $text;
@@ -5449,7 +5395,7 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
  */
 function hasResources($id,$type='survey')
 {
-    global $CI;
+	$CI = &get_instance();
     $dirname = $CI->config->item("uploaddir");
 
     if ($type == 'survey')
@@ -5606,7 +5552,7 @@ function filterforattributes ($fieldname)
  */
 function GetAttributeFieldNames($surveyid)
 {
-    global $CI; //$dbprefix, $connect;
+	$CI = &get_instance();
     if (tableExists('tokens_'.$surveyid) === false)
     {
         return Array();
@@ -5637,7 +5583,6 @@ function GetTokenConditionsFieldNames($surveyid)
  */
 function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
 {
-    //global $CI, $clang; //global $dbprefix, $connect, $clang;
     $CI= &get_instance();
 	$clang=$CI->limesurvey_lang;
     if (tableExists('tokens_'.$surveyid) === false)
@@ -5700,7 +5645,7 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
  */
 function GetAttributeValue($surveyid,$attrName,$token)
 {
-    global $CI; //$dbprefix, $connect;
+	$CI = &get_instance();
     $attrName=strtolower($attrName);
     if (!tableExists('tokens_'.$surveyid) || !in_array($attrName,GetTokenConditionsFieldNames($surveyid)))
     {
@@ -5749,7 +5694,6 @@ function strip_javascript($content){
  */
 function cleanTempDirectory()
 {
-    //global $CI; //tempdir;
     $CI =& get_instance();
     $dir =  $CI->config->item('tempdir').'/';
     $dp = opendir($dir) or show_error('Could not open temporary directory');
@@ -5812,7 +5756,6 @@ function removeBOM($str=""){
  */
 function GetUpdateInfo()
 {
-    //global $CI; //$homedir, $debug, $buildnumber, $versionnumber;
     //require_once($homedir."/classes/http/http.php");
     $CI =& get_instance();
 	$CI->load->library('admin/http/http','http');
@@ -5860,7 +5803,6 @@ function GetUpdateInfo()
  */
 function updatecheck()
 {
-    //global $CI;
     $CI =& get_instance();
     $updateinfo=GetUpdateInfo();
     if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)$CI->config->item('buildnumber') && trim($CI->config->item('buildnumber'))!='')
@@ -5893,7 +5835,7 @@ function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
 
 function getTokenData($surveyid, $token)
 {
-    global $CI; //$dbprefix, $connect;
+	$CI = &get_instance();
     //$query = "SELECT * FROM ".db_table_name('tokens_'.$surveyid)." WHERE token='".db_quote($token)."'";
     //$result = db_execute_assoc($query) or safe_die("Couldn't get token info in getTokenData()<br />".$query."<br />".$connect->ErrorMsg());    //Checked
 	$CI->load->model('Tokens_dynamic_model');
@@ -5922,7 +5864,7 @@ function getTokenData($surveyid, $token)
 */
 function sGetTemplatePath($sTemplateName)
 {
-    global $CI; //$standardtemplaterootdir, $usertemplaterootdir, $defaulttemplate;
+	$CI = &get_instance();
 
     if (isStandardTemplate($sTemplateName))
     {
@@ -5957,7 +5899,7 @@ function sGetTemplatePath($sTemplateName)
 */
 function sGetTemplateURL($sTemplateName)
 {
-    global $CI; //$standardtemplaterooturl, $standardtemplaterootdir, $usertemplaterooturl, $usertemplaterootdir, $defaulttemplate;
+	$CI = &get_instance();
     if (isStandardTemplate($sTemplateName))
     {
         return $CI->config->item("standardtemplaterooturl").'/'.$sTemplateName;
@@ -5991,7 +5933,8 @@ function sGetTemplateURL($sTemplateName)
  * @param $sLanguage Language of the subquestion text
  */
 function getSubQuestions($sid, $qid, $sLanguage) {
-    global $CI, $clang ; //$dbprefix, $connect;
+	$CI = &get_instance();
+    $clang = $CI->limesurvey_lang;
     static $subquestions;
 
     if (!isset($subquestions[$sid])) {
@@ -6035,7 +5978,7 @@ function getXMLWriter() {
  */
 function db_rename_table($oldtable, $newtable)
 {
-    global $CI;
+	$CI = &get_instance();
 
     //$dict = NewDataDictionary($connect);
     //$result=$dict->RenameTableSQL($oldtable, $newtable);
@@ -6053,7 +5996,8 @@ function db_rename_table($oldtable, $newtable)
 */
 function usedTokens($token)
 {
-    global $CI, $surveyid;
+	$CI = &get_instance();
+	$surveyid = $CI->config->item('sid');
 
     $utresult = true;
 	$CI->load->model('Tokens_dynamic_model');
@@ -6096,10 +6040,6 @@ function SSL_redirect($ssl_mode)
  */
 function SSL_mode()
 {
-	//base_url(),
-    //global $rooturl , $homeurl , $publicurl , $tempurl , $imageurl , $uploadurl;
-    //global $usertemplaterooturl , $standardtemplaterooturl;
-    //global $parsedurl , $relativeurl , $fckeditordir , $ssl_emergency_override;
 	$CI =& get_instance();
 
     $https = isset($_SERVER['HTTPS'])?$_SERVER['HTTPS']:'';
@@ -6181,7 +6121,7 @@ function get_quotaCompletedCount($surveyid, $quotaid)
 */
 function aGetFullResponseTable($iSurveyID,$iResponseID,$sLanguageCode)
 {
-    global $CI;
+	$CI = &get_instance();
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
     //Get response data
     $CI->load->model('surveys_dynamic_model');
@@ -6351,7 +6291,8 @@ function vIncludeKeypad()
  */
 function getQuotaInformation($surveyid,$language,$quotaid='all')
 {
-    global $CI, $clienttoken;
+    global $clienttoken;
+	$CI = &get_instance();
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
     /*$query = "SELECT * FROM ".db_table_name('quota').", ".db_table_name('quota_languagesettings')."
@@ -6463,7 +6404,9 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
  */
 function checkquestionfordisplay($qid, $gid=null)
 {
-    global $CI, $surveyid, $thissurvey; //$dbprefix, $connect
+    global $thissurvey;
+	$CI = &get_instance();
+	$surveyid = $CI->config->item('sid');
 
     if (!is_array($thissurvey))
     {
@@ -6830,8 +6773,7 @@ function checkquestionfordisplay($qid, $gid=null)
 */
 function sStripDBPrefix($sTableName)
 {
-    //global $dbprefix;
-    global $CI;
+	$CI = &get_instance();
     $dbprefix = $CI->db->dbprefix;
     return substr($sTableName,strlen($dbprefix));
 }
@@ -6845,7 +6787,7 @@ function sStripDBPrefix($sTableName)
  */
 function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 {
-    global $CI; //$connect, $dbprefix;
+	$CI = &get_instance();
     $CI->load->helper('database');
     $newsid=sanitize_int($newsid);
     $oldsid=sanitize_int($oldsid);
@@ -7209,7 +7151,6 @@ function access_denied($action,$sid='')
  */
 function CleanLanguagesFromSurvey($sid, $availlangs)
 {
-    //global $connect;
     $CI =& get_instance();
     $CI->load->helper('database');
     //$clang = $CI->limesurvey_lang;
@@ -7267,7 +7208,6 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
  */
 function FixLanguageConsistency($sid, $availlangs='')
 {
-    //global $connect, $databasetype;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -7446,7 +7386,6 @@ function FixLanguageConsistency($sid, $availlangs='')
 */
 function db_switchIDInsert($table,$state)
 {
-    //global $databasetype, $connect;
     $CI =& get_instance();
     $CI->load->helper('database');
     if ($CI->db->dbdriver =='odbc_mssql' || $CI->db->dbdriver =='odbtp' || $CI->db->dbdriver =='mssql_n' || $CI->db->dbdriver =='mssqlnative')
@@ -7529,7 +7468,6 @@ function db_switchIDInsert($table,$state)
  */
 function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="by-depgid")
 {
-    //global $connect, $clang;
     $CI =& get_instance();
     $CI->load->helper('database');
     $sid=sanitize_int($sid);
@@ -7619,7 +7557,6 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
  */
 function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid", $searchscope="samegroup")
 {
-    //global $connect, $clang;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -7796,7 +7733,6 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
 
 function getusergrouplist($ugid=NULL,$outputformat='optionlist')
 {
-    //global $dbprefix, $scriptname, $connect, $clang;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -7844,7 +7780,6 @@ function getusergrouplist($ugid=NULL,$outputformat='optionlist')
 
 function getgroupuserlist($ugid)
 {
-    //global , $dbprefix, $scriptname, $connect, $clang;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -7893,18 +7828,10 @@ function modify_database($sqlfile='', $sqlstring='')
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
 
-    //global $dbprefix;
-    //global $defaultuser;
-    //global $defaultpass;
     global $siteadminemail;
     global $siteadminname;
-    //global $defaultlang;
     global $codeString;
-    //global $rootdir, $homedir;
-    //global $connect;
-    //global $clang;
     global $modifyoutput;
-    //global $databasetabletype;
 
     //require_once($homedir."/classes/core/sha256.php");
     $CI->load->library('admin/sha256');
@@ -8000,9 +7927,10 @@ function getlabelsets($languages=null)
 
 function getHeader($meta = false)
 {
-    global $embedded, $surveyid;
+    global $embedded;
 
     $CI =& get_instance();
+	$surveyid = $CI->config->item('sid');
     $CI->load->helper('surveytranslator');
     $clang = $CI->limesurvey_lang;
 
@@ -8346,7 +8274,6 @@ function retrieve_Answer($surveyid, $code, $phpdateformat=null)
 */
 function sGetSurveyUserlist($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surveyid)
 {
-    //global $surveyid, $dbprefix, $scriptname, $connect, $clang, $usercontrolSameGroupPolicy;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -8392,7 +8319,6 @@ function sGetSurveyUserlist($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surv
 
 function getsurveyusergrouplist($outputformat='htmloptions',$surveyid)
 {
-    //global $surveyid, $dbprefix, $scriptname, $connect, $clang, $usercontrolSameGroupPolicy;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;

@@ -23,7 +23,6 @@
 */
 function CSVImportGroup($sFullFilepath, $newsid)
 {
-    //global $dbprefix, $connect, $clang;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -813,8 +812,6 @@ function CSVImportGroup($sFullFilepath, $newsid)
 */
 function XMLImportGroup($sFullFilepath, $newsid)
 {
-    //global $connect, $dbprefix, $clang;
-
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -1153,7 +1150,6 @@ function XMLImportGroup($sFullFilepath, $newsid)
 */
 function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 {
-    //global $dbprefix, $connect, $clang;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -1759,7 +1755,6 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 */
 function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
 {
-    //global $connect, $dbprefix, $clang;
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -1991,7 +1986,6 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
  */
 function CSVImportLabelset($sFullFilepath, $options)
         {
-            //global $dbprefix, $connect, $clang;
             $CI =& get_instance();
             $CI->load->helper('database');
             $clang = $CI->limesurvey_lang;
@@ -2174,7 +2168,6 @@ function CSVImportLabelset($sFullFilepath, $options)
  */
 function XMLImportLabelsets($sFullFilepath, $options)
     {
-        //global $connect, $dbprefix, $clang;
         $CI =& get_instance();
         $CI->load->helper('database');
         $clang = $CI->limesurvey_lang;
@@ -2292,8 +2285,6 @@ function XMLImportLabelsets($sFullFilepath, $options)
 */
 function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 {
-    //global $dbprefix, $connect, $timeadjust, $clang;
-
     $CI =& get_instance();
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
@@ -3404,8 +3395,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 */
 function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true)
 {
-    //global $connect, $dbprefix, $clang, $timeadjust;
-
     $CI =& get_instance();
 
     $CI->load->helper('database');
@@ -3973,7 +3962,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 */
 function GetNewSurveyID($oldsid)
 {
-    //global $connect, $dbprefix;
     $CI =& get_instance();
     $CI->load->helper('database');
     //$clang = $CI->limesurvey_lang;
@@ -4030,7 +4018,6 @@ function GiveAllSurveyPermissions($iUserID, $iSurveyID)
 */
 function SetSurveyPermissions($iUserID, $iSurveyID, $aPermissions)
 {
-    //global $connect, $surveyid;
     $CI =& get_instance();
     $CI->load->helper('database');
     $iUserID=sanitize_int($iUserID);

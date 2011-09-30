@@ -207,7 +207,7 @@ class SurveyDao
     {
     	$CI=& get_instance();
         $survey = new Survey();
-        global $clang;
+    	$clang = $CI->limesurvey_lang;
 
         $intId = sanitize_int($id);
         $survey->id = $intId;

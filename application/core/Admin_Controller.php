@@ -251,9 +251,6 @@ class Admin_Controller extends LSCI_Controller {
 	 */
 	function _getAdminFooter($url, $explanation, $return = false)
 	{
-	    //global $js_admin_includes, $homeurl;
-	    //global $versionnumber, $buildnumber, $setfont, $imageurl, $clang;
-
 		$clang = $this->limesurvey_lang;
 		$data['clang'] = $clang;
 

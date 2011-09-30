@@ -117,6 +117,7 @@ class Save {
 		if (isset($move) && $move == "movesubmit")
 		{
 		    $backok=null;
+            // TODO - also check relevance
 		    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 		    $notvalidated=aCheckInput($surveyid, $move,$backok);
 		    $filenotvalidated = checkUploadedFileValidity($surveyid, $move, $backok);
