@@ -1195,6 +1195,15 @@ class ExpressionManager {
     }
 
     /**
+     * This is only used when there are no needed substitutions
+     * @param <type> $expr
+     */
+    public function SetPrettyPrintSource($expr)
+    {
+        $this->prettyPrintSource = $expr;
+    }
+
+    /**
      * Color-codes Expressions (using HTML <span> tags), showing variable types and values.
      * @return <type>
      */

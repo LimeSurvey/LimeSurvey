@@ -109,7 +109,7 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
     // Only continue in this routine if there are bracketed items to replace {}
     if (strpos($line, "{") === false) {
         // process string anyway so that it can be pretty-printed
-        return LimeExpressionManager::ProcessString($line, $questionNum, NULL, false, 1, 1);
+        return LimeExpressionManager::ProcessString($line, $questionNum, NULL, false, 1, 1, true);
     }
 
     if (

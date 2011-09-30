@@ -239,7 +239,57 @@ class LimeExpressionManager {
                     }
                     break;
             }
-            $this->SetVariableAttributes($type, $varName, $code, $codeValue, $jsVarName, $readWrite, $isOnCurrentPage, $displayValue, $question, $relevance, $questionNum, $relStatus,  $mandatory);
+
+            // Set mappings of variable names to needed attributes
+            $varInfo_Code = array(
+                'codeValue'=>$codeValue,
+                'jsName'=>$jsVarName,
+                'readWrite'=>$readWrite,
+                'isOnCurrentPage'=>$isOnCurrentPage,
+                'displayValue'=>$displayValue,
+                'question'=>$question,
+                'qid'=>$questionNum,
+                'relevance'=>$relevance,
+                'relevanceNum'=>'relevance' . $questionNum,
+                'relevanceStatus'=>$relStatus,
+                );
+            $this->knownVars[$varName] = $varInfo_Code;
+            $this->knownVars['INSERTANS:' . $code] = $varInfo_Code; // $varInfo_DisplayVal;
+
+            $this->jsVar2qid[$jsVarName] = $questionNum;
+
+            // Create JavaScript arrays
+            $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'");
+            $this->alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
+            $this->alias2varName[$code] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $code . "':'" . $jsVarName . "'");
+            $this->alias2varName['INSERTANS:' . $code] = array('jsName'=>$jsVarName, 'jsPart' => "'INSERTANS:" . $code . "':'" . $jsVarName . "'");
+
+            $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
+                . "'jsName':'" . $jsVarName
+    //            . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
+                . "','qid':" . $questionNum
+                . ",'mandatory':'" . $mandatory
+                . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
+                . "','type':'" . $type
+                . "','relevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES)
+                . "','shown':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$displayValue),ENT_QUOTES)
+                . "'}";
+
+            if ($this->debugLEM)
+            {
+                $this->debugLog[] = array(
+                    'code' => $code,
+                    'type' => $type,
+                    'varname' => $varName,
+                    'jsName' => $jsVarName,
+                    'question' => $question,
+                    'codeValue' => ($codeValue=='') ? '&nbsp;' : $codeValue,
+                    'displayValue' => ($displayValue=='') ? '&nbsp;' : $displayValue,
+                    'readWrite' => $readWrite,
+                    'isOnCurrentPage' => $isOnCurrentPage,
+                    'relevance' => $relevance,
+                    );
+            }
         }
 
         // Now set tokens
@@ -334,76 +384,6 @@ class LimeExpressionManager {
     }
 
     /**
-     *
-     * @param <type> $type
-     * @param <type> $varName
-     * @param <type> $code
-     * @param <type> $codeValue
-     * @param <type> $jsVarName
-     * @param <type> $readWrite
-     * @param <type> $isOnCurrentPage
-     * @param <type> $displayValue
-     * @param <type> $question
-     * @param <type> $relevance
-     * @param <type> $questionNum
-     * @param <type> $relStatus
-     * @param <type> $mandatory
-     */
-    private function SetVariableAttributes($type, $varName, $code, $codeValue, $jsVarName, $readWrite, $isOnCurrentPage, $displayValue, $question, $relevance, $questionNum, $relStatus, $mandatory)
-    {
-        // Set mappings of variable names to needed attributes
-        $varInfo_Code = array(
-            'codeValue'=>$codeValue,
-            'jsName'=>$jsVarName,
-            'readWrite'=>$readWrite,
-            'isOnCurrentPage'=>$isOnCurrentPage,
-            'displayValue'=>$displayValue,
-            'question'=>$question,
-            'qid'=>$questionNum,
-            'relevance'=>$relevance,
-            'relevanceNum'=>'relevance' . $questionNum,
-            'relevanceStatus'=>$relStatus,
-            );
-        $this->knownVars[$varName] = $varInfo_Code;
-        $this->knownVars['INSERTANS:' . $code] = $varInfo_Code; // $varInfo_DisplayVal;
-
-        $this->jsVar2qid[$jsVarName] = $questionNum;
-
-        // Create JavaScript arrays
-        $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'");
-        $this->alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
-        $this->alias2varName[$code] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $code . "':'" . $jsVarName . "'");
-        $this->alias2varName['INSERTANS:' . $code] = array('jsName'=>$jsVarName, 'jsPart' => "'INSERTANS:" . $code . "':'" . $jsVarName . "'");
-
-        $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
-            . "'jsName':'" . $jsVarName
-//            . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
-            . "','qid':" . $questionNum
-            . ",'mandatory':'" . $mandatory
-            . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
-            . "','type':'" . $type
-            . "','relevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES)
-            . "','shown':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$displayValue),ENT_QUOTES)
-            . "'}";
-
-        if ($this->debugLEM)
-        {
-            $this->debugLog[] = array(
-                'code' => $code,
-                'type' => $type,
-                'varname' => $varName,
-                'jsName' => $jsVarName,
-                'question' => $question,
-                'codeValue' => ($codeValue=='') ? '&nbsp;' : $codeValue,
-                'displayValue' => ($displayValue=='') ? '&nbsp;' : $displayValue,
-                'readWrite' => $readWrite,
-                'isOnCurrentPage' => $isOnCurrentPage,
-                'relevance' => $relevance,
-                );
-        }
-    }
-
-    /**
      * Translate all Expressions, Macros, registered variables, etc. in $string
      * @param <type> $string - the string to be replaced
      * @param <type> $replacementFields - optional replacement values
@@ -413,9 +393,14 @@ class LimeExpressionManager {
      * @return <type> - the original $string with all replacements done.
      */
 
-    static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1)
+    static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false)
     {
         $LEM =& LimeExpressionManager::singleton();
+
+        if ($noReplacements) {
+            $LEM->em->SetPrettyPrintSource($string);
+            return $string;
+        }
 
         if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
         {
