@@ -10,7 +10,7 @@ include_once('em_core_helper.php');
 
 class LimeExpressionManager {
     private static $instance;
-    private $em;    // Expression Manager
+    private static $em;    // Expression Manager
     private $groupRelevanceInfo;
     private $groupNum;
     private $debugLEM = true;   // set this to false to turn off debugging
@@ -28,11 +28,12 @@ class LimeExpressionManager {
     // A private constructor; prevents direct creation of object
     private function __construct()
     {
+        self::$instance =& $this;
         $this->em = new ExpressionManager();
     }
 
     // The singleton method
-    public static function singleton()
+    public static function &singleton()
     {
         if (!isset(self::$instance)) {
             $c = __CLASS__;
@@ -414,8 +415,7 @@ class LimeExpressionManager {
 
     static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1)
     {
-        $lem = LimeExpressionManager::singleton();
-        $em = $lem->em;
+        $LEM =& LimeExpressionManager::singleton();
 
         if (isset($replacementFields) && is_array($replacementFields) && count($replacementFields) > 0)
         {
@@ -428,15 +428,15 @@ class LimeExpressionManager {
                     'isOnCurrentPage'=>'N',
                 );
             }
-            $em->RegisterVarnamesUsingMerge($replaceArray);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
+            $LEM->em->RegisterVarnamesUsingMerge($replaceArray);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
         }
-        $result = $em->sProcessStringContainingExpressions(htmlspecialchars_decode($string,ENT_QUOTES),(is_null($questionNum) ? 0 : $questionNum), $numRecursionLevels, $whichPrettyPrintIteration);
+        $result = $LEM->em->sProcessStringContainingExpressions(htmlspecialchars_decode($string,ENT_QUOTES),(is_null($questionNum) ? 0 : $questionNum), $numRecursionLevels, $whichPrettyPrintIteration);
 
-        if ($lem->debugLEM)
+        if ($LEM->debugLEM)
         {
-                $varsUsed = $em->GetJSVarsUsed();
+                $varsUsed = $LEM->em->GetJSVarsUsed();
                 if (is_array($varsUsed) and count($varsUsed) > 0) {
-                    $lem->pageTailoringLog .= '<tr><td>' . $lem->groupNum . '</td><td>' . $string . '</td><td>' . $em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
+                    $LEM->pageTailoringLog .= '<tr><td>' . $LEM->groupNum . '</td><td>' . $string . '</td><td>' . $LEM->em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
                 }
         }
 
@@ -452,10 +452,10 @@ class LimeExpressionManager {
     static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
     {
         // These will be called in the order that questions are supposed to be asked
-        $lem = LimeExpressionManager::singleton();
+        $LEM =& LimeExpressionManager::singleton();
         if (!isset($eqn) || trim($eqn=='') || trim($eqn)=='1')
         {
-            $lem->groupRelevanceInfo[] = array(
+            $LEM->groupRelevanceInfo[] = array(
                 'qid' => $questionNum,
                 'eqn' => $eqn,
                 'result' => true,
@@ -468,12 +468,11 @@ class LimeExpressionManager {
             );
             return true;
         }
-        $em = $lem->em;
-        $result = $em->ProcessBooleanExpression(htmlspecialchars_decode($eqn,ENT_QUOTES));
-        $jsVars = $em->GetJSVarsUsed();
-        $relevanceVars = implode('|',$em->GetJSVarsUsed());
-        $relevanceJS = $lem->em->GetJavaScriptEquivalentOfExpression();
-        $lem->groupRelevanceInfo[] = array(
+        $result = $LEM->em->ProcessBooleanExpression(htmlspecialchars_decode($eqn,ENT_QUOTES));
+        $jsVars = $LEM->em->GetJSVarsUsed();
+        $relevanceVars = implode('|',$LEM->em->GetJSVarsUsed());
+        $relevanceJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
+        $LEM->groupRelevanceInfo[] = array(
             'qid' => $questionNum,
             'eqn' => $eqn,
             'result' => $result,
@@ -493,60 +492,58 @@ class LimeExpressionManager {
      */
     static function GetLastPrettyPrintExpression()
     {
-        $lem = LimeExpressionManager::singleton();
-        return $lem->em->GetLastPrettyPrintExpression();
+        $LEM =& LimeExpressionManager::singleton();
+        return $LEM->em->GetLastPrettyPrintExpression();
     }
 
     static function StartProcessingPage($debug=true,$allOnOnePage=false)
     {
-        $lem = LimeExpressionManager::singleton();
-        $lem->pageRelevanceInfo=array();
-        $lem->pageTailorInfo=array();
-        $lem->alias2varName=array();
-        $lem->varNameAttr=array();
-        $lem->allOnOnePage=$allOnOnePage;
-        $lem->pageTailoringLog='';
-        $lem->surveyLogicFile='';
+        $LEM =& LimeExpressionManager::singleton();
+        $LEM->pageRelevanceInfo=array();
+        $LEM->pageTailorInfo=array();
+        $LEM->alias2varName=array();
+        $LEM->varNameAttr=array();
+        $LEM->allOnOnePage=$allOnOnePage;
+        $LEM->pageTailoringLog='';
+        $LEM->surveyLogicFile='';
 
-        if ($debug && $lem->debugLEM)
+        if ($debug && $LEM->debugLEM)
         {
-            $lem->pageTailoringLog .= '<tr><th>Group</th><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
+            $LEM->pageTailoringLog .= '<tr><th>Group</th><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
         }
     }
 
     static function StartProcessingGroup($groupNum=NULL,$anonymized=false,$surveyid=NULL)
     {
-        $lem = LimeExpressionManager::singleton();
-        $em = $lem->em;
-        $em->StartProcessingGroup();
+        $LEM =& LimeExpressionManager::singleton();
+        $LEM->em->StartProcessingGroup();
         if (!is_null($groupNum))
         {
-            $lem->groupNum = $groupNum;
-            $lem->qid2code = array();   // List of codes for each question - needed to know which to NULL if a question is irrelevant
-            $lem->jsVar2qid = array();
+            $LEM->groupNum = $groupNum;
+            $LEM->qid2code = array();   // List of codes for each question - needed to know which to NULL if a question is irrelevant
+            $LEM->jsVar2qid = array();
 
-            if (!is_null($surveyid) && $lem->setVariableAndTokenMappingsForExpressionManager(true,$anonymized,$lem->allOnOnePage,$surveyid))
+            if (!is_null($surveyid) && $LEM->setVariableAndTokenMappingsForExpressionManager(true,$anonymized,$LEM->allOnOnePage,$surveyid))
             {
                 // means that some values changed, so need to update what was registered to ExpressionManager
-                $em->RegisterVarnamesUsingMerge($lem->knownVars);
+                $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
             }
         }
-        $lem->groupRelevanceInfo = array();
+        $LEM->groupRelevanceInfo = array();
     }
 
     static function FinishProcessingGroup()
     {
-        $lem = LimeExpressionManager::singleton();
-        $em = $lem->em;
-        $lem->pageTailorInfo[] = $em->GetCurrentSubstitutionInfo();
-        $lem->pageRelevanceInfo[] = $lem->groupRelevanceInfo;
+        $LEM =& LimeExpressionManager::singleton();
+        $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
+        $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
     }
 
     static function FinishProcessingPage()
     {
-        $lem = LimeExpressionManager::singleton();
-        $_SESSION['EM_pageTailoringLog'] = $lem->pageTailoringLog;
-        $_SESSION['EM_surveyLogicFile'] = $lem->surveyLogicFile;
+        $LEM =& LimeExpressionManager::singleton();
+        $_SESSION['EM_pageTailoringLog'] = $LEM->pageTailoringLog;
+        $_SESSION['EM_surveyLogicFile'] = $LEM->surveyLogicFile;
     }
 
     static function ShowLogicFile()
@@ -571,10 +568,9 @@ class LimeExpressionManager {
      */
     static function GetRelevanceAndTailoringJavaScript()
     {
-        $lem = LimeExpressionManager::singleton();
-        $em = $lem->em;
+        $LEM =& LimeExpressionManager::singleton();
 
-        $knownVars = $lem->knownVars;
+        $knownVars = $LEM->knownVars;
 
         $jsParts=array();
         $allJsVarsUsed=array();
@@ -590,9 +586,9 @@ class LimeExpressionManager {
         $pageRelevanceInfo=array();
         $qidList = array(); // list of questions used in relevance and tailoring
 
-        if (is_array($lem->pageRelevanceInfo))
+        if (is_array($LEM->pageRelevanceInfo))
         {
-            foreach($lem->pageRelevanceInfo as $prel)
+            foreach($LEM->pageRelevanceInfo as $prel)
             {
                 foreach($prel as $rel)
                 {
@@ -608,7 +604,7 @@ class LimeExpressionManager {
             {
                 // First check if there is any tailoring  and construct the tailoring JavaScript if needed
                 $tailorParts = array();
-                foreach ($lem->pageTailorInfo as $tailor)
+                foreach ($LEM->pageTailorInfo as $tailor)
                 {
                     if (is_array($tailor))
                     {
@@ -636,7 +632,7 @@ class LimeExpressionManager {
                     continue;
                 }
                 $relevance = ($relevance == '') ? '1' : $relevance;
-                $jsResultVar = $lem->em->GetJsVarFor($arg['jsResultVar']);
+                $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
                 $jsParts[] = "\n// Process Relevance for Question " . $arg['qid'] . "(" . $arg['jsResultVar'] . "=" . $jsResultVar . "): { " . $arg['eqn'] . " }\n";
                 $jsParts[] = "if (\n";
                 $jsParts[] = $relevance;
@@ -678,7 +674,7 @@ class LimeExpressionManager {
         $allJsVarsUsed = array_unique($allJsVarsUsed);
 
         // Add JavaScript Mapping Arrays
-        if (isset($lem->alias2varName) && count($lem->alias2varName) > 0)
+        if (isset($LEM->alias2varName) && count($LEM->alias2varName) > 0)
         {
             $neededAliases=array();
             $neededCanonical=array();
@@ -692,7 +688,7 @@ class LimeExpressionManager {
                     $jsVar = preg_replace("/\.NAOK$/","",$jsVar);
                 }
                 $neededCanonical[] = $jsVar;
-                foreach ($lem->alias2varName as $key=>$value)
+                foreach ($LEM->alias2varName as $key=>$value)
                 {
                     if ($jsVar == $value['jsName'])
                     {
@@ -703,7 +699,7 @@ class LimeExpressionManager {
             $neededCanonical = array_unique($neededCanonical);
             foreach ($neededCanonical as $nc)
             {
-                $neededCanonicalAttr[] = $lem->varNameAttr[$nc];
+                $neededCanonicalAttr[] = $LEM->varNameAttr[$nc];
             }
             $neededAliases = array_unique($neededAliases);
             if (count($neededAliases) > 0)
@@ -738,8 +734,8 @@ class LimeExpressionManager {
                             $undeclaredJsVars[] = $jsVar;
                             $undeclaredVal[$jsVar] = $knownVar['codeValue'];
 
-                            if (isset($lem->jsVar2qid[$jsVar])) {
-                                $qidList[$lem->jsVar2qid[$jsVar]] = $lem->jsVar2qid[$jsVar];
+                            if (isset($LEM->jsVar2qid[$jsVar])) {
+                                $qidList[$LEM->jsVar2qid[$jsVar]] = $LEM->jsVar2qid[$jsVar];
                             }
                             break;
                         }
@@ -764,9 +760,9 @@ class LimeExpressionManager {
                 $relStatus = 1;
             }
             $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid .  "' value='" . $relStatus . "'/>\n";
-            if (isset($lem->qid2code[$qid]))
+            if (isset($LEM->qid2code[$qid]))
             {
-                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' name='relevance" . $qid . "codes' value='" . $lem->qid2code[$qid] . "'/>\n";
+                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' name='relevance" . $qid . "codes' value='" . $LEM->qid2code[$qid] . "'/>\n";
             }
         }
 
@@ -845,9 +841,8 @@ EOST;
         LimeExpressionManager::StartProcessingPage();
         LimeExpressionManager::StartProcessingGroup(1);
 
-        $lem = LimeExpressionManager::singleton();
-        $em = $lem->em;
-        $em->RegisterVarnamesUsingMerge($vars);
+        $LEM =& LimeExpressionManager::singleton();
+        $LEM->em->RegisterVarnamesUsingMerge($vars);
 
         print '<table border="1"><tr><th>Test</th><th>Result</th></tr>';    // <th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
         for ($i=0;$i<count($alltests);++$i)
@@ -908,9 +903,8 @@ EOT;
 
         LimeExpressionManager::StartProcessingGroup();
 
-        $lem = LimeExpressionManager::singleton();
-        $em = $lem->em;
-        $em->RegisterVarnamesUsingMerge($vars);
+        $LEM =& LimeExpressionManager::singleton();
+        $LEM->em->RegisterVarnamesUsingMerge($vars);
 
         // collect relevance
         $alias2varName = array();
@@ -939,8 +933,8 @@ EOT;
                 . "','qid':'" . $i
             . "'}";
         }
-        $lem->alias2varName = $alias2varName;
-        $lem->varNameAttr = $varNameAttr;
+        $LEM->alias2varName = $alias2varName;
+        $LEM->varNameAttr = $varNameAttr;
         LimeExpressionManager::FinishProcessingGroup();
 
         print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
