@@ -574,6 +574,7 @@ class Installer extends CI_Controller {
     function install($step=0)
     {
         $clang = $this->limesurvey_lang;
+        $step=(int)$step;
         switch($step)
         {
             case 'welcome':

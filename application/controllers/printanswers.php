@@ -55,7 +55,7 @@ class printanswers extends LSCI_Controller {
         //if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
         //else {
             //This next line ensures that the $surveyid value is never anything but a number.
-        $surveyid=sanitize_int($surveyid);
+        $surveyid=(int)($surveyid);
         //}
         $this->load->helper('database');
         //$clang = $this->limesurvey_lang;

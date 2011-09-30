@@ -37,54 +37,57 @@
     /**
      * optout::index()
      * Function responsible to process opting out from a survey and display appropriate message.
-     * @param mixed $surveyid
-     * @param mixed $postlang
-     * @param mixed $token
+     * @param mixed $iSurveyID
+     * @param mixed $sLanguageCode
+     * @param mixed $sToken
      * @return
      */
-    function index($surveyid,$postlang,$token)
+    function index($iSurveyID,$sLanguageCode,$sToken)
     {
 
         $this->load->helper('database');
+        $this->load->helper('sanitize');
+        $sToken=sanitize_token($sToken);
 
-        //$surveyid=$this->input->post('sid');
-        //$postlang=$this->input->post('lang');
-        //$token=$this->input->post('token');
+        //$iSurveyID=$this->input->post('sid');
+        //$sLanguageCode=$this->input->post('lang');
+        //$sToken=$this->input->post('token');
 
         //Check that there is a SID
-        if (!$surveyid)
+        if (!$iSurveyID)
         {
             //You must have an SID to use this
             redirect(); //include "index.php";
             //exit;
         }
-
+        $iSurveyID = (int)$iSurveyID;
         // Get passed language from form, so that we dont loose this!
-        if (!isset($postlang) || $postlang == "" || !$postlang)
+        if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
-            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $baselang = GetBaseLanguageFromSurveyID($iSurveyID);
             $this->load->library('Limesurvey_lang',array($baselang));
             $clang = $this->limesurvey_lang;
 
-            //$baselang = GetBaseLanguageFromSurveyID($surveyid);
+            //$baselang = GetBaseLanguageFromSurveyID($iSurveyID);
             //$clang = new limesurvey_lang($baselang);
         } else {
-            $this->load->library('Limesurvey_lang',array($postlang));
+            $sLanguageCode = sanitize_languagecode($sLanguageCode);
+            $this->load->library('Limesurvey_lang',array($sLanguageCode));
             $clang = $this->limesurvey_lang;
-            $baselang = $postlang;
+            $baselang = $sLanguageCode;
 
-            //$clang = new limesurvey_lang($postlang);
-            //$baselang = $postlang;
+            //$clang = new limesurvey_lang($sLanguageCode);
+            //$baselang = $sLanguageCode;
         }
-        $thissurvey=getSurveyInfo($surveyid,$baselang);
+        $thissurvey=getSurveyInfo($iSurveyID,$baselang);
 
         $html='<div id="wrapper"><p id="optoutmessage">';
-        if ($thissurvey==false || !tableExists("tokens_{$surveyid}")){
+        if ($thissurvey==false || !tableExists("tokens_{$iSurveyID}")){
             $html .= $clang->gT('This survey does not seem to exist.');
         }
         else
         {
-            $usquery = "SELECT emailstatus from ".$this->db->dbprefix."tokens_{$surveyid} where token='".$token."'";
+            $usquery = "SELECT emailstatus from ".$this->db->dbprefix."tokens_{$iSurveyID} where token='".$sToken."'";
             $res=db_execute_assoc($usquery);
             $row=$res->row_array();
             $usresult = $row['emailstatus']; //'$connect->GetOne($usquery);
@@ -95,7 +98,7 @@
             }
             elseif ($usresult=='OK')
             {
-                $usquery = "Update ".$this->db->dbprefix."tokens_{$surveyid} set emailstatus='OptOut' where token='".$token."'";
+                $usquery = "Update ".$this->db->dbprefix."tokens_{$iSurveyID} set emailstatus='OptOut' where token='".$sToken."'";
                 $usresult = db_execute_assoc($usquery);
                 $html .= $clang->gT('You have been successfully removed from this survey.');
             }
