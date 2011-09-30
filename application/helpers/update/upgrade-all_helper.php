@@ -21,6 +21,8 @@ function db_upgrade_all($oldversion) {
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
     global $modifyoutput, $dbprefix, $usertemplaterootdir, $standardtemplaterootdir, $clang;
+    $CI =& get_instance();
+    $CI->load->dbforge();
     echo str_pad($clang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".". $clang->gT('Please be patient...')."<br /><br />\n";
 
     if ($oldversion < 143)
@@ -51,6 +53,29 @@ function db_upgrade_all($oldversion) {
         // close directory
         closedir($myDirectory);
 
+    }
+    if ($oldversion < 148)
+    {
+        $CI->dbforge->add_field('id');
+        $fields = array(
+            'sid' => array(
+                             'type' => 'INT',
+                          ),
+            'parameter' => array(
+                             'type' => 'VARCHAR',
+                             'constraint' => '50',
+                              ),
+            'targetsqid' => array(
+                             'type' => 'INT',
+                             'null' => TRUE,
+                              ),
+            'targetsqid' => array(
+                             'type' => 'INT',
+                             'null' => TRUE,
+                              ),
+        );
+        $CI->dbforge->add_field($fields);
+        $CI->dbforge->create_table('survey_url_parameters',TRUE);
     }
 }
 

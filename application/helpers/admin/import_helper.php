@@ -3418,6 +3418,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $results['quota']=0;
     $results['quotals']=0;
     $results['quotamembers']=0;
+    $results['survey_url_parameters']=0;
     $results['importwarnings']=array();
 
 
@@ -3476,7 +3477,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         //Set current user to be the owner
         $insertdata['owner_id']=$CI->session->userdata('loginID');
         //Change creation date to import date
-        
+
         $insertdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $CI->config->item('timeadjust')));
 
         if ($insertdata['expires'] == '')
@@ -3509,7 +3510,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $CI->load->model('surveys_languagesettings_model');
     foreach ($xml->surveys_languagesettings->rows->row as $row)
     {
-        
+
         $insertdata=array();
         foreach ($row as $key=>$value)
         {
@@ -3622,7 +3623,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
-    // Import subquestions --------------------------------------------------------------
+    // Import subquestions -------------------------------------------------------
     if(isset($xml->subquestions))
     {
         //$tablename=$dbprefix.'questions';
@@ -3663,7 +3664,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
-    // Import answers --------------------------------------------------------------
+    // Import answers ------------------------------------------------------------
     if(isset($xml->answers))
     {
         //$tablename=$dbprefix.'answers';
@@ -3685,7 +3686,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
-    // Import questionattributes --------------------------------------------------------------
+    // Import questionattributes -------------------------------------------------
     if(isset($xml->question_attributes))
     {
         //$tablename=$dbprefix.'question_attributes';
@@ -3708,7 +3709,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     }
 
 
-    // Import defaultvalues --------------------------------------------------------------
+    // Import defaultvalues ------------------------------------------------------
     if(isset($xml->defaultvalues))
     {
         //$tablename=$dbprefix.'defaultvalues';
@@ -3731,7 +3732,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
-    // Import conditions --------------------------------------------------------------
+    // Import conditions ---------------------------------------------------------
     if(isset($xml->conditions))
     {
         //$tablename=$dbprefix.'conditions';
@@ -3797,7 +3798,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
-    // Import assessments --------------------------------------------------------------
+    // Import assessments --------------------------------------------------------
     if(isset($xml->assessments))
     {
         //$tablename=$dbprefix.'assessments';
@@ -3846,7 +3847,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
-    // Import quota_members --------------------------------------------------------------
+    // Import quota_members ------------------------------------------------------
     if(isset($xml->quota_members))
     {
         //$tablename=$dbprefix.'quota_members';
@@ -3869,7 +3870,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
-    // Import quota_languagesettings --------------------------------------------------------------
+    // Import quota_languagesettings----------------------------------------------
     if(isset($xml->quota_languagesettings))
     {
         //$tablename=$dbprefix.'quota_languagesettings';
@@ -3889,17 +3890,44 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $results['quotals']++;
         }
     }
-    
-    
-    
+
+    // Import survey_url_parameters ----------------------------------------------
+    if(isset($xml->quota_languagesettings))
+    {
+        //$tablename=$dbprefix.'quota_languagesettings';
+        $CI->load->model('survey_url_parameters_model');
+        foreach ($xml->survey_url_parameters->rows->row as $row)
+        {
+            $insertdata=array();
+            foreach ($row as $key=>$value)
+            {
+                $insertdata[(string)$key]=(string)$value;
+            }
+            $insertdata['sid']=$newsid; // remap the survey id
+            if ($insertdata['targetsqid']!='')
+            {
+                $insertdata['targetsqid'] =$aSQIDReplacements[(int)$insertdata['targetsqid']]; // remap the qid
+            }
+            if ($insertdata['targetqid']!='')
+            {
+                $insertdata['targetqid'] =$aQIDReplacements[(int)$insertdata['targetqid']]; // remap the qid
+            }
+            unset($insertdata['id']);
+            // now translate any links
+            //$query=$connect->GetInsertSQL($tablename,$insertdata);
+            $result=$CI->quota_languagesettings_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+            $results['survey_url_parameters']++;
+        }
+    }
+
     // Set survey rights
     GiveAllSurveyPermissions($CI->session->userdata('loginID'),$newsid);
     if ($bTranslateInsertansTags)
     {
-        
+
         $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
         TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
-        
+
     }
 
     return $results;

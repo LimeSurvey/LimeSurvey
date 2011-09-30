@@ -1134,7 +1134,7 @@ class Installer extends CI_Controller {
                         'cache_on' => 'FALSE',
                         'cachedir' => '',
                         'char_set' => 'utf8',
-                        'dbcollat' => 'utf8_general_ci',
+                        'dbcollat' => 'utf8_unicode_ci',
                         'swap_pre' => '',
                         'autoinit' => 'TRUE',
                         'stricton' => 'FALSE',

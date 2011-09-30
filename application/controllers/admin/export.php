@@ -34,19 +34,20 @@ class export extends Survey_Common_Controller {
 		$this->load->helper("database");
 	}
 
-	function survey($surveyid)
+	function survey($sSurveyID)
 	{
-		if(bHasSurveyPermission($surveyid,'surveycontent','export')) {
+        $iSurveyID= (int)$sSurveyID;
+		if(bHasSurveyPermission($iSurveyID,'surveycontent','export')) {
 			if($this->input->post("action"))
 			{
-				self::_surveyexport($this->input->post("action"), $surveyid);
+				self::_surveyexport($this->input->post("action"), $iSurveyID);
 				return;
 			}
 			$css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	   		$this->config->set_item("css_admin_includes", $css_admin_includes);
 			self::_getAdminHeader();
-	    	self::_showadminmenu($surveyid);
-	    	self::_surveybar($surveyid);
+	    	self::_showadminmenu($iSurveyID);
+	    	self::_surveybar($iSurveyID);
 	    	$this->load->view("admin/export/survey_view");
 	        self::_loadEndScripts();
 	    	self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));

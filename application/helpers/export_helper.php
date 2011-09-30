@@ -38,10 +38,10 @@ function my_is_numeric($value)  {
     if (empty($value)) return true;
     $eng_or_world = preg_match
     ('/^[+-]?'. // start marker and sign prefix
-  '(((([0-9]+)|([0-9]{1,4}(,[0-9]{3,4})+)))?(\\.[0-9])?([0-9]*)|'. // american 
-  '((([0-9]+)|([0-9]{1,4}(\\.[0-9]{3,4})+)))?(,[0-9])?([0-9]*))'. // world 
-  '(e[0-9]+)?'. // exponent 
-  '$/', // end marker 
+  '(((([0-9]+)|([0-9]{1,4}(,[0-9]{3,4})+)))?(\\.[0-9])?([0-9]*)|'. // american
+  '((([0-9]+)|([0-9]{1,4}(\\.[0-9]{3,4})+)))?(,[0-9])?([0-9]*))'. // world
+  '(e[0-9]+)?'. // exponent
+  '$/', // end marker
     $value) == 1;
     return ($eng_or_world);
 }
@@ -180,9 +180,9 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
         } else {
             $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer,
 			{$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE";
-            
+
             if (isset($field['scale_id'])) $query .= " {$dbprefix}answers.scale_id = " . (int) $field['scale_id'] . " AND";
-            
+
             $query .= " {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
 			    and {$dbprefix}questions.qid='".$field['qid']."' ORDER BY sortorder ASC";
             $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
@@ -338,7 +338,7 @@ function spss_fieldmap($prefix = 'V') {
         $code='';
         $scale_id = null;
         $aQuestionAttribs=array();
-         
+
         #Determine field type
         if ($fieldname=='submitdate' || $fieldname=='startdate' || $fieldname == 'datestamp') {
             $fieldtype = 'DATETIME23.2';
@@ -360,7 +360,7 @@ function spss_fieldmap($prefix = 'V') {
         } elseif ($fieldname == 'lastpage') {
         	$hide = 1;
         }
-         
+
         #Get qid (question id)
         if (in_array($fieldname, $noQID) || substr($fieldname,0,10)=='attribute_'){
             $qid = 0;
@@ -472,11 +472,11 @@ function spss_getquery() {
 
 /**
 * BuildXMLFromQuery() creates a datadump of a table in XML using XMLWriter
-* 
+*
 * @param mixed $xmlwriter  The existing XMLWriter object
 * @param mixed $Query  The table query to build from
 * @param mixed $tagname  If the XML tag of the resulting question should be named differently than the table name set it here
-* @param array $excludes array of columnames not to include in export 
+* @param array $excludes array of columnames not to include in export
 */
 function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 {
@@ -484,8 +484,7 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
     $dbprefix = $CI->db->dbprefix;
     $CI->load->helper('database');
     $QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg()); //safe
-    preg_match('/FROM (\w+)( |,)/', $Query, $MatchResults);
-    
+    preg_match('/\bfrom\b\s*(\w+)/i', $Query, $MatchResults);
     if ($tagname!='')
     {
         $TableName=$tagname;
@@ -531,63 +530,63 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
  */
 function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
 {
-	
+
 	$CI =& get_instance();
 
     $sdump = "";
-	
+
 	$dbprefix = $CI->db->dbprefix;
 
     if ((!isset($exclude) && $exclude['answers'] !== true) || empty($exclude))
     {
         //Answers table
         $aquery = "SELECT {$dbprefix}answers.*
-           FROM {$dbprefix}answers, {$dbprefix}questions 
-		   WHERE {$dbprefix}answers.language={$dbprefix}questions.language 
-		   AND {$dbprefix}answers.qid={$dbprefix}questions.qid 
+           FROM {$dbprefix}answers, {$dbprefix}questions
+		   WHERE {$dbprefix}answers.language={$dbprefix}questions.language
+		   AND {$dbprefix}answers.qid={$dbprefix}questions.qid
 		   AND {$dbprefix}questions.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$aquery);
     }
 
     // Assessments
     $query = "SELECT {$dbprefix}assessments.*
-          FROM {$dbprefix}assessments 
+          FROM {$dbprefix}assessments
           WHERE {$dbprefix}assessments.sid=$surveyid";
     BuildXMLFromQuery($xmlwriter,$query);
-    
+
     if ((!isset($exclude) && $exclude['conditions'] !== true) || empty($exclude))
     {
         //Conditions table
         $cquery = "SELECT DISTINCT {$dbprefix}conditions.*
-           FROM {$dbprefix}conditions, {$dbprefix}questions 
-		   WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid 
+           FROM {$dbprefix}conditions, {$dbprefix}questions
+		   WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid
 		   AND {$dbprefix}questions.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$cquery);
     }
 
     //Default values
     $query = "SELECT {$dbprefix}defaultvalues.*
-          FROM {$dbprefix}defaultvalues JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = {$dbprefix}defaultvalues.qid AND {$dbprefix}questions.sid=$surveyid AND {$dbprefix}questions.language={$dbprefix}defaultvalues.language "; 
-    
+          FROM {$dbprefix}defaultvalues JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = {$dbprefix}defaultvalues.qid AND {$dbprefix}questions.sid=$surveyid AND {$dbprefix}questions.language={$dbprefix}defaultvalues.language ";
+
     BuildXMLFromQuery($xmlwriter,$query);
-    
-    // Groups 
+
+    // Groups
     $gquery = "SELECT *
-           FROM {$dbprefix}groups 
-           WHERE sid=$surveyid 
+           FROM {$dbprefix}groups
+           WHERE sid=$surveyid
            ORDER BY gid";
     BuildXMLFromQuery($xmlwriter,$gquery);
-    
-    //Questions    
+
+    //Questions
     $qquery = "SELECT *
-           FROM {$dbprefix}questions 
-           WHERE sid=$surveyid and parent_qid=0 
+           FROM {$dbprefix}questions
+           WHERE sid=$surveyid and parent_qid=0
            ORDER BY qid";
     BuildXMLFromQuery($xmlwriter,$qquery);
 
-    //Subquestions    
+    //Subquestions
     $qquery = "SELECT *
-           FROM {$dbprefix}questions 
+           FROM {$dbprefix}questions
            WHERE sid=$surveyid and parent_qid>0
            ORDER BY qid";
     BuildXMLFromQuery($xmlwriter,$qquery,'subquestions');
@@ -596,29 +595,29 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
     $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
     if ($CI->db->platform() == 'odbc_mssql' || $CI->db->platform() == 'odbtp' || $CI->db->platform() == 'mssql_n' || $CI->db->platform() =='mssqlnative')
     {
-        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value 
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} 
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
+          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
     else {
         $query="SELECT qa.qid, qa.attribute, qa.value
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} 
+          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
-    
+
     BuildXMLFromQuery($xmlwriter,$query,'question_attributes');
 
     if ((!isset($exclude) && $exclude['quotas'] !== true) || empty($exclude))
     {
         //Quota
         $query = "SELECT {$dbprefix}quota.*
-          FROM {$dbprefix}quota 
+          FROM {$dbprefix}quota
 		  WHERE {$dbprefix}quota.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$query);
 
         //1Quota members
         $query = "SELECT {$dbprefix}quota_members.*
-          FROM {$dbprefix}quota_members 
+          FROM {$dbprefix}quota_members
 		  WHERE {$dbprefix}quota_members.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$query);
 
@@ -629,20 +628,26 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
 		  AND {$dbprefix}quota.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$query);
     }
-    
-    // Surveys 
+
+    // Surveys
     $squery = "SELECT *
-           FROM {$dbprefix}surveys 
+           FROM {$dbprefix}surveys
            WHERE sid=$surveyid";
     //Exclude some fields from the export
     BuildXMLFromQuery($xmlwriter,$squery,'',array('owner_id','active','datecreated'));
 
-    // Survey language settings 
+    // Survey language settings
     $slsquery = "SELECT *
-             FROM {$dbprefix}surveys_languagesettings 
+             FROM {$dbprefix}surveys_languagesettings
              WHERE surveyls_survey_id=$surveyid";
     BuildXMLFromQuery($xmlwriter,$slsquery);
-    
+
+    // Survey url parameters
+    $slsquery = "SELECT *
+             FROM {$dbprefix}survey_url_parameters
+             WHERE sid={$surveyid}";
+    BuildXMLFromQuery($xmlwriter,$slsquery);
+
 }
 
 /**
@@ -656,16 +661,16 @@ function survey_getXMLData($surveyid, $exclude = array())
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
-    $xml->writeElement('LimeSurveyDocType','Survey');    
+    $xml->writeElement('LimeSurveyDocType','Survey');
     $xml->writeElement('DBVersion',$CI->config->item("dbversionnumber"));
     $xml->startElement('languages');
     $surveylanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
     $surveylanguages[]=GetBaseLanguageFromSurveyID($surveyid);
-    foreach ($surveylanguages as $surveylanguage)   
+    foreach ($surveylanguages as $surveylanguage)
     {
-        $xml->writeElement('language',$surveylanguage);    
+        $xml->writeElement('language',$surveylanguage);
     }
-    $xml->endElement();    
+    $xml->endElement();
     survey_getXMLStructure($surveyid, $xml,$exclude);
     $xml->endElement(); // close columns
     $xml->endDocument();
@@ -735,12 +740,12 @@ function quexml_fixed_array($array)
 
 /**
  * Calculate if this item should have a quexml_skipto element attached to it
- * 
+ *
  * from export_structure_quexml.php
- * 
- * @param mixed $qid   
- * @param mixed $value 
- * 
+ *
+ * @param mixed $qid
+ * @param mixed $value
+ *
  * @return bool|string Text of item to skip to otherwise false if nothing to skip to
  * @author Adam Zammit <adam.zammit@acspri.org.au>
  * @since  2010-10-28
@@ -757,18 +762,18 @@ function quexml_skipto($qid,$value,$cfieldname = "")
 
 	$Query = "SELECT q.*," . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." as globalorder
                   FROM {$dbprefix}questions as q, {$dbprefix}questions as q2, {$dbprefix}groups as g, {$dbprefix}groups as g2
-                  WHERE q.parent_qid = 0 
+                  WHERE q.parent_qid = 0
                   AND q2.parent_qid = 0
                   AND q.sid=$surveyid
                   AND q2.sid=$surveyid
-                  AND q2.qid = $qid       
-                  AND g2.gid =q2.gid                      
+                  AND q2.qid = $qid
+                  AND g2.gid =q2.gid
                   AND g.gid = q.gid
                   AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." > " . concat("RIGHT(" . concat($zeros,'g2.gid') . ",10)","RIGHT(". concat($zeros,'q2.question_order') .",10)") ."
                   ORDER BY globalorder";
 
 	$QueryResult = db_execute_assoc($Query);
-	
+
 	$nextqid="";
 	$nextorder="";
 
@@ -790,7 +795,7 @@ function quexml_skipto($qid,$value,$cfieldname = "")
 		AND q.parent_qid = 0
 		AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." >= $nextorder
 		AND c.cqid IS NULL
-		ORDER BY  " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)"); 
+		ORDER BY  " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)");
 
 
 	$QueryResult = db_execute_assoc($Query);
@@ -848,7 +853,7 @@ function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=fal
 		{
 			$quexml_skipto = $dom->create_element("quexml_skipto");
 			$quexml_skipto->set_content($st);
-			$category->append_child($quexml_skipto);	
+			$category->append_child($quexml_skipto);
 		}
 
 
@@ -874,7 +879,7 @@ function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=fal
 		$value->set_content($nextcode);
 
 		$category->append_child($label);
-		$category->append_child($value);	    
+		$category->append_child($value);
 
 		$contingentQuestion = $dom->create_element("contingentQuestion");
 		$length = $dom->create_element("length");
@@ -903,7 +908,7 @@ function quexml_get_lengthth($qid,$attribute,$default)
 	global $dom;
 	$CI =& get_instance();
 	$dbprefix = $CI->db->dbprefix;
-	
+
 	$Query = "SELECT value FROM {$dbprefix}question_attributes WHERE qid = $qid AND attribute = '$attribute'";
 	//$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
 	$QueryResult = db_execute_assoc($Query);
@@ -960,7 +965,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 			{
 				$quexml_skipto = $dom->create_element("quexml_skipto");
 				$quexml_skipto->set_content($st);
-				$category->append_child($quexml_skipto);	
+				$category->append_child($quexml_skipto);
 			}
 
 
@@ -996,7 +1001,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 		$value->set_content(1);
 
 		$category->append_child($label);
-		$category->append_child($value);	    
+		$category->append_child($value);
 
 		$contingentQuestion = $dom->create_element("contingentQuestion");
 		$length = $dom->create_element("length");
@@ -1061,31 +1066,31 @@ function quexml_export($surveyi, $quexmllan)
 	$surveyid = $surveyi;
 	$CI =& get_instance();
 	$dbprefix = $CI->db->dbprefix;
-	
+
 	$CI->load->helper("admin/domxml_wrapper");
 	$dom = domxml_new_doc("1.0");
-	
+
 	//Title and survey id
 	$questionnaire = $dom->create_element("questionnaire");
 	$title = $dom->create_element("title");
-	
+
 	$Query = "SELECT * FROM {$dbprefix}surveys,{$dbprefix}surveys_languagesettings WHERE sid=$surveyid and surveyls_survey_id=sid and surveyls_language='".$quexmllang."'";
 	$QueryResult = db_execute_assoc($Query);
 	$Row = $QueryResult->row_array();
 	$questionnaire->set_attribute("id", $Row['sid']);
 	$title->set_content(quexml_cleanup($Row['surveyls_title']));
 	$questionnaire->append_child($title);
-	
+
 	//investigator and datacollector
 	$investigator = $dom->create_element("investigator");
 	$name = $dom->create_element("name");
 	$name = $dom->create_element("firstName");
 	$name = $dom->create_element("lastName");
 	$dataCollector = $dom->create_element("dataCollector");
-	
+
 	$questionnaire->append_child($investigator);
 	$questionnaire->append_child($dataCollector);
-	
+
 	//questionnaireInfo == welcome
 	if (!empty($Row['surveyls_welcometext']))
 	{
@@ -1101,20 +1106,20 @@ function quexml_export($surveyi, $quexmllan)
 		$questionnaireInfo->append_child($administration);
 		$questionnaire->append_child($questionnaireInfo);
 	}
-	
+
 	//section == group
-	
-	
+
+
 	$Query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid AND language='$quexmllang' order by group_order ASC";
 	$QueryResult = db_execute_assoc($Query);
-	
+
 	//for each section
 	foreach($QueryResult->result_array() as $Row)
 	{
 		$gid = $Row['gid'];
-	
+
 		$section = $dom->create_element("section");
-	
+
 		if (!empty($Row['group_name']))
 		{
 			$sectionInfo = $dom->create_element("sectionInfo");
@@ -1129,11 +1134,11 @@ function quexml_export($surveyi, $quexmllan)
 			$sectionInfo->append_child($administration);
 			$section->append_child($sectionInfo);
 		}
-	
-	
+
+
 		if (!empty($Row['description']))
 		{
-			$sectionInfo = $dom->create_element("sectionInfo");	
+			$sectionInfo = $dom->create_element("sectionInfo");
 			$position = $dom->create_element("position");
 			$text = $dom->create_element("text");
 			$administration = $dom->create_element("administration");
@@ -1145,11 +1150,11 @@ function quexml_export($surveyi, $quexmllan)
 			$sectionInfo->append_child($administration);
 			$section->append_child($sectionInfo);
 		}
-	
-	
-	
+
+
+
 		$section->set_attribute("id", $gid);
-	
+
 		//boilerplate questions convert to sectionInfo elements
 		$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
 		$QR = db_execute_assoc($Query);
@@ -1159,19 +1164,19 @@ function quexml_export($surveyi, $quexmllan)
 			$position = $dom->create_element("position");
 			$text = $dom->create_element("text");
 			$administration = $dom->create_element("administration");
-	
+
 			$position->set_content("before");
 			$text->set_content(quexml_cleanup($RowQ['question']));
 			$administration->set_content("self");
 			$sectionInfo->append_child($position);
 			$sectionInfo->append_child($text);
 			$sectionInfo->append_child($administration);
-	
+
 			$section->append_child($sectionInfo);
 		}
-	
-	
-	
+
+
+
 		//foreach question
 		$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
 		$QR = db_execute_assoc($Query);
@@ -1180,10 +1185,10 @@ function quexml_export($surveyi, $quexmllan)
 			$question = $dom->create_element("question");
 			$type = $RowQ['type'];
 			$qid = $RowQ['qid'];
-	
+
 			$other = false;
 			if ($RowQ['other'] == 'Y') $other = true;
-	
+
 			//create a new text element for each new line
 			$questiontext = explode('<br />',$RowQ['question']);
 			foreach ($questiontext as $qt)
@@ -1192,12 +1197,12 @@ function quexml_export($surveyi, $quexmllan)
 				if (!empty($txt))
 				{
 					$text = $dom->create_element("text");
-					$text->set_content($txt);	
+					$text->set_content($txt);
 					$question->append_child($text);
 				}
 			}
-	
-	
+
+
 			//directive
 			if (!empty($RowQ['help']))
 			{
@@ -1208,21 +1213,21 @@ function quexml_export($surveyi, $quexmllan)
 				$text->set_content(quexml_cleanup($RowQ['help']));
 				$administration = $dom->create_element("administration");
 				$administration->set_content("self");
-	
+
 				$directive->append_child($position);
 				$directive->append_child($text);
 				$directive->append_child($administration);
-	
+
 				$question->append_child($directive);
 			}
-	
+
 			$response = $dom->create_element("response");
 			$response->set_attribute("varName",quexml_cleanup($RowQ['title']));
-	
+
 			switch ($type)
 			{
 				case "X": //BOILERPLATE QUESTION - none should appear
-	
+
 					break;
 				case "5": //5 POINT CHOICE radio-buttons
 					$response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
@@ -1333,12 +1338,12 @@ function quexml_export($surveyi, $quexmllan)
 					//select subQuestions from answers table where QID
 					quexml_create_subQuestions($question,$qid,$RowQ['title']);
 				$response = $dom->create_element("response");
-				$response->append_child(quexml_create_fixed($qid,false,false,0,$other)); 
-				$response2 = $dom->create_element("response");  
+				$response->append_child(quexml_create_fixed($qid,false,false,0,$other));
+				$response2 = $dom->create_element("response");
 				$response2->set_attribute("varName",quexml_cleanup($RowQ['title']) . "_2");
-				$response2->append_child(quexml_create_fixed($qid,false,false,1,$other));   
+				$response2->append_child(quexml_create_fixed($qid,false,false,1,$other));
 				$question->append_child($response);
-				$question->append_child($response2);  
+				$question->append_child($response2);
 				break;
 				case ":": //multi-flexi array numbers
 					quexml_create_subQuestions($question,$qid,$RowQ['title']);
@@ -1363,26 +1368,26 @@ function quexml_export($surveyi, $quexmllan)
 				$question->append_child($response);
 				break;
 			} //End Switch
-	
-	
-	
-	
+
+
+
+
 			$section->append_child($question);
 		}
-	
-	
+
+
 		$questionnaire->append_child($section);
 	}
-	
-	
+
+
 	$dom->append_child($questionnaire);
-	
+
 	return $dom->dump_mem(true,'UTF-8');
 }
 
 /**
  * From adodb
- * 
+ *
  * Different SQL databases used different methods to combine strings together.
  * This function provides a wrapper.
  *
@@ -1417,12 +1422,12 @@ function lsrccsv_export($surveyid)
 	// 10. Assessments
 	// 11. Quota
 	// 12. Quota Members
-	
+
 	include_once("login_check.php");
-	
+
 	if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
-	
-	
+
+
 	if (!$surveyid)
 	{
 	    echo $htmlheader
@@ -1441,120 +1446,120 @@ function lsrccsv_export($surveyid)
 	    ."</body></html>\n";
 	    exit;
 	}
-	
+
 	$dumphead = "# LimeSurvey Survey Dump\n"
 	. "# DBVersion $dbversionnumber\n"
 	. "# This is a dumped survey from the LimeSurvey Script\n"
 	. "# http://www.limesurvey.org/\n"
 	. "# Do not change this header!\n";
-	
+
 	//1: Surveys table
 	$squery = "SELECT *
-	           FROM {$dbprefix}surveys 
+	           FROM {$dbprefix}surveys
 			   WHERE sid=$surveyid";
 	$sdump = BuildCSVFromQuery($squery);
-	
+
 	//2: Surveys Languagsettings table
 	$slsquery = "SELECT *
-	             FROM {$dbprefix}surveys_languagesettings 
+	             FROM {$dbprefix}surveys_languagesettings
 				 WHERE surveyls_survey_id=$surveyid";
 	$slsdump = BuildCSVFromQuery($slsquery);
-	
+
 	//3: Groups Table
 	$gquery = "SELECT *
-	           FROM {$dbprefix}groups 
-			   WHERE sid=$surveyid 
+	           FROM {$dbprefix}groups
+			   WHERE sid=$surveyid
 			   ORDER BY gid";
 	$gdump = BuildCSVFromQuery($gquery);
-	
+
 	//4: Questions Table
 	$qquery = "SELECT *
-	           FROM {$dbprefix}questions 
-			   WHERE sid=$surveyid 
+	           FROM {$dbprefix}questions
+			   WHERE sid=$surveyid
 			   ORDER BY qid";
 	$qdump = BuildCSVFromQuery($qquery);
-	
+
 	//5: Answers table
 	$aquery = "SELECT {$dbprefix}answers.*
-	           FROM {$dbprefix}answers, {$dbprefix}questions 
-			   WHERE {$dbprefix}answers.language={$dbprefix}questions.language 
-			   AND {$dbprefix}answers.qid={$dbprefix}questions.qid 
+	           FROM {$dbprefix}answers, {$dbprefix}questions
+			   WHERE {$dbprefix}answers.language={$dbprefix}questions.language
+			   AND {$dbprefix}answers.qid={$dbprefix}questions.qid
 			   AND {$dbprefix}questions.sid=$surveyid";
 	$adump = BuildCSVFromQuery($aquery);
-	
+
 	//6: Conditions table
 	$cquery = "SELECT DISTINCT {$dbprefix}conditions.*
-	           FROM {$dbprefix}conditions, {$dbprefix}questions 
-			   WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid 
+	           FROM {$dbprefix}conditions, {$dbprefix}questions
+			   WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid
 			   AND {$dbprefix}questions.sid=$surveyid";
 	$cdump = BuildCSVFromQuery($cquery);
-	
+
 	//7: Label Sets
 	$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}labelsets.languages
-	            FROM {$dbprefix}labelsets, {$dbprefix}questions 
-				WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid or {$dbprefix}labelsets.lid={$dbprefix}questions.lid1) 
-				AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';') 
+	            FROM {$dbprefix}labelsets, {$dbprefix}questions
+				WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid or {$dbprefix}labelsets.lid={$dbprefix}questions.lid1)
+				AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';')
 				AND sid=$surveyid";
 	$lsdump = BuildCSVFromQuery($lsquery);
-	
+
 	//8: Labels
 	$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language
-	           FROM {$dbprefix}labels, {$dbprefix}questions 
-			   WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1) 
-			   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';') 
-			   AND sid=$surveyid 
+	           FROM {$dbprefix}labels, {$dbprefix}questions
+			   WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1)
+			   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';')
+			   AND sid=$surveyid
 			   GROUP BY {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language";
 	$ldump = BuildCSVFromQuery($lquery);
-	
+
 	//9: Question Attributes
 	$query = "SELECT DISTINCT {$dbprefix}question_attributes.*
-	          FROM {$dbprefix}question_attributes, {$dbprefix}questions 
-			  WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid 
+	          FROM {$dbprefix}question_attributes, {$dbprefix}questions
+			  WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid
 			  AND {$dbprefix}questions.sid=$surveyid";
 	$qadump = BuildCSVFromQuery($query);
-	
+
 	//10: Assessments;
 	$query = "SELECT {$dbprefix}assessments.*
-	          FROM {$dbprefix}assessments 
+	          FROM {$dbprefix}assessments
 			  WHERE {$dbprefix}assessments.sid=$surveyid";
 	$asdump = BuildCSVFromQuery($query);
-	
+
 	//11: Quota;
 	$query = "SELECT {$dbprefix}quota.*
-	          FROM {$dbprefix}quota 
+	          FROM {$dbprefix}quota
 			  WHERE {$dbprefix}quota.sid=$surveyid";
 	$quotadump = BuildCSVFromQuery($query);
-	
+
 	//12: Quota Members;
 	$query = "SELECT {$dbprefix}quota_members.*
-	          FROM {$dbprefix}quota_members 
+	          FROM {$dbprefix}quota_members
 			  WHERE {$dbprefix}quota_members.sid=$surveyid";
 	$quotamemdump = BuildCSVFromQuery($query);
-	
+
 	$fn = "limesurvey_survey_$surveyid.csv";
-	
+
 	//header("Content-Type: application/download");
 	//header("Content-Disposition: attachment; filename=$fn");
 	//header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
 	//header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	//header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 	//header("Pragma: cache");                          // HTTP/1.0
-	
+
 	//include("../config.php");
 	include_once("../config-defaults.php");
 	include_once("../common.php");
 	include("remotecontrol/lsrc.config.php");
-	
+
 	$lsrcString = $dumphead. $sdump. $gdump. $qdump. $adump. $cdump. $lsdump. $ldump. $qadump. $asdump. $slsdump. $quotadump. $quotamemdump."\n";
-	
+
 	//Select title as Filename and save
 	$surveyTitleSql = "SELECT surveyls_title
-		             FROM {$dbprefix}surveys_languagesettings 
+		             FROM {$dbprefix}surveys_languagesettings
 					 WHERE surveyls_survey_id=$surveyid";
 	$surveyTitleRs = db_execute_assoc($surveyTitleSql);
 	$surveyTitle = $surveyTitleRs->FetchRow();
 	file_put_contents("remotecontrol/".$coreDir.$surveyTitle['surveyls_title'].".csv",$lsrcString);
-	
+
 	header("Location: $scriptname?sid=$surveyid");
 	exit;
 }
@@ -1567,20 +1572,20 @@ function lsrccsv_export($surveyid)
 function group_export($action, $surveyid, $gid)
 {
 	$fn = "limesurvey_group_$gid.lsg";
-	$xml = getXMLWriter();    
+	$xml = getXMLWriter();
 	$CI =& get_instance();
 	$dbprefix = $CI->db->dbprefix;
-	
-	
+
+
 	if($action=='exportstructureLsrcCsvGroup')
 	{
 	    include_once($homedir.'/remotecontrol/lsrc.config.php');
 	    //Select group_name as Filename and save
 	    $groupTitleSql = "SELECT group_name
-	                     FROM {$dbprefix}groups 
+	                     FROM {$dbprefix}groups
 	                     WHERE sid=$surveyid AND gid=$gid ";
 	    $groupTitle = $connect->GetOne($groupTitleSql);
-	    $xml->openURI('remotecontrol/'.$queDir.substr($groupTitle,0,20).".lsq");     
+	    $xml->openURI('remotecontrol/'.$queDir.substr($groupTitle,0,20).".lsq");
 	}
 	else
 	{
@@ -1590,23 +1595,23 @@ function group_export($action, $surveyid, $gid)
 	    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 	    header("Pragma: cache");                          // HTTP/1.0
-	
+
 	    $xml->openURI('php://output');
 	}
-	
+
 	$xml->setIndent(true);
 	$xml->startDocument('1.0', 'UTF-8');
 	$xml->startElement('document');
-	$xml->writeElement('LimeSurveyDocType','Group');    
+	$xml->writeElement('LimeSurveyDocType','Group');
 	$xml->writeElement('DBVersion',$CI->config->item("dbversionnumber"));
 	$xml->startElement('languages');
 	$lquery = "SELECT language
-	           FROM {$dbprefix}groups 
+	           FROM {$dbprefix}groups
 	           WHERE gid=$gid group by language";
-	$lresult=db_execute_assoc($lquery);           
-	foreach($lresult->result_array() as $row)   
+	$lresult=db_execute_assoc($lquery);
+	foreach($lresult->result_array() as $row)
 	{
-	    $xml->writeElement('language',$row['language']);    
+	    $xml->writeElement('language',$row['language']);
 	}
 	$xml->endElement();
 	group_getXMLStructure($xml,$gid);
@@ -1619,37 +1624,37 @@ function group_getXMLStructure($xml,$gid)
 {
 	$CI =& get_instance();
 	$dbprefix = $CI->db->dbprefix;
-    // Groups 
+    // Groups
     $gquery = "SELECT *
-               FROM {$dbprefix}groups 
+               FROM {$dbprefix}groups
                WHERE gid=$gid";
-    BuildXMLFromQuery($xml,$gquery);                
+    BuildXMLFromQuery($xml,$gquery);
 
     // Questions table
     $qquery = "SELECT *
-               FROM {$dbprefix}questions 
+               FROM {$dbprefix}questions
                WHERE gid=$gid and parent_qid=0 order by question_order, language, scale_id";
     BuildXMLFromQuery($xml,$qquery);
 
     // Questions table - Subquestions
     $qquery = "SELECT *
-               FROM {$dbprefix}questions 
+               FROM {$dbprefix}questions
                WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
-    BuildXMLFromQuery($xml,$qquery,'subquestions');    
-    
-    //Answers 
+    BuildXMLFromQuery($xml,$qquery,'subquestions');
+
+    //Answers
     $aquery = "SELECT DISTINCT {$dbprefix}answers.*
-               FROM {$dbprefix}answers, {$dbprefix}questions 
-               WHERE ({$dbprefix}answers.qid={$dbprefix}questions.qid) 
+               FROM {$dbprefix}answers, {$dbprefix}questions
+               WHERE ({$dbprefix}answers.qid={$dbprefix}questions.qid)
                AND ({$dbprefix}questions.gid=$gid)";
     BuildXMLFromQuery($xml,$aquery);
 
     //Conditions - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
     $cquery = "SELECT DISTINCT c.*
-               FROM {$dbprefix}conditions c, {$dbprefix}questions q, {$dbprefix}questions b 
-               WHERE (c.cqid=q.qid) 
-               AND (c.qid=b.qid) 
-               AND (q.gid={$gid}) 
+               FROM {$dbprefix}conditions c, {$dbprefix}questions q, {$dbprefix}questions b
+               WHERE (c.cqid=q.qid)
+               AND (c.qid=b.qid)
+               AND (q.gid={$gid})
                AND (b.gid={$gid})";
     BuildXMLFromQuery($xml,$cquery,'conditions');
 
@@ -1659,25 +1664,25 @@ function group_getXMLStructure($xml,$gid)
     $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
     if ($CI->db->platform() == 'odbc_mssql' || $CI->db->platform() == 'odbtp' || $CI->db->platform() == 'mssql_n' || $CI->db->platform() =='mssqlnative')
     {
-        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value 
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid} 
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
+          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
     else {
         $query="SELECT qa.qid, qa.attribute, qa.value
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}         
+          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
     BuildXMLFromQuery($xml,$query,'question_attributes');
-    
+
     // Default values
     $query = "SELECT dv.*
                 FROM {$dbprefix}defaultvalues dv
-                JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = dv.qid 
-                AND {$dbprefix}questions.language=dv.language 
-                AND {$dbprefix}questions.gid=$gid 
-                order by dv.language, dv.scale_id"; 
-    BuildXMLFromQuery($xml,$query,'defaultvalues');                 
+                JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = dv.qid
+                AND {$dbprefix}questions.language=dv.language
+                AND {$dbprefix}questions.gid=$gid
+                order by dv.language, dv.scale_id";
+    BuildXMLFromQuery($xml,$query,'defaultvalues');
 }
 
 
@@ -1691,7 +1696,7 @@ function group_getXMLStructure($xml,$gid)
 function question_export($action, $surveyid, $gid, $qid)
 {
 	$fn = "limesurvey_question_$qid.lsq";
-	$xml = getXMLWriter();    
+	$xml = getXMLWriter();
 	$CI =& get_instance();
 	$dbprefix = $CI->db->dbprefix;
 
@@ -1700,10 +1705,10 @@ function question_export($action, $surveyid, $gid, $qid)
 	    include_once($homedir.'/remotecontrol/lsrc.config.php');
 	    //Select title as Filename and save
 	    $questionTitleSql = "SELECT title
-	                     FROM {$dbprefix}questions 
+	                     FROM {$dbprefix}questions
 	                     WHERE qid=$qid AND sid=$surveyid AND gid=$gid ";
 	    $questionTitle = $connect->GetOne($questionTitleSql);
-	    $xml->openURI('remotecontrol/'.$queDir.substr($questionTitle,0,20).".lsq");     
+	    $xml->openURI('remotecontrol/'.$queDir.substr($questionTitle,0,20).".lsq");
 	}
 	else
 	{
@@ -1713,23 +1718,23 @@ function question_export($action, $surveyid, $gid, $qid)
 	    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 	    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 	    header("Pragma: cache");                          // HTTP/1.0
-	
+
 	    $xml->openURI('php://output');
 	}
-	
+
 	$xml->setIndent(true);
 	$xml->startDocument('1.0', 'UTF-8');
 	$xml->startElement('document');
-	$xml->writeElement('LimeSurveyDocType','Question');    
-	$xml->writeElement('DBVersion',$CI->config->item("dbversionnumber"));    
+	$xml->writeElement('LimeSurveyDocType','Question');
+	$xml->writeElement('DBVersion',$CI->config->item("dbversionnumber"));
 	$xml->startElement('languages');
 	$lquery = "SELECT language
-	           FROM {$dbprefix}questions 
+	           FROM {$dbprefix}questions
 	           WHERE qid=$qid or parent_qid=$qid group by language";
-	$lresult=db_execute_assoc($lquery);           
+	$lresult=db_execute_assoc($lquery);
 	foreach($lresult->result_array() as $row)
 	{
-	    $xml->writeElement('language',$row['language']);    
+	    $xml->writeElement('language',$row['language']);
 	}
 	$xml->endElement();
 	question_getXMLStructure($xml,$gid,$qid);
@@ -1745,47 +1750,47 @@ function question_getXMLStructure($xml,$gid,$qid)
 
     // Questions table
     $qquery = "SELECT *
-               FROM {$dbprefix}questions 
+               FROM {$dbprefix}questions
                WHERE qid=$qid and parent_qid=0 order by language, scale_id, question_order";
     BuildXMLFromQuery($xml,$qquery);
 
     // Questions table - Subquestions
     $qquery = "SELECT *
-               FROM {$dbprefix}questions 
+               FROM {$dbprefix}questions
                WHERE parent_qid=$qid order by language, scale_id, question_order";
     BuildXMLFromQuery($xml,$qquery,'subquestions');
-    
-    
+
+
     // Answers table
     $aquery = "SELECT *
-               FROM {$dbprefix}answers 
+               FROM {$dbprefix}answers
                WHERE qid = $qid order by language, scale_id, sortorder";
     BuildXMLFromQuery($xml,$aquery);
 
-    
-    
+
+
     // Question attributes
     $surveyid=db_execute_assoc("select sid from {$dbprefix}groups where gid={$gid}");
     $surveyid=reset($surveyid->row_array());
     $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
     if ($CI->db->platform() == 'odbc_mssql' || $CI->db->platform() == 'odbtp' || $CI->db->platform() == 'mssql_n' || $CI->db->platform() =='mssqlnative')
     {
-        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value 
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid} 
+        $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
+          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
     else {
         $query="SELECT qa.qid, qa.attribute, qa.value
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}         
+          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
     BuildXMLFromQuery($xml,$query);
 
     // Default values
     $query = "SELECT *
-              FROM {$dbprefix}defaultvalues 
+              FROM {$dbprefix}defaultvalues
               WHERE qid=$qid  order by language, scale_id";
-    BuildXMLFromQuery($xml,$query);              
+    BuildXMLFromQuery($xml,$query);
 
 }
 
@@ -1798,9 +1803,9 @@ function tokens_export($surveyid)
     header("Pragma: cache");
 
     $CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;    
+	$dbprefix = $CI->db->dbprefix;
 	$_POST = $CI->input->post();
-    
+
     $bquery = "SELECT * FROM ".$CI->db->dbprefix("tokens_$surveyid").' where 1=1';
     if (trim($_POST['filteremail'])!='')
     {
@@ -1909,25 +1914,25 @@ function tokens_export($surveyid)
 
 function cpdb_export($data,$filename)
 {
-    
+
     header("Content-Disposition: attachment; filename=".$filename.".csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: cache");
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
     $CI =& get_instance();
-    
+
     foreach($data as $key=>$value)
-    {   
+    {
         foreach($value as $values)
         {
             $tokenoutput .= trim($values).',';
             $tokenoutput .= ',';
             $tokenoutput = substr($tokenoutput,0,-1); // remove last comma
-        
+
         }
         $tokenoutput .= "\n";
-        
+
     }
     echo $tokenoutput;
     exit;

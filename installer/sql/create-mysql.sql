@@ -339,7 +339,7 @@ CREATE TABLE `prefix_survey_permissions` (
 -- Table structure for table survey_url_parameters
 --
 CREATE TABLE `prefix_survey_url_parameters` (
-	`id` int(10) NOT NULL AUTO_INCREMENT,
+	`id` int(9) NOT NULL AUTO_INCREMENT,
 	`sid` int(10) NOT NULL,
 	`parameter` varchar(50) NOT NULL,
 	`targetqid` int(10) NULL,
