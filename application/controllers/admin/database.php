@@ -1380,6 +1380,11 @@ class Database extends Admin_Controller {
             $this->survey_url_parameters_model->deleteRecords(array('sid'=>$surveyid));
             foreach($aURLParams as $aURLParam)
             {
+                $aURLParam['parameter']=trim($aURLParam['parameter']);
+                if ($aURLParam['parameter']=='' || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/',$aURLParam['parameter']) || $aURLParam['parameter']=='sid' || $aURLParam['parameter']=='newtest' || $aURLParam['parameter']=='token' || $aURLParam['parameter']=='lang')
+                {
+                    continue;  // this parameter name seems to be invalid - just ignore it
+                }
                 unset($aURLParam['act']);
                 unset($aURLParam['title']);
                 unset($aURLParam['id']);

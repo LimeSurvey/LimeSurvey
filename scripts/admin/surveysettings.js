@@ -6,7 +6,7 @@ $(document).ready(function(){
     $("#copysurveyform").submit(copysurvey);
     $("#urlparams").jqGrid({ url:jsonUrl,
         datatype: "json",
-        colNames:['Actions','','','Parameter','','','Target question'],
+        colNames:[sAction,'','',sParameter,'','',sTargetQuestion],
         colModel:[ {name:'act',index:'act', width:50,sortable:false},
                    {name:'id',index:'id', hidden:true},
                    {name:'sid',index:'sid', hidden:true},
@@ -24,14 +24,14 @@ $(document).ready(function(){
         viewrecords: true,
         sortorder: "asc",
         editurl: jsonUrl, // this is dummy existing url
-        emptyrecords : "No parameters defined.",
-        caption: "URL parameters",
+        emptyrecords : sNoParametersDefined,
+        caption: sURLParameters,
         gridComplete: function(){   var ids = jQuery("#urlparams").jqGrid('getDataIDs');
                                     for(var i=0;i < ids.length;i++)
                                     {
                                         var cl = ids[i];
                                         be = "<image style='cursor:pointer;' src='"+imageUrl+"/token_edit.png' value='E' onclick=\"editParameter('"+cl+"');\" />";
-                                        de = "<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm('Are you sure you want to delete this URL parameter?')) jQuery('#urlparams').delRowData('"+cl+"');\" />";
+                                        de = "<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+cl+"');\" />";
                                         jQuery("#urlparams").jqGrid('setRowData',ids[i],{act:be+de});
                                     }
         }
@@ -41,7 +41,7 @@ $(document).ready(function(){
                                     search:false,
                                     add:false}, {})
     .jqGrid('navButtonAdd',"#pagerurlparams",{buttonicon:'ui-icon-plusthick',
-                                              caption: 'Add parameter',
+                                              caption: sAddParam,
                                               id: 'btnAddParam',
                                               onClickButton: newParameter});
     $("#dlgEditParameter").dialog({ autoOpen: false,
@@ -66,7 +66,7 @@ function saveParameter()
     sParamname=$.trim($('#paramname').val());
     if (sParamname=='' || !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(sParamname) || sParamname=='sid' || sParamname=='newtest' || sParamname=='token' || sParamname=='lang')
     {
-        alert ('You have to enter a valid parameter name.');
+        alert (sEnterValidParam);
         return;
     }
     $("#dlgEditParameter").dialog("close");
@@ -78,7 +78,7 @@ function saveParameter()
     {
        sGUID=guidGenerator();
        jQuery("#urlparams").addRowData(sGUID, { act: "<image style='cursor:pointer;' src='"+imageUrl+"/token_edit.png' value='E' onclick=\"editParameter('"+sGUID+"');\" />"
-                                                    +"<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm('Are you sure you want to delete this URL parameter?')) jQuery('#urlparams').delRowData('"+sGUID+"');\" />",
+                                                    +"<image style='cursor:pointer;' src='"+imageUrl+"/token_delete.png' value='D' onclick=\"if (confirm(sSureDelete)) jQuery('#urlparams').delRowData('"+sGUID+"');\" />",
                                                 id:sGUID,
                                                 sid:$('#id').val(),
                                                 parameter:sParamname,
@@ -98,23 +98,21 @@ function saveParameter()
 }
 function newParameter(event)
 {
-    dialogTitle='Add URL parameter';
     $("#targetquestion").val('');
     $('#paramname').val('');
     $("#dlgEditParameter").data('action','add');
-    $("#dlgEditParameter").dialog("option", "title", dialogTitle);
+    $("#dlgEditParameter").dialog("option", "title", sAddParam);
     $("#dlgEditParameter").dialog("open");
 }
 
 function editParameter(rowid)
 {
-    dialogTitle='Edit URL parameter';
     aRowData=jQuery("#urlparams").getRowData(rowid);
     $("#targetquestion").val(aRowData.targetqid+'-'+aRowData.targetsqid);
     $('#paramname').val(aRowData.parameter);
     $("#dlgEditParameter").data('action','edit');
     $("#dlgEditParameter").data('rowid',rowid);
-    $("#dlgEditParameter").dialog("option", "title", dialogTitle);
+    $("#dlgEditParameter").dialog("option", "title", sEditParam);
     $("#dlgEditParameter").dialog("open");
 }
 

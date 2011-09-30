@@ -828,7 +828,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
 
     $xml = @simplexml_load_file($sFullFilepath);
     if ($xml==false || $xml->LimeSurveyDocType!='Group') show_error('This is not a valid LimeSurvey group structure XML file.');
-    $dbversion = (int) $xml->DBVersion;
+    $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
     $results['defaultvalues']=0;
     $results['answers']=0;
@@ -1027,6 +1027,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
     {
         //$tablename=$dbprefix.'question_attributes';
         $CI->load->model('question_attributes_model');
+        $aAllAttributes=questionAttributes(true);
+
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();
@@ -1038,9 +1040,22 @@ function XMLImportGroup($sFullFilepath, $newsid)
             if (!isset($aQIDReplacements[(int)$insertdata['qid']])) continue; // Skip questions with invalid group id
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
-            // now translate any links
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+
+            if ($iDBVersion<148) // Convert to multilingual question attributes
+            {
+                if (isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n'])
+                {
+                    foreach ($importlanguages as $sLanguage)
+                    {
+                        $insertdata['language']=$sLanguage;
+                        $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+                    }
+                }
+            }
+            else
+            {
+                $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+            }
             $results['question_attributes']++;
         }
     }
@@ -1761,7 +1776,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
 
     $xml = simplexml_load_file($sFullFilepath);
     if ($xml->LimeSurveyDocType!='Question') safe_die('This is not a valid LimeSurvey question structure XML file.');
-    $dbversion = (int) $xml->DBVersion;
+    $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
     $results['defaultvalues']=0;
     $results['answers']=0;
@@ -1908,6 +1923,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
     {
         //$tablename=$dbprefix.'question_attributes';
         $CI->load->model('question_attributes_model');
+        $aAllAttributes=questionAttributes(true);
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();
@@ -1918,9 +1934,22 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             unset($insertdata['qaid']);
             $insertdata['qid']=$aQIDReplacements[(integer)$insertdata['qid']]; // remap the parent_qid
 
-            // now translate any links
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />\n");
+
+            if ($iDBVersion<148) // Convert to multilingual question attributes
+            {
+                if (isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n'])
+                {
+                    foreach ($importlanguages as $sLanguage)
+                    {
+                        $insertdata['language']=$sLanguage;
+                        $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert question_attributes<br />");
+                    }
+                }
+            }
+            else
+            {
+                $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert question_attributes<br />\n");
+            }
             $results['question_attributes']++;
         }
     }
@@ -2157,7 +2186,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
         $clang = $CI->limesurvey_lang;
         $xml = simplexml_load_file($sFullFilepath);
         if ($xml->LimeSurveyDocType!='Label set') show_error('This is not a valid LimeSurvey label set structure XML file.');
-        $dbversion = (int) $xml->DBVersion;
+        $iDBVersion = (int) $xml->DBVersion;
         $csarray=buildLabelSetCheckSumArray();
         $aLSIDReplacements=array();
         $results['labelsets']=0;
@@ -3404,7 +3433,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         return $results;
     }
 
-    $dbversion = (int) $xml->DBVersion;
+    $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
     $aQuotaReplacements=array();
     $results['defaultvalues']=0;
@@ -3463,7 +3492,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $newsid=GetNewSurveyID($oldsid);
         }
 
-        if ($dbversion<=143)
+        if ($iDBVersion<=143)
         {
             $insertdata['anonymized']=$insertdata['private'];
             unset($insertdata['private']);
@@ -3691,6 +3720,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     {
         //$tablename=$dbprefix.'question_attributes';
         $CI->load->model('question_attributes_model');
+        $aAllAttributes=questionAttributes(true);
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();
@@ -3699,12 +3729,23 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata[(string)$key]=(string)$value;
             }
             unset($insertdata['qaid']);
-            $insertdata['qid']=$aQIDReplacements[(integer)$insertdata['qid']]; // remap the parent_qid
-
-            // now translate any links
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
-            $results['question_attributes']++;
+            $insertdata['qid']=$aQIDReplacements[(integer)$insertdata['qid']]; // remap the qid
+            if ($iDBVersion<148) // Convert to multilingual question attributes
+            {
+                if (isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n'])
+                {
+                    foreach ($aLanguagesSupported as $sLanguage)
+                    {
+                        $insertdata['language']=$sLanguage;
+                        $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+                    }
+                }
+            }
+            else
+            {
+                $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+                $results['question_attributes']++;
+            }
         }
     }
 
