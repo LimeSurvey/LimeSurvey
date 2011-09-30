@@ -1041,15 +1041,12 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the parent_qid
 
 
-            if ($iDBVersion<148) // Convert to multilingual question attributes
+            if ($iDBVersion<148 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n'])
             {
-                if (isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n'])
+                foreach ($importlanguages as $sLanguage)
                 {
-                    foreach ($importlanguages as $sLanguage)
-                    {
-                        $insertdata['language']=$sLanguage;
-                        $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
-                    }
+                    $insertdata['language']=$sLanguage;
+                    $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
                 }
             }
             else
@@ -1935,15 +1932,12 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $insertdata['qid']=$aQIDReplacements[(integer)$insertdata['qid']]; // remap the parent_qid
 
 
-            if ($iDBVersion<148) // Convert to multilingual question attributes
+            if ($iDBVersion<148 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n'])
             {
-                if (isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n'])
+                foreach ($importlanguages as $sLanguage)
                 {
-                    foreach ($importlanguages as $sLanguage)
-                    {
-                        $insertdata['language']=$sLanguage;
-                        $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert question_attributes<br />");
-                    }
+                    $insertdata['language']=$sLanguage;
+                    $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert question_attributes<br />");
                 }
             }
             else
@@ -3730,22 +3724,19 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             unset($insertdata['qaid']);
             $insertdata['qid']=$aQIDReplacements[(integer)$insertdata['qid']]; // remap the qid
-            if ($iDBVersion<148) // Convert to multilingual question attributes
+            if ($iDBVersion<148 && isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n'])
             {
-                if (isset($aAllAttributes[$insertdata['attribute']]['i18n']) && $aAllAttributes[$insertdata['attribute']]['i18n'])
+                foreach ($aLanguagesSupported as $sLanguage)
                 {
-                    foreach ($aLanguagesSupported as $sLanguage)
-                    {
-                        $insertdata['language']=$sLanguage;
-                        $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
-                    }
+                    $insertdata['language']=$sLanguage;
+                    $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
                 }
             }
             else
             {
                 $result=$CI->question_attributes_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
-                $results['question_attributes']++;
             }
+            $results['question_attributes']++;
         }
     }
 
