@@ -190,6 +190,7 @@ div.menubar {
 
 html>body .menubar-right .arrow-wrapper { /* For real browsers */
 	display: inline-block;
+    padding:0 5px;
 }
 
 .menubar-right .arrow-wrapper a {
@@ -500,7 +501,7 @@ th.admincell {
     padding:1px;
     padding-left:42px;
 }
- 
+
 .btnaddanswer,
 .btndelanswer,
 .header_statistics img {
@@ -1451,4 +1452,8 @@ div.translate {
 #gbox_urlparams
 {
     margin:0 auto;
+}
+
+#loginform input[type='text'], #loginform input[type='password'], #loginform select{
+    width:230px;
 }

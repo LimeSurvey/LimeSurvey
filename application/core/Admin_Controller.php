@@ -295,12 +295,12 @@ class Admin_Controller extends LSCI_Controller {
 	    {
 	        //$fields = $sresult->FetchRow();
 			$fields = $query->row_array();
+            $this->session->set_userdata('USER_RIGHT_SUPERADMIN', $fields['superadmin']);
 	        $this->session->set_userdata('USER_RIGHT_CREATE_SURVEY', $fields['create_survey']);
-                $this->session->set_userdata('USER_RIGHT_PARTICIPANT_PANEL', $fields['participant_panel']);
+            $this->session->set_userdata('USER_RIGHT_PARTICIPANT_PANEL', $fields['participant_panel']);
 	        $this->session->set_userdata('USER_RIGHT_CONFIGURATOR', $fields['configurator']);
-                 $this->session->set_userdata('USER_RIGHT_CREATE_USER', $fields['create_user']);
+            $this->session->set_userdata('USER_RIGHT_CREATE_USER', $fields['create_user']);
 	        $this->session->set_userdata('USER_RIGHT_DELETE_USER', $fields['delete_user']);
-	        $this->session->set_userdata('USER_RIGHT_SUPERADMIN', $fields['superadmin']);
 	        $this->session->set_userdata('USER_RIGHT_MANAGE_TEMPLATE', $fields['manage_template']);
 	        $this->session->set_userdata('USER_RIGHT_MANAGE_LABEL', $fields['manage_label']);
 	    }

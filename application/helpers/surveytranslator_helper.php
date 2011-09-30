@@ -69,7 +69,7 @@ function getDateFormatData($format=0)
 function getRadixPointData($format=-1)
 {
     $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;     
+    $clang = $CI->limesurvey_lang;
     $aRadixFormats = array (
             0=>array('seperator'=> '.', 'desc'=> $clang->gT('Dot (.)')),
             1=>array('seperator'=> ',', 'desc'=> $clang->gT('Comma (,)'))
@@ -304,7 +304,7 @@ function getLanguageDetails($codetosearch)
 }
 
 function getLanguageData($orderbynative=false,$installer=false) {
-    
+
     if ($installer)
     {
         $CI = &get_instance();
@@ -317,7 +317,7 @@ function getLanguageData($orderbynative=false,$installer=false) {
     {
 	$clang = &get_instance()->limesurvey_lang;
     }
-	
+
     static $supportedLanguages;
     static $result = array();
 
@@ -350,8 +350,8 @@ function getLanguageData($orderbynative=false,$installer=false) {
     $supportedLanguages['be']['nativedescription'] = '&#1041;&#1077;&#1083;&#1072;&#1088;&#1091;&#1089;&#1082;&#1110;';
     $supportedLanguages['be']['rtl'] = false;
     $supportedLanguages['be']['dateformat'] = 1;
-    $supportedLanguages['be']['radixpoint'] = 1;    
-    
+    $supportedLanguages['be']['radixpoint'] = 1;
+
     // Bosnian
     $supportedLanguages['bs']['description'] = $clang->gT('Bosnian');
     $supportedLanguages['bs']['nativedescription'] = 'Bosanski';
@@ -396,7 +396,7 @@ function getLanguageData($orderbynative=false,$installer=false) {
 
     // Chinese (Traditional - Taiwan)
     $supportedLanguages['zh-Hant-TW']['description'] = $clang->gT('Chinese (Traditional - Taiwan)');
-    $supportedLanguages['zh-Hant-TW']['nativedescription'] = 'Chinese (Traditional - Taiwan)';
+    $supportedLanguages['zh-Hant-TW']['nativedescription'] = '&#32321;&#39636;&#20013;&#25991;&#65288;&#21488;&#28771;&#65289;';
     $supportedLanguages['zh-Hant-TW']['rtl'] = false;
     $supportedLanguages['zh-Hant-TW']['dateformat'] = 6;
     $supportedLanguages['zh-Hant-TW']['radixpoint'] = 0;
@@ -530,7 +530,7 @@ function getLanguageData($orderbynative=false,$installer=false) {
     // Irish
     $supportedLanguages['ie']['description'] = $clang->gT('Irish');
     $supportedLanguages['ie']['nativedescription'] = 'Gaeilge';
-    $supportedLanguages['ie']['rtl'] = false;    
+    $supportedLanguages['ie']['rtl'] = false;
     $supportedLanguages['ie']['dateformat'] = 2;
     $supportedLanguages['ie']['radixpoint'] = 0;
 
@@ -729,8 +729,8 @@ function getLanguageData($orderbynative=false,$installer=false) {
     $supportedLanguages['ur']['nativedescription'] = '&#1575;&#1585;&#1583;&#1608;';
     $supportedLanguages['ur']['rtl'] = true;
     $supportedLanguages['ur']['dateformat'] = 2;
-    $supportedLanguages['ur']['radixpoint'] = 0;    
-    
+    $supportedLanguages['ur']['radixpoint'] = 0;
+
     // Vietnamese
     $supportedLanguages['vi']['description'] = $clang->gT('Vietnamese');
     $supportedLanguages['vi']['nativedescription'] = 'Ti&#7871;ng Vi&#7879;t';
@@ -754,7 +754,7 @@ function getLanguageData($orderbynative=false,$installer=false) {
 }
 
 function user_sort($a, $b) {
-    
+
     // smarts is all-important, so sort it first
     if($a['description'] >$b['description']) {
         return 1;

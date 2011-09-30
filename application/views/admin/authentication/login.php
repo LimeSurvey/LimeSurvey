@@ -5,7 +5,7 @@
                                         <li><label for='password'><?php echo $clang->gT("Password");?></label>
                                         <input name='password' id='password' type='password' size='40' maxlength='40' /></li>
                                         <li><label for='loginlang'><?php echo $clang->gT("Language");?></label>
-                                        <select id='loginlang' name='loginlang' style='width:216px;'>
+                                        <select id='loginlang' name='loginlang'>
             <option value="default" selected="selected"><?php echo $clang->gT('Default');?></option>
 <?php
 			$x=0;

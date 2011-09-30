@@ -546,7 +546,7 @@ class user extends Survey_Common_Controller {
 
 	            // Forbids Allowing more privileges than I have
 	            if(isset($_POST['create_survey']) && $this->session->userdata('USER_RIGHT_CREATE_SURVEY'))$rights['create_survey']=1;		else $rights['create_survey']=0;
-                    if(isset($_POST['participant_panel']) && $this->session->userdata('USER_RIGHT_PARTICIPANT_PANEL'))$rights['participant_panel']=1;	else $rights['participant_panel']=0;
+                if(isset($_POST['participant_panel']) && $this->session->userdata('USER_RIGHT_PARTICIPANT_PANEL'))$rights['participant_panel']=1;	else $rights['participant_panel']=0;
 	            if(isset($_POST['configurator']) && $this->session->userdata('USER_RIGHT_CONFIGURATOR'))$rights['configurator']=1;			else $rights['configurator']=0;
 	            if(isset($_POST['create_user']) && $this->session->userdata('USER_RIGHT_CREATE_USER'))$rights['create_user']=1;			else $rights['create_user']=0;
 	            if(isset($_POST['delete_user']) && $this->session->userdata('USER_RIGHT_DELETE_USER'))$rights['delete_user']=1;			else $rights['delete_user']=0;
@@ -566,7 +566,7 @@ class user extends Survey_Common_Controller {
 	            if(isset($_POST['create_survey']))$rights['create_survey']=1;		else $rights['create_survey']=0;
 	            if(isset($_POST['configurator']))$rights['configurator']=1;			else $rights['configurator']=0;
 	            if(isset($_POST['create_user']))$rights['create_user']=1;			else $rights['create_user']=0;
-                    if(isset($_POST['participant_panel']))$rights['participant_panel']=1;	else $rights['participant_panel']=0;
+                if(isset($_POST['participant_panel']))$rights['participant_panel']=1;	else $rights['participant_panel']=0;
 	            if(isset($_POST['delete_user']))$rights['delete_user']=1;			else $rights['delete_user']=0;
 
 	            // Only Initial Superadmin can give this right

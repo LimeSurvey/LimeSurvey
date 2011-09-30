@@ -54,64 +54,64 @@
         	<li><a href='#'>
             <img src='<?php echo $imageurl;?>/edit.png' name='EditSurveyProperties' alt='<?php echo $clang->gT("Survey properties");?>' /></a><ul>
             	<?php if($surveylocale) { ?>
-		            <li><a href='<?php echo site_url("admin/survey/editlocalsettings/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/edit_30.png' name='EditTextElements' /> <?php echo $clang->gT("Edit text elements");?></a></li>
+		            <li><a href='<?php echo site_url("admin/survey/editlocalsettings/$surveyid");?>'>
+		            <img src='<?php echo $imageurl;?>/edit_30.png' name='EditTextElements' alt=''/> <?php echo $clang->gT("Edit text elements");?></a></li>
 		   		<?php } ?>
             	<?php if($surveysettings) { ?>
 		            <li><a href='<?php echo site_url("admin/survey/editsurveysettings/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/token_manage_30.png' name='EditGeneralSettings' /> <?php echo $clang->gT("General settings");?></a></li>
+		            <img src='<?php echo $imageurl;?>/token_manage_30.png' name='EditGeneralSettings' alt=''/> <?php echo $clang->gT("General settings");?></a></li>
 		   		<?php } ?>
             	<?php if($surveysecurity) { ?>
 		            <li><a href='<?php echo site_url("admin/surveypermission/view/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/survey_security_30.png' name='SurveySecurity' /> <?php echo $clang->gT("Survey permissions");?></a></li>
+		            <img src='<?php echo $imageurl;?>/survey_security_30.png' name='SurveySecurity' alt=''/> <?php echo $clang->gT("Survey permissions");?></a></li>
 		   		<?php } ?>
             	<?php if ($surveycontent) {
 					if($activated == "Y") { ?>
 		                <li><a href="#" onclick="alert('<?php echo $clang->gT("You can't reorder question groups if the survey is active.", "js");?>');" >
-		                <img src='<?php echo $imageurl;?>/reorder_disabled_30.png' name='translate'/> <?php echo $clang->gT("Reorder question groups");?></a></li>
+		                <img src='<?php echo $imageurl;?>/reorder_disabled_30.png' name='translate' alt=''/> <?php echo $clang->gT("Reorder question groups");?></a></li>
 			        <?php } elseif ($groupsum) { ?>
 		                <li><a href='<?php echo site_url("admin/questiongroup/order/$surveyid");?>'>
-		                <img src='<?php echo $imageurl;?>/reorder_30.png' /> <?php echo $clang->gT("Reorder question groups");?></a></li>
+		                <img src='<?php echo $imageurl;?>/reorder_30.png' alt=''/> <?php echo $clang->gT("Reorder question groups");?></a></li>
 			        <?php } else { ?>
 			            <li><a href="#" onclick="alert('<?php echo $clang->gT("You can't reorder question groups if there is only one group.", "js");?>');" >
-			            <img src='<?php echo $imageurl;?>/reorder_disabled_30.png' name='translate'/> <?php echo $clang->gT("Reorder question groups");?></a></li>
+			            <img src='<?php echo $imageurl;?>/reorder_disabled_30.png' name='translate' alt=''/> <?php echo $clang->gT("Reorder question groups");?></a></li>
 			        <?php }
 			    } ?>
             	<?php if($quotas) { ?>
 		            <li><a href='<?php echo site_url("admin/quotas/$surveyid/");?>' >
-		            <img src='<?php echo $imageurl;?>/quota_30.png' /> <?php echo $clang->gT("Quotas");?></a></li>
+		            <img src='<?php echo $imageurl;?>/quota_30.png' alt=''/> <?php echo $clang->gT("Quotas");?></a></li>
 		   		<?php } ?>
 		   		<?php if($assessments) { ?>
 		            <li><a href='<?php echo site_url("admin/assessments/index/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/assessments_30.png' /> <?php echo $clang->gT("Assessments");?></a></li>
+		            <img src='<?php echo $imageurl;?>/assessments_30.png' alt=''/> <?php echo $clang->gT("Assessments");?></a></li>
 		   		<?php } ?>
             	<?php if($surveylocale) { ?>
 		            <li><a href='<?php echo site_url("admin/emailtemplates/edit/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/emailtemplates_30.png' name='EditEmailTemplates' /> <?php echo $clang->gT("Email templates");?></a></li>
+		            <img src='<?php echo $imageurl;?>/emailtemplates_30.png' name='EditEmailTemplates' alt=''/> <?php echo $clang->gT("Email templates");?></a></li>
 		   		<?php } ?>
             	</ul></li>
             	<li><a href="#">
                 <img src='<?php echo $imageurl;?>/tools.png' name='SorveyTools' alt='<?php echo $clang->gT("Tools");?>' /></a><ul>
                 <?php if ($surveydelete) { ?>
                 	<li><a href="#" onclick="<?php echo get2post(site_url("admin/survey/delete")."?action=deletesurvey&amp;sid={$surveyid}");?>">
-                	<img src='<?php echo $imageurl;?>/delete_30.png' name='DeleteSurvey' /> <?php echo $clang->gT("Delete survey");?></a></li>
+                	<img src='<?php echo $imageurl;?>/delete_30.png' name='DeleteSurvey' alt=''/> <?php echo $clang->gT("Delete survey");?></a></li>
 		   		<?php } ?>
 		   		<?php if ($surveytranslate) {
 					if($hasadditionallanguages) { ?>
                 		<li><a href="<?php echo site_url("admin/translate/$surveyid");?>">
-                		<img src='<?php echo $imageurl;?>/translate_30.png' /> <?php echo $clang->gT("Quick-translation");?></a></li>
+                		<img src='<?php echo $imageurl;?>/translate_30.png' alt=''/> <?php echo $clang->gT("Quick-translation");?></a></li>
                 	<?php } else { ?>
                 		<li><a href="#" onclick="alert('<?php echo $clang->gT("Currently there are no additional languages configured for this survey.", "js");?>');" >
-                		<img src='<?php echo $imageurl;?>/translate_disabled_30.png' /> <?php echo $clang->gT("Quick-translation");?></a></li>
+                		<img src='<?php echo $imageurl;?>/translate_disabled_30.png' alt=''/> <?php echo $clang->gT("Quick-translation");?></a></li>
 		   			<?php } ?>
 		   		<?php } ?>
 		   		<?php if ($surveycontent) {
 					if($conditionscount) { ?>
                 		<li><a href="#" onclick="<?php echo get2post(base_url()."?action=resetsurveylogic&amp;sid=$surveyid");?>">
-                		<img src='<?php echo $imageurl;?>/resetsurveylogic_30.png' name='ResetSurveyLogic' /> <?php echo $clang->gT("Reset conditions");?></a></li>
+                		<img src='<?php echo $imageurl;?>/resetsurveylogic_30.png' name='ResetSurveyLogic' alt=''/> <?php echo $clang->gT("Reset conditions");?></a></li>
                 	<?php } else { ?>
                 		<li><a href="#" onclick="alert('<?php echo $clang->gT("Currently there are no conditions configured for this survey.", "js");?>');" >
-                		<img src='<?php echo $imageurl;?>/resetsurveylogic_disabled_30.png' name='ResetSurveyLogic' /> <?php echo $clang->gT("Reset Survey Logic");?></a></li>
+                		<img src='<?php echo $imageurl;?>/resetsurveylogic_disabled_30.png' name='ResetSurveyLogic' alt=''/> <?php echo $clang->gT("Reset Survey Logic");?></a></li>
 		   			<?php } ?>
 		   		<?php } ?>
 		   		</ul></li>
@@ -119,14 +119,14 @@
             	<img src='<?php echo $imageurl;?>/display_export.png' name='DisplayExport' alt='<?php echo $clang->gT("Display / Export");?>' /></a><ul>
             	<?php if($surveyexport) { ?>
 		            <li><a href='<?php echo site_url("admin/export/survey/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/export_30.png' /> <?php echo $clang->gT("Export survey");?></a></li>
+		            <img src='<?php echo $imageurl;?>/export_30.png' alt=''/> <?php echo $clang->gT("Export survey");?></a></li>
 		   		<?php } ?>
 		   		<?php if($onelanguage) { ?>
 		            <li><a href='<?php echo site_url("admin/printablesurvey/index/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' /> <?php echo $clang->gT("Printable version");?></a></li>
+		            <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' alt=''/> <?php echo $clang->gT("Printable version");?></a></li>
 		        <?php } else { ?>
 		            <li><a href='<?php echo site_url("admin/printablesurvey/index/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' /> <?php echo $clang->gT("Printable version");?></a><ul>
+		            <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' alt=''/> <?php echo $clang->gT("Printable version");?></a><ul>
 		            <?php foreach ($languagelist as $tmp_lang) { ?>
 		                <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/printablesurvey/index/$surveyid/$tmp_lang");?>'>
 		                <img src='<?php echo $imageurl;?>/print_30.png' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
@@ -136,10 +136,10 @@
 		   		<?php if($surveyexport) {
 		   			if($onelanguage) { ?>
 		            <li><a href='<?php echo site_url("admin/export/showquexmlsurvey/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' /> <?php echo $clang->gT("QueXML export");?></a></li>
+		            <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' alt=''/> <?php echo $clang->gT("QueXML export");?></a></li>
 		        <?php } else { ?>
 		            <li><a href='<?php echo site_url("admin/export/showquexmlsurvey/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' /> <?php echo $clang->gT("QueXML export");?></a><ul>
+		            <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' alt=''/> <?php echo $clang->gT("QueXML export");?></a><ul>
 		            <?php foreach ($languagelist as $tmp_lang) { ?>
 		                <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/export/showquexmlsurvey/$surveyid/$tmp_lang");?>'>
 		                <img src='<?php echo $imageurl;?>/scanner_30.png' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
@@ -152,28 +152,28 @@
 		   		<?php if($respstatsread) {
 		   			if($activated) { ?>
 		            <li><a href='<?php echo site_url("admin/browse/$surveyid/");?>' >
-		            <img src='<?php echo $imageurl;?>/browse_30.png' name='BrowseSurveyResults' /> <?php echo $clang->gT("Responses & statistics");?></a></li>
+		            <img src='<?php echo $imageurl;?>/browse_30.png' name='BrowseSurveyResults' alt=''/> <?php echo $clang->gT("Responses & statistics");?></a></li>
 		        <?php } else { ?>
                		<li><a href="#" onclick="alert('<?php echo $clang->gT("This survey is not active - no responses are available.","js");?>');" >
-                	<img src='<?php echo $imageurl;?>/browse_disabled_30.png' name='BrowseSurveyResults' /> <?php echo $clang->gT("Responses & statistics");?></a></li>
+                	<img src='<?php echo $imageurl;?>/browse_disabled_30.png' name='BrowseSurveyResults' alt=''/> <?php echo $clang->gT("Responses & statistics");?></a></li>
 		   		<?php }
 				} ?>
 		   		<?php if($responsescreate) {
 		   			if($activated) { ?>
 		            <li><a href='<?php echo site_url("admin/dataentry/view/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/dataentry_30.png' /> <?php echo $clang->gT("Data entry screen");?></a></li>
+		            <img src='<?php echo $imageurl;?>/dataentry_30.png' alt=''/> <?php echo $clang->gT("Data entry screen");?></a></li>
 		        <?php } else { ?>
                		<li><a href="#" onclick="alert('<?php echo $clang->gT("This survey is not active, data entry is not allowed","js");?>');" >
-                	<img src='<?php echo $imageurl;?>/dataentry_disabled_30.png' /> <?php echo $clang->gT("Data entry screen");?></a></li>
+                	<img src='<?php echo $imageurl;?>/dataentry_disabled_30.png' alt=''/> <?php echo $clang->gT("Data entry screen");?></a></li>
 		   		<?php }
 				} ?>
 				<?php if($responsesread) {
 		   			if($activated) { ?>
 		            <li><a href='<?php echo site_url("admin/saved/view/$surveyid");?>' >
-		            <img src='<?php echo $imageurl;?>/saved_30.png' name='BrowseSaved' /> <?php echo $clang->gT("Partial (saved) responses");?></a></li>
+		            <img src='<?php echo $imageurl;?>/saved_30.png' name='PartialResponses' alt=''/> <?php echo $clang->gT("Partial (saved) responses");?></a></li>
 		        <?php } else { ?>
                		<li><a href="#" onclick="alert('<?php echo $clang->gT("This survey is not active - no responses are available","js");?>');" >
-                	<img src='<?php echo $imageurl;?>/saved_disabled_30.png' name='PartialResponses' /> <?php echo $clang->gT("Partial (saved) responses");?></a></li>
+                	<img src='<?php echo $imageurl;?>/saved_disabled_30.png' name='PartialResponses' alt=''/> <?php echo $clang->gT("Partial (saved) responses");?></a></li>
 		   		<?php }
 				} ?>
 				</ul></li>

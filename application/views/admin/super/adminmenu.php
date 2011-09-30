@@ -43,13 +43,8 @@
 		{ ?>
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/checkintegrity");?>', '_top')" title="<?php echo $clang->gTview("Check Data Integrity");?>">
 	    <img src='<?php echo $this->config->item('imageurl');?>/checkdb.png' name='CheckDataIntegrity' alt='<?php echo $clang->gT("Check Data Integrity");?>' /></a>
-		<?php } ?>
-
-	    <a href="#" onclick="window.open('<?php echo site_url("admin/survey/listsurveys");?>', '_top')" title="<?php echo $clang->gTview("List Surveys");?>" >
-	    <img src='<?php echo $this->config->item('imageurl');?>/surveylist.png' name='ListSurveys' alt='<?php echo $clang->gT("List Surveys");?>' />
-	    </a>
-
 		<?php
+        }
 		if($this->session->userdata('USER_RIGHT_CONFIGURATOR') == 1)
 		{
 		/*
@@ -89,16 +84,19 @@
 	    <img src='<?php echo $this->config->item('imageurl');?>/templates.png' name='EditTemplates' alt='<?php echo $clang->gT("Template Editor");?>' /></a>
 	    <?php } ?>
             <img src='<?php echo $this->config->item('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
-            <?php if($this->session->userdata('USER_RIGHT_PARTICIPANT_PANEL') == 1)
+        <?php if($this->session->userdata('USER_RIGHT_PARTICIPANT_PANEL') == 1)
 		{ 	 ?>
-            <a href="#" onclick="window.open('<?php echo site_url("admin/participants");?>', '_top')" title="<?php echo $clang->gTview("Pariticpant's panel");?>" >
-	    <img src='<?php echo $this->config->item('imageurl');?>/tokens.png' name='participantpanel' alt='<?php echo $clang->gT("Participant's Panel");?>' /></a>
-            <?php } ?>
+            <a href="#" onclick="window.open('<?php echo site_url("admin/participants");?>', '_top')" title="<?php echo $clang->gTview("Participant panel");?>" >
+	        <img src='<?php echo $this->config->item('imageurl');?>/tokens.png' name='participantpanel' alt='<?php echo $clang->gT("Participant panel");?>' /></a>
+        <?php } ?>
 	</div>
 	<div class='menubar-right'><span class="boxcaption"><?php echo $clang->gT("Surveys");?>:</span>
 	    <select onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 	    <?php echo getsurveylist(false, false, $surveyid); ?>
 	    </select>
+        <a href="#" onclick="window.open('<?php echo site_url("admin/survey/listsurveys");?>', '_top')" title="<?php echo $clang->gTview("Detailed list of surveys");?>" >
+        <img src='<?php echo $this->config->item('imageurl');?>/surveylist.png' name='ListSurveys' alt='<?php echo $clang->gT("Detailed list of surveys");?>' />
+        </a>
 
 	    <?php
 	    if($this->session->userdata('USER_RIGHT_CREATE_SURVEY') == 1)

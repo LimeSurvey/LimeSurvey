@@ -71,7 +71,7 @@ class GlobalSettings extends Admin_Controller {
 
 		self::_getAdminHeader();
 		self::_showadminmenu();
-		$this->load->view('admin/globalsettings', $data);
+		$this->load->view('admin/globalSettings_view', $data);
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
 	}
