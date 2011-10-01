@@ -38,7 +38,7 @@
  * NO TRAILING SLASH!
  *
  */
-	$application_folder = "application";
+	$application_folder = dirname(__FILE__)."/application";
 
 /*
  * --------------------------------------------------------------------
