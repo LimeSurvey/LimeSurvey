@@ -138,8 +138,6 @@
         }
     }
 
-    //				[<a href='saved.php?sid=$surveyid&amp;action=remind&amp;scid=".$row['scid']."'>".$clang->gT("Remind")."</a>]
-    //               c_schmitz: Since its without function at the moment i removed it from the above lines
 
     /**
      * saved::_savedmenubar()
@@ -154,16 +152,7 @@
         if (!isset($surveyoptions)) {$surveyoptions="";}
         $surveyoptions .= "<a href='".site_url('admin/survey/view/'.$surveyid)."' title='".$clang->gTview("Return to survey administration")."' >" .
     			"<img name='Administration' src='".$this->config->item('imageurl')."/home.png' alt='".$clang->gT("Return to survey administration")."' align='left'></a>\n";
-        /*	. "\t\t\t<img src='$imageurl/blank.gif' alt='' width='11' border='0' hspace='0' align='left'>\n"
-         . "\t\t\t<img src='$imageurl/seperator.gif' alt='' border='0' hspace='0' align='left'>\n"
-         . "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid' " .
-         "title='".$clang->gTview("Show summary information")."'>" .
-         "<img name='SurveySummary' src='$imageurl/summary.png' alt='".$clang->gT("Show summary information")."' align='left'></a>\n"
-         . "\t\t\t<a href='$scriptname?action=saved&amp;sid=$surveyid&amp;subaction=all' title='".$clang->gTview("Display Responses")."'>"
-         . "<img name='ViewAll' src='$imageurl/document.png' alt='".$clang->gT("Display Responses")."' align='left'></a>\n"
-         //. "\t\t\t<input type='image' name='ViewLast' src='$imageurl/viewlast.png' title='"
-         //. $clang->gT("Display Last 50 Responses")."'  align='left'  onclick=\"window.open('saved.php?sid=$surveyid&action=all&limit=50&order=desc', '_top')\">\n"
-         . "\t\t\t<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt=''>\n";*/
+
         return $surveyoptions;
     }
 

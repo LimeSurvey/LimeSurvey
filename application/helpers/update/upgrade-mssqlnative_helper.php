@@ -533,7 +533,7 @@ function db_upgrade($oldversion) {
                           [date_created] datetime,
                           PRIMARY KEY  ([participant_id],[token_id],[survey_id])
                           ); ");echo $modifyoutput; flush();ob_flush();
-        modify_database("", "ALTER TABLE [prefix_users] ADD [participant_panel] int NOT NULL default '1'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("", "ALTER TABLE [prefix_users] ADD [participant_panel] int NOT NULL default '0'"); echo $modifyoutput; flush();ob_flush();
 
         // Add language field to question_attributes table
         modify_database("","ALTER TABLE [prefix_question_attributes] ADD [language] varchar(20)"); echo $modifyoutput; flush();ob_flush();

@@ -21,28 +21,28 @@
     <div class='menubar-main'>
     <div class='menubar-left'>
 	    <a href="#" onclick="window.open('<?php echo site_url("admin");?>', '_top')" title="<?php echo $clang->gTview("Default Administration Page");?>">
-	    <img src='<?php echo $this->config->item('imageurl');?>/home.png' name='HomeButton' alt='<?php echo $clang->gT("Default Administration Page");?>' /></a>
+	    <img src='<?php echo $this->config->item('imageurl');?>/home.png' name='HomeButton' alt='<?php echo $clang->gT("Default Administration Page");?>' width='40' height='40'/></a>
 
 	    <img src='<?php echo $this->config->item('imageurl');?>/blank.gif' alt='' width='11' />
 	    <img src='<?php echo $this->config->item('imageurl');?>/seperator.gif' alt='' />
 
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/user/editusers");?>', '_top')" title="<?php echo $clang->gTview("Create/Edit Users");?>" >
-	    <img src='<?php echo $this->config->item('imageurl');?>/security.png' name='AdminSecurity' alt='<?php echo $clang->gT("Create/Edit Users");?>' /></a>
+	    <img src='<?php echo $this->config->item('imageurl');?>/security.png' name='AdminSecurity' alt='<?php echo $clang->gT("Create/Edit Users");?>' width='40' height='40'/></a>
 
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/usergroups/view");?>', '_top')" title="<?php echo $clang->gTview("Create/Edit Groups");?>" >
-	    <img src='<?php echo $this->config->item('imageurl');?>/usergroup.png' alt='<?php echo $clang->gT("Create/Edit Groups");?>' /></a>
+	    <img src='<?php echo $this->config->item('imageurl');?>/usergroup.png' alt='<?php echo $clang->gT("Create/Edit Groups");?>' width='40' height='40'/></a>
 
 		<?php
 		if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
 		{ ?>
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/globalsettings");?>', '_top')" title="<?php echo $clang->gTview("Global settings");?>" >
-	    <img src='<?php echo $this->config->item('imageurl');?>/global.png' name='GlobalSettings' alt='<?php echo $clang->gT("Global settings");?>' /></a>
+	    <img src='<?php echo $this->config->item('imageurl');?>/global.png' name='GlobalSettings' alt='<?php echo $clang->gT("Global settings");?>' width='40' height='40'/></a>
 	    <img src='<?php echo $this->config->item('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
 		<?php }
 		if($this->session->userdata('USER_RIGHT_CONFIGURATOR') == 1)
 		{ ?>
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/checkintegrity");?>', '_top')" title="<?php echo $clang->gTview("Check Data Integrity");?>">
-	    <img src='<?php echo $this->config->item('imageurl');?>/checkdb.png' name='CheckDataIntegrity' alt='<?php echo $clang->gT("Check Data Integrity");?>' /></a>
+	    <img src='<?php echo $this->config->item('imageurl');?>/checkdb.png' name='CheckDataIntegrity' alt='<?php echo $clang->gT("Check Data Integrity");?>' width='40' height='40'/></a>
 		<?php
         }
 		if($this->session->userdata('USER_RIGHT_CONFIGURATOR') == 1)
@@ -54,7 +54,7 @@
 		?>
 
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/dumpdb");?>', '_top')" title="<?php echo $clang->gTview("Backup Entire Database");?>" >
-	    <img src='<?php echo $this->config->item('imageurl');?>/backup.png' name='ExportDB' alt='<?php echo $clang->gT("Backup Entire Database");?>' />
+	    <img src='<?php echo $this->config->item('imageurl');?>/backup.png' name='ExportDB' alt='<?php echo $clang->gT("Backup Entire Database");?>' width='40' height='40'/>
 	    </a>
 	    <?php
 	    /*
@@ -75,19 +75,20 @@
 	    ?>
 
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/labels/view");?>', '_top')" title="<?php echo $clang->gTview("Edit label sets");?>" >
-	    <img src='<?php echo $this->config->item('imageurl');?>/labels.png' name='LabelsEditor' alt='<?php echo $clang->gT("Edit label sets");?>' /></a>
+	    <img src='<?php echo $this->config->item('imageurl');?>/labels.png' name='LabelsEditor' alt='<?php echo $clang->gT("Edit label sets");?>' width='40' height='40'/></a>
 	    <img src='<?php echo $this->config->item('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
 	    <?php }
 	    if($this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') == 1)
 		{ ?>
 	    <a href="#" onclick="window.open('<?php echo site_url("admin/templates/view");?>', '_top')" title="<?php echo $clang->gTview("Template Editor");?>" >
-	    <img src='<?php echo $this->config->item('imageurl');?>/templates.png' name='EditTemplates' alt='<?php echo $clang->gT("Template Editor");?>' /></a>
+	    <img src='<?php echo $this->config->item('imageurl');?>/templates.png' name='EditTemplates' alt='<?php echo $clang->gT("Template Editor");?>' width='40' height='40'/></a>
 	    <?php } ?>
             <img src='<?php echo $this->config->item('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
-        <?php if($this->session->userdata('USER_RIGHT_PARTICIPANT_PANEL') == 1)
+        <?php
+        if($this->session->userdata('USER_RIGHT_PARTICIPANT_PANEL') == 1)
 		{ 	 ?>
             <a href="#" onclick="window.open('<?php echo site_url("admin/participants");?>', '_top')" title="<?php echo $clang->gTview("Participant panel");?>" >
-	        <img src='<?php echo $this->config->item('imageurl');?>/tokens.png' name='participantpanel' alt='<?php echo $clang->gT("Participant panel");?>' /></a>
+	        <img src='<?php echo $this->config->item('imageurl');?>/tokens.png' name='participantpanel' alt='<?php echo $clang->gT("Participant panel");?>' width='40' height='40'/></a>
         <?php } ?>
 	</div>
 	<div class='menubar-right'><span class="boxcaption"><?php echo $clang->gT("Surveys");?>:</span>

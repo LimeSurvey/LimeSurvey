@@ -1,4 +1,5 @@
-<form name='loginform' id='loginform' method='post' action='<?php echo site_url("admin/authentication/login");?>' ><br /><p><strong><?php echo $summary;?></strong><br />	<br />
+<form name='loginform' id='loginform' method='post' action='<?php echo site_url("admin/authentication/login");?>' >
+<br /><p><strong><?php echo $summary;?></strong><br /><br /></p>
 <ul>
                                         <li><label for='user'><?php echo $clang->gT("Username");?></label>
                                         <input name='user' id='user' type='text' size='40' maxlength='40' value='' /></li>
@@ -28,11 +29,11 @@
         if ($this->config->item("display_user_password_in_email") === true)
         {
             ?>
-            <p><a href='<?php echo site_url("admin/authentication/forgotpassword");?>'><?php echo $clang->gT("Forgot Your Password?");?></a><br />&nbsp;
+            <a href='<?php echo site_url("admin/authentication/forgotpassword");?>'><?php echo $clang->gT("Forgot Your Password?");?></a><br />&nbsp;
             <?php
         }
 		?>
-        </form><br />
+        </p></form><br />
         <script type='text/javascript'>
           document.getElementById('user').focus();
        </script>

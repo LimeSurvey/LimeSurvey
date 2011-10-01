@@ -590,7 +590,7 @@ function db_upgrade($oldversion) {
     }
     if ($oldversion < 148)
     {
-        modify_database("","ALTER TABLE `prefix_users` ADD `participant_panel` tinyint(1) NOT NULL default '1'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","ALTER TABLE `prefix_users` ADD `participant_panel` tinyint(1) NOT NULL default '0'"); echo $modifyoutput; flush();ob_flush();
         modify_database("","CREATE TABLE `prefix_participants` (`participant_id` varchar(50) NOT NULL,
                                                                 `firstname` varchar(40) default NULL,
                                                                 `lastname` varchar(40) default NULL,
