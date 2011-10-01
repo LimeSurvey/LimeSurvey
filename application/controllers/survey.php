@@ -153,9 +153,41 @@ class survey extends LSCI_Controller {
 		    doHeader();
 
 			//Template variables
-			$vars = compact(array_keys(get_defined_vars()));
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
 
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$vars);
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t<span class='error'>".$clang->gT("Token mismatch")."</span><br /><br />\n"
@@ -164,7 +196,7 @@ class survey extends LSCI_Controller {
 		    ."\t</p>\n"
 		    ."\t</div>\n";
 
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$vars);
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata);
 		    doFooter();
 		    exit;
 		}
@@ -182,9 +214,41 @@ class survey extends LSCI_Controller {
 		    doHeader();
 
 			//Template variables
-			$vars = compact(array_keys(get_defined_vars()));
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
 
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$vars);
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t<span class='error'>".$clang->gT("Previous session is set to be finished.")."</span><br /><br />\n"
@@ -193,7 +257,7 @@ class survey extends LSCI_Controller {
 		    ."\t</p>\n"
 		    ."\t</div>\n";
 
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$vars);
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata);
 		    doFooter();
 		    exit;
 		}
@@ -337,9 +401,41 @@ class survey extends LSCI_Controller {
 		        sendcacheheaders();
 		        doHeader();
 
-				$vars = compact(array_keys(get_defined_vars()));
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
 
-				echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$vars);
+				echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata);
 		        echo "\t<div id='wrapper'>\n"
 		        ."\t<p id='tokenmessage'>\n"
 		        ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
@@ -348,7 +444,7 @@ class survey extends LSCI_Controller {
 		        ."\t</p>\n"
 		        ."\t</div>\n";
 
-				echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$vars);
+				echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata);
 		        doFooter();
 		        exit;
 		    }
@@ -373,9 +469,41 @@ class survey extends LSCI_Controller {
 		    sendcacheheaders();
 		    doHeader();
 
-			$vars = compact(array_keys(get_defined_vars()));
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
 
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$vars);
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
@@ -385,7 +513,7 @@ class survey extends LSCI_Controller {
 		    ."\t</p>\n"
 		    ."\t</div>\n";
 
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$vars);
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata);
 		    doFooter();
 		    exit;
 		};
@@ -490,24 +618,62 @@ class survey extends LSCI_Controller {
 		    $thissurvey['name']=$sitename;
 		    $thissurvey['templatedir']=$defaulttemplate;
 
-		    $data['thissurvey'] = $thissurvey;
-	        //$data['privacy'] = $privacy;
-	        $data['surveylist'] = $surveylist;
-	        $data['surveyid'] = $surveyid;
-	        $data['templatedir'] = sGetTemplatePath($defaulttemplate);
-	        $data['templateurl'] = sGetTemplateURL($defaulttemplate)."/";
-	        $data['templatename'] = $defaulttemplate;
-			$data['sitename'] = $sitename;
-			$data['languagechanger'] = $languagechanger;
+//		    $data['thissurvey'] = $thissurvey;
+//	        //$data['privacy'] = $privacy;
+//	        $data['surveylist'] = $surveylist;
+//	        $data['surveyid'] = $surveyid;
+//	        $data['templatedir'] = sGetTemplatePath($defaulttemplate);
+//	        $data['templateurl'] = sGetTemplateURL($defaulttemplate)."/";
+//	        $data['templatename'] = $defaulttemplate;
+//			$data['sitename'] = $sitename;
+//			$data['languagechanger'] = $languagechanger;
+            
+            $templatedir =  sGetTemplatePath($defaulttemplate);
+            $templateurl = sGetTemplateURL($defaulttemplate)."/";
+            $templatename = $defaulttemplate;
+
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
 
 		    //A nice exit
 		    sendcacheheaders();
 		    doHeader();
-			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"),array(),$data);
+			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"),array(),$redata);
 
-			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl"),array(),$data);
+			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl"),array(),$redata);
 
-			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"),array(),$data);
+			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"),array(),$redata);
 		    doFooter();
 		    exit;
 		}
@@ -568,9 +734,41 @@ class survey extends LSCI_Controller {
 		    sendcacheheaders();
 		    doHeader();
 
-			$vars = compact(array_keys(get_defined_vars()));
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
 
-			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
+			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
@@ -578,7 +776,7 @@ class survey extends LSCI_Controller {
 			."\t</p>\n"
 		    ."\t</div>\n";
 
-			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
+			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
 		    doFooter();
 		    exit;
 		}
@@ -589,9 +787,41 @@ class survey extends LSCI_Controller {
 		    sendcacheheaders();
 		    doHeader();
 
-			$vars = compact(array_keys(get_defined_vars()));
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
 
-		    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
+		    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
@@ -599,7 +829,7 @@ class survey extends LSCI_Controller {
 		    ."\t</p>\n"
 		    ."\t</div>\n";
 
-		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
+		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
 		    doFooter();
 		    exit;
 		}
@@ -612,9 +842,41 @@ class survey extends LSCI_Controller {
 		    sendcacheheaders();
 		    doHeader();
 
-			$vars = compact(array_keys(get_defined_vars()));
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
 
-			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
+			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t<span class='error'>".$clang->gT("Error")."</span><br /><br />\n"
@@ -623,7 +885,7 @@ class survey extends LSCI_Controller {
 		    ."\t</p>\n"
 		    ."\t</div>\n";
 
-			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
+			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
 		    doFooter();
 		    exit;
 		}
@@ -747,10 +1009,42 @@ class survey extends LSCI_Controller {
 		        doHeader();
 		        //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
-				$vars = compact(array_keys(get_defined_vars()));
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
 
-		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
-		        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$vars);
+		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+		        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata);
 		        echo "\t<div id='wrapper'>\n"
 		        ."\t<p id='tokenmessage'>\n"
 		        ."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
@@ -761,7 +1055,7 @@ class survey extends LSCI_Controller {
 		        ."\t</p>\n"
 		        ."\t</div>\n";
 
-		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
+		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
 			    killSession();
 		        doFooter();
 		        exit;
@@ -784,10 +1078,42 @@ class survey extends LSCI_Controller {
 		        doHeader();
 		        //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
-				$vars = compact(array_keys(get_defined_vars()));
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
 
-		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
-		        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$vars);
+		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+		        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata);
 		        echo "\t<div id='wrapper'>\n"
 		        ."\t<p id='tokenmessage'>\n"
 		        ."\t".$clang->gT("We are sorry but you are not allowed to enter this survey.")."<br /><br />\n"
@@ -798,7 +1124,7 @@ class survey extends LSCI_Controller {
 		        ."\t</p>\n"
 		        ."\t</div>\n";
 
-		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
+		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
 		        doFooter();
 			    killSession();
 		        exit;
@@ -868,8 +1194,42 @@ class survey extends LSCI_Controller {
 		        header("Location: {$_GET['redirect']}");
 		    }
 		    doHeader();
-			$vars = compact(array_keys(get_defined_vars()));
-		    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
+
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
+
+            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
 		    echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 		    ."\t<script type='text/javascript'>\n"
 		    ."\t<!--\n"
@@ -880,9 +1240,9 @@ class survey extends LSCI_Controller {
 		    ."\t</script>\n\n";
 
 		    //Present the clear all page using clearall.pstpl template
-		    echo templatereplace(file_get_contents("$thistpl/clearall.pstpl"),array(),$vars);
+		    echo templatereplace(file_get_contents("$thistpl/clearall.pstpl"),array(),$redata);
 
-		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
+		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
 		    doFooter();
 		    exit;
 		}

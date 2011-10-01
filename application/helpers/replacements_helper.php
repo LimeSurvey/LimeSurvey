@@ -16,16 +16,52 @@
 function templatereplace($line, $replacements=array(),$redata=array(), $anonymized=false, $questionNum=NULL)
 {
     $CI =& get_instance();
+/*
     global $clienttoken,$token,$sitename,$move,$showXquestions,$showqnumcode,$questioncode,$register_errormsg;
     global $s_lang,$errormsg,$saved_id, $totalBoilerplatequestions, $relativeurl, $languagechanger,$captchapath,$loadname;
+*/
 
-	//extract($redata);
+     /*
 	$allowedvars = array('surveylist', 'sitename', 'clienttoken', 'rooturl', 'thissurvey', 'imageurl', 'defaulttemplate',
 					'percentcomplete', 'move', 'groupname', 'groupdescription', 'question', 'showXquestions',
 					'showgroupinfo', 'showqnumcode', 'questioncode', 'answer', 'navigator', 'help', 'totalquestions',
 					'surveyformat', 'completed', 'register_errormsg', 'notanswered', 'privacy', 'surveyid', 'publicurl',
 					'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'clang', 'saved_id', 'usertemplaterootdir',
 					'totalBoilerplatequestions', 'relativeurl', 'languagechanger', 'printoutput', 'captchapath', 'loadname');
+    */
+    $allowedvars = array(
+        'answer',
+        'assessments',
+        'captchapath',
+        'clienttoken',
+        'completed',
+        'errormsg',
+        'groupdescription',
+        'groupname',
+        'help',
+        'imageurl',
+        'languagechanger',
+        'loadname',
+        'move',
+        'navigator',
+        'percentcomplete',
+        'privacy',
+        'question',
+        'register_errormsg',
+        'relativeurl',
+        's_lang',
+        'saved_id',
+        'showgroupinfo',
+        'showqnumcode',
+        'showXquestions',
+        'sitename',
+        'surveylist',
+        'templatedir',
+        'thissurvey',
+        'token',
+        'totalBoilerplatequestions',
+        'totalquestions ',
+    );
 
 	foreach($allowedvars as $var)
 	{
@@ -34,8 +70,15 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
         }
 	}
 
-	$showXquestions = $CI->config->item("showXquestions");
-	$showgroupinfo = $CI->config->item("showgroupinfo");
+    // Local over-rides in case not set above 
+    if (!isset($relativeurl)) { $relativeurl = $CI->config->item("relativeurl"); }
+    if (!isset($showgroupinfo)) { $showgroupinfo = ''; }
+    if (!isset($showqnumcode)) { $showqnumcode = ''; }
+    if (!isset($showXquestions)) { $showXquestions = ''; }
+    if (!isset($s_lang)) { $s_lang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'); }
+    if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
+    if (!isset($captchapath)) { $captchapath = ''; }
+    $_surveyid = (isset($surveyid) ? $surveyid : 0);
 
     if (file_exists($line))
     {
@@ -46,7 +89,7 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
     $clang = $CI->limesurvey_lang;
     $CI->load->helper('surveytranslator');
     $questiondetails = array('sid' => 0, 'gid' => 0, 'qid' => 0, 'aid' =>0);
-	if(isset($question) && $question['sgq']) $questiondetails=getsidgidqidaidtype($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type)
+	if(isset($question) && isset($question['sgq'])) $questiondetails=getsidgidqidaidtype($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type)
 
     if (isset($thissurvey['sid'])) {
         $surveyid = $thissurvey['sid'];
@@ -446,7 +489,7 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
     $_saveform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_saveform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php?sid=$surveyid' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+        $_saveform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php?sid=$_surveyid' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
     }
     $_saveform .= "<tr><td align='right'></td><td></td></tr>\n"
         . "<tr><td></td><td><input type='submit'  id='savebutton' name='savesubmit' value='" . $clang->gT("Save Now") . "' /></td></tr>\n"
@@ -454,7 +497,7 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
 
     // Load Form
     $_loadform = "<table><tr><td align='right'>" . $clang->gT("Saved name") . ":</td><td><input type='text' name='loadname' value='";
-    if ($loadname)
+    if (isset($loadname))
     {
         $_loadform .= html_escape(auto_unescape($loadname));
     }
@@ -467,7 +510,7 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
     $_loadform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_loadform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php?sid=$surveyid' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
+        $_loadform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='{$captchapath}verification.php?sid=$_surveyid' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
     }
     $_loadform .="<tr><td align='right'></td><td></td></tr>\n"
         . "<tr><td></td><td><input type='submit' id='loadbutton' value='" . $clang->gT("Load Now") . "' /></td></tr></table>\n";
@@ -554,8 +597,8 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
 	$coreReplacements['GROUPDESCRIPTION'] = $_groupdescription;
 	$coreReplacements['GROUPNAME'] = $_groupname;
 	$coreReplacements['LANG'] = $clang->getlangcode();
-	$coreReplacements['LANGUAGECHANGER'] = $languagechanger;    // global
-	$coreReplacements['LOADERROR'] = $errormsg; // global
+	$coreReplacements['LANGUAGECHANGER'] = isset($languagechanger) ? $languagechanger : '';    // global
+	$coreReplacements['LOADERROR'] = isset($errormsg) ? $errormsg : ''; // global
 	$coreReplacements['LOADFORM'] = $_loadform;
 	$coreReplacements['LOADHEADING'] = $clang->gT("Load A Previously Saved Survey");
 	$coreReplacements['LOADMESSAGE'] = $clang->gT("You can load a survey that you have previously saved from this screen.")."<br />".$clang->gT("Type in the 'name' you used to save the survey, and the password.")."<br />";
@@ -590,19 +633,19 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
 	$coreReplacements['SAVE'] = $_saveall;
 	$coreReplacements['SAVEALERT'] = $_savealert;
 	$coreReplacements['SAVEDID'] = isset($saved_id) ? $saved_id : '';   // global
-	$coreReplacements['SAVEERROR'] = $errormsg; // global - same as LOADERROR
+	$coreReplacements['SAVEERROR'] = isset($errormsg) ? $errormsg : ''; // global - same as LOADERROR
 	$coreReplacements['SAVEFORM'] = $_saveform;
 	$coreReplacements['SAVEHEADING'] = $clang->gT("Save Your Unfinished Survey");
 	$coreReplacements['SAVEMESSAGE'] = $clang->gT("Enter a name and password for this survey and click save below.")."<br />\n".$clang->gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n".$clang->gT("If you give an email address, an email containing the details will be sent to you.")."<br /><br />\n".$clang->gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
 	$coreReplacements['SGQ'] = $_question_sgq;
 	$coreReplacements['SID'] = (isset($surveyid) ? $surveyid : (isset($questiondetails['sid']) ? $questiondetails['sid'] : ''));
-	$coreReplacements['SITENAME'] = $sitename;  // global
+	$coreReplacements['SITENAME'] = isset($sitename) ? $sitename : '';  // global
 	$coreReplacements['SUBMITBUTTON'] = $_submitbutton;
 	$coreReplacements['SUBMITCOMPLETE'] = "<strong>".$clang->gT("Thank you!")."<br /><br />".$clang->gT("You have completed answering the questions in this survey.")."</strong><br /><br />".$clang->gT("Click on 'Submit' now to complete the process and save your answers.");
 	$coreReplacements['SUBMITREVIEW'] = $_strreview;
 	$coreReplacements['SURVEYCONTACT'] = $surveycontact;
 	$coreReplacements['SURVEYDESCRIPTION'] = (isset($thissurvey['description']) ? $thissurvey['description'] : '');
-	$coreReplacements['SURVEYFORMAT'] = $surveyformat;  // global
+	$coreReplacements['SURVEYFORMAT'] = isset($surveyformat) ? $surveyformat : '';  // global
 	$coreReplacements['SURVEYLANGAGE'] = $clang->langcode;
 	$coreReplacements['SURVEYLIST'] = (isset($surveylist))?$surveylist['list']:'';
 	$coreReplacements['SURVEYLISTHEADING'] =  (isset($surveylist))?$surveylist['listheading']:'';

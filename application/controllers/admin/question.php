@@ -1307,26 +1307,60 @@
 		    $question['man_class'] = '';
 		};
 
-		$vars = compact(array_keys(get_defined_vars()));
-		$content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$vars);
+$redata = array(
+	'answer' => &$answer,
+	'assessments' => &$assessments,
+	'captchapath' => &$captchapath,
+	'clienttoken' => &$clienttoken,
+	'completed' => &$completed,
+	'errormsg' => &$errormsg,
+	'groupdescription' => &$groupdescription,
+	'groupname' => &$groupname,
+	'help' => &$help,
+	'imageurl' => &$imageurl,
+	'languagechanger' => &$languagechanger,
+	'loadname' => &$loadname,
+	'move' => &$move,
+	'navigator' => &$navigator,
+	'percentcomplete' => &$percentcomplete,
+	'privacy' => &$privacy,
+	'question' => &$question,
+	'register_errormsg' => &$register_errormsg,
+	'relativeurl' => &$relativeurl,
+	's_lang' => &$s_lang,
+	'saved_id' => &$saved_id,
+	'showgroupinfo' => &$showgroupinfo,
+	'showqnumcode' => &$showqnumcode,
+	'showXquestions' => &$showXquestions,
+	'sitename' => &$sitename,
+	'surveylist' => &$surveylist,
+	'templatedir' => &$templatedir,
+	'thissurvey' => &$thissurvey,
+	'token' => &$token,
+	'totalBoilerplatequestions' => &$totalBoilerplatequestions,
+	'totalquestions' => &$totalquestions,
+);
+
+
+		$content = templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
 		$content .='<form method="post" action="index.php" id="limesurvey" name="limesurvey" autocomplete="off">';
-		$content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"),array(),$vars);
+		$content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"),array(),$redata);
 
 		$question_template = file_get_contents("$thistpl/question.pstpl");
 		if(substr_count($question_template , '{QUESTION_ESSENTIALS}') > 0 ) // the following has been added for backwards compatiblity.
 		{// LS 1.87 and newer templates
-		$content .= "\n".templatereplace($question_template,array(),$vars)."\n";
+		$content .= "\n".templatereplace($question_template,array(),$redata)."\n";
 		}
 		else
 		{// LS 1.86 and older templates
 		$content .= '<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
-		$content .= "\n".templatereplace($question_template,array(),$vars)."\n";
+		$content .= "\n".templatereplace($question_template,array(),$redata)."\n";
 		$content .= "\n\t</div>\n";
 		};
 
-		$content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),$vars).$dummy_js;
+		$content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),$redata).$dummy_js;
 		$content .= '<p>&nbsp;</form>';
-		$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$vars);
+		$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
 
         // if want to  include Javascript in question preview, uncomment these.  However, Group level preview is probably adequate
 //        LimeExpressionManager::FinishProcessingGroup();
