@@ -455,7 +455,8 @@ class tokens extends Survey_Common_Controller {
 		    }
 		
 		    $santitizedtoken='';
-		    
+
+            $tokenoutput = '';
 		    $tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Add dummy tokens")."</div>\n"
 		    ."\t<div class='messagebox ui-corner-all'>\n";
 		    $data = array('firstname' => $_POST['firstname'],

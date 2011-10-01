@@ -13,7 +13,7 @@
  * @param questionNum - needed to support dynamic JavaScript-based tailoring within questions
  * @return string  Text with replaced strings
  */
-function templatereplace($line, $replacements=array(),$redata=array(), $anonymized=false, $questionNum=NULL)
+function templatereplace($line, $replacements=array(),&$redata=array(), $anonymized=false, $questionNum=NULL)
 {
     $CI =& get_instance();
 /*
@@ -29,6 +29,7 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
 					'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'clang', 'saved_id', 'usertemplaterootdir',
 					'totalBoilerplatequestions', 'relativeurl', 'languagechanger', 'printoutput', 'captchapath', 'loadname');
     */
+    /*
     $allowedvars = array(
         'answer',
         'assessments',
@@ -69,6 +70,8 @@ function templatereplace($line, $replacements=array(),$redata=array(), $anonymiz
             $$var = $redata[$var];
         }
 	}
+     */
+    extract($redata);   // creates variables for each of the keys in the array
 
     // Local over-rides in case not set above 
     if (!isset($relativeurl)) { $relativeurl = $CI->config->item("relativeurl"); }
