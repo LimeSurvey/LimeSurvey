@@ -3,7 +3,7 @@ $clang = &get_instance()->limesurvey_lang;
 $this->load->view("installer/header_view",array('progressValue' => $progressValue));
 ?>
 
-<form action="<?php echo $this->config->site_url('installer/language'); ?>" method="post">
+<form action="<?php echo $this->config->site_url('installer/install/welcome'); ?>" method="post">
 
 <div class="container_6">
 
@@ -32,18 +32,10 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 </td>
 <td align="right">
 <select id='installerLang' name='installerLang' style='width:190px;'>
-<?php
-    $langauges = getlanguagedata(true,true);
-    foreach($langauges as $langkey => $languagekind)
-    {
-        $selected = $langkey === 'en';
-        $value = $langkey;
-        $label = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
-        echo '<option value="', htmlspecialchars($langkey), '"', $selected ? ' selected="selected"' : '', ">",
-            $label, '</option>', "\n";
-    }
-?>
+<?php $this->load->view('installer/language_options_view'); ?>
 </select>
+</td>
+</tr>
 </table>
 </fieldset>
 

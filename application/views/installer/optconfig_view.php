@@ -72,17 +72,7 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 <td align="right">
 
 <select id='surveylang' name='surveylang' style='width:156px;'>
-<?php
-    $langauges = getlanguagedata(true,true);
-    foreach($langauges as $langkey => $languagekind)
-    {
-        $selected = $langkey === 'en';
-        $value = $langkey;
-        $label = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
-        echo '<option value="', htmlspecialchars($langkey), '"', $selected ? ' selected="selected"' : '', ">",
-            $label, '</option>', "\n";
-    }
-?>
+<?php $this->load->view('installer/language_options_view'); ?>
 </select>
 </td>
 </tr>

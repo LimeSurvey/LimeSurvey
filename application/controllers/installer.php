@@ -232,7 +232,7 @@ class Installer extends CI_Controller {
     }
 
     /**
-     * display welcome and language selection
+     * welcome and language selection install step
      */
     private function stepWelcome()
     {
@@ -242,6 +242,12 @@ class Installer extends CI_Controller {
         $aData['descp']=$clang->gT('Welcome to the LimeSurvey installation wizard. This wizard will guide you through the installation, database setup and initial configuration of LimeSurvey.');
         $aData['classesForStep']=array('on','off','off','off','off','off');
         $aData['progressValue']=0; // TODO
+
+        if ($lang = $this->input->post('installerLang', false))
+        {
+            $this->session->set_userdata('installerLang', $lang);
+            redirect(site_url('installer/install/license'));
+        }
 
         $this->load->helper('surveytranslator');
 
@@ -574,7 +580,7 @@ class Installer extends CI_Controller {
     function install($step=0)
     {
         $clang = $this->limesurvey_lang;
-        $step=(int)$step;
+
         switch($step)
         {
             case 'welcome':
@@ -611,19 +617,6 @@ class Installer extends CI_Controller {
         }
     }
 
-
-    // this function does the processing of welcome view's language selection form
-    /**
-     * Installer::language()
-     * Changes the installer's language after welcome view
-     * @return
-     */
-    function language()
-    {
-        $lang = $this->input->post('installerLang');
-        $this->session->set_userdata('installerLang', $lang);
-        redirect(site_url('installer/install/license'));
-    }
 
     // this function does the processing of optional view form.
     /**
