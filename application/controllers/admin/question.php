@@ -720,7 +720,8 @@
                     }
                 }
 
-                $eqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language='{$baselang}'";
+                $eqquery = "SELECT ".$this->db->dbprefix."questions.*, group_name FROM ".$this->db->dbprefix."questions
+                            join ".$this->db->dbprefix."groups on ".$this->db->dbprefix."groups.gid=".$this->db->dbprefix."questions.gid WHERE ".$this->db->dbprefix."questions.sid=$surveyid AND ".$this->db->dbprefix."questions.gid=$gid AND qid=$qid AND ".$this->db->dbprefix."questions.language='{$baselang}'";
                 $eqresult = db_execute_assoc($eqquery);
             }
 

@@ -1386,27 +1386,6 @@ function getgrouplist3($gid,$surveyid)
 }
 
 /**
- * Gives back the name of a group for a certaing group id
- *
- * @param integer $gid Group ID
- */
-function getgroupname($gid)
-{
-    $CI =& get_instance();
-    $surveyid=returnglobal('sid');
-    $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    //$gidquery = "SELECT group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' and gid=$gid";
-    $CI->load->model('groups_model');
-
-    $gidresult = $CI->groups_model->getGroupName($surveyid,$gid,$s_lang) or safe_die("Group name could not be fetched (getgroupname).");      //Checked
-    $gv = $gidresult->row_array();
-
-    $groupname = htmlspecialchars($gv['group_name']);
-
-    return $groupname;
-}
-
-/**
  * put your comment there...
  *
  * @param mixed $gid

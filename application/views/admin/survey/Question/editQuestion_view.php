@@ -123,7 +123,7 @@ var imgurl = '<?php echo $this->config->item('imageurl'); ?>';
             { ?>
                 <li>
                 <label><?php $clang->eT("Question group:"); ?></label>
-                <?php echo getgroupname($eqrow['gid'])." - ".$clang->gT("Cannot be changed (survey is active)"); ?>
+                <?php echo $eqrow['group_name']." - ".$clang->gT("Cannot be changed (survey is active)"); ?>
                 <input type='hidden' name='gid' value='<?php echo $eqrow['gid']; ?>' />
                 </li>
             <?php } ?>
