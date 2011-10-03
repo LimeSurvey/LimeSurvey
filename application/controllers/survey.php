@@ -98,7 +98,7 @@ class survey extends LSCI_Controller {
 		// * on this specific limesurvey installation (Value SessionName in DB)
 		// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
 
-		session_write_close(); #05468: prevent deletion of session
+// this does not fix #05468		session_write_close(); #05468: prevent deletion of session
 
 		$sSessionname=getGlobalSetting('SessionName');
 		if ($sSessionname!='')
