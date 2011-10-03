@@ -31,14 +31,14 @@ class update extends Admin_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		
+
 		if (!$this->session->userdata("adminlang") || $this->session->userdata("adminlang")=='')
 		{
 			$this->session->set_userdata("adminlang",$this->config->item("defaultlang"));
 		}
 
         $this->load->library('Limesurvey_lang',array("langcode"=>$this->session->userdata("adminlang")));
-		
+
 	}
 
 	/**
@@ -48,7 +48,7 @@ class update extends Admin_Controller {
 	{
 		global $updaterversion;
 		self::_RunUpdaterUpdate();
-		
+
 	    $clang = $this->limesurvey_lang;
 		$buildnumber = $this->config->item("buildnumber");
 		$tempdir = $this->config->item("tempdir");
@@ -79,7 +79,7 @@ class update extends Admin_Controller {
 	    else
 	    {
 	        echo "<ul><li class='successtitle'>".$clang->gT('Update key: Valid')."</li>";
-	         
+
 	        if (!is_writable($tempdir))
 	        {
 	            echo  "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
@@ -92,7 +92,7 @@ class update extends Admin_Controller {
 	        }
 	        echo '</ul><h3>'.$clang->gT('Change log').'</h3>';
 	        $updatekey=getGlobalSetting('updatekey');
-	
+
 	        $http=new http;
 	        /* Connection timeout */
 	        $http->timeout=0;
@@ -100,11 +100,11 @@ class update extends Admin_Controller {
 	        $http->data_timeout=0;
 	        $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
 	        $http->GetRequestArguments("http://update.limesurvey.org/updates/changelog/$buildnumber/$updaterversion/$updatekey",$arguments);
-	
+
 	        $updateinfo=false;
 	        $httperror=$http->Open($arguments);
 	        $httperror=$http->SendRequest($arguments);
-	
+
 	        if($httperror=="") {
 	            $body=''; $full_body='';
 	            for(;;){
@@ -120,8 +120,8 @@ class update extends Admin_Controller {
 	            print( $httperror );
 	        }
 	    }
-	
-	
+
+
 	    if ($error)
 	    {
 	        echo '<br /><br />'.$clang->gT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
@@ -137,21 +137,21 @@ class update extends Admin_Controller {
 	    }
 	    echo '</div>';
 		echo self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"), true);
-			
-			
-			
-			
-		
-		
-		
-		
+
+
+
+
+
+
+
+
 	}
 
-	
+
 	function step2()
 	{
 			global $updaterversion;
-			
+
 		    $clang = $this->limesurvey_lang;
 			$this->load->config("version");
 			$buildnumber = $this->config->item("buildnumber");
@@ -161,13 +161,13 @@ class update extends Admin_Controller {
 			$_POST=$this->input->post();
 			$this->load->library('admin/http/http');
 			$rootdir = $this->config->item("rootdir");
-			
+
 	    // Request the list with changed files from the server
 	    $updatekey=getGlobalSetting('updatekey');
-		
+
 		echo self::_getAdminHeader(false, true);
 	    echo '<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'2').'</div><div class="updater-background"><br />';
-	
+
 	    $http=new http;
 	    /* Connection timeout */
 	    $http->timeout=0;
@@ -175,11 +175,11 @@ class update extends Admin_Controller {
 	    $http->data_timeout=0;
 	    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
 	    $http->GetRequestArguments("http://update.limesurvey.org/updates/update/$buildnumber/$updatebuild/$updatekey",$arguments);
-	
+
 	    $updateinfo=false;
 	    $error=$http->Open($arguments);
 	    $error=$http->SendRequest($arguments);
-	
+
 	    if($error=="") {
 	        $body=''; $full_body='';
 	        for(;;){
@@ -194,11 +194,11 @@ class update extends Admin_Controller {
 	    {
 	        print( $error );
 	    }
-	
+
 	    if (isset($updateinfo['error']))
 	    {
 	        echo $clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
-	
+
 	        if ($updateinfo['error']==1)
 	        {
 	            setGlobalSetting('updatekey','');
@@ -219,11 +219,11 @@ class update extends Admin_Controller {
 	            <p>".$clang->gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.')."<br /><br />
 	               ".$clang->gT('Please be patient and try again in about 10 minutes.')."</p></div>
 	            <p><button onclick=\"window.open('".site_url("admin/globalsettings")."', '_top')\">".sprintf($clang->gT('Back to global settings'),'4')."</button></p>";
-	         
+
 	    }
 	    else
 	    {
-	
+
 	        foreach ($updateinfo['files'] as $afile)
 	        {
 	            if ($afile['type']=='A' && !file_exists($rootdir.$afile['file']))
@@ -237,7 +237,7 @@ class update extends Admin_Controller {
 	                    {
 	                        $is_writable=is_writable($searchpath);
 	                        break;
-	
+
 	                    }
 	                }
 	                if (!$is_writable)
@@ -248,8 +248,8 @@ class update extends Admin_Controller {
 	            elseif (file_exists($rootdir.$afile['file']) && !is_writable($rootdir.$afile['file'])) {
 	                $readonlyfiles[]=$rootdir.$afile['file'];
 	            }
-	
-	
+
+
 	            if ($afile['type']=='A' && file_exists($rootdir.$afile['file']))
 	            {
 	                //A new file, check if this already exists
@@ -260,7 +260,7 @@ class update extends Admin_Controller {
 	                $modifiedfiles[]=$afile;
 	            }
 	        }
-	         
+
 	        echo '<h3>'.$clang->gT('Checking existing LimeSurvey files...').'</h3>';
 	        if (count($readonlyfiles)>0)
 	        {
@@ -287,7 +287,7 @@ class update extends Admin_Controller {
 	            }
 	            echo '</ul>';
 	        }
-	         
+
 	        if (count($modifiedfiles)>0)
 	        {
 	            echo $clang->gT('The following files will be modified or deleted but were already modified by someone else.').'<br />';
@@ -300,7 +300,7 @@ class update extends Admin_Controller {
 	            }
 	            echo '</ul>';
 	        }
-	
+
 	        if (count($readonlyfiles)>0)
 	        {
 	            echo '<br />'.$clang->gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
@@ -312,7 +312,7 @@ class update extends Admin_Controller {
 	            echo $clang->gT('Please check any problems above and then proceed to the next step.').'<br />';
 	            echo "<p><button onclick=\"window.open('".site_url("admin/update/step3/")."', '_top')\" ";
 	            echo ">".sprintf($clang->gT('Proceed to step %s'),'3')."</button></p>";
-	
+
 	        }
 	    }
 	    $_SESSION['updateinfo']=$updateinfo;
@@ -320,8 +320,8 @@ class update extends Admin_Controller {
 		echo "</div>";
 		echo self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"), true);
 	}
-		
-	
+
+
 	function step3()
 	{
 	    $clang = $this->limesurvey_lang;
@@ -336,18 +336,18 @@ class update extends Admin_Controller {
 		$publicdir = $this->config->item("publicdir");
 		$tempdir = $this->config->item("tempdir");
 		$databasetype = $this->db->dbdriver;
-			
+
 	    // Request the list with changed files from the server
 	    $updatekey=getGlobalSetting('updatekey');
-		
+
 		echo self::_getAdminHeader(false, true);
-		
+
 	    echo '<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'3').'</div><div class="updater-background">';
 	    echo '<h3>'.$clang->gT('Creating DB & file backup').'</h3>';
 	    if (!isset( $_SESSION['updateinfo']))
 	    {
 	        echo $clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
-	
+
 	        if ($updateinfo['error']==1)
 	        {
 	            setGlobalSetting('updatekey','');
@@ -360,13 +360,13 @@ class update extends Admin_Controller {
 	    {
 	        $updateinfo=$_SESSION['updateinfo'];
 	    }
-	
+
 	    // okay, updateinfo now contains all necessary updateinformation
 	    // Create DB and file backups now
-	
+
 	    $basefilename = date("YmdHis-").md5(uniqid(rand(), true));
 	    //Now create a backup of the files to be delete or modified
-	
+
 	    Foreach ($updateinfo['files'] as $file)
 	    {
 	        if (is_file($publicdir.$file['file'])===true) // Sort out directories
@@ -374,30 +374,30 @@ class update extends Admin_Controller {
 	            $filestozip[]=$publicdir.$file['file'];
 	        }
 	    }
-	
+
 	    //  require_once("classes/pclzip/pclzip.lib.php");
 	    //  require_once('classes/pclzip/pcltrace.lib.php');
 	    //  require_once('classes/pclzip/pclzip-trace.lib.php');
-	
+
 	    //PclTraceOn(1);
-	
+
 		$this->load->library("admin/pclzip/pclzip",array('p_zipname' => $tempdir.DIRECTORY_SEPARATOR.'files-'.$basefilename.'.zip'));
 	    $archive = $this->pclzip;
-	
+
 	    $v_list = $archive->add($filestozip, PCLZIP_OPT_REMOVE_PATH, $publicdir);
-	
+
 	    echo $clang->gT('Creating file backup... ').'<br />';
-	
+
 	    if ($v_list == 0) {
 	        die("Error : ".$archive->errorInfo(true));
 	    }
 	    else
 	    {
 	        echo "<span class='successtitle'>".$clang->gT('File backup created:').' '.htmlspecialchars($tempdir.DIRECTORY_SEPARATOR.'files-'.$basefilename.'.zip').'</span><br /><br />';
-	
+
 	    }
-	
-	
+
+
 	    if ($databasetype=='mysql' || $databasetype=='mysqli')
 	    {
 	        echo $clang->gT('Creating database backup... ').'<br />';
@@ -435,15 +435,15 @@ class update extends Admin_Controller {
 	    {
 	        echo "<span class='warningtitle'>".$clang->gT('No DB backup created:').'<br />'.$clang->gT('Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!').'</span><br /><br />';
 	    }
-	
+
 	    echo $clang->gT('Please check any problems above and then proceed to the final step.');
 	    echo "<p><button onclick=\"window.open('".site_url("admin/update/step4/")."', '_top')\" ";
 	    echo ">".sprintf($clang->gT('Proceed to step %s'),'4')."</button></p>";
 	    echo '</div>';
 		echo self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"), true);
 	}
-	
-	
+
+
 	function step4()
 	{
 	    $clang = $this->limesurvey_lang;
@@ -460,13 +460,13 @@ class update extends Admin_Controller {
 		$databasetype = $this->db->dbdriver;
 	    // Request the list with changed files from the server
 	    $updatekey=getGlobalSetting('updatekey');
-		
+
 		echo self::_getAdminHeader(false, true);
 	    echo '<div class="header ui-widget-header">'.sprintf($clang->gT('ComfortUpdate step %s'),'4').'</div><div class="updater-background"><br />';
 	    if (!isset( $_SESSION['updateinfo']))
 	    {
 	        echo $clang->gT('On requesting the update information from limesurvey.org there has been an error:').'<br />';
-	
+
 	        if ($updateinfo['error']==1)
 	        {
 	            setGlobalSetting('updatekey','');
@@ -481,14 +481,14 @@ class update extends Admin_Controller {
 	    }
 	    // this is the last step - Download the zip file, unpack it and replace files accordingly
 	    // Create DB and file backups now
-	
+
 	    //   require_once('classes/pclzip/pcltrace.lib.php');
 	    //   require_once('classes/pclzip/pclzip-trace.lib.php');
-	
+
 	    // PclTraceOn(2);
 	    $downloaderror=false;
 	    $http=new http;
-	
+
 	    // Allow redirects
 	    $http->follow_redirect=1;
 	    /* Connection timeout */
@@ -498,7 +498,7 @@ class update extends Admin_Controller {
 	    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
 	    $http->GetRequestArguments("http://update.limesurvey.org/updates/download/{$updateinfo['downloadid']}",$arguments);
 	    $http->RestoreCookies($_SESSION['updatesession']);
-	
+
 	    $error=$http->Open($arguments);
 	    $error=$http->SendRequest($arguments);
 	    $http->ReadReplyHeaders($headers);
@@ -520,7 +520,7 @@ class update extends Admin_Controller {
 	    {
 	        print( $error );
 	    }
-	
+
 	    // Now remove all files that are to be deleted according to update process
 	    foreach ($updateinfo['files'] as $afile)
 	    {
@@ -536,7 +536,7 @@ class update extends Admin_Controller {
 	            echo sprintf($clang->gT('File deleted: %s'),$afile['file']).'<br />';
 	        }
 	    }
-	
+
 	    //Now unzip the new files over the existing ones.
 	    if (file_exists($tempdir.'/update.zip')){
 			$this->load->library("admin/pclzip/pclzip",array('p_zipname' => $tempdir.'/update.zip'));
@@ -556,7 +556,7 @@ class update extends Admin_Controller {
 	        $downloaderror=true;
 	    }
 	    //  PclTraceDisplay();
-	
+
 	    // Now we have to update version.php
 	    if (!$downloaderror)
 	    {
@@ -575,8 +575,8 @@ class update extends Admin_Controller {
 	        echo sprintf($clang->gT('Buildnumber was successfully updated to %s.'),$_SESSION['updateinfo']['toversion']).'<br />';
 	        echo $clang->gT('Please check any problems above - update was done.').'<br />';
 	    }
-	
-	
+
+
 	    echo "<p><button onclick=\"window.open('".site_url("admin/globalsettings")."', '_top')\" >".$clang->gT('Back to main menu')."</button></p>";
 	    echo '</div>';
 	    setGlobalSetting('updatelastcheck','1980-01-01 00:00');
@@ -585,7 +585,7 @@ class update extends Admin_Controller {
 		setGlobalSetting('updateversion','');
 		echo self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"), true);
 	}
-		
+
 	function _RunUpdaterUpdate()
 	{
 	    //global $homedir, $debug, $updaterversion;
@@ -594,23 +594,23 @@ class update extends Admin_Controller {
 		$versionnumber = $this->config->item("versionnumber");
 		$tempdir = $this->config->item("tempdir");
 	    $this->load->library('admin/http/http');
-	
+
 	    $http=new http;
-	
+
 	    /* Connection timeout */
 	    $http->timeout=0;
 	    /* Data transfer timeout */
 	    $http->data_timeout=0;
 	    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
 	    $http->GetRequestArguments("http://update.limesurvey.org?updaterbuild=$updaterversion",$arguments);
-	
+
 	    $updateinfo=false;
 	    $error=$http->Open($arguments);
 	    $error=$http->SendRequest($arguments);
-	
+
 	    $http->ReadReplyHeaders($headers);
-	
-	
+
+
 	    if($error=="") {
 	        $body=''; $full_body='';
 	        for(;;){
@@ -635,7 +635,7 @@ class update extends Admin_Controller {
 	    {
 	        return true;
 	    }
-	    
+
 	    if (!is_writable($tempdir))
 	    {
 	        echo  "<li class='errortitle'>".sprintf($clang->gT("Tempdir %s is not writable"),$tempdir)."<li>";
@@ -646,19 +646,19 @@ class update extends Admin_Controller {
 	        echo  "<li class='errortitle'>".sprintf($clang->gT("Updater file is not writable (%s). Please set according file permissions."),DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'update.php')."</li>";
 	        $error=true;
 	    }
-	 
+
 	    //  Download the zip file, unpack it and replace the updater file accordingly
 	    // Create DB and file backups now
-	
+
 	    //   require_once('classes/pclzip/pcltrace.lib.php');
 	    //   require_once('classes/pclzip/pclzip-trace.lib.php');
 	    // PclTraceOn(2);
-	
+
 	    //require_once($homedir."/classes/http/http.php");
-	
+
 	    $downloaderror=false;
 	    $http=new http;
-	
+
 	    // Allow redirects
 	    $http->follow_redirect=1;
 	    /* Connection timeout */
@@ -667,7 +667,7 @@ class update extends Admin_Controller {
 	    $http->data_timeout=0;
 	    $http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
 	    $http->GetRequestArguments("http://update.limesurvey.org/updates/downloadupdater/$updaterversion",$arguments);
-	
+
 	    $httperror=$http->Open($arguments);
 	    $httperror=$http->SendRequest($arguments);
 	    $http->ReadReplyHeaders($headers);
@@ -688,7 +688,7 @@ class update extends Admin_Controller {
 	    {
 	        print( $httperror );
 	    }
-	
+
 	    //Now unzip the new updater over the existing ones.
 	    if (file_exists($tempdir.'/updater.zip')){
 	    	$this->load->library("admin/pclzip/pclzip",array('p_zipname' => $tempdir.'/updater.zip'));
@@ -706,8 +706,8 @@ class update extends Admin_Controller {
 	        echo $clang->gT('There was a problem downloading the updater file. Please try to restart the update process.').'<br />';
 	        $error=true;
 	    }
-	 
-	 
+
+
 	}
 
 	/**

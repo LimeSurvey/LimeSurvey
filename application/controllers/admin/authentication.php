@@ -195,15 +195,6 @@ class Authentication extends Admin_Controller {
      */
     function _showLoginForm($logoutsummary="")
     {
-
-        $refererargs=''; // If this is a direct access to admin.php, no args are given
-        // If we are called from a link with action and other args set, get them
-        if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'])
-        {
-            $refererargs = html_escape($_SERVER['QUERY_STRING']);
-        }
-
-        $data['refererargs'] = $refererargs;
         $data['clang'] = $this->limesurvey_lang;
 
         if ($logoutsummary=="")
@@ -325,16 +316,12 @@ class Authentication extends Admin_Controller {
 
             $loginsummary = "<br />".sprintf($clang->gT("Welcome %s!"),$this->session->userdata('full_name'))."<br />&nbsp;";
 
-            if ($this->input->post('refererargs') && strpos($this->input->post('refererargs'), "action=logout") === FALSE)
+            if ($this->session->userdata('redirect_after_login') && strpos($this->session->userdata('redirect_after_login'), "logout") === FALSE)
             {
-                //require_once("../classes/inputfilter/class.inputfilter_clean.php");
-                $myFilter = new InputFilter('','',1,1,1);
-                // Prevent XSS attacks
-                //$sRefererArg=$myFilter->process($_POST['refererargs']);
-                $sRefererArg = $this->input->post('refererargs',true);
                 $this->session->set_userdata('metaHeader',"<meta http-equiv=\"refresh\""
-                   . " content=\"1;URL={$scriptname}?".$sRefererArg."\" />");
+                   . " content=\"1;URL=".site_url($this->session->userdata('redirect_after_login'))."\" />");
                 $loginsummary = "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
+                $this->session->unset_userdata('redirect_after_login');
             }
             self::_GetSessionUserRights($this->session->userdata('loginID'));
             // self::_showMessageBox($clang->gT("Logged in"), $loginsummary);

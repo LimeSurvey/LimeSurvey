@@ -118,9 +118,32 @@
             <li><a href='#'>
                     <img src='<?php echo $imageurl;?>/display_export.png' name='DisplayExport' alt='<?php echo $clang->gT("Display / Export");?>' width="40" height="40"/></a><ul>
                     <?php if($surveyexport) { ?>
-                        <li><a href='<?php echo site_url("admin/export/survey/$surveyid");?>' >
-                            <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Export survey");?></a></li>
-                        <?php } ?>
+                        <li><a href='#' >
+                            <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Export...");?></a>
+                            <?php } ?>
+                        <ul>
+                            <?php if($surveyexport) { ?>
+                                <li><a href='<?php echo site_url("admin/export/survey/exportstructurexml/$surveyid");?>' >
+                                <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Survey structure (.lss)");?></a>
+                                <?php } ?>
+                            <?php if($respstatsread && $surveyexport) {
+                                    if ($activated){?>
+                                    <li><a href='<?php echo site_url("admin/export/survey/exportarchive/$surveyid");?>' >
+                                        <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Survey archive (.lsa)");?></a></li>
+                                    <?php }
+                                    else
+                                    {?>
+                                    <li><a href="#" onclick="alert('<?php echo $clang->gT("You can only archive active surveys.", "js");?>');" >
+                                        <img src='<?php echo $imageurl;?>/export_disabled_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Survey archive (.lsa)");?></a></li><?php
+                                    }
+                            }?>
+                            <?php if($surveyexport) { ?>
+                                <li><a href='<?php echo site_url("admin/export/survey/exportstructurequexml/$surveyid");?>' >
+                                <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("queXML format (*.xlm)");?></a>
+                                <?php } ?>
+
+                        </ul>
+                    </li>
                     <?php if($onelanguage) { ?>
                         <li><a href='<?php echo site_url("admin/printablesurvey/index/$surveyid");?>' >
                             <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' alt='' width="30" height="30"/> <?php echo $clang->gT("Printable version");?></a></li>

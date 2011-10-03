@@ -50,7 +50,6 @@ class survey extends LSCI_Controller {
 		$this->load->helper("frontend");
 		$this->load->helper("surveytranslator");
 
-		$publicdir = $this->config->item("publicurl");
 		$relativeurl = $this->config->item("relativeurl");
 		$defaultlang = $this->config->item("defaultlang");
 		$siteadminname = $this->config->item("siteadminname");
@@ -87,13 +86,7 @@ class survey extends LSCI_Controller {
 		//This next line ensures that the $surveyid value is never anything but a number.
 		$surveyid=sanitize_int($surveyid);
 
-		//DEFAULT SETTINGS FOR TEMPLATES
-		if (!$publicdir)
-		{
-		    $publicdir=".";
-		}
-
-		// Compute the Session name
+        // Compute the Session name
 		// Session name is based:
 		// * on this specific limesurvey installation (Value SessionName in DB)
 		// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
@@ -496,7 +489,7 @@ class survey extends LSCI_Controller {
 	        $data['templatename'] = $defaulttemplate;
 			$data['sitename'] = $sitename;
 			$data['languagechanger'] = $languagechanger;
-            
+
 		    //A nice exit
 		    sendcacheheaders();
 		    doHeader();

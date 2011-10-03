@@ -185,8 +185,8 @@
         else
         {
             $useHtmlEmail = false;
-            $fieldsarray["{SURVEYURL}"]=site_url(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken); //"$publicurl/index.php?lang=".$baselang."&sid=$surveyid&token=$newtoken";
-            $fieldsarray["{OPTOUTURL}"]= site_url('optout/'.$surveyid.'/'.$baselang.'/'.$newtoken); //"$publicurl/optout.phplang=".$baselang."&sid=$surveyid&token=$newtoken";
+            $fieldsarray["{SURVEYURL}"]=site_url(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
+            $fieldsarray["{OPTOUTURL}"]= site_url('optout/'.$surveyid.'/'.$baselang.'/'.$newtoken);
         }
 
         $message=ReplaceFields($message, $fieldsarray);

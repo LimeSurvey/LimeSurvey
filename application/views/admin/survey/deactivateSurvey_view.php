@@ -24,16 +24,16 @@
                         <li><?php $clang->eT("Also you should export your responses before deactivating.");?></li>
                     </ul>
                 </td>
-                </tr><tr>
+            </tr><tr>
                 <td>
                     <form method="post" action="<?php echo site_url("admin/survey/expire/".$surveyid);?>">
-                      <input type='submit' value='<?php $clang->eT("Expire survey"); ?>'/>
+                        <input type='submit' value='<?php $clang->eT("Expire survey"); ?>'/>
                     </form>
                 </td>
                 <td>
                     <form method="post" action="<?php echo site_url("admin/survey/deactivate/".$surveyid);?>">
-                      <input type='submit' value='<?php $clang->eT("Deactivate survey"); ?>' onclick="<?php echo get2post(site_url("admin/survey/deactivate/".$surveyid)."?action=deactivate&amp;ok=Y&amp;sid=$surveyid"); ?>" />
-                      <input type='hidden' value='Y' name='ok' />
+                        <input type='submit' value='<?php $clang->eT("Deactivate survey"); ?>' onclick="<?php echo get2post(site_url("admin/survey/deactivate/".$surveyid)."?action=deactivate&amp;ok=Y&amp;sid=$surveyid"); ?>" />
+                        <input type='hidden' value='Y' name='ok' />
                     </form>
                 </td>
             </tr>

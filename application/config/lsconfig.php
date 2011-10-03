@@ -60,7 +60,7 @@ $config['stringcomparizonoperators']   =   0;                // By default, Lime
 $config['printanswershonorsconditions'] = 1;	      // Set to 1 if you want the participant printanswers feature to show only the questions that were displayed survey branching-logic
 $config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
 $config['admintheme']         =  'default';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
-$config['userideditable']    =  'N';
+$config['userideditable']     =  'N';
 $config['defaulttemplate']    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
 
 $config['allowedtemplateuploads'] = 'gif,ico,jpg,png';  // File types allowed to be uploaded in the templates section.
@@ -479,13 +479,10 @@ $config['googleMapsAPIKey'] = '';
 $config['iFileUploadTotalSpaceMB']= 0;
 
 
-//DO NOT EVER CHANGE THE FOLLOWING 5 LINES ---------------
-//require_once(dirname(__FILE__).'/config.php');
-//if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='' && $_SERVER['HTTPS']!='off')
-//{
-//       $rooturl=str_replace('http://', 'https://', $rooturl);
-//}
-//-----------------------------------------------------
+// defines if the CKeditor toolbar should be opened by default
+$config['ckeditexpandtoolbar']     = true;
+
+
 
 // === Advanced Setup
 // The following parameters need information from config.php
@@ -502,29 +499,28 @@ $config['iFileUploadTotalSpaceMB']= 0;
 //Initialize URL Helper to get base_url();
 get_instance()->load->helper('url');
 
-$config['homeurl']                 = base_url()."admin";         // The website location (url) of the admin scripts
-$config['publicurl']               = base_url();               // The public website location (url) of the public survey script
-$config['tempurl']                 = base_url()."tmp";
-$config['imageurl']                = base_url()."images";        // Location of button bar files for admin script
-$config['uploadurl']               = base_url()."upload";
-$config['standardtemplaterooturl'] = base_url()."templates";     // Location of the standard templates
-$config['usertemplaterooturl']     = $config['uploadurl']."/templates";   // Location of the user templates
+$config['publicurl']               = base_url();                            // The public website location (url) of the public survey script
+$config['homeurl']                 = $config['publicurl']."admin";          // The website location (url) of the admin scripts
+$config['tempurl']                 = $config['publicurl']."tmp";
+$config['imageurl']                = $config['publicurl']."images";         // Location of button bar files for admin script
+$config['uploadurl']               = $config['publicurl']."upload";
+$config['standardtemplaterooturl'] = $config['publicurl']."templates";      // Location of the standard templates
+$config['adminscripts']            = $config['publicurl']."scripts/admin/";
+$config['generalscripts']          = $config['publicurl']."scripts/";
+$config['styleurl']                = $config['publicurl']."styles/";
+$config['sCKEditorURL']            = $config['adminscripts']."/ckeditor.36";
+$config['usertemplaterooturl']     = $config['uploadurl']."/templates";     // Location of the user templates
 
 
-$config['homedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."admin";       // The directory path of the admin scripts
 $config['publicdir']               = $config['rootdir'];                                   // The directory path of the public scripts
+$config['homedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."admin";       // The directory path of the admin scripts
 $config['tempdir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
 $config['imagedir']                = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardtemplaterootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard templates
 $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
 
-$config['sCKEditorURL']            = base_url()."/scripts/admin/ckeditor.36";
-$config['ckeditexpandtoolbar']     = true; // defines if the CKeditor toolbar should be opened by default
 
-$config['adminscripts']            = base_url()."scripts/admin/";
-$config['generalscripts']          = base_url()."scripts/";
-$config['styleurl']                = base_url()."styles/";
 // Computing relative url
 // $relativeurl  is the url relative to you DocumentRoot where is installed LimeSurvey.
 // Usually same as $rooturl without http://{$_SERVER['HTTP_HOST']}.

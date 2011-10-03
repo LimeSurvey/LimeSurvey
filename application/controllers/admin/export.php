@@ -34,23 +34,12 @@ class export extends Survey_Common_Controller {
 		$this->load->helper("database");
 	}
 
-	function survey($sSurveyID)
+	function survey($action,$sSurveyID)
 	{
         $iSurveyID= (int)$sSurveyID;
 		if(bHasSurveyPermission($iSurveyID,'surveycontent','export')) {
-			if($this->input->post("action"))
-			{
-				self::_surveyexport($this->input->post("action"), $iSurveyID);
-				return;
-			}
-			$css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-	   		$this->config->set_item("css_admin_includes", $css_admin_includes);
-			self::_getAdminHeader();
-	    	self::_showadminmenu($iSurveyID);
-	    	self::_surveybar($iSurveyID);
-	    	$this->load->view("admin/export/survey_view");
-	        self::_loadEndScripts();
-	    	self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		    self::_surveyexport($action, $iSurveyID);
+		    return;
 		}
 	}
 
@@ -87,11 +76,16 @@ class export extends Survey_Common_Controller {
 				echo quexml_export($surveyid, $quexmllang);
 				exit;
 			}
-			elseif($action == "exportstructureLsrcCsv")
-			{
-				lsrccsv_export($surveyid);
-			}
-		}
+        }
+        elseif($action == "exportstructureLsrcCsv")
+        {
+            lsrccsv_export($surveyid);
+        }
+        elseif($action == "exportarchive")
+        {
+           // lsrccsv_export($surveyid);
+           
+        }
 	}
 
 	function group($surveyid, $gid)
