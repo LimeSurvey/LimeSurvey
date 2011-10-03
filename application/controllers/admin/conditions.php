@@ -226,25 +226,25 @@ class conditions extends Survey_Common_Controller {
 		        // so we only need to db_quote _POST variables
 		        if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
 		        {
-		            $posted_condition_value = db_quote($_POST['ConditionConst']);
+		            $posted_condition_value = $this->db->escape($_POST['ConditionConst']);
 		        }
 		        elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
 		        {
-		            $posted_condition_value = db_quote($_POST['prevQuestionSGQA']);
+		            $posted_condition_value = $this->db->escape($_POST['prevQuestionSGQA']);
 		        }
 		        elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
 		        {
-		            $posted_condition_value = db_quote($_POST['tokenAttr']);
+		            $posted_condition_value = $this->db->escape($_POST['tokenAttr']);
 		        }
 		        elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
 		        {
-		            $posted_condition_value = db_quote($_POST['ConditionRegexp']);
+		            $posted_condition_value = $this->db->escape($_POST['ConditionRegexp']);
 		        }
 
 		        if (isset($posted_condition_value))
 		        {
 		            $query = "INSERT INTO {$dbprefix}conditions (qid, scenario, cqid, cfieldname, method, value) VALUES "
-		            . "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', '".$posted_condition_value."')";
+		            . "('{$qid}', '{$p_scenario}', '{$p_cqid}', '{$conditionCfieldname}', '{$p_method}', {$posted_condition_value})";
 		            $result = db_execute_assoc($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		        }
 		    }
@@ -288,24 +288,24 @@ class conditions extends Survey_Common_Controller {
 		        // so we only need to db_quote _POST variables
 		        if (isset($_POST['ConditionConst']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#CONST")
 		        {
-		            $posted_condition_value = db_quote($_POST['ConditionConst']);
+		            $posted_condition_value = $this->db->escape($_POST['ConditionConst']);
 		        }
 		        elseif (isset($_POST['prevQuestionSGQA']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#PREVQUESTIONS")
 		        {
-		            $posted_condition_value = db_quote($_POST['prevQuestionSGQA']);
+		            $posted_condition_value = $this->db->escape($_POST['prevQuestionSGQA']);
 		        }
 		        elseif (isset($_POST['tokenAttr']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#TOKENATTRS")
 		        {
-		            $posted_condition_value = db_quote($_POST['tokenAttr']);
+		            $posted_condition_value = $this->db->escape($_POST['tokenAttr']);
 		        }
 		        elseif (isset($_POST['ConditionRegexp']) && isset($_POST['editTargetTab']) && $_POST['editTargetTab']=="#REGEXP")
 		        {
-		            $posted_condition_value = db_quote($_POST['ConditionRegexp']);
+		            $posted_condition_value = $this->db->escape($_POST['ConditionRegexp']);
 		        }
 
 		        if (isset($posted_condition_value))
 		        {
-		            $query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}' , cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value='".$posted_condition_value."' "
+		            $query = "UPDATE {$dbprefix}conditions SET qid='{$qid}', scenario='{$p_scenario}' , cqid='{$p_cqid}', cfieldname='{$conditionCfieldname}', method='{$p_method}', value={$posted_condition_value} "
 		            . " WHERE cid={$p_cid}";
 		            $result = db_execute_assoc($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
 		        }
