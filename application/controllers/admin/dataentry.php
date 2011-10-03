@@ -1196,7 +1196,7 @@
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
                                 $qAttributes = getQuestionAttributeValues($fname['qid']);
 
-                                for ($i = 0; $i < $idrow[$fname['fieldname']]['max_files'], isset($metadata[$i]); $i++)
+                                for ($i = 0; $i < $qAttributes['max_files'], isset($metadata[$i]); $i++)
                                 {
                                     if ($qAttributes['show_title'])
                                         $dataentryoutput .= '<tr><td width="25%">Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
@@ -2320,7 +2320,7 @@
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
                     LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$deqrow['qid'],NULL,$deqrow['type'],$hidden);
-                    
+
                     //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
                     $explanation = ""; //reset conditions explanation
                     $s=0;

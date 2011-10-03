@@ -242,6 +242,7 @@
         $js_admin_includes[]=$this->config->item('generalscripts').'jquery/hoverIntent.js';
         $js_admin_includes[]=$this->config->item('adminscripts').'surveytoolbar.js';
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+
 		$this->config->set_item("css_admin_includes", $css_admin_includes);
         $this->config->set_item("js_admin_includes", $js_admin_includes);
 
@@ -357,7 +358,7 @@
         $data['GidNext'] = $GidNext = getGidNext($surveyid, $gid);
         $data['activated'] = $activated;
 
-        $this->load->view("admin/survey/surveybar",$data);
+        $this->load->view("admin/survey/surveybar_view",$data);
 
 
     }

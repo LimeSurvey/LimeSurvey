@@ -25,8 +25,8 @@
                     <?php }
                     if($canactivate) { ?>
                     <a href="#" onclick="window.open('<?php echo site_url("admin/survey/deactivate/$surveyid"); ?>', '_top')"
-                        title="<?php echo $clang->gTview("Deactivate this Survey"); ?>" >
-                        <img src='<?php echo $imageurl;?>/deactivate.png' alt='<?php echo $clang->gT("Deactivate this Survey"); ?>' /></a>
+                        title="<?php echo $clang->gTview("Stop this survey"); ?>" >
+                        <img src='<?php echo $imageurl;?>/deactivate.png' alt='<?php echo $clang->gT("Stop this survey"); ?>' /></a>
                     <?php } else { ?>
                     <img src='<?php echo $imageurl; ?>/blank.gif' alt='' width='14' />
                     <?php } ?>

@@ -1,38 +1,38 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * $Id$
- */
+* LimeSurvey (tm)
+* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
 
- /**
-  * survey
-  *
-  * @package LimeSurvey
-  * @author  The LimeSurvey Project team
-  * @copyright 2011
-  * @version $Id$
-  * @access public
-  */
- class survey extends Survey_Common_Controller {
+/**
+* survey
+*
+* @package LimeSurvey
+* @author  The LimeSurvey Project team
+* @copyright 2011
+* @version $Id$
+* @access public
+*/
+class survey extends Survey_Common_Controller {
 
     /**
-     * survey::__construct()
-     * Constructor
-     * @return
-     */
+    * survey::__construct()
+    * Constructor
+    * @return
+    */
     function __construct()
-	{
-		parent::__construct();
-	}
+    {
+        parent::__construct();
+    }
 
     /**
     * This function prepares the view for a new survey
@@ -121,7 +121,7 @@
         $this->load->model('questions_model');
         $oResult=$this->questions_model->getQuestionsWithSubQuestions($surveyid,$esrow['language'],"({$this->db->dbprefix}questions.type = 'T'  OR  {$this->db->dbprefix}questions.type = 'Q'  OR  {$this->db->dbprefix}questions.type = 'T' OR {$this->db->dbprefix}questions.type = 'S')");
         $data['questions']=$oResult->result_array();
-//        var_dump($data['questions']);
+        //        var_dump($data['questions']);
         $data['display'] = $editsurvey;
         $data['action'] = "editsurveysettings";
         $this->load->view('admin/survey/editSurvey_view',$data);
@@ -130,10 +130,10 @@
     }
 
     /**
-     * survey::importsurveyresources()
-     * Function responsible to import survey reasources.
-     * @return
-     */
+    * survey::importsurveyresources()
+    * Function responsible to import survey reasources.
+    * @return
+    */
     function importsurveyresources()
     {
         $clang = $this->limesurvey_lang;
@@ -220,8 +220,8 @@
                                 if (!copy($extractdir."/".$direntry, $destdir.$direntry))
                                 {
                                     $aErrorFilesInfo[]=Array(
-        								"filename" => $direntry,
-        								"status" => $clang->gT("Copy failed")
+                                    "filename" => $direntry,
+                                    "status" => $clang->gT("Copy failed")
                                     );
                                     unlink($extractdir."/".$direntry);
 
@@ -229,8 +229,8 @@
                                 else
                                 {
                                     $aImportedFilesInfo[]=Array(
-        								"filename" => $direntry,
-        								"status" => $clang->gT("OK")
+                                    "filename" => $direntry,
+                                    "status" => $clang->gT("OK")
                                     );
                                     unlink($extractdir."/".$direntry);
                                 }
@@ -239,10 +239,10 @@
                             else
                             { // Extension forbidden
                                 $aErrorFilesInfo[]=Array(
-        							"filename" => $direntry,
-        							"status" => $clang->gT("Error")." (".$clang->gT("Forbidden Extension").")"
-        							);
-        							unlink($extractdir."/".$direntry);
+                                "filename" => $direntry,
+                                "status" => $clang->gT("Error")." (".$clang->gT("Forbidden Extension").")"
+                                );
+                                unlink($extractdir."/".$direntry);
                             }
                         } // end if is_file
                     } // end if ! . or ..
@@ -356,33 +356,33 @@
     }
 
 
-	/**
-	 * survey::view()
-	 * Load complete view of survey properties and actions specified by $surveyid
-	 * @param mixed $surveyid
-	 * @param mixed $gid
-	 * @param mixed $qid
-	 * @return
-	 */
-	function view($surveyid,$gid=null,$qid=null)
-	{
-	    // show till question menubar.
+    /**
+    * survey::view()
+    * Load complete view of survey properties and actions specified by $surveyid
+    * @param mixed $surveyid
+    * @param mixed $gid
+    * @param mixed $qid
+    * @return
+    */
+    function view($surveyid,$gid=null,$qid=null)
+    {
+        // show till question menubar.
         if (!is_null($qid))
         {
             $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-   			$this->config->set_item("css_admin_includes", $css_admin_includes);
+            $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-   			self::_getAdminHeader();
-   			self::_showadminmenu($surveyid);
-   			self::_surveybar($surveyid,$gid);
+            self::_getAdminHeader();
+            self::_showadminmenu($surveyid);
+            self::_surveybar($surveyid,$gid);
             self::_surveysummary($surveyid,"viewquestion");
-   			self::_questiongroupbar($surveyid,$gid,$qid,"viewquestion");
+            self::_questiongroupbar($surveyid,$gid,$qid,"viewquestion");
 
             self::_questionbar($surveyid,$gid,$qid,"viewquestion");
             self::_loadEndScripts();
 
 
-   			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
         }
         else
@@ -391,38 +391,38 @@
             if (!is_null($gid))
             {
                 $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-       			$this->config->set_item("css_admin_includes", $css_admin_includes);
+                $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-       			self::_getAdminHeader();
-       			self::_showadminmenu($surveyid);
-       			self::_surveybar($surveyid,$gid);
+                self::_getAdminHeader();
+                self::_showadminmenu($surveyid);
+                self::_surveybar($surveyid,$gid);
                 self::_surveysummary($surveyid,"viewgroup");
-       			self::_questiongroupbar($surveyid,$gid,$qid,"viewgroup");
+                self::_questiongroupbar($surveyid,$gid,$qid,"viewgroup");
 
                 self::_loadEndScripts();
 
 
-       			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
             }
             else
             {
                 //show till survey menu bar.
                 if(bHasSurveyPermission($surveyid,'survey','read'))
-        	    {
+                {
                     $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        			$this->config->set_item("css_admin_includes", $css_admin_includes);
+                    $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-        			self::_getAdminHeader();
-        			self::_showadminmenu($surveyid);
-        			self::_surveybar($surveyid);
-        			self::_surveysummary($surveyid);
+                    self::_getAdminHeader();
+                    self::_showadminmenu($surveyid);
+                    self::_surveybar($surveyid);
+                    self::_surveysummary($surveyid);
                     self::_loadEndScripts();
 
 
-        			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
-        		}
+                }
 
             }
 
@@ -432,22 +432,22 @@
 
 
 
-	}
+    }
 
     /**
-     * survey::deactivate()
-     * Function responsible to deactivate a survey.
-     * @param mixed $surveyid
-     * @return
-     */
+    * survey::deactivate()
+    * Function responsible to deactivate a survey.
+    * @param mixed $surveyid
+    * @return
+    */
     function deactivate($surveyid)
     {
 
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
 
-	   self::_getAdminHeader();
-	   self::_showadminmenu($surveyid);
+        self::_getAdminHeader();
+        self::_showadminmenu($surveyid);
 
         //$postsid=returnglobal('sid');
         if ($this->input->post('sid'))
@@ -545,11 +545,11 @@
             $prow=$presult->row_array(); //fetch savetimings value
             if ($prow['savetimings'] == "Y")
             {
-        		$oldtable=$this->db->dbprefix."survey_{$postsid}_timings";
-        		$newtable=$this->db->dbprefix."old_survey_{$postsid}_timings_{$date}";
+                $oldtable=$this->db->dbprefix."survey_{$postsid}_timings";
+                $newtable=$this->db->dbprefix."old_survey_{$postsid}_timings_{$date}";
 
-        		$deactivateresult2 = db_rename_table($oldtable,$newtable) or die ("Couldn't make backup of the survey timings table. Please try again.<br /><br />Survey was deactivated.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
-        		$deactivateresult=($deactivateresult && $deactivateresult2);
+                $deactivateresult2 = db_rename_table($oldtable,$newtable) or die ("Couldn't make backup of the survey timings table. Please try again.<br /><br />Survey was deactivated.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
+                $deactivateresult=($deactivateresult && $deactivateresult2);
             }
 
             $data['clang'] = $clang;
@@ -563,37 +563,29 @@
         self::_loadEndScripts();
 
 
-	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
 
     /**
-     * survey::activate()
-     * Function responsible to activate survey.
-     * @param mixed $surveyid
-     * @return
-     */
-    function activate($surveyid)
+    * survey::activate()
+    * Function responsible to activate survey.
+    * @param mixed $surveyid
+    * @return
+    */
+    function activate($iSurveyID)
     {
+        $iSurveyID=(int) $iSurveyID;
 
-       $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-	   $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $data['aSurveysettings'] = getSurveyInfo($iSurveyID);
+        if (!isset($data['aSurveysettings']['active']) || $data['aSurveysettings']['active']=='Y') die(); // Die if this is not possible
 
-	   self::_getAdminHeader();
-	   self::_showadminmenu($surveyid);
-	   self::_surveybar($surveyid);
+        self::_getAdminHeader();
+        self::_showadminmenu($iSurveyID);
+        self::_surveybar($iSurveyID);
 
 
-
-
-        //$postsid=returnglobal('sid');
-        if ($this->input->post('sid'))
-        {
-            $postsid = $this->input->post('sid');
-        }
-        else
-        {
-            $postsid = $surveyid;
-        }
 
         $qtypes=getqtypelist('','array');
         $this->load->helper("admin/activate");
@@ -608,14 +600,14 @@
             }
 
             // Check consistency for groups and questions
-            $failedgroupcheck = checkGroup($postsid);
-            $failedcheck = checkQuestions($postsid, $surveyid, $qtypes);
+            $failedgroupcheck = checkGroup($iSurveyID);
+            $failedcheck = checkQuestions($iSurveyID, $iSurveyID, $qtypes);
 
             $data['clang'] = $this->limesurvey_lang;
-            $data['surveyid'] =  $surveyid;
+            $data['surveyid'] =  $iSurveyID;
             $data['$failedcheck'] = $failedcheck;
             $data['failedgroupcheck'] = $failedgroupcheck;
-
+            $data['aSurveysettings'] = getSurveyInfo($iSurveyID);
 
             $this->load->view("admin/survey/activateSurvey_view",$data);
             //IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
@@ -624,7 +616,14 @@
         }
         else
         {
-            $activateoutput = activateSurvey($postsid,$surveyid);
+            $this->load->model("surveys_model");
+            $this->surveys_model->updateSurvey(array('anonymized'=>$this->input->post('anonymized'),
+                                                'datestamp'=>$this->input->post('datestamp'),
+                                                'ipaddr'=>$this->input->post('ipaddr'),
+                                                'refurl'=>$this->input->post('refurl'),
+                                                'savetimings'=>$this->input->post('savetimings')),
+                                                array('sid'=>$iSurveyID));
+            $activateoutput = activateSurvey($iSurveyID,$iSurveyID);
             $displaydata['display'] = $activateoutput;
             $this->load->view('survey_view',$displaydata);
         }
@@ -638,10 +637,10 @@
 
 
     /**
-     * survey::listsurveys()
-     * Function that load list of surveys and it's few quick properties.
-     * @return
-     */
+    * survey::listsurveys()
+    * Function that load list of surveys and it's few quick properties.
+    * @return
+    */
     function listsurveys()
     {
         $clang = $this->limesurvey_lang;
@@ -776,8 +775,8 @@
                         if (bHasSurveyPermission($rows['sid'],'surveyactivation','update'))
                         {
                             $listsurveys .= "<td><a href=\"#\" onclick=\"window.open('".$this->config->item('scriptname')."?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
-                            . " title=\"".$clang->gTview("This survey is active - click here to deactivate this survey.")."\" >"
-                            . "<img src='".$this->config->item('imageurl')."/active.png' alt='".$clang->gT("This survey is active - click here to deactivate this survey.")."' /></a></td>\n";
+                            . " title=\"".$clang->gTview("This survey is active - click here to stop this survey.")."\" >"
+                            . "<img src='".$this->config->item('imageurl')."/active.png' alt='".$clang->gT("This survey is active - click here to stop this survey.")."' /></a></td>\n";
                         } else
                         {
                             $listsurveys .= "<td><img src='".$this->config->item('imageurl')."/active.png' "
@@ -800,10 +799,10 @@
                 $link = site_url("admin/survey/view/".$rows['sid']);
                 $listsurveys.="<td align='center'><a href='".$link."'>{$rows['sid']}</a></td>";
                 $listsurveys.="<td align='left'><a href='".$link."'>{$rows['surveyls_title']}</a></td>".
-    					    "<td>".$datecreated."</td>".
-    					    "<td>".$ownername." (<a href='#' class='ownername_edit' id='ownername_edit_{$rows['sid']}'>Edit</a>)</td>".
-    					    "<td>".$visibility."</td>" .
-    					    "<td>".$privacy."</td>";
+                "<td>".$datecreated."</td>".
+                "<td>".$ownername." (<a href='#' class='ownername_edit' id='ownername_edit_{$rows['sid']}'>Edit</a>)</td>".
+                "<td>".$visibility."</td>" .
+                "<td>".$privacy."</td>";
 
                 if ($rows['active']=="Y")
                 {
@@ -818,49 +817,49 @@
                 }
 
                 if ($rows['active']=="Y" && tableExists("tokens_".$rows['sid']))
-    		    {
-    		    	//get the number of tokens for each survey
-    		    	$tokencountquery = "SELECT COUNT(tid) AS countoftid FROM ".$this->db->dbprefix."tokens_".$rows['sid'];
-                                $tokencountresult = db_execute_assoc($tokencountquery); //Checked)
-                                foreach ($tokencountresult->result_array() as $tokenrow)
-                                {
-                                    $tokencount = $tokenrow['countoftid'];
-                                }
+                {
+                    //get the number of tokens for each survey
+                    $tokencountquery = "SELECT COUNT(tid) AS countoftid FROM ".$this->db->dbprefix."tokens_".$rows['sid'];
+                    $tokencountresult = db_execute_assoc($tokencountquery); //Checked)
+                    foreach ($tokencountresult->result_array() as $tokenrow)
+                    {
+                        $tokencount = $tokenrow['countoftid'];
+                    }
 
-    		    	//get the number of COMLETED tokens for each survey
-    		    	$tokencompletedquery = "SELECT COUNT(tid) AS countoftid FROM ".$this->db->dbprefix."tokens_".$rows['sid']." WHERE completed!='N'";
-                                $tokencompletedresult = db_execute_assoc($tokencompletedquery); //Checked
-                                foreach ($tokencompletedresult->result_array() as $tokencompletedrow)
-                                {
-                                    $tokencompleted = $tokencompletedrow['countoftid'];
-                                }
+                    //get the number of COMLETED tokens for each survey
+                    $tokencompletedquery = "SELECT COUNT(tid) AS countoftid FROM ".$this->db->dbprefix."tokens_".$rows['sid']." WHERE completed!='N'";
+                    $tokencompletedresult = db_execute_assoc($tokencompletedquery); //Checked
+                    foreach ($tokencompletedresult->result_array() as $tokencompletedrow)
+                    {
+                        $tokencompleted = $tokencompletedrow['countoftid'];
+                    }
 
-                                //calculate percentage
+                    //calculate percentage
 
-                                //prevent division by zero problems
-                                if($tokencompleted != 0 && $tokencount != 0)
-                                {
-                                $tokenpercentage = round(($tokencompleted / $tokencount) * 100, 1);
-                                }
-                                else
-                                {
-                                $tokenpercentage = 0;
-                                }
+                    //prevent division by zero problems
+                    if($tokencompleted != 0 && $tokencount != 0)
+                    {
+                        $tokenpercentage = round(($tokencompleted / $tokencount) * 100, 1);
+                    }
+                    else
+                    {
+                        $tokenpercentage = 0;
+                    }
 
-                                $listsurveys .= "<td>".$tokencount."</td>";
-                                $listsurveys .= "<td>".$tokenpercentage."%</td>";
-    		    }
-    		    else
-    		    {
-    				$listsurveys .= "<td>&nbsp;</td>";
-    				$listsurveys .= "<td>&nbsp;</td>";
-    		    }
+                    $listsurveys .= "<td>".$tokencount."</td>";
+                    $listsurveys .= "<td>".$tokenpercentage."%</td>";
+                }
+                else
+                {
+                    $listsurveys .= "<td>&nbsp;</td>";
+                    $listsurveys .= "<td>&nbsp;</td>";
+                }
 
-    		    $listsurveys .= "</tr>" ;
+                $listsurveys .= "</tr>" ;
             }
 
-    		$listsurveys.="</tbody>";
-    		$listsurveys.="</table><br />" ;
+            $listsurveys.="</tbody>";
+            $listsurveys.="</table><br />" ;
             $data['clang'] = $clang;
             $this->load->view('admin/survey/listSurveys_view',$data);
 
@@ -879,10 +878,10 @@
     }
 
     /**
-     * survey::delete()
-     * Function responsible to delete a survey.
-     * @return
-     */
+    * survey::delete()
+    * Function responsible to delete a survey.
+    * @return
+    */
     function delete()
     {
         $this->load->helper("database");
@@ -895,7 +894,7 @@
             self::_showadminmenu(false);
         }
         else{
-        self::_showadminmenu($surveyid);
+            self::_showadminmenu($surveyid);
         }
         if (!$this->input->post('deleteok')) self::_surveybar($this->input->post('sid'));
 
@@ -913,7 +912,7 @@
                     $dsresult = $this->dbforge->drop_table('survey_'.$surveyid) or safe_die ("Couldn't drop table survey_".$surveyid." in survey.php");
                 }
 
-            	if (tableExists("survey_{$surveyid}_timings"))  //delete the survey_$surveyid_timings table
+                if (tableExists("survey_{$surveyid}_timings"))  //delete the survey_$surveyid_timings table
                 {
                     $dsresult = $this->dbforge->drop_table('survey_'.$surveyid.'_timings') or safe_die ("Couldn't drop table survey_".$surveyid."_timings in survey.php");
                 }
@@ -964,11 +963,11 @@
     }
 
     /**
-     * survey::editlocalesettings()
-     * Load editing of local settings of a survey screen.
-     * @param mixed $surveyid
-     * @return
-     */
+    * survey::editlocalesettings()
+    * Load editing of local settings of a survey screen.
+    * @param mixed $surveyid
+    * @return
+    */
     function editlocalsettings($surveyid)
     {
         $clang = $this->limesurvey_lang;
@@ -977,7 +976,7 @@
         $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_js_admin_includes(base_url().'scripts/admin/surveysettings.js');
         self::_getAdminHeader();
-  		self::_showadminmenu($surveyid);;
+        self::_showadminmenu($surveyid);;
         self::_surveybar($surveyid);
         if(bHasSurveyPermission($surveyid,'surveylocale','read'))
         {
@@ -1066,10 +1065,10 @@
     }
 
     /**
-     * survey::copy()
-     * Function responsible to import/copy a survey based on $action.
-     * @return
-     */
+    * survey::copy()
+    * Function responsible to import/copy a survey based on $action.
+    * @return
+    */
     function copy()
     {
         $importsurvey = "";
@@ -1325,12 +1324,12 @@
 
 
     /**
-     * survey::_fetchSurveyInfo()
-     * Load survey information based on $action.
-     * @param mixed $action
-     * @param mixed $surveyid
-     * @return
-     */
+    * survey::_fetchSurveyInfo()
+    * Load survey information based on $action.
+    * @param mixed $action
+    * @param mixed $surveyid
+    * @return
+    */
     function _fetchSurveyInfo($action,$surveyid=null)
     {
         if ($action == 'newsurvey')
@@ -1384,10 +1383,10 @@
     }
 
     /**
-     * survey::_generalTabNewSurvey()
-     * Load "General" tab of new survey screen.
-     * @return
-     */
+    * survey::_generalTabNewSurvey()
+    * Load "General" tab of new survey screen.
+    * @return
+    */
     function _generalTabNewSurvey()
     {
         global $siteadminname,$siteadminemail;
@@ -1419,12 +1418,12 @@
     }
 
     /**
-     * survey::_generalTabEditSurvey()
-     * Load "General" tab of edit survey screen.
-     * @param mixed $surveyid
-     * @param mixed $esrow
-     * @return
-     */
+    * survey::_generalTabEditSurvey()
+    * Load "General" tab of edit survey screen.
+    * @param mixed $surveyid
+    * @param mixed $esrow
+    * @return
+    */
     function _generalTabEditSurvey($surveyid,$esrow)
     {
         global $siteadminname,$siteadminemail;
@@ -1437,11 +1436,11 @@
     }
 
     /**
-     * survey::_tabPresentationNavigation()
-     * Load "Presentation & navigation" tab.
-     * @param mixed $esrow
-     * @return
-     */
+    * survey::_tabPresentationNavigation()
+    * Load "Presentation & navigation" tab.
+    * @param mixed $esrow
+    * @return
+    */
     function _tabPresentationNavigation($esrow)
     {
         $clang = $this->limesurvey_lang;
@@ -1462,30 +1461,30 @@
     }
 
     /**
-     * survey::_tabPublicationAccess()
-     * Load "Publication * access control" tab.
-     * @param mixed $esrow
-     * @return
-     */
+    * survey::_tabPublicationAccess()
+    * Load "Publication * access control" tab.
+    * @param mixed $esrow
+    * @return
+    */
     function _tabPublicationAccess($esrow)
     {
         $clang = $this->limesurvey_lang;
         $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
         $startdate='';
         if (trim($esrow['startdate']) != '') {
-                $items = array($esrow['startdate'] , "Y-m-d H:i:s");
-                $this->load->library('Date_Time_Converter',$items);
-                $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
-                $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-            }
+            $items = array($esrow['startdate'] , "Y-m-d H:i:s");
+            $this->load->library('Date_Time_Converter',$items);
+            $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
+            $startdate=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+        }
 
         $expires='';
         if (trim($esrow['expires']) != '') {
-                $items = array($esrow['expires'] , "Y-m-d H:i:s");
-                $this->load->library('Date_Time_Converter',$items);
-                $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
-                $expires=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
-            }
+            $items = array($esrow['expires'] , "Y-m-d H:i:s");
+            $this->load->library('Date_Time_Converter',$items);
+            $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
+            $expires=$datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
+        }
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
         $data['startdate'] = $startdate;
@@ -1494,11 +1493,11 @@
     }
 
     /**
-     * survey::_tabNotificationDataManagement()
-     * Load "Notification & data management" tab.
-     * @param mixed $esrow
-     * @return
-     */
+    * survey::_tabNotificationDataManagement()
+    * Load "Notification & data management" tab.
+    * @param mixed $esrow
+    * @return
+    */
     function _tabNotificationDataManagement($esrow)
     {
         $clang = $this->limesurvey_lang;
@@ -1511,11 +1510,11 @@
     }
 
     /**
-     * survey::_tabTokens()
-     * Load "Tokens" tab.
-     * @param mixed $esrow
-     * @return
-     */
+    * survey::_tabTokens()
+    * Load "Tokens" tab.
+    * @param mixed $esrow
+    * @return
+    */
     function _tabTokens($esrow)
     {
         $clang = $this->limesurvey_lang;
@@ -1534,11 +1533,11 @@
 
 
     /**
-     * survey::_tabImport()
-     * Load "Import" tab.
-     * @param mixed $surveyid
-     * @return
-     */
+    * survey::_tabImport()
+    * Load "Import" tab.
+    * @param mixed $surveyid
+    * @return
+    */
     function _tabImport()
     {
         $data=array();
@@ -1546,11 +1545,11 @@
     }
 
     /**
-     * survey::_tabCopy()
-     * Load "Copy" tab.
-     * @param mixed $surveyid
-     * @return
-     */
+    * survey::_tabCopy()
+    * Load "Copy" tab.
+    * @param mixed $surveyid
+    * @return
+    */
     function _tabCopy()
     {
         $data=array();
@@ -1559,11 +1558,11 @@
 
 
     /**
-     * survey::_tabResourceManagement()
-     * Load "Resources" tab.
-     * @param mixed $surveyid
-     * @return
-     */
+    * survey::_tabResourceManagement()
+    * Load "Resources" tab.
+    * @param mixed $surveyid
+    * @return
+    */
     function _tabResourceManagement($surveyid)
     {
         $clang = $this->limesurvey_lang;
@@ -1588,12 +1587,31 @@
 
     }
 
-
-    function getUrlParamsJSON($surveyid)
+    function expire($iSurveyID)
     {
+        $surveyid = (int)$iSurveyID;
+        if(!bHasSurveyPermission($iSurveyID,'surveysettings','update'))
+        {
+            die();
+        }
+        $clang = $this->limesurvey_lang;
+        $this->session->set_userdata('flashmessage',$clang->gT("The survey was successfully expired by setting an expiration date in the survey settings."));
+        $this->load->model('surveys_model');
+        $dExpirationdate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->config->item('timeadjust'));
+        $dExpirationdate=date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
+        $this->surveys_model->updateSurvey(array('expires'=>$dExpirationdate),
+                                           array('sid'=>$iSurveyID));
+        redirect('admin/survey/view/'.$iSurveyID);
+
+    }
+
+
+    function getUrlParamsJSON($iSurveyID)
+    {
+        $iSurveyID = (int)$iSurveyID;
         $this->load->model('survey_url_parameters_model');
         $this->load->helper('text');
-        $oResult=$this->survey_url_parameters_model->getParametersForSurvey($surveyid);
+        $oResult=$this->survey_url_parameters_model->getParametersForSurvey($iSurveyID);
         $i=0;
         foreach ($oResult->result_array() as $oRow)
         {
@@ -1618,4 +1636,4 @@
         echo json_encode($data);
     }
 
- }
+}

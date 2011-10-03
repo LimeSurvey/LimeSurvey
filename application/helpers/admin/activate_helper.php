@@ -477,9 +477,14 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
 
             if (isset($savetimings) && $savetimings=="TRUE")
             {
-                foreach ($fieldstiming as $field)
+                $timingsfieldmap = createTimingsFieldMap($surveyid);
+                $createsurveytimings .= '`'.implode("` F DEFAULT '0',\n`",array_keys($timingsfieldmap)) . "` F DEFAULT '0'";
+
+                $CI->dbforge->add_field(array('id'=>array('type'=>'INT')));
+
+                foreach ($timingsfieldmap as $field=>$fielddata)
                 {
-                    $CI->dbforge->add_field($field);
+                    $CI->dbforge->add_field(' `'.$field.'` FLOAT');
                 }
                 $CI->dbforge->create_table($tabnametimings, TRUE);
                 //$dict->ExecuteSQLArray($sqlarraytimings,1);    // create a timings table for this survey
