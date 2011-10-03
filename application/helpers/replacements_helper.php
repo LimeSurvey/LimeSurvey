@@ -84,9 +84,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     if (!isset($showXquestions)) { $showXquestions = 'choose'; }
     if (!isset($relativeurl)) { $relativeurl = $CI->config->item("relativeurl"); }
     if (!isset($s_lang)) { $s_lang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'); }
-    /*
     if (!isset($captchapath)) { $captchapath = ''; }
-     */
 
     if (file_exists($line))
     {

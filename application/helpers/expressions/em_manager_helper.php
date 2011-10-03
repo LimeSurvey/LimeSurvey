@@ -48,6 +48,97 @@ class LimeExpressionManager {
         trigger_error('Clone is not allowed.', E_USER_ERROR);
     }
 
+    public function ConvertConditionsToRelevance($surveyId)
+    {
+        $CI =& get_instance();
+    	$CI->load->model('conditions_model');
+
+        $query = $CI->conditions_model->getAllRecordsForSurvey($surveyId);
+
+        $_qid = -1;
+        $relevanceEqns = array();
+        $scenarios = array();
+        $relAndList = array();
+        $relOrList = array();
+        foreach($query->result_array() as $row)
+        {
+            if ($row['qid'] != $_qid)
+            {
+                // output the values for prior question is there was one
+                if ($_qid != -1)
+                {
+                    if (count($relOrList) > 0)
+                    {
+                        $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
+                    }
+                    if (count($relAndList) > 0)
+                    {
+                        $scenarios[] = '(' . implode(' and ', $relAndList) . ')';
+                    }
+                    $relevanceEqn = implode(' and ', $scenarios);
+                    $relevanceEqns[$_qid] = $relevanceEqn;
+                }
+
+                // clear for next question
+                $_qid = $row['qid'];
+                $_scenario = $row['scenario'];
+                $_cqid = $row['cqid'];
+                $relAndList = array();
+                $relOrList = array();
+                $scenarios = array();
+                $releqn = '';
+            }
+            if ($row['scenario'] != $_scenario)
+            {
+                if (count($relOrList) > 0)
+                {
+                    $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
+                }
+                $scenarios[] = '(' . implode(' and ', $relAndList) . ')';
+                $relAndList = array();
+                $relOrList = array();
+                $_scenario = $row['scenario'];
+                $_cqid = $row['cqid'];
+            }
+            if ($row['cqid'] != $_cqid)
+            {
+                $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
+                $relOrList = array();
+                $_cqid = $row['cqid'];
+            }
+            if  ($row['method'] == 'RX')
+            {
+                $relOrList[] = "regexMatch('" . $row['value'] . "'," . $row['cfieldname'] . ")";    // TODO - escape the value?
+            }
+            else
+            {
+                $relOrList[] = $row['cfieldname'] . " " . $row['method'] . " '" . $row['value'] . "'";
+            }
+        }
+        // output last one
+        if ($_qid != -1)
+        {
+            if (count($relOrList) > 0)
+            {
+                $relAndList[] = '(' . implode(' or ', $relOrList) . ')';
+            }
+            if (count($relAndList) > 0)
+            {
+                $scenarios[] = '(' . implode(' and ', $relAndList) . ')';
+            }
+            $relevanceEqn = implode(' and ', $scenarios);
+            $relevanceEqns[$_qid] = $relevanceEqn;
+        }
+        return $relevanceEqns;
+    }
+
+    public static function UnitTestConvertConditionsToRelevance()
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        print_r($LEM->ConvertConditionsToRelevance(1));
+        print_r($LEM->ConvertConditionsToRelevance(26766));
+    }
+
     /**
      * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
      * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)

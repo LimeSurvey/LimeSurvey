@@ -118,6 +118,15 @@ function LEMimplode()
     return result;
 }
 
+/*
+ * Returns true if within matches the pattern
+ */
+function LEMregexMatch(pattern,within)
+{
+    var str = new String(within);
+    return (str.match(pattern) !== null);
+}
+
 function LEMstrlen(a)
 {
     var  str = new String(a);

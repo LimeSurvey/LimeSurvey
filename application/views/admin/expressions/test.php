@@ -43,6 +43,10 @@ and open the template in the editor.
                 <td><a href="<?php echo site_url("admin/expressions/test/usage");?>">Running Log - Translations on this Page</a></td>
                 <td>For this page group, shows all of the translation requests, the pretty-printed version of the request, and the translated results</td>
             </tr>
+            <tr>
+                <td><a href="<?php echo site_url("admin/expressions/test/conditions2relevance");?>">Convert Conditions to Relevance</a></td>
+                <td>Shows Relevance equations for all conditions in the active survey</td>
+            </tr>
         </table>
     </body>
 </html>

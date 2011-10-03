@@ -162,6 +162,7 @@ class ExpressionManager {
 'quoted_printable_encode' => array('quoted_printable_encode', 'quoted_printable_encode', 'Convert a 8 bit string to a quoted-printable string', 'string quoted_printable_encode(string)', 'http://www.php.net/manual/en/function.quoted-printable-encode.php', 1),
 'quotemeta' => array('quotemeta', 'quotemeta', 'Quote meta characters', 'string quotemeta(string)', 'http://www.php.net/manual/en/function.quotemeta.php', 1),
 'rand' => array('rand', 'Math.random', 'Generate a random integer', 'int rand() OR int rand(min, max)', 'http://www.php.net/manual/en/function.rand.php', 0,2),
+'regexMatch' => array('exprmgr_regexMatch', 'LEMregexMatch', 'Compare a string to a regular expression pattern', 'bool regexMatch(pattern,input)', '', 2),
 'round' => array('round', 'LEMround', 'Rounds a number to an optional precision', 'number round(val [, precision])', 'http://www.php.net/manual/en/function.round.php', 1,2),
 'rtrim' => array('rtrim', 'rtrim', 'Strip whitespace (or other characters) from the end of a string', 'string rtrim(string [, charlist])', 'http://www.php.net/manual/en/function.rtrim.php', 1,2),
 'sin' => array('sin', 'Math.sin', 'Sine', 'number sin(arg)', 'http://www.php.net/manual/en/function.sin.php', 1),
@@ -1941,7 +1942,7 @@ class ExpressionManager {
                         if ($this->asTokenType[$i] == 'DQ_STRING' || $this->asTokenType[$i] == 'SQ_STRING')
                         {
                             // remove outside quotes
-                            $unquotedToken = stripslashes(substr($token,1,-1));
+                            $unquotedToken = str_replace(array('\"',"\'","\\\\"),array('"',"'",'\\'),substr($token,1,-1));
                             $tokens0[$j][0] = $unquotedToken;
                         }
                         $tokens[] = $tokens0[$j];   // get first matching non-SPACE token type and push onto $tokens array
@@ -1998,6 +1999,7 @@ EOD;
     {
         // Comprehensive test cases for tokenizing
         $tests = <<<EOD
+        String:  "what about regular expressions, like for SSN (^\d{3}-\d{2}-\d{4}) or US phone# ((?:\(\d{3}\)\s*\d{3}-\d{4})"
         String:  "Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"
         String:  "can single quoted strings" . 'contain nested \'quoted sections\'?';
         Parens:  upcase('hello');
@@ -2329,6 +2331,15 @@ hi there!~strtolower(c)
 1~three == 3
 1~c == 'Hi there!'
 1~c == "Hi there!"
+1~strpos(c,'there')>1
+1~regexMatch('there',c)
+1~regexMatch('^.*there.*$',c)
+0~regexMatch('joe',c)
+1~regexMatch('(?:dog|cat)food','catfood stinks')
+1~regexMatch('(?:dog|cat)food','catfood stinks')
+1~regexMatch('[0-9]{3}-[0-9]{2}-[0-9]{4}','123-45-6789')
+1~regexMatch('\d{3}-\d{2}-\d{4}','123-45-6789')
+1~regexMatch('(?:\(\d{3}\))\s*\d{3}-\d{4}','(212) 555-1212')
 11~eleven
 144~twelve * twelve
 4~if(5 > 7,2,4)
@@ -2641,6 +2652,17 @@ function expr_mgr_htmlspecialchars($string)
 function expr_mgr_htmlspecialchars_decode($string)
 {
     return htmlspecialchars_decode($string,ENT_QUOTES);
+}
+
+/**
+ * Return true of $input matches the regular expression $pattern
+ * @param <type> $pattern
+ * @param <type> $input
+ * @return <type>
+ */
+function exprmgr_regexMatch($pattern, $input)
+{
+    return preg_match("/" . $pattern . "/", $input);
 }
 
 ?>

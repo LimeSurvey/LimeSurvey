@@ -2,6 +2,18 @@
 
 class Conditions_model extends CI_Model {
 
+    function getAllRecordsForSurvey($surveyid)
+    {
+        $query = "select * from ".$this->db->dbprefix('conditions')
+                ." where qid in (select qid from ".$this->db->dbprefix('questions')
+                ." where sid = ".$surveyid
+                .") order by qid, scenario, cqid";
+
+		$data = $this->db->query($query);
+
+		return $data;
+    }
+
 	function getAllRecords($condition=FALSE,$order=FALSE)
 	{
 		if ($condition != FALSE)
