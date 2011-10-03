@@ -18,7 +18,9 @@
 // For this there will be a settings table which holds the last time the database was upgraded
 
 function db_upgrade($oldversion) {
-    global $modifyoutput, $databasename, $databasetabletype, $clang;
+    global $modifyoutput, $databasename, $databasetabletype;
+    $CI =& get_instance();
+    $clang = $CI->limesurvey_lang;
 
 
     if ($oldversion < 127) {

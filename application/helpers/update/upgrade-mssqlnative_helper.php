@@ -20,7 +20,9 @@
 function db_upgrade($oldversion) {
 /// This function does anything necessary to upgrade
 /// older versions to match current functionality
-    global $modifyoutput, $dbprefix, $clang;
+    global $modifyoutput, $dbprefix;
+    $CI =& get_instance();
+    $clang = $CI->limesurvey_lang;
     if ($oldversion < 111) {
 
     // Language upgrades from version 110 to 111 since the language names did change

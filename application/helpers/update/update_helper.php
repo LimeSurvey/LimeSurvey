@@ -42,6 +42,7 @@ function CheckForDBUpgrades($subaction = null)
             $tables = $connect->MetaTables();
             db_upgrade_all(intval($currentDBVersion));
             db_upgrade(intval($currentDBVersion));
+            $CI->db->update('settings_global',array('stg_value' => intval($dbversionnumber)),array('stg_name' => 'DBVersion'));
             echo "<br />".sprintf($clang->gT("Database has been successfully upgraded to version %s"),$dbversionnumber);
 			echo "<br /><a href='".site_url("admin")."'>".$clang->gT("Back to main menu")."</a></div>";
         }
