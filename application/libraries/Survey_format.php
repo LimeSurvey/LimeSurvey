@@ -51,46 +51,13 @@
 		$filenotvalidated = checkUploadedFileValidity($surveyid, $move);
 		
 		//SUBMIT
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
+        $redata = compact(array_keys(get_defined_vars()));
 		if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) && !$notvalidated) && (!isset($filenotvalidated) || !$filenotvalidated))
 		{
 		    setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies : not actually used in all in one.
 		    if ($thissurvey['anonymized'] == "Y")
 		    {
-		        $privacy = templatereplace(file_get_contents("$thistpl/privacy.pstpl"),array(),$redata);
+		        $privacy = templatereplace(file_get_contents("$thistpl/privacy.pstpl"),array(),$redata,'Survey_format[60]');
 		    }
 		    if ($thissurvey['refurl'] == "Y")
 		    {
@@ -115,47 +82,14 @@ $redata = array(
 		        sendcacheheaders();
 		        doHeader();
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+                $redata = compact(array_keys(get_defined_vars()));
+		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'Survey_format[86]');
 		
 		        //Check for assessments
 		
 		        if ($thissurvey['assessments']== "Y" && $assessments)
 		        {
-		            echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"),array(),$redata);
+		            echo templatereplace(file_get_contents("$thistpl/assessment.pstpl"),array(),$redata,'Survey_format[92]');
 		        }
 		
 		        $completed = $thissurvey['surveyls_endtext'];
@@ -184,46 +118,13 @@ $redata = array(
                 //Check for assessments
 		        $assessments = doAssessment($surveyid);
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
+                $redata = compact(array_keys(get_defined_vars()));
 		        $content='';
-		        $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+		        $content .= templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'Survey_format[123]');
 		
 		        if ($assessments)
 		        {
-		            $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"),array(),$redata);
+		            $content .= templatereplace(file_get_contents("$thistpl/assessment.pstpl"),array(),$redata,'Survey_format[127]');
 		        }
 		
 		        // Unsetting $postedfieldnames tells the createinsertquery() function only to set the sbumit date, nothing else
@@ -308,94 +209,28 @@ $redata = array(
 		        echo $content;
 		
 		    }
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-
-		    echo templatereplace(file_get_contents("$thistpl/completed.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+		    echo templatereplace(file_get_contents("$thistpl/completed.pstpl"),array(),$redata,'Survey_format[213]');
 		
 		    echo "\n<br />\n";
-		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'Survey_format[216]');
 		    doFooter();
 		    exit;
 		}
 		
-
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
 
 		//SEE IF $surveyid EXISTS
 		if ($surveyexists <1)
 		{
 		    sendcacheheaders();
 		    doHeader();
-		    //SURVEY DOES NOT EXIST. POLITELY EXIT.
-		    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+
+		    $redata = compact(array_keys(get_defined_vars()));
+            //SURVEY DOES NOT EXIST. POLITELY EXIT.
+		    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'Survey_format[230]');
 		    echo "\t<center><br />\n"
 		    ."\t".$clang->gT("Sorry. There is no matching survey.")."<br /></center>&nbsp;\n";
-		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'Survey_format[233]');
 		    doFooter();
 		    exit;
 		}
@@ -523,41 +358,8 @@ $redata = array(
 		doHeader();
 		if(isset($popup)) {echo $popup;}
 		if(isset($vpopup)) {echo $vpopup;}
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+        $redata = compact(array_keys(get_defined_vars()));
+		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'Survey_format[362]');
 		echo "\n<form method='post' action='".site_url("survey/$surveyid")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 		//PUT LIST OF FIELDS INTO HIDDEN FORM ELEMENT
 		echo "\n<!-- INPUT NAMES -->\n"
@@ -571,12 +373,12 @@ $redata = array(
 		if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
 		    //Hide the welcome screen if explicitly set
 		} else {
-		    echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"),array(),$redata)."\n";
+		    echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"),array(),$redata,'Survey_format[376]')."\n";
 		}
 		
 		if ($thissurvey['anonymized'] == "Y")
 		{
-		    echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"),array(),$redata)."\n";
+		    echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"),array(),$redata,'Survey_format[381]')."\n";
 		}
 		
 		print <<<END
@@ -1173,50 +975,17 @@ END;
 		    $groupname=$gl[1];
 		    $groupdescription=$gl[2];
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
+            $redata = compact(array_keys(get_defined_vars()));
 		    echo "\n\n<!-- START THE GROUP -->\n";
 		    echo "\n\n<div id='group-$gid'>\n";
-		    echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"),array(),$redata);
+		    echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"),array(),$redata,'Survey_format[981]');
 		    echo "\n";
 
             LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
 		
 		    if ($groupdescription)
 		    {
-		        echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"),array(),$redata);
+		        echo templatereplace(file_get_contents("$thistpl/groupdescription.pstpl"),array(),$redata,'Survey_format[988]');
 		    }
 		    echo "\n";
 		
@@ -1264,41 +1033,7 @@ $redata = array(
 		
 		                $question_template = file_get_contents($thistpl.'/question.pstpl');
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-
+                        $redata = compact(array_keys(get_defined_vars()));
 		                if( preg_match( '/\{QUESTION_ESSENTIALS\}/' , $question_template ) === false || preg_match( '/\{QUESTION_CLASS\}/' , $question_template ) === false )
 		                {
 		                    // if {QUESTION_ESSENTIALS} is present in the template but not {QUESTION_CLASS} remove it because you don't want id="" and display="" duplicated.
@@ -1309,56 +1044,22 @@ $redata = array(
 			<!-- NEW QUESTION -->
 						<div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
 		';
-		                    echo templatereplace($question_template,array(),$redata);
+		                    echo templatereplace($question_template,array(),$redata,'Survey_format[1047]');
 		                    echo '
 						</div>
 		';
 		                }
 		                else
 		                {
-		                    echo templatereplace($question_template,array(),$redata);
+		                    echo templatereplace($question_template,array(),$redata,'Survey_format[1054]');
 		                };
 		            }
 		        }
 		    }
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-		
+            $redata = compact(array_keys(get_defined_vars()));
 		    echo "\n\n<!-- END THE GROUP -->\n";
 		
-		    echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),$redata);
+		    echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"),array(),$redata,'Survey_format[1062]s');
 		    echo "\n\n</div>\n";
 		    echo "\n";
 
@@ -1368,9 +1069,9 @@ $redata = array(
 		//echo "&nbsp;\n";
 		$navigator = surveymover();
 
-        $redata = array_merge($redata, array('navigator' => $navigator));
+        $redata = compact(array_keys(get_defined_vars()));
 		echo "\n\n<!-- PRESENT THE NAVIGATOR -->\n";
-		echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"),array(),$redata);
+		echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"),array(),$redata,'Survey_format[1074]');
 		echo "\n";
 		
 		if ($thissurvey['active'] != "Y") {echo "<p style='text-align:center' class='error'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";}
@@ -1420,7 +1121,9 @@ $redata = array(
 		."<input type='hidden' name='start_time' value='".time()."' id='start_time' />\n"
 		."<input type='hidden' name='token' value='$token' id='token' />\n"
 		."</form>\n";
-		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+
+        $redata = compact(array_keys(get_defined_vars()));
+		echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'Survey_format[1126]');
 		echo "\n";
 		doFooter();
 

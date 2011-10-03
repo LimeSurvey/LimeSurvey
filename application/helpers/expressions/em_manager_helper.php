@@ -60,6 +60,7 @@ class LimeExpressionManager {
     public function setVariableAndTokenMappingsForExpressionManager($forceRefresh=false,$anonymized=false,$allOnOnePage=false,$surveyid=NULL)
     {
         // TODO - this is called multiple times per page - can it be reduced to once per page?
+        log_message('debug','Start LEM::setVariableAndTokenMappingsForExpressionManager');
         $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
         if (!isset($fieldmap)) {
             return false; // implies an error occurred
@@ -379,7 +380,7 @@ class LimeExpressionManager {
             $debugLog_html .= "</table>";
             $this->surveyLogicFile = $debugLog_html;
         }
-
+        log_message('debug','Finish LEM::setVariableAndTokenMappingsForExpressionManager');
         return true;
     }
 

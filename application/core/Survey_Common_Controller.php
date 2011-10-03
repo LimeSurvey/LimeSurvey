@@ -311,6 +311,7 @@
         $data['surveytranslate'] = bHasSurveyPermission($surveyid,'translations','read');
         // RESET SURVEY LOGIC BUTTON
         //$sumquery6 = "SELECT count(*) FROM ".db_table_name('conditions')." as c, ".db_table_name('questions')." as q WHERE c.qid = q.qid AND q.sid=$surveyid"; //Getting a count of conditions for this survey
+        // TMW - how is conditionscount used?  Should Relevance do the same?
         $this->load->model('conditions_model');
         $query = $this->conditions_model->getCountOfConditions($surveyid);
         $sumcount6 = $query->row_array(); //$connect->GetOne($sumquery6); //Checked

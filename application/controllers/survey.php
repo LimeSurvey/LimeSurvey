@@ -155,42 +155,8 @@ class survey extends LSCI_Controller {
 		    sendcacheheaders();
 		    doHeader();
 
-			//Template variables
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata,'survey[159]');
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t<span class='error'>".$clang->gT("Token mismatch")."</span><br /><br />\n"
@@ -199,7 +165,7 @@ $redata = array(
 		    ."\t</p>\n"
 		    ."\t</div>\n";
 
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata);
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata,'survey[168]');
 		    doFooter();
 		    exit;
 		}
@@ -216,42 +182,8 @@ $redata = array(
 		    sendcacheheaders();
 		    doHeader();
 
-			//Template variables
-$redata = array(
-//	'answer' => $answer,
-//	'assessments' => $assessments,
-//	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-//	'completed' => $completed,
-//	'errormsg' => $errormsg,
-//	'groupdescription' => $groupdescription,
-//	'groupname' => $groupname,
-//	'help' => $help,
-//	'imageurl' => $imageurl,
-//	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-//	'navigator' => $navigator,
-//	'percentcomplete' => $percentcomplete,
-//	'privacy' => $privacy,
-//	'question' => $question,
-//	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-//	's_lang' => $s_lang,
-//	'saved_id' => $saved_id,
-//	'showgroupinfo' => $showgroupinfo,
-//	'showqnumcode' => $showqnumcode,
-//	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-//	'surveylist' => $surveylist,
-//	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-//	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata,'survey[186]');
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t<span class='error'>".$clang->gT("Previous session is set to be finished.")."</span><br /><br />\n"
@@ -260,7 +192,7 @@ $redata = array(
 		    ."\t</p>\n"
 		    ."\t</div>\n";
 
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata);
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata,'survey[195]');
 		    doFooter();
 		    exit;
 		}
@@ -404,41 +336,8 @@ $redata = array(
 		        sendcacheheaders();
 		        doHeader();
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-				echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata);
+                $redata = compact(array_keys(get_defined_vars()));
+				echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata,'survey[340]');
 		        echo "\t<div id='wrapper'>\n"
 		        ."\t<p id='tokenmessage'>\n"
 		        ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
@@ -447,7 +346,7 @@ $redata = array(
 		        ."\t</p>\n"
 		        ."\t</div>\n";
 
-				echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata);
+				echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata,'survey[349]');
 		        doFooter();
 		        exit;
 		    }
@@ -472,41 +371,8 @@ $redata = array(
 		    sendcacheheaders();
 		    doHeader();
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/startpage.pstpl"),array(),$redata,'survey[375]');
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t<span class='error'>".$clang->gT("ERROR")."</span><br /><br />\n"
@@ -516,7 +382,7 @@ $redata = array(
 		    ."\t</p>\n"
 		    ."\t</div>\n";
 
-			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata);
+			echo templatereplace(file_get_contents("$standardtemplaterootdir/default/endpage.pstpl"),array(),$redata,'survey[385]');
 		    doFooter();
 		    exit;
 		};
@@ -621,62 +487,24 @@ $redata = array(
 		    $thissurvey['name']=$sitename;
 		    $thissurvey['templatedir']=$defaulttemplate;
 
-//		    $data['thissurvey'] = $thissurvey;
-//	        //$data['privacy'] = $privacy;
-//	        $data['surveylist'] = $surveylist;
-//	        $data['surveyid'] = $surveyid;
-//	        $data['templatedir'] = sGetTemplatePath($defaulttemplate);
-//	        $data['templateurl'] = sGetTemplateURL($defaulttemplate)."/";
-//	        $data['templatename'] = $defaulttemplate;
-//			$data['sitename'] = $sitename;
-//			$data['languagechanger'] = $languagechanger;
+		    $data['thissurvey'] = $thissurvey;
+	        //$data['privacy'] = $privacy;
+	        $data['surveylist'] = $surveylist;
+	        $data['surveyid'] = $surveyid;
+	        $data['templatedir'] = sGetTemplatePath($defaulttemplate);
+	        $data['templateurl'] = sGetTemplateURL($defaulttemplate)."/";
+	        $data['templatename'] = $defaulttemplate;
+			$data['sitename'] = $sitename;
+			$data['languagechanger'] = $languagechanger;
             
-            $templatedir =  sGetTemplatePath($defaulttemplate);
-            $templateurl = sGetTemplateURL($defaulttemplate)."/";
-            $templatename = $defaulttemplate;
-
-$redata = array(
-//	'answer' => $answer,
-//	'assessments' => $assessments,
-//	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-//	'completed' => $completed,
-//	'errormsg' => $errormsg,
-//	'groupdescription' => $groupdescription,
-//	'groupname' => $groupname,
-//	'help' => $help,
-//	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-//	'navigator' => $navigator,
-//	'percentcomplete' => $percentcomplete,
-//	'privacy' => $privacy,
-//	'question' => $question,
-//	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-//	's_lang' => $s_lang,
-//	'saved_id' => $saved_id,
-//	'showgroupinfo' => $showgroupinfo,
-//	'showqnumcode' => $showqnumcode,
-//	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-//	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
 		    //A nice exit
 		    sendcacheheaders();
 		    doHeader();
-			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"),array(),$redata);
+			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/startpage.pstpl"),array(),$data,'survey[503]');
 
-			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl"),array(),$redata);
+			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl"),array(),$data,'survey[505]');
 
-			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"),array(),$redata);
+			echo templatereplace(file_get_contents(sGetTemplatePath($defaulttemplate)."/endpage.pstpl"),array(),$data,'survey[507]');
 		    doFooter();
 		    exit;
 		}
@@ -737,41 +565,8 @@ $redata = array(
 		    sendcacheheaders();
 		    doHeader();
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'survey[569]');
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t".$clang->gT("This survey is no longer available.")."<br /><br />\n"
@@ -779,7 +574,7 @@ $redata = array(
 			."\t</p>\n"
 		    ."\t</div>\n";
 
-			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'survey[577]');
 		    doFooter();
 		    exit;
 		}
@@ -790,41 +585,8 @@ $redata = array(
 		    sendcacheheaders();
 		    doHeader();
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-		    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+		    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'survey[589]');
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t".$clang->gT("This survey is not yet started.")."<br /><br />\n"
@@ -832,7 +594,7 @@ $redata = array(
 		    ."\t</p>\n"
 		    ."\t</div>\n";
 
-		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'survey[597]');
 		    doFooter();
 		    exit;
 		}
@@ -845,41 +607,8 @@ $redata = array(
 		    sendcacheheaders();
 		    doHeader();
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+			echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'survey[611]');
 		    echo "\t<div id='wrapper'>\n"
 		    ."\t<p id='tokenmessage'>\n"
 		    ."\t<span class='error'>".$clang->gT("Error")."</span><br /><br />\n"
@@ -888,7 +617,7 @@ $redata = array(
 		    ."\t</p>\n"
 		    ."\t</div>\n";
 
-			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+			echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'survey[620]');
 		    doFooter();
 		    exit;
 		}
@@ -1012,42 +741,9 @@ $redata = array(
 		        doHeader();
 		        //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
-		        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata);
+                $redata = compact(array_keys(get_defined_vars()));
+		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'survey[745]');
+		        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata,'survey[746]');
 		        echo "\t<div id='wrapper'>\n"
 		        ."\t<p id='tokenmessage'>\n"
 		        ."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
@@ -1058,7 +754,7 @@ $redata = array(
 		        ."\t</p>\n"
 		        ."\t</div>\n";
 
-		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'survey[757]');
 			    killSession();
 		        doFooter();
 		        exit;
@@ -1081,42 +777,9 @@ $redata = array(
 		        doHeader();
 		        //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
-		        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata);
+                $redata = compact(array_keys(get_defined_vars()));
+		        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'survey[781]');
+		        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata,'survey[782]');
 		        echo "\t<div id='wrapper'>\n"
 		        ."\t<p id='tokenmessage'>\n"
 		        ."\t".$clang->gT("We are sorry but you are not allowed to enter this survey.")."<br /><br />\n"
@@ -1127,7 +790,7 @@ $redata = array(
 		        ."\t</p>\n"
 		        ."\t</div>\n";
 
-		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+		        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'survey[793]');
 		        doFooter();
 			    killSession();
 		        exit;
@@ -1198,41 +861,8 @@ $redata = array(
 		    }
 		    doHeader();
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'survey[864]');
 		    echo "\n\n<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->\n"
 		    ."\t<script type='text/javascript'>\n"
 		    ."\t<!--\n"
@@ -1243,9 +873,9 @@ $redata = array(
 		    ."\t</script>\n\n";
 
 		    //Present the clear all page using clearall.pstpl template
-		    echo templatereplace(file_get_contents("$thistpl/clearall.pstpl"),array(),$redata);
+		    echo templatereplace(file_get_contents("$thistpl/clearall.pstpl"),array(),$redata,'survey[876]');
 
-		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+		    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'survey[878]');
 		    doFooter();
 		    exit;
 		}

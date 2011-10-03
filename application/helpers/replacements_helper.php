@@ -13,14 +13,14 @@
  * @param questionNum - needed to support dynamic JavaScript-based tailoring within questions
  * @return string  Text with replaced strings
  */
-function templatereplace($line, $replacements=array(),&$redata=array(), $anonymized=false, $questionNum=NULL)
+function templatereplace($line, $replacements=array(),&$redata=array(), $debugSrc='Unspecified', $anonymized=false, $questionNum=NULL)
 {
     $CI =& get_instance();
-/*
+
+    /*
     global $clienttoken,$token,$sitename,$move,$showXquestions,$showqnumcode,$questioncode,$register_errormsg;
     global $s_lang,$errormsg,$saved_id, $totalBoilerplatequestions, $relativeurl, $languagechanger,$captchapath,$loadname;
-*/
-
+    */
      /*
 	$allowedvars = array('surveylist', 'sitename', 'clienttoken', 'rooturl', 'thissurvey', 'imageurl', 'defaulttemplate',
 					'percentcomplete', 'move', 'groupname', 'groupdescription', 'question', 'showXquestions',
@@ -29,7 +29,6 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $anonymi
 					'templatedir', 'token', 'assessments', 's_lang', 'errormsg', 'clang', 'saved_id', 'usertemplaterootdir',
 					'totalBoilerplatequestions', 'relativeurl', 'languagechanger', 'printoutput', 'captchapath', 'loadname');
     */
-    /*
     $allowedvars = array(
         'answer',
         'assessments',
@@ -64,24 +63,30 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $anonymi
         'totalquestions ',
     );
 
+    $varsPassed = array();
 	foreach($allowedvars as $var)
 	{
 		if(isset($redata[$var])) {
             $$var = $redata[$var];
+            $varsPassed[] = $var;
         }
 	}
-     */
-    extract($redata);   // creates variables for each of the keys in the array
+    if (count($varsPassed) > 0) {
+        log_message('debug', 'templatereplace() called from ' . $debugSrc . ' contains: ' . implode(', ', $varsPassed));
+    }
+//    extract($redata);   // creates variables for each of the keys in the array
 
-    // Local over-rides in case not set above 
-    if (!isset($relativeurl)) { $relativeurl = $CI->config->item("relativeurl"); }
-    if (!isset($showgroupinfo)) { $showgroupinfo = ''; }
+    // Local over-rides in case not set above
+    if (!isset($showgroupinfo)) { $showgroupinfo = 'Y'; }
     if (!isset($showqnumcode)) { $showqnumcode = ''; }
-    if (!isset($showXquestions)) { $showXquestions = ''; }
-    if (!isset($s_lang)) { $s_lang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'); }
-    if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
-    if (!isset($captchapath)) { $captchapath = ''; }
     $_surveyid = (isset($surveyid) ? $surveyid : 0);
+    if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
+    if (!isset($showXquestions)) { $showXquestions = 'choose'; }
+    if (!isset($relativeurl)) { $relativeurl = $CI->config->item("relativeurl"); }
+    if (!isset($s_lang)) { $s_lang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'); }
+    /*
+    if (!isset($captchapath)) { $captchapath = ''; }
+     */
 
     if (file_exists($line))
     {

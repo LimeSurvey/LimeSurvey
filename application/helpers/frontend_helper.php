@@ -1391,45 +1391,12 @@ function SendSubmitNotifications()
     }
 
     $sFrom = $thissurvey['adminname'].' <'.$thissurvey['adminemail'].'>';
-
-$redata = array(
-//	'answer' => $answer,
-//	'assessments' => $assessments,
-//	'captchapath' => $captchapath,
-//	'clienttoken' => $clienttoken,
-//	'completed' => $completed,
-//	'errormsg' => $errormsg,
-//	'groupdescription' => $groupdescription,
-//	'groupname' => $groupname,
-//	'help' => $help,
-//	'imageurl' => $imageurl,
-//	'languagechanger' => $languagechanger,
-//	'loadname' => $loadname,
-//	'move' => $move,
-//	'navigator' => $navigator,
-//	'percentcomplete' => $percentcomplete,
-//	'privacy' => $privacy,
-//	'question' => $question,
-//	'register_errormsg' => $register_errormsg,
-//	'relativeurl' => $relativeurl,
-//	's_lang' => $s_lang,
-//	'saved_id' => $saved_id,
-//	'showgroupinfo' => $showgroupinfo,
-//	'showqnumcode' => $showqnumcode,
-//	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-//	'surveylist' => $surveylist,
-//	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-//	'token' => $token,
-//	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-//	'totalquestions' => $totalquestions,
-);
-
+    
+    $redata=compact(array_keys(get_defined_vars()));
     if (count($aEmailNotificationTo)>0)
     {
-        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,$redata,($thissurvey['anonymized'] == "Y"));
-        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,($thissurvey['anonymized'] == "Y"));
+        $sMessage=templatereplace($thissurvey['email_admin_notification'],$aReplacementVars,$redata,'frontend_helper[1398]',($thissurvey['anonymized'] == "Y"));
+        $sSubject=templatereplace($thissurvey['email_admin_notification_subj'],$aReplacementVars,$redata,'frontend_helper[1399]',($thissurvey['anonymized'] == "Y"));
         foreach ($aEmailNotificationTo as $sRecipient)
         {
             if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
@@ -1444,8 +1411,8 @@ $redata = array(
 
     if (count($aEmailResponseTo)>0)
     {
-        $sMessage=templatereplace($thissurvey['email_admin_responses'],$aReplacementVars,$redata,($thissurvey['anonymized'] == "Y"));
-        $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars,$redata,($thissurvey['anonymized'] == "Y"));
+        $sMessage=templatereplace($thissurvey['email_admin_responses'],$aReplacementVars,$redata,'frontend_helper[1414]',($thissurvey['anonymized'] == "Y"));
+        $sSubject=templatereplace($thissurvey['email_admin_responses_subj'],$aReplacementVars,$redata,'frontend_helper[1415]',($thissurvey['anonymized'] == "Y"));
         foreach ($aEmailResponseTo as $sRecipient)
         {
             if (!SendEmailMessage($sMessage, $sSubject, $sRecipient, $sFrom, $sitename, $bIsHTML, getBounceEmail($surveyid)))
@@ -1540,41 +1507,6 @@ function buildsurveysession($surveyid)
     $totalBoilerplatequestions = 0;
     $loadsecurity = returnglobal('loadsecurity');
 
-$redata = array(
-//	'answer' => $answer,
-//	'assessments' => $assessments,
-//	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-//	'completed' => $completed,
-//	'errormsg' => $errormsg,
-//	'groupdescription' => $groupdescription,
-//	'groupname' => $groupname,
-//	'help' => $help,
-//	'imageurl' => $imageurl,
-//	'languagechanger' => $languagechanger,
-//	'loadname' => $loadname,
-	'move' => $move,
-//	'navigator' => $navigator,
-//	'percentcomplete' => $percentcomplete,
-//	'privacy' => $privacy,
-//	'question' => $question,
-		'register_errormsg' => $register_errormsg,
-//	'relativeurl' => $relativeurl,
-//	's_lang' => $s_lang,
-//	'saved_id' => $saved_id,
-//	'showgroupinfo' => $showgroupinfo,
-//	'showqnumcode' => $showqnumcode,
-//	'showXquestions' => $showXquestions,
-//	'sitename' => $sitename,
-//	'surveylist' => $surveylist,
-//	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-//	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-
     // NO TOKEN REQUIRED BUT CAPTCHA ENABLED FOR SURVEY ACCESS
     if ($tokensexist == 0 &&
     captcha_enabled('surveyaccessscreen',$thissurvey['usecaptcha']))
@@ -1589,9 +1521,10 @@ $redata = array(
             doHeader();
             // No or bad answer to required security question
 
-            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[1525]');
             //echo makedropdownlist();
-            echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata);
+            echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata,'frontend_helper[1527]');
 
             if (isset($loadsecurity))
             { // was a bad answer
@@ -1631,7 +1564,7 @@ $redata = array(
 		        </table>
 		        </form>";
 
-            echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+            echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[1567]');
             doFooter();
             exit;
         }
@@ -1657,12 +1590,13 @@ $redata = array(
         sendcacheheaders();
         doHeader();
 
-        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+        $redata = compact(array_keys(get_defined_vars()));
+        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[1594]');
         //echo makedropdownlist();
-        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata);
+        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata,'frontend_helper[1596]');
         if (isset($thissurvey) && $thissurvey['allowregister'] == "Y")
         {
-            echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata);
+            echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'frontend_helper[1599]');
         }
         else
         {
@@ -1708,7 +1642,7 @@ $redata = array(
 	        </form></div>";
         }
 
-        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[1645]');
         doFooter();
         exit;
     }
@@ -1738,15 +1672,16 @@ $redata = array(
             sendcacheheaders();
             doHeader();
 
-            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
-            echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[1676]');
+            echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata,'frontend_helper[1677]');
             echo '<div id="wrapper"><p id="tokenmessage">'.$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
             ."\t".$clang->gT("The token you have provided is either not valid, or has already been used.")."<br />\n"
             ."\t".sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname'])
             ." (<a href='mailto:{$thissurvey['adminemail']}'>"
             ."{$thissurvey['adminemail']}</a>)</p></div>\n";
 
-            echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+            echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[1684]');
             doFooter();
             exit;
         }
@@ -1780,8 +1715,9 @@ $redata = array(
                 doHeader();
                 //TOKEN DOESN'T EXIST OR HAS ALREADY BEEN USED. EXPLAIN PROBLEM AND EXIT
 
-                echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
-                echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata);
+                $redata = compact(array_keys(get_defined_vars()));
+                echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[1719]');
+                echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata,'frontend_helper[1720]');
                 echo "\t<div id='wrapper'>\n"
                 ."\t<p id='tokenmessage'>\n"
                 ."\t".$clang->gT("This is a controlled survey. You need a valid token to participate.")."<br /><br />\n"
@@ -1792,7 +1728,7 @@ $redata = array(
                 ."\t</p>\n"
                 ."\t</div>\n";
 
-                echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+                echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[1731]');
                 doFooter();
                 exit;
             }
@@ -1805,13 +1741,14 @@ $redata = array(
             sendcacheheaders();
             doHeader();
             // No or bad answer to required security question
-            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
-            echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata);
+            $redata = compact(array_keys(get_defined_vars()));
+            echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[1745]');
+            echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata,'frontend_helper[1746]');
             // If token wasn't provided and public registration
             // is enabled then show registration form
             if ( !isset($gettoken) && isset($thissurvey) && $thissurvey['allowregister'] == "Y")
             {
-                echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata);
+                echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'frontend_helper[1751]');
             }
             else
             { // only show CAPTCHA
@@ -1877,7 +1814,7 @@ $redata = array(
 		                </id>";
             }
 
-            echo '</div>'.templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+            echo '</div>'.templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[1817]');
             doFooter();
             exit;
         }
@@ -1949,8 +1886,6 @@ $redata = array(
 
     $totalquestions = $result->num_rows();
 
-    $redata = array_merge($redata, array('totalquestions' => $totalquestions));
-
     //2. SESSION VARIABLE: totalsteps
     //The number of "pages" that will be presented in this survey
     //The number of pages to be presented will differ depending on the survey format
@@ -1975,8 +1910,9 @@ $redata = array(
         sendcacheheaders();
         doHeader();
 
-        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
-        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata);
+        $redata = compact(array_keys(get_defined_vars()));
+        echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[1914]');
+        echo templatereplace(file_get_contents("$thistpl/survey.pstpl"),array(),$redata,'frontend_helper[1915]');
         echo "\t<div id='wrapper'>\n"
         ."\t<p id='tokenmessage'>\n"
         ."\t".$clang->gT("This survey does not yet have any questions and cannot be tested or completed.")."<br /><br />\n"
@@ -1986,7 +1922,7 @@ $redata = array(
 		."\t</p>\n"
         ."\t</div>\n";
 
-        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+        echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[1925]');
         doFooter();
         exit;
     }
@@ -2658,42 +2594,6 @@ function check_quota($checkaction,$surveyid)
         // Need to add Quota action enforcement here.
         reset($quota_info);
 
-$redata = array(
-	'answer' => $answer,
-	'assessments' => $assessments,
-	'captchapath' => $captchapath,
-	'clienttoken' => $clienttoken,
-	'completed' => $completed,
-	'errormsg' => $errormsg,
-	'groupdescription' => $groupdescription,
-	'groupname' => $groupname,
-	'help' => $help,
-	'imageurl' => $imageurl,
-	'languagechanger' => $languagechanger,
-	'loadname' => $loadname,
-	'move' => $move,
-	'navigator' => $navigator,
-	'percentcomplete' => $percentcomplete,
-	'privacy' => $privacy,
-	'question' => $question,
-	'register_errormsg' => $register_errormsg,
-	'relativeurl' => $relativeurl,
-	's_lang' => $s_lang,
-	'saved_id' => $saved_id,
-	'showgroupinfo' => $showgroupinfo,
-	'showqnumcode' => $showqnumcode,
-	'showXquestions' => $showXquestions,
-	'sitename' => $sitename,
-	'surveylist' => $surveylist,
-	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-
-
         $tempmsg ="";
         $found = false;
         foreach($quota_info as $quota)
@@ -2712,12 +2612,14 @@ $redata = array(
                     header("Location: ".$quota['Url']);
                 }
                 doHeader();
-                echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+
+                $redata = compact(array_keys(get_defined_vars()));
+                echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2617]');
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
                 echo "\t</div>\n";
-                echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+                echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[2622]');
                 doFooter();
                 exit;
             }
@@ -2727,7 +2629,9 @@ $redata = array(
 
                 sendcacheheaders();
                 doHeader();
-                echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+
+                $redata = compact(array_keys(get_defined_vars()));
+                echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2634]');
                 echo "\t<div class='quotamessage'>\n";
                 echo "\t".$quota['Message']."<br /><br />\n";
                 echo "\t<a href='".$quota['Url']."'>".$quota['UrlDescrip']."</a><br />\n";
@@ -2737,7 +2641,7 @@ $redata = array(
 					<input type='hidden' name='token' value='".$clienttoken."' id='token' />
 					</form>\n";
                 echo "\t</div>\n";
-                echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+                echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[2644]');
                 doFooter();
                 exit;
             }
@@ -2846,56 +2750,21 @@ function GetReferringUrl()
 
     $navigator = surveymover();
 
-$redata = array(
-//	'answer' => $answer,
-//	'assessments' => $assessments,
-//	'captchapath' => $captchapath,
-//	'clienttoken' => $clienttoken,
-//	'completed' => $completed,
-//	'errormsg' => $errormsg,
-//	'groupdescription' => $groupdescription,
-//	'groupname' => $groupname,
-//	'help' => $help,
-//	'imageurl' => $imageurl,
-//	'languagechanger' => $languagechanger,
-//	'loadname' => $loadname,
-//	'move' => $move,
-	'navigator' => $navigator,
-//	'percentcomplete' => $percentcomplete,
-//	'privacy' => $privacy,
-//	'question' => $question,
-//	'register_errormsg' => $register_errormsg,
-//	'relativeurl' => $relativeurl,
-//	's_lang' => $s_lang,
-//	'saved_id' => $saved_id,
-//	'showgroupinfo' => $showgroupinfo,
-//	'showqnumcode' => $showqnumcode,
-//	'showXquestions' => $showXquestions,
-//	'sitename' => $sitename,
-//	'surveylist' => $surveylist,
-//	'templatedir' => $templatedir,
-	'thissurvey' => $thissurvey,
-	'token' => $token,
-//	'totalBoilerplatequestions' => $totalBoilerplatequestions,
-	'totalquestions' => $totalquestions,
-);
-
-
-
     sendcacheheaders();
     doHeader();
 
-    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata);
+    $redata = compact(array_keys(get_defined_vars()));
+    echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'frontend_helper[2757]');
     echo "\n<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 
     echo "\n\n<!-- START THE SURVEY -->\n";
 
-    echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"),array(),$redata)."\n";
+    echo templatereplace(file_get_contents("$thistpl/welcome.pstpl"),array(),$redata,'frontend_helper[2762]')."\n";
     if ($thissurvey['anonymized'] == "Y")
     {
-        echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"),array(),$redata)."\n";
+        echo templatereplace(file_get_contents("$thistpl/privacy.pstpl"),array(),$redata,'frontend_helper[2765]')."\n";
     }
-    echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"),array(),$redata);
+    echo templatereplace(file_get_contents("$thistpl/navigator.pstpl"),array(),$redata,'frontend_helper[2767]');
     if ($thissurvey['active'] != "Y")
     {
         echo "<p style='text-align:center' class='error'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";
@@ -2910,7 +2779,7 @@ $redata = array(
         echo "\n<input type='hidden' name='loadsecurity' value='$loadsecurity' id='loadsecurity' />\n";
     }
     echo "\n</form>\n";
-    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata);
+    echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'frontend_helper[2782]');
     doFooter();
 }
 
