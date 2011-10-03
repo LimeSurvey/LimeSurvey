@@ -191,6 +191,7 @@ CREATE TABLE [prefix_questions] (
   [language] VARCHAR(20) default 'en',
   [scale_id] tinyint NOT NULL default '0',
   [same_default] tinyint NOT NULL default '0',
+  [relevance] varchar(max),
   PRIMARY KEY  ([qid],[language])
 ) 
 ;

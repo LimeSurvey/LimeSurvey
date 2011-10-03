@@ -184,6 +184,7 @@ CREATE TABLE prefix_questions (
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
     scale_id smallint DEFAULT 0 NOT NULL,
     same_default smallint DEFAULT 0 NOT NULL,
+    relevance text,
     CONSTRAINT prefix_questions_pkey PRIMARY KEY (qid, "language")    
 );
 
