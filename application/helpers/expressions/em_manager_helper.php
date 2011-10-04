@@ -113,14 +113,30 @@ class LimeExpressionManager {
                 $relOrList = array();
                 $_cqid = $row['cqid'];
             }
-            if ($row['type'] == 'M' || $row['type'] == 'P') {
-                $fieldname = $row['cfieldname'] . $row['value'];
-                $value = 'Y';
+
+            // fix fieldnames
+            if ($row['type'] == '' && preg_match('/^{.+}$/',$row['cfieldname'])) {
+                $fieldname = substr($row['cfieldname'],1,-1);    // {TOKEN:xxxx}
+                $value = $row['value'];
+            }
+            else if ($row['type'] == 'M' || $row['type'] == 'P') {
+                if (substr($row['cfieldname'],0,1) == '+') {
+                    // if prefixed with +, then a fully resolved name
+                    $fieldname = substr($row['cfieldname'],1);
+                    $value = $row['value'];
+                }
+                else {
+                    // else create name by concatenating two parts together
+                    $fieldname = $row['cfieldname'] . $row['value'];
+                    $value = 'Y';
+                }
             }
             else {
                 $fieldname = $row['cfieldname'];
                 $value = $row['value'];
             }
+
+            // fix values
             if (preg_match('/^@\d+X\d+X\d+.*@$/',$value)) {
                 $value = substr($value,1,-1);
             }
@@ -130,10 +146,8 @@ class LimeExpressionManager {
             else {
                 $value = $CI->db->escape($value);   // TODO - is this the desired behavior - esp for regex?
             }
-            // TODO - test for for the following additional types of Conditions
-            // (1) +SGQA - is that just M or P type questions that are fully-specified (so don't append $value and  compare to 'Y')?
-            // (2) Can Constant contain {INSERTANS:xxxx}?
-            // (3) {TOKEN:xxx} == xxxx - how should that be stored in the database?  have cfield={TOKEN:xxx}?  Right now it is stored wrong in 1.91+
+
+            // add equation
             if  ($row['method'] == 'RX')
             {
                 $relOrList[] = "regexMatch(" . $value . "," . $fieldname . ")";
@@ -141,6 +155,10 @@ class LimeExpressionManager {
             else
             {
                 $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
+            }
+
+            if ($row['cqid'] == 0 || substr($row['cfieldname'],0,1) == '+') {
+                $_cqid = -1;    // forces this statement to be ANDed instead of being part of a cqid OR group
             }
         }
         // output last one

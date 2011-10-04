@@ -11,7 +11,13 @@ class Conditions_model extends CI_Model {
                     .", ".$this->db->dbprefix('questions')." as q"
                     ." where c.qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.")"
                     ." and c.cqid = q.qid"
-                    ." order by qid, scenario, cqid";
+                    ." union "
+                    ." select c.*, '' as type"
+                    ." from ".$this->db->dbprefix('conditions')." as c"
+                    .", ".$this->db->dbprefix('questions')." as q"
+                    ." where c.qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.")"
+                    ." and c.cqid = 0"
+                    ." order by qid, scenario, cqid, cfieldname, value";
         }
         else {
             $query = "select c.*"
@@ -20,7 +26,13 @@ class Conditions_model extends CI_Model {
                     .", ".$this->db->dbprefix('questions')." as q"
                     ." where c.qid = ".$qid
                     ." and c.cqid = q.qid"
-                    ." order by qid, scenario, cqid";
+                    ." union "
+                    ." select c.*, '' as type"
+                    ." from ".$this->db->dbprefix('conditions')." as c"
+                    .", ".$this->db->dbprefix('questions')." as q"
+                    ." where c.qid = ".$qid
+                    ." and c.cqid = 0"
+                    ." order by qid, scenario, cqid, cfieldname, value";
         }
 
 		$data = $this->db->query($query);
