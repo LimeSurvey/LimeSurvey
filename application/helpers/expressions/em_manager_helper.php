@@ -113,13 +113,34 @@ class LimeExpressionManager {
                 $relOrList = array();
                 $_cqid = $row['cqid'];
             }
+            if ($row['type'] == 'M' || $row['type'] == 'P') {
+                $fieldname = $row['cfieldname'] . $row['value'];
+                $value = 'Y';
+            }
+            else {
+                $fieldname = $row['cfieldname'];
+                $value = $row['value'];
+            }
+            if (preg_match('/^@\d+X\d+X\d+.*@$/',$value)) {
+                $value = substr($value,1,-1);
+            }
+            else if (preg_match('/^{.+}$/',$value)) {
+                $value = substr($value,1,-1);
+            }
+            else {
+                $value = $CI->db->escape($value);   // TODO - is this the desired behavior - esp for regex?
+            }
+            // TODO - test for for the following additional types of Conditions
+            // (1) +SGQA - is that just M or P type questions that are fully-specified (so don't append $value and  compare to 'Y')?
+            // (2) Can Constant contain {INSERTANS:xxxx}?
+            // (3) {TOKEN:xxx} == xxxx - how should that be stored in the database?  have cfield={TOKEN:xxx}?  Right now it is stored wrong in 1.91+
             if  ($row['method'] == 'RX')
             {
-                $relOrList[] = "regexMatch('" . $row['value'] . "'," . $row['cfieldname'] . ")";    // TODO - escape the value?
+                $relOrList[] = "regexMatch(" . $value . "," . $fieldname . ")";
             }
             else
             {
-                $relOrList[] = $row['cfieldname'] . " " . $row['method'] . " '" . $row['value'] . "'";
+                $relOrList[] = $fieldname . " " . $row['method'] . " " . $value;
             }
         }
         // output last one

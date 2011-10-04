@@ -5,15 +5,22 @@ class Conditions_model extends CI_Model {
     function getAllRecordsForSurvey($surveyid, $qid=NULL)
     {
         if (is_null($qid)) {
-            $query = "select * from ".$this->db->dbprefix('conditions')
-                    ." where qid in (select qid from ".$this->db->dbprefix('questions')
-                    ." where sid = ".$surveyid
-                .") order by qid, scenario, cqid";
+            $query = "select c.*"
+                    .", q.type"
+                    ." from ".$this->db->dbprefix('conditions')." as c"
+                    .", ".$this->db->dbprefix('questions')." as q"
+                    ." where c.qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.")"
+                    ." and c.cqid = q.qid"
+                    ." order by qid, scenario, cqid";
         }
         else {
-            $query = "select * from ".$this->db->dbprefix('conditions')
-                    ." where qid = ".$qid
-                ." order by qid, scenario, cqid";
+            $query = "select c.*"
+                    .", q.type"
+                    ." from ".$this->db->dbprefix('conditions')." as c"
+                    .", ".$this->db->dbprefix('questions')." as q"
+                    ." where c.qid = ".$qid
+                    ." and c.cqid = q.qid"
+                    ." order by qid, scenario, cqid";
         }
 
 		$data = $this->db->query($query);
