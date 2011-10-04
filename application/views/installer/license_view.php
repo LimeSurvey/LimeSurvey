@@ -32,7 +32,7 @@ $this->load->view("installer/header_view", array('progressValue' => $progressVal
 <div class="grid_2">&nbsp;</div>
 <div class="grid_4 demo">
 <br/>
-<form action="<?php echo site_url("installer/install/0"); ?>" method="post" style="width: 300px;" name="formcheck">
+<form action="<?php echo site_url("installer/install/license"); ?>" method="post" style="width: 300px;" name="formcheck">
 <table style="font-size:11px; width: 694px; background: #ffffff;">
 <tbody>
    <tr>

@@ -265,6 +265,11 @@ class Installer extends CI_Controller {
         $aData['descp']=$clang->gT('GNU General Public License:');
         $aData['classesForStep']=array('off','on','off','off','off','off');
         $aData['progressValue']=0;
+        
+        if ($_SERVER['REQUEST_METHOD']=='POST')
+        {
+            redirect(site_url('installer/install/0'));
+        }
 
         $this->load->view('installer/license_view',$aData);
     }
