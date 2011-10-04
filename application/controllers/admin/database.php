@@ -581,6 +581,12 @@ class Database extends Admin_Controller {
 
             //now save all valid attributes
             $validAttributes=$qattributes[$_POST['type']];
+            // if there are conditions, create a relevance equation, over-writing any default relevance value
+            $cond2rel = LimeExpressionManager::ConvertConditionsToRelevance($surveyid,$qid);
+            if (!is_null($cond2rel)) {
+                $_POST['relevance'] = $cond2rel;
+            }
+            
             foreach ($validAttributes as $validAttribute)
             {
                 if ($validAttribute['i18n'])
@@ -615,16 +621,17 @@ class Database extends Admin_Controller {
                         $query = "select qaid from ".$this->db->dbprefix."question_attributes
                                   WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                         $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                        $value = $this->db->escape($_POST[$validAttribute['name']]);
                         if ($result->num_rows()>0)
                         {
                             $query = "UPDATE ".$this->db->dbprefix."question_attributes
-                                      SET value='".$_POST[$validAttribute['name']]."',language=NULL WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                                      SET value=".$value.",language=NULL WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                             $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                         }
                         else
                         {
                             $query = "INSERT into ".$this->db->dbprefix."question_attributes
-                                      (qid, value, attribute) values ($qid,'".$_POST[$validAttribute['name']]."','{$validAttribute['name']}')";
+                                      (qid, value, attribute) values ($qid,$value,'{$validAttribute['name']}')";
                             $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                         }
                     }

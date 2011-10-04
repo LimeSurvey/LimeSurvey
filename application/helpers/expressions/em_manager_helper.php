@@ -48,12 +48,19 @@ class LimeExpressionManager {
         trigger_error('Clone is not allowed.', E_USER_ERROR);
     }
 
-    public function ConvertConditionsToRelevance($surveyId)
+    /**
+     * If $qid is set, returns the relevance equation generated from conditions (or NULL if there are no conditions for that $qid)
+     * If $qid is NULL, returns an array of relevance equations generated from Conditions, keyed on the question ID
+     * @param <type> $surveyId
+     * @param <type> $qid - if passed, only generates relevance equation for that question - otherwise genereates for all questions with conditions
+     * @return <type>
+     */
+    public function ConvertConditionsToRelevance($surveyId, $qid=NULL)
     {
         $CI =& get_instance();
     	$CI->load->model('conditions_model');
 
-        $query = $CI->conditions_model->getAllRecordsForSurvey($surveyId);
+        $query = $CI->conditions_model->getAllRecordsForSurvey($surveyId,$qid);
 
         $_qid = -1;
         $relevanceEqns = array();
@@ -129,7 +136,19 @@ class LimeExpressionManager {
             $relevanceEqn = implode(' and ', $scenarios);
             $relevanceEqns[$_qid] = $relevanceEqn;
         }
-        return $relevanceEqns;
+        if (is_null($qid)) {
+            return $relevanceEqns;
+        }
+        else {
+            if (isset($relevanceEqns[$qid]))
+            {
+                return $relevanceEqns[$qid];
+            }
+            else
+            {
+                return NULL;
+            }
+        }
     }
 
     public static function UnitTestConvertConditionsToRelevance()
@@ -137,6 +156,8 @@ class LimeExpressionManager {
         $LEM =& LimeExpressionManager::singleton();
         print_r($LEM->ConvertConditionsToRelevance(1));
         print_r($LEM->ConvertConditionsToRelevance(26766));
+        print_r($LEM->ConvertConditionsToRelevance(26766,289));
+        print_r($LEM->ConvertConditionsToRelevance(26766,3));   // should be NULL
     }
 
     /**
@@ -344,9 +365,11 @@ class LimeExpressionManager {
                 'relevance'=>$relevance,
                 'relevanceNum'=>'relevance' . $questionNum,
                 'relevanceStatus'=>$relStatus,
+                'qcode'=>$varName,
                 );
             $this->knownVars[$varName] = $varInfo_Code;
             $this->knownVars['INSERTANS:' . $code] = $varInfo_Code; // $varInfo_DisplayVal;
+            $this->knownVars[$code] = $varInfo_Code;
 
             $this->jsVar2qid[$jsVarName] = $questionNum;
 

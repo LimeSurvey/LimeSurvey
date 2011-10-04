@@ -1268,12 +1268,12 @@ class ExpressionManager {
                     $stringParts[] = "'</span>";
                     break;
                 case 'SGQA':
-                    $codeValue = $this->GetVarAttribute($token[0], 'displayValue', '');
-                    $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
-                    $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: #4C88BE; font-weight: bold'>";
-                    $stringParts[] = $token[0];
-                    $stringParts[] = "</span>";
-                    break;
+//                    $codeValue = $this->GetVarAttribute($token[0], 'displayValue', '');
+//                    $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
+//                    $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: #4C88BE; font-weight: bold'>";
+//                    $stringParts[] = $token[0];
+//                    $stringParts[] = "</span>";
+//                    break;
                 case 'WORD':
                     if ($i+1<$numTokens && $tokens[$i+1][2] == 'LP')
                     {
@@ -1292,27 +1292,36 @@ class ExpressionManager {
                         $isOnCurrentPage = $this->GetVarAttribute($token[0],'isOnCurrentPage','N');
                         $jsName = $this->GetVarAttribute($token[0],'jsName','');
                         $codeValue = $this->GetVarAttribute($token[0],'codeValue','');
-                        if ($isOnCurrentPage=='Y')
-                        {
-                            $messages[] = 'Variable that is set on current page';
-                            if ($jsName != '') {
-                                $messages[] = $jsName;
+                        $question = $this->GetVarAttribute($token[0], 'question', '');
+                        $qcode= $this->GetVarAttribute($token[0],'qcode','');
+                        if ($token[2] == 'SGQA' && $qcode != '') {
+                            $descriptor = '[' . $qcode . ']: ';
+                        }
+                        else if ($jsName != '') {
+                            $descriptor = '[' . $jsName . ']: ';
+                        }
+                        else {
+                            $descriptor = '';
+                        }
+                        $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
+                        if ($codeValue != '') {
+                            if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
+                                $displayValue = $this->GetVarAttribute($token[0], 'displayValue', '');
+                                $messages[] = 'value=[' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false) . '] '
+                                        . htmlspecialchars($displayValue,ENT_QUOTES,'UTF-8',false);
                             }
-                            if ($codeValue != '') {
+                            else {
                                 $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
                             }
+                        }
+                        if ($isOnCurrentPage=='Y')
+                        {
                             $stringParts[] = "<span title='". implode('; ',$messages) . "' style='color: #a0522d; font-weight: bold'>";
                             $stringParts[] = $token[0];
                             $stringParts[] = "</span>";
                         }
                         else
                         {
-                            if ($jsName != '') {
-                                $messages[] = $jsName;
-                            }
-                            if ($codeValue != '') {
-                                $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
-                            }
                             $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: #228b22; font-weight: bold'>";
                             $stringParts[] = $token[0];
                             $stringParts[] = "</span>";
@@ -1384,6 +1393,7 @@ class ExpressionManager {
             case 'relevanceNum':
             case 'relevanceStatus':
             case 'type':
+            case 'qcode':
                 return (isset($var[$attr])) ? $var[$attr] : $default;
             case 'displayValue':
             case 'shown':
