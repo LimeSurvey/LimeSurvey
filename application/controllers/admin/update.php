@@ -13,7 +13,7 @@
  * $Id: update.php 10323 2011-06-22 15:33:54Z dionet $
  *
  */
-list(,$updaterversion)=explode(' ','$Rev: 588887976 $');  // this is updated by subversion so don't change this string
+list(,$updaterversion)=explode(' ','$Rev$');  // this is updated by subversion so don't change this string
 
 /**
  * Update Controller

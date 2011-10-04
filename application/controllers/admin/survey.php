@@ -1211,12 +1211,14 @@ class survey extends Survey_Common_Controller {
                 {
                     $aImportResults=XMLImportSurvey($sFullFilepath,null,null, null,(isset($_POST['translinksfields'])));
                 }
+                elseif (isset($sExtension) && strtolower($sExtension)=='.zip')
+                {
+                    $aImportResults=XMLImportSurvey($sFullFilepath,null,null, null,(isset($_POST['translinksfields'])));
+                }
                 else
                 {
                     $importerror = true;
                 }
-
-
             }
             elseif ($action == 'copysurvey' && !$importerror)
             {

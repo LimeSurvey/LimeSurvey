@@ -83,16 +83,20 @@ class export extends Survey_Common_Controller {
         }
         elseif($action == "exportarchive")
         {
-           $sLSSFileName=sRandomChars(30);
-           $sResultsFileName=sRandomChars(30);
-           $sTokenFileName=sRandomChars(30);
-           $sTimingsFileName=sRandomChars(30);
-           file_put_contents($this->config->item("tempdir").DIRECTORY_SEPARATOR.$sLSSFileName,survey_getXMLData($surveyid));
-           file_put_contents($this->config->item("tempdir").DIRECTORY_SEPARATOR.$sResultsFileName,getXMLDataSingleTable($surveyid,'survey_'.$surveyid,'Responses'));
+
+           $this->load->library('zip');
+           $oZIP = $this->zip;
+           $this->zip->add_data('survey_'.$surveyid.'.lss',survey_getXMLData($surveyid));
+           $this->zip->add_data('survey_'.$surveyid.'_responses.lsr',getXMLDataSingleTable($surveyid,'survey_'.$surveyid,'Responses'));
            if ($this->db->table_exists('tokens_'.$surveyid))
            {
-
+              $this->zip->add_data('survey_'.$surveyid.'_tokens.lst',getXMLDataSingleTable($surveyid,'tokens_'.$surveyid,'Tokens'));
            }
+           if ($this->db->table_exists('survey_'.$surveyid.'_timings'))
+           {
+                $this->zip->add_data('survey_'.$surveyid.'_timings.lsi',getXMLDataSingleTable($surveyid,'survey_'.$surveyid.'_timings','Timings'));
+           }
+           $this->zip->download("limesurvey_archive_{$surveyid}.zip");
         }
 	}
 
