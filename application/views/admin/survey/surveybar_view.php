@@ -129,17 +129,17 @@
                             <?php if($respstatsread && $surveyexport) {
                                     if ($activated){?>
                                     <li><a href='<?php echo site_url("admin/export/survey/exportarchive/$surveyid");?>' >
-                                        <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Survey archive (.lsa)");?></a></li>
+                                        <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Survey archive (.zip)");?></a></li>
                                     <?php }
                                     else
                                     {?>
                                     <li><a href="#" onclick="alert('<?php echo $clang->gT("You can only archive active surveys.", "js");?>');" >
-                                        <img src='<?php echo $imageurl;?>/export_disabled_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Survey archive (.lsa)");?></a></li><?php
+                                        <img src='<?php echo $imageurl;?>/export_disabled_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Survey archive (.zip)");?></a></li><?php
                                     }
                             }?>
                             <?php if($surveyexport) { ?>
                                 <li><a href='<?php echo site_url("admin/export/survey/exportstructurequexml/$surveyid");?>' >
-                                <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("queXML format (*.xlm)");?></a>
+                                <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("queXML format (*.xml)");?></a>
                                 <?php } ?>
 
                         </ul>

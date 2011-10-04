@@ -66,7 +66,7 @@ function db_upgrade_all($oldversion) {
                              'type' => 'VARCHAR',
                              'constraint' => '50',
                               ),
-            'targetsqid' => array(
+            'targetqid' => array(
                              'type' => 'INT',
                              'null' => TRUE,
                               ),
