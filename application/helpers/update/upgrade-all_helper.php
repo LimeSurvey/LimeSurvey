@@ -78,15 +78,6 @@ function db_upgrade_all($oldversion) {
         $CI->dbforge->add_field($fields);
         $CI->dbforge->create_table('survey_url_parameters',TRUE);
     }
-    if ($oldversion < 150)
-    {
-        $fields = array(
-            'relevance' => array(
-                            'type' => 'TEXT'
-            )
-        );
-        $CI->dbforge->add_column('questions',$fields);
-    }
 }
 
 function upgrade_question_attributes148()

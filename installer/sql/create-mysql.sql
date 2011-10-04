@@ -175,7 +175,6 @@ CREATE TABLE `prefix_questions` (
   `language` varchar(20) default 'en',
   `scale_id` tinyint NOT NULL default '0',
   `same_default` tinyint NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog',
-  `relevance` text,
   PRIMARY KEY  (`qid`,`language`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -516,6 +515,6 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '150');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '149');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 
