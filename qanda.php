@@ -4409,7 +4409,7 @@ function do_multiplenumeric($ia)
                 . "<div class=\"slider_callout\" id=\"slider-callout-$myfname\"></div>\n"
                 . "<div class=\"ui-slider-handle\" id=\"slider-handle-$myfname\"></div>\n";
                 $answer_main .= "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
-                if (isset($_SESSION[$myfname]))
+                if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')
                 {
                     $answer_main .= $_SESSION[$myfname];
                 }
