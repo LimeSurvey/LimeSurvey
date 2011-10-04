@@ -44,8 +44,16 @@ and open the template in the editor.
                 <td>For this page group, shows all of the translation requests, the pretty-printed version of the request, and the translated results</td>
             </tr>
             <tr>
-                <td><a href="<?php echo site_url("admin/expressions/test/conditions2relevance");?>">Convert Conditions to Relevance</a></td>
-                <td>Shows Relevance equations for all conditions in the active survey</td>
+                <td><a href="<?php echo site_url("admin/expressions/test/conditions2relevance");?>">Preview Conversion of Conditions to Relevance</a></td>
+                <td>Shows Relevance equations for all conditions in the database, grouped by question id (and not pretty-printed)</td>
+            </tr>
+            <tr>
+                <td><a href="<?php echo site_url("admin/expressions/test/upgrade_conditions2relevance");?>"><span style='background-color: red;'>**</span>Upgrade Conditions to Relevance</a></td>
+                <td><span style='color: red;'>CAUTION: This function changes your database.</span> This upgrades all conditions within your database to Relevance.  Existing conditions are preserved, but any relevance attributes are overwritten by Conditions if there are any.</td>
+            </tr>
+            <tr>
+                <td><a href="<?php echo site_url("admin/expressions/test/revert_upgrade_conditions2relevance");?>"><span style='background-color: red;'>**</span>Revert of Upgrade Conditions to Relevance</a></td>
+                <td><span style='color: red;'>CAUTION: This function changes your database.</span> This deletes the relevance attribute for all questions that have Conditions (to avoid having run-time clashes between relevance and conditions)  This function will be removed once the back-end conditions processing is removed and testing is complete.</td>
             </tr>
         </table>
     </body>

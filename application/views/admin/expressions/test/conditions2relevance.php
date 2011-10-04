@@ -2,13 +2,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>LimeExpressionManager:  Conditions to Relevance</title>
+        <title>LimeExpressionManager:  Preview Conditions to Relevance</title>
     </head>
     <body>
-        <pre>
         <?php
-            echo LimeExpressionManager::UnitTestConvertConditionsToRelevance();
+            $data = LimeExpressionManager::UnitTestConvertConditionsToRelevance();
+            echo count($data) . " question(s) in your database contain conditions.  Below is the mapping of question ID number to generated relevance equation<br/>";
+            echo "<pre>";
+            print_r($data);
+            echo "</pre>";
         ?>
-        </pre>
     </body>
 </html>

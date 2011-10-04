@@ -49,13 +49,62 @@ class LimeExpressionManager {
     }
 
     /**
+     * Do bulk-update/save of Conditions to Relevance
+     * @param <type> $surveyId - if NULL, processes the entire database, otherwise just the specified survey
+     * @param <type> $qid - if specified, just updates that one question
+     * @return <type>
+     */
+    public static function UpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
+    {
+        $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
+        $num = count($releqns);
+        if ($num == 0) {
+            return NULL;
+        }
+
+        $data = array();
+        foreach ($releqns as $key=>$value) {
+            $data[] = array(
+                'qid' => $key,
+                'attribute' => 'relevance',
+                'value' => $value,
+            );
+        }
+
+        $CI =& get_instance();
+        $CI->db->where('attribute','relevance')->where_in('qid',array_keys($releqns))->delete('question_attributes');
+        $CI->db->insert_batch('question_attributes',$data);
+
+        return $releqns;
+    }
+
+    /**
+     * This partially reverses UpgradeConditionsToRelevance().  It removes Relevance for questions that have Conditions
+     * @param <type> $surveyId
+     * @param <type> $qid
+     */
+    public static function RevertUpgradeConditionsToRelevance($surveyId=NULL, $qid=NULL)
+    {
+        $releqns = self::ConvertConditionsToRelevance($surveyId,$qid);
+        $num = count($releqns);
+        if ($num == 0) {
+            return NULL;
+        }
+
+        $CI =& get_instance();
+        $CI->db->where('attribute','relevance')->where_in('qid',array_keys($releqns))->delete('question_attributes');
+
+        return $CI->db->affected_rows();
+    }
+
+    /**
      * If $qid is set, returns the relevance equation generated from conditions (or NULL if there are no conditions for that $qid)
      * If $qid is NULL, returns an array of relevance equations generated from Conditions, keyed on the question ID
      * @param <type> $surveyId
      * @param <type> $qid - if passed, only generates relevance equation for that question - otherwise genereates for all questions with conditions
      * @return <type>
      */
-    public function ConvertConditionsToRelevance($surveyId, $qid=NULL)
+    public static function ConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
     {
         $CI =& get_instance();
     	$CI->load->model('conditions_model');
@@ -144,7 +193,7 @@ class LimeExpressionManager {
                 $value = substr($value,1,-1);
             }
             else {
-                $value = $CI->db->escape($value);   // TODO - is this the desired behavior - esp for regex?
+                $value = '"' . $value . '"';
             }
 
             // add equation
@@ -190,13 +239,16 @@ class LimeExpressionManager {
         }
     }
 
-    public static function UnitTestConvertConditionsToRelevance()
+    /**
+     * Return list of relevance equations generated from conditions
+     * @param <type> $surveyId
+     * @param <type> $qid
+     * @return <type>
+     */
+    public static function UnitTestConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
     {
         $LEM =& LimeExpressionManager::singleton();
-        print_r($LEM->ConvertConditionsToRelevance(1));
-        print_r($LEM->ConvertConditionsToRelevance(26766));
-        print_r($LEM->ConvertConditionsToRelevance(26766,289));
-        print_r($LEM->ConvertConditionsToRelevance(26766,3));   // should be NULL
+        return $LEM->ConvertConditionsToRelevance($surveyId, $qid);
     }
 
     /**

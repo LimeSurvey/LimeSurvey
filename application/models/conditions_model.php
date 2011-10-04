@@ -2,38 +2,31 @@
 
 class Conditions_model extends CI_Model {
 
-    function getAllRecordsForSurvey($surveyid, $qid=NULL)
+    function getAllRecordsForSurvey($surveyid=NULL, $qid=NULL)
     {
-        if (is_null($qid)) {
-            $query = "select c.*"
-                    .", q.type"
-                    ." from ".$this->db->dbprefix('conditions')." as c"
-                    .", ".$this->db->dbprefix('questions')." as q"
-                    ." where c.qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.")"
-                    ." and c.cqid = q.qid"
-                    ." union "
-                    ." select c.*, '' as type"
-                    ." from ".$this->db->dbprefix('conditions')." as c"
-                    .", ".$this->db->dbprefix('questions')." as q"
-                    ." where c.qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.")"
-                    ." and c.cqid = 0"
-                    ." order by qid, scenario, cqid, cfieldname, value";
+        if (!is_null($qid)) {
+            $where = " c.qid = ".$qid." and ";
+        }
+        else if (!is_null($surveyid)) {
+            $where = " c.qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.") and ";
         }
         else {
-            $query = "select c.*"
-                    .", q.type"
-                    ." from ".$this->db->dbprefix('conditions')." as c"
-                    .", ".$this->db->dbprefix('questions')." as q"
-                    ." where c.qid = ".$qid
-                    ." and c.cqid = q.qid"
-                    ." union "
-                    ." select c.*, '' as type"
-                    ." from ".$this->db->dbprefix('conditions')." as c"
-                    .", ".$this->db->dbprefix('questions')." as q"
-                    ." where c.qid = ".$qid
-                    ." and c.cqid = 0"
-                    ." order by qid, scenario, cqid, cfieldname, value";
+            $where = "";
         }
+
+        $query = "select distinct c.*"
+                .", q.sid, q.type"
+                ." from ".$this->db->dbprefix('conditions')." as c"
+                .", ".$this->db->dbprefix('questions')." as q"
+                ." where " . $where
+                ." c.cqid=q.qid"
+                ." union "
+                ." select c.*, q.sid, '' as type"
+                ." from ".$this->db->dbprefix('conditions')." as c"
+                .", ".$this->db->dbprefix('questions')." as q"
+                ." where ". $where
+                ." c.cqid = 0 and c.qid = q.qid"
+                ." order by sid, qid, scenario, cqid, cfieldname, value";
 
 		$data = $this->db->query($query);
 
