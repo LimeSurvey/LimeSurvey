@@ -1470,7 +1470,7 @@ class Database extends Admin_Controller {
                     if ($usresult->num_rows()==0)
                     {
                         $this->load->library('Limesurvey_lang',array($langname));
-                        $bplang = $this->limesurvey_lang;//new limesurvey_lang($langname);
+                        $bplang = $this->limesurvey_lang;
                         $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');
                         if (getEmailFormat($surveyid) == "html")
                         {
@@ -1501,34 +1501,11 @@ class Database extends Admin_Controller {
                             'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
                             'surveyls_dateformat' => $languagedetails['dateformat']
                            );
-                        /**$usquery = "INSERT INTO ".db_table_name('surveys_languagesettings')
-                        ." (surveyls_survey_id, surveyls_language, surveyls_title, "
-                        ." surveyls_email_invite_subj, surveyls_email_invite, "
-                        ." surveyls_email_remind_subj, surveyls_email_remind, "
-                        ." surveyls_email_confirm_subj, surveyls_email_confirm, "
-                        ." surveyls_email_register_subj, surveyls_email_register, "
-                        ." email_admin_notification_subj, email_admin_notification, "
-                        ." email_admin_responses_subj, email_admin_responses, "
-                        ." surveyls_dateformat) "
-                        ." VALUES ({$postsid}, '".$langname."', '',"
-                        .db_quoteall($aDefaultTexts['invitation_subject']).","
-                        .db_quoteall($aDefaultTexts['invitation']).","
-                        .db_quoteall($aDefaultTexts['reminder_subject']).","
-                        .db_quoteall($aDefaultTexts['reminder']).","
-                        .db_quoteall($aDefaultTexts['confirmation_subject']).","
-                        .db_quoteall($aDefaultTexts['confirmation']).","
-                        .db_quoteall($aDefaultTexts['registration_subject']).","
-                        .db_quoteall($aDefaultTexts['registration']).","
-                        .db_quoteall($aDefaultTexts['admin_notification_subject']).","
-                        .db_quoteall($aDefaultTexts['admin_notification']).","
-                        .db_quoteall($aDefaultTexts['admin_detailed_notification_subject']).","
-                        .db_quoteall($aDefaultTexts['admin_detailed_notification']).","
-                        .$languagedetails['dateformat'].")"; */
+
                         $this->load->model('surveys_languagesettings_model');
 
                         $usresult = $this->surveys_languagesettings_model->insertNewSurvey($insertdata);
                         unset($bplang);
-                        //$usresult = $connect->Execute($usquery) or safe_die("Error deleting obsolete surveysettings<br />".$usquery."<br /><br />".$connect->ErrorMsg()); // Checked
                     }
                 }
             }

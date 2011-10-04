@@ -3492,15 +3492,16 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
         $insertdata['datecreated']=$connect->BindTimeStamp(date_shift(date("Y-m-d H:i:s"), "Y-m-d", $CI->config->item('timeadjust')));
 
-        if ($insertdata['expires'] == '')
+
+        if (isset($insertdata['expires']) && $insertdata['expires'] == '')
         {
             $insertdata['expires'] = NULL;
         }
-        if ($insertdata['startdate'] == '')
+        if (isset($insertdata['startdate']) && $insertdata['startdate'] == '')
         {
             $insertdata['startdate'] = NULL;
         }
-        if ($insertdata['bouncetime'] == '')
+        if (isset($insertdata['bouncetime']) && $insertdata['bouncetime'] == '')
         {
             $insertdata['bouncetime'] = NULL;
         }
@@ -3655,7 +3656,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             // now translate any links
             $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
             $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
-            $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
+            if (isset($insertdata['help'])) $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
             if (isset($aQIDReplacements[$oldsqid])){
                $insertdata['qid']=$aQIDReplacements[$oldsqid];
                db_switchIDInsert('questions',true);

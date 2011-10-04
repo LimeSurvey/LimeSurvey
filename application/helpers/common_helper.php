@@ -7840,7 +7840,7 @@ function modify_database($sqlfile='', $sqlstring='')
                 $command = str_replace('$sessionname', 'ls'.sRandomChars(20,'123456789'), $command);
                 $command = str_replace('$databasetabletype', $CI->db->dbdriver, $command);
 
-                if (! db_execute_assoc($command)) {  //Checked
+                if (!$CI->db->query($command)) {  //Checked
                     $command=htmlspecialchars($command);
                     $modifyoutput .="<br />".sprintf($clang->gT("SQL command failed: %s"),"<span style='font-size:10px;'>".$command."</span>","<span style='color:#ee0000;font-size:10px;'></span><br/>");
                     $success = false;

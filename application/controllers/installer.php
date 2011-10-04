@@ -1129,7 +1129,7 @@ class Installer extends CI_Controller {
                         'dbdriver' => $this->session->userdata('dbtype'),
                         'dbprefix' => $this->session->userdata('dbprefix'),
                         'pconnect' => 'FALSE',
-                        'db_debug' => 'TRUE',
+                        'db_debug' => 'FALSE',
                         'cache_on' => 'FALSE',
                         'cachedir' => '',
                         'char_set' => 'utf8',

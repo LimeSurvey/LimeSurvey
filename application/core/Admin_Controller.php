@@ -30,7 +30,6 @@ class Admin_Controller extends LSCI_Controller {
 		//{
 		//    require_once($homedir.'/admin_functions.php');
 		//}
-
         $updatelastcheck = '';
 
 		//Admin menus and standards
@@ -89,7 +88,7 @@ class Admin_Controller extends LSCI_Controller {
 		if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 		*/
 
-		self::_logincheck();
+		if ($this->router->class != "update" && $this->router->method != "db") self::_logincheck();
 
 		/*if ( $action == 'CSRFwarn')
 		{

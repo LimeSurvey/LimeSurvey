@@ -491,7 +491,7 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
     }
     else
     {
-        $TableName = $MatchResults[1];;
+        $TableName = $MatchResults[1];
         $TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
     }
     if ($QueryResult->num_rows()>0)
@@ -512,11 +512,15 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
             foreach ($Row as $Key=>$Value)
             {
                 if (!isset($exclude[$Key])) {
-                $xmlwriter->startElement($Key);
-                    // Remove invalid XML characters
-                    $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
-                $xmlwriter->endElement();
-            }
+                    if (is_numeric($Key[0])) $Key='F'.$Key;
+                    if(!(is_null($Value)))
+                    {
+                        if (!$xmlwriter->startElement($Key)) echo $Key ;
+                            // Remove invalid XML characters
+                        if ($Value!='') $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
+                        $xmlwriter->endElement();
+                    }
+                }
             }
             $xmlwriter->endElement(); // close row
         }
@@ -676,6 +680,33 @@ function survey_getXMLData($surveyid, $exclude = array())
     $xml->endDocument();
     return $xml->outputMemory(true);
 }
+
+
+function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType)
+{
+    $CI =& get_instance();
+    $xml = getXMLWriter();
+    $xml->openMemory();
+    $xml->setIndent(true);
+    $xml->startDocument('1.0', 'UTF-8');
+    $xml->startElement('document');
+    $xml->writeElement('LimeSurveyDocType','Responses');
+    $xml->writeElement('DBVersion',$CI->config->item("dbversionnumber"));
+    $xml->startElement('languages');
+    $aSurveyLanguages=GetAdditionalLanguagesFromSurveyID($iSurveyID);
+    $aSurveyLanguages[]=GetBaseLanguageFromSurveyID($iSurveyID);
+    foreach ($aSurveyLanguages as $sSurveyLanguage)
+    {
+        $xml->writeElement('language',$sSurveyLanguage);
+    }
+    $xml->endElement();
+    $aquery = "SELECT * FROM {$CI->db->dbprefix}$sTableName";
+    BuildXMLFromQuery($xml,$aquery);
+    $xml->endElement(); // close columns
+    $xml->endDocument();
+    return $xml->outputMemory(true);
+}
+
 
 /**
  * from export_structure_quexml.php
