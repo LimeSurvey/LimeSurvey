@@ -22,7 +22,6 @@
 </li>
 </ul>
                 <p><input type='hidden' name='action' value='login' />
-                <input type='hidden' name='refererargs' value='<?php echo $refererargs;?>' />
                 <input class='action' type='submit' value='<?php echo $clang->gT("Login");?>' /><br />&nbsp;
                 <br/>
                 <?php

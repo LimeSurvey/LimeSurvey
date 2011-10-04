@@ -889,14 +889,11 @@ class survey extends Survey_Common_Controller {
         $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_getAdminHeader();
         $data['surveyid'] = $surveyid = $this->input->post('sid');
-        if ($this->input->post('deleteok'))
+        if (!$this->input->post('deleteok'))
         {
-            self::_showadminmenu(false);
-        }
-        else{
             self::_showadminmenu($surveyid);
+            self::_surveybar($surveyid);
         }
-        if (!$this->input->post('deleteok')) self::_surveybar($this->input->post('sid'));
 
         if(bHasSurveyPermission($surveyid,'survey','delete'))
         {
@@ -948,7 +945,7 @@ class survey extends Survey_Common_Controller {
 
                 $this->db->delete('quota_members', array('sid' => $surveyid));
                 rmdirr($this->config->item("uploaddir").'/surveys/'.$surveyid);
-
+                self::_showadminmenu(false);
             }
             $this->load->view('admin/survey/deleteSurvey_view',$data);
         }

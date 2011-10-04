@@ -513,7 +513,7 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
             {
                 if (!isset($exclude[$Key])) {
                     if (is_numeric($Key[0])) $Key='F'.$Key;
-                    if(!(is_null($Value)))
+                    if(!(is_null($Value))) // If the $value is null don't output an element at all
                     {
                         if (!$xmlwriter->startElement($Key)) echo $Key ;
                             // Remove invalid XML characters

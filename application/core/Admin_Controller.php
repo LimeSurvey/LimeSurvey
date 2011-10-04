@@ -172,10 +172,13 @@ class Admin_Controller extends LSCI_Controller {
 	 */
 	function _logincheck()
 	{
-    //    DebugBreak();
+//       DebugBreak();
 		if(!$this->session->userdata("loginID") && $this->router->class != "authentication")
 		{
-            $this->session->set_userdata('redirect_after_login',$this->uri->uri_string());
+            if (!($this->router->class == "index" && $this->router->method == "index"))
+            {
+                $this->session->set_userdata('redirect_after_login',$this->uri->uri_string());
+            }
 			redirect('/admin/authentication/login', 'refresh');
 		}
 
