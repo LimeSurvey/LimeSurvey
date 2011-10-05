@@ -62,6 +62,8 @@ function importCSV()
 */
 function displayParticipants()
 {
+    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
+    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js");
     $css_admin_includes[] = $this->config->item('generalscripts')."jquery/css/jquery.multiselect.css";
     $css_admin_includes[] = $this->config->item('generalscripts')."jquery/css/jquery.multiselect.filter.css";
     $css_admin_includes[] = $this->config->item('styleurl')."admin/default/displayParticipants.css";
@@ -152,6 +154,12 @@ function userControl()
 */
 function sharePanel()
 {
+    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
+    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js");
+    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/plugins/jquery.searchFilter.js");
+    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/src/grid.celledit.js");
+    self::_js_admin_includes($this->config->item('adminscripts')."sharePanel.js");
+    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
     $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css";
     $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css";
     $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -1614,6 +1622,7 @@ function addToTokenattmap()
  */
 function attributeMap()
 {
+    self::_js_admin_includes($this->config->item('adminscripts')."attributeMap.js");
     $css_admin_includes[] = $this->config->item('styleurl')."admin/default/attributeMap.css";
     $this->config->set_item("css_admin_includes", $css_admin_includes);
     self::_getAdminHeader();
