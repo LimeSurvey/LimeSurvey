@@ -2389,8 +2389,25 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $usedinconditions = "Y";
         }
         else
-        {
-            $usedinconditions = "N";
+        {   
+            // This question is not directly used in a condition, however we should
+            // check if its SGQA code is not used as a value in another condition
+            // as a @SGQA@ code
+            $atsgqaQuery = "SELECT count(1) as sgqausedincondition "
+                        . "FROM ".db_table_name('questions')." as q, "
+                        . db_table_name('conditions')." as c "
+                        . "WHERE c.qid=q.qid AND q.sid=".$arow['sid']." AND "
+                        . "c.value like '@".$arow['sid']."X".$arow['gid']."X".$arow['qid']."%'";
+            $atsgqaResult = db_execute_assoc($atsgqaQuery) or safe_die ("Couldn't get list @sgqa@ conditions in createFieldMap function.<br />$atsgqaQuery<br />".$connect->ErrorMsg()); //Checked
+            $atsgqaRow = $atsgqaResult->FetchRow();
+            if ($atsgqaRow['sgqausedincondition'] == 0 )
+            {
+                $usedinconditions = "N";
+            }
+            else
+            {
+                $usedinconditions = "Y";
+            }
         }
 
         // Field identifier
