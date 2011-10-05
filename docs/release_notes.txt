@@ -78,6 +78,19 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 Thank you to everyone who helped with this new release!
 
 
+Changes from 1.91+ (build 11026) to 1.91+ (build 11110)
+#Updated translation: Polish (elisa-ls)
+-Fixed issue: Re-implemented commit 10985 ("groups of "or"ed conditions were displaying multiple times") (maziminke)
+-Fied issue: Some single choice questions were missing answer codes for available answer options. Some questions using "other" text fields were missing correct IDs. (maziminke)
+-Fixed issue #05476: File upload questions hidden by condition with min file upload set prevent survey submission (lemeur)
+-Fixed issue #05477: Users with all rights unticked still see everyone in the system in the surveylist view (lemeur)
+-Fixed issue #05483: Conditions using previous answers as rightoperand do not work when both questions are on the same page (lemeur)
+-Fixed issue #05493: Conditions using previous answers (coded as @sgqa@) aren't translated when survey is imported. (lemeur)
+-Fixed issue 05488: multi numeric - slider, inital value dont register (tpartner)
+-Fixed issue: slider layout multinumeric can't be answered without javascript (shnoulle)
+-Fixed issue: Path disclosure vulnerabilities (c_schmitz)
+-Fixed issue: Templates not editable in Chinese (c_schmitz)
+
 Changes from 1.91+ (build 11018) to 1.91+ (build 11026)
 #Updated translation: Italian by Paride Buetti (c_schmitz)
 -Fixed issue #5426: Language chooser (c_schmitz)
