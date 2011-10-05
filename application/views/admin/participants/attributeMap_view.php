@@ -1,6 +1,3 @@
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.qtip.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.ui.sortable.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('adminscripts')."attributeMap.js" ?>" type="text/javascript"></script>
 <script type="text/javascript">
     var redUrl = "<?php echo site_url("admin/participants/displayParticipants");?>";
     var surveyId = "<?php echo $survey_id ?>";

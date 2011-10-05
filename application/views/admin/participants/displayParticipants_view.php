@@ -1,10 +1,3 @@
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.ui.datepicker.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.ui.core.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.min.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.multiselect.filter.min.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.ui.selectable.min.js" ?>" type="text/javascript"></script>
 <?php
 /* If there are any attributes to display as extra columns in the jqGrid, iterate through them */
 

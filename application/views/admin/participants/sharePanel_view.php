@@ -1,10 +1,3 @@
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.ui.datepicker.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/js/jquery.ui.core.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/plugins/jquery.searchFilter.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jqGrid/src/grid.celledit.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('adminscripts')."sharePanel.js" ?>" type="text/javascript"></script>
 <script type="text/javascript">
     var shareinfoUrl = "<?php echo site_url("admin/participants/getShareInfo_json");?>";
     var editurlshare = "<?php echo site_url("admin/participants/editShareInfo"); ?>";
@@ -13,6 +6,7 @@
 <div class='header ui-widget-header'><strong><?php echo $clang->gT("Share Panel"); ?> </strong></div>
 <br/>
 <table id="sharePanel">
+    <tr><td>&nbsp;</td></tr>
 </table>
 <div id="pager">
 </div>

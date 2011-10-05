@@ -148,8 +148,10 @@
    </div>
    </div>
  <br/>
+ <center>
    <?php
     echo form_submit('submit', 'Save');
     echo form_close()
    ?>
+ </center>
  
