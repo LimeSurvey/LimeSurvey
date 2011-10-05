@@ -4644,7 +4644,7 @@ function do_multiplenumeric($ia)
                 . "\t</div>"
                 . "</div>$sliderright\n"
                 . "<input class=\"text\" type=\"text\" name=\"$myfname\" id=\"answer$myfname\" value=\"";
-                if (isset($_SESSION[$myfname]))
+                if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] != '')
                 {
                     $answer_main .= $_SESSION[$myfname];
                 }
