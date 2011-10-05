@@ -1399,6 +1399,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
+    $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
     // Import conditions --------------------------------------------------------------
     if(isset($xml->conditions))
     {
@@ -1456,6 +1457,19 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata["method"]='==';
             }
+
+            // Now process the value and replace @sgqa@ codes TIBO
+            if (preg_match("/^@(.*)@$/",$insertdata["value"],$cfieldnameInCondValue))
+            {
+                if (isset($aOldNewFieldmap[$cfieldnameInCondValue[1]]))
+                {
+                    $newvalue = '@'.$aOldNewFieldmap[$cfieldnameInCondValue[1]].'@';
+                    $insertdata["value"] = $newvalue;
+                }
+
+            }
+            
+
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata);
@@ -1561,7 +1575,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     GiveAllSurveyPermissions($_SESSION['loginID'],$newsid);
     if ($bTranslateInsertansTags)
     {
-        $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
         TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
     }
 
