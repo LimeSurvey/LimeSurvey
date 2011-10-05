@@ -11,6 +11,28 @@
             echo "<pre>";
             print_r($data);
             echo "</pre>";
+
+            /* Temporary for unit testing
+            $CI =& get_instance();
+            $CI->load->model('question_attributes_model');
+            $data = $CI->question_attributes_model->getEMRelatedRecordsForSurvey(1);
+            echo "Here are the attrubutes for survey 1<br/>";
+            echo $CI->db->last_query();
+            echo "<pre>";
+            print_r($data);
+            echo "</pre>";
+             */
+
+            /* Temporary for unit testing
+            $CI =& get_instance();
+            $CI->load->model('answers_model');
+            $data = $CI->answers_model->getAllAnswersForEM(26766);
+            echo "Here are the answers for survey 26766<br/>";
+            echo $CI->db->last_query();
+            echo "<pre>";
+            print_r($data);
+            echo "</pre>";
+             */
         ?>
     </body>
 </html>

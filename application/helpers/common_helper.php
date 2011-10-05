@@ -1772,6 +1772,7 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
 
 function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
 {
+    // TMW - not needed
 	$CI = &get_instance();
 	$surveyid = $CI->config->item('sid');
     $qid=sanitize_int($qid);
@@ -6371,6 +6372,7 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
  */
 function checkquestionfordisplay($qid, $gid=null)
 {
+    // TMW - not needed (only check relevance)
     global $thissurvey;
 	$CI = &get_instance();
 	$surveyid = $CI->config->item('sid');

@@ -93,7 +93,46 @@ class Answers_model extends CI_Model {
 
         return $this->db->insert('answers',$data);
     }
+    
+    /**
+     * Return array of language-specific answer codes
+     * @param <type> $surveyid
+     * @param <type> $qid
+     * @return <type> 
+     */
 
+    function getAllAnswersForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
+    {
+        if (!is_null($qid)) {
+            $where = "qid = ".$qid;
+        }
+        else if (!is_null($surveyid)) {
+            $where = "qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.")";
+        }
+        else {
+            $where = "1";
+        }
+        if (!is_null($lang)) {
+            $lang = " and language='".$lang."'";
+        }
 
+        $query = "SELECT qid, code, answer, scale_id"
+            ." FROM ".$this->db->dbprefix('answers')
+            ." WHERE ".$where
+            .$lang
+            ." ORDER BY qid, sortorder";
+        
+        $data = $this->db->query($query);
 
+        $qans = array();
+
+        foreach($data->result_array() as $row) {
+            if (!isset($qans[$row['qid']])) {
+                $qans[$row['qid']] = array();
+            }
+            $qans[$row['qid']][$row['scale_id'].':'.$row['code']] = $row['answer'];
+        }
+
+        return $qans;
+    }
 }

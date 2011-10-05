@@ -260,7 +260,7 @@ class LimeExpressionManager {
      * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
      */
 
-    public function setVariableAndTokenMappingsForExpressionManager($forceRefresh=false,$anonymized=false,$allOnOnePage=false,$surveyid=NULL)
+    public function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
     {
         // TODO - this is called multiple times per page - can it be reduced to once per page?
         log_message('debug','Start LEM::setVariableAndTokenMappingsForExpressionManager');
@@ -275,6 +275,15 @@ class LimeExpressionManager {
         $this->jsVar2qid = array();
         $this->alias2varName = array();
         $this->varNameAttr = array();
+
+        $CI =& get_instance();
+        $clang = $CI->limesurvey_lang;
+
+        $CI->load->model('question_attributes_model');
+        $qattr = $CI->question_attributes_model->getEMRelatedRecordsForSurvey($surveyid);   // what happens if $surveyid is null?
+
+        $CI->load->model('answers_model');
+        $qans = $CI->answers_model->getAllAnswersForEM($surveyid);
 
         foreach($fieldmap as $fielddata)
         {
@@ -291,8 +300,9 @@ class LimeExpressionManager {
 
             $questionId = $fieldNameParts[2];
             $questionNum = $fielddata['qid'];
-            $questionAttributes = getQuestionAttributeValues($questionNum,$fielddata['type']);
-            $relevance = (isset($questionAttributes['relevance'])) ? $questionAttributes['relevance'] : 1;
+            $relevance = (isset($qattr[$questionNum]['relevance'])) ? $qattr[$questionNum]['relevance'] : 1;
+            $hidden = (isset($qattr[$questionNum]['hidden'])) ? $qattr[$questionNum]['hidden'] : 'N';
+            $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
 
             // Create list of codes associated with each question
             $codeList = (isset($this->qid2code[$questionNum]) ? $this->qid2code[$questionNum] : '');
@@ -318,7 +328,70 @@ class LimeExpressionManager {
             if (isset($_SESSION[$code]))
             {
                 $codeValue = $_SESSION[$code];
-                $displayValue= retrieve_Answer($surveyid, $code);
+                
+                // don't call retrieve_Answer()
+                $displayValue = ''; // default to blank?
+                switch($fielddata['type'])
+                {
+                    case '!': //List - dropdown
+                    case 'L': //LIST drop-down/radio-button list
+                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                    case '1': //Array (Flexible Labels) dual scale  // need scale
+                    case 'H': //ARRAY (Flexible) - Column Format
+                    case 'F': //ARRAY (Flexible) - Row Format
+                    case 'R': //RANKING STYLE
+                        $which_ans = $scale_id . ':' . $codeValue;
+                        $displayValue = (isset($qans[$questionNum][$which_ans])) ? $qans[$questionNum][$which_ans] : '';    // what should default be?
+                        break;
+                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                    case ':': //ARRAY (Multi Flexi) 1 to 10
+                    case '5': //5 POINT CHOICE radio-buttons
+                        $displayValue = $codeValue; // what about "no answer"?
+                        break;
+                    case 'N': //NUMERICAL QUESTION TYPE
+                    case 'K': //MULTIPLE NUMERICAL QUESTION
+                    case 'Q': //MULTIPLE SHORT TEXT
+                    case ';': //ARRAY (Multi Flexi) Text
+                    case 'S': //SHORT FREE TEXT
+                    case 'T': //LONG FREE TEXT
+                    case 'U': //HUGE FREE TEXT
+                    case 'M': //Multiple choice checkbox
+                    case 'P': //Multiple choice with comments checkbox + text
+                    case 'D': //DATE
+                    case '*': //Equation
+                    case 'I': //Language Question
+                    case '|': //File Upload
+                    case 'X': //BOILERPLATE QUESTION
+                        $displayValue = $codeValue; // TODO - is this correct?
+                        break;
+                    case 'G': //GENDER drop-down list
+                        switch ($codeValue) {
+                            case 'M': $displayValue = $clang->gT("Male"); break;
+                            case 'F': $displayValue = $clang->gT("Female"); break;
+                        }
+                        break;
+                    case 'Y': //YES/NO radio-buttons
+                        switch ($codeValue) {
+                            case 'Y': $displayValue = $clang->gT("Yes"); break;
+                            case 'N': $displayValue = $clang->gT("No"); break;
+                        }
+                        break;
+                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        switch ($codeValue) {
+                            case 'Y': $displayValue = $clang->gT("Yes"); break;
+                            case 'N': $displayValue = $clang->gT("No"); break;
+                            case 'U': $displayValue = $clang->gT("Uncertain"); break;
+                        }
+                        break;
+                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                        switch ($codeValue) {
+                            case 'I': $displayValue = $clang->gT("Increase"); break;
+                            case 'S': $displayValue = $clang->gT("Same"); break;
+                            case 'D': $displayValue = $clang->gT("Decrease"); break;
+                        }
+                        break;
+                }
             }
             else
             {
@@ -451,6 +524,7 @@ class LimeExpressionManager {
                 'readWrite'=>$readWrite,
                 'isOnCurrentPage'=>$isOnCurrentPage,
                 'displayValue'=>$displayValue,
+                'hidden'=>$hidden,
                 'question'=>$question,
                 'qid'=>$questionNum,
                 'relevance'=>$relevance,
@@ -494,6 +568,7 @@ class LimeExpressionManager {
                     'readWrite' => $readWrite,
                     'isOnCurrentPage' => $isOnCurrentPage,
                     'relevance' => $relevance,
+                    'hidden' => $hidden,
                     );
             }
         }
@@ -539,6 +614,7 @@ class LimeExpressionManager {
                         'readWrite'=>'N',
                         'isOnCurrentPage'=>'N',
                         'relevance'=>'',
+                        'hidden'=>'',
                     );
                 }
             }
@@ -567,7 +643,7 @@ class LimeExpressionManager {
         if ($this->debugLEM)
         {
             $debugLog_html = "<table border='1'>";
-            $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>CodeVal</th><th>DisplayVal</th><th>JSname</th><th>Writable?</th><th>Set On This Page?</th><th>Relevance</th><th>Question</th></tr>";
+            $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>CodeVal</th><th>DisplayVal</th><th>JSname</th><th>Writable?</th><th>Set On This Page?</th><th>Relevance</th><th>Hidden</th><th>Question</th></tr>";
             foreach ($this->debugLog as $t)
             {
                 $debugLog_html .= "<tr><td>" . $t['code']
@@ -579,6 +655,7 @@ class LimeExpressionManager {
                     . "</td><td>" . $t['readWrite']
                     . "</td><td>" . $t['isOnCurrentPage']
                     . "</td><td>" . $t['relevance']
+                    . "</td><td>" . $t['hidden']
                     . "</td><td>" . $t['question']
                     . "</td></tr>";
             }
@@ -714,7 +791,7 @@ class LimeExpressionManager {
             $LEM->qid2code = array();   // List of codes for each question - needed to know which to NULL if a question is irrelevant
             $LEM->jsVar2qid = array();
 
-            if (!is_null($surveyid) && $LEM->setVariableAndTokenMappingsForExpressionManager(true,$anonymized,$LEM->allOnOnePage,$surveyid))
+            if (!is_null($surveyid) && $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,true,$anonymized,$LEM->allOnOnePage))
             {
                 // means that some values changed, so need to update what was registered to ExpressionManager
                 $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);

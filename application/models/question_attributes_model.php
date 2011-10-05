@@ -37,5 +37,33 @@ class Question_attributes_model extends CI_Model {
 
         return $this->db->insert('question_attributes',$data);
     }
+    
+    function getEMRelatedRecordsForSurvey($surveyid=NULL,$qid=NULL)
+    {
+        if (!is_null($qid)) {
+            $where = " qid = ".$qid." and ";
+        }
+        else if (!is_null($surveyid)) {
+            $where = " qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.") and ";
+        }
+        else {
+            $where = "";
+        }
 
+        // TODO - does this need to be filtered by language
+        $query = "select distinct qid, attribute, value"
+                ." from ".$this->db->dbprefix('question_attributes')
+                ." where " . $where
+                ." attribute in ('hidden', 'relevance')"
+                ." order by qid, attribute";
+        
+		$data = $this->db->query($query);
+        $qattr = array();
+
+        foreach($data->result_array() as $row) {
+            $qattr[$row['qid']][$row['attribute']] = $row['value'];
+        }
+
+		return $qattr;
+    }
 }
