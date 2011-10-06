@@ -5962,10 +5962,9 @@ function db_rename_table($oldtable, $newtable)
 *
 * @param mixed $tid Token
 */
-function usedTokens($token)
+function usedTokens($token, $surveyid)
 {
 	$CI = &get_instance();
-	$surveyid = $CI->config->item('sid');
 
     $utresult = true;
 	$CI->load->model('Tokens_dynamic_model');
@@ -8346,6 +8345,24 @@ function sDefaultSubmitHandler()
     -->
     </script>
 EOS;
+}
+
+/**
+* This function fixes the group ID and type on all subquestions
+*
+*/
+function fixSubquestions()
+{
+    $CI =& get_instance();
+    $CI->load->helper('database');
+    $surveyidresult=$CI->db->query("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
+                                    from ".$CI->db->dbprefix('questions')." sq JOIN ".$CI->db->dbprefix('questions')." q on sq.parent_qid=q.qid
+                                    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)");
+    foreach($surveyidresult->result_array() as $sv)
+    {
+      $CI->db->query('update '.$CI->db->dbprefix('questions')." set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}");
+    }
+
 }
 
 // Closing PHP tag intentionally omitted - yes, it is okay

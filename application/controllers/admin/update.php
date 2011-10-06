@@ -482,10 +482,6 @@ class update extends Admin_Controller {
 	    // this is the last step - Download the zip file, unpack it and replace files accordingly
 	    // Create DB and file backups now
 
-	    //   require_once('classes/pclzip/pcltrace.lib.php');
-	    //   require_once('classes/pclzip/pclzip-trace.lib.php');
-
-	    // PclTraceOn(2);
 	    $downloaderror=false;
 	    $http=new http;
 
@@ -649,12 +645,6 @@ class update extends Admin_Controller {
 
 	    //  Download the zip file, unpack it and replace the updater file accordingly
 	    // Create DB and file backups now
-
-	    //   require_once('classes/pclzip/pcltrace.lib.php');
-	    //   require_once('classes/pclzip/pclzip-trace.lib.php');
-	    // PclTraceOn(2);
-
-	    //require_once($homedir."/classes/http/http.php");
 
 	    $downloaderror=false;
 	    $http=new http;

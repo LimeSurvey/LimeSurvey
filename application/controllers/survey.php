@@ -718,7 +718,7 @@ class survey extends LSCI_Controller {
 			isset($_SESSION['step']) && $_SESSION['step']>0 && db_tables_exist($dbprefix.'tokens_'.$surveyid))
 		{
 			//check if tokens actually haven't been already used
-			$areTokensUsed = usedTokens(trim(strip_tags(returnglobal('token'))));
+			$areTokensUsed = usedTokens(trim(strip_tags(returnglobal('token'))),$surveyid);
 			// check if token actually does exist
 			// check also if it is allowed to change survey after completion
 			if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {

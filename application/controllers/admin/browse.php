@@ -996,7 +996,6 @@ class browse extends Survey_Common_Controller {
     function zipFiles($responseIds, $zipfilename) {
         global $surveyid, $surveytable;
 
-        require_once('classes/pclzip/pclzip.lib.php');
         $tmpdir = $CI->config->item('uploaddir'). "/surveys/" . $surveyid . "/files/";
 
         $filelist = array();
@@ -1045,6 +1044,7 @@ class browse extends Survey_Common_Controller {
         }
 
         if (count($filelist)>0) {
+            $this->load->library("admin/pclzip/pclzip",array('p_zipname' => $tempdir.$zipfilename));
             $zip = new PclZip($tmpdir . $zipfilename);
             if ($zip->create($filelist)===0) {
                 //Oops something has gone wrong!

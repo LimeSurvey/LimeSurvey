@@ -651,6 +651,7 @@ function db_upgrade($oldversion) {
         // add question_attributes field to assessment table
         modify_database("","ALTER TABLE `prefix_question_attributes` ADD `language` varchar(20)"); echo $modifyoutput; flush();@ob_flush();
         upgrade_question_attributes148();
+        fixSubquestions();
         modify_database("", "UPDATE `prefix_settings_global` SET `stg_value`='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();@ob_flush();
     }
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';

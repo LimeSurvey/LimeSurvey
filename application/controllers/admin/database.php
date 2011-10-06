@@ -586,7 +586,7 @@ class Database extends Admin_Controller {
             if (!is_null($cond2rel)) {
                 $_POST['relevance'] = $cond2rel;
             }
-            
+
             foreach ($validAttributes as $validAttribute)
             {
                 if ($validAttribute['i18n'])
@@ -740,12 +740,7 @@ class Database extends Admin_Controller {
                                         'mandatory' => $_POST['mandatory']
 
                                         );
-                                /*
-                                $uqquery = "UPDATE ".$this->db->dbprefix."questions SET type='".$_POST['type']."', title='".$_POST['title']."', "
-                                . "question='".$_POST['question_'.$qlang]."', preg='".$_POST['preg']."', help='".$_POST['help_'.$qlang]."', "
-                                . "gid='".$gid."', other='".$_POST['other']."', "
-                                . "mandatory='".$_POST['mandatory']."'";
-                                */
+
                                 if ($oldgid!=$gid)
                                 {
 
@@ -756,7 +751,6 @@ class Database extends Admin_Controller {
                                         // this prevent breaking conditions if the target qid is in the dest group
                                         $insertorder = getMaxquestionorder($gid) + 1;
                                         $udata = array_merge($udata,array('question_order' => $insertorder));
-                                        //$uqquery .=', question_order='.$insertorder.' ';
                                     }
                                     else
                                     {
@@ -764,18 +758,14 @@ class Database extends Admin_Controller {
                                         // insert question at the beginning of the destination group
                                         shiftorderQuestions($surveyid,$gid,1); // makes 1 spare room for new question at top of dest group
                                         $udata = array_merge($udata,array('question_order' => 0));
-                                        $uqquery .=', question_order=0 ';
                                     }
                                 }
-                                //$uqquery.= "WHERE sid='".$surveyid."' AND qid='".$qid."' AND language='{$qlang}'";
                                 $condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
                                 $uqresult = $this->questions_model->update($udata,$condn); //($uqquery); // or safe_die ("Error Update Question: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked)
                                 if (!$uqresult)
                                 {
                                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
                                 }
-
-
                             }
                         }
 
@@ -785,17 +775,19 @@ class Database extends Admin_Controller {
                         {
                             $sQuery="UPDATE ".$this->db->dbprefix."questions set gid={$gid} where gid={$oldgid} and parent_qid>0";
                             $oResult = db_execute_assoc($sQuery); // or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
-                        }
                         // if the group has changed then fix the sortorder of old and new group
-                        if ($oldgid!=$gid)
-                        {
                             fixsortorderQuestions($oldgid, $surveyid);
                             fixsortorderQuestions($gid, $surveyid);
                             // If some questions have conditions set on this question's answers
                             // then change the cfieldname accordingly
                             fixmovedquestionConditions($qid, $oldgid, $gid);
                         }
+                        if ($oldtype != $_POST['type'])
+                        {
+                            $sQuery="UPDATE ".$this->db->dbprefix."questions set type=".$this->db->escape($_POST['type'])." where parent_qid={$qid}";
+                            $oResult = db_execute_assoc($sQuery); // or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
 
+                        }
                         $query = "DELETE FROM ".$this->db->dbprefix."answers WHERE qid= {$qid} and scale_id>={$iAnswerScales}";
                             $result = db_execute_assoc($query); // or safe_die("Error: ".$connect->ErrorMsg()); // Checked
 

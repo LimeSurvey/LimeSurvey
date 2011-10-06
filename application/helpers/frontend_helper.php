@@ -1653,7 +1653,7 @@ function buildsurveysession($surveyid)
     {
 
         //check if tokens actually haven't been already used
-		$areTokensUsed = usedTokens(trim(strip_tags($clienttoken)));
+		$areTokensUsed = usedTokens(trim(strip_tags($clienttoken)),$surveyid);
         //check if token actually does exist
 	    // check also if it is allowed to change survey after completion
 		if ($thissurvey['alloweditaftercompletion'] == 'Y' ) {
@@ -1697,7 +1697,7 @@ function buildsurveysession($surveyid)
         $loadsecurity == $_SESSION['secanswer'])
         {
             //check if tokens actually haven't been already used
-            $areTokensUsed = usedTokens(trim(strip_tags($clienttoken)));
+            $areTokensUsed = usedTokens(trim(strip_tags($clienttoken)),$surveyid);
             //check if token actually does exist
             if ($thissurvey['alloweditaftercompletion'] == 'Y' )
             {

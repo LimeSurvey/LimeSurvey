@@ -512,10 +512,10 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
             foreach ($Row as $Key=>$Value)
             {
                 if (!isset($exclude[$Key])) {
-                    if (is_numeric($Key[0])) $Key='F'.$Key;
                     if(!(is_null($Value))) // If the $value is null don't output an element at all
                     {
-                        if (!$xmlwriter->startElement($Key)) echo $Key ;
+                        if (is_numeric($Key[0])) $Key='_'.$Key; // mask invalid element names with an underscore
+                        if (!$xmlwriter->startElement($Key)) safe_die('Invalid elemnt key: '.$Key);
                             // Remove invalid XML characters
                         if ($Value!='') $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
                         $xmlwriter->endElement();
@@ -681,8 +681,16 @@ function survey_getXMLData($surveyid, $exclude = array())
     return $xml->outputMemory(true);
 }
 
-
-function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType)
+/**
+* Exports a single table to XML
+*
+* @param inetger $iSurveyID The survey ID
+* @param string $sTableName The database table name of the table to be export
+* @param string $sDocType What doctype should be written
+* @param string $sXMLTableName Name of the tag table name in the XML file
+* @return object XMLWriter object
+*/
+function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTagName='')
 {
     $CI =& get_instance();
     $xml = getXMLWriter();
@@ -690,7 +698,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType)
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
-    $xml->writeElement('LimeSurveyDocType','Responses');
+    $xml->writeElement('LimeSurveyDocType',$sDocType);
     $xml->writeElement('DBVersion',$CI->config->item("dbversionnumber"));
     $xml->startElement('languages');
     $aSurveyLanguages=GetAdditionalLanguagesFromSurveyID($iSurveyID);
@@ -701,7 +709,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType)
     }
     $xml->endElement();
     $aquery = "SELECT * FROM {$CI->db->dbprefix}$sTableName";
-    BuildXMLFromQuery($xml,$aquery);
+    BuildXMLFromQuery($xml,$aquery, $sXMLTableTagName);
     $xml->endElement(); // close columns
     $xml->endDocument();
     return $xml->outputMemory(true);

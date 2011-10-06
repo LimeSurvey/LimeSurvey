@@ -226,6 +226,9 @@ class CheckIntegrity extends Admin_Controller {
         $this->db->query("delete FROM {$this->db->dbprefix('survey_permissions')} where sid not in (select sid from {$this->db->dbprefix('surveys')})");
         $this->db->query("delete FROM {$this->db->dbprefix('survey_permissions')} where uid not in (select uid from {$this->db->dbprefix('users')})");
 
+        // Fix subquestions
+        fixSubquestions();
+
         /*** Check for active survey tables with missing survey entry and rename them ***/
         $sDBPrefix=$this->db->dbprefix;
         $sQuery = db_select_tables_like("{$sDBPrefix}survey\_%");
@@ -535,14 +538,14 @@ class CheckIntegrity extends Admin_Controller {
                     $iDay=substr($sDateTime, 6, 2);
                     $iHour=substr($sDateTime, 8, 2);
                     $iMinute=substr($sDateTime, 10, 2);
-                    $sDate=date("D, d M Y  h:i a", mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
+                    $sDate=date("d M Y  H:i", mktime($iHour, $iMinute, 0, $iMonth, $iDay, $iYear));
                     $sQuery="SELECT * FROM ".$sTableName;
                     $oQRresult=db_execute_assoc($sQuery) or safe_die('Failed: '.$sQuery);
                     $iRecordcount=$oQRresult->num_rows();
                     if($iRecordcount == 0) { // empty table - so add it to immediate deletion
                         $aDelete['orphansurveytables'][]=$sTableName;
                     } else {
-                        $aOldSurveyTableAsk[]=array('table'=>$sTableName, 'details'=>sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s) (%s)"), $sid, $date, $jqcount, $type));
+                        $aOldSurveyTableAsk[]=array('table'=>$sTableName, 'details'=>sprintf($clang->gT("Survey ID %d saved at %s containing %d record(s) (%s)"), $iSurveyID, $sDate, $iRecordcount, $sType));
                     }
                 }
             }
@@ -624,8 +627,16 @@ class CheckIntegrity extends Admin_Controller {
             $aDelete['redundancyok']=true;
         } else {
             $aDelete['redundancyok']=false;
-            $aDelete['redundanttokentables']=$aOldTokenTableAsk;
-            $aDelete['redundantsurveytables']=$aOldSurveyTableAsk;
+            $aDelete['redundanttokentables']=array();
+            $aDelete['redundantsurveytables']=array();
+            if (isset($aOldTokenTableAsk))
+            {
+                 $aDelete['redundanttokentables']=$aOldTokenTableAsk;
+            }
+            if (isset($aOldSurveyTableAsk))
+            {
+                $aDelete['redundantsurveytables']=$aOldSurveyTableAsk;
+            }
         }
 
         return $aDelete;

@@ -199,7 +199,7 @@ class survey extends Survey_Common_Controller {
                 if ($z->extract($extractdir,$zipfile) != 'OK')
                 {
                     $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
-                    $importsurveyresourcesoutput .= $clang->gT("This file is not a valid ZIP file archive. Import failed.")."<br /><br />\n";
+                    $importsurveyresourcesoutput .= $clang->gT("This file is not a valid ZIP file $CI. Import failed.")."<br /><br />\n";
                     $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                     $importsurveyresourcesoutput .= "</div>\n";
                     show_error($importsurveyresourcesoutput);
@@ -269,8 +269,8 @@ class survey extends Survey_Common_Controller {
                 elseif (is_null($aErrorFilesInfo) && is_null($aImportedFilesInfo))
                 {
                     $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
-                    $importsurveyresourcesoutput .= $clang->gT("This ZIP archive contains no valid Resources files. Import failed.")."<br /><br />\n";
-                    $importsurveyresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP archives.")."<br /><br />\n";
+                    $importsurveyresourcesoutput .= $clang->gT("This ZIP $CI contains no valid Resources files. Import failed.")."<br /><br />\n";
+                    $importsurveyresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP $CIs.")."<br /><br />\n";
                     $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                     $importsurveyresourcesoutput .= "</div>\n";
                     show_error($importsurveyresourcesoutput);
@@ -623,7 +623,7 @@ class survey extends Survey_Common_Controller {
                                                 'refurl'=>$this->input->post('refurl'),
                                                 'savetimings'=>$this->input->post('savetimings')),
                                                 array('sid'=>$iSurveyID));
-            $activateoutput = activateSurvey($iSurveyID,$iSurveyID);
+            $activateoutput = activateSurvey($iSurveyID);
             $displaydata['display'] = $activateoutput;
             $this->load->view('survey_view',$displaydata);
         }
@@ -1098,7 +1098,7 @@ class survey extends Survey_Common_Controller {
             if ($action == 'importsurvey')
             {
 
-                $the_full_file_path = $this->config->item('tempdir') . "/" . $_FILES['the_file']['name'];
+                $the_full_file_path = $this->config->item('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
                 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
                 {
                     $importsurvey .= "<div class='errorheader'>".$clang->gT("Error")."</div>\n";
@@ -1124,7 +1124,7 @@ class survey extends Survey_Common_Controller {
 
                 }
 
-                if (!$importerror && (strtolower($sExtension)!='csv' && strtolower($sExtension)!='lss'))
+                if (!$importerror && (strtolower($sExtension)!='csv' && strtolower($sExtension)!='lss' && strtolower($sExtension)!='zip'))
                 {
                     $importsurvey .= "<div class='errorheader'>".$clang->gT("Error")."</div>\n";
                     $importsurvey .= $clang->gT("Import failed. You specified an invalid file type.")."\n";
@@ -1211,9 +1211,58 @@ class survey extends Survey_Common_Controller {
                 {
                     $aImportResults=XMLImportSurvey($sFullFilepath,null,null, null,(isset($_POST['translinksfields'])));
                 }
-                elseif (isset($sExtension) && strtolower($sExtension)=='.zip')
+                elseif (isset($sExtension) && strtolower($sExtension)=='zip')
                 {
-                    $aImportResults=XMLImportSurvey($sFullFilepath,null,null, null,(isset($_POST['translinksfields'])));
+                    $this->load->library("admin/pclzip/pclzip",array('p_zipname' => $sFullFilepath));
+                    $aFiles=$this->pclzip->listContent();
+                    if ($this->pclzip->extract(PCLZIP_OPT_PATH, $this->config->item('tempdir').DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/')== 0) {
+                        unset($this->pclzip);
+                        unlink($sFullFilepath);
+                    }
+                    // Step 1 - import the LSS file and activate the survey
+                    foreach ($aFiles as $aFile)
+                    {
+                       if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lss')
+                       {
+                            //Import the LSS file
+                            $aLSSImportResults=XMLImportSurvey($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],null, null, null,true);
+                            // Activate the survey
+                            $this->load->helper("admin/activate");
+                            $activateoutput = activateSurvey($aLSSImportResults['newsid']);
+                            break;
+                       }
+                    }
+                    // Step 2 - import the responses file
+                    foreach ($aFiles as $aFile)
+                    {
+                       if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lsr')
+                       {
+                            //Import the LSS file
+                            $aResponseImportResults=XMLImportResponses($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aLSSImportResults['newsid'],$aLSSImportResults['FieldReMap']);
+                            // Activate the survey
+                            break;
+                       }
+                    }
+                    // Step 3 - import the tokens file - if exists
+                    foreach ($aFiles as $aFile)
+                    {
+                       if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lst')
+                       {
+                            $this->load->helper("admin/token");
+                            $aTokenCreateResults = createTokenTable($aLSSImportResults['newsid']);
+                            $aTokenImportResults = XMLImportTokens($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aLSSImportResults['newsid']);
+                            break;
+                       }
+                    }
+                    // Step 3 - import the timings file - if exists
+                    foreach ($aFiles as $aFile)
+                    {
+                       if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lsi')
+                       {
+                            $aTimingsImportResults = XMLImportTimings($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aLSSImportResults['newsid']);
+                            break;
+                       }
+                    }
                 }
                 else
                 {

@@ -258,13 +258,13 @@ function checkQuestions($postsid, $surveyid, $qtypes)
 }
 /**
  * Function to activate a survey
- * @param int $postsid
- * @param int $surveyid
+ * @param int $surveyid The Survey ID
+ * @param bool $simulate
  * @return string
  */
 
 
-function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = false)
+function activateSurvey($surveyid, $simulate = false)
 {
     $CI =& get_instance();
     $CI->load->helper('database');
@@ -277,7 +277,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
      $fieldstiming = array();
      $createsurveydirectory=false;
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl, savetimings FROM ".$CI->db->dbprefix."surveys WHERE sid={$postsid}";
+    $pquery = "SELECT anonymized, allowregister, datestamp, ipaddr, refurl, savetimings FROM ".$CI->db->dbprefix."surveys WHERE sid={$surveyid}";
     $presult=db_execute_assoc($pquery);
     $prow=$presult->row_array();
     if ($prow['allowregister'] == "Y")
@@ -413,7 +413,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
     $createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
-    $tabname = "survey_{$postsid}"; // dbprefix is added automatically
+    $tabname = "survey_{$surveyid}"; // dbprefix is added automatically
 
     /**
      $taboptarray = array('mysql' => 'ENGINE='.$CI->db->databasetabletype.'  CHARACTER SET utf8 COLLATE utf8_unicode_ci',
@@ -436,7 +436,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
     //if ($execresult==0 || $execresult==1)
     if (!$execresult)
     {
-        $link = site_url("admin/survey/view/".$postsid);
+        $link = site_url("admin/survey/view/".$surveyid);
         $activateoutput .= "<br />\n<div class='messagebox ui-corner-all'>\n" .
         "<div class='header ui-widget-header'>".$clang->gT("Activate Survey")." ($surveyid)</div>\n" .
         "<div class='warningheader'>".$clang->gT("Survey could not be actived.")."</div>\n" .
@@ -450,7 +450,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
     if ($execresult)
     {
 
-        $anquery = "SELECT autonumber_start FROM ".$CI->db->dbprefix."surveys WHERE sid={$postsid}";
+        $anquery = "SELECT autonumber_start FROM ".$CI->db->dbprefix."surveys WHERE sid={$surveyid}";
         if ($anresult=db_execute_assoc($anquery))
         {
             //if there is an autonumber_start field, start auto numbering here
@@ -459,16 +459,16 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                 if ($row['autonumber_start'] > 0)
                 {
                     if ($CI->db->dbdriver=='odbc_mssql' || $CI->db->dbdriver=='odbtp' || $CI->db->dbdriver=='mssql_n' || $CI->db->dbdriver=='mssqlnative') {
-                        mssql_drop_primary_index('survey_'.$postsid);
-                        mssql_drop_constraint('id','survey_'.$postsid);
-                        $autonumberquery = "alter table ".$CI->db->dbprefix."survey_{$postsid} drop column id ";
+                        mssql_drop_primary_index('survey_'.$surveyid);
+                        mssql_drop_constraint('id','survey_'.$surveyid);
+                        $autonumberquery = "alter table ".$CI->db->dbprefix."survey_{$surveyid} drop column id ";
                         db_execute_assoc($autonumberquery);
-                        $autonumberquery = "alter table ".$CI->db->dbprefix."survey_{$postsid} add [id] int identity({$row['autonumber_start']},1)";
+                        $autonumberquery = "alter table ".$CI->db->dbprefix."survey_{$surveyid} add [id] int identity({$row['autonumber_start']},1)";
                         db_execute_assoc($autonumberquery);
                     }
                     else
                     {
-                        $autonumberquery = "ALTER TABLE ".$CI->db->dbprefix."survey_{$postsid} AUTO_INCREMENT = ".$row['autonumber_start'];
+                        $autonumberquery = "ALTER TABLE ".$CI->db->dbprefix."survey_{$surveyid} AUTO_INCREMENT = ".$row['autonumber_start'];
                         $result = @db_execute_assoc($autonumberquery);
 
                     }
@@ -497,10 +497,10 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
 
         // create the survey directory where the uploaded files can be saved
         if ($createsurveydirectory)
-            if (!file_exists($CI->config->item('rootdir')."upload/surveys/" . $postsid . "/files") && !(mkdir($CI->config->item('rootdir')."upload/surveys/" . $postsid . "/files", 0777, true)))
-            if (!file_exists($CI->config->item('uploaddir')."/surveys/" . $postsid . "/files"))
+            if (!file_exists($CI->config->item('rootdir')."upload/surveys/" . $surveyid . "/files") && !(mkdir($CI->config->item('rootdir')."upload/surveys/" . $surveyid . "/files", 0777, true)))
+            if (!file_exists($CI->config->item('uploaddir')."/surveys/" . $surveyid . "/files"))
             {
-               if (!(mkdir($CI->config->item('uploaddir')."/surveys/" . $postsid . "/files", 0777, true)))
+               if (!(mkdir($CI->config->item('uploaddir')."/surveys/" . $surveyid . "/files", 0777, true)))
                {
 
                 $activateoutput .= "<div class='warningheader'>".
@@ -508,7 +508,7 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
                }
                else
                {
-                   file_put_contents($CI->config->item('uploaddir')."/surveys/" . $postsid . "/files/index.html",'<html><head></head><body></body></html>');
+                   file_put_contents($CI->config->item('uploaddir')."/surveys/" . $surveyid . "/files/index.html",'<html><head></head><body></body></html>');
                }
             }
         $acquery = "UPDATE ".$CI->db->dbprefix."surveys SET active='Y' WHERE sid=".$surveyid;
@@ -517,33 +517,24 @@ function activateSurvey($postsid,$surveyid, $scriptname='admin.php',$simulate = 
         if (isset($surveyallowsregistration) && $surveyallowsregistration == "TRUE")
         {
             $activateoutput .= $clang->gT("This survey allows public registration. A token table must also be created.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".get2post(site_url("admin/survey/activate/".$surveyid)."?action=tokens&amp;sid={$postsid}&amp;createtable=Y")."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Initialise tokens")."' onclick=\"".get2post(site_url("admin/survey/activate/".$surveyid)."?action=tokens&amp;sid={$surveyid}&amp;createtable=Y")."\" />\n";
         }
         else
         {
-            $link = site_url("admin/survey/view/".$postsid);
+            $link = site_url("admin/survey/view/".$surveyid);
 
             $activateoutput .= $clang->gT("This survey is now active, and responses can be recorded.")."<br /><br />\n";
             $activateoutput .= "<strong>".$clang->gT("Open-access mode").":</strong> ".$clang->gT("No invitation code is needed to complete the survey.")."<br />".$clang->gT("You can switch to the closed-access mode by initialising a token table with the button below.")."<br /><br />\n";
-            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post(site_url("admin/survey/activate/".$surveyid)."?action=tokens&amp;sid={$postsid}&amp;createtable=Y")."\" />\n";
-            //$activateoutput .= "<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".get2post("$scriptname?sid={$postsid}")."\" />\n";
+            $activateoutput .= "<input type='submit' value='".$clang->gT("Switch to closed-access mode")."' onclick=\"".get2post(site_url("admin/survey/activate/".$surveyid)."?action=tokens&amp;sid={$surveyid}&amp;createtable=Y")."\" />\n";
             $activateoutput .= "<input type='submit' value='".$clang->gT("No, thanks.")."' onclick=\"".get2post("$link")."\" />\n";
         }
         $activateoutput .= "</div><br />&nbsp;\n";
         $lsrcOutput = true;
     }
 
-    if($scriptname=='lsrc')
-    {
-        if($lsrcOutput==true)
-            return true;
-        else
-            return $activateoutput;
-    }
-    else
-    {
-        return $activateoutput;
-    }
+
+    return $activateoutput;
+
 }
 
 function mssql_drop_constraint($fieldname, $tablename)
