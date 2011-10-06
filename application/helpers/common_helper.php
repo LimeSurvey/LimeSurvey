@@ -5350,6 +5350,8 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
           $aFieldMappings[$sFieldname]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']].$aFieldinfo['aid'];
           // now also add a shortened field mapping which is needed for certain kind of condition mappings
           $aFieldMappings[$iNewSID.'X'.$aFieldinfo['gid'].'X'.$aFieldinfo['qid']]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']].'X'.$aQIDReplacements[$aFieldinfo['qid']];
+          // Shortened field mapping for timings table
+          $aFieldMappings[$iNewSID.'X'.$aFieldinfo['gid']]=$iOldSID.'X'.$aGIDReplacements[$aFieldinfo['gid']];
       }
     }
     return array_flip($aFieldMappings);

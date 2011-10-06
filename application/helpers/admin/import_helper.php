@@ -2649,9 +2649,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
     $surveyrowdata=array_combine($sfieldorders,$sfieldcontents);
     $oldsid=$surveyrowdata["sid"];
 
-    if($iDesiredSurveyId!=NULL)
-        $oldsid = $iDesiredSurveyId;
-
     if (!$oldsid)
     {
         if ($importingfrom == "http")
@@ -2670,8 +2667,15 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             return;
         }
     }
+    if($iDesiredSurveyId!=NULL)
+    {
+        $newsid = GetNewSurveyID($iDesiredSurveyId);
+    }
+    else
+    {
+        $newsid = GetNewSurveyID($oldsid);
+    }
 
-    $newsid = GetNewSurveyID($oldsid);
 
     $insert=$surveyarray[0];
     $sfieldorders  =convertCSVRowToArray($surveyarray[0],',','"');
@@ -2704,13 +2708,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
     $CI->load->model('surveys_model');
     $iresult = $CI->surveys_model->insertNewSurvey($surveyrowdata) or show_error("<br />".$clang->gT("Import of this survey file failed")."<br />{$surveyarray[0]}<br /><br />\n" );
-    /**
 
-    $values=array_values($surveyrowdata);
-    $values=array_map(array(&$connect, "qstr"),$values); // quote everything accordingly
-    $insert = "INSERT INTO ".$CI->db->dbprefix."surveys (".implode(',',array_keys($surveyrowdata)).") VALUES (".implode(',',$values).")"; //handle db prefix
-    $iresult = db_execute_assoc($insert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$insert]<br />{$surveyarray[0]}<br /><br />\n" );
-    */
     // Now import the survey language settings
     $fieldorders=convertCSVRowToArray($surveylsarray[0],',','"');
     unset($surveylsarray[0]);
@@ -2735,12 +2733,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
         $CI->load->model('surveys_languagesettings_model');
         $lsiresult = $CI->surveys_languagesettings_model->insertNewSurvey($surveylsrowdata) or show_error("<br />".$clang->gT("Import of this survey file failed")."<br />");
-        /**
-        $newvalues=array_values($surveylsrowdata);
-        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-        $lsainsert = "INSERT INTO {$dbprefix}surveys_languagesettings (".implode(',',array_keys($surveylsrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-        $lsiresult=$connect->Execute($lsainsert) or safe_die("<br />".$clang->gT("Import of this survey file failed")."<br />\n[$lsainsert]<br />\n" . $connect->ErrorMsg() );
-        */
+
     }
 
     // The survey languagesettings are imported now
@@ -2781,13 +2774,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
             $CI->load->model('labelsets_model');
             $lsiresult = $CI->labelsets_model->insertRecords($labelsetrowdata);
-            /**
 
-            $newvalues=array_values($labelsetrowdata);
-            $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-            $lsainsert = "INSERT INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-            $lsiresult=$connect->Execute($lsainsert);
-            */
             $results['labelsets']++;
             // Get the new insert id for the labels inside this labelset
             $newlid=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}labelsets",'lid');
@@ -2815,12 +2802,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
                         $CI->load->model('labels_model');
                         $liresult = $CI->labels_model->insertRecords($labelrowdata);
-                        /**
-                        $newvalues=array_values($labelrowdata);
-                        $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-                        $lainsert = "INSERT INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
-                        $liresult=$connect->Execute($lainsert);
-                        */
+
                         if ($liresult!==false) $results['labels']++;
                     }
                 }
@@ -2913,11 +2895,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             $CI->load->model('groups_model');
             $gres = $CI->groups_model->insertRecords($grouprowdata) or show_error($clang->gT('Error').": Failed to insert group<br />\<br />\n");
 
-            /**
-            $tablename=$CI->db->dbprefix.'groups';
-            $ginsert = $connect->GetinsertSQL($tablename,$grouprowdata);
-            $gres = $connect->Execute($ginsert) or safe_die($clang->gT('Error').": Failed to insert group<br />\n$ginsert<br />\n".$connect->ErrorMsg());
-            */
             if (isset($grouprowdata['gid'])) db_switchIDInsert('groups',false);
             //GET NEW GID
             if (!isset($grouprowdata['gid'])) {$aGIDReplacements[$oldgid]=$CI->db->insert_id(); }//$connect->Insert_ID("{$dbprefix}groups","gid");}
@@ -2993,11 +2970,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             $CI->load->model('questions_model');
             $qres = $CI->questions_model->insertRecords($questionrowdata) or show_error ($clang->gT("Error").": Failed to insert question<br />");
 
-            /**
-            $tablename=$dbprefix.'questions';
-            $qinsert = $connect->GetInsertSQL($tablename,$questionrowdata);
-            $qres = $connect->Execute($qinsert) or safe_die ($clang->gT("Error").": Failed to insert question<br />\n$qinsert<br />\n".$connect->ErrorMsg());
-            */
             if (isset($questionrowdata['qid'])) {
                 db_switchIDInsert('questions',false);
                 $saveqid=$questionrowdata['qid'];
@@ -3007,7 +2979,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
                 $aQIDReplacements[$oldqid]=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}questions",'qid');
                 $saveqid=$aQIDReplacements[$oldqid];
             }
-
 
             // Now we will fix up old label sets where they are used as answers
             if (((isset($oldlid1) && isset($aLIDReplacements[$oldlid1])) || (isset($oldlid2) && isset($aLIDReplacements[$oldlid2]))) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1))
@@ -3109,11 +3080,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
                 $insertdata['language']=$answerrowdata['language'];
                 $insertdata['defaultvalue']=$answerrowdata['answer'];
                 $qres = $CI->defaultvalues_model->insertRecords($insertdata) or show_error ("Error: Failed to insert defaultvalue <br />");
-                /**
-                $query=$connect->GetInsertSQL($dbprefix.'defaultvalues',$insertdata);
-                $qres = $connect->Execute($query) or safe_die ("Error: Failed to insert defaultvalue <br />{$query}<br />\n".$connect->ErrorMsg());
-                */
-
             }
             // translate internal links
             $answerrowdata['answer']=translink('survey', $oldsid, $newsid, $answerrowdata['answer']);
@@ -3137,16 +3103,13 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
 
 
-                /**
-                $tablename=$dbprefix.'questions';
-                $query=$connect->GetInsertSQL($tablename,$questionrowdata); */
                 if (isset($questionrowdata['qid'])) db_switchIDInsert('questions',true);
                 $CI->load->model('questions_model');
                 $qres= $CI->questions_model->insertRecords($questionrowdata) or show_error("Error: Failed to insert subquestion <br />");
-                //$qres = $connect->Execute($query) or safe_die ("Error: Failed to insert subquestion <br />{$query}<br />".$connect->ErrorMsg());
+
                 if (!isset($questionrowdata['qid']))
                 {
-                    $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}questions","qid");
+                    $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$CI->db->insert_id();
                 }
                 else
                 {
@@ -3162,8 +3125,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
                     $insertdata['sqid']=$aSQIDReplacements[$answerrowdata['code']];
                     $insertdata['language']=$answerrowdata['language'];
                     $insertdata['defaultvalue']='Y';
-                    //$tablename=$dbprefix.'defaultvalues';
-                    //$query=$connect->GetInsertSQL($tablename,$insertdata);
                     $qres = $CI->defaultvalues_model->insertRecords($insertdata) or show_error("Error: Failed to insert defaultvalue <br />");
                 }
 
@@ -3171,8 +3132,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             else   // insert answers
             {
                 unset($answerrowdata['default_value']);
-                //$tablename=$dbprefix.'answers';
-                //$query=$connect->GetInsertSQL($tablename,$answerrowdata);
                 $ares = $CI->answers_model->insertRecords($answerrowdata) or show_error("Error: Failed to insert answer<br />");
                 $results['answers']++;
             }
@@ -3229,8 +3188,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             unset($asrowdata["id"]);
             $CI->load->model('assessments_model');
 
-            //$tablename=$dbprefix.'assessments';
-            //$asinsert = $connect->GetInsertSQL($tablename,$asrowdata);
             $result=$CI->assessments_model->insertRecords($asrowdata) or show_error("Couldn't insert assessment<br />");
 
             unset($newgid);
@@ -3256,8 +3213,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             unset($asrowdata["id"]);
             $quotadata[]=$asrowdata; //For use later if needed
             $CI->load->model('quotas_model');
-            //$tablename=$dbprefix.'quota';
-            //$asinsert = $connect->getInsertSQL($tablename,$asrowdata);
             $result=$CI->quotas_model->insertRecords($asrowdata) or safe_die ("Couldn't insert quota<br />");
             $aQuotaReplacements[$oldid] = $CI->db->insert_id(); // $connect->Insert_ID(db_table_name_nq('quota'),"id");
         }
@@ -3291,8 +3246,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             $asrowdata["quota_id"]=$newquotaid;
             unset($asrowdata["id"]);
             $CI->load->model('quota_members_model');
-            //$tablename=$dbprefix.'quota_members';
-            //$asinsert = $connect->getInsertSQL($tablename,$asrowdata);
 
             $result=$CI->quota_members_model->insertRecords($asrowdata) or show_error("Couldn't insert quota<br />");
 
@@ -3336,9 +3289,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             "quotals_urldescrip" => "");
             $i++;
         }
-        //$tablename=$dbprefix.'quota_languagesettings';
         $CI->load->model('quota_languagesettings_model');
-        //$asinsert = $connect->getInsertSQL($tablename,$asrowdata);
         $result=$CI->quota_languagesettings_model->insertRecords($asrowdata) or show_error("Couldn't insert quota<br />");
         $countquotals=$i;
     }
@@ -3373,9 +3324,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             $oldcfieldname=$conditionrowdata["cfieldname"];
             $conditionrowdata["cfieldname"]=str_replace($oldsid.'X'.$oldgid.'X'.$oldcqid,$newsid.'X'.$aGIDReplacements[$oldgid].'X'.$conditionrowdata["cqid"],$conditionrowdata["cfieldname"]);
 
-            //$tablename=$dbprefix.'conditions';
             $CI->load->model('conditions_model');
-            //$conditioninsert = $connect->getInsertSQL($tablename,$conditionrowdata);
             $result=$CI->conditions_model->insertRecords($conditionrowdata) or show_error("Couldn't insert condition<br />");
 
         }
@@ -3441,16 +3390,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     }
     $results['languages']=count($aLanguagesSupported);
 
-
-    // First get an overview of fieldnames - it's not useful for the moment but might be with newer versions
-    /*
-    $fieldnames=array();
-    foreach ($xml->questions->fields->fieldname as $fieldname )
-    {
-    $fieldnames[]=(string)$fieldname;
-    };*/
-
-
     // Import surveys table ===================================================================================
 
     //$tablename=$CI->db->dbprefix.'surveys';
@@ -3507,7 +3446,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
 
         db_switchIDInsert('surveys',true);
-        //$query=$connect->GetInsertSQL($tablename,$insertdata);
 
         $result = $CI->surveys_model->insertNewSurvey($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
 
@@ -3546,7 +3484,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         $insertdata['surveyls_email_register']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_email_register']);
         $insertdata['surveyls_email_confirm']=translink('survey', $oldsid, $newsid, $insertdata['surveyls_email_confirm']);
 
-        //$query=$connect->GetInsertSQL($tablename,$insertdata);
         $result = $CI->surveys_languagesettings_model->insertNewSurvey($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
     }
 
@@ -3575,13 +3512,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             db_switchIDInsert('groups',true);
             $insertdata['gid']=$aGIDReplacements[$oldgid];
         }
-        //$query=$connect->GetInsertSQL($tablename,$insertdata);
         $result = $CI->groups_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
         $results['groups']++;
 
         if (!isset($aGIDReplacements[$oldgid]))
         {
-            $newgid=$CI->db->insert_id(); //$connect->Insert_ID($tablename,"gid"); // save this for later
+            $newgid=$CI->db->insert_id();
             $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
         }
         else
@@ -3597,7 +3533,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // then for subquestions (because we need to determine the new qids for the main questions first)
     if(isset($xml->questions))  // there could be surveys without a any questions
     {
-        //$tablename=$dbprefix.'questions';
         $CI->load->model('questions_model');
         foreach ($xml->questions->rows->row as $row)
         {
@@ -3622,7 +3557,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 db_switchIDInsert('questions',true);
 
             }
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result = $CI->questions_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
             if (!isset($aQIDReplacements[$oldqid]))
             {
@@ -3640,7 +3574,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import subquestions -------------------------------------------------------
     if(isset($xml->subquestions))
     {
-        //$tablename=$dbprefix.'questions';
         $CI->load->model('questions_model');
         foreach ($xml->subquestions->rows->row as $row)
         {
@@ -3665,7 +3598,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
             //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result = $CI->questions_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
-            $newsqid=$CI->db->insert_id(); //$connect->Insert_ID($tablename,"qid"); // save this for later
+            $newsqid=$CI->db->insert_id(); // save this for later
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
@@ -3681,7 +3614,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import answers ------------------------------------------------------------
     if(isset($xml->answers))
     {
-        //$tablename=$dbprefix.'answers';
         $CI->load->model('answers_model');
         foreach ($xml->answers->rows->row as $row)
         {
@@ -3694,7 +3626,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
             // now translate any links
             $insertdata['answer']=translink('survey', $oldsid, $newsid, $insertdata['answer']);
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result=$CI->answers_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
             $results['answers']++;
         }
@@ -3731,7 +3662,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
-
     // Import defaultvalues ------------------------------------------------------
     if(isset($xml->defaultvalues))
     {
@@ -3749,13 +3679,13 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if (isset($aQIDReplacements[(int)$insertdata['sqid']])) $insertdata['sqid']=$aQIDReplacements[(int)$insertdata['sqid']]; // remap the subquestion id
 
             // now translate any links
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result=$CI->defaultvalues_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
             $results['defaultvalues']++;
         }
     }
 
     $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
+
     // Import conditions ---------------------------------------------------------
     if(isset($xml->conditions))
     {
@@ -3827,7 +3757,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
 
             // now translate any links
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result=$CI->conditions_model->insertRecords($insertdata) or show_error ($clang->gT("Error").": Failed to insert data<br />");
             $results['conditions']++;
         }
@@ -3853,7 +3782,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['sid']=$newsid; // remap the survey id
 
             // now translate any links
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result=$CI->assessments_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
             $results['assessments']++;
         }
@@ -3875,9 +3803,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $oldid=$insertdata['id'];
             unset($insertdata['id']);
             // now translate any links
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result=$CI->quota_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
-            $aQuotaReplacements[$oldid] = $CI->db->insert_id(); //$connect->Insert_ID(db_table_name_nq('quota'),"id");
+            $aQuotaReplacements[$oldid] = $CI->db->insert_id();
             $results['quota']++;
         }
     }
@@ -3885,7 +3812,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import quota_members ------------------------------------------------------
     if(isset($xml->quota_members))
     {
-        //$tablename=$dbprefix.'quota_members';
         $CI->load->model('quota_members_model');
         foreach ($xml->quota_members->rows->row as $row)
         {
@@ -3899,7 +3825,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['quota_id']=$aQuotaReplacements[(int)$insertdata['quota_id']]; // remap the qid
             unset($insertdata['id']);
             // now translate any links
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result=$CI->quota_members_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
             $results['quotamembers']++;
         }
@@ -3908,7 +3833,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import quota_languagesettings----------------------------------------------
     if(isset($xml->quota_languagesettings))
     {
-        //$tablename=$dbprefix.'quota_languagesettings';
         $CI->load->model('quota_languagesettings_model');
         foreach ($xml->quota_languagesettings->rows->row as $row)
         {
@@ -3919,8 +3843,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             $insertdata['quotals_quota_id']=$aQuotaReplacements[(int)$insertdata['quotals_quota_id']]; // remap the qid
             unset($insertdata['quotals_id']);
-            // now translate any links
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result=$CI->quota_languagesettings_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
             $results['quotals']++;
         }
@@ -3948,8 +3870,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['targetqid'] =$aQIDReplacements[(int)$insertdata['targetqid']]; // remap the qid
             }
             unset($insertdata['id']);
-            // now translate any links
-            //$query=$connect->GetInsertSQL($tablename,$insertdata);
             $result=$CI->quota_languagesettings_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
             $results['survey_url_parameters']++;
         }
@@ -3978,7 +3898,6 @@ function GetNewSurveyID($oldsid)
 {
     $CI =& get_instance();
     $CI->load->helper('database');
-    //$clang = $CI->limesurvey_lang;
     $query = "SELECT sid FROM ".$CI->db->dbprefix."surveys WHERE sid=$oldsid";
 
     $res = db_execute_assoc($query);
@@ -3993,7 +3912,6 @@ function GetNewSurveyID($oldsid)
             $newsid = sRandomChars(5,'123456789');
             $query = "SELECT sid FROM ".$CI->db->dbprefix."surveys WHERE sid=$newsid";
             $res = db_execute_assoc($query);
-            //$isresult = $res->row_array(); //$connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$newsid");
         }
         while ($res->num_rows > 0);
 
@@ -4169,7 +4087,7 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
             if ($key[0]=='_') $key=substr($key,1);
             if (isset($aFieldReMap[$key]))
             {
-               $key=$aFieldReMap[$key];
+                $key=$aFieldReMap[$key];
             }
             $insertdata[$key]=(string)$value;
         }
@@ -4208,28 +4126,28 @@ function XMLImportTimings($sFullFilepath,$iSurveyID,$aFieldReMap=array())
     $results['languages']=count($aLanguagesSupported);
 
 
-    $CI->load->model('surveys_dynamic_model');
+    $CI->load->model('timings_dynamic_model');
 
-    db_switchIDInsert('survey_'.$iSurveyID,true);
-    foreach ($xml->responses->rows->row as $row)
+    db_switchIDInsert('survey_'.$iSurveyID.'_timings',true);
+    foreach ($xml->timings->rows->row as $row)
     {
         $insertdata=array();
 
         foreach ($row as $key=>$value)
         {
             if ($key[0]=='_') $key=substr($key,1);
-            if (isset($aFieldReMap[$key]))
+            if (isset($aFieldReMap[substr($key,0,-4)]))
             {
-               $key=$aFieldReMap[$key];
+                $key=$aFieldReMap[substr($key,0,-4)].'time';
             }
             $insertdata[$key]=(string)$value;
         }
 
-        $result = $CI->surveys_dynamic_model->insertRecords($iSurveyID,$insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+        $result = $CI->timings_dynamic_model->insertRecords($iSurveyID,$insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
 
         $results['responses']++;
     }
-    db_switchIDInsert('survey_'.$iSurveyID,false);
+    db_switchIDInsert('survey_'.$iSurveyID.'_timings',false);
 
     return $results;
 }

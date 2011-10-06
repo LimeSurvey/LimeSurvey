@@ -4,7 +4,7 @@
 	</div>
 	<div class='menubar-main'>
     	<div class='menubar-left'>
-    		<a href="#" onclick="window.open('<?php echo site_url("admin");?>', '_top')" title='<?php echo $clang->gTview("Return to survey administration");?>'>
+    		<a href="<?php echo site_url("admin/survey/view/$surveyid");?>" title='<?php echo $clang->gTview("Return to survey administration");?>'>
     			<img name='HomeButton' src='<?php echo $imageurl;?>/home.png' alt='<?php echo $clang->gT("Return to survey administration");?>' />
     		</a>
 		    <img src='<?php echo $imageurl;?>/blank.gif' alt='' width='11' />
@@ -26,7 +26,7 @@
 		        	title='<?php echo $clang->gTview("Add dummy tokens");?>' >
 		        	<img name='AddNewDummyButton' src='<?php echo $imageurl;?>/create_dummy_token.png' title='' alt='<?php echo $clang->gT("Add dummy tokens");?>' />
 		        </a>
-		
+
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'tokens','update'))
 		    { ?>
@@ -61,11 +61,11 @@
 		        <a href='<?php echo site_url("admin/emailtemplates/index/$surveyid");?>' title='<?php echo $clang->gTview("Edit email templates");?>'>
 		        	<img name='EmailTemplatesButton' src='<?php echo $imageurl;?>/emailtemplates.png' alt='<?php echo $clang->gT("Edit email templates");?>' />
 		        </a>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/email/$surveyid");?>', '_top')" 
+		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/email/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Send email invitation");?>'>
 		        	<img name='InviteButton' src='<?php echo $imageurl;?>/invite.png' alt='<?php echo $clang->gT("Send email invitation");?>' />
 		        </a>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/remind/$surveyid");?>', '_top')" 
+		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/remind/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Send email reminder");?>'>
 		        	<img name='RemindButton' src='<?php echo $imageurl;?>/remind.png' alt='<?php echo $clang->gT("Send email reminder");?>' />
 		        </a>
@@ -78,7 +78,7 @@
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
 		    { ?>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/kill/$surveyid");?>', '_top')" 
+		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/kill/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Drop tokens table");?>' >
 		        	<img name='DeleteTokensButton' src='<?php echo $imageurl;?>/delete.png' alt='<?php echo $clang->gT("Drop tokens table");?>' />
 		        </a>
@@ -86,7 +86,7 @@
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'tokens','update'))
 		    { ?>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/bouncesettings/$surveyid");?>', '_top')" 
+		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/bouncesettings/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Bounce processing settings");?>' >
 		        	<img name='BounceSettings' src='<?php echo $imageurl;?>/bounce_settings.png' alt='<?php echo $clang->gT("Bounce settings");?>' />
 		        </a>

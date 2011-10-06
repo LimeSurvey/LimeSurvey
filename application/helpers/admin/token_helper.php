@@ -13,6 +13,15 @@
 *	$Id: activate_functions.php 10193 2011-06-05 12:20:37Z c_schmitz $
 *	Files Purpose: holds functions to activate a survey and precheck the consistency of the survey
 */
+
+
+/**
+* Creates the basic token table for a survey
+*
+* @param mixed $iSurveyID
+* @param mixed $aAttributeFields
+* @return False if failed , else DB object
+*/
 function createTokenTable($iSurveyID, $aAttributeFields=array())
 {
     $CI =& get_instance();
@@ -41,6 +50,6 @@ function createTokenTable($iSurveyID, $aAttributeFields=array())
     $CI->dbforge->add_field($aFields);
     $CI->dbforge->add_key('tid', TRUE);
     $CI->dbforge->add_key("token");
-    $CI->dbforge->create_table("tokens_{$iSurveyID}");
+    return $CI->dbforge->create_table("tokens_{$iSurveyID}");
 
 }

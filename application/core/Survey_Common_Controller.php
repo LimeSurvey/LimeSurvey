@@ -552,7 +552,7 @@
         if (!isset($showstyle)) {$showstyle="";} */
         $data['showstyle'] = $showstyle;
         $data['aAdditionalLanguages'] = $aAdditionalLanguages;
-		$this->load->view("admin/survey/surveysummary",$data);
+		$this->load->view("admin/survey/surveySummary_view",$data);
 
     }
 

@@ -212,7 +212,7 @@ class Save {
 		    }
 		    if ($thissurvey['savetimings']=="Y" && $thissurvey['active'] == "Y")
 		    {
-				set_answer_time();
+				$this->set_answer_time();
 		}
 		}
 
@@ -837,6 +837,7 @@ class Save {
 	 */
 	function set_answer_time()
 	{
+        $CI = &get_instance();
 		global $thissurvey;
 	    if (isset($_POST['lastanswer']))
 	    {
@@ -848,7 +849,7 @@ class Save {
 			$setField = $_POST['lastgroup'];
 		if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
 			if($CI->db->insert_id() > 0){	// means that the last operation was INSERT
-				$query = "INSERT INTO ".$CI->db->escape($thissurvey['tablename']."_timings") ." ("
+				$query = "INSERT INTO ".$CI->db->protect_identifiers($thissurvey['tablename']."_timings") ." ("
 					 ."id, interviewtime)"
 					 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime .")";
 			}else{	// UPDATE
@@ -862,14 +863,14 @@ class Save {
 
 		$setField .= "time";
 		//saving the times
-		if($connect->Insert_ID($thissurvey['tablename'],"id") > 0){	// means that the last operation was INSERT
-			$query = "INSERT INTO ".$CI->db->escape($thissurvey['tablename']."_timings") ." ("
-				 ."id, interviewtime, " .$CI->db->escape($setField) .")"
+		if($CI->db->insert_id() > 0){	// means that the last operation was INSERT
+			$query = "INSERT INTO ".$CI->db->protect_identifiers($thissurvey['tablename']."_timings") ." ("
+				 ."id, interviewtime, " .$CI->db->protect_identifiers($setField) .")"
 				 ." VALUES (" .$_SESSION['srid'] ."," .$passedTime ."," .$passedTime.")";
 		}else{	// UPDATE
 			$query = "UPDATE {$thissurvey['tablename']}_timings SET "
 				."interviewtime = interviewtime" ." + " .$passedTime .","
-				.$CI->db->escape($setField) ." = " .$CI->db->escape($setField) ." + " .$passedTime
+				.$CI->db->protect_identifiers($setField) ." = " .$CI->db->protect_identifiers($setField) ." + " .$passedTime
 				." WHERE id = " .$_SESSION['srid'];
 		}
 		db_execute_assoc($query);

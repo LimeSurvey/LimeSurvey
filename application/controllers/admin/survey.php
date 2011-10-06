@@ -618,11 +618,11 @@ class survey extends Survey_Common_Controller {
         {
             $this->load->model("surveys_model");
             $this->surveys_model->updateSurvey(array('anonymized'=>$this->input->post('anonymized'),
-                                                'datestamp'=>$this->input->post('datestamp'),
-                                                'ipaddr'=>$this->input->post('ipaddr'),
-                                                'refurl'=>$this->input->post('refurl'),
-                                                'savetimings'=>$this->input->post('savetimings')),
-                                                array('sid'=>$iSurveyID));
+            'datestamp'=>$this->input->post('datestamp'),
+            'ipaddr'=>$this->input->post('ipaddr'),
+            'refurl'=>$this->input->post('refurl'),
+            'savetimings'=>$this->input->post('savetimings')),
+            array('sid'=>$iSurveyID));
             $activateoutput = activateSurvey($iSurveyID);
             $displaydata['display'] = $activateoutput;
             $this->load->view('survey_view',$displaydata);
@@ -1083,17 +1083,17 @@ class survey extends Survey_Common_Controller {
             // Start the HTML
             if ($action == 'importsurvey')
             {
-                $importsurvey .= "<div class='header ui-widget-header'>".$clang->gT("Import survey")."</div>\n";
+                $aData['sHeader']=$clang->gT("Import survey");
+                $aData['sSummaryHeader']=$clang->gT("Survey import summary");
                 $importingfrom = "http";
             }
             elseif($action == 'copysurvey')
             {
-                $importsurvey .= "<div class='header ui-widget-header'>".$clang->gT("Copy survey")."</div>\n";
-                $copyfunction= true;
+                $aData['sHeader']=$clang->gT("Copy survey");
+                $aData['sSummaryHeader']=$clang->gT("Survey copy summary");
             }
             // Start traitment and messagebox
-            $importsurvey .= "<div class='messagebox ui-corner-all'>\n";
-            $importerror=false; // Put a var for continue
+            $aData['bFailed']=false; // Put a var for continue
 
             if ($action == 'importsurvey')
             {
@@ -1101,16 +1101,11 @@ class survey extends Survey_Common_Controller {
                 $the_full_file_path = $this->config->item('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
                 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
                 {
-                    $importsurvey .= "<div class='errorheader'>".$clang->gT("Error")."</div>\n";
-                    $importsurvey .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$this->config->item('tempdir'))."<br /><br />\n";
-                    $importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\"><br /><br />\n";
-                    $importerror=true;
+                    $aData['sErrorMessage'] = sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$this->config->item('tempdir'));
+                    $aData['bFailed']=true;
                 }
                 else
                 {
-                    $importsurvey .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n";
-                    $importsurvey .= $clang->gT("File upload succeeded.")."<br /><br />\n";
-                    $importsurvey .= $clang->gT("Reading file..")."<br />\n";
                     $sFullFilepath=$the_full_file_path;
                     $aPathInfo = pathinfo($sFullFilepath);
                     if (isset($aPathInfo['extension']))
@@ -1121,14 +1116,12 @@ class survey extends Survey_Common_Controller {
                     {
                         $sExtension = "";
                     }
-
                 }
 
-                if (!$importerror && (strtolower($sExtension)!='csv' && strtolower($sExtension)!='lss' && strtolower($sExtension)!='zip'))
+                if (!$aData['bFailed'] && (strtolower($sExtension)!='csv' && strtolower($sExtension)!='lss' && strtolower($sExtension)!='zip'))
                 {
-                    $importsurvey .= "<div class='errorheader'>".$clang->gT("Error")."</div>\n";
-                    $importsurvey .= $clang->gT("Import failed. You specified an invalid file type.")."\n";
-                    $importerror=true;
+                    $aData['sErrorMessage'] = $clang->gT("Import failed. You specified an invalid file type.");
+                    $aData['bFailed']=true;
                 }
             }
             elseif ($action == 'copysurvey')
@@ -1156,51 +1149,19 @@ class survey extends Survey_Common_Controller {
 
                 if (!$surveyid)
                 {
-                    self::_getAdminHeader();
-                    echo ""
-                    ."<br />\n"
-                    ."<table width='350' align='center' style='border: 1px solid #555555' cellpadding='1' cellspacing='0'>\n"
-                    ."\t<tr bgcolor='#555555'><td colspan='2' height='4'><font size='1' face='verdana' color='white'><strong>"
-                    .$clang->gT("Export Survey")."</strong></td></tr>\n"
-                    ."\t<tr><td align='center'>\n"
-                    ."<br /><strong><font color='red'>"
-                    .$clang->gT("Error")."</font></strong><br />\n"
-                    .$clang->gT("No SID has been provided. Cannot dump survey")."<br />\n"
-                    ."<br /><input type='submit' value='"
-                    .$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\">\n"
-                    ."\t</td></tr>\n"
-                    ."</table>\n"
-                    ."</body></html>\n";
-                    exit;
+                    $aData['sErrorMessage'] = $clang->gT("No survey ID has been provided. Cannot copy survey");
+                    $aData['bFailed']=true;
                 }
-
 
                 $this->load->helper('export_helper');
-
-
-                if (!isset($copyfunction))
-                {
-                    $fn = "limesurvey_survey_$surveyid.lss";
-                    header("Content-Type: text/xml");
-                    header("Content-Disposition: attachment; filename=$fn");
-                    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-                    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-                    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-                    header("Pragma: public");                          // HTTP/1.0
-                    echo getXMLData();
-                    exit;
-                }
-
                 $copysurveydata = survey_getXMLData($surveyid,$exclude);
-
-
             }
 
             // Now, we have the survey : start importing
             //require_once('import_functions.php');
             $this->load->helper('admin/import');
             $_POST = $this->input->post();
-            if ($action == 'importsurvey' && !$importerror)
+            if ($action == 'importsurvey' && !$aData['bFailed'])
             {
 
                 if (isset($sExtension) && strtolower($sExtension)=='csv')
@@ -1211,57 +1172,63 @@ class survey extends Survey_Common_Controller {
                 {
                     $aImportResults=XMLImportSurvey($sFullFilepath,null,null, null,(isset($_POST['translinksfields'])));
                 }
-                elseif (isset($sExtension) && strtolower($sExtension)=='zip')
+                elseif (isset($sExtension) && strtolower($sExtension)=='zip')  // Import a survey archive
                 {
                     $this->load->library("admin/pclzip/pclzip",array('p_zipname' => $sFullFilepath));
                     $aFiles=$this->pclzip->listContent();
                     if ($this->pclzip->extract(PCLZIP_OPT_PATH, $this->config->item('tempdir').DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/')== 0) {
                         unset($this->pclzip);
-                        unlink($sFullFilepath);
                     }
                     // Step 1 - import the LSS file and activate the survey
                     foreach ($aFiles as $aFile)
                     {
-                       if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lss')
-                       {
+                        if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lss')
+                        {
                             //Import the LSS file
-                            $aLSSImportResults=XMLImportSurvey($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],null, null, null,true);
+                            $aImportResults=XMLImportSurvey($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],null, null, null,true);
                             // Activate the survey
                             $this->load->helper("admin/activate");
-                            $activateoutput = activateSurvey($aLSSImportResults['newsid']);
+                            $activateoutput = activateSurvey($aImportResults['newsid']);
+                            unlink($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                             break;
-                       }
+                        }
                     }
                     // Step 2 - import the responses file
                     foreach ($aFiles as $aFile)
                     {
-                       if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lsr')
-                       {
+                        if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lsr')
+                        {
                             //Import the LSS file
-                            $aResponseImportResults=XMLImportResponses($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aLSSImportResults['newsid'],$aLSSImportResults['FieldReMap']);
-                            // Activate the survey
+                            $aResponseImportResults=XMLImportResponses($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aImportResults['newsid'],$aImportResults['FieldReMap']);
+                            $aImportResults=array_merge($aResponseImportResults,$aImportResults);
+                            unlink($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                             break;
-                       }
+                        }
                     }
                     // Step 3 - import the tokens file - if exists
                     foreach ($aFiles as $aFile)
                     {
-                       if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lst')
-                       {
+                        if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lst')
+                        {
                             $this->load->helper("admin/token");
-                            $aTokenCreateResults = createTokenTable($aLSSImportResults['newsid']);
-                            $aTokenImportResults = XMLImportTokens($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aLSSImportResults['newsid']);
+                            if (createTokenTable($aImportResults['newsid'])) $aTokenCreateResults = array('tokentablecreated'=>true);
+                            $aImportResults=array_merge($aTokenCreateResults,$aImportResults);
+                            $aTokenImportResults = XMLImportTokens($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aImportResults['newsid']);
+                            $aImportResults=array_merge($aTokenImportResults,$aImportResults);
+                            unlink($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                             break;
-                       }
+                        }
                     }
-                    // Step 3 - import the timings file - if exists
+                    // Step 4 - import the timings file - if exists
                     foreach ($aFiles as $aFile)
                     {
-                       if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lsi')
-                       {
-                            $aTimingsImportResults = XMLImportTimings($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aLSSImportResults['newsid']);
+                        if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lsi' && tableExists("survey_{$aImportResults['newsid']}_timings"))
+                        {
+                            $aTimingsImportResults = XMLImportTimings($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aImportResults['newsid'],$aImportResults['FieldReMap']);
+                            $aImportResults=array_merge($aTimingsImportResults,$aImportResults);
+                            unlink($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                             break;
-                       }
+                        }
                     }
                 }
                 else
@@ -1277,94 +1244,19 @@ class survey extends Survey_Common_Controller {
             {
                 $importerror=true;
             }
-
-            if (isset($aImportResults['error']) && $aImportResults['error']!=false)
+            if ($action == 'importsurvey')
             {
-                $link = site_url('admin');
-                $importsurvey .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
-                $importsurvey .= $aImportResults['error']."<br /><br />\n";
-                $importsurvey .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$link', '_top')\" />\n";
-                $importerror = true;
+                unlink($sFullFilepath);
             }
 
-            if (!$importerror)
-            {
-                $importsurvey .= "<br />\n<div class='successheader'>".$clang->gT("Success")."</div><br /><br />\n";
-                if ($action == 'importsurvey')
-                {
-                    $importsurvey .= "<strong>".$clang->gT("Survey copy summary")."</strong><br />\n";
-                }
-                elseif($action == 'copysurvey')
-                {
-                    $importsurvey .= "<strong>".$clang->gT("Survey import summary")."</strong><br />\n";
-                }
-
-                $importsurvey .= "<ul style=\"text-align:left;\">\n\t<li>".$clang->gT("Surveys").": {$aImportResults['surveys']}</li>\n";
-                $importsurvey .= "\t<li>".$clang->gT("Languages").": {$aImportResults['languages']}</li>\n";
-                $importsurvey .= "\t<li>".$clang->gT("Question groups").": {$aImportResults['groups']}</li>\n";
-                $importsurvey .= "\t<li>".$clang->gT("Questions").": {$aImportResults['questions']}</li>\n";
-                $importsurvey .= "\t<li>".$clang->gT("Answers").": {$aImportResults['answers']}</li>\n";
-                if (isset($aImportResults['subquestions']))
-                {
-                    $importsurvey .= "\t<li>".$clang->gT("Subquestions").": {$aImportResults['subquestions']}</li>\n";
-                }
-                if (isset($aImportResults['defaultvalues']))
-                {
-                    $importsurvey .= "\t<li>".$clang->gT("Default answers").": {$aImportResults['defaultvalues']}</li>\n";
-                }
-                if (isset($aImportResults['conditions']))
-                {
-                    $importsurvey .= "\t<li>".$clang->gT("Conditions").": {$aImportResults['conditions']}</li>\n";
-                }
-                if (isset($aImportResults['labelsets']))
-                {
-                    $importsurvey .= "\t<li>".$clang->gT("Label sets").": {$aImportResults['labelsets']}</li>\n";
-                }
-                if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls']>0)
-                {
-                    $importsurvey .= "\t<li>".$clang->gT("Not imported label sets").": {$aImportResults['deniedcountls']} ".$clang->gT("(Label sets were not imported since you do not have the permission to create new label sets.)")."</li>\n";
-                }
-                $importsurvey .= "\t<li>".$clang->gT("Question attributes").": {$aImportResults['question_attributes']}</li>\n";
-                $importsurvey .= "\t<li>".$clang->gT("Assessments").": {$aImportResults['assessments']}</li>\n";
-                $importsurvey .= "\t<li>".$clang->gT("Quotas").": {$aImportResults['quota']} ({$aImportResults['quotamembers']} ".$clang->gT("quota members")." ".$clang->gT("and")." {$aImportResults['quotals']} ".$clang->gT("quota language settings").")</li>\n</ul><br />\n";
-
-                if (count($aImportResults['importwarnings'])>0)
-                {
-                    $importsurvey .= "<div class='warningheader'>".$clang->gT("Warnings").":</div><ul style=\"text-align:left;\">";
-                    foreach ($aImportResults['importwarnings'] as $warning)
-                    {
-                        $importsurvey .='<li>'.$warning.'</li>';
-                    }
-                    $importsurvey .= "</ul><br />\n";
-                }
-                $link = site_url('admin/survey/view/'.$aImportResults['newsid']);
-                if ($action == 'importsurvey')
-                {
-                    $importsurvey .= "<strong>".$clang->gT("Import of Survey is completed.")."</strong><br />\n"
-                    . "<a href='$link'>".$clang->gT("Go to survey")."</a><br />\n";
-                }
-                elseif($action == 'copysurvey')
-                {
-                    $importsurvey .= "<strong>".$clang->gT("Copy of survey is completed.")."</strong><br />\n"
-                    . "<a href='$link'>".$clang->gT("Go to survey")."</a><br />\n";
-                }
-
-                if ($action == 'importsurvey')
-                {
-                    unlink($sFullFilepath);
-                }
-
-            }
-            // end of traitment an close message box
-            $importsurvey .= "</div><br />\n";
+            $aData['action']= $action;
+            $aData['sLink']= site_url('admin/survey/view/'.$aImportResults['newsid']);
+            $aData['aImportResults']=$aImportResults;
         }
+
         self::_getAdminHeader();
         self::_showadminmenu();;
-        //self::_surveybar($surveyid);
-
-        $data['display'] = $importsurvey;
-        $this->load->view('survey_view',$data);
-
+        $this->load->view('admin/survey/importSurvey_view',$aData);
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
     }
@@ -1648,7 +1540,7 @@ class survey extends Survey_Common_Controller {
         $dExpirationdate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->config->item('timeadjust'));
         $dExpirationdate=date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
         $this->surveys_model->updateSurvey(array('expires'=>$dExpirationdate),
-                                           array('sid'=>$iSurveyID));
+        array('sid'=>$iSurveyID));
         redirect('admin/survey/view/'.$iSurveyID);
 
     }
