@@ -7747,4 +7747,21 @@ function sDefaultSubmitHandler()
 EOS;
 }
 
+/**
+* This function fixes the group ID and type on all subquestions
+*
+*/
+function fixSubquestions()
+{
+    $surveyidresult=db_execute_assoc("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
+                                    from ".db_table_name('questions')." sq JOIN ".db_table_name('questions')." q on sq.parent_qid=q.qid
+                                    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)");
+    foreach($surveyidresult->GetRows() as $sv)
+    {
+      db_execute_assoc('update '.db_table_name('questions')." set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}");
+    }
+
+}
+
+
 // Closing PHP tag intentionally omitted - yes, it is okay
