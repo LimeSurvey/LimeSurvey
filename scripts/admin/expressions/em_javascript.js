@@ -198,11 +198,59 @@ function LEMval(alias)
             return '';
         }
     }
+    if (str.match(/^INSERTANS:/)) {
+        suffix = 'shown';
+    }
     // values should always be stored encoded with htmlspecialchars()
     switch (suffix) {
         case 'displayValue':
-        case 'shown':
-            return htmlspecialchars_decode(attr.shown);
+        case 'shown': {
+            value = htmlspecialchars_decode(document.getElementById(attr.jsName).value);
+            switch(attr.type)
+            {
+                case 'G': //GENDER drop-down list
+                case 'Y': //YES/NO radio-buttons
+                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                    displayValue = (typeof attr.answers[value] === 'undefined') ? '' : attr.answers[value];
+                    break;
+                case '!': //List - dropdown
+                case 'L': //LIST drop-down/radio-button list
+                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                case 'H': //ARRAY (Flexible) - Column Format
+                case 'F': //ARRAY (Flexible) - Row Format
+                case 'R': //RANKING STYLE
+                    which_ans = '0~' + value;
+                    displayValue = (typeof attr.answers[which_ans] === 'undefined') ? '' : attr.answers[which_ans];
+                    break;
+                case '1': //Array (Flexible Labels) dual scale  // need scale
+                    prefix = (attr.jsName.match(/#1$/)) ? '1' : '0';
+                    which_ans = prefix + '~' + value;
+                    displayValue = (typeof attr.answers[which_ans] === 'undefined') ? '' : attr.answers[which_ans];
+                    break;
+                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                case ':': //ARRAY (Multi Flexi) 1 to 10
+                case '5': //5 POINT CHOICE radio-buttons
+                case 'N': //NUMERICAL QUESTION TYPE
+                case 'K': //MULTIPLE NUMERICAL QUESTION
+                case 'Q': //MULTIPLE SHORT TEXT
+                case ';': //ARRAY (Multi Flexi) Text
+                case 'S': //SHORT FREE TEXT
+                case 'T': //LONG FREE TEXT
+                case 'U': //HUGE FREE TEXT
+                case 'M': //Multiple choice checkbox
+                case 'P': //Multiple choice with comments checkbox + text
+                case 'D': //DATE
+                case '*': //Equation
+                case 'I': //Language Question
+                case '|': //File Upload
+                case 'X': //BOILERPLATE QUESTION
+                    displayValue = value; // what about "no answer"?
+                    break;
+            }
+        }
+            return htmlspecialchars_decode(displayValue);
         case 'qid':
             return attr.qid;
         case 'mandatory':

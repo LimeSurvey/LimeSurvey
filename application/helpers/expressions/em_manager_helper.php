@@ -279,6 +279,26 @@ class LimeExpressionManager {
         $CI =& get_instance();
         $clang = $CI->limesurvey_lang;
 
+        $presets = array();
+        $presets['G'] = array(  //GENDER drop-down list
+            'M' => $clang->gT("Male"),
+            'F' => $clang->gT("Female"),
+        );
+        $presets['Y'] = array(  //YES/NO radio-buttons
+            'Y' => $clang->gT("Yes"),
+            'N' => $clang->gT("No"),
+        );
+        $presets['C'] = array(   //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+            'Y' => $clang->gT("Yes"),
+            'N' => $clang->gT("No"),
+            'U' => $clang->gT("Uncertain"),
+        );
+        $presets['E'] = array(  //ARRAY (Increase/Same/Decrease) radio-buttons
+            'I' => $clang->gT("Increase"),
+            'S' => $clang->gT("Same"),
+            'D' => $clang->gT("Decrease"),
+        );
+
         $CI->load->model('question_attributes_model');
         $qattr = $CI->question_attributes_model->getEMRelatedRecordsForSurvey($surveyid);   // what happens if $surveyid is null?
 
@@ -325,81 +345,55 @@ class LimeExpressionManager {
             }
 
             $readWrite = 'N';
-            if (isset($_SESSION[$code]))
+
+            $codeValue = (isset($_SESSION[$code])) ? $_SESSION[$code] : '';
+            $displayValue = ''; // default to blank or $clang->gT("No Answer")?
+            switch($type)
             {
-                $codeValue = $_SESSION[$code];
-                
-                // don't call retrieve_Answer()
-                $displayValue = ''; // default to blank?
-                switch($fielddata['type'])
-                {
-                    case '!': //List - dropdown
-                    case 'L': //LIST drop-down/radio-button list
-                    case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    case '1': //Array (Flexible Labels) dual scale  // need scale
-                    case 'H': //ARRAY (Flexible) - Column Format
-                    case 'F': //ARRAY (Flexible) - Row Format
-                    case 'R': //RANKING STYLE
-                        $which_ans = $scale_id . ':' . $codeValue;
-                        $displayValue = (isset($qans[$questionNum][$which_ans])) ? $qans[$questionNum][$which_ans] : '';    // what should default be?
-                        break;
-                    case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                    case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                    case ':': //ARRAY (Multi Flexi) 1 to 10
-                    case '5': //5 POINT CHOICE radio-buttons
-                        $displayValue = $codeValue; // what about "no answer"?
-                        break;
-                    case 'N': //NUMERICAL QUESTION TYPE
-                    case 'K': //MULTIPLE NUMERICAL QUESTION
-                    case 'Q': //MULTIPLE SHORT TEXT
-                    case ';': //ARRAY (Multi Flexi) Text
-                    case 'S': //SHORT FREE TEXT
-                    case 'T': //LONG FREE TEXT
-                    case 'U': //HUGE FREE TEXT
-                    case 'M': //Multiple choice checkbox
-                    case 'P': //Multiple choice with comments checkbox + text
-                    case 'D': //DATE
-                    case '*': //Equation
-                    case 'I': //Language Question
-                    case '|': //File Upload
-                    case 'X': //BOILERPLATE QUESTION
-                        $displayValue = $codeValue; // TODO - is this correct?
-                        break;
-                    case 'G': //GENDER drop-down list
-                        switch ($codeValue) {
-                            case 'M': $displayValue = $clang->gT("Male"); break;
-                            case 'F': $displayValue = $clang->gT("Female"); break;
-                        }
-                        break;
-                    case 'Y': //YES/NO radio-buttons
-                        switch ($codeValue) {
-                            case 'Y': $displayValue = $clang->gT("Yes"); break;
-                            case 'N': $displayValue = $clang->gT("No"); break;
-                        }
-                        break;
-                    case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                        switch ($codeValue) {
-                            case 'Y': $displayValue = $clang->gT("Yes"); break;
-                            case 'N': $displayValue = $clang->gT("No"); break;
-                            case 'U': $displayValue = $clang->gT("Uncertain"); break;
-                        }
-                        break;
-                    case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                        switch ($codeValue) {
-                            case 'I': $displayValue = $clang->gT("Increase"); break;
-                            case 'S': $displayValue = $clang->gT("Same"); break;
-                            case 'D': $displayValue = $clang->gT("Decrease"); break;
-                        }
-                        break;
-                }
-            }
-            else
-            {
-                $codeValue = '';
-                $displayValue = '';
+                case '!': //List - dropdown
+                case 'L': //LIST drop-down/radio-button list
+                case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                case '1': //Array (Flexible Labels) dual scale  // need scale
+                case 'H': //ARRAY (Flexible) - Column Format
+                case 'F': //ARRAY (Flexible) - Row Format
+                case 'R': //RANKING STYLE
+                    $which_ans = $scale_id . '~' . $codeValue;
+                    $displayValue = (isset($qans[$questionNum][$which_ans])) ? $qans[$questionNum][$which_ans] : '';    // what should default be?
+                    $ansArray = $qans[$questionNum];
+                    break;
+                case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                case ':': //ARRAY (Multi Flexi) 1 to 10
+                case '5': //5 POINT CHOICE radio-buttons
+                    $displayValue = $codeValue; // what about "no answer"?
+                    break;
+                case 'N': //NUMERICAL QUESTION TYPE
+                case 'K': //MULTIPLE NUMERICAL QUESTION
+                case 'Q': //MULTIPLE SHORT TEXT
+                case ';': //ARRAY (Multi Flexi) Text
+                case 'S': //SHORT FREE TEXT
+                case 'T': //LONG FREE TEXT
+                case 'U': //HUGE FREE TEXT
+                case 'M': //Multiple choice checkbox
+                case 'P': //Multiple choice with comments checkbox + text
+                case 'D': //DATE
+                case '*': //Equation
+                case 'I': //Language Question
+                case '|': //File Upload
+                case 'X': //BOILERPLATE QUESTION
+                    $displayValue = $codeValue; // TODO - is this correct?
+                    $ansArray = NULL;
+                    break;
+                case 'G': //GENDER drop-down list
+                case 'Y': //YES/NO radio-buttons
+                case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                    $displayValue = (isset($presets[$type][$codeValue])) ? $presets[$type][$codeValue] : '';
+                    $ansArray = $presets[$type];
+                    break;
             }
 
-            switch($fielddata['type'])
+            switch($type)
             {
                 case '!': //List - dropdown
                 case '5': //5 POINT CHOICE radio-buttons
@@ -443,7 +437,7 @@ class LimeExpressionManager {
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
                     break;
             }
-            switch($fielddata['type'])
+            switch($type)
             {
                 case 'R': //RANKING STYLE
                     if ($isOnCurrentPage=='Y')
@@ -544,7 +538,17 @@ class LimeExpressionManager {
             $this->alias2varName[$code] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $code . "':'" . $jsVarName . "'");
             $this->alias2varName['INSERTANS:' . $code] = array('jsName'=>$jsVarName, 'jsPart' => "'INSERTANS:" . $code . "':'" . $jsVarName . "'");
 
-            $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
+            // TODO - should these arrays only be built for questions that require substitution at run-time?
+            $ansList = '';
+            if (!is_null($ansArray)) {
+                $answers = array();
+                foreach ($ansArray as $key => $value) {
+                    $answers[] = "'" . $key . "':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$value),ENT_QUOTES) . "'";
+                }
+                $ansList = ",'answers':{ " . implode(",",$answers) . "}";
+            }
+
+            $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
                 . "'jsName':'" . $jsVarName
     //            . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
                 . "','qid':" . $questionNum
@@ -553,7 +557,7 @@ class LimeExpressionManager {
                 . "','type':'" . $type
                 . "','relevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES)
                 . "','shown':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$displayValue),ENT_QUOTES)
-                . "'}";
+                . "'".$ansList."}";
 
             if ($this->debugLEM)
             {

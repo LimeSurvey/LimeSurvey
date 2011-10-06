@@ -58,7 +58,7 @@ class ExpressionManager {
         $regex_binary = '[+*/-]';
         $regex_compare = '<=|<|>=|>|==|!=|\ble\b|\blt\b|\bge\b|\bgt\b|\beq\b|\bne\b';
         $regex_assign = '=|\+=|-=|\*=|/=';
-        $regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[12]?';
+        $regex_sgqa = '(?:INSERTANS:)?[0-9]+X[0-9]+X[0-9]+[A-Z0-9_]*\#?[01]?';
         $regex_word = '(?:TOKEN:)?(?:[A-Z][A-Z0-9_]*)?(?:\.(?:' . ExpressionManager::$regex_var_attr . '))?';
         $regex_number = '[0-9]+\.?[0-9]*|\.[0-9]+';
         $regex_andor = '\band\b|\bor\b|&&|\|\|';
@@ -1181,9 +1181,11 @@ class ExpressionManager {
     {
         $jsParts = array();
         $jsParts[] = "\n// Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
+        $jsParts[] = "try{\n";
         $jsParts[] = "document.getElementById('" . $name . "').innerHTML=\n";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
         $jsParts[] = ";\n";
+        $jsParts[] = "} catch (e) { }\n";
         return implode('',$jsParts);
     }
 

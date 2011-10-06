@@ -120,7 +120,7 @@ class Answers_model extends CI_Model {
             ." FROM ".$this->db->dbprefix('answers')
             ." WHERE ".$where
             .$lang
-            ." ORDER BY qid, sortorder";
+            ." ORDER BY qid, scale_id, sortorder";
         
         $data = $this->db->query($query);
 
@@ -130,7 +130,7 @@ class Answers_model extends CI_Model {
             if (!isset($qans[$row['qid']])) {
                 $qans[$row['qid']] = array();
             }
-            $qans[$row['qid']][$row['scale_id'].':'.$row['code']] = $row['answer'];
+            $qans[$row['qid']][$row['scale_id'].'~'.$row['code']] = $row['answer'];
         }
 
         return $qans;
