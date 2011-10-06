@@ -433,6 +433,9 @@ class user extends Survey_Common_Controller {
 	                $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
 	            } elseif($uresult && !empty($sPassword))
 	            {
+					if ($sPassword != 'password' ) $this->session->set_userdata('pw_notify',false);
+					if ($sPassword == 'password' ) $this->session->set_userdata('pw_notify',true);
+					
 	                if ($display_user_password_in_html === true)
 	                {
 	                    $displayedPwd = $sPassword;
