@@ -390,6 +390,7 @@ class user extends Survey_Common_Controller {
 		$postemail = $this->input->post("email");
 		$postuserid = $this->input->post("uid");
 		$postfull_name = $this->input->post("full_name");
+        $display_user_password_in_html=$this->config->item("display_user_password_in_html");
         $addsummary='';
 	    $squery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE uid=$postuserid AND parent_id=".$this->session->userdata('loginID');
 	    $sresult = db_select_limit_assoc($squery); //Checked
