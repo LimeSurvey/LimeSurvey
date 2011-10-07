@@ -2187,7 +2187,7 @@ EOD;
 '12X3X5lab1_ber'    => array('codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'q5pointChoice'    => array('codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>12),
 'qArrayNumbers_ls1_min'    => array('codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6),
-'12X3X5lab1_ber#2'  => array('codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'12X3X5lab1_ber#1'  => array('codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
         );
 
         // Syntax for $tests is
@@ -2195,7 +2195,6 @@ EOD;
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
 3~q5pointChoice.code
-Father~q5pointChoice.shown
 5~q5pointChoice.type
 (question for q5pointChoice)~q5pointChoice.question
 1~q5pointChoice.relevance
@@ -2203,7 +2202,6 @@ Father~q5pointChoice.shown
 NULL~q5pointChoice.bogus
 12~q5pointChoice.qid
 7~qArrayNumbers_ls1_min.code
-I love LimeSurvey~qArrayNumbers_ls1_min.shown
 6~max(five,(one + (two * four)- three))
 6~max((one + (two * four)- three))
 212~5 + max(1,(2+3),(4 + (5 + 6)),((7 + 8) + 9),((10 + 11), 12),(13 + (14 * 15) - 16))
@@ -2287,7 +2285,7 @@ value for {QID}~QID
 Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?~QUESTION_HELP
 value for {TOKEN:FIRSTNAME}~TOKEN:FIRSTNAME
 value for {THEREAREXQUESTIONS}~THEREAREXQUESTIONS
-15~12X3X5lab1_ber#2
+15~12X3X5lab1_ber#1
 NULL~*
 NULL~three +
 NULL~four * / seven
