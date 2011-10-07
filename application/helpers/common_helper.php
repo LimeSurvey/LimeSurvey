@@ -1878,7 +1878,7 @@ function getsidgidqidaidtype($fieldcode)
     // but fails for type M and type P multiple choice
     // questions because the SESSION fieldcode is combined
     // and we want here to pass only the sidXgidXqid for type M and P
-    $fields=arraySearchByKey($fieldcode, createFieldMap($fsid), "fieldname", 1);
+    $fields=arraySearchByKey($fieldcode, createFieldMap($fsid,'full'), "fieldname", 1);
 
     if (count($fields) != 0)
     {
@@ -2495,7 +2495,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $aquery.=" ORDER BY group_order, question_order"; */
     $CI->load->model('conditions_model');
     $CI->load->model('defaultvalues_model');
-    $aresult = $CI->conditions_model->getConditions($surveyid,$questionid,$s_lang) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />"); //Checked
+    $aresult = $CI->conditions_model->getConditions($surveyid,$questionid,$s_lang) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />".$CI->db->last_query()."<br />"); //Checked
 
     foreach ($aresult->result_array() as $arow) //With each question, create the appropriate field(s))
     {
@@ -3163,7 +3163,7 @@ function buildLabelSetCheckSumArray()
                    FROM ".db_table_name('labels')."
                    WHERE lid={$row['lid']}
                    ORDER BY language, sortorder, code"; */
-        $result2 = $CI->labels_model->getLabelCodeInfo($row['lid']) or show_error("safe_died querying labelset $lid<br />"); //Checked
+        $result2 = $CI->labels_model->getLabelCodeInfo($row['lid']) or show_error("safe_died querying labelset ".$row['lid']."<br />"); //Checked
         foreach ($result2->result_array() as $row2)
         {
             $thisset .= implode('.', $row2);
@@ -4874,7 +4874,8 @@ function getArrayFilterExcludesForQuestion($qid)
 	$dbprefix = $CI->db->dbprefix;
 
     // TODO: Check list_filter values to make sure questions are previous?
-	$surveyid = $CI->config->item('sid');
+//	$surveyid = $CI->config->item('sid');
+    $surveyid=returnglobal('sid');
     $qid=sanitize_int($qid);
 
     if (isset($cache[$qid])) return $cache[$qid];

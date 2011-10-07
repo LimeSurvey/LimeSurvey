@@ -540,7 +540,7 @@ class LimeExpressionManager {
 
             // TODO - should these arrays only be built for questions that require substitution at run-time?
             $ansList = '';
-            if (!is_null($ansArray)) {
+            if (isset($ansArray) && !is_null($ansArray)) {
                 $answers = array();
                 foreach ($ansArray as $key => $value) {
                     $answers[] = "'" . $key . "':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$value),ENT_QUOTES) . "'";
@@ -795,7 +795,7 @@ class LimeExpressionManager {
             $LEM->qid2code = array();   // List of codes for each question - needed to know which to NULL if a question is irrelevant
             $LEM->jsVar2qid = array();
 
-            if (!is_null($surveyid) && $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,true,$anonymized,$LEM->allOnOnePage))
+            if (!is_null($surveyid) && $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,false,$anonymized,$LEM->allOnOnePage))
             {
                 // means that some values changed, so need to update what was registered to ExpressionManager
                 $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);

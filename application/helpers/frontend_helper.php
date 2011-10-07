@@ -872,7 +872,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
     if (!isset($backok) || $backok != "Y")
     {
         global $dbprefix;
-        $fieldmap = createFieldMap($surveyid);
+        $fieldmap = createFieldMap($surveyid,'full');
 
         if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
         {
@@ -979,7 +979,7 @@ function aCheckInput($surveyid, $move,$backok=null)
     if (!isset($backok) || $backok != "Y")
     {
         global $dbprefix;
-        $fieldmap=createFieldMap($surveyid);
+        $fieldmap=createFieldMap($surveyid, 'full');
         if (isset($_POST['fieldnames']))
         {
             $fields=explode("|", $_POST['fieldnames']);
