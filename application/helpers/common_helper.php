@@ -3043,11 +3043,14 @@ function GetBaseLanguageFromSurveyID($surveyid)
 	    $query = $CI->surveys_model->getSomeRecords($fields,$condition);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
 	    $surveylanguage = $query->row_array(); //Checked)
 
-	    $surveylanguage = $surveylanguage['language'];
-	    if (is_null($surveylanguage))
+	    if (!isset($surveylanguage['language']) || is_null($surveylanguage))
 	    {
 	        $surveylanguage='en';
 	    }
+        else
+        {
+            $surveylanguage = $surveylanguage['language'];
+        }
 	    $cache[$surveyid] = $surveylanguage;
     } else {
         $surveylanguage = $cache[$surveyid];

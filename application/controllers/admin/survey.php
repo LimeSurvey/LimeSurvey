@@ -651,8 +651,6 @@ class survey extends Survey_Common_Controller {
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
         self::_js_admin_includes(base_url().'scripts/admin/listsurvey.js');
 
-        self::_getAdminHeader();
-        self::_showadminmenu(false);;
 
 
         $query = " SELECT a.*, c.*, u.users_name FROM ".$this->db->dbprefix."surveys as a "
@@ -662,54 +660,62 @@ class survey extends Survey_Common_Controller {
         if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
         {
             $query .= "WHERE a.sid in (select sid from ".$this->db->dbprefix."survey_permissions WHERE uid=".$this->session->userdata('loginID')." AND permission='survey' AND read_p=1) ";
+            $data['issuperadmin']=false;
         }
-
+        else
+        {
+            $data['issuperadmin']=true;
+        }
         $query .= " ORDER BY surveyls_title";
-        $this->load->helper('database');
         $result = db_execute_assoc($query);
 
         if($result->num_rows() > 0) {
 
-
-            $gbc = "evenrow";
             $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
             $listsurveys = "";
             $first_time = true;
             foreach ($result->result_array() as $rows)
             {
+                $aSurveyEntry['dbactive']=($rows['active']=="Y");
+                $aSurveyEntry['surveyid']=$rows['sid'];
+                $aSurveyEntry['mayupdate']=bHasSurveyPermission($rows['sid'],'surveyactivation','update');
+
 
                 if($rows['anonymized']=="Y")
                 {
-                    $privacy=$clang->gT("Yes") ;
+                    $aSurveyEntry['privacy']=$clang->gT("Yes") ;
                 }
                 else
                 {
-                    $privacy =$clang->gT("No") ;
+                    $aSurveyEntry['privacy']=$clang->gT("No") ;
                 }
 
 
                 if (tableExists('tokens_'.$rows['sid']))
                 {
-                    $visibility = $clang->gT("Closed");
+                    $aSurveyEntry['visibility'] = $clang->gT("Closed");
                 }
                 else
                 {
-                    $visibility = $clang->gT("Open");
+                    $aSurveyEntry['visibility'] = $clang->gT("Open");
                 }
 
                 if($rows['active']=="Y")
                 {
-
+                    $aSurveyEntry['bActive']=true;
                     if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')))
                     {
-                        $status=$clang->gT("Expired") ;
+                        $aSurveyEntry['statusText']=$clang->gT("Expired") ;
+                        $aSurveyEntry['status']='expired' ;
                     }
                     elseif ($rows['startdate']!='' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')))
                     {
-                        $status=$clang->gT("Not yet active") ;
+                        $aSurveyEntry['statusText']=$clang->gT("Not yet active") ;
+                        $aSurveyEntry['status']='notyetactive' ;
                     }
                     else {
-                        $status=$clang->gT("Active") ;
+                        $aSurveyEntry['statusText']=$clang->gT("Active") ;
+                        $aSurveyEntry['status']='active' ;
                     }
 
                     // Complete Survey Responses - added by DLR
@@ -718,17 +724,21 @@ class survey extends Survey_Common_Controller {
 
                     foreach ($gnresult->result_array() as $gnrow)
                     {
-                        $partial_responses=$gnrow['countofid'];
+                        $aSurveyEntry['partial_responses']=$gnrow['countofid'];
                     }
                     $gnquery = "SELECT COUNT(id) AS countofid FROM ".$this->db->dbprefix."survey_".$rows['sid'];
                     $gnresult = db_execute_assoc($gnquery); //Checked
                     foreach ($gnresult->result_array() as $gnrow)
                     {
-                        $responses=$gnrow['countofid'];
+                        $aSurveyEntry['responses']=$gnrow['countofid'];
                     }
 
                 }
-                else $status = $clang->gT("Inactive") ;
+                else
+                {
+                    $aSurveyEntry['statusText'] = $clang->gT("Inactive") ;
+                    $aSurveyEntry['status']='inactive' ;
+                }
 
                 if ($first_time) // can't use same instance of Date_Time_Converter library every time!
                 {
@@ -745,76 +755,26 @@ class survey extends Survey_Common_Controller {
                 }
 
 
-                $datecreated=$datetimeobj->convert($dateformatdetails['phpdate']);
+                $aSurveyEntry['datecreated']=$datetimeobj->convert($dateformatdetails['phpdate']);
 
                 if (in_array($rows['owner_id'],getuserlist('onlyuidarray')))
                 {
-                    $ownername=$rows['users_name'] ;
+                    $aSurveyEntry['ownername']=$rows['users_name'] ;
                 }
                 else
                 {
-                    $ownername="---";
+                    $aSurveyEntry['ownername']="---";
                 }
 
-                $questionsCount = 0;
-                $questionsCountQuery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid={$rows['sid']} AND language='".$rows['language']."'"; //Getting a count of questions for this survey
+                $questionsCountQuery = "SELECT qid FROM ".$this->db->dbprefix."questions WHERE sid={$rows['sid']} AND language='".$rows['language']."'"; //Getting a count of questions for this survey
                 $questionsCountResult = db_execute_assoc($questionsCountQuery); //($connect->Execute($questionsCountQuery); //Checked)
-                $questionsCount = $questionsCountResult->num_rows();
+                $aSurveyEntry['questioncount'] = $questionsCountResult->num_rows();
 
-                $listsurveys.="<tr>";
 
-                if ($rows['active']=="Y")
-                {
-                    if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')))
-                    {
-                        $listsurveys .= "<td><img src='".$this->config->item('imageurl')."/expired.png' "
-                        . "alt='".$clang->gT("This survey is active but expired.")."' /></td>";
-                    }
-                    else
-                    {
-                        if (bHasSurveyPermission($rows['sid'],'surveyactivation','update'))
-                        {
-                            $listsurveys .= "<td><a href=\"#\" onclick=\"window.open('".$this->config->item('scriptname')."?action=deactivate&amp;sid={$rows['sid']}', '_top')\""
-                            . " title=\"".$clang->gTview("This survey is active - click here to stop this survey.")."\" >"
-                            . "<img src='".$this->config->item('imageurl')."/active.png' alt='".$clang->gT("This survey is active - click here to stop this survey.")."' /></a></td>\n";
-                        } else
-                        {
-                            $listsurveys .= "<td><img src='".$this->config->item('imageurl')."/active.png' "
-                            . "alt='".$clang->gT("This survey is currently active.")."' /></td>\n";
-                        }
-                    }
-                } else {
-                    if ( $questionsCount > 0 && bHasSurveyPermission($rows['sid'],'surveyactivation','update') )
-                    {
-                        $listsurveys .= "<td><a href=\"#\" onclick=\"window.open('".$this->config->item('scriptname')."?action=activate&amp;sid={$rows['sid']}', '_top')\""
-                        . " title=\"".$clang->gTview("This survey is currently not active - click here to activate this survey.")."\" >"
-                        . "<img src='".$this->config->item('imageurl')."/inactive.png' title='' alt='".$clang->gT("This survey is currently not active - click here to activate this survey.")."' /></a></td>\n" ;
-                    } else
-                    {
-                        $listsurveys .= "<td><img src='".$this->config->item('imageurl')."/inactive.png'"
-                        . " title='".$clang->gT("This survey is currently not active.")."' alt='".$clang->gT("This survey is currently not active.")."' />"
-                        . "</td>\n";
-                    }
-                }
-                $link = site_url("admin/survey/view/".$rows['sid']);
-                $listsurveys.="<td align='center'><a href='".$link."'>{$rows['sid']}</a></td>";
-                $listsurveys.="<td align='left'><a href='".$link."'>{$rows['surveyls_title']}</a></td>".
-                "<td>".$datecreated."</td>".
-                "<td>".$ownername." (<a href='#' class='ownername_edit' id='ownername_edit_{$rows['sid']}'>Edit</a>)</td>".
-                "<td>".$visibility."</td>" .
-                "<td>".$privacy."</td>";
+                $aSurveyEntry['viewurl'] = site_url("admin/survey/view/".$rows['sid']);
+                $aSurveyEntry['iSurveyID']=$rows['sid'];
+                $aSurveyEntry['sSurveyTitle']=$rows['surveyls_title'];
 
-                if ($rows['active']=="Y")
-                {
-                    $complete = $responses - $partial_responses;
-                    $listsurveys .= "<td>".$complete."</td>";
-                    $listsurveys .= "<td>".$partial_responses."</td>";
-                    $listsurveys .= "<td>".$responses."</td>";
-                }else{
-                    $listsurveys .= "<td>&nbsp;</td>";
-                    $listsurveys .= "<td>&nbsp;</td>";
-                    $listsurveys .= "<td>&nbsp;</td>";
-                }
 
                 if ($rows['active']=="Y" && tableExists("tokens_".$rows['sid']))
                 {
@@ -823,7 +783,7 @@ class survey extends Survey_Common_Controller {
                     $tokencountresult = db_execute_assoc($tokencountquery); //Checked)
                     foreach ($tokencountresult->result_array() as $tokenrow)
                     {
-                        $tokencount = $tokenrow['countoftid'];
+                        $aSurveyEntry['tokencount'] = $tokenrow['countoftid'];
                     }
 
                     //get the number of COMLETED tokens for each survey
@@ -839,43 +799,76 @@ class survey extends Survey_Common_Controller {
                     //prevent division by zero problems
                     if($tokencompleted != 0 && $tokencount != 0)
                     {
-                        $tokenpercentage = round(($tokencompleted / $tokencount) * 100, 1);
+                        $aSurveyEntry['tokenpercentage'] = round(($tokencompleted / $tokencount) * 100, 1);
                     }
                     else
                     {
-                        $tokenpercentage = 0;
+                        $aSurveyEntry['tokenpercentage'] = 0;
                     }
 
-                    $listsurveys .= "<td>".$tokencount."</td>";
-                    $listsurveys .= "<td>".$tokenpercentage."%</td>";
                 }
                 else
                 {
-                    $listsurveys .= "<td>&nbsp;</td>";
-                    $listsurveys .= "<td>&nbsp;</td>";
+                    $aSurveyEntry['tokenpercentage'] = '&nbsp;';
+                    $aSurveyEntry['tokencount'] = '&nbsp;';
                 }
 
                 $listsurveys .= "</tr>" ;
+                $data['aSurveyEntries'][]=$aSurveyEntry;
             }
 
             $listsurveys.="</tbody>";
             $listsurveys.="</table><br />" ;
             $data['clang'] = $clang;
-            $this->load->view('admin/survey/listSurveys_view',$data);
 
         }
         else
         {
+            $data['sSurveyEntries']=array();
             $listsurveys ="<p><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
         }
 
-        $displaydata['display'] = $listsurveys;
-        $this->load->view('survey_view',$displaydata);
+        self::_getAdminHeader();
+        self::_showadminmenu(false);;
+        $data['imageurl']=$this->config->item('imageurl');
+        $this->load->view('admin/survey/listSurveys_view',$data);
         self::_loadEndScripts();
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
-
     }
+
+    /**
+    * This functions receives the form data from listsurveys and executes accroding mass actions, like survey deletions, etc.
+    * Only superadmins are allowed to do this!
+    */
+
+    function surveyactions()
+    {
+        if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
+        {
+            die();
+        }
+        $aSurveyIDs=$this->input->post('surveyids');
+        $sSurveysAction=$this->input->post('surveysaction');
+        $actioncount=0; $message=$this->limesurvey_lang->gT('You did not choose any surveys.');
+        if (is_array($aSurveyIDs))
+            foreach($aSurveyIDs as $iSurveyID)
+            {
+                $iSurveyID= (int)$iSurveyID;
+                switch ($sSurveysAction){
+                    case 'delete': $this->_deleteSurvey($iSurveyID);
+                                   $message=$this->limesurvey_lang->gT('%s survey(s) were successfully deleted.');
+                                   $actioncount++;
+                                   break;
+                    case 'expire': if ($this->_expireSurvey($iSurveyID)) $actioncount++;;
+                                   $message=$this->limesurvey_lang->gT('%s survey(s) were successfully expired.');
+                                   break;
+                }
+            }
+        $this->session->set_userdata('flashmessage',sprintf($message, $actioncount));
+        redirect('admin/survey/listsurveys');
+    }
+
+
 
     /**
     * survey::delete()
@@ -884,11 +877,10 @@ class survey extends Survey_Common_Controller {
     */
     function delete()
     {
-        $this->load->helper("database");
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_getAdminHeader();
-        $data['surveyid'] = $surveyid = $this->input->post('sid');
+        $data['surveyid'] = $surveyid = (int) $this->input->post('sid');
         if (!$this->input->post('deleteok'))
         {
             self::_showadminmenu($surveyid);
@@ -899,52 +891,12 @@ class survey extends Survey_Common_Controller {
         {
             $data['deleteok'] = $deleteok = $this->input->post('deleteok');
             $data['clang'] = $this->limesurvey_lang;
-
             $data['link'] = site_url("admin/survey/delete");
+
+
             if (!(!isset($deleteok) || !$deleteok))
             {
-                $this->load->dbforge();
-                if (tableExists("survey_$surveyid"))  //delete the survey_$surveyid table
-                {
-                    $dsresult = $this->dbforge->drop_table('survey_'.$surveyid) or safe_die ("Couldn't drop table survey_".$surveyid." in survey.php");
-                }
-
-                if (tableExists("survey_{$surveyid}_timings"))  //delete the survey_$surveyid_timings table
-                {
-                    $dsresult = $this->dbforge->drop_table('survey_'.$surveyid.'_timings') or safe_die ("Couldn't drop table survey_".$surveyid."_timings in survey.php");
-                }
-
-                if (tableExists("tokens_$surveyid")) //delete the tokens_$surveyid table
-                {
-                    $dsresult = $this->dbforge->drop_table('tokens_'.$surveyid) or safe_die ("Couldn't drop table token_".$surveyid." in survey.php");
-                }
-
-                $dsquery = "SELECT qid FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid";
-                $dsresult = db_execute_assoc($dsquery) or safe_die ("Couldn't find matching survey to delete<br />$dsquery<br />");
-                foreach ($dsresult->result_array() as $dsrow)
-                {
-                    $this->db->delete('answers', array('qid' => $dsrow['qid']));
-                    $this->db->delete('conditions', array('qid' => $dsrow['qid']));
-                    $this->db->delete('question_attributes', array('qid' => $dsrow['qid']));
-
-                }
-
-                $this->db->delete('questions', array('sid' => $surveyid));
-                $this->db->delete('assessments', array('sid' => $surveyid));
-                $this->db->delete('groups', array('sid' => $surveyid));
-                $this->db->delete('surveys_languagesettings', array('surveyls_survey_id' => $surveyid));
-                $this->db->delete('survey_permissions', array('sid' => $surveyid));
-                $this->db->delete('saved_control', array('sid' => $surveyid));
-                $this->db->delete('surveys', array('sid' => $surveyid));
-                $this->load->model('survey_url_parameters_model');
-                $this->survey_url_parameters_model->deleteRecords(array('sid'=>$surveyid));
-
-                $sdel = "DELETE ".$this->db->dbprefix."quota_languagesettings FROM ".$this->db->dbprefix."quota_languagesettings, ".$this->db->dbprefix."quota WHERE ".$this->db->dbprefix."quota_languagesettings.quotals_quota_id=".$this->db->dbprefix."quota.id and sid=$surveyid";
-                $sres = db_execute_assoc($sdel);
-                $this->db->delete('quota', array('sid' => $surveyid));
-
-                $this->db->delete('quota_members', array('sid' => $surveyid));
-                rmdirr($this->config->item("uploaddir").'/surveys/'.$surveyid);
+                _deleteSurvey($surveyid);
                 self::_showadminmenu(false);
             }
             $this->load->view('admin/survey/deleteSurvey_view',$data);
@@ -1529,13 +1481,14 @@ class survey extends Survey_Common_Controller {
 
     function expire($iSurveyID)
     {
-        $surveyid = (int)$iSurveyID;
+        $iSurveyID = (int)$iSurveyID;
         if(!bHasSurveyPermission($iSurveyID,'surveysettings','update'))
         {
             die();
         }
         $clang = $this->limesurvey_lang;
         $this->session->set_userdata('flashmessage',$clang->gT("The survey was successfully expired by setting an expiration date in the survey settings."));
+        _expireSurvey($iSurveyID);
         $this->load->model('surveys_model');
         $dExpirationdate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->config->item('timeadjust'));
         $dExpirationdate=date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
@@ -1544,6 +1497,21 @@ class survey extends Survey_Common_Controller {
         redirect('admin/survey/view/'.$iSurveyID);
 
     }
+
+    /**
+    * Expires a survey
+    *
+    * @param mixed $iSurveyID The survey ID
+    * @return False if not successful
+    */
+    function _expireSurvey($iSurveyID)
+    {
+        $this->load->model('surveys_model');
+        $dExpirationdate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->config->item('timeadjust'));
+        $dExpirationdate=date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
+        return $this->surveys_model->updateSurvey(array('expires'=>$dExpirationdate), array('sid'=>$iSurveyID));
+    }
+
 
 
     function getUrlParamsJSON($iSurveyID)
@@ -1574,6 +1542,62 @@ class survey extends Survey_Common_Controller {
         $data->total = 1;
 
         echo json_encode($data);
+    }
+
+    /**
+    * This private function deletes a survey
+    *
+    * @param mixed $iSurveyID  The survey ID to delete
+    */
+    function _deleteSurvey($iSurveyID)
+    {
+        $this->load->helper("database");
+        $this->load->dbforge();
+        if (tableExists("survey_{$iSurveyID}"))  //delete the survey_$iSurveyID table
+        {
+            $dsresult = $this->dbforge->drop_table('survey_'.$iSurveyID) or safe_die ("Couldn't drop table survey_".$iSurveyID);
+        }
+
+        if (tableExists("survey_{$iSurveyID}_timings"))  //delete the survey_$iSurveyID_timings table
+        {
+            $dsresult = $this->dbforge->drop_table('survey_'.$iSurveyID.'_timings') or safe_die ("Couldn't drop table survey_".$iSurveyID."_timings");
+        }
+
+        if (tableExists("tokens_$iSurveyID")) //delete the tokens_$iSurveyID table
+        {
+            $dsresult = $this->dbforge->drop_table('tokens_'.$iSurveyID) or safe_die ("Couldn't drop table token_".$iSurveyID);
+        }
+
+        $dsquery = "SELECT qid FROM ".$this->db->dbprefix."questions
+                    WHERE sid={$iSurveyID}";
+        $dsresult = db_execute_assoc($dsquery) or safe_die ("Couldn't find matching survey to delete<br />$dsquery<br />");
+        foreach ($dsresult->result_array() as $dsrow)
+        {
+            $this->db->delete('answers', array('qid' => $dsrow['qid']));
+            $this->db->delete('conditions', array('qid' => $dsrow['qid']));
+            $this->db->delete('question_attributes', array('qid' => $dsrow['qid']));
+
+        }
+
+        $this->db->delete('questions', array('sid' => $iSurveyID));
+        $this->db->delete('assessments', array('sid' => $iSurveyID));
+        $this->db->delete('groups', array('sid' => $iSurveyID));
+        $this->db->delete('surveys_languagesettings', array('surveyls_survey_id' => $iSurveyID));
+        $this->db->delete('survey_permissions', array('sid' => $iSurveyID));
+        $this->db->delete('saved_control', array('sid' => $iSurveyID));
+        $this->db->delete('surveys', array('sid' => $iSurveyID));
+        $this->load->model('survey_url_parameters_model');
+        $this->survey_url_parameters_model->deleteRecords(array('sid'=>$iSurveyID));
+
+        $sdel = "DELETE ".$this->db->dbprefix."quota_languagesettings
+                 FROM ".$this->db->dbprefix."quota_languagesettings, ".$this->db->dbprefix."quota
+                 WHERE ".$this->db->dbprefix."quota_languagesettings.quotals_quota_id=".$this->db->dbprefix."quota.id and sid={$iSurveyID}";
+        $sres = db_execute_assoc($sdel);
+        $this->db->delete('quota', array('sid' => $iSurveyID));
+
+        $this->db->delete('quota_members', array('sid' => $iSurveyID));
+        rmdirr($this->config->item("uploaddir").'/surveys/'.$iSurveyID);
+
     }
 
 }
