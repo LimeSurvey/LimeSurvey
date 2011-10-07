@@ -95,7 +95,7 @@ final class Session extends CI_Driver_Library {
 
 		// Load driver and get array reference
 		$this->load_driver($driver);
-		$this->userdata =& $this->current->get_userdata();
+		$this->bind_userdata();
 
 		// Delete 'old' flashdata (from last request)
 		$this->_flashdata_sweep();
@@ -107,6 +107,11 @@ final class Session extends CI_Driver_Library {
 		$this->_tempdata_sweep();
 
 		log_message('debug', 'Session routines successfully run');
+	}
+
+	public function bind_userdata()
+	{
+		$this->userdata =& $this->current->get_userdata();
 	}
 
 	/**

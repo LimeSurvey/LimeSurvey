@@ -108,10 +108,17 @@ class survey extends LSCI_Controller {
 			$sSessionname = "LimeSurveyRuntime-$surveyid";
 		}
 
+        // Establish / Switch to survey session
+        // Import data from current session (if available) to survey
+        // session if the survey session has no data.
+
+        $__SESSION = array(); // session data copy store
         $oSess = new LS_PHP_Session();
         if ($oSess->changeTo($sSessionname))
         {
             // Needed to call session_start() below.
+            $__SESSION =& $_SESSION; // reference current session data.
+            unset($_SESSION);
             $_SESSION = array();
         }
         else
@@ -120,9 +127,17 @@ class survey extends LSCI_Controller {
         }
         unset($oSess);
 
-		session_set_cookie_params(0,$relativeurl);
-		if (empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
-			@session_start();
+        session_set_cookie_params(0,$relativeurl);
+        if (empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
+        {
+            @session_start();
+            if (empty($_SESSION)) // if this session is new, import old session
+            {
+                $_SESSION = $__SESSION;
+                unset($__SESSION);
+            }
+            $this->session->bind_userdata();
+        }
 
 		// First check if survey is active
 		// if not: copy some vars from the admin session

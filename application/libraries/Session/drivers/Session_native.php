@@ -81,19 +81,19 @@ class Session_Native extends SessionDriver {
 		// Check session expiration, ip, and agent
 		$now = time();
 		$destroy = FALSE;
-		if (isset($_SESSION['last_activity']) && ($_SESSION['last_activity'] + $expire) < $now)
+		if (isset($_SESSION['__CI']['last_activity']) && ($_SESSION['__CI']['last_activity'] + $expire) < $now)
 		{
 			// Expired - destroy
 			$destroy = TRUE;
 		}
-		else if ($config['sess_match_ip'] == TRUE && isset($_SESSION['ip_address']) &&
-		$_SESSION['ip_address'] != $CI->input->ip_address())
+		else if ($config['sess_match_ip'] == TRUE && isset($_SESSION['__CI']['ip_address']) &&
+		$_SESSION['__CI']['ip_address'] != $CI->input->ip_address())
 		{
 			// IP doesn't match - destroy
 			$destroy = TRUE;
 		}
-		else if ($config['sess_match_useragent'] == TRUE && isset($_SESSION['user_agent']) &&
-		$_SESSION['user_agent'] != trim(substr($CI->input->user_agent(), 0, 50)))
+		else if ($config['sess_match_useragent'] == TRUE && isset($_SESSION['__CI']['user_agent']) &&
+		$_SESSION['__CI']['user_agent'] != trim(substr($CI->input->user_agent(), 0, 50)))
 		{
 			// Agent doesn't match - destroy
 			$destroy = TRUE;
@@ -108,18 +108,18 @@ class Session_Native extends SessionDriver {
 		}
 
 		// Set activity time
-		$_SESSION['last_activity'] = $now;
+		$_SESSION['__CI']['last_activity'] = $now;
 
 		// Set matching values as required
-		if ($config['sess_match_ip'] == TRUE && !isset($_SESSION['ip_address']))
+		if ($config['sess_match_ip'] == TRUE && !isset($_SESSION['__CI']['ip_address']))
 		{
 			// Store user IP address
-			$_SESSION['ip_address'] = $CI->input->ip_address();
+			$_SESSION['__CI']['ip_address'] = $CI->input->ip_address();
 		}
-		if ($config['sess_match_useragent'] == TRUE && !isset($_SESSION['user_agent']))
+		if ($config['sess_match_useragent'] == TRUE && !isset($_SESSION['__CI']['user_agent']))
 		{
 			// Store user agent string
-			$_SESSION['user_agent'] = trim(substr($CI->input->user_agent(), 0, 50));
+			$_SESSION['__CI']['user_agent'] = trim(substr($CI->input->user_agent(), 0, 50));
 		}
 	}
 
