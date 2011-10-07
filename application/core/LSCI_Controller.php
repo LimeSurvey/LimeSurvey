@@ -18,6 +18,7 @@ class LSCI_Controller extends CI_Controller {
     {
         parent::__construct();
         $this->_checkinstallation();
+        require_once(APPPATH.'libraries/LS/LS.php');
         $this->_init();
     }
 

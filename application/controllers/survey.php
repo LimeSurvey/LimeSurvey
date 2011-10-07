@@ -91,26 +91,37 @@ class survey extends LSCI_Controller {
 		// * on this specific limesurvey installation (Value SessionName in DB)
 		// * on the surveyid (from Get or Post param). If no surveyid is given we are on the public surveys portal
 
-// this does not fix #05468		session_write_close(); #05468: prevent deletion of session
-
 		$sSessionname=getGlobalSetting('SessionName');
 		if ($sSessionname!='')
 		{
-		    if ($surveyid)
-		    {
-		        @session_name($sSessionname.'-runtime-'.$surveyid);
-		    }
-		    else
-		    {
-		        @session_name($sSessionname.'-runtime-publicportal');
-		    }
+			if ($surveyid)
+			{
+				$sSessionname = $sSessionname.'-runtime-'.$surveyid;
+			}
+			else
+			{
+				$sSessionname = $sSessionname.'-runtime-publicportal';
+			}
 		}
 		else
 		{
-		    session_name("LimeSurveyRuntime-$surveyid");
+			$sSessionname = "LimeSurveyRuntime-$surveyid";
 		}
+
+        $oSess = new LS_PHP_Session();
+        if ($oSess->changeTo($sSessionname))
+        {
+            // Needed to call session_start() below.
+            $_SESSION = array();
+        }
+        else
+        {
+            session_name($sSessionname);
+        }
+        unset($oSess);
+
 		session_set_cookie_params(0,$relativeurl);
-		if (!isset($_SESSION) || empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
+		if (empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
 			@session_start();
 
 		// First check if survey is active
