@@ -5,7 +5,7 @@
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <?php if($activated == "N") { ?>
+            <?php if(!$activated) { ?>
                 <img src='<?php echo $imageurl;?>/inactive.png' alt='<?php echo $clang->gT("This survey is currently not active"); ?>' />
                 <?php if($canactivate) { ?>
                     <a href="#" onclick="window.open('<?php echo site_url("admin/survey/activate/$surveyid");?>', '_top')"
@@ -66,7 +66,7 @@
                             <img src='<?php echo $imageurl;?>/survey_security_30.png' name='SurveySecurity' alt=''/> <?php echo $clang->gT("Survey permissions");?></a></li>
                         <?php } ?>
                     <?php if ($surveycontent) {
-                            if($activated == "Y") { ?>
+                            if($activated) { ?>
                             <li><a href="#" onclick="alert('<?php echo $clang->gT("You can't reorder question groups if the survey is active.", "js");?>');" >
                                 <img src='<?php echo $imageurl;?>/reorder_disabled_30.png' name='translate' alt=''/> <?php echo $clang->gT("Reorder question groups");?></a></li>
                             <?php } elseif ($groupsum) { ?>
@@ -250,7 +250,7 @@
 
             <?php if(bHasSurveyPermission($surveyid,'surveycontent','create'))
                 {
-                    if ($activated == "Y")
+                    if ($activated)
                     { ?>
                     <img src='<?php echo $this->config->item('imageurl'); ?>/add_disabled.png' title='' alt='<?php echo $clang->gT("Disabled"); ?> - <?php echo $clang->gT("This survey is currently active."); ?>'
                         name='AddNewGroup' width="40" height="40"/>

@@ -234,7 +234,7 @@
         $surveyinfo = $sumresult1->row_array();
         $surveyinfo = array_map('FlattenText', $surveyinfo);
         //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
-        $activated = $surveyinfo['active'];
+        $activated = ($surveyinfo['active']=='Y');
 
         $js_admin_includes = $this->config->item("js_admin_includes");
         $js_admin_includes[]=$this->config->item('generalscripts').'jquery/jquery.coookie.js';
@@ -252,7 +252,7 @@
 		$data['surveyid']=$surveyid;
 
 		// ACTIVATE SURVEY BUTTON
-		$data['activated'] = ($activated=="Y") ? true : false;
+		$data['activated'] = $activated;
 		$data['imageurl'] = $this->config->item('imageurl');
 
         $condition = array('sid' => $surveyid, 'parent_qid' => 0, 'language' => $baselang);
@@ -268,7 +268,7 @@
 
         // Start of suckerfish menu
         // TEST BUTTON
-  		if ($activated == "N")
+  		if (!$activated)
         {
             $data['icontext']=$clang->gT("Test This Survey");
             $data['icontext2']=$clang->gTview("Test This Survey");
@@ -356,7 +356,6 @@
         $data['GidPrev'] = $GidPrev = getGidPrevious($surveyid, $gid);
 
         $data['GidNext'] = $GidNext = getGidNext($surveyid, $gid);
-        $data['activated'] = $activated;
 
         $this->load->view("admin/survey/surveybar_view",$data);
 
