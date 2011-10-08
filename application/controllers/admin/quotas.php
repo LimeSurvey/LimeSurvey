@@ -40,6 +40,7 @@ class quotas extends Survey_Common_Controller {
 	
 	function action($surveyid, $subaction = null)
 	{
+		$surveyid = sanitize_int($surveyid);
 		
 		self::_js_admin_includes($this->config->item("generalscripts").'/jquery/jquery.tablesorter.min.js');
 		self::_js_admin_includes($this->config->item("adminscripts").'/quotas.js');

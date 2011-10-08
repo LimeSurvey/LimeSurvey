@@ -29,6 +29,9 @@ class htmleditor_pop extends Admin_Controller {
     
     function index($fieldname=0,$fieldtext=0,$fieldtype=0,$action=0,$sid=0,$gid=0,$qid=0,$lang=0)
     {
+    	$sid = (int) $sid;
+		$gid = (int) $gid;
+		$qid = (int) $qid;
         //require_once(dirname(__FILE__).'/../config-defaults.php');
         //require_once(dirname(__FILE__).'/../common.php');
         

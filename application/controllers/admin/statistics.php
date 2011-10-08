@@ -40,6 +40,7 @@ class statistics extends Survey_Common_Controller {
 	
 	function action($surveyid, $subaction = null)
 	{
+		$surveyid = sanitize_int($surveyid);
 		//TODO: Convert question types to views
 		$clang = $this->limesurvey_lang;
 		$this->load->helper("database");

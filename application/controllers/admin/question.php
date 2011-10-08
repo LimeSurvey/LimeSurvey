@@ -168,6 +168,9 @@
      */
     function editdefaultvalues($surveyid,$gid,$qid)
     {
+    	$surveyid = sanitize_int($surveyid);
+		$gid = sanitize_int($gid);
+		$qid = sanitize_int($qid);
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
 
@@ -327,6 +330,9 @@
      */
     function answeroptions($surveyid,$gid,$qid)
     {
+    	$surveyid = sanitize_int($surveyid);
+		$qid = sanitize_int($qid);
+		$gid = sanitize_int($gid);
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.dd.js');
         self::_js_admin_includes(base_url().'scripts/admin/answers.js');
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.blockUI.js');
@@ -365,6 +371,9 @@
      */
     function _editansweroptions($surveyid,$gid,$qid)
     {
+    	$surveyid = sanitize_int($surveyid);
+		$qid = sanitize_int($qid);
+		$gid = sanitize_int($gid);
         $this->load->helper('database');
         // Get languages select on survey.
         $anslangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -478,6 +487,10 @@
      */
     function subquestions($surveyid,$gid,$qid)
     {
+    	$surveyid = sanitize_int($surveyid);
+		$qid = sanitize_int($qid);
+		$gid = sanitize_int($gid);
+		
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.dd.js');
         self::_js_admin_includes(base_url().'scripts/admin/subquestions.js');
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.blockUI.js');
@@ -518,6 +531,11 @@
      */
     function _editsubquestion($surveyid,$gid,$qid)
     {
+   
+    	$surveyid = sanitize_int($surveyid);
+		$qid = sanitize_int($qid);
+		$gid = sanitize_int($gid);
+		
         $this->load->helper('database');
         $clang = $this->limesurvey_lang;
 
@@ -646,6 +664,10 @@
     function index($action,$surveyid,$gid,$qid=null)
     {
 
+    	$surveyid = sanitize_int($surveyid);
+		if(isset($qid)) $qid = sanitize_int($qid);
+		$gid = sanitize_int($gid);
+		
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.dd.js');
         $css_admin_includes[] = base_url().'scripts/jquery/dd.css';
 
@@ -841,7 +863,8 @@
      */
     function order($surveyid,$gid)
     {
-
+    	$surveyid = sanitize_int($surveyid);
+		$gid = sanitize_int($gid);
         $clang = $this->limesurvey_lang;
         $_POST = $this->input->post();
         if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
@@ -1201,6 +1224,9 @@
      */
     function preview($surveyid, $qid, $lang = null)
     {
+    	$surveyid = sanitize_int($surveyid);
+		$qid = sanitize_int($qid);
+
 		$this->load->helper("qanda");
 		$this->load->helper("surveytranslator");
 

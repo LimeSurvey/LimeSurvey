@@ -37,6 +37,7 @@ class assessments extends Survey_Common_Controller {
 	 */
 	function index($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		$action=$this->input->post("action");
 		$_POST=$this->input->post();
 		$assessmentlangs = GetAdditionalLanguagesFromSurveyID($surveyid);

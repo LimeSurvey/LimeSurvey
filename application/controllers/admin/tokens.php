@@ -37,6 +37,8 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function index($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
+
 		$clang = $this->limesurvey_lang;
 		if(!bHasSurveyPermission($surveyid,'tokens','read'))
 		{
@@ -106,6 +108,7 @@ class tokens extends Survey_Common_Controller {
      */
     function bounceprocessing($surveyid)
     {
+    	$surveyid = sanitize_int($surveyid);
         
         $this->load->helper('globalsettings');
         
@@ -267,6 +270,10 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function browse($surveyid,$limit=50,$start=0,$order=false,$searchstring=false)
 	{
+		$surveyid = sanitize_int($surveyid);
+		$limit = (int) $limit;
+		$start = (int) $start;
+
 		$clang=$this->limesurvey_lang;
 		$this->load->model("tokens_dynamic_model");
 		$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
@@ -351,6 +358,8 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function addnew($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
+
 		/*if (($subaction == "edit" &&  bHasSurveyPermission($surveyid, 'tokens','update')) ||
     	($subaction == "addnew" && bHasSurveyPermission($surveyid, 'tokens','create')))*/
 
@@ -439,7 +448,8 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function edit($surveyid,$tokenid)
 	{
-
+		$surveyid = sanitize_int($surveyid);
+		$tokenid = (int) $tokenid;
 		if(!bHasSurveyPermission($surveyid, 'tokens','update'))
 		{
 			show_error("no permissions"); // TODO Replace
@@ -545,8 +555,12 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function delete($surveyid, $tokenid=null,$limit=50,$start=0,$order=false,$searchstring=false)
 	{
-
-                	if(bHasSurveyPermission($surveyid, 'tokens','delete')) {
+		$surveyid = sanitize_int($surveyid);
+		$tokenid = (int) $tokenid;
+		$limit = (int) $limit;
+		$start = (int) $start;
+		
+        if(bHasSurveyPermission($surveyid, 'tokens','delete')) {
 			$clang=$this->limesurvey_lang;
 			$this->load->model("tokens_dynamic_model");
 			$this->session->set_userdata('metaHeader', "<meta http-equiv=\"refresh\" content=\"1;URL=".site_url("/admin/tokens/browse/$surveyid")."\" />");
@@ -590,6 +604,7 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function adddummys($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		$clang=$this->limesurvey_lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens','create'))
 		{
@@ -708,6 +723,7 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function managetokenattributes($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		$clang=$this->limesurvey_lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
@@ -745,6 +761,7 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function updatetokenattributes($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
 			$_POST=$this->input->post();
@@ -786,6 +803,7 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function updatetokenattributedescriptions($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
 		    // find out the existing token attribute fieldnames
@@ -819,6 +837,7 @@ class tokens extends Survey_Common_Controller {
 	function email($surveyid,$tokenids=null)
 	{
 		global $maildebug, $maildebugbody;
+		$surveyid = sanitize_int($surveyid);
 		$clang=$this->limesurvey_lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
@@ -1075,6 +1094,7 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function remind($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		$clang=$this->limesurvey_lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
@@ -1369,6 +1389,7 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function exportdialog($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		if (bHasSurveyPermission($surveyid, 'tokens','export') )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 		{
 			$this->load->helper("database");
@@ -1400,6 +1421,7 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function tokenify($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		$clang = $this->limesurvey_lang;
 		$data['clang']=$this->limesurvey_lang;
 		$data['thissurvey']=getSurveyInfo($surveyid);
@@ -1485,6 +1507,7 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function kill($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		$clang = $this->limesurvey_lang;
 		$data['clang']=$this->limesurvey_lang;
 		$data['thissurvey']=getSurveyInfo($surveyid);
@@ -1546,6 +1569,7 @@ class tokens extends Survey_Common_Controller {
 
 	function bouncesettings($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		$clang = $this->limesurvey_lang;
 		$data['clang']=$this->limesurvey_lang;
 		$data['thissurvey'] = $data['settings']=getSurveyInfo($surveyid);

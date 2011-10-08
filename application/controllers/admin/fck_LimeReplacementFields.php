@@ -21,6 +21,10 @@ class fck_LimeReplacementFields extends Admin_Controller {
 
 	function index($fieldtype, $action, $surveyid=false, $gid=false, $qid=false)
 	{
+		if($surveyid!=false) $surveyid = sanitize_int($surveyid);
+		if($gid!=false) $gid = sanitize_int($gid);
+		if($qid!=false) $qid = sanitize_int($qid);
+		
 		$clang=$this->limesurvey_lang;
 		if(!$this->session->userdata('loginID'))
 		{

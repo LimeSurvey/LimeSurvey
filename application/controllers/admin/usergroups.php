@@ -45,6 +45,7 @@ class Usergroups extends Admin_Controller {
     function mail($ugid)
     {
 
+		$ugid = sanitize_int($ugid);
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
 
@@ -345,6 +346,7 @@ class Usergroups extends Admin_Controller {
      */
     function edit($ugid)
     {
+    	$ugid = (int) $ugid;
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
 
@@ -433,6 +435,7 @@ class Usergroups extends Admin_Controller {
      */
     function view($ugid=false)
     {
+    	if($ugid!=false) $ugid = (int) $ugid;
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
 

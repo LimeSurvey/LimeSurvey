@@ -37,7 +37,7 @@ class printablesurvey extends Admin_Controller {
 	 */
 	function index($surveyid, $lang = null)
 	{
-		
+		$surveyid = sanitize_int($surveyid);
 		$this->load->helper("database");
 		//echo '<pre>'.print_r($_SESSION,true).'</pre>';
 		// PRESENT SURVEY DATAENTRY SCREEN

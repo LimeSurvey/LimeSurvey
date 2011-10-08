@@ -70,6 +70,7 @@
 
     function vvimport($surveyid)
     {
+    	$surveyid = sanitize_int($surveyid);
         self::_getAdminHeader();
 
         if(bHasSurveyPermission($surveyid,'responses','create'))
@@ -416,6 +417,7 @@
      */
     function import($surveyid)
     {
+    	$surveyid = sanitize_int($surveyid);
         self::_getAdminHeader();
         if(bHasSurveyPermission($surveyid,'responses','create'))
         {
@@ -594,6 +596,8 @@
      */
     function editdata($subaction,$id,$surveyid,$language)
     {
+    	$surveyid = sanitize_int($surveyid);
+		$id = sanitize_int($id);
         if (!isset($sDataEntryLanguage))
         {
             $sDataEntryLanguage = GetBaseLanguageFromSurveyID($surveyid);
@@ -2162,6 +2166,8 @@
      */
     function view($surveyid,$lang=NULL)
     {
+    	$surveyid = sanitize_int($surveyid);
+		if(isset($lang)) $lang=sanitize_languagecode($urlParam);
         self::_getAdminHeader();
 
         if (bHasSurveyPermission($surveyid, 'responses','read'))

@@ -38,8 +38,8 @@ class survey extends LSCI_Controller {
 		if($arg_list[0]==__CLASS__) array_shift($arg_list);
 		if(count($arg_list)%2 == 0) {
 		    for ($i = 0; $i < count($arg_list); $i+=2) {
-		        //echo $arg_list[$i]."=" . $arg_list[$i+1] . "<br />\n";
-				$param[$arg_list[$i]] = $arg_list[$i+1];
+		        //Sanitize input from URL with returnglobal
+				$param[$arg_list[$i]] = returnglobal($arg_list[$i], $arg_list[$i+1]);
 		    }
 		}
 

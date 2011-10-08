@@ -40,6 +40,7 @@ class browse extends Survey_Common_Controller {
 
 	function action($surveyid = null, $subaction = null, $var1 = null, $var2 = null, $var3 = null, $var4 = null)
 	{
+		$surveyid = sanitize_int($surveyid);
 		$_POST = $this->input->post();
 		$clang = $this->limesurvey_lang;
 		$this->load->helper("database");
@@ -154,7 +155,7 @@ class browse extends Survey_Common_Controller {
 
 		if ($subaction == "id")
 		{
-			$id=$var1;
+			$id=sanitize_int($var1);
 		    //SHOW HEADER
 		    if (!isset($_POST['sql']) || !$_POST['sql']) {$browseoutput .= $surveyoptions;} // Don't show options if coming from tokens script
 		    //FIRST LETS GET THE NAMES OF THE QUESTIONS AND MATCH THEM TO THE FIELD NAMES FOR THE DATABASE

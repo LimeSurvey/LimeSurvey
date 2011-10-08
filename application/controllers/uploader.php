@@ -36,7 +36,7 @@ class uploader extends LSCI_Controller {
 		if(count($arg_list)%2 == 0) {
 		    for ($i = 0; $i < count($arg_list); $i+=2) {
 		        //echo $arg_list[$i]."=" . $arg_list[$i+1] . "<br />\n";
-				$param[$arg_list[$i]] = $arg_list[$i+1];
+				$param[$arg_list[$i]] = returnglobal($arg_list[$i], $arg_list[$i+1]);
 		    }
 		}
 		

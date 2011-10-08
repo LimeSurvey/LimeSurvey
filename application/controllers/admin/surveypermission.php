@@ -42,6 +42,7 @@ class surveypermission extends Survey_Common_Controller {
      */
     function view($surveyid)
     {
+    	$surveyid = sanitize_int($surveyid);
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
 
@@ -234,6 +235,8 @@ class surveypermission extends Survey_Common_Controller {
      */
     function addusergroup($surveyid)
     {
+    	$surveyid = sanitize_int($surveyid);
+
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -328,6 +331,8 @@ class surveypermission extends Survey_Common_Controller {
     function adduser($surveyid)
     {
 
+		$surveyid = sanitize_int($surveyid);
+		
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -409,6 +414,8 @@ class surveypermission extends Survey_Common_Controller {
      */
     function set($surveyid)
     {
+    	$surveyid = sanitize_int($surveyid);
+
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -540,6 +547,9 @@ class surveypermission extends Survey_Common_Controller {
      */
     function delete($surveyid)
     {
+    	
+		$surveyid = sanitize_int($surveyid);
+
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -605,6 +615,8 @@ class surveypermission extends Survey_Common_Controller {
      */
     function surveyright($surveyid)
     {
+    	$surveyid = sanitize_int($surveyid);
+
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);

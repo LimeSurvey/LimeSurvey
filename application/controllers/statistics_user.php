@@ -42,7 +42,7 @@ class statistics_user extends LSCI_Controller {
 
 	function action($surveyid)
 	{
-
+		$surveyid=(int)$surveyid;
 		$this->load->library('admin/progressbar','progressbar');
 		$this->load->helper("admin/statistics");
 		$this->load->helper('database');

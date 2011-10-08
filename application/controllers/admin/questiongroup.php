@@ -149,6 +149,8 @@
      */
     function add($surveyid)
     {
+    	$surveyid = sanitize_int($surveyid);
+
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
             $action = "addgroup";//$this->input->post('action');
@@ -248,6 +250,9 @@
     function edit($surveyid,$gid)
     {
 
+    	$surveyid = sanitize_int($surveyid);
+		$gid = sanitize_int($gid);
+		
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
 
@@ -381,6 +386,9 @@
      */
     function order($surveyid)
     {
+
+    	$surveyid = sanitize_int($surveyid);
+
         $clang = $this->limesurvey_lang;
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);

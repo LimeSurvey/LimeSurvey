@@ -40,6 +40,7 @@ class emailtemplates extends Survey_Common_Controller {
      */
     function edit($surveyid)
     {
+		$surveyid = sanitize_int($surveyid);
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
 	    $this->config->set_item("css_admin_includes", $css_admin_includes);
 

@@ -45,6 +45,7 @@ class export extends Survey_Common_Controller {
 
 	function _surveyexport($action, $surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		if($action == "exportstructurexml")
 		{
 			    $fn = "limesurvey_survey_$surveyid.lss";
@@ -102,6 +103,8 @@ class export extends Survey_Common_Controller {
 
 	function group($surveyid, $gid)
 	{
+		$surveyid = sanitize_int($surveyid);
+		$gid = sanitize_int($gid);
 		if($this->config->item("export4lsrc") === true && bHasSurveyPermission($surveyid,'survey','export')) {
 			if($this->input->post("action"))
 			{
@@ -127,6 +130,9 @@ class export extends Survey_Common_Controller {
 
 	function question($surveyid, $gid, $qid)
 	{
+		$surveyid = sanitize_int($surveyid);
+		$gid = sanitize_int($gid);
+		$qid = sanitize_int($qid);
 		if($this->config->item("export4lsrc") === true && bHasSurveyPermission($surveyid,'survey','export')) {
 			if($this->input->post("action"))
 			{
@@ -152,6 +158,7 @@ class export extends Survey_Common_Controller {
 
 	function exportresults($surveyid)
 	{
+		$surveyid = sanitize_int($surveyid);
 		if (!isset($imageurl)) {$imageurl="./images";}
 		if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 		if (!isset($exportstyle)) {$exportstyle=returnglobal('exportstyle');}
@@ -978,6 +985,7 @@ class export extends Survey_Common_Controller {
 	 */
 	function showquexmlsurvey($surveyid, $lang = null)
 	{
+		$surveyid = sanitize_int($surveyid);
 		$tempdir = $this->config->item("tempdir");
 
 		// Set the language of the survey, either from GET parameter of session var
@@ -1043,6 +1051,7 @@ class export extends Survey_Common_Controller {
 
 	function resources($action, $id)
 	{
+		$id = sanitize_int($id);
 		$this->load->library("admin/Phpzip");
 		$z = $this->phpzip;
 		if ($action == "exportsurvresources") {
@@ -1091,6 +1100,7 @@ class export extends Survey_Common_Controller {
 
 	function dumplabel($lid=null)
 	{
+		$lid = sanitize_int($lid);
 		// DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
 		// ON ANOTHER SURVEY SETUP DUMP ALL DATA WITH RELATED QID FROM THE FOLLOWING TABLES
 		// 1. questions

@@ -730,6 +730,7 @@ class user extends Survey_Common_Controller {
 	}
 
 	function _getUserNameFromUid($uid){
+		$uid = sanitize_int($uid);
 	    $query = "SELECT users_name, uid FROM ".$this->db->dbprefix('users')." WHERE uid = $uid;";
 
 	    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());

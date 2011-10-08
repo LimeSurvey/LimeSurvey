@@ -42,6 +42,7 @@
      */
     function view($surveyid)
     {
+    	$surveyid = sanitize_int($surveyid);
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
         self::_js_admin_includes(base_url().'scripts/admin/saved.js');
         self::_getAdminHeader();

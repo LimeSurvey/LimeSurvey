@@ -41,6 +41,9 @@ class conditions extends Survey_Common_Controller {
 	function action($subaction, $surveyid=null, $gid=null, $qid=null)
 	{
 
+		$surveyid = sanitize_int($surveyid);
+		$gid = sanitize_int($gid);
+		$qid = sanitize_int($qid);		
 		//Compatibility variables for CI
 		$_POST = $this->input->post();
 		$clang = $this->limesurvey_lang;

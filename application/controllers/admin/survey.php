@@ -366,6 +366,10 @@ class survey extends Survey_Common_Controller {
     */
     function view($surveyid,$gid=null,$qid=null)
     {
+    	$surveyid = sanitize_int($surveyid);
+		if(isset($gid)) $gid = sanitize_int($gid);
+		if(isset($qid)) $qid = sanitize_int($qid);
+				
         // show till question menubar.
         if (!is_null($qid))
         {
@@ -442,7 +446,7 @@ class survey extends Survey_Common_Controller {
     */
     function deactivate($surveyid)
     {
-
+		$surveyid = sanitize_int($surveyid);
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
 
@@ -919,6 +923,8 @@ class survey extends Survey_Common_Controller {
     */
     function editlocalsettings($surveyid)
     {
+    	$surveyid = sanitize_int($surveyid);
+
         $clang = $this->limesurvey_lang;
 
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
@@ -1224,6 +1230,8 @@ class survey extends Survey_Common_Controller {
     */
     function _fetchSurveyInfo($action,$surveyid=null)
     {
+    	if(isset($surveyid)) $surveyid = sanitize_int($surveyid);
+
         if ($action == 'newsurvey')
         {
             $esrow = array();

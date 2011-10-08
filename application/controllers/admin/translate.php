@@ -40,6 +40,7 @@ class translate extends Admin_Controller {
 	
 	function action($surveyid=null, $tolang="")
 	{
+		if(isset($surveyid)) $surveyid = sanitize_int($surveyid);
 		$action=returnglobal('action');
 		if($action=="ajaxtranslategoogleapi")
 		{

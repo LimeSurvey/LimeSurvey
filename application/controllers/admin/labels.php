@@ -363,7 +363,7 @@
      */
     function index($action,$lid=0)
     {
-
+		$lid = sanitize_int($lid);
         $this->load->helper('database');
         $this->load->helper('surveytranslator');
         $clang = $this->limesurvey_lang;
@@ -507,6 +507,7 @@
      */
     function view($lid=false)
     {
+    	if($lid!=false) $lid = sanitize_int($lid);
         $clang = $this->limesurvey_lang;
         $action = 'labels';
         self::_getAdminHeader();
@@ -816,6 +817,7 @@
      */
     function _labelsetbar($lid=0)
     {
+    	$lid = (int) $lid;
         $data['clang'] = $this->limesurvey_lang;
         $data['lid'] = $lid;
         $data['labelsets'] = getlabelsets();
