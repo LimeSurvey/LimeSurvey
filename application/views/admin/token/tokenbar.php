@@ -58,7 +58,7 @@
 		    if (bHasSurveyPermission($surveyid, 'tokens','update'))
 		    { ?>
 		        <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-		        <a href='<?php echo site_url("admin/emailtemplates/index/$surveyid");?>' title='<?php echo $clang->gTview("Edit email templates");?>'>
+		        <a href='<?php echo site_url("admin/emailtemplates/edit/$surveyid");?>' title='<?php echo $clang->gTview("Edit email templates");?>'>
 		        	<img name='EmailTemplatesButton' src='<?php echo $imageurl;?>/emailtemplates.png' alt='<?php echo $clang->gT("Edit email templates");?>' />
 		        </a>
 		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/email/$surveyid");?>', '_top')"
