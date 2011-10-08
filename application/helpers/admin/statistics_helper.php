@@ -2127,7 +2127,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
 
                         //check if aggregated results should be shown
-                        elseif (isset($CI->config->item('showaggregateddata')) && $CI->config->item('showaggregateddata') == 1)
+                        elseif ($CI->config->item('showaggregateddata') == 1)
                         {
                             if(!isset($showheadline) || $showheadline != false)
                             {
@@ -2505,7 +2505,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $gdata[$i] = 0;
 
                                 //check if we have to adjust ouput due to $CI->config->item('showaggregateddata') setting
-                                if(isset($CI->config->item('showaggregateddata')) && $CI->config->item('showaggregateddata') == 1 && ($qtype == "5" || $qtype == "A"))
+                                if($CI->config->item('showaggregateddata') == 1 && ($qtype == "5" || $qtype == "A"))
                                 {
                                     $statisticsoutput .= "\t\t</td>";
                                 }
@@ -2526,7 +2526,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     else
                     {
                         //check if data should be aggregated
-                        if(isset($CI->config->item('showaggregateddata')) && $CI->config->item('showaggregateddata') == 1 && ($qtype == "5" || $qtype == "A"))
+                        if($CI->config->item('showaggregateddata') == 1 && ($qtype == "5" || $qtype == "A"))
                         {
                             //mark that we have done soemthing special here
                             $aggregated = true;
@@ -2931,7 +2931,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }	//end while
 
                 //only show additional values when this setting is enabled
-                if(isset($CI->config->item('showaggregateddata')) && $CI->config->item('showaggregateddata') == 1 )
+                if($CI->config->item('showaggregateddata') == 1 )
                 {
                     //it's only useful to calculate standard deviation and arithmetic means for question types
                     //5 = 5 Point Scale
