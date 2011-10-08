@@ -49,9 +49,9 @@ $(document).ready(function(){
 	});
         function checkbounces(surveyid) {
 $("#dialog-modal").dialog('open');
- var url = 'admin.php?action=tokens&subaction=bounceprocessing&sid='+surveyid
-  $('#dialog-modal').html('<p><img style="margin-top:42px" src="../images/ajax-loader.gif" width="200" height="25" /></p>');
-  $('#dialog-modal').load(url);
+ var url = controllerurl;
+  $('#dialog-modal').html('<p><img style="margin-top:42px" src="'+ imgurl + '/ajax-loader.gif" width="200" height="25" /></p>');
+  $('#dialog-modal').load(controllerurl);
 }
 
 function turnoff(ui,evt)

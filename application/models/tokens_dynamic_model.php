@@ -156,4 +156,11 @@ class Tokens_dynamic_model extends CI_Model {
         $dlquery = "DELETE FROM ".$this->db->dbprefix("tokens_$surveyid")." WHERE tid IN (".implode(", ", $tokenids).")";
 		return $this->db->query($dlquery);
 	}
+    
+    function updateRecords($surveyid,$data,$condn)
+    {
+        return $this->db->update("tokens_$surveyid", $data, $condn);
+    }
+    
+    
 }

@@ -1,4 +1,8 @@
-	<div class='menubar'><div class='menubar-title ui-widget-header'><span style='font-weight:bold;'>
+	<script language='javascript' type='text/javascript'> surveyid = '<?php echo $surveyid; ?>'; </script>
+    <script language='javascript' type='text/javascript'> var imgurl = '<?php echo $this->config->item('imageurl'); ?>';
+    var controllerurl = '<?php echo site_url("admin/tokens/bounceprocessing/$surveyid"); ?>'; </script>
+    
+    <div class='menubar'><div class='menubar-title ui-widget-header'><span style='font-weight:bold;'>
     <?php $clang->eT("Data view control");?></span></div>
 	<div class='menubar-main'>
     <div class='menubar-left'>
@@ -279,6 +283,9 @@
 	//End multiple item actions
 ?>
 	</table>
+    
+    <div id='dialog-modal'></div>
+    
 <!-- Code for central Participants database -->
     <p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br />
 <!-- End of Code for central Participants database -->
