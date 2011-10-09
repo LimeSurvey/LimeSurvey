@@ -60,7 +60,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
         'thissurvey',
         'token',
         'totalBoilerplatequestions',
-        'totalquestions ',
+        'totalquestions',
     );
 
     $varsPassed = array();
