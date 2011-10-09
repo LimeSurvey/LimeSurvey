@@ -6,11 +6,11 @@ $(document).ready(function(){
          var width = $(document).width();
          var tokencurrentarray = {};
          var newcurrentarray = {};
-         $('#tokenattribute').css({'height' : height-200});
-         $('#centralattribute').css({'height' : height-200});
-         $('#newcreated').css({'height' : height-200});
-         $("#tokenatt").sortable({connectWith:'.centralatt,.newcreate',helper: 'clone',appendTo: 'body'});
-         $("ul.centralatt").sortable({helper: 'clone',appendTo: 'body', connectWith: "ul",
+         $('#tokenattribute').css({ 'height' : height-200});
+         $('#centralattribute').css({ 'height' : height-200});
+         $('#newcreated').css({ 'height' : height-200});
+         $("#tokenatt").sortable({ connectWith:'.centralatt,.newcreate',helper: 'clone',appendTo: 'body'});
+         $("ul.centralatt").sortable({ helper: 'clone',appendTo: 'body', connectWith: "ul",
                 beforeStop: function(event,ui) { 
                         $(this).sortable('cancel');
                     },
@@ -39,7 +39,7 @@ $(document).ready(function(){
                     }
                 }
                });
-                $("ul.newcreate").sortable({helper: 'clone',appendTo: 'body', dropOnEmpty: true,
+                $("ul.newcreate").sortable({ helper: 'clone',appendTo: 'body', dropOnEmpty: true,
                 receive: function(event,ui) {
                 newcurrentarray = $(this).sortable('toArray');
                 var cpdbattpos = jQuery.inArray($(ui.item).attr('id'),newcurrentarray)

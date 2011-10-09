@@ -5,7 +5,7 @@
 /* This can probably be moved into the controller */
 if($this->config->item("userideditable") == 'Y')  //Firstly, if the user has edit rights, make the columns editable
 {
-	$uid = '{"name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{"value":"';
+	$uid = '{ "name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{ "value":"';
 	$i=0;
 	foreach($names->result() as $row)
 	{
@@ -17,11 +17,11 @@ if($this->config->item("userideditable") == 'Y')  //Firstly, if the user has edi
 }
 else
 {
-	$uidNames[] = '{"name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":false}';
+	$uidNames[] = '{ "name":"owner_uid", "index":"owner_uid", "width":150, "sorttype":"int", "sortable": true, "align":"center", "editable":false}';
 }
 /* Build the options for additional languages */
 $j=1;
-$lang = '{"name":"language", "index":"language", "sorttype":"string", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{"value":"';
+$lang = '{ "name":"language", "index":"language", "sorttype":"string", "sortable": true, "align":"center", "editable":true, "edittype":"select", "editoptions":{ "value":"';
 $getlangvalues = getLanguageData();
 if($this->session->userdata('adminlang')!='auto')
 {
@@ -44,7 +44,7 @@ foreach ($getlangvalues as $keycode => $keydesc) {
         foreach($attributes as $row)
             {
                 $attnames[]='"'.$row['attribute_name'].'"';
-                $uidNames[]='{"name": "'.$row['attribute_name'].'", "index":"'.$row['attribute_name'].'", "sorttype":"string", "sortable": true, "align":"center"}';
+                $uidNames[]='{ "name": "'.$row['attribute_name'].'", "index":"'.$row['attribute_name'].'", "sorttype":"string", "sortable": true, "align":"center"}';
             }
         $columnNames = ','.implode(",",$attnames).''; //Add to the end of the standard list of columnNames
 
@@ -100,13 +100,13 @@ var postUrl = "<?php echo site_url("admin/participants/setSession"); ?>";
 var ajaxUrl = "<?php echo site_url("images/ajax-loader.gif"); ?>";
 var redUrl = "<?php echo site_url("admin/participants/displayParticipants");?>";
 var colNames = '["participant_id","can_edit","<?php echo $clang->gT("First Name") ?>","<?php echo $clang->gT("Last Name") ?>","<?php echo $clang->gT("E-Mail") ?>","<?php echo $clang->gT("Blacklisted") ?>","<?php echo $clang->gT("Surveys") ?>","<?php echo $clang->gT("Language") ?>","<?php echo $clang->gT("Owner Name") ?>"<?php echo $columnNames; ?>]';
-var colModels = '[{"name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
-    colModels += '{"name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
-    colModels += '{"name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":120, "align":"center", "editable":true},';
-    colModels += '{"name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":120, "align":"center", "editable":true},';
-    colModels += '{"name":"email", "index":"email","align":"center","width":300, "sorttype":"string", "sortable": true, "editable":true},';
-    colModels += '{"name":"blacklisted", "index":"blacklisted","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true, "edittype":"checkbox", "editoptions":{"value":"Y:N"}},';
-    colModels += '{"name":"surveys", "index":"surveys","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":false},';
+var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
+    colModels += '{ "name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
+    colModels += '{ "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":120, "align":"center", "editable":true},';
+    colModels += '{ "name":"lastname", "index":"lastname", "sorttype":"string", "sortable": true,"width":120, "align":"center", "editable":true},';
+    colModels += '{ "name":"email", "index":"email","align":"center","width":300, "sorttype":"string", "sortable": true, "editable":true},';
+    colModels += '{ "name":"blacklisted", "index":"blacklisted","align":"center","width":80,"sorttype":"string", "sortable": true, "editable":true, "edittype":"checkbox", "editoptions":{ "value":"Y:N"}},';
+    colModels += '{ "name":"surveys", "index":"surveys","align":"center", "sorttype":"int", "sortable": true,"width":80,"editable":false},';
 
 <?php
     $colModels  ="colModels += '".implode(",';\n colModels += '",$langNames).",";

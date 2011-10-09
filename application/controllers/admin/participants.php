@@ -196,7 +196,7 @@ function getShareInfo_json()
             $aData->rows[$i]['cell']=array($row->firstname,$row->lastname,$row->email,$oShared->full_name,$row->share_uid,$owner->full_name,$row->date_added,$row->can_edit);
             $i++;
         }
-        echo json_encode($aData);
+        echo ls_json_encode($aData);
     }
     else            // otherwise only the shared participants by that user
     {
@@ -215,7 +215,7 @@ function getShareInfo_json()
                 $aData->rows[$i]['cell']=array($row->firstname,$row->lastname,$row->email,$sharename->full_name,$row->share_uid,$row->date_added,$row->can_edit);
                 $i++;
         }
-        echo json_encode($aData);
+        echo ls_json_encode($aData);
     }
 }
 /**
@@ -353,7 +353,7 @@ function getSurveyInfo_json()
         $aData->rows[$i]['cell']=array($surveyname->row()->surveyls_title,"<a href=".site_url("admin/tokens/browse")."/".$row->survey_id.">".$row->survey_id,$row->token_id,$row->date_created);
         $i++;
     }
-    echo json_encode($aData);
+    echo ls_json_encode($aData);
 }
 /**
  * This function returns the count of the participants in the CSV and show it in the title of the modal box
@@ -782,7 +782,7 @@ function getParticipantsResults_json()
             }
             $i++;
         }
-        echo json_encode($aData);
+        echo ls_json_encode($aData);
     }
     else // Only the owned and shared participants will be visible
     {
@@ -863,7 +863,7 @@ function getParticipantsResults_json()
                 $i++;
             }
         }
-        echo json_encode($aData);
+        echo ls_json_encode($aData);
     }
 
 }
@@ -946,7 +946,7 @@ function getParticipants_json()
             }
             $i++;
         }
-        echo json_encode($aData);
+        echo ls_json_encode($aData);
     }
     else // Only the owned and shared participants will be visible
     {
@@ -1012,7 +1012,7 @@ function getParticipants_json()
             }
             $i++;
         }
-        echo json_encode($aData);
+        echo ls_json_encode($aData);
     }
 }
 /*
@@ -1102,7 +1102,7 @@ function getAttribute_json()
             $i++;
         }
     }
-    echo json_encode($aData);
+    echo ls_json_encode($aData);
 }
 /*
  * This function gets the data from the form for add participants and pass it to the participants model

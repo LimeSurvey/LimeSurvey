@@ -216,7 +216,7 @@
                 if (bHasSurveyPermission($surveyid, 'tokens','delete'))
                 { ?>
                     <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png'
-                    title='<?php $clang->eT("Delete token entry");?>' alt='<?php $clang->eT("Delete token entry");?>' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js");?> (<?php echo $brow['tid'];?>)')) {<?php echo get2post(site_url("admin/tokens/delete/$surveyid/".$brow['tid']."?order=1"));?>}"  />
+                    title='<?php $clang->eT("Delete token entry");?>' alt='<?php $clang->eT("Delete token entry");?>' onclick="if (confirm('<?php $clang->eT("Are you sure you want to delete this entry?","js");?> (<?php echo $brow['tid'];?>)')) { <?php echo get2post(site_url("admin/tokens/delete/$surveyid/".$brow['tid']."?order=1"));?>}"  />
                 <?php }
 
 	            if ($brow['completed'] != "N" && $brow['completed']!="" && $surveyprivate == "N"  && $thissurvey['active']=='Y')
@@ -259,7 +259,7 @@
             <img src='<?php echo $imageurl;?>/blank.gif' height='16' width='16' alt='' />
             <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_delete.png'
             title='<?php $clang->eT("Delete the selected entries");?>' alt='<?php $clang->eT("Delete the selected entries");?>'
-            onclick="if($('#tokenboxeschecked').val()){if (confirm('<?php $clang->eT("Are you sure you want to delete the selected entries?","js");?>')) {<?php echo get2post(site_url("admin/tokens/delete/$surveyid/")."?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tokenids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}");?>}}else{alert('<?php $clang->eT("No tokens selected",'js');?>');}"  />
+            onclick="if($('#tokenboxeschecked').val()){ if (confirm('<?php $clang->eT("Are you sure you want to delete the selected entries?","js");?>')) { <?php echo get2post(site_url("admin/tokens/delete/$surveyid/")."?action=tokens&amp;sid={$surveyid}&amp;subaction=delete&amp;tokenids=document.getElementById('tokenboxeschecked').value&amp;limit={$limit}&amp;start={$start}&amp;order={$order}");?>}}else{ alert('<?php $clang->eT("No tokens selected",'js');?>');}"  />
 
         <?php }
 

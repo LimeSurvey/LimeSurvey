@@ -20,7 +20,7 @@
                 if (bHasSurveyPermission($surveyid,'responses','delete'))
                 { ?>
                     <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $this->config->item('imageurl'); ?>/token_delete.png' title='
-                    <?php echo $clang->gT("Delete entry"); ?>' onclick="if (confirm('<?php echo $clang->gT("Are you sure you want to delete this entry?","js"); ?>')) {<?php echo get2post(site_url("admin/saved/delete")."?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid={$row['scid']}&amp;srid={$row['srid']}"); ?>}"  />
+                    <?php echo $clang->gT("Delete entry"); ?>' onclick="if (confirm('<?php echo $clang->gT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo get2post(site_url("admin/saved/delete")."?action=saved&amp;sid=$surveyid&amp;subaction=delete&amp;scid={$row['scid']}&amp;srid={$row['srid']}"); ?>}"  />
                  <?php } ?>
                  
                  </td>

@@ -321,9 +321,9 @@
                                         {
     
                             <?php if ($qidattributes['show_title']) { ?>
-                                jsonstr += '{"title":"'+$('#<?php echo $fieldname; ?>_title_'+i).val()+'",';
+                                jsonstr += '{ "title":"'+$('#<?php echo $fieldname; ?>_title_'+i).val()+'",';
                             <?php } else { ?>
-                                jsonstr += '{"title":"",';
+                                jsonstr += '{ "title":"",';
     
                             <?php } ?>
                             <?php if ($qidattributes['show_comment']) { ?>

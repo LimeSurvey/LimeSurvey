@@ -36,7 +36,7 @@
                     if (is_null($condarray))
                     { ?>
 
-                    <a href='#' onclick="if (confirm('<?php echo $clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) {<?php echo get2post(site_url('admin/questiongroup/delete')."?action=delgroup&amp;sid=$surveyid&amp;gid=$gid"); ?>}"
+                    <a href='#' onclick="if (confirm('<?php echo $clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { <?php echo get2post(site_url('admin/questiongroup/delete')."?action=delgroup&amp;sid=$surveyid&amp;gid=$gid"); ?>}"
                         title="<?php echo $clang->gTview("Delete current question group"); ?>">
                         <img src='<?php echo $this->config->item('imageurl'); ?>/delete.png' alt='<?php echo $clang->gT("Delete current question group"); ?>' name='DeleteWholeGroup' title='' width="40" height="40"/></a>
 

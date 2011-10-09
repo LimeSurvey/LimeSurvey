@@ -1134,6 +1134,6 @@ class translate extends Admin_Controller {
 		
 		}
 		
-		return json_encode($aOutput). "\n";
+		return ls_json_encode($aOutput). "\n";
 	}
 }

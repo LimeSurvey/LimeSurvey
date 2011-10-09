@@ -47,7 +47,7 @@
                 if (is_null($condarray))
                 { ?>
                     <a href='#'
-    				onclick="if (confirm('<?php echo $clang->gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) {<?php echo get2post(site_url('admin/question/delete')."?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid"); ?>}">
+    				onclick="if (confirm('<?php echo $clang->gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo get2post(site_url('admin/question/delete')."?action=delquestion&amp;sid=$surveyid&amp;gid=$gid&amp;qid=$qid"); ?>}">
     				<img src='<?php echo $this->config->item('imageurl'); ?>/delete.png' name='DeleteWholeQuestion' alt='<?php echo $clang->gT("Delete current question"); ?>'
     				border='0' hspace='0' /></a>
                 <?php }

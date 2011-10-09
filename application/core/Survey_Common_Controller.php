@@ -427,10 +427,10 @@
         {
             $surveysummary2 .= $clang->gT("Regenerate question codes:")
             . " [<a href='#' "
-            . "onclick=\"if (confirm('".$clang->gT("Are you sure you want regenerate the question codes?","js")."')) {".get2post(base_url()."?action=renumberquestions&amp;sid=$surveyid&amp;style=straight")."}\" "
+            . "onclick=\"if (confirm('".$clang->gT("Are you sure you want regenerate the question codes?","js")."')) { ".get2post(base_url()."?action=renumberquestions&amp;sid=$surveyid&amp;style=straight")."}\" "
             . ">".$clang->gT("Straight")."</a>] "
             . " [<a href='#' "
-            . "onclick=\"if (confirm('".$clang->gT("Are you sure you want regenerate the question codes?","js")."')) {".get2post(base_url()."?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup")."}\" "
+            . "onclick=\"if (confirm('".$clang->gT("Are you sure you want regenerate the question codes?","js")."')) { ".get2post(base_url()."?action=renumberquestions&amp;sid=$surveyid&amp;style=bygroup")."}\" "
             . ">".$clang->gT("By Group")."</a>]";
         }
 

@@ -21,7 +21,7 @@
     { ?>
         || document.getElementById('group_name_$grouplang').value.length==0 
     <?php } ?>
-     ) {alert ('<?php echo $clang->gT("Error: You have to enter a group title for each language.",'js'); ?>'); return false;}" >
+     ) { alert ('<?php echo $clang->gT("Error: You have to enter a group title for each language.",'js'); ?>'); return false;}" >
         
     <?php foreach ($grplangs as $grouplang)
     { ?>

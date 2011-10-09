@@ -539,7 +539,7 @@ class Save {
 	                            if (!rename($tmp . $phparray[$i]->filename, $target . $phparray[$i]->filename))
 	                                echo "Error Moving file to its destination";
 
-	                            $_SESSION[$value] = json_encode($phparray);
+	                            $_SESSION[$value] = ls_json_encode($phparray);
 	                        }
 	                    }
 	                    $values[] = $CI->db->escape($_SESSION[$value]);

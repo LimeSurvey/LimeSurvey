@@ -24,7 +24,7 @@ $this->load->view('admin/survey/subview/tabResourceManagement_view',$data);
 if (bHasSurveyPermission($surveyid,'surveysettings','update'))
 {?>
     <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) {$('#addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save"); ?></button></p>
-    <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) {document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; $('addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save & edit survey text elements");?> >></button></p><?php
+    <p><button onclick="if (UpdateLanguageIDs(mylangs,'<?php $clang->eT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js");?>')) { document.getElementById('surveysettingsaction').value = 'updatesurveysettingsandeditlocalesettings'; $('addnewsurvey').submit();}" class='standardbtn' ><?php $clang->eT("Save & edit survey text elements");?> >></button></p><?php
 }?>
 <div id='dlgEditParameter'>
     <div id='dlgForm' class='form30'>

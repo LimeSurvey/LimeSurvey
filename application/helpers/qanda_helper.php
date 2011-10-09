@@ -3435,7 +3435,7 @@ function do_multiplechoice($ia)
         }
     }
     if ($exclude_all_others_auto==1){
-    $answer .= "<script type='text/javascript'>autoArray = ".json_encode($autoArray).";</script>";
+    $answer .= "<script type='text/javascript'>autoArray = ".ls_json_encode($autoArray).";</script>";
     }
     if ($other == 'Y')
     {
@@ -5324,7 +5324,7 @@ function do_yesno($ia)
 
     }
 
-    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"{".$_SESSION[$ia[1]]."}\" />\n";
+    $answer .= "</ul>\n\n<input type=\"hidden\" name=\"java{$ia[1]}\" id=\"java{$ia[1]}\" value=\"{ ".$_SESSION[$ia[1]]."}\" />\n";
     $inputnames[]=$ia[1];
     return array($answer, $inputnames);
 }

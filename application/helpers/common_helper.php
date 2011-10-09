@@ -8371,4 +8371,12 @@ function fixSubquestions()
 
 }
 
+/**
+ * Must use ls_json_encode to json_encode content, otherwise LimeExpressionManager will think that the associative arrays are expressions and try to parse them.
+ */
+function ls_json_encode($content)
+{
+    return preg_replace('/\{\"/','{ "',json_encode($content));
+}
+
 // Closing PHP tag intentionally omitted - yes, it is okay

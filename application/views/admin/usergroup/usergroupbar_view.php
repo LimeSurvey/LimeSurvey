@@ -42,7 +42,7 @@
     $this->session->userdata('loginID') == $grow['owner_id'])
     { ?>
         
-        <a href='#' onclick="if (confirm('<?php echo $clang->gT("Are you sure you want to delete this entry?","js"); ?>')) {<?php echo get2post(site_url('admin/usergroups/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}"
+        <a href='#' onclick="if (confirm('<?php echo $clang->gT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo get2post(site_url('admin/usergroups/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}"
          title='<?php echo $clang->gTview("Delete Current User Group"); ?>'>
         <img src='<?php echo $this->config->item('imageurl'); ?>/delete.png' alt='<?php echo $clang->gT("Delete Current User Group"); ?>' name='DeleteUserGroup'  /></a>
     <?php }

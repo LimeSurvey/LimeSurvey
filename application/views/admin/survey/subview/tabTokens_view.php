@@ -43,7 +43,7 @@
         </li>
         <li>
              <label for='alloweditaftercompletion'><?php echo $clang->gT("Allow editing responses after completion?"); ?></label>
-             <select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange="javascript: if (document.getElementById('private').value == 'Y') {alert('<?php echo $clang->gT("This option can't be set if Anonymous answers are used","js"); ?>'); this.value='N';}">
+             <select id='alloweditaftercompletion' name='alloweditaftercompletion' onchange="javascript: if (document.getElementById('private').value == 'Y') { alert('<?php echo $clang->gT("This option can't be set if Anonymous answers are used","js"); ?>'); this.value='N';}">
              <option value='Y'
             <?php if ($esrow['alloweditaftercompletion'] == "Y") { ?>
                  selected='selected'
@@ -56,7 +56,7 @@
         </li>
          <li>
              <label for='tokenanswerspersistence'><?php echo $clang->gT("Enable token-based response persistence?"); ?></label>
-             <select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange="javascript: if (document.getElementById('anonymized').value == 'Y') {alert('<?php echo $clang->gT("This option can't be set if the `Anonymized responses` option is active.","js"); ?>'); this.value='N';}">
+             <select id='tokenanswerspersistence' name='tokenanswerspersistence' onchange="javascript: if (document.getElementById('anonymized').value == 'Y') { alert('<?php echo $clang->gT("This option can't be set if the `Anonymized responses` option is active.","js"); ?>'); this.value='N';}">
              <option value='Y'
             <?php if ($esrow['tokenanswerspersistence'] == "Y") { ?>
                   selected='selected'

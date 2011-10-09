@@ -25,7 +25,7 @@ $this->load->view('admin/survey/subview/tabCopy_view',$data);
 ?>
 </div>
 
-<p><button onclick="if (isEmpty(document.getElementById('surveyls_title'), '<?php $clang->eT("Error: You have to enter a title for this survey.", 'js');?>')) {document.getElementById('addnewsurvey').submit();}" class='standardbtn' >
+<p><button onclick="if (isEmpty(document.getElementById('surveyls_title'), '<?php $clang->eT("Error: You have to enter a title for this survey.", 'js');?>')) { document.getElementById('addnewsurvey').submit();}" class='standardbtn' >
     <?php $clang->eT("Save");?>
     </button>
 </p>

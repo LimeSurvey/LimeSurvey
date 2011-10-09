@@ -131,10 +131,10 @@ ondblClickRow: function(id)
                         height: "100%",
                         width: "100%",
                         colNames:['Survey Name','Survey ID','Token ID','Date Added'], 
-                        colModel:[{name:'surveyname',index:'surveyname', width:100,align:'center'},
-                                  {name:'surveyid',index:'surveyid', width:90,align:'center'},
-                                  {name:'tokenid',index:'tokenid', width:100,align:'center'}, 
-                                  {name:'dateadded',index:'added', width:120,align:'center'}],
+                        colModel:[{ name:'surveyname',index:'surveyname', width:100,align:'center'},
+                                  { name:'surveyid',index:'surveyid', width:90,align:'center'},
+                                  { name:'tokenid',index:'tokenid', width:100,align:'center'},
+                                  { name:'dateadded',index:'added', width:120,align:'center'}],
                                   caption: "Participant's Survey Information",
                               gridComplete: function () {
 
@@ -158,12 +158,12 @@ ondblClickRow: function(id)
                 editable:true,
                 loadonce : true,
                 colNames: ['Actions','Participant ID','Attribute Type','Attribute Name','Attribute Value','Attribute Possible Values'],
-                colModel: [ {name:'act',index:'act',width:55,align:'center',sortable:false,formatter:'actions',formatoptions : {keys:true,onEdit:function(id){ }}},
-                            {name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
-                            {name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
-                            {name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
-                            {name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
-                            {name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:true,hidden:true}],
+                colModel: [ { name:'act',index:'act',width:55,align:'center',sortable:false,formatter:'actions',formatoptions : { keys:true,onEdit:function(id){ }}},
+                            { name:'participant_id',index:'participant_id', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
+                            { name:'atttype',index:'atttype', width:150, sorttype:"string",align:"center",editable:true,hidden:true},
+                            { name:'attname',index:'attname', width:150, sorttype:"string",align:"center",editable:false},
+                            { name:'attvalue',index:'attvalue', width:150, sorttype:"string",align:"center",editable:true},
+                            { name:'attpvalues',index:'attpvalues', width:150, sorttype:"string",align:"center",editable:true,hidden:true}],
                 rowNum:20,
                 pager: pager_id, 
                       gridComplete: function () {
@@ -195,17 +195,17 @@ ondblClickRow: function(id)
                   var att_type = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'atttype');
                   if(att_type=="DP")
                   {
-                     $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{editoptions:{dataInit:function (elem) {$(elem).datepicker();}}});
+                     $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:{ dataInit:function (elem) {$(elem).datepicker();}}});
                   }
                 if(att_type=="DD")
                  {
                      var att_p_values = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attpvalues');
-                     $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{edittype:'select',editoptions:{value:":Select One;"+att_p_values}});
+                     $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'select',editoptions:{ value:":Select One;"+att_p_values}});
                  }
                  if(att_type=="TB")
                  {
-                      $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{edittype:'text'});
-                      $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{editoptions:''});
+                      $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ edittype:'text'});
+                      $("#displayparticipants_"+parid[0]+"_t").setColProp('attvalue',{ editoptions:''});
                  }
                 var attap = $("#displayparticipants_"+parid[0]+"_t").getCell(id,'attap');
                 if(id && id!==lastSel2)
@@ -222,7 +222,7 @@ ondblClickRow: function(id)
       }
    
 });
-jQuery("#displayparticipants").jqGrid('navGrid','#pager',{add:true,del:true,edit:false,refresh: true,search: false},{},{ width : 400},{msg:deleteMsg, width : 700, 
+jQuery("#displayparticipants").jqGrid('navGrid','#pager',{ add:true,del:true,edit:false,refresh: true,search: false},{},{ width : 400},{ msg:deleteMsg, width : 700,
                      afterShowForm: function($form) {
                                var dialog = $form.closest('div.ui-jqdialog'),
                                    selRowId = jQuery("#displayparticipants").jqGrid('getGridParam', 'selrow'),
@@ -245,9 +245,9 @@ jQuery("#displayparticipants").jqGrid('navGrid','#pager',{add:true,del:true,edit
          return[success,message]; 
      }
      
-} ,beforeShowForm:function(form) {$('#selectable').bind("mousedown", function (e) {e.metaKey = false;}).selectable({tolerance: 'fit'})}},{multipleSearch:true, multipleGroup:true});
-$("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Export to CSV", buttonicon:'exporticon', onClickButton:function(){
-            $.post(exporttocsvcount, {searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
+} ,beforeShowForm:function(form) {$('#selectable').bind("mousedown", function (e) { e.metaKey = false;}).selectable({ tolerance: 'fit'})}},{ multipleSearch:true, multipleGroup:true});
+$("#displayparticipants").navButtonAdd('#pager',{  caption:"",title:"Export to CSV", buttonicon:'exporticon', onClickButton:function(){
+            $.post(exporttocsvcount, { searchcondition: jQuery('#displayparticipants').jqGrid('getGridParam', 'url')},
                             function(data) {
                             titlemsg = data;
                             
@@ -270,13 +270,13 @@ $("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Export to CSV
                             width : 400,
                             height : 400,
                             open: function(event, ui) {
-                            $('#attributes').multiselect({noneSelectedText: 'Select Attributes',autoOpen:true}).multiselectfilter();
+                            $('#attributes').multiselect({ noneSelectedText: 'Select Attributes',autoOpen:true}).multiselectfilter();
                          }
                         });
                  });
 }});
 
-$("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Full Search", buttonicon:'searchicon', onClickButton:function(){
+$("#displayparticipants").navButtonAdd('#pager',{ caption:"",title:"Full Search", buttonicon:'searchicon', onClickButton:function(){
                 var dialog_buttons={};
                 dialog_buttons[searchBtn]=function(){
                 searchconditions="";
@@ -309,7 +309,7 @@ $("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Full Search",
         if(id == 1)
          {
                 searchconditions = searchconditions + $('#field_1').val()+"||"+$('#condition_1').val()+"||"+$('#conditiontext_1').val();      
-                jQuery("#displayparticipants").jqGrid('setGridParam',{url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");      
+                jQuery("#displayparticipants").jqGrid('setGridParam',{ url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
          }
         else
          {
@@ -322,7 +322,7 @@ $("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Full Search",
                         searchconditions = searchconditions + "||"+ $('#join_'+(i)).val()+"||"+$('#field_'+i).val()+"||"+$('#condition_'+i).val()+"||"+$('#conditiontext_'+i).val();                          
                     }
                 }
-            jQuery("#displayparticipants").jqGrid('setGridParam',{url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");      
+            jQuery("#displayparticipants").jqGrid('setGridParam',{ url:jsonSearchUrl+'/'+searchconditions}).trigger("reloadGrid");
         }
         $(this).dialog("close");
         }
@@ -340,7 +340,7 @@ $("#displayparticipants").navButtonAdd('#pager',{caption:"",title:"Full Search",
 	        });    
  
 }});
-$.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnEspace:true});
+$.extend(jQuery.jgrid.edit,{ closeAfterAdd: true,reloadAfterSubmit: true,closeOnEspace:true});
 	//script for sharing of participants
 	$("#sharingparticipants").dialog({
 	               title: spTitle,
@@ -418,7 +418,7 @@ $.extend(jQuery.jgrid.edit,{closeAfterAdd: true,reloadAfterSubmit: true,closeOnE
             var selected = "";
             var myGrid = $("#displayparticipants").jqGrid();
             var rows = myGrid.getGridParam('selarrrow');
-            $('#selectableadd').bind("mousedown", function (e) {e.metaKey = false;}).selectable({tolerance: 'fit',
+            $('#selectableadd').bind("mousedown", function (e) { e.metaKey = false;}).selectable({ tolerance: 'fit',
             selected: function(event, ui) { 
                   if(ui.selected.id == "all")
                     {

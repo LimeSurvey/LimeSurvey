@@ -1969,7 +1969,7 @@
                                     }
 
                                     //$columns[] .= $fieldname; //db_quote_id($fieldname);
-                                    $values = array_merge($values,array($fieldname => json_encode($phparray))); // .= json_encode($phparray); //db_quoteall(json_encode($phparray), true);
+                                    $values = array_merge($values,array($fieldname => ls_json_encode($phparray))); // .= ls_json_encode($phparray); //db_quoteall(ls_json_encode($phparray), true);
 
                                 }
                                 else
@@ -3057,9 +3057,9 @@
                                         {";
 
                             if ($qidattributes['show_title'])
-                                $dataentryoutput .= "jsonstr += '{\"title\":\"'+$('#".$fieldname."_title_'+i).val()+'\",';";
+                                $dataentryoutput .= "jsonstr += '{ \"title\":\"'+$('#".$fieldname."_title_'+i).val()+'\",';";
                             else
-                                $dataentryoutput .= "jsonstr += '{\"title\":\"\",';";
+                                $dataentryoutput .= "jsonstr += '{ \"title\":\"\",';";
 
 
                             if ($qidattributes['show_comment'])

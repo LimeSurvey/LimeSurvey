@@ -752,7 +752,7 @@
             $qCodeToInfo = 'qCodeToInfo = {';
             foreach ($qtypelist as $qtype=>$qdesc){
                 $qDescToCode .= " '{$qdesc['description']}' : '{$qtype}', \n";
-                $qCodeToInfo .= " '{$qtype}' : '".json_encode($qdesc)."', \n";
+                $qCodeToInfo .= " '{$qtype}' : '".ls_json_encode($qdesc)."', \n";
             }
             $data['qTypeOutput'] = "$qDescToCode 'null':'null' }; \n $qCodeToInfo 'null':'null' };";
 

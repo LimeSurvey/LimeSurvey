@@ -1062,7 +1062,7 @@ class conditions extends Survey_Common_Controller {
 		{
             foreach($canswers as $can)
             {
-                $an=json_encode(FlattenText($can[2]));
+                $an=ls_json_encode(FlattenText($can[2]));
                 $conditionsoutput_main_content .= "Fieldnames[$jn]='$can[0]';\n"
                 ."Codes[$jn]='$can[1]';\n"
                 ."Answers[$jn]={$an};\n";
@@ -1164,7 +1164,7 @@ class conditions extends Survey_Common_Controller {
 		            if ($subaction == "copyconditionsform" || $subaction == "copyconditions")
 		            {
 		                $initialCheckbox = "<td><input type='checkbox' id='scenarioCbx{$scenarionr['scenario']}' checked='checked'/>\n"
-		                ."<script type='text/javascript'>$(document).ready(function () { $('#scenarioCbx{$scenarionr['scenario']}').checkgroup({groupName:'aConditionFromScenario{$scenarionr['scenario']}'}); });</script>"
+		                ."<script type='text/javascript'>$(document).ready(function () { $('#scenarioCbx{$scenarionr['scenario']}').checkgroup({ groupName:'aConditionFromScenario{$scenarionr['scenario']}'}); });</script>"
 		                ."</td><td>&nbsp;</td>\n";
 		            }
 		            else
@@ -1193,7 +1193,7 @@ class conditions extends Survey_Common_Controller {
 		            $subaction == "deletescenario" || $subaction == "delete") )
 		            {
 		                $conditionsoutput_main_content .= "\t<a href='#' "
-		                ." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?","js")."')) {document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}\""
+		                ." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete all conditions set in this scenario?","js")."')) { document.getElementById('deletescenario{$scenarionr['scenario']}').submit();}\""
 		                ." title='".$clang->gTview("Delete this scenario")."' >"
 		                ." <img src='$imageurl/scenario_delete.png' ".$clang->gT("Delete this scenario")." name='DeleteWholeGroup' /></a>\n";
 
@@ -1443,7 +1443,7 @@ class conditions extends Survey_Common_Controller {
 		                    { // show single condition action buttons in edit mode
 		                        $conditionsoutput_main_content .= ""
 		                        ."<a href='#' "
-		                        ." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete this condition?","js")."')) {\$('#editModeTargetVal{$rows['cid']}').remove();\$('#cquestions{$rows['cid']}').remove();document.getElementById('conditionaction{$rows['cid']}').submit();}\""
+		                        ." onclick=\"if ( confirm('".$clang->gT("Are you sure you want to delete this condition?","js")."')) { \$('#editModeTargetVal{$rows['cid']}').remove();\$('#cquestions{$rows['cid']}').remove();document.getElementById('conditionaction{$rows['cid']}').submit();}\""
 		                        ." title='".$clang->gTview("Delete this condition")."' >"
 		                        ." <img src='$imageurl/conditions_delete_16.png'  alt='".$clang->gT("Delete this condition")."' name='DeleteThisCondition' title='' /></a>\n"
 		                        ."<a href='#' "
@@ -1563,7 +1563,7 @@ class conditions extends Survey_Common_Controller {
 		        //TIBO
 				self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery.multiselect.min.js');
 
-		        $conditionsoutput_main_content .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( {autoOpen: true, noneSelectedText: '".$clang->gT("No questions selected")."', checkAllText: '".$clang->gT("Check all")."', uncheckAllText: '".$clang->gT("Uncheck all")."', selectedText: '# ".$clang->gT("selected")."', beforeclose: function(){return false;},height: 200 } ); });</script>";
+		        $conditionsoutput_main_content .= "<script type='text/javascript'>$(document).ready(function () { $('#copytomultiselect').multiselect( { autoOpen: true, noneSelectedText: '".$clang->gT("No questions selected")."', checkAllText: '".$clang->gT("Check all")."', uncheckAllText: '".$clang->gT("Uncheck all")."', selectedText: '# ".$clang->gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });</script>";
 
 		        $conditionsoutput_main_content .= "\t<div class='conditioncopy-tbl-row'>\n"
 		        ."\t<div class='condition-tbl-left'>".$clang->gT("Copy the selected conditions to").":</div>\n"
@@ -1590,7 +1590,7 @@ class conditions extends Survey_Common_Controller {
 		        }
 
 		        $conditionsoutput_main_content .= "\t<div class='condition-tbl-full'>\n"
-		//        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){prepareCopyconditions(); return true;} else {return false;}\" $disableCopyCondition/>\n"
+		//        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"if (confirm('".$clang->gT("Are you sure you want to copy these condition(s) to the questions you have selected?","js")."')){ prepareCopyconditions(); return true;} else { return false;}\" $disableCopyCondition/>\n"
 		        ."\t\t<input type='submit' value='".$clang->gT("Copy conditions")."' onclick=\"prepareCopyconditions(); return true;\" $disableCopyCondition/>\n"
 		        ."<input type='hidden' name='subaction' value='copyconditions' />\n"
 		        ."<input type='hidden' name='sid' value='$surveyid' />\n"

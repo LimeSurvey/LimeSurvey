@@ -1549,7 +1549,7 @@ class survey extends Survey_Common_Controller {
         $data->records = $oResult->num_rows();
         $data->total = 1;
 
-        echo json_encode($data);
+        echo ls_json_encode($data);
     }
 
     /**

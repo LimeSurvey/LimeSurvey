@@ -10,7 +10,7 @@
         
         function OtherSelection(QuestionType)
         {
-        if (QuestionType == '') {QuestionType=document.getElementById('question_type').value;}
+        if (QuestionType == '') { QuestionType=document.getElementById('question_type').value;}
         if (QuestionType == 'M' || QuestionType == 'P' || QuestionType == 'L' || QuestionType == '!')
         {
             document.getElementById('OtherSelection').style.display = '';
@@ -45,7 +45,7 @@
         {
             document.getElementById('Validation').style.display = '';
             document.getElementById('OtherSelection').style.display ='none';
-            if (document.getElementById('ON'))  {document.getElementById('ON').checked = true;}
+            if (document.getElementById('ON'))  { document.getElementById('ON').checked = true;}
             document.getElementById('MandatorySelection').style.display='';
         }
         else if (QuestionType == 'X')
@@ -57,7 +57,7 @@
         else
         {
             document.getElementById('OtherSelection').style.display = 'none';
-            if (document.getElementById('ON'))  {document.getElementById('ON').checked = true;}
+            if (document.getElementById('ON'))  { document.getElementById('ON').checked = true;}
             document.getElementById('Validation').style.display = 'none';
             document.getElementById('MandatorySelection').style.display='';
         }

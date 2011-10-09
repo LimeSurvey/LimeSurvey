@@ -142,7 +142,7 @@ class printanswers extends LSCI_Controller {
          };   */
 
         //Ensure script is not run directly, avoid path disclosure
-        //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die("browse - Cannot run this script directly");}
+        //if (!isset($rootdir) || isset($_REQUEST['$rootdir'])) {die( "browse - Cannot run this script directly");}
 
         // Set the language for dispay
         //require_once($rootdir.'/classes/core/language.php');  // has been secured
