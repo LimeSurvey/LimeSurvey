@@ -110,6 +110,7 @@ class tokens extends Survey_Common_Controller {
     {
     	$surveyid = sanitize_int($surveyid);
         
+        $clang = $this->limesurvey_lang;
         $this->load->helper('globalsettings');
         
         $thissurvey=getSurveyInfo($surveyid);
