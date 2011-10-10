@@ -480,10 +480,10 @@ function spss_getquery() {
 */
 function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 {
+    $iChunkSize=3000; // This works even for very large result sets and leaves a minimal memory footprint
 	$CI =& get_instance();
     $dbprefix = $CI->db->dbprefix;
     $CI->load->helper('database');
-    $QueryResult = db_execute_assoc($Query) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg()); //safe
     preg_match('/\bfrom\b\s*(\w+)/i', $Query, $MatchResults);
     if ($tagname!='')
     {
@@ -494,18 +494,28 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
         $TableName = $MatchResults[1];
         $TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
     }
-    if ($QueryResult->num_rows()>0)
+
+
+
+    // Read table in smaller chunks
+    $iStart=0;
+    do
     {
-        $exclude = array_flip($excludes);    //Flip key/value in array for faster checks
-        $xmlwriter->startElement($TableName);
-        $xmlwriter->startElement('fields');
-        $Columninfo =  $QueryResult->row_array();
-        foreach ($Columninfo as $fieldname=>$value)
+   //     debugbreak();
+        $QueryResult = db_select_limit_assoc($Query,$iChunkSize,$iStart) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg()); //safe
+        if ($iStart==0 && $QueryResult->num_rows()>0)
         {
-            if (!isset($exclude[$fieldname])) $xmlwriter->writeElement('fieldname',$fieldname);
+            $exclude = array_flip($excludes);    //Flip key/value in array for faster checks
+            $xmlwriter->startElement($TableName);
+            $xmlwriter->startElement('fields');
+            $aColumninfo = $QueryResult->field_data();
+            foreach ($aColumninfo as $fieldname)
+            {
+                if (!isset($exclude[$fieldname->name])) $xmlwriter->writeElement('fieldname',$fieldname->name);
+            }
+            $xmlwriter->endElement(); // close columns
+            $xmlwriter->startElement('rows');
         }
-        $xmlwriter->endElement(); // close columns
-        $xmlwriter->startElement('rows');
         foreach($QueryResult->result_array() as $Row)
         {
             $xmlwriter->startElement('row');
@@ -524,6 +534,11 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
             }
             $xmlwriter->endElement(); // close row
         }
+        $iStart=$iStart+$iChunkSize;
+    } while ($QueryResult->num_rows()==$iChunkSize);
+    if ($QueryResult->num_rows()>0)
+    {
+        $QueryResult->free_result();
         $xmlwriter->endElement(); // close rows
         $xmlwriter->endElement(); // close tablename
     }
@@ -690,12 +705,19 @@ function survey_getXMLData($surveyid, $exclude = array())
 * @param string $sXMLTableName Name of the tag table name in the XML file
 * @return object XMLWriter object
 */
-function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTagName='')
+function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTagName='', $sFileName='', $bSetIndent=true)
 {
     $CI =& get_instance();
     $xml = getXMLWriter();
-    $xml->openMemory();
-    $xml->setIndent(true);
+    if ($sFileName=='')
+    {
+        $xml->openMemory();
+    }
+    else
+    {
+        $bOK=$xml->openURI($sFileName);
+    }
+    $xml->setIndent($bSetIndent);
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType',$sDocType);
@@ -712,7 +734,14 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     BuildXMLFromQuery($xml,$aquery, $sXMLTableTagName);
     $xml->endElement(); // close columns
     $xml->endDocument();
-    return $xml->outputMemory(true);
+    if ($sFileName='')
+    {
+        return $xml->outputMemory(true);
+    }
+    else
+    {
+        return $bOK;
+    }
 }
 
 

@@ -82,25 +82,27 @@ function db_upgrade_all($oldversion) {
 
 function upgrade_question_attributes148()
 {
-    global $modifyoutput, $connect, $dbprefix;
-    $sSurveyQuery = "SELECT sid FROM {$dbprefix}surveys";
+    global $modifyoutput;
+    $CI =& get_instance();
+    $sDBPrefix=$CI->db->dbprefix;
+    $sSurveyQuery = "SELECT sid FROM {$sDBPrefix}surveys";
     $oSurveyResult = db_execute_assoc($sSurveyQuery);
     foreach ( $oSurveyResult->result_array()  as $aSurveyRow)
     {
         $surveyid=$aSurveyRow['sid'];
         $languages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)), GetAdditionalLanguagesFromSurveyID($surveyid));
 
-        $sAttributeQuery = "select q.qid,attribute,value from {$dbprefix}question_attributes qa , {$dbprefix}questions q where q.qid=qa.qid and sid={$surveyid}";
+        $sAttributeQuery = "select q.qid,attribute,value from {$sDBPrefix}question_attributes qa , {$sDBPrefix}questions q where q.qid=qa.qid and sid={$surveyid}";
         $oAttributeResult = db_execute_assoc($sAttributeQuery);
         $aAllAttributes=questionAttributes(true);
         foreach ( $oAttributeResult->result_array() as $aAttributeRow)
         {
             if (isset($aAllAttributes[$aAttributeRow['attribute']]['i18n']) && $aAllAttributes[$aAttributeRow['attribute']]['i18n'])
             {
-                $connect->query("delete from {$dbprefix}question_attributes where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'");
+                $CI->db->query("delete from {$sDBPrefix}question_attributes where qid={$aAttributeRow['qid']} and attribute='{$aAttributeRow['attribute']}'");
                 foreach ($languages as $language)
                 {
-                    $sAttributeInsertQuery="insert into {$dbprefix}question_attributes (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$language}' )";
+                    $sAttributeInsertQuery="insert into {$sDBPrefix}question_attributes (qid,attribute,value,language) VALUES({$aAttributeRow['qid']},'{$aAttributeRow['attribute']}','{$aAttributeRow['value']}','{$language}' )";
                     modify_database("",$sAttributeInsertQuery); echo $modifyoutput; flush();@ob_flush();
                 }
             }

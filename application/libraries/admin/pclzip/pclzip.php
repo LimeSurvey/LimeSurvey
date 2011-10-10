@@ -215,8 +215,10 @@ class PclZip
     function __construct($params = array())
     {
 
-        if(isset($params['p_zipname']))
+        if(isset($params['p_zipname']) && is_array($params))
             $p_zipname = $params['p_zipname'];
+        elseif (isset($params))
+            $p_zipname = $params;
         else
             trigger_error("Missing argument p_zipname", E_USER_ERROR);
 
