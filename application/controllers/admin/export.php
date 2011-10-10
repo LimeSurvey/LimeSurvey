@@ -43,6 +43,53 @@ class export extends Survey_Common_Controller {
         }
     }
 
+    /**
+    * This function exports a ZIP archives of several ZIP archives - it is used in the listSurvey controller
+    * The SIDs are read from session flashdata.
+    *
+    */
+    function surveyarchives()
+    {
+        if (!$this->session->userdata('USER_RIGHT_SUPERADMIN')) die('Access denied.');
+        $aSurveyIDs= $this->session->flashdata('sids');
+        $aExportedFiles=array();
+        foreach ($aSurveyIDs as $iSurveyID)
+        {
+            $iSurveyID=(int)$iSurveyID;
+            if ($iSurveyID>0)
+            {
+                $aExportedFiles[$iSurveyID]=$this->_exportarchive($iSurveyID,false);
+            }
+        }
+        if (count($aExportedFiles)>0){
+            $aZIPFileName=$this->config->item("tempdir").DIRECTORY_SEPARATOR.sRandomChars(30);
+            $this->load->library("admin/pclzip/pclzip",array('p_zipname' => $aZIPFileName));
+            $zip = new PclZip($aZIPFileName);
+            foreach ($aExportedFiles as $iSurveyID=>$sFileName)
+            {
+                $zip->add(array(array(PCLZIP_ATT_FILE_NAME=>$sFileName,
+                                      PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_archive_'.$iSurveyID.'.zip')));
+                unlink($sFileName);
+            }
+        }
+        if (is_file($aZIPFileName)) {
+                //Send the file for download!
+                header("Pragma: public");
+                header("Expires: 0");
+                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+
+                header("Content-Type: application/force-download");
+                header( "Content-Disposition: attachment; filename=survey_archives_pack.zip" );
+                header( "Content-Description: File Transfer");
+                @readfile($aZIPFileName);
+
+                //Delete the temporary file
+                unlink($aZIPFileName);
+                return;
+        }
+    }
+
+
     function _surveyexport($action, $surveyid)
     {
 
@@ -85,51 +132,67 @@ class export extends Survey_Common_Controller {
         }
         elseif($action == "exportarchive")
         {
-            $aSurveyInfo=getSurveyInfo($surveyid);
-            $sTempDir = $this->config->item("tempdir");
-            $aZIPFileName=$sTempDir.DIRECTORY_SEPARATOR.sRandomChars(30);
-            $sLSSFileName=$sTempDir.DIRECTORY_SEPARATOR.sRandomChars(30);
-            $sLSRFileName=$sTempDir.DIRECTORY_SEPARATOR.sRandomChars(30);
-            $sLSTFileName=$sTempDir.DIRECTORY_SEPARATOR.sRandomChars(30);
-            $sLSIFileName=$sTempDir.DIRECTORY_SEPARATOR.sRandomChars(30);
+            $this->_exportarchive($surveyid);
+        }
 
-            $this->load->library("admin/pclzip/pclzip",array('p_zipname' => $aZIPFileName));
-            $zip = new PclZip($aZIPFileName);
+    }
 
-            file_put_contents($sLSSFileName,survey_getXMLData($surveyid));
-            $zip->add(array(array(PCLZIP_ATT_FILE_NAME=>$sLSSFileName,
-                            PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_'.$surveyid.'.lss')));
-            unlink($sLSSFileName);
+    /**
+    * Exports a archive (ZIP) of the current survey (structure, responses, timings, tokens)
+    *
+    * @param integer $iSurveyID  The ID of the survey to export
+    * @param boolean $bSendToBrowser If true (default) then the ZIP file is sent to the browser
+    * @return string Full path of the ZIP filename if $bSendToBrowser is set to true, otherwise no return value
+    */
+    function _exportarchive($iSurveyID, $bSendToBrowser=true)
+    {
+        $aSurveyInfo=getSurveyInfo($iSurveyID);
+        $sTempDir = $this->config->item("tempdir");
+        $aZIPFileName=$sTempDir.DIRECTORY_SEPARATOR.sRandomChars(30);
+        $sLSSFileName=$sTempDir.DIRECTORY_SEPARATOR.sRandomChars(30);
+        $sLSRFileName=$sTempDir.DIRECTORY_SEPARATOR.sRandomChars(30);
+        $sLSTFileName=$sTempDir.DIRECTORY_SEPARATOR.sRandomChars(30);
+        $sLSIFileName=$sTempDir.DIRECTORY_SEPARATOR.sRandomChars(30);
 
-            if ($aSurveyInfo['active']=='Y')
+        $this->load->library("admin/pclzip/pclzip",array('p_zipname' => $aZIPFileName));
+        $zip = new PclZip($aZIPFileName);
+
+        file_put_contents($sLSSFileName,survey_getXMLData($iSurveyID));
+        $zip->add(array(array(PCLZIP_ATT_FILE_NAME=>$sLSSFileName,
+                        PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_'.$iSurveyID.'.lss')));
+        unlink($sLSSFileName);
+
+        if ($aSurveyInfo['active']=='Y')
+        {
+            getXMLDataSingleTable($iSurveyID,'survey_'.$iSurveyID,'Responses','responses',$sLSRFileName, false);
+            $zip->add(array(array(PCLZIP_ATT_FILE_NAME=>$sLSRFileName,
+                            PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_'.$iSurveyID.'_responses.lsr')));
+            unlink($sLSRFileName);
+        }
+        if ($this->db->table_exists('tokens_'.$iSurveyID))
+        {
+            getXMLDataSingleTable($iSurveyID,'tokens_'.$iSurveyID,'Tokens','tokens',$sLSTFileName);
+            $zip->add(array(array(PCLZIP_ATT_FILE_NAME=>$sLSTFileName,
+                            PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_'.$iSurveyID.'_tokens.lst')));
+            unlink($sLSTFileName);
+        }
+        if ($this->db->table_exists('survey_'.$iSurveyID.'_timings'))
+        {
+            getXMLDataSingleTable($iSurveyID,'survey_'.$iSurveyID.'_timings','Timings','timings',$sLSIFileName);
+            $zip->add(array(array(PCLZIP_ATT_FILE_NAME=>$sLSIFileName,
+                            PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_'.$iSurveyID.'_timings.lsi')));
+            unlink($sLSIFileName);
+        }
+        if (is_file($aZIPFileName)) {
+            if ($bSendToBrowser)
             {
-                getXMLDataSingleTable($surveyid,'survey_'.$surveyid,'Responses','responses',$sLSRFileName, false);
-                $zip->add(array(array(PCLZIP_ATT_FILE_NAME=>$sLSRFileName,
-                                PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_'.$surveyid.'_responses.lsr')));
-                unlink($sLSRFileName);
-            }
-            if ($this->db->table_exists('tokens_'.$surveyid))
-            {
-                getXMLDataSingleTable($surveyid,'tokens_'.$surveyid,'Tokens','tokens',$sLSTFileName);
-                $zip->add(array(array(PCLZIP_ATT_FILE_NAME=>$sLSTFileName,
-                                PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_'.$surveyid.'_tokens.lst')));
-                unlink($sLSTFileName);
-            }
-            if ($this->db->table_exists('survey_'.$surveyid.'_timings'))
-            {
-                getXMLDataSingleTable($surveyid,'survey_'.$surveyid.'_timings','Timings','timings',$sLSIFileName);
-                $zip->add(array(array(PCLZIP_ATT_FILE_NAME=>$sLSIFileName,
-                                PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_'.$surveyid.'_timings.lsi')));
-                unlink($sLSIFileName);
-            }
-            if (is_file($aZIPFileName)) {
                 //Send the file for download!
                 header("Pragma: public");
                 header("Expires: 0");
                 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 
                 header("Content-Type: application/force-download");
-                header( "Content-Disposition: attachment; filename=survey_archive_{$surveyid}.zip" );
+                header( "Content-Disposition: attachment; filename=survey_archive_{$iSurveyID}.zip" );
                 header( "Content-Description: File Transfer");
                 @readfile($aZIPFileName);
 
@@ -137,7 +200,12 @@ class export extends Survey_Common_Controller {
                 unlink($aZIPFileName);
                 return;
             }
+            else
+            {
+                return($aZIPFileName);
+            }
         }
+
     }
 
     function group($surveyid, $gid)

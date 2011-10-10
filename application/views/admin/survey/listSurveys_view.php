@@ -2,6 +2,7 @@
 <script type='text/javascript'>
     sConfirmationDeleteMessage='<?php $clang->eT("Are you sure you want to delete these surveys?",'js');?>';
     sConfirmationExpireMessage='<?php $clang->eT("Are you sure you want to expire these surveys?",'js');?>';
+    sConfirmationArchiveMessage='<?php $clang->eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to contine?",'js');?>';
 </script>
 <form action="<?php echo site_url('admin/survey/surveyactions');?>" id='frmListSurveys' method='post'>
 <table class='listsurveys'>
@@ -36,6 +37,7 @@
                     <select name='surveysaction' id='surveysaction' size='1'>
                     <option value='expire'><?php $clang->eT('Expire');?></option>
                     <option value='delete'><?php $clang->eT('Delete');?></option>
+                    <option value='archive'><?php $clang->eT('Download archive');?></option>
                     </select>
                     <input type='submit' value='<?php $clang->eT('OK');?>'>
                 </td>

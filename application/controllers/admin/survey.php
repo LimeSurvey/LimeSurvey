@@ -866,6 +866,9 @@ class survey extends Survey_Common_Controller {
                     case 'expire': if ($this->_expireSurvey($iSurveyID)) $actioncount++;;
                                    $message=$this->limesurvey_lang->gT('%s survey(s) were successfully expired.');
                                    break;
+                    case 'archive': $this->session->set_flashdata('sids', $aSurveyIDs);
+                                   redirect('admin/export/surveyarchives');
+                                   break;
                 }
             }
         $this->session->set_userdata('flashmessage',sprintf($message, $actioncount));

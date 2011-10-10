@@ -36,7 +36,11 @@ $(document).ready(function(){
         {
            $sConfirmation=sConfirmationExpireMessage;
         }
-        return confirm($sConfirmation);
+        else if ($('#surveysaction').val()=='archive')
+        {
+           $sConfirmation=sConfirmationArchiveMessage;
+        }
+       return confirm($sConfirmation);
     });
     $('#checkall').change(function(){
        $('.surveycbs').attr('checked',$('#checkall').attr('checked'));
