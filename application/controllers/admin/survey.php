@@ -369,7 +369,7 @@ class survey extends Survey_Common_Controller {
     	$surveyid = sanitize_int($surveyid);
 		if(isset($gid)) $gid = sanitize_int($gid);
 		if(isset($qid)) $qid = sanitize_int($qid);
-				
+
         // show till question menubar.
         if (!is_null($qid))
         {
@@ -1041,8 +1041,8 @@ class survey extends Survey_Common_Controller {
             // Start the HTML
             if ($action == 'importsurvey')
             {
-                $aData['sHeader']=$clang->gT("Import survey");
-                $aData['sSummaryHeader']=$clang->gT("Survey import summary");
+                $aData['sHeader']=$clang->gT("Import survey data");
+                $aData['sSummaryHeader']=$clang->gT("Survey structure import summary");
                 $importingfrom = "http";
             }
             elseif($action == 'copysurvey')

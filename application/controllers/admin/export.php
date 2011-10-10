@@ -105,7 +105,7 @@ class export extends Survey_Common_Controller {
             {
                 getXMLDataSingleTable($surveyid,'survey_'.$surveyid,'Responses','responses',$sLSRFileName, false);
                 $zip->add(array(array(PCLZIP_ATT_FILE_NAME=>$sLSRFileName,
-                                PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_'.$surveyid.'_responses.lss')));
+                                PCLZIP_ATT_FILE_NEW_FULL_NAME =>'survey_'.$surveyid.'_responses.lsr')));
                 unlink($sLSRFileName);
             }
             if ($this->db->table_exists('tokens_'.$surveyid))

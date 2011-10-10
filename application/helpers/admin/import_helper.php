@@ -4057,45 +4057,56 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
 
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
-    $xml = simplexml_load_file($sFullFilepath);
-
-    if ($xml->LimeSurveyDocType!='Responses')
-    {
-        $results['error'] = $clang->gT("This is not a valid response data XML file.");
-        return $results;
-    }
-
-    $results['responses']=0;
-
-    $aLanguagesSupported=array();
-    foreach ($xml->languages->language as $language)
-    {
-        $aLanguagesSupported[]=(string)$language;
-    }
-    $results['languages']=count($aLanguagesSupported);
-
 
     $CI->load->model('surveys_dynamic_model');
-
-    db_switchIDInsert('survey_'.$iSurveyID,true);
-    foreach ($xml->responses->rows->row as $row)
-    {
-        $insertdata=array();
-
-        foreach ($row as $key=>$value)
+    db_switchIDInsert('survey_'.$iSurveyID,false);
+    $results['responses']=0;
+    $oXMLReader = new XMLReader();
+    $oXMLReader->open($sFullFilepath);
+    $DestinationFields = $CI->db->list_fields('survey_'.$iSurveyID);
+    while ($oXMLReader->read()) {
+        if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT)
         {
-            if ($key[0]=='_') $key=substr($key,1);
-            if (isset($aFieldReMap[$key]))
+            $oXMLReader->read();
+            if ($oXMLReader->value!='Responses')
             {
-                $key=$aFieldReMap[$key];
+                $results['error'] = $clang->gT("This is not a valid response data XML file.");
+                return $results;
             }
-            $insertdata[$key]=(string)$value;
         }
+        if ($oXMLReader->name === 'rows' && $oXMLReader->nodeType == XMLReader::ELEMENT)
+        {
+            while ($oXMLReader->read()) {
+                if ($oXMLReader->name === 'row' && $oXMLReader->nodeType == XMLReader::ELEMENT)
+                {
+                    $aInsertData=array();
+                    while ($oXMLReader->read() && $oXMLReader->name != 'row') {
+                        $sFieldname=$oXMLReader->name;
+                        if ($sFieldname[0]=='_') $sFieldname=substr($sFieldname,1);
+                        if (isset($aFieldReMap[$sFieldname]))
+                        {
+                            $sFieldname=$aFieldReMap[$sFieldname];
+                        }
+                        if (!$oXMLReader->isEmptyElement)
+                        {
+                            $oXMLReader->read();
+                            if(in_array($sFieldname,$DestinationFields)) // some old response tables contain invalid column names due to old bugs
+                                $aInsertData[$sFieldname]=$oXMLReader->value;
+                            $oXMLReader->read();
+                        }else
+                        {
+                            if(in_array($sFieldname,$DestinationFields))
+                                $aInsertData[$sFieldname]='';
+                        }
+                    }
+                    $result = $CI->surveys_dynamic_model->insertRecords($iSurveyID,$aInsertData) or show_error($clang->gT("Error").": Failed to insert data<br />". $CI->db->last_query());
+                    $results['responses']++;
+                }
+            }
 
-        $result = $CI->surveys_dynamic_model->insertRecords($iSurveyID,$insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
-
-        $results['responses']++;
+        }
     }
+
     db_switchIDInsert('survey_'.$iSurveyID,false);
 
     return $results;
