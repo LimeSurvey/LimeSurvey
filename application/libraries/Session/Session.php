@@ -109,6 +109,15 @@ final class Session extends CI_Driver_Library {
 		log_message('debug', 'Session routines successfully run');
 	}
 
+	/**
+	 * (Re-) bind session drivers data-store
+	 * to session object.
+	 *
+	 * For example this is needed if a new session is started to
+	 * reference the (new) $_SESSION array. Otherwise the old
+	 * zval container of $_SESSION is still referenced which
+	 * is useless.
+	 */
 	public function bind_userdata()
 	{
 		$this->userdata =& $this->current->get_userdata();
@@ -122,11 +131,10 @@ final class Session extends CI_Driver_Library {
 	 */
 	public function load_driver($driver)
 	{
-        if ('userdata' === $driver)
-        {
-            // var_dump($driver, $this->current);
-            throw new Exception('Invalid Session Access, check CodeIgniter documentation.');
-        }
+		if ('userdata' === $driver)
+		{
+			throw new Exception('Invalid Session Access, check CodeIgniter documentation.');
+		}
 
 		// Save reference to most recently loaded driver as library default
 		$this->current = parent::load_driver($driver);
