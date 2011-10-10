@@ -877,15 +877,11 @@ class survey extends LSCI_Controller {
         $sSessionname = $this->_getSessionName($surveyId);
 
         // Establish / Switch to survey session
-        // Import data from current session (if available) to survey
-        // session if the survey session has no data.
 
-        $__SESSION = array(); // session data copy store
         $oSess = new LS_PHP_Session();
         if ($oSess->changeTo($sSessionname))
         {
             // Needed to call session_start() below.
-            $__SESSION =& $_SESSION; // reference current session data.
             unset($_SESSION);
             $_SESSION = array();
         }
@@ -898,13 +894,8 @@ class survey extends LSCI_Controller {
         session_set_cookie_params(0,$this->config->item("relativeurl"));
         if (empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
         {
-            @session_start();
-            if (empty($_SESSION)) // if this session is new, import old session
-            {
-                $_SESSION = $__SESSION;
-                unset($__SESSION);
-            }
-            $this->session->bind_userdata(); // que?
+            session_start();
+            $this->session->bind_userdata(); // bind $_SESSION to session
         }
     }
 
