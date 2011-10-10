@@ -984,7 +984,7 @@ class survey extends LSCI_Controller {
         $rightresult = db_execute_assoc(
         	"SELECT uid
         	FROM ".($this->db->dbprefix('survey_permissions'))."
-        	WHERE sid = '".$this->db->escape($surveyId)."'
+        	WHERE sid = ".$this->db->escape($surveyId)."
         	AND uid = '".$this->db->escape($_SESSION['loginID'])."'
         	GROUP BY uid");
         if ($rightresult->num_rows() > 0 || $_SESSION['USER_RIGHT_SUPERADMIN'] == 1)
@@ -1031,7 +1031,7 @@ class survey extends LSCI_Controller {
         if ( func_num_args() > 1 )
             $asLines = func_get_args();
 
-        if ( size($asLines) == 0 )
+        if ( count($asLines) == 0 )
             return;
 
         $sError = array_shift($asLines);

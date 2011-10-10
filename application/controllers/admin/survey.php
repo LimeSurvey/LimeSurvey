@@ -900,7 +900,7 @@ class survey extends Survey_Common_Controller {
 
             if (!(!isset($deleteok) || !$deleteok))
             {
-                _deleteSurvey($surveyid);
+                self::_deleteSurvey($surveyid);
                 self::_showadminmenu(false);
             }
             $this->load->view('admin/survey/deleteSurvey_view',$data);
