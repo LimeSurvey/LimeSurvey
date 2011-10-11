@@ -6,14 +6,14 @@ $(document).ready(function(){
         language=$('#datelanguage'+basename).val();
         yearrange=$('#dateyearrange'+basename).val();
         range=yearrange.split(':');
-        $(e).datepicker({ dateFormat: format,  
+        $(e).datepicker({ dateFormat: format, 
                           showOn: 'both',
                           changeYear: true, 
                           changeMonth: true,
                           yearRange: yearrange,
-                          defaultDate:new Date(range[0]),
-                          minDate:new Date(range[0]),
-                          maxDate: new Date(range[1],12,31),
+                          defaultDate: +0,
+                          minDate:new Date(range[0],0,1),
+                          maxDate: new Date(range[1],11,31),
                           duration: 'fast'
                         }, $.datepicker.regional[language]);
     });
@@ -22,9 +22,7 @@ $(document).ready(function(){
     $('.month').change(dateUpdater);
     $('.day').change(dateUpdater)
     $('.year').change(dateUpdater);
-    $('.hour').change(dateUpdater);
-    $('.minute').change(dateUpdater);
-    $('.month, .day, .year, .hour, .minute').change();
+    $('.year').change();
 });
 
 
