@@ -658,8 +658,7 @@ table.clearall-result td {
   margin-left: 1em;
 }
 
-.date p.question select.day {
-  
+.date p.question select.day {  
 }
 
 .date p.question select.month {
@@ -668,6 +667,10 @@ table.clearall-result td {
 
 .date p.question select.year {
   
+}
+
+#ui-datepicker-div {
+	z-index: 2 !important;
 }
 
 .date p.tip,.numeric-multi p.tip,.numeric p.tip {
@@ -1008,15 +1011,6 @@ table.rank td.helptext {
   vertical-align: middle;
 }
 
-.ui-slider-handle {
-  position: absolute;
-  height: 23px;
-  width: 12px;
-  top: 0px;
-  left: 0px;
-  background-image: url(slider-handle.gif);
-}
-
 .ui-slider-1 {
   width: 200px;
   height: 9px;
@@ -1048,7 +1042,7 @@ table.rank td.helptext {
 .slider_showmin {
   float: left;
   width: 50px;
-  margin: 15px 0 0 0;
+  margin: 15px 0 0 -0.3em;
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 0.7em;
   font-weight: normal;
@@ -1058,7 +1052,7 @@ table.rank td.helptext {
 .slider_showmax {
   float: right;
   width: 50px;
-  margin: 15px 0 0 0;
+  margin: 15px -0.3em 0 0;
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 0.7em;
   font-weight: normal;

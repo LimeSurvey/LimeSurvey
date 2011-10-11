@@ -473,16 +473,17 @@ td.clearall-result .warning-text {
   margin-left: 1em;
 }
 
-.date p.question select.day {
-  
+.date p.question select.day {  
 }
 
-.date p.question select.month {
-  
+.date p.question select.month {  
 }
 
-.date p.question select.year {
-  
+.date p.question select.year {  
+}
+
+#ui-datepicker-div {
+	z-index: 2 !important;
 }
 
 .numeric p.question {
@@ -752,6 +753,7 @@ table.rank td.helptext {
 /************** Progress bar ********************/
 #progress-wrapper .ui-widget-content {
   border: 1px solid #999999;
+  background: transparent none;
 }
 
 #progress-wrapper .ui-widget-header {
@@ -774,6 +776,8 @@ table.rank td.helptext {
   width: 10px !important;
   top: -7px !important;
   left: 0px;
+  margin-left: -0.4em !important;
+  -moz-border-radius: 5px 5px 5px 5px;
 }
 
 .multinum-slider .ui-state-default {
@@ -807,7 +811,7 @@ table.rank td.helptext {
   overflow: hidden;
   position: absolute;
   top: -22px;
-  margin-left: -7px;
+  margin-left: -3px;
   font-family: 'Arial';
   font-size: 9pt;
   color: #284a6e;
@@ -818,7 +822,7 @@ table.rank td.helptext {
 .slider_showmin {
   float: left;
   width: 50px;
-  margin: 15px 0 0 0;
+  margin: 15px 0 0 -0.3em;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.7em;
   font-weight: normal;
@@ -828,7 +832,7 @@ table.rank td.helptext {
 .slider_showmax {
   float: right;
   width: 50px;
-  margin: 15px 0 0 0;
+  margin: 15px -0.3em 0 0;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.7em;
   font-weight: normal;
@@ -1046,3 +1050,9 @@ span.qnumcode {
 #index .container .row.current { background: #000; color: #fff; }
 #index .container .row.missing { background: #CC0000; color: #fff; }
 #index .container input { margin: 1em; }
+
+/* jQuery UI Theme Over-rides *?
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    color: #666666;
+}

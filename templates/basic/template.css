@@ -434,16 +434,17 @@ table.question tr.array1:hover,table.question tr.array2:hover {
   margin-left: 1em;
 }
 
-.date p.question select.day {
-  
+.date p.question select.day {  
 }
 
-.date p.question select.month {
-  
+.date p.question select.month {  
 }
 
-.date p.question select.year {
-  
+.date p.question select.year {  
+}
+
+#ui-datepicker-div {
+	z-index: 2 !important;
 }
 
 .date p.tip,.numeric-multi p.tip,.numeric p.tip {
@@ -750,14 +751,10 @@ table.rank td.helptext {
   margin-bottom: 0.2em;
 }
 
-.multinum-slider .ui-state-default {
-	background: none #CCCCCC;
-	border:1px solid #666666;
-}
-
-.multinum-slider .ui-widget-content {
-	background: none;
-	border:1px solid #666666;
+.ui-slider .ui-slider-handle {
+    height: 1.0em;
+    width: 1.0em;
+	 top: -0.25em;
 }
 
 .ui-slider-disabled .ui-slider-handle {
@@ -796,7 +793,7 @@ table.rank td.helptext {
 .slider_showmin {
   float: left;
   width: 50px;
-  margin: 15px 0 0 0;
+  margin: 15px 0 0 -0.3em;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.7em;
   font-weight: normal;
@@ -806,7 +803,7 @@ table.rank td.helptext {
 .slider_showmax {
   float: right;
   width: 50px;
-  margin: 15px 0 0 0;
+  margin: 15px -0.3em 0 0;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 0.7em;
   font-weight: normal;
