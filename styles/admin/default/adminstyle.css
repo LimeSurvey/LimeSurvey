@@ -175,6 +175,9 @@ div.menubar {
     white-space: nowrap;
 }
 
+.menubar-right label{
+    font-weight:bold;
+}
 .menubar select {
     color: #333;
     width: 200px;
@@ -320,13 +323,6 @@ textarea {
     height: 20px;
     color: #333;
     width: 180px;
-}
-
-.boxcaption {
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 40px;
-    padding:0 4px;
 }
 
 .saveOrderbtn {

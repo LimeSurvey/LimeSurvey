@@ -43,10 +43,10 @@
                         <img src='<?php echo $imageurl;?>/do.png' alt='<?php echo $icontext;?>' />
                     </a><ul>
                         <li><a accesskey='d' target='_blank' href='index.php?sid=<?php echo $surveyid;?>&amp;newtest=Y'>
-                            <img src='<?php echo $imageurl;?>/do_30.png' /> <?php echo $icontext;?> </a><ul>
+                            <img src='<?php echo $imageurl;?>/do_30.png' alt=''/> <?php echo $icontext;?> </a><ul>
                                 <?php foreach ($languagelist as $tmp_lang) { ?>
                                     <li><a accesskey='d' target='_blank' href='<?php echo site_url("survey/sid/$surveyid/newtest/Y/lang/$tmp_lang");?>'>
-                                        <img src='<?php echo $imageurl;?>/do_30.png' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
+                                        <img src='<?php echo $imageurl;?>/do_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
                                     <?php } ?>
                             </ul></li>
                     </ul></li>
@@ -124,7 +124,8 @@
                         <ul>
                             <?php if($surveyexport) { ?>
                                 <li><a href='<?php echo site_url("admin/export/survey/exportstructurexml/$surveyid");?>' >
-                                <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Survey structure (.lss)");?></a>
+                                    <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("Survey structure (.lss)");?></a>
+                                </li>
                                 <?php } ?>
                             <?php if($respstatsread && $surveyexport) {
                                     if ($activated){?>
@@ -139,7 +140,8 @@
                             }?>
                             <?php if($surveyexport) { ?>
                                 <li><a href='<?php echo site_url("admin/export/survey/exportstructurequexml/$surveyid");?>' >
-                                <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("queXML format (*.xml)");?></a>
+                                    <img src='<?php echo $imageurl;?>/export_30.png' alt='' width="30" height="30"/> <?php echo $clang->gT("queXML format (*.xml)");?></a>
+                                </li>
                                 <?php } ?>
 
                         </ul>
@@ -152,7 +154,7 @@
                             <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' alt='' width="30" height="30"/> <?php echo $clang->gT("Printable version");?></a><ul>
                                 <?php foreach ($languagelist as $tmp_lang) { ?>
                                     <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/printablesurvey/index/$surveyid/$tmp_lang");?>'>
-                                        <img src='<?php echo $imageurl;?>/print_30.png' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
+                                        <img src='<?php echo $imageurl;?>/print_30.png' alt='' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
                                     <?php } ?>
                             </ul></li>
                         <?php } ?>
@@ -165,7 +167,7 @@
                                 <img src='<?php echo $imageurl;?>/scanner_30.png' name='ShowPrintableScannableSurvey' alt='' width="30" height="30"/> <?php echo $clang->gT("QueXML export");?></a><ul>
                                     <?php foreach ($languagelist as $tmp_lang) { ?>
                                         <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/export/showquexmlsurvey/$surveyid/$tmp_lang");?>'>
-                                            <img src='<?php echo $imageurl;?>/scanner_30.png' /> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
+                                            <img src='<?php echo $imageurl;?>/scanner_30.png' alt=''/> <?php echo getLanguageNameFromCode($tmp_lang,false);?></a></li>
                                         <?php } ?>
                                 </ul></li>
                             <?php }
@@ -200,18 +202,34 @@
                             <?php }
                     } ?>
                 </ul></li>
+            <?php if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+                {
+                    if ($activated)
+                    { ?><li><a href='#'>
+                        <img name='Organize' src='<?php echo $this->config->item('imageurl'); ?>/organize_disabled.png' title='' alt='<?php echo $clang->gT("Question group/question organizer disabled"); ?> - <?php echo $clang->gT("This survey is currently active."); ?>'
+                            width="40" height="40"/></a></li>
+                    <?php }
+                    else
+                    { ?><li>
+
+                        <a href="<?php echo site_url("admin/questiongroup/organize/$surveyid"); ?>">
+                            <img src='<?php echo $this->config->item('imageurl'); ?>/organize.png' alt='<?php echo $clang->gT("Reorder question groups / questions"); ?>' name='Organize' width="40" height="40"/></a></li>
+                    <?php }
+            } ?>
+
             <?php if($tokenmanagement) { ?>
                 <li><a href="#" onclick="window.open('<?php echo site_url("admin/tokens/index/$surveyid");?>', '_top')"
                         title="<?php echo $clang->gTview("Token management");?>" >
-                        <img src='<?php echo $imageurl;?>/tokens.png' name='TokensControl' alt='<?php echo $clang->gT("Token management");?>' width="40" height="40"/></a></li>
+                        <img src='<?php echo $imageurl;?>/tokens.png' name='TokensControl' alt='<?php echo $clang->gT("Token management");?>' width="40" height="40"/></a>
+                </li>
                 <?php } ?>
         </ul>
 
         <div class='menubar-right'>
             <?php if ($permission)
                 { ?>
-                <span class="boxcaption"><?php echo $clang->gT("Question groups"); ?>:</span>
-                <select name='groupselect' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
+                <label for='groupselect'><?php echo $clang->gT("Question groups:"); ?></label>
+                <select name='groupselect' id='groupselect' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 
                     <?php echo $groups; ?>
                 </select>

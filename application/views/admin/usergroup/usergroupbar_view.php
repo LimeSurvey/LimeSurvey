@@ -16,7 +16,7 @@
     <?php if($ugid && $grpresultcount > 0)
     { ?>
         <a href="#" onclick="window.location='<?php echo site_url("admin/usergroups/mail/".$ugid); ?>'"
-         title='<?php echo $clang->gTview("Mail to all Members"); ?>'> 
+         title='<?php echo $clang->gTview("Mail to all Members"); ?>'>
         <img src='<?php echo $this->config->item('imageurl'); ?>/invite.png' alt='<?php echo $clang->gT("Mail to all Members"); ?>' name='MailUserGroup' /></a>
     <?php }
     else
@@ -36,12 +36,12 @@
     else
     { ?>
         <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='40' height='20' />
-    <?php } 
+    <?php }
 
     if($ugid && $grpresultcount > 0 &&
     $this->session->userdata('loginID') == $grow['owner_id'])
     { ?>
-        
+
         <a href='#' onclick="if (confirm('<?php echo $clang->gT("Are you sure you want to delete this entry?","js"); ?>')) { <?php echo get2post(site_url('admin/usergroups/delete')."?action=delusergroup&amp;ugid=$ugid"); ?>}"
          title='<?php echo $clang->gTview("Delete Current User Group"); ?>'>
         <img src='<?php echo $this->config->item('imageurl'); ?>/delete.png' alt='<?php echo $clang->gT("Delete Current User Group"); ?>' name='DeleteUserGroup'  /></a>
@@ -54,15 +54,14 @@
     <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt='' />
     </div>
     <div class='menubar-right'>
-    <font class="boxcaption"><?php echo $clang->gT("User Groups"); ?>:</font>&nbsp;<select name='ugid' 
-     onchange="window.location=this.options[this.selectedIndex].value">
+    <label for="ugid"><?php echo $clang->gT("User groups"); ?>:</label>  <select name='ugid' id='ugid' onchange="window.location=this.options[this.selectedIndex].value">
     <?php echo getusergrouplist($ugid,'optionlist'); ?>
     </select>
     <?php if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
     { ?>
         <a href='<?php echo site_url("admin/usergroups/add"); ?>'
          title='<?php echo $clang->gTview("Add New User Group"); ?>'>
-        <img src='<?php echo $this->config->item('imageurl'); ?>/add.png' alt='<?php echo $clang->gT("Add New User Group"); ?>' 
+        <img src='<?php echo $this->config->item('imageurl'); ?>/add.png' alt='<?php echo $clang->gT("Add New User Group"); ?>'
         name='AddNewUserGroup' onclick="window.location=''" /></a>
     <?php } ?>
     <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt='' />

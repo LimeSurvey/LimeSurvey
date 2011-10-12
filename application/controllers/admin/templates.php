@@ -1,44 +1,44 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *
- */
+* LimeSurvey (tm)
+* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*
+*/
 
- /**
-  * templates
-  *
-  * @package LimeSurvey
-  * @author
-  * @copyright 2011
-  * @version $Id$
-  * @access public
-  */
- class templates extends Admin_Controller {
+/**
+* templates
+*
+* @package LimeSurvey
+* @author
+* @copyright 2011
+* @version $Id$
+* @access public
+*/
+class templates extends Admin_Controller {
 
     /**
-     * templates::__construct()
-     * Constructor
-     * @return
-     */
+    * templates::__construct()
+    * Constructor
+    * @return
+    */
     function __construct()
-	{
-		parent::__construct();
-	}
+    {
+        parent::__construct();
+    }
 
     /**
-     * templates::upload()
-     * function responsible to import a template archive.
-     * @return void
-     */
+    * templates::upload()
+    * function responsible to import a template archive.
+    * @return void
+    */
     function upload()
     {
         $clang = $this->limesurvey_lang;
@@ -142,8 +142,8 @@
                                 if (!copy($extractdir."/".$direntry, $destdir.$direntry))
                                 {
                                     $aErrorFilesInfo[]=Array(
-                                        "filename" => $direntry,
-                                        "status" => $clang->gT("Copy failed")
+                                    "filename" => $direntry,
+                                    "status" => $clang->gT("Copy failed")
                                     );
                                     unlink($extractdir."/".$direntry);
 
@@ -151,8 +151,8 @@
                                 else
                                 {
                                     $aImportedFilesInfo[]=Array(
-                                        "filename" => $direntry,
-                                        "status" => $clang->gT("OK")
+                                    "filename" => $direntry,
+                                    "status" => $clang->gT("OK")
                                     );
                                     unlink($extractdir."/".$direntry);
                                 }
@@ -161,10 +161,10 @@
                             else
                             { // Extension forbidden
                                 $aErrorFilesInfo[]=Array(
-                                    "filename" => $direntry,
-                                    "status" => $clang->gT("Error")." (".$clang->gT("Forbidden Extension").")"
-                                    );
-                                    unlink($extractdir."/".$direntry);
+                                "filename" => $direntry,
+                                "status" => $clang->gT("Error")." (".$clang->gT("Forbidden Extension").")"
+                                );
+                                unlink($extractdir."/".$direntry);
                             }
                         } // end if is_file
                     } // end if ! . or ..
@@ -267,13 +267,13 @@
 
 
             $templatesoutput.= "\t<form enctype='multipart/form-data' id='importtemplate' name='importtemplate' action='".site_url('admin/templates/upload')."' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
-                            . "\t<input type='hidden' name='lid' value='$lid' />\n"
-                            . "\t<input type='hidden' name='action' value='templateupload' />\n"
-                            . "\t<ul>\n"
-                            . "<li><label for='the_file'>".$clang->gT("Select template ZIP file:")."</label>\n"
-                            . "<input id='the_file' name='the_file' type=\"file\" size=\"50\" /></li>\n"
-                            . "<li><label>&nbsp;</label><input type='button' value='".$clang->gT("Import template ZIP archive")."' $ZIPimportAction /></li>\n"
-                            . "\t</ul></form>\n";
+            . "\t<input type='hidden' name='lid' value='$lid' />\n"
+            . "\t<input type='hidden' name='action' value='templateupload' />\n"
+            . "\t<ul>\n"
+            . "<li><label for='the_file'>".$clang->gT("Select template ZIP file:")."</label>\n"
+            . "<input id='the_file' name='the_file' type=\"file\" size=\"50\" /></li>\n"
+            . "<li><label>&nbsp;</label><input type='button' value='".$clang->gT("Import template ZIP archive")."' $ZIPimportAction /></li>\n"
+            . "\t</ul></form>\n";
             $data['display'] = $templatesoutput;
             $this->load->view('survey_view',$data);
         }
@@ -283,7 +283,7 @@
         self::_loadEndScripts();
 
 
-	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
 
     }
@@ -303,11 +303,11 @@
     }
 
     /**
-     * Strips file extension
-     *
-     * @param string $name
-     * @return string
-     */
+    * Strips file extension
+    *
+    * @param string $name
+    * @return string
+    */
     function _strip_ext($name)
     {
         $ext = strrchr($name, '.');
@@ -320,17 +320,20 @@
 
 
     /**
-     * templates::view()
-     * Load default view screen of template controller.
-     * @param string $editfile
-     * @param string $screenname
-     * @param string $templatename
-     * @return
-     */
+    * templates::view()
+    * Load default view screen of template controller.
+    * @param string $editfile
+    * @param string $screenname
+    * @param string $templatename
+    * @return
+    */
     function view($editfile='startpage.pstpl', $screenname='welcome', $templatename='default')
     {
 
         self::_js_admin_includes(base_url().'scripts/admin/templates.js');
+        self::_css_admin_includes(base_url().'scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.css');
+        self::_css_admin_includes(base_url().'scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.css');
+        self::_css_admin_includes(base_url().'scripts/admin/codemirror_ui/css/codemirror-ui.css');
 
         self::_getAdminHeader();
         self::_initialise($templatename, $screenname, $editfile);
@@ -338,7 +341,7 @@
         self::_loadEndScripts();
 
 
-	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
         if ($screenname != 'welcome') {$this->session->set_userdata('step',1);} else {$this->session->unset_userdata('step');} //This helps handle the load/save buttons)
 
@@ -346,36 +349,36 @@
     }
     //temporary solution to the bug that crashes LS!
     /**
-     * templates::screenredirect()
-     * Function that modify order of arguments and pass to main viewing function i.e. view()
-     * @param string $editfile
-     * @param string $templatename
-     * @param string $screenname
-     * @return
-     */
+    * templates::screenredirect()
+    * Function that modify order of arguments and pass to main viewing function i.e. view()
+    * @param string $editfile
+    * @param string $templatename
+    * @param string $screenname
+    * @return
+    */
     function screenredirect($editfile='startpage.pstpl', $templatename='default', $screenname='welcome')
     {
         redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,'refresh');
     }
     //temporary solution to th bug that crashes LS!
     /**
-     * templates::fileredirect()
-     * Function that modify order of arguments and pass to main viewing function i.e. view()
-     * @param string $templatename
-     * @param string $screenname
-     * @param string $editfile
-     * @return
-     */
+    * templates::fileredirect()
+    * Function that modify order of arguments and pass to main viewing function i.e. view()
+    * @param string $templatename
+    * @param string $screenname
+    * @param string $editfile
+    * @return
+    */
     function fileredirect($templatename='default', $screenname='welcome', $editfile='startpage.pstpl')
     {
         redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,'refresh');
     }
 
     /**
-     * templates::templatefiledelete()
-     * Function responsible to delete a template file.
-     * @return
-     */
+    * templates::templatefiledelete()
+    * Function responsible to delete a template file.
+    * @return
+    */
     function templatefiledelete()
     {
         if ($this->input->post('action') == "templatefiledelete") {
@@ -387,10 +390,10 @@
     }
 
     /**
-     * templates::templaterename()
-     * Function responsible to rename a template(folder).
-     * @return
-     */
+    * templates::templaterename()
+    * Function responsible to rename a template(folder).
+    * @return
+    */
     function templaterename()
     {
 
@@ -404,7 +407,7 @@
             }
             elseif (rename($olddirname, $newdirname)==false)
             {
-               echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory could not be renamed to `%s`.","js"), $this->input->post('newname'))." ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
+                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory could not be renamed to `%s`.","js"), $this->input->post('newname'))." ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
             }
             else
             {
@@ -421,109 +424,109 @@
     }
 
     /**
-     * templates::templatecopy()
-     * Function responsible to copy a template.
-     * @return
-     */
+    * templates::templatecopy()
+    * Function responsible to copy a template.
+    * @return
+    */
     function templatecopy()
     {
         if ($this->input->post('action') == "templatecopy" && $this->input->post('newname') && $this->input->post('copydir')) {
-           //Copies all the files from one template directory to a new one
-           //This is a security issue because it is allowing copying from get variables...
-           $this->load->helper('admin/template');
-           $newdirname=$this->config->item('usertemplaterootdir')."/".$this->input->post('newname');
-           $copydirname=sGetTemplatePath($this->input->post('copydir'));
-           $mkdirresult=mkdir_p($newdirname);
-           if ($mkdirresult == 1) {
-               $copyfiles=getListOfFiles($copydirname);
-               foreach ($copyfiles as $file) {
-                   $copyfile=$copydirname."/".$file;
-                   $newfile=$newdirname."/".$file;
-                   if (!copy($copyfile, $newfile)) {
-                       echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Failed to copy %s to new template directory.","js"), $file)."\");\n//-->\n</script>";
-                   }
-               }
-        	   //$templates[$newname]=$newdirname;
-               $templatename=$this->input->post('newname');
-               self::view("startpage.pstpl","welcome",$templatename);
-           } elseif($mkdirresult == 2) {
-               echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory with the name `%s` already exists - choose another name","js"), $this->input->post('newname'))."\");\n//-->\n</script>";
-           } else {
-               echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Unable to create directory `%s`.","js"), $this->input->post('newname'))." ".$clang->gT("Please check the directory permissions.","js")."\");\n//-->\n</script>";
-           }
+            //Copies all the files from one template directory to a new one
+            //This is a security issue because it is allowing copying from get variables...
+            $this->load->helper('admin/template');
+            $newdirname=$this->config->item('usertemplaterootdir')."/".$this->input->post('newname');
+            $copydirname=sGetTemplatePath($this->input->post('copydir'));
+            $mkdirresult=mkdir_p($newdirname);
+            if ($mkdirresult == 1) {
+                $copyfiles=getListOfFiles($copydirname);
+                foreach ($copyfiles as $file) {
+                    $copyfile=$copydirname."/".$file;
+                    $newfile=$newdirname."/".$file;
+                    if (!copy($copyfile, $newfile)) {
+                        echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Failed to copy %s to new template directory.","js"), $file)."\");\n//-->\n</script>";
+                    }
+                }
+                //$templates[$newname]=$newdirname;
+                $templatename=$this->input->post('newname');
+                self::view("startpage.pstpl","welcome",$templatename);
+            } elseif($mkdirresult == 2) {
+                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory with the name `%s` already exists - choose another name","js"), $this->input->post('newname'))."\");\n//-->\n</script>";
+            } else {
+                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Unable to create directory `%s`.","js"), $this->input->post('newname'))." ".$clang->gT("Please check the directory permissions.","js")."\");\n//-->\n</script>";
+            }
         }
 
     }
 
     /**
-     * templates::delete()
-     * Function responsible to delete a template.
-     * @param mixed $templatename
-     * @return
-     */
+    * templates::delete()
+    * Function responsible to delete a template.
+    * @param mixed $templatename
+    * @return
+    */
     function delete($templatename)
     {
         $this->load->helper("admin/template");
         if (is_template_editable($templatename)==true)
         {
-           $clang = $this->limesurvey_lang;
-           if (rmdirr($this->config->item('usertemplaterootdir')."/".$templatename)==true)
-           {
-               $condn = array('template' => $templatename);
-               $this->load->model('surveys_model');
-               $this->surveys_model->updateSurvey(array('template' => $this->config->item('defaulttemplate')),$condn);
+            $clang = $this->limesurvey_lang;
+            if (rmdirr($this->config->item('usertemplaterootdir')."/".$templatename)==true)
+            {
+                $condn = array('template' => $templatename);
+                $this->load->model('surveys_model');
+                $this->surveys_model->updateSurvey(array('template' => $this->config->item('defaulttemplate')),$condn);
 
-               /**
-               $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";
-               $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
+                /**
+                $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";
+                $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
 
-               $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";
-               $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
+                $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";
+                $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
                 */
-               $this->load->helper('database');
-               $templatequery = "delete from ".$this->db->dbprefix."templates_rights where folder='$templatename'\n";
-               db_execute_assoc($templatequery);//$connect->Execute($templatequery) or safe_die ("Couldn't update template_rights<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked)
+                $this->load->helper('database');
+                $templatequery = "delete from ".$this->db->dbprefix."templates_rights where folder='$templatename'\n";
+                db_execute_assoc($templatequery);//$connect->Execute($templatequery) or safe_die ("Couldn't update template_rights<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked)
 
-               $templatequery = "delete from ".$this->db->dbprefix."templates where folder='$templatename'\n";
-               db_execute_assoc($templatequery);//$connect->Execute($templatequery) or safe_die ("Couldn't update templates<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
+                $templatequery = "delete from ".$this->db->dbprefix."templates where folder='$templatename'\n";
+                db_execute_assoc($templatequery);//$connect->Execute($templatequery) or safe_die ("Couldn't update templates<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
 
-               $flashmessage=sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename);
-               //unset($templates[$templatename]);
-               //$templatename = $this->config->item('defaulttemplate');
-           }
-           else
-           {
-                $flashmessage=sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."),$templatename);
-           }
+                $this->session->set_userdata('flashmessage',sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename));
+                //unset($templates[$templatename]);
+                //$templatename = $this->config->item('defaulttemplate');
+            }
+            else
+            {
+                $this->session->set_userdata('flashmessage',sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."),$templatename));
+            }
         }
         // redirect with default templatename, editfile and screenname
         redirect("admin/templates/view","refresh");
     }
 
     /**
-     * templates::templatesavechanges()
-     * Function responsible to save the changes made in CodemMirror editor.
-     * @return
-     */
+    * templates::templatesavechanges()
+    * Function responsible to save the changes made in CodemMirror editor.
+    * @return
+    */
     function templatesavechanges()
     {
 
         if ($this->input->post('changes')) {
-           $changedtext=$this->input->post('changes');
-           $changedtext=str_replace ('<?','',$changedtext);
-           if(get_magic_quotes_gpc())
-           {
-               $changedtext = stripslashes($changedtext);
-           }
+            $changedtext=$this->input->post('changes');
+            $changedtext=str_replace ('<?','',$changedtext);
+            if(get_magic_quotes_gpc())
+            {
+                $changedtext = stripslashes($changedtext);
+            }
         }
 
         if ($this->input->post('changes_cp')) {
-           $changedtext=$this->input->post('changes_cp');
-           $changedtext=str_replace ('<?','',$changedtext);
-           if(get_magic_quotes_gpc())
-           {
-               $changedtext = stripslashes($changedtext);
-           }
+            $changedtext=$this->input->post('changes_cp');
+            $changedtext=str_replace ('<?','',$changedtext);
+            if(get_magic_quotes_gpc())
+            {
+                $changedtext = stripslashes($changedtext);
+            }
         }
 
         $action = $this->input->post('action');
@@ -543,17 +546,17 @@
                 if (multiarray_search($files,'name',$editfile)===false && multiarray_search($cssfiles,'name',$editfile)===false) {show_error('Invalid template filename');}  // Die you sneaky bastard!
                 $savefilename=$this->config->item('usertemplaterootdir')."/".$templatename."/".$editfile;
                 if (is_writable($savefilename)) {
-                   if (!$handle = fopen($savefilename, 'w')) {
-                       echo "Could not open file ($savefilename)";
-                       exit;
-                   }
-                   if (!fwrite($handle, $changedtext)) {
-                       echo "Cannot write to file ($savefilename)";
-                       exit;
-                   }
-                   fclose($handle);
+                    if (!$handle = fopen($savefilename, 'w')) {
+                        echo "Could not open file ($savefilename)";
+                        exit;
+                    }
+                    if (!fwrite($handle, $changedtext)) {
+                        echo "Cannot write to file ($savefilename)";
+                        exit;
+                    }
+                    fclose($handle);
                 } else {
-                   show_error( "The file $savefilename is not writable");
+                    show_error( "The file $savefilename is not writable");
 
                 }
             }
@@ -562,44 +565,18 @@
         redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,"refresh");
     }
 
-    /**
-     * templates::_templateditorbar()
-     * Load main menu bar of template editor screen.
-     * @param mixed $codelanguage
-     * @param mixed $highlighter
-     * @param mixed $flashmessage
-     * @param mixed $templatename
-     * @param mixed $templates
-     * @param mixed $editfile
-     * @param mixed $screenname
-     * @return
-     */
-    function _templateditorbar($codelanguage,$highlighter,$flashmessage,$templatename,$templates,$editfile,$screenname)
-    {
-        $data['clang'] = $this->limesurvey_lang;
-        $data['codelanguage'] = $codelanguage;
-        $data['highlighter'] = $highlighter;
-        //$data['allowedtemplateuploads'] = $this->config->item('allowedtemplateuploads');
-        $data['flashmessage'] = $flashmessage;
-        $data['templatename'] = $templatename;
-        $data['templates'] = $templates;
-        $data['editfile'] = $editfile;
-        $data['screenname'] = $screenname;
 
-        $this->load->view("admin/templates/templateeditorbar_view",$data);
-
-    }
 
     /**
-     * templates::_templatebar()
-     * Load menu bar related to a template.
-     * @param mixed $screenname
-     * @param mixed $editfile
-     * @param mixed $screens
-     * @param mixed $tempdir
-     * @param mixed $templatename
-     * @return
-     */
+    * templates::_templatebar()
+    * Load menu bar related to a template.
+    * @param mixed $screenname
+    * @param mixed $editfile
+    * @param mixed $screens
+    * @param mixed $tempdir
+    * @param mixed $templatename
+    * @return
+    */
     function _templatebar($screenname,$editfile,$screens,$tempdir,$templatename)
     {
         $data['clang'] = $this->limesurvey_lang;
@@ -615,18 +592,18 @@
     }
 
     /**
-     * templates::_templatesummary()
-     * Load CodeMirror editor and various files information.
-     * @param mixed $templatename
-     * @param mixed $screenname
-     * @param mixed $editfile
-     * @param mixed $templates
-     * @param mixed $files
-     * @param mixed $cssfiles
-     * @param mixed $otherfiles
-     * @param mixed $myoutput
-     * @return
-     */
+    * templates::_templatesummary()
+    * Load CodeMirror editor and various files information.
+    * @param mixed $templatename
+    * @param mixed $screenname
+    * @param mixed $editfile
+    * @param mixed $templates
+    * @param mixed $files
+    * @param mixed $cssfiles
+    * @param mixed $otherfiles
+    * @param mixed $myoutput
+    * @return
+    */
     function _templatesummary($templatename,$screenname,$editfile,$templates,$files,$cssfiles,$otherfiles,$myoutput)
     {
 
@@ -635,41 +612,32 @@
 
         $this->load->helper("admin/template");
         $data = array();
-        if (is_template_editable($templatename)==true)
+        $time=date("ymdHis");
+        // prepare textarea class for optional javascript
+        $templateclasseditormode='full'; // default
+        if ($this->session->userdata('templateeditormode')=='none'){$templateclasseditormode='none';}
+        $data['templateclasseditormode'] = $templateclasseditormode;
+
+        // The following lines are forcing the browser to refresh the templates on each save
+        @$fnew=fopen("$tempdir/template_temp_$time.html", "w+");
+        $data['time'] = $time;
+
+        if(!$fnew)
         {
-
-            // prepare textarea class for optional javascript
-            $templateclasseditormode='full'; // default
-	        if ($this->session->userdata('templateeditormode')=='none'){$templateclasseditormode='none';}
-            $data['templateclasseditormode'] = $templateclasseditormode;
-
-                                   // The following lines are forcing the browser to refresh the templates on each save
-            $time=date("ymdHis");
-            @$fnew=fopen("$tempdir/template_temp_$time.html", "w+");
-            $data['time'] = $time;
-
-            if(!$fnew)
+            $data['filenotwritten'] =  true;
+        }
+        else
+        {
+            @fwrite ($fnew, getHeader());
+            foreach ($cssfiles as $cssfile)
             {
-                $data['filenotwritten'] =  true;
-            }
-            else
-            {
-                @fwrite ($fnew, getHeader());
-                foreach ($cssfiles as $cssfile)
-                {
-                    $myoutput=str_replace($cssfile['name'],$cssfile['name']."?t=$time",$myoutput);
-                }
-
-                foreach($myoutput as $line) {
-               	    @fwrite($fnew, $line);
-                }
-                @fclose($fnew);
-                //$langdir_template="$publicurl/locale/".$_SESSION['adminlang']."/help";
-                    //$templatesoutput.= "<p>\n"."<iframe id='previewiframe' src='$tempurl/template_temp_$time.html' width='95%' height='768' name='previewiframe' style='background-color: white;'>Embedded Frame</iframe>\n"
-                    //."</div>\n";
+                $myoutput=str_replace($cssfile['name'],$cssfile['name']."?t=$time",$myoutput);
             }
 
-
+            foreach($myoutput as $line) {
+                @fwrite($fnew, $line);
+            }
+            @fclose($fnew);
         }
 
 
@@ -684,17 +652,18 @@
         $data['cssfiles'] = $cssfiles;
         $data['otherfiles'] = $otherfiles;
         $data['tempurl'] = $tempurl;
+        $data['time']= $time;
 
         $this->load->view("admin/templates/templatesummary_view",$data);
 
     }
 
     /**
-     * templates::_initfiles()
-     * Function that initialises file data.
-     * @param mixed $templatename
-     * @return
-     */
+    * templates::_initfiles()
+    * Function that initialises file data.
+    * @param mixed $templatename
+    * @return
+    */
     function _initfiles($templatename)
     {
         $files[]=array('name'=>'assessment.pstpl');
@@ -721,7 +690,7 @@
 
         if(is_file($this->config->item('usertemplaterootdir').'/'.$templatename.'/question_start.pstpl'))
         {
-           $files[]=array('name'=>'question_start.pstpl');
+            $files[]=array('name'=>'question_start.pstpl');
         }
 
         return $files;
@@ -729,10 +698,10 @@
     }
 
     /**
-     * templates::_initcssfiles()
-     * Function that initialises cssfile data.
-     * @return
-     */
+    * templates::_initcssfiles()
+    * Function that initialises cssfile data.
+    * @return
+    */
     function _initcssfiles()
     {
         $cssfiles[]=array('name'=>'template.css');
@@ -747,14 +716,14 @@
     }
 
     /**
-     * templates::_initialise()
-     * Function that initialises all data and call other functions to load default view.
-     * @param mixed $templatename
-     * @param mixed $screenname
-     * @param mixed $editfile
-     * @param bool $showsummary
-     * @return
-     */
+    * templates::_initialise()
+    * Function that initialises all data and call other functions to load default view.
+    * @param mixed $templatename
+    * @param mixed $screenname
+    * @param mixed $editfile
+    * @param bool $showsummary
+    * @return
+    */
     function _initialise($templatename, $screenname, $editfile,$showsummary=TRUE)
     {
         global $siteadminname, $siteadminemail;
@@ -825,55 +794,55 @@
 
         //Page display blocks
         $SurveyList=array('startpage.pstpl',
-                          'surveylist.pstpl',
-                          'endpage.pstpl'
-                          );
+        'surveylist.pstpl',
+        'endpage.pstpl'
+        );
         $Welcome=array('startpage.pstpl',
-                       'welcome.pstpl',
-                       'privacy.pstpl',
-                       'navigator.pstpl',
-                       'endpage.pstpl'
-                       );
+        'welcome.pstpl',
+        'privacy.pstpl',
+        'navigator.pstpl',
+        'endpage.pstpl'
+        );
         $Question=array('startpage.pstpl',
-                        'survey.pstpl',
-                        'startgroup.pstpl',
-                        'groupdescription.pstpl',
-                        'question.pstpl',
-                        'endgroup.pstpl',
-                        'navigator.pstpl',
-                        'endpage.pstpl'
-                        );
+        'survey.pstpl',
+        'startgroup.pstpl',
+        'groupdescription.pstpl',
+        'question.pstpl',
+        'endgroup.pstpl',
+        'navigator.pstpl',
+        'endpage.pstpl'
+        );
         $CompletedTemplate=array(
-                        'startpage.pstpl',
-                        'assessment.pstpl',
-                        'completed.pstpl',
-                        'endpage.pstpl'
-                        );
+        'startpage.pstpl',
+        'assessment.pstpl',
+        'completed.pstpl',
+        'endpage.pstpl'
+        );
         $Clearall=array('startpage.pstpl',
-                        'clearall.pstpl',
-                        'endpage.pstpl'
-                        );
+        'clearall.pstpl',
+        'endpage.pstpl'
+        );
         $Register=array('startpage.pstpl',
-                        'survey.pstpl',
-                        'register.pstpl',
-                        'endpage.pstpl'
-                        );
+        'survey.pstpl',
+        'register.pstpl',
+        'endpage.pstpl'
+        );
         $Save=array('startpage.pstpl',
-                    'save.pstpl',
-                    'endpage.pstpl'
-                    );
+        'save.pstpl',
+        'endpage.pstpl'
+        );
         $Load=array('startpage.pstpl',
-                    'load.pstpl',
-                    'endpage.pstpl'
-                    );
+        'load.pstpl',
+        'endpage.pstpl'
+        );
         $printtemplate=array('startpage.pstpl',
-                             'printanswers.pstpl',
-                             'endpage.pstpl'
-                             );
+        'printanswers.pstpl',
+        'endpage.pstpl'
+        );
         $printablesurveytemplate=array('print_survey.pstpl',
-                                       'print_group.pstpl',
-                                       'print_question.pstpl'
-                                       );
+        'print_group.pstpl',
+        'print_question.pstpl'
+        );
 
 
 
@@ -899,8 +868,8 @@
 
         if(is_file($this->config->item('usertemplaterootdir').'/'.$templatename.'/question_start.pstpl'))
         {
-           $files[]=array('name'=>'question_start.pstpl');
-           $Question[]='question_start.pstpl';
+            $files[]=array('name'=>'question_start.pstpl');
+            $Question[]='question_start.pstpl';
         }
 
         $availableeditorlanguages=array('bg','cs','de','dk','en','eo','es','fi','fr','hr','it','ja','mk','nl','pl','pt','ru','sk','zh');
@@ -914,15 +883,15 @@
         $templates=gettemplatelist();
         if (!isset($templates[$templatename]))
         {
-           $templatename = $this->config->item('defaulttemplate');
+            $templatename = $this->config->item('defaulttemplate');
         }
 
         $normalfiles=array("DUMMYENTRY", ".", "..", "preview.png");
         foreach ($files as $fl) {
-           $normalfiles[]=$fl["name"];
+            $normalfiles[]=$fl["name"];
         }
         foreach ($cssfiles as $fl) {
-           $normalfiles[]=$fl["name"];
+            $normalfiles[]=$fl["name"];
         }
 
 
@@ -959,27 +928,27 @@
         $printoutput="<span class='printouttitle'><strong>".$clang->gT("Survey name (ID)")."</strong> Test survey (46962)</span><br />
         <table class='printouttable' >
         <tr><th>".$clang->gT("Question")."</th><th>".$clang->gT("Your answer")."</th></tr>
-            <tr>
-                <td>id</td>
-                <td>12</td>
-            </tr>
-            <tr>
-                <td>Date Submitted</td>
+        <tr>
+        <td>id</td>
+        <td>12</td>
+        </tr>
+        <tr>
+        <td>Date Submitted</td>
 
-                <td>1980-01-01 00:00:00</td>
-            </tr>
-            <tr>
-                <td>This is a sample question text. The user was asked to enter a date.</td>
-                <td>2007-11-06</td>
-            </tr>
-            <tr>
-                <td>This is another sample question text - asking for number. </td>
-                <td>666</td>
-            </tr>
-            <tr>
-                <td>This is one last sample question text - asking for some free text. </td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</td>
-            </tr>
+        <td>1980-01-01 00:00:00</td>
+        </tr>
+        <tr>
+        <td>This is a sample question text. The user was asked to enter a date.</td>
+        <td>2007-11-06</td>
+        </tr>
+        <tr>
+        <td>This is another sample question text - asking for number. </td>
+        <td>666</td>
+        </tr>
+        <tr>
+        <td>This is one last sample question text - asking for some free text. </td>
+        <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</td>
+        </tr>
         </table>";
 
         $addbr=false;
@@ -1041,7 +1010,7 @@
             case 'question':
                 unset($files);
                 foreach ($Question as $qs) {
-                   $files[]=array("name"=>$qs);
+                    $files[]=array("name"=>$qs);
                 }
                 $myoutput[]="<meta http-equiv=\"expires\" content=\"Wed, 26 Feb 1997 08:21:57 GMT\" />\n";
                 $myoutput[]="<meta http-equiv=\"Last-Modified\" content=\"".gmdate('D, d M Y H:i:s'). " GMT\" />\n";
@@ -1054,50 +1023,50 @@
                 $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/groupdescription.pstpl",$data));
 
                 $question = array(
-        		         'all' => 'How many roads must a man walk down?'
-        		         ,'text' => 'How many roads must a man walk down?'
-        		         ,'code' => '1a'
-        		         ,'help' => 'helpful text'
-        		         ,'mandatory' => ''
-        		         ,'man_message' => ''
-        		         ,'valid_message' => ''
-        		         ,'file_valid_message' => ''
-        		         ,'essentials' => 'id="question1"'
-        		         ,'class' => 'list-radio'
-        		         ,'man_class' => ''
-        		         ,'input_error_class' => ''
-        		         ,'number' => '1'
-        		         );
+                'all' => 'How many roads must a man walk down?'
+                ,'text' => 'How many roads must a man walk down?'
+                ,'code' => '1a'
+                ,'help' => 'helpful text'
+                ,'mandatory' => ''
+                ,'man_message' => ''
+                ,'valid_message' => ''
+                ,'file_valid_message' => ''
+                ,'essentials' => 'id="question1"'
+                ,'class' => 'list-radio'
+                ,'man_class' => ''
+                ,'input_error_class' => ''
+                ,'number' => '1'
+                );
                 $data['question'] = $question;
 
-        		$answer="<ul><li><input type='radio' class='radio' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radio' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radio' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
+                $answer="<ul><li><input type='radio' class='radio' name='1' value='1' id='radio1' /><label class='answertext' for='radio1'>One</label></li><li><input type='radio' class='radio' name='1' value='2' id='radio2' /><label class='answertext' for='radio2'>Two</label></li><li><input type='radio' class='radio' name='1' value='3' id='radio3' /><label class='answertext' for='radio3'>Three</label></li></ul>\n";
                 $data['answer'] = $answer;
                 $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/question.pstpl",$data));
 
-        	    //	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:");
+                //	$question='<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:");
                 $answer="<textarea class='textarea' rows='5' cols='40'>Some text in this answer</textarea>";
                 $data['answer'] = $answer;
-        	    $question = array(
-        		  'all' => '<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:")
-        		 ,'text' => $clang->gT('Please explain something in detail:')
-        		 ,'code' => '2a'
-        		 ,'help' => ''
-        		 ,'mandatory' => $clang->gT('*')
-        		 ,'man_message' => ''
-        		 ,'valid_message' => ''
-        		 ,'file_valid_message' => ''
-        		 ,'essentials' => 'id="question2"'
-        		 ,'class' => 'text-long'
-        		 ,'man_class' => 'mandatory'
-        		 ,'input_error_class' => ''
-        		 ,'number' => '2'
-        		 );
+                $question = array(
+                'all' => '<span class="asterisk">*</span>'.$clang->gT("Please explain something in detail:")
+                ,'text' => $clang->gT('Please explain something in detail:')
+                ,'code' => '2a'
+                ,'help' => ''
+                ,'mandatory' => $clang->gT('*')
+                ,'man_message' => ''
+                ,'valid_message' => ''
+                ,'file_valid_message' => ''
+                ,'essentials' => 'id="question2"'
+                ,'class' => 'text-long'
+                ,'man_class' => 'mandatory'
+                ,'input_error_class' => ''
+                ,'number' => '2'
+                );
                 $data['question'] = $question;
                 $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/question.pstpl",$data));
                 $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/endgroup.pstpl",$data));
                 $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/navigator.pstpl",$data));
                 $myoutput = array_merge($myoutput, doreplacement(sGetTemplatePath($templatename)."/endpage.pstpl",$data));
-        		break;
+                break;
 
             case 'welcome':
 
@@ -1115,7 +1084,7 @@
             case 'register':
                 unset($files);
                 foreach($Register as $qs) {
-                   $files[]=array("name"=>$qs);
+                    $files[]=array("name"=>$qs);
                 }
                 $myoutput[] =  templatereplace("$templatedir/startpage.pstpl",array(),$data);
                 $myoutput[] =  templatereplace("$templatedir/survey.pstpl",array(),$data);
@@ -1124,19 +1093,19 @@
 
                 /**foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/survey.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/register.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 */
                 $myoutput[]= "\n";
@@ -1145,7 +1114,7 @@
             case 'save':
                 unset($files);
                 foreach($Save as $qs) {
-                   $files[]=array("name"=>$qs);
+                    $files[]=array("name"=>$qs);
                 }
 
                 $myoutput[] =  templatereplace("$templatedir/startpage.pstpl",array(),$data);
@@ -1154,15 +1123,15 @@
                 /**
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/save.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 */
 
@@ -1172,7 +1141,7 @@
             case 'load':
                 unset($files);
                 foreach($Load as $qs) {
-                   $files[]=array("name"=>$qs);
+                    $files[]=array("name"=>$qs);
                 }
                 $myoutput[] =  templatereplace("$templatedir/startpage.pstpl",array(),$data);
                 $myoutput[] =  templatereplace("$templatedir/load.pstpl",array(),$data);
@@ -1181,15 +1150,15 @@
                 /**
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/load.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 } */
                 $myoutput[]= "\n";
                 break;
@@ -1197,7 +1166,7 @@
             case 'clearall':
                 unset($files);
                 foreach ($Clearall as $qs) {
-                   $files[]=array("name"=>$qs);
+                    $files[]=array("name"=>$qs);
                 }
                 $myoutput[] =  templatereplace("$templatedir/startpage.pstpl",array(),$data);
                 $myoutput[] =  templatereplace("$templatedir/clear.pstpl",array(),$data);
@@ -1206,15 +1175,15 @@
                 /**
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/clearall.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 } */
                 $myoutput[]= "\n";
                 break;
@@ -1231,64 +1200,64 @@
             case 'printablesurvey':
                 unset($files);
                 foreach ($printablesurveytemplate as $qs) {
-                   $files[]=array("name"=>$qs);
+                    $files[]=array("name"=>$qs);
                 }
 
                 $questionoutput=array();
                 foreach(file("$templatedir/print_question.pstpl") as $op)
                 { // echo '<pre>line '.__LINE__.'$op = '.htmlspecialchars(print_r($op)).'</pre>';
                     $questionoutput[]=templatereplace($op, array(
-                         'QUESTION_NUMBER'=>'1',
-                         'QUESTION_CODE'=>'Q1',
-                         'QUESTION_MANDATORY' => $clang->gT('*'),
-                         'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',    // if there are conditions on a question, list the conditions.
-                         'QUESTION_CLASS' => ' mandatory list-radio',
-                         'QUESTION_TYPE_HELP' => $clang->gT('Please choose *only one* of the following:'),
-                         'QUESTION_MAN_MESSAGE' => '',        // (not sure if this is used) mandatory error
-                         'QUESTION_VALID_MESSAGE' => '',        // (not sure if this is used) validation error
-                         'QUESTION_FILE_VALID_MESSAGE' => '',        // (not sure if this is used) file validation error
-                         'QUESTION_TEXT'=>'This is a sample question text. The user was asked to pick an entry.',
-                         'QUESTIONHELP'=>'This is some help text for this question.',
-                         'ANSWER'=>'<ul>
-                                        <li>
-                                            <img src="'.$templateurl.'/print_img_radio.png" alt="First choice" class="input-radio" height="14" width="14">First choice
-                                        </li>
-                                        <li>
-                                            <img src="'.$templateurl.'/print_img_radio.png" alt="Second choice" class="input-radio" height="14" width="14">Second choice
-                                        </li>
-                                        <li>
-                                            <img src="'.$templateurl.'/print_img_radio.png" alt="Third choice" class="input-radio" height="14" width="14">Third choice
-                                        </li>
-                                    </ul>'
-                         ),$data);
+                    'QUESTION_NUMBER'=>'1',
+                    'QUESTION_CODE'=>'Q1',
+                    'QUESTION_MANDATORY' => $clang->gT('*'),
+                    'QUESTION_SCENARIO' => 'Only answer this if certain conditions are met.',    // if there are conditions on a question, list the conditions.
+                    'QUESTION_CLASS' => ' mandatory list-radio',
+                    'QUESTION_TYPE_HELP' => $clang->gT('Please choose *only one* of the following:'),
+                    'QUESTION_MAN_MESSAGE' => '',        // (not sure if this is used) mandatory error
+                    'QUESTION_VALID_MESSAGE' => '',        // (not sure if this is used) validation error
+                    'QUESTION_FILE_VALID_MESSAGE' => '',        // (not sure if this is used) file validation error
+                    'QUESTION_TEXT'=>'This is a sample question text. The user was asked to pick an entry.',
+                    'QUESTIONHELP'=>'This is some help text for this question.',
+                    'ANSWER'=>'<ul>
+                    <li>
+                    <img src="'.$templateurl.'/print_img_radio.png" alt="First choice" class="input-radio" height="14" width="14">First choice
+                    </li>
+                    <li>
+                    <img src="'.$templateurl.'/print_img_radio.png" alt="Second choice" class="input-radio" height="14" width="14">Second choice
+                    </li>
+                    <li>
+                    <img src="'.$templateurl.'/print_img_radio.png" alt="Third choice" class="input-radio" height="14" width="14">Third choice
+                    </li>
+                    </ul>'
+                    ),$data);
                 }
                 $groupoutput=array();
                 $groupoutput[] = templatereplace("$templatedir/print_group.pstpl",array('QUESTIONS'=>implode(' ',$questionoutput)),$data);
                 /**
                 foreach(file("$templatedir/print_group.pstpl") as $op)
                 {
-                    $groupoutput[]=templatereplace($op, array('QUESTIONS'=>implode(' ',$questionoutput)),$data);
+                $groupoutput[]=templatereplace($op, array('QUESTIONS'=>implode(' ',$questionoutput)),$data);
                 }
                 */
                 $myoutput[] =  templatereplace("$templatedir/print_survey.pstpl",array('GROUPS'=>implode(' ',$groupoutput),
-                           'FAX_TO' => $clang->gT("Please fax your completed survey to:")." 000-000-000",
-                           'SUBMIT_TEXT'=> $clang->gT("Submit your survey."),
-                           'HEADELEMENTS'=>getPrintableHeader(),
-                           'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
-                           'THANKS'=>$clang->gT('Thank you for completing this survey.'),
-                           'END'=>$clang->gT('This is the survey end message.')
-                   ),$data);
-                   /**
+                'FAX_TO' => $clang->gT("Please fax your completed survey to:")." 000-000-000",
+                'SUBMIT_TEXT'=> $clang->gT("Submit your survey."),
+                'HEADELEMENTS'=>getPrintableHeader(),
+                'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
+                'THANKS'=>$clang->gT('Thank you for completing this survey.'),
+                'END'=>$clang->gT('This is the survey end message.')
+                ),$data);
+                /**
                 foreach(file("$templatedir/print_survey.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op, array('GROUPS'=>implode(' ',$groupoutput),
-                           'FAX_TO' => $clang->gT("Please fax your completed survey to:")." 000-000-000",
-                           'SUBMIT_TEXT'=> $clang->gT("Submit your survey."),
-                           'HEADELEMENTS'=>getPrintableHeader(),
-                           'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
-                           'THANKS'=>$clang->gT('Thank you for completing this survey.'),
-                           'END'=>$clang->gT('This is the survey end message.')
-                   ),$data);
+                $myoutput[]=templatereplace($op, array('GROUPS'=>implode(' ',$groupoutput),
+                'FAX_TO' => $clang->gT("Please fax your completed survey to:")." 000-000-000",
+                'SUBMIT_TEXT'=> $clang->gT("Submit your survey."),
+                'HEADELEMENTS'=>getPrintableHeader(),
+                'SUBMIT_BY' => sprintf($clang->gT("Please submit by %s"), date('d.m.y')),
+                'THANKS'=>$clang->gT('Thank you for completing this survey.'),
+                'END'=>$clang->gT('This is the survey end message.')
+                ),$data);
                 }
                 */
                 break;
@@ -1297,7 +1266,7 @@
                 unset($files);
                 foreach ($printtemplate as $qs)
                 {
-                   $files[]=array("name"=>$qs);
+                    $files[]=array("name"=>$qs);
                 }
 
                 $myoutput[] =  templatereplace("$templatedir/startpage.pstpl",array(),$data);
@@ -1307,15 +1276,15 @@
                 /**
                 foreach(file("$templatedir/startpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 }
                 foreach(file("$templatedir/printanswers.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array('ANSWERTABLE'=>$printoutput),$data);
+                $myoutput[]=templatereplace($op,array('ANSWERTABLE'=>$printoutput),$data);
                 }
                 foreach(file("$templatedir/endpage.pstpl") as $op)
                 {
-                   $myoutput[]=templatereplace($op,array(),$data);
+                $myoutput[]=templatereplace($op,array(),$data);
                 } */
                 $myoutput[]= "\n";
                 break;
@@ -1324,52 +1293,56 @@
         $myoutput[]="</html>";
 
         if (is_array($files)) {
-           $match=0;
-           foreach ($files as $f) {
-               if ($editfile == $f["name"]) {
-                   $match=1;
-               }
-           }
-           foreach ($cssfiles as $f) {
-               if ($editfile == $f["name"]) {
-                   $match=1;
-               }
-           }
-           if ($match == 0) {
-               if (count($files) > 0) {
-                   $editfile=$files[0]["name"];
-               } else {
-                   $editfile="";
-               }
-           }
+            $match=0;
+            foreach ($files as $f) {
+                if ($editfile == $f["name"]) {
+                    $match=1;
+                }
+            }
+            foreach ($cssfiles as $f) {
+                if ($editfile == $f["name"]) {
+                    $match=1;
+                }
+            }
+            if ($match == 0) {
+                if (count($files) > 0) {
+                    $editfile=$files[0]["name"];
+                } else {
+                    $editfile="";
+                }
+            }
         }
 
         //Get list of 'otherfiles'
         $otherfiles=array();
         if ($handle = opendir($templatedir)) {
-           while(false !== ($file = readdir($handle))) {
-               if (!array_search($file, $normalfiles)) {
-                   if (!is_dir($templatedir.DIRECTORY_SEPARATOR.$file)) {
-                       $otherfiles[]=array("name"=>$file);
-                   }
-               }
-           } // while
-           closedir($handle);
+            while(false !== ($file = readdir($handle))) {
+                if (!array_search($file, $normalfiles)) {
+                    if (!is_dir($templatedir.DIRECTORY_SEPARATOR.$file)) {
+                        $otherfiles[]=array("name"=>$file);
+                    }
+                }
+            } // while
+            closedir($handle);
         }
 
 
-        self::_templateditorbar($codelanguage,$highlighter,$this->session->userdata('flashmessage'),$templatename,$templates,$editfile,$screenname);
+        $data['clang'] = $this->limesurvey_lang;
+        $data['codelanguage'] = $codelanguage;
+        $data['highlighter'] = $highlighter;
+        //$data['allowedtemplateuploads'] = $this->config->item('allowedtemplateuploads');
+        $data['screens'] = $screens;
+        $data['templatename'] = $templatename;
+        $data['templates'] = $templates;
+        $data['editfile'] = $editfile;
+        $data['screenname'] = $screenname;
+        $data['tempdir'] = $this->config->item('tempdir');
+        $data['usertemplaterootdir'] = $this->config->item('usertemplaterootdir');
 
-        self::_templatebar($screenname,$editfile,$screens,$this->config->item('tempdir'),$templatename);
+        $this->load->view("admin/templates/templateeditorbar_view",$data);
+
         if ($showsummary)
-        self::_templatesummary($templatename,$screenname,$editfile,$templates,$files,$cssfiles,$otherfiles,$myoutput);
-
-
+            self::_templatesummary($templatename,$screenname,$editfile,$templates,$files,$cssfiles,$otherfiles,$myoutput);
     }
 
-
-
-
-
-
- }
+}

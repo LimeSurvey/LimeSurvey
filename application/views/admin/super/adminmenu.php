@@ -91,8 +91,9 @@
 	        <img src='<?php echo $this->config->item('imageurl');?>/tokens.png' name='participantpanel' alt='<?php echo $clang->gT("Participant panel");?>' width='40' height='40'/></a>
         <?php } ?>
 	</div>
-	<div class='menubar-right'><span class="boxcaption"><?php echo $clang->gT("Surveys");?>:</span>
-	    <select onchange="window.open(this.options[this.selectedIndex].value,'_top')">
+	<div class='menubar-right'>
+        <label for='surveylist'><?php echo $clang->gT("Surveys:");?></label>
+	    <select id='surveylist' name='surveylist' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 	    <?php echo getsurveylist(false, false, $surveyid); ?>
 	    </select>
         <a href="#" onclick="window.open('<?php echo site_url("admin/survey/listsurveys");?>', '_top')" title="<?php echo $clang->gTview("Detailed list of surveys");?>" >

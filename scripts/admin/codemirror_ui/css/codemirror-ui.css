@@ -1,7 +1,7 @@
 .codemirror-ui-button-frame{
 	border:1px solid #ccc;
 	background:#eee;
-	position:relative;
+	position:relative;         
 }
 
 .codemirror-ui-button-frame input,.codemirror-ui-button-frame label{
@@ -16,11 +16,11 @@
 	padding:0px;
     margin:2px 5px;
 	margin-top:0px;
-	display:inline-block;		
+	display:inline-block;
 }
 
 input.codemirror-ui-checkbox{
-	
+
 }
 
 .codemirror-ui-button{
@@ -65,7 +65,7 @@ iframe{
 }
 
 .codemirror-ui-find-bar{
-	text-align:center;	
+	text-align:center;
 }
 
 .codemirror-ui-popup-find-wrap{
@@ -86,8 +86,8 @@ iframe{
 
 
 .codemirror-ui-popup-find-wrap .codemirror-ui-button{
-	float:left;	
-} 
+	float:left;
+}
 
 .codemirror-ui-popup-find-wrap .codemirror-ui-find-bar{
 	float:left;
@@ -97,6 +97,7 @@ iframe{
 	border:1px solid #ccc;
 	border-top:0px;
 	background:white;
+    text-align: left;
 }
 
 /*

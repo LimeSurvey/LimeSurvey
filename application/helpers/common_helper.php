@@ -347,8 +347,6 @@ function getsurveylist($returnarray=false,$returnwithouturl=false, $surveyid=fal
     static $cached = null;
 	$CI = &get_instance();
 
-    $CI->load->config('lsconfig');
-	//$surveyid = $CI->config->item("surveyid");
 	$timeadjust = $CI->config->item("timeadjust");
 	$clang = $CI->limesurvey_lang;
 
@@ -592,7 +590,6 @@ function getQuestions($surveyid,$gid,$selectedqid)
 {
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
-    $CI->load->config('lsconfig');
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('questions_model');
     $qresult = $CI->questions_model->getQuestions($surveyid,$gid,$s_lang);
@@ -1311,7 +1308,6 @@ function getgrouplist($gid,$surveyid)
     echo $surveyid;
 
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->config('lsconfig');
     $CI->load->model('groups_model');
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND  language='{$s_lang}'  ORDER BY group_order";
     $gidresult = $CI->groups_model->getGroupAndID($surveyid,$s_lang) or safe_die("Couldn't get group list in common_helper.php<br />"); //Checked
@@ -1794,7 +1790,6 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 function returnglobal($stringname, $urlParam = null)
 {
     $CI = & get_instance();
-    $CI->load->config('lsconfig');
     $useWebserverAuth = $CI->config->item('useWebserverAuth');
 
 	if(!isset($urlParam))
@@ -2314,7 +2309,6 @@ function strip_comments($comment, $email, $replace=''){
 function validate_templatedir($templatename)
 {
 	$CI = &get_instance();
-    $CI->load->config('lsconfig');
     $usertemplaterootdir = $CI->config->item('usertemplaterootdir');
     $standardtemplaterootdir = $CI->config->item('standardtemplaterootdir');
     $defaulttemplate = $CI->config->item('defaulttemplate');
@@ -3095,9 +3089,7 @@ function SetSurveyLanguage($surveyid, $language)
 {
 	$CI = &get_instance();
     $surveyid=sanitize_int($surveyid);
-    //$CI->load->config('lsconfig');
     $defaultlang = $CI->config->item('defaultlang');
-    //require_once($rootdir.'/classes/core/language.php');
 
     if (isset($surveyid) && $surveyid>0)
     {
@@ -3106,7 +3098,6 @@ function SetSurveyLanguage($surveyid, $language)
         $condition = array('sid' => $surveyid); //"sid = $surveyid";
         $CI->load->model('surveys_model');
 
-        //$query = "SELECT  language, additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
         $result = $CI->surveys_model->getSomeRecords($fields,$condition); //Checked
         foreach ($result->result_array() as $row) {//while ($result && ($row=$result->FetchRow())) {)
             $additional_languages = $row['additional_languages'];

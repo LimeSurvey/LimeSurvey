@@ -149,12 +149,6 @@ textarea {
   width: 180px;
 }
 
-.boxcaption {
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 40px;
-}
-
 .saveOrderbtn {
   border: thin solid #00CED1;
   text-decoration: none;

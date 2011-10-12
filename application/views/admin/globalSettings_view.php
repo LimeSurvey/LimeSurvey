@@ -1,35 +1,35 @@
-<div class='header ui-widget-header'><?php echo $clang->gT("Global settings");?></div>
+<div class='header ui-widget-header'><?php $clang->eT("Global settings");?></div>
 <div id='tabs'>
     <ul>
-        <li><a href='#overview'><?php echo $clang->gT("Overview & update");?></a></li>
-        <li><a href='#general'><?php echo $clang->gT("General");?></a></li>
-        <li><a href='#email'><?php echo $clang->gT("Email settings");?></a></li>
-        <li><a href='#bounce'><?php echo $clang->gT("Bounce settings");?></a></li>
-        <li><a href='#security'><?php echo $clang->gT("Security");?></a></li>
-        <li><a href='#presentation'><?php echo $clang->gT("Presentation");?></a></li>
+        <li><a href='#overview'><?php $clang->eT("Overview & update");?></a></li>
+        <li><a href='#general'><?php $clang->eT("General");?></a></li>
+        <li><a href='#email'><?php $clang->eT("Email settings");?></a></li>
+        <li><a href='#bounce'><?php $clang->eT("Bounce settings");?></a></li>
+        <li><a href='#security'><?php $clang->eT("Security");?></a></li>
+        <li><a href='#presentation'><?php $clang->eT("Presentation");?></a></li>
     </ul>
     <form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='<?php echo site_url("admin/globalsettings");?>' method='post'>
         <div id='overview'>
             <?php echo $checksettings;?>
 
-            <br /></p><div class='header ui-widget-header'><?php echo $clang->gT("Updates");?></div><ul>
-                <li><label for='updatecheckperiod'><?php echo $clang->gT("Check for updates:");?></label>
+            <br /></p><div class='header ui-widget-header'><?php $clang->eT("Updates");?></div><ul>
+                <li><label for='updatecheckperiod'><?php $clang->eT("Check for updates:");?></label>
                     <select name='updatecheckperiod' id='updatecheckperiod'>
                         <option value='0'
                             <?php if ($thisupdatecheckperiod==0) { echo "selected='selected'";} ?>
-                            ><?php echo $clang->gT("Never");?></option>
+                            ><?php $clang->eT("Never");?></option>
                         <option value='1'
                             <?php if ($thisupdatecheckperiod==1) { echo "selected='selected'";} ?>
-                            ><?php echo $clang->gT("Every day");?></option>
+                            ><?php $clang->eT("Every day");?></option>
                         <option value='7'
                             <?php if ($thisupdatecheckperiod==7) { echo "selected='selected'";} ?>
-                            ><?php echo $clang->gT("Every week");?></option>
+                            ><?php $clang->eT("Every week");?></option>
                         <option value='14'
                             <?php if ($thisupdatecheckperiod==14) { echo "selected='selected'";} ?>
-                            ><?php echo $clang->gT("Every 2 weeks");?></option>
+                            ><?php $clang->eT("Every 2 weeks");?></option>
                         <option value='30'
                             <?php if ($thisupdatecheckperiod==30) { echo "selected='selected'";} ?>
-                            ><?php echo $clang->gT("Every month");?></option>
+                            ><?php $clang->eT("Every month");?></option>
                     </select>&nbsp;<input type='button' onclick="window.open('<?php echo site_url("admin/globalsettings/updatecheck");?>', '_top')" value='<?php echo $clang->gT("Check now");?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck);?></span></li></ul><p>
 
                 <?php
@@ -213,8 +213,8 @@
                     </select></li>
 
                 <li><label for='bounceaccounthost'><?php echo $clang->gT("Server name & port:");?></label>
-                <input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" /><font size='1'><?php echo $clang->gT("Enter your hostname and port, e.g.: imap.gmail.com:995");?></font>
-
+                    <input type='text' size='50' id='bounceaccounthost' name='bounceaccounthost' value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccounthost'))?>" /><font size='1'><?php echo $clang->gT("Enter your hostname and port, e.g.: imap.gmail.com:995");?></font>
+                </li>
                 <li><label for='bounceaccountuser'><?php echo $clang->gT("User name:");?></label>
                     <input type='text' size='50' id='bounceaccountuser' name='bounceaccountuser'
                         value="<?php echo htmlspecialchars(getGlobalSetting('bounceaccountuser'))?>" /></li>
@@ -310,7 +310,7 @@
                     </select></li>
 
                 <?php $thisrepeatheadings=getGlobalSetting('repeatheadings');?>
-                <li><label for='repeatheadings'><?php echo $clang->gT("Repeating headings in array questions every X subquestions:");?></label>
+                <li><label for='repeatheadings'><?php $clang->eT("Repeating headings in array questions every X subquestions:");?></label>
                     <input id='repeatheadings' name='repeatheadings' value='<?php echo $thisrepeatheadings;?>' size='4' maxlength='4' /></li>
 
                 <?php
@@ -323,7 +323,7 @@
                         $sel_xq['choose'] = ' selected="selected"';
                     };
                 ?>
-                <li><label for="showXquestions"><?php echo $clang->gT('Show "There are X questions in this survey"');?></label>
+                <li><label for="showXquestions"><?php $clang->eT('Show "There are X questions in this survey"');?></label>
                     <select id="showXquestions" name="showXquestions">
                         <option value="show"<?php echo $sel_xq['show'];?>><?php echo $clang->gT('Yes');?></option>
                         <option value="hide"<?php echo $sel_xq['hide'];?>><?php echo $clang->gT('No');?></option>
@@ -337,7 +337,7 @@
                     {
                         $sel_gri['choose'] = ' selected="selected"';
                     }; ?>
-                <li><label for="showgroupinfo"><?php echo $clang->gT('Show question group name and/or description');?></label>
+                <li><label for="showgroupinfo"><?php $clang->eT('Show question group name and/or description');?></label>
                     <select id="showgroupinfo" name="showgroupinfo">
                         <option value="both"<?php echo $sel_gri['both'];?>><?php echo $clang->gT('Show both');?></option>
                         <option value="name"<?php echo $sel_gri['name'];?>><?php echo $clang->gT('Show group name only');?></option>
@@ -356,7 +356,7 @@
                         $sel_qnc['choose'] = ' selected="selected"';
                     };
                 ?>
-                <li><label for="showqnumcode"><?php echo $clang->gT('Show question number and/or question code');?></label>
+                <li><label for="showqnumcode"><?php $clang->eT('Show question number and/or question code');?></label>
                     <select id="showqnumcode" name="showqnumcode">
                         <option value="both"<?php echo $sel_qnc['both'];?>><?php echo $clang->gT('Show both');?></option>
                         <option value="number"<?php echo $sel_qnc['number'];?>><?php echo $clang->gT('Show question number only');?></option>

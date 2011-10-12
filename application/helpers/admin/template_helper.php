@@ -13,15 +13,15 @@
  *	$Id: activate_functions.php 10193 2011-06-05 12:20:37Z c_schmitz $
  *	Files Purpose: holds functions to activate a survey and precheck the consistency of the survey
  */
- 
- 
+
+
 function doreplacement($file,$data) { //Produce sample page from template file
    /**
-   $output=array();   
+   $output=array();
    foreach(file($file) as $op) {
        $output[]=templatereplace($op);
    }
-   return $output; 
+   return $output;
    */
    return (array)templatereplace($file,array(),$data);
 }
@@ -83,7 +83,7 @@ function makegraph($currentstep, $total)
        $graph.='$(document).ready(function() {
                 $("div.ui-progressbar-value").removeClass("ui-corner-left");
                 $("div.ui-progressbar-value").addClass("ui-corner-right");
-                });';  
+                });';
     }
     $graph.='</script>
 
@@ -119,7 +119,7 @@ function makegraph($currentstep, $total)
         <script type="text/javascript">
         $(document).ready(function() {
         $("div.ui-progressbar-value").hide();
-        }); 
+        });
         </script>';
     }
 
@@ -196,12 +196,9 @@ function recursive_in_array($needle, $haystack) {
 */
 function is_template_editable($templatename)
 {
-   global $standard_templates_readonly, $debug; 
-   if($debug>1) // Debug mode set to developer
-   {
-       return true;
-   }
-   elseif (isStandardTemplate($templatename) && $standard_templates_readonly==true)
+    $CI = &get_instance();
+
+    if (isStandardTemplate($templatename) && $CI->config->item("standard_templates_readonly")==true)
    {
        return false;
    }

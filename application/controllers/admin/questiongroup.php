@@ -252,7 +252,7 @@
 
     	$surveyid = sanitize_int($surveyid);
 		$gid = sanitize_int($gid);
-		
+
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
 
@@ -378,6 +378,24 @@
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
+
+
+     /**
+     * questiongroup::organize()
+     * Load ordering of question group screen.
+     * @return
+     */
+    function organize($surveyid)
+    {
+         $surveyid= (int)$surveyid;
+         $this->load->model('groups_model');
+         $aGrouplist=$this->groups_model->getGroups($surveyid);
+         foreach($aGrouplist as $aGroup)
+         {
+
+         }
+    }
+
 
     /**
      * questiongroup::order()

@@ -109,7 +109,7 @@
                     <?php
                     } else
                     {?>
-                    <td colspan="5">&nbsp;</td>
+                    <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                     <?php
                 }?>
 
