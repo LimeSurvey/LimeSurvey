@@ -62,26 +62,7 @@
 
             <a href='<?php echo site_url("admin/export/group/$surveyid/$gid");?>' title="<?php echo $clang->gTview("Export this question group"); ?>" >
                 <img src='<?php echo $this->config->item('imageurl'); ?>/dumpgroup.png' title='' alt='<?php echo $clang->gT("Export this question group"); ?>' name='ExportGroup' width="40" height="40"/></a>
-            <?php }
-
-
-
-
-            if(bHasSurveyPermission($surveyid,'surveycontent','update'))
-            { ?>
-            <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt='' />
-            <?php if($activated != "Y" && getQuestionSum($surveyid, $gid) > 1)
-                { ?>
-
-                <a href='<?php echo site_url("admin/question/order/".$surveyid."/".$gid); ?>' title="<?php echo $clang->gTview("Change Question Order"); ?>" >
-                    <img src='<?php echo $this->config->item('imageurl'); ?>/reorder.png' alt='<?php echo $clang->gT("Change Question Order"); ?>' name='updatequestionorder' width="40" height="40"/></a>
-                <?php }
-                else
-                { ?>
-                <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='40' />
-                <?php }
-        } ?>
-
+            <?php } ?>
     </div>
     <div class='menubar-right'>
         <label for="qid"><?php echo $clang->gT("Questions:"); ?></label><select class="listboxquestions" name='qid' id='qid'
@@ -125,10 +106,6 @@
                 <?php } ?>
         </span>
 
-
-
-
-
         <?php if ($activated == "Y")
             { ?>
             <a href='#'>
@@ -142,9 +119,6 @@
                 <img src='<?php echo $this->config->item('imageurl'); ?>/add.png' title='' alt='<?php echo $clang->gT("Add New Question to Group"); ?>'
                     name='AddNewQuestion' onclick="window.open('', '_top')" width="40" height="40"/></a>
             <?php } ?>
-
-
-
 
         <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt=''  />
 

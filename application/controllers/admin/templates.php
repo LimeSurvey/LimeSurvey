@@ -430,6 +430,7 @@ class templates extends Admin_Controller {
     */
     function templatecopy()
     {
+        $clang = $this->limesurvey_lang;
         if ($this->input->post('action') == "templatecopy" && $this->input->post('newname') && $this->input->post('copydir')) {
             //Copies all the files from one template directory to a new one
             //This is a security issue because it is allowing copying from get variables...

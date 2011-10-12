@@ -16,8 +16,8 @@
 
 <div id='panelintegration'>
 
-        <table id="urlparams" style='margin:0 auto;'></table>
-        <div id="pagerurlparams"></div>
-        <input type='hidden' id='allurlparams' name='allurlparams' value='' />
+    <table id="urlparams" style='margin:0 auto;'><tr><td>&nbsp;</td></tr></table>
+    <div id="pagerurlparams"></div>
+    <input type='hidden' id='allurlparams' name='allurlparams' value='' />
 
 </div>

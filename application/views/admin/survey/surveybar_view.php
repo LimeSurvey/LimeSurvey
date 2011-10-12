@@ -65,18 +65,7 @@
                         <li><a href='<?php echo site_url("admin/surveypermission/view/$surveyid");?>' >
                             <img src='<?php echo $imageurl;?>/survey_security_30.png' name='SurveySecurity' alt=''/> <?php echo $clang->gT("Survey permissions");?></a></li>
                         <?php } ?>
-                    <?php if ($surveycontent) {
-                            if($activated) { ?>
-                            <li><a href="#" onclick="alert('<?php echo $clang->gT("You can't reorder question groups if the survey is active.", "js");?>');" >
-                                <img src='<?php echo $imageurl;?>/reorder_disabled_30.png' name='translate' alt=''/> <?php echo $clang->gT("Reorder question groups");?></a></li>
-                            <?php } elseif ($groupsum) { ?>
-                            <li><a href='<?php echo site_url("admin/questiongroup/order/$surveyid");?>'>
-                                <img src='<?php echo $imageurl;?>/reorder_30.png' alt=''/> <?php echo $clang->gT("Reorder question groups");?></a></li>
-                            <?php } else { ?>
-                            <li><a href="#" onclick="alert('<?php echo $clang->gT("You can't reorder question groups if there is only one group.", "js");?>');" >
-                                <img src='<?php echo $imageurl;?>/reorder_disabled_30.png' name='translate' alt=''/> <?php echo $clang->gT("Reorder question groups");?></a></li>
-                            <?php }
-                    } ?>
+
                     <?php if($quotas) { ?>
                         <li><a href='<?php echo site_url("admin/quotas/$surveyid/");?>' >
                             <img src='<?php echo $imageurl;?>/quota_30.png' alt=''/> <?php echo $clang->gT("Quotas");?></a></li>
@@ -202,12 +191,13 @@
                             <?php }
                     } ?>
                 </ul></li>
-            <?php if(bHasSurveyPermission($surveyid,'surveycontent','update'))
+
+            <?php if($surveycontent)
                 {
                     if ($activated)
                     { ?><li><a href='#'>
-                        <img name='Organize' src='<?php echo $this->config->item('imageurl'); ?>/organize_disabled.png' title='' alt='<?php echo $clang->gT("Question group/question organizer disabled"); ?> - <?php echo $clang->gT("This survey is currently active."); ?>'
-                            width="40" height="40"/></a></li>
+                            <img name='Organize' src='<?php echo $this->config->item('imageurl'); ?>/organize_disabled.png' title='' alt='<?php echo $clang->gT("Question group/question organizer disabled"); ?> - <?php echo $clang->gT("This survey is currently active."); ?>'
+                                width="40" height="40"/></a></li>
                     <?php }
                     else
                     { ?><li>

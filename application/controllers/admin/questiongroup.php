@@ -1,44 +1,44 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *
- */
+* LimeSurvey (tm)
+* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*
+*/
 
- /**
-  * questiongroup
-  *
-  * @package LimeSurvey
-  * @author
-  * @copyright 2011
-  * @version $Id$
-  * @access public
-  */
- class questiongroup extends Survey_Common_Controller {
+/**
+* questiongroup
+*
+* @package LimeSurvey
+* @author
+* @copyright 2011
+* @version $Id$
+* @access public
+*/
+class questiongroup extends Survey_Common_Controller {
 
     /**
-     * questiongroup::__construct()
-     * Constructor
-     * @return
-     */
+    * questiongroup::__construct()
+    * Constructor
+    * @return
+    */
     function __construct()
-	{
-		parent::__construct();
-	}
+    {
+        parent::__construct();
+    }
 
     /**
-     * questiongroup::import()
-     * Function responsible to import a question group.
-     * @return
-     */
+    * questiongroup::import()
+    * Function responsible to import a question group.
+    * @return
+    */
     function import()
     {
         $action = $this->input->post('action');
@@ -71,7 +71,7 @@
             }
             /**else
             {
-                $surveyid=returnglobal('sid');
+            $surveyid=returnglobal('sid');
             }*/
 
             if (isset($fatalerror))
@@ -102,13 +102,13 @@
 
             if (isset($aImportResults['fatalerror']))
             {
-                    $importgroup .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
-                    $importgroup .= $aImportResults['fatalerror']."<br /><br />\n";
-                    $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
-                    $importgroup .=  "</div>\n";
-                    unlink($sFullFilepath);
-                    show_error($importgroup);
-                    return;
+                $importgroup .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
+                $importgroup .= $aImportResults['fatalerror']."<br /><br />\n";
+                $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+                $importgroup .=  "</div>\n";
+                unlink($sFullFilepath);
+                show_error($importgroup);
+                return;
             }
 
             $importgroup .= "<div class='successheader'>".$clang->gT("Success")."</div><br />\n"
@@ -143,13 +143,13 @@
 
 
     /**
-     * questiongroup::add()
-     * Load add new question grup screen.
-     * @return
-     */
+    * questiongroup::add()
+    * Load add new question grup screen.
+    * @return
+    */
     function add($surveyid)
     {
-    	$surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int($surveyid);
 
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
@@ -181,16 +181,16 @@
             self::_loadEndScripts();
 
             self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-            }
+        }
 
 
     }
 
     /**
-     * questiongroup::delete()
-     * Function responsible for deleting a question group.
-     * @return
-     */
+    * questiongroup::delete()
+    * Function responsible for deleting a question group.
+    * @return
+    */
     function delete()
     {
         $action = $this->input->post("action");
@@ -243,15 +243,15 @@
     }
 
     /**
-     * questiongroup::edit()
-     * Load editing of a question group screen.
-     * @return
-     */
+    * questiongroup::edit()
+    * Load editing of a question group screen.
+    * @return
+    */
     function edit($surveyid,$gid)
     {
 
-    	$surveyid = sanitize_int($surveyid);
-		$gid = sanitize_int($gid);
+        $surveyid = sanitize_int($surveyid);
+        $gid = sanitize_int($gid);
 
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
@@ -315,12 +315,12 @@
                 $data['esrow'] = $esrow;
                 $data['i'] = 0;
                 $tab_content[0] = $this->load->view('admin/survey/QuestionGroups/editGroup_view',$data,true);/**"<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n")
-                    . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-                    . "\t</span></div>\n"
-                    . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
-                    . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-                    . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
-                    . "\t</span></div><div style='clear:both'></div>"; */
+                . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+                . "\t</span></div>\n"
+                . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
+                . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+                . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
+                . "\t</span></div><div style='clear:both'></div>"; */
                 $egquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid AND language!='$baselang'";
                 $egresult = db_execute_assoc($egquery);
                 $i = 1;
@@ -335,12 +335,12 @@
                     $data['esrow'] = $esrow;
 
                     $tab_content[$i] = $this->load->view('admin/survey/QuestionGroups/editGroup_view',$data,true); /**"<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n"
-                        . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-                        . "\t</span></div>\n"
-                        . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
-                        . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-                        . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
-                        . "\t</span></div><div style='clear:both'></div>"; */
+                    . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
+                    . "\t</span></div>\n"
+                    . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
+                    . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
+                    . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
+                    . "\t</span></div><div style='clear:both'></div>"; */
                     $i++;
                 }
 
@@ -380,32 +380,72 @@
     }
 
 
-     /**
-     * questiongroup::organize()
-     * Load ordering of question group screen.
-     * @return
-     */
-    function organize($surveyid)
+    /**
+    * questiongroup::organize()
+    * Load ordering of question group screen.
+    * @return
+    */
+    function organize($iSurveyID)
     {
-         $surveyid= (int)$surveyid;
-         $this->load->model('groups_model');
-         $aGrouplist=$this->groups_model->getGroups($surveyid);
-         foreach($aGrouplist as $aGroup)
-         {
+        $iSurveyID= (int)$iSurveyID;
+        $this->load->model('groups_model');
+        $this->load->model('questions_model');
 
-         }
+        if ($this->input->post('orgdata') && bHasSurveyPermission($iSurveyID,'surveycontent','update'))
+        {
+            $AOrgData=array();
+            parse_str($this->input->post('orgdata'),$AOrgData);
+            $grouporder=0;
+            foreach($AOrgData['list'] as $ID=>$parent)
+            {
+                if ($parent=='root' && $ID[0]=='g'){
+                    $this->groups_model->update(array('group_order'=>$grouporder),array('gid'=>(int)substr($ID,1)));
+                    $grouporder++;
+                }
+                elseif ($ID[0]=='q')
+                {
+                    if (!isset($questionorder[(int)substr($parent,1)])) $questionorder[(int)substr($parent,1)]=0;
+                    $this->questions_model->update(array('question_order'=>$questionorder[(int)substr($parent,1)],'gid'=>(int)substr($parent,1)),array('qid'=>(int)substr($ID,1)));
+                    $this->questions_model->update(array('gid'=>(int)substr($parent,1)),array('parent_qid'=>(int)substr($ID,1)));
+                    $questionorder[(int)substr($parent,1)]++;
+                }
+            }
+            $this->session->set_userdata('flashmessage', $this->limesurvey_lang->gT("The new question group/question order was successfully saved."));
+            redirect('admin/survey/view/'.$iSurveyID);
+        }
+        $sBaseLanguage=GetBaseLanguageFromSurveyID($iSurveyID);
+        self::_js_admin_includes(base_url().'scripts/jquery/jquery.ui.nestedSortable.js');
+        self::_js_admin_includes(base_url().'scripts/admin/organize.js');
+
+        $aGrouplist=$this->groups_model->getGroups($iSurveyID);
+        foreach($aGrouplist as $iGID=>$aGroup)
+        {
+            $oQuestionData=$this->questions_model->getQuestions($iSurveyID,$aGroup['gid'],$sBaseLanguage);
+            $aGrouplist[$iGID]['questions']=$oQuestionData->result_array();
+        }
+        $aViewData['aGroupsAndQuestions']=$aGrouplist;
+        $aViewData['clang']=$this->limesurvey_lang;
+        $aViewData['surveyid']=$iSurveyID;
+        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        self::_getAdminHeader();
+        self::_showadminmenu();
+        self::_surveybar($iSurveyID);
+        $this->load->view('admin/survey/organizeGroupsAndQuestions_view',$aViewData);
+        self::_loadEndScripts();
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
 
 
     /**
-     * questiongroup::order()
-     * Load ordering of question group screen.
-     * @return
-     */
+    * questiongroup::order()
+    * Load ordering of question group screen.
+    * @return
+    */
     function order($surveyid)
     {
 
-    	$surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int($surveyid);
 
         $clang = $this->limesurvey_lang;
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
@@ -675,4 +715,4 @@
 
 
 
- }
+}

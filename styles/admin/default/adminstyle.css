@@ -85,7 +85,7 @@ table.statisticstable {
 }
 
 table.statisticstable span {
-     font-weight:bold;
+    font-weight:bold;
 }
 
 span.basic {
@@ -152,10 +152,10 @@ div.menubar {
 }
 
 .menubar-title-right a {
-        font-size:10px;
-        font-weight:bold;
-        color:#ee0000 !important;
-        text-decoration: underline !important;
+    font-size:10px;
+    font-weight:bold;
+    color:#ee0000 !important;
+    text-decoration: underline !important;
 }
 
 .menubar-left {
@@ -184,25 +184,25 @@ div.menubar {
 }
 
 .menubar-right .arrow-wrapper {
-	display: inline; /* For IE */
-	position: relative;
-	margin: 0 5px 0 5px;
-	width: 20px;
-	vertical-align: bottom;
+    display: inline; /* For IE */
+    position: relative;
+    margin: 0 5px 0 5px;
+    width: 20px;
+    vertical-align: bottom;
 }
 
 html>body .menubar-right .arrow-wrapper { /* For real browsers */
-	display: inline-block;
+    display: inline-block;
     padding:0 5px;
 }
 
 .menubar-right .arrow-wrapper a {
-	display: block;
+    display: block;
 }
 
 .menubar-right .arrow-wrapper img {
-	display: block;
-	margin: 0;
+    display: block;
+    margin: 0;
 }
 
 /* END menubar CSS */
@@ -259,9 +259,9 @@ td {
 }
 
 .disabledbtn {
-height:20px;
-color:#999;
-font-size:11px;
+    height:20px;
+    color:#999;
+    font-size:11px;
 }
 
 .disabledUpDnBtn {
@@ -287,16 +287,16 @@ and are having difficulty seeing text in inputs, textareas and dropdown selects.
 /*
 input,
 textarea {
-	background: #FFF;
-	border: 1px solid #DBDFE6;
-	border-top-color: #ABADB3;
-	border-bottom-color: #E3E9EF;
-	padding: 2px;
+background: #FFF;
+border: 1px solid #DBDFE6;
+border-top-color: #ABADB3;
+border-bottom-color: #E3E9EF;
+padding: 2px;
 }
 
 select {
-	background: #FFF;
-	border: 1px solid #828790;
+background: #FFF;
+border: 1px solid #828790;
 }
 */
 
@@ -348,7 +348,7 @@ textarea {
 
 .annotationasterisk
 {
-        color: #E00;
+    color: #E00;
 }
 
 .annotation {
@@ -399,11 +399,11 @@ span.settingcaption {
     clear: right;
     margin-bottom: 10px;
     background-color: #F8F8FF;
-	outline: 0 none;
+    outline: 0 none;
 }
 
 .settingentry span {
-	outline: 0 none;
+    outline: 0 none;
 }
 
 .settingrow {
@@ -415,7 +415,7 @@ span.settingcaption {
 
 .settingrow .cke_skin_office2003,
 .settingrow .cke_skin_office2003 .cke_wrapper{
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .movableList {
@@ -441,17 +441,17 @@ span.settingcaption {
 .langpopup ul {
     font-size: 1em;
     font-weight:bold;
-     padding-left:1.2em;
-     line-height:1.5em;
+    padding-left:1.2em;
+    line-height:1.5em;
     margin-top:0.5em;
 }
 
 li.cancellink
 {
-  list-style-type:none;
-  margin-top:1em;
-  margin-left:-1.2em;
-  text-align:center;
+    list-style-type:none;
+    margin-top:1em;
+    margin-left:-1.2em;
+    text-align:center;
 }
 
 
@@ -580,12 +580,12 @@ a.optoutemail {
     background-color: #C5D0F2;
 }
 .browsetable td span.content{
-	display:block;
+    display:block;
     height:3em;
     overflow:hidden;
 }
 .browsetable th strong.content{
-	display:block;
+    display:block;
     height:4em;
     overflow:hidden;
 }
@@ -751,22 +751,22 @@ a.optoutemail {
 
 .browsetokens td:first-child {
     text-align:right;
-   padding-right: 3px;
+    padding-right: 3px;
 }
 
 .tokensummary tr:first-child {
- font-weight:bold;
+    font-weight:bold;
 }
 
 .tokensummary tr {
- margin:0px;
- padding:0px;
+    margin:0px;
+    padding:0px;
 }
 
 .tokensummary td {
-     outline: 1px solid;
-     outline-color:#D2E0F2;
-padding: 2px 5px;
+    outline: 1px solid;
+    outline-color:#D2E0F2;
+    padding: 2px 5px;
 }
 
 #addattribute label,
@@ -808,9 +808,9 @@ table.templatecontrol select
 }
 
 .templatecontrol textarea#changes {
-   font-family: monospace;
-   font-size:0.8em;
-   width:95%;
+    font-family: monospace;
+    font-size:0.8em;
+    width:95%;
 }
 
 /* Added by evan to help usability on the user template rights form in useradmin/userrighthandling.php */
@@ -832,7 +832,7 @@ table#user-template-rights tr:hover
 {
     background-color: #D1D1DF;
 }
- table#user-template-rights tr td
+table#user-template-rights tr td
 ,table#user-template-rights tr th
 ,table#user-template-rights tfoot tr td
 {
@@ -906,8 +906,8 @@ table.statisticstable, table.statisticssummary {
 }
 
 form#personalsettings {
-  width:750px;
-  margin:0 auto;
+    width:750px;
+    margin:0 auto;
 }
 
 div.messagebox {
@@ -1186,9 +1186,9 @@ div.loader {
 }
 
 #wrapper {
-     background-color:#f8f8ff;
-     width:100%;
-     padding:1px 0px;
+    background-color:#f8f8ff;
+    width:100%;
+    padding:1px 0px;
 }
 
 .background {
@@ -1235,7 +1235,7 @@ thead tr .headerSortDown {
 }
 
 thead tr .headerSortDown, thead tr .headerSortUp {
-background-color: #8195BA;
+    background-color: #8195BA;
 }
 
 #tokensearch, #tokenrange, #browseresults{
@@ -1256,18 +1256,18 @@ background-color: #8195BA;
 
 div.left
 {
-float:left;
-width:300px;
+    float:left;
+    width:300px;
 }
 
 div.right {
- float:right;
- width:300px;
+    float:right;
+    width:300px;
 }
 
 .wrap2columns {
-width:600px;
-margin:0 auto;
+    width:600px;
+    margin:0 auto;
 }
 
 #resultexport ul {
@@ -1305,7 +1305,7 @@ margin:0 auto;
 }
 
 #statistics_general_filter fieldset{
-clear:both;
+    clear:both;
 }
 
 
@@ -1340,7 +1340,7 @@ clear:both;
     border-right:1px #fff solid;
     border-bottom:1px #fff solid;
     vertical-align: top;
-        border-collapse:collapse !important;
+    border-collapse:collapse !important;
 }
 
 .filtertable td:last-child {
@@ -1362,17 +1362,17 @@ clear:both;
 
 .limebutton
 {
-   outline: 0;
-   margin:1px 4px 1px 0;
-   padding: 1px 1em;
-   text-decoration:none !important;
-   cursor:pointer;
-   text-align: center;
-   zoom: 1;
+    outline: 0;
+    margin:1px 4px 1px 0;
+    padding: 1px 1em;
+    text-decoration:none !important;
+    cursor:pointer;
+    text-align: center;
+    zoom: 1;
 }
 
 #emailtemplates .ui-tabs-panel .limebutton {
-	margin: 3px 20% 10px 30.5%;
+    margin: 3px 20% 10px 30.5%;
 }
 
 table.limetable thead th{
@@ -1411,11 +1411,11 @@ thead th
 }
 
 .usersurveypermissions th{
-     padding:0 2em;
+    padding:0 2em;
 }
 
 #responsedetail td{
-   padding:3px 5px;
+    padding:3px 5px;
 }
 
 #frmglobalsettings table {
@@ -1432,18 +1432,18 @@ thead th
 }
 
 div.translate {
-  margin: 2px 1px;
+    margin: 2px 1px;
 }
 
 #translateform table {
-  padding: 1px 0;
-  vertical-align: top;
-  width: 90%;
+    padding: 1px 0;
+    vertical-align: top;
+    width: 90%;
 }
 
 
 #translateform textarea:focus{
-  outline: blue solid thin;
+    outline: blue solid thin;
 }
 #gbox_urlparams
 {
@@ -1452,4 +1452,56 @@ div.translate {
 
 #loginform input[type='text'], #loginform input[type='password'], #loginform select{
     width:230px;
+}
+
+.placeholder {
+    background-color: #cfcfcf;
+}
+
+.ui-nestedSortable-error {
+    background:#fbe3e4;
+    color:#8a1f11;
+}
+
+
+ol.organizer {
+    padding: 0 auto;
+    list-style-type: none;
+    font-weight: bold;
+    width:800px;
+}
+
+ol.organizer ol {
+    list-style-type: none;
+    font-weight: normal;
+    width:750px;
+
+}
+
+ol.organizer {
+    margin: 4em 0;
+}
+
+.organizer li {
+    margin: 10px 0 0 0;
+    padding: 0;
+}
+
+.organizer li ol li{
+    margin: 3px 0 0 0;
+    padding: 0;
+}
+
+
+.organizer li div  {
+    border: 1px solid #D2E0F2;
+    background-color:#D2E0F2;
+    padding: 3px;
+    margin: 0;
+    cursor: move;
+    width:80%;
+}
+
+.organizer li ol li div{
+    background-color:#EEF6FF;
 }
