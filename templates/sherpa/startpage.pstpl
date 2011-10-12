@@ -4,6 +4,8 @@
 			SURVEY: {SURVEYNAME}
 		</title>
 		<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+    
+    	<link rel="stylesheet" type="text/css" href="{TEMPLATEURL}jquery-ui-custom.css" />
 
 		<!-- The following line includes template.css and if an RTL-language is used template-rtl.css -->
         {TEMPLATECSS}

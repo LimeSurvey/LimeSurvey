@@ -708,16 +708,21 @@ select {
   margin-left: 1em;
 }
 
-.date p.question select.day {
-  
+.date p.question select.day {  
 }
 
-.date p.question select.month {
-  
+.date p.question select.month {  
 }
 
-.date p.question select.year {
-  
+.date p.question select.year {  
+}
+
+#ui-datepicker-div {
+	z-index: 2 !important;
+}
+
+#ui-datepicker-div select {
+	min-width: 0;
 }
 
 .date p.tip,.numeric-multi p.tip,.numeric p.tip {
@@ -1025,12 +1030,13 @@ table.rank td.helptext {
   vertical-align: middle;
 }
 
-.ui-slider-handle {
+.numeric-multi .ui-slider-handle {
   position: absolute;
-  height: 23px;
-  width: 12px !important;
-  top: 0px;
-  left: 0px;
+  height: 1.15em;
+  width: 0.8em;
+  top: -0.3em;
+  left: 0;
+  margin-left: -0.5em;
 }
 
 .multinum-slider .ui-state-default {
@@ -1047,13 +1053,6 @@ table.rank td.helptext {
   width: 200px;
   height: 9px;
   margin-bottom: 20px;
-}
-
-.ui-widget-content {
-  border: 1px solid #a6c9e2;
-  background: #123 url(images/ui-bg_inset-hard_100_fcfdfd_1x100.png) 50%
-    bottom repeat-x;
-  color: #222222;
 }
 
 .ui-slider-2 {
@@ -1082,7 +1081,7 @@ table.rank td.helptext {
 .slider_showmin {
   float: left;
   width: 50px;
-  margin: 13px 0 0 0px;
+  margin: 13px 0 0 -0.3em;
   font-family: 'Arial';
   font-size: 0.7em;
   font-weight: normal;
@@ -1093,7 +1092,7 @@ table.rank td.helptext {
 .slider_showmax {
   float: right;
   width: 50px;
-  margin: 13px 0 0 0;
+  margin: 13px -0.3em 0 0;
   font-family: 'Arial';
   font-size: 0.7em;
   font-weight: normal;
