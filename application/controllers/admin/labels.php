@@ -51,7 +51,7 @@
             $importlabelresourcesoutput = "<div class='header ui-widget-header'>".$clang->gT("Import Label Set")."</div>\n";
             $importlabelresourcesoutput .= "<div class='messagebox ui-corner-all'>";
 
-            if ($demoModeOnly === true)
+            if ($this->config->item('demoMode'))
             {
                 $importlabelresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                 $importlabelresourcesoutput .= sprintf ($clang->gT("Demo mode only: Uploading files is disabled in this system."),$basedestdir)."<br /><br />\n";

@@ -87,7 +87,7 @@ function getGlobalSetting($settingname)
 function setGlobalSetting($settingname, $settingvalue)
 {
     $CI =& get_instance();
-    if ($CI->config->item("demoModeOnly")==true && ($settingname=='sitename' || $settingname=='defaultlang' || $settingname=='defaulthtmleditormode' || $settingname=='filterxsshtml'))
+    if ($CI->config->item("demoMode")==true && ($settingname=='sitename' || $settingname=='defaultlang' || $settingname=='defaulthtmleditormode' || $settingname=='filterxsshtml'))
     {
         return; //don't save
     }

@@ -404,7 +404,7 @@ class update extends Admin_Controller {
 	        //$byteswritten=file_put_contents($tempdir.DIRECTORY_SEPARATOR.'db-'.$basefilename.'.sql',completedump());
 			$this->load->dbutil();
 	        $this->load->helper("string");
-			if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoModeOnly') != true) {
+			if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoMode') != true) {
 	            $tables = $this->db->list_tables();
 	            foreach ($tables as $table)
 	            {

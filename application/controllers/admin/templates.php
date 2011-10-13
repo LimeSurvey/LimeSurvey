@@ -58,7 +58,7 @@ class templates extends Admin_Controller {
             $importtemplateoutput = "<div class='header ui-widget-header'>".$clang->gT("Import template")."</div>\n";
             $importtemplateoutput .= "<div class='messagebox ui-corner-all'>";
 
-            if ($this->config->item('demoModeOnly') === true)
+            if ($this->config->item('demoMode'))
             {
                 $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                 $importtemplateoutput .= sprintf ($clang->gT("Demo mode: Uploading templates is disabled."),$basedestdir)."<br/><br/>\n";

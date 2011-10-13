@@ -4352,7 +4352,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 	$emailsmtpdebug = $CI->config->item("emailsmtpdebug");
 	$emailsmtpssl = $CI->config->item("emailsmtpssl");
 	$defaultlang = $CI->config->item("defaultlang");
-	$demoModeOnly = $CI->config->item("demoModeOnly");
 	$emailcharset = $CI->config->item("charset");
 
 
@@ -4360,7 +4359,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     {
         $customheaders=array();
     }
-    if ($demoModeOnly==true)
+    if ($CI->config->item('demoMode'))
     {
         $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
         $maildebugbody='';

@@ -280,7 +280,7 @@ $config['cookie_path']		= '/';
 | COOKIE data is encountered
 |
 */
-$config['global_xss_filtering'] = TRUE; //was FALSE earlier
+$config['global_xss_filtering'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------

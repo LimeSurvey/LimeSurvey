@@ -38,7 +38,7 @@ class Dumpdb extends Admin_Controller {
         $this->load->dbutil();
         $this->load->helper("string");
 
-        if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoModeOnly') != true) {
+        if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoMode') != true) {
 
             $tables = $this->db->list_tables();
 
@@ -89,7 +89,7 @@ class Dumpdb extends Admin_Controller {
 
         $this->load->dbutil();
 
-        if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoModeOnly') != true && $action=='dumpdb') {
+        if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoMode') != true && $action=='dumpdb') {
 
             $export=self::_completedump();
 

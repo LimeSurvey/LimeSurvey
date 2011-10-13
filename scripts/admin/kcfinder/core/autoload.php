@@ -1,16 +1,16 @@
 <?php
-
-/** This file is part of KCFinder project
-  *
-  *      @desc Autoload classes magic function
-  *   @package KCFinder
-  *   @version 2.21
-  *    @author Pavel Tzonkov <pavelc@users.sourceforge.net>
-  * @copyright 2010 KCFinder Project
-  *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
-  *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
-  *      @link http://kcfinder.sunhater.com
-  */
+/*
+* This file is part of KCFinder project
+*
+*      @desc Autoload classes magic function
+*   @package KCFinder
+*   @version 2.21
+*    @author Pavel Tzonkov <pavelc@users.sourceforge.net>
+* @copyright 2010 KCFinder Project
+*   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
+*   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
+*      @link http://kcfinder.sunhater.com
+*/
 
 require_once(dirname(__FILE__).'/../../../../config-defaults.php');
 require_once(dirname(__FILE__).'/../../../../common.php');
@@ -36,19 +36,19 @@ $_SESSION['KCFINDER'] = array();
 
 $sAllowedExtensions = implode(' ',array_map('trim',explode(',',$allowedresourcesuploads)));
 $_SESSION['KCFINDER']['types']=array('files'=>$sAllowedExtensions,
-                                     'flash'=>$sAllowedExtensions,
-                                     'images'=>$sAllowedExtensions);
+'flash'=>$sAllowedExtensions,
+'images'=>$sAllowedExtensions);
 
-if ($demoModeOnly === false &&
-    isset($_SESSION['loginID']) &&
-    isset($_SESSION['FileManagerContext']))
+if ($demoMode === false &&
+isset($_SESSION['loginID']) &&
+isset($_SESSION['FileManagerContext']))
 {
     // disable upload at survey creation time
     // because we don't know the sid yet
     if (preg_match('/^(create|edit):(question|group|answer)/',$_SESSION['FileManagerContext']) != 0 ||
-        preg_match('/^edit:survey/',$_SESSION['FileManagerContext']) !=0 ||
-        preg_match('/^edit:assessments/',$_SESSION['FileManagerContext']) !=0 ||
-        preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
+    preg_match('/^edit:survey/',$_SESSION['FileManagerContext']) !=0 ||
+    preg_match('/^edit:assessments/',$_SESSION['FileManagerContext']) !=0 ||
+    preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
     {
         $contextarray=explode(':',$_SESSION['FileManagerContext'],3);
         $surveyid=$contextarray[2];
@@ -91,6 +91,4 @@ function kcfinder_autoload($class) {
         require "lib/helper_$class.php";
 }
 
-spl_autoload_register('kcfinder_autoload');
-
-?>
+    spl_autoload_register('kcfinder_autoload');

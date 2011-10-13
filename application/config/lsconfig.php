@@ -244,7 +244,7 @@ $config['usercontrolSameGroupPolicy'] = true;
 // for new releases of screen readers.
 $config['addTitleToLinks'] = false;
 
-// $demoModeOnly
+// $demoMode
 // If this option is set to true, then LimeSurvey will go into demo mode.
 // Demo mode disables the following things:
 //
@@ -254,7 +254,7 @@ $config['addTitleToLinks'] = false;
 // * Disables doing a database dump
 // * Disables the ability to save the following global settings: Site name, Default language, Default Htmleditor Mode, XSS filter
 
-$config['demoModeOnly'] = false;
+$config['demoMode'] = false;
 
 /** -----------------------------------------------------
  * Because columns are tricky things, in terms of balancing visual

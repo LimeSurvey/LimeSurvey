@@ -149,7 +149,7 @@ class survey extends Survey_Common_Controller {
             $importsurveyresourcesoutput = "<div class='header ui-widget-header'>".$clang->gT("Import survey resources")."</div>\n";
             $importsurveyresourcesoutput .= "<div class='messagebox ui-corner-all'>";
 
-            if ($demoModeOnly === true)
+            if ($this->config->item('demoMode'))
             {
                 $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                 $importsurveyresourcesoutput .= $clang->gT("Demo Mode Only: Uploading file is disabled in this system.")."<br /><br />\n";

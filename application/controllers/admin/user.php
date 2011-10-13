@@ -397,7 +397,7 @@ class user extends Survey_Common_Controller {
 	    $sresultcount = $sresult->num_rows();
 
 	    if(($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $postuserid == $this->session->userdata('loginID') ||
-	    ($sresultcount > 0 && $this->session->userdata('USER_RIGHT_CREATE_USER'))) && !($this->config->item("demoModeOnly") == true && $postuserid == 1)
+	    ($sresultcount > 0 && $this->session->userdata('USER_RIGHT_CREATE_USER'))) && !($this->config->item("demoMode") == true && $postuserid == 1)
 	    )
 	    {
 	        $users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');

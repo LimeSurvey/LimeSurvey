@@ -51,9 +51,9 @@
 
         <div id='general'>
             <ul>
-                <li><label for='sitename'><?php echo $clang->gT("Site name:").(($this->config->item("demoModeOnly")==true)?'*':'');?></label>
+                <li><label for='sitename'><?php echo $clang->gT("Site name:").(($this->config->item("demoMode")==true)?'*':'');?></label>
                     <input type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars(getGlobalSetting('sitename'));?>" /></li>
-                <li><label for='defaultlang'><?php echo $clang->gT("Default site language:").(($this->config->item("demoModeOnly")==true)?'*':'');?></label>
+                <li><label for='defaultlang'><?php echo $clang->gT("Default site language:").(($this->config->item("demoMode")==true)?'*':'');?></label>
                     <select name='defaultlang' id='defaultlang'>
                         <?php
                             $actuallang=getGlobalSetting('defaultlang');
@@ -88,7 +88,7 @@
 
 
                 <?php $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode'); ?>
-                <li><label for='defaulthtmleditormode'><?php echo $clang->gT("Default HTML editor mode:").(($this->config->item("demoModeOnly")==true)?'*':'');?></label>
+                <li><label for='defaulthtmleditormode'><?php echo $clang->gT("Default HTML editor mode:").(($this->config->item("demoMode")==true)?'*':'');?></label>
                     <select name='defaulthtmleditormode' id='defaulthtmleditormode'>
                         <option value='default'
                             <?php if ($thisdefaulthtmleditormode=='default') { echo "selected='selected'";} ?>
@@ -247,7 +247,7 @@
                     </select></li>
 
                 <?php $thisfilterxsshtml=getGlobalSetting('filterxsshtml'); ?>
-                <li><label for='filterxsshtml'><?php echo $clang->gT("Filter HTML for XSS:").(($this->config->item("demoModeOnly")==true)?'*':'');?></label>
+                <li><label for='filterxsshtml'><?php echo $clang->gT("Filter HTML for XSS:").(($this->config->item("demoMode")==true)?'*':'');?></label>
                     <select id='filterxsshtml' name='filterxsshtml'>
                         <option value='1'
                             <?php if ( $thisfilterxsshtml == true) { echo " selected='selected'";}?>
@@ -373,7 +373,7 @@
 </div>
 
 <p><input type='button' onclick='$("#frmglobalsettings").submit();' class='standardbtn' value='<?php echo $clang->gT("Save settings");?>' /><br /></p>
-<?php if ($this->config->item("demoModeOnly")==true)
+<?php if ($this->config->item("demoMode")==true)
     { ?>
     <p><?php echo $clang->gT("Note: Demo mode is activated. Marked (*) settings can't be changed.");?></p>
     <?php } ?>
