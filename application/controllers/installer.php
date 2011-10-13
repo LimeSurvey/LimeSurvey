@@ -714,7 +714,7 @@ class Installer extends CI_Controller {
                     switch ($dbtype){
                         case 'mysql':
                         case 'mysqli':
-                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`, `create_user` , `delete_user` , `superadmin` , `configurator` , `manage_template` , `manage_label`) VALUES (\''.$defaultuser.'\', \''.$password_hash.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1)');
+                            $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'users` (`users_name`, `password`, `full_name`, `parent_id`, `lang` ,`email`, `create_survey`, `create_user`, `participant_panel` , `delete_user` , `superadmin` , `configurator` , `manage_template` , `manage_label`) VALUES (\''.$defaultuser.'\', \''.$password_hash.'\', \''.$siteadminname.'\', 0, \''.$defaultlang.'\', \''.$siteadminemail.'\', 1,1,1,1,1,1,1,1)');
                             // Default global settings
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global` (`stg_name`,`stg_value`) VALUES (\'sitename\', \''.$sitename.'\')');
                             $connect->Execute('INSERT INTO `'.$this->session->userdata("dbprefix").'settings_global` (`stg_name`,`stg_value`) VALUES (\'siteadminname\', \''.$siteadminname.'\')');
