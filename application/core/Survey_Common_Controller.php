@@ -119,6 +119,7 @@
                     {
                         $aAttribute['value']=$aAttribute['options'][$aAttribute['value']];
                     }
+                    /*
                     if ($aAttribute['name']=='relevance')
                     {
                         $sRelevance = $aAttribute['value'];
@@ -128,8 +129,18 @@
                             $aAttribute['value']= LimeExpressionManager::GetLastPrettyPrintExpression();
                         }
                     }
+                     */
                     $DisplayArray[]=$aAttribute;
                 }
+            }
+            if (is_null($qrrow['relevance']) || trim($qrrow['relevance']) == '')
+            {
+                $data['relevance'] = 1;
+            }
+            else
+            {
+                LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $data['qid']);    // tests Relevance equation so can pretty-print it
+                $data['relevance'] = LimeExpressionManager::GetLastPrettyPrintExpression();
             }
             $data['advancedsettings']=$DisplayArray;
 

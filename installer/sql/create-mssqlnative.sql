@@ -191,6 +191,7 @@ CREATE TABLE [prefix_questions] (
   [language] VARCHAR(20) default 'en',
   [scale_id] tinyint NOT NULL default '0',
   [same_default] tinyint NOT NULL default '0',
+  [relevance] varchar(max),
   PRIMARY KEY  ([qid],[language])
 ) 
 ;
@@ -544,6 +545,6 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '149');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '150');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 

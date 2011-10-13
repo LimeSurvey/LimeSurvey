@@ -54,7 +54,7 @@ class Question_attributes_model extends CI_Model {
         $query = "select distinct qid, attribute, value"
                 ." from ".$this->db->dbprefix('question_attributes')
                 ." where " . $where
-                ." attribute in ('hidden', 'relevance')"
+                ." attribute in ('hidden')"
                 ." order by qid, attribute";
         
 		$data = $this->db->query($query);

@@ -737,8 +737,8 @@ class Database extends Admin_Controller {
                                         'help' => $_POST['help_'.$qlang],
                                         'gid' => $gid,
                                         'other' => $_POST['other'],
-                                        'mandatory' => $_POST['mandatory']
-
+                                        'mandatory' => $_POST['mandatory'],
+                                        'relevance' => $_POST['relevance'],
                                         );
 
                                 if ($oldgid!=$gid)

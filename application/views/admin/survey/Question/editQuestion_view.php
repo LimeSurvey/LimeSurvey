@@ -164,6 +164,10 @@ var imgurl = '<?php echo $this->config->item('imageurl'); ?>';
              />
             </li>
 
+            <div class='settingrow'><span class='settingcaption'><?php $clang->eT("Relevance equation:"); ?></span>
+            <span class='settingentry'><textarea cols='50' rows='1' name='relevance'><?php echo $eqrow['relevance']; ?></textarea>
+            </span></div>   
+
             <li id='Validation'>
             <label for='preg'><?php $clang->eT("Validation:"); ?></label>
             <input type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />

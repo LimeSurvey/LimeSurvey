@@ -268,7 +268,7 @@
 		$inputnames=array();
 		$groupUnconditionnalQuestionsCount=array();
 
-        LimeExpressionManager::StartProcessingPage(true,true);  // means that all variables are on the same page
+        LimeExpressionManager::StartProcessingPage(false,true,true);  // means that all variables are on the same page
 
 		global $gl;
 		foreach ($_SESSION['grouplist'] as $gl)

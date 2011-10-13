@@ -131,12 +131,13 @@ class Question_format {
 		$conditionforthisquestion=$ia[7];
 		$questionsSkipped=0;
 
-        LimeExpressionManager::StartProcessingPage();
+        LimeExpressionManager::StartProcessingPage($thissurvey['allowjumps']=='Y');
         LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
         // Skip questions that are irrelevant
         if (isset($qidattributes['relevance']))
         {
             $relevant = LimeExpressionManager::ProcessRelevance($qidattributes['relevance']);
+//            $relevant = LimeExpressionManager::QuestionIsRelevant($ia[0]);
             if (!$relevant) {
                 // TODO skip the question - need more elegant solution
                 echo 'IRRELEVANT QUESTION!';

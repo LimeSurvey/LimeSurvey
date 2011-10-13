@@ -25,6 +25,19 @@ class LimeExpressionManager {
     private $pageTailoringLog;  // Debug log of tailorings done on this page
     private $surveyLogicFile;   // Shows current configuration and data from most recent $fieldmap
 
+    private $maxGroup;  // ID of the maximum group reached
+    private $questionId2questionSeq;    // map question # to an incremental count of question order across the whole survey
+    private $questionId2groupSeq;   // map question  # to the group it is within, using an incremental count of group order
+
+    private $gid2relevanceStatus;   // tracks which groups have at least one relevant, non-hidden question
+
+    private $questionSeq2relevance; // keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
+    private $currentGroupSeq;
+    private $maxGroupSeq;  // the maximum groupSeq reached -  this is needed for Index
+    private $navigationIndex=false; // whether to build an index showing groups that have relevant questions // TODO - color code whether any visible questions are unanswered?
+
+    private $runtimeTimings;
+
     // A private constructor; prevents direct creation of object
     private function __construct()
     {
@@ -46,6 +59,21 @@ class LimeExpressionManager {
     public function __clone()
     {
         trigger_error('Clone is not allowed.', E_USER_ERROR);
+    }
+
+    public static function UpgradeRelevanceAttributeToQuestion()
+    {
+        $CI =& get_instance();
+        $data = $CI->db->where('attribute','relevance')->select('qid')->select('value')->get('question_attributes');
+
+        $queries = array();
+        foreach($data->result_array() as $row)
+        {
+            $info['relevance'] = $row['value'];
+            $CI->db->where('qid',$row['qid'])->update('questions',$info);
+            $queries[] = $CI->db->last_query();
+        }
+        return $queries;
     }
 
     /**
@@ -262,8 +290,7 @@ class LimeExpressionManager {
 
     public function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
     {
-        // TODO - this is called multiple times per page - can it be reduced to once per page?
-        log_message('debug','Start LEM::setVariableAndTokenMappingsForExpressionManager');
+        $now = microtime(true);
         $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
         if (!isset($fieldmap)) {
             return false; // implies an error occurred
@@ -275,6 +302,9 @@ class LimeExpressionManager {
         $this->jsVar2qid = array();
         $this->alias2varName = array();
         $this->varNameAttr = array();
+        $this->questionId2questionSeq = array();
+        $this->questionId2groupSeq = array();
+        $this->questionSeq2relevance = array();
 
         $CI =& get_instance();
         $clang = $CI->limesurvey_lang;
@@ -320,9 +350,32 @@ class LimeExpressionManager {
 
             $questionId = $fieldNameParts[2];
             $questionNum = $fielddata['qid'];
-            $relevance = (isset($qattr[$questionNum]['relevance'])) ? $qattr[$questionNum]['relevance'] : 1;
+//            $relevance = (isset($qattr[$questionNum]['relevance'])) ? $qattr[$questionNum]['relevance'] : 1;
+            $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
             $hidden = (isset($qattr[$questionNum]['hidden'])) ? $qattr[$questionNum]['hidden'] : 'N';
             $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
+
+            if (isset($this->questionId2groupSeq[$questionNum])) {
+                $groupSeq = $this->questionId2groupSeq[$questionNum];
+            }
+            else {
+                $groupSeq = (isset($fielddata['groupSeq'])) ? $fielddata['groupSeq'] : -1;
+                $this->questionId2groupSeq[$questionNum] = $groupSeq;
+            }
+
+            if (isset($this->questionId2questionSeq[$questionNum])) {
+                $questionSeq = $this->questionId2questionSeq[$questionNum];
+            }
+            else {
+                $questionSeq = (isset($fielddata['questionSeq'])) ? $fielddata['questionSeq'] : -1;
+                $this->questionId2questionSeq[$questionNum] = $questionSeq;
+            }
+            if ($groupNum == $this->groupNum) {
+                $this->currentGroupSeq = $groupSeq;
+            }
+            if ($groupNum == $this->maxGroup) {
+                $this->maxGroupSeq = $groupSeq;
+            }
 
             // Create list of codes associated with each question
             $codeList = (isset($this->qid2code[$questionNum]) ? $this->qid2code[$questionNum] : '');
@@ -337,12 +390,14 @@ class LimeExpressionManager {
             $this->qid2code[$questionNum] = $codeList;
 
             // Check off-page relevance status
+            /*
             if (isset($_SESSION['relevanceStatus'])) {
-                $relStatus = (isset($_SESSION['relevanceStatus'][$questionId]) ? $_SESSION['relevanceStatus'][$questionId] : 1);
+                $relStatus = (isset($_SESSION['relevanceStatus'][$questionId]) ? $_SESSION['relevanceStatus'][$questionId] : 2);
             }
             else {
-                $relStatus = 1;
+                $relStatus = 2;
             }
+             */
 
             $readWrite = 'N';
 
@@ -523,9 +578,25 @@ class LimeExpressionManager {
                 'qid'=>$questionNum,
                 'relevance'=>$relevance,
                 'relevanceNum'=>'relevance' . $questionNum,
-                'relevanceStatus'=>$relStatus,
+//                'relevanceStatus'=>$relStatus,
                 'qcode'=>$varName,
+                'questionSeq'=>$questionSeq,
+                'groupSeq'=>$groupSeq,
+                'type'=>$type,
                 );
+
+            $this->questionSeq2relevance[$questionSeq] = array(
+                'relevance'=>$relevance,
+//                'relevanceStatus'=>$relStatus,
+                'qid'=>$questionNum,
+                'questionSeq'=>$questionSeq,
+                'groupSeq'=>$groupSeq,
+                'jsResultVar'=>$jsVarName,
+                'type'=>$type,
+                'hidden'=>$hidden,
+                'gid'=>$groupNum,
+                );
+
             $this->knownVars[$varName] = $varInfo_Code;
             $this->knownVars['INSERTANS:' . $code] = $varInfo_Code; // $varInfo_DisplayVal;
             $this->knownVars[$code] = $varInfo_Code;
@@ -602,7 +673,7 @@ class LimeExpressionManager {
                     'readWrite'=>'N',
                     'isOnCurrentPage'=>'N',
                     'relevanceNum'=>'',
-                    'relevanceStatus'=>'1',
+//                    'relevanceStatus'=>'1',
                     );
 
                 if ($this->debugLEM)
@@ -632,7 +703,7 @@ class LimeExpressionManager {
                     'readWrite'=>'N',
                     'isOnCurrentPage'=>'N',
                     'relevanceNum'=>'',
-                    'relevanceStatus'=>'1',
+//                    'relevanceStatus'=>'1',
                     );
             $this->knownVars['TOKEN:FIRSTNAME'] = $blankVal;
             $this->knownVars['TOKEN:LASTNAME'] = $blankVal;
@@ -644,6 +715,7 @@ class LimeExpressionManager {
             }
         }
 
+        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
         if ($this->debugLEM)
         {
             $debugLog_html = "<table border='1'>";
@@ -666,8 +738,122 @@ class LimeExpressionManager {
             $debugLog_html .= "</table>";
             $this->surveyLogicFile = $debugLog_html;
         }
-        log_message('debug','Finish LEM::setVariableAndTokenMappingsForExpressionManager');
         return true;
+    }
+
+    static function QuestionIsRelevant($qid)
+    {
+        if (isset($_SESSION['relevanceStatus'][$qid])) {
+            return $_SESSION['relevanceStatus'][$qid];
+        }
+        return trues;    // TODO - is this the right default?
+    }
+
+    static function GroupIsRelevant($gid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if (isset($LEM->gid2relevanceStatus[$gid])) {
+            return $LEM->gid2relevanceStatus[$gid];
+        }
+        else {
+            return true;    // TODO correct default?
+        }
+    }
+
+/**
+ * Used by usort() to order $this->questionSeq2relevance in proper order
+ * @param <type> $a
+ * @param <type> $b
+ * @return <type>
+ */
+    function cmpQuestionSeq($a, $b)
+    {
+        if (is_null($a['questionSeq'])) {
+            if (is_null($b['questionSeq'])) {
+                return 0;
+            }
+            return 1;
+        }
+        if (is_null($b['questionSeq'])) {
+            return -1;
+        }
+        if ($a['questionSeq'] == $b['questionSeq']) {
+            return 0;
+        }
+        return ($a['questionSeq'] < $b['questionSeq']) ? -1 : 1;
+    }
+
+    /**
+     * (1) If using index, check all 
+     */
+    function ProcessAllNeededRelevance()
+    {
+        $now = microtime(true);
+
+        // TODO - refactor this to not call a static function
+        $this->gid2relevanceStatus = array();
+        $_groupSeq = -1;
+        usort($this->questionSeq2relevance,'self::cmpQuestionSeq');
+        foreach($this->questionSeq2relevance as $rel)
+        {
+            $qid = $rel['qid'];
+            if ($this->allOnOnePage) {
+                ;   // process relevance for all questions
+            }
+            else {
+                $gid = $rel['gid'];
+                $groupSeq = $rel['groupSeq'];
+
+                if ($groupSeq > $this->maxGroupSeq) {
+                    break;   // break out of loop
+                }
+                if (!$this->navigationIndex) {
+                    if ($groupSeq > $this->currentGroupSeq) {
+                        break;
+                    }
+                    if ($groupSeq < $this->currentGroupSeq) {
+                        continue;
+                    }
+                }
+                else {
+                    if  ($groupSeq != $_groupSeq) {
+                        $_groupSeq = $groupSeq;   // if new group, then reset status flags
+                        $_groupSeqVisibility=false;
+                        $this->gid2relevanceStatus[$gid]=false;    // default until found to be true
+                    }
+
+                    // TODO - augment this to show color coding for whether there are unanswered questions?
+                    if ($groupSeq < $this->currentGroupSeq || $groupSeq > $this->currentGroupSeq) {
+                        // only process until know there is at least one non-hidden relevant question to answer
+                        // TODO - is this valid logic?
+                        //  - if prior-page relevance can change based upon subsequent values, then question and group-level relevance status may change
+                        //  - if that is a concern, should re-compute relevance for all questions each page flip
+                        if ($_groupSeqVisibility == true) {
+                            continue;   // if at least one in the group is visible, then skip relevance check
+                        }
+                        else {
+                            $result = LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES));
+                            $_SESSION['relevanceStatus'][$qid] = $result;   // is this needed?  YES, if trying to tailor using a question that was irrelevant on prior page
+                            $this->gid2relevanceStatus[$gid]=true;
+                            continue;
+                        }
+                    }
+                    else {
+                        ;   // current group, so process this one
+                    }
+                }
+            }
+
+            $result = LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES),
+                    $qid,
+                    $rel['jsResultVar'],
+                    $rel['type'],
+                    $rel['hidden']
+                    );
+            $_SESSION['relevanceStatus'][$qid] = $result;
+        }
+        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+//        log_message('debug',print_r($_SESSION['relevanceStatus'],true));
     }
 
     /**
@@ -682,6 +868,7 @@ class LimeExpressionManager {
 
     static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false)
     {
+        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
         if ($noReplacements) {
@@ -702,7 +889,15 @@ class LimeExpressionManager {
             }
             $LEM->em->RegisterVarnamesUsingMerge($replaceArray);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
         }
-        $result = $LEM->em->sProcessStringContainingExpressions(htmlspecialchars_decode($string,ENT_QUOTES),(is_null($questionNum) ? 0 : $questionNum), $numRecursionLevels, $whichPrettyPrintIteration);
+        $questionSeq = -1;
+        $groupSeq = -1;
+        if (!is_null($questionNum)) {
+            $questionSeq = isset($LEM->questionId2questionSeq[$questionNum]) ? $LEM->questionId2questionSeq[$questionNum] : -1;
+            $groupSeq = isset($LEM->questionId2groupSeq[$questionNum]) ? $LEM->questionId2groupSeq[$questionNum] : -1;
+        }
+        $result = $LEM->em->sProcessStringContainingExpressions(htmlspecialchars_decode($string,ENT_QUOTES),is_null($questionNum) ? 0 : $questionNum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq);
+
+        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
         if ($LEM->debugLEM)
         {
@@ -740,21 +935,31 @@ class LimeExpressionManager {
             );
             return true;
         }
-        $result = $LEM->em->ProcessBooleanExpression(htmlspecialchars_decode($eqn,ENT_QUOTES));
-        $jsVars = $LEM->em->GetJSVarsUsed();
-        $relevanceVars = implode('|',$LEM->em->GetJSVarsUsed());
-        $relevanceJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
-        $LEM->groupRelevanceInfo[] = array(
-            'qid' => $questionNum,
-            'eqn' => $eqn,
-            'result' => $result,
-            'numJsVars' => count($jsVars),
-            'relevancejs' => $relevanceJS,
-            'relevanceVars' => $relevanceVars,
-            'jsResultVar' => $jsResultVar,
-            'type'=>$type,
-            'hidden'=>$hidden,
-        );
+        $questionSeq = -1;
+        $groupSeq = -1;
+        if (!is_null($questionNum)) {
+            $questionSeq = isset($LEM->questionId2questionSeq[$questionNum]) ? $LEM->questionId2questionSeq[$questionNum] : -1;
+            $groupSeq = isset($LEM->questionId2groupSeq[$questionNum]) ? $LEM->questionId2groupSeq[$questionNum] : -1;
+        }
+
+        $result = $LEM->em->ProcessBooleanExpression(htmlspecialchars_decode($eqn,ENT_QUOTES),$groupSeq, $questionSeq);
+
+        if (!is_null($questionNum)) {
+            $jsVars = $LEM->em->GetJSVarsUsed();
+            $relevanceVars = implode('|',$LEM->em->GetJSVarsUsed());
+            $relevanceJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
+            $LEM->groupRelevanceInfo[] = array(
+                'qid' => $questionNum,
+                'eqn' => $eqn,
+                'result' => $result,
+                'numJsVars' => count($jsVars),
+                'relevancejs' => $relevanceJS,
+                'relevanceVars' => $relevanceVars,
+                'jsResultVar' => $jsResultVar,
+                'type'=>$type,
+                'hidden'=>$hidden,
+            );
+        }
         return $result;
     }
 
@@ -768,8 +973,9 @@ class LimeExpressionManager {
         return $LEM->em->GetLastPrettyPrintExpression();
     }
 
-    static function StartProcessingPage($debug=true,$allOnOnePage=false)
+    static function StartProcessingPage($navigationIndex=false,$allOnOnePage=false,$debug=true)
     {
+        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
         $LEM->pageRelevanceInfo=array();
         $LEM->pageTailorInfo=array();
@@ -778,6 +984,9 @@ class LimeExpressionManager {
         $LEM->allOnOnePage=$allOnOnePage;
         $LEM->pageTailoringLog='';
         $LEM->surveyLogicFile='';
+        $LEM->navigationIndex=$navigationIndex;
+
+        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
         if ($debug && $LEM->debugLEM)
         {
@@ -787,11 +996,16 @@ class LimeExpressionManager {
 
     static function StartProcessingGroup($groupNum=NULL,$anonymized=false,$surveyid=NULL)
     {
+        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
         $LEM->em->StartProcessingGroup();
+        $LEM->groupRelevanceInfo = array();
         if (!is_null($groupNum))
         {
             $LEM->groupNum = $groupNum;
+            if ($groupNum > $LEM->maxGroup) {
+                $LEM->maxGroup = $groupNum;
+            }
             $LEM->qid2code = array();   // List of codes for each question - needed to know which to NULL if a question is irrelevant
             $LEM->jsVar2qid = array();
 
@@ -799,23 +1013,27 @@ class LimeExpressionManager {
             {
                 // means that some values changed, so need to update what was registered to ExpressionManager
                 $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
+                $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
             }
         }
-        $LEM->groupRelevanceInfo = array();
     }
 
     static function FinishProcessingGroup()
     {
+        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
         $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
         $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
+        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
     }
 
     static function FinishProcessingPage()
     {
+        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
         $_SESSION['EM_pageTailoringLog'] = $LEM->pageTailoringLog;
         $_SESSION['EM_surveyLogicFile'] = $LEM->surveyLogicFile;
+        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
     }
 
     static function ShowLogicFile()
@@ -840,6 +1058,7 @@ class LimeExpressionManager {
      */
     static function GetRelevanceAndTailoringJavaScript()
     {
+        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
         $knownVars = $LEM->knownVars;
@@ -1037,6 +1256,13 @@ class LimeExpressionManager {
                 $jsParts[] = "<input type='hidden' id='relevance" . $qid . "codes' name='relevance" . $qid . "codes' value='" . $LEM->qid2code[$qid] . "'/>\n";
             }
         }
+        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+//        log_message('debug',print_r($LEM->runtimeTimings,true));
+        $totalTime = 0.;
+        foreach($LEM->runtimeTimings as $unit) {
+            $totalTime += $unit[1];
+        }
+        log_message('debug','Total time attributable to EM = ' . $totalTime);
 
         return implode('',$jsParts);
     }
@@ -1048,17 +1274,17 @@ class LimeExpressionManager {
     {
         $vars = array(
 //'name' => array('codeValue'=>'"<Sergei>\'', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
-'name' => array('codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y', 'question'=>'What is your first/given name?'),
-'surname' => array('codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'question'=>'What is your last/surname?'),
-'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'question'=>'How old are you?'),
-'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'3'),
-'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N','question'=>'How many pets do you have?'),
-'gender' => array('codeValue'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'shown'=>'Male','question'=>'What is your gender (male/female)?'),
+'name' => array('codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'question'=>'What is your first/given name?', 'questionSeq'=>10, 'groupSeq'=>1),
+'surname' => array('codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'question'=>'What is your last/surname?', 'questionSeq'=>20, 'groupSeq'=>1),
+'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'question'=>'How old are you?', 'questionSeq'=>30, 'groupSeq'=>2),
+'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','questionSeq'=>40, 'groupSeq'=>2),
+'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y','question'=>'How many pets do you have?', 'questionSeq'=>50, 'groupSeq'=>2),
+'gender' => array('codeValue'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'questionSeq'=>110, 'groupSeq'=>3),
 // Constants
-'INSERTANS:61764X1X1'   => array('codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y'),
-'INSERTANS:61764X1X2'   => array('codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y'),
-'INSERTANS:61764X1X3'   => array('codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:61764X1X4'   => array('codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:61764X1X1'   => array('codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y', 'questionSeq'=>70, 'groupSeq'=>2),
+'INSERTANS:61764X1X2'   => array('codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y', 'questionSeq'=>80, 'groupSeq'=>2),
+'INSERTANS:61764X1X3'   => array('codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'questionSeq'=>15, 'groupSeq'=>1),
+'INSERTANS:61764X1X4'   => array('codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'questionSeq'=>100, 'groupSeq'=>3),
 'TOKEN:ATTRIBUTE_1'     => array('codeValue'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
         );
 
@@ -1116,11 +1342,22 @@ EOST;
         $LEM =& LimeExpressionManager::singleton();
         $LEM->em->RegisterVarnamesUsingMerge($vars);
 
+        $LEM->questionId2questionSeq = array();
+        $LEM->questionId2groupSeq = array();
+        $_SESSION['relevanceStatus'] = array();
+        foreach ($vars as $var) {
+            if (isset($var['questionSeq'])) {
+                $LEM->questionId2questionSeq[$var['questionSeq']] = $var['questionSeq'];
+                $LEM->questionId2groupSeq[$var['questionSeq']] = $var['groupSeq'];
+                $_SESSION['relevanceStatus'][$var['questionSeq']] = 1;
+            }
+        }
+
         print '<table border="1"><tr><th>Test</th><th>Result</th></tr>';    // <th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
         for ($i=0;$i<count($alltests);++$i)
         {
             $test = $alltests[$i];
-            $result = LimeExpressionManager::ProcessString($test, $i, NULL, false, 1, 1);
+            $result = LimeExpressionManager::ProcessString($test, 40, NULL, false, 1, 1);
             $prettyPrint = LimeExpressionManager::GetLastPrettyPrintExpression();
             print "<tr><td>" . $prettyPrint . "</td>\n";
             print "<td>" . $result . "</td>\n";
@@ -1161,22 +1398,39 @@ EOT;
         $testArgs = array();
         $argInfo = array();
 
+        $LEM =& LimeExpressionManager::singleton();
+
+
+        LimeExpressionManager::StartProcessingPage(false,true,true);
+        LimeExpressionManager::StartProcessingGroup();
+
         // collect variables
         $i=0;
+//        $LEM->questionId2questionSeq = array();
+//        $LEM->questionId2groupSeq = array();
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
-            $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'relevanceNum'=>'relevance' . $i++, 'relevanceStatus'=>'1');
+            $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'relevanceNum'=>'relevance' . $i, 'relevanceStatus'=>'1','groupSeq'=>1, 'questionSeq'=>$i);
             $varSeq[] = $args[0];
             $testArgs[] = $args;
+            $LEM->questionId2questionSeq[$i] = $i;
+            $LEM->questionId2groupSeq[$i] = 1;
+            $LEM->questionSeq2relevance[$i] = array(
+                'relevance'=>htmlspecialchars(preg_replace('/[[:space:]]/',' ',$args[1]),ENT_QUOTES),
+                'qid'=>$i,
+                'questionSeq'=>$i,
+                'groupSeq'=>1,
+                'jsResultVar'=>'java_' . $args[0],
+                'type'=>(($args[1]=='expr') ? '*' : ($args[1]=='message') ? 'X' : 'S'),
+                'hidden'=>0,
+                'gid'=>1,
+                );
+            ++$i;
         }
 
-        LimeExpressionManager::StartProcessingPage(true,true);
-
-        LimeExpressionManager::StartProcessingGroup();
-
-        $LEM =& LimeExpressionManager::singleton();
         $LEM->em->RegisterVarnamesUsingMerge($vars);
+        $LEM->ProcessAllNeededRelevance();
 
         // collect relevance
         $alias2varName = array();
@@ -1185,7 +1439,8 @@ EOT;
         {
             $testArg = $testArgs[$i];
             $var = $testArg[0];
-            $rel = LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1],ENT_QUOTES),$i,$var);
+//            $rel = LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1],ENT_QUOTES),$i,$var);
+            $rel = LimeExpressionManager::QuestionIsRelevant($i);
             $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
             $jsVarName='java_' . $testArg[0];
@@ -1208,6 +1463,7 @@ EOT;
         $LEM->alias2varName = $alias2varName;
         $LEM->varNameAttr = $varNameAttr;
         LimeExpressionManager::FinishProcessingGroup();
+        LimeExpressionManager::FinishProcessingPage();
 
         print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
@@ -1215,7 +1471,8 @@ EOT;
         print "<table border='1'><tr><td>";
         foreach ($argInfo as $arg)
         {
-            $rel = $arg['relevanceStatus'];
+//            $rel = $arg['relevanceStatus'];
+            $rel = LimeExpressionManager::QuestionIsRelevant($arg['num']);
             print "<div id='question" . $arg['num'] . (($rel) ? "'" : "' style='display: none'") . ">\n";
             print "<input type='hidden' id='display" . $arg['num'] . "' name='" . $arg['num'] .  "' value='" . (($rel) ? 'on' : '') . "'/>\n";
             print "<input type='hidden' id='relevance" . $arg['num'] . "' name='" . $arg['num'] . "' value='" . $rel . "'/>\n";

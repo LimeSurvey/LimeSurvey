@@ -289,6 +289,7 @@ function makelanguagechanger()
 
 function checkgroupfordisplay($gid,$anonymized,$surveyid)
 {
+    return LimeExpressionManager::GroupIsRelevant($gid);
     //This function checks all the questions in a group to see if they have
     //conditions, and if the do - to see if the conditions are met.
     //If none of the questions in the group are set to display, then

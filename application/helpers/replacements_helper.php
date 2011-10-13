@@ -72,7 +72,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
         }
     }
     if (count($varsPassed) > 0) {
-        log_message('debug', 'templatereplace() called from ' . $debugSrc . ' contains: ' . implode(', ', $varsPassed));
+//        log_message('debug', 'templatereplace() called from ' . $debugSrc . ' contains: ' . implode(', ', $varsPassed));
     }
     //    extract($redata);   // creates variables for each of the keys in the array
 

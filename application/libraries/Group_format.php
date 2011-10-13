@@ -127,6 +127,7 @@ class Group_format {
 
 		    if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 		    {
+                // TMW - fix navigation here
 		        while(isset($_SESSION['grouplist'][$_SESSION['step']-1]) && checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0],($thissurvey['anonymized']!='N'),$thissurvey['sid']) === false)
 		        {
 		            if ($_SESSION['prevstep'] > $_SESSION['step'])
@@ -418,7 +419,7 @@ class Group_format {
 
 		$qnumber = 0;
         //This re-starts the group, after checking relevance, so get consistent and unduplcated set of replacement functions
-        LimeExpressionManager::StartProcessingPage();
+        LimeExpressionManager::StartProcessingPage($thissurvey['allowjumps']=='Y');
         LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
 
 		foreach ($_SESSION['fieldarray'] as $key=>$ia)
@@ -1288,10 +1289,11 @@ END;
 
 		        if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
                 // Hide Equations of attribute set to always hide them, yet unlike other questions, do include the answer fields.
-                $eqnAttributes = getQuestionAttributeValues($qa[4], $qa[8]);
-                $hidden = (isset($eqnAttributes['hidden']) ? $eqnAttributes['hidden'] : 0);
+//                $eqnAttributes = getQuestionAttributeValues($qa[4], $qa[8]);
+//                $hidden = (isset($eqnAttributes['hidden']) ? $eqnAttributes['hidden'] : 0);
                 // Want to make the question invisible and have save.php blank out the value if it is irrelevant
-                if (isset($eqnAttributes['relevance']) && !LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance'],$qa[4],$qa[5],$qa[8],$hidden))
+//                if (isset($eqnAttributes['relevance']) && !LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance'],$qa[4],$qa[5],$qa[8],$hidden))
+                if (!LimeExpressionManager::QuestionIsRelevant($qa[4]))
                 {
                     $n_q_display = ' style="display: none;"';;
                 }

@@ -188,14 +188,16 @@
             <tr><td align='right' valign='top'><strong>
             <?php echo $clang->gT("Question:"); ?></strong></td><td align='left'>
             <?php
-                templatereplace($qrrow['question']);
+                $junk = array();
+                templatereplace($qrrow['question'],NULL,$junk,'',false,$qid);
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
                 ?></td></tr>
             <tr><td align='right' valign='top'><strong>
             <?php echo $clang->gT("Help:"); ?></strong></td><td align='left'>
             <?php
                 if (trim($qrrow['help'])!=''){
-                    templatereplace($qrrow['help']);
+                    $junk = array();
+                    templatereplace($qrrow['help'],NULL,$junk,'',false,$qid);
                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
                     } ?>
             </td></tr>
@@ -257,6 +259,10 @@
 
                 <?php } ?>
                 </td></tr>
+                <tr>
+                    <td><?php echo $clang->gt("Relevance equation:"); ?></td>
+                    <td><?php echo $relevance; ?></td>
+                </tr>
             <?php }
             if (!is_null($condarray))
             { ?>

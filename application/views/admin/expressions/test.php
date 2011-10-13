@@ -55,6 +55,10 @@ and open the template in the editor.
                 <td><a href="<?php echo site_url("admin/expressions/test/revert_upgrade_conditions2relevance");?>"><span style='background-color: red;'>**</span>Revert of Upgrade Conditions to Relevance</a></td>
                 <td><span style='color: red;'>CAUTION: This function changes your database.</span> This deletes the relevance attribute for all questions that have Conditions (to avoid having run-time clashes between relevance and conditions)  This function will be removed once the back-end conditions processing is removed and testing is complete.</td>
             </tr>
+            <tr>
+                <td><a href="<?php echo site_url("admin/expressions/test/upgrade_relevance_location");?>"><span style='background-color: red;'>**</span>Move Relevance from Attribute to Question</a></td>
+                <td><span style='color: red;'>CAUTION: This function changes your database.</span> This function copies existing relevance from Question Attribute to Question model.  This function will be removed once the back-end conditions processing is removed and testing is complete.</td>
+            </tr>
         </table>
     </body>
 </html>

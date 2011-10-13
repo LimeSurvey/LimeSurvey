@@ -15,7 +15,7 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    private static $regex_var_attr = 'codeValue|code|displayValue|isOnCurrentPage|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type';
+    private static $regex_var_attr = 'codeValue|code|displayValue|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type';
 
     // These three variables are effectively static once constructed
     private $sExpressionRegex;
@@ -43,6 +43,9 @@ class ExpressionManager {
     private $substitutionNum; // Keeps track of number of substitions performed XXX
     private $substitutionInfo; // array of JavaScripts to managing dynamic substitution
     private $jsExpression;  // caches computation of JavaScript equivalent for an Expression
+
+    private $questionSeq;   // sequence order of question - so can detect if try to use variable before it is set
+    private $groupSeq;  // sequence order of groups - so can detect if try to use variable before it is set
 
     function __construct()
     {
@@ -457,9 +460,18 @@ class ExpressionManager {
                         }
                         else
                         {
-                            $result = array(0,$token[1],'NUMBER');
+                            $result = array(NULL,$token[1],'NUMBER');   // was 0 instead of NULL
                         }
                         $this->StackPush($result);
+                        /*
+                        // TODO - currently, will try to process value anyway, but want to show a potential error.  Should it be a definitive error (e.g. prevent this behavior)?
+                        $groupSeq = $this->GetVarAttribute($token[0],'groupSeq',-1);
+                        if (($groupSeq != -1) && ($groupSeq > $this->groupSeq))
+                        {
+                            $this->AddError("This variable is set on a later page",$token);
+                            return false;
+                        }
+                         */
                         return true;
                     }
                     else
@@ -1270,12 +1282,6 @@ class ExpressionManager {
                     $stringParts[] = "'</span>";
                     break;
                 case 'SGQA':
-//                    $codeValue = $this->GetVarAttribute($token[0], 'displayValue', '');
-//                    $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
-//                    $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: #4C88BE; font-weight: bold'>";
-//                    $stringParts[] = $token[0];
-//                    $stringParts[] = "</span>";
-//                    break;
                 case 'WORD':
                     if ($i+1<$numTokens && $tokens[$i+1][2] == 'LP')
                     {
@@ -1291,43 +1297,79 @@ class ExpressionManager {
                     }
                     else
                     {
-                        $isOnCurrentPage = $this->GetVarAttribute($token[0],'isOnCurrentPage','N');
-                        $jsName = $this->GetVarAttribute($token[0],'jsName','');
-                        $codeValue = $this->GetVarAttribute($token[0],'codeValue','');
-                        $question = $this->GetVarAttribute($token[0], 'question', '');
-                        $qcode= $this->GetVarAttribute($token[0],'qcode','');
-                        if ($token[2] == 'SGQA' && $qcode != '') {
-                            $descriptor = '[' . $qcode . ']: ';
-                        }
-                        else if ($jsName != '') {
-                            $descriptor = '[' . $jsName . ']: ';
+                        if (!$this->isValidVariable($token[0])) {
+                            $color = 'red';
                         }
                         else {
-                            $descriptor = '';
-                        }
-                        $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
-                        if ($codeValue != '') {
-                            if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
-                                $displayValue = $this->GetVarAttribute($token[0], 'displayValue', '');
-                                $messages[] = 'value=[' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false) . '] '
-                                        . htmlspecialchars($displayValue,ENT_QUOTES,'UTF-8',false);
+                            $isOnCurrentPage = $this->GetVarAttribute($token[0],'isOnCurrentPage','N');
+                            $jsName = $this->GetVarAttribute($token[0],'jsName','');
+                            $codeValue = $this->GetVarAttribute($token[0],'codeValue','');
+                            $question = $this->GetVarAttribute($token[0], 'question', '');
+                            $qcode= $this->GetVarAttribute($token[0],'qcode','');
+                            $questionSeq = $this->GetVarAttribute($token[0],'questionSeq',-1);
+                            $groupSeq = $this->GetVarAttribute($token[0],'groupSeq',-1);
+                            if ($token[2] == 'SGQA' && $qcode != '') {
+                                $descriptor = '[' . $qcode . ']';
+                            }
+                            else if ($jsName != '') {
+                                $descriptor = '[' . $jsName . ']';
                             }
                             else {
-                                $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
+                                $descriptor = '';
+                            }
+                            if ($questionSeq != -1) {
+                                $descriptor .= '[G:' . $groupSeq . ']';
+                            }
+                            if ($groupSeq != -1) {
+                                $descriptor .= '[Q:' . $questionSeq . ']';
+                            }
+                            if (strlen($descriptor) > 0) {
+                                $descriptor .= ': ';
+                            }
+
+                            $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
+                            if ($codeValue != '') {
+                                if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
+                                    $displayValue = $this->GetVarAttribute($token[0], 'displayValue', '');
+                                    $messages[] = 'value=[' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false) . '] '
+                                            . htmlspecialchars($displayValue,ENT_QUOTES,'UTF-8',false);
+                                }
+                                else {
+                                    $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
+                                }
+                            }
+                            // TODO - isOnCurrentPage may now be surpufluous, EXCEPT for fact that LS has different data storage names for on vs. off page.
+                            if ($isOnCurrentPage=='Y')
+                            {
+                                if ($questionSeq == -1 || $this->questionSeq == -1) {
+//                                    log_message('debug','{' . $this->groupSeq . "," . $this->questionSeq . "} " . $token[0] . ": " . $descriptor);
+                                    $color = '#996600'; // tan
+                                }
+                                else if ($questionSeq > $this->questionSeq) {
+                                    $color = 'maroon';  // #228b22 - warning
+                                }
+                                else {
+                                    $color = '#4C88BE';    // cyan that goes well with the background color
+                                }
+                            }
+                            else
+                            {
+                                if ($this->groupSeq == -1 || $groupSeq == -1) {
+//                                    log_message('debug','{' . $this->groupSeq . "," . $this->questionSeq . "} " . $token[0] . ": " . $descriptor);
+                                    $color = '#996600'; // tan
+                                }
+                                else if ($groupSeq > $this->groupSeq) {
+                                    $color = '#FF00FF ';     // pink a likely error
+                                }
+                                else {
+                                    $color = 'green';
+                                }
                             }
                         }
-                        if ($isOnCurrentPage=='Y')
-                        {
-                            $stringParts[] = "<span title='". implode('; ',$messages) . "' style='color: #a0522d; font-weight: bold'>";
-                            $stringParts[] = $token[0];
-                            $stringParts[] = "</span>";
-                        }
-                        else
-                        {
-                            $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: #228b22; font-weight: bold'>";
-                            $stringParts[] = $token[0];
-                            $stringParts[] = "</span>";
-                        }
+
+                        $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'>";
+                        $stringParts[] = $token[0];
+                        $stringParts[] = "</span>";
                     }
                     break;
                 case 'ASSIGN':
@@ -1393,15 +1435,25 @@ class ExpressionManager {
             case 'readWrite':
             case 'relevance':
             case 'relevanceNum':
-            case 'relevanceStatus':
             case 'type':
             case 'qcode':
+            case 'groupSeq':
+            case 'questionSeq':
                 return (isset($var[$attr])) ? $var[$attr] : $default;
             case 'displayValue':
             case 'shown':
                 return (isset($var['displayValue'])) ? $var['displayValue'] : $default;
+            case 'relevanceStatus':
+                $qid = (isset($var['qid'])) ? $var['qid'] : -1;
+                if ($qid == -1) {
+                    return 1;
+                }
+                if (isset($args[1]) && $args[1]=='NAOK') {
+                    return 1;
+                }
+                return (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0); // should defualt be to show?
             default:
-                echo 'UNDEFINED ATTRIBUTE: ' . $attr;
+                log_message('debug','UNDEFINED ATTRIBUTE: ' . $attr);
                 return $default;
         }
         return $default;    // and throw and error?
@@ -1521,8 +1573,11 @@ class ExpressionManager {
      * @param <type> $expr
      * @return <type>
      */
-    public function ProcessBooleanExpression($expr)
+    public function ProcessBooleanExpression($expr,$groupSeq=-1,$questionSeq=-1)
     {
+        $this->groupSeq = $groupSeq;
+        $this->questionSeq = $questionSeq;
+        
         $status = $this->Evaluate($expr);
         if (!$status) {
             return false;    // if there are errors in the expression, hide it?
@@ -1552,10 +1607,12 @@ class ExpressionManager {
      * @return <type>
      */
 
-    public function sProcessStringContainingExpressions($src, $questionNum=0, $numRecursionLevels=1, $whichPrettyPrintIteration=1)
+    public function sProcessStringContainingExpressions($src, $questionNum=0, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $groupSeq=-1, $questionSeq=-1)
     {
         // tokenize string by the {} pattern, properly dealing with strings in quotations, and escaped curly brace values
         $this->allVarsUsed = array();
+        $this->questionSeq = $questionSeq;
+        $this->groupSeq = $groupSeq;
         $result = $src;
         $prettyPrint = '';
 
@@ -2064,25 +2121,25 @@ EOD;
     {
         // Some test cases for Evaluator
         $vars = array(
-'one' => array('codeValue'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'two' => array('codeValue'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'three' => array('codeValue'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'four' => array('codeValue'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'five' => array('codeValue'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'six' => array('codeValue'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'seven' => array('codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'eight' => array('codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'nine' => array('codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'ten' => array('codeValue'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'half' => array('codeValue'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'hi' => array('codeValue'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'hello' => array('codeValue'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'a' => array('codeValue'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
-'b' => array('codeValue'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
-'c' => array('codeValue'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
-'d' => array('codeValue'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
-'eleven' => array('codeValue'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
-'twelve' => array('codeValue'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N'),
+'one' => array('codeValue'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>2,'questionSeq'=>4),
+'two' => array('codeValue'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>2,'questionSeq'=>4),
+'three' => array('codeValue'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>4),
+'four' => array('codeValue'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
+'five' => array('codeValue'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
+'six' => array('codeValue'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
+'seven' => array('codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>3,'questionSeq'=>5),
+'eight' => array('codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>3,'questionSeq'=>5),
+'nine' => array('codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>3,'questionSeq'=>5),
+'ten' => array('codeValue'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'half' => array('codeValue'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'hi' => array('codeValue'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'hello' => array('codeValue'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'a' => array('codeValue'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
+'b' => array('codeValue'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
+'c' => array('codeValue'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
+'d' => array('codeValue'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
+'eleven' => array('codeValue'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'twelve' => array('codeValue'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
 // Constants
 'ADMINEMAIL' => array('codeValue'=>'value for {ADMINEMAIL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'ADMINNAME' => array('codeValue'=>'value for {ADMINNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
@@ -2183,11 +2240,11 @@ EOD;
 'URL' => array('codeValue'=>'value for {URL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 'WELCOME' => array('codeValue'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
 // also include SGQA values and read-only variable attributes
-'12X34X56'  => array('codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'12X3X5lab1_ber'    => array('codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'q5pointChoice'    => array('codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>12),
-'qArrayNumbers_ls1_min'    => array('codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6),
-'12X3X5lab1_ber#1'  => array('codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'12X34X56'  => array('codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'12X3X5lab1_ber'    => array('codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'q5pointChoice'    => array('codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>12,'isOnCurrentPage'=>'N', 'groupSeq'=>3,'questionSeq'=>12),
+'qArrayNumbers_ls1_min'    => array('codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'isOnCurrentPage'=>'N', 'groupSeq'=>3,'questionSeq'=>6),
+'12X3X5lab1_ber#1'  => array('codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
         );
 
         // Syntax for $tests is
@@ -2404,6 +2461,14 @@ EOD;
         $em = new ExpressionManager();
         $em->RegisterVarnamesUsingMerge($vars);
 
+        // manually set relevance status
+        $_SESSION['relevanceStatus'] = array();
+        foreach ($vars as $var) {
+            if (isset($var['questionSeq'])) {
+                $_SESSION['relevanceStatus'][$var['questionSeq']] = 1;
+            }
+        }
+
         $allJsVarnamesUsed = array();
         $body = '';
         $body .= '<table border="1"><tr><th>Expression</th><th>PHP Result</th><th>Expected</th><th>JavaScript Result</th><th>VarNames</th><th>JavaScript Eqn</th></tr>';
@@ -2416,6 +2481,8 @@ EOD;
             $expectedResult = array_shift($values);
             $expr = implode("~",$values);
             $resultStatus = 'ok';
+            $em->groupSeq=2;
+            $em->questionSeq=3;
             $status = $em->Evaluate($expr);
             if ($status)
             {

@@ -92,7 +92,7 @@ class Conditions_model extends CI_Model {
     function getConditions($surveyid,$questionid,$language=false)
     {
 
-        $aquery = "SELECT *, "
+        $aquery = "SELECT questions.*, groups.group_order, groups.group_name,"
         ." (SELECT count(1) FROM ".$this->db->dbprefix('conditions')." c\n"
         ." WHERE questions.qid = c.qid) AS hasconditions,\n"
         ." (SELECT count(1) FROM ".$this->db->dbprefix('conditions')." c\n"
@@ -110,6 +110,7 @@ class Conditions_model extends CI_Model {
         $aquery.=" ORDER BY group_order, question_order";
 
         $data = $this->db->query($aquery);
+//        log_message('debug',$this->db->last_query());
         return $data;
     }
 

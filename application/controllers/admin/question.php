@@ -775,6 +775,7 @@
                 $eqrow['other']='N';
                 $eqrow['mandatory']='N';
                 $eqrow['preg']='';
+                $eqrow['relevance']=1;
             }
             $data['eqrow'] = $eqrow;
             $data['surveyid'] = $surveyid;

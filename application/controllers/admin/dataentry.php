@@ -2288,7 +2288,7 @@
             $data['surveyid'] = $surveyid;
             $data['blang'] = $blang;
 
-            LimeExpressionManager::StartProcessingPage(true,true);  // means that all variables are on the same page
+            LimeExpressionManager::StartProcessingPage(false,true,true);  // means that all variables are on the same page
 
             $this->load->view("admin/dataentry/caption_view",$data);
 
