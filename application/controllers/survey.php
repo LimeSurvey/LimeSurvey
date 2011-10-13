@@ -893,7 +893,7 @@ class survey extends LSCI_Controller {
         $saveSessionVars['loginID'] = $_SESSION['loginID'];
         $saveSessionVars['user'] = $_SESSION['user'];
 
-        return $saveSessionVars
+        return $saveSessionVars;
     }
 
     function _destroyOldSession($sInitialSessionName, $sSessionHandler, $clang)
