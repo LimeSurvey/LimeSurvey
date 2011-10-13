@@ -476,19 +476,6 @@ class Question_format {
         $redata = compact(array_keys(get_defined_vars()));
 		echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"),array(),$redata,'Question_format[477]');
 
-		//ALTER PAGE CLASS TO PROVIDE WHOLE-PAGE ALTERNATION
-		if ($_SESSION['step'] != $_SESSION['prevstep'] ||
-		    (isset($_SESSION['stepno']) && $_SESSION['stepno'] % 2))
-		{
-		    if (!isset($_SESSION['stepno'])) $_SESSION['stepno'] = 0;
-		    if ($_SESSION['step'] != $_SESSION['prevstep']) ++$_SESSION['stepno'];
-		    if ($_SESSION['stepno'] % 2)
-		    {
-		        echo "<script type=\"text/javascript\">\n"
-		        . "  $(\"body\").addClass(\"page-odd\");\n"
-		        . "</script>\n";
-		    }
-		}
 
 		echo "\n<form method='post' action='".site_url("survey")."' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
         echo sDefaultSubmitHandler();

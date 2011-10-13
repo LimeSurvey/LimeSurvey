@@ -131,7 +131,12 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     {
         $surveyformat = "";
     }
-    if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y" && $surveyformat!="allinone" && (isset($_SESSION['step']) && $_SESSION['step']>0)){
+    if ((isset($_SESSION['step']) && $_SESSION['step'] % 2) && $surveyformat!="allinone")
+    {
+        $surveyformat .= " page-odd";
+    }
+    
+    if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y" && $surveyformat!="allinone" && (isset($_SESSION['step']) && $_SESSION['step']>0)){
         $surveyformat .= " withindex";
     }
     if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y"){
