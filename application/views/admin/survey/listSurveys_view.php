@@ -51,76 +51,77 @@
             </tr>
         </tfoot>
         <tbody>
-            <?php foreach ($aSurveyEntries as $aSurveyEntry){?>
-                <tr>
-                    <td <?php if (!$issuperadmin) {?> style='display:none;'<?php } ?>><input type='checkbox' value='<?php echo $aSurveyEntry['surveyid'];?>' name='surveyids[]' class='surveycbs' /></td>
+            <?php if(isset($aSurveyEntries)){?>
+                <?php foreach ($aSurveyEntries as $aSurveyEntry){?>
+                    <tr>
+                        <td <?php if (!$issuperadmin) {?> style='display:none;'<?php } ?>><input type='checkbox' value='<?php echo $aSurveyEntry['surveyid'];?>' name='surveyids[]' class='surveycbs' /></td>
 
-                    <td> <span style='display:none'><?php echo $aSurveyEntry['status'];?></span>
-                        <?php
-                            if ($aSurveyEntry['status']=='expired')
-                            {?>
-                            <img src='<?php echo $imageurl;?>/expired.png' alt='<?php $clang->eT("This survey is active but expired.");?>' /><?php
-                            }
-                            elseif ($aSurveyEntry['status']=='notyetactive')
-                            {?>
-                            <img src='<?php echo $imageurl;?>/notyetstarted.png' alt='<?php $clang->eT("This survey is active but has a start date.");?>' /><?php
-                            }
-                            elseif ($aSurveyEntry['status']=='active')
-                            {
-                                if ($aSurveyEntry['mayupdate'])
+                        <td> <span style='display:none'><?php echo $aSurveyEntry['status'];?></span>
+                            <?php
+                                if ($aSurveyEntry['status']=='expired')
                                 {?>
-                                <a href="<?php echo site_url('admin/survey/deactivate/'.$aSurveyEntry['surveyid']);?>">
-                                    <img src='<?php echo $imageurl;?>/active.png' alt='<?php $clang->eT("This survey is active - click here to stop this survey.");?>'/>
-                                </a> <?php
-                                } else
+                                <img src='<?php echo $imageurl;?>/expired.png' alt='<?php $clang->eT("This survey is active but expired.");?>' /><?php
+                                }
+                                elseif ($aSurveyEntry['status']=='notyetactive')
                                 {?>
-                                <img src='<?php echo $imageurl;?>/active.png' alt='<?php $clang->eT("This survey is currently active.")?>' /> <?php
+                                <img src='<?php echo $imageurl;?>/notyetstarted.png' alt='<?php $clang->eT("This survey is active but has a start date.");?>' /><?php
+                                }
+                                elseif ($aSurveyEntry['status']=='active')
+                                {
+                                    if ($aSurveyEntry['mayupdate'])
+                                    {?>
+                                    <a href="<?php echo site_url('admin/survey/deactivate/'.$aSurveyEntry['surveyid']);?>">
+                                        <img src='<?php echo $imageurl;?>/active.png' alt='<?php $clang->eT("This survey is active - click here to stop this survey.");?>'/>
+                                    </a> <?php
+                                    } else
+                                    {?>
+                                    <img src='<?php echo $imageurl;?>/active.png' alt='<?php $clang->eT("This survey is currently active.")?>' /> <?php
 
+                                    }
                                 }
-                            }
-                            elseif ($aSurveyEntry['status']=='inactive')
-                            {
-                                if ( $aSurveyEntry['questioncount'] && $aSurveyEntry['mayupdate'] )
-                                {?>
-                                <a href="<?php echo site_url('admin/survey/activate/'.$aSurveyEntry['surveyid']);?>">
-                                    <img src='<?php echo $imageurl;?>/inactive.png' title='' alt='<?php $clang->eT("This survey is currently not active - click here to activate this survey.");?>' />
-                                </a><?php
-                                } else
-                                {?>
-                                <img src='<?php echo $imageurl;?>/inactive.png' title='<?php $clang->eT("This survey is currently not active."); ?>' alt='<?php $clang->eT("This survey is currently not active.");?>' />
-                                <?php
-                                }
+                                elseif ($aSurveyEntry['status']=='inactive')
+                                {
+                                    if ( $aSurveyEntry['questioncount'] && $aSurveyEntry['mayupdate'] )
+                                    {?>
+                                    <a href="<?php echo site_url('admin/survey/activate/'.$aSurveyEntry['surveyid']);?>">
+                                        <img src='<?php echo $imageurl;?>/inactive.png' title='' alt='<?php $clang->eT("This survey is currently not active - click here to activate this survey.");?>' />
+                                    </a><?php
+                                    } else
+                                    {?>
+                                    <img src='<?php echo $imageurl;?>/inactive.png' title='<?php $clang->eT("This survey is currently not active."); ?>' alt='<?php $clang->eT("This survey is currently not active.");?>' />
+                                    <?php
+                                    }
+                            }?>
+                        </td>
+                        <td align='center'><a href='<?php echo $aSurveyEntry['viewurl'];?>'><?php echo $aSurveyEntry['surveyid'];?></a></td>
+                        <td align='left'><a href='<?php echo $aSurveyEntry['viewurl'];?>'><?php echo $aSurveyEntry['sSurveyTitle'];?></a></td>
+                        <td><?php echo $aSurveyEntry['datecreated'];?></td>
+                        <td><?php echo $aSurveyEntry['ownername'];?> (<a href='#' class='ownername_edit' id='ownername_edit_<?php echo $aSurveyEntry['iSurveyID'];?>'>Edit</a>)</td>
+                        <td><?php echo $aSurveyEntry['visibility'];?></td>
+                        <td><?php echo $aSurveyEntry['privacy'];?></td>
+                        <?php if($aSurveyEntry['dbactive'])
+                            {?>
+                            <td><?php echo ($aSurveyEntry['responses']-$aSurveyEntry['partial_responses']);?></td>
+                            <td><?php echo $aSurveyEntry['partial_responses'];?></td>
+                            <td><?php echo $aSurveyEntry['responses'];?></td>
+                            <td><?php echo $aSurveyEntry['tokencount'];?></td>
+                            <td><?php echo $aSurveyEntry['tokenpercentage'];?></td>
+
+                            <?php
+                            } else
+                            {?>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <?php
                         }?>
-                    </td>
-                    <td align='center'><a href='<?php echo $aSurveyEntry['viewurl'];?>'><?php echo $aSurveyEntry['surveyid'];?></a></td>
-                    <td align='left'><a href='<?php echo $aSurveyEntry['viewurl'];?>'><?php echo $aSurveyEntry['sSurveyTitle'];?></a></td>
-                    <td><?php echo $aSurveyEntry['datecreated'];?></td>
-                    <td><?php echo $aSurveyEntry['ownername'];?> (<a href='#' class='ownername_edit' id='ownername_edit_<?php echo $aSurveyEntry['iSurveyID'];?>'>Edit</a>)</td>
-                    <td><?php echo $aSurveyEntry['visibility'];?></td>
-                    <td><?php echo $aSurveyEntry['privacy'];?></td>
-                    <?php if($aSurveyEntry['dbactive'])
-                        {?>
-                        <td><?php echo ($aSurveyEntry['responses']-$aSurveyEntry['partial_responses']);?></td>
-                        <td><?php echo $aSurveyEntry['partial_responses'];?></td>
-                        <td><?php echo $aSurveyEntry['responses'];?></td>
-                        <td><?php echo $aSurveyEntry['tokencount'];?></td>
-                        <td><?php echo $aSurveyEntry['tokenpercentage'];?></td>
 
-                        <?php
-                        } else
-                        {?>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <?php
-                    }?>
-
-                </tr>
+                    </tr>
+                    <?php } ?>
                 <?php } ?>
-
         </tbody>
     </table>
 </form>
-<br/>
+<br />
