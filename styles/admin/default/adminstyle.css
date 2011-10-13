@@ -419,9 +419,10 @@ span.settingcaption {
 }
 
 .movableList {
-    padding-left: 0;
+    padding: 10px 0px;
     width: 60em;
     margin:0 auto;
+    background-color: #fdfdff;
 }
 
 .movableNode {
@@ -1455,7 +1456,8 @@ div.translate {
 }
 
 .placeholder {
-    background-color: #cfcfcf;
+    background-color: #dfdfdf;
+    width:630px;
 }
 
 .ui-nestedSortable-error {
@@ -1479,7 +1481,7 @@ ol.organizer ol {
 }
 
 ol.organizer {
-    margin: 4em 0;
+    margin: 1em 0;
 }
 
 .organizer li {
@@ -1489,7 +1491,6 @@ ol.organizer {
 
 .organizer li ol li{
     margin: 3px 0 0 0;
-    padding: 0;
 }
 
 
@@ -1500,6 +1501,8 @@ ol.organizer {
     margin: 0;
     cursor: move;
     width:80%;
+    font-size:11px;
+
 }
 
 .organizer li ol li div{

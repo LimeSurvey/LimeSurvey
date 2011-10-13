@@ -2,44 +2,44 @@
 
 class Questions_model extends CI_Model {
 
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
+    function getAllRecords($condition=FALSE)
+    {
+        if ($condition != FALSE)
+        {
+            $this->db->where($condition);
+        }
 
-		$data = $this->db->get('questions');
+        $data = $this->db->get('questions');
 
-		return $data;
-	}
+        return $data;
+    }
 
-	function getSomeRecords($fields,$condition=FALSE,$order=FALSE)
-	{
-		if(is_array($fields))
-		{
-			foreach ($fields as $field)
-			{
-				$this->db->select($field);
-			}
-		}
-		else
-		{
-			$this->db->select($fields);
-		}
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
-		if ($order != FALSE)
-		{
-			$this->db->order_by($order);
-		}
+    function getSomeRecords($fields,$condition=FALSE,$order=FALSE)
+    {
+        if(is_array($fields))
+        {
+            foreach ($fields as $field)
+            {
+                $this->db->select($field);
+            }
+        }
+        else
+        {
+            $this->db->select($fields);
+        }
+        if ($condition != FALSE)
+        {
+            $this->db->where($condition);
+        }
+        if ($order != FALSE)
+        {
+            $this->db->order_by($order);
+        }
 
-		$data = $this->db->get('questions');
+        $data = $this->db->get('questions');
 
-		return $data;
-	}
+        return $data;
+    }
 
     function getQuestions($sid,$gid,$language)
     {
@@ -51,7 +51,7 @@ class Questions_model extends CI_Model {
         $this->db->order_by("question_order","asc");
         $data = $this->db->get('questions');
 
-		return $data;
+        return $data;
     }
 
     function getQuestionsWithSubQuestions($iSurveyID, $sLanguage, $sCondition=FALSE)
@@ -84,7 +84,7 @@ class Questions_model extends CI_Model {
         $this->db->order_by("question_order","asc");
         $data = $this->db->get('questions');
 
-		return $data;
+        return $data;
     }
 
     function getMaximumQuestionOrder($gid,$language)
@@ -94,7 +94,7 @@ class Questions_model extends CI_Model {
         $this->db->where('language',$language);
         $data = $this->db->get('questions');
 
-		return $data;
+        return $data;
     }
 
     function updateQuestionOrder($gid,$lang,$position=0)
@@ -105,7 +105,7 @@ class Questions_model extends CI_Model {
         $this->db->order_by('question_order, title ASC');
         $data = $this->db->get('questions');
 
-		foreach($data->result_array() as $row)
+        foreach($data->result_array() as $row)
         {
             $datatoupdate = array('question_order' => $position);
             $this->db->where('qid',$row['qid']);
@@ -119,44 +119,44 @@ class Questions_model extends CI_Model {
         return $this->db->query('SELECT type FROM '.$this->db->dbprefix('questions').' WHERE qid='.((int)$qid).' and parent_qid=0 group by type');
     }
 
-	function getSubQuestions($sid,$sLanguage)
-	{
-		//Used by getSubQuestions helper
-		$query = "SELECT sq.*, q.other FROM ".$this->db->dbprefix('questions')." as sq, ".$this->db->dbprefix('questions')." as q"
-	            ." WHERE sq.parent_qid=q.qid AND q.sid=".$sid
-	            ." AND sq.language='".$sLanguage. "' "
-	            ." AND q.language='".$sLanguage. "' "
-	            ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
-		return $this->db->query($query);
-	}
+    function getSubQuestions($sid,$sLanguage)
+    {
+        //Used by getSubQuestions helper
+        $query = "SELECT sq.*, q.other FROM ".$this->db->dbprefix('questions')." as sq, ".$this->db->dbprefix('questions')." as q"
+        ." WHERE sq.parent_qid=q.qid AND q.sid=".$sid
+        ." AND sq.language='".$sLanguage. "' "
+        ." AND q.language='".$sLanguage. "' "
+        ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
+        return $this->db->query($query);
+    }
 
-	function update($data, $condition=FALSE)
-	{
+    function update($data, $condition=FALSE)
+    {
 
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
+        if ($condition != FALSE)
+        {
+            $this->db->where($condition);
+        }
 
-		return $this->db->update('questions', $data);
+        return $this->db->update('questions', $data);
 
-	}
+    }
 
     function valueLabel($field,$language)
     {
-       if (isset($field['scale_id']))
-       {
+        if (isset($field['scale_id']))
+        {
             $query = "SELECT answers.code, answers.answer, questions.type FROM answers, questions WHERE";
             $query .= " answers.scale_id = ? AND";
             $query .= " answers.qid = ? AND questions.language = ? AND  answers.language = ? AND questions.qid = ? ORDER BY sortorder ASC";
             return $this->db->query($query, array((int) $field['scale_id'], $field["qid"], $language, $language, $field['qid']));
-       } else
-       {
+        } else
+        {
             $query = "SELECT answers.code, answers.answer, questions.type FROM answers, questions WHERE";
 
             $query .= " answers.qid = ? AND questions.language = ? AND  answers.language = ? AND questions.qid = ? ORDER BY sortorder ASC";
             return $this->db->query($query, array($field["qid"], $language, $language, $field['qid']));
-       }
+        }
 
 
     }
