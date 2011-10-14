@@ -295,6 +295,9 @@ class LimeExpressionManager {
         if (!isset($fieldmap)) {
             return false; // implies an error occurred
         }
+        if ($allOnOnePage && isset($this->knownVars)) {
+            return false;   // so that does not try to re-compute relevance
+        }
 
         $this->knownVars = array();   // mapping of VarName to Value
         $this->debugLog = array();    // array of mappings among values to confirm their accuracy
@@ -996,7 +999,6 @@ class LimeExpressionManager {
 
     static function StartProcessingGroup($groupNum=NULL,$anonymized=false,$surveyid=NULL)
     {
-        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
         $LEM->em->StartProcessingGroup();
         $LEM->groupRelevanceInfo = array();
@@ -1038,6 +1040,7 @@ class LimeExpressionManager {
             $totalTime += $unit[1];
         }
         log_message('debug','Total time attributable to EM = ' . $totalTime);
+        log_message('debug',print_r($LEM->runtimeTimings,true));
     }
 
     static function ShowLogicFile()
@@ -1261,13 +1264,6 @@ class LimeExpressionManager {
             }
         }
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
-//        log_message('debug',print_r($LEM->runtimeTimings,true));
-        $totalTime = 0.;
-        foreach($LEM->runtimeTimings as $unit) {
-            $totalTime += $unit[1];
-        }
-        log_message('debug','Total time attributable to EM = ' . $totalTime);
-
         return implode('',$jsParts);
     }
 

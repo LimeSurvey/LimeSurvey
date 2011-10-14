@@ -1349,8 +1349,8 @@ END;
 		echo "\n";
 
         LimeExpressionManager::FinishProcessingGroup();
-        LimeExpressionManager::FinishProcessingPage();
         echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+        LimeExpressionManager::FinishProcessingPage();
 
 		if (!$previewgrp){
 		    $navigator = surveymover(); //This gets globalised in the templatereplace function
