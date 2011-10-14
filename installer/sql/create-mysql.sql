@@ -69,6 +69,7 @@ CREATE TABLE `prefix_groups` (
   `group_order` int(11) NOT NULL default '0',
   `description` text,
   `language` varchar(20) default 'en',
+  `randomization_group` NOT NULL default '',
   PRIMARY KEY  (`gid`,`language`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -516,6 +517,6 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '150');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '151');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 

@@ -250,6 +250,7 @@ class questiongroup extends Survey_Common_Controller {
     function edit($surveyid,$gid)
     {
 
+        $this->load->model('groups_model');
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
 
@@ -272,113 +273,129 @@ class questiongroup extends Survey_Common_Controller {
                 $this->load->helper('surveytranslator');
                 $this->load->helper('database');
 
-                $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
-                $baselang = GetBaseLanguageFromSurveyID($surveyid);
+                $aAdditionalLanguages = GetAdditionalLanguagesFromSurveyID($surveyid);
+                $aBaseLanguage = GetBaseLanguageFromSurveyID($surveyid);
 
-                $grplangs[] = $baselang;
-                $grplangs = array_flip($grplangs);
+                $aLanguages=array_merge(array($aBaseLanguage),$aAdditionalLanguages);
 
+                $grplangs=array_flip($aLanguages);
+                // Check out the intgrity of the language versions of this group
                 $egquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid";
                 $egresult = db_execute_assoc($egquery);
                 foreach ($egresult->result_array() as $esrow)
                 {
-                    if(!array_key_exists($esrow['language'], $grplangs)) // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
+                    if(!in_array($esrow['language'], $aLanguages)) // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
                     {
                         $egquery = "DELETE FROM ".$this->db->dbprefix."groups WHERE sid='{$surveyid}' AND gid='{$gid}' AND language='".$esrow['language']."'";
                         $egresultD = db_execute_assoc($egquery);
                     } else {
-                        $grplangs[$esrow['language']] = 99;
+                        $grplangs[$esrow['language']] = 'exists';
                     }
-                    if ($esrow['language'] == $baselang) $basesettings = array('group_name' => $esrow['group_name'],'description' => $esrow['description'],'group_order' => $esrow['group_order']);
-
+                    if ($esrow['language'] == $aBaseLanguage) $basesettings = $esrow;
                 }
 
+                // Create groups in missing languages
                 while (list($key,$value) = each($grplangs))
                 {
-                    if ($value != 99)
+                    if ($value != 'exists')
                     {
-                        $egquery = "INSERT INTO ".$this->db->dbprefix."groups (gid, sid, group_name, description,group_order,language) VALUES ('{$gid}', '{$surveyid}', '{$basesettings['group_name']}', '{$basesettings['description']}','{$basesettings['group_order']}', '{$key}')";
-                        $egresult = db_execute_assoc($egquery);
+                        $basesettings['language']=$key;
+                        $this->groups_model->insertRecords($basesettings);
                     }
                 }
+                $first=true;
+                foreach ($aLanguages as $sLanguage)
+                {
+                    $oResult=$this->groups_model->getAllRecords(array('sid'=>$surveyid,'gid'=>$gid,'language'=>$sLanguage));
+                    $data['aGroupData'][$sLanguage]=$oResult->row_array();
+                    $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
+                    if($first){
+                        $aTabTitles[$sLanguage].= ' ('.$clang->gT("Base language").')';
+                        $first=false;
+                    }
 
-                $egquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid AND language='$baselang'";
-                $egresult = db_execute_assoc($egquery);
-                $editgroup = PrepareEditorScript();
-                $esrow = $egresult->row_array();
-                $tab_title[0] = getLanguageNameFromCode($esrow['language'],false). '('.$clang->gT("Base language").')';
-                $esrow = array_map('htmlspecialchars', $esrow);
+                }
                 $data['action'] = "editgroup";
                 $data['clang'] = $clang;
                 $data['surveyid'] = $surveyid;
                 $data['gid'] = $gid;
-                $data['esrow'] = $esrow;
-                $data['i'] = 0;
-                $tab_content[0] = $this->load->view('admin/survey/QuestionGroups/editGroup_view',$data,true);/**"<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n")
-                . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-                . "\t</span></div>\n"
-                . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
-                . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-                . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
-                . "\t</span></div><div style='clear:both'></div>"; */
-                $egquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid AND language!='$baselang'";
-                $egresult = db_execute_assoc($egquery);
-                $i = 1;
-                foreach ($egresult->result_array() as $esrow)
-                {
-                    $tab_title[$i] = getLanguageNameFromCode($esrow['language'],false);
-                    $esrow = array_map('htmlspecialchars', $esrow);
-                    $data['action'] = "editgroup";
-                    $data['clang'] = $clang;
-                    $data['surveyid'] = $surveyid;
-                    $data['gid'] = $gid;
-                    $data['esrow'] = $esrow;
-
-                    $tab_content[$i] = $this->load->view('admin/survey/QuestionGroups/editGroup_view',$data,true); /**"<div class='settingrow'><span class='settingcaption'><label for='group_name_{$esrow['language']}'>".$clang->gT("Title").":</label></span>\n"
-                    . "<span class='settingentry'><input type='text' maxlength='100' size='80' name='group_name_{$esrow['language']}' id='group_name_{$esrow['language']}' value=\"{$esrow['group_name']}\" />\n"
-                    . "\t</span></div>\n"
-                    . "<div class='settingrow'><span class='settingcaption'><label for='description_{$esrow['language']}'>".$clang->gT("Description:")."</label>\n"
-                    . "</span><span class='settingentry'><textarea cols='70' rows='8' id='description_{$esrow['language']}' name='description_{$esrow['language']}'>{$esrow['description']}</textarea>\n"
-                    . getEditor("group-desc","description_".$esrow['language'], "[".$clang->gT("Description:", "js")."](".$esrow['language'].")",$surveyid,$gid,'',$action)
-                    . "\t</span></div><div style='clear:both'></div>"; */
-                    $i++;
-                }
-
-                $editgroup .= "<div class='header ui-widget-header'>".$clang->gT("Edit Group")."</div>\n"
-                . "<form name='frmeditgroup' id='frmeditgroup' action='".site_url("admin/database/index")."' class='form30' method='post'>\n<div id='tabs'><ul>\n";
+                $data['tabtitles']=$aTabTitles;
+                $data['aBaseLanguage']=$aBaseLanguage;
 
 
-                foreach ($tab_title as $i=>$eachtitle){
-                    $editgroup .= "\t<li style='clear:none'><a href='#editgrp$i'>$eachtitle</a></li>\n";
-
-                }
-                $editgroup.="</ul>\n";
-
-                foreach ($tab_content as $i=>$eachcontent){
-                    $editgroup .= "\n<div id='editgrp$i'>$eachcontent</div>";
-                }
-
-                $editgroup .= "</div>\n\t<p><input type='submit' class='standardbtn' value='".$clang->gT("Update Group")."' />\n"
-                . "\t<input type='hidden' name='action' value='updategroup' />\n"
-                . "\t<input type='hidden' name='sid' value=\"{$surveyid}\" />\n"
-                . "\t<input type='hidden' name='gid' value='{$gid}' />\n"
-                . "\t<input type='hidden' name='language' value=\"{$esrow['language']}\" />\n"
-                . "\t</p>\n"
-                . "</form>\n";
+                $this->load->view('admin/survey/QuestionGroups/editGroup_view',$data);
             }
-
-            //echo $editsurvey;
-            $finaldata['display'] = $editgroup;
-            $this->load->view('survey_view',$finaldata);
-
-
-
         }
         self::_loadEndScripts();
 
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
     }
 
+    function update($gid)
+    {
+        $gid= (int)$gid;
+        $this->load->model('groups_model');
+
+        $surveyid= $this->groups_model->getSurveyIDFromGroup($gid);
+        if (bHasSurveyPermission($surveyid, 'surveycontent','update'))
+        {
+            $this->load->helper('surveytranslator');
+            $this->load->helper('database');
+
+            $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            array_push($grplangs,$baselang);
+            //require_once("../classes/inputfilter/class.inputfilter_clean.php");
+            //$myFilter = new InputFilter('','',1,1,1);
+            foreach ($grplangs as $grplang)
+            {
+                if (isset($grplang) && $grplang != "")
+                {
+                    /**if ($filterxsshtml)
+                    {
+                        $_POST['group_name_'.$grplang]=$myFilter->process($_POST['group_name_'.$grplang]);
+                        $_POST['description_'.$grplang]=$myFilter->process($_POST['description_'.$grplang]);
+                    }
+                    else
+                    {
+                        $_POST['group_name_'.$grplang] = html_entity_decode($_POST['group_name_'.$grplang], ENT_QUOTES, "UTF-8");
+                        $_POST['description_'.$grplang] = html_entity_decode($_POST['description_'.$grplang], ENT_QUOTES, "UTF-8");
+                    } */
+
+                    // Fix bug with FCKEditor saving strange BR types
+                    $group_name = $this->input->post('group_name_'.$grplang);
+                    $group_description = $this->input->post('description_'.$grplang);
+
+                    $group_name=fix_FCKeditor_text($group_name);
+                    $group_description=fix_FCKeditor_text($group_description);
+
+                    $data = array (
+                            'group_name' => $group_name,
+                            'description' => $group_description,
+                            'randomization_group' => $this->input->post('randomization_group')
+                        );
+                    $condition = array (
+                        'gid' => $gid,
+                        'sid' => $surveyid,
+                        'language' => $grplang
+                    );
+                    $this->load->model('groups_model');
+                    $ugresult = $this->groups_model->update($data,$condition); //$connect->Execute($ugquery);  // Checked
+                    if ($ugresult)
+                    {
+                        $groupsummary = getgrouplist($gid,$surveyid);
+                    }
+                    else
+                    {
+                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be updated","js")."\")\n //-->\n</script>\n";
+
+                    }
+                }
+            }
+            $this->session->set_userdata('flashmessage', $this->limesurvey_lang->gT("Question group successfully saved."));
+            redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid));
+        }
+    }
 
     /**
     * questiongroup::organize()

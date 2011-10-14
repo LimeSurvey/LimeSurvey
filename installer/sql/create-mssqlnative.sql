@@ -76,6 +76,7 @@ CREATE TABLE [prefix_groups] (
   [group_order] INT NOT NULL default '0',
   [description] varchar(max),
   [language] VARCHAR(20) default 'en',
+  [randomization_group] NOT NULL default '',
   PRIMARY KEY  ([gid],[language])
 ) 
 ;
@@ -545,6 +546,6 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '150');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '151');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 

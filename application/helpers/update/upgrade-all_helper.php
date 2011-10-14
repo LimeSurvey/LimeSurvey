@@ -87,6 +87,18 @@ function db_upgrade_all($oldversion) {
         );
         $CI->dbforge->add_column('questions',$fields);
     }
+    if ($oldversion < 151)
+    {
+        $fields = array(
+            'randomization_group' => array(
+                             'type' => 'VARCHAR',
+                             'constraint' => '20',
+                             'null' => FALSE,
+                             'default' => ''
+            )
+        );
+        $CI->dbforge->add_column('groups',$fields);
+    }
 }
 
 function upgrade_question_attributes148()

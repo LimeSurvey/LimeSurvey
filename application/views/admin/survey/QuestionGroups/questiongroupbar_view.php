@@ -17,8 +17,6 @@
             <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt=''  />
             <?php } ?>
 
-
-
         <?php if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt=''  />
@@ -53,10 +51,6 @@
                 <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' alt='' width='40' />
                 <?php }
             }
-
-
-
-
             if(bHasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
 
@@ -65,7 +59,7 @@
             <?php } ?>
     </div>
     <div class='menubar-right'>
-        <label for="qid"><?php echo $clang->gT("Questions:"); ?></label><select class="listboxquestions" name='qid' id='qid'
+        <label for="qid"><?php echo $clang->gT("Questions:"); ?></label> <select class="listboxquestions" name='qid' id='qid'
             onchange="window.open(this.options[this.selectedIndex].value, '_top')">
 
             <?php echo getQuestions($surveyid,$gid,$qid); ?>
@@ -115,7 +109,7 @@
             elseif(bHasSurveyPermission($surveyid,'surveycontent','create'))
             { ?>
             <a href='<?php echo site_url("admin/question/newquestion/".$surveyid."/".$gid); ?>'
-                title="<?php echo $clang->gTview("Add New Question to Group"); ?>" >
+                title="<?php echo $clang->gTview("Add new question to group"); ?>" >
                 <img src='<?php echo $this->config->item('imageurl'); ?>/add.png' title='' alt='<?php echo $clang->gT("Add New Question to Group"); ?>'
                     name='AddNewQuestion' onclick="window.open('', '_top')" width="40" height="40"/></a>
             <?php } ?>
@@ -123,14 +117,11 @@
         <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt=''  />
 
         <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' width='18' alt='' />
-        <input id='MinimizeGroupWindow' type='image' src='<?php echo $this->config->item('imageurl'); ?>/minus.gif' title='
-            <?php echo $clang->gT("Hide Details of this Group"); ?>' alt='<?php echo $clang->gT("Hide Details of this Group"); ?>' name='MinimizeGroupWindow' />
-        <input type='image' id='MaximizeGroupWindow' src='<?php echo $this->config->item('imageurl'); ?>/plus.gif' title='
-            <?php echo $clang->gT("Show Details of this Group"); ?>' alt='<?php echo $clang->gT("Show Details of this Group"); ?>' name='MaximizeGroupWindow' />
+        <input id='MinimizeGroupWindow' type='image' src='<?php echo $this->config->item('imageurl'); ?>/minus.gif' title='<?php echo $clang->gT("Hide Details of this Group"); ?>' alt='<?php echo $clang->gT("Hide details of thisgroup"); ?>' name='MinimizeGroupWindow' />
+        <input type='image' id='MaximizeGroupWindow' src='<?php echo $this->config->item('imageurl'); ?>/plus.gif' title='<?php echo $clang->gT("Show Details of this Group"); ?>' alt='<?php echo $clang->gT("Show details of this group"); ?>' name='MaximizeGroupWindow' />
         <?php if (!$qid)
             { ?>
-            <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' title='
-                <?php echo $clang->gT("Close this Group"); ?>' alt='<?php echo $clang->gT("Close this Group"); ?>'  name='CloseSurveyWindow'
+            <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' title='<?php echo $clang->gT("Close this Group"); ?>' alt='<?php echo $clang->gT("Close this Group"); ?>'  name='CloseSurveyWindow'
                 onclick="window.open('<?php echo site_url("admin/survey/view/".$surveyid); ?>', '_top')" />
             <?php }
             else
@@ -143,19 +134,31 @@
 
 
 
-<table id='groupdetails' <?php echo $gshowstyle; ?> ><tr ><td width='20%' align='right'><strong>
+<table id='groupdetails' <?php echo $gshowstyle; ?> >
+<tr ><td width='20%' align='right'><strong>
             <?php echo $clang->gT("Title"); ?>:</strong></td>
     <td align='left'>
-        <?php echo $grow['group_name']; ?> (<?php echo $grow['gid']; ?>)</td></tr>
+        <?php echo $grow['group_name']; ?> (<?php echo $grow['gid']; ?>)</td>
+</tr>
 <tr><td valign='top' align='right'><strong>
-        <?php echo $clang->gT("Description:"); ?></strong></td><td align='left'>
+        <?php echo $clang->gT("Description:"); ?></strong>
+    </td>
+    <td align='left'>
         <?php if (trim($grow['description'])!='') {
                 templatereplace($grow['description']);
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
         } ?>
-    </td></tr>
-
-<?php if (!is_null($condarray))
+    </td>
+</tr>
+<?php
+    if (trim($grow['randomization_group'])!='')
+    {?>
+    <tr>
+        <td><?php echo $clang->gT("Randomization group:"); ?></td><td><?php echo $grow['randomization_group'];?></td>
+    </tr>
+    <?php
+    }
+    if (!is_null($condarray))
     { ?>
     <tr><td align='right'><strong>
                 <?php echo $clang->gT("Questions with conditions to this group"); ?>:</strong></td>

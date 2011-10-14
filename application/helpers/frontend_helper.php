@@ -1950,7 +1950,32 @@ function buildsurveysession($surveyid)
     $qtypes=getqtypelist('','array');
     $fieldmap=createFieldMap($surveyid,'full',false,false,$_SESSION['s_lang']);
 
-    // Randomization Groups
+
+    // Randomization groups for groups
+    $CI->load->model('groups_model');
+    $aRandomGroups=array();
+    $aGIDCompleteMap=array();
+    // first find all groups and their groups IDS
+    $oData=$CI->groups_model->getSomeRecords(array('gid','randomization_group'),
+                                             array('sid'=>$surveyid,'randomization_group <>'=>'','language'=>$_SESSION['s_lang']));
+    foreach($oData->result_array() as $aGroup)
+    {
+        $aRandomGroups[$aGroup['randomization_group']][] = $aGroup['gid'];
+    }
+    // Shuffle each group and create a map for old GID => new GID
+    foreach ($aRandomGroups as $sGroupName=>$aGIDs)
+    {
+        $aShuffledIDs=$aGIDs;
+        shuffle($aShuffledIDs);
+        $aGIDCompleteMap=$aGIDCompleteMap+array_combine($aGIDs,$aShuffledIDs);
+    }
+
+    if (count($aRandomGroups)>0)
+    {
+        $_SESSION['groupReMap']=$aGIDCompleteMap;
+    }
+
+    // Randomization groups for questions
 
     // Find all defined randomization groups through question attribute values
     $randomGroups=array();
@@ -2026,7 +2051,6 @@ function buildsurveysession($surveyid)
         $fieldmap=$copyFieldMap;
 
     }
-//die(print_r($fieldmap));
 
     $_SESSION['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)
@@ -2095,7 +2119,6 @@ function buildsurveysession($surveyid)
     $oResult=$CI->survey_url_parameters_model->getParametersForSurvey($surveyid);
     foreach($oResult->result_array() as $aRow)
     {
-        DebugBreak();
         if(isset($_GET[$aRow['parameter']]))
         {
             $_SESSION['urlparams'][$aRow['parameter']]=$_GET[$aRow['parameter']];
@@ -2407,9 +2430,13 @@ function UpdateSessionGroupList($surveyid, $language)
     $result = db_execute_assoc($query) or safe_die ("Couldn't get group list<br />$query<br />".$connect->ErrorMsg());  //Checked
     foreach ($result->result_array() as $row)
     {
-        $_SESSION['grouplist'][]=array($row['gid'], $row['group_name'], $row['description']);
+        $_SESSION['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
     }
-	//$CI->session->userdata = $_SESSION;
+    if (isset($_SESSION['groupReMap']))
+    foreach ($_SESSION['groupReMap'] as $iOldGid=>$iNewGid)
+    {
+        $_SESSION['grouplist']=array_swap_assoc($iOldGid,$iNewGid,$_SESSION['grouplist']);
+    }
 }
 
 function UpdateFieldArray()

@@ -763,6 +763,10 @@
                 $aArray[$key] = $aLanguageData[$key];
             }
         }
+        else
+        {
+           $aArray=$aLanguageData;
+        }
         return $aArray;
     }
 

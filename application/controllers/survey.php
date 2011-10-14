@@ -775,21 +775,15 @@ class survey extends LSCI_Controller {
         switch ($thissurvey['format'])
         {
             case "A": //All in one
-                //require_once("survey.php");
                 $this->load->library("Survey_format");
                 $this->survey_format->run($redata);
-                break;
-            case "S": //One at a time
-                //require_once("question.php");
-                $this->load->library("Question_format");
-                $this->question_format->run($redata);
                 break;
             case "G": //Group at a time
                 $this->load->library("Group_format");
                 $this->group_format->run($redata);
                 break;
-            default:
-                //require_once("question.php");
+            case "S": //One at a time
+             default:
                 $this->load->library("Question_format");
                 $this->question_format->run($redata);
         }

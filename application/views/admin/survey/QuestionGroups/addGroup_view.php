@@ -1,28 +1,29 @@
+<?php echo PrepareEditorScript();?>
 <div class='header ui-widget-header'><?php echo $clang->gT("Add question group"); ?></div>
 <div id='tabs'><ul>
     <?php foreach ($grplangs as $grouplang)
         { ?>
-            <li><a href="#<?php echo $grouplang; ?>"><?php echo GetLanguageNameFromCode($grouplang,false); 
+            <li><a href="#<?php echo $grouplang; ?>"><?php echo GetLanguageNameFromCode($grouplang,false);
             if ($grouplang==$baselang) { ?>(<?php echo $clang->gT("Base language"); ?>) <?php } ?>
             </a></li>
         <?php }
     if (bHasSurveyPermission($surveyid,'surveycontent','import'))
     { ?>
         <li><a href="#import"><?php echo $clang->gT("Import question group"); ?></a></li>
-            		
+
    	<?php } ?>
     </ul>
-        
-    
-    
-    <form action='<?php echo site_url("admin/database/index/"); ?>' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=" if (1==0 
-        
+
+
+
+    <form action='<?php echo site_url("admin/database/index/"); ?>' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=" if (1==0
+
     <?php foreach ($grplangs as $grouplang)
     { ?>
-        || document.getElementById('group_name_$grouplang').value.length==0 
+        || document.getElementById('group_name_$grouplang').value.length==0
     <?php } ?>
      ) { alert ('<?php echo $clang->gT("Error: You have to enter a group title for each language.",'js'); ?>'); return false;}" >
-        
+
     <?php foreach ($grplangs as $grouplang)
     { ?>
         <div id="<?php echo $grouplang; ?>">
@@ -38,13 +39,13 @@
         <p><input type='submit' value='<?php echo $clang->gT("Save question group"); ?>' />
         </div>
     <?php } ?>
-        
+
     <input type='hidden' name='action' value='insertquestiongroup' />
     <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     </form>
-        
-        
-    
+
+
+
     <?php if (bHasSurveyPermission($surveyid,'surveycontent','import'))
     { ?>
         <div id="import">
@@ -59,11 +60,11 @@
         <input type='hidden' name='action' value='importgroup' />
         <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
         </form>
-        
+
         </div>
     <?php } ?>
-        	 
-        
-        
-    
+
+
+
+
     </div>

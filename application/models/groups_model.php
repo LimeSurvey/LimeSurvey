@@ -38,9 +38,18 @@ class Groups_model extends CI_Model {
         //$this->db->where('parent_qid',0);
         $this->db->order_by("group_order","asc");
         $data = $this->db->get('groups');
-
         return $data;
     }
+
+    function getSurveyIDFromGroup($gid)
+    {
+        $this->db->select('sid');
+        $this->db->where('gid',$gid);
+        $data = $this->db->get('groups');
+        $data=$data->row_array();
+        return $data['sid'];
+    }
+
 
     function getMaximumGroupOrder($sid,$language)
     {
@@ -127,7 +136,7 @@ class Groups_model extends CI_Model {
         FROM ".$this->db->dbprefix('groups')."
         WHERE sid=? and language=?
         ORDER BY group_order";
-        $result=$this->db->query($query,array($surveyid,$this->config->item("baselang")));
+        $result=$this->db->query($query,array($surveyid,$baselang));
         $output=array();
         foreach($result->result_array() as $row) {
             $output[$row['gid']]=$row;

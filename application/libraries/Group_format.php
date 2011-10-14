@@ -384,9 +384,10 @@ class Group_format {
 		    else
 		    {
 		        $grouparrayno=$_SESSION['step']-1;
-		        $gid=$_SESSION['grouplist'][$grouparrayno][0];
-		        $groupname=$_SESSION['grouplist'][$grouparrayno][1];
-		        $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
+                $aSlice=array_slice($_SESSION['grouplist'],$grouparrayno,1);
+		        $gid=$aSlice[0][0];
+		        $groupname=$aSlice[0][1];
+		        $groupdescription=$aSlice[0][2];
 		    }
 		}
 

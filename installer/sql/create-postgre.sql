@@ -77,6 +77,7 @@ CREATE TABLE prefix_groups (
     group_order integer DEFAULT 0 NOT NULL,
     description text,
     "language" character varying(20) DEFAULT 'en'::character varying NOT NULL,
+    randomization_group varying(20) DEFAULT ''::character varying NOT NULL,
     CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, "language")    
 );
 
@@ -527,6 +528,6 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '150');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '151');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 
