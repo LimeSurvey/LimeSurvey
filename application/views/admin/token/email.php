@@ -2,14 +2,14 @@
     <div class='header ui-widget-header'>
     <?php echo $clang->gT("Send email invitations");?></div>
     <div><br/>
- 
+
         <?php if ($thissurvey['active']!='Y')
         { ?>
             <div class='messagebox ui-corner-all'><div class='warningheader'><?php echo $clang->gT('Warning!');?></div><?php echo $clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.");?></div>
        <?php } ?>
 		<div id='tabs'>
 		<ul>
-		<?php 
+		<?php
 		$surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 		$baselang = GetBaseLanguageFromSurveyID($surveyid);
         array_unshift($surveylangs,$baselang);
@@ -21,7 +21,7 @@
                 echo"(".$clang->gT("Base language").")";
             }
 
-		
+
 		echo "</a></li>";
 		}
 		?>
@@ -33,15 +33,15 @@
         {
             //GET SURVEY DETAILS
             $thissurvey=getSurveyInfo($surveyid,$language);
-            $bplang = new limesurvey_lang($language);
+            $bplang = new limesurvey_lang(array($language));
 
             if ($ishtml===true)
             {
-               $aDefaultTexts=aTemplateDefaultTexts($bplang);     
+               $aDefaultTexts=aTemplateDefaultTexts($bplang);
             }
             else
             {
-                $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');     
+                $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');
             }
             if (!$thissurvey['email_invite'])
             {
@@ -69,7 +69,7 @@
             if ($ishtml!==true){$textarea=str_replace(array('<x>','</x>'),array(''),$textarea);}
 ?>
             <div id="<?php echo $language;?>">
-			
+
             <ul>
             <li><label for='from_<?php echo $language;?>'><?php echo $clang->gT("From");?>:</label>
             <input type='text' size='50' id='from_<?php echo $language;?>' name='from_<?php echo $language;?>' value="<?php echo "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";?>" /></li>

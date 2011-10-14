@@ -1,7 +1,7 @@
 	<script language='javascript' type='text/javascript'> surveyid = '<?php echo $surveyid; ?>'; </script>
     <script language='javascript' type='text/javascript'> var imgurl = '<?php echo $this->config->item('imageurl'); ?>';
     var controllerurl = '<?php echo site_url("admin/tokens/bounceprocessing/$surveyid"); ?>'; </script>
-    
+
     <div class='menubar'><div class='menubar-title ui-widget-header'><span style='font-weight:bold;'>
     <?php $clang->eT("Data view control");?></span></div>
 	<div class='menubar-main'>
@@ -241,7 +241,7 @@
 	            <?php }
 	            elseif ($brow['completed'] == "N" && $brow['token'] && $brow['sent'] != "N" && trim($brow['email'])!='')  // reminder button
 	            { ?>
-	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='{$imageurl}/token_remind.png'
+	                <input style='height: 16; width: 16px; font-size: 8; font-family: verdana' type='image' src='<?php echo $imageurl;?>/token_remind.png'
                     title='<?php $clang->eT("Send reminder email to this entry");?>' alt='<?php $clang->eT("Send reminder email to this entry");?>' onclick="<?php echo get2post(site_url("admin/tokens/remind/$surveyid/")."?tid=".$brow['tid']);?>" />
 	           <?php } ?>
   	            </td>
@@ -283,9 +283,9 @@
 	//End multiple item actions
 ?>
 	</table>
-    
+
     <div id='dialog-modal'></div>
-    
+
 <!-- Code for central Participants database -->
     <p><input type='button' name='addtocpdb' id='addtocpdb' value='<?php $clang->eT("Add participants to central database");?>'/><br />
 <!-- End of Code for central Participants database -->

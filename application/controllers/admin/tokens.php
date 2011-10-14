@@ -100,19 +100,19 @@ class tokens extends Survey_Common_Controller {
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
 	}
-    
+
     /**
      * tokens::bounceprocessing()
-     * 
+     *
      * @return void
      */
     function bounceprocessing($surveyid)
     {
     	$surveyid = sanitize_int($surveyid);
-        
+
         $clang = $this->limesurvey_lang;
         $this->load->helper('globalsettings');
-        
+
         $thissurvey=getSurveyInfo($surveyid);
         if ($thissurvey['bounceprocessing']!='N' && !($thissurvey['bounceprocessing']=='G' && getGlobalSetting('bounceaccounttype')=='off') && bHasSurveyPermission($surveyid, 'tokens','update'))
     	{
@@ -125,7 +125,7 @@ class tokens extends Survey_Common_Controller {
     			$username=getGlobalSetting('bounceaccountuser');
     			$pass=getGlobalSetting('bounceaccountpass');
     			$hostencryption=getGlobalSetting('bounceencryption');
-    		    
+
             }
     		else
     		{
@@ -134,7 +134,7 @@ class tokens extends Survey_Common_Controller {
     			$username=$thissurvey['bounceaccountuser'];
     			$pass=$thissurvey['bounceaccountpass'];
     			$hostencryption=$thissurvey['bounceaccountencryption'];
-                
+
     		}
             @list($hostname,$port) = split(':', $hostname);
                 if(empty($port))
@@ -144,13 +144,13 @@ class tokens extends Survey_Common_Controller {
                       switch($hostencryption)
                       {
                           case "Off":
-                            $hostname = $hostname.":143";    
+                            $hostname = $hostname.":143";
                             break;
                           case "SSL":
-                            $hostname = $hostname.":993";    
+                            $hostname = $hostname.":993";
                             break;
                           case "TLS":
-                            $hostname = $hostname.":993";    
+                            $hostname = $hostname.":993";
                             break;
                       }
                     }
@@ -159,13 +159,13 @@ class tokens extends Survey_Common_Controller {
                        switch($hostencryption)
                       {
                           case "Off":
-                            $hostname = $hostname.":110";    
+                            $hostname = $hostname.":110";
                             break;
                           case "SSL":
-                            $hostname = $hostname.":995";    
+                            $hostname = $hostname.":995";
                             break;
                           case "TLS":
-                            $hostname = $hostname.":995";    
+                            $hostname = $hostname.":995";
                             break;
                       }
                     }
@@ -190,8 +190,8 @@ class tokens extends Survey_Common_Controller {
     			break;
     		}
     		if($mbox=imap_open('{'.$hostname.$flags.'}INBOX',$username,$pass))
-    		{   
-                imap_errors();          
+    		{
+                imap_errors();
     			$count=imap_num_msg($mbox);
     			$lasthinfo=imap_headerinfo($mbox,$count);
     			$datelcu = strtotime($lasthinfo->date);
@@ -210,19 +210,19 @@ class tokens extends Survey_Common_Controller {
     					{
     						$tokenBounce=explode(": ",$item);
     						if($surveyid == $surveyidBounce[1])
-    						{ 
+    						{
     							$bouncequery = "UPDATE ".db_table_name("tokens_$surveyid")." SET emailstatus='bounced' WHERE token='$tokenBounce[1]';";
     							$data = array(
                                         'emailstatus'=> 'bounced'
-                                        
+
                                 );
                                 $condn = array('token' => $tokenBounce[1]);
                                 $this->load->model('tokens_dynamic_model');
-                                
-                                
+
+
                                 $anish= $this->tokens_dynamic_model->updateRecords($surveyid,$data,$condn); //$connect->Execute($bouncequery);)
-                                
-    							$readbounce=imap_body($mbox,$count); // Put read 
+
+    							$readbounce=imap_body($mbox,$count); // Put read
     							if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
     							{
     								$deletebounce=imap_delete($mbox,$count); // Put delete
@@ -242,13 +242,13 @@ class tokens extends Survey_Common_Controller {
                 $data = array('bouncetime' => $datelastbounce);
                 $condn = array('sid' => $surveyid);
                 $this->load->model('surveys_model');
-                
+
     			$executetimestamp = $this->surveys_model->updateSurvey($data,$condn); //'$connect->Execute($entertimestamp);)
     			if($bouncetotal>0)
     			{
     				echo sprintf($clang->gT("%s messages were scanned out of which %s were marked as bounce by the system."), $checktotal,$bouncetotal);
     			}
-    			else 
+    			else
     			{
     				echo sprintf($clang->gT("%s messages were scanned, none were marked as bounce by the system."),$checktotal);
     			}
@@ -263,7 +263,7 @@ class tokens extends Survey_Common_Controller {
     		echo $clang->gT("We are sorry but you don't have permissions to do this.");
     	}
     	exit(0); // if bounceprocessing : javascript : no more todo
-        
+
     }
 
 	/**
@@ -560,7 +560,7 @@ class tokens extends Survey_Common_Controller {
 		$tokenid = (int) $tokenid;
 		$limit = (int) $limit;
 		$start = (int) $start;
-		
+
         if(bHasSurveyPermission($surveyid, 'tokens','delete')) {
 			$clang=$this->limesurvey_lang;
 			$this->load->model("tokens_dynamic_model");
@@ -1005,13 +1005,13 @@ class tokens extends Survey_Common_Controller {
 	                elseif (SendEmailMessage($modmessage, $modsubject, $to , $from, $this->config->item("sitename"), $ishtml, getBounceEmail($surveyid),null,$customheaders))
 	                {
 	                    // Put date into sent
-	                    $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
+	                    $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $this->config->item("timeadjust"));
 	                    $udequery = "UPDATE ".$this->db->dbprefix("tokens_{$surveyid}")."\n"
 	                    ."SET sent='$today' WHERE tid={$emrow['tid']}";
 	                    //
 	                    $uderesult = db_execute_assoc($udequery);
 	                    $tokenoutput .= $clang->gT("Invitation sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)<br />\n";
-	                    if ($emailsmtpdebug==2)
+	                    if ($this->config->item("emailsmtpdebug")==2)
 	                    {
 	                        $tokenoutput .=$maildebug;
 	                    }

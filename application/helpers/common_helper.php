@@ -5587,7 +5587,7 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
         return Array();
     }
     $extra_attrs=GetAttributeFieldNames($surveyid);
-    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
+    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount','usesleft');
     $basic_attrs_names=Array(
     $clang->gT('First name'),
     $clang->gT('Last name'),
@@ -5601,8 +5601,11 @@ function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
     );
 
     $thissurvey=getSurveyInfo($surveyid);
-    $attdescriptiondata=!empty($thissurvey['attributedescriptions']) ? $thissurvey['attributedescriptions'] : "";
-    $attdescriptiondata=explode("\n",$attdescriptiondata);
+    $attdescriptiondata=array();
+    if (!empty($thissurvey['attributedescriptions']))
+    {
+        $attdescriptiondata=explode("\n",$thissurvey['attributedescriptions']);
+    }
     $attributedescriptions=array();
     $basic_attrs_and_names=array();
     $extra_attrs_and_names=array();
