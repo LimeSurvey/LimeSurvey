@@ -376,12 +376,12 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
         {
-            $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}'>"
+            $surveysummary .= "<li><a  target='_blank' href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}'>"
             . "<img src='{$imageurl}/print_30.png' name='ShowPrintableSurvey' /> ".$clang->gT("Printable version")."</a></li>";
         }
         else
         {
-            $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}'>"
+            $surveysummary .= "<li><a  target='_blank' href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}'>"
             . "<img src='{$imageurl}/print_30.png' name='ShowPrintableSurvey' /> ".$clang->gT("Printable version")."</a><ul>";
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -389,7 +389,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             rsort($tmp_survlangs);
             foreach ($tmp_survlangs as $tmp_lang)
             {
-                $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}'><img src='{$imageurl}/print_30.png' /> ".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+                $surveysummary .= "<li><a target='_blank' href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}'><img src='{$imageurl}/print_30.png' /> ".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
             }
             $surveysummary.='</ul></li>';
         }

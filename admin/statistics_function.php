@@ -529,9 +529,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     //$_POST['sql'] is a post field that is sent from the statistics script to the export script in order
     // to export just those results filtered by this statistics script. It can also be passed to the statistics
     // script to filter from external scripts.
-    elseif (!empty($_POST['sql']) && !isset($_POST['id=']))
+    elseif (isset($_SESSION['sql']) && $_SESSION['sql']!='NULL' && !isset($_POST['id=']))
     {
-        $newsql=substr($_POST['sql'], strpos($_POST['sql'], "WHERE")+5, strlen($_POST['sql']));
+        $newsql=substr($_SESSION['sql'], strpos($_SESSION['sql'], "WHERE")+5, strlen($_SESSION['sql']));
 
         //for debugging only
         //$query = $_POST['sql'];
@@ -629,12 +629,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     {
         if($outputType=='html' && $browse === true)
         {
+            $_SESSION['sql']=$sql;
             //add a buttons to browse results
             $statisticsoutput .= "<form action='$scriptname?action=browse' method='post' target='_blank'>\n"
             ."\t\t<p>"
             ."\t\t\t<input type='submit' value='".$statlang->gT("Browse")."'  />\n"
             ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
-            ."\t\t\t<input type='hidden' name='sql' value=\"$sql\" />\n"
             ."\t\t\t<input type='hidden' name='subaction' value='all' />\n"
             ."\t\t</p>"
             ."\t\t</form>\n";
@@ -2066,7 +2066,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $TotalCompleted -=$row[0];
                             }
                             $fname="$al[1]";
-                            if ($browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                            if ($browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid={$surveyid}&amp;column={$ColumnName_RM}', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                         }
 
                         /*
@@ -2087,8 +2087,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             {
                                 $fname= "$al[1]";
                                 if ($browse===true) $fname .= " <input type='submit' value='"
-                                . $statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
-                                . urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                                . $statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                             }
                             elseif ($al[0] == "NoAnswer")
                             {
