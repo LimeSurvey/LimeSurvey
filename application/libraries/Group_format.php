@@ -1299,6 +1299,8 @@ END;
                 }
                 if ($qa[8] == '*')
                 {
+                    // TMW - replace this with a call to EM to get hidden attribute status
+                    $eqnAttributes = getQuestionAttributeValues($qa[4], $qa[8]);
                     if ($eqnAttributes['hidden']==1) {
                         $n_q_display = ' style="display: none;"';
                     }

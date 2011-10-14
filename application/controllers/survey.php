@@ -1017,7 +1017,7 @@ class survey extends LSCI_Controller {
     }
 
     function _userHasPreviewAccessSession($surveyId){
-        return isset($_SESSION['USER_RIGHT_PREVIEW']) || $_SESSION['USER_RIGHT_PREVIEW'] != $surveyId;
+        return (!(isset($_SESSION['USER_RIGHT_PREVIEW']) && ($_SESSION['USER_RIGHT_PREVIEW'] == $surveyId)));
     }
 
     function _killPage(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array(), $bKillSession = false)
