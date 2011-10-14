@@ -1040,7 +1040,7 @@ class LimeExpressionManager {
             $totalTime += $unit[1];
         }
         log_message('debug','Total time attributable to EM = ' . $totalTime);
-        log_message('debug',print_r($LEM->runtimeTimings,true));
+//        log_message('debug',print_r($LEM->runtimeTimings,true));
     }
 
     static function ShowLogicFile()

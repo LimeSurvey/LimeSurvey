@@ -288,7 +288,7 @@
 		            $qidattributes=getQuestionAttributeValues($ia[0]);
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
 
-                    LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$ia[0],$ia[2],$ia[4],$hidden);
+//                    LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$ia[0],$ia[2],$ia[4],$hidden);
                     // TODO - double check this  about expressions - should it continue?
                     if ($ia[4] != '*' && ($qidattributes===false || $qidattributes['hidden']==1)) {
                         continue;
