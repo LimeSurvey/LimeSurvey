@@ -485,6 +485,7 @@ class user extends Survey_Common_Controller {
 		$this->load->helper("database");
 		$data['clang']=$this->limesurvey_lang;
 		$_POST = $this->input->post();
+                self::_js_admin_includes(base_url().'scripts/admin/users.js');  
 		$postuser = $this->input->post("user");
 		$postemail = $this->input->post("email");
 		$postuserid = $_POST["uid"];
