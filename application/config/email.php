@@ -8,7 +8,8 @@ $config['siteadminemail']     = 'your-email@example.net'; // The default email a
 $config['siteadminbounce']    = 'your-email@example.net'; // The default email address used for error notification of sent messages for the site administrator (Return-Path)
 $config['siteadminname']      = 'Your Name';      // The name of the site administrator
 
-$config['protocol']        = 'mail';           // The following values can be used:
+$config['emailmethod']        = 'mail';           // The following values can be used:
+$config['protocol'] = $config['emailmethod'];
 // mail      -  use internal PHP Mailer
 // sendmail  -  use Sendmail Mailer
 // smtp      -  use SMTP relaying

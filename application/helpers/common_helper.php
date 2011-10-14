@@ -4378,7 +4378,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 	$CI =& get_instance();
 	$CI->config->load('email');
 	$clang = $CI->limesurvey_lang;
-	$emailmethod = $CI->config->item("protocol");
+	$emailmethod = $CI->config->item('emailmethod');
 	$emailsmtphost = $CI->config->item("emailsmtphost");
 	$emailsmtpuser = $CI->config->item("emailsmtpuser");
 	$emailsmtppassword = $CI->config->item("emailsmtppassword");
