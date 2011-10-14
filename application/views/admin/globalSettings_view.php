@@ -1,3 +1,6 @@
+<script type="text/javascript">
+    var msgAtLeastOneLanguageNeeded = '<?php $clang->eT("You must set at last one available language.",'js');?>';
+</script>
 <div class='header ui-widget-header'><?php $clang->eT("Global settings");?></div>
 <div id='tabs'>
     <ul>
@@ -7,6 +10,7 @@
         <li><a href='#bounce'><?php $clang->eT("Bounce settings");?></a></li>
         <li><a href='#security'><?php $clang->eT("Security");?></a></li>
         <li><a href='#presentation'><?php $clang->eT("Presentation");?></a></li>
+        <li><a href='#language'><?php $clang->eT("Language");?></a></li>
     </ul>
     <form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='<?php echo site_url("admin/globalsettings");?>' method='post'>
         <div id='overview'>
@@ -53,21 +57,7 @@
             <ul>
                 <li><label for='sitename'><?php echo $clang->gT("Site name:").(($this->config->item("demoMode")==true)?'*':'');?></label>
                     <input type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars(getGlobalSetting('sitename'));?>" /></li>
-                <li><label for='defaultlang'><?php echo $clang->gT("Default site language:").(($this->config->item("demoMode")==true)?'*':'');?></label>
-                    <select name='defaultlang' id='defaultlang'>
-                        <?php
-                            $actuallang=getGlobalSetting('defaultlang');
-                            foreach (getLanguageData(true) as  $langkey2=>$langname)
-                            {
-                            ?>
-                            <option value='<?php echo $langkey2;?>'
-                                <?php
-                                    if ($actuallang == $langkey2) { ?> selected='selected' <?php } ?>
-                                ><?php echo $langname['nativedescription']." - ".$langname['description'];?></option>
-                            <?php
-                            }
-                        ?>
-                    </select></li><?php
+                <?php
 
                     $thisdefaulttemplate=getGlobalSetting('defaulttemplate');
                     $templatenames=array_keys(gettemplatelist());
@@ -368,7 +358,55 @@
                 ?>
             </ul>
 
-        </div><input type='hidden' name='action' value='globalsettingssave'/></form>
+        </div>
+        <div id='language'>
+            <ul>
+                <li><label for='defaultlang'><?php echo $clang->gT("Default site language:").(($this->config->item("demoMode")==true)?'*':'');?></label>
+                    <select name='defaultlang' id='defaultlang'>
+                        <?php
+                            $actuallang=getGlobalSetting('defaultlang');
+                            foreach (getLanguageData(true) as  $langkey2=>$langname)
+                            {
+                            ?>
+                            <option value='<?php echo $langkey2;?>'
+                                <?php
+                                    if ($actuallang == $langkey2) { ?> selected='selected' <?php } ?>
+                                ><?php echo $langname['nativedescription']." - ".$langname['description'];?></option>
+                            <?php
+                            }
+                        ?>
+                    </select>
+                </li>
+                <li><label for='includedLanguages'><?php echo $clang->gT("Available languages:");?></label>
+                    <table>
+                        <tr>
+                            <td align='left'>
+                                <select style='min-width:220px;' size='5' id='includedLanguages' name='includedLanguages' multiple='multiple'><?php
+                                        foreach ($restrictToLanguages as $sLanguageCode) {?>
+                                        <option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option>
+                                        <?php
+                                    }?>
+
+                                </select>
+                            </td>
+                            <td align='center'>
+                                <button id="btnAdd" type="button"><span class="ui-icon ui-icon-carat-1-w" style="float:left"></span><?php echo $clang->gT("Add"); ?></button><br /><button type="button" id="btnRemove"><span class="ui-icon ui-icon-carat-1-e" style="float:right"></span><?php echo $clang->gT("Remove"); ?></button>
+                            </td>
+                            <td align='left'>
+                                <select size='5' style='min-width:220px;' id='excludedLanguages' name='excludedLanguages' multiple='multiple'>
+                                    <?php foreach ($excludedLanguages as $sLanguageCode) {
+                                        ?><option value='<?php echo $sLanguageCode; ?>'><?php echo $allLanguages[$sLanguageCode]['description']; ?></option><?php
+                                    } ?>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+        </div>
+        <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ',$restrictToLanguages);?>'/>
+        <input type='hidden' name='action' value='globalsettingssave'/>
+    </form>
 
 </div>
 

@@ -206,13 +206,6 @@ class Authentication extends Admin_Controller {
             $data['summary'] = $logoutsummary;
         }
 
-        $lan=array();
-        $this->load->helper("surveytranslator");
-        foreach (getlanguagedata(true) as $langkey=>$languagekind)
-        {
-            array_push($lan,$langkey);
-        }
-
         parent::_getAdminHeader();
         $this->load->view('admin/authentication/login', $data);
         parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));

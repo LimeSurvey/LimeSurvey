@@ -482,6 +482,14 @@ $config['iFileUploadTotalSpaceMB']= 0;
 // defines if the CKeditor toolbar should be opened by default
 $config['ckeditexpandtoolbar']     = true;
 
+/**
+* This variable defines the languages available in LimeSurvey (front- and backend)
+* and should contain a space-separated list of language codes. If empty then no restrictions
+* are set and all languages are available
+*
+* @var string
+*/
+$config['restrictToLanguages'] = '';
 
 
 // === Advanced Setup

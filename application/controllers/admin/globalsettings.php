@@ -58,7 +58,9 @@ class GlobalSettings extends Admin_Controller {
     {
 
         $clang = $this->limesurvey_lang;
+        $this->load->helper('surveytranslator_helper');
 
+        self::_js_admin_includes(base_url()."scripts/jquery/jquery.selectboxes.min.js");
         self::_js_admin_includes(base_url()."scripts/admin/globalsettings.js");
 
         $data['title']="hi";
@@ -68,6 +70,17 @@ class GlobalSettings extends Admin_Controller {
         $data['updatelastcheck'] = $this->config->item("updatelastcheck");
         $data['updateavailable'] = $this->config->item("updateavailable");
         $data['updateinfo'] = $this->config->item("updateinfo");
+        $data['allLanguages']=getLanguageData();
+        if (trim($this->config->item('restrictToLanguages'))=='')
+        {
+            $data['restrictToLanguages']=array_keys($data['allLanguages']);
+            $data['excludedLanguages']=array();
+        }
+        else
+        {
+            $data['restrictToLanguages']=explode(' ',trim($this->config->item('restrictToLanguages')));
+            $data['excludedLanguages']=array_diff(array_keys($data['allLanguages']),$data['restrictToLanguages']);
+        }
 
         self::_getAdminHeader();
         self::_showadminmenu();
@@ -79,6 +92,8 @@ class GlobalSettings extends Admin_Controller {
     function _savesettings()
     {
         $clang = $this->limesurvey_lang;
+        $this->load->helper('surveytranslator_helper');
+
         $action = $this->input->post("action");
         if ($action == "globalsettingssave")
         {
@@ -89,6 +104,17 @@ class GlobalSettings extends Admin_Controller {
                 {
                     $maxemails=1;
                 }
+
+                $aRestrictToLanguages=explode(' ',sanitize_languagecodeS($this->input->post('restrictToLanguages')));
+                if  (count(array_diff(array_keys(getLanguageData()),$aRestrictToLanguages))==0)
+                {
+                    $aRestrictToLanguages='';
+                }else
+                {
+                    $aRestrictToLanguages=implode(' ',$aRestrictToLanguages);
+                }
+
+                setGlobalSetting('restrictToLanguages',trim($aRestrictToLanguages));
                 setGlobalSetting('sitename',strip_tags($this->input->post('sitename')));
                 setGlobalSetting('updatecheckperiod',(int)($this->input->post('updatecheckperiod')));
                 setGlobalSetting('addTitleToLinks',sanitize_paranoid_string($this->input->post('addTitleToLinks')));
@@ -141,6 +167,7 @@ class GlobalSettings extends Admin_Controller {
 
                 $this->session->set_userdata('flashmessage',$clang->gT("Global settings were saved."));
             }
+            redirect(site_url('admin'));
         }
     }
 

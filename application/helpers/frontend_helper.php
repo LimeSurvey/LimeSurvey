@@ -273,7 +273,7 @@ function makelanguagechanger()
         global $baselang;
         $htmlcode = "<select name=\"select\" class='languagechanger' onchange=\"javascript:window.location=this.value\">\n";
         $htmlcode .= "<option value=\"$relativeurl/index.php?lang=". $defaultlang ."$tokenparam\">".getLanguageNameFromCode($defaultlang,false)."</option>\n";
-        foreach(getlanguagedata() as $key=>$val)
+        foreach(getlanguagedataRestricted() as $key=>$val)
         {
             $htmlcode .= "\t<option value=\"$relativeurl/index.php?lang=".$key."$tokenparam\" ";
             if($key == $baselang)

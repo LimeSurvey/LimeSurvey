@@ -425,15 +425,6 @@ span.settingcaption {
     background-color: #fdfdff;
 }
 
-.movableNode {
-    list-style-type: none;
-    border: 1px solid #999;
-    width: 60em;
-    text-align: left;
-    margin-top: 2px;
-    background: #EEEFFF;
-    padding: 0.5em;
-}
 
 .langpopup {
     display:none;
@@ -1072,10 +1063,6 @@ textarea.updater-changelog {
     font-size:11px;
 }
 
-/*controls the width of select boxes in group order dialog*/
-.movableNode select {
-    max-width:200px;
-}
 
 .form44 li label:first-child,
 #exportspss li label:first-child,

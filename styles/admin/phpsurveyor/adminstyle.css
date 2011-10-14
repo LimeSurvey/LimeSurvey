@@ -220,30 +220,13 @@ span.settingcaption {
   display: none;
   z-index: 10000;
   opacity: 0.7;
-  filter: alpha(opacity =           70);
+  filter: alpha(opacity = 70);
   -khtml-opacity: 0.7;
   -moz-opacity: 0.7;
   -moz-border-radius: 5px;
   background: #555;
 }
 
-.movableNodeul {
-  padding-left: 0;
-  margin-left: 0;
-  margin-top: 0;
-  padding-top: 0;
-  width: 50em;
-}
-
-.movableNode {
-  list-style-type: none;
-  border: 1px solid #999;
-  padding: 0.5em;
-  width: 50em;
-  text-align: left;
-  margin-top: 2px;
-  background: #EEE;
-}
 
 .testsurvpopup {
   position: absolute;

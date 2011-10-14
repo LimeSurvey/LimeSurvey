@@ -253,15 +253,6 @@ span.settingcaption {
   width: 60em;
 }
 
-.movableNode {
-  list-style-type: none;
-  border: 1px solid #999;
-  width: 60em;
-  text-align: right;
-  margin-top: 2px;
-  background: #EEEFFF;
-  padding: 0.5em;
-}
 
 .langpopup2 {
   position: absolute;
