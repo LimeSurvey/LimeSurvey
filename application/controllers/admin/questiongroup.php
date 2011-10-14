@@ -419,12 +419,24 @@ class questiongroup extends Survey_Common_Controller {
         self::_js_admin_includes(base_url().'scripts/jquery/jquery.ui.nestedSortable.js');
         self::_js_admin_includes(base_url().'scripts/admin/organize.js');
 
+        LimeExpressionManager::StartProcessingPage(false,true,false);
         $aGrouplist=$this->groups_model->getGroups($iSurveyID);
         foreach($aGrouplist as $iGID=>$aGroup)
         {
+            LimeExpressionManager::StartProcessingGroup($aGroup['gid'],false,$iSurveyID);
             $oQuestionData=$this->questions_model->getQuestions($iSurveyID,$aGroup['gid'],$sBaseLanguage);
-            $aGrouplist[$iGID]['questions']=$oQuestionData->result_array();
+            $qs = array();
+            $junk=array();
+            foreach ($oQuestionData->result_array() as $q) {
+                $question = '[{' . $q['relevance'] . '}] ' . $q['question'];
+                LimeExpressionManager::ProcessString($question,$q['qid'],$junk,false,1,1);
+                $q['question'] = LimeExpressionManager::GetLastPrettyPrintExpression();
+//                log_message('debug',$q['question']);
+                $qs[] = $q;
+            }
+            $aGrouplist[$iGID]['questions']=$qs;
         }
+        LimeExpressionManager::FinishProcessingPage();
         $aViewData['aGroupsAndQuestions']=$aGrouplist;
         $aViewData['clang']=$this->limesurvey_lang;
         $aViewData['surveyid']=$iSurveyID;

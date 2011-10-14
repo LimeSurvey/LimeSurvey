@@ -1029,11 +1029,15 @@ class LimeExpressionManager {
 
     static function FinishProcessingPage()
     {
-        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
         $_SESSION['EM_pageTailoringLog'] = $LEM->pageTailoringLog;
         $_SESSION['EM_surveyLogicFile'] = $LEM->surveyLogicFile;
-        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+
+        $totalTime = 0.;
+        foreach($LEM->runtimeTimings as $unit) {
+            $totalTime += $unit[1];
+        }
+        log_message('debug','Total time attributable to EM = ' . $totalTime);
     }
 
     static function ShowLogicFile()
