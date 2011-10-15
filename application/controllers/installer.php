@@ -471,7 +471,7 @@ class Installer extends CI_Controller {
                     $this->session->set_userdata($aStatusdata);
                     //redirect(site_url("installer/loadOptView"));
                     header("refresh:5;url=".site_url("admin"));
-                    echo $clang->gT('The database you specified is up to date.You\'ll be redirected in 5 secs. If not, click ').anchor('admin','here');
+                    echo $clang->gT('The database you specified is up to date. You\'ll be redirected in 5 secs. If not, click ').anchor('admin','here');
                     exit();
                 }
 
