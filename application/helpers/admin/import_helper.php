@@ -4083,6 +4083,7 @@ function XMLImportResponses($sFullFilepath,$iSurveyID,$aFieldReMap=array())
                     while ($oXMLReader->read() && $oXMLReader->name != 'row') {
                         $sFieldname=$oXMLReader->name;
                         if ($sFieldname[0]=='_') $sFieldname=substr($sFieldname,1);
+                        $sFieldname=str_replace('-','#',$sFieldname);
                         if (isset($aFieldReMap[$sFieldname]))
                         {
                             $sFieldname=$aFieldReMap[$sFieldname];
