@@ -568,17 +568,10 @@ class user extends Survey_Common_Controller {
 	        {
 	            $rights = array();
 
-	            if(isset($_POST['create_survey']))$rights['create_survey']=1;		else $rights['create_survey']=0;
-	            if(isset($_POST['configurator']))$rights['configurator']=1;			else $rights['configurator']=0;
-	            if(isset($_POST['create_user']))$rights['create_user']=1;			else $rights['create_user']=0;
-                if(isset($_POST['participant_panel']))$rights['participant_panel']=1;	else $rights['participant_panel']=0;
-	            if(isset($_POST['delete_user']))$rights['delete_user']=1;			else $rights['delete_user']=0;
-
 	            // Only Initial Superadmin can give this right
 	            if(isset($_POST['superadmin']))
 	            {
 	                // Am I original Superadmin ?
-
 	                // Initial SuperAdmin has parent_id == 0
 	                $adminquery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE parent_id=0";
 	                $adminresult = db_select_limit_assoc($adminquery, 1);
@@ -597,9 +590,14 @@ class user extends Survey_Common_Controller {
 	            {
 	                $rights['superadmin']=0;
 	            }
-
-	            if(isset($_POST['manage_template']))$rights['manage_template']=1;	else $rights['manage_template']=0;
-	            if(isset($_POST['manage_label']))$rights['manage_label']=1;			else $rights['manage_label']=0;
+	            
+	            if(isset($_POST['create_survey']) || $rights['superadmin'])$rights['create_survey']=1;		else $rights['create_survey']=0;
+	            if(isset($_POST['configurator']) || $rights['superadmin'])$rights['configurator']=1;			else $rights['configurator']=0;
+	            if(isset($_POST['create_user']) || $rights['superadmin'])$rights['create_user']=1;			else $rights['create_user']=0;
+              if(isset($_POST['participant_panel']) || $rights['superadmin'])$rights['participant_panel']=1;	else $rights['participant_panel']=0;
+	            if(isset($_POST['delete_user']) || $rights['superadmin'])$rights['delete_user']=1;			else $rights['delete_user']=0;
+	            if(isset($_POST['manage_template']) || $rights['superadmin'])$rights['manage_template']=1;	else $rights['manage_template']=0;
+	            if(isset($_POST['manage_label']) || $rights['superadmin'])$rights['manage_label']=1;			else $rights['manage_label']=0;
 
 	            setuserrights($postuserid, $rights);
 	            $addsummary .= "<div class=\"successheader\">".$clang->gT("User permissions were updated successfully.")."</div>\n";
