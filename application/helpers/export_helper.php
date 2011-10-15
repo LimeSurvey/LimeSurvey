@@ -525,7 +525,7 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
                     if(!(is_null($Value))) // If the $value is null don't output an element at all
                     {
                         if (is_numeric($Key[0])) $Key='_'.$Key; // mask invalid element names with an underscore
-                        $Key=str_replace('#','-',str_replace);
+                        $Key=str_replace('#','-',$Key);
                         if (!$xmlwriter->startElement($Key)) safe_die('Invalid elemnt key: '.$Key);
                             // Remove invalid XML characters
                         if ($Value!='') $xmlwriter->writeCData(preg_replace('/[^\x9\xA\xD\x20-\x{D7FF}\x{E000}-\x{FFFD}\x{10000}-\x{10FFFF}]/u','',$Value));
