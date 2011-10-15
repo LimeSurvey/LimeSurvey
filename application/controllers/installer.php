@@ -460,7 +460,7 @@ class Installer extends CI_Controller {
                 //store them in session
                 $this->session->set_userdata(array('databaseexist' => $bDBExists, 'tablesexist' => !$bTablesDoNotExist));
 
-                // If database is up to date, redirect to Optional Configuration screen.
+                // If database is up to date, redirect to administration screen.
                 if ($bDBExists && !$bTablesDoNotExist)
                 {
 
@@ -469,7 +469,10 @@ class Installer extends CI_Controller {
                     'step3'  => TRUE
                     );
                     $this->session->set_userdata($aStatusdata);
-                    redirect(site_url("installer/loadOptView"));
+                    //redirect(site_url("installer/loadOptView"));
+                    header("refresh:5;url=".site_url("admin"));
+                    echo $clang->gT('The database you specified is up to date.You\'ll be redirected in 5 secs. If not, click ').anchor('admin','here');
+                    exit();
                 }
 
                 if ($_POST['dbtype']=='mysql' || $_POST['dbtype']=='mysqli') {
@@ -615,7 +618,7 @@ class Installer extends CI_Controller {
                 {
                     redirect(site_url('installer/install/1'));
                 }
-                $message = sprintf($clang->gT("Database %s has been successfully populated."), sprintf('<b>%s<b>', $this->session->userdata('dbname')));
+                $message = sprintf($clang->gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', $this->session->userdata('dbname')));
                 $this->session->set_userdata('optconfig_message', $message);
                 $this->stepOptionalConfiguration();
                 break;
@@ -645,7 +648,9 @@ class Installer extends CI_Controller {
         //check if passwords match , input class take care of any xss filetring or sql injection
         $adminLoginPwd = $this->input->post('adminLoginPwd');
         $confirmPwd = $this->input->post('confirmPwd');
-        if (!empty($adminLoginPwd) && $adminLoginPwd == $confirmPwd)
+        //if (!empty($adminLoginPwd) && $adminLoginPwd == $confirmPwd)
+        //DEV NOTE: !empty($adminLoginPwd) need not be true to execute following code i.e. why called optional screen.
+        if ($adminLoginPwd == $confirmPwd)
         {
 
             $defaultuser = $this->input->post('adminLoginName');
