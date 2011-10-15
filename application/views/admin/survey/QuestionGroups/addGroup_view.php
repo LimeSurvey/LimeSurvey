@@ -16,7 +16,7 @@
 
 
 
-    <form action='<?php echo site_url("admin/database/index/"); ?>' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=" if (1==0
+    <form action='<?php echo site_url("admin/questiongroup/insert/".$surveyid); ?>' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=" if (1==0
 
     <?php foreach ($grplangs as $grouplang)
     { ?>
@@ -24,24 +24,26 @@
     <?php } ?>
      ) { alert ('<?php echo $clang->gT("Error: You have to enter a group title for each language.",'js'); ?>'); return false;}" >
 
-    <?php foreach ($grplangs as $grouplang)
+    <?php
+    foreach ($grplangs as $grouplang)
     { ?>
         <div id="<?php echo $grouplang; ?>">
         <ul>
         <li>
-        <label for='group_name_$grouplang'><?php echo $clang->gT("Title"); ?>:</label>
+        <label for='group_name_$grouplang'><?php echo $clang->gT("Title:"); ?></label>
         <input type='text' size='80' maxlength='100' name='group_name_<?php echo $grouplang; ?>' id='group_name_<?php echo $grouplang; ?>' /><font color='red' face='verdana' size='1'> <?php echo $clang->gT("Required"); ?></font></li>
         <li><label for='description_<?php echo $grouplang; ?>'><?php echo $clang->gT("Description:"); ?></label>
         <textarea cols='80' rows='8' id='description_<?php echo $grouplang; ?>' name='description_<?php echo $grouplang; ?>'></textarea>
         <?php echo getEditor("group-desc","description_".$grouplang, "[".$clang->gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action); ?>
         </li>
+        <?php if ($grouplang==$baselang){?>
+                  <li><label for='randomization_group'><?php echo $clang->gT("Randomization group:"); ?></label><input type='text' size='20' maxlength='20' name='randomization_group' id='randomization_group' /></li>
+        <?php } ?>
         </ul>
         <p><input type='submit' value='<?php echo $clang->gT("Save question group"); ?>' />
         </div>
     <?php } ?>
 
-    <input type='hidden' name='action' value='insertquestiongroup' />
-    <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
     </form>
 
 

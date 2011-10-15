@@ -1,10 +1,10 @@
 <div class='header ui-widget-header'><?php $clang->eT('Organize question groups/questions');?></div>
 <p>
-<?php $clang->eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?><br />
-<?php $clang->eT("After you are done please click the bottom 'Save' button to save your changes.");?>
+    <?php $clang->eT("To reorder questions/questiongroups just drag the question/group with your mouse to the desired position.");?><br />
+    <?php $clang->eT("After you are done please click the bottom 'Save' button to save your changes.");?>
 </p>
 <div class='movableList'>
-<ol class="organizer">
+    <ol class="organizer">
         <?php
             foreach ($aGroupsAndQuestions as  $aGroupAndQuestions)
             {?>
@@ -15,10 +15,7 @@
                         <?php
                             foreach($aGroupAndQuestions['questions'] as $aQuestion)
                             {?>
-                        <!--
                             <li id='list_q<?php echo $aQuestion['qid'];?>'><div><b><?php echo $aQuestion['title'];?></b>: <?php echo FlattenText($aQuestion['question']);?></div></li>
-                        -->
-                            <li id='list_q<?php echo $aQuestion['qid'];?>'><div><b><?php echo $aQuestion['title'];?></b>: <?php echo $aQuestion['question'];?></div></li>
 
                             <?php }?>
                     </ol>

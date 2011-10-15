@@ -186,6 +186,109 @@ class questiongroup extends Survey_Common_Controller {
 
     }
 
+
+    /**
+    * Insert the new group to the database
+    *
+    * @param mixed $surveyid
+    */
+    function insert($surveyid)
+    {
+        if (bHasSurveyPermission($surveyid, 'surveycontent','create'))
+        {
+
+            $this->load->helper('surveytranslator');
+            $this->load->helper('database');
+            $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
+            $baselang = GetBaseLanguageFromSurveyID($surveyid);
+            $grplangs[] = $baselang;
+            $errorstring = '';
+            foreach ($grplangs as $grouplang)
+            {
+                if (!$this->input->post('group_name_'.$grouplang)) { $errorstring.= GetLanguageNameFromCode($grouplang,false)."\\n";}
+            }
+            if ($errorstring!='')
+            {
+                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be added.\\n\\nIt is missing the group name for the following languages","js").":\\n".$errorstring."\")\n //-->\n</script>\n";
+            }
+
+            else
+            {
+                $first=true;
+                /**require_once("../classes/inputfilter/class.inputfilter_clean.php");
+                $myFilter = new InputFilter('','',1,1,1);
+                */
+                foreach ($grplangs as $grouplang)
+                {
+                    //Clean XSS
+                    /**if ($filterxsshtml)
+                    {
+                    $_POST['group_name_'.$grouplang]=$myFilter->process($_POST['group_name_'.$grouplang]);
+                    $_POST['description_'.$grouplang]=$myFilter->process($_POST['description_'.$grouplang]);
+                    }
+                    else
+                    {
+                    $_POST['group_name_'.$grouplang] = html_entity_decode($_POST['group_name_'.$grouplang], ENT_QUOTES, "UTF-8");
+                    $_POST['description_'.$grouplang] = html_entity_decode($_POST['description_'.$grouplang], ENT_QUOTES, "UTF-8");
+                    } */
+
+                    $group_name = $this->input->post('group_name_'.$grouplang);
+                    $group_description = $this->input->post('description_'.$grouplang);
+
+                    // Fix bug with FCKEditor saving strange BR types
+                    $group_name=fix_FCKeditor_text($group_name);
+                    $group_description=fix_FCKeditor_text($group_description);
+
+
+                    if ($first)
+                    {
+                        $data = array (
+                        'sid' => $surveyid,
+                        'group_name' => $group_name,
+                        'description' => $group_description,
+                        'group_order' => getMaxgrouporder($surveyid),
+                        'language' => $grouplang,
+                        'randomization_group' =>$this->input->post('randomization_group')
+                        );
+                        $this->load->model('groups_model');
+
+                        $result = $this->groups_model->insertRecords($data);
+                        $groupid=$this->db->insert_id();
+                        $first=false;
+
+                    }
+                    else{
+                        db_switchIDInsert('groups',true);
+                        $data = array (
+                        'gid' => $groupid,
+                        'sid' => $surveyid,
+                        'group_name' => $group_name,
+                        'description' => $group_description,
+                        'group_order' => getMaxgrouporder($surveyid),
+                        'language' => $grouplang,
+                        'randomization_group' =>$this->input->post('randomization_group')
+                        );
+                        $result = $this->groups_model->insertRecords($data);
+                        db_switchIDInsert('groups',false);
+                    }
+                    if (!$result)
+                    {
+                        $databaseoutput .= $clang->gT("Error: The database reported an error while executing INSERT query in addgroup action in database.php:")."<br />\n";
+
+                        $databaseoutput .= "</body>\n</html>";
+                        //exit;
+                    }
+                }
+                // This line sets the newly inserted group as the new group
+                if (isset($groupid)){$gid=$groupid;}
+                $this->session->set_userdata('flashmessage', $this->limesurvey_lang->gT("New question group was saved."));
+
+            }
+            redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid));
+        }
+    }
+
+
     /**
     * questiongroup::delete()
     * Function responsible for deleting a question group.
@@ -353,13 +456,13 @@ class questiongroup extends Survey_Common_Controller {
                 {
                     /**if ($filterxsshtml)
                     {
-                        $_POST['group_name_'.$grplang]=$myFilter->process($_POST['group_name_'.$grplang]);
-                        $_POST['description_'.$grplang]=$myFilter->process($_POST['description_'.$grplang]);
+                    $_POST['group_name_'.$grplang]=$myFilter->process($_POST['group_name_'.$grplang]);
+                    $_POST['description_'.$grplang]=$myFilter->process($_POST['description_'.$grplang]);
                     }
                     else
                     {
-                        $_POST['group_name_'.$grplang] = html_entity_decode($_POST['group_name_'.$grplang], ENT_QUOTES, "UTF-8");
-                        $_POST['description_'.$grplang] = html_entity_decode($_POST['description_'.$grplang], ENT_QUOTES, "UTF-8");
+                    $_POST['group_name_'.$grplang] = html_entity_decode($_POST['group_name_'.$grplang], ENT_QUOTES, "UTF-8");
+                    $_POST['description_'.$grplang] = html_entity_decode($_POST['description_'.$grplang], ENT_QUOTES, "UTF-8");
                     } */
 
                     // Fix bug with FCKEditor saving strange BR types
@@ -370,14 +473,14 @@ class questiongroup extends Survey_Common_Controller {
                     $group_description=fix_FCKeditor_text($group_description);
 
                     $data = array (
-                            'group_name' => $group_name,
-                            'description' => $group_description,
-                            'randomization_group' => $this->input->post('randomization_group')
-                        );
+                    'group_name' => $group_name,
+                    'description' => $group_description,
+                    'randomization_group' => $this->input->post('randomization_group')
+                    );
                     $condition = array (
-                        'gid' => $gid,
-                        'sid' => $surveyid,
-                        'language' => $grplang
+                    'gid' => $gid,
+                    'sid' => $surveyid,
+                    'language' => $grplang
                     );
                     $this->load->model('groups_model');
                     $ugresult = $this->groups_model->update($data,$condition); //$connect->Execute($ugquery);  // Checked
@@ -448,7 +551,7 @@ class questiongroup extends Survey_Common_Controller {
                 $question = '[{' . $q['relevance'] . '}] ' . $q['question'];
                 LimeExpressionManager::ProcessString($question,$q['qid'],$junk,false,1,1);
                 $q['question'] = LimeExpressionManager::GetLastPrettyPrintExpression();
-//                log_message('debug',$q['question']);
+                //                log_message('debug',$q['question']);
                 $qs[] = $q;
             }
             $aGrouplist[$iGID]['questions']=$qs;
