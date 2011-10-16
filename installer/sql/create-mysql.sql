@@ -69,7 +69,7 @@ CREATE TABLE `prefix_groups` (
   `group_order` int(11) NOT NULL default '0',
   `description` text,
   `language` varchar(20) default 'en',
-  `randomization_group` NOT NULL default '',
+  `randomization_group` varchar(20) NOT NULL default '',
   PRIMARY KEY  (`gid`,`language`)
 ) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 

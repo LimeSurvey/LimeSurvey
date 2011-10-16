@@ -76,7 +76,7 @@ CREATE TABLE [prefix_groups] (
   [group_order] INT NOT NULL default '0',
   [description] varchar(max),
   [language] VARCHAR(20) default 'en',
-  [randomization_group] NOT NULL default '',
+  [randomization_group] VARCHAR(20) NOT NULL default '',
   PRIMARY KEY  ([gid],[language])
 ) 
 ;
