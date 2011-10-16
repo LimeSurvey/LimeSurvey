@@ -1235,7 +1235,7 @@ class Installer extends CI_Controller {
 
             $string = read_file(APPPATH . 'config/autoload.php');
 
-            $string = str_replace('$autoload[\'libraries\'] = array();','$autoload[\'libraries\'] = array(\'database\');', $string);
+            $string = str_replace('$autoload[\'libraries\'] = array(array(\'session\');','$autoload[\'libraries\'] = array(\'session\', \'database\');', $string);
             write_file(APPPATH . 'config/autoload.php', $string);
         }
 
