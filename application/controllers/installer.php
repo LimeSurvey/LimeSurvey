@@ -618,8 +618,6 @@ class Installer extends CI_Controller {
                 {
                     redirect(site_url('installer/install/1'));
                 }
-                $message = sprintf($clang->gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', $this->session->userdata('dbname')));
-                $this->session->set_userdata('optconfig_message', $message);
                 $this->stepOptionalConfiguration();
                 break;
         }
@@ -806,24 +804,7 @@ class Installer extends CI_Controller {
         {
             redirect(site_url('installer/install/license'));
         }
-
-        $this->_writeDatabaseFile();
-        $this->_writeAutoloadfile();
-
-        $clang = $this->limesurvey_lang;
-
-        // confirmation message to be displayed
-        $aData['confirmation']=$this->session->userdata('optconfig_message');
-        $aData['title']=$clang->gT("Optional settings");
-        $aData['descp']=$clang->gT("Optional settings to give you a head start");
-        $aData['classesForStep']=array('off','off','off','off','off','on');
-        $aData['progressValue']=80;
-
-        $this->session->set_userdata('optional', TRUE);
-
-        $this->load->helper('surveytranslator'); // FIXME for what?
-        $this->load->view('installer/optconfig_view', $aData);
-
+        $this->stepOptionalConfiguration();
     }
 
     //function used to create different DB systems.
@@ -981,31 +962,22 @@ class Installer extends CI_Controller {
                 //$data1['adminoutput'] = '';
                 //$data1['adminoutput'] .= sprintf("Database `%s` has been successfully populated.",$dbname)."</font></strong></font><br /><br />\n";
                 //$data1['adminoutput'] .= "<input type='submit' value='Main Admin Screen' onclick=''>";
-                $this->session->set_userdata(array('tablesexist' => TRUE));
-                $aStatusdata = array(
-                            //'step2'  => 'TRUE',
-                            'step3'  => TRUE,
-                            'confirmation'=> sprintf($clang->gT("The %s database has been successfully populated."),$this->session->userdata('dbname'))
-                            );
-
-                $this->session->unset_userdata('populatedatabase');
-                $this->session->set_userdata($aStatusdata);
-                redirect(site_url('installer/install/2'));
-
+                $sonfirmation = sprintf($clang->gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', $this->session->userdata('dbname')));
             }
             else
             {
-                $aStatusdata = array(
-                            //'step2'  => 'TRUE',
-                            'step3'  => TRUE,
-                            'confirmation'=>$clang->gT('Database was populated but there were errors:').'<p>'.$sErrors
-                            );
-                $this->session->set_userdata(array('tablesexist' => TRUE));
-                $this->session->set_userdata($aStatusdata);
-                $this->session->unset_userdata('populatedatabase');
-                redirect(site_url('installer/install/2'));
+                $confirmation = $clang->gT('Database was populated but there were errors:').'<p>'.$sErrors;
             }
 
+            $aStatusdata = array(
+                'tablesexist' => TRUE,
+                //'step2'  => 'TRUE',
+                'step3'  => TRUE,
+                'optconfig_message' => $confirmation,
+            );
+            $this->session->unset_userdata('populatedatabase');
+            $this->session->set_userdata($aStatusdata);
+            redirect(site_url('installer/install/2'));
         }
 
 
