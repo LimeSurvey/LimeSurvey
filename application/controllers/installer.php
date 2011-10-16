@@ -1235,8 +1235,20 @@ class Installer extends CI_Controller {
 
             $string = read_file(APPPATH . 'config/autoload.php');
 
-            $string = str_replace('$autoload[\'libraries\'] = array(array(\'session\');','$autoload[\'libraries\'] = array(\'session\', \'database\');', $string);
-            write_file(APPPATH . 'config/autoload.php', $string);
+            $base = "\$autoload['libraries'] = array('session'";
+            $anchor = "$base);";
+            $target = "$base, 'database');";
+
+            // only change the file if there is a need to
+            if (false === strpos($string, $target))
+            {
+                $stringNew = str_replace($anchor, $target, $string);
+                if (false === strpos($stringNew, $target))
+                {
+                    throw new Exception('Failed to change autoload configuration.');
+                    write_file(APPPATH . 'config/autoload.php', $stringNew);
+                }
+            }
         }
 
     }
