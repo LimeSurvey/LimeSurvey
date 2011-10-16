@@ -359,22 +359,5 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 
-/*
-|--------------------------------------------------------------------------
-|  Auto-load Super Controllers
-|--------------------------------------------------------------------------
-*/
-if (!function_exists('limesurvey_config_autoloader'))
-{
-    function limesurvey_config_autoloader($class) {
-        if (0 === strpos($class, 'CI_'))
-            return;
-        if (file_exists($file = APPPATH.'core/'.$class.'.php'))
-            require $file;
-    }
-
-    spl_autoload_register('limesurvey_config_autoloader');
-}
-
 /* End of file config.php */
 /* Location: ./application/config/config.php */

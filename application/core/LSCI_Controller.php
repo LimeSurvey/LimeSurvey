@@ -146,3 +146,20 @@ class LSCI_Controller extends CI_Controller {
 		//$singleborderstyle = "style='border: 1px solid #111111'";
 	}
 }
+
+/*
+|--------------------------------------------------------------------------
+|  Auto-load Super Controllers
+|--------------------------------------------------------------------------
+*/
+if (!function_exists('limesurvey_config_autoloader'))
+{
+    function limesurvey_config_autoloader($class) {
+        if (0 === strpos($class, 'CI_'))
+            return;
+        if (file_exists($file = APPPATH.'core/'.$class.'.php'))
+            require $file;
+    }
+
+    spl_autoload_register('limesurvey_config_autoloader');
+}
