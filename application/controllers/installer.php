@@ -962,7 +962,7 @@ class Installer extends CI_Controller {
                 //$data1['adminoutput'] = '';
                 //$data1['adminoutput'] .= sprintf("Database `%s` has been successfully populated.",$dbname)."</font></strong></font><br /><br />\n";
                 //$data1['adminoutput'] .= "<input type='submit' value='Main Admin Screen' onclick=''>";
-                $sonfirmation = sprintf($clang->gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', $this->session->userdata('dbname')));
+                $confirmation = sprintf($clang->gT("Database %s has been successfully populated."), sprintf('<b>%s</b>', $this->session->userdata('dbname')));
             }
             else
             {
@@ -1121,48 +1121,48 @@ class Installer extends CI_Controller {
                 $dbvalues['port']=$sDatabasePort;
             }
 
-            $dbdata = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); " ."\n"
+            $dbdata = "<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');" ."\n"
                     ."/*"."\n"
                     ."| -------------------------------------------------------------------"."\n"
                     ."| DATABASE CONNECTIVITY SETTINGS"."\n"
-                    ."| ------------------------------------------------------------------- "."\n"
+                    ."| -------------------------------------------------------------------"."\n"
                     ."| This file will contain the settings needed to access your database."."\n"
                     ."|"."\n"
-                    ."| For complete instructions please consult the 'Database Connection' "."\n"
-                    ."| page of the User Guide. "."\n"
+                    ."| For complete instructions please consult the 'Database Connection'"."\n"
+                    ."| page of the User Guide."."\n"
                     ."|"."\n"
-                    ."| ------------------------------------------------------------------- "."\n"
-                    ."| EXPLANATION OF VARIABLES "."\n"
-                    ."| ------------------------------------------------------------------- "."\n"
+                    ."| -------------------------------------------------------------------"."\n"
+                    ."| EXPLANATION OF VARIABLES"."\n"
+                    ."| -------------------------------------------------------------------"."\n"
                     ."|"."\n"
-                    ."|	['hostname'] The hostname of your database server. "."\n"
-                    ."|	['username'] The username used to connect to the database "."\n"
-                    ."|	['password'] The password used to connect to the database "."\n"
-                    ."|	['database'] The name of the database you want to connect to "."\n"
-                    ."|	['dbdriver'] The database type. ie: mysql.  Currently supported: "."\n"
-                    ."|				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8 "."\n"
-                    ."|	['dbprefix'] You can add an optional prefix, which will be added "."\n"
-                    ."|				 to the table name when using the  Active Record class "."\n"
-                    ."|	['pconnect'] TRUE/FALSE - Whether to use a persistent connection "."\n"
-                    ."|	['db_debug'] TRUE/FALSE - Whether database errors should be displayed. "."\n"
-                    ."|	['cache_on'] TRUE/FALSE - Enables/disables query caching "."\n"
-                    ."|	['cachedir'] The path to the folder where cache files should be stored "."\n"
-                    ."|	['char_set'] The character set used in communicating with the database "."\n"
-                    ."|	['dbcollat'] The character collation used in communicating with the database "."\n"
-                    ."|	['swap_pre'] A default table prefix that should be swapped with the dbprefix "."\n"
-                    ."|	['autoinit'] Whether or not to automatically initialize the database. "."\n"
-                    ."|	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections "."\n"
-                    ."|							- good for ensuring strict SQL while developing "."\n"
+                    ."|	['hostname'] The hostname of your database server."."\n"
+                    ."|	['username'] The username used to connect to the database"."\n"
+                    ."|	['password'] The password used to connect to the database"."\n"
+                    ."|	['database'] The name of the database you want to connect to"."\n"
+                    ."|	['dbdriver'] The database type. ie: mysql.  Currently supported:"."\n"
+                    ."|				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8"."\n"
+                    ."|	['dbprefix'] You can add an optional prefix, which will be added"."\n"
+                    ."|				 to the table name when using the  Active Record class"."\n"
+                    ."|	['pconnect'] TRUE/FALSE - Whether to use a persistent connection"."\n"
+                    ."|	['db_debug'] TRUE/FALSE - Whether database errors should be displayed."."\n"
+                    ."|	['cache_on'] TRUE/FALSE - Enables/disables query caching"."\n"
+                    ."|	['cachedir'] The path to the folder where cache files should be stored"."\n"
+                    ."|	['char_set'] The character set used in communicating with the database"."\n"
+                    ."|	['dbcollat'] The character collation used in communicating with the database"."\n"
+                    ."|	['swap_pre'] A default table prefix that should be swapped with the dbprefix"."\n"
+                    ."|	['autoinit'] Whether or not to automatically initialize the database."."\n"
+                    ."|	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections"."\n"
+                    ."|							- good for ensuring strict SQL while developing"."\n"
                     ."|"."\n"
-                    .'| The $active_group'." variable lets you choose which connection group to "."\n"
-                    ."| make active.  By default there is only one group (the 'default' group). "."\n"
+                    .'| The $active_group'." variable lets you choose which connection group to"."\n"
+                    ."| make active.  By default there is only one group (the 'default' group)."."\n"
                     ."|"."\n"
-                    .'| The $active_record'." variables lets you determine whether or not to load "."\n"
-                    ."| the active record class "."\n"
-                    ."*/ "."\n"
+                    .'| The $active_record'." variables lets you determine whether or not to load"."\n"
+                    ."| the active record class"."\n"
+                    ."*/"."\n"
                     .""."\n"
-                    .'$active_group = \'default\'; '."\n"
-                    .'$active_record = TRUE; '."\n"
+                    .'$active_group = \'default\';'."\n"
+                    .'$active_record = TRUE;'."\n"
                     .""."\n" ;
             foreach ($dbvalues as $key=>$value)
             {
@@ -1176,9 +1176,9 @@ class Installer extends CI_Controller {
                 }
 
             }
-            $dbdata .= '$config[\'dbdriver\'] = $db[\'default\'][\'dbdriver\']; ' . "\n" . "\n"
-                   . "/* End of file database.php */ ". "\n"
-                    . "/* Location: ./application/config/database.php */ ";
+            $dbdata .= '$config[\'dbdriver\'] = $db[\'default\'][\'dbdriver\'];' . "\n" . "\n"
+                   . "/* End of file database.php */"."\n"
+                    . "/* Location: ./application/config/database.php */";
 
             if (is_writable(APPPATH . 'config/database.php'))
             {
