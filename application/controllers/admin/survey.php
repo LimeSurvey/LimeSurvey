@@ -61,12 +61,10 @@ class survey extends Survey_Common_Controller {
 
         $data = self::_generalTabNewSurvey();
         $data['esrow']=$esrow;
-
         $data = array_merge($data,self::_tabPresentationNavigation($esrow));
         $data = array_merge($data,self::_tabPublicationAccess($esrow));
         $data = array_merge($data,self::_tabNotificationDataManagement($esrow));
         $data = array_merge($data,self::_tabTokens($esrow));
-
         $this->load->view('admin/survey/newSurvey_view',$data);
         self::_loadEndScripts();
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
@@ -1234,7 +1232,6 @@ class survey extends Survey_Common_Controller {
     function _fetchSurveyInfo($action,$surveyid=null)
     {
     	if(isset($surveyid)) $surveyid = sanitize_int($surveyid);
-
         if ($action == 'newsurvey')
         {
             $esrow = array();
@@ -1271,7 +1268,7 @@ class survey extends Survey_Common_Controller {
             $esrow['emailresponseto']          = '';
             $esrow['assessments']              = 'N';
             $esrow['navigationdelay']          = 0;
-        } elseif ($action == 'editsurvey') {
+            } elseif ($action == 'editsurvey') {
             $condition = array('sid' => $surveyid);
             $this->load->model('surveys_model');
             //$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";

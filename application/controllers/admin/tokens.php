@@ -958,11 +958,12 @@ class tokens extends Survey_Common_Controller {
 
 	                $from = $_POST['from_'.$emrow['language']];
 
-					$publicurl=base_url();
+					$publicurl=site_url();
 					$modrewrite=$this->config->item("modrewrite");
 	                if ($ishtml === false)
 	                {
-	                    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
+	                    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}";
+                            $fieldsarray["{OPTINURL}"]="$publicurl/optin/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}";
 
 	                    if ( $modrewrite )
 	                    {
@@ -976,7 +977,8 @@ class tokens extends Survey_Common_Controller {
 	                else
 	                {
 
-	                    $fieldsarray["{OPTOUTURL}"]="<a href='$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
+	                    $fieldsarray["{OPTOUTURL}"]="<a href='$publicurl/optout/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}'>".htmlspecialchars("$publicurl/optout/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}")."</a>";
+                            $fieldsarray["{OPTINURL}"]="<a href='$publicurl/optin/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}'>".htmlspecialchars("$publicurl/optin/local".trim($emrow['language'])."/$surveyid/{$emrow['token']}")."</a>";
 	                    if ( $modrewrite )
 	                    {
 	                        $fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";
@@ -1263,7 +1265,8 @@ class tokens extends Survey_Common_Controller {
 
 	                if ($ishtml == false)
 	                {
-	                    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}";
+	                    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}";
+                            $fieldsarray["{OPTINURL}"]="$publicurl/optin/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}";
 	                    if ( $modrewrite )
 	                    {
 	                        $fieldsarray["{SURVEYURL}"]="$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}";
@@ -1275,7 +1278,8 @@ class tokens extends Survey_Common_Controller {
 	                }
 	                else
 	                {
-	                    $fieldsarray["{OPTOUTURL}"]="<a href='$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}'>".htmlspecialchars("$publicurl/optout.php?lang=".trim($emrow['language'])."&sid=$surveyid&token={$emrow['token']}")."</a>";
+	                    $fieldsarray["{OPTOUTURL}"]="<a href='$publicurl/optout/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}'>".htmlspecialchars("$publicurl/optout/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}")."</a>";
+                            $fieldsarray["{OPTINURL}"]="<a href='$publicurl/optin/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}'>".htmlspecialchars("$publicurl/optin/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}")."</a>";
 	                    if ( $modrewrite )
 	                    {
 	                        $fieldsarray["{SURVEYURL}"]="<a href='$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}'>".htmlspecialchars("$publicurl/$surveyid/lang-".trim($emrow['language'])."/tk-{$emrow['token']}")."</a>";

@@ -29,38 +29,28 @@
 	 * Constructor
 	 * @return
 	 */
-	function __construct()
+  /*  	function __construct()
 	{
 		parent::__construct();
 	}
-
-    /**
-     * optout::index()
-     * Function responsible to process opting out from a survey and display appropriate message.
-     * @param mixed $iSurveyID
-     * @param mixed $sLanguageCode
-     * @param mixed $sToken
-     * @return
-     */
-    function index($iSurveyID,$sLanguageCode,$sToken)
-    {
-
-        $this->load->helper('database');
-        $this->load->helper('sanitize');
-        $sToken=sanitize_token($sToken);
-
-        //$iSurveyID=$this->input->post('sid');
-        //$sLanguageCode=$this->input->post('lang');
-        //$sToken=$this->input->post('token');
-
-        //Check that there is a SID
-        if (!$iSurveyID)
-        {
+*/
+     function local()
+     {
+          $this->load->helper('database');
+         $this->load->helper('sanitize');
+         $sLanguageCode=$this->uri->segment(3);
+         $iSurveyID=$this->uri->segment(4);
+         $sToken=$this->uri->segment(5);
+         $sToken=sanitize_token($sToken);
+         
+         if (!$iSurveyID)
+         {
             //You must have an SID to use this
             redirect(); //include "index.php";
             //exit;
-        }
-        $iSurveyID = (int)$iSurveyID;
+         }
+         $iSurveyID = (int)$iSurveyID;
+          //Check that there is a SID
         // Get passed language from form, so that we dont loose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
@@ -75,6 +65,8 @@
             $this->load->library('Limesurvey_lang',array($sLanguageCode));
             $clang = $this->limesurvey_lang;
             $baselang = $sLanguageCode;
+
+
 
             //$clang = new limesurvey_lang($sLanguageCode);
             //$baselang = $sLanguageCode;
@@ -128,7 +120,15 @@
         echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
         doFooter();
-
     }
 
- }
+    /**
+     * optout::index()
+     * Function responsible to process opting out from a survey and display appropriate message.
+     * @param mixed $iSurveyID
+     * @param mixed $sLanguageCode
+     * @param mixed $sToken
+     * @return
+     */
+    
+}

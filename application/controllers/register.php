@@ -178,15 +178,18 @@
         {
             $useHtmlEmail = true;
             $surveylink = site_url(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
-            $optlink = site_url('optout/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $optoutlink = site_url('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $optinlink = site_url('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
             $fieldsarray["{SURVEYURL}"]="<a href='$surveylink'>".$surveylink."</a>";
-            $fieldsarray["{OPTOUTURL}"]="<a href='$optlink'>".$optlink."</a>";
+            $fieldsarray["{OPTOUTURL}"]="<a href='$optoutlink'>".$optoutlink."</a>";
+            $fieldsarray["{OPTINURL}"]="<a href='$optinlink'>".$optinlink."</a>";
         }
         else
         {
             $useHtmlEmail = false;
             $fieldsarray["{SURVEYURL}"]=site_url(''.$surveyid.'/lang-'.$baselang.'/tk-'.$newtoken);
-            $fieldsarray["{OPTOUTURL}"]= site_url('optout/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $fieldsarray["{OPTOUTURL}"]= site_url('optout/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
+            $fieldsarray["{OPTINURL}"]= site_url('optin/local/'.$surveyid.'/'.$baselang.'/'.$newtoken);
         }
 
         $message=ReplaceFields($message, $fieldsarray);

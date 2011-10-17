@@ -99,6 +99,7 @@ class fck_LimeReplacementFields extends Admin_Controller {
 		        $replFields[]=array('EMAIL',$clang->gT("Email from the token"));
 		        $replFields[]=array('TOKEN',$clang->gT("Token code for this participant"));
 		        $replFields[]=array('OPTOUTURL',$clang->gT("URL for a respondent to opt-out this survey"));
+                        $replFields[]=array('OPTINURL',$clang->gT("URL for a respondent to opt-in this survey"));
 		    case 'email-reg':
 		        $replFields[]=array('FIRSTNAME',$clang->gT("Firstname from token"));
 		        $replFields[]=array('LASTNAME',$clang->gT("Lastname from token"));
