@@ -287,10 +287,6 @@ class printanswers extends LSCI_Controller {
    			$this->pdf->Output($sExportFileName."-".$surveyid.".pdf","D");
         }
 
-        LimeExpressionManager::FinishProcessingGroup();
-        LimeExpressionManager::FinishProcessingPage();
-        // Note, don't need to output JavaScript for print answers.
-
         //Display the page with user answers
         if(!$printableexport)
         {
@@ -298,11 +294,14 @@ class printanswers extends LSCI_Controller {
             sendcacheheaders();
             doHeader();
 
-            echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/startpage.pstpl'),array(),array());
-            echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput),array(),array());
-            echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/endpage.pstpl'),array(),array());
+            echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/startpage.pstpl'));
+            echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput));
+            echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/endpage.pstpl'));
             echo "</body></html>";
         }
+
+        LimeExpressionManager::FinishProcessingGroup();
+        LimeExpressionManager::FinishProcessingPage();
 
     }
 
