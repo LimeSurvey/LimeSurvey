@@ -364,9 +364,9 @@ class survey extends Survey_Common_Controller {
     */
     function view($surveyid,$gid=null,$qid=null)
     {
-    	$surveyid = sanitize_int($surveyid);
-		if(isset($gid)) $gid = sanitize_int($gid);
-		if(isset($qid)) $qid = sanitize_int($qid);
+        $surveyid = sanitize_int($surveyid);
+        if(isset($gid)) $gid = sanitize_int($gid);
+        if(isset($qid)) $qid = sanitize_int($qid);
 
         // show till question menubar.
         if (!is_null($qid))
@@ -444,7 +444,7 @@ class survey extends Survey_Common_Controller {
     */
     function deactivate($surveyid)
     {
-		$surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int($surveyid);
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
 
@@ -858,17 +858,17 @@ class survey extends Survey_Common_Controller {
                 $iSurveyID= (int)$iSurveyID;
                 switch ($sSurveysAction){
                     case 'delete': $this->_deleteSurvey($iSurveyID);
-                                   $message=$this->limesurvey_lang->gT('%s survey(s) were successfully deleted.');
-                                   $actioncount++;
-                                   break;
+                        $message=$this->limesurvey_lang->gT('%s survey(s) were successfully deleted.');
+                        $actioncount++;
+                        break;
                     case 'expire': if ($this->_expireSurvey($iSurveyID)) $actioncount++;;
-                                   $message=$this->limesurvey_lang->gT('%s survey(s) were successfully expired.');
-                                   break;
+                        $message=$this->limesurvey_lang->gT('%s survey(s) were successfully expired.');
+                        break;
                     case 'archive': $this->session->set_flashdata('sids', $aSurveyIDs);
-                                   redirect('admin/export/surveyarchives');
-                                   break;
+                        redirect('admin/export/surveyarchives');
+                        break;
                 }
-            }
+        }
         $this->session->set_userdata('flashmessage',sprintf($message, $actioncount));
         redirect('admin/survey/listsurveys');
     }
@@ -924,7 +924,7 @@ class survey extends Survey_Common_Controller {
     */
     function editlocalsettings($surveyid)
     {
-    	$surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int($surveyid);
 
         $clang = $this->limesurvey_lang;
 
@@ -1231,7 +1231,7 @@ class survey extends Survey_Common_Controller {
     */
     function _fetchSurveyInfo($action,$surveyid=null)
     {
-    	if(isset($surveyid)) $surveyid = sanitize_int($surveyid);
+        if(isset($surveyid)) $surveyid = sanitize_int($surveyid);
         if ($action == 'newsurvey')
         {
             $esrow = array();
@@ -1268,7 +1268,7 @@ class survey extends Survey_Common_Controller {
             $esrow['emailresponseto']          = '';
             $esrow['assessments']              = 'N';
             $esrow['navigationdelay']          = 0;
-            } elseif ($action == 'editsurvey') {
+        } elseif ($action == 'editsurvey') {
             $condition = array('sid' => $surveyid);
             $this->load->model('surveys_model');
             //$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
@@ -1554,66 +1554,16 @@ class survey extends Survey_Common_Controller {
 
     /**
     * This private function deletes a survey
+    * Important: If you change this function also change the remotecontrol XMLRPC function
     *
     * @param mixed $iSurveyID  The survey ID to delete
     */
     function _deleteSurvey($iSurveyID)
     {
-        $this->load->helper('database');
-        $this->load->dbforge();
-        $this->load->model('questions_model');
-        if (tableExists("survey_{$iSurveyID}"))  //delete the survey_$iSurveyID table
-        {
-            $dsresult = $this->dbforge->drop_table('survey_'.$iSurveyID) or safe_die ("Couldn't drop table survey_".$iSurveyID);
-        }
-
-        if (tableExists("survey_{$iSurveyID}_timings"))  //delete the survey_$iSurveyID_timings table
-        {
-            $dsresult = $this->dbforge->drop_table('survey_'.$iSurveyID.'_timings') or safe_die ("Couldn't drop table survey_".$iSurveyID."_timings");
-        }
-
-        if (tableExists("tokens_$iSurveyID")) //delete the tokens_$iSurveyID table
-        {
-            $dsresult = $this->dbforge->drop_table('tokens_'.$iSurveyID) or safe_die ("Couldn't drop table token_".$iSurveyID);
-        }
-
-        $oResult=$this->questions_model->getSomeRecords(array('qid'),array('sid'=>$iSurveyID));
-        foreach ($oResult->result_array() as $aRow)
-        {
-            $this->db->delete('answers', array('qid' => $aRow['qid']));
-            $this->db->delete('conditions', array('qid' => $aRow['qid']));
-            $this->db->delete('question_attributes', array('qid' => $aRow['qid']));
-
-        }
-
-        $this->db->delete('questions', array('sid' => $iSurveyID));
-        $this->db->delete('assessments', array('sid' => $iSurveyID));
-        $this->db->delete('groups', array('sid' => $iSurveyID));
-        $this->db->delete('surveys_languagesettings', array('surveyls_survey_id' => $iSurveyID));
-        $this->db->delete('survey_permissions', array('sid' => $iSurveyID));
-        $this->db->delete('saved_control', array('sid' => $iSurveyID));
-        $this->db->delete('surveys', array('sid' => $iSurveyID));
-        $this->load->model('survey_url_parameters_model');
-        $this->survey_url_parameters_model->deleteRecords(array('sid'=>$iSurveyID));
-
-        $this->load->model('quota_model');
-        $this->quota_model->deleteQuota(array('sid'=>$iSurveyID));
+        $this->load->model('surveys_model');
+        $this->surveys_model->deleteSurvey($iSurveyID);
         rmdirr($this->config->item("uploaddir").'/surveys/'.$iSurveyID);
     }
 
-    function _xmlrpc_deleteSurvey($request)
-    {
-        debugBreak();
-        $parameters = $request->output_parameters();
-
-        $this->_deleteSurvey($iSurveyID);
-        $iSurveyID=(int)$parameters['0'];
-        $response = array(
-                            array(
-                                    'status'  => 'OK'
-                                    ),
-                            'struct');
-        return $this->xmlrpc->send_response($response);
-    }
 
 }

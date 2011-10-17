@@ -47,18 +47,15 @@ class Authentication extends Admin_Controller {
     {
         if(!$this->session->userdata("loginID"))
         {
-            //from login_check.php
             $sIp = $this->session->userdata("ip_address");
             $this->load->model("failed_login_attempts_model");
             $query = $this->failed_login_attempts_model->getAllRecords(array("ip"=>$sIp));
-            //$query = "SELECT * FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
 
             $bCannotLogin = false;
             $intNthAttempt = 0;
-            //if ($result!==false && $result->RecordCount() >= 1)
             if ($query->num_rows() > 0)
             {
-                $field = $query->row_array();//$result->FetchRow();
+                $field = $query->row_array();
                 $intNthAttempt = $field['number_attempts'];
                 if ($intNthAttempt>=$this->config->item("maxLoginAttempt")){
                     $bCannotLogin = true;
@@ -68,7 +65,6 @@ class Authentication extends Admin_Controller {
 
                 if (time() > $iLastAttempt + $this->config->item("timeOutTime")){
                     $bCannotLogin = false;
-                    //$query = "DELETE FROM ".db_table_name('failed_login_attempts'). " WHERE ip='$sIp';";
                     $this->failed_login_attempts_model->deleteAttempts($sIp);
                 }
             }
@@ -77,7 +73,32 @@ class Authentication extends Admin_Controller {
             {
                 if($this->input->post('action'))
                 {
-                    self::_doLogin($sIp, $intNthAttempt);
+                    $clang = $this->limesurvey_lang;
+
+                    $data=self::_doLogin($intNthAttempt, $this->input->post("user"), $this->input->post('password'));
+                    if (isset($data['errormsg']))
+                    {
+                        parent::_getAdminHeader();
+                        $this->load->view('admin/authentication/error', $data);
+                        parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+
+                    }
+                    else
+                    {
+                        $loginsummary = "<br />".sprintf($clang->gT("Welcome %s!"),$this->session->userdata('full_name'))."<br />&nbsp;";
+                        if ($this->session->userdata('redirect_after_login') && strpos($this->session->userdata('redirect_after_login'), "logout") === FALSE)
+                        {
+                            $this->session->set_userdata('metaHeader',"<meta http-equiv=\"refresh\""
+                            . " content=\"1;URL=".site_url($this->session->userdata('redirect_after_login'))."\" />");
+                            $loginsummary = "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
+                            $this->session->unset_userdata('redirect_after_login');
+                        }
+                        self::_GetSessionUserRights($this->session->userdata('loginID'));
+                        $this->session->set_userdata("just_logged_in",true);
+                        $this->session->set_userdata('loginsummary',$loginsummary);
+                        redirect(site_url('/admin'));
+                    }
+
                 }
                 else
                 {
@@ -213,27 +234,28 @@ class Authentication extends Admin_Controller {
     }
 
     /**
-    * Parse login data
-    * @param user ip
-    * @param login attempts
+    * Do the actual login work
+    * Note: This function is replicated in parts in remotecontrol.php controller - if you change this don't forget to make according changes there, too
+    * @param boolean $bLoginAttempted Set to true if there were previous login attempts
+    * @param string $sUsername The username to login with
+    * @param string $sPassword The password to login with
     */
-    function _doLogin($sIp,$bLoginAttempted)
+    function _doLogin($bLoginAttempted, $sUsername, $sPassword)
     {
 
         $clang = $this->limesurvey_lang;
-        $post_user = sanitize_user($this->input->post("user"));
+        $sUsername = sanitize_user($sUsername);
         $this->load->library('admin/sha256','sha256');
-        $post_pwd = $this->input->post('password');
-        $post_hash = $this->sha256->hashing($post_pwd);
+        $post_hash = $this->sha256->hashing($sPassword);
 
         $this->load->model("Users_model");
 
-        $query = $this->Users_model->getAllRecords(array("users_name"=>$post_user, 'password'=>$post_hash));
+        $query = $this->Users_model->getAllRecords(array("users_name"=>$sUsername, 'password'=>$post_hash));
 
         if ($query->num_rows() < 1)
         {
             $this->load->model("failed_login_attempts_model");
-            $query = $this->failed_login_attempts_model->addAttempt($bLoginAttempted,$sIp);
+            $query = $this->failed_login_attempts_model->addAttempt($this->input->ip_address());
 
             if ($query)
             {
@@ -245,10 +267,7 @@ class Authentication extends Admin_Controller {
                     $data['maxattempts']=sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($this->config->item("timeOutTime")/60))."<br />";
                 }
                 $data['clang']=$clang;
-
-                parent::_getAdminHeader();
-                $this->load->view('admin/authentication/error', $data);
-                parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                return $data;
             }
         }
         else
@@ -295,21 +314,8 @@ class Authentication extends Admin_Controller {
                 $this->load->library('Limesurvey_lang',array("langcode"=>$fields['lang']));
                 $clang = $this->limesurvey_lang;
             }
-            $login = true;
+            return true;
 
-            $loginsummary = "<br />".sprintf($clang->gT("Welcome %s!"),$this->session->userdata('full_name'))."<br />&nbsp;";
-
-            if ($this->session->userdata('redirect_after_login') && strpos($this->session->userdata('redirect_after_login'), "logout") === FALSE)
-            {
-                $this->session->set_userdata('metaHeader',"<meta http-equiv=\"refresh\""
-                . " content=\"1;URL=".site_url($this->session->userdata('redirect_after_login'))."\" />");
-                $loginsummary = "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
-                $this->session->unset_userdata('redirect_after_login');
-            }
-            self::_GetSessionUserRights($this->session->userdata('loginID'));
-            $this->session->set_userdata("just_logged_in",true);
-            $this->session->set_userdata('loginsummary',$loginsummary);
-            redirect(site_url('/admin'));
         }
     }
 }

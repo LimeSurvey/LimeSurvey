@@ -491,6 +491,14 @@ $config['ckeditexpandtoolbar']     = true;
 */
 $config['restrictToLanguages'] = '';
 
+/**
+* This parameter enables/disables the XML-RPC interface
+* Set 1 to enable and 0 to disable
+* @var integer
+*/
+$config['enableXMLRPCInterface'] = 0;
+
+
 
 // === Advanced Setup
 // The following parameters need information from config.php

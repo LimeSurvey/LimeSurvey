@@ -1071,6 +1071,11 @@ class survey extends LSCI_Controller {
     {
         echo templatereplace(file_get_contents($sTemplateFile),array(),$redata,'survey['.$iDebugLine.']');
     }
+
+    function test($yes)
+    {
+        debugbreak();
+    }
 }
 
 /* End of file survey.php */
