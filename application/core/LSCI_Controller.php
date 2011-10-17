@@ -159,9 +159,9 @@ if (!function_exists('limesurvey_config_autoloader'))
             return;
             
         // validate classname
-        if (!ctype_alnum($class))
+        if (!preg_match('~[a-z_]~i', $class))
         {
-            throw new Exception(__FUNCTION__.'(): Invalid classname.');
+            throw new Exception(__FUNCTION__.'(): Invalid classname:'.$class);
         }
         if (file_exists($file = APPPATH.'core/'.$class.'.php'))
             require $file;
