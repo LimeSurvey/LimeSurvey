@@ -157,6 +157,12 @@ if (!function_exists('limesurvey_config_autoloader'))
     function limesurvey_config_autoloader($class) {
         if (0 === strpos($class, 'CI_'))
             return;
+            
+        // validate classname
+        if (!ctype_alnum($class))
+        {
+            throw new Exception(__FUNCTION__.'(): Invalid classname.');
+        }
         if (file_exists($file = APPPATH.'core/'.$class.'.php'))
             require $file;
     }
