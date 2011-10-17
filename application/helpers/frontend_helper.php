@@ -2265,17 +2265,17 @@ function surveymover()
     // here, in some lace, is where I must modify to turn the next button conditionable
     if (!isset($_SESSION['step']) || !$_SESSION['step'])
     {
-        $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" 
+        $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\"
 		value='".$clang->gT("Next")."' name='move2' id='movenextbtn' $disabled>".$clang->gT("Next")."</button>\n";
     }
     if (isset($_SESSION['step']) && $_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && $presentinggroupdescription == "yes")
     {
-        $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\" 
+        $surveymover .=  "\t<button class='submit' type='submit' accesskey='n' onclick=\"javascript:document.limesurvey.move.value = 'movenext';\"
 		value='".$clang->gT("Next")."' name='move2' id=\"movenextbtn\" $disabled>".$clang->gT("Next")."</button>\n";
     }
     if (($_SESSION['step'] && ($_SESSION['step'] == $_SESSION['totalsteps']) && !$presentinggroupdescription) || $thissurvey['format'] == 'A')
     {
-        $surveymover .= "\t<button class=\"submit\" type=\"submit\" accesskey=\"l\" onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\" 
+        $surveymover .= "\t<button class=\"submit\" type=\"submit\" accesskey=\"l\" onclick=\"javascript:document.limesurvey.move.value = 'movesubmit';\"
 		value=\"".$clang->gT("Submit")."\" name=\"move2\" id=\"movesubmitbtn\" $disabled>".$clang->gT("Submit")."</button>\n";
     }
 
@@ -2474,7 +2474,7 @@ function UpdateSessionGroupList($surveyid, $language)
     {
         $_SESSION['grouplist'][$row['gid']]=array($row['gid'], $row['group_name'], $row['description']);
     }
-    if (count($_SESSION['groupReMap'])>0)
+    if (isset($_SESSION['groupReMap']) && count($_SESSION['groupReMap'])>0)
     {
         // Now adjust the grouplist
         foreach ($_SESSION['groupReMap'] as $iOldGid=>$iNewGid)
