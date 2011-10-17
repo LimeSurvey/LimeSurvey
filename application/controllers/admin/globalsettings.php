@@ -158,7 +158,8 @@ class GlobalSettings extends Admin_Controller {
                 setGlobalSetting('ipInfoDbAPIKey',$this->input->post('ipInfoDbAPIKey'));
                 setGlobalSetting('googleMapsAPIKey',$this->input->post('googleMapsAPIKey'));
                 setGlobalSetting('force_ssl',$this->input->post('force_ssl'));
-                setGlobalSetting('surveyPreview_require_Auth',strip_tags($this->input->post('surveyPreview_require_Auth')));
+                setGlobalSetting('surveyPreview_require_Auth',$this->input->post('surveyPreview_require_Auth'));
+                setGlobalSetting('enableXMLRPCInterface',$this->input->post('enableXMLRPCInterface'));
                 $savetime=trim(strip_tags((float) $this->input->post('timeadjust')).' hours'); //makes sure it is a number, at least 0
                 if ((substr($savetime,0,1)!='-') && (substr($savetime,0,1)!='+')) { $savetime = '+'.$savetime;}
                 setGlobalSetting('timeadjust',$savetime);

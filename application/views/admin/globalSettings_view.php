@@ -11,6 +11,7 @@
         <li><a href='#security'><?php $clang->eT("Security");?></a></li>
         <li><a href='#presentation'><?php $clang->eT("Presentation");?></a></li>
         <li><a href='#language'><?php $clang->eT("Language");?></a></li>
+        <li><a href='#interfaces'><?php $clang->eT("Interfaces");?></a></li>
     </ul>
     <form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='<?php echo site_url("admin/globalsettings");?>' method='post'>
         <div id='overview'>
@@ -402,6 +403,20 @@
                         </tr>
                     </table>
                 </li>
+            </ul>
+        </div>
+        <div id='interfaces'>
+            <ul>
+                <?php $enableXMLRPCInterface=getGlobalSetting('enableXMLRPCInterface'); ?>
+                <li><label for='enableXMLRPCInterface'><?php echo $clang->gT("XML-RPC interface enabled:");?></label>
+                    <select id='enableXMLRPCInterface' name='enableXMLRPCInterface'>
+                        <option value='1'
+                            <?php if ($enableXMLRPCInterface == true) { echo " selected='selected'";}?>
+                            ><?php echo $clang->gT("Yes");?></option>
+                        <option value='0'
+                            <?php if ($enableXMLRPCInterface == false) { echo " selected='selected'";}?>
+                            ><?php echo $clang->gT("No");?></option>
+                    </select></li>
             </ul>
         </div>
         <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ',$restrictToLanguages);?>'/>

@@ -1559,8 +1559,9 @@ class survey extends Survey_Common_Controller {
     */
     function _deleteSurvey($iSurveyID)
     {
-        $this->load->helper("database");
+        $this->load->helper('database');
         $this->load->dbforge();
+        $this->load->model('questions_model');
         if (tableExists("survey_{$iSurveyID}"))  //delete the survey_$iSurveyID table
         {
             $dsresult = $this->dbforge->drop_table('survey_'.$iSurveyID) or safe_die ("Couldn't drop table survey_".$iSurveyID);
@@ -1576,14 +1577,12 @@ class survey extends Survey_Common_Controller {
             $dsresult = $this->dbforge->drop_table('tokens_'.$iSurveyID) or safe_die ("Couldn't drop table token_".$iSurveyID);
         }
 
-        $dsquery = "SELECT qid FROM ".$this->db->dbprefix."questions
-                    WHERE sid={$iSurveyID}";
-        $dsresult = db_execute_assoc($dsquery) or safe_die ("Couldn't find matching survey to delete<br />$dsquery<br />");
-        foreach ($dsresult->result_array() as $dsrow)
+        $oResult=$this->questions_model->getSomeRecords(array('qid'),array('sid'=>$iSurveyID));
+        foreach ($oResult->result_array() as $aRow)
         {
-            $this->db->delete('answers', array('qid' => $dsrow['qid']));
-            $this->db->delete('conditions', array('qid' => $dsrow['qid']));
-            $this->db->delete('question_attributes', array('qid' => $dsrow['qid']));
+            $this->db->delete('answers', array('qid' => $aRow['qid']));
+            $this->db->delete('conditions', array('qid' => $aRow['qid']));
+            $this->db->delete('question_attributes', array('qid' => $aRow['qid']));
 
         }
 
@@ -1597,15 +1596,24 @@ class survey extends Survey_Common_Controller {
         $this->load->model('survey_url_parameters_model');
         $this->survey_url_parameters_model->deleteRecords(array('sid'=>$iSurveyID));
 
-        $sdel = "DELETE ".$this->db->dbprefix."quota_languagesettings
-                 FROM ".$this->db->dbprefix."quota_languagesettings, ".$this->db->dbprefix."quota
-                 WHERE ".$this->db->dbprefix."quota_languagesettings.quotals_quota_id=".$this->db->dbprefix."quota.id and sid={$iSurveyID}";
-        $sres = db_execute_assoc($sdel);
-        $this->db->delete('quota', array('sid' => $iSurveyID));
-
-        $this->db->delete('quota_members', array('sid' => $iSurveyID));
+        $this->load->model('quota_model');
+        $this->quota_model->deleteQuota(array('sid'=>$iSurveyID));
         rmdirr($this->config->item("uploaddir").'/surveys/'.$iSurveyID);
+    }
 
+    function _xmlrpc_deleteSurvey($request)
+    {
+        debugBreak();
+        $parameters = $request->output_parameters();
+
+        $this->_deleteSurvey($iSurveyID);
+        $iSurveyID=(int)$parameters['0'];
+        $response = array(
+                            array(
+                                    'status'  => 'OK'
+                                    ),
+                            'struct');
+        return $this->xmlrpc->send_response($response);
     }
 
 }

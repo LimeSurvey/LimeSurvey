@@ -1,48 +1,48 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * $Id$
- *
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*
+*/
 
 /**
- * Authentication Controller
- *
- * This controller performs authentication
- *
- * @package		LimeSurvey
- * @subpackage	Backend
- */
+* Authentication Controller
+*
+* This controller performs authentication
+*
+* @package		LimeSurvey
+* @subpackage	Backend
+*/
 class Authentication extends Admin_Controller {
 
     /**
-     * Constructor
-     */
+    * Constructor
+    */
     function __construct()
     {
         parent::__construct();
     }
 
     /**
-     * Default Controller Action
-     */
+    * Default Controller Action
+    */
     function index()
     {
         redirect('/admin', 'refresh');
     }
 
     /**
-     * Show login screen and parse login data
-     */
+    * Show login screen and parse login data
+    */
     function login()
     {
         if(!$this->session->userdata("loginID"))
@@ -103,8 +103,8 @@ class Authentication extends Admin_Controller {
     }
 
     /**
-     * Logout user
-     */
+    * Logout user
+    */
     function logout()
     {
         killSession();
@@ -112,8 +112,8 @@ class Authentication extends Admin_Controller {
     }
 
     /**
-     * Forgot Password screen
-     */
+    * Forgot Password screen
+    */
     function forgotpassword()
     {
         $clang = $this->limesurvey_lang;
@@ -185,14 +185,14 @@ class Authentication extends Admin_Controller {
                     parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
                 }
             }
-       }
+        }
 
     }
 
     /**
-     * Show login screen
-     * @param optional message
-     */
+    * Show login screen
+    * @param optional message
+    */
     function _showLoginForm($logoutsummary="")
     {
         $data['clang'] = $this->limesurvey_lang;
@@ -213,10 +213,10 @@ class Authentication extends Admin_Controller {
     }
 
     /**
-     * Parse login data
-     * @param user ip
-     * @param login attempts
-     */
+    * Parse login data
+    * @param user ip
+    * @param login attempts
+    */
     function _doLogin($sIp,$bLoginAttempted)
     {
 
@@ -226,20 +226,15 @@ class Authentication extends Admin_Controller {
         $post_pwd = $this->input->post('password');
         $post_hash = $this->sha256->hashing($post_pwd);
 
-        //$query = "SELECT * FROM ".db_table_name('users')." WHERE users_name=".$connect->qstr($postuser);
         $this->load->model("Users_model");
 
         $query = $this->Users_model->getAllRecords(array("users_name"=>$post_user, 'password'=>$post_hash));
 
-        //var_dump($query->row_array());
-        //$result = $connect->SelectLimit($query, 1) or safe_die ($query."<br />".$connect->ErrorMsg());
         if ($query->num_rows() < 1)
         {
-            //$query = fGetLoginAttemptUpdateQry($bLoginAttempted,$sIp);
             $this->load->model("failed_login_attempts_model");
             $query = $this->failed_login_attempts_model->addAttempt($bLoginAttempted,$sIp);
 
-            //$result = $connect->Execute($query) or safe_die ($query."<br />".$connect->ErrorMsg());;
             if ($query)
             {
                 // wrong or unknown username
@@ -273,16 +268,16 @@ class Authentication extends Admin_Controller {
             }
 
             $session_data = array(
-                'loginID' => intval($fields['uid']),
-                'user' => $fields['users_name'],
-                'full_name' => $fields['full_name'],
-                'full_name' => $fields['full_name'],
-                'htmleditormode' => $fields['htmleditormode'],
-                'templateeditormode' => $fields['templateeditormode'],
-                'questionselectormode' => $fields['questionselectormode'],
-                'dateformat' => $fields['dateformat'],
-                // Compute a checksession random number to test POSTs
-                'checksessionpost' => sRandomChars(10)
+            'loginID' => intval($fields['uid']),
+            'user' => $fields['users_name'],
+            'full_name' => $fields['full_name'],
+            'full_name' => $fields['full_name'],
+            'htmleditormode' => $fields['htmleditormode'],
+            'templateeditormode' => $fields['templateeditormode'],
+            'questionselectormode' => $fields['questionselectormode'],
+            'dateformat' => $fields['dateformat'],
+            // Compute a checksession random number to test POSTs
+            'checksessionpost' => sRandomChars(10)
             );
             $this->session->set_userdata($session_data);
 
@@ -290,13 +285,8 @@ class Authentication extends Admin_Controller {
             if (isset($postloginlang) && $postloginlang!='default')
             {
                 $this->session->set_userdata('adminlang',$postloginlang);
-                //$this->load->library('Limesurvey_lang',array("langcode"=>$postloginlang));
                 $this->limesurvey_lang->limesurvey_lang(array("langcode"=>$postloginlang));
                 $clang = $this->limesurvey_lang;
-                //$uquery = "UPDATE {$dbprefix}users "
-                //. "SET lang='{$postloginlang}' "
-                //. "WHERE uid={$_SESSION['loginID']}";
-                //$uresult = $connect->Execute($uquery);  // Checked
                 $this->Users_model->updateLang($this->session->userdata("loginID"),$postloginlang);
             }
             else
@@ -312,12 +302,11 @@ class Authentication extends Admin_Controller {
             if ($this->session->userdata('redirect_after_login') && strpos($this->session->userdata('redirect_after_login'), "logout") === FALSE)
             {
                 $this->session->set_userdata('metaHeader',"<meta http-equiv=\"refresh\""
-                   . " content=\"1;URL=".site_url($this->session->userdata('redirect_after_login'))."\" />");
+                . " content=\"1;URL=".site_url($this->session->userdata('redirect_after_login'))."\" />");
                 $loginsummary = "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
                 $this->session->unset_userdata('redirect_after_login');
             }
             self::_GetSessionUserRights($this->session->userdata('loginID'));
-            // self::_showMessageBox($clang->gT("Logged in"), $loginsummary);
             $this->session->set_userdata("just_logged_in",true);
             $this->session->set_userdata('loginsummary',$loginsummary);
             redirect(site_url('/admin'));
