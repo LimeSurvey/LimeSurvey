@@ -13,6 +13,142 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* This part don't have to be modified */
+
+/*** Start jQuery UI Theme Styles ***/
+
+button.ui-button::-moz-focus-inner {
+	border: 0; 
+	padding: 0;   /* Get rid of extra padding in focused button in FF */
+}
+
+.ui-corner-all {
+    -moz-border-radius: 4px;
+}
+
+.ui-button { 
+	position: relative; 
+	padding: 0.1em 0 0.1em 0; 
+	cursor: pointer;
+	font-family: FreeSans,Arial,Helvetica,sans-serif;
+	font-size: 1.0em;
+	font-weight: normal;
+	line-height: normal;
+}
+
+.ui-button-icon-only { 
+	width: 2.2em; /* To make room for the icon, a width needs to be set here */
+} 
+
+button.ui-button-icon-only { 
+	width: 2.4em; /* Button elements seem to need a little more width */
+}
+
+.ui-button-icons-only { 
+	width: 3.4em; 
+} 
+
+button.ui-button-icons-only {
+	width: 3.7em; 
+}
+
+/* Button text elements */
+.ui-button-text-only .ui-button-text {
+	padding: 0 1em; 
+}
+
+.ui-button-icon-only .ui-button-text, 
+.ui-button-icons-only .ui-button-text {
+	text-indent: -9999999px; 
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	padding: 0 0.7em 0 1.7em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	padding: 0 1.7em 0 0.7em; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	padding: 0 1.7em; 
+}
+
+input.ui-button {
+	padding: 0.1em 1em 0.1em 1em;  /* No icon support for input elements, provide padding by default */
+}
+
+/* Button icon element(s) */
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px; 
+}
+
+.ui-button-icon-only .ui-icon {
+	left: 50%; 
+	margin-left: -8px; 
+}
+
+.ui-button-text-icon-primary .ui-button-icon-primary, 
+.ui-button-text-icons .ui-button-icon-primary, 
+.ui-button-icons-only .ui-button-icon-primary {
+	left: .4em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-icon-secondary, 
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+/* Button sets*/
+.ui-buttonset {
+	margin-right: 7px; 
+}
+
+.ui-buttonset .ui-button {
+	margin-left: 0;
+	margin-right: -.3em; 
+}
+
+/* IE6/7 hacks 8 */
+
+.ui-button,
+input.ui-button { 
+	*padding: 0.1em 0 0.1em 0; 
+}
+
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	*margin-top: -9px;
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	*padding: 0 0 0 1.0em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	*padding: 0 1.2em 0 0; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	*padding: 0 1.0em; 
+}
+
+/*** End jQuery UI Theme Styles ***/
+
 /* Base style only */
 html{font-size:100%}
 body{font-family:Arial, Helvetica, FreeSans, sans-serif;font-size:.85em;line-height:1.4;color:#000;background:#FFF;margin:0;padding:0}
@@ -109,6 +245,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	.tools input,
 	.tools a,
 	input.submit,
+	button.submit,
 	input#savebutton,
 	input#loadbutton,
 	input#registercontinue,
@@ -124,6 +261,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	.tools a:hover,
 	.navigator input:hover,
 	input.submit:hover,
+	button.submit:hover,
 	input#savebutton:hover,
 	input#loadbutton:hover,
 	input#registercontinue:hover,
@@ -132,6 +270,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 	.tools a:focus,
 	.navigator input:focus,
 	input.submit:focus,
+	button.submit:focus,
 	input#savebutton:focus,
 	input#loadbutton:focus,
 	input#registercontinue:focus
@@ -146,6 +285,7 @@ ul#surveylist li a.surveytitle{color:#5670A1;}
 .tools input[disabled],
 	.navigator input[disabled],
 	input.submit[disabled],
+	button.submit[disabled],
 	input#savebutton[disabled],
 	input#loadbutton[disabled],
 	input#registercontinue[disabled],
@@ -254,17 +394,19 @@ ul#surveylist li a{color:#5670A1;}
 
 /* Tool button and link */
 /* tools input */
-.tools input,.tools a,.navigator input,input.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
+.tools input,.tools a,.navigator input,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
 		{font-family:FreeSans,Arial,Helvetica,sans-serif;font-size:1em;vertical-align:middle;}
-tools input,.tools a,input.submit,.navigator input,input#savebutton,input#loadbutton,input#registercontinue
+tools input,.tools a,input.submit,button.submit,.navigator input,input#savebutton,input#loadbutton,input#registercontinue
 	{box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
-.tools input,.tools a,input.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input
+.tools input,.tools a,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input
 	{margin:0;padding:3px 6px;text-decoration:none;cursor: pointer;}
+button.submit
+	{margin:0;padding:3px 0;}
 #languagechanger select
 		{margin:0;padding:1px 2px;}
-.tools input,.tools a,.navigator input,input.submit,input#savebutton,input#loadbutton,input#registercontinue
+.tools input,.tools a,.navigator input,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue
 	{outline: 0;}/* try to remove the outline on click : replaced with focus selector*/
-.tools input,.tools a,.navigator input,input.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
+.tools input,.tools a,.navigator input,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
 	{-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}
 /* tools list */
 ul.tools{list-style: none ;margin: 0.5em ; padding: 0 ;text-align: left;}
