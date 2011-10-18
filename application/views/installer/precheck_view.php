@@ -6,7 +6,7 @@ function dirReport($dir,$write)
 {
     $clang = &get_instance()->limesurvey_lang;
     $error = 0;
-    
+
     if ($dir == "Found")
     {
        $a = $clang->gT("Found");
@@ -15,7 +15,7 @@ function dirReport($dir,$write)
        $error = 1;
        $a = $clang->gT("Not Found");
     }
-    
+
     if ($write == "Writable")
     {
        $b = $clang->gT("Writable");
@@ -24,14 +24,14 @@ function dirReport($dir,$write)
        $error = 1;
        $b = $clang->gT("Unwritable");
     }
-    
+
     if ($error)
     {
-       return '<b><font color="red">'.$a.' & '.$b.'</font></b>';     
+       return '<b><font color="red">'.$a.' & '.$b.'</font></b>';
     }
     else
     {
-       return $a.' & '.$b;       
+       return $a.' & '.$b;
     }
 }
 
@@ -57,8 +57,8 @@ function dirReport($dir,$write)
 <table style="width: 671px; margin-top: 0px; border-top-width: 1px; ">
 <tr>
        <td  style="width: 209px;"><?php //echo $clang->gT("Required settings"); ?></td>
-       <td align="center" style="width: 225px;"><b><?php echo $clang->gT("Recommended setting"); ?></b></td>
-       <td align="center" style="width: 225px;"><b><?php echo $clang->gT("Current setting"); ?></b></td>
+       <td align="center" style="width: 225px;"><b><?php echo $clang->gT("Required"); ?></b></td>
+       <td align="center" style="width: 225px;"><b><?php echo $clang->gT("Current"); ?></b></td>
 </tr>
 <tr>
        <td style="width: 209px;"><?php echo $clang->gT("PHP version"); ?></td>
@@ -104,8 +104,8 @@ function dirReport($dir,$write)
 <table style="width: 671px; margin-top: 0px; border-top-width: 1px;" >
 <tr>
        <td style="width: 209px;">&nbsp;</td>
-       <td align="center" style="width: 225px;"><b><?php echo $clang->gT('Reccommended settings'); ?></b></td>
-       <td align="center" style="width: 225px;"><b><?php echo $clang->gT('Current settings'); ?></b></td>
+       <td align="center" style="width: 225px;"><b><?php echo $clang->gT('Recommended'); ?></b></td>
+       <td align="center" style="width: 225px;"><b><?php echo $clang->gT('Current'); ?></b></td>
 </tr>
 <tr>
        <td style="width: 209px;">PHP5 GD library</td>

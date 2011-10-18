@@ -19,22 +19,22 @@
     color: #536482;
     font-family: 'Lucida Grande',Verdana,'Lucida Sans Unicode','Sans Serif' !important;
     font-size: 13px;
-    
-    
+
+
 }
 
 .title {
     font-size: 14px;
     font-weight: bold;
-    
-    
+
+
 }
 
 .table {
     border-radius: 5px;
     -moz-border-radius: 5px 5px 5px 5px;
-    
-    
+
+
 }
 
 .content-table{
@@ -53,12 +53,12 @@
     font-family: Tahoma,arial,Verdana,Sans-serif;
     font-size: 13px;
     font-weight: bold;
-   
+
 }
 
 .description-field {
     font-size: 10px;
-    
+
 }
 
 hr {
@@ -66,4 +66,26 @@ hr {
     border: 0 none;
     height: 1px;
     width: 100%;
+}
+
+div.messagebox {
+    width: 550px;
+    margin:10px auto;
+    border: 1px solid;
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    background-color: #F8F8FF;
+    text-align: center;
+    padding:10px;
+}
+
+div.messagebox .header{
+    padding:10px;
+}
+
+.header {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    background-color: #D2E0F2;
+    color: #1D2D45;
 }

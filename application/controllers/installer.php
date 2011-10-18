@@ -265,7 +265,7 @@ class Installer extends CI_Controller {
         $aData['descp']=$clang->gT('GNU General Public License:');
         $aData['classesForStep']=array('off','on','off','off','off','off');
         $aData['progressValue']=0;
-        
+
         if ($_SERVER['REQUEST_METHOD']=='POST')
         {
             redirect(site_url('installer/install/0'));
@@ -532,9 +532,7 @@ class Installer extends CI_Controller {
 
                     $connect->database = $this->input->post('dbname');
                     $connect->Execute("USE DATABASE `".$this->input->post('dbname')."`");
-                    $values['adminoutputText'].= "\t<tr bgcolor='#efefef'><td colspan='2' align='center'><br />\n"
-                    ."<font class='successtitle'><strong>\n"
-                    .sprintf($clang->gT('A database named "%s" already exists.'),$this->input->post('dbname'))."</strong></font><br /><br />\n"
+                    $values['adminoutputText'].= sprintf($clang->gT('A database named "%s" already exists.'),$this->input->post('dbname'))."<br /><br />\n"
                     .$clang->gT("Do you want to populate that database now by creating the necessary tables?")."<br /><br />";
 
                     $values['adminoutputForm']= "<form method='post' action='".base_url()."index.php/installer/populatedb/'>"
@@ -551,6 +549,7 @@ class Installer extends CI_Controller {
                     else {$values['adminoutput'].=$output;}
                     $values['adminoutput'].="<br />Please ".anchor("admin","log in.");
                 }
+                $values['clang']=$clang;
                 $this->load->view('installer/dbsettings_view', $values);
             }
         }
@@ -1200,6 +1199,7 @@ class Installer extends CI_Controller {
      */
     function _writeAutoloadfile()
     {
+
         if ($this->session->userdata('databaseexist') && $this->session->userdata('tablesexist'))
         {
 
@@ -1218,6 +1218,9 @@ class Installer extends CI_Controller {
                 if (false === strpos($stringNew, $target))
                 {
                     throw new Exception('Failed to change autoload configuration.');
+                }
+                else
+                {
                     write_file(APPPATH . 'config/autoload.php', $stringNew);
                 }
             }

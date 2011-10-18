@@ -6,32 +6,32 @@ $clang = &get_instance()->limesurvey_lang;
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="author" content="" />
     <link rel="stylesheet" href="<?php echo base_url(); ?>installer/css/style.css" type="text/css" media="all" />
     <link rel="stylesheet" href="<?php echo base_url(); ?>installer/css/main.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="<?php echo $this->config->item('generalscripts');?>jquery/css/start/jquery-ui.css" type="text/css" media="all" /> 
+    <link rel="stylesheet" href="<?php echo $this->config->item('generalscripts');?>jquery/css/start/jquery-ui.css" type="text/css" media="all" />
     <link rel="shortcut icon" href="<?php echo base_url();?>styles/admin/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="<?php echo base_url();?>styles/admin/favicon.ico" type="image/x-icon" />  
+    <link rel="icon" href="<?php echo base_url();?>styles/admin/favicon.ico" type="image/x-icon" />
 	 <!--<link rel="stylesheet" href="http://static.jquery.com/ui/css/demo-docs-theme/ui.theme.css" type="text/css" media="all" />  -->
-	<script src="<?php echo $this->config->item('generalscripts');?>jquery/jquery.js" type="text/javascript"></script> 
-	<script src="<?php echo $this->config->item('generalscripts');?>jquery/jquery-ui.js" type="text/javascript"></script>  
-    <script type="text/javascript"> 
+	<script src="<?php echo $this->config->item('generalscripts');?>jquery/jquery.js" type="text/javascript"></script>
+	<script src="<?php echo $this->config->item('generalscripts');?>jquery/jquery-ui.js" type="text/javascript"></script>
+    <script type="text/javascript">
 	$(function() {
-	         
+
 		$( "#progressbar" ).progressbar({
 			value: <?php echo $progressValue ; ?>
 		});
-        
+
         $(".on").animate({
-					color: "#0B55C4" 
+					color: "#0B55C4"
 				}, 1000 );
-                
+
         $('.demo').find('a:first').button().end().
             find('a:eq(1)').button().end().
             find('a:eq(2)').button();
 	});
-    
+
  	</script>
 	<link rel="icon" href="<?php echo base_url(); ?>images/favicon.ico" />
 	<title>LimeSurvey Installer</title>
