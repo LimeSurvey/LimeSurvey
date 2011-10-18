@@ -136,10 +136,10 @@
                         </ul>
                     </li>
                     <?php if($onelanguage) { ?>
-                        <li><a href='<?php echo site_url("admin/printablesurvey/index/$surveyid");?>' >
+                        <li><a target='_blank' href='<?php echo site_url("admin/printablesurvey/index/$surveyid");?>' >
                             <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' alt='' width="30" height="30"/> <?php echo $clang->gT("Printable version");?></a></li>
                         <?php } else { ?>
-                        <li><a href='<?php echo site_url("admin/printablesurvey/index/$surveyid");?>' >
+                        <li><a target='_blank' href='<?php echo site_url("admin/printablesurvey/index/$surveyid");?>' >
                             <img src='<?php echo $imageurl;?>/print_30.png' name='ShowPrintableSurvey' alt='' width="30" height="30"/> <?php echo $clang->gT("Printable version");?></a><ul>
                                 <?php foreach ($languagelist as $tmp_lang) { ?>
                                     <li><a accesskey='d' target='_blank' href='<?php echo site_url("admin/printablesurvey/index/$surveyid/$tmp_lang");?>'>
