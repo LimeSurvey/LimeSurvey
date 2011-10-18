@@ -6233,12 +6233,14 @@ function aArrayInvert($aArr)
  */
 function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
 {
-    if (@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'X')
+    $qtype = $_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'];
+
+    if ($qtype == 'X')
     {
         // boilerplate have no answers
         return true;
     }
-    elseif (@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'M' || @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'P' || @$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'] == 'O')
+    else if ($qtype == 'M' || $qtype == 'P' || $qtype == 'O')
     {
         // multiple choice and list with comments question types - just one answer is required and comments are not required
         $bAnsw = false;
@@ -6251,19 +6253,69 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
             }
         }
     }
+    else if ($qtype == 'F' || $qtype == ':' || $qtype == ';' || $qtype == '1' || $qtype == 'C' || $qtype == 'B' || $qtype == 'A' || $qtype == 'E')
+    {
+        // array question types - if filtered only displayed answer are required
+        $bAnsw = true;
+
+        $qid=$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'];
+
+        $gquery = "SELECT * FROM ".db_table_name('question_attributes')." WHERE qid={$qid} AND attribute ='array_filter'";
+        $qresult = db_execute_assoc($gquery); //checked
+        $qrows = $qresult->GetRows();
+
+        $filter=$qrows[0]['value'];
+
+        //if there is no filter checkall answers
+        if (trim($filter) == '')
+            goto checkall;
+
+
+        foreach($_SESSION['fieldarray'] as $field)
+        {
+            //look for the multiple choice filter
+            if ($field[2] == $filter && $field[4] == 'M')
+            {
+                //filter SQG
+                $array_filter = $field[1];
+                break;
+            }
+        }
+
+        //if filter not found checkall answers
+        if ($array_filter == '')
+            goto checkall;
+
+        foreach($aFieldnamesInfoInv[$q] as $sField)
+        {
+        //keep only first SQ for multiple scale answer
+        $aid = explode('_',$_SESSION['fieldmap'][$sField]['aid']);
+        $aid = explode('#',$aid[0]);
+
+        if ($_SESSION[$array_filter.$aid[0]]=='Y' && $_SESSION[$sField]=='')
+            {
+                $bAnsw = false;
+                break;
+            }
+        }
+
+    }
     else
     {
+        checkall:
         // all answers required for all other question types
         $bAnsw = true;
-    foreach($aFieldnamesInfoInv[$q] as $sField)
-    {
+        foreach($aFieldnamesInfoInv[$q] as $sField)
+        {
             if(!isset($_SESSION[$sField]) || trim($_SESSION[$sField])=='')
-		{
+            {
                 $bAnsw = false;
-            break;
+                break;
+            }
         }
+
     }
-    }
+
     return $bAnsw;
 }
 
