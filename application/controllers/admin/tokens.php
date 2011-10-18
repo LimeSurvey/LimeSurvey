@@ -45,25 +45,6 @@ class tokens extends Survey_Common_Controller {
 			show_error("no permissions"); // TODO Replace
 		}
 
-		//if ($enableLdap)
-		//{
-		//    require_once(dirname(__FILE__).'/../config-ldap.php');
-		//}
-		/*if (!isset($order)) {$order=preg_replace('/[^_ a-z0-9-]/i', '', returnglobal('order'));}
-		if (!isset($limit)) {$limit=(int)returnglobal('limit');}
-		if ($limit==0) $limit=50;
-		if (!isset($start)) {$start=(int)returnglobal('start');}
-		if (!isset($searchstring)) {$searchstring=returnglobal('searchstring');}
-		if (!isset($tokenid)) {$tokenid=returnglobal('tid');}
-		if (!isset($tokenids)) {$tokenids=returnglobal('tids');}
-		if (!isset($gtokenid)) {$gtokenid=returnglobal('gtid');}
-		if (!isset($gtokenids)) {$gtokenids=returnglobal('gtids');}
-		if (!isset($starttokenid)) {$starttokenid=sanitize_int(returnglobal('last_tid'));}*/
-
-		//include_once("login_check.php");
-		//include_once("database.php");
-
-		//$js_admin_includes[]='scripts/tokens.js';
 		self::_js_admin_includes(base_url()."scripts/admin/tokens.js");
 
 		$this->load->helper("surveytranslator");
@@ -1164,9 +1145,9 @@ class tokens extends Survey_Common_Controller {
 
 	        }
 
-	        if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From Token ID").":&nbsp;{$starttokenid})";}
-	        if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to Token ID").":&nbsp;{$tokenid})";}
-	        if (isset($tokenids)) {$tokenoutput .= " (".$clang->gT("Sending to Token IDs").":&nbsp;".implode("|", $tokenids).")";}
+	        if (isset($starttokenid)) {$tokenoutput .= " (".$clang->gT("From token ID").":&nbsp;{$starttokenid})";}
+	        if (isset($tokenid)) {$tokenoutput .= " (".$clang->gT("Sending to token ID").":&nbsp;{$tokenid})";}
+	        if (isset($tokenids)) {$tokenoutput .= " (".$clang->gT("Sending to token IDs").":&nbsp;".implode("|", $tokenids).")";}
 
 	        if (isset($_POST['bypassbademails']) && $_POST['bypassbademails'] == 'Y')
 	        {

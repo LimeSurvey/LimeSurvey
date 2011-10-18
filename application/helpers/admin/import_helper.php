@@ -3851,7 +3851,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     }
 
     // Import survey_url_parameters ----------------------------------------------
-    if(isset($xml->quota_languagesettings))
+    if(isset($xml->survey_url_parameters))
     {
         //$tablename=$dbprefix.'quota_languagesettings';
         $CI->load->model('survey_url_parameters_model');

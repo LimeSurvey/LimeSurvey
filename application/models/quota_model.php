@@ -2,33 +2,33 @@
 
 class Quota_model extends CI_Model {
 
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
+    function getAllRecords($condition=FALSE)
+    {
+        if ($condition != FALSE)
+        {
+            $this->db->where($condition);
+        }
 
-		$data = $this->db->get('quota');
+        $data = $this->db->get('quota');
 
-		return $data;
-	}
+        return $data;
+    }
 
-	function getSomeRecords($fields,$condition=FALSE)
-	{
-		foreach ($fields as $field)
-		{
-			$this->db->select($field);
-		}
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
+    function getSomeRecords($fields,$condition=FALSE)
+    {
+        foreach ($fields as $field)
+        {
+            $this->db->select($field);
+        }
+        if ($condition != FALSE)
+        {
+            $this->db->where($condition);
+        }
 
-		$data = $this->db->get('quota');
+        $data = $this->db->get('quota');
 
-		return $data;
-	}
+        return $data;
+    }
 
     function deleteQuota($condition=false,$recursive=true)
     {
@@ -51,17 +51,28 @@ class Quota_model extends CI_Model {
         $this->db->delete('quota');
     }
 
-	function getQuotaInformation($surveyid,$language,$quotaid)
-	{
-		//Used by getQuotaInformation helper
+    function getQuotaInformation($surveyid,$language,$quotaid)
+    {
+        //Used by getQuotaInformation helper
         $query = "SELECT * FROM ".$this->db->dbprefix('quota').", ".$this->db->dbprefix('quota_languagesettings')."
-		   	  WHERE ".$this->db->dbprefix('quota').".id = ".$this->db->dbprefix('quota_languagesettings').".quotals_quota_id
-			  AND sid='".$surveyid."'
-              AND quotals_language='".$language."'";
-		if ($quotaid != 'all')
-		{
-			$query .= " AND id=$quotaid";
-		}
-		return $this->db->query($query);
-	}
+        WHERE ".$this->db->dbprefix('quota').".id = ".$this->db->dbprefix('quota_languagesettings').".quotals_quota_id
+        AND sid='".$surveyid."'
+        AND quotals_language='".$language."'";
+        if ($quotaid != 'all')
+        {
+            $query .= " AND id=$quotaid";
+        }
+        return $this->db->query($query);
+    }
+
+    /**
+    * Inserts record(s) to the quota table
+    *
+    * @param array $data Records to insert
+    */
+    function insertRecords($data)
+    {
+        return $this->db->insert('quota',$data);
+    }
+
 }
