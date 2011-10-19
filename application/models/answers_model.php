@@ -104,10 +104,10 @@ class Answers_model extends CI_Model {
     function getAllAnswersForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
     {
         if (!is_null($qid)) {
-            $where = "qid = ".$qid;
+            $where = "a.qid = ".$qid;
         }
         else if (!is_null($surveyid)) {
-            $where = "qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.")";
+            $where = "a.qid = q.qid and q.sid = ".$surveyid;
         }
         else {
             $where = "1";
@@ -116,8 +116,8 @@ class Answers_model extends CI_Model {
             $lang = " and language='".$lang."'";
         }
 
-        $query = "SELECT qid, code, answer, scale_id"
-            ." FROM ".$this->db->dbprefix('answers')
+        $query = "SELECT a.qid, a.code, a.answer, a.scale_id"
+            ." FROM ".$this->db->dbprefix('answers')." AS a, ".$this->db->dbprefix('questions')." as q"
             ." WHERE ".$where
             .$lang
             ." ORDER BY qid, scale_id, sortorder";

@@ -519,6 +519,7 @@ create index [conditions_idx2] on [prefix_conditions] ([qid]);
 create index [conditions_idx3] on [prefix_conditions] ([cqid]);
 create index [groups_idx2] on [prefix_groups] ([sid]);
 create index [question_attributes_idx2] on [prefix_question_attributes] ([qid]);
+create index [question_attributes_idx3] on [prefix_question_attributes] ([attribute]);
 create index [questions_idx2] on [prefix_questions] ([sid]);
 create index [questions_idx3] on [prefix_questions] ([gid]);
 create index [questions_idx4] on [prefix_questions] ([type]);
@@ -530,6 +531,6 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '151');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '152');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 

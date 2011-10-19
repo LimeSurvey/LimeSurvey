@@ -99,6 +99,11 @@ function db_upgrade_all($oldversion) {
         );
         $CI->dbforge->add_column('groups',$fields);
     }
+    if ($oldversion < 152)
+    {
+        $sql = "CREATE INDEX question_attributes_idx3 ON ".$CI->db->dbprefix('question_attributes')."(attribute)";
+        $CI->db->query($sql);
+    }
 }
 
 function upgrade_question_attributes148()

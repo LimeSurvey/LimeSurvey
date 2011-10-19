@@ -54,7 +54,7 @@ class Question_attributes_model extends CI_Model {
         $query = "select distinct qid, attribute, value"
                 ." from ".$this->db->dbprefix('question_attributes')
                 ." where " . $where
-                ." attribute in ('hidden')"
+                ." attribute in ('hidden', 'array_filter', 'array_filter_exclude', 'code_filter', 'equals_num_value', 'exclude_all_others', 'exclude_all_others_auto', 'max_answers', 'max_num_value', 'max_num_value_n', 'max_num_value_sgqa', 'min_answers', 'min_num_value', 'min_num_value_n', 'min_num_value_sgqa', 'multiflexible_max', 'multiflexible_min', 'num_value_equals_sgqa', 'show_totals')"
                 ." order by qid, attribute";
         
 		$data = $this->db->query($query);
