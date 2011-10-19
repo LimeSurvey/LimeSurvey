@@ -409,7 +409,7 @@ function LEMmoveNextTabIndex(prev)
     var els, el;
     try {
         if (prev) {
-            els= $('div[id^=question]').has('[tabindex]:lt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').add('input[type=button]:enabled,input[type=submit]:enabled').toArray();
+            els= $('div[id^=question]').has('[tabindex]:lt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').add('input[type=button]:enabled,input[type=submit]:enabled').add('button[type=button]:enabled,button[type=submit]:enabled').toArray();
             for (i=els.length-1;i>=0;--i) {
                 el = els[i];
                 if (el.tabIndex < currentIndex) {
@@ -422,7 +422,7 @@ function LEMmoveNextTabIndex(prev)
             return;
         }
         else {
-            els= $('div[id^=question]').has('[tabindex]:gt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').add('input[type=button]:enabled,input[type=submit]:enabled').toArray();
+            els= $('div[id^=question]').has('[tabindex]:gt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').add('input[type=button]:enabled,input[type=submit]:enabled').add('button[type=button]:enabled,button[type=submit]:enabled').toArray();
             for (i=0;i<els.length;++i) {
                 el = els[i];
                 if (el.tabIndex > currentIndex) {
