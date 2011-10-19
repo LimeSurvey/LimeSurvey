@@ -68,7 +68,7 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
     // Remove invalid fieldnames from fieldnames array
     for($x=count($postedfieldnames)-1;$x>=0;$x--)
     {
-        if (strpos($postedfieldnames[$x],$surveyid.'X')===false)
+        if (!isset($_SESSION['fieldmap'][$postedfieldnames[$x]]))
         {
             array_remval($postedfieldnames[$x],$postedfieldnames);
         }
