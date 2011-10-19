@@ -4537,8 +4537,10 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8')
 {
     $sNicetext = strip_javascript($sTextToFlatten);
-    $sNicetext = strip_tags($sNicetext);
-    $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
+    // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
+    $sNicetext = str_replace('</',' </', $sNicetext);
+    $sNicetext = strip_tags($sNicetext,'<span>');
+    $sNicetext = str_replace(array("\n","\r"),array(' ',' '), $sNicetext);
     if ($bDecodeHTMLEntities==true)
     {
         $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not properly convert &nbsp; to spaces
