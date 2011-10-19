@@ -4446,7 +4446,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->IsSMTP();
             if ($emailsmtpdebug>0)
             {
-                $mail->SMTPDebug = true;
+                $mail->SMTPDebug = $emailsmtpdebug;
             }
             if (strpos($emailsmtphost,':')>0)
             {
