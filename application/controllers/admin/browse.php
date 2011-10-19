@@ -549,7 +549,7 @@ class browse extends Survey_Common_Controller {
 		            else {$gbc = "odd";}
 		            }
 		        $tableheader .= "<th class='$gbc'><strong>"
-		                . FlattenText("$fn[1]")
+		                . FlattenText("$fn[1]",true)
 		                . "</strong></th>\n";
 		    }
 		    $tableheader .= "\t</tr></thead>\n\n";

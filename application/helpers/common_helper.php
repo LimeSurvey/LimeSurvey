@@ -604,7 +604,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
         if ($selectedqid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
         $questionselecter .=">{$qrow['title']}:";
         $questionselecter .= " ";
-        $question=FlattenText($qrow['question']);
+        $question=FlattenText($qrow['question'],true);
         if (strlen($question)<35)
         {
             $questionselecter .= $question;
@@ -4535,13 +4535,20 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *
 * @return string  Cleaned text
 */
-function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8')
+function FlattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=false, $sCharset='UTF-8')
 {
     $sNicetext = strip_javascript($sTextToFlatten);
-    // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
+    // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
     $sNicetext = str_replace('</',' </', $sNicetext);
-    $sNicetext = strip_tags($sNicetext,'<span>');
-    $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
+    if ($keepSpan) {
+        // Keep <span> so can show EM syntax-highlighting; add space before tags so that word-wrapping not destroyed when remove tags.
+        $sNicetext = strip_tags($sNicetext,'<span>');
+    }
+    else {
+        $sNicetext = strip_tags($sNicetext);
+    }
+    $sNicetext = str_replace(array("\n","\r"),array(' ',' '), $sNicetext);
+    $sNicetext = preg_replace('/\s{2,}/',' ', $sNicetext);
     if ($bDecodeHTMLEntities==true)
     {
         $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not properly convert &nbsp; to spaces
@@ -6277,7 +6284,7 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
         case 'A':
         case 'E':
             // array question types - if filtered only displayed answer are required
-            $qattr = getQuestionAttributes(@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'], $qtype);
+            $qattr = getQuestionAttributeValues(@$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'], $qtype);
 
             $qcodefilter = @$qattr['array_filter'];
 

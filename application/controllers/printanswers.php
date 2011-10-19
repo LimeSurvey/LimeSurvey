@@ -242,7 +242,7 @@ class printanswers extends LSCI_Controller {
 
         	    if($printableexport)
         	    {
-        		    $this->pdf->intopdf(FlattenText($fname[0],true));
+        		    $this->pdf->intopdf(FlattenText($fname[0],false,true));
         		    $this->pdf->ln(2);
                 }
                 else
@@ -254,7 +254,7 @@ class printanswers extends LSCI_Controller {
             {
                 if($printableexport=='pdf')
                 {
-                    $this->pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
+                    $this->pdf->intopdf(FlattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
                     $this->pdf->ln(2);
                 }
                 else
@@ -266,7 +266,7 @@ class printanswers extends LSCI_Controller {
             {
                 if($printableexport=='pdf')
                 {
-                    $this->pdf->intopdf(FlattenText($fname[0].$fname[1],true).": ".$fname[2]);
+                    $this->pdf->intopdf(FlattenText($fname[0].$fname[1],false,true).": ".$fname[2]);
                     $this->pdf->ln(2);
                 }
                     else

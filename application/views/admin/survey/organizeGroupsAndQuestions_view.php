@@ -15,7 +15,7 @@
                         <?php
                             foreach($aGroupAndQuestions['questions'] as $aQuestion)
                             {?>
-                            <li id='list_q<?php echo $aQuestion['qid'];?>'><div><b><?php echo $aQuestion['title'];?></b>: <?php echo FlattenText($aQuestion['question']);?></div></li>
+                            <li id='list_q<?php echo $aQuestion['qid'];?>'><div><b><?php echo $aQuestion['title'];?></b>: <?php echo FlattenText($aQuestion['question'],true);?></div></li>
 
                             <?php }?>
                     </ol>

@@ -1016,7 +1016,7 @@ abstract class Writer implements IWriter
                 {
                     if ($question['title'] == $answerCode && $question['scale_id'] == 0)
                     {
-                        $subHeading = ' ['.FlattenText($question['title'], true).'][Scale '.$answerScale.']';
+                        $subHeading = ' ['.FlattenText($question['title'], true,true).'][Scale '.$answerScale.']';
                     }
                 }
                 break;
@@ -1133,7 +1133,7 @@ abstract class Writer implements IWriter
                 {
                     if ($question['title'] == $answerCode && $question['scale_id'] == 0)
                     {
-                        $subHeading = ' ['.FlattenText($question['question'], true).'][Scale '.$answerScale.']';
+                        $subHeading = ' ['.FlattenText($question['question'], true,true).'][Scale '.$answerScale.']';
                     }
                 }
                 break;

@@ -2058,7 +2058,7 @@ class conditions extends Survey_Common_Controller {
 
 	    if(strlen(html_entity_decode($hinttext,ENT_QUOTES,'UTF-8')) > ($max+3))
 	    {
-	        $shortstring = FlattenText($hinttext);
+	        $shortstring = FlattenText($hinttext,true);
 
 	        $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $max, 'UTF-8'));
 
@@ -2071,7 +2071,7 @@ class conditions extends Survey_Common_Controller {
 	    }
 	    else
 	    {
-	        $shortstring = FlattenText($hinttext);
+	        $shortstring = FlattenText($hinttext,true);
 
 	        $reshtml= "<span title='".$shortstring."'> \"$shortstring\"</span>";
 	    }

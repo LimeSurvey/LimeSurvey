@@ -298,7 +298,7 @@ class Question_format {
 		        }
 
 
-		        if (FlattenText($thissurvey['surveyls_endtext'])=='')
+		        if (trim(FlattenText($thissurvey['surveyls_endtext']))=='')
 		        {
 		            $completed = "<br /><span class='success'>".$clang->gT("Thank you!")."</span><br /><br />\n\n"
 		            . $clang->gT("Your survey responses have been recorded.")."<br /><br />\n";
@@ -672,7 +672,7 @@ class Question_format {
 		        if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
 		            continue;
 
-		        $sText = FlattenText($ia[3]);
+		        $sText = FlattenText($ia[3],true);
 		        $bAnsw = bCheckQuestionForAnswer($ia[1], $aFieldnamesInfoInv);
 
 		        if($iLastGrp != $ia[5])

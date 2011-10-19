@@ -5,7 +5,7 @@
             <tr>
             <td colspan='3' align='center'>
             <strong><?php echo $thissurvey['name']; ?></strong>
-            <br /><?php echo FlattenText($thissurvey['description']); ?>
+            <br /><?php echo FlattenText($thissurvey['description'],true); ?>
             </td>
             </tr>
     

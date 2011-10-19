@@ -27,7 +27,7 @@ function browsemenubar($title='',$surveyid=null,$load=false)
     //BROWSE MENU BAR
     $browsemenubar = "<div class='menubar'>\n"
     . "<div class='menubar-title ui-widget-header'>\n"
-    . "<strong>$title</strong>: (".FlattenText($thissurvey['name']).")"
+    . "<strong>$title</strong>: (".FlattenText($thissurvey['name'],true).")"
     . "</div>"
     . "<div class='menubar-main'>\n"
     . "<div class='menubar-left'>\n"

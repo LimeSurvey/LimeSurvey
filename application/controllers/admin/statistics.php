@@ -535,7 +535,7 @@ class statistics extends Survey_Common_Controller {
 		        {$statisticsoutput .= " checked='checked'";}
 		
 		        //show speaker symbol which contains full question text
-		        $statisticsoutput .= " /><label for='filter$myfield'>".self::_showspeaker(FlattenText($flt[5]))
+		        $statisticsoutput .= " /><label for='filter$myfield'>".self::_showspeaker(FlattenText($flt[5],true))
 		        ."</label><br />\n";
 		
 		        //numerical question type -> add some HTML to the output
@@ -596,7 +596,7 @@ class statistics extends Survey_Common_Controller {
 		                $statisticsoutput .= " />&nbsp;";
 		                 
 		                //show speaker
-		                $statisticsoutput .= self::_showSpeaker($flt[3]." - ".FlattenText($row[1]))."<br />\n";
+		                $statisticsoutput .= self::_showSpeaker($flt[3]." - ".FlattenText($row[1],true))."<br />\n";
 		
 		                //input fields
 		                $statisticsoutput .= "\t\t\t\t\t<font size='1'>".$clang->gT("Number greater than").":</font><br />\n"
@@ -644,7 +644,7 @@ class statistics extends Survey_Common_Controller {
 		                {$statisticsoutput .= " checked='checked'";}
 		                 
 		                $statisticsoutput .= " />&nbsp;";
-		                $statisticsoutput .= self::_showSpeaker($flt[3]." - ".FlattenText($row[1]))
+		                $statisticsoutput .= self::_showSpeaker($flt[3]." - ".FlattenText($row[1],true))
 		                ."<br />\n"
 		                ."\t\t\t\t\t<font size='1'>".$clang->gT("Responses containing").":</font><br />\n"
 		                ."\t\t\t\t\t<input type='text' name='$myfield2' value='";
@@ -1275,7 +1275,7 @@ class statistics extends Survey_Common_Controller {
 		                    //pre-select
 		                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 		
-		                    $statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['answer'])."</option>\n";
+		                    $statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['answer'],true)."</option>\n";
 		                }
 		                 
 		                $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
@@ -1460,7 +1460,7 @@ class statistics extends Survey_Common_Controller {
 		                    //pre-check
 		                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 		
-		                    $statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['answer'])."</option>\n";
+		                    $statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['answer'],true)."</option>\n";
 		
 		                }
 		
@@ -1540,7 +1540,7 @@ class statistics extends Survey_Common_Controller {
 		                    //pre-check
 		                    if (isset($_POST[$myfield2]) && is_array($_POST[$myfield2]) && in_array($frow['code'], $_POST[$myfield2])) {$statisticsoutput .= " selected";}
 		
-		                    $statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['answer'])."</option>\n";
+		                    $statisticsoutput .= ">({$frow['code']}) ".FlattenText($frow['answer'],true)."</option>\n";
 		
 		                }
 		
@@ -1571,7 +1571,7 @@ class statistics extends Survey_Common_Controller {
 		                //pre-check
 		                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
 		
-		                $statisticsoutput .= '>'.FlattenText($row[1])."</option>\n";
+		                $statisticsoutput .= '>'.FlattenText($row[1],true)."</option>\n";
 		            }
 		
 		            $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";
@@ -1600,7 +1600,7 @@ class statistics extends Survey_Common_Controller {
 		                //pre-check
 		                if (isset($_POST[$myfield]) && is_array($_POST[$myfield]) && in_array($row[0], $_POST[$myfield])) {$statisticsoutput .= " selected";}
 		                 
-		                $statisticsoutput .= '>'.FlattenText($row[1])."</option>\n";
+		                $statisticsoutput .= '>'.FlattenText($row[1],true)."</option>\n";
 		            }
 		
 		            $statisticsoutput .= "\t\t\t\t</select>\n\t\t\t\t</td>\n";

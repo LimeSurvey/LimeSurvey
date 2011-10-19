@@ -1395,7 +1395,7 @@ END;
 		            if(!checkgroupfordisplay($g[0],($thissurvey['anonymized']!="N"),$thissurvey['sid']))
 		                continue;
 
-		            $sText = FlattenText($g[1]);
+		            $sText = FlattenText($g[1],true);
 
 		            $bGAnsw = true;
 		            foreach($_SESSION['fieldarray'] as $ia)

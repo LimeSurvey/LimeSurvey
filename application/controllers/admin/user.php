@@ -98,9 +98,9 @@ class user extends Survey_Common_Controller {
             exit;
         }
 
-        $new_user = FlattenText($this->input->post('new_user'),true);
-        $new_email = FlattenText($this->input->post('new_email'),true);
-        $new_full_name = FlattenText($this->input->post('new_full_name'),true);
+        $new_user = FlattenText($this->input->post('new_user'),false,true);
+        $new_email = FlattenText($this->input->post('new_email'),false,true);
+        $new_full_name = FlattenText($this->input->post('new_full_name'),false,true);
 
         self::_getAdminHeader();
         self::_showadminmenu();

@@ -1532,10 +1532,10 @@ class survey extends Survey_Common_Controller {
         foreach ($oResult->result_array() as $oRow)
         {
             $data->rows[$i]['id']=$oRow['id'];
-            $oRow['title']= $oRow['title'].': '.ellipsize(FlattenText($oRow['question'],true),43,.70);
+            $oRow['title']= $oRow['title'].': '.ellipsize(FlattenText($oRow['question'],false,true),43,.70);
             if ($oRow['sqquestion']!='')
             {
-                echo ' - '.ellipsize(FlattenText($oRow['sqquestion'],true),30,.75);
+                echo ' - '.ellipsize(FlattenText($oRow['sqquestion'],false,true),30,.75);
             }
             unset($oRow['sqquestion']);
             unset($oRow['sqtitle']);

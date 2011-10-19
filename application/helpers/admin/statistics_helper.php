@@ -254,7 +254,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         $pdf->setFooterFont(Array($pdfdefaultfont, '', PDF_FONT_SIZE_DATA));
 
         // set default header data
-        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".FlattenText($surveyInfo['surveyls_title'],true,'UTF-8')."'");
+        $pdf->SetHeaderData("statistics.png", 10, $statlang->gT("Quick statistics",'unescaped') , $statlang->gT("Survey")." ".$surveyid." '".FlattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
 
 
         // set default monospaced font
@@ -1912,7 +1912,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         break;
                     case 'pdf':
 
-                        $sPDFQuestion=FlattenText($qquestion,true);
+                        $sPDFQuestion=FlattenText($qquestion,false,true);
                         $pdfTitle = $pdf->delete_html(sprintf($statlang->gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8')));
                         $titleDesc = $sPDFQuestion;
 

@@ -2307,7 +2307,7 @@
                 $deqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
                 $deqresult = db_execute_assoc($deqquery);
                 $dataentryoutput .= "\t<tr>\n"
-                ."<td colspan='3' align='center'><strong>".FlattenText($degrow['group_name'])."</strong></td>\n"
+                ."<td colspan='3' align='center'><strong>".FlattenText($degrow['group_name'],true)."</strong></td>\n"
                 ."\t</tr>\n";
                 $gid = $degrow['gid'];
 

@@ -397,7 +397,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     }
 
     if(!isset($help)) $help = "";
-    if (FlattenText($help, true) != '')
+    if (FlattenText($help, true,true) != '')
     {
         if (!isset($helpicon))
         {
