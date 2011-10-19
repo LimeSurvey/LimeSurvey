@@ -133,6 +133,8 @@ class questiongroup extends Survey_Common_Controller {
 
             $data['display'] = $importgroup;
             $this->load->view('survey_view',$data);
+            // TMSW Conditions->Relevance:  call LEM->ConvertConditionsToRelevance() after import
+
 
 
         }

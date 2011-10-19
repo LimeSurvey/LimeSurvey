@@ -284,6 +284,8 @@ class printablesurvey extends Admin_Controller {
 		            $printablesurveyoutput = '';
 		            $explanation = ''; //reset conditions explanation
 		            $s=0;
+                    // TMSW Conditions->Relevance:  show relevance instead of this whole section to create $explanation
+
 		            $scenarioquery="SELECT DISTINCT ".$this->db->dbprefix("conditions").".scenario FROM ".$this->db->dbprefix("conditions")." WHERE ".$this->db->dbprefix("conditions").".qid={$deqrow['qid']} ORDER BY scenario";
 		            $scenarioresult=db_execute_assoc($scenarioquery);
 		

@@ -57,6 +57,7 @@ function fixNumbering($fixnumbering)
             $result = db_execute_assosc($query); // or safe_die($query."<br />".$connect->ErrorMsg());
         }
     }
+    // TMSW Conditions->Relevance:  (1) Call LEM->ConvertConditionsToRelevance()when done. (2) Should relevance for old conditions be removed first?
     //Now question_attributes
     $query = "UPDATE ".$CI->db->dbprefix."question_attributes SET qid=$newqid WHERE qid=$oldqid";
     $result = db_execute_assosc($query); // or safe_die($query."<br />".$connect->ErrorMsg());
@@ -171,6 +172,8 @@ function checkQuestions($postsid, $surveyid, $qtypes)
     } // while
 
 
+    // TMSW Conditions->Relevance:  Have EM do this, since already detects cases where try to use variables before they are declared.
+    //
     //CHECK THAT ALL CONDITIONS SET ARE FOR QUESTIONS THAT PRECEED THE QUESTION CONDITION
     //A: Make an array of all the qids in order of appearance
     //	$qorderquery="SELECT * FROM ".$CI->db->dbprefix."questions, ".$CI->db->dbprefix."groups WHERE ".$CI->db->dbprefix."questions.gid=".$CI->db->dbprefix."groups.gid AND ".$CI->db->dbprefix."questions.sid={$_GET['sid']} ORDER BY ".$CI->db->dbprefix."groups.sortorder, ".$CI->db->dbprefix."questions.title";

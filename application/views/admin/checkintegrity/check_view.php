@@ -5,6 +5,7 @@
 
     <ul>
         <?php
+            // TMSW Conditions->Relevance:  Update this to use relevance processing results
             if (isset($conditions))
             {?>
             <li><?php $clang->eT("The following conditions should be deleted:"); ?></li>

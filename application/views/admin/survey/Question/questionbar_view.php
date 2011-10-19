@@ -52,6 +52,8 @@
     				border='0' hspace='0' /></a>
                 <?php }
                 else
+                            // TMSW Conditions->Relevance:  not needed - should be allowed to delete questions even if others depend upon it - use separate view to see exceptions
+
                 { ?>
                     <a href='<?php echo site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
     				onclick="alert('<?php echo $clang->gT("It's impossible to delete this question because there is at least one question having a condition on it.","js"); ?>')"
@@ -264,6 +266,8 @@
                     <td><?php echo $relevance; ?></td>
                 </tr>
             <?php }
+                    // TMSW Conditions->Relevance:  not needed?  Or use relevance output or custom EM query to compute this?
+
             if (!is_null($condarray))
             { ?>
                 <tr>

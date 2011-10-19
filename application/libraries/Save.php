@@ -117,8 +117,9 @@ class Save {
 		if (isset($move) && $move == "movesubmit")
 		{
 		    $backok=null;
-            // TODO - also check relevance
+            // TMSW Conditions->Relevance:  EM will check mandatories
 		    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
+            // TMSW Conditions->Relevance:  EM will validate most/all of input
 		    $notvalidated=aCheckInput($surveyid, $move,$backok);
 		    $filenotvalidated = checkUploadedFileValidity($surveyid, $move, $backok);
 
@@ -674,6 +675,7 @@ class Save {
 	                    $query .= " submitdate = ".$CI->db->escape($mysubmitdate).", ";
 	                }
 	                // Resets fields hidden due to conditions
+                    // TMSW Conditions->Relevance:  EM will deal with NULLing irrelevant fields (as opposed to hidden ones)
 	                if ($deletenonvalues == 1)
 	                {
 	                    $hiddenfields=array_unique(array_values($colnames_hidden));

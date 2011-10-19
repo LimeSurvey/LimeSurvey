@@ -71,9 +71,11 @@ class Question_format {
 
 		//Now, we check mandatory questions if necessary
 		//CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
+        // TMSW Conditions->Relevance:  EM will handle mandatories
 		$notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 
 		//CHECK INPUT
+        // TMSW Conditions->Relevance:  EM will handle most/all validation
 		$notvalidated=aCheckInput($surveyid, $move, $backok);
 
 		// CHECK UPLOADED FILES
@@ -134,6 +136,7 @@ class Question_format {
         LimeExpressionManager::StartProcessingPage($thissurvey['allowjumps']=='Y');
         LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
         // Skip questions that are irrelevant
+        // TMSW Conditions->Relevance:  LEM->GetNextRelevantSet() will handle navigation, saving / NULLing values along the way
         if (isset($qidattributes['relevance']))
         {
             $relevant = LimeExpressionManager::ProcessRelevance($qidattributes['relevance']);
@@ -401,6 +404,7 @@ class Question_format {
 		//require_once("qanda.php");
 		$CI->load->helper("qanda");
 		setNoAnswerMode($thissurvey);
+        // TMSW Conditions->Relevance:  EM will handle mandatories, so these arrays not needed
 		$mandatorys=array();
 		$mandatoryfns=array();
 		$conmandatorys=array();
@@ -440,6 +444,7 @@ class Question_format {
 		}
 
 		//Get list of mandatory questions
+        // TMSW Conditions->Relevance:  not needed
 		list($plusman, $pluscon)=create_mandatorylist($ia);
 		if ($plusman !== null)
 		{
@@ -447,6 +452,7 @@ class Question_format {
 		    $mandatorys=addtoarray_single($mandatorys, $plus_man);
 		    $mandatoryfns=addtoarray_single($mandatoryfns, $plus_manfns);
 		}
+        // TMSW Conditions->Relevance:  not needed
 		if ($pluscon !== null)
 		{
 		    list($plus_conman, $plus_conmanfns)=$pluscon;
@@ -454,6 +460,7 @@ class Question_format {
 		    $conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
 		}
 		//Build an array containing the conditions that apply for this page
+        // TMSW Conditions->Relevance:  not needed
 		$plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
 		if ($plus_conditions)
 		{
@@ -586,6 +593,9 @@ class Question_format {
 		            // (note there is only 1 question, $conditionforthisquestion is the result from
 		            // condition eval in php)
 		            //			if ($qa[3] != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
+                    //
+                    // TMSW Conditions->Relevance:  EM will handle server and client-side control of question display.
+
 		            if ($conditionforthisquestion != 'Y') {$n_q_display = '';} else { $n_q_display = ' style="display: none;"';}
 
 		            $question= $qa[0];
@@ -695,6 +705,8 @@ class Question_format {
 
 		    echo '</div></div>';
 		}
+
+        // TMSW Conditions->Relevance:  EM already does this
 
 		if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
 		{

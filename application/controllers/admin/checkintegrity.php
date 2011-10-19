@@ -89,7 +89,7 @@ class CheckIntegrity extends Admin_Controller {
         {
             $aDelete=$this->_checkintegrity();
 
-
+            // TMSW Conditions->Relevance:  Update this to process relevance instead
             if (isset($aDelete['conditions'])) {
                 foreach ($aDelete['conditions'] as $aCondition) {
                     $sSQL = "DELETE FROM {$sDBPrefix}conditions WHERE cid={$aCondition['cid']}";
@@ -301,6 +301,7 @@ class CheckIntegrity extends Admin_Controller {
         /**********************************************************************/
         /*     Check conditions                                               */
         /**********************************************************************/
+        // TMSW Conditions->Relevance:  Replace this with analysis of relevance
         $sQuery = "SELECT * FROM {$sDBPrefix}conditions ORDER BY cid";
         $oCResult =$this->db->query($sQuery) or safe_die("Couldn't get list of conditions from database<br />$sQuery<br />");
         foreach ($oCResult->result_array() as $aRow)

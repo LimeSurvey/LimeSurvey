@@ -290,6 +290,8 @@ function makelanguagechanger()
 function checkgroupfordisplay($gid,$anonymized,$surveyid)
 {
     return LimeExpressionManager::GroupIsRelevant($gid);
+    // TMSW Conditions->Relevance:  The rest of this function is not needed
+
     //This function checks all the questions in a group to see if they have
     //conditions, and if the do - to see if the conditions are met.
     //If none of the questions in the group are set to display, then
@@ -370,6 +372,7 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
     }
 }
 
+// TMSW Conditions->Relevance:  this function is not needed.  Use EM to NULL fields that are irrelevant
 function checkconfield($value)
 {
     global $surveyid,$thissurvey,$qattributes;
@@ -669,6 +672,7 @@ function checkconfield($value)
     return $fieldisdisplayed;
 }
 
+// TMSW Conditions->Relevance:  Not needed - use EM to check mandatories
 function checkmandatorys($move, $backok=null)
 {
     global $thisstep;
@@ -768,6 +772,7 @@ function checkmandatorys($move, $backok=null)
     return $notanswered;
 }
 
+// TMSW Conditions->Relevance:  Not needed - use EM to check mandatories
 function checkconditionalmandatorys($move, $backok=null)
 {
     global $thisstep;
@@ -969,6 +974,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
         return $filenotvalidated;
 }
 
+// TMSW Conditions->Relevance:  Consolidate checking most/all validation criteria within EM
 function aCheckInput($surveyid, $move,$backok=null)
 {
     global $connect, $thisstep, $thissurvey;
@@ -1865,6 +1871,7 @@ function buildsurveysession($surveyid)
     UpdateSessionGroupList($surveyid, $_SESSION['s_lang']);
 
 
+    // TMSW Conditions->Relevance:  Duplicates refactoring of createFieldMap?  Conditions tables not needed here.
 
     // Optimized Query
     // Change query to use sub-select to see if conditions exist.
@@ -2093,6 +2100,8 @@ function buildsurveysession($surveyid)
         $fieldmap=$copyFieldMap;
 
     }
+
+    // TMSW Conditions->Relevance:  don't need hasconditions, or usedinconditions
 
     $_SESSION['fieldmap']=$fieldmap;
     foreach ($fieldmap as $field)

@@ -872,7 +872,8 @@
         {
             if (!isset($qid)) {$qid=returnglobal('qid');}
             //check if any other questions have conditions which rely on this question. Don't delete if there are.
-            $ccquery = "SELECT * FROM ".$this->db->dbprefix."conditions WHERE cqid=$qid";
+            // TMSW Conditions->Relevance:  Allow such deletes - can warn about missing relevance separately.
+            $ccquery = "SELECT * FROM ".$this->db->dbprefix."as WHERE cqid=$qid";
             $ccresult = db_execute_assoc($ccquery); // or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg()); // Checked
             $cccount=$ccresult->num_rows();
             foreach ($ccresult->result_array() as $ccr) {$qidarray[]=$ccr['qid'];}
@@ -1072,6 +1073,7 @@
 
 		//Temporary fix for error condition arising from linked question via replacement fields
 		//@todo: find a consistent way to check and handle this - I guess this is already handled but the wrong values are entered into the DB
+        // TMSW Conditions->Relevance:  Show relevance instead of this dependency notation
 
 		$search_for = '{INSERTANS';
 		if(strpos($question['text'],$search_for)!==false){

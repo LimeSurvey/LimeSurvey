@@ -2327,6 +2327,8 @@
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
 //                    LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$deqrow['qid'],NULL,$deqrow['type'],$hidden);
 
+                    // TMSW Conditions->Relevance:  Show relevance equation instead of conditions here - better yet, have data entry use survey-at-a-time but with different view
+
                     //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
                     $explanation = ""; //reset conditions explanation
                     $s=0;
@@ -2480,6 +2482,8 @@
                     }
                     if ($explanation)
                     {
+                        // TMSW Conditions->Relevance:  show relevance equation here instead
+
                         if ($bgc == "even") {$bgc = "odd";} else {$bgc = "even";} //Do no alternate on explanation row
                         $explanation = "[".$blang->gT("Only answer this if the following conditions are met:")."]<br />$explanation\n";
                         $cdata['explanation'] = $explanation;

@@ -40,6 +40,8 @@
 
                     <?php }
                     else
+                    // TMSW Conditions->Relevance:  Should be allowed to delete group even if there are conditions/relevance, since separate view will show exceptions
+
                     { ?>
                     <a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick="alert('<?php echo $clang->gT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>')"
                         title="<?php echo $clang->gTview("Delete current question group"); ?>">
@@ -158,6 +160,7 @@
     </tr>
     <?php
     }
+    // TMSW Conditions->Relevance:  Use relevance equation or different EM query to show dependencies
     if (!is_null($condarray))
     { ?>
     <tr><td align='right'><strong>

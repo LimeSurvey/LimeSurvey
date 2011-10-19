@@ -62,6 +62,7 @@ function setNoAnswerMode($thissurvey)
     };
 }
 
+// TMSW Conditions->Relevance:  Not needed
 function retrieveConditionInfo($ia)
 {
     //This function returns an array containing all related conditions
@@ -160,6 +161,8 @@ function retrieveConditionInfo($ia)
     }
 }
 
+// TMSW Conditions->Relevance:  This function not needed - JS name identified within EM.
+
 // returns the Javascript IdName of a question used in conditions
 // $cd = Array (
 //   0 => Unused
@@ -254,7 +257,7 @@ function retrieveJSidname($cd,$currentgid=null)
     return $idname;
 }
 
-// TODO - also address Relevance
+// TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function create_mandatorylist($ia)
 {
     //Checks current question and returns required mandatory arrays if required
@@ -318,6 +321,7 @@ function create_mandatorylist($ia)
     }
 }
 
+// TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function setman_normal($ia)
 {
     $mandatorys[]=$ia[1];
@@ -325,6 +329,7 @@ function setman_normal($ia)
     return array($mandatorys, $mandatoryfns);
 }
 
+// TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function setman_ranking($ia)
 {
     $CI =& get_instance();
@@ -351,6 +356,7 @@ function setman_ranking($ia)
     return array($mandatorys, $mandatoryfns);
 }
 
+// TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function setman_questionandcode($ia)
 {
     $CI =& get_instance();
@@ -378,6 +384,7 @@ function setman_questionandcode($ia)
 }
 
 
+// TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 /**
 * The point of these functions (setman) is to return an array containing two arrays.
 * The first ($mandatorys) is an array containing question, so they can all be checked
@@ -461,6 +468,7 @@ function setman_multiflex($ia)
     return array($mandatorys, $mandatoryfns);
 }
 
+// TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function setman_questionandcode_multiscale($ia)
 {
     $CI =& get_instance();
@@ -546,6 +554,7 @@ function setman_questionandcode_multiscale($ia)
 * @param mixed $filenotvalidated
 * @return mixed
 */
+// TMSW Conditions->Relevance:  Refactor this - EM does most of this already without need for DB query per question
 function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotvalidated=null)
 {
     //globalise required config variables
@@ -890,7 +899,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     return array($qanda, $inputnames);
 }
 
-// TODO - check relevance too
+// TMSW Conditions->Relevance:  EM will manage mandatories - but must check all question specific issues (like ranking)
 function mandatory_message($ia)
 {
     //This function checks to see if this question is mandatory and
@@ -952,6 +961,7 @@ function mandatory_message($ia)
     return $qtitle;
 }
 
+// TMSW Conditions->Relevance:  EM will manage all validation
 function validation_message($ia)
 {
     //This function checks to see if this question requires validation and
@@ -1455,6 +1465,7 @@ function return_array_filter_selected($ia, $aQuestionAttributes, $thissurvey, $a
     return $filter_select;
 }
 
+// TMSW Conditions->Relevance:  EM will manage all array_filter as a sub-question relevance
 function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     /* We're just going to work out whether to do the include or exclude version of the function at this point */
     if(isset($aQuestionAttributes['array_filter_exclude']) && trim($aQuestionAttributes['array_filter_exclude']) != '') {
@@ -1465,6 +1476,7 @@ function return_array_filter_strings($ia, $aQuestionAttributes, $thissurvey, $an
     return array($html2body, $hiddenfield);
 }
 
+// TMSW Conditions->Relevance:  EM will manage all array_filter as a sub-question relevance
 function return_array_filter_include_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     /* DO ARRAY_FILTER ATTRIBUTE
     We set the $hiddenfield for each answer, and the value of this is available to java to let javascripts
@@ -1557,6 +1569,7 @@ function return_array_filter_include_strings($ia, $aQuestionAttributes, $thissur
     return array($htmltbody2, $hiddenfield);
 }
 
+// TMSW Conditions->Relevance:  EM will manage all array_filter as a sub-question relevance
 function return_array_filter_exclude_strings($ia, $aQuestionAttributes, $thissurvey, $ansrow, $rowname, $trbc='', $valuename, $method="tbody", $class=null) {
     /* DO ARRAY_FILTER_EXCLUDE ATTRIBUTE
     We set the $hiddenfield for each answer, and the value of this is available to java to let javascripts
@@ -1673,6 +1686,7 @@ function do_equation($ia)
 }
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_5pointchoice($ia)
 {
     //global $js_header_includes, $css_header_includes;
@@ -1801,6 +1815,8 @@ function do_5pointchoice($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
+
 function do_date($ia)
 {
     global $js_header_includes, $css_header_includes, $thissurvey;
@@ -2113,6 +2129,8 @@ function do_date($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
+
 function do_language($ia)
 {
     global $surveyid;
@@ -2155,6 +2173,8 @@ function do_language($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
+
 function do_list_dropdown($ia)
 {
     global $dropdownthreshold;
@@ -2410,6 +2430,8 @@ function do_list_dropdown($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
+
 function do_list_radio($ia)
 {
     global $dropdownthreshold;
@@ -2705,6 +2727,8 @@ function do_list_radio($ia)
 }
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
+
 function do_listwithcomment($ia)
 {
     global $maxoptionsize, $dropdownthreshold, $thissurvey;
@@ -2883,6 +2907,8 @@ function do_listwithcomment($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
+
 function do_ranking($ia)
 {
     global $thissurvey, $showpopups;
@@ -3128,6 +3154,8 @@ function do_ranking($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
+
 function do_multiplechoice($ia)
 {
     global $dbprefix, $thissurvey;
@@ -3625,6 +3653,8 @@ function do_multiplechoice($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
+
 function do_multiplechoice_withcomments($ia)
 {
     global $thissurvey;
@@ -3938,6 +3968,7 @@ function do_multiplechoice_withcomments($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_file_upload($ia)
 {
     global $js_header_includes, $thissurvey, $surveyid;
@@ -4125,6 +4156,7 @@ function do_file_upload($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_multipleshorttext($ia)
 {
     global $thissurvey;
@@ -4303,6 +4335,7 @@ function do_multipleshorttext($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_multiplenumeric($ia)
 {
     global $js_header_includes, $css_header_includes, $thissurvey;
@@ -4813,6 +4846,7 @@ function do_multiplenumeric($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_numerical($ia)
 {
     global $thissurvey;
@@ -4906,6 +4940,7 @@ function do_numerical($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_shortfreetext($ia)
 {
     global $js_header_includes, $thissurvey,$googleMapsAPIKey;
@@ -5116,6 +5151,7 @@ function getLatLongFromIp($ip){
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_longfreetext($ia)
 {
     global $js_header_includes, $thissurvey;
@@ -5198,6 +5234,7 @@ function do_longfreetext($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_hugefreetext($ia)
 {
     global $thissurvey;
@@ -5278,6 +5315,7 @@ function do_hugefreetext($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_yesno($ia)
 {
     $CI =& get_instance();
@@ -5333,6 +5371,7 @@ function do_yesno($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_gender($ia)
 {
     $CI =& get_instance();
@@ -5409,6 +5448,7 @@ function do_gender($ia)
 * @param $ia
 * @return unknown_type
 */
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_array_5point($ia)
 {
     global $notanswered, $thissurvey;
@@ -5579,6 +5619,7 @@ function do_array_5point($ia)
 * @param $ia
 * @return unknown_type
 */
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_array_10point($ia)
 {
     global $notanswered, $thissurvey;
@@ -5718,6 +5759,7 @@ function do_array_10point($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_array_yesnouncertain($ia)
 {
     global $notanswered, $thissurvey;
@@ -5876,6 +5918,7 @@ function do_array_yesnouncertain($ia)
     return array($answer, $inputnames);
 }
 
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_array_increasesamedecrease($ia)
 {
     global $thissurvey;
@@ -6048,6 +6091,7 @@ function do_array_increasesamedecrease($ia)
 }
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_array($ia)
 {
     global $thissurvey;
@@ -6434,6 +6478,7 @@ function do_array($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_array_multitext($ia)
 {
     global $thissurvey;
@@ -6781,6 +6826,7 @@ function do_array_multitext($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_array_multiflexi($ia)
 {
     global $thissurvey;
@@ -7139,6 +7185,7 @@ function do_array_multiflexi($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_arraycolumns($ia)
 {
     global $notanswered;
@@ -7298,6 +7345,7 @@ function do_arraycolumns($ia)
 
 
 // ---------------------------------------------------------------
+// TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_array_dual($ia)
 {
     global $thissurvey;

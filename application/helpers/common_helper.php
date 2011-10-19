@@ -1768,7 +1768,6 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
 
 function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
 {
-    // TMW - not needed
 	$CI = &get_instance();
 	$surveyid = $CI->config->item('sid');
     $qid=sanitize_int($qid);
@@ -1776,7 +1775,7 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
     $newgid=sanitize_int($newgid);
     $CI->load->model('conditions_model');
     $CI->conditions_model->updateCFieldName($surveyid,$qid,$oldgid,$newgid);
-
+    // TMSW Conditions->Relevance:  Call LEM->ConvertConditionsToRelevance() when done
 }
 
 
@@ -2341,6 +2340,8 @@ function validate_templatedir($templatename)
  * @return array
  */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
+    // TMSW Conditions->Relevance:  Refactor this function so that doesn't query conditions table, and so that only 3 db calls total to build array (questions, answers, attributes)
+    // TMSW Conditions->Relevance:  'hasconditions' and 'usedinconditions' are no longer needed.
 
     global $globalfieldmap, $aDuplicateQIDs;
     $CI =& get_instance();
@@ -6459,7 +6460,7 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
  */
 function checkquestionfordisplay($qid, $gid=null)
 {
-    // TMW - not needed (only check relevance)
+    // TMSW Conditions->Relevance:  not needed (only check relevance)
     global $thissurvey;
 	$CI = &get_instance();
 	$surveyid = $CI->config->item('sid');
@@ -7459,6 +7460,7 @@ function db_switchIDInsert($table,$state)
     }
 }
 
+// TMSW Conditions->Relevance:  This function is not needed?  Optionally replace this with call to EM to get similar info
 /**
  * GetGroupDepsForConditions() get Dependencies between groups caused by conditions
  * @param string $sid - the currently selected survey
@@ -7579,6 +7581,7 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
     return null;
 }
 
+// TMSW Conditions->Relevance:  This function is not needed?  Optionally replace this with call to EM to get similar info
 /**
  * GetQuestDepsForConditions() get Dependencies between groups caused by conditions
  * @param string $sid - the currently selected survey
@@ -7656,6 +7659,7 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
     return null;
 }
 
+// TMSW Conditions->Relevance:  This function is not needed - could replace with a message from EM output.
 /**
  * checkMovequestionConstraintsForConditions()
  * @param string $sid - the currently selected survey

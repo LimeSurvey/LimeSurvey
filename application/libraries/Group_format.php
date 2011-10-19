@@ -110,10 +110,11 @@ class Group_format {
 
 		    //Now, we check mandatory questions if necessary
 		    //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
-            // TODO - Modify this to ensure that irrelevant mandatories are not required
+            // TMSW Conditions->Relevance:  EM will handle this
 		    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 
 		    //CHECK INPUT
+            // TMSW Conditions->Relevance:  EM will handle this
 		    $notvalidated=aCheckInput($surveyid, $move, $backok);
 
 		    // CHECK UPLOADED FILES
@@ -127,7 +128,7 @@ class Group_format {
 
 		    if (isset($move) && $_SESSION['step'] != 0 && $move != "movesubmit")
 		    {
-                // TMW - fix navigation here
+                // TMSW Conditions->Relevance:  fix navigation here so calls LEM->GetNextRelevantSet()
 		        while(isset($_SESSION['grouplist'][$_SESSION['step']-1]) && checkgroupfordisplay($_SESSION['grouplist'][$_SESSION['step']-1][0],($thissurvey['anonymized']!='N'),$thissurvey['sid']) === false)
 		        {
 		            if ($_SESSION['prevstep'] > $_SESSION['step'])
@@ -409,6 +410,8 @@ class Group_format {
 		$CI->load->helper("qanda");
 		setNoAnswerMode($thissurvey);
 		//Iterate through the questions about to be displayed:
+        //
+        // TMSW Conditions->Relevance:  mandatory and conmandatory arrays not needed
 		$mandatorys=array();
 		$mandatoryfns=array();
 		$conmandatorys=array();
@@ -460,7 +463,9 @@ class Group_format {
 		        }
 
 		        //Display the "mandatory" popup if necessary
-		        if (isset($notanswered))
+
+                // TMSW Conditions->Relevance:  Let EM handle validation messages and management of conditionals and mandatories.
+                if (isset($notanswered))
 		        {
 		            list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
 		        }
@@ -493,6 +498,7 @@ class Group_format {
 		        }
 
 		        //Build an array containing the conditions that apply for this page
+                // TMSW Conditions->Relevance:  not needed
 		        $plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
 		        if ($plus_conditions)
 		        {
@@ -567,6 +573,8 @@ class Group_format {
 		    $array_filterXqs = getArrayFilterExcludesForGroup($surveyid,$gid);
 		    $array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, $gid);
 		}
+        // TMSW Conditions->Relevance:  replace noop_checkconditions and checkconditions with a single function - too hard to know which changes might have downstream consequences, and JS is very fast
+
 		print <<<END
 			function noop_checkconditions(value, name, type)
 			{
@@ -597,6 +605,8 @@ class Group_format {
 END;
 
 		// If there are conditions or arrray_filter questions then include the appropriate Javascript
+        // TMSW Conditions->Relevance:  move array_filter to EM - part of relevance calculations
+
 		if ((isset($conditions) && is_array($conditions)) ||
 		(isset($array_filterqs) && is_array($array_filterqs)) ||
 		(isset($array_filterXqs) && is_array($array_filterXqs)))
@@ -641,6 +651,8 @@ END;
 		     * $condition[n][6] => method used to evaluate *NEW*
 		     * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
 		     */
+
+            // TMSW Conditions->Relevance:  Not needed - managed by EM
 
 		    for ($i=0;$i<count($conditions);$i++)
 		    {
@@ -1039,6 +1051,8 @@ END;
 		    $java .= $endzone;
 		}
 
+        // TMSW Conditions->Relevance:  move this processing to EM - sub-question-level relevance
+
 		if ((isset($array_filterqs) && is_array($array_filterqs)) ||
 		(isset($array_filterXqs) && is_array($array_filterXqs)))
 		{
@@ -1300,7 +1314,7 @@ END;
                 }
                 if ($qa[8] == '*')
                 {
-                    // TMW - replace this with a call to EM to get hidden attribute status
+                    // TMSW Conditions->Relevance:  replace this with a call to EM to get hidden attribute status
                     $eqnAttributes = getQuestionAttributeValues($qa[4], $qa[8]);
                     if ($eqnAttributes['hidden']==1) {
                         $n_q_display = ' style="display: none;"';
@@ -1420,6 +1434,8 @@ END;
 
 		    echo "<!-- group2.php -->\n"; //This can go eventually - it's redundent for debugging
 
+            // TMSW Conditions->Relevance:  Not needed - EM already creates these hidden nodes.
+
 		    if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
 		    {
 		        //if conditions exist, create hidden inputs for 'previously' answered questions
@@ -1434,7 +1450,7 @@ END;
 		        }
 		    }
 		    //SOME STUFF FOR MANDATORY QUESTIONS
-            // TODO - what must be done vis-a-vis relevance?
+            // TMSW Conditions->Relevance:  EM will handle mandatories on server and client-side
 		    if (remove_nulls_from_array($mandatorys))
 		    {
 		        $mandatory=implode("|", remove_nulls_from_array($mandatorys));

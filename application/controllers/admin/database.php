@@ -668,6 +668,7 @@ class Database extends Admin_Controller {
 
             if ($oldtype != $_POST['type'])
             {
+                // TMSW Conditions->Relevance:  Do similar check via EM, but do allow such a change since will be easier to modify relevance
                 //Make sure there are no conditions based on this question, since we are changing the type
                 $ccquery = "SELECT * FROM ".$this->db->dbprefix."conditions WHERE cqid={$qid}";
                 $ccresult = db_execute_assoc($ccquery); // or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg()); // Checked
@@ -684,6 +685,7 @@ class Database extends Admin_Controller {
                 if (isset($gid) && $gid != "")
                 {
 
+                    // TMSW Conditions->Relevance:  not needed?
 
                     $array_result=checkMovequestionConstraintsForConditions(sanitize_int($surveyid),sanitize_int($qid), sanitize_int($gid));
                     // If there is no blocking conditions that could prevent this move
@@ -746,6 +748,8 @@ class Database extends Admin_Controller {
 
                                     if ( getGroupOrder($surveyid,$oldgid) > getGroupOrder($surveyid,$gid) )
                                     {
+                                        // TMSW Conditions->Relevance:  What is needed here?
+
                                         // Moving question to a 'upper' group
                                         // insert question at the end of the destination group
                                         // this prevent breaking conditions if the target qid is in the dest group
@@ -800,6 +804,7 @@ class Database extends Admin_Controller {
                     }
                     else
                     {
+                        // TMSW Conditions->Relevance:  not needed since such a move is no longer an error?
 
                         // There are conditions constraints: alert the user
                         $errormsg="";

@@ -2039,6 +2039,8 @@ class conditions extends Survey_Common_Controller {
 		$data['conditionsoutput'] = $conditionsoutput;
 		$this->load->view("admin/conditions/conditionsforms_view",$data);
 		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+
+        // TMSW Conditions->Relevance:  Must call LEM->ConvertConditionsToRelevance() whenever Condition is added or updated - what is best location for that action?
 	}
 
 	function _showSpeaker($hinttext)

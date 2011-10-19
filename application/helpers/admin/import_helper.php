@@ -744,6 +744,8 @@ function CSVImportGroup($sFullFilepath, $newsid)
     // ATTRIBUTES is DONE
 
 
+    // TMSW Conditions->Relevance:  Anything needed here, other than call to LEM->ConvertConditionsToRelevance() when done?
+
     // do CONDITIONS
     $results['conditions']=0;
     if (isset($conditionsarray) && $conditionsarray)
@@ -1131,6 +1133,7 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $results['conditions']++;
         }
     }
+    // TMSW Conditions->Relevance:  Call  LEM->ConvertConditionsToRelevance
 
 
     $results['newgid']=$newgid;
@@ -3329,6 +3332,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
             $CI->load->model('conditions_model');
             $result=$CI->conditions_model->insertRecords($conditionrowdata) or show_error("Couldn't insert condition<br />");
 
+            // TMSW Conditions->Relevance:  Call  LEM->ConvertConditionsToRelevance
         }
     }
     $importresults['importversion']=$importversion;
@@ -3763,6 +3767,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $results['conditions']++;
         }
     }
+    // TMSW Conditions->Relevance:  Call  LEM->ConvertConditionsToRelevance
 
     // Import assessments --------------------------------------------------------
     if(isset($xml->assessments))

@@ -39,12 +39,13 @@ class Survey_format {
         // submit page.
         //if (isset($_SESSION['finished'])) {$move="movesubmit"; }
 
-        // TODO - also check relevance
+        // TMSW Conditions->Relevance:  EM will handle mandatory
         //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
         //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
         $notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys($move));
 
         //CHECK INPUT
+        // TMSW Conditions->Relevance:  EM will manage most/all validation
         $notvalidated=aCheckInput($surveyid, $move);
 
         //CHECK UPLOADED FILES
@@ -275,6 +276,7 @@ class Survey_format {
         foreach ($_SESSION['grouplist'] as $gl)
         {
             $gid=$gl[0];
+            // TMSW Conditions->Relevance:  EM will have group list
             $groupUnconditionnalQuestionsCount[$gid]=0;
             $qnumber = 0;
 
@@ -438,6 +440,7 @@ END;
 
 END;
 
+        // TMSW Conditions->Relevance:  EM will manage conditions as relevance
         // If there are conditions or arrray_filter questions then include the appropriate Javascript
         if ((isset($conditions) && is_array($conditions)) ||
         (isset($array_filterqs) && is_array($array_filterqs)) ||
@@ -1091,7 +1094,7 @@ END;
                 }
             }
         }
-        // TODO - also check relevance
+        // TMSW Conditions->Relevance:  EM Will manage mandatories
         //SOME STUFF FOR MANDATORY QUESTIONS
         if (remove_nulls_from_array($mandatorys))
         {
