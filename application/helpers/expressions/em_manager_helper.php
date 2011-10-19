@@ -13,7 +13,7 @@ class LimeExpressionManager {
     private static $em;    // Expression Manager
     private $groupRelevanceInfo;
     private $groupNum;
-    private $debugLEM = true;   // set this to false to turn off debugging
+    private $debugLEM = false;   // set this to false to turn off debugging
     private $knownVars;
     private $pageRelevanceInfo;
     private $pageTailorInfo;
@@ -353,7 +353,6 @@ class LimeExpressionManager {
 
             $questionId = $fieldNameParts[2];
             $questionNum = $fielddata['qid'];
-//            $relevance = (isset($qattr[$questionNum]['relevance'])) ? $qattr[$questionNum]['relevance'] : 1;
             $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
             $hidden = (isset($qattr[$questionNum]['hidden'])) ? $qattr[$questionNum]['hidden'] : 'N';
             $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
@@ -391,16 +390,6 @@ class LimeExpressionManager {
                 $codeList .= '|' . $code;
             }
             $this->qid2code[$questionNum] = $codeList;
-
-            // Check off-page relevance status
-            /*
-            if (isset($_SESSION['relevanceStatus'])) {
-                $relStatus = (isset($_SESSION['relevanceStatus'][$questionId]) ? $_SESSION['relevanceStatus'][$questionId] : 2);
-            }
-            else {
-                $relStatus = 2;
-            }
-             */
 
             $readWrite = 'N';
 
@@ -571,7 +560,7 @@ class LimeExpressionManager {
 
             // Set mappings of variable names to needed attributes
             $varInfo_Code = array(
-                'codeValue'=>$codeValue,
+                'codeValue'=>$codeValue,      // TODO - comment
                 'jsName'=>$jsVarName,
                 'readWrite'=>$readWrite,
                 'isOnCurrentPage'=>$isOnCurrentPage,
@@ -581,16 +570,15 @@ class LimeExpressionManager {
                 'qid'=>$questionNum,
                 'relevance'=>$relevance,
                 'relevanceNum'=>'relevance' . $questionNum,
-//                'relevanceStatus'=>$relStatus,
                 'qcode'=>$varName,
                 'questionSeq'=>$questionSeq,
                 'groupSeq'=>$groupSeq,
                 'type'=>$type,
+                'sgqa'=>$code,
                 );
 
             $this->questionSeq2relevance[$questionSeq] = array(
                 'relevance'=>$relevance,
-//                'relevanceStatus'=>$relStatus,
                 'qid'=>$questionNum,
                 'questionSeq'=>$questionSeq,
                 'groupSeq'=>$groupSeq,
@@ -625,6 +613,7 @@ class LimeExpressionManager {
             $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
                 . "'jsName':'" . $jsVarName
     //            . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
+                . "','sgqa':'" . $code
                 . "','qid':" . $questionNum
                 . ",'mandatory':'" . $mandatory
                 . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
@@ -641,7 +630,7 @@ class LimeExpressionManager {
                     'varname' => $varName,
                     'jsName' => $jsVarName,
                     'question' => $question,
-                    'codeValue' => ($codeValue=='') ? '&nbsp;' : $codeValue,
+                    'codeValue' => ($codeValue=='') ? '&nbsp;' : $codeValue,  // TODO  - comment
                     'displayValue' => ($displayValue=='') ? '&nbsp;' : $displayValue,
                     'readWrite' => $readWrite,
                     'isOnCurrentPage' => $isOnCurrentPage,
@@ -676,7 +665,6 @@ class LimeExpressionManager {
                     'readWrite'=>'N',
                     'isOnCurrentPage'=>'N',
                     'relevanceNum'=>'',
-//                    'relevanceStatus'=>'1',
                     );
 
                 if ($this->debugLEM)
@@ -706,7 +694,6 @@ class LimeExpressionManager {
                     'readWrite'=>'N',
                     'isOnCurrentPage'=>'N',
                     'relevanceNum'=>'',
-//                    'relevanceStatus'=>'1',
                     );
             $this->knownVars['TOKEN:FIRSTNAME'] = $blankVal;
             $this->knownVars['TOKEN:LASTNAME'] = $blankVal;
@@ -728,7 +715,7 @@ class LimeExpressionManager {
                 $debugLog_html .= "<tr><td>" . $t['code']
                     . "</td><td>" . $t['type']
                     . "</td><td>" . $t['varname']
-                    . "</td><td>" . $t['codeValue']
+                    . "</td><td>" . $t['codeValue']     // TODO - comment
                     . "</td><td>" . $t['displayValue']
                     . "</td><td>" . $t['jsName']
                     . "</td><td>" . $t['readWrite']
@@ -1406,8 +1393,6 @@ EOT;
 
         // collect variables
         $i=0;
-//        $LEM->questionId2questionSeq = array();
-//        $LEM->questionId2groupSeq = array();
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
@@ -1439,7 +1424,6 @@ EOT;
         {
             $testArg = $testArgs[$i];
             $var = $testArg[0];
-//            $rel = LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($testArg[1],ENT_QUOTES),$i,$var);
             $rel = LimeExpressionManager::QuestionIsRelevant($i);
             $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
@@ -1471,7 +1455,6 @@ EOT;
         print "<table border='1'><tr><td>";
         foreach ($argInfo as $arg)
         {
-//            $rel = $arg['relevanceStatus'];
             $rel = LimeExpressionManager::QuestionIsRelevant($arg['num']);
             print "<div id='question" . $arg['num'] . (($rel) ? "'" : "' style='display: none'") . ">\n";
             print "<input type='hidden' id='display" . $arg['num'] . "' name='" . $arg['num'] .  "' value='" . (($rel) ? 'on' : '') . "'/>\n";

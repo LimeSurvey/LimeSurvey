@@ -15,7 +15,7 @@
 
 class ExpressionManager {
     // These are the allowable suffixes for variables - each represents an attribute of a variable.
-    private static $regex_var_attr = 'codeValue|code|displayValue|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type';
+    private static $regex_var_attr = 'codeValue|code|displayValue|groupSeq|jsName|mandatory|NAOK|qid|questionSeq|question|readWrite|relevanceNum|relevanceStatus|relevance|sgqa|shown|type';
 
     // These three variables are effectively static once constructed
     private $sExpressionRegex;
@@ -1412,6 +1412,7 @@ class ExpressionManager {
             return $default;    // and throw error?
         }
         $var = $this->amVars[$varName];
+        $sgqa = isset($var['sgqa']) ? $var['sgqa'] : NULL;
         if (is_null($attr))
         {
             // then use the requested attribute, if any
@@ -1427,8 +1428,17 @@ class ExpressionManager {
             case 'NAOK':
                 // TODO: check relevance first for non-NAOK?
                 return (isset($var['codeValue'])) ? $var['codeValue'] : $default;
+                /* TODO - refactor to take this approach
+                if (is_null($sgqa)) {
+                    return (isset($var['codeValue'])) ? $var['codeValue'] : $default;
+                }
+                else {
+                    return (isset($_SESSION[$sgqa])) ? $_SESSION[$sgqa] : NULL;
+                }
+                */
             case 'isOnCurrentPage':
             case 'jsName':
+            case 'sgqa':
             case 'mandatory':
             case 'qid':
             case 'question':
