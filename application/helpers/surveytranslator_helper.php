@@ -526,6 +526,11 @@
         1=>array('seperator'=> ',', 'desc'=> $clang->gT('Comma (,)'))
         );
 
+        // hack for fact that null sometimes sent to this function
+        if (is_null($format)) {
+            $format = 0;
+        }
+
         if ($format >= 0)
             return $aRadixFormats[$format];
         else

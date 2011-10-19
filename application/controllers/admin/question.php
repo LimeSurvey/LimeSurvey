@@ -1032,7 +1032,7 @@
 
         // This is needed to properly detect and color code EM syntax errors
         LimeExpressionManager::StartProcessingPage();
-        LimeExpressionManager::StartProcessingGroup($qrows['gid'],false,$surveyid);  // loads list of replacement values available for this group
+        LimeExpressionManager::StartProcessingGroup($qrows['gid'],false,$surveyid,true);  // loads list of replacement values available for this group
 
 		$answers = retrieveAnswers($ia);
 
@@ -1098,12 +1098,12 @@
 		$question_template = file_get_contents("$thistpl/question.pstpl");
 		if(substr_count($question_template , '{QUESTION_ESSENTIALS}') > 0 ) // the following has been added for backwards compatiblity.
 		{// LS 1.87 and newer templates
-		$content .= "\n".templatereplace($question_template,array(),$redata,'question[1319]')."\n";
+		$content .= "\n".templatereplace($question_template,array(),$redata,'question[1319]',false,$qid)."\n";
 		}
 		else
 		{// LS 1.86 and older templates
 		$content .= '<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
-		$content .= "\n".templatereplace($question_template,array(),$redata,'question[1324]')."\n";
+		$content .= "\n".templatereplace($question_template,array(),$redata,'question[1324]',false,$qid)."\n";
 		$content .= "\n\t</div>\n";
 		};
 
@@ -1112,9 +1112,9 @@
 		$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"),array(),$redata,'question[1330]');
 
         // if want to  include Javascript in question preview, uncomment these.  However, Group level preview is probably adequate
-//        LimeExpressionManager::FinishProcessingGroup();
-//        LimeExpressionManager::FinishProcessingPage();
-//        echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+        LimeExpressionManager::FinishProcessingGroup();
+        $content .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+        LimeExpressionManager::FinishProcessingPage();
 
 		echo $content;
 		echo "</html>\n";

@@ -6233,6 +6233,8 @@ function aArrayInvert($aArr)
  */
 function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
 {
+    $CI =& get_instance();
+
     $qtype = $_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['type'];
 
     if ($qtype == 'X')
@@ -6260,9 +6262,9 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
 
         $qid=$_SESSION['fieldmap'][$aFieldnamesInfoInv[$q][0]]['qid'];
 
-        $gquery = "SELECT * FROM ".db_table_name('question_attributes')." WHERE qid={$qid} AND attribute ='array_filter'";
+        $gquery = "SELECT * FROM ".$CI->db->dbprefix('question_attributes')." WHERE qid={$qid} AND attribute ='array_filter'";
         $qresult = db_execute_assoc($gquery); //checked
-        $qrows = $qresult->GetRows();
+        $qrows = $qresult->result_array();
 
         $filter=$qrows[0]['value'];
 
