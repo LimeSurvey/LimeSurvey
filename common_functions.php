@@ -7691,6 +7691,14 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
                 if(!strstr($sField, 'comment') && isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
                     return true;
                 return false;
+        case 'L': // List questions only need one answer (including the 'other' option)
+            foreach($aFieldnamesInfoInv[$q] as $sField)
+            {
+                if(isset($_SESSION[$sField]) && trim($_SESSION[$sField])!='')
+                    return true;
+            }
+            return false;
+
         case 'F':
         case ':':
         case ';':
