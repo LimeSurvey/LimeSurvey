@@ -93,7 +93,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     }
     else
     {
-        $statlang = new limesurvey_lang($statlangcode);
+        $statlang = new limesurvey_lang(array($statlangcode));
     }
 
     /*
@@ -1133,7 +1133,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $fieldname=substr($rt, 1, strlen($rt));
 
                     //special treatment for MS SQL databases
-					if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
+                    $sDatabaseType = $CI->db->platform();
+					if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
                     {
                         //standard deviation
                         $query = "SELECT STDEVP(".db_quote_id($fieldname)."*1) as stdev";
@@ -1160,7 +1161,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //Only select responses where there is an actual number response, ignore nulls and empties (if these are included, they are treated as zeroes, and distort the deviation/mean calculations)
 
                     //special treatment for MS SQL databases
-					if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
+					if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
                     {
                         //no NULL/empty values please
                         $query .= " FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL";
@@ -1962,7 +1963,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             {
                             //get data
                             $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ";
-                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                            $query .= ($sDatabaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
                         }
                         }
 
@@ -1981,19 +1982,19 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             if($al[0]=="Answers")
                             {
                                 $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ";
-                                $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                                $query .= ($sDatabaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
                             }
                             //"no answer" handling
                             elseif($al[0]=="NoAnswer")
                             {
                                 $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ( ";
-                                $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." = '')" : " (".db_quote_id($al[2])." LIKE ''))";
+                                $query .= ($sDatabaseType == "mysql")?  db_quote_id($al[2])." = '')" : " (".db_quote_id($al[2])." LIKE ''))";
                             }
                         }
                         elseif ($qtype == "O")
                         {
                             $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ( ";
-                            $query .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." <> '')" : " (".db_quote_id($al[2])." NOT LIKE ''))";
+                            $query .= ($sDatabaseType == "mysql")?  db_quote_id($al[2])." <> '')" : " (".db_quote_id($al[2])." NOT LIKE ''))";
                         // all other question types
                         }
                         else
@@ -2018,8 +2019,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         if ($al[0] != "")
                         {
                             //get more data
-
-							if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
+                            $sDatabaseType = $CI->db->platform();
+							if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
                                 $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'";
@@ -2036,7 +2037,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //  ==> value is ''
                             // * NoAnswer due to conditions, or a page not displayed
                             //  ==> value is NULL
-                            if ($connect->databaseType == 'odbc_mssql' || $connect->databaseType == 'odbtp' || $connect->databaseType == 'mssql_n' || $connect->databaseType == 'mssqlnative')
+                            if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
                                 //$query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE (".db_quote_id($rt)." IS NULL "
