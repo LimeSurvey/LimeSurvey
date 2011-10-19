@@ -57,7 +57,6 @@ $config['allowmandbackwards'] =   1;                // Allow moving backwards (i
 // has not been answered. 1=Allow, 0=Deny
 $config['deletenonvalues']    =   1;                // By default, LimeSurvey does not save responses to conditional questions that haven't been answered/shown. To have LimeSurvey save these responses change this value to 0.
 $config['stringcomparizonoperators']   =   0;                // By default, LimeSurvey assumes the numrical order for comparizon operators in conditions. If you need string comparizon operators, set this parameter to 1
-$config['printanswershonorsconditions'] = 1;	      // Set to 1 if you want the participant printanswers feature to show only the questions that were displayed survey branching-logic
 $config['shownoanswer']       =   1;                // Show 'no answer' for non mandatory questions ( 0 = no , 1 = yes , 2 = survey admin can choose )
 $config['admintheme']         =  'default';         // This setting specifys the directory where the admin finds it theme/css style files, e.g. setting 'default' points to /admin/styles/default
 $config['userideditable']     =  'N';

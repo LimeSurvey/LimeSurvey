@@ -217,7 +217,7 @@ class printanswers extends LSCI_Controller {
         // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
         LimeExpressionManager::StartProcessingGroup(1,($thissurvey['anonymized']!="N"),$surveyid);
 
-        $aFullResponseTable=aGetFullResponseTable($surveyid,$id,$language);
+        $aFullResponseTable=aGetFullResponseTable($surveyid,$id,$language,true);
 
         //Get the fieldmap @TODO: do we need to filter out some fields?
         unset ($aFullResponseTable['id']);
