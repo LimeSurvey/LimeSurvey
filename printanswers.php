@@ -174,8 +174,8 @@ if(isset($_POST['printableexport']))
 }
 $printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
 
-
-$aFullResponseTable=aGetFullResponseTable($surveyid,$id,$language,true);
+$bHonorConditions=($printanswershonorsconditions==1);
+$aFullResponseTable=aGetFullResponseTable($surveyid,$id,$language,$bHonorConditions);
 
 //Get the fieldmap @TODO: do we need to filter out some fields?
 unset ($aFullResponseTable['id']);
