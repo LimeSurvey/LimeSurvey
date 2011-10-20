@@ -109,11 +109,11 @@ class FormattingOptions
     public $responseMaxRecord;
 
     /**
-     * The columns that have been selected for output.  The values must be
-     * in fieldMap format.
-     *
-     * @var array[]string
-     */
+    * The columns that have been selected for output.  The values must be
+    * in fieldMap format.
+    *
+    * @var array[]string
+    */
     public $selectedColumns;
 
     /**
@@ -127,87 +127,87 @@ class FormattingOptions
     public $responseCompletionState;
 
     /**
-     * Acceptable values are:
-     * "abrev" = Abbreviated headings
-     * "full" = Full headings
-     * "headcodes" = Question codes
-     *
-     * @var string
-     */
+    * Acceptable values are:
+    * "abrev" = Abbreviated headings
+    * "full" = Full headings
+    * "headcodes" = Question codes
+    *
+    * @var string
+    */
     public $headingFormat;
 
     /**
-     * Indicates whether to convert spaces in question headers to underscores.
-     *
-     * @var boolean
-     */
+    * Indicates whether to convert spaces in question headers to underscores.
+    *
+    * @var boolean
+    */
     public $headerSpacesToUnderscores;
 
     /**
-     * Valid values are:
-     * "short" = Answer codes
-     * "long" = Full answers
-     *
-     * @var string
-     */
+    * Valid values are:
+    * "short" = Answer codes
+    * "long" = Full answers
+    *
+    * @var string
+    */
     public $answerFormat;
 
     /**
-     * If $answerFormat is set to "short" then this indicates that 'Y' responses
-     * should be converted to another value that is specified by $yValue.
-     *
-     * @var boolean
-     */
+    * If $answerFormat is set to "short" then this indicates that 'Y' responses
+    * should be converted to another value that is specified by $yValue.
+    *
+    * @var boolean
+    */
     public $convertY;
 
     public $yValue;
 
     /**
-     * If $answerFormat is set to "short" then this indicates that 'N' responses
-     * should be converted to another value that is specified by $nValue.
-     *
-     * @var boolean
-     */
+    * If $answerFormat is set to "short" then this indicates that 'N' responses
+    * should be converted to another value that is specified by $nValue.
+    *
+    * @var boolean
+    */
     public $convertN;
 
     public $nValue;
 
     /**
-     * "doc", "xls", "csv", "pdf"
-     * @var string
-     */
+    * "doc", "xls", "csv", "pdf"
+    * @var string
+    */
     public $format;
 
     public function toString()
     {
         return $this->format.','.$this->headingFormat.','
-          .$this->headerSpacesToUnderscores.','.$this->responseCompletionState
-          .','.$this->responseMinRecord.','.$this->responseMaxRecord.','
-          .$this->answerFormat.','.$this->convertY.','.$this->yValue.','
-          .$this->convertN.','.$this->nValue.','
-          .implode(',',$this->selectedColumns);
+        .$this->headerSpacesToUnderscores.','.$this->responseCompletionState
+        .','.$this->responseMinRecord.','.$this->responseMaxRecord.','
+        .$this->answerFormat.','.$this->convertY.','.$this->yValue.','
+        .$this->convertN.','.$this->nValue.','
+        .implode(',',$this->selectedColumns);
     }
 }
 
 class SurveyDao
 {
     /**
-     * Loads a survey from the database that has the given ID.  If no matching
-     * survey is found then null is returned.  Note that no results are loaded
-     * from this function call, only survey structure/definition.
-     *
-     * In the future it would be nice to load all languages from the db at
-     * once and have the infrastructure be able to return responses based
-     * on language codes.
-     *
-     * @param int $id
-     * @return Survey
-     */
+    * Loads a survey from the database that has the given ID.  If no matching
+    * survey is found then null is returned.  Note that no results are loaded
+    * from this function call, only survey structure/definition.
+    *
+    * In the future it would be nice to load all languages from the db at
+    * once and have the infrastructure be able to return responses based
+    * on language codes.
+    *
+    * @param int $id
+    * @return Survey
+    */
     public function loadSurveyById($id)
     {
-    	$CI=& get_instance();
+        $CI=& get_instance();
         $survey = new Survey();
-    	$clang = $CI->limesurvey_lang;
+        $clang = $CI->limesurvey_lang;
 
         $intId = sanitize_int($id);
         $survey->id = $intId;
@@ -225,24 +225,24 @@ class SurveyDao
 
         //Load groups
         $sql = 'SELECT g.* FROM '.$CI->db->dbprefix('groups').' AS g '.
-               'WHERE g.sid = '.$intId.' '.
-               'ORDER BY g.group_order;';
+        'WHERE g.sid = '.$intId.' '.
+        'ORDER BY g.group_order;';
         $recordSet = db_execute_assoc($sql);
         $survey->groups = $recordSet->result_array();
 
         //Load questions
         $sql = 'SELECT q.* FROM '.$CI->db->dbprefix('questions').' AS q '.
-               'JOIN '.$CI->db->dbprefix('groups').' AS g ON q.gid = g.gid '.
-               'WHERE q.sid = '.$intId.' AND q.language = \''.$lang.'\' '.
-               'ORDER BY g.group_order, q.question_order;';
+        'JOIN '.$CI->db->dbprefix('groups').' AS g ON q.gid = g.gid '.
+        'WHERE q.sid = '.$intId.' AND q.language = \''.$lang.'\' '.
+        'ORDER BY g.group_order, q.question_order;';
         $recordSet = db_execute_assoc($sql);
         $survey->questions = $recordSet->result_array();
 
         //Load answers
         $sql = 'SELECT DISTINCT a.* FROM '.$CI->db->dbprefix('answers').' AS a '.
-               'JOIN '.$CI->db->dbprefix('questions').' AS q ON a.qid = q.qid '.
-		       'WHERE q.sid = '.$intId.' AND a.language = \''.$lang.'\' '.
-               'ORDER BY a.qid, a.sortorder;';
+        'JOIN '.$CI->db->dbprefix('questions').' AS q ON a.qid = q.qid '.
+        'WHERE q.sid = '.$intId.' AND a.language = \''.$lang.'\' '.
+        'ORDER BY a.qid, a.sortorder;';
         $recordSet = db_execute_assoc($sql);
         $survey->answers = $recordSet->result_array();
 
@@ -267,18 +267,18 @@ class SurveyDao
     }
 
     /**
-     * Loads results for the survey into the $survey->responses array.  The
-     * results  begin from $minRecord and end with $maxRecord.  Either none,
-     * or both,  the $minRecord and $maxRecord variables must be provided.
-     * If none are then all responses are loaded.
-     *
-     * @param Survey $survey
-     * @param int $minRecord
-     * @param int $maxRecord
-     */
+    * Loads results for the survey into the $survey->responses array.  The
+    * results  begin from $minRecord and end with $maxRecord.  Either none,
+    * or both,  the $minRecord and $maxRecord variables must be provided.
+    * If none are then all responses are loaded.
+    *
+    * @param Survey $survey
+    * @param int $minRecord
+    * @param int $maxRecord
+    */
     public function loadSurveyResults(Survey $survey, $minRecord = null, $maxRecord = null)
     {
-    	$CI=& get_instance();
+        $CI=& get_instance();
         /* @var $recordSet ADORecordSet */
         $sql = 'SELECT * FROM '.$CI->db->dbprefix('survey_'.$survey->id);
         if (!isset($minRecord) && !isset($maxRecord))
@@ -304,30 +304,30 @@ class SurveyDao
 class Survey
 {
     /**
-     * @var int
-     */
+    * @var int
+    */
     public $id;
 
     /**
-     * Whether the survey is anonymous or not.
-     * @var boolean
-     */
+    * Whether the survey is anonymous or not.
+    * @var boolean
+    */
     public $anonymous;
 
     /**
-     * Answers, codes, and full text to the questions.
-     * This is used in conjunction with the fieldMap to produce
-     * some of the more verbose output in a survey export.
-     * array[recordNo][columnName]
-     *
-     * @var array[int][string]mixed
-     */
+    * Answers, codes, and full text to the questions.
+    * This is used in conjunction with the fieldMap to produce
+    * some of the more verbose output in a survey export.
+    * array[recordNo][columnName]
+    *
+    * @var array[int][string]mixed
+    */
     public $answers;
 
     /**
-     * The fieldMap as generated by createFieldMap(...).
-     * @var array[]mixed
-     */
+    * The fieldMap as generated by createFieldMap(...).
+    * @var array[]mixed
+    */
     public $fieldMap;
 
     /**
@@ -352,11 +352,11 @@ class Survey
     public $tokens;
 
     /**
-     * Stores the responses to the survey in a two dimensional array form.
-     * array[recordNo][fieldMapName]
-     *
-     * @var array[int][string]mixed
-     */
+    * Stores the responses to the survey in a two dimensional array form.
+    * array[recordNo][fieldMapName]
+    *
+    * @var array[int][string]mixed
+    */
     public $responses;
 
     /**
@@ -389,11 +389,11 @@ class Survey
     }
 
     /**
-     * Returns the question code/title for the question that matches the $fieldName.
-     * False is returned if no matching question is found.
-     * @param string $fieldName
-     * @return string (or false)
-     */
+    * Returns the question code/title for the question that matches the $fieldName.
+    * False is returned if no matching question is found.
+    * @param string $fieldName
+    * @return string (or false)
+    */
     public function getQuestionCode($fieldName)
     {
         if (isset($this->fieldMap[$fieldName]['title']))
@@ -484,19 +484,19 @@ class Survey
     }
 
     /**
-     * Returns the full answer for the question that matches $fieldName
-     * and the answer that matches the $answerCode.  If a match cannot
-     * be made then false is returned.
-     *
-     * The name of the variable $answerCode is not strictly an answerCode
-     * but could also be a comment entered by a participant.
-     *
-     * @param string $fieldName
-     * @param string $answerCode
-     * @param Translator $translator
-     * @param string $languageCode
-     * @return string (or false)
-     */
+    * Returns the full answer for the question that matches $fieldName
+    * and the answer that matches the $answerCode.  If a match cannot
+    * be made then false is returned.
+    *
+    * The name of the variable $answerCode is not strictly an answerCode
+    * but could also be a comment entered by a participant.
+    *
+    * @param string $fieldName
+    * @param string $answerCode
+    * @param Translator $translator
+    * @param string $languageCode
+    * @return string (or false)
+    */
     public function getFullAnswer($fieldName, $answerCode, Translator $translator, $languageCode)
     {
         $fullAnswer = null;
@@ -517,7 +517,7 @@ class Survey
         switch ($fieldType)
         {
             case 'R':   //RANKING TYPE
-                    $fullAnswer = $answer;
+                $fullAnswer = $answer;
                 break;
 
             case '1':   //Array dual scale
@@ -559,49 +559,49 @@ class Survey
                 break;
 
             case 'O':   //DROPDOWN LIST WITH COMMENT
-                    if (isset($answer))
-                    {
-                        //This is one of the dropdown list options.
-                        $fullAnswer = $answer;
-                    }
-                    else
-                    {
-                         //This is a comment.
-                         $fullAnswer = $answerCode;
-                    }
+                if (isset($answer))
+                {
+                    //This is one of the dropdown list options.
+                    $fullAnswer = $answer;
+                }
+                else
+                {
+                    //This is a comment.
+                    $fullAnswer = $answerCode;
+                }
                 break;
 
             case 'Y':   //YES/NO
-                switch ($answerCode)
-                {
-                    case 'Y':
-                        $fullAnswer = $translator->translate('Yes', $languageCode);
-                        break;
+            switch ($answerCode)
+            {
+                case 'Y':
+                    $fullAnswer = $translator->translate('Yes', $languageCode);
+                    break;
 
-                    case 'N':
-                        $fullAnswer = $translator->translate('No', $languageCode);
-                        break;
+                case 'N':
+                    $fullAnswer = $translator->translate('No', $languageCode);
+                    break;
 
-                    default:
-                        $fullAnswer = $translator->translate('N/A', $languageCode);
-                }
-                break;
+                default:
+                    $fullAnswer = $translator->translate('N/A', $languageCode);
+            }
+            break;
 
             case 'G':
-                switch ($answerCode)
-                {
-                    case 'M':
-                        $fullAnswer = $translator->translate('Male', $languageCode);
-                        break;
+            switch ($answerCode)
+            {
+                case 'M':
+                    $fullAnswer = $translator->translate('Male', $languageCode);
+                    break;
 
-                    case 'F':
-                        $fullAnswer = $translator->translate('Female', $languageCode);
-                        break;
+                case 'F':
+                    $fullAnswer = $translator->translate('Female', $languageCode);
+                    break;
 
-                    default:
-                        $fullAnswer = $translator->translate('N/A', $languageCode);
-                }
-                break;
+                default:
+                    $fullAnswer = $translator->translate('N/A', $languageCode);
+            }
+            break;
 
             case 'M':   //MULTIOPTION
             case 'P':
@@ -631,38 +631,38 @@ class Survey
                 break;
 
             case 'C':
-                switch ($answerCode)
-                {
-                    case 'Y':
-                        $fullAnswer = $translator->translate('Yes', $languageCode);
-                        break;
+            switch ($answerCode)
+            {
+                case 'Y':
+                    $fullAnswer = $translator->translate('Yes', $languageCode);
+                    break;
 
-                    case 'N':
-                        $fullAnswer = $translator->translate('No', $languageCode);
-                        break;
+                case 'N':
+                    $fullAnswer = $translator->translate('No', $languageCode);
+                    break;
 
-                    case 'U':
-                        $fullAnswer = $translator->translate('Uncertain', $languageCode);
-                        break;
-                }
-                break;
+                case 'U':
+                    $fullAnswer = $translator->translate('Uncertain', $languageCode);
+                    break;
+            }
+            break;
 
             case 'E':
-                switch ($answerCode)
-                {
-                    case 'I':
-                        $fullAnswer = $translator->translate('Increase', $languageCode);
-                        break;
+            switch ($answerCode)
+            {
+                case 'I':
+                    $fullAnswer = $translator->translate('Increase', $languageCode);
+                    break;
 
-                    case 'S':
-                        $fullAnswer = $translator->translate('Same', $languageCode);
-                        break;
+                case 'S':
+                    $fullAnswer = $translator->translate('Same', $languageCode);
+                    break;
 
-                    case 'D':
-                        $fullAnswer = $translator->translate('Decrease', $languageCode);
-                        break;
-                }
-                break;
+                case 'D':
+                    $fullAnswer = $translator->translate('Decrease', $languageCode);
+                    break;
+            }
+            break;
 
             case 'F':
             case 'H':
@@ -672,8 +672,8 @@ class Survey
 
             default:
 
-                    $fullAnswer .= $answerCode;
-                }
+                $fullAnswer .= $answerCode;
+        }
 
         return $fullAnswer;
     }
@@ -699,9 +699,9 @@ class Survey
                 $answers[$answer['code']] = $answer;
             }
             else if ($answer['qid'] == $questionId && $answer['scale_id'] == $scaleId)
-            {
-                $answers[$answer['code']] = $answer;
-            }
+                {
+                    $answers[$answer['code']] = $answer;
+                }
         }
         return $answers;
     }
@@ -715,20 +715,20 @@ class Translator
     //The following array stores field names that require pulling a value from the
     //internationalization layer. <fieldname> => <internationalization key>
     private $headerTranslationKeys = array(
-        'id' => 'id',
-        'lastname' => 'Last Name',
-        'firstname' => 'First Name',
-        'email' => 'Email Address',
-        'token' => 'Token',
-        'datestamp' => 'Date Last Action',
-        'startdate' => 'Date Started',
-        'submitdate' => 'Completed',
-        //'completed' => 'Completed',
-        'ipaddr' => 'IP-Address',
-        'refurl' => 'Referring URL',
-        'lastpage' => 'Last page seen',
-        'startlanguage' => 'Start language'//,
-        //'tid' => 'Token ID'
+    'id' => 'id',
+    'lastname' => 'Last Name',
+    'firstname' => 'First Name',
+    'email' => 'Email Address',
+    'token' => 'Token',
+    'datestamp' => 'Date Last Action',
+    'startdate' => 'Date Started',
+    'submitdate' => 'Completed',
+    //'completed' => 'Completed',
+    'ipaddr' => 'IP-Address',
+    'refurl' => 'Referring URL',
+    'lastpage' => 'Last page seen',
+    'startlanguage' => 'Start language'//,
+    //'tid' => 'Token ID'
     );
 
     public function translate($key, $languageCode)
@@ -919,14 +919,14 @@ abstract class Writer implements IWriter
     }
 
     /**
-     * Returns a full heading for the question that matches the $fieldName.
-     * False is returned if no matching question is found.
-     *
-     * @param Survey $survey
-     * @param FormattingOptions $options
-     * @param string $fieldName
-     * @return string (or false)
-     */
+    * Returns a full heading for the question that matches the $fieldName.
+    * False is returned if no matching question is found.
+    *
+    * @param Survey $survey
+    * @param FormattingOptions $options
+    * @param string $fieldName
+    * @return string (or false)
+    */
     public function getFullHeading(Survey $survey, FormattingOptions $options, $fieldName)
     {
         $question = $survey->getQuestionArray($fieldName);
@@ -957,7 +957,7 @@ abstract class Writer implements IWriter
         {
             case 'R':
                 $subHeading .= ' ['.$this->translate('Ranking', $this->languageCode).' '.
-                  $answerCode.']';
+                $answerCode.']';
                 break;
 
             case 'L':
@@ -1045,7 +1045,7 @@ abstract class Writer implements IWriter
         {
             case 'R':
                 $subHeading .= ' ['.$this->translate('Ranking', $this->languageCode).' '.
-                  $answerCode.']';
+                $answerCode.']';
                 break;
 
             case 'L':
@@ -1186,8 +1186,8 @@ abstract class Writer implements IWriter
     {
         //The following if block handles transforms of Ys and Ns.
         if (($options->convertN || $options->convertY) &&
-            isset($fieldType) &&
-           ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y'))
+        isset($fieldType) &&
+        ($fieldType == 'M' || $fieldType == 'P' || $fieldType == 'Y'))
         {
             if ($value == 'N' && $options->convertN)
             {
@@ -1195,10 +1195,10 @@ abstract class Writer implements IWriter
                 return $options->nValue;
             }
             else if ($value == 'Y' && $options->convertY)
-            {
-                //echo "Transforming 'Y' to ".$options->yValue.PHP_EOL;
-                return $options->yValue;
-            }
+                {
+                    //echo "Transforming 'Y' to ".$options->yValue.PHP_EOL;
+                    return $options->yValue;
+                }
         }
 
         //This spot should only be reached if no transformation occurs.
@@ -1286,13 +1286,13 @@ abstract class Writer implements IWriter
                 switch ($options->answerFormat) {
                     case 'short':
                         $elementArray[] = $this->transformResponseValue($value,
-                            $survey->fieldMap[$column]['type'], $options);
+                        $survey->fieldMap[$column]['type'], $options);
                         break;
 
                     case 'long':
                         $elementArray[] = $this->transformResponseValue($survey->getFullAnswer(
-                            $column, $value, $this->translator, $this->languageCode),
-                            $survey->fieldMap[$column]['type'], $options);
+                        $column, $value, $this->translator, $this->languageCode),
+                        $survey->fieldMap[$column]['type'], $options);
                         break;
 
                     default:
@@ -1307,13 +1307,8 @@ abstract class Writer implements IWriter
 
     protected function strip_tags_full($string)
     {
-        $string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
-        mb_regex_encoding('utf-8');
-        $pattern = array('\r', '\n', '-oth-');
-        for ($i=0; $i<sizeof($pattern); $i++) {
-            $string = mb_ereg_replace($pattern[$i], '', $string);
-        }
-        return strip_tags($string);
+        $string=str_replace('-oth-','',$string);
+        return FlattenText($string,true,'UTF-8',false);
     }
 
     /**
@@ -1404,13 +1399,13 @@ class DocWriter extends Writer
         //header("Content-type: application/vnd.ms-word");
         $this->output .= '<style>
         table {
-            border-collapse:collapse;
+        border-collapse:collapse;
         }
         td, th {
-            border:solid black 1.0pt;
+        border:solid black 1.0pt;
         }
         th {
-            background: #c0c0c0;
+        background: #c0c0c0;
         }
         </style>';
     }
@@ -1488,8 +1483,8 @@ class ExcelWriter extends Writer
     */
     public function __construct($filename = null)
     {
-    	$CI=& get_instance();
-    	$CI->load->library('admin/pear/Spreadsheet/Excel/Xlswriter');
+        $CI=& get_instance();
+        $CI->load->library('admin/pear/Spreadsheet/Excel/Xlswriter');
         if (!empty($filename))
         {
             $this->workbook = $CI->xlswriter;

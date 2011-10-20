@@ -2389,81 +2389,79 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     //$pquery = "SELECT anonymized, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
     $CI->load->model('surveys_model');
-    $fieldtoselect = array('anonymized', 'datestamp', 'ipaddr', 'refurl');
+    $fieldtoselect = array('anonymized', 'datestamp', 'ipaddr', 'refurl','language');
     $conditiontoselect = array('sid' => $surveyid); //"WHERE sid=$surveyid";
-    $presult=$CI->surveys_model->getSomeRecords($fieldtoselect,$conditiontoselect); //Checked)
-    foreach ($presult->result_array() as $prow)
+    $oResult=$CI->surveys_model->getSomeRecords($fieldtoselect,$conditiontoselect); //Checked)
+    $prow=$oResult->row_array();
+    if ($prow['anonymized'] == "N")
     {
-        if ($prow['anonymized'] == "N")
+        $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
+        if ($style == "full")
         {
-            $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["token"]['title']="";
-                $fieldmap["token"]['question']=$clang->gT("Token");
-                $fieldmap["token"]['group_name']="";
-            }
+            $fieldmap["token"]['title']="";
+            $fieldmap["token"]['question']=$clang->gT("Token");
+            $fieldmap["token"]['group_name']="";
         }
-        if ($prow['datestamp'] == "Y")
+    }
+    if ($prow['datestamp'] == "Y")
+    {
+        $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
+        'type'=>"datestamp",
+        'sid'=>$surveyid,
+        "gid"=>"",
+        "qid"=>"",
+        "aid"=>"");
+        if ($style == "full")
         {
-            $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
-            'type'=>"datestamp",
-            'sid'=>$surveyid,
-            "gid"=>"",
-            "qid"=>"",
-            "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["datestamp"]['title']="";
-                $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
-                $fieldmap["datestamp"]['group_name']="";
-            }
-            $fieldmap["startdate"]=array("fieldname"=>"startdate",
-            'type'=>"startdate",
-            'sid'=>$surveyid,
-            "gid"=>"",
-            "qid"=>"",
-            "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["startdate"]['title']="";
-                $fieldmap["startdate"]['question']=$clang->gT("Date started");
-                $fieldmap["startdate"]['group_name']="";
-            }
+            $fieldmap["datestamp"]['title']="";
+            $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
+            $fieldmap["datestamp"]['group_name']="";
+        }
+        $fieldmap["startdate"]=array("fieldname"=>"startdate",
+        'type'=>"startdate",
+        'sid'=>$surveyid,
+        "gid"=>"",
+        "qid"=>"",
+        "aid"=>"");
+        if ($style == "full")
+        {
+            $fieldmap["startdate"]['title']="";
+            $fieldmap["startdate"]['question']=$clang->gT("Date started");
+            $fieldmap["startdate"]['group_name']="";
+        }
 
-        }
-        if ($prow['ipaddr'] == "Y")
+    }
+    if ($prow['ipaddr'] == "Y")
+    {
+        $fieldmap["ipaddr"]=array("fieldname"=>"ipaddr",
+        'type'=>"ipaddress",
+        'sid'=>$surveyid,
+        "gid"=>"",
+        "qid"=>"",
+        "aid"=>"");
+        if ($style == "full")
         {
-            $fieldmap["ipaddr"]=array("fieldname"=>"ipaddr",
-            'type'=>"ipaddress",
-            'sid'=>$surveyid,
-            "gid"=>"",
-            "qid"=>"",
-            "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["ipaddr"]['title']="";
-                $fieldmap["ipaddr"]['question']=$clang->gT("IP address");
-                $fieldmap["ipaddr"]['group_name']="";
-            }
+            $fieldmap["ipaddr"]['title']="";
+            $fieldmap["ipaddr"]['question']=$clang->gT("IP address");
+            $fieldmap["ipaddr"]['group_name']="";
         }
-        // Add 'refurl' to fieldmap.
-        if ($prow['refurl'] == "Y")
+    }
+    // Add 'refurl' to fieldmap.
+    if ($prow['refurl'] == "Y")
+    {
+        $fieldmap["refurl"]=array("fieldname"=>"refurl", 'type'=>"url", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+        if ($style == "full")
         {
-            $fieldmap["refurl"]=array("fieldname"=>"refurl", 'type'=>"url", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["refurl"]['title']="";
-                $fieldmap["refurl"]['question']=$clang->gT("Referrer URL");
-                $fieldmap["refurl"]['group_name']="";
-            }
+            $fieldmap["refurl"]['title']="";
+            $fieldmap["refurl"]['question']=$clang->gT("Referrer URL");
+            $fieldmap["refurl"]['group_name']="";
         }
     }
 
     //Get list of questions
     if (is_null($sQuestionLanguage))
     {
-        $s_lang = GetBaseLanguageFromSurveyID($surveyid);
+        $s_lang = $prow['language'];
     }
     else
     {
@@ -2471,23 +2469,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
     $qtypes=getqtypelist('','array');
 
-    /**
-    $aquery = "SELECT *, "
-    ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
-    ." WHERE questions.qid = c.qid) AS hasconditions,\n"
-    ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
-    ." WHERE questions.qid = c.cqid) AS usedinconditions\n"
-    ." FROM ".db_table_name('questions')." as questions, ".db_table_name('groups')." as groups"
-    ." WHERE questions.gid=groups.gid AND "
-    ." questions.sid=$surveyid AND "
-    ." questions.language='{$s_lang}' AND "
-    ." questions.parent_qid=0 AND "
-    ." groups.language='{$s_lang}' ";
-    if ($questionid!==false)
-    {
-    $aquery.=" and questions.qid={$questionid} ";
-    }
-    $aquery.=" ORDER BY group_order, question_order"; */
     $CI->load->model('conditions_model');
     $CI->load->model('defaultvalues_model');
     $aresult = $CI->conditions_model->getConditions($surveyid,$questionid,$s_lang) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />".$CI->db->last_query()."<br />"); //Checked
@@ -4535,7 +4516,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 *
 * @return string  Cleaned text
 */
-function FlattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=false, $sCharset='UTF-8')
+function FlattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
 {
     $sNicetext = strip_javascript($sTextToFlatten);
     // When stripping tags, add a space before closing tags so that strings with embedded HTML tables don't get concatenated
@@ -4547,11 +4528,16 @@ function FlattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
     else {
         $sNicetext = strip_tags($sNicetext);
     }
-    $sNicetext = str_replace(array("\n","\r"),array(' ',' '), $sNicetext);
-    $sNicetext = preg_replace('/\s{2,}/',' ', $sNicetext);
+    if ($bStripNewLines ){  // strip new lines
+        $sNicetext = preg_replace(array('~\R~','/\s{2,}/'),array(' ',' '), $sNicetext);
+    }
+    else // unify newlines to \r\n
+    {
+        $sNicetext = preg_replace(array('~\R~'), array("\r\n"), $sNicetext);
+    }
     if ($bDecodeHTMLEntities==true)
     {
-        $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not properly convert &nbsp; to spaces
+        $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not convert &nbsp; to spaces
         $sNicetext = html_entity_decode($sNicetext, ENT_QUOTES, $sCharset);
     }
     $sNicetext = trim($sNicetext);
