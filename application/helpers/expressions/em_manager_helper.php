@@ -35,6 +35,9 @@ class LimeExpressionManager {
     private $currentGroupSeq;
     private $maxGroupSeq;  // the maximum groupSeq reached -  this is needed for Index
     private $navigationIndex=false; // whether to build an index showing groups that have relevant questions // TODO - color code whether any visible questions are unanswered?
+    private $slang='en';
+    private $q2subqInfo;
+    private $qattr;
 
     private $runtimeTimings;
 
@@ -279,6 +282,500 @@ class LimeExpressionManager {
         return $LEM->ConvertConditionsToRelevance($surveyId, $qid);
     }
 
+    public function _CreateSubQLevelRelevanceAndValidationEqns()
+    {
+        $now = microtime(true);
+
+        $subQrels = array();    // array of sub-question-level relevance equations
+        $validationEqn = array();
+
+//        log_message('debug',print_r($this->q2subqInfo,true));
+//        log_message('debug',print_r($this->qattr,true));
+
+        foreach ($this->q2subqInfo as $qinfo)
+        {
+            $questionNum = $qinfo['qid'];
+            $type = $qinfo['type'];
+            $hasSubqs = (isset($qinfo['subqs']) && count($qinfo['subqs'] > 0));
+            $qattr = isset($this->qattr[$questionNum]) ? $this->qattr[$questionNum] : array();
+
+            // array_filter
+            // If want to filter question Q2 on Q1, where each have subquestions SQ1-SQ3, this is equivalent to relevance equations of:
+            // relevance for Q2_SQ1 is Q1_SQ1!=''
+            if (isset($qattr['array_filter']) && trim($qattr['array_filter']) != '')
+            {
+                $array_filter = $qattr['array_filter'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case '1':   //Array (Flexible Labels) dual scale
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                            case ';': //ARRAY (Multi Flexi) Text
+                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case 'F': //ARRAY (Flexible) - Row Format
+                            case 'M': //Multiple choice checkbox
+                            case 'P': //Multiple choice with comments checkbox + text
+                                $sq_name = $array_filter . $sq['vsuffix'];
+                                break;
+                            case 'L': //LIST drop-down/radio-button list
+                                // TODO - this does not have sub-questions.  How should it be supported?
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $subQrels[] = array(
+                                'type' => 'array_filter',
+                                'rowdivid' => $sq['rowdivid'],
+                                'eqn' => '(' . $sq_name . ' != "")'
+                            );
+                        }
+                    }
+                }
+            }
+
+            // array_filter_exclude
+            // If want to filter question Q2 on Q1, where each have subquestions SQ1-SQ3, this is equivalent to relevance equations of:
+            // relevance for Q2_SQ1 is Q1_SQ1==''
+            if (isset($qattr['array_filter_exclude']) && trim($qattr['array_filter_exclude']) != '')
+            {
+                $array_filter_exclude = $qattr['array_filter_exclude'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case '1':   //Array (Flexible Labels) dual scale
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                            case ';': //ARRAY (Multi Flexi) Text
+                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case 'F': //ARRAY (Flexible) - Row Format
+                            case 'M': //Multiple choice checkbox
+                            case 'P': //Multiple choice with comments checkbox + text
+                                $sq_name = $array_filter_exclude . $sq['vsuffix'];
+                                break;
+                            case 'L': //LIST drop-down/radio-button list
+                                // TODO - this does not have sub-questions.  How should it be supported?
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $subQrels[] = array(
+                                'type' => 'array_filter_exclude',
+                                'rowdivid' => $sq['rowdivid'],
+                                'eqn' => '(' . $sq_name . ' == "")'
+                            );
+                        }
+                    }
+                }
+            }
+
+            // code_filter
+            // TMSW Conditions->Relevance:  How is this supposed to work?
+
+            // equals_num_value
+            // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
+            if (isset($qattr['equals_num_value']) && trim($qattr['equals_num_value']) != '')
+            {
+                $equals_num_value = $qattr['equals_num_value'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'type' => 'equals_num_value',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $equals_num_value . '))'
+                            );
+                    }
+                }
+            }
+
+            // exclude_all_others
+            // TODO
+
+            // exclude_all_others_auto
+            //  TODO
+
+            // max_answers
+            // Validation:= count(sq1,...,sqN) <= value (which could be an expression).
+            if (isset($qattr['max_answers']) && trim($qattr['max_answers']) != '')
+            {
+                $max_answers = $qattr['max_answers'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'M': //Multiple choice checkbox
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            case 'P': //Multiple choice with comments checkbox + text
+                                if (!preg_match('/comment$/',$sq['varName'])) {
+                                    $sq_name = $sq['varName'] . '.NAOK';
+                                }
+                                break;
+                            case 'R': //RANKING STYLE
+                                // TODO - does not have sub-questions, so how should this be done?
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'type' => 'max_answers',
+                            'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))'
+                        );
+                    }
+                }
+            }
+
+            // max_num_value
+            // Validation:= sum(sq1,...,sqN) <= value (which could be an expression).
+            if (isset($qattr['max_num_value']) && trim($qattr['max_num_value']) != '')
+            {
+                $max_num_value = $qattr['max_num_value'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'type' => 'max_num_value',
+                            'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . '))'
+                        );
+                    }
+                }
+            }
+
+            // max_num_value_n
+            // TODO - note, has no subqs
+
+            // max_num_value_sgqa
+            // Validation:= sum(sq1,...,sqN) <= value (which could be an expression).
+            if (isset($qattr['max_num_value_sgqa']) && trim($qattr['max_num_value_sgqa']) != '')
+            {
+                $max_num_value_sgqa = $qattr['max_num_value_sgqa'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'type' => 'max_num_value_sgqa',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value_sgqa . '))'
+                        );
+                    }
+                }
+            }
+
+            // min_answers
+            // Validation:= count(sq1,...,sqN) >= value (which could be an expression).
+            if (isset($qattr['min_answers']) && trim($qattr['min_answers']) != '')
+            {
+                $min_answers = $qattr['min_answers'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'M': //Multiple choice checkbox
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            case 'P': //Multiple choice with comments checkbox + text
+                                if (!preg_match('/comment$/',$sq['varName'])) {
+                                    $sq_name = $sq['varName'] . '.NAOK';
+                                }
+                                break;
+                            case 'R': //RANKING STYLE
+                                // TODO - does not have sub-questions, so how should this be done?
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'type' => 'min_answers',
+                            'eqn' => '(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . '))'
+                        );
+                    }
+                }
+            }
+
+            // min_num_value
+            // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
+            if (isset($qattr['min_num_value']) && trim($qattr['min_num_value']) != '')
+            {
+                $min_num_value = $qattr['min_num_value'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'type' => 'min_num_value',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . '))'
+                        );
+                    }
+                }
+            }
+
+            // min_num_value_n
+            // TODO - note has no subqs
+
+            // min_num_value_sgqa
+            // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
+            if (isset($qattr['min_num_value_sgqa']) && trim($qattr['min_num_value_sgqa']) != '')
+            {
+                $min_num_value_sgqa = $qattr['min_num_value_sgqa'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'type' => 'min_num_value_sgqa',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value_sgqa . '))'
+                        );
+                    }
+                }
+            }
+
+            // multiflexible_max
+            // Validation:= sum(sq1,...,sqN) <= value (which could be an expression).
+            if (isset($qattr['multiflexible_max']) && trim($qattr['multiflexible_max']) != '')
+            {
+                $multiflexible_max = $qattr['multiflexible_max'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'type' => 'multiflexible_max',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') <= (' . $multiflexible_max . '))'
+                        );
+                    }
+                }
+            }
+
+            // multiflexible_min
+            // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
+            if (isset($qattr['multiflexible_min']) && trim($qattr['multiflexible_min']) != '')
+            {
+                $multiflexible_min = $qattr['multiflexible_min'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'type' => 'multiflexible_min',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $multiflexible_min . '))'
+                        );
+                    }
+                }
+            }
+
+            // num_value_equals_sgqa
+            // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
+            if (isset($qattr['num_value_equals_sgqa']) && trim($qattr['num_value_equals_sgqa']) != '')
+            {
+                $num_value_equals_sgqa = $qattr['num_value_equals_sgqa'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                                $sq_name = $sq['varName'] . '.NAOK';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'type' => 'num_value_equals_sgqa',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $num_value_equals_sgqa . '))'
+                        );
+                    }
+                }
+            }
+
+            // show_totals
+            // TODO - create equations for these?
+
+            // assessment_value
+            // TODO?  How does it work?
+        }
+
+//        log_message('debug','==SUBQUESTION RELEVANCE==' . print_r($subQrels,true));
+//        log_message('debug','==VALIDATION EQUATIONS==' . print_r($validationEqn,true));
+
+        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+    }
+
     /**
      * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
      * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
@@ -292,6 +789,10 @@ class LimeExpressionManager {
     {
         $now = microtime(true);
         $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
+
+        $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));
+        $now = microtime(true);
+
         if (!isset($fieldmap)) {
             return false; // implies an error occurred
         }
@@ -334,9 +835,20 @@ class LimeExpressionManager {
 
         $CI->load->model('question_attributes_model');
         $qattr = $CI->question_attributes_model->getEMRelatedRecordsForSurvey($surveyid);   // what happens if $surveyid is null?
+        $this->qattr = $qattr;
+
+//        log_message('debug', print_r($qattr, true));
+
+        $this->runtimeTimings[] = array(__METHOD__ . ' - question_attributes_model->getEMRelatedRecordsForSurvey',(microtime(true) - $now));
+        $now = microtime(true);
 
         $CI->load->model('answers_model');
         $qans = $CI->answers_model->getAllAnswersForEM($surveyid);
+
+        $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAllAnswersForEM',(microtime(true) - $now));
+        $now = microtime(true);
+
+        $q2subqInfo = array();
 
         foreach($fieldmap as $fielddata)
         {
@@ -394,6 +906,8 @@ class LimeExpressionManager {
             $readWrite = 'N';
 
             $codeValue = (isset($_SESSION[$code])) ? $_SESSION[$code] : '';
+
+            // Set $displayValue and $ansArray
             $displayValue = ''; // default to blank or $clang->gT("No Answer")?
             switch($type)
             {
@@ -440,6 +954,8 @@ class LimeExpressionManager {
                     break;
             }
 
+            // Set $varName (question code / questions.title), $rowdivid, $csuffix, $vsuffix, and $question
+            $rowdivid=NULL;   // so that blank for types not needing it.
             switch($type)
             {
                 case '!': //List - dropdown
@@ -457,33 +973,53 @@ class LimeExpressionManager {
                 case 'Y': //YES/NO radio-buttons
                 case '|': //File Upload
                 case '*': //Equation
+                    $csuffix = '';
+                    $vsuffix = '';
                     $varName = $fielddata['title'];
                     $question = $fielddata['question'];
                     break;
                 case '1': //Array (Flexible Labels) dual scale
-                    $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];
+                    $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
+                    $vsuffix = '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];
+                    $varName = $fielddata['title'] . $vsuffix;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
+                    $rowdivid = substr($code,0,-2);
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                 case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                 case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
                 case 'F': //ARRAY (Flexible) - Row Format
-                case 'H': //ARRAY (Flexible) - Column Format
-                case 'K': //MULTIPLE NUMERICAL QUESTION
+                case 'H': //ARRAY (Flexible) - Column Format    // note does not have javatbd equivalent - so array filters don't work on it
+                case 'K': //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
-                case 'Q': //MULTIPLE SHORT TEXT
-                case 'R': //RANKING STYLE
-                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
+                case 'Q': //MULTIPLE SHORT TEXT                 // note does not have javatbd equivalent - so array filters don't work on it
+                case 'R': //RANKING STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
+                    $csuffix = $fielddata['aid'];
+                    $vsuffix = '_' . $fielddata['aid'];
+                    $varName = $fielddata['title'] . $vsuffix;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
+                    if ($type != 'H' && $type != 'K' && $type != 'Q' && $type != 'R') {
+                        if ($type == 'P' && preg_match("/comment$/", $code)) {
+                            $rowdivid = 'javatbd' . substr($code,0,-7);
+                        }
+                        else {
+                            $rowdivid = 'javatbd' . $code;
+                        }
+                    }
                     break;
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
-                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
+                    $csuffix = $fielddata['aid'];
+                    $vsuffix = '_' . $fielddata['aid'];
+                    $varName = $fielddata['title'] . $vsuffix;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
+                    $rowdivid = 'javatbd' . substr($code,0,strpos($code,'_'));
                     break;
             }
+
+            // Set $jsVarName (e.g. javaSGQA vs. answerSGQA) - depends upon whether $isOncurrentPage
             switch($type)
             {
                 case 'R': //RANKING STYLE
@@ -557,6 +1093,28 @@ class LimeExpressionManager {
                     }
                     break;
             }
+            if (!is_null($rowdivid)) {
+                if (!isset($q2subqInfo[$questionNum])) {
+                    $q2subqInfo[$questionNum] = array(
+                        'qid' => $questionNum,
+                        'gid' => $groupNum,
+                        'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
+                        'varName' => $varName,
+                        'type' => $type,
+                        'fieldname' => $code
+                        );
+                }
+                if (!isset($q2subqInfo[$questionNum]['subqs'])) {
+                    $q2subqInfo[$questionNum]['subqs'] = array();
+                }
+                $q2subqInfo[$questionNum]['subqs'][] = array(
+                    'rowdivid' => $rowdivid,
+                    'varName' => $varName,
+                    'jsVarName' => $jsVarName,
+                    'csuffix' => $csuffix,
+                    'vsuffix' => $vsuffix,
+                    );
+            }
 
             // Set mappings of variable names to needed attributes
             $varInfo_Code = array(
@@ -575,7 +1133,11 @@ class LimeExpressionManager {
                 'groupSeq'=>$groupSeq,
                 'type'=>$type,
                 'sgqa'=>$code,
+                'rowdivid'=>$rowdivid,
                 );
+
+//            log_message('debug','$varInfoCode:=' . print_r($varInfo_Code,true));
+//            log_message('debug','$fielddata:=' . print_r($fielddata,true));
 
             $this->questionSeq2relevance[$questionSeq] = array(
                 'relevance'=>$relevance,
@@ -639,6 +1201,9 @@ class LimeExpressionManager {
                     );
             }
         }
+
+//        log_message('debug',print_r($q2subqInfo,true));
+        $this->q2subqInfo = $q2subqInfo;
 
         // Now set tokens
         if (isset($_SESSION['token']) && $_SESSION['token'] != '')
@@ -705,7 +1270,7 @@ class LimeExpressionManager {
             }
         }
 
-        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+        $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
         if ($this->debugLEM)
         {
             $debugLog_html = "<table border='1'>";
@@ -728,6 +1293,9 @@ class LimeExpressionManager {
             $debugLog_html .= "</table>";
             $this->surveyLogicFile = $debugLog_html;
         }
+
+        $this->_CreateSubQLevelRelevanceAndValidationEqns();
+        
         return true;
     }
 
@@ -975,6 +1543,8 @@ class LimeExpressionManager {
         $LEM->pageTailoringLog='';
         $LEM->surveyLogicFile='';
         $LEM->navigationIndex=$navigationIndex;
+        $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
+        $LEM->q2subqInfo=array();
 
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
