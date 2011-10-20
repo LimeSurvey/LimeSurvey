@@ -4344,7 +4344,7 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
 *
 * @param string $body Body text of the email in plain text or HTML
 * @param mixed $subject Email subject
-* @param mixed $to
+* @param mixed $to Array with several email addresses or single string with one email address
 * @param mixed $from
 * @param mixed $sitename
 * @param mixed $ishtml
@@ -4368,6 +4368,11 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     $emailsmtpssl = $CI->config->item("emailsmtpssl");
     $defaultlang = $CI->config->item("defaultlang");
     $emailcharset = $CI->config->item("charset");
+
+    if (!is_array($to)){
+        $to=array($to);
+    }
+
 
 
     if (!is_array($customheaders) && $customheaders == '')
@@ -4455,8 +4460,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     $mail->SetFrom($fromemail, $fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
-    $toemails = explode(";", $to);
-    foreach ($toemails as $singletoemail)
+    foreach ($to as $singletoemail)
     {
         if (strpos($singletoemail, '<') )
         {
