@@ -19,31 +19,13 @@
  * @param $string
  * @return $string
  */
-function strip_tags_full($string, $is_csv=false ) {
+function strip_tags_full($string) {
     $string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
     //combining these into one mb_ereg_replace call ought to speed things up
     //$string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
     //The backslashes must be escaped twice, once for php, and again for the regexp
     //$string = str_replace("'|\\\\'", "&apos;", $string);
-    if($is_csv==true)	
-     return FlattenText($string,true);
-    else
-	return FlattenText($string);	
-}
-
-/**
- * Strips html tags
- *
- * @param $string
- * @return $string
- */
-function strip_tags_full_save_newline($string) {
-    $string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
-    //combining these into one mb_ereg_replace call ought to speed things up
-    //$string = str_replace(array("\r\n","\r","\n",'-oth-'), '', $string);
-    //The backslashes must be escaped twice, once for php, and again for the regexp
-    //$string = str_replace("'|\\\\'", "&apos;", $string);
-    return FlattenTextWithNewline($string);
+    return FlattenText($string);
 }
 
 /**
@@ -64,7 +46,7 @@ function my_is_numeric($value)  {
     return ($eng_or_world);
 }
 
-function spss_export_data ($na = null, $is_csv = false) {
+function spss_export_data ($na = null) {
     global $length_data;
 
     // Build array that has to be returned
@@ -156,19 +138,9 @@ function spss_export_data ($na = null, $is_csv = false) {
                     echo("'0'");
                 }
             } elseif (!$field['hide']) {
-                if($is_csv == true) {
-					$strTmp=mb_substr(strip_tags_full($row[$fieldno],true), 0, $length_data);
-				}
-		    else {
-					$strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
-				}
+                $strTmp=mb_substr(strip_tags_full($row[$fieldno]), 0, $length_data);
                 if (trim($strTmp) != ''){
-                    if($is_csv == true) {
-						$strTemp=str_replace(array("'"),array("''"),trim($strTmp));
-					}
-					else {
-						$strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
-					}
+                    $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
                     /*
                      * Temp quick fix for replacing decimal dots with comma's
                      if (my_is_numeric($strTemp)) {

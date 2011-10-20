@@ -4389,31 +4389,26 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
 *
 * @return string  Cleaned text
 */
-function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8',$is_csv=false)
+function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF-8', $bStripNewLines=true)
 {
     $sNicetext = strip_javascript($sTextToFlatten);
     $sNicetext = strip_tags($sNicetext);
-    if($is_csv==true)
-    {
-        $sNicetext = str_replace(array("\r\n","\r","\n"),array(PHP_EOL,PHP_EOL,PHP_EOL), $sNicetext);
+
+    if ($bStripNewLines ){
+        $sNicetext = preg_replace('~\R~', '', $sNicetext);
     }
-    elseif ($sCharset=='UTF-8')
+    else // unify newlines
     {
-        $sNicetext = preg_replace('/[\x0a\x0b\x0c\x0d\x85\x{2028}\x{2029}]/u', ' ', $sNicetext);
-        $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
-    }
-    else
-    {
-        $sNicetext = str_replace(array("\n","\r"),array('',''), $sNicetext);
+        $sNicetext = preg_replace('~\R~', "\r\n", $sNicetext);
     }
     if ($bDecodeHTMLEntities==true)
     {
-        $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not properly convert &nbsp; to spaces
+        $sNicetext = str_replace('&nbsp;',' ', $sNicetext); // html_entity_decode does not convert &nbsp; to spaces
         $sNicetext = html_entity_decode($sNicetext, ENT_QUOTES, $sCharset);
     }
-    $sNicetext = trim($sNicetext);
-    return  $sNicetext;
+    return trim($sNicetext); ;
 }
+
 
 /**
 * getArrayFiltersForGroup() queries the database and produces a list of array_filter questions and targets with in the same group
