@@ -4216,7 +4216,7 @@ function ReplaceFields ($text,$fieldsarray, $bReplaceInsertans=false)
 * @param mixed $mail This is an PHPMailer object. If null, one will be created automatically and unset afterwards. If supplied it won't be unset.
 * @param string $body Body text of the email in plain text or HTML
 * @param mixed $subject Email subject
-* @param mixed $to
+* @param mixed $to Array with several email addresses or single string with one email address
 * @param mixed $from
 * @param mixed $sitename
 * @param mixed $ishtml
@@ -4229,7 +4229,9 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
 
     global $emailmethod, $emailsmtphost, $emailsmtpuser, $emailsmtppassword, $defaultlang, $emailsmtpdebug;
     global $rootdir, $maildebug, $maildebugbody, $emailsmtpssl, $clang, $demoModeOnly, $emailcharset;
-
+    if (!is_array($to)){
+        $to=array($to);
+    }
     if (!is_array($customheaders) && $customheaders == '')
     {
         $customheaders=array();
@@ -4322,8 +4324,7 @@ function SendEmailMessage($mail, $body, $subject, $to, $from, $sitename, $ishtml
 
     $mail->SetFrom($fromemail, $fromname);
     $mail->Sender = $senderemail; // Sets Return-Path for error notifications
-    $toemails = explode(";", $to);
-    foreach ($toemails as $singletoemail)
+    foreach ($to as $singletoemail)
     {
         if (strpos($singletoemail, '<') )
         {
