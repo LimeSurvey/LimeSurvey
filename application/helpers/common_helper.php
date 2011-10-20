@@ -2385,6 +2385,10 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $fieldmap["startlanguage"]['group_name']="";
     }
 
+    // Select which question IDs have default values
+    $CI->load->model('defaultvalues_model');
+    $oQuery=$CI->defaultvalues_model->getSurveyDefaultValues(array('defaultvalues.qid'),$surveyid);
+    $aDefaultValues=$oQuery->result_array();
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     //$pquery = "SELECT anonymized, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
@@ -2470,7 +2474,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $qtypes=getqtypelist('','array');
 
     $CI->load->model('conditions_model');
-    $CI->load->model('defaultvalues_model');
     $aresult = $CI->conditions_model->getConditions($surveyid,$questionid,$s_lang) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />".$CI->db->last_query()."<br />"); //Checked
 
     $questionSeq=-1; // this is incremental question sequence across all groups
@@ -2520,7 +2523,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                 $fieldtoselect = array('defaultvalue');
 
-                if ($qtypes[$arow['type']]['hasdefaultvalues'])
+                if ($qtypes[$arow['type']]['hasdefaultvalues'] && in_array($arow['qid'],$aDefaultValues))
                 {
                     if ($arow['same_default'])
                     {
@@ -2579,31 +2582,35 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                             $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                             $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
-                            if ($arow['same_default'])
+                            if (in_array($arow['qid'],$aDefaultValues))
                             {
-                                //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-                                $conditiontoselect = array(
-                                'qid' => $arow['qid'],
-                                'scale_id' => 0,
-                                'language' => GetBaseLanguageFromSurveyID($surveyid)
-                                );
-                                $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
-                                $data  = $data->row_array();
-                                if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
-                                $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
-                            }
-                            else
-                            {
-                                //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
-                                $conditiontoselect = array(
-                                'qid' => $arow['qid'],
-                                'scale_id' => 0,
-                                'language' => $clang->langcode
-                                );
-                                $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
-                                $data  = $data->row_array();
-                                if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
-                                $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                                if ($arow['same_default'])
+                                {
+                                    //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+                                    $conditiontoselect = array(
+                                    'qid' => $arow['qid'],
+                                    'scale_id' => 0,
+                                    'language' => GetBaseLanguageFromSurveyID($surveyid)
+                                    );
+                                    $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
+                                    $data  = $data->row_array();
+                                    if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
+                                    $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
+                                }
+                                else
+                                {
+                                    //$conditiontoselect = "WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
+                                    $conditiontoselect = array(
+                                    'qid' => $arow['qid'],
+                                    'scale_id' => 0,
+                                    'language' => $clang->langcode
+                                    );
+                                    $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
+                                    $data  = $data->row_array();
+                                    if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
+                                    $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                                }
+
                             }
                         }
                     }
@@ -2814,26 +2821,30 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
-                    if ($arow['same_default'])
+                    if (in_array($arow['qid'],$aDefaultValues))
                     {
-                        $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-                        $CI->load->model("defaultvalues_model");
-                        $data = $CI->defaultvalues_model->getSomeRecords(array("defaultvalue"),$conditiontoselect);
-                        $data  = $data->row_array();
-                        if(isset($data['defaultvalue']))
-                            $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
-                        //$fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
-                    }
-                    else
-                    {
-                        $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
-                        $CI->load->model("defaultvalues_model");
-                        $data = $CI->defaultvalues_model->getSomeRecords(array("defaultvalue"),$conditiontoselect);
-                        $data  = $data->row_array();
-                        if(isset($data['defaultvalue']))
-                            $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
 
-                        //$fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                        if ($arow['same_default'])
+                        {
+                            $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
+                            $CI->load->model("defaultvalues_model");
+                            $data = $CI->defaultvalues_model->getSomeRecords(array("defaultvalue"),$conditiontoselect);
+                            $data  = $data->row_array();
+                            if(isset($data['defaultvalue']))
+                                $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
+                            //$fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
+                        }
+                        else
+                        {
+                            $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
+                            $CI->load->model("defaultvalues_model");
+                            $data = $CI->defaultvalues_model->getSomeRecords(array("defaultvalue"),$conditiontoselect);
+                            $data  = $data->row_array();
+                            if(isset($data['defaultvalue']))
+                                $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
+
+                            //$fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                        }
                     }
                 }
                 if ($arow['type'] == "P")

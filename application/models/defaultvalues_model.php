@@ -30,6 +30,20 @@ class Defaultvalues_model extends CI_Model {
 		return $data;
 	}
 
+    function getSurveyDefaultValues($fields,$sid)
+    {
+        foreach ($fields as $field)
+        {
+            $this->db->select($field);
+        }
+        $this->db->join('questions', 'questions.qid = defaultvalues.qid');
+        $this->db->where(array('sid'=>$sid));
+
+        $data = $this->db->get('defaultvalues');
+
+        return $data;
+    }
+
     function insertRecords($data)
     {
 
