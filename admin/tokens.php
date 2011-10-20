@@ -1557,7 +1557,11 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
             while ($emrow = $emresult->FetchRow())
             {
                 unset($fieldsarray);
-                $to = $emrow['firstname']." ".$emrow['lastname']." <".$emrow['email'].">";
+                $aEmailaddresses=explode(';',$emrow['email']);
+                foreach($aEmailaddresses as $sEmailaddress)
+                {
+                    $to[]=$emrow['firstname']." ".$emrow['lastname']." <{$sEmailaddress}>";
+                }
                 $fieldsarray["{EMAIL}"]=$emrow['email'];
                 $fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
                 $fieldsarray["{LASTNAME}"]=$emrow['lastname'];
@@ -1628,7 +1632,7 @@ if ($subaction == "email" && bHasSurveyPermission($surveyid, 'tokens','update'))
                     ."SET sent='$today' WHERE tid={$emrow['tid']}";
                     //
                     $uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
-                    $tokenoutput .= $clang->gT("Invitation sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)<br />\n";
+                    $tokenoutput .= $clang->gT("Invitation sent to:")." {$emrow['firstname']} {$emrow['lastname']} (".htmlspecialchars(implode(',',$to)).")<br />\n";
                     if ($emailsmtpdebug==2)
                     {
                         $tokenoutput .=$maildebug;
@@ -1885,7 +1889,11 @@ if ($subaction == "remind" && bHasSurveyPermission($surveyid, 'tokens','update')
             while ($emrow = $emresult->FetchRow())
             {
                 unset($fieldsarray);
-                $to = $emrow['firstname']." ".$emrow['lastname']." <".$emrow['email'].">";
+                $aEmailaddresses=explode(';',$emrow['email']);
+                foreach($aEmailaddresses as $sEmailaddress)
+                {
+                    $to[]=$emrow['firstname']." ".$emrow['lastname']." <{$sEmailaddress}>";
+                }
                 $fieldsarray["{EMAIL}"]=$emrow['email'];
                 $fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
                 $fieldsarray["{LASTNAME}"]=$emrow['lastname'];
