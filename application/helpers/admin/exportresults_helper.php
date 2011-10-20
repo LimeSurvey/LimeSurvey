@@ -1308,7 +1308,7 @@ abstract class Writer implements IWriter
     protected function strip_tags_full($string)
     {
         $string=str_replace('-oth-','',$string);
-        return FlattenText($string,true,'UTF-8',false);
+        return FlattenText($string,false,true,'UTF-8',false);
     }
 
     /**
