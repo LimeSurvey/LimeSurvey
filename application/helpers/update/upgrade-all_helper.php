@@ -104,6 +104,43 @@ function db_upgrade_all($oldversion) {
         $sql = "CREATE INDEX question_attributes_idx3 ON ".$CI->db->dbprefix('question_attributes')."(attribute)";
         $CI->db->query($sql);
     }
+    if ($oldversion < 153)
+    {
+        $CI->dbforge->add_field('id');
+        $fields = array(
+            'errortime' => array(
+                             'type' => 'VARCHAR',
+                             'constraint' => '50',
+                        ),
+            'sid' => array(
+                             'type' => 'INT',
+                          ),
+            'gid' => array(
+                             'type' => 'INT',
+                          ),
+            'qid' => array(
+                             'type' => 'INT',
+                          ),
+            'gseq' => array(
+                             'type' => 'INT',
+                          ),
+            'qseq' => array(
+                             'type' => 'INT',
+                          ),
+            'type' => array(
+                             'type' => 'VARCHAR',
+                             'constraint' => '50',
+                              ),
+            'eqn' => array(
+                            'type' => 'TEXT'
+                              ),
+            'prettyprint' => array(
+                            'type' => 'TEXT'
+                              ),
+        );
+        $CI->dbforge->add_field($fields);
+        $CI->dbforge->create_table('expression_errors',TRUE);
+    }
 }
 
 function upgrade_question_attributes148()

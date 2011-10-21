@@ -66,6 +66,24 @@ CREATE TABLE prefix_defaultvalues (
     CONSTRAINT prefix_defaultvalues_pkey PRIMARY KEY (qid , scale_id, language, specialtype, sqid)      
 );
 
+--
+-- Table structure for table expression_errors
+--
+
+CREATE TABLE prefix_expression_errors (
+  id integer NOT NULL AUTO_INCREMENT,
+  errortime varchar(50) DEFAULT NULL,
+  sid integer DEFAULT NULL,
+  gid integer DEFAULT NULL,
+  qid integer DEFAULT NULL,
+  gseq integer DEFAULT NULL,
+  qseq integer DEFAULT NULL,
+  "type" character varying(50) ,
+  eqn text,
+  prettyprint text,
+  CONSTRAINT prefix_expression_errors_pkey PRIMARY KEY (id)
+);
+
 
 -- 
 -- Table structure for table groups
@@ -529,6 +547,6 @@ create index parent_qid_idx on prefix_questions (parent_qid);
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '152');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '153');
 INSERT INTO prefix_settings_global VALUES ('SessionName', '$sessionname');
 

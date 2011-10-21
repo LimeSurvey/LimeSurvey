@@ -63,6 +63,24 @@ CREATE TABLE [prefix_defaultvalues] (
   [specialtype] varchar(20) NOT NULL default '',
   [defaultvalue] varchar(max),
   CONSTRAINT pk_defaultvalues_qlss PRIMARY KEY ([qid] , [scale_id], [language], [specialtype], [sqid]))
+
+--
+-- Table structure for table expression_errors
+--
+
+CREATE TABLE [prefix_expression_errors] (
+  [id] integer NOT NULL AUTO_INCREMENT,
+  [errortime] varchar(50) DEFAULT NULL,
+  [sid] integer DEFAULT NULL,
+  [gid] integer DEFAULT NULL,
+  [qid] integer DEFAULT NULL,
+  [gseq] integer DEFAULT NULL,
+  [qseq] integer DEFAULT NULL,
+  [type] varchar(50) ,
+  [eqn] varchar(max),
+  [prettyprint] varchar(max),
+  PRIMARY KEY ([id])
+);
                               
                               
 -- 
@@ -547,6 +565,6 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '152');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '153');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 

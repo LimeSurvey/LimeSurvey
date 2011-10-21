@@ -1652,6 +1652,7 @@ class ExpressionManager {
 
         $resolvedParts = array();
         $prettyPrintParts = array();
+        $allErrors=array();
 
         foreach ($stringParts as $stringPart)
         {
@@ -1669,6 +1670,7 @@ class ExpressionManager {
                 {
                     // show original and errors in-line
                     $resolvedPart = $this->GetPrettyPrintString();
+                    $allErrors[] = $this->GetErrors();
                 }
                 $jsVarsUsed = $this->GetJsVarsUsed();
                 $prettyPrintParts[] = $this->GetPrettyPrintString();
@@ -1699,6 +1701,7 @@ class ExpressionManager {
         }
         $result = implode('',$this->flatten_array($resolvedParts));
         $this->prettyPrintSource = implode('',$this->flatten_array($prettyPrintParts));
+        $this->errs = $allErrors;   // so that has all errors from this string
         return $result;    // recurse in case there are nested ones, avoiding infinite loops?
     }
 

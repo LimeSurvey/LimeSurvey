@@ -58,6 +58,23 @@ CREATE TABLE `prefix_defaultvalues` (
   PRIMARY KEY  (`qid` , `scale_id`, `language`, `specialtype`, `sqid` )
 ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
+--
+-- Table structure for table expression_errors
+--
+
+CREATE TABLE `prefix_expression_errors` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `errortime` varchar(50) DEFAULT NULL,
+  `sid` int(11) DEFAULT NULL,
+  `gid` int(11) DEFAULT NULL,
+  `qid` int(11) DEFAULT NULL,
+  `gseq` int(11) DEFAULT NULL,
+  `qseq` int(11) DEFAULT NULL,
+  `type` varchar(50) ,
+  `eqn` text,
+  `prettyprint` text,
+  PRIMARY KEY (`id`)
+) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- 
 -- Table structure for table groups
@@ -518,6 +535,6 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '152');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '153');
 INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
 

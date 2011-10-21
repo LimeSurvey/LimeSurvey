@@ -353,6 +353,65 @@ class survey extends Survey_Common_Controller {
         return $path;
     }
 
+    function showsyntaxerrors($surveyid)
+    {
+        $surveyid=(int)$surveyid;
+        if (is_null($surveyid) || !$surveyid)
+        {
+            die();
+        }
+
+        if(!bHasSurveyPermission($surveyid,'surveysettings','read') && !bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+        {
+            die();
+        }
+
+        self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jquery.json.min.js');
+        self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
+        self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
+        self::_getAdminHeader();
+        self::_showadminmenu($surveyid);;
+        self::_surveybar($surveyid);
+
+        $data['errors'] = LimeExpressionManager::GetSyntaxErrors();
+
+        $this->load->view('admin/survey/showSyntaxErrors_view',$data);
+        self::_loadEndScripts();
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    }
+
+    function resetsyntaxerrorlog($surveyid)
+    {
+        $surveyid=(int)$surveyid;
+        if (is_null($surveyid) || !$surveyid)
+        {
+            die();
+        }
+
+        if(!bHasSurveyPermission($surveyid,'surveysettings','read') && !bHasGlobalPermission('USER_RIGHT_CREATE_SURVEY'))
+        {
+            die();
+        }
+
+        self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jquery.json.min.js');
+        self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
+        self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
+        self::_getAdminHeader();
+        self::_showadminmenu($surveyid);;
+        self::_surveybar($surveyid);
+
+        LimeExpressionManager::ResetSyntaxErrorLog();
+
+        $this->load->view('admin/survey/resetSyntaxErrorLog_view');
+        self::_loadEndScripts();
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    }
 
     /**
     * survey::view()

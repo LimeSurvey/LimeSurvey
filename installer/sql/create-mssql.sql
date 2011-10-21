@@ -61,6 +61,24 @@ CREATE TABLE [prefix_defaultvalues] (
   [defaultvalue] text,
   CONSTRAINT pk_defaultvalues_qlss PRIMARY KEY ([qid] , [scale_id], [language], [specialtype], [sqid]))
    
+--
+-- Table structure for table expression_errors
+--
+
+CREATE TABLE [prefix_expression_errors] (
+  [id] integer NOT NULL AUTO_INCREMENT,
+  [errortime] varchar(50) DEFAULT NULL,
+  [sid] integer DEFAULT NULL,
+  [gid] integer DEFAULT NULL,
+  [qid] integer DEFAULT NULL,
+  [gseq] integer DEFAULT NULL,
+  [qseq] integer DEFAULT NULL,
+  [type] varchar(50) ,
+  [eqn] text,
+  [prettyprint] text,
+  PRIMARY KEY ([id])
+);
+
                               
 -- 
 -- Table structure for table groups
@@ -437,7 +455,7 @@ CREATE TABLE [prefix_participants] (
 --
 CREATE TABLE [prefix_participant_attribute] (
     [participant_id] varchar(50) NOT NULL,
-    [attribute_id] int(11) NOT NULL,
+    [attribute_id] integer NOT NULL,
     [value] varchar(50) NOT NULL,
     PRIMARY KEY  ([participant_id],[attribute_id])
 );
@@ -445,7 +463,7 @@ CREATE TABLE [prefix_participant_attribute] (
 -- Table structure for table participant attribute names
 --
 CREATE TABLE [prefix_participant_attribute_names] (
-    [attribute_id] int(11) NOT NULL AUTO_INCREMENT,
+    [attribute_id] integer NOT NULL AUTO_INCREMENT,
     [attribute_type] varchar(4) NOT NULL,
     [visible] char(5) NOT NULL,
     PRIMARY KEY  ([attribute_id],[attribute_type]   )
@@ -454,8 +472,8 @@ CREATE TABLE [prefix_participant_attribute_names] (
 -- Table structure for table participant attribute names lang
 --
 CREATE TABLE [prefix_participant_attribute_names_lang] (
-    [id] int(11) NOT NULL AUTO_INCREMENT,
-    [attribute_id] int(11) NOT NULL,
+    [id] integer NOT NULL AUTO_INCREMENT,
+    [attribute_id] integer NOT NULL,
     [attribute_name] varchar(30) NOT NULL,
     [lang] varchar(20) NOT NULL,
     PRIMARY KEY  ([attribute_id],[lang])
@@ -464,8 +482,8 @@ CREATE TABLE [prefix_participant_attribute_names_lang] (
 -- Table structure for table participant attribute values
 --
 CREATE TABLE [prefix_participant_attribute_values] (
-    [attribute_id] int(11) NOT NULL,
-    [value_id] int(11) NOT NULL AUTO_INCREMENT,
+    [attribute_id] integer NOT NULL,
+    [value_id] integer NOT NULL AUTO_INCREMENT,
     [value] varchar(20) NOT NULL,
     PRIMARY KEY  ([value_id])
 );
@@ -474,7 +492,7 @@ CREATE TABLE [prefix_participant_attribute_values] (
 --
 CREATE TABLE [prefix_participant_shares] (
     [participant_id] varchar(50) NOT NULL,
-    [share_uid] int(11) NOT NULL,
+    [share_uid] integer NOT NULL,
     [date_added] datetime,
     [can_edit] text NOT NULL,
     PRIMARY KEY  ([participant_id],[share_uid])
@@ -484,8 +502,8 @@ CREATE TABLE [prefix_participant_shares] (
 --
 CREATE TABLE [prefix_survey_links] (
     [participant_id] varchar(50) NOT NULL,
-    [token_id] int(11) NOT NULL,
-    [survey_id] int(11) NOT NULL,
+    [token_id] integer NOT NULL,
+    [survey_id] integer NOT NULL,
     [date_created] datetime
     PRIMARY KEY  ([participant_id],[token_id],[survey_id]   )
 );
@@ -531,6 +549,6 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '152');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '153');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
 

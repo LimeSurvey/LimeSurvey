@@ -550,10 +550,10 @@ class questiongroup extends Survey_Common_Controller {
             $qs = array();
             $junk=array();
             foreach ($oQuestionData->result_array() as $q) {
-                $question = '[{' . $q['relevance'] . '}] ' . $q['question'];
+                $relevance = (trim($q['relevance'])=='') ? 1 : $q['relevance'];
+                $question = '[{' . $relevance . '}] ' . $q['question'];
                 LimeExpressionManager::ProcessString($question,$q['qid'],$junk,false,1,1);
                 $q['question'] = LimeExpressionManager::GetLastPrettyPrintExpression();
-                //                log_message('debug',$q['question']);
                 $qs[] = $q;
             }
             $aGrouplist[$iGID]['questions']=$qs;

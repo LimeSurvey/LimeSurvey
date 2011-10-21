@@ -12,6 +12,7 @@ class LimeExpressionManager {
     private static $instance;
     private static $em;    // Expression Manager
     private $groupRelevanceInfo;
+    private $sid;
     private $groupNum;
     private $debugLEM = false;   // set this to false to turn off debugging
     private $knownVars;
@@ -38,6 +39,7 @@ class LimeExpressionManager {
     private $slang='en';
     private $q2subqInfo;
     private $qattr;
+    private $syntaxErrors=array();
 
     private $runtimeTimings;
 
@@ -333,7 +335,8 @@ class LimeExpressionManager {
                             $subQrels[] = array(
                                 'type' => 'array_filter',
                                 'rowdivid' => $sq['rowdivid'],
-                                'eqn' => '(' . $sq_name . ' != "")'
+                                'eqn' => '(' . $sq_name . ' != "")',
+                                'qid' => $questionNum
                             );
                         }
                     }
@@ -375,7 +378,8 @@ class LimeExpressionManager {
                             $subQrels[] = array(
                                 'type' => 'array_filter_exclude',
                                 'rowdivid' => $sq['rowdivid'],
-                                'eqn' => '(' . $sq_name . ' == "")'
+                                'eqn' => '(' . $sq_name . ' == "")',
+                                'qid' => $questionNum
                             );
                         }
                     }
@@ -773,6 +777,11 @@ class LimeExpressionManager {
 //        log_message('debug','==SUBQUESTION RELEVANCE==' . print_r($subQrels,true));
 //        log_message('debug','==VALIDATION EQUATIONS==' . print_r($validationEqn,true));
 
+        foreach ($subQrels as $sq)
+        {
+            $result = $this->_ProcessSubQRelevance($sq['eqn'], $sq['qid'], $sq['rowdivid'], $sq['type']);
+        }
+
         $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
     }
 
@@ -789,6 +798,7 @@ class LimeExpressionManager {
     {
         $now = microtime(true);
         $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
+        $this->sid= $surveyid;
 
         $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));
         $now = microtime(true);
@@ -1294,8 +1304,6 @@ class LimeExpressionManager {
             $this->surveyLogicFile = $debugLog_html;
         }
 
-        $this->_CreateSubQLevelRelevanceAndValidationEqns();
-        
         return true;
     }
 
@@ -1390,7 +1398,7 @@ class LimeExpressionManager {
                             continue;   // if at least one in the group is visible, then skip relevance check
                         }
                         else {
-                            $result = LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES));
+                            $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES));
                             $_SESSION['relevanceStatus'][$qid] = $result;   // is this needed?  YES, if trying to tailor using a question that was irrelevant on prior page
                             $this->gid2relevanceStatus[$gid]=true;
                             continue;
@@ -1402,7 +1410,7 @@ class LimeExpressionManager {
                 }
             }
 
-            $result = LimeExpressionManager::ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES),
+            $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES),
                     $qid,
                     $rel['jsResultVar'],
                     $rel['type'],
@@ -1453,7 +1461,25 @@ class LimeExpressionManager {
             $questionSeq = isset($LEM->questionId2questionSeq[$questionNum]) ? $LEM->questionId2questionSeq[$questionNum] : -1;
             $groupSeq = isset($LEM->questionId2groupSeq[$questionNum]) ? $LEM->questionId2groupSeq[$questionNum] : -1;
         }
-        $result = $LEM->em->sProcessStringContainingExpressions(htmlspecialchars_decode($string,ENT_QUOTES),is_null($questionNum) ? 0 : $questionNum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq);
+        $stringToParse = htmlspecialchars_decode($string,ENT_QUOTES);
+        $qnum = is_null($questionNum) ? 0 : $questionNum;
+        $result = $LEM->em->sProcessStringContainingExpressions($stringToParse,$qnum, $numRecursionLevels, $whichPrettyPrintIteration, $groupSeq, $questionSeq);
+        if ($LEM->em->HasErrors()) {
+            $error = array(
+                'errortime' => date('Y-m-d H:i:s'),
+                'sid' => $LEM->sid,
+                'type' => 'Text',
+                'gid' => $LEM->groupNum,
+                'gseq' => $groupSeq,
+                'qid' => $qnum,
+                'qseq' => $questionSeq,
+                'eqn' => $stringToParse,
+                'prettyPrint' => $LEM->em->GetLastPrettyPrintExpression(),
+            );
+            $LEM->syntaxErrors[] = $error;
+            $CI =& get_instance();
+            $CI->db->insert('expression_errors',$error);
+        }
 
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
@@ -1470,17 +1496,31 @@ class LimeExpressionManager {
 
 
     /**
-     * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, currently returns true.  My change to returning null so can look for errors?
+     * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, return false.
      * @param <type> $eqn
      * @return <type>
      */
     static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
     {
-        // These will be called in the order that questions are supposed to be asked
         $LEM =& LimeExpressionManager::singleton();
+        return $LEM->_ProcessRelevance($eqn,$questionNum,$jsResultVar,$type,$hidden);
+    }
+
+    /**
+     * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, return false.
+     * @param <type> $eqn
+     * @param <type> $questionNum
+     * @param <type> $jsResultVar
+     * @param <type> $type
+     * @param <type> $hidden
+     * @return <type>
+     */
+    private function _ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
+    {
+        // These will be called in the order that questions are supposed to be asked
         if (!isset($eqn) || trim($eqn=='') || trim($eqn)=='1')
         {
-            $LEM->groupRelevanceInfo[] = array(
+            $this->groupRelevanceInfo[] = array(
                 'qid' => $questionNum,
                 'eqn' => $eqn,
                 'result' => true,
@@ -1496,17 +1536,36 @@ class LimeExpressionManager {
         $questionSeq = -1;
         $groupSeq = -1;
         if (!is_null($questionNum)) {
-            $questionSeq = isset($LEM->questionId2questionSeq[$questionNum]) ? $LEM->questionId2questionSeq[$questionNum] : -1;
-            $groupSeq = isset($LEM->questionId2groupSeq[$questionNum]) ? $LEM->questionId2groupSeq[$questionNum] : -1;
+            $questionSeq = isset($this->questionId2questionSeq[$questionNum]) ? $this->questionId2questionSeq[$questionNum] : -1;
+            $groupSeq = isset($this->questionId2groupSeq[$questionNum]) ? $this->questionId2groupSeq[$questionNum] : -1;
         }
 
-        $result = $LEM->em->ProcessBooleanExpression(htmlspecialchars_decode($eqn,ENT_QUOTES),$groupSeq, $questionSeq);
+        $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);
+        $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq, $questionSeq);
+
+        if ($this->em->HasErrors()) {
+            $prettyPrint = $this->em->GetPrettyPrintString();
+            $error = array(
+                'errortime' => date('Y-m-d H:i:s'),
+                'sid' => $this->sid,
+                'type' => 'Relevance',
+                'gid' => $this->groupNum,
+                'gseq' => $groupSeq,
+                'qid' => $questionNum,
+                'qseq' => $questionSeq,
+                'eqn' => $stringToParse,
+                'prettyPrint' => $prettyPrint,
+            );
+            $this->syntaxErrors[] = $error;
+            $CI =& get_instance();
+            $CI->db->insert('expression_errors',$error);
+        }
 
         if (!is_null($questionNum)) {
-            $jsVars = $LEM->em->GetJSVarsUsed();
-            $relevanceVars = implode('|',$LEM->em->GetJSVarsUsed());
-            $relevanceJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
-            $LEM->groupRelevanceInfo[] = array(
+            $jsVars = $this->em->GetJSVarsUsed();
+            $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
+            $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
+            $this->groupRelevanceInfo[] = array(
                 'qid' => $questionNum,
                 'eqn' => $eqn,
                 'result' => $result,
@@ -1520,6 +1579,65 @@ class LimeExpressionManager {
         }
         return $result;
     }
+
+   private function _ProcessSubQRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL, $type=NULL)
+    {
+        // These will be called in the order that questions are supposed to be asked
+        if (!isset($eqn) || trim($eqn=='') || trim($eqn)=='1')
+        {
+            return true;
+        }
+        $questionSeq = -1;
+        $groupSeq = -1;
+        if (!is_null($questionNum)) {
+            $questionSeq = isset($this->questionId2questionSeq[$questionNum]) ? $this->questionId2questionSeq[$questionNum] : -1;
+            $groupSeq = isset($this->questionId2groupSeq[$questionNum]) ? $this->questionId2groupSeq[$questionNum] : -1;
+        }
+
+        $stringToParse = htmlspecialchars_decode($eqn,ENT_QUOTES);
+        $result = $this->em->ProcessBooleanExpression($stringToParse,$groupSeq, $questionSeq);
+
+        if ($this->em->HasErrors()) {
+            $prettyPrint = $this->em->GetPrettyPrintString();
+            $error = array(
+                'errortime' => date('Y-m-d H:i:s'),
+                'sid' => $this->sid,
+                'type' => $type,
+                'gid' => $this->groupNum,
+                'gseq' => $groupSeq,
+                'qid' => $questionNum,
+                'qseq' => $questionSeq,
+                'eqn' => $stringToParse,
+                'prettyPrint' => $prettyPrint,
+            );
+            $this->syntaxErrors[] = $error;
+            $CI =& get_instance();
+            $CI->db->insert('expression_errors',$error);
+        }
+
+        if (!is_null($questionNum)) {
+            $jsVars = $this->em->GetJSVarsUsed();
+            $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
+            $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
+//            $hasErrors = $this->em->HasErrors();
+            $this->groupRelevanceInfo[] = array(
+                'qid' => $questionNum,
+                'eqn' => $eqn,
+                'result' => $result,
+                'numJsVars' => count($jsVars),
+                'relevancejs' => $relevanceJS,
+                'relevanceVars' => $relevanceVars,
+                'jsResultVar' => $jsResultVar,
+//                'prettyPrint' => $prettyPrint,
+//                'hasErrors' => $hasErrors,
+                'type'=>$type,
+                'hidden'=>0
+            );
+//            log_message('debug',print_r($info,true));
+        }
+        return $result;
+    }
+
 
     /**
      * Used to show potential syntax errors of processing Relevance or Equations.
@@ -1573,6 +1691,7 @@ class LimeExpressionManager {
                 // means that some values changed, so need to update what was registered to ExpressionManager
                 $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
                 $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
+                $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
             }
         }
     }
@@ -1598,6 +1717,7 @@ class LimeExpressionManager {
         }
         log_message('debug','Total time attributable to EM = ' . $totalTime);
 //        log_message('debug',print_r($LEM->runtimeTimings,true));
+//        log_message('debug','==ERRORS==' . print_r($LEM->syntaxErrors,true));
     }
 
     static function ShowLogicFile()
@@ -1626,6 +1746,8 @@ class LimeExpressionManager {
         $LEM =& LimeExpressionManager::singleton();
 
         $knownVars = $LEM->knownVars;
+
+//        log_message('debug',print_r($LEM->groupRelevanceInfo,true));
 
         $jsParts=array();
         $allJsVarsUsed=array();
@@ -1822,6 +1944,23 @@ class LimeExpressionManager {
         }
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
         return implode('',$jsParts);
+    }
+
+    /**
+     * Return array of most recent syntax errors for whatever scope was most recently processed
+     * @return <type>
+     */
+    static function GetSyntaxErrors()
+    {
+        $CI =& get_instance();
+        return $CI->db->get('expression_errors')->result_array();
+    }
+
+    static function ResetSyntaxErrorLog()
+    {
+        // truncate the table
+        $CI =& get_instance();
+        $CI->db->truncate('expression_errors');
     }
 
     /**

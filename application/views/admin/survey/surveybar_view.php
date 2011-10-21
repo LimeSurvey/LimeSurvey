@@ -103,6 +103,14 @@
                                 <img src='<?php echo $imageurl;?>/resetsurveylogic_disabled_30.png' name='ResetSurveyLogic' alt='' width="30" height="30"/> <?php echo $clang->gT("Reset Survey Logic");?></a></li>
                             <?php } ?>
                         <?php } ?>
+                    <?php if(1) { ?>
+                        <li><a href='<?php echo site_url("admin/survey/showsyntaxerrors/$surveyid");?>' >
+                            <?php echo $clang->gT("Show Log of Syntax Errors");?></a></li>
+                        <?php } ?>
+                    <?php if(1) { ?>
+                        <li><a href='<?php echo site_url("admin/survey/resetsyntaxerrorlog/$surveyid");?>' >
+                            <?php echo $clang->gT("Delete Log of Syntax Errors");?></a></li>
+                        <?php } ?>
                 </ul></li>
             <li><a href='#'>
                     <img src='<?php echo $imageurl;?>/display_export.png' name='DisplayExport' alt='<?php echo $clang->gT("Display / Export");?>' width="40" height="40"/></a><ul>
