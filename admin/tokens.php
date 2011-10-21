@@ -1890,6 +1890,7 @@ if ($subaction == "remind" && bHasSurveyPermission($surveyid, 'tokens','update')
             while ($emrow = $emresult->FetchRow())
             {
                 unset($fieldsarray);
+                $to=array();
                 $aEmailaddresses=explode(';',$emrow['email']);
                 foreach($aEmailaddresses as $sEmailaddress)
                 {
