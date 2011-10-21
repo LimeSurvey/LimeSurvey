@@ -658,7 +658,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         $rowcounter++;
         if ($type == "csv")
         {
-            $exportoutput .= "\"".implode("\"$separator\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
+            $exportoutput .= "\"".implode("\"$separator\"", str_replace("\"", "\"\"", $drow)) . "\"\n";
         }
         elseif ($type == "xls")
         {
