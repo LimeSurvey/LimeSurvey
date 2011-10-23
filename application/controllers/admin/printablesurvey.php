@@ -124,7 +124,7 @@ class printablesurvey extends Admin_Controller {
 		}
 		
 		$pdf_form='';
-		if($this->config->item('usepdfexport') == 1 && !in_array($surveyprintlang,$notsupportlanguages))
+		if($this->config->item('usepdfexport') == 1 && !in_array($surveyprintlang,$this->config->item('notsupportlanguages')))
 		{
 		    $pdf_form = '
 		    <form action="'.site_url('admin/printablesurvey/index/'.$surveyid.'/'.$surveyprintlang.'/').'" method="post">
@@ -913,12 +913,13 @@ class printablesurvey extends Admin_Controller {
 		                    }
 		                    if ($deqrow['other'] == "Y")
 		                    {
-		                        if (trim($qidattributes['other_replace_text'])=='')
+		                        if (trim($qidattributes['other_replace_text'][$surveyprintlang])=='')
 		                        {
-		                            $qidattributes["other_replace_text"]="Other";
+		                            $qidattributes["other_replace_text"][$surveyprintlang]="Other";
 		                        }
-		                        $question['ANSWER'] .= $wrapper['item-start-other'].self::_input_type_image('checkbox',$mearow['answer']).$clang->gT($qidattributes["other_replace_text"]).":\n\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$fieldname."other) ").$wrapper['item-end'];
-		                        if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"]).": ________");}
+								if(!isset($mearow['answer'])) $mearow['answer']="";
+		                        $question['ANSWER'] .= $wrapper['item-start-other'].self::_input_type_image('checkbox',$mearow['answer']).$clang->gT($qidattributes["other_replace_text"][$surveyprintlang]).":\n\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$fieldname."other) ").$wrapper['item-end'];
+		                        if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"][$surveyprintlang]).": ________");}
 		                    }
 		                    $question['ANSWER'] .= $wrapper['whole-end'];
 		                    //				}
