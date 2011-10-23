@@ -878,9 +878,10 @@
             $cccount=$ccresult->num_rows();
             foreach ($ccresult->result_array() as $ccr) {$qidarray[]=$ccr['qid'];}
             if (isset($qidarray)) {$qidlist=implode(", ", $qidarray);}
+            $databaseoutput = '';
             if ($cccount) //there are conditions dependent on this question
             {
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
+                $databaseoutput = "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed","js")." ($qidlist)\")\n //-->\n</script>\n";
             }
             else
             {
