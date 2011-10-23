@@ -38,7 +38,6 @@ class survey extends LSCI_Controller {
         $this->_loadRequiredHelpersAndLibraries();
 
         $_POST = $this->input->post();
-        //$_SESSION = $this->session->userdata;
         $param = $this->_getParameters(func_get_args(), $_POST);
 
         $surveyid = $param['sid'];
@@ -120,7 +119,7 @@ class survey extends LSCI_Controller {
                 // - start a brand new user session
                 // - copy interresting values in this user session
 
-                @session_destroy();    // make it silent because for
+                session_destroy();    // make it silent because for
                 // some strange reasons it fails sometimes
                 // which is not a problem
                 // but if it throws an error then future
@@ -128,9 +127,9 @@ class survey extends LSCI_Controller {
                 // headers are already sent.
 
                 // TODO where is $stg_SessionName comming from?
-                if (isset($stg_SessionName) && $stg_SessionName)
+                if (!empty($stg_SessionName))
                 {
-                    @session_name($stg_SessionName);
+                    session_name($stg_SessionName);
                 }
                 else
                 {
@@ -145,7 +144,7 @@ class survey extends LSCI_Controller {
                 $this->_destroyOldSession($initial_session_name, $sessionhandler, $clang);
 
                 // start new session
-                @session_start();
+                session_start();
                 // regenerate id so that the header geenrated by previous
                 // regenerate_id is overwritten
                 // needed after clearall
@@ -851,30 +850,73 @@ class survey extends LSCI_Controller {
         return 'LimeSurveyRuntime-'.$surveyId;
     }
 
+    /**
+     * Switch to survey session, from admin session if applicable.
+     *
+     * @param string $surveyId
+     */
     function _setSessionToSurvey($surveyId)
     {
         $sSessionname = $this->_getSessionName($surveyId);
-
-        // Establish / Switch to survey session
-
-        $oSess = new LS_PHP_Session();
-        if ($oSess->changeTo($sSessionname))
+        if (LS_PHP_Session::isActive())
         {
-            // Needed to call session_start() below.
-            unset($_SESSION);
-            $_SESSION = array();
+            throw new BadMethodCallException('Session already started.');
         }
-        else
+        session_name($sSessionname);
+        $sCurrentname = $this->session->getActiveName();
+        if ($sCurrentname !== $sSessionname)
         {
-            session_name($sSessionname);
+            throw new RuntimeException(sprintf('Session name mismatch, must be %s, is %s.', $sSessionname, $sCurrentname));
         }
-        unset($oSess);
-
-        session_set_cookie_params(0,$this->config->item("relativeurl"));
-        if (empty($_SESSION)) // the $_SESSION variable can be empty if register_globals is on
+        // check if session is new, if not check for admin session, pick data to merge if available
+        // and get back on survey session name.
+        $aMergevars = array('loginID', 'USER_RIGHT_SUPERADMIN');
+        $aMerge = array();
+        if (!$this->session->all_userdata())
         {
-            session_start();
-            $this->session->bind_userdata(); // bind $_SESSION to session
+            $this->session->sess_destroy();
+            $sAdminName = 'PHPSESSID';
+            session_name($sAdminName);
+            $sCurrentname = $this->session->getActiveName();
+            if ($sCurrentname !== $sAdminName)
+            {
+                throw new RuntimeException(sprintf('Session name mismatch, must be %s, is %s.', $sAdminName, $sCurrentname));
+            }
+            if ($aData = $this->session->all_userdata())
+            {
+                foreach ($aMergevars as $sVar)
+                {
+                    if (isset ($aData[$sVar]))
+                    {
+                        $aMerge[$sVar] = $aData[$sVar];
+                    }
+                }
+                // switch session from admin to survey
+                LS_PHP_Session::changeTo($sSessionname);
+                $this->session->close();
+            }
+            else
+            {
+                // there is no admin session (data), destroy it
+                // and change the session name
+                $this->session->session_destroy();
+                session_name($sSessionname);
+            }
+        }
+
+        // @todo check if $this->session handles PHP configuration
+        //       -> on start(). check what is required. -> give a setCookieParams() to private config
+        session_set_cookie_params(0, $this->config->item("relativeurl"));
+        // @todo move that up and/or where it belongs to, session might need to be restarted if necessary to set
+        //       for survey session
+        $sCurrentname = $this->session->getActiveName();
+        if ($sCurrentname !== $sSessionname)
+        {
+            throw new RuntimeException(sprintf('Session name mismatch, must be %s, is %s.', $sSessionname, $sCurrentname));
+        }
+        foreach($aMerge as $sVar => $mValue)
+        {
+            isset ($_SESSION[$sVar]) || $_SESSION[$sVar] = $mValue;
         }
     }
 
@@ -909,7 +951,7 @@ class survey extends LSCI_Controller {
             );
             $this->_killPage($redata, __LINE__, null, $asMessage);
         }
-        @session_destroy();
+        session_destroy();
     }
 
     function _restoreSavedSession($saveSessionVars, $bPreviewRight)

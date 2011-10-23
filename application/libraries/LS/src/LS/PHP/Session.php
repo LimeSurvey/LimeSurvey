@@ -62,7 +62,7 @@ class LS_PHP_Session
      */
     public function changeTo($newName)
     {
-        $isActive = $this->isActive();
+        $isActive = self::isActive();
         $currentName = session_name();
         $currentId = session_id();
 
@@ -73,11 +73,11 @@ class LS_PHP_Session
         if ($isActive) session_write_close();
 
         // as the name changes, the id needs to change, too
-        $newId = $this->getRequestSessionId($newName);
+        $newId = self::getRequestSessionId($newName);
 
         if (NULL === $newId  &&  $currentId !== '')
         {
-            $newId = $this->generateSessionId($currentId);
+            $newId = self::generateSessionId($currentId);
         }
 
         // set new session name and id
@@ -155,7 +155,7 @@ class LS_PHP_Session
         if (isset($_COOKIE[$sessionName]))
         {
             $cookieId = $_COOKIE[$sessionName];
-            if ($this->isValidId($cookieId))
+            if (self::isValidId($cookieId))
                 $sessionId = $cookieId;
         }
 

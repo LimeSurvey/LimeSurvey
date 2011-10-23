@@ -21,12 +21,12 @@ require_once 'LS/LS.php';
  *
  * Non-autostart variant
  *
- * @todo remove bind_userdata() from code-base (after this class has been accepted)
  * @todo remove LSCI_Session_Debug seam for production
  * @since 2.0
  */
 class LSCI_Session extends LSCI_Session_Debug // LSCI_Session_Base
 {
+    const KEY_STORE = '__CI';
     /**
      * session status.
      *
@@ -67,11 +67,29 @@ class LSCI_Session extends LSCI_Session_Debug // LSCI_Session_Base
             $this->start();
         }
     }
+    
+    /**
+     * start session
+     */
+    public function start()
+    {
+        $this->doStart();
+    }
+
+    /**
+     * close session
+     *
+     * signal the session the internal state that it's closed.
+     */
+    public function close()
+    {
+        $this->status = 1;
+    }
 
     /**
      * start session
      */
-    private function start()
+    private function doStart()
     {
         $config = $this->config;
 
@@ -102,12 +120,12 @@ class LSCI_Session extends LSCI_Session_Debug // LSCI_Session_Base
         $destroy = FALSE;
 
         // Initialize store on session
-        if (!isset($_SESSION['__CI']))
+        if (!isset($_SESSION[self::KEY_STORE]))
         {
-            $_SESSION = array('__CI' => array()) + $_SESSION;
+            $_SESSION = array(self::KEY_STORE => array()) + $_SESSION;
         }
         
-        $store =& $_SESSION['__CI'];
+        $store =& $_SESSION[self::KEY_STORE];
         
         if (isset($store['last_activity']) && ($store['last_activity'] + $expire) < $now)
         {
@@ -167,6 +185,32 @@ class LSCI_Session extends LSCI_Session_Debug // LSCI_Session_Base
     }
 
     /**
+     * get the session name associated with the current
+     * (autostarted) session.
+     */
+    public function getActiveName()
+    {
+        $store = $this->userdata(self::KEY_STORE, array());
+        assert('isset($store["name"])');
+        return $store["name"];
+    }
+
+    /**
+     * Get a copy of all user session vars (CI like Interface)
+     *
+     * @param bool (optional) $dropStore
+     * @return array
+     */
+    public function all_userdata($dropStore = TRUE)
+    {
+        if ($this->status == 1) $this->ping();
+        $data = $_SESSION;
+        if ($dropStore)
+            unset($data[self::KEY_STORE]);
+        return $data;
+    }
+
+    /**
      * Fetch a specific item in session data (CI Interface)
      *
      * @param string $item
@@ -222,7 +266,6 @@ class LSCI_Session extends LSCI_Session_Debug // LSCI_Session_Base
 
     /**
      * Destroy the current session (CI Interface)
-     *
      */
     public function sess_destroy()
     {
@@ -230,6 +273,12 @@ class LSCI_Session extends LSCI_Session_Debug // LSCI_Session_Base
         $_SESSION = array();
         LS_PHP_Session::cookieDestroy();
         session_destroy();
+        $this->status = 1;
+    }
+
+    public function write_close()
+    {
+        session_write_close();
         $this->status = 1;
     }
 }
