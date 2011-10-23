@@ -1819,13 +1819,15 @@ function do_5pointchoice($ia)
 
 function do_date($ia)
 {
-    global $js_header_includes, $css_header_includes, $thissurvey;
+    global $thissurvey;
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
 
     $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
-    $js_header_includes[] = '/scripts/jquery/jquery-ui.js';
-    $js_header_includes[] = '/scripts/jquery/lime-calendar.js';
+    $js_admin_includes = $CI->config->item("js_admin_includes");
+    $js_admin_includes[] = '/scripts/jquery/lime-calendar.js';
+    $CI->config->set_item("js_admin_includes", $js_admin_includes);
+        
 
 
     if ($ia[8] == 'Y')
@@ -2067,9 +2069,13 @@ function do_date($ia)
     {
         if ($clang->langcode !== 'en')
         {
-            $js_header_includes[] = '/scripts/jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js';
+			$js_admin_includes = $CI->config->item("js_admin_includes");
+    		$js_admin_includes[] = '/scripts/jquery/locale/jquery.ui.datepicker-'.$clang->langcode.'.js';
+    		$CI->config->set_item("js_admin_includes", $js_admin_includes);
         }
-        $css_header_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
+		$css_admin_includes = $CI->config->item("css_admin_includes");
+        $css_admin_includes[]= '/scripts/jquery/css/start/jquery-ui.css';
+		$CI->config->set_item("css_admin_includes", $css_admin_includes);
 
         // Format the date  for output
         if (trim($_SESSION[$ia[1]])!='')
