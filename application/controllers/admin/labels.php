@@ -492,12 +492,12 @@
                     if ($first)
                         $tab_content[$i] .= "<th>&nbsp;</th>";
 
-                    $tab_content[$i] .= "<th class='settingcaption'>{$clang->gT("Code")}</th>
-                                    <th class='settingcaption'>{$clang->gT("Assessment value")}</th>
-                                    <th class='settingcaption'>{$clang->gT("Title")}</th>";
+                    $tab_content[$i] .= "<th>{$clang->gT("Code")}</th>
+                                    <th>{$clang->gT("Assessment value")}</th>
+                                    <th>{$clang->gT("Title")}</th>";
 
                     if ($first)
-                        $tab_content[$i] .= "<th class='settingcaption'>{$clang->gT("Action")}</th>";
+                        $tab_content[$i] .= "<th>{$clang->gT("Action")}</th>";
 
                     $tab_content[$i] .= "</tr>
                             </thead>

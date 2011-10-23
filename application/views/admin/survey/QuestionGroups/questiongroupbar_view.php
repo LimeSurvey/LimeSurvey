@@ -61,7 +61,7 @@
             <?php } ?>
     </div>
     <div class='menubar-right'>
-        <label for="qid"><?php echo $clang->gT("Questions:"); ?></label> <select class="listboxquestions" name='qid' id='qid'
+        <label for="questionid"><?php echo $clang->gT("Questions:"); ?></label> <select class="listboxquestions" name='questionid' id='questionid'
             onchange="window.open(this.options[this.selectedIndex].value, '_top')">
 
             <?php echo getQuestions($surveyid,$gid,$qid); ?>

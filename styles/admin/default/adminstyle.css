@@ -371,25 +371,6 @@ textarea {
     color: #16B700;
 }
 
-font.settingcaption {
-    vertical-align: top;
-    text-align: right;
-    font-size: 13px;
-    font-weight: 700;
-    color: #1D2D45;
-}
-
-span.settingcaption {
-    float: left;
-    width: 350px;
-    text-align: right;
-    font-weight: 700;
-    clear: left;
-    margin-bottom: 10px;
-    background-color: #F8F8FF;
-    color: #1D2D45;
-}
-
 .settingentry {
     float: left;
     width: 660px;
@@ -406,17 +387,6 @@ span.settingcaption {
     outline: 0 none;
 }
 
-.settingrow {
-    width: 1015px;
-    clear: left;
-    margin: 0 auto 20px auto;
-    background-color: #F8F8FF;
-}
-
-.settingrow .cke_skin_office2003,
-.settingrow .cke_skin_office2003 .cke_wrapper{
-    margin-bottom: 0;
-}
 
 .movableList {
     padding: 10px 0px;
@@ -476,7 +446,7 @@ th.admincell {
     margin-bottom: 10px;
 }
 
-.header, .formheader, .headertwo, .settingcaption {
+.header, .formheader, .headertwo {
     text-align: center;
     font-size: 13px;
     font-weight: 700;
@@ -503,11 +473,6 @@ img.handle {
 .header_small {
     margin-top:2px;
     font-size: 11px;
-}
-
-div.settingcaption{
-    clear:both;
-    margin: 3px 0;
 }
 
 .formheader
@@ -1184,15 +1149,7 @@ div.loader {
     padding:1% 10%;
 }
 
-#emailtemplates .ui-tabs-panel iframe,
-#frmeditgroup .ui-tabs-panel iframe,
-#frmcopyquestion .ui-tabs-panel iframe,
-#sendreminder .ui-tabs-panel iframe,
-#newquestiongroup .ui-tabs-panel iframe,
-#sendinvitation .ui-tabs-panel iframe,
-#addnewsurvey .ui-tabs-panel iframe {
 
-}
 
 #editsurvey textarea,
 #editsurvey input {

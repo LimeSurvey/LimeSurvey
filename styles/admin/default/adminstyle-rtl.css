@@ -193,16 +193,7 @@ font.settingcaption {
   color: #1D2D45;
 }
 
-span.settingcaption {
-  float: right;
-  width: 350px;
-  text-align: left;
-  font-weight: 700;
-  clear: right;
-  margin-bottom: 10px;
-  background-color: #F8F8FF;
-  color: #1D2D45;
-}
+
 
 .settingentry {
   float: right;
@@ -215,12 +206,6 @@ span.settingcaption {
   background-color: #F8F8FF;
 }
 
-.settingrow {
-  width: 1000px;
-  clear: right;
-  margin-bottom: 20px;
-  background-color: #F8F8FF;
-}
 
 #dhtmlgoodies_tooltip {
   border: 1px solid #000;

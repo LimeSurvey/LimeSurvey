@@ -170,23 +170,6 @@ textarea {
   color: #090;
 }
 
-font.settingcaption {
-  vertical-align: top;
-  text-align: right;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-span.settingcaption {
-  float: left;
-  width: 150px;
-  text-align: right;
-  font-size: 13px;
-  font-weight: bold;
-  clear: left;
-  margin-bottom: 10px;
-}
-
 .settingentry {
   float: left;
   width: 450px;
@@ -195,13 +178,6 @@ span.settingcaption {
   text-align: left;
   clear: right;
   margin-bottom: 10px;
-}
-
-.settingrow {
-  width: 620px;
-  float: center;
-  clear: left;
-  margin-bottom: 20px;
 }
 
 #dhtmlgoodies_tooltip {

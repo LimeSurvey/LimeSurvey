@@ -920,6 +920,7 @@ class tokens extends Survey_Common_Controller {
 	            foreach ($emresult->result_array() as $emrow)
 	            {
 	                unset($fieldsarray);
+                    $to=array();
                     $aEmailaddresses=explode(';',$emrow['email']);
                     foreach($aEmailaddresses as $sEmailaddress)
                     {
@@ -1220,6 +1221,7 @@ class tokens extends Survey_Common_Controller {
 	            while ($emrow = $emresult->FetchRow())
 	            {
 	                unset($fieldsarray);
+                    $to=array();
                     $aEmailaddresses=explode(';',$emrow['email']);
                     foreach($aEmailaddresses as $sEmailaddress)
                     {
