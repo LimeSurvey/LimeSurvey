@@ -807,11 +807,11 @@ class printablesurvey extends Admin_Controller {
 		                    }
 		                    if ($deqrow['other'] == 'Y')
 		                    {
-		                        if(trim($qidattributes["other_replace_text"])=='')
-		                        {$qidattributes["other_replace_text"]="Other";}
+		                        if(trim($qidattributes["other_replace_text"][$surveyprintlang])=='')
+		                        {$qidattributes["other_replace_text"][$surveyprintlang]="Other";}
 		                        //					$printablesurveyoutput .="\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio' , $clang->gT("Other"))."\n\t\t\t".$clang->gT("Other")."\n\t\t\t<input type='text' size='30' readonly='readonly' />\n".$wrapper['item-end'];
-		                        $question['ANSWER']  .= $wrapper['item-start-other'].self::_input_type_image('radio',$clang->gT($qidattributes["other_replace_text"])).' '.$clang->gT($qidattributes["other_replace_text"]).self::_addsgqacode(" (-oth-)")."\n\t\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$deqrow['sid']."X".$deqrow['gid']."X".$deqrow['qid']."other)")."\n".$wrapper['item-end'];
-		                        if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"]).": ________");}
+		                        $question['ANSWER']  .= $wrapper['item-start-other'].self::_input_type_image('radio',$clang->gT($qidattributes["other_replace_text"][$surveyprintlang])).' '.$clang->gT($qidattributes["other_replace_text"][$surveyprintlang]).self::_addsgqacode(" (-oth-)")."\n\t\t\t".self::_input_type_image('other').self::_addsgqacode(" (".$deqrow['sid']."X".$deqrow['gid']."X".$deqrow['qid']."other)")."\n".$wrapper['item-end'];
+		                        if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT($qidattributes["other_replace_text"][$surveyprintlang]).": ________");}
 		                    }
 		                    $question['ANSWER'] .= $wrapper['whole-end'];
 		                    //Let's break the presentation into columns.
