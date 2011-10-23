@@ -42,7 +42,7 @@ function LS_autoload($class)
         return;
     
     $translated = str_replace($separator, DIRECTORY_SEPARATOR, $class);
-    $libpath = dirname(dirname(__FILE__));
+    $libpath = dirname(__FILE__).DIRECTORY_SEPARATOR.'src';
     $file = $libpath.DIRECTORY_SEPARATOR.$translated.'.php';
 
     require $file; # provoke fatal error if file does not exists.
