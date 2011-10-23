@@ -858,9 +858,9 @@ class survey extends Survey_Common_Controller {
                     //calculate percentage
 
                     //prevent division by zero problems
-                    if($tokencompleted != 0 && $tokencount != 0)
+                    if($tokencompleted != 0 && $aSurveyEntry['tokencount'] != 0)
                     {
-                        $aSurveyEntry['tokenpercentage'] = round(($tokencompleted / $tokencount) * 100, 1);
+                        $aSurveyEntry['tokenpercentage'] = round(($tokencompleted / $aSurveyEntry['tokencount']) * 100, 1);
                     }
                     else
                     {
