@@ -695,6 +695,77 @@ class survey extends Survey_Common_Controller {
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
     }
+    
+    
+    /**
+     * survey::ajaxgetusers()
+     * This get the userlist in surveylist screen.
+     * @return void
+     */
+    function ajaxgetusers()
+    {
+        header('Content-type: application/json');
+        $this->load->helper('database');
+
+        $query = "SELECT users_name, uid FROM ".$this->db->dbprefix."users";
+    
+        $result = db_execute_assoc($query) or show_error("Couldn't execute $query");
+    
+        $aUsers = array();
+        if($result->num_rows() > 0) {
+            foreach($result->result_array() as $rows)
+                    $aUsers[] = array($rows['uid'], $rows['users_name']);
+        }
+        
+        $ajaxoutput = json_encode($aUsers) . "\n";
+        echo $ajaxoutput;
+    }
+    
+    /**
+     * survey::ajaxowneredit()
+     * This function change the owner of a survey.
+     * @param mixed $newowner
+     * @param mixed $surveyid
+     * @return void
+     */
+    function ajaxowneredit($newowner,$surveyid)
+    {
+        header('Content-type: application/json');
+        $this->load->helper('database');
+        //if (isset($_REQUEST['newowner'])) {$intNewOwner=sanitize_int($_REQUEST['newowner']);}
+        //if (isset($_REQUEST['survey_id'])) {$intSurveyId=sanitize_int($_REQUEST['survey_id']);}
+        $intNewOwner = sanitize_int($newowner);
+        $intSurveyId = sanitize_int($surveyid);
+        $owner_id = $this->session->userdata('loginID');
+    
+        header('Content-type: application/json');
+        
+        $query = "UPDATE ".$this->db->dbprefix."surveys SET owner_id = $intNewOwner WHERE sid=$intSurveyId";
+        if (bHasGlobalPermission("USER_RIGHT_SUPERADMIN"))
+            $query .="";
+        else
+            $query .=" AND owner_id=$owner_id";
+    
+        $result = db_execute_assoc($query) or show_error("Couldn't execute $query");
+    
+        $query = "SELECT b.users_name FROM ".$this->db->dbprefix."surveys as a"
+        ." INNER JOIN  ".$this->db->dbprefix."users as b ON a.owner_id = b.uid   WHERE sid=$intSurveyId AND owner_id=$intNewOwner;";
+        $result = db_execute_assoc($query) or show_error("Couldn't execute $query");
+        $intRecordCount = $result->num_rows();
+        
+        $aUsers = array(
+            'record_count' => $intRecordCount,
+        );
+    
+        if($result->num_rows() > 0) {
+            foreach($result->result_array() as $rows)
+                    $aUsers['newowner'] = $rows['users_name'];
+        }
+        $ajaxoutput = json_encode($aUsers) . "\n";
+        echo $ajaxoutput;
+        
+        
+    }
 
 
     /**

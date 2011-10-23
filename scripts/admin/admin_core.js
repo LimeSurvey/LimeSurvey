@@ -217,9 +217,7 @@ $(document).ready(function(){
        var survey_id = ownername_edit_id.slice(15);
        var translate_to = $(this).attr('translate_to');
        var initial_text = $(this).html();
-       $.getJSON('admin.php', {
-                    action: 'ajaxgetusers'
-                },function(oData)
+       $.getJSON(getuserurl,'',function(oData)
                 {
                     old_owner =  $($(oldThis).parent()).html();
 
@@ -244,11 +242,7 @@ $(document).ready(function(){
        var newowner = $("#ownername_select_"+survey_id).val();
        var translate_to = $(this).attr('value');
 
-       $.getJSON('admin.php',{
-            action: 'ajaxowneredit',
-            newowner: newowner,
-            survey_id : survey_id
-       }, function (data){
+       $.getJSON(ownerediturl+'/' + newowner + '/' + survey_id,'', function (data){
 
            var objToUpdate = $($(oldThis).parent());
 
