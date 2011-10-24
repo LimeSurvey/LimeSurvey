@@ -554,6 +554,7 @@ class questiongroup extends Survey_Common_Controller {
                 $question = '[{' . $relevance . '}] ' . $q['question'];
                 LimeExpressionManager::ProcessString($question,$q['qid'],$junk,false,1,1);
                 $q['question'] = LimeExpressionManager::GetLastPrettyPrintExpression();
+                $q['gid'] = $aGroup['gid'];
                 $qs[] = $q;
             }
             $aGrouplist[$iGID]['questions']=$qs;

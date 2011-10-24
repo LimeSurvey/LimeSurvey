@@ -18,9 +18,18 @@
                 <?php foreach ($errors as $error){?>
                     <tr>
                         <td><?php echo $error['errortime'];?></td>
-                        <td><?php echo $error['sid'];?></td>
-                        <td><?php echo $error['gid'];?></td>
-                        <td><?php echo $error['qid'];?></td>
+                        <td><a href="<?php echo site_url('admin/survey/view/'.$error['sid']);?>">
+                            <?php echo $error['sid'];?>
+                            </a>
+                        </td>
+                        <td><a href="<?php echo site_url('admin/survey/view/'.$error['sid'].'/'.$error['gid']);?>">
+                            <?php echo $error['gid'];?>                                
+                            </a>
+                        </td>
+                        <td><a href="<?php echo site_url('admin/question/editquestion/'.$error['sid'].'/'.$error['gid'].'/'.$error['qid']);?>">
+                            <?php echo $error['qid'];?>
+                            </a>
+                        </td>
                         <td><?php echo $error['gseq'];?></td>
                         <td><?php echo $error['qseq'];?></td>
                         <td><?php echo $clang->eT($error['type']);?></td>
