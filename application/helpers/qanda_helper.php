@@ -842,7 +842,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     // templaters to control where the various parts of the question text
     // are put.
 
-    if(is_file('templates/'.validate_templatedir($thissurvey['template']).'/question_start.pstpl'))
+    $sTemplate = isset($thissurvey['template']) ? $thissurvey['template'] : NULL;
+    if(is_file('templates/'.validate_templatedir($sTemplate).'/question_start.pstpl'))
     {
         $qtitle_custom = '';
 
@@ -1121,12 +1122,15 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
         $thissurvey['timercount']=1;
     }
 
-    if($thissurvey['format'] != "S")
+    if(isset($thissurvey['format']))
     {
-        if($thissurvey['format'] != "G")
+        if($thissurvey['format'] != "S")
         {
-            return "\n\n<!-- TIMER MODE DISABLED DUE TO INCORRECT SURVEY FORMAT -->\n\n";
-            //We don't do the timer in any format other than question-by-question
+            if($thissurvey['format'] != "G")
+            {
+                return "\n\n<!-- TIMER MODE DISABLED DUE TO INCORRECT SURVEY FORMAT -->\n\n";
+                //We don't do the timer in any format other than question-by-question
+            }
         }
     }
 
@@ -1228,7 +1232,7 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null) {
         if(!warninghide) { var warninghide=0;}
         if(!warning2hide) { var warning2hide=0;}";
 
-        if($thissurvey['format'] == "G")
+        if(isset($thissurvey['format']) && $thissurvey['format'] == "G")
         {
             global $gid;
             $qcount=0;
