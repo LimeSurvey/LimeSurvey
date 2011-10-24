@@ -30,7 +30,7 @@ function LS_autoload($class)
         return;
     // @todo currently whitelisting prefixes, current CI library prefix 'LS' nocks here too often.
     $match = false;
-    foreach(array('LS_Exception', 'LS_Installer_', 'LS_PHP_') as $prefix)
+    foreach (array('LS_Exception', 'LS_Installer_', 'LS_PHP_') as $prefix)
     {
         if (0 === strpos($class, $prefix))
         {
@@ -39,8 +39,10 @@ function LS_autoload($class)
         }
     }
     if (!$match)
+    {
         return;
-    
+    }
+
     $translated = str_replace($separator, DIRECTORY_SEPARATOR, $class);
     $libpath = dirname(__FILE__).DIRECTORY_SEPARATOR.'src';
     $file = $libpath.DIRECTORY_SEPARATOR.$translated.'.php';
