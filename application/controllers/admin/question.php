@@ -679,6 +679,8 @@
         self::_surveybar($surveyid,$gid);
         self::_surveysummary($surveyid,"viewgroup");
         self::_questiongroupbar($surveyid,$gid,$qid,"addquestion");
+        self::_questionbar($surveyid,$gid,$qid,"editquestion");
+
 
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
@@ -853,7 +855,7 @@
     {
         $this->load->view('admin/survey/Question/questionJavascript_view',array('type' => $type));
     }
-    
+
     /**
      * question::delete()
      * Function responsible for deleting a question.
