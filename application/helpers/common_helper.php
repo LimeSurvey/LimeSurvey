@@ -1305,7 +1305,6 @@ function getgrouplist($gid,$surveyid)
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
     if (!$surveyid) {$surveyid=returnglobal('sid');}
-    echo $surveyid;
 
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     $CI->load->model('groups_model');

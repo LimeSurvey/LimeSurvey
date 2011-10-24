@@ -1391,7 +1391,8 @@ END;
 		        echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
 		        for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
 		        {
-		            $g = $_SESSION['grouplist'][$n];
+		            $g = array_slice($_SESSION['grouplist'],$n,1);
+                    $g = $g[0];
 		            if(!checkgroupfordisplay($g[0],($thissurvey['anonymized']!="N"),$thissurvey['sid']))
 		                continue;
 

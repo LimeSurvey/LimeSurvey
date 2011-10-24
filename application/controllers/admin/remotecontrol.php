@@ -20,6 +20,7 @@ class remotecontrol extends Survey_Common_Controller {
         $config['functions']['get_session_key'] = array('function' => 'remotecontrol.getSessionKey');
         $config['functions']['release_session_key'] = array('function' => 'remotecontrol.releaseSessionKey');
         $config['functions']['delete_survey'] = array('function' => 'remotecontrol.deleteSurvey');
+        $config['functions']['create_survey'] = array('function' => 'remotecontrol.createSurvey');
 
         $this->xmlrpcs->initialize($config);
         $this->xmlrpcs->serve();
@@ -154,7 +155,7 @@ class remotecontrol extends Survey_Common_Controller {
 
 
     /**
-    * This function checks if the XML-RPC session key is valid. If yes returns true, otherwise false and sends a 'FAILED'' responses
+    * This function checks if the XML-RPC session key is valid. If yes returns true, otherwise false and sends a 'FAILED' responses
     *
     * @param mixed $sSessionKey
     */

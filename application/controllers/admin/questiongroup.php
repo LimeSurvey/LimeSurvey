@@ -305,7 +305,6 @@ class questiongroup extends Survey_Common_Controller {
         if ($action == "delgroup" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
         {
             $this->load->helper('database');
-            if (!isset($gid)) $gid=returnglobal('gid');
             $query = "SELECT qid FROM ".$this->db->dbprefix."groups g, ".$this->db->dbprefix."questions q WHERE g.gid=q.gid AND g.gid=$gid AND q.parent_qid=0 group by qid";
             if ($result = db_execute_assoc($query)) // Checked
             {
@@ -316,7 +315,7 @@ class questiongroup extends Survey_Common_Controller {
                     db_execute_assoc("DELETE FROM ".$this->db->dbprefix."answers WHERE qid={$row['qid']}"); // Checked
                     db_execute_assoc("DELETE FROM ".$this->db->dbprefix."questions WHERE qid={$row['qid']} or parent_qid={$row['qid']}"); // Checked
                     db_execute_assoc("DELETE FROM ".$this->db->dbprefix."defaultvalues WHERE qid={$row['qid']}"); // Checked
-                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."quota_members WHERE qid={$qid}");
+                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."quota_members WHERE qid={$row['qid']}");
                 }
             }
             $query = "DELETE FROM ".$this->db->dbprefix."assessments WHERE sid=$surveyid AND gid=$gid";
@@ -333,17 +332,9 @@ class questiongroup extends Survey_Common_Controller {
             }
             else
             {
-                $databaseoutput = "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\")\n //-->\n</script>\n";
+                $this->session->set_userdata('flashmessage', $this->limesurvey_lang->gT("Group could not be deleted"));
             }
-
-            if ($databaseoutput != '')
-            {
-                echo $databaseoutput;
-            }
-            else
-            {
-                redirect(site_url('admin/survey/view/'.$surveyid));
-            }
+            redirect(site_url('admin/survey/view/'.$surveyid));
         }
     }
 
