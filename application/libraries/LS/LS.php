@@ -26,19 +26,8 @@ function LS_autoload($class)
 {
     $namespace = 'LS';
     $separator = '_';
+
     if (0 !== strpos($class, $namespace.$separator))
-        return;
-    // @todo currently whitelisting prefixes, current CI library prefix 'LS' nocks here too often.
-    $match = false;
-    foreach (array('LS_Exception', 'LS_Installer_', 'LS_PHP_') as $prefix)
-    {
-        if (0 === strpos($class, $prefix))
-        {
-            $match = true;
-            break;
-        }
-    }
-    if (!$match)
     {
         return;
     }
