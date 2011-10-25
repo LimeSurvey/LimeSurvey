@@ -1,46 +1,46 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * $Id$
- *
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*
+*/
 /**
- * Database
- *
- * @package LimeSurvey
- * @author
- * @copyright 2011
- * @version $Id$
- * @access public
- */
+* Database
+*
+* @package LimeSurvey
+* @author
+* @copyright 2011
+* @version $Id$
+* @access public
+*/
 class Database extends Admin_Controller {
 
 
     /**
-     * Database::__construct()
-     * Constructor
-     * @return
-     */
+    * Database::__construct()
+    * Constructor
+    * @return
+    */
     function __construct()
-	{
-		parent::__construct();
-	}
+    {
+        parent::__construct();
+    }
 
     /**
-     * Database::index()
-     *
-     * @param mixed $action
-     * @return
-     */
+    * Database::index()
+    *
+    * @param mixed $action
+    * @return
+    */
     function index($action=null)
     {
 
@@ -96,14 +96,14 @@ class Database extends Admin_Controller {
                 {
                     foreach ($questlangs as $language)
                     {
-                       if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language]))
-                       {
-                           self::_Updatedefaultvalues($qid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
-                       }
-                       if (isset($_POST['other_'.$scale_id.'_'.$language]))
-                       {
-                           self::_Updatedefaultvalues($qid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
-                       }
+                        if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language]))
+                        {
+                            self::_Updatedefaultvalues($qid,0,$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language],true);
+                        }
+                        if (isset($_POST['other_'.$scale_id.'_'.$language]))
+                        {
+                            self::_Updatedefaultvalues($qid,0,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
+                        }
                     }
                 }
             }
@@ -118,18 +118,18 @@ class Database extends Admin_Controller {
 
                     for ($scale_id=0;$scale_id<$qtproperties[$questiontype]['subquestions'];$scale_id++)
                     {
-                       foreach ($sqresult->result_array() as $aSubquestionrow)
-                       {
-                           if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']]))
-                           {
-                               self::_Updatedefaultvalues($qid,$aSubquestionrow['qid'],$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']],true);
-                           }
-    /*                       if (isset($_POST['other_'.$scale_id.'_'.$language]))
-                           {
-                               Updatedefaultvalues($postqid,$qid,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
-                           } */
+                        foreach ($sqresult->result_array() as $aSubquestionrow)
+                        {
+                            if (isset($_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']]))
+                            {
+                                self::_Updatedefaultvalues($qid,$aSubquestionrow['qid'],$scale_id,'',$language,$_POST['defaultanswerscale_'.$scale_id.'_'.$language.'_'.$aSubquestionrow['qid']],true);
+                            }
+                            /*                       if (isset($_POST['other_'.$scale_id.'_'.$language]))
+                            {
+                            Updatedefaultvalues($postqid,$qid,$scale_id,'other',$language,$_POST['other_'.$scale_id.'_'.$language],true);
+                            } */
 
-                       }
+                        }
                     }
                 }
             }
@@ -194,21 +194,21 @@ class Database extends Admin_Controller {
                     {
                         $answer=$_POST['answer_'.$language.'_'.$sortorderid.'_'.$scale_id];
 
-                        /**if ($filterxsshtml)
+                        if ($this->config->item('filterxsshtml'))
                         {
                             //Sanitize input, strip XSS
-                            $answer=$myFilter->process($answer);
+                            $answer=$this->security->xss_clean($answer);
                         }
                         else
-                        { */
+                        {
                             $answer=html_entity_decode($answer, ENT_QUOTES, "UTF-8");
-                        //}
+                        }
                         // Fix bug with FCKEditor saving strange BR types
                         $answer=fix_FCKeditor_text($answer);
 
                         // Now we insert the answers
                         $query = "INSERT INTO ".$this->db->dbprefix."answers (code,answer,qid,sortorder,language,assessment_value, scale_id)
-                                  VALUES ('".$code."', '".
+                        VALUES ('".$code."', '".
                         $answer."', ".
                         $qid.", ".
                         $sortorderid.", '".
@@ -272,12 +272,12 @@ class Database extends Admin_Controller {
                 $deletedqid=(int)$deletedqid;
                 if ($deletedqid>0)
                 { // don't remove undefined
-                $query = "DELETE FROM ".$this->db->dbprefix."questions WHERE qid='{$deletedqid}'";  // Checked
-                if (!$result = db_execute_assoc($query))
-                {
-                    $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." \")\n //-->\n</script>\n";
+                    $query = "DELETE FROM ".$this->db->dbprefix."questions WHERE qid='{$deletedqid}'";  // Checked
+                    if (!$result = db_execute_assoc($query))
+                    {
+                        $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Failed to delete answer","js")." - ".$query." \")\n //-->\n</script>\n";
+                    }
                 }
-            }
             }
 
             //Determine ids by evaluating the hidden field
@@ -305,18 +305,18 @@ class Database extends Admin_Controller {
             $duplicateCode = 0;
             $dupanswers = array();
             /*
-             for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
-             {
+            for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
+            {
 
-             // Find duplicate codes and add these to dupanswers array
-             $foundCat=array_count_values($codes);
-             foreach($foundCat as $key=>$value){
-             if($value>=2){
-             $dupanswers[]=$key;
-             }
-             }
-             }
-             */
+            // Find duplicate codes and add these to dupanswers array
+            $foundCat=array_count_values($codes);
+            foreach($foundCat as $key=>$value){
+            if($value>=2){
+            $dupanswers[]=$key;
+            }
+            }
+            }
+            */
             //require_once("../classes/inputfilter/class.inputfilter_clean.php");
             //$myFilter = new InputFilter('','',1,1,1);
 
@@ -407,20 +407,18 @@ class Database extends Admin_Controller {
                     $question_order++;
                 }
 
-                /**if ($filterxsshtml)
+                if ($this->config->item('filterxsshtml'))
                 {
-                    require_once("../classes/inputfilter/class.inputfilter_clean.php");
-                    $myFilter = new InputFilter('','',1,1,1);
-                    $_POST['title']=$myFilter->process($_POST['title']);
-                    $_POST['question_'.$baselang]=$myFilter->process($_POST['question_'.$baselang]);
-                    $_POST['help_'.$baselang]=$myFilter->process($_POST['help_'.$baselang]);
+                    $_POST['title']=$this->security->xss_clean($_POST['title']);
+                    $_POST['question_'.$baselang]=$this->security->xss_clean($_POST['question_'.$baselang]);
+                    $_POST['help_'.$baselang]=$this->security->xss_clean($_POST['help_'.$baselang]);
                 }
                 else
                 {
                     $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
                     $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
                     $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
-                } */
+                }
 
                 // Fix bug with FCKEditor saving strange BR types
                 $_POST['title']=fix_FCKeditor_text($_POST['title']);
@@ -431,17 +429,17 @@ class Database extends Admin_Controller {
 
                 $data = array();
                 $data = array(
-                        'sid' => $surveyid,
-                        'gid' => $gid,
-                        'type' => $_POST['type'],
-                        'title' => $_POST['title'],
-                        'question' => $_POST['question_'.$baselang],
-                        'preg' => $_POST['preg'],
-                        'help' => $_POST['help_'.$baselang],
-                        'other' => $_POST['other'],
-                        'mandatory' => $_POST['mandatory'],
-                        'question_order' => $question_order,
-                        'language' => $baselang
+                'sid' => $surveyid,
+                'gid' => $gid,
+                'type' => $_POST['type'],
+                'title' => $_POST['title'],
+                'question' => $_POST['question_'.$baselang],
+                'preg' => $_POST['preg'],
+                'help' => $_POST['help_'.$baselang],
+                'other' => $_POST['other'],
+                'mandatory' => $_POST['mandatory'],
+                'question_order' => $question_order,
+                'language' => $baselang
 
 
 
@@ -469,22 +467,22 @@ class Database extends Admin_Controller {
                             db_switchIDInsert('questions',true);
 
                             $data = array(
-                                    'qid' => $qid,
-                                    'sid' => $surveyid,
-                                    'gid' => $gid,
-                                    'type' => $_POST['type'],
-                                    'title' => $_POST['title'],
-                                    'question' => $_POST['question_'.$alang],
-                                    'preg' => $_POST['preg'],
-                                    'help' => $_POST['help_'.$alang],
-                                    'other' => $_POST['other'],
-                                    'mandatory' => $_POST['mandatory'],
-                                    'question_order' => $question_order,
-                                    'language' => $alang
+                            'qid' => $qid,
+                            'sid' => $surveyid,
+                            'gid' => $gid,
+                            'type' => $_POST['type'],
+                            'title' => $_POST['title'],
+                            'question' => $_POST['question_'.$alang],
+                            'preg' => $_POST['preg'],
+                            'help' => $_POST['help_'.$alang],
+                            'other' => $_POST['other'],
+                            'mandatory' => $_POST['mandatory'],
+                            'question_order' => $question_order,
+                            'language' => $alang
 
 
 
-                                    );
+                            );
 
                             $this->load->model("questions_model");
                             $result2 = $this->questions_model->insertRecords($data);
@@ -499,7 +497,7 @@ class Database extends Admin_Controller {
 
                             }
                             db_switchIDInsert('questions',false);
-                    }
+                        }
                     }
                 }
 
@@ -518,9 +516,9 @@ class Database extends Admin_Controller {
                     {
                         $data = array();
                         $data = array(
-                                'qid' => $qid,
-                                'value' => $_POST[$validAttribute['name']],
-                                'attribute' => $validAttribute['name']
+                        'qid' => $qid,
+                        'value' => $_POST[$validAttribute['name']],
+                        'attribute' => $validAttribute['name']
 
                         );
 
@@ -528,7 +526,7 @@ class Database extends Admin_Controller {
                         $this->load->model("question_attributes_model");
                         $result = $this->question_attributes_model->insertRecords($data);
                         /**$query = "INSERT into ".db_table_name('question_attributes')."
-                                  (qid, value, attribute) values ($qid,'".db_quote($_POST[$validAttribute['name']])."','{$validAttribute['name']}')";
+                        (qid, value, attribute) values ($qid,'".db_quote($_POST[$validAttribute['name']])."','{$validAttribute['name']}')";
                         $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg()); // Checked */
 
                     }
@@ -591,47 +589,47 @@ class Database extends Admin_Controller {
             {
                 if ($validAttribute['i18n'])
                 {
-                   foreach ($aLanguages as $sLanguage)
-                   {
+                    foreach ($aLanguages as $sLanguage)
+                    {
                         if (isset($_POST[$validAttribute['name'].'_'.$sLanguage]))
                         {
                             $value=$this->db->escape($_POST[$validAttribute['name'].'_'.$sLanguage]);
                             $query = "select qaid from ".$this->db->dbprefix."question_attributes
-                                      WHERE attribute='".$validAttribute['name']."' AND qid={$qid} AND language='{$sLanguage}'";
+                            WHERE attribute='".$validAttribute['name']."' AND qid={$qid} AND language='{$sLanguage}'";
                             $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                             if ($result->num_rows()>0)
                             {
                                 $query = "UPDATE ".$this->db->dbprefix."question_attributes
-                                          SET value=".$value." WHERE attribute='".$validAttribute['name']."' AND qid={$qid} AND language='{$sLanguage}'";
+                                SET value=".$value." WHERE attribute='".$validAttribute['name']."' AND qid={$qid} AND language='{$sLanguage}'";
                                 $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                             }
                             else
                             {
                                 $query = "INSERT into ".$this->db->dbprefix."question_attributes
-                                          (qid, value, attribute, language) values ({$qid},{$value},'{$validAttribute['name']}','{$sLanguage}')";
+                                (qid, value, attribute, language) values ({$qid},{$value},'{$validAttribute['name']}','{$sLanguage}')";
                                 $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                             }
                         }
-                   }
+                    }
                 }
                 else
                 {
                     if (isset($_POST[$validAttribute['name']]))
                     {
                         $query = "select qaid from ".$this->db->dbprefix."question_attributes
-                                  WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                        WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                         $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                         $value = $this->db->escape($_POST[$validAttribute['name']]);
                         if ($result->num_rows()>0)
                         {
                             $query = "UPDATE ".$this->db->dbprefix."question_attributes
-                                      SET value=".$value.",language=NULL WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
+                            SET value=".$value.",language=NULL WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
                             $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                         }
                         else
                         {
                             $query = "INSERT into ".$this->db->dbprefix."question_attributes
-                                      (qid, value, attribute) values ($qid,$value,'{$validAttribute['name']}')";
+                            (qid, value, attribute) values ($qid,$value,'{$validAttribute['name']}')";
                             $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                         }
                     }
@@ -696,34 +694,30 @@ class Database extends Admin_Controller {
                         $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                         $baselang = GetBaseLanguageFromSurveyID($surveyid);
                         array_push($questlangs,$baselang);
-                        /**
-                        if ($filterxsshtml)
+                        if ($this->config->item('filterxsshtml'))
                         {
-                            require_once("../classes/inputfilter/class.inputfilter_clean.php");
-                            $myFilter = new InputFilter('','',1,1,1);
-                            $_POST['title']=$myFilter->process($_POST['title']);
+                            $_POST['title']=$this->security->xss_clean($_POST['title']);
                         }
                         else
                         {
                             $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
                         }
-                        */
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['title']=fix_FCKeditor_text($_POST['title']);
                         $this->load->model('questions_model');
                         foreach ($questlangs as $qlang)
                         {
-                            /**if ($filterxsshtml)
+                            if ($this->config->item('filterxsshtml'))
                             {
-                                $_POST['question_'.$qlang]=$myFilter->process($_POST['question_'.$qlang]);
-                                $_POST['help_'.$qlang]=$myFilter->process($_POST['help_'.$qlang]);
+                                $_POST['question_'.$qlang]=$this->security->xss_clean($_POST['question_'.$qlang]);
+                                $_POST['help_'.$qlang]=$this->security->xss_clean($_POST['help_'.$qlang]);
                             }
                             else
                             {
                                 $_POST['question_'.$qlang] = html_entity_decode($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8");
                                 $_POST['help_'.$qlang] = html_entity_decode($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8");
                             }
-                            */
+
                             // Fix bug with FCKEditor saving strange BR types
                             $_POST['question_'.$qlang]=fix_FCKeditor_text($_POST['question_'.$qlang]);
                             $_POST['help_'.$qlang]=fix_FCKeditor_text($_POST['help_'.$qlang]);
@@ -732,16 +726,16 @@ class Database extends Admin_Controller {
                             { // ToDo: Sanitize the POST variables !
 
                                 $udata = array(
-                                        'type' => $_POST['type'],
-                                        'title' => $_POST['title'],
-                                        'question' => $_POST['question_'.$qlang],
-                                        'preg' => $_POST['preg'],
-                                        'help' => $_POST['help_'.$qlang],
-                                        'gid' => $gid,
-                                        'other' => $_POST['other'],
-                                        'mandatory' => $_POST['mandatory'],
-                                        'relevance' => $_POST['relevance'],
-                                        );
+                                'type' => $_POST['type'],
+                                'title' => $_POST['title'],
+                                'question' => $_POST['question_'.$qlang],
+                                'preg' => $_POST['preg'],
+                                'help' => $_POST['help_'.$qlang],
+                                'gid' => $gid,
+                                'other' => $_POST['other'],
+                                'mandatory' => $_POST['mandatory'],
+                                'relevance' => $_POST['relevance'],
+                                );
 
                                 if ($oldgid!=$gid)
                                 {
@@ -779,7 +773,7 @@ class Database extends Admin_Controller {
                         {
                             $sQuery="UPDATE ".$this->db->dbprefix."questions set gid={$gid} where gid={$oldgid} and parent_qid>0";
                             $oResult = db_execute_assoc($sQuery); // or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
-                        // if the group has changed then fix the sortorder of old and new group
+                            // if the group has changed then fix the sortorder of old and new group
                             fixsortorderQuestions($oldgid, $surveyid);
                             fixsortorderQuestions($gid, $surveyid);
                             // If some questions have conditions set on this question's answers
@@ -793,11 +787,11 @@ class Database extends Admin_Controller {
 
                         }
                         $query = "DELETE FROM ".$this->db->dbprefix."answers WHERE qid= {$qid} and scale_id>={$iAnswerScales}";
-                            $result = db_execute_assoc($query); // or safe_die("Error: ".$connect->ErrorMsg()); // Checked
+                        $result = db_execute_assoc($query); // or safe_die("Error: ".$connect->ErrorMsg()); // Checked
 
                         // Remove old subquestion scales
                         $query = "DELETE FROM ".$this->db->dbprefix."questions WHERE parent_qid={$qid} and scale_id>={$iSubquestionScales}";
-                            $result = db_execute_assoc($query) ; //or safe_die("Error: ".$connect->ErrorMsg()); // Checked
+                        $result = db_execute_assoc($query) ; //or safe_die("Error: ".$connect->ErrorMsg()); // Checked
                         $this->session->set_userdata('flashmessage',$clang->gT("Question was successfully saved."));
 
 
@@ -857,9 +851,7 @@ class Database extends Admin_Controller {
         {
             $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
             $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
-            /**require_once("../classes/inputfilter/class.inputfilter_clean.php");
-            $myFilter = new InputFilter('','',1,1,1);
-            */
+
             foreach ($languagelist as $langname)
             {
                 if ($langname)
@@ -868,24 +860,24 @@ class Database extends Admin_Controller {
                     if ($url == 'http://') {$url="";}
 
                     // Clean XSS attacks
-                    /**if ($filterxsshtml) //not required. As we are using input class, XSS filetring is done automatically!
+                    if ($this->config->item('filterxsshtml'))
                     {
-                        $_POST['short_title_'.$langname]=$myFilter->process($_POST['short_title_'.$langname]);
-                        $_POST['description_'.$langname]=$myFilter->process($_POST['description_'.$langname]);
-                        $_POST['welcome_'.$langname]=$myFilter->process($_POST['welcome_'.$langname]);
-                        $_POST['endtext_'.$langname]=$myFilter->process($_POST['endtext_'.$langname]);
-                        $_POST['urldescrip_'.$langname]=$myFilter->process($_POST['urldescrip_'.$langname]);
-                        $_POST['url_'.$langname]=$myFilter->process($_POST['url_'.$langname]);
+                        $short_title=$this->security->xss_clean($this->input->post('short_title_'.$langname));
+                        $description=$this->security->xss_clean($this->input->post('description_'.$langname));
+                        $welcome=$this->security->xss_clean($this->input->post('welcome_'.$langname));
+                        $endtext=$this->security->xss_clean($this->input->post('endtext_'.$langname));
+                        $sURLDescription=$this->security->xss_clean($this->input->post('urldescrip_'.$langname));
+                        $sURL=$this->security->xss_clean($this->input->post('url_'.$langname));
                     }
                     else
                     {
-                        $_POST['short_title_'.$langname] = html_entity_decode($_POST['short_title_'.$langname], ENT_QUOTES, "UTF-8");
-                        $_POST['description_'.$langname] = html_entity_decode($_POST['description_'.$langname], ENT_QUOTES, "UTF-8");
-                        $_POST['welcome_'.$langname] = html_entity_decode($_POST['welcome_'.$langname], ENT_QUOTES, "UTF-8");
-                        $_POST['endtext_'.$langname] = html_entity_decode($_POST['endtext_'.$langname], ENT_QUOTES, "UTF-8");
-                        $_POST['urldescrip_'.$langname] = html_entity_decode($_POST['urldescrip_'.$langname], ENT_QUOTES, "UTF-8");
-                        $_POST['url_'.$langname] = html_entity_decode($_POST['url_'.$langname], ENT_QUOTES, "UTF-8");
-                    } */
+                        $short_title = html_entity_decode($this->input->post('short_title_'.$langname), ENT_QUOTES, "UTF-8");
+                        $description = html_entity_decode($this->input->post('description_'.$langname), ENT_QUOTES, "UTF-8");
+                        $welcome = html_entity_decode($this->input->post('welcome_'.$langname), ENT_QUOTES, "UTF-8");
+                        $endtext = html_entity_decode($this->input->post('endtext_'.$langname), ENT_QUOTES, "UTF-8");
+                        $sURLDescription = html_entity_decode($this->input->post('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
+                        $sURL = html_entity_decode($this->input->post('url_'.$langname), ENT_QUOTES, "UTF-8");
+                    }
 
                     // Fix bug with FCKEditor saving strange BR types
                     $short_title = $this->input->post('short_title_'.$langname);
@@ -903,8 +895,8 @@ class Database extends Admin_Controller {
                     'surveyls_description' => $description,
                     'surveyls_welcometext' => $welcome,
                     'surveyls_endtext' => $endtext,
-                    'surveyls_url' => $url,
-                    'surveyls_urldescription' => $this->input->post('urldescrip_'.$langname),
+                    'surveyls_url' => $sURL,
+                    'surveyls_urldescription' => $sURLDescription,
                     'surveyls_dateformat' => $this->input->post('dateformat_'.$langname),
                     'surveyls_numberformat' => $this->input->post('numberformat_'.$langname)
                     );
@@ -1005,52 +997,52 @@ class Database extends Admin_Controller {
                 $this->survey_url_parameters_model->insertRecord($aURLParam);
             }
             $updatearray= array('admin'=> $this->input->post('admin'),
-                                'expires'=>$expires,
-                                'adminemail'=> $this->input->post('adminemail'),
-                                'startdate'=>$startdate,
-                                'bounce_email'=> $this->input->post('bounce_email'),
-                                'anonymized'=> $this->input->post('anonymized'),
-                                'faxto'=> $this->input->post('faxto'),
-                                'format'=> $this->input->post('format'),
-                                'savetimings'=> $this->input->post('savetimings'),
-                                'template'=>$template,
-                                'assessments'=> $this->input->post('assessments'),
-                                'language'=> $this->input->post('language'),
-                                'additional_languages'=> $this->input->post('languageids'),
-                                'datestamp'=> $this->input->post('datestamp'),
-                                'ipaddr'=> $this->input->post('ipaddr'),
-                                'refurl'=> $this->input->post('refurl'),
-                                'publicgraphs'=> $this->input->post('publicgraphs'),
-                                'usecookie'=> $this->input->post('usecookie'),
-                                'allowregister'=> $this->input->post('allowregister'),
-                                'allowsave'=> $this->input->post('allowsave'),
-                                'navigationdelay'=> $this->input->post('navigationdelay'),
-                                'printanswers'=> $this->input->post('printanswers'),
-                                'publicstatistics'=> $this->input->post('publicstatistics'),
-                                'autoredirect'=> $this->input->post('autoredirect'),
-                                'showXquestions'=> $this->input->post('showXquestions'),
-                                'showgroupinfo'=> $this->input->post('showgroupinfo'),
-                                'showqnumcode'=> $this->input->post('showqnumcode'),
-                                'shownoanswer'=> $this->input->post('shownoanswer'),
-                                'showwelcome'=> $this->input->post('showwelcome'),
-                                'allowprev'=> $this->input->post('allowprev'),
-                                'allowjumps'=> $this->input->post('allowjumps'),
-                                'nokeyboard'=> $this->input->post('nokeyboard'),
-                                'showprogress'=> $this->input->post('showprogress'),
-                                'listpublic'=> $this->input->post('public'),
-                                'htmlemail'=> $this->input->post('htmlemail'),
-                                'tokenanswerspersistence'=> $this->input->post('tokenanswerspersistence'),
-                                'alloweditaftercompletion'=> $this->input->post('alloweditaftercompletion'),
-                                'usecaptcha'=> $this->input->post('usecaptcha'),
-                                'emailresponseto'=>trim($this->input->post('emailresponseto')),
-                                'emailnotificationto'=>trim($this->input->post('emailnotificationto')),
-                                'tokenlength'=>$tokenlength
+            'expires'=>$expires,
+            'adminemail'=> $this->input->post('adminemail'),
+            'startdate'=>$startdate,
+            'bounce_email'=> $this->input->post('bounce_email'),
+            'anonymized'=> $this->input->post('anonymized'),
+            'faxto'=> $this->input->post('faxto'),
+            'format'=> $this->input->post('format'),
+            'savetimings'=> $this->input->post('savetimings'),
+            'template'=>$template,
+            'assessments'=> $this->input->post('assessments'),
+            'language'=> $this->input->post('language'),
+            'additional_languages'=> $this->input->post('languageids'),
+            'datestamp'=> $this->input->post('datestamp'),
+            'ipaddr'=> $this->input->post('ipaddr'),
+            'refurl'=> $this->input->post('refurl'),
+            'publicgraphs'=> $this->input->post('publicgraphs'),
+            'usecookie'=> $this->input->post('usecookie'),
+            'allowregister'=> $this->input->post('allowregister'),
+            'allowsave'=> $this->input->post('allowsave'),
+            'navigationdelay'=> $this->input->post('navigationdelay'),
+            'printanswers'=> $this->input->post('printanswers'),
+            'publicstatistics'=> $this->input->post('publicstatistics'),
+            'autoredirect'=> $this->input->post('autoredirect'),
+            'showXquestions'=> $this->input->post('showXquestions'),
+            'showgroupinfo'=> $this->input->post('showgroupinfo'),
+            'showqnumcode'=> $this->input->post('showqnumcode'),
+            'shownoanswer'=> $this->input->post('shownoanswer'),
+            'showwelcome'=> $this->input->post('showwelcome'),
+            'allowprev'=> $this->input->post('allowprev'),
+            'allowjumps'=> $this->input->post('allowjumps'),
+            'nokeyboard'=> $this->input->post('nokeyboard'),
+            'showprogress'=> $this->input->post('showprogress'),
+            'listpublic'=> $this->input->post('public'),
+            'htmlemail'=> $this->input->post('htmlemail'),
+            'tokenanswerspersistence'=> $this->input->post('tokenanswerspersistence'),
+            'alloweditaftercompletion'=> $this->input->post('alloweditaftercompletion'),
+            'usecaptcha'=> $this->input->post('usecaptcha'),
+            'emailresponseto'=>trim($this->input->post('emailresponseto')),
+            'emailnotificationto'=>trim($this->input->post('emailnotificationto')),
+            'tokenlength'=>$tokenlength
             );
 
 
             /**$usquery=$connect->GetUpdateSQL($rs, $updatearray, false, get_magic_quotes_gpc());
             if ($usquery) {
-                $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());  // Checked
+            $usresult = $connect->Execute($usquery) or safe_die("Error updating<br />".$usquery."<br /><br /><strong>".$connect->ErrorMsg());  // Checked
             }
             */
             $condition = array('sid' =>  $surveyid);
@@ -1096,23 +1088,23 @@ class Database extends Admin_Controller {
                         $languagedetails=getLanguageDetails($langname);
 
                         $insertdata = array(
-                            'surveyls_survey_id' => $surveyid,
-                            'surveyls_language' => $langname,
-                            'surveyls_title' => '',
-                            'surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
-                            'surveyls_email_invite' => $aDefaultTexts['invitation'],
-                            'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
-                            'surveyls_email_remind' => $aDefaultTexts['reminder'],
-                            'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
-                            'surveyls_email_confirm' => $aDefaultTexts['confirmation'],
-                            'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
-                            'surveyls_email_register' => $aDefaultTexts['registration'],
-                            'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
-                            'email_admin_notification' => $aDefaultTexts['admin_notification'],
-                            'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
-                            'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
-                            'surveyls_dateformat' => $languagedetails['dateformat']
-                           );
+                        'surveyls_survey_id' => $surveyid,
+                        'surveyls_language' => $langname,
+                        'surveyls_title' => '',
+                        'surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
+                        'surveyls_email_invite' => $aDefaultTexts['invitation'],
+                        'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
+                        'surveyls_email_remind' => $aDefaultTexts['reminder'],
+                        'surveyls_email_confirm_subj' => $aDefaultTexts['confirmation_subject'],
+                        'surveyls_email_confirm' => $aDefaultTexts['confirmation'],
+                        'surveyls_email_register_subj' => $aDefaultTexts['registration_subject'],
+                        'surveyls_email_register' => $aDefaultTexts['registration'],
+                        'email_admin_notification_subj' => $aDefaultTexts['admin_notification_subject'],
+                        'email_admin_notification' => $aDefaultTexts['admin_notification'],
+                        'email_admin_responses_subj' => $aDefaultTexts['admin_detailed_notification_subject'],
+                        'email_admin_responses' => $aDefaultTexts['admin_detailed_notification'],
+                        'surveyls_dateformat' => $languagedetails['dateformat']
+                        );
 
                         $this->load->model('surveys_languagesettings_model');
 
@@ -1145,7 +1137,7 @@ class Database extends Admin_Controller {
 
                 if ($this->input->post('action') == "updatesurveysettingsandeditlocalesettings")
                 {
-                   redirect(site_url('admin/survey/editlocalsettings/'.$surveyid));
+                    redirect(site_url('admin/survey/editlocalsettings/'.$surveyid));
                 }
                 else
                 {
@@ -1176,32 +1168,32 @@ class Database extends Admin_Controller {
     */
     function _Updatedefaultvalues($qid,$sqid,$scale_id,$specialtype,$language,$defaultvalue,$ispost)
     {
-       $this->load->helper('database');
-       if ($defaultvalue=='')  // Remove the default value if it is empty
-       {
-          $query = "DELETE FROM ".$this->db->dbprefix."defaultvalues WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'";
-          db_execute_assoc($query);
-          //$connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'");
-       }
-       else
-       {
-           $query = "SELECT qid FROM ".$this->db->dbprefix."defaultvalues WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'";
-           $res = db_execute_assoc($query);
-           $exists=$res->num_rows(); //$connect->GetOne("SELECT qid FROM ".$this->db->dbprefix."defaultvalues WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'");)
-           //if ($exists===false || $exists===null)
-           if ($exists == 0)
-           {
-               $query = 'INSERT INTO '.$this->db->dbprefix."defaultvalues (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES ('".$defaultvalue."',{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})";
-               db_execute_assoc($query);
-               //$connect->execute('INSERT INTO '.$this->db->dbprefix."defaultvalues (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})");
-           }
-           else
-           {
-               $query = 'UPDATE '.$this->db->dbprefix."defaultvalues set defaultvalue='".$defaultvalue."'  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'";
-               db_execute_assoc($query);
-               //$connect->execute('UPDATE '.$this->db->dbprefix."defaultvalues set defaultvalue='".$defaultvalue."'  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'");
-           }
-       }
+        $this->load->helper('database');
+        if ($defaultvalue=='')  // Remove the default value if it is empty
+        {
+            $query = "DELETE FROM ".$this->db->dbprefix."defaultvalues WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'";
+            db_execute_assoc($query);
+            //$connect->execute("DELETE FROM ".db_table_name('defaultvalues')." WHERE sqid=$sqid AND qid=$qid AND specialtype='$specialtype' AND scale_id={$scale_id} AND language='{$language}'");
+        }
+        else
+        {
+            $query = "SELECT qid FROM ".$this->db->dbprefix."defaultvalues WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'";
+            $res = db_execute_assoc($query);
+            $exists=$res->num_rows(); //$connect->GetOne("SELECT qid FROM ".$this->db->dbprefix."defaultvalues WHERE sqid=$sqid AND qid=$qid AND specialtype=$specialtype'' AND scale_id={$scale_id} AND language='{$language}'");)
+            //if ($exists===false || $exists===null)
+            if ($exists == 0)
+            {
+                $query = 'INSERT INTO '.$this->db->dbprefix."defaultvalues (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES ('".$defaultvalue."',{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})";
+                db_execute_assoc($query);
+                //$connect->execute('INSERT INTO '.$this->db->dbprefix."defaultvalues (defaultvalue,qid,scale_id,language,specialtype,sqid) VALUES (".db_quoteall($defaultvalue,$ispost).",{$qid},{$scale_id},'{$language}','{$specialtype}',{$sqid})");
+            }
+            else
+            {
+                $query = 'UPDATE '.$this->db->dbprefix."defaultvalues set defaultvalue='".$defaultvalue."'  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'";
+                db_execute_assoc($query);
+                //$connect->execute('UPDATE '.$this->db->dbprefix."defaultvalues set defaultvalue='".$defaultvalue."'  WHERE sqid={$sqid} AND qid={$qid} AND specialtype='{$specialtype}' AND scale_id={$scale_id} AND language='{$language}'");
+            }
+        }
     }
 
 

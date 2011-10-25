@@ -1694,70 +1694,42 @@ class survey extends Survey_Common_Controller {
     /**
     * Saves the new survey after the creation screen is submitted
     *
+    * @param $iSurveyID  The survey id to be used for the new survey. If already taken a new random one will be used.
     */
-    function insert()
+    function insert($iSurveyID=null)
     {
         if ($this->session->userdata('USER_RIGHT_CREATE_SURVEY'))
         {
-            $this->load->helper("surveytranslator");
-            $aDateFormatDetails=getDateFormatData($this->session->userdata('dateformat'));
-
-            $supportedLanguages = getLanguageData();
-
-            $numberformatid = $supportedLanguages[$this->input->post('language')]['radixpoint'];
-
-            $url = $this->input->post('url');
-            if ($url == 'http://') {$url="";}
-            $surveyls_title = $this->input->post('surveyls_title');
-            if (!$surveyls_title)
+            if (!$this->input->post('surveyls_title'))
             {
-
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Survey could not be created because it did not have a title","js")."\")\n //-->\n</script>\n";
-            } else
+                $this->session->set_userdata('flashmessage',$clang->gT("Survey could not be created because it did not have a title"));
+            }
+            else
             {
-                $this->load->helper('database');
-                // Get random ids until one is found that is not used
-                do
-                {
-                    $surveyid = sRandomChars(5,'123456789');
-                    $isquery = "SELECT sid FROM ".$this->db->dbprefix('surveys')." WHERE sid=$surveyid";
-                    $isresult = db_execute_assoc($isquery); // Checked
-                }
-                while ($isresult->num_rows()>0);
-
-
-                $description = $this->input->post('description');
-                $welcome = $this->input->post('welcome');
-                $urldescp = $this->input->post('urldescrip');
-
                 $template = $this->input->post('template');
-                if (!$template) {$template='default';}
-                if($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1 && $this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') != 1 && !hasTemplateManageRights($this->session->userdata('loginID'), $this->input->post('template'))) $template = "default";
-
-                // insert base language into surveys_language_settings
-                if ($this->config->item('filterxsshtml'))
+                if(!$template || ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1 && $this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') != 1 && !hasTemplateManageRights($this->session->userdata('loginID'), $this->input->post('template'))))
                 {
-                    /**
-                    require_once("../classes/inputfilter/class.inputfilter_clean.php");
-                    $myFilter = new InputFilter('','',1,1,1);
+                    $template = "default";
+                }
 
-                    $surveyls_title=$myFilter->process($surveyls_title);
-                    $description=$myFilter->process($description);
-                    $welcome=$myFilter->process($welcome);
-                    $this->input->post['urldescrip']=$myFilter->process($this->input->post['urldescrip']); */
+                $this->load->helper("surveytranslator");
+
+
+                // Start date set?
+                $startdate = $this->input->post('startdate');
+                $aDateFormatData=getDateFormatData($_SESSION['dateformat']);
+
+                if (trim($startdate)=='')
+                {
+                    $startdate=null;
                 }
                 else
                 {
-                    $surveyls_title = html_entity_decode($surveyls_title, ENT_QUOTES, "UTF-8");
-                    $description = html_entity_decode($description, ENT_QUOTES, "UTF-8");
-                    $welcome = html_entity_decode($welcome, ENT_QUOTES, "UTF-8");
-                    $urldescp = html_entity_decode($urldescp, ENT_QUOTES, "UTF-8");
+                    $this->load->library('Date_Time_Converter',array($startdate , $aDateFormatData['phpdate'].' H:i:s'));
+                    $startdate=$this->date_time_converter->convert("Y-m-d H:i:s");
                 }
 
-                //make sure only numbers are passed within the $this->input->post variable
-                $dateformat = (int) $this->input->post('dateformat');
-                $tokenlength = (int) $this->input->post('tokenlength');
-
+                // Expiry date set?
                 $expires = $this->input->post('expires');
                 if (trim($expires)=='')
                 {
@@ -1765,26 +1737,12 @@ class survey extends Survey_Common_Controller {
                 }
                 else
                 {
-                    $this->load->library('Date_Time_Converter',array($expires , "d.m.Y H:i"));
-                    $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($expires , "d.m.Y H:i");
-                    $browsedatafield=$datetimeobj->convert("Y-m-d H:i:s");
-                    $expires=$browsedatafield;
-                }
-                $startdate = $this->input->post('startdate');
-                if (trim($startdate)=='')
-                {
-                    $startdate=null;
-                }
-                else
-                {
-                    $this->load->library('Date_Time_Converter',array($startdate , "d.m.Y H:i"));
-                    $datetimeobj = $this->date_time_converter; //new Date_Time_Converter($startdate , "d.m.Y H:i");
-                    $browsedatafield=$datetimeobj->convert("Y-m-d H:i:s");
-                    $startdate=$browsedatafield;
+                    $this->load->library('Date_Time_Converter',array($expires , $aDateFormatData['phpdate'].' H:i:s'));
+                    $expires=$this->date_time_converter->convert("Y-m-d H:i:s");
                 }
 
 
-                $insertarray=array( 'sid'=>$surveyid,
+                $insertarray=array(
                 'owner_id'=>$this->session->userdata('loginID'),
                 'admin'=>$this->input->post('admin'),
                 'active'=>'N',
@@ -1817,8 +1775,6 @@ class survey extends Survey_Common_Controller {
                 'nokeyboard'=>$this->input->post('nokeyboard'),
                 'showprogress'=>$this->input->post('showprogress'),
                 'printanswers'=>$this->input->post('printanswers'),
-                //                            'usetokens'=>$this->input->post['usetokens'],
-                'datecreated'=>date("Y-m-d"),
                 'listpublic'=>$this->input->post('public'),
                 'htmlemail'=>$this->input->post('htmlemail'),
                 'tokenanswerspersistence'=>$this->input->post('tokenanswerspersistence'),
@@ -1828,11 +1784,36 @@ class survey extends Survey_Common_Controller {
                 'publicgraphs'=>$this->input->post('publicgraphs'),
                 'assessments'=>$this->input->post('assessments'),
                 'emailresponseto'=>$this->input->post('emailresponseto'),
-                'tokenlength'=>$tokenlength
+                'tokenlength'=>$this->input->post('tokenlength')
                 );
+                if (!is_null($iSurveyID))
+                {
+                    $insertarray['wishSID']=$iSurveyID;
+                }
 
                 $this->load->model('surveys_model');
-                $this->surveys_model->insertNewSurvey($insertarray);
+                $iNewSurveyid=$this->surveys_model->insertNewSurvey($insertarray);
+                if (!$iNewSurveyid) die('Survey could not be created.');
+
+                // Insert base language into surveys_language_settings
+                $sTitle = $this->input->post('surveyls_title');
+                $description = $this->input->post('description');
+                $welcome = $this->input->post('welcome');
+                $urldescp = $this->input->post('urldescrip');
+                if ($this->config->item('filterxsshtml'))
+                {
+                    $sTitle=$this->security->xss_clean($sTitle);
+                    $description=$this->security->xss_clean($description);
+                    $welcome=$this->security->xss_clean($welcome);
+                    $urldescp=$this->security->xss_clean($this->input->post['urldescrip']);
+                }
+                else
+                {
+                    $sTitle = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
+                    $description = html_entity_decode($description, ENT_QUOTES, "UTF-8");
+                    $welcome = html_entity_decode($welcome, ENT_QUOTES, "UTF-8");
+                    $urldescp = html_entity_decode($urldescp, ENT_QUOTES, "UTF-8");
+                }
 
                 // Fix bug with FCKEditor saving strange BR types
                 $surveyls_title=fix_FCKeditor_text($surveyls_title);
@@ -1850,9 +1831,12 @@ class survey extends Survey_Common_Controller {
                     $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditional_nl2br($aDefaultTexts['admin_detailed_notification'],$is_html_email,'unescaped');
                 }
 
-                $insertarray=array( 'surveyls_survey_id'=>$surveyid,
+                $url = $this->input->post('url');
+                if ($url == 'http://') {$url="";}
+
+                $insertarray=array( 'surveyls_survey_id'=>$iNewSurveyid,
                 'surveyls_language'=>$this->input->post('language'),
-                'surveyls_title'=>$surveyls_title,
+                'surveyls_title'=>$sTitle,
                 'surveyls_description'=>$description,
                 'surveyls_welcometext'=>$welcome,
                 'surveyls_urldescription'=>$this->input->post('urldescrip'),
@@ -1870,9 +1854,10 @@ class survey extends Survey_Common_Controller {
                 'email_admin_notification'=>conditional_nl2br($aDefaultTexts['admin_notification'],$is_html_email,'unescaped'),
                 'email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
                 'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
-                'surveyls_dateformat'=>$dateformat,
-                'surveyls_numberformat'=>$numberformatid
+                'surveyls_dateformat'=>(int) $this->input->post('dateformat'),
+                'surveyls_numberformat'=>(int) $this->input->post('numberformat')
                 );
+
                 $this->load->model('surveys_languagesettings_model');
                 $this->surveys_languagesettings_model->insertNewSurvey($insertarray);
                 unset($bplang);

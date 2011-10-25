@@ -32,7 +32,7 @@
                 <?php } ?>
         </select>
     </li>
-    <li><label for='numberformat_<?php echo $esrow['surveyls_language']; ?>'><?php echo $clang->gT("Decimal Point Format:"); ?></label>
+    <li><label for='numberformat_<?php echo $esrow['surveyls_language']; ?>'><?php echo $clang->gT("Decimal mark:"); ?></label>
         <select size='1' id='numberformat_<?php echo $esrow['surveyls_language']; ?>' name='numberformat_<?php echo $esrow['surveyls_language']; ?>'>
             <?php foreach (getRadixPointData() as $index=>$radixptdata)
                 { ?>

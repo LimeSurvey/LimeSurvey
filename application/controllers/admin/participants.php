@@ -83,7 +83,7 @@ function displayParticipants()
     // loads the survey names to be shown in add to survey
     if($this->session->userdata('USER_RIGHT_SUPERADMIN'))  // if user is superadmin, all survey names
     {
-     $surveynames = $this->surveys_model->getALLSurveyNames();
+     $surveynames = $this->surveys_model->getAllSurveyNames();
     }
     else                                                   // otherwise owned by him
     {
@@ -121,7 +121,7 @@ function blacklistControl()
 */
 function attributeControl()
 {
-    
+
     $css_admin_includes[] = $this->config->item('styleurl')."admin/default/participants.css";
     $this->config->set_item("css_admin_includes", $css_admin_includes);
     self::_getAdminHeader();

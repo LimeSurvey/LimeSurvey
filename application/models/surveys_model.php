@@ -2,33 +2,33 @@
 
 class Surveys_model extends CI_Model {
 
-	function getAllRecords($condition=FALSE)
-	{
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
+    function getAllRecords($condition=FALSE)
+    {
+        if ($condition != FALSE)
+        {
+            $this->db->where($condition);
+        }
 
-		$data = $this->db->get('surveys');
+        $data = $this->db->get('surveys');
 
-		return $data;
-	}
+        return $data;
+    }
 
-	function getSomeRecords($fields,$condition=FALSE)
-	{
-		foreach ($fields as $field)
-		{
-			$this->db->select($field);
-		}
-		if ($condition != FALSE)
-		{
-			$this->db->where($condition);
-		}
+    function getSomeRecords($fields,$condition=FALSE)
+    {
+        foreach ($fields as $field)
+        {
+            $this->db->select($field);
+        }
+        if ($condition != FALSE)
+        {
+            $this->db->where($condition);
+        }
 
-		$data = $this->db->get('surveys');
+        $data = $this->db->get('surveys');
 
-		return $data;
-	}
+        return $data;
+    }
 
     function getDataOnSurvey($surveyid)
     {
@@ -41,7 +41,27 @@ class Surveys_model extends CI_Model {
     function insertNewSurvey($data)
     {
 
-        return $this->db->insert('surveys', $data);
+        do
+        {
+            if(isset($data['wishSID'])) // if wishSID is set check if it is not taken already
+            {
+                $data['sid']=$data['wishSID'];
+                unset($data['wishSID']);
+            }
+            else
+            {
+                $data['sid'] = sRandomChars(6,'123456789');
+            }
+            $isquery = "SELECT sid FROM ".$this->db->dbprefix('surveys').' WHERE sid='.$data['sid'];
+            $isresult = $this->db->query($isquery); // Checked
+        }
+        while ($isresult->num_rows()>0);
+        $data['datecreated']=date("Y-m-d");
+
+        if (!$this->db->insert('surveys', $data))
+            return false;
+        else
+            return $data['sid'];
     }
 
     function updateSurvey($data,$condition)
@@ -60,7 +80,7 @@ class Surveys_model extends CI_Model {
         $query=$this->db->get();
         return $query->result_array();
     }
-    function getALLSurveyNames()
+    function getAllSurveyNames()
     {
         $this->db->select('surveyls_survey_id,surveyls_title');
         $this->db->from('surveys_languagesettings');

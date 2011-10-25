@@ -44,6 +44,16 @@
         <?php } ?>
         </select>
         </li>
+        <li><label for='numberformat'><?php echo $clang->gT("Decimal mark:"); ?></label>
+            <select size='1' id='numberformat' name='numberformat'>
+                <?php foreach (getRadixPointData() as $index=>$radixptdata)
+                    { ?>
+                    <option value='<?php echo $index; ?>'
+                        ><?php echo $radixptdata['desc']; ?></option>
+                    <?php } ?>
+            </select>
+        </li>
+
 
         <li><label for='admin'><?php echo $clang->gT("Administrator:") ; ?></label>
         <input type='text' size='50' id='admin' name='admin' value='<?php echo $owner['full_name'] ; ?>' /></li>

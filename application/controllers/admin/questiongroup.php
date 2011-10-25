@@ -217,25 +217,22 @@ class questiongroup extends Survey_Common_Controller {
             else
             {
                 $first=true;
-                /**require_once("../classes/inputfilter/class.inputfilter_clean.php");
-                $myFilter = new InputFilter('','',1,1,1);
-                */
                 foreach ($grplangs as $grouplang)
                 {
                     //Clean XSS
-                    /**if ($filterxsshtml)
+                    $group_name = $this->input->post('group_name_'.$grouplang);
+                    $group_description = $this->input->post('description_'.$grouplang);
+                    if ($this->config->item('filterxsshtml'))
                     {
-                    $_POST['group_name_'.$grouplang]=$myFilter->process($_POST['group_name_'.$grouplang]);
-                    $_POST['description_'.$grouplang]=$myFilter->process($_POST['description_'.$grouplang]);
+                        $group_name=$this->security->xss_clean($group_name);
+                        $group_description=$this->security->xss_clean($group_description);
                     }
                     else
                     {
-                    $_POST['group_name_'.$grouplang] = html_entity_decode($_POST['group_name_'.$grouplang], ENT_QUOTES, "UTF-8");
-                    $_POST['description_'.$grouplang] = html_entity_decode($_POST['description_'.$grouplang], ENT_QUOTES, "UTF-8");
-                    } */
+                        $group_name = html_entity_decode($group_name, ENT_QUOTES, "UTF-8");
+                        $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
+                    }
 
-                    $group_name = $this->input->post('group_name_'.$grouplang);
-                    $group_description = $this->input->post('description_'.$grouplang);
 
                     // Fix bug with FCKEditor saving strange BR types
                     $group_name=fix_FCKeditor_text($group_name);
@@ -441,27 +438,24 @@ class questiongroup extends Survey_Common_Controller {
             $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             array_push($grplangs,$baselang);
-            //require_once("../classes/inputfilter/class.inputfilter_clean.php");
-            //$myFilter = new InputFilter('','',1,1,1);
             foreach ($grplangs as $grplang)
             {
                 if (isset($grplang) && $grplang != "")
                 {
-                    /**if ($filterxsshtml)
+                    $group_name = $this->input->post('group_name_'.$grplang);
+                    $group_description = $this->input->post('description_'.$grplang);
+                    if ($this->config->item('filterxsshtml'))
                     {
-                    $_POST['group_name_'.$grplang]=$myFilter->process($_POST['group_name_'.$grplang]);
-                    $_POST['description_'.$grplang]=$myFilter->process($_POST['description_'.$grplang]);
+                        $group_name=$this->security->xss_clean($group_name);
+                        $group_description=$this->security->xss_clean($group_description);
                     }
                     else
                     {
-                    $_POST['group_name_'.$grplang] = html_entity_decode($_POST['group_name_'.$grplang], ENT_QUOTES, "UTF-8");
-                    $_POST['description_'.$grplang] = html_entity_decode($_POST['description_'.$grplang], ENT_QUOTES, "UTF-8");
-                    } */
+                        $group_name = html_entity_decode($group_name, ENT_QUOTES, "UTF-8");
+                        $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
+                    }
 
                     // Fix bug with FCKEditor saving strange BR types
-                    $group_name = $this->input->post('group_name_'.$grplang);
-                    $group_description = $this->input->post('description_'.$grplang);
-
                     $group_name=fix_FCKeditor_text($group_name);
                     $group_description=fix_FCKeditor_text($group_description);
 

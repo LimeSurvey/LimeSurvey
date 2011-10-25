@@ -24,17 +24,17 @@ injectglobalsettings();
 function injectglobalsettings()
 {
 	$CI =& get_instance();
-	
+
     //$registry = SettingsStorage::getInstance();
 	$registry = $CI->settingsstorage->getInstance();
-	
+
 	$CI->load->model("settings_global_model");
-	
+
     //$usquery = "SELECT * FROM ".db_table_name("settings_global");
     //$dbvaluearray=$connect->GetAll($usquery);
-	
+
 	$query = $CI->settings_global_model->getAllRecords();
-	
+
     //if ($dbvaluearray!==false)
     if($query->num_rows() > 0)
     {
@@ -46,7 +46,7 @@ function injectglobalsettings()
                 //$$setting['stg_name']=$setting['stg_value'];
                 $CI->config->set_item($setting['stg_name'], $setting['stg_value']);
             }
-            
+
             $registry->set($setting['stg_name'],$setting['stg_value']);
         }
     }
@@ -56,7 +56,7 @@ function getGlobalSetting($settingname)
 {
 	$CI =& get_instance();
     //$registry = SettingsStorage::getInstance();
-	
+
 	$registry = $CI->settingsstorage->getInstance();
 	$CI->load->model("settings_global_model");
 
@@ -94,10 +94,10 @@ function setGlobalSetting($settingname, $settingvalue)
 
 	$CI->load->model("settings_global_model");
 	$CI->settings_global_model->updateSetting($settingname, $settingvalue);
-	
+
     $registry = $CI->settingsstorage->getInstance();
     $registry->set($settingname,$settingvalue);
-    //if (!isset($CI->config->item('{$settingname}'))) 
+    //if (!isset($CI->config->item('{$settingname}')))
     $CI->config->set_item($settingname, $settingvalue);
 }
 
