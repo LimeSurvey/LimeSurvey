@@ -679,7 +679,10 @@
         self::_surveybar($surveyid,$gid);
         self::_surveysummary($surveyid,"viewgroup");
         self::_questiongroupbar($surveyid,$gid,$qid,"addquestion");
-        self::_questionbar($surveyid,$gid,$qid,"editquestion");
+        if ($action != "addquestion")
+        {
+            self::_questionbar($surveyid,$gid,$qid,"editquestion");
+        }
 
 
         if(bHasSurveyPermission($surveyid,'surveycontent','read'))
