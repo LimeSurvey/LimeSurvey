@@ -899,7 +899,7 @@ class survey extends LSCI_Controller {
             {
                 // there is no admin session (data), destroy it
                 // and change the session name
-                $this->session->session_destroy();
+                $this->session->sess_destroy();
                 session_name($sSessionname);
             }
         }
@@ -938,6 +938,8 @@ class survey extends LSCI_Controller {
         // then delete this new session
         // ==> the original admin session remains valid
         // ==> it is possible to start a new session
+        // @todo session_destroy() used in here (and elsewehere in this file)
+        //       , not ->session->sess_destroy(), check.
         session_name($sInitialSessionName);
         if ( $sSessionHandler == 'db' )
         {
