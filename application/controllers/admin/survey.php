@@ -1255,7 +1255,7 @@ class survey extends Survey_Common_Controller {
 
                 if (isset($sExtension) && strtolower($sExtension)=='csv')
                 {
-                    $aImportResults=CSVImportSurvey($sFullFilepath);
+                    $aImportResults=CSVImportSurvey($sFullFilepath,null,(isset($_POST['translinksfields'])));
                 }
                 elseif (isset($sExtension) && strtolower($sExtension)=='lss')
                 {

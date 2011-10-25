@@ -5331,37 +5331,33 @@ function getNextCode($sourcecode)
 }
 
 /**
-* Translink
+* Translate links which are in any answer/question/survey/email template/label set to their new counterpart
 *
-* @param mixed $type
-* @param mixed $oldid
-* @param mixed $newid
-* @param mixed $text
-* @return mixed
+* @param mixed $type  'survey' or 'label'
+* @param mixed $iOldSurveyID
+* @param mixed $iNewSurveyID
+* @param mixed $sString
+* @return string
 */
-function translink($type, $oldid, $newid, $text)
+function translink($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
     $CI = &get_instance();
-    if ($CI->input->post('translinksfields') === false)
-    {
-        return $text;
-    }
 
-    if ($type == 'survey')
+    if ($sType == 'survey')
     {
-        $pattern = "([^'\"]*)/upload/surveys/$oldid/";
-        $replace = $CI->config->item("relativeurl")."/upload/surveys/$newid/";
-        return preg_replace('#'.$pattern.'#', $replace, $text);
+        $sPattern = "([^'\"]*)/upload/surveys/{$iOldSurveyID}/";
+        $sReplace = $CI->config->item("relativeurl")."/upload/surveys/{$iNewSurveyID}/";
+        return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
     }
-    elseif ($type == 'label')
+    elseif ($sType == 'label')
     {
-        $pattern = "([^'\"]*)/upload/labels/$oldid/";
-        $replace = $CI->config->item("relativeurl")."/upload/labels/$newid/";
-        return preg_replace('#'.$pattern.'#', $replace, $text);
+        $pattern = "([^'\"]*)/upload/labels/{$iOldSurveyID}/";
+        $replace = $CI->config->item("relativeurl")."/upload/labels/{$newid}/";
+        return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
     }
-    else
+    else // unkown type
     {
-        return $text;
+        return $sString;
     }
 }
 
