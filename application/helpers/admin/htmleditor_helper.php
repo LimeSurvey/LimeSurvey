@@ -184,7 +184,9 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
                                                                 ,smiley_path : \"".$CI->config->item('uploadurl')."/images/smiley/msn/\"\n"
                                                                 . $htmlformatoption
                                                                 . $toolbaroption
-    ."});});";
+                                                            ."});
+                                                            \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
+	});";
 
 
     $htmlcode.= '</script>';

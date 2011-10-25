@@ -1101,7 +1101,9 @@ textarea.updater-changelog {
     padding-bottom:5px;
 }
 
-
+.form30 ul.editor-parent {
+	min-width:1000px; 
+}
 
 #frmeditquestion li,
 #importquestion li {
