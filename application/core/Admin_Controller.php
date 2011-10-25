@@ -202,7 +202,11 @@ class Admin_Controller extends LSCI_Controller {
         if (getLanguageRTL($this->session->userdata("adminlang")))
         {
             $data['languageRTL'] = " dir=\"rtl\" ";
-            $data['styleRTL']="<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/".$this->config->item("admintheme")."/adminstyle-rtl.css\" />\n";
+            $data['bIsRTL']=true;
+        }
+        else
+        {
+            $data['bIsRTL']=false;
         }
 
         $data['meta']="";

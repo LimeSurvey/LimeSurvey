@@ -23,7 +23,7 @@ switch ($this->session->userdata('htmleditormode'))
 <strong><?php echo $clang->gT("Your personal settings");?></strong>
 </div>
 <div>
-<form action='<?php echo site_url("admin/user/personalsettings/");?>' id='personalsettings' method='post'>
+<form action='<?php echo site_url("admin/user/personalsettings/");?>' id='personalsettings' class='form44' method='post'>
 <ul>
 
 <li><label for='lang'><?php echo $clang->gT("Interface language");?>:</label>
@@ -68,7 +68,7 @@ switch ($this->session->userdata('htmleditormode'))
 	echo "selected='selected'";}?>><?php echo $clang->gT("Simple template editor");?></option>
 </select>
 </li>
-    
+
 <li>
 <label for='dateformat'><?php echo $clang->gT("Date format");?>:</label>
 <select name='dateformat' id='dateformat'>
@@ -79,7 +79,7 @@ switch ($this->session->userdata('htmleditormode'))
     {
         echo "selected='selected'";
     }
-     
+
     echo ">".$dateformatdata['dateformat'].'</option>';
 } ?>
 </select>

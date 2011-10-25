@@ -5333,7 +5333,7 @@ function getNextCode($sourcecode)
 /**
 * Translate links which are in any answer/question/survey/email template/label set to their new counterpart
 *
-* @param mixed $type  'survey' or 'label'
+* @param mixed $sType 'survey' or 'label'
 * @param mixed $iOldSurveyID
 * @param mixed $iNewSurveyID
 * @param mixed $sString
@@ -5352,7 +5352,7 @@ function translink($sType, $iOldSurveyID, $iNewSurveyID, $sString)
     elseif ($sType == 'label')
     {
         $pattern = "([^'\"]*)/upload/labels/{$iOldSurveyID}/";
-        $replace = $CI->config->item("relativeurl")."/upload/labels/{$newid}/";
+        $replace = $CI->config->item("relativeurl")."/upload/labels/{$iNewSurveyID}/";
         return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
     }
     else // unkown type

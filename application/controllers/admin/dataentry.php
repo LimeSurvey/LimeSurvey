@@ -462,7 +462,7 @@
             		<div class='header ui-widget-header'>
             			".$clang->gT("Import responses from a deactivated survey table")."
             		</div>
-                    <form id='personalsettings' method='post'>
+                    <form id='importresponses' class='form30' method='post'>
             		<ul>
             		 <li><label for='spansurveyid'>".$clang->gT("Target survey ID:")."</label>
             		 <span id='spansurveyid'> $surveyid<input type='hidden' value='$surveyid' name='sid'></span>

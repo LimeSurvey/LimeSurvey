@@ -849,24 +849,6 @@ table.statisticstable, table.statisticssummary {
     text-align:center;
 }
 
-#personalsettings label {
-    float: left;
-    width: 20em;
-    margin-right: 0.5em;
-    text-align: right;
-    font-weight: bold;
-}
-
-#personalsettings li {
-    list-style-type: none;
-    padding-bottom:5px;
-}
-
-form#personalsettings {
-    width:750px;
-    margin:0 auto;
-}
-
 div.messagebox {
     width: 550px;
     margin:10px auto;
@@ -1037,7 +1019,6 @@ textarea.updater-changelog {
 #vvexport li label:first-child,
 #importlabels li label:first-child,
 #exportdialog li label:first-child,
-#frmeditquestion li label:first-child,
 #importquestion li label:first-child,
 #bouncesettings li label:first-child,
 #importquestion li label:first-child {
