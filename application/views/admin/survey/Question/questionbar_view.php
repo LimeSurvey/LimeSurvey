@@ -7,7 +7,7 @@
     </ul></div>
 <?php } ?>
 <div class='menubar-title ui-widget-header'>
-            <strong><?php echo $clang->gT("Question"); ?></strong> <span class='basic'><?php echo $qrrow['question']; ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
+            <strong><?php echo $clang->gT("Question"); ?></strong> <span class='basic'><?php echo ellipsize($qrrow['question'],150,.8); ?> (<?php echo $clang->gT("ID").":".$qid; ?>)</span>
             </div>
             <div class='menubar-main'>
             <div class='menubar-left'>

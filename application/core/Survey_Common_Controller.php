@@ -45,6 +45,8 @@
 
         $clang = $this->limesurvey_lang;
         $this->load->helper('database');
+        $this->load->helper('text');
+
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
         //Show Question Details
