@@ -1536,7 +1536,6 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
             $questionrowdata=array_map('convertCsvreturn2return', $questionrowdata);
 
             // translate internal links
-            $questionrowdata['title']=translink('survey', $oldsid, $newsid, $questionrowdata['title']);
             $questionrowdata['question']=translink('survey', $oldsid, $newsid, $questionrowdata['question']);
             $questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
 
@@ -1871,7 +1870,6 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
 
             // now translate any links
-            $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
             $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
             $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
             if (isset($aQIDReplacements[$oldsqid])){
@@ -2963,7 +2961,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
             if (!isset($questionrowdata["question_order"]) || $questionrowdata["question_order"]=='') {$questionrowdata["question_order"]=0;}
             // translate internal links
-            $questionrowdata['title']=translink('survey', $oldsid, $newsid, $questionrowdata['title']);
             $questionrowdata['question']=translink('survey', $oldsid, $newsid, $questionrowdata['question']);
             $questionrowdata['help']=translink('survey', $oldsid, $newsid, $questionrowdata['help']);
 
@@ -3553,7 +3550,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $oldqid=$insertdata['qid']; unset($insertdata['qid']); // save the old qid
 
             // now translate any links
-            $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
             $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
             $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
             // Insert the new question
@@ -3594,7 +3590,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
 
             // now translate any links
-            $insertdata['title']=translink('survey', $oldsid, $newsid, $insertdata['title']);
             $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
             if (isset($insertdata['help'])) $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
             if (isset($aQIDReplacements[$oldsqid])){
