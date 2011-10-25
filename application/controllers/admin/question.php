@@ -864,13 +864,13 @@
      * Function responsible for deleting a question.
      * @return
      */
-    function delete()
+    function delete($action, $surveyid, $gid, $qid)
     {
         $clang = $this->limesurvey_lang;
-        $action = $this->input->post('action');
-        $surveyid = $this->input->post('sid');
-        $gid = $this->input->post('gid');
-        $qid = $this->input->post('qid');
+    	$surveyid = sanitize_int($surveyid);
+		$gid = sanitize_int($gid);
+		$qid = sanitize_int($qid);
+
         $this->load->helper("database");
 
         if ($action == "delquestion" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
@@ -878,7 +878,7 @@
             if (!isset($qid)) {$qid=returnglobal('qid');}
             //check if any other questions have conditions which rely on this question. Don't delete if there are.
             // TMSW Conditions->Relevance:  Allow such deletes - can warn about missing relevance separately.
-            $ccquery = "SELECT * FROM ".$this->db->dbprefix."as WHERE cqid=$qid";
+            $ccquery = "SELECT * FROM ".$this->db->dbprefix."conditions WHERE cqid=$qid";
             $ccresult = db_execute_assoc($ccquery); // or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg()); // Checked
             $cccount=$ccresult->num_rows();
             foreach ($ccresult->result_array() as $ccr) {$qidarray[]=$ccr['qid'];}
@@ -919,6 +919,8 @@
                 redirect(site_url('admin/survey/view/'.$surveyid."/".$gid));
             }
         }
+        $this->session->set_userdata('flashmessage', $clang->gT("You are not authorized to delete questions."));
+        redirect(site_url('admin/survey/view/'.$surveyid."/".$gid));
 
 
     }

@@ -54,6 +54,7 @@ $route['admin'] = "admin/index";
 //question
 $route['admin/question/newquestion/(:num)/(:num)'] = "admin/question/index/addquestion/$1/$2";
 $route['admin/question/editquestion/(:num)/(:num)/(:num)'] = "admin/question/index/editquestion/$1/$2/$3";
+$route['admin/question/deletequestion/(:num)/(:num)/(:num)'] = "admin/question/delete/delquestion/$1/$2/$3";
 
 //labels
 $route['admin/labels/newlabel'] = "admin/labels/index/newlabelset";
