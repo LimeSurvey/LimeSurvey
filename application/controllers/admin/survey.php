@@ -1794,7 +1794,7 @@ class survey extends Survey_Common_Controller {
                 $this->load->model('surveys_model');
                 $iNewSurveyid=$this->surveys_model->insertNewSurvey($insertarray);
                 if (!$iNewSurveyid) die('Survey could not be created.');
-
+                
                 // Insert base language into surveys_language_settings
                 $sTitle = $this->input->post('surveyls_title');
                 $description = $this->input->post('description');
@@ -1871,7 +1871,7 @@ class survey extends Survey_Common_Controller {
                 $surveyselect = getsurveylist();
 
             }
-            redirect(site_url('admin/survey/view/'.$surveyid));
+            redirect(site_url('admin/survey/view/'.$iNewSurveyid));
         }
 
     }
