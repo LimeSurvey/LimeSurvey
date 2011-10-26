@@ -4396,11 +4396,11 @@ function FlattenText($sTextToFlatten, $bDecodeHTMLEntities=false, $sCharset='UTF
     $sNicetext = strip_tags($sNicetext);
 
     if ($bStripNewLines ){
-        $sNicetext = preg_replace('~\R~', '', $sNicetext);
+        $sNicetext = preg_replace('~\Ru~', '', $sNicetext);
     }
     else // unify newlines
     {
-        $sNicetext = preg_replace('~\R~', "\r\n", $sNicetext);
+        $sNicetext = preg_replace('~\Ru~', "\r\n", $sNicetext);
     }
     if ($bDecodeHTMLEntities==true)
     {
