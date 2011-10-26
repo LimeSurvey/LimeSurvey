@@ -321,12 +321,10 @@ class LimeExpressionManager {
                             case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
                             case 'F': //ARRAY (Flexible) - Row Format
+                            case 'L': //LIST drop-down/radio-button list
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
                                 $sq_name = $array_filter . $sq['sqsuffix'];
-                                break;
-                            case 'L': //LIST drop-down/radio-button list
-                                // TODO - this does not have sub-questions.  How should it be supported?
                                 break;
                             default:
                                 break;
@@ -364,12 +362,10 @@ class LimeExpressionManager {
                             case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
                             case 'F': //ARRAY (Flexible) - Row Format
+                            case 'L': //LIST drop-down/radio-button list
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
                                 $sq_name = $array_filter_exclude . $sq['sqsuffix'];
-                                break;
-                            case 'L': //LIST drop-down/radio-button list
-                                // TODO - this does not have sub-questions.  How should it be supported?
                                 break;
                             default:
                                 break;
@@ -453,6 +449,7 @@ class LimeExpressionManager {
                                 break;
                             case 'R': //RANKING STYLE
                                 // TODO - does not have sub-questions, so how should this be done?
+                                // Current JavaScript works fine, but can't use expression value
                                 break;
                             default:
                                 break;
@@ -572,6 +569,7 @@ class LimeExpressionManager {
                                 break;
                             case 'R': //RANKING STYLE
                                 // TODO - does not have sub-questions, so how should this be done?
+                                // Current JavaScript works fine, but can't use expression value
                                 break;
                             default:
                                 break;
@@ -669,6 +667,7 @@ class LimeExpressionManager {
                 }
             }
 
+            /* Mistake - multiflexible_max specifies the top value for the pick list, not a sum of values across the entries
             // multiflexible_max
             // Validation:= sum(sq1,...,sqN) <= value (which could be an expression).
             if (isset($qattr['multiflexible_max']) && trim($qattr['multiflexible_max']) != '')
@@ -740,6 +739,7 @@ class LimeExpressionManager {
                     }
                 }
             }
+             */
 
             // num_value_equals_sgqa
             // Validation:= sum(sq1,...,sqN) == value (which could be an expression).
@@ -1020,7 +1020,7 @@ class LimeExpressionManager {
                 case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'H': //ARRAY (Flexible) - Column Format    // note does not have javatbd equivalent - so array filters don't work on it
-                case 'K': //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it
+                case 'K': //MULTIPLE NUMERICAL QUESTION         // note does not have javatbd equivalent - so array filters don't work on it, but need rowdivid to process validations
                 case 'M': //Multiple choice checkbox
                 case 'P': //Multiple choice with comments checkbox + text
                 case 'Q': //MULTIPLE SHORT TEXT                 // note does not have javatbd equivalent - so array filters don't work on it
@@ -1028,7 +1028,7 @@ class LimeExpressionManager {
                     $csuffix = $fielddata['aid'];
                     $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
-                    if ($type != 'H' && $type != 'K' && $type != 'Q' && $type != 'R') {
+                    if ($type != 'H' && $type != 'Q' && $type != 'R') {
                         if ($type == 'P' && preg_match("/comment$/", $code)) {
 //                            $rowdivid = substr($code,0,-7);
                         }
@@ -1122,7 +1122,7 @@ class LimeExpressionManager {
                     }
                     break;
             }
-            if (!is_null($rowdivid)) {
+            if (!is_null($rowdivid) || $type == 'L') {
                 if (!isset($q2subqInfo[$questionNum])) {
                     $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -1136,13 +1136,28 @@ class LimeExpressionManager {
                 if (!isset($q2subqInfo[$questionNum]['subqs'])) {
                     $q2subqInfo[$questionNum]['subqs'] = array();
                 }
-                $q2subqInfo[$questionNum]['subqs'][] = array(
-                    'rowdivid' => $rowdivid,
-                    'varName' => $varName,
-                    'jsVarName' => $jsVarName,
-                    'csuffix' => $csuffix,
-                    'sqsuffix' => $sqsuffix,
-                    );
+                if ($type == 'L')
+                {
+                    foreach (array_keys($ansArray) as $key)
+                    {
+                        $parts = explode('~',$key);
+                        $q2subqInfo[$questionNum]['subqs'][] = array(
+                            'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
+                            'varName' => $varName,
+                            'sqsuffix' => '_' . $parts[1],
+                            );
+                    }
+                }
+                else
+                {
+                    $q2subqInfo[$questionNum]['subqs'][] = array(
+                        'rowdivid' => $rowdivid,
+                        'varName' => $varName,
+                        'jsVarName' => $jsVarName,
+                        'csuffix' => $csuffix,
+                        'sqsuffix' => $sqsuffix,
+                        );
+                }
             }
 
             // TODO - should these arrays only be built for questions that require substitution at run-time?
