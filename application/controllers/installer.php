@@ -887,7 +887,8 @@ class Installer extends CI_Controller {
                 $this->load->view('installer/dbconfig_view',$aData);
 
             }
-
+            
+            $values['clang'] = $clang;
             $values['title']=$clang->gT("Database settings");
             $values['descp']=$clang->gT("Database settings");
             $values['classesForStep']=array('off','off','off','off','on','off');
