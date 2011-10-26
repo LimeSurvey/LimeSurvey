@@ -2,6 +2,19 @@
  * @author Thomas M. White
  */
 
+function LEMcount()
+{
+    // takes variable number of arguments
+    var result=0;
+    for (i=0;i<arguments.length;++i) {
+        var arg = arguments[i];
+        if (arg !== '') {
+            ++result;
+        }
+    }
+    return result;
+}
+
 function LEMpi()
 {
     return Math.PI;

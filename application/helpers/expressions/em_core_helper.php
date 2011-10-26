@@ -131,6 +131,7 @@ class ExpressionManager {
 'ceil' => array('ceil', 'Math.ceil', 'Round fractions up', 'number ceil(number)', 'http://www.php.net/manual/en/function.ceil.php', 1),
 'checkdate' => array('checkdate', 'checkdate', 'Returns true(1) if it is a valid date in gregorian calendar', 'bool checkdate(month,day,year)', 'http://www.php.net/manual/en/function.checkdate.php', 3),
 'cos' => array('cos', 'Math.cos', 'Cosine', 'number cos(number)', 'http://www.php.net/manual/en/function.cos.php', 1),
+'count' => array('exprmgr_count', 'LEMcount', 'Count the number of answered questions in the list', 'number count(arg1, arg2, ... argN)', '', -1),
 'date' => array('date', 'date', 'Format a local date/time', 'string date(format [, timestamp=time()])', 'http://www.php.net/manual/en/function.date.php', 1,2),
 'exp' => array('exp', 'Math.exp', 'Calculates the exponent of e', 'number exp(number)', 'http://www.php.net/manual/en/function.exp.php', 1),
 'floor' => array('floor', 'Math.floor', 'Round fractions down', 'number floor(number)', 'http://www.php.net/manual/en/function.floor.php', 1),
@@ -2336,6 +2337,9 @@ there~hi
 10~ceil(9.1)
 9~floor(9.9)
 15~sum(one,two,three,four,five)
+5~count(one,two,three,four,five)
+0~a='',b='',c=0
+1~count(a,b,c)
 5~intval(5.7)
 1~is_float(pi())
 0~is_float(5)
@@ -2632,6 +2636,23 @@ function cmpErrorTokens($a, $b)
         return 0;
     }
     return ($a[1][1] < $b[1][1]) ? -1 : 1;
+}
+
+/**
+ * Count the number of answered questions (non-empty)
+ * @param <type> $args
+ * @return int
+ */
+function exprmgr_count($args)
+{
+    $j=0;    // keep track of how many non-null values seen
+    foreach ($args as $arg)
+    {
+        if ($arg != '') {
+            ++$j;
+        }
+    }
+    return $j;
 }
 
 /**
