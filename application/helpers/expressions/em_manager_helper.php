@@ -323,7 +323,7 @@ class LimeExpressionManager {
                             case 'F': //ARRAY (Flexible) - Row Format
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
-                                $sq_name = $array_filter . $sq['vsuffix'];
+                                $sq_name = $array_filter . $sq['sqsuffix'];
                                 break;
                             case 'L': //LIST drop-down/radio-button list
                                 // TODO - this does not have sub-questions.  How should it be supported?
@@ -366,7 +366,7 @@ class LimeExpressionManager {
                             case 'F': //ARRAY (Flexible) - Row Format
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
-                                $sq_name = $array_filter_exclude . $sq['vsuffix'];
+                                $sq_name = $array_filter_exclude . $sq['sqsuffix'];
                                 break;
                             case 'L': //LIST drop-down/radio-button list
                                 // TODO - this does not have sub-questions.  How should it be supported?
@@ -418,7 +418,8 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'type' => 'equals_num_value',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $equals_num_value . '))'
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $equals_num_value . '))',
+                            'qid' => $questionNum
                             );
                     }
                 }
@@ -467,7 +468,8 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'type' => 'max_answers',
-                            'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))'
+                            'eqn' => '(count(' . implode(', ', $sq_names) . ') <= (' . $max_answers . '))',
+                            'qid' => $questionNum
                         );
                     }
                 }
@@ -502,7 +504,8 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'type' => 'max_num_value',
-                            'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . '))'
+                            'eqn' =>  '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value . '))',
+                            'qid' => $questionNum
                         );
                     }
                 }
@@ -540,7 +543,8 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'type' => 'max_num_value_sgqa',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value_sgqa . '))'
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') <= (' . $max_num_value_sgqa . '))',
+                            'qid' => $questionNum
                         );
                     }
                 }
@@ -583,7 +587,8 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'type' => 'min_answers',
-                            'eqn' => '(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . '))'
+                            'eqn' => '(count(' . implode(', ', $sq_names) . ') >= (' . $min_answers . '))',
+                            'qid' => $questionNum
                         );
                     }
                 }
@@ -618,7 +623,8 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'type' => 'min_num_value',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . '))'
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value . '))',
+                            'qid' => $questionNum
                         );
                     }
                 }
@@ -656,7 +662,8 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'type' => 'min_num_value_sgqa',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value_sgqa . '))'
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $min_num_value_sgqa . '))',
+                            'qid' => $questionNum
                         );
                     }
                 }
@@ -691,7 +698,8 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'type' => 'multiflexible_max',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') <= (' . $multiflexible_max . '))'
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') <= (' . $multiflexible_max . '))',
+                            'qid' => $questionNum
                         );
                     }
                 }
@@ -726,7 +734,8 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'type' => 'multiflexible_min',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $multiflexible_min . '))'
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') >= (' . $multiflexible_min . '))',
+                            'qid' => $questionNum
                         );
                     }
                 }
@@ -761,7 +770,8 @@ class LimeExpressionManager {
                         }
                         $validationEqn[$questionNum][] = array(
                             'type' => 'num_value_equals_sgqa',
-                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $num_value_equals_sgqa . '))'
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == (' . $num_value_equals_sgqa . '))',
+                            'qid' => $questionNum
                         );
                     }
                 }
@@ -773,13 +783,20 @@ class LimeExpressionManager {
             // assessment_value
             // TODO?  How does it work?
         }
-
-//        log_message('debug','==SUBQUESTION RELEVANCE==' . print_r($subQrels,true));
-//        log_message('debug','==VALIDATION EQUATIONS==' . print_r($validationEqn,true));
+//        log_message('debug','**SUBQUESTION RELEVANCE**' . print_r($subQrels,true));
+//        log_message('debug','**VALIDATION EQUATIONS**' . print_r($validationEqn,true));
 
         foreach ($subQrels as $sq)
         {
             $result = $this->_ProcessSubQRelevance($sq['eqn'], $sq['qid'], $sq['rowdivid'], $sq['type']);
+        }
+        foreach ($validationEqn as $qvals)
+        {
+            // HACK - this is to generate the error messages
+            foreach ($qvals as $val)
+            {
+//                $result = $this->_ProcessSubQRelevance($val['eqn'], $val['qid'], 'bogus', $val['type']);
+            }
         }
 
         $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
@@ -965,8 +982,9 @@ class LimeExpressionManager {
                     break;
             }
 
-            // Set $varName (question code / questions.title), $rowdivid, $csuffix, $vsuffix, and $question
+            // Set $varName (question code / questions.title), $rowdivid, $csuffix, $sqsuffix, and $question
             $rowdivid=NULL;   // so that blank for types not needing it.
+            $sqsuffix='';
             switch($type)
             {
                 case '!': //List - dropdown
@@ -985,16 +1003,16 @@ class LimeExpressionManager {
                 case '|': //File Upload
                 case '*': //Equation
                     $csuffix = '';
-                    $vsuffix = '';
+                    $sqsuffix = '';
                     $varName = $fielddata['title'];
                     $question = $fielddata['question'];
                     break;
                 case '1': //Array (Flexible Labels) dual scale
                     $csuffix = $fielddata['aid'] . '#' . $fielddata['scale_id'];
-                    $vsuffix = '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];
-                    $varName = $fielddata['title'] . $vsuffix;
+                    $sqsuffix = '_' . $fielddata['aid'];
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'] . '_' . $fielddata['scale_id'];;
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'] . '[' . $fielddata['scale'] . ']';
-                    $rowdivid = substr($code,0,-2);
+                    $rowdivid = substr($code,0,-2); // TMSW Check this
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
@@ -1008,25 +1026,25 @@ class LimeExpressionManager {
                 case 'Q': //MULTIPLE SHORT TEXT                 // note does not have javatbd equivalent - so array filters don't work on it
                 case 'R': //RANKING STYLE                       // note does not have javatbd equivalent - so array filters don't work on it
                     $csuffix = $fielddata['aid'];
-                    $vsuffix = '_' . $fielddata['aid'];
-                    $varName = $fielddata['title'] . $vsuffix;
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion'];
                     if ($type != 'H' && $type != 'K' && $type != 'Q' && $type != 'R') {
                         if ($type == 'P' && preg_match("/comment$/", $code)) {
-                            $rowdivid = 'javatbd' . substr($code,0,-7);
+//                            $rowdivid = substr($code,0,-7);
                         }
                         else {
-                            $rowdivid = 'javatbd' . $code;
+                            $sqsuffix = '_' . $fielddata['aid'];
+                            $rowdivid = $code;
                         }
                     }
                     break;
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
                     $csuffix = $fielddata['aid'];
-                    $vsuffix = '_' . $fielddata['aid'];
-                    $varName = $fielddata['title'] . $vsuffix;
+                    $sqsuffix = '_' . substr($fielddata['aid'],0,strpos($fielddata['aid'],'_'));
+                    $varName = $fielddata['title'] . '_' . $fielddata['aid'];
                     $question = $fielddata['question'] . ': ' . $fielddata['subquestion1'] . '[' . $fielddata['subquestion2'] . ']';
-                    $rowdivid = 'javatbd' . substr($code,0,strpos($code,'_'));
+                    $rowdivid = substr($code,0,strpos($code,'_'));
                     break;
             }
 
@@ -1123,7 +1141,7 @@ class LimeExpressionManager {
                     'varName' => $varName,
                     'jsVarName' => $jsVarName,
                     'csuffix' => $csuffix,
-                    'vsuffix' => $vsuffix,
+                    'sqsuffix' => $sqsuffix,
                     );
             }
 
@@ -1352,7 +1370,7 @@ class LimeExpressionManager {
     }
 
     /**
-     * (1) If using index, check all 
+     * (1) If using index, check all
      */
     function ProcessAllNeededRelevance()
     {
@@ -1582,7 +1600,7 @@ class LimeExpressionManager {
         return $result;
     }
 
-   private function _ProcessSubQRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL, $type=NULL)
+   private function _ProcessSubQRelevance($eqn,$questionNum=NULL,$rowdivid=NULL, $type=NULL)
     {
         // These will be called in the order that questions are supposed to be asked
         if (!isset($eqn) || trim($eqn=='') || trim($eqn)=='1')
@@ -1616,8 +1634,7 @@ class LimeExpressionManager {
 //            $CI =& get_instance();
 //            $CI->db->insert('expression_errors',$error);
         }
-
-        if (!is_null($questionNum)) {
+        else if (!is_null($questionNum)) {
             $jsVars = $this->em->GetJSVarsUsed();
             $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
             $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
@@ -1629,7 +1646,8 @@ class LimeExpressionManager {
                 'numJsVars' => count($jsVars),
                 'relevancejs' => $relevanceJS,
                 'relevanceVars' => $relevanceVars,
-                'jsResultVar' => $jsResultVar,
+                'jsResultVar' => $rowdivid, // TMSW - check this
+                'rowdivid' => $rowdivid,
 //                'prettyPrint' => $prettyPrint,
 //                'hasErrors' => $hasErrors,
                 'type'=>$type,
@@ -1693,7 +1711,7 @@ class LimeExpressionManager {
                 // means that some values changed, so need to update what was registered to ExpressionManager
                 $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
                 $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
-//                $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
+                $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
             }
         }
     }
@@ -1781,7 +1799,7 @@ class LimeExpressionManager {
             }
         }
 
-
+        $subqrels = array();
         if (is_array($pageRelevanceInfo))
         {
             foreach ($pageRelevanceInfo as $arg)
@@ -1809,6 +1827,24 @@ class LimeExpressionManager {
                 $qidList[$arg['qid']] = $arg['qid'];
 
                 $relevance = $arg['relevancejs'];
+                if (isset($arg['rowdivid']))
+                {
+                    if ($relevance == '' || $relevance == 1) {
+                        // always an error?
+                        log_message('debug', 'Invalid SubQ Relevance?: ' . print_r($arg,true));
+                        continue;
+                    }
+                    if (!isset($subqrels[$relevance]))
+                    {
+                        $subqrels[$relevance] = array(
+                            'relevance' => $relevance,
+                            'targets' => array(),
+                            );
+                    }
+                    $subqrels[$relevance]['targets'][] = $arg['rowdivid'];
+                }
+                else
+                {
                     if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0)
                     {
                         // Only show constitutively true relevances if there is tailoring that should be done.
@@ -1845,6 +1881,7 @@ class LimeExpressionManager {
                     $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
                     $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
                     $jsParts[] = "}\n";
+                }
 
                 $vars = explode('|',$arg['relevanceVars']);
                 if (is_array($vars))
@@ -1853,7 +1890,35 @@ class LimeExpressionManager {
                 }
             }
         }
+        // Now process subquestion relevance (e.g. array_filter and array_filter_exclude)
+        foreach ($subqrels as $sq)
+        {
+            $jsParts[] = "if (\n";
+            $jsParts[] = $sq['relevance'];
+            $jsParts[] = "\n)\n{\n";
+            $targets = array_unique($sq['targets']);
+
+            foreach ($targets as $target)
+            {
+                $jsParts[] = "  $('#javatbd" . $target . "').show();\n";
+//                $jsParts[] = "  document.getElementById('tbdisp" . $target . "').value='on';\n";
+//                $jsParts[] = "  document.getElementById('relevance" . $target . "').value='1';\n";
+            }
+            $jsParts[] = "}\nelse {\n";
+
+            foreach ($targets as $target)
+            {
+                $jsParts[] = "  $('#javatbd" . $target . "').hide();\n";
+//                $jsParts[] = "  $('#javatbd" . $target . " input[type=text]').val('');\n";
+//                $jsParts[] = "  $('#javatbd" . $target . " input[type=radio]').attr('checked', false);\n";
+//                $jsParts[] = "  document.getElementById('tbdisp" . $target . "').value='';\n";
+//                $jsParts[] = "  document.getElementById('relevance" . $target . "').value='0';\n";
+            }
+
             $jsParts[] = "}\n";
+        }
+
+        $jsParts[] = "}\n";
 
         $allJsVarsUsed = array_unique($allJsVarsUsed);
 
