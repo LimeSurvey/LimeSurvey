@@ -1308,6 +1308,7 @@ class ExpressionManager {
                             $qcode= $this->GetVarAttribute($token[0],'qcode','');
                             $questionSeq = $this->GetVarAttribute($token[0],'questionSeq',-1);
                             $groupSeq = $this->GetVarAttribute($token[0],'groupSeq',-1);
+                            $ansList = $this->GetVarAttribute($token[0],'ansList','');
                             if ($token[2] == 'SGQA' && $qcode != '') {
                                 $descriptor = '[' . $qcode . ']';
                             }
@@ -1328,6 +1329,10 @@ class ExpressionManager {
                             }
 
                             $messages[] = $descriptor . htmlspecialchars($question,ENT_QUOTES,'UTF-8',false);
+                            if ($ansList != '')
+                            {
+                                $messages[] = htmlspecialchars($ansList,ENT_QUOTES,'UTF-8',false);
+                            }
                             if ($codeValue != '') {
                                 if ($token[2] == 'SGQA' && preg_match('/^INSERTANS:/',$token[0])) {
                                     $displayValue = $this->GetVarAttribute($token[0], 'displayValue', '');
@@ -1449,6 +1454,7 @@ class ExpressionManager {
             case 'qcode':
             case 'groupSeq':
             case 'questionSeq':
+            case 'ansList':
                 return (isset($var[$attr])) ? $var[$attr] : $default;
             case 'displayValue':
             case 'shown':

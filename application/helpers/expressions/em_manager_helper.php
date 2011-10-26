@@ -937,6 +937,7 @@ class LimeExpressionManager {
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case '5': //5 POINT CHOICE radio-buttons
                     $displayValue = $codeValue; // what about "no answer"?
+                    $ansArray=NULL;
                     break;
                 case 'N': //NUMERICAL QUESTION TYPE
                 case 'K': //MULTIPLE NUMERICAL QUESTION
@@ -1126,6 +1127,16 @@ class LimeExpressionManager {
                     );
             }
 
+            // TODO - should these arrays only be built for questions that require substitution at run-time?
+            $ansList = '';
+            if (isset($ansArray) && !is_null($ansArray)) {
+                $answers = array();
+                foreach ($ansArray as $key => $value) {
+                    $answers[] = "'" . $key . "':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$value),ENT_QUOTES) . "'";
+                }
+                $ansList = ",'answers':{ " . implode(",",$answers) . "}";
+            }
+
             // Set mappings of variable names to needed attributes
             $varInfo_Code = array(
                 'codeValue'=>$codeValue,      // TODO - comment
@@ -1144,6 +1155,7 @@ class LimeExpressionManager {
                 'type'=>$type,
                 'sgqa'=>$code,
                 'rowdivid'=>$rowdivid,
+                'ansList'=>$ansList,
                 );
 
 //            log_message('debug','$varInfoCode:=' . print_r($varInfo_Code,true));
@@ -1171,16 +1183,6 @@ class LimeExpressionManager {
             $this->alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
             $this->alias2varName[$code] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $code . "':'" . $jsVarName . "'");
             $this->alias2varName['INSERTANS:' . $code] = array('jsName'=>$jsVarName, 'jsPart' => "'INSERTANS:" . $code . "':'" . $jsVarName . "'");
-
-            // TODO - should these arrays only be built for questions that require substitution at run-time?
-            $ansList = '';
-            if (isset($ansArray) && !is_null($ansArray)) {
-                $answers = array();
-                foreach ($ansArray as $key => $value) {
-                    $answers[] = "'" . $key . "':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$value),ENT_QUOTES) . "'";
-                }
-                $ansList = ",'answers':{ " . implode(",",$answers) . "}";
-            }
 
             $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
                 . "'jsName':'" . $jsVarName
@@ -1477,8 +1479,8 @@ class LimeExpressionManager {
                 'prettyPrint' => $LEM->em->GetLastPrettyPrintExpression(),
             );
             $LEM->syntaxErrors[] = $error;
-            $CI =& get_instance();
-            $CI->db->insert('expression_errors',$error);
+//            $CI =& get_instance();
+//            $CI->db->insert('expression_errors',$error);
         }
 
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
@@ -1557,8 +1559,8 @@ class LimeExpressionManager {
                 'prettyPrint' => $prettyPrint,
             );
             $this->syntaxErrors[] = $error;
-            $CI =& get_instance();
-            $CI->db->insert('expression_errors',$error);
+//            $CI =& get_instance();
+//            $CI->db->insert('expression_errors',$error);
         }
 
         if (!is_null($questionNum)) {
@@ -1611,8 +1613,8 @@ class LimeExpressionManager {
                 'prettyPrint' => $prettyPrint,
             );
             $this->syntaxErrors[] = $error;
-            $CI =& get_instance();
-            $CI->db->insert('expression_errors',$error);
+//            $CI =& get_instance();
+//            $CI->db->insert('expression_errors',$error);
         }
 
         if (!is_null($questionNum)) {
@@ -1691,7 +1693,7 @@ class LimeExpressionManager {
                 // means that some values changed, so need to update what was registered to ExpressionManager
                 $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
                 $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
-                $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
+//                $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
             }
         }
     }
@@ -1717,7 +1719,12 @@ class LimeExpressionManager {
         }
         log_message('debug','Total time attributable to EM = ' . $totalTime);
 //        log_message('debug',print_r($LEM->runtimeTimings,true));
-//        log_message('debug','==ERRORS==' . print_r($LEM->syntaxErrors,true));
+//        log_message('debug','**ERRORS**' . print_r($LEM->syntaxErrors,true));
+        if (count($LEM->syntaxErrors) > 0)
+        {
+            $CI =& get_instance();
+            $CI->db->insert_batch('expression_errors',$LEM->syntaxErrors);
+        }
     }
 
     static function ShowLogicFile()
@@ -1747,7 +1754,7 @@ class LimeExpressionManager {
 
         $knownVars = $LEM->knownVars;
 
-//        log_message('debug',print_r($LEM->groupRelevanceInfo,true));
+//        log_message('debug',print_r($LEM->pageRelevanceInfo,true));
 
         $jsParts=array();
         $allJsVarsUsed=array();
@@ -1802,42 +1809,42 @@ class LimeExpressionManager {
                 $qidList[$arg['qid']] = $arg['qid'];
 
                 $relevance = $arg['relevancejs'];
-                if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0)
-                {
-                    // Only show constitutively true relevances if there is tailoring that should be done.
-                    $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
-                    continue;
-                }
-                $relevance = ($relevance == '') ? '1' : $relevance;
-                $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
-                $jsParts[] = "\n// Process Relevance for Question " . $arg['qid'] . "(" . $arg['jsResultVar'] . "=" . $jsResultVar . "): { " . $arg['eqn'] . " }\n";
-                $jsParts[] = "if (\n";
-                $jsParts[] = $relevance;
-                $jsParts[] = "\n)\n{\n";
-                // Do all tailoring
-                $jsParts[] = implode("\n",$tailorParts);
-                if ($arg['hidden'] == 1) {
-                    $jsParts[] = "  // This question should always be hidden\n";
+                    if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0)
+                    {
+                        // Only show constitutively true relevances if there is tailoring that should be done.
+                        $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
+                        continue;
+                    }
+                    $relevance = ($relevance == '') ? '1' : $relevance;
+                    $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
+                    $jsParts[] = "\n// Process Relevance for Question " . $arg['qid'] . "(" . $arg['jsResultVar'] . "=" . $jsResultVar . "): { " . $arg['eqn'] . " }\n";
+                    $jsParts[] = "if (\n";
+                    $jsParts[] = $relevance;
+                    $jsParts[] = "\n)\n{\n";
+                    // Do all tailoring
+                    $jsParts[] = implode("\n",$tailorParts);
+                    if ($arg['hidden'] == 1) {
+                        $jsParts[] = "  // This question should always be hidden\n";
+                        $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
+                        $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
+                    }
+                    else {
+                        $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
+                        $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
+                    }
+                    // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
+                    if ($arg['type'] == '*')
+                    {
+                        $jsParts[] = "  // Write value from the question into the answer field\n";
+                        $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
+
+                    }
+                    $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
+                    $jsParts[] = "}\nelse {\n";
                     $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                     $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
-                }
-                else {
-                    $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
-                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
-                }
-                // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
-                if ($arg['type'] == '*')
-                {
-                    $jsParts[] = "  // Write value from the question into the answer field\n";
-                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
-
-                }
-                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
-                $jsParts[] = "}\nelse {\n";
-                $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-                $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
-                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
-                $jsParts[] = "}\n";
+                    $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
+                    $jsParts[] = "}\n";
 
                 $vars = explode('|',$arg['relevanceVars']);
                 if (is_array($vars))
@@ -1846,7 +1853,7 @@ class LimeExpressionManager {
                 }
             }
         }
-        $jsParts[] = "}\n";
+            $jsParts[] = "}\n";
 
         $allJsVarsUsed = array_unique($allJsVarsUsed);
 
