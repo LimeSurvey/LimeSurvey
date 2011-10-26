@@ -1870,8 +1870,12 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
 
             // now translate any links
+            
             $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
-            $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
+            if (isset($insertdata['help']))
+            {
+                $insertdata['help']=translink('survey', $oldsid, $newsid, $insertdata['help']);
+            }
             if (isset($aQIDReplacements[$oldsqid])){
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
                 db_switchIDInsert('questions',true);
