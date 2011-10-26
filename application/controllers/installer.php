@@ -800,7 +800,7 @@ class Installer extends CI_Controller {
      */
     public function license()
     {
-        $filename = base_url(). 'COPYING';
+        $filename = dirname(BASEPATH) . '/COPYING';
         header('Content-Type: text/plain;');
         readfile($filename);
         exit;
