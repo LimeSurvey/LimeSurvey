@@ -82,6 +82,7 @@ Changes from 1.91+ (build 11228) to 2.0a (build 11268) Oct 20, 2011
 +New feature #5103: Advanced way to create conditions/piping/micro-tailoring based on equations by using the Expression Manage (EM) engine (tmswhite)
 +New feature: Auto-generate Relevance Equation from Conditions when save question (tmswhite)
 +New feature: GUI for ExpressionManager (tmswhite)
++New feature: A real installer (magiclko)
 +New feature: $lwcdropdowns setting removed from config-defaults.php and moved to Advanced question settings for List with Comment question type (c_schmitz)
 +New feature: Ability to make last minute changes in the survey activation screen to settings that cannot be changed after activation anymore (c_schmitz)
 +New feature: Export multiple survey archives at the survey list as one big ZIP file (c_schmitz)
