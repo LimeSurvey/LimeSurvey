@@ -4543,11 +4543,11 @@ function FlattenText($sTextToFlatten, $keepSpan=false, $bDecodeHTMLEntities=fals
         $sNicetext = strip_tags($sNicetext);
     }
     if ($bStripNewLines ){  // strip new lines
-        $sNicetext = preg_replace(array('~\R~','/\s{2,}/'),array(' ',' '), $sNicetext);
+        $sNicetext = preg_replace(array('~\Ru~','/\s{2,}/'),array(' ',' '), $sNicetext);
     }
     else // unify newlines to \r\n
     {
-        $sNicetext = preg_replace(array('~\R~'), array("\r\n"), $sNicetext);
+        $sNicetext = preg_replace(array('~\Ru~'), array("\r\n"), $sNicetext);
     }
     if ($bDecodeHTMLEntities==true)
     {
