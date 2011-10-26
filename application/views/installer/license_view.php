@@ -21,7 +21,7 @@ $this->load->view("installer/header_view", array('progressValue' => $progressVal
 <div style="-moz-border-radius:15px; border-radius:15px;" >
 <p>&nbsp;<?php echo $descp; ?></p>
 <hr />
-<iframe src="<?php echo base_url(); ?>COPYING" style="height: 268px; width: 694px; border-width: 0px;"> </iframe>
+<iframe src="<?php echo site_url("installer/license"); ?>" style="height: 268px; width: 694px; border-width: 0px;"> </iframe>
 <hr />
 
 </div>

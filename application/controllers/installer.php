@@ -794,6 +794,19 @@ class Installer extends CI_Controller {
     }
 
     /**
+     * display the license file as IIS for example
+     * does not display it via the server.
+     *
+     */
+    public function license()
+    {
+        $filename = base_url(). 'COPYING';
+        header('Content-Type: text/plain;');
+        readfile($filename);
+        exit;
+    }
+
+    /**
      * Loads optional configuration screen.
      * @return
      */
