@@ -1870,7 +1870,7 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             $insertdata['parent_qid']=$aQIDReplacements[(int)$insertdata['parent_qid']]; // remap the parent_qid
 
             // now translate any links
-            
+
             $insertdata['question']=translink('survey', $oldsid, $newsid, $insertdata['question']);
             if (isset($insertdata['help']))
             {
@@ -3364,7 +3364,6 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDesiredSurveyId=NULL, $bTranslateInsertansTags=true)
 {
     $CI =& get_instance();
-
     $CI->load->helper('database');
     $clang = $CI->limesurvey_lang;
     require_once ($CI->config->item('rootdir').'/application/third_party/adodb/adodb.inc.php');
@@ -3466,7 +3465,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 
         db_switchIDInsert('surveys',true);
 
-        $result = $CI->surveys_model->insertNewSurvey($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+        $newsid = $CI->surveys_model->insertNewSurvey($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
 
         $results['surveys']++;
         db_switchIDInsert('surveys',false);
@@ -3658,7 +3657,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata['answer']=translink('survey', $oldsid, $newsid, $insertdata['answer']);
             }
- 
+
             $result=$CI->answers_model->insertRecords($insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
             $results['answers']++;
         }

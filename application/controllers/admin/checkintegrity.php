@@ -178,7 +178,7 @@ class CheckIntegrity extends Admin_Controller {
 
             if (isset($aDelete['groups'])) {
                 foreach ($aDelete['groups'] as $aQuestion) {
-                    $sSQL = "DELETE FROM {$sDBPrefix}groups WHERE gid={$aQuestion['gid']}'";
+                    $sSQL = "DELETE FROM {$sDBPrefix}groups WHERE gid={$aQuestion['gid']}";
                     $oResult = $this->db->query($sSQL) or safe_die ("Couldn't delete groups ({$sSQL})");
                 }
                 $aData['messages'][]= sprintf($clang->gT("Deleting groups: %u groups deleted"), count($aDelete['groups']));
@@ -468,7 +468,7 @@ class CheckIntegrity extends Admin_Controller {
             $oResult2=db_execute_assoc($sQuery) or safe_die ("Couldn't check surveys table for sids from questions<br />$qquery");
             if (!$oResult2->num_rows())
             {
-                $aDelete['questions'][]=array("qid"=>$aRow['qid'], "reason"=>$clang->gT("No matching matching")." ({$aRow['sid']})");
+                $aDelete['questions'][]=array("qid"=>$aRow['qid'], "reason"=>$clang->gT("There is no matching survey.")." ({$aRow['sid']})");
             }
         }
 
