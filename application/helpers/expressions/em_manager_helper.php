@@ -40,6 +40,7 @@ class LimeExpressionManager {
     private $q2subqInfo;    // mapping of questions to information about their subquestions.
     private $qattr; // array of attributes for each question
     private $syntaxErrors=array();
+    private $subQrelInfo;   // list of needed sub-question relevance (e.g. array_filter)
 
     private $runtimeTimings;
 
@@ -299,8 +300,12 @@ class LimeExpressionManager {
 //        log_message('debug',print_r($this->q2subqInfo,true));
 //        log_message('debug',print_r($this->qattr,true));
 
+        // Associate these with $qid so that can be nested under appropriate question-level relevance?
         foreach ($this->q2subqInfo as $qinfo)
         {
+            if (!$this->allOnOnePage && $this->groupNum != $qinfo['gid']) {
+                continue; // only need subq relevance for current page.
+            }
             $questionNum = $qinfo['qid'];
             $type = $qinfo['type'];
             $hasSubqs = (isset($qinfo['subqs']) && count($qinfo['subqs'] > 0));
@@ -1418,11 +1423,11 @@ class LimeExpressionManager {
         foreach($this->questionSeq2relevance as $rel)
         {
             $qid = $rel['qid'];
+            $gid = $rel['gid'];
             if ($this->allOnOnePage) {
                 ;   // process relevance for all questions
             }
             else {
-                $gid = $rel['gid'];
                 $groupSeq = $rel['groupSeq'];
 
                 if ($groupSeq > $this->maxGroupSeq) {
@@ -1451,7 +1456,7 @@ class LimeExpressionManager {
                             continue;   // if at least one in the group is visible, then skip relevance check
                         }
                         else {
-                            $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES), $qid);
+                            $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES), $qid, $gid);
                             $_SESSION['relevanceStatus'][$qid] = $result;   // is this needed?  YES, if trying to tailor using a question that was irrelevant on prior page
                             $this->gid2relevanceStatus[$gid]=true;
                             continue;
@@ -1465,6 +1470,7 @@ class LimeExpressionManager {
 
             $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES),
                     $qid,
+                    $gid,
                     $rel['jsResultVar'],
                     $rel['type'],
                     $rel['hidden']
@@ -1562,7 +1568,7 @@ class LimeExpressionManager {
     static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
     {
         $LEM =& LimeExpressionManager::singleton();
-        return $LEM->_ProcessRelevance($eqn,$questionNum,$jsResultVar,$type,$hidden);
+        return $LEM->_ProcessRelevance($eqn,$questionNum,NULL,$jsResultVar,$type,$hidden);
     }
 
     /**
@@ -1574,13 +1580,14 @@ class LimeExpressionManager {
      * @param <type> $hidden - whether question should always be hidden
      * @return <type>
      */
-    private function _ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
+    private function _ProcessRelevance($eqn,$questionNum=NULL,$groupNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
     {
         // These will be called in the order that questions are supposed to be asked
         if (!isset($eqn) || trim($eqn=='') || trim($eqn)=='1')
         {
             $this->groupRelevanceInfo[] = array(
                 'qid' => $questionNum,
+                'gid' => $groupNum,
                 'eqn' => $eqn,
                 'result' => true,
                 'numJsVars' => 0,
@@ -1608,7 +1615,7 @@ class LimeExpressionManager {
                 'errortime' => date('Y-m-d H:i:s'),
                 'sid' => $this->sid,
                 'type' => 'Relevance',
-                'gid' => $this->groupNum,
+                'gid' => $groupNum,
                 'gseq' => $groupSeq,
                 'qid' => $questionNum,
                 'qseq' => $questionSeq,
@@ -1626,6 +1633,7 @@ class LimeExpressionManager {
             $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
             $this->groupRelevanceInfo[] = array(
                 'qid' => $questionNum,
+                'gid' => $groupNum,
                 'eqn' => $eqn,
                 'result' => $result,
                 'numJsVars' => count($jsVars),
@@ -1686,21 +1694,16 @@ class LimeExpressionManager {
             $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
             $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
 //            $hasErrors = $this->em->HasErrors();
-            $this->groupRelevanceInfo[] = array(
+            $this->subQrelInfo[] = array(
                 'qid' => $questionNum,
                 'eqn' => $eqn,
                 'result' => $result,
                 'numJsVars' => count($jsVars),
                 'relevancejs' => $relevanceJS,
                 'relevanceVars' => $relevanceVars,
-                'jsResultVar' => $rowdivid, // TMSW - check this
                 'rowdivid' => $rowdivid,
-//                'prettyPrint' => $prettyPrint,
-//                'hasErrors' => $hasErrors,
                 'type'=>$type,
-                'hidden'=>0
             );
-//            log_message('debug',print_r($info,true));
         }
         return $result;
     }
@@ -1736,6 +1739,7 @@ class LimeExpressionManager {
         $LEM->navigationIndex=$navigationIndex;
         $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
         $LEM->q2subqInfo=array();
+        $LEM->subQrelInfo=array();
 
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
@@ -1873,11 +1877,13 @@ class LimeExpressionManager {
             }
         }
 
-        $subqrels = array();
         if (is_array($pageRelevanceInfo))
         {
             foreach ($pageRelevanceInfo as $arg)
             {
+                if (!$LEM->allOnOnePage && $LEM->groupNum != $arg['gid']) {
+                    continue;
+                }
                 // First check if there is any tailoring  and construct the tailoring JavaScript if needed
                 $tailorParts = array();
                 foreach ($LEM->pageTailorInfo as $tailor)
@@ -1898,64 +1904,80 @@ class LimeExpressionManager {
                         }
                     }
                 }
+
+                // Now check whether there is sub-question relevance to perform for this question
+                $subqParts = array();
+                foreach ($LEM->subQrelInfo as $subq)
+                {
+                    if ($subq['qid'] == $arg['qid'])
+                    {
+                        $subqParts[$subq['rowdivid']] = $subq;
+                    }
+                }
+
                 $qidList[$arg['qid']] = $arg['qid'];
 
                 $relevance = $arg['relevancejs'];
-                if (isset($arg['rowdivid']))
-                {
-                    if ($relevance == '' || $relevance == 1) {
-                        // always an error?
-                        log_message('debug', 'Invalid SubQ Relevance?: ' . print_r($arg,true));
-                        continue;
-                    }
-                    if (!isset($subqrels[$relevance]))
-                    {
-                        $subqrels[$relevance] = array(
-                            'relevance' => $relevance,
-                            'targets' => array(),
-                            );
-                    }
-                    $subqrels[$relevance]['targets'][] = $arg['rowdivid'];
-                }
-                else
-                {
-                    if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0)
-                    {
-                        // Only show constitutively true relevances if there is tailoring that should be done.
-                        $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
-                        continue;
-                    }
-                    $relevance = ($relevance == '') ? '1' : $relevance;
-                    $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
-                    $jsParts[] = "\n// Process Relevance for Question " . $arg['qid'] . "(" . $arg['jsResultVar'] . "=" . $jsResultVar . "): { " . $arg['eqn'] . " }\n";
-                    $jsParts[] = "if (\n";
-                    $jsParts[] = $relevance;
-                    $jsParts[] = "\n)\n{\n";
-                    // Do all tailoring
-                    $jsParts[] = implode("\n",$tailorParts);
-                    if ($arg['hidden'] == 1) {
-                        $jsParts[] = "  // This question should always be hidden\n";
-                        $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-                        $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
-                    }
-                    else {
-                        $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
-                        $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
-                    }
-                    // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
-                    if ($arg['type'] == '*')
-                    {
-                        $jsParts[] = "  // Write value from the question into the answer field\n";
-                        $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
 
+                if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0 && count($subqParts) == 0)
+                {
+                    // Only show constitutively true relevances if there is tailoring that should be done.
+                    $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
+                    continue;
+                }
+                $relevance = ($relevance == '') ? '1' : $relevance;
+                $jsResultVar = $LEM->em->GetJsVarFor($arg['jsResultVar']);
+                $jsParts[] = "\n// Process Relevance for Question " . $arg['qid'];
+                if ($relevance != 1)
+                {
+                    $jsParts[] = ": { " . $arg['eqn'] . " }";
+                }
+                $jsParts[] = "\nif (\n  ";
+                $jsParts[] = $relevance;
+                $jsParts[] = "\n  )\n{\n";
+                // Do all tailoring
+                $jsParts[] = implode("\n",$tailorParts);
+
+                // Do all sub-question filtering (e..g array_filter)
+                // TODO - is it adequate to only do this if the question itself is relevant?
+                foreach ($subqParts as $sq)
+                {
+                    $jsParts[] = "  // Apply " . $sq['type'] . ": " . $sq['eqn'] ."\n";
+                    $jsParts[] = "  if ( " . $sq['relevancejs'] . " ) {\n";
+                    $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').show();\n";
+                    $jsParts[] = "  }\n  else {\n";
+                    $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').hide();\n";
+                    $jsParts[] = "  }\n";
+
+                    $sqvars = explode('|',$sq['relevanceVars']);
+                    if (is_array($sqvars))
+                    {
+                        $allJsVarsUsed = array_merge($allJsVarsUsed,$sqvars);
                     }
-                    $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
-                    $jsParts[] = "}\nelse {\n";
+                }
+
+                if ($arg['hidden'] == 1) {
+                    $jsParts[] = "  // This question should always be hidden\n";
                     $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
                     $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
-                    $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
-                    $jsParts[] = "}\n";
                 }
+                else {
+                    $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
+                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
+                }
+                // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
+                if ($arg['type'] == '*')
+                {
+                    $jsParts[] = "  // Write value from the question into the answer field\n";
+                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
+
+                }
+                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
+                $jsParts[] = "}\nelse {\n";
+                $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
+                $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
+                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
+                $jsParts[] = "}\n";
 
                 $vars = explode('|',$arg['relevanceVars']);
                 if (is_array($vars))
@@ -1963,33 +1985,6 @@ class LimeExpressionManager {
                     $allJsVarsUsed = array_merge($allJsVarsUsed,$vars);
                 }
             }
-        }
-        // Now process subquestion relevance (e.g. array_filter and array_filter_exclude)
-        foreach ($subqrels as $sq)
-        {
-            $jsParts[] = "if (\n";
-            $jsParts[] = $sq['relevance'];
-            $jsParts[] = "\n)\n{\n";
-            $targets = array_unique($sq['targets']);
-
-            foreach ($targets as $target)
-            {
-                $jsParts[] = "  $('#javatbd" . $target . "').show();\n";
-//                $jsParts[] = "  document.getElementById('tbdisp" . $target . "').value='on';\n";
-//                $jsParts[] = "  document.getElementById('relevance" . $target . "').value='1';\n";
-            }
-            $jsParts[] = "}\nelse {\n";
-
-            foreach ($targets as $target)
-            {
-                $jsParts[] = "  $('#javatbd" . $target . "').hide();\n";
-//                $jsParts[] = "  $('#javatbd" . $target . " input[type=text]').val('');\n";
-//                $jsParts[] = "  $('#javatbd" . $target . " input[type=radio]').attr('checked', false);\n";
-//                $jsParts[] = "  document.getElementById('tbdisp" . $target . "').value='';\n";
-//                $jsParts[] = "  document.getElementById('relevance" . $target . "').value='0';\n";
-            }
-
-            $jsParts[] = "}\n";
         }
 
         $jsParts[] = "}\n";
