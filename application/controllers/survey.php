@@ -301,8 +301,9 @@ class survey extends LSCI_Controller {
                       AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
                       AND ((a.startdate <= '".date("Y-m-d H:i")."') OR (a.startdate is null))
                       ORDER BY surveyls_title";
-            $result = db_execute_assoc($query,false,true) or die("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
+            $result = db_execute_assoc($query,false,true) or show_error("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
             $list=array();
+            
             if($result->num_rows() > 0)
             {
                 foreach($result->result_array() as $rows)
@@ -318,6 +319,38 @@ class survey extends LSCI_Controller {
                     $list[]=$link;
                 }
             }
+            //Check for inactive surveys which allow public registration.
+            $squery = "SELECT a.sid, b.surveyls_title, a.publicstatistics
+                      FROM ".$this->db->dbprefix('surveys')." AS a
+                      INNER JOIN ".$this->db->dbprefix('surveys_languagesettings')." AS b
+                      ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
+                      WHERE surveyls_survey_id=a.sid
+                      AND surveyls_language=a.language
+                      AND surveyls_language='$baselang'
+                      AND a.allowregister='Y'
+                      AND a.active='N'
+                      AND a.listpublic='Y'
+                      AND a.expires is not null
+                      AND a.startdate is not null
+                      ORDER BY surveyls_title";
+                                            
+            $sresult = db_execute_assoc($squery) or show_error("Couldn't execute $squery");
+            
+            
+            if($sresult->num_rows() > 0)
+            {
+                $list[] = "<br/>".$clang->gT("Following survey(s) are not yet active but you can register for them.");
+                foreach($sresult->result_array() as $rows)
+                {
+                    $link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'sendreq(".$rows['sid'].");' ";
+                    //$link = "<li><a href=\"#\" id='inactivesurvey' onclick = 'get2post(".site_url('survey/send/')."?sid={$rows['sid']}&amp;)sendreq(".$rows['sid'].",".$rows['startdate'].",".$rows['expires'].");' ";
+                    $link .= "  class='surveytitle'>".$rows['surveyls_title']."</a>\n";
+                    if ($rows['publicstatistics'] == 'Y') $link .= "<a href='".site_url("statistics_user/".$rows['sid'])."'>(".$clang->gT('View statistics').")</a>";
+                    $link .= "</li><div id='regform'></div>\n";
+                    $list[]=$link;
+                }
+            }                                  
+            
             if(count($list) < 1)
             {
                 $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
@@ -348,6 +381,22 @@ class survey extends LSCI_Controller {
             $this->_printTemplateContent(sGetTemplatePath($defaulttemplate)."/startpage.pstpl", $data, __LINE__);
 
             $this->_printTemplateContent(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl", $data, __LINE__);
+            
+            echo '<script type="text/javascript" >
+            function sendreq(surveyid)
+            {
+                 
+                $.ajax({
+                  type: "GET",
+                  url: "'.site_url("register/ajaxregisterform").'/" + surveyid,
+                }).done(function(msg) {
+                  document.getElementById("regform").innerHTML = msg;
+                });
+            }
+            </script>';
+            
+
+            
 
             $this->_killPage($redata, __LINE__);
         }
@@ -493,7 +542,7 @@ class survey extends LSCI_Controller {
                 $_POST['loadall']="reload";
             }
         }
-
+        
         //LOAD SAVED SURVEY
         if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
         {

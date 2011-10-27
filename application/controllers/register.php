@@ -33,6 +33,34 @@
 	{
 		parent::__construct();
 	}
+    
+    function ajaxregisterform($surveyid)
+    {
+        $this->load->helper('database');
+        $this->load->helper('replacements');
+        $redata = compact(array_keys(get_defined_vars()));
+        $thistpl = $this->config->item("standardtemplaterootdir").'/default';
+        $surveyid = sanitize_int($surveyid);
+        $squery = "SELECT a.expires, a.startdate
+                      FROM ".$this->db->dbprefix('surveys')." AS a
+                      WHERE a.sid = $surveyid "; 
+                     
+                                            
+        $sresult = db_execute_assoc($squery) or show_error("Couldn't execute $squery");
+        
+            
+        $row = $sresult->row_array();
+        
+        $data['sid'] = $surveyid;
+        $data['startdate'] = $row['startdate'];
+        $data['enddate'] = $row['expires'];
+        
+        $baselang = GetBaseLanguageFromSurveyID($surveyid);
+        $this->load->library('Limesurvey_lang',array($baselang));
+        $data['clang'] = $this->limesurvey_lang;
+        echo templatereplace(file_get_contents("$thistpl/register.pstpl"),array(),$redata,'register.php',false,NULL,$data);
+        
+    }
 
     /**
      * register::index()
@@ -44,6 +72,7 @@
 
         $surveyid=$this->input->post('sid');
         $postlang=$this->input->post('lang');
+        
         if (!$surveyid)
         {
             redirect();
@@ -63,7 +92,7 @@
             session_name("LimeSurveyRuntime-$surveyid");
         }
 
-        session_set_cookie_params(0,$relativeurl.'/');
+        session_set_cookie_params(0,$this->config->item('relativeurl').'/');
         session_start();
 
         // Get passed language from form, so that we dont loose this!
@@ -101,8 +130,9 @@
 
         if ($register_errormsg != "")
         {
-            redirect();
+            redirect($surveyid);
         }
+        
         $dbprefix = $this->db->dbprefix;
         //Check if this email already exists in token database
         $query = "SELECT email FROM {$dbprefix}tokens_$surveyid\n"
@@ -111,7 +141,7 @@
         if (($result->num_rows()) > 0)
         {
             $register_errormsg=$clang->gT("The email you used has already been registered.");
-            redirect();
+            redirect($surveyid);
             //include "index.php";
             //exit;
         }
@@ -139,13 +169,25 @@
 
         $postfirstname=sanitize_xss_string(strip_tags($_POST['register_firstname']));
         $postlastname=sanitize_xss_string(strip_tags($_POST['register_lastname']));
+        $starttime = sanitize_xss_string($this->input->post('startdate'));
+        $endtime = sanitize_xss_string($this->input->post('enddate'));        
         /*$postattribute1=sanitize_xss_string(strip_tags(returnglobal('register_attribute1')));
          $postattribute2=sanitize_xss_string(strip_tags(returnglobal('register_attribute2')));   */
 
         //Insert new entry into tokens db
         $query = "INSERT INTO {$dbprefix}tokens_$surveyid\n"
-        . "(firstname, lastname, email, emailstatus, token)\n"
-        . "VALUES ('$postfirstname', '$postlastname', '".$_POST['register_email']."', 'OK', '$newtoken')";
+        . "(firstname, lastname, email, emailstatus, token"; 
+        
+        if ($starttime && $endtime)
+        $query .= ", validfrom, validuntil"; 
+        
+        $query .=")\n"      
+        . "VALUES ('$postfirstname', '$postlastname', '".$_POST['register_email']."', 'OK', '$newtoken'";
+        
+        if ($starttime && $endtime)
+        $query .= ",$starttime,$endtime";
+        
+        $query .=")";
         $result = db_execute_assoc($query);
         /**
         $result = $connect->Execute($query, array($postfirstname,

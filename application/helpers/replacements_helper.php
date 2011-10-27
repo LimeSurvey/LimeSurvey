@@ -13,7 +13,7 @@
 * @param questionNum - needed to support dynamic JavaScript-based tailoring within questions
 * @return string  Text with replaced strings
 */
-function templatereplace($line, $replacements=array(),&$redata=array(), $debugSrc='Unspecified', $anonymized=false, $questionNum=NULL)
+function templatereplace($line, $replacements=array(),&$redata=array(), $debugSrc='Unspecified', $anonymized=false, $questionNum=NULL, $registerdata=array())
 {
     $CI =& get_instance();
 
@@ -80,6 +80,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     if (!isset($showgroupinfo)) { $showgroupinfo = 'Y'; }
     if (!isset($showqnumcode)) { $showqnumcode = ''; }
     $_surveyid = (isset($surveyid) ? $surveyid : 0);
+    
     if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
     if (!isset($showXquestions)) { $showXquestions = 'choose'; }
     if (!isset($relativeurl)) { $relativeurl = $CI->config->item("relativeurl"); }
@@ -90,9 +91,10 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     {
         $line = file_get_contents($line);
     }
+    
 
-
-    $clang = $CI->limesurvey_lang;
+    $clang = ($CI->limesurvey_lang) ? $CI->limesurvey_lang : $registerdata['clang'];
+    
     $CI->load->helper('surveytranslator');
     $questiondetails = array('sid' => 0, 'gid' => 0, 'qid' => 0, 'aid' =>0);
     if(isset($question) && isset($question['sgq'])) $questiondetails=getsidgidqidaidtype($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type)
@@ -527,19 +529,25 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     . "<tr><td></td><td><input type='submit' id='loadbutton' value='" . $clang->gT("Load Now") . "' /></td></tr></table>\n";
 
     // Registration Form
-    if (isset($surveyid))
+    if (isset($surveyid) || (isset($registerdata) && $debugSrc == 'register.php'))
     {
-        $_registerform = "<form method='post' action='".$CI->config->item('publicurl')."/register.php'>\n";
+        if (isset($surveyid))
+            $tokensid = $surveyid;
+        else
+            $tokensid = $registerdata['sid'];
+        
+        $_registerform = "<form method='post' action='".site_url('register/index')."'>\n";
         if (!isset($_REQUEST['lang']))
         {
-            $_reglang = GetBaseLanguageFromSurveyID($surveyid);
+            $_reglang = GetBaseLanguageFromSurveyID($tokensid);
         }
         else
         {
             $_reglang = returnglobal('lang');
         }
+        
         $_registerform .= "<input type='hidden' name='lang' value='" . $_reglang . "' />\n";
-        $_registerform .= "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
+        $_registerform .= "<input type='hidden' name='sid' value='$tokensid' id='sid' />\n";
 
         $_registerform.="<table class='register' summary='Registrationform'>\n"
         . "<tr><td align='right'>"
@@ -564,14 +572,23 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
             $_registerform .= " value='" . htmlentities(returnglobal('register_email'), ENT_QUOTES, 'UTF-8') . "'";
         }
         $_registerform .= " /></td></tr>\n";
-        if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('registrationscreen', $thissurvey['usecaptcha']))
+        
+        if ((count($registerdata) > 1 || isset($thissurvey['usecaptcha'])) && function_exists("ImageCreate") && captcha_enabled('registrationscreen', $thissurvey['usecaptcha']))
         {
             $_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".site_url('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
         }
         $_registerform .= "<tr><td></td><td><input id='registercontinue' class='submit' type='submit' value='" . $clang->gT("Continue") . "' />"
         . "</td></tr>\n"
-        . "</table>\n"
-        . "</form>\n";
+        . "</table>\n";
+        
+        if (count($registerdata) > 1 && $registerdata['sid'] != NULL && $debugSrc == 'register.php')
+        {
+            $_registerform .= "<input name='startdate' type ='hidden' value='".$registerdata['startdate']."' />";
+            $_registerform .= "<input name='enddate' type ='hidden' value='".$registerdata['enddate']."' />";
+        }  
+        
+        
+        $_registerform .= "</form>\n";
     }
     else
     {
