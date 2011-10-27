@@ -1048,6 +1048,10 @@ class ExpressionManager {
         return $this->errs;
     }
 
+    /**
+     * Converts the most recent expression into a valid JavaScript expression, mapping function and variable names and operators as needed.
+     * @return <type> the JavaScript expresssion
+     */
     public function GetJavaScriptEquivalentOfExpression()
     {
         if (!is_null($this->jsExpression))
@@ -1427,7 +1431,6 @@ class ExpressionManager {
         if (is_null($attr))
         {
             // then use the requested attribute, if any
-            // TODO: adjust this for INSERTANS?
             $attr = (count($args)==2) ? $args[1] : 'code';
         }
         switch ($attr)
@@ -1437,16 +1440,7 @@ class ExpressionManager {
             case 'code':
             case 'codeValue':
             case 'NAOK':
-                // TODO: check relevance first for non-NAOK?
                 return (isset($var['codeValue'])) ? $var['codeValue'] : $default;
-                /* TODO - refactor to take this approach
-                if (is_null($sgqa)) {
-                    return (isset($var['codeValue'])) ? $var['codeValue'] : $default;
-                }
-                else {
-                    return (isset($_SESSION[$sgqa])) ? $_SESSION[$sgqa] : NULL;
-                }
-                */
             case 'isOnCurrentPage':
             case 'jsName':
             case 'sgqa':
@@ -1593,6 +1587,8 @@ class ExpressionManager {
     /**
      * Process an expression and return its boolean value
      * @param <type> $expr
+     * @param <type> $groupSeq - needed to determine whether using variables before they are declared
+     * @param <type> $questionSeq - needed to determine whether using variables before they are declared
      * @return <type>
      */
     public function ProcessBooleanExpression($expr,$groupSeq=-1,$questionSeq=-1)
@@ -1624,8 +1620,11 @@ class ExpressionManager {
     /**
      * Process multiple substitution iterations of a full string, containing multiple expressions delimited by {}, return a consolidated string
      * @param <type> $src
+     * @param <type> $questionNum
      * @param <type> $numRecursionLevels - number of levels of recursive substitution to perform
-     * @param <type> $whichPrettyPrint - if recursing, specify which pretty-print iteration is desired
+     * @param <type> $whichPrettyPrintIteration - if recursing, specify which pretty-print iteration is desired
+     * @param <type> $groupSeq - needed to determine whether using variables before they are declared
+     * @param <type> $questionSeq - needed to determine whether using variables before they are declared
      * @return <type>
      */
 
@@ -1654,6 +1653,7 @@ class ExpressionManager {
     /**
      * Process one substitution iteration of a full string, containing multiple expressions delimited by {}, return a consolidated string
      * @param <type> $src
+     * @param <type> $questionNum - used to generate substitution <span>s that indicate to which question they belong
      * @return <type>
      */
 
@@ -1688,7 +1688,6 @@ class ExpressionManager {
                 $prettyPrintParts[] = $this->GetPrettyPrintString();
                 $this->allVarsUsed = array_merge($this->allVarsUsed,$this->GetVarsUsed());
 
-                // TODO Note, don't want these SPANS if they are part of a JavaScript substitution!
                 if (count($jsVarsUsed) > 0)
                 {
                     $idName = "LEMtailor_Q_" . $questionNum . "_" . $this->substitutionNum;
@@ -1717,6 +1716,10 @@ class ExpressionManager {
         return $result;    // recurse in case there are nested ones, avoiding infinite loops?
     }
 
+    /**
+     * Get info about all <span> elements needed for dynamic tailoring
+     * @return <type>
+     */
     public function GetCurrentSubstitutionInfo()
     {
         return $this->substitutionInfo;
@@ -1902,6 +1905,10 @@ class ExpressionManager {
         $this->amVars = array_merge($this->amVars, $varnames);
     }
 
+    /**
+     * Like RegisterVarnamesUsingMerge, except deletes pre-registered varnames.
+     * @param array $varnames
+     */
     public function RegisterVarnamesUsingReplace(array $varnames) {
         $this->amVars = array_merge(array(), $varnames);
     }
@@ -1940,6 +1947,11 @@ class ExpressionManager {
         return $this->amVars[$name]['codeValue'];
     }
 
+    /**
+     * Split a soure string into STRING vs. EXPRESSION, where the latter is surrounded by unescaped curly braces.
+     * @param <type> $src
+     * @return string
+     */
     public function asSplitStringOnExpressions($src)
     {
         // tokenize string by the {} pattern, propertly dealing with strings in quotations, and escaped curly brace values
@@ -2071,10 +2083,7 @@ Can {expressions contain 'single' or "double" quoted strings}?
 [img src="images/mine_{if(Q1=="Y",'sq with {nested braces}',"dq with {nested braces}")}.png"/]
 {name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.
 Since you have more {if((INSERT61764X1X3 > INSERT61764X1X4),'children','pets')} than you do {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')}, do you feel that the {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')} are at a disadvantage?
-[{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y"))}] Which brand of Antibacterial Liquid Hand Soap is your favorite?
-Does string split fail if there are 20 embedded strings? {'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eightteen', 'nineteen, 'twenty'}???
-Strings with many SGQA (e.g. > 10 or 15) will fail to parse: [{617167X9X3244, 617167X9X3245, 617167X9X3246, 617167X9X3247, 617167X9X3248, 617167X9X3249, 617167X9X3301, 617167X9X3302, 617167X9X3303, 617167X9X3304, 617167X9X3305, 617167X9X3306, 617167X9X3307, 617167X9X3308, 617167X9X3309}] Which brand of Antibacterial Liquid Hand Soap is your favorite?
-[{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Which brand of Antibacterial Liquid Hand Soap is your favorite?
+Here is a String that failed to parse prior to fixing the preg_split() command to avoid recursive search of sub-strings: [{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Here is the question.
 EOD;
 
         $em = new ExpressionManager();
@@ -2446,15 +2455,15 @@ there~if((one > two),'hi','there')
 64~if((one < two),pow(2,6),pow(6,2))
 1, 2, 3, 4, 5~list(one,two,three,min(four,five,six),max(three,four,five))
 11, 12~list(eleven,twelve)
-1~is_empty(0)
+1~is_empty('0')
 1~is_empty('')
 0~is_empty(1)
-1~is_empty(a==b)
+1~is_empty(one==two)
 0~if('',1,0)
 1~if(' ',1,0)
-0~!is_empty(a==b)
+0~!is_empty(one==two)
 1~!is_empty(1)
-1~is_bool(false)
+1~is_bool(0)
 0~is_bool(1)
 &quot;Can strings contain embedded \&quot;quoted passages\&quot; (and parentheses + other characters?)?&quot;~a=htmlspecialchars(ASSESSMENT_HEADING)
 &quot;can single quoted strings&quot; . &#039;contain nested &#039;quoted sections&#039;?~b=htmlspecialchars(QUESTIONHELP)
@@ -2722,6 +2731,11 @@ function exprmgr_implode($args)
     return implode($joiner,$args);
 }
 
+/**
+ * Return true if the variable is NULL or blank.
+ * @param <type> $arg
+ * @return <type>
+ */
 function exprmgr_empty($arg)
 {
     return empty($arg);

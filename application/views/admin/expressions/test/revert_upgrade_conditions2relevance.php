@@ -11,7 +11,7 @@
                 echo "No conditions found in database.  Nothing to revert.";
             }
             else {
-                echo "Found and removed relevance attributes for " . $data . " question(s)";
+                echo "Found and removed relevance for " . $data . " question(s)";
             }
         ?>
     </body>

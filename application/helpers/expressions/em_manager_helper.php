@@ -4,13 +4,13 @@
  * This is a wrapper class around ExpressionManager that implements a Singleton and eases
  * passing of LimeSurvey variable values into ExpressionManager
  *
- * @author Thomas M. White
+ * @author Thomas M. White (TMSWhite)
  */
 include_once('em_core_helper.php');
 
 class LimeExpressionManager {
     private static $instance;
-    private static $em;    // Expression Manager
+    private $em;    // Expression Manager
     private $groupRelevanceInfo;
     private $sid;
     private $groupNum;
@@ -37,8 +37,8 @@ class LimeExpressionManager {
     private $maxGroupSeq;  // the maximum groupSeq reached -  this is needed for Index
     private $navigationIndex=false; // whether to build an index showing groups that have relevant questions // TODO - color code whether any visible questions are unanswered?
     private $slang='en';
-    private $q2subqInfo;
-    private $qattr;
+    private $q2subqInfo;    // mapping of questions to information about their subquestions.
+    private $qattr; // array of attributes for each question
     private $syntaxErrors=array();
 
     private $runtimeTimings;
@@ -66,6 +66,10 @@ class LimeExpressionManager {
         trigger_error('Clone is not allowed.', E_USER_ERROR);
     }
 
+    /**
+     * A legacy upgrader.  Relevance was initially a Question Attribute during development.  However, as of 2.0 alpha, it was already in the questions table.
+     * @return <type>
+     */
     public static function UpgradeRelevanceAttributeToQuestion()
     {
         $CI =& get_instance();
@@ -95,24 +99,18 @@ class LimeExpressionManager {
             return NULL;
         }
 
-        $data = array();
-        foreach ($releqns as $key=>$value) {
-            $data[] = array(
-                'qid' => $key,
-                'attribute' => 'relevance',
-                'value' => $value,
-            );
-        }
-
         $CI =& get_instance();
-        $CI->db->where('attribute','relevance')->where_in('qid',array_keys($releqns))->delete('question_attributes');
-        $CI->db->insert_batch('question_attributes',$data);
-
-        return $releqns;
+        $queries = array();
+        foreach ($releqns as $key=>$value) {
+            $info['relevance'] = $value;
+            $CI->db->where('qid',$key)->update('questions',$info);
+            $queries[] = $CI->db->last_query();
+        }
+        return $queries;
     }
 
     /**
-     * This partially reverses UpgradeConditionsToRelevance().  It removes Relevance for questions that have Conditions
+     * This reverses UpgradeConditionsToRelevance().  It removes Relevance for questions that have Conditions
      * @param <type> $surveyId
      * @param <type> $qid
      */
@@ -125,9 +123,11 @@ class LimeExpressionManager {
         }
 
         $CI =& get_instance();
-        $CI->db->where('attribute','relevance')->where_in('qid',array_keys($releqns))->delete('question_attributes');
-
-        return $CI->db->affected_rows();
+        foreach ($releqns as $key=>$value) {
+            $info['relevance'] = '1';
+            $CI->db->where('qid',$key)->update('questions',$info);
+        }
+        return count($releqns);
     }
 
     /**
@@ -284,6 +284,11 @@ class LimeExpressionManager {
         return $LEM->ConvertConditionsToRelevance($surveyId, $qid);
     }
 
+    /**
+     * Process all question attributes that apply to EM
+     * (1) Sub-question-level  relevance:  e.g. array_filter, array_filter_exclude
+     * (2) Validations: e.g. min/max number of answers; min/max/eq sum of answers
+     */
     public function _CreateSubQLevelRelevanceAndValidationEqns()
     {
         $now = microtime(true);
@@ -805,9 +810,12 @@ class LimeExpressionManager {
     /**
      * Create the arrays needed by ExpressionManager to process LimeSurvey strings.
      * The long part of this function should only be called once per page display (e.g. only if $fieldMap changes)
+     * TODO:  It should be possible to call this once per survey, and just update the values that change across page (e.g. jsVarName, relevanceStatus)
      *
+     * @param <type> $surveyid
      * @param <type> $forceRefresh
      * @param <type> $anonymized
+     * @param <type> $allOnOnePage - if true (like for survey_format), uses certain optimizations
      * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
      */
 
@@ -840,6 +848,7 @@ class LimeExpressionManager {
         $CI =& get_instance();
         $clang = $CI->limesurvey_lang;
 
+        // Since building array of allowable answers, need to know preset values for certain question types
         $presets = array();
         $presets['G'] = array(  //GENDER drop-down list
             'M' => $clang->gT("Male"),
@@ -1342,14 +1351,24 @@ class LimeExpressionManager {
         return true;
     }
 
+    /**
+     * Return whether question $qid is relevanct
+     * @param <type> $qid
+     * @return boolean
+     */
     static function QuestionIsRelevant($qid)
     {
         if (isset($_SESSION['relevanceStatus'][$qid])) {
             return $_SESSION['relevanceStatus'][$qid];
         }
-        return trues;    // TODO - is this the right default?
+        return true;    // TODO - is this the right default?
     }
 
+    /**
+     * Return whether group $gid is relevant
+     * @param <type> $gid
+     * @return boolean
+     */
     static function GroupIsRelevant($gid)
     {
         $LEM =& LimeExpressionManager::singleton();
@@ -1385,7 +1404,8 @@ class LimeExpressionManager {
     }
 
     /**
-     * (1) If using index, check all
+     * Check the relevance status of all questions on or before the current group.
+     * This generates needed JavaScript for dynamic relevance, and sets flags about which questions and groups are relevant
      */
     function ProcessAllNeededRelevance()
     {
@@ -1425,15 +1445,13 @@ class LimeExpressionManager {
 
                     // TODO - augment this to show color coding for whether there are unanswered questions?
                     if ($groupSeq < $this->currentGroupSeq || $groupSeq > $this->currentGroupSeq) {
-                        // only process until know there is at least one non-hidden relevant question to answer
-                        // TODO - is this valid logic?
-                        //  - if prior-page relevance can change based upon subsequent values, then question and group-level relevance status may change
-                        //  - if that is a concern, should re-compute relevance for all questions each page flip
+                        // Must know relevance of all prior questions so know what to display in reports.
+                        // TODO - if sure relevance won't retroactively change, can reduce calls to this (e.g. if can't have equations depend on future variables and can't assign values)
                         if ($_groupSeqVisibility == true) {
                             continue;   // if at least one in the group is visible, then skip relevance check
                         }
                         else {
-                            $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES));
+                            $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES), $qid);
                             $_SESSION['relevanceStatus'][$qid] = $result;   // is this needed?  YES, if trying to tailor using a question that was irrelevant on prior page
                             $this->gid2relevanceStatus[$gid]=true;
                             continue;
@@ -1460,10 +1478,12 @@ class LimeExpressionManager {
     /**
      * Translate all Expressions, Macros, registered variables, etc. in $string
      * @param <type> $string - the string to be replaced
+     * @param <type> $questionNum - the $qid of question being replaced - needed for properly alignment of question-level relevance and tailoring
      * @param <type> $replacementFields - optional replacement values
      * @param boolean $debug - if true,write translations for this page to html-formatted log file
      * @param <type> $numRecursionLevels - the number of times to recursively subtitute values in this string
      * @param <type> $whichPrettyPrintIteration - if want to pretty-print the source string, which recursion  level should be pretty-printed
+     * @param <type> $noReplacements - true if we already know that no replacements are needed (e.g. there are no curly braces)
      * @return <type> - the original $string with all replacements done.
      */
 
@@ -1520,10 +1540,10 @@ class LimeExpressionManager {
 
         if ($LEM->debugLEM)
         {
-                $varsUsed = $LEM->em->GetJSVarsUsed();
-                if (is_array($varsUsed) and count($varsUsed) > 0) {
-                    $LEM->pageTailoringLog .= '<tr><td>' . $LEM->groupNum . '</td><td>' . $string . '</td><td>' . $LEM->em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
-                }
+            $varsUsed = $LEM->em->GetJSVarsUsed();
+            if (is_array($varsUsed) and count($varsUsed) > 0) {
+                $LEM->pageTailoringLog .= '<tr><td>' . $LEM->groupNum . '</td><td>' . $string . '</td><td>' . $LEM->em->GetLastPrettyPrintExpression() . '</td><td>' . $result . "</td></tr>\n";
+            }
         }
 
         return $result;
@@ -1532,7 +1552,11 @@ class LimeExpressionManager {
 
     /**
      * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, return false.
-     * @param <type> $eqn
+     * @param <type> $eqn - the relevance equation
+     * @param <type> $questionNum - needed to align question-level relevance and tailoring
+     * @param <type> $jsResultVar - this variable determines whether irrelevant questions are hidden
+     * @param <type> $type - question type
+     * @param <type> $hidden - whether question should always be hidden
      * @return <type>
      */
     static function ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
@@ -1543,11 +1567,11 @@ class LimeExpressionManager {
 
     /**
      * Compute Relevance, processing $eqn to get a boolean value.  If there are syntax errors, return false.
-     * @param <type> $eqn
-     * @param <type> $questionNum
-     * @param <type> $jsResultVar
-     * @param <type> $type
-     * @param <type> $hidden
+     * @param <type> $eqn - the relevance equation
+     * @param <type> $questionNum - needed to align question-level relevance and tailoring
+     * @param <type> $jsResultVar - this variable determines whether irrelevant questions are hidden
+     * @param <type> $type - question type
+     * @param <type> $hidden - whether question should always be hidden
      * @return <type>
      */
     private function _ProcessRelevance($eqn,$questionNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
@@ -1596,7 +1620,7 @@ class LimeExpressionManager {
 //            $CI->db->insert('expression_errors',$error);
         }
 
-        if (!is_null($questionNum)) {
+        if (!is_null($questionNum) && !is_null($jsResultVar)) { // so if missing either, don't generate JavaScript for this - means off-page relevance.
             $jsVars = $this->em->GetJSVarsUsed();
             $relevanceVars = implode('|',$this->em->GetJSVarsUsed());
             $relevanceJS = $this->em->GetJavaScriptEquivalentOfExpression();
@@ -1615,6 +1639,14 @@ class LimeExpressionManager {
         return $result;
     }
 
+    /**
+     * Create JavaScript needed to process sub-question-level relevance (e.g. for array_filter and array_filter_exclude)
+     * @param <type> $eqn - the equation to parse
+     * @param <type> $questionNum - the question number - needed to align relavance and tailoring blocks
+     * @param <type> $rowdivid - the javascript ID that needs to be shown/hidden in order to control array_filter visibility
+     * @param <type> $type - the type of sub-question relevance (e.g. 'array_filter', 'array_filter_exclude')
+     * @return <type>
+     */
    private function _ProcessSubQRelevance($eqn,$questionNum=NULL,$rowdivid=NULL, $type=NULL)
     {
         // These will be called in the order that questions are supposed to be asked
@@ -1684,6 +1716,12 @@ class LimeExpressionManager {
         return $LEM->em->GetLastPrettyPrintExpression();
     }
 
+    /**
+     * Should be first function called on each page - sets/clears internally needed variables
+     * @param <type> $navigationIndex - true if should compute the navigation index (list of questions or groups to display)
+     * @param <type> $allOnOnePage - true if StartProcessingGroup will be called multiple times on this page - does some optimizatinos
+     * @param <type> $debug - whether to generate debug logs
+     */
     static function StartProcessingPage($navigationIndex=false,$allOnOnePage=false,$debug=true)
     {
         $now = microtime(true);
@@ -1703,10 +1741,17 @@ class LimeExpressionManager {
 
         if ($debug && $LEM->debugLEM)
         {
-            $LEM->pageTailoringLog .= '<tr><th>Group</th><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
+            $LEM->pageTailoringLog .= '<tr><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
         }
     }
 
+    /**
+     * This should be called each time a new group is started, whether on same or different pages. Sets/Clears needed internal parameters.
+     * @param <type> $groupNum - the group number
+     * @param <type> $anonymized - whether anonymized
+     * @param <type> $surveyid - the surveyId
+     * @param <type> $forceRefresh - whether to force refresh of setting variable and token mappings (should be done rarely)
+     */
     static function StartProcessingGroup($groupNum=NULL,$anonymized=false,$surveyid=NULL,$forceRefresh=false)
     {
         $LEM =& LimeExpressionManager::singleton();
@@ -1731,6 +1776,9 @@ class LimeExpressionManager {
         }
     }
 
+    /**
+     * Should be called after each group finishes
+     */
     static function FinishProcessingGroup()
     {
         $now = microtime(true);
@@ -1740,6 +1788,9 @@ class LimeExpressionManager {
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
     }
 
+    /**
+     * Should be called at end of each page
+     */
     static function FinishProcessingPage()
     {
         $LEM =& LimeExpressionManager::singleton();
@@ -1760,6 +1811,10 @@ class LimeExpressionManager {
         }
     }
 
+    /**
+     * Show the HTML for the logic file if $debugLEM was true
+     * @return <type>
+     */
     static function ShowLogicFile()
     {
         if (isset($_SESSION['EM_surveyLogicFile'])) {
@@ -1768,6 +1823,10 @@ class LimeExpressionManager {
         return '';
     }
 
+    /**
+     * Show the HTML of the tailorings on this page if $debugLEM was true
+     * @return <type>
+     */
     static function ShowPageTailorings()
     {
         if (isset($_SESSION['EM_pageTailoringLog'])) {
@@ -2043,6 +2102,9 @@ class LimeExpressionManager {
         return $CI->db->get('expression_errors')->result_array();
     }
 
+    /**
+     * Truncate the expression_errors table to clear the history of syntax errors.
+     */
     static function ResetSyntaxErrorLog()
     {
         // truncate the table
@@ -2051,12 +2113,11 @@ class LimeExpressionManager {
     }
 
     /**
-     * Unit test
+     * Unit test strings containing expressions
      */
     static function UnitTestProcessStringContainingExpressions()
     {
         $vars = array(
-//'name' => array('codeValue'=>'"<Sergei>\'', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y'),
 'name' => array('codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'question'=>'What is your first/given name?', 'questionSeq'=>10, 'groupSeq'=>1),
 'surname' => array('codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'question'=>'What is your last/surname?', 'questionSeq'=>20, 'groupSeq'=>1),
 'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'question'=>'How old are you?', 'questionSeq'=>30, 'groupSeq'=>2),
@@ -2076,6 +2137,13 @@ class LimeExpressionManager {
 <b>Here is an example of OK syntax with tooltips</b><br/>Hello {if(gender=='M','Mr.','Mrs.')} {surname}, it is now {date('g:i a',time())}.  Do you know where your {sum(numPets,numKids)} chidren and pets are?
 <b>Here are common errors so you can see the tooltips</b><br/>Variables used before they are declared:  {notSetYet}<br/>Unknown Function:  {iff(numPets>numKids,1,2)}<br/>Unknown Variable: {sum(age,num_pets,numKids)}<br/>Wrong # parameters: {sprintf()},{if(1,2)},{date()}<br/>Assign read-only-vars:{TOKEN:ATTRIBUTE_1+=10},{name='Sally'}<br/>Unbalanced parentheses: {pow(3,4},{(pow(3,4)},{pow(3,4))}
 <b>Here is some of the unsupported syntax</b><br/>No support for '++', '--', '%',';': {min(++age, --age,age % 2);}<br/>Nor '|', '&', '^': {(sum(2 | 3,3 & 4,5 ^ 6)}}<br/>Nor arrays: {name[2], name['mine']}
+<b>Inline JavaScipt that forgot to add spaces after curly brace</b><br/>[script type="text/javascript" language="Javascript"] var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') {document.write('BOSSES');}[/script]
+<b>Unknown/Misspelled Variables, Functions, and Operators</b><br/>{if(sex=='M','Mr.','Mrs.')} {surname}, next year you will be {age++} years old.
+<b>Warns if use = instead of == or perform value assignments</b><br>Hello, {if(gender='M','Mr.','Mrs.')} {surname}, next year you will be {age+=1} years old.
+<b>Wrong number of arguments for functions:</b><br/>{if(gender=='M','Mr.','Mrs.','Other')} {surname}, sum(age,numKids,numPets)={sum(age,numKids,numPets,)}
+<b>Mismatched parentheses</b><br/>pow(3,4)={pow(3,4)}<br/>but these are wrong: {pow(3,4}, {(pow(3,4)}, {pow(3,4))}
+<b>Unsupported syntax</b><br/>No support for '++', '--', '%',';': {min(++age, --age, age % 2);}<br/>Nor '|', '&', '^':  {(sum(2 | 3, 3 & 4, 5 ^ 6)}}<br/>Nor arrays:  {name[2], name['mine']}
+<b>Invalid assignments</b><br/>Assign values to equations or strings:  {(3 + 4)=5}, {'hi'='there'}<br/>Assign read-only vars:  {TOKEN:ATTRIBUTE_1='boss'}, {name='Sally'}
 <b>Values:</b><br/>name={name}; surname={surname}<br/>gender={gender}; age={age}; numPets={numPets}<br/>numKids=INSERTANS:61764X1X3={numKids}={INSERTANS:61764X1X3}<br/>TOKEN:ATTRIBUTE_1={TOKEN:ATTRIBUTE_1}
 <b>Question Attributes:</b><br/>numKids.question={numKids.question}; Question#={numKids.qid}; .relevance={numKids.relevance}
 <b>Math:</b><br/>5+7={5+7}; 2*pi={2*pi()}; sin(pi/2)={sin(pi()/2)}; max(age,numKids,numPets)={max(age,numKids,numPets)}
@@ -2085,13 +2153,6 @@ class LimeExpressionManager {
 <b>Tailored Paragraph:</b><br/>{name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.<p>Since you have more {if((numKids > numPets),'children','pets')} than you do {if((numKids > numPets),'pets','children')}, do you feel that the {if((numKids > numPets),'pets','children')} are at a disadvantage?</p>
 <b>EM processes within strings:</b><br/>Here is your picture [img src='images/users_{name}_{surname}.jpg' alt='{if(gender=='M','Mr.','Mrs.')} {name} {surname}'/];
 <b>EM doesn't process curly braces like these:</b><br/>{name}, { this is not an expression}<br/>{nor is this }, { nor  this }<br/>\{nor this\},{this\},\{or this }
-<b>Inline JavaScipt that forgot to add spaces after curly brace</b><br/>[script type="text/javascript" language="Javascript"] var job='{TOKEN:ATTRIBUTE_1}'; if (job=='worker') {document.write('BOSSES');}[/script]
-<b>Unknown/Misspelled Variables, Functions, and Operators</b><br/>{if(sex=='M','Mr.','Mrs.')} {surname}, next year you will be {age++} years old.
-<b>Warns if use = instead of == or perform value assignments</b><br>Hello, {if(gender='M','Mr.','Mrs.')} {surname}, next year you will be {age+=1} years old.
-<b>Wrong number of arguments for functions:</b><br/>{if(gender=='M','Mr.','Mrs.','Other')} {surname}, sum(age,numKids,numPets)={sum(age,numKids,numPets,)}
-<b>Mismatched parentheses</b><br/>pow(3,4)={pow(3,4)}<br/>but these are wrong: {pow(3,4}, {(pow(3,4)}, {pow(3,4))}
-<b>Unsupported syntax</b><br/>No support for '++', '--', '%',';': {min(++age, --age, age % 2);}<br/>Nor '|', '&', '^':  {(sum(2 | 3, 3 & 4, 5 ^ 6)}}<br/>Nor arrays:  {name[2], name['mine']}
-<b>Invalid assignments</b><br/>Assign values to equations or strings:  {(3 + 4)=5}, {'hi'='there'}<br/>Assign read-only vars:  {TOKEN:ATTRIBUTE_1='boss'}, {name='Sally'}
 {INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
 Since you have more {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'children','pets')} than you do {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')}, do you feel that the {if((INSERTANS:61764X1X3 > INSERTANS:61764X1X4),'pets','children')} are at a disadvantage?
 {INSERTANS:61764X1X1}, you said that you are {INSERTANS:61764X1X2} years old, and that you have {INSERTANS:61764X1X3} {if((INSERTANS:61764X1X3==1),'child','children','kiddies')} and {INSERTANS:61764X1X4} {if((INSERTANS:61764X1X4==1),'pet','pets')} running around the house.  So, you have {INSERTANS:61764X1X3 + INSERTANS:61764X1X4} wild {if((INSERTANS:61764X1X3 + INSERTANS:61764X1X4 ==1),'beast','beasts')} to chase around every day.
@@ -2137,36 +2198,59 @@ EOST;
             }
         }
 
-        print '<table border="1"><tr><th>Test</th><th>Result</th></tr>';    // <th>VarName(jsName, readWrite, isOnCurrentPage)</th></tr>';
+        print "<h3>Note, if the <i>Vars Used</i> column is red, then at least one error was found in the <b>Source</b>. In such cases, the <i>Vars Used</i> list may be missing names of variables from sub-expressions containing errors</h3>";
+        print '<table border="1"><tr><th>Source</th><th>Pretty Print</th><th>Result</th><th>Vars Used</th></tr>';
         for ($i=0;$i<count($alltests);++$i)
         {
             $test = $alltests[$i];
             $result = LimeExpressionManager::ProcessString($test, 40, NULL, false, 1, 1);
             $prettyPrint = LimeExpressionManager::GetLastPrettyPrintExpression();
-            print "<tr><td>" . $prettyPrint . "</td>\n";
+            $varsUsed = $LEM->em->GetAllVarsUsed();
+            if (count($varsUsed) > 0) {
+                sort($varsUsed);
+                $varList = implode(',<br />', $varsUsed);
+            }
+            else {
+                $varList  = '&nbsp;';
+            }
+
+            print "<tr><td>" . htmlspecialchars($test,ENT_QUOTES) . "</td>\n";
+            print "<td>" . $prettyPrint . "</td>\n";
             print "<td>" . $result . "</td>\n";
+            if ($LEM->em->HasErrors()) {
+                print "<td style='background-color:  red'>";
+            }
+            else {
+                print "<td>";
+            }
+            print $varList . "</td>\n";
             print "</tr>\n";
         }
         print '</table>';
         LimeExpressionManager::FinishProcessingGroup();
         LimeExpressionManager::FinishProcessingPage();
-        print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
     }
 
+    /**
+     * Unit test Relevance using a simplified syntax to represent questions.
+     */
     static function UnitTestRelevance()
     {
         // Tests:  varName~relevance~inputType~message
-//info~1~expr~{info='Can strings have embedded <tags> like <html>, or even unbalanced "quotes, \'single quoted strings\', or entities without terminal semicolons like &amp and  &lt?'}
-//junk~1~text~Enter "junk" here to test XSS - will show below
-//info2~1~message~Here is a messy string: {info}<br/>Here is the "junk" you entered: {junk}
 $tests = <<<EOT
 name~1~text~What is your name?
-age~1~text~How old are you?
+age~1~text~How old are you (must be 16-80)?
 badage~1~expr~{badage=((age<16) || (age>80))}
 agestop~!is_empty(age) && ((age<16) || (age>80))~message~Sorry, {name}, you are too {if((age<16),'young',if((age>80),'old','middle-aged'))} for this test.
 kids~!((age<16) || (age>80))~yesno~Do you have children (Y/N)?
+kidsO~!is_empty(kids) && !(kids=='Y' or kids=='N')~message~Please answer the question about whether you have children with 'Y' or 'N'.
+wantsKids~kids=='N'~yesno~Do you hope to have kids some day (Y/N)?
+wantsKidsY~wantsKids=='Y'~message~{name}, I hope you are able to have children some day!
+wantsKidsN~wantsKids=='N'~message~{name}, I hope you have a wonderfully fulfilling life!
+wantsKidsO~!is_empty(wantsKids) && !(wantsKids=='Y' or wantsKids=='N')~message~Please answer the question about whether you want children with 'Y' or 'N'.
 parents~1~expr~{parents = (!badage && kids=='Y')}
 numKids~kids=='Y'~text~How many children do you have?
+numKidsValidation~parents and strlen(numKids) > 0 and numKids <= 0~message~{name}, please check your entries.  You said you do have children, {numKids} of them, which makes no sense.
 kid1~numKids >= 1~text~How old is your first child?
 kid2~numKids >= 2~text~How old is your second child?
 kid3~numKids >= 3~text~How old is your third child?
@@ -2249,6 +2333,9 @@ EOT;
         print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
         // Print Table of questions
+        print "<h3>This is a test of dynamic relevance.</h3>";
+        print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br/>\n";
+        print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br/>";
         print "<table border='1'><tr><td>";
         foreach ($argInfo as $arg)
         {
