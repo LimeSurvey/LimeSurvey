@@ -1700,173 +1700,165 @@ class survey extends Survey_Common_Controller {
     {
         if ($this->session->userdata('USER_RIGHT_CREATE_SURVEY'))
         {
+            // Check if survey title was set
             if (!$this->input->post('surveyls_title'))
             {
                 $this->session->set_userdata('flashmessage',$clang->gT("Survey could not be created because it did not have a title"));
+                redirect(site_url('admin'));
+                return;
+            }
+
+            // Check if template may be used
+            $sTemplate = $this->input->post('template');
+            if(!$sTemplate || ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1 && $this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') != 1 && !hasTemplateManageRights($this->session->userdata('loginID'), $this->input->post('template'))))
+            {
+                $sTemplate = "default";
+            }
+
+            $this->load->helper("surveytranslator");
+
+
+            // If start date supplied convert it to the right format
+            $aDateFormatData=getDateFormatData($_SESSION['dateformat']);
+            $sStartDate = $this->input->post('startdate');
+            if (trim($sStartDate)!='')
+            {
+                $this->load->library('Date_Time_Converter',array($sStartDate , $aDateFormatData['phpdate'].' H:i:s'));
+                $sStartDate=$this->date_time_converter->convert("Y-m-d H:i:s");
+            }
+
+            // If expiry date supplied convert it to the right format
+            $sExpiryDate = $this->input->post('expires');
+            if (trim($sExpiryDate)!='')
+            {
+                $this->load->library('Date_Time_Converter',array($sExpiryDate , $aDateFormatData['phpdate'].' H:i:s'));
+                $sExpiryDate=$this->date_time_converter->convert("Y-m-d H:i:s");
+            }
+
+            // Insert base settings into surveys table
+            $aInsertData=array(
+            'expires'=>$sExpiryDate,
+            'startdate'=>$sStartDate,
+            'template'=>$sTemplate,
+            'owner_id'=>$this->session->userdata('loginID'),
+            'admin'=>$this->input->post('admin'),
+            'active'=>'N',
+            'adminemail'=>$this->input->post('adminemail'),
+            'bounce_email'=>$this->input->post('bounce_email'),
+            'anonymized'=>$this->input->post('anonymized'),
+            'faxto'=>$this->input->post('faxto'),
+            'format'=>$this->input->post('format'),
+            'savetimings'=>$this->input->post('savetimings'),
+            'language'=>$this->input->post('language'),
+            'datestamp'=>$this->input->post('datestamp'),
+            'ipaddr'=>$this->input->post('ipaddr'),
+            'refurl'=>$this->input->post('refurl'),
+            'usecookie'=>$this->input->post('usecookie'),
+            'emailnotificationto'=>$this->input->post('emailnotificationto'),
+            'allowregister'=>$this->input->post('allowregister'),
+            'allowsave'=>$this->input->post('allowsave'),
+            'navigationdelay'=>$this->input->post('navigationdelay'),
+            'autoredirect'=>$this->input->post('autoredirect'),
+            'showXquestions'=>$this->input->post('showXquestions'),
+            'showgroupinfo'=>$this->input->post('showgroupinfo'),
+            'showqnumcode'=>$this->input->post('showqnumcode'),
+            'shownoanswer'=>$this->input->post('shownoanswer'),
+            'showwelcome'=>$this->input->post('showwelcome'),
+            'allowprev'=>$this->input->post('allowprev'),
+            'allowjumps'=>$this->input->post('allowjumps'),
+            'nokeyboard'=>$this->input->post('nokeyboard'),
+            'showprogress'=>$this->input->post('showprogress'),
+            'printanswers'=>$this->input->post('printanswers'),
+            'listpublic'=>$this->input->post('public'),
+            'htmlemail'=>$this->input->post('htmlemail'),
+            'tokenanswerspersistence'=>$this->input->post('tokenanswerspersistence'),
+            'alloweditaftercompletion'=>$this->input->post('alloweditaftercompletion'),
+            'usecaptcha'=>$this->input->post('usecaptcha'),
+            'publicstatistics'=>$this->input->post('publicstatistics'),
+            'publicgraphs'=>$this->input->post('publicgraphs'),
+            'assessments'=>$this->input->post('assessments'),
+            'emailresponseto'=>$this->input->post('emailresponseto'),
+            'tokenlength'=>$this->input->post('tokenlength')
+            );
+            if (!is_null($iSurveyID))
+            {
+                $aInsertData['wishSID']=$iSurveyID;
+            }
+
+            $this->load->model('surveys_model');
+            $iNewSurveyid=$this->surveys_model->insertNewSurvey($aInsertData);
+            if (!$iNewSurveyid) die('Survey could not be created.');
+
+            // Prepare locale data for surveys_language_settings table
+            $sTitle = $this->input->post('surveyls_title');
+            $sDescription = $this->input->post('description');
+            $sWelcome = $this->input->post('welcome');
+            $sURLDescription = $this->input->post('urldescrip');
+            if ($this->config->item('filterxsshtml'))
+            {
+                $sTitle=$this->security->xss_clean($sTitle);
+                $sDescription=$this->security->xss_clean($sDescription);
+                $sWelcome=$this->security->xss_clean($sWelcome);
+                $sURLDescription=$this->security->xss_clean($sURLDescription);
+            }
+            $sTitle = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
+            $sDescription = html_entity_decode($sDescription, ENT_QUOTES, "UTF-8");
+            $sWelcome = html_entity_decode($sWelcome, ENT_QUOTES, "UTF-8");
+            $sURLDescription = html_entity_decode($sURLDescription, ENT_QUOTES, "UTF-8");
+
+            // Fix bug with FCKEditor saving strange BR types
+            $sTitle=fix_FCKeditor_text($sTitle);
+            $sDescription=fix_FCKeditor_text($sDescription);
+            $sWelcome=fix_FCKeditor_text($sWelcome);
+
+            // Load default email templates for the chosen language
+            $oLanguage = new limesurvey_lang(array($this->input->post('language')));
+            $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
+            unset($oLanguage);
+
+            if ($this->input->post('htmlemail') && $this->input->post('htmlemail') == "Y")
+            {
+                $bIsHTMLEmail = true;
+                $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditional_nl2br($aDefaultTexts['admin_detailed_notification'],$bIsHTMLEmail,'unescaped');
             }
             else
             {
-                $template = $this->input->post('template');
-                if(!$template || ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1 && $this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') != 1 && !hasTemplateManageRights($this->session->userdata('loginID'), $this->input->post('template'))))
-                {
-                    $template = "default";
-                }
-
-                $this->load->helper("surveytranslator");
-
-
-                // Start date set?
-                $startdate = $this->input->post('startdate');
-                $aDateFormatData=getDateFormatData($_SESSION['dateformat']);
-
-                if (trim($startdate)=='')
-                {
-                    $startdate=null;
-                }
-                else
-                {
-                    $this->load->library('Date_Time_Converter',array($startdate , $aDateFormatData['phpdate'].' H:i:s'));
-                    $startdate=$this->date_time_converter->convert("Y-m-d H:i:s");
-                }
-
-                // Expiry date set?
-                $expires = $this->input->post('expires');
-                if (trim($expires)=='')
-                {
-                    $expires=null;
-                }
-                else
-                {
-                    $this->load->library('Date_Time_Converter',array($expires , $aDateFormatData['phpdate'].' H:i:s'));
-                    $expires=$this->date_time_converter->convert("Y-m-d H:i:s");
-                }
-
-
-                $insertarray=array(
-                'owner_id'=>$this->session->userdata('loginID'),
-                'admin'=>$this->input->post('admin'),
-                'active'=>'N',
-                'expires'=>$expires,
-                'startdate'=>$startdate,
-                'adminemail'=>$this->input->post('adminemail'),
-                'bounce_email'=>$this->input->post('bounce_email'),
-                'anonymized'=>$this->input->post('anonymized'),
-                'faxto'=>$this->input->post('faxto'),
-                'format'=>$this->input->post('format'),
-                'savetimings'=>$this->input->post('savetimings'),
-                'template'=>$template,
-                'language'=>$this->input->post('language'),
-                'datestamp'=>$this->input->post('datestamp'),
-                'ipaddr'=>$this->input->post('ipaddr'),
-                'refurl'=>$this->input->post('refurl'),
-                'usecookie'=>$this->input->post('usecookie'),
-                'emailnotificationto'=>$this->input->post('emailnotificationto'),
-                'allowregister'=>$this->input->post('allowregister'),
-                'allowsave'=>$this->input->post('allowsave'),
-                'navigationdelay'=>$this->input->post('navigationdelay'),
-                'autoredirect'=>$this->input->post('autoredirect'),
-                'showXquestions'=>$this->input->post('showXquestions'),
-                'showgroupinfo'=>$this->input->post('showgroupinfo'),
-                'showqnumcode'=>$this->input->post('showqnumcode'),
-                'shownoanswer'=>$this->input->post('shownoanswer'),
-                'showwelcome'=>$this->input->post('showwelcome'),
-                'allowprev'=>$this->input->post('allowprev'),
-                'allowjumps'=>$this->input->post('allowjumps'),
-                'nokeyboard'=>$this->input->post('nokeyboard'),
-                'showprogress'=>$this->input->post('showprogress'),
-                'printanswers'=>$this->input->post('printanswers'),
-                'listpublic'=>$this->input->post('public'),
-                'htmlemail'=>$this->input->post('htmlemail'),
-                'tokenanswerspersistence'=>$this->input->post('tokenanswerspersistence'),
-                'alloweditaftercompletion'=>$this->input->post('alloweditaftercompletion'),
-                'usecaptcha'=>$this->input->post('usecaptcha'),
-                'publicstatistics'=>$this->input->post('publicstatistics'),
-                'publicgraphs'=>$this->input->post('publicgraphs'),
-                'assessments'=>$this->input->post('assessments'),
-                'emailresponseto'=>$this->input->post('emailresponseto'),
-                'tokenlength'=>$this->input->post('tokenlength')
-                );
-                if (!is_null($iSurveyID))
-                {
-                    $insertarray['wishSID']=$iSurveyID;
-                }
-
-                $this->load->model('surveys_model');
-                $iNewSurveyid=$this->surveys_model->insertNewSurvey($insertarray);
-                if (!$iNewSurveyid) die('Survey could not be created.');
-
-                // Insert base language into surveys_language_settings
-                $sTitle = $this->input->post('surveyls_title');
-                $description = $this->input->post('description');
-                $welcome = $this->input->post('welcome');
-                $urldescp = $this->input->post('urldescrip');
-                if ($this->config->item('filterxsshtml'))
-                {
-                    $sTitle=$this->security->xss_clean($sTitle);
-                    $description=$this->security->xss_clean($description);
-                    $welcome=$this->security->xss_clean($welcome);
-                    $urldescp=$this->security->xss_clean($this->input->post('urldescrip'));
-                }
-                else
-                {
-                    $sTitle = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
-                    $description = html_entity_decode($description, ENT_QUOTES, "UTF-8");
-                    $welcome = html_entity_decode($welcome, ENT_QUOTES, "UTF-8");
-                    $urldescp = html_entity_decode($urldescp, ENT_QUOTES, "UTF-8");
-                }
-
-                // Fix bug with FCKEditor saving strange BR types
-                $sTitle=fix_FCKeditor_text($sTitle);
-                $description=fix_FCKeditor_text($description);
-                $welcome=fix_FCKeditor_text($welcome);
-
-                $bplang = new limesurvey_lang(array($this->input->post('language')));
-
-                $aDefaultTexts=aTemplateDefaultTexts($bplang,'unescaped');
-                $is_html_email = false;
-                if ($this->input->post('htmlemail') && $this->input->post('htmlemail') == "Y")
-                {
-                    $is_html_email = true;
-                    $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditional_nl2br($aDefaultTexts['admin_detailed_notification'],$is_html_email,'unescaped');
-                }
-
-                $url = $this->input->post('url');
-                if ($url == 'http://') {$url="";}
-
-                $insertarray=array( 'surveyls_survey_id'=>$iNewSurveyid,
-                'surveyls_language'=>$this->input->post('language'),
-                'surveyls_title'=>$sTitle,
-                'surveyls_description'=>$description,
-                'surveyls_welcometext'=>$welcome,
-                'surveyls_urldescription'=>$this->input->post('urldescrip'),
-                'surveyls_endtext'=>$this->input->post('endtext'),
-                'surveyls_url'=>$url,
-                'surveyls_email_invite_subj'=>$aDefaultTexts['invitation_subject'],
-                'surveyls_email_invite'=>conditional_nl2br($aDefaultTexts['invitation'],$is_html_email,'unescaped'),
-                'surveyls_email_remind_subj'=>$aDefaultTexts['reminder_subject'],
-                'surveyls_email_remind'=>conditional_nl2br($aDefaultTexts['reminder'],$is_html_email,'unescaped'),
-                'surveyls_email_confirm_subj'=>$aDefaultTexts['confirmation_subject'],
-                'surveyls_email_confirm'=>conditional_nl2br($aDefaultTexts['confirmation'],$is_html_email,'unescaped'),
-                'surveyls_email_register_subj'=>$aDefaultTexts['registration_subject'],
-                'surveyls_email_register'=>conditional_nl2br($aDefaultTexts['registration'],$is_html_email,'unescaped'),
-                'email_admin_notification_subj'=>$aDefaultTexts['admin_notification_subject'],
-                'email_admin_notification'=>conditional_nl2br($aDefaultTexts['admin_notification'],$is_html_email,'unescaped'),
-                'email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
-                'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
-                'surveyls_dateformat'=>(int) $this->input->post('dateformat'),
-                'surveyls_numberformat'=>(int) $this->input->post('numberformat')
-                );
-
-                $this->load->model('surveys_languagesettings_model');
-                $this->surveys_languagesettings_model->insertNewSurvey($insertarray);
-                unset($bplang);
-                $this->session->set_userdata('flashmessage',$this->limesurvey_lang->gT("Survey was successfully added."));
-
-                // Update survey permissions
-                $this->load->model('survey_permissions_model');
-                $this->survey_permissions_model->giveAllSurveyPermissions($this->session->userdata('loginID'),$iNewSurveyid);
-
+                $bIsHTMLEmail = false;
             }
+
+            // Insert base language into surveys_language_settings table
+
+            $aInsertData=array( 'surveyls_survey_id'=>$iNewSurveyid,
+            'surveyls_title'=>$sTitle,
+            'surveyls_description'=>$sDescription,
+            'surveyls_welcometext'=>$sWelcome,
+            'surveyls_language'=>$this->input->post('language'),
+            'surveyls_urldescription'=>$this->input->post('urldescrip'),
+            'surveyls_endtext'=>$this->input->post('endtext'),
+            'surveyls_url'=>$this->input->post('url'),
+            'surveyls_email_invite_subj'=>$aDefaultTexts['invitation_subject'],
+            'surveyls_email_invite'=>conditional_nl2br($aDefaultTexts['invitation'],$bIsHTMLEmail,'unescaped'),
+            'surveyls_email_remind_subj'=>$aDefaultTexts['reminder_subject'],
+            'surveyls_email_remind'=>conditional_nl2br($aDefaultTexts['reminder'],$bIsHTMLEmail,'unescaped'),
+            'surveyls_email_confirm_subj'=>$aDefaultTexts['confirmation_subject'],
+            'surveyls_email_confirm'=>conditional_nl2br($aDefaultTexts['confirmation'],$bIsHTMLEmail,'unescaped'),
+            'surveyls_email_register_subj'=>$aDefaultTexts['registration_subject'],
+            'surveyls_email_register'=>conditional_nl2br($aDefaultTexts['registration'],$bIsHTMLEmail,'unescaped'),
+            'email_admin_notification_subj'=>$aDefaultTexts['admin_notification_subject'],
+            'email_admin_notification'=>conditional_nl2br($aDefaultTexts['admin_notification'],$bIsHTMLEmail,'unescaped'),
+            'email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
+            'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
+            'surveyls_dateformat'=>(int) $this->input->post('dateformat'),
+            'surveyls_numberformat'=>(int) $this->input->post('numberformat')
+            );
+
+            $this->load->model('surveys_languagesettings_model');
+            $this->surveys_languagesettings_model->insertNewSurvey($aInsertData);
+            $this->session->set_userdata('flashmessage',$this->limesurvey_lang->gT("Survey was successfully added."));
+
+            // Update survey permissions
+            $this->load->model('survey_permissions_model');
+            $this->survey_permissions_model->giveAllSurveyPermissions($this->session->userdata('loginID'),$iNewSurveyid);
             redirect(site_url('admin/survey/view/'.$iNewSurveyid));
         }
 

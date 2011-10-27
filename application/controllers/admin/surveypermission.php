@@ -61,10 +61,8 @@ class surveypermission extends Survey_Common_Controller {
             $this->load->model('survey_permissions_model');
             $aBaseSurveyPermissions=$this->survey_permissions_model->aGetBaseSurveyPermissions();
 
-            //$js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
             self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
             self::_js_admin_includes(base_url().'scripts/admin/surveysecurity.js');
-            //$js_admin_includes[]='scripts/surveysecurity.js';
 
             $query2 = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM ".$this->db->dbprefix."survey_permissions AS p INNER JOIN ".$this->db->dbprefix."users  AS u ON p.uid = u.uid
             WHERE p.sid = {$surveyid} AND u.uid != ".$this->session->userdata('loginID') ."

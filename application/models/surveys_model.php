@@ -38,9 +38,14 @@ class Surveys_model extends CI_Model {
 
     }
 
+    /**
+    * Creates a new survey - does some basic checks of the suppplied data
+    *
+    * @param string $data
+    * @return mixed
+    */
     function insertNewSurvey($data)
     {
-
         do
         {
             if(isset($data['wishSID'])) // if wishSID is set check if it is not taken already
@@ -56,7 +61,16 @@ class Surveys_model extends CI_Model {
             $isresult = $this->db->query($isquery); // Checked
         }
         while ($isresult->num_rows()>0);
+
         $data['datecreated']=date("Y-m-d");
+        if (isset($data['startdate']) && trim($data['startdate'])=='')
+        {
+            $data['startdate']=null;
+        }
+        if (isset($data['expires']) && trim($data['expires'])=='')
+        {
+            $data['expires']=null;
+        }
 
         if (!$this->db->insert('surveys', $data))
             return false;

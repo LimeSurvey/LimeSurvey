@@ -87,9 +87,7 @@ class emailtemplates extends Survey_Common_Controller {
         foreach ($grplangs as $grouplang)
         {
             // this one is created to get the right default texts fo each language
-            //$bplang = new limesurvey_lang($grouplang);
-            $this->load->library('Limesurvey_lang',array($grouplang));
-            $bplang = $this->limesurvey_lang;
+            $bplang = new limesurvey_lang(array($grouplang));
             $esquery = "SELECT * FROM ".$this->db->dbprefix."surveys_languagesettings WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
             $esresult = db_execute_assoc($esquery);
             $esrow = $esresult->row_array();
@@ -183,13 +181,13 @@ class emailtemplates extends Survey_Common_Controller {
             $sHTMLOutput .= "<ul><li><label for='email_register_subj_{$grouplang}'>".$clang->gT("Public registration email subject:")."</label>\n"
             . "<input type='text' size='80' name='email_register_subj_".$esrow['surveyls_language']."' id='email_register_subj_{$grouplang}' value=\"{$esrow['surveyls_email_register_subj']}\" />\n"
             . "<input type='hidden' name='email_register_subj_default_".$esrow['surveyls_language']."' id='email_register_subj_default_{$grouplang}' value='{$aDefaultTexts['registration_subject']}' />\n"
-            . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_subj_{$grouplang}\",\"email_register_subj_default_{$grouplang}\")' />\n"
+            . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_register_subj_{$grouplang}\",\"email_register_subj_default_{$grouplang}\")' />\n"
             . "\t</li>\n";
             $sHTMLOutput .= "<li><label for='email_register_{$grouplang}'>".$clang->gT("Public registration email:")."</label>\n"
             . "<textarea cols='80' rows='20' name='email_register_{$grouplang}' id='email_register_{$grouplang}'>".htmlspecialchars($esrow['surveyls_email_register'])."</textarea>\n"
             . getEditor("email-reg","email_register_{$grouplang}", "[".$clang->gT("Public registration email:", "js")."](".$grouplang.")",$surveyid,'','','editemailtemplates')
             . "<input type='hidden' name='email_register_default_".$esrow['surveyls_language']."' id='email_register_default_{$grouplang}' value='".htmlspecialchars(conditional_nl2br($aDefaultTexts['registration'],$ishtml),ENT_QUOTES)."' />\n"
-            . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript:  fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
+            . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_register_{$grouplang}\",\"email_register_default_{$grouplang}\")' />\n"
             . "\t</li></ul>";
             $sHTMLOutput .="</div>" // tab
 
