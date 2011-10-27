@@ -169,7 +169,7 @@
             $bquery .= " and language=".db_quoteall($_POST['tokenlanguage']);
         }
         $bquery .= " ORDER BY tid";
-                echo $bquery; die();
+
         header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
         header("Content-type: text/comma-separated-values; charset=UTF-8");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
