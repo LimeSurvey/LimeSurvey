@@ -5247,7 +5247,7 @@ function do_longfreetext($ia)
 // TMSW Conditions->Relevance:  don't need $checkconditionFunction
 function do_hugefreetext($ia)
 {
-    global $thissurvey;
+    global $js_header_includes, $thissurvey;
     $CI =& get_instance();
     $clang = $CI->limesurvey_lang;
 
