@@ -4,11 +4,9 @@
  * Modify these two lines to point to your TCPDF installation
  * Tested with TCPDF 5.8.008 - see http://www.tcpdf.org/
  */
-//require(APPPATH.'config/tcpdf_config_ci'.EXT);
 require('pdf.php');
 require_once($tcpdf['base_directory'].'/tcpdf.php');
 require_once($tcpdf['base_directory'].'/config/lang/eng.php');
-//require_once($homedir .'/classes/tcpdf/tcpdf.php');
 
 /**
  * A TCPDF based class to produce queXF compatible questionnaire PDF files and banding description XML from queXML
@@ -82,8 +80,19 @@ class quexmlpdf extends pdf {
 	 * 
 	 * @var bool  Defaults to 138. 
 	 * @since 2010-09-20
+	 * @deprecated
+	 * @see $barcodeMarginX
 	 */
-	protected $barcodeX = 138;
+	//protected $barcodeX = 138;
+
+	/**
+	 * The distance between the right hand page border and
+	 * the end of the barcode in MM
+	 * 
+	 * @var bool  Defaults to 23. 
+	 * @since 2011-10-25
+	 */
+	protected $barcodeMarginX = 23;
 
 	/**
 	 * Y position of barcode in mm
@@ -174,6 +183,7 @@ class quexmlpdf extends pdf {
 	 * @since 2010-09-16
 	 */
 	protected $style;
+
 	/**
 	 * Width of the area of each single response 
 	 * 
@@ -291,16 +301,38 @@ class quexmlpdf extends pdf {
 	 * 
 	 * @var mixed  Defaults to 24. 
 	 * @since 2010-09-20
+         * @deprecated
+	 * @see $textResponseMarginX
 	 */
-	protected $textResponsesPerLine = 24;
+	//protected $textResponsesPerLine = 24;
+
+	/**
+	 * The left hand margin of text responses to auto calculate responses
+	 * per line (mm)
+	 * 
+	 * @var mixed  Defaults to 13. 
+	 * @since 2011-10-25
+	 */
+	protected $textResponseMarginX = 13;
 
 	/**
 	 * Maximum number of text responses boxes where the label should appear on the same line
 	 * 
 	 * @var mixed  Defaults to 16. 
 	 * @since 2010-09-20
+	 * @deprecated
+	 * @see $labelTextResponsesSameLineMarginX
 	 */
-	protected $labelTextResponsesSameLine = 16;
+	//protected $labelTextResponsesSameLine = 16;
+
+	/**
+	 * The left hand margin of text responses to auto calculated responses
+	 * per line where the label should appear on the same line (mm)
+	 * 
+	 * @var mixed  Defaults to 62. 
+	 * @since 2011-10-25
+	 */
+	protected $labelTextResponsesSameLineMarginX = 62;
 
 	/**
 	 * The gap between multi line text responses
@@ -541,13 +573,14 @@ class quexmlpdf extends pdf {
 	 * @since 2010-11-05
 	 */
 	protected $sectionHeight = 18;
-    
-    function __construct()
-    {
-    	parent::__construct();
-        $CI =& get_instance();
+
+	function __construct()
+	{
+		parent::__construct();
+		$CI =& get_instance();
 		$this->style = $CI->load->view('libraries/quexmlpdf/style_view','',true);
-    }
+	}
+
 	/**
 	 * Add a box group to the page layout system
 	 *
@@ -1126,8 +1159,9 @@ class quexmlpdf extends pdf {
 					else if (isset($r->vas))
 					{
 						$rtmp['type'] = 'vas';
-						$rtmp['width'] = current($r->vas->length);
-						$rtmp['text'] = current($r->vas->label);
+						$rtmp['width'] = 100; 
+						$rtmp['labelleft'] = current($r->vas->labelleft);
+						$rtmp['labelright'] = current($r->vas->labelright);
 					}
 					$rstmp['response'] = $rtmp;
 					$qtmp['responses'][] = $rstmp;
@@ -1289,7 +1323,7 @@ class quexmlpdf extends pdf {
 							$this->drawMatrixTextVertical($subquestions,$response['width'],$text,$bgtype);
 						break;
 					case 'vas':
-						$this->drawMatrixVas($subquestions,$text);
+						$this->drawMatrixVas($subquestions,$text,$response['labelleft'],$response['labelright']);
 						break;
 		
 				}
@@ -1330,7 +1364,7 @@ class quexmlpdf extends pdf {
 						break;
 					case 'vas':
 						$this->addBoxGroup(1,$varname,$rtext,strlen($this->vasIncrements));
-						$this->drawVas($response['text']);
+						$this->drawVas("",$response['labelleft'],$response['labelright']);
 						break;
 		
 				}
@@ -1393,16 +1427,19 @@ class quexmlpdf extends pdf {
 	 * 
 	 * @param array $subquestions The subquestions containing text and varname
 	 * @param string|bool $parenttext The question text of the parent or false if not specified
+	 * @param string $labelleft The left hand side label
+	 * @param string $labelright The right hand side label
 	 * 
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2010-09-20
 	 */
-	protected function drawMatrixVas($subquestions,$parenttext = false)
+	protected function drawMatrixVas($subquestions,$parenttext = false,$labelleft,$labelright)
 	{
 		$c = count($subquestions);
 		
 		$width = strlen($this->vasIncrements);	
 
+		$heading = true;
 		for ($i = 0; $i < $c; $i++)
 		{
 			$s = $subquestions[$i];
@@ -1415,13 +1452,15 @@ class quexmlpdf extends pdf {
 
 
 
-			$this->drawVas($s['text']);
+			$this->drawVas($s['text'],$labelleft,$labelright,$heading);
 		
 			$currentY = $this->GetY();
 		
 			//Insert a gap here
 			$this->Rect($this->getMainPageX(),$this->GetY(),$this->getMainPageWidth(),$this->subQuestionLineSpacing,'F',array(),$this->backgroundColourQuestion);
 			$this->SetY($currentY + $this->subQuestionLineSpacing,false);
+			
+			$heading = false;
 
 		}
 		
@@ -1449,7 +1488,7 @@ class quexmlpdf extends pdf {
 		//Align to skip column on right
 		$this->SetX(($this->getPageWidth() - $this->getMainPageX() - $this->skipColumnWidth - $this->longTextResponseWidth),false);
 		//Add to pay layout
-		$this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $this->longTextResponseWidth, $this->GetX() + $height);
+		$this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $this->longTextResponseWidth, $this->GetY() + $height);
 		$this->SetDrawColor($this->lineColour[0],$this->lineColour[1],$this->lineColour[2]);
 		$this->Cell($this->longTextResponseWidth,$height,'',$border,0,'',true,'',0,false,'T','C');
 		$currentY = $currentY + $height;
@@ -1460,22 +1499,40 @@ class quexmlpdf extends pdf {
 	/**
 	 * Draw a VAS
 	 * 
-	 * @param mixed $text The label for the VAS if any
+	 * @param string $text The text of this item
+	 * @param string $labelleft The left hand side label
+	 * @param string $labelright The right hand side label
+	 * @param bool $heading Whether to draw a heading or not
 	 * 
 	 * @author Adam Zammit <adam.zammit@acspri.org.au>
 	 * @since  2010-09-20
 	 */
-	protected function drawVas($text)
+	protected function drawVas($text, $labelleft,$labelright,$heading = true)
 	{
+		$textwidth = $this->getMainPageWidth() - $this->skipColumnWidth - ($this->vasLength + ($this->vasLineWidth * 2.0)) - 2;
+		$this->setBackground('question');
+
+		if ($heading)
+		{
+			//draw heading
+			$lwidth = 20;
+			$slwidth = $textwidth - ($lwidth / 2);
+			$gapwidth = ($this->vasLength + ($this->vasLineWidth * 2.0)) - $lwidth;
+	
+	
+			$html = "<table><tr><td width=\"{$slwidth}mm\"></td><td width=\"{$lwidth}mm\" class=\"vasLabel\">$labelleft</td><td width=\"{$gapwidth}mm\"></td><td width=\"{$lwidth}mm\" class=\"vasLabel\">$labelright</td></tr></table>";
+	
+	
+			$this->writeHTMLCell($this->getMainPageWidth(), 0, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,false);
+		}
+
 		$currentY = $this->GetY();
 
-		$textwidth = $this->getMainPageWidth() - $this->skipColumnWidth - ($this->vasLength + ($this->vasLineWidth * 2.0)) - 2;
 
 		$html = "<table><tr><td width=\"{$textwidth}mm\" class=\"responseText\">$text</td><td></td></tr></table>";
 		
 		$textwidth += 2;
 
-		$this->setBackground('question');
 
 		$this->writeHTMLCell($this->getMainPageWidth(), $this->vasAreaHeight, $this->getMainPageX(), $this->GetY(), $this->style . $html,0,1,true,false);
 
@@ -1524,11 +1581,15 @@ class quexmlpdf extends pdf {
 	{
 		$this->SetDrawColor($this->lineColour[0],$this->lineColour[1],$this->lineColour[2]);
 
+		//calculate text responses per line
+		$textResponsesPerLine = round(($this->getMainPageWidth() - $this->skipColumnWidth - $this->textResponseMarginX) / ($this->textResponseWidth + $this->textResponseBorder));
+		$labelTextResponsesSameLine = round(($this->getMainPageWidth() - $this->skipColumnWidth - $this->labelTextResponsesSameLineMarginX) / ($this->textResponseWidth + $this->textResponseBorder));
+
 		//draw boxes - can draw up to $textResponsesPerLine for each line
-		$lines = ceil($width / $this->textResponsesPerLine);
+		$lines = ceil($width / $textResponsesPerLine);
 
 		//draw the text label on the top of this box
-		if ($width > $this->labelTextResponsesSameLine && !empty($text))
+		if ($width > $labelTextResponsesSameLine && !empty($text))
 		{
 			$this->setBackground('question');
 			$html = "<table><tr><td width=\"{$this->questionTitleWidth}mm\"></td><td width=\"" . ($this->getMainPageWidth() -  $this->skipColumnWidth - $this->questionTitleWidth) . "mm\" class=\"responseAboveText\">$text</td><td></td></tr></table>";
@@ -1540,8 +1601,8 @@ class quexmlpdf extends pdf {
 		for ($i = 0; $i < $lines; $i++)
 		{
 			if ($lines == 1) $cells = $width; //one line only
-			else if (($i + 1 == $lines)) $cells = ($width - ($this->textResponsesPerLine * $i));  //last line
-			else $cells = $this->textResponsesPerLine; //middle line
+			else if (($i + 1 == $lines)) $cells = ($width - ($textResponsesPerLine * $i));  //last line
+			else $cells = $textResponsesPerLine; //middle line
 
 
 			$textwidth = ($this->getMainPageWidth() - $this->skipColumnWidth) - (($this->textResponseWidth + $this->textResponseBorder ) * $cells);
@@ -1552,7 +1613,7 @@ class quexmlpdf extends pdf {
 			$this->setBackground('question');
 			$this->writeHTMLCell($this->getMainPageWidth(), $this->textResponseHeight, $this->getMainPageX(), $this->GetY() , $this->style . $html,0,1,true,false);
 
-			if ($lines == 1 && $cells <= $this->labelTextResponsesSameLine && !empty($text))
+			if ($lines == 1 && $cells <= $labelTextResponsesSameLine && !empty($text))
 			{
 				$this->setDefaultFont($this->responseTextFontSize);			
 
@@ -1625,8 +1686,10 @@ class quexmlpdf extends pdf {
 
 			//Add the box to the layout scheme
 			$this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $this->textResponseWidth,$this->GetY() + $this->textResponseHeight);
+
 			//Draw the box
 			$this->Cell($this->textResponseWidth,$this->textResponseHeight,'',$border,0,'',true,'',0,false,'T','C');
+	
 		}
 
 		//add some spacing for the bottom border
@@ -2047,7 +2110,10 @@ class quexmlpdf extends pdf {
 
 		$barcodeValue = str_pad($this->questionnaireId,$this->idLength,"0",STR_PAD_LEFT) . str_pad($this->getPage(),$this->pageLength,"0",STR_PAD_LEFT);	
 
-		$this->write1DBarcode($barcodeValue, $this->barcodeType, $this->barcodeX, $this->barcodeY, $this->barcodeW, $this->barcodeH,'', $barcodeStyle, 'N');
+		//Calc X position of barcode from page width
+		$barcodeX = $width - ($this->barcodeMarginX + $this->barcodeW);
+
+		$this->write1DBarcode($barcodeValue, $this->barcodeType, $barcodeX, $this->barcodeY, $this->barcodeW, $this->barcodeH,'', $barcodeStyle, 'N');
 	
 		//Add this page to the layout system
 		$b = $this->cornerBorder + ($this->cornerWidth / 2.0); //temp calc for middle of line
