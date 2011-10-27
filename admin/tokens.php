@@ -109,7 +109,16 @@
 
 
 
-        $bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid").' where 1=1';
+        $bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid").' t';
+        if ($_POST['tokenstatus']==3 && $thissurvey['anonymized']=='N')
+        {
+            $bquery .= " JOIN ".db_table_name("survey_$surveyid")." s on t.token=s.token ";
+        }
+        if ($_POST['tokenstatus']==2 && $thissurvey['anonymized']=='N')
+        {
+            $bquery .= " LEFT JOIN ".db_table_name("survey_$surveyid")." s on t.token=s.token ";
+        }
+        $bquery.=' where 1=1';
         if (trim($_POST['filteremail'])!='')
         {
             if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $connect->databaseType == 'mssqlnative')
@@ -130,12 +139,12 @@
             $bquery .= " and completed='N'";
             if ($thissurvey['anonymized']=='N')
             {
-                $bquery .=" and token not in (select distinct token from ".db_table_name("survey_$surveyid")." where token is not null)";
+                $bquery .=" and s.token is null ";
             }
         }
         if ($_POST['tokenstatus']==3 && $thissurvey['anonymized']=='N')
         {
-            $bquery .= " and completed='N' and token in (select distinct token from ".db_table_name("survey_$surveyid")." where token is not null)";
+            $bquery .= " and completed='N' and s.token is not null";
         }
         if ($_POST['invitationstatus']==1)
         {
@@ -160,7 +169,7 @@
             $bquery .= " and language=".db_quoteall($_POST['tokenlanguage']);
         }
         $bquery .= " ORDER BY tid";
-
+                echo $bquery; die();
         header("Content-Disposition: attachment; filename=tokens_".$surveyid.".csv");
         header("Content-type: text/comma-separated-values; charset=UTF-8");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
