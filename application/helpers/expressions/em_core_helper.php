@@ -67,7 +67,8 @@ class ExpressionManager {
         $regex_andor = '\band\b|\bor\b|&&|\|\|';
 
         $this->sExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n|\s+)' .
-                '(' . $regex_dq_string . '|' . $regex_sq_string . '|.*?)*' .
+                '.*?' .
+//                '(' . $regex_dq_string . '|' . $regex_sq_string . '|.*?)*' .  // this led to parsing failures when there were more than about 10 SGQA + strings in an expression
                 '(?<!\\\\)(?<!\n|\r|\r\n|\s)' . '}' . ')#';
 
 
@@ -2066,6 +2067,10 @@ Can {expressions contain 'single' or "double" quoted strings}?
 [img src="images/mine_{if(Q1=="Y",'sq with {nested braces}',"dq with {nested braces}")}.png"/]
 {name}, you said that you are {age} years old, and that you have {numKids} {if((numKids==1),'child','children')} and {numPets} {if((numPets==1),'pet','pets')} running around the house. So, you have {numKids + numPets} wild {if((numKids + numPets ==1),'beast','beasts')} to chase around every day.
 Since you have more {if((INSERT61764X1X3 > INSERT61764X1X4),'children','pets')} than you do {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')}, do you feel that the {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')} are at a disadvantage?
+[{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y"))}] Which brand of Antibacterial Liquid Hand Soap is your favorite?
+Does string split fail if there are 20 embedded strings? {'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eightteen', 'nineteen, 'twenty'}???
+Strings with many SGQA (e.g. > 10 or 15) will fail to parse: [{617167X9X3244, 617167X9X3245, 617167X9X3246, 617167X9X3247, 617167X9X3248, 617167X9X3249, 617167X9X3301, 617167X9X3302, 617167X9X3303, 617167X9X3304, 617167X9X3305, 617167X9X3306, 617167X9X3307, 617167X9X3308, 617167X9X3309}] Which brand of Antibacterial Liquid Hand Soap is your favorite?
+[{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Which brand of Antibacterial Liquid Hand Soap is your favorite?
 EOD;
 
         $em = new ExpressionManager();
