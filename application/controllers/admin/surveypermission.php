@@ -1,50 +1,50 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
- * LimeSurvey (tm)
- * Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- *
- */
+* LimeSurvey (tm)
+* Copyright (C) 2011 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+*
+*/
 
 /**
- * surveypermission
- *
- * @package LimeSurvey
- * @copyright 2011
- * @version $Id$
- * @access public
- */
+* surveypermission
+*
+* @package LimeSurvey
+* @copyright 2011
+* @version $Id$
+* @access public
+*/
 class surveypermission extends Survey_Common_Controller {
 
 
     /**
-     * surveypermission::__construct()
-     * Constructor
-     * @return
-     */
+    * surveypermission::__construct()
+    * Constructor
+    * @return
+    */
     function __construct()
-	{
-		parent::__construct();
-	}
+    {
+        parent::__construct();
+    }
 
     /**
-     * surveypermission::view()
-     * Load survey security screen.
-     * @param mixed $surveyid
-     * @return
-     */
+    * surveypermission::view()
+    * Load survey security screen.
+    * @param mixed $surveyid
+    * @return
+    */
     function view($surveyid)
     {
-    	$surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int($surveyid);
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-	    $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
 
 
         self::_getAdminHeader();
@@ -58,16 +58,18 @@ class surveypermission extends Survey_Common_Controller {
 
         if(bHasSurveyPermission($surveyid,'survey','read'))
         {
-            $aBaseSurveyPermissions=aGetBaseSurveyPermissions();
+            $this->load->model('survey_permissions_model');
+            $aBaseSurveyPermissions=$this->survey_permissions_model->aGetBaseSurveyPermissions();
+
             //$js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
             self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
             self::_js_admin_includes(base_url().'scripts/admin/surveysecurity.js');
             //$js_admin_includes[]='scripts/surveysecurity.js';
 
             $query2 = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM ".$this->db->dbprefix."survey_permissions AS p INNER JOIN ".$this->db->dbprefix."users  AS u ON p.uid = u.uid
-                       WHERE p.sid = {$surveyid} AND u.uid != ".$this->session->userdata('loginID') ."
-                        GROUP BY p.sid, p.uid, u.users_name, u.full_name
-                       ORDER BY u.users_name";
+            WHERE p.sid = {$surveyid} AND u.uid != ".$this->session->userdata('loginID') ."
+            GROUP BY p.sid, p.uid, u.users_name, u.full_name
+            ORDER BY u.users_name";
             $result2 = db_execute_assoc($query2); //Checked
 
             $surveysecurity ="<div class='header ui-widget-header'>".$clang->gT("Survey permissions")."</div>\n"
@@ -124,7 +126,7 @@ class surveypermission extends Survey_Common_Controller {
                             $group_names[] = $resul4row['name'];
                         }
                         if(count($group_names) > 0)
-                        $group_names_query = implode(", ", $group_names);
+                            $group_names_query = implode(", ", $group_names);
                     }
                     //                  else {break;} //TODO Commented by lemeur
                     $surveysecurity .= "<tr>\n";
@@ -228,18 +230,18 @@ class surveypermission extends Survey_Common_Controller {
     }
 
     /**
-     * surveypermission::addusergroup()
-     * Function responsible to add usergroup.
-     * @param mixed $surveyid
-     * @return
-     */
+    * surveypermission::addusergroup()
+    * Function responsible to add usergroup.
+    * @param mixed $surveyid
+    * @return
+    */
     function addusergroup($surveyid)
     {
-    	$surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int($surveyid);
 
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-	    $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
 
 
         self::_getAdminHeader();
@@ -323,19 +325,19 @@ class surveypermission extends Survey_Common_Controller {
 
 
     /**
-     * surveypermission::adduser()
-     * Function responsible to add user.
-     * @param mixed $surveyid
-     * @return
-     */
+    * surveypermission::adduser()
+    * Function responsible to add user.
+    * @param mixed $surveyid
+    * @return
+    */
     function adduser($surveyid)
     {
 
-		$surveyid = sanitize_int($surveyid);
-		
+        $surveyid = sanitize_int($surveyid);
+
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-	    $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
 
 
         self::_getAdminHeader();
@@ -407,18 +409,18 @@ class surveypermission extends Survey_Common_Controller {
     }
 
     /**
-     * surveypermission::set()
-     * Function responsible to set permissions to a user/usergroup.
-     * @param mixed $surveyid
-     * @return
-     */
+    * surveypermission::set()
+    * Function responsible to set permissions to a user/usergroup.
+    * @param mixed $surveyid
+    * @return
+    */
     function set($surveyid)
     {
-    	$surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int($surveyid);
 
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-	    $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
 
 
         self::_getAdminHeader();
@@ -438,7 +440,7 @@ class surveypermission extends Survey_Common_Controller {
             $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID');
             if ($action == "setsurveysecurity")
             {
-              $query.=  " AND owner_id != ".$postuserid;
+                $query.=  " AND owner_id != ".$postuserid;
             }
             $result = db_execute_assoc($query); //Checked
             if($result->num_rows() > 0 || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
@@ -478,8 +480,9 @@ class surveypermission extends Survey_Common_Controller {
                 . "</tr></thead>\n";
 
                 //content
+                $this->load->model('survey_permissions_model');
+                $aBasePermissions=$this->survey_permissions_model->aGetBaseSurveyPermissions();
 
-                $aBasePermissions=aGetBaseSurveyPermissions();
                 $oddcolumn=false;
                 foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
                 {
@@ -540,19 +543,19 @@ class surveypermission extends Survey_Common_Controller {
     }
 
     /**
-     * surveypermission::delete()
-     * Function responsible to delete a user/usergroup.
-     * @param mixed $surveyid
-     * @return
-     */
+    * surveypermission::delete()
+    * Function responsible to delete a user/usergroup.
+    * @param mixed $surveyid
+    * @return
+    */
     function delete($surveyid)
     {
-    	
-		$surveyid = sanitize_int($surveyid);
+
+        $surveyid = sanitize_int($surveyid);
 
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-	    $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
 
 
         self::_getAdminHeader();
@@ -608,18 +611,18 @@ class surveypermission extends Survey_Common_Controller {
     }
 
     /**
-     * surveypermission::surveyright()
-     * Function responsible to process setting of permission of a user/usergroup.
-     * @param mixed $surveyid
-     * @return
-     */
+    * surveypermission::surveyright()
+    * Function responsible to process setting of permission of a user/usergroup.
+    * @param mixed $surveyid
+    * @return
+    */
     function surveyright($surveyid)
     {
-    	$surveyid = sanitize_int($surveyid);
+        $surveyid = sanitize_int($surveyid);
 
         $action = $this->input->post('action');
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-	    $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $this->config->set_item("css_admin_includes", $css_admin_includes);
 
 
         self::_getAdminHeader();
@@ -657,8 +660,9 @@ class surveypermission extends Survey_Common_Controller {
                 $resrow=$res->row_array();
                 $iOwnerID=$resrow['owner_id']; //$connect->GetOne($sQuery);
             }
+            $this->load->model('survey_permissions_model');
 
-            $aBaseSurveyPermissions=aGetBaseSurveyPermissions();
+            $aBaseSurveyPermissions=$this->survey_permissions_model->aGetBaseSurveyPermissions();
             $aPermissions=array();
             foreach ($aBaseSurveyPermissions as $sPermissionKey=>$aCRUDPermissions)
             {
@@ -686,7 +690,7 @@ class surveypermission extends Survey_Common_Controller {
                 {
                     foreach ($oResult->result_array() as $aRow)
                     {
-                        SetSurveyPermissions($aRow['uid'], $surveyid, $aPermissions);
+                        $this->survey_permissions_model->setSurveyPermissions($aRow['uid'], $surveyid, $aPermissions);
                     }
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions for all users in this group were successfully updated.")."</div>\n";
                 }
@@ -694,7 +698,8 @@ class surveypermission extends Survey_Common_Controller {
             else
             {
                 $this->load->helper('admin/import');
-                if(SetSurveyPermissions($postuserid, $surveyid, $aPermissions))
+                $this->load->model('survey_permissions_model');
+                if($this->survey_permissions_model->setSurveyPermissions($postuserid, $surveyid, $aPermissions))
                 {
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions were successfully updated.")."</div>\n";
                 }

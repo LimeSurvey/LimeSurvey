@@ -2755,7 +2755,8 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
 
     // DO SURVEY_RIGHTS
-    GiveAllSurveyPermissions($CI->session->userdata('loginID'),$newsid);
+    $CI->load->model('survey_permissions_model');
+    $CI->survey_permissions_model->giveAllSurveyPermissions($CI->session->userdata('loginID'),$newsid);
     $importresults['deniedcountls'] =0;
 
 
@@ -3909,7 +3910,8 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     }
 
     // Set survey rights
-    GiveAllSurveyPermissions($CI->session->userdata('loginID'),$newsid);
+    $CI->load->model('survey_permissions_model');
+    $CI->survey_permissions_model->giveAllSurveyPermissions($CI->session->userdata('loginID'),$newsid);
     $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
     $results['FieldReMap']=$aOldNewFieldmap;
     if ($bTranslateInsertansTags)
@@ -3954,58 +3956,6 @@ function GetNewSurveyID($oldsid)
     {
         return $oldsid;
     }
-}
-
-function GiveAllSurveyPermissions($iUserID, $iSurveyID)
-{
-    $aPermissions=aGetBaseSurveyPermissions();
-    $aPermissionsToSet=array();
-    foreach ($aPermissions as $sPermissionName=>$aPermissionDetails)
-    {
-        foreach ($aPermissionDetails as $sPermissionDetailKey=>$sPermissionDetailValue)
-        {
-            if (in_array($sPermissionDetailKey,array('create','read','update','delete','import','export')) && $sPermissionDetailValue==true)
-            {
-                $aPermissionsToSet[$sPermissionName][$sPermissionDetailKey]=1;
-            }
-
-        }
-    }
-    SetSurveyPermissions($iUserID, $iSurveyID, $aPermissionsToSet);
-}
-
-/**
-* Set the survey permissions for a user. Beware that all survey permissions for the particual survey are removed before the new ones are written.
-*
-* @param int $iUserID The User ID
-* @param int $iSurveyID The Survey ID
-* @param array $aPermissions  Array with permissions in format <permissionname>=>array('create'=>0/1,'read'=>0/1,'update'=>0/1,'delete'=>0/1)
-*/
-function SetSurveyPermissions($iUserID, $iSurveyID, $aPermissions)
-{
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $iUserID=sanitize_int($iUserID);
-    $sQuery = "delete from ".$CI->db->dbprefix."survey_permissions WHERE sid = {$iSurveyID} AND uid = {$iUserID}";
-    db_execute_assoc($sQuery);
-    $bResult=true;
-
-    foreach($aPermissions as $sPermissionname=>$aPermissions)
-    {
-        if (!isset($aPermissions['create'])) {$aPermissions['create']=0;}
-        if (!isset($aPermissions['read'])) {$aPermissions['read']=0;}
-        if (!isset($aPermissions['update'])) {$aPermissions['update']=0;}
-        if (!isset($aPermissions['delete'])) {$aPermissions['delete']=0;}
-        if (!isset($aPermissions['import'])) {$aPermissions['import']=0;}
-        if (!isset($aPermissions['export'])) {$aPermissions['export']=0;}
-        if ($aPermissions['create']==1 || $aPermissions['read']==1 ||$aPermissions['update']==1 || $aPermissions['delete']==1  || $aPermissions['import']==1  || $aPermissions['export']==1)
-        {
-            $sQuery = "INSERT INTO ".$CI->db->dbprefix."survey_permissions (sid, uid, permission, create_p, read_p, update_p, delete_p, import_p, export_p)
-            VALUES ({$iSurveyID},{$iUserID},'{$sPermissionname}',{$aPermissions['create']},{$aPermissions['read']},{$aPermissions['update']},{$aPermissions['delete']},{$aPermissions['import']},{$aPermissions['export']})";
-            $bResult=db_execute_assoc($sQuery);
-        }
-    }
-    return $bResult;
 }
 
 
