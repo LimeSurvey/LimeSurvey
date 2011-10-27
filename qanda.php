@@ -4955,7 +4955,7 @@ function do_longfreetext($ia)
 // ---------------------------------------------------------------
 function do_hugefreetext($ia)
 {
-    global $clang, $thissurvey;
+    global $clang, $js_header_includes, $thissurvey;
 
     if ($thissurvey['nokeyboard']=='Y')
     {
