@@ -185,7 +185,7 @@ class survey extends LSCI_Controller {
                 doHeader();
 
                 $redata = compact(array_keys(get_defined_vars()));
-                $this->_printTemplateContent($this->config->item("standardtemplaterootdir").'/startpage.pstpl', $redata, __LINE__);
+                $this->_printTemplateContent($this->config->item("standardtemplaterootdir").'/default/startpage.pstpl', $redata, __LINE__);
                 $asMessage = array(
                         $clang->gT("Error"),
                         $clang->gT("We are sorry but you don't have permissions to do this."),
@@ -219,7 +219,7 @@ class survey extends LSCI_Controller {
             doHeader();
 
             $redata = compact(array_keys(get_defined_vars()));
-            $this->_printTemplateContent($this->config->item("standardtemplaterootdir").'/startpage.pstpl', $redata, __LINE__);
+            $this->_printTemplateContent($this->config->item("standardtemplaterootdir").'/default/startpage.pstpl', $redata, __LINE__);
             $asMessage = array(
                     $clang->gT("Error"),
                     $clang->gT("We are sorry but your session has expired."),
@@ -1065,7 +1065,7 @@ class survey extends LSCI_Controller {
         if ( $sTemplateDir == null )
             $sTemplateDir = $this->config->item("standardtemplaterootdir");
 
-        $this->_printTemplateContent($sTemplateDir.'/endpage.pstpl', $redata, $iDebugLine);
+        $this->_printTemplateContent($sTemplateDir.'/default/endpage.pstpl', $redata, $iDebugLine);
         doFooter();
         if ( $bKillSession )
             killSession();
@@ -1084,7 +1084,7 @@ class survey extends LSCI_Controller {
         sendcacheheaders();
         doHeader();
 
-        $template = $this->config->item("standardtemplaterootdir").'/startpage.pstpl';
+        $template = $this->config->item("standardtemplaterootdir").'/default/startpage.pstpl';
         $this->_printTemplateContent($template, $redata, __LINE__);
 
         $this->_killPage($redata, __LINE__, null, $asMessage);
