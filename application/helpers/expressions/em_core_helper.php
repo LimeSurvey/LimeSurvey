@@ -465,15 +465,14 @@ class ExpressionManager {
                             $result = array(NULL,$token[1],'NUMBER');   // was 0 instead of NULL
                         }
                         $this->StackPush($result);
-                        /*
+
                         // TODO - currently, will try to process value anyway, but want to show a potential error.  Should it be a definitive error (e.g. prevent this behavior)?
                         $groupSeq = $this->GetVarAttribute($token[0],'groupSeq',-1);
                         if (($groupSeq != -1) && ($groupSeq > $this->groupSeq))
                         {
-                            $this->AddError("This variable is set on a later page",$token);
+                            $this->AddError("This variable is not declared until a later page",$token);
                             return false;
                         }
-                         */
                         return true;
                     }
                     else
@@ -1353,7 +1352,12 @@ class ExpressionManager {
                                     $color = '#996600'; // tan
                                 }
                                 else if ($questionSeq > $this->questionSeq) {
-                                    $color = 'maroon';  // #228b22 - warning
+                                    if ($groupSeq > $this->groupSeq) {
+                                        $color = '#FF00FF ';     // pink a likely error
+                                    }
+                                    else {
+                                        $color = 'maroon';  // #228b22 - warning
+                                    }
                                 }
                                 else {
                                     $color = '#4C88BE';    // cyan that goes well with the background color
@@ -2152,9 +2156,9 @@ EOD;
 'four' => array('codeValue'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
 'five' => array('codeValue'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
 'six' => array('codeValue'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
-'seven' => array('codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>3,'questionSeq'=>5),
-'eight' => array('codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>3,'questionSeq'=>5),
-'nine' => array('codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>3,'questionSeq'=>5),
+'seven' => array('codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
+'eight' => array('codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
+'nine' => array('codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
 'ten' => array('codeValue'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
 'half' => array('codeValue'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
 'hi' => array('codeValue'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
@@ -2267,8 +2271,8 @@ EOD;
 // also include SGQA values and read-only variable attributes
 '12X34X56'  => array('codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
 '12X3X5lab1_ber'    => array('codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'q5pointChoice'    => array('codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>12,'isOnCurrentPage'=>'N', 'groupSeq'=>3,'questionSeq'=>12),
-'qArrayNumbers_ls1_min'    => array('codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'isOnCurrentPage'=>'N', 'groupSeq'=>3,'questionSeq'=>6),
+'q5pointChoice'    => array('codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>12,'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>12),
+'qArrayNumbers_ls1_min'    => array('codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>6),
 '12X3X5lab1_ber#1'  => array('codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
         );
 
