@@ -1148,8 +1148,6 @@ class export extends Survey_Common_Controller {
         header('Content-Type: application/zip');
         header('Content-Transfer-Encoding: binary');
         header('Content-Disposition: attachment; filename="quexmlpdf_' . $qid . '_' . $surveyprintlang . '.zip"');
-        $len = filesize($zipfile);
-        header("Content-Length: $len;\n");
         header("Pragma: public");
         // load the file to send:
         readfile($zipfile);

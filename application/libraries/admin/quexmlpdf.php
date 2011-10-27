@@ -20,7 +20,7 @@ require_once($tcpdf['base_directory'].'/config/lang/eng.php');
  * @link      http://quexml.sourceforge.net
  * @link      http://quexf.sourceforge.net
  */
-class queXMLPDF extends pdf {
+class quexmlpdf extends pdf {
 
 	/**
 	 * Define an inch in MM
