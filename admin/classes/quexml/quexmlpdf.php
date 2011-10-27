@@ -79,8 +79,19 @@ class queXMLPDF extends TCPDF {
 	 * 
 	 * @var bool  Defaults to 138. 
 	 * @since 2010-09-20
+	 * @deprecated
+	 * @see $barcodeMarginX
 	 */
-	protected $barcodeX = 138;
+	//protected $barcodeX = 138;
+
+	/**
+	 * The distance between the right hand page border and
+	 * the end of the barcode in MM
+	 * 
+	 * @var bool  Defaults to 23. 
+	 * @since 2011-10-25
+	 */
+	protected $barcodeMarginX = 23;
 
 	/**
 	 * Y position of barcode in mm
@@ -300,16 +311,38 @@ class queXMLPDF extends TCPDF {
 	 * 
 	 * @var mixed  Defaults to 24. 
 	 * @since 2010-09-20
+         * @deprecated
+	 * @see $textResponseMarginX
 	 */
-	protected $textResponsesPerLine = 24;
+	//protected $textResponsesPerLine = 24;
+
+	/**
+	 * The left hand margin of text responses to auto calculate responses
+	 * per line (mm)
+	 * 
+	 * @var mixed  Defaults to 13. 
+	 * @since 2011-10-25
+	 */
+	protected $textResponseMarginX = 13;
 
 	/**
 	 * Maximum number of text responses boxes where the label should appear on the same line
 	 * 
 	 * @var mixed  Defaults to 16. 
 	 * @since 2010-09-20
+	 * @deprecated
+	 * @see $labelTextResponsesSameLineMarginX
 	 */
-	protected $labelTextResponsesSameLine = 16;
+	//protected $labelTextResponsesSameLine = 16;
+
+	/**
+	 * The left hand margin of text responses to auto calculated responses
+	 * per line where the label should appear on the same line (mm)
+	 * 
+	 * @var mixed  Defaults to 62. 
+	 * @since 2011-10-25
+	 */
+	protected $labelTextResponsesSameLineMarginX = 62;
 
 	/**
 	 * The gap between multi line text responses
@@ -1551,11 +1584,15 @@ class queXMLPDF extends TCPDF {
 	{
 		$this->SetDrawColor($this->lineColour[0],$this->lineColour[1],$this->lineColour[2]);
 
+		//calculate text responses per line
+		$textResponsesPerLine = round(($this->getMainPageWidth() - $this->skipColumnWidth - $this->textResponseMarginX) / ($this->textResponseWidth + $this->textResponseBorder));
+		$labelTextResponsesSameLine = round(($this->getMainPageWidth() - $this->skipColumnWidth - $this->labelTextResponsesSameLineMarginX) / ($this->textResponseWidth + $this->textResponseBorder));
+
 		//draw boxes - can draw up to $textResponsesPerLine for each line
-		$lines = ceil($width / $this->textResponsesPerLine);
+		$lines = ceil($width / $textResponsesPerLine);
 
 		//draw the text label on the top of this box
-		if ($width > $this->labelTextResponsesSameLine && !empty($text))
+		if ($width > $labelTextResponsesSameLine && !empty($text))
 		{
 			$this->setBackground('question');
 			$html = "<table><tr><td width=\"{$this->questionTitleWidth}mm\"></td><td width=\"" . ($this->getMainPageWidth() -  $this->skipColumnWidth - $this->questionTitleWidth) . "mm\" class=\"responseAboveText\">$text</td><td></td></tr></table>";
@@ -1567,8 +1604,8 @@ class queXMLPDF extends TCPDF {
 		for ($i = 0; $i < $lines; $i++)
 		{
 			if ($lines == 1) $cells = $width; //one line only
-			else if (($i + 1 == $lines)) $cells = ($width - ($this->textResponsesPerLine * $i));  //last line
-			else $cells = $this->textResponsesPerLine; //middle line
+			else if (($i + 1 == $lines)) $cells = ($width - ($textResponsesPerLine * $i));  //last line
+			else $cells = $textResponsesPerLine; //middle line
 
 
 			$textwidth = ($this->getMainPageWidth() - $this->skipColumnWidth) - (($this->textResponseWidth + $this->textResponseBorder ) * $cells);
@@ -1579,7 +1616,7 @@ class queXMLPDF extends TCPDF {
 			$this->setBackground('question');
 			$this->writeHTMLCell($this->getMainPageWidth(), $this->textResponseHeight, $this->getMainPageX(), $this->GetY() , $this->style . $html,0,1,true,false);
 
-			if ($lines == 1 && $cells <= $this->labelTextResponsesSameLine && !empty($text))
+			if ($lines == 1 && $cells <= $labelTextResponsesSameLine && !empty($text))
 			{
 				$this->setDefaultFont($this->responseTextFontSize);			
 
@@ -1652,8 +1689,10 @@ class queXMLPDF extends TCPDF {
 
 			//Add the box to the layout scheme
 			$this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $this->textResponseWidth,$this->GetY() + $this->textResponseHeight);
+
 			//Draw the box
 			$this->Cell($this->textResponseWidth,$this->textResponseHeight,'',$border,0,'',true,'',0,false,'T','C');
+	
 		}
 
 		//add some spacing for the bottom border
@@ -2074,7 +2113,10 @@ class queXMLPDF extends TCPDF {
 
 		$barcodeValue = str_pad($this->questionnaireId,$this->idLength,"0",STR_PAD_LEFT) . str_pad($this->getPage(),$this->pageLength,"0",STR_PAD_LEFT);	
 
-		$this->write1DBarcode($barcodeValue, $this->barcodeType, $this->barcodeX, $this->barcodeY, $this->barcodeW, $this->barcodeH,'', $barcodeStyle, 'N');
+		//Calc X position of barcode from page width
+		$barcodeX = $width - ($this->barcodeMarginX + $this->barcodeW);
+
+		$this->write1DBarcode($barcodeValue, $this->barcodeType, $barcodeX, $this->barcodeY, $this->barcodeW, $this->barcodeH,'', $barcodeStyle, 'N');
 	
 		//Add this page to the layout system
 		$b = $this->cornerBorder + ($this->cornerWidth / 2.0); //temp calc for middle of line
