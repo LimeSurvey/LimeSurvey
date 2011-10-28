@@ -36,6 +36,31 @@ class Failed_login_attempts_model extends CI_Model {
 		return $this->db->delete('failed_login_attempts');
 	}
 
+    /**
+    * Check if an IP address is allowed to login or not
+    *
+    * @param string $sIPAddress IP Address to check
+    * @return boolean Returns true if the user is blocked
+    */
+    function isLockedOut($sIPAddress)
+    {
+        $this->db->where('number_attempts >',$this->config->item("maxLoginAttempt"));
+        $this->db->where('ip >',$sIPAddress);
+        $oQuery = $this->db->get('failed_login_attempts');
+        return ($oQuery->num_rows()>0);
+    }
+
+    /**
+    * This function removes obsolete login attempts
+    *
+    */
+    function cleanOutOldAttempts()
+    {
+        $this->db->where('now() > (last_attempt+'.$this->config->item("timeOutTime").')');
+        return $this->db->delete('failed_login_attempts');
+    }
+
+
 	function addAttempt($sIp)
 	{
 

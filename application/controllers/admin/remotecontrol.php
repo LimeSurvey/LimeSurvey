@@ -20,7 +20,7 @@ class remotecontrol extends Survey_Common_Controller {
         $config['functions']['get_session_key'] = array('function' => 'remotecontrol.getSessionKey');
         $config['functions']['release_session_key'] = array('function' => 'remotecontrol.releaseSessionKey');
         $config['functions']['delete_survey'] = array('function' => 'remotecontrol.deleteSurvey');
-        $config['functions']['create_survey'] = array('function' => 'remotecontrol.createSurvey');
+//        $config['functions']['create_survey'] = array('function' => 'remotecontrol.createSurvey');
 
         $this->xmlrpcs->initialize($config);
         $this->xmlrpcs->serve();
@@ -48,9 +48,12 @@ class remotecontrol extends Survey_Common_Controller {
             'created'=>date( 'Y-m-d H:i:s'),
             'modified'=>date( 'Y-m-d H:i:s'),
             'sessdata'=>$sUserName));
-            $response = array(array('sessionkey'  => $sSessionKey),'struct');
+            return $this->xmlrpc->send_response(array($sSessionKey,'array'));
         }
-        return $this->xmlrpc->send_response($response);
+        else
+        {
+            return $this->xmlrpc->send_error_message('1', 'Login failed');
+        }
     }
 
 
@@ -66,8 +69,7 @@ class remotecontrol extends Survey_Common_Controller {
         $sSessionKey=$parameters['0'];
         $this->db->delete('sessions', array('sesskey' => $sSessionKey));
         $this->sessions_model->cleanSessions();
-        $response = array(array('status'  => 'OK'),'struct');
-        return $this->xmlrpc->send_response($response);
+        return $this->xmlrpc->send_response(array('OK','array'));
     }
 
 
@@ -90,10 +92,10 @@ class remotecontrol extends Survey_Common_Controller {
                 $this->surveys_model->deleteSurvey($iSurveyID);
                 rmdirr($this->config->item("uploaddir").'/surveys/'.$iSurveyID);
                 $response = array(array('status'  => 'OK'),'struct');
+                return $this->xmlrpc->send_response($response);
             }
             else
-                $response = array(array('status'  => 'Failed'),'struct');
-            return $this->xmlrpc->send_response($response);
+            return $this->xmlrpc->send_error_message('2', 'No permission');
         }
     }
 
@@ -105,17 +107,21 @@ class remotecontrol extends Survey_Common_Controller {
     */
     function _doLogin($sUsername, $sPassword)
     {
+        $this->load->model("failed_login_attempts_model");
+        if ($this->failed_login_attempts_model->isLockedOut($this->input->ip_address()))
+        {
+            return false;
+        }
+
         $sUsername = sanitize_user($sUsername);
         $this->load->library('admin/sha256','sha256');
         $post_hash = $this->sha256->hashing($sPassword);
 
         $this->load->model("Users_model");
-
         $query = $this->Users_model->getAllRecords(array("users_name"=>$sUsername, 'password'=>$post_hash));
 
         if ($query->num_rows()==0)
         {
-            $this->load->model("failed_login_attempts_model");
             $query = $this->failed_login_attempts_model->addAttempt($this->input->ip_address());
             return false;
         }
@@ -155,7 +161,7 @@ class remotecontrol extends Survey_Common_Controller {
 
 
     /**
-    * This function checks if the XML-RPC session key is valid. If yes returns true, otherwise false and sends a 'FAILED' responses
+    * This function checks if the XML-RPC session key is valid. If yes returns true, otherwise false and sends an error message with error code 1
     *
     * @param mixed $sSessionKey
     */
@@ -165,8 +171,7 @@ class remotecontrol extends Survey_Common_Controller {
         $oResult=$this->sessions_model->getAllRecords(array('sesskey'=>$sSessionKey));
         if($oResult->num_rows()==0)
         {
-            $response = array(array('status'  => 'Failed'),'struct');
-            $this->xmlrpc->send_response($response);
+            $this->xmlrpc->send_error_message('1', 'Invalid session key');
             return false;
         }
         else

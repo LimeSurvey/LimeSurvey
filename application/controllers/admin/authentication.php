@@ -49,25 +49,8 @@ class Authentication extends Admin_Controller {
         {
             $sIp = $this->session->userdata("ip_address");
             $this->load->model("failed_login_attempts_model");
-            $query = $this->failed_login_attempts_model->getAllRecords(array("ip"=>$sIp));
-
-            $bCannotLogin = false;
-            $intNthAttempt = 0;
-            if ($query->num_rows() > 0)
-            {
-                $field = $query->row_array();
-                $intNthAttempt = $field['number_attempts'];
-                if ($intNthAttempt>=$this->config->item("maxLoginAttempt")){
-                    $bCannotLogin = true;
-                }
-
-                $iLastAttempt = strtotime($field['last_attempt']);
-
-                if (time() > $iLastAttempt + $this->config->item("timeOutTime")){
-                    $bCannotLogin = false;
-                    $this->failed_login_attempts_model->deleteAttempts($sIp);
-                }
-            }
+            $this->failed_login_attempts_model->cleanOutOldAttempts();
+            $bCannotLogin=$this->failed_login_attempts_model->isLockedOut($sIp);
 
             if (!$bCannotLogin)
             {
@@ -75,7 +58,7 @@ class Authentication extends Admin_Controller {
                 {
                     $clang = $this->limesurvey_lang;
 
-                    $data=self::_doLogin($intNthAttempt, $this->input->post("user"), $this->input->post('password'));
+                    $data=self::_doLogin($this->input->post("user"), $this->input->post('password'));
                     if (isset($data['errormsg']))
                     {
                         parent::_getAdminHeader();
@@ -236,11 +219,10 @@ class Authentication extends Admin_Controller {
     /**
     * Do the actual login work
     * Note: This function is replicated in parts in remotecontrol.php controller - if you change this don't forget to make according changes there, too
-    * @param boolean $bLoginAttempted Set to true if there were previous login attempts
     * @param string $sUsername The username to login with
     * @param string $sPassword The password to login with
     */
-    function _doLogin($bLoginAttempted, $sUsername, $sPassword)
+    function _doLogin( $sUsername, $sPassword)
     {
 
         $clang = $this->limesurvey_lang;
@@ -262,7 +244,7 @@ class Authentication extends Admin_Controller {
                 // wrong or unknown username
                 $data['errormsg']=$clang->gT("Incorrect username and/or password!");
                 $data['maxattempts']="";
-                if ($bLoginAttempted+1 >= $this->config->item("maxLoginAttempt"))
+                if ($this->failed_login_attempts_model->isLockedOut($this->input->ip_address()))
                 {
                     $data['maxattempts']=sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($this->config->item("timeOutTime")/60))."<br />";
                 }

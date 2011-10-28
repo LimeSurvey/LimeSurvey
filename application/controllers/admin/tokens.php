@@ -1413,7 +1413,7 @@ class tokens extends Survey_Common_Controller {
 	}
 
 	/**
-	 * Generate Tokens
+	 * Generate tokens
 	 */
 	function tokenify($surveyid)
 	{
@@ -1426,7 +1426,6 @@ class tokens extends Survey_Common_Controller {
 
 		if (bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
-		    //$tokenoutput .= "<div class='header ui-widget-header'>".$clang->gT("Create tokens")."</div>\n";
 		    if (!$this->input->post('ok'))
 		    {
 
@@ -1435,7 +1434,6 @@ class tokens extends Survey_Common_Controller {
 				self::_showMessageBox($clang->gT("Create tokens"),
 						$clang->gT("Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?")."<br /><br />\n"
 		        ."<input type='submit' value='"
-		        //		.$clang->gT("Yes")."' onclick=\"window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify&amp;ok=Y', '_top')\" />\n"
 		        .$clang->gT("Yes")."' onclick=\"".get2post(site_url("admin/tokens/tokenify/$surveyid")."?action=tokens&amp;sid=$surveyid&amp;subaction=tokenify&amp;ok=Y")."\" />\n"
 		        ."<input type='submit' value='"
 		        .$clang->gT("No")."' onclick=\"window.open('".site_url("admin/tokens/index/$surveyid")."', '_top')\" />\n"
@@ -1446,8 +1444,6 @@ class tokens extends Survey_Common_Controller {
 		    else
 		    {
 		        //get token length from survey settings
-		        //$tlquery = "SELECT tokenlength FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
-		        //$tlresult = db_execute_assoc($tlquery);
 				$this->load->model("surveys_model");
 				$tlresult = $this->surveys_model->getSomeRecords(array("tokenlength"),array("sid"=>$surveyid));
 		        $tlrow = $tlresult->row_array();
@@ -1460,17 +1456,13 @@ class tokens extends Survey_Common_Controller {
 		        }
 
 		        // select all existing tokens
-		        //$ntquery = "SELECT token FROM ".db_table_name("tokens_$surveyid")." group by token";
 				$this->load->model("tokens_dynamic_model");
 				$ntresult = $this->tokens_dynamic_model->getSomeRecords(array("token"),$surveyid,FALSE,"token");
-		        //$ntresult = db_execute_assoc($ntquery);
 		        foreach ($ntresult->result_array() as $tkrow)
 		        {
 		            $existingtokens[$tkrow['token']]=null;
 		        }
 		        $newtokencount = 0;
-		        //$tkquery = "SELECT tid FROM ".db_table_name("tokens_$surveyid")." WHERE token IS NULL OR token=''";
-		        //$tkresult = db_execute_assoc($tkquery) or safe_die ("Mucked up!<br />$tkquery<br />".$connect->ErrorMsg());
 				$tkresult = $this->tokens_dynamic_model->selectEmptyTokens($surveyid);
 		        foreach ($tkresult->result_array() as $tkrow)
 		        {
@@ -1483,13 +1475,10 @@ class tokens extends Survey_Common_Controller {
 		                    $existingtokens[$newtoken]=null;
 		                }
 		            }
-		            //$itquery = "UPDATE ".db_table_name("tokens_$surveyid")." SET token='$newtoken' WHERE tid={$tkrow['tid']}";
-		            //$itresult = $connect->Execute($itquery);
 					$itresult = $this->tokens_dynamic_model->updateToken($surveyid,$tkrow['tid'],$newtoken);
 		            $newtokencount++;
 		        }
 		        $message=str_replace("{TOKENCOUNT}", $newtokencount, $clang->gT("{TOKENCOUNT} tokens have been created"));
-		        //$tokenoutput .= "<div class='successheader'>$message</div>\n";
 				self::_getAdminHeader();
 				$this->load->view("admin/token/tokenbar",$data);
 				self::_showMessageBox($clang->gT("Create tokens"),$message);

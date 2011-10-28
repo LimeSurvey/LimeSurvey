@@ -303,7 +303,7 @@ class survey extends LSCI_Controller {
                       ORDER BY surveyls_title";
             $result = db_execute_assoc($query,false,true) or show_error("Could not connect to database. If you try to install LimeSurvey please refer to the <a href='http://docs.limesurvey.org'>installation docs</a> and/or contact the system administrator of this webpage."); //Checked
             $list=array();
-            
+
             if($result->num_rows() > 0)
             {
                 foreach($result->result_array() as $rows)
@@ -333,10 +333,10 @@ class survey extends LSCI_Controller {
                       AND a.expires is not null
                       AND a.startdate is not null
                       ORDER BY surveyls_title";
-                                            
+
             $sresult = db_execute_assoc($squery) or show_error("Couldn't execute $squery");
-            
-            
+
+
             if($sresult->num_rows() > 0)
             {
                 $list[] = "<br/>".$clang->gT("Following survey(s) are not yet active but you can register for them.");
@@ -349,8 +349,8 @@ class survey extends LSCI_Controller {
                     $link .= "</li><div id='regform'></div>\n";
                     $list[]=$link;
                 }
-            }                                  
-            
+            }
+
             if(count($list) < 1)
             {
                 $list[]="<li class='surveytitle'>".$clang->gT("No available surveys")."</li>";
@@ -381,11 +381,11 @@ class survey extends LSCI_Controller {
             $this->_printTemplateContent(sGetTemplatePath($defaulttemplate)."/startpage.pstpl", $data, __LINE__);
 
             $this->_printTemplateContent(sGetTemplatePath($defaulttemplate)."/surveylist.pstpl", $data, __LINE__);
-            
+
             echo '<script type="text/javascript" >
             function sendreq(surveyid)
             {
-                 
+
                 $.ajax({
                   type: "GET",
                   url: "'.site_url("register/ajaxregisterform").'/" + surveyid,
@@ -394,9 +394,9 @@ class survey extends LSCI_Controller {
                 });
             }
             </script>';
-            
 
-            
+
+
 
             $this->_killPage($redata, __LINE__);
         }
@@ -542,7 +542,7 @@ class survey extends LSCI_Controller {
                 $_POST['loadall']="reload";
             }
         }
-        
+
         //LOAD SAVED SURVEY
         if (isset($_POST['loadall']) && $_POST['loadall'] == "reload")
         {
@@ -1112,9 +1112,9 @@ class survey extends LSCI_Controller {
         $this->_printMessage($asMessage);
 
         if ( $sTemplateDir == null )
-            $sTemplateDir = $this->config->item("standardtemplaterootdir");
+            $sTemplateDir = $this->config->item("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
 
-        $this->_printTemplateContent($sTemplateDir.'/default/endpage.pstpl', $redata, $iDebugLine);
+        $this->_printTemplateContent($sTemplateDir.DIRECTORY_SEPARATOR.'endpage.pstpl', $redata, $iDebugLine);
         doFooter();
         if ( $bKillSession )
             killSession();
