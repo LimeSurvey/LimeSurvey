@@ -532,15 +532,19 @@ class Save {
                             // move the files from tmp to the files folder
 
                             $tmp = $CI->config->item('tempdir').'/upload/';
-                            if (!is_null($phparray) && count($phparray) > 0 && file_exists($tmp.$phparray[0]->filename))
+                            if (!is_null($phparray) && count($phparray) > 0)
                             {
-
+                                // Move the (unmoved, temp) files from temp to files directory.
+                                // Check all possible file uploads
                                 for ($i = 0; $i < count($phparray); $i++)
                                 {
-                                    $sDestinationFileName='fu_'.sRandomChars(15);
-                                    if (!rename($tmp . $phparray[$i]->filename, $target . $sDestinationFileName))
-                                        echo "Error moving file to its destination";
-                                    $phparray[$i]->filename=$sDestinationFileName;
+                                    if (file_exists($tmp.$phparray[$i]->filename))
+                                    {
+                                        $sDestinationFileName='fu_'.sRandomChars(15);
+                                        if (!rename($tmp . $phparray[$i]->filename, $target . $sDestinationFileName))
+                                            echo "Error moving file to its destination";
+                                        $phparray[$i]->filename=$sDestinationFileName;
+                                    }
                             }
                             $_SESSION[$value] = json_encode($phparray);
                         }
