@@ -392,6 +392,7 @@ class Survey_format {
 
 END;
         // Find out if there are any array_filter questions in this group
+        /* TMSW - replaced by EM
         $array_filterqs = getArrayFiltersForGroup($surveyid, "");
         $array_filterXqs = getArrayFilterExcludesForGroup($surveyid, "");
         $array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, "");
@@ -411,6 +412,7 @@ END;
 END;
 
         }
+         */
         print <<<END
 			function noop_checkconditions(value, name, type)
 			{
@@ -751,7 +753,7 @@ END;
             $java .= $endzone;
         }
 
-
+/*  TMSW - replaced by EM
         if ((isset($array_filterqs) && is_array($array_filterqs)) ||
         (isset($array_filterXqs) && is_array($array_filterXqs)))
         {
@@ -835,7 +837,7 @@ END;
                         $appendj .= "\t{\n";
                         $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
                         $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-                        // This line resets the text fields in the hidden row
+                        // This line resets the text fields in the hidden rows
                         $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
                         // This line resets any radio group in the hidden row
                         $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
@@ -881,7 +883,7 @@ END;
                             $appendj .= "\tif (\n";
                             $appendj .= "\t\t(document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y')\n";
 
-                            /* If this question is a cascading question, then it also needs to check the status of the question that this one relies on */
+                            // If this question is a cascading question, then it also needs to check the status of the question that this one relies on
                             if(isset($array_filterXqs_cascades[$attralist['qid']]))
                             {
                                 $groups=getGroupsByQuestion($surveyid);
@@ -892,7 +894,6 @@ END;
                                     $appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
                                 }
                             }
-                            /* */
                             $appendj .= "\t)\n";
                             $appendj .= "\t{\n";
                             $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
@@ -942,6 +943,7 @@ END;
             }
             $java .= $appendj;
         }
+ */
 
         if (isset($java)) {echo $java;}
         foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
