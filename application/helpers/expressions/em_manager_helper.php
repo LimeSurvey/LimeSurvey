@@ -332,8 +332,6 @@ class LimeExpressionManager {
                             case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
                             case 'F': //ARRAY (Flexible) - Row Format
                             case 'L': //LIST drop-down/radio-button list
-                                // TODO - if an active selection is unchecked, then check NANS and blank the javaSGQA value
-                                // TODO - OR, use function so that if count(*) answer checked , mark NANS?
                             case 'M': //Multiple choice checkbox
                             case 'P': //Multiple choice with comments checkbox + text
                                 $sq_name = $array_filter . $sq['sqsuffix'];
@@ -347,7 +345,8 @@ class LimeExpressionManager {
                                 'type' => 'array_filter',
                                 'rowdivid' => $sq['rowdivid'],
                                 'eqn' => '(' . $sq_name . ' != "")',
-                                'qid' => $questionNum
+                                'qid' => $questionNum,
+                                'sgqa' => $qinfo['sgqa'],
                             );
                         }
                     }
@@ -389,7 +388,8 @@ class LimeExpressionManager {
                                 'type' => 'array_filter_exclude',
                                 'rowdivid' => $sq['rowdivid'],
                                 'eqn' => '(' . $sq_name . ' == "")',
-                                'qid' => $questionNum
+                                'qid' => $questionNum,
+                                'sgqa' => $qinfo['sgqa'],
                             );
                         }
                     }
@@ -810,7 +810,7 @@ class LimeExpressionManager {
 
         foreach ($subQrels as $sq)
         {
-            $result = $this->_ProcessSubQRelevance($sq['eqn'], $sq['qid'], $sq['rowdivid'], $sq['type'], $sq['qtype']);
+            $result = $this->_ProcessSubQRelevance($sq['eqn'], $sq['qid'], $sq['rowdivid'], $sq['type'], $sq['qtype'],  $sq['sgqa']);
         }
         foreach ($validationEqn as $qvals)
         {
@@ -1667,7 +1667,7 @@ class LimeExpressionManager {
      * @param <type> $type - the type of sub-question relevance (e.g. 'array_filter', 'array_filter_exclude')
      * @return <type>
      */
-   private function _ProcessSubQRelevance($eqn,$questionNum=NULL,$rowdivid=NULL, $type=NULL, $qtype=NULL)
+   private function _ProcessSubQRelevance($eqn,$questionNum=NULL,$rowdivid=NULL, $type=NULL, $qtype=NULL, $sgqa=NULL)
     {
         // These will be called in the order that questions are supposed to be asked
         if (!isset($eqn) || trim($eqn=='') || trim($eqn)=='1')
@@ -1716,6 +1716,7 @@ class LimeExpressionManager {
                 'rowdivid' => $rowdivid,
                 'type'=>$type,
                 'qtype'=>$qtype,
+                'sgqa'=>$sgqa,
             );
         }
         return $result;
@@ -1987,7 +1988,7 @@ class LimeExpressionManager {
                             $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#0').value = 'off';\n";
                             $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#1').value = 'off';\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#0').val('');\n";
-                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#0').val('');\n";
+                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#1').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=radio]').attr('checked',false);\n";
                             $jsParts[] = "    $('#answer" . $sq['rowdivid'] . "#0-').attr('checked',true);\n";
                             break;
@@ -1997,6 +1998,12 @@ class LimeExpressionManager {
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
                             break;
                         case ':': //ARRAY (Multi Flexi) 1 to 10
+                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+                            $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " select').val('');\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=checkbox]').attr('checked',false);\n";
+                            $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
+                            break;
                         case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                         case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                         case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
@@ -2016,14 +2023,15 @@ class LimeExpressionManager {
                             break;
                         case 'L': //LIST drop-down/radio-button list
                             $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
-                            // use count() to set NANS if none of them are set?
-//                            $jsParts[] = "    $('#java" . substr($sq['rowdivid'],0,-1) . "').val('');\n";
-//                            $jsParts[] = "    $('#answer" . substr($sq['rowdivid'],0,-1) . "NANS').attr('checked',true);\n";
+                            $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
+                            $jsParts[] = "    if ($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "'){\n";
+                            $jsParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
+                            $jsParts[] = "      $('#answer" . $sq['sgqa'] . "NANS').attr('checked',true);\n";
+                            $jsParts[] = "    }\n";
                             break;
                         default:
                             break;
                     }
-                    //  Unset values - should this be replaced with true relevance?
                     $jsParts[] = "  }\n";
 
                     $sqvars = explode('|',$sq['relevanceVars']);
