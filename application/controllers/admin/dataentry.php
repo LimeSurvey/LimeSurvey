@@ -2089,7 +2089,7 @@
                                             "sent"=>date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust),
                                             "completed"=>"N");
                                 $this->load->model('tokens_dynamic_model');
-                                $this->tokens_dynamic_model->insertTokens($surveyid,$tokendata);
+                                $this->tokens_dynamic_model->insertToken($surveyid,$tokendata);
                                 //$connect->AutoExecute(db_table_name("tokens_".$surveyid), $tokendata,'INSERT');
                                 $dataentryoutput .= "<font class='successtitle'>".$clang->gT("A token entry for the saved survey has been created too.")."</font><br />\n";
 

@@ -66,7 +66,7 @@ class Failed_login_attempts_model extends CI_Model {
 
         $timestamp = date("Y-m-d H:m:s");
         $this->db->where('ip', $ip);
-        $oData=$this->db->select('failed_login_attempts');
+        $oData=$this->db->get('failed_login_attempts');
 	    if ($oData->num_rows()>0)
 		{
 	        //$query = "UPDATE ".db_table_name('failed_login_attempts')

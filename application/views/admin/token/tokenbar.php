@@ -80,7 +80,7 @@
 		    { ?>
 		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/kill/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Drop tokens table");?>' >
-		        	<img name='DeleteTokensButton' src='<?php echo $imageurl;?>/delete.png' alt='<?php echo $clang->gT("Drop tokens table");?>' />
+		        	<img name='DeleteParticipantTable' src='<?php echo $imageurl;?>/delete.png' alt='<?php echo $clang->gT("Drop tokens table");?>' />
 		        </a>
 		        <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
 		    <?php }

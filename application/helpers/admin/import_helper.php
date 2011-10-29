@@ -4024,7 +4024,7 @@ function XMLImportTokens($sFullFilepath,$iSurveyID,$sCreateMissingAttributeField
 
         //$query=$connect->GetInsertSQL($tablename,$insertdata);
 
-        $result = $CI->tokens_dynamic_model->insertTokens($iSurveyID,$insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
+        $result = $CI->tokens_dynamic_model->insertToken($iSurveyID,$insertdata) or show_error($clang->gT("Error").": Failed to insert data<br />");
 
         $results['tokens']++;
     }

@@ -451,6 +451,7 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
     if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
     $sCRUD=$sCRUD.'_p';
     $iSID = (int)$iSID;
+    if ($iSID==0) return false;
     $aSurveyPermissionCache = $CI->config->item("aSurveyPermissionCache");
 
     if (is_null($iUID))

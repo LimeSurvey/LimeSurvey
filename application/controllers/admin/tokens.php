@@ -258,7 +258,7 @@ class tokens extends Survey_Common_Controller {
 
 		$clang=$this->limesurvey_lang;
 		$this->load->model("tokens_dynamic_model");
-		$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
+		$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
 
 		self::_js_admin_includes(base_url()."scripts/admin/tokens.js");
 
@@ -399,7 +399,7 @@ class tokens extends Survey_Common_Controller {
 		    {
 		        // AutoExecute
 		        //$inresult = $connect->AutoExecute($tblInsert, $data, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
-				$inresult = $this->tokens_dynamic_model->insertTokens($surveyid,$data);
+				$inresult = $this->tokens_dynamic_model->insertToken($surveyid,$data);
 				$data['success']=true;
 			}
 		    else
@@ -556,7 +556,7 @@ class tokens extends Survey_Common_Controller {
                             }
                     if(isset($tokenids) && count($tokenids)>0) {
 		        if(implode(", ", $tokenids) != "") {
-                		$this->tokens_dynamic_model->deleteTokens($surveyid,$tokenids);
+                		$this->tokens_dynamic_model->deleteRecords($surveyid,$tokenids);
 		            $tokenoutput = $clang->gT("Marked tokens have been deleted.");
 		        } else {
 		            $tokenoutput = $clang->gT("No tokens were selected for deletion");
@@ -660,7 +660,7 @@ class tokens extends Survey_Common_Controller {
 		        $dataToInsert['token'] = $newtoken;
 		        //$tblInsert=db_table_name('tokens_'.$surveyid);
 		        //$inresult = $connect->AutoExecute($tblInsert, $dataToInsert, 'INSERT') or safe_die ("Add new record failed:<br />\n$inquery<br />\n".$connect->ErrorMsg());
-				$inresult = $this->tokens_dynamic_model->insertTokens($surveyid,$dataToInsert);
+				$inresult = $this->tokens_dynamic_model->insertToken($surveyid,$dataToInsert);
 		    }
 
 			self::_getAdminHeader();
@@ -671,7 +671,7 @@ class tokens extends Survey_Common_Controller {
 
 		} else {
 			$this->load->model("tokens_dynamic_model");
-			$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
+			$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
 			$this->load->helper("surveytranslator");
 		    //get token length from survey settings
 			$this->load->model("surveys_model");
@@ -713,7 +713,7 @@ class tokens extends Survey_Common_Controller {
 		}
 
 		$this->load->model("tokens_dynamic_model");
-		$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
+		$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
 		$this->load->helper("surveytranslator");
 
 		$this->load->model("surveys_model");
@@ -836,7 +836,7 @@ class tokens extends Survey_Common_Controller {
 		}
 
 		$this->load->model("tokens_dynamic_model");
-		$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
+		$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
 		$this->load->helper("surveytranslator");
 
 		$this->load->model("surveys_model");
@@ -1091,7 +1091,7 @@ class tokens extends Survey_Common_Controller {
 		}
 
 		$this->load->model("tokens_dynamic_model");
-		$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
+		$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
 		$this->load->helper("surveytranslator");
 
 		$this->load->model("surveys_model");
@@ -1444,40 +1444,8 @@ class tokens extends Survey_Common_Controller {
 		    else
 		    {
 		        //get token length from survey settings
-				$this->load->model("surveys_model");
-				$tlresult = $this->surveys_model->getSomeRecords(array("tokenlength"),array("sid"=>$surveyid));
-		        $tlrow = $tlresult->row_array();
-		        $tokenlength = $tlrow['tokenlength'];
-
-		        //if tokenlength is not set or there are other problems use the default value (15)
-		        if(!isset($tokenlength) || $tokenlength == '')
-		        {
-		            $tokenlength = 15;
-		        }
-
-		        // select all existing tokens
 				$this->load->model("tokens_dynamic_model");
-				$ntresult = $this->tokens_dynamic_model->getSomeRecords(array("token"),$surveyid,FALSE,"token");
-		        foreach ($ntresult->result_array() as $tkrow)
-		        {
-		            $existingtokens[$tkrow['token']]=null;
-		        }
-		        $newtokencount = 0;
-				$tkresult = $this->tokens_dynamic_model->selectEmptyTokens($surveyid);
-		        foreach ($tkresult->result_array() as $tkrow)
-		        {
-		            $isvalidtoken = false;
-		            while ($isvalidtoken == false)
-		            {
-		                $newtoken = sRandomChars($tokenlength);
-		                if (!isset($existingtokens[$newtoken])) {
-		                    $isvalidtoken = true;
-		                    $existingtokens[$newtoken]=null;
-		                }
-		            }
-					$itresult = $this->tokens_dynamic_model->updateToken($surveyid,$tkrow['tid'],$newtoken);
-		            $newtokencount++;
-		        }
+                $newtokencount=$his->tokens_dynamic_model->createTokens($surveyid);
 		        $message=str_replace("{TOKENCOUNT}", $newtokencount, $clang->gT("{TOKENCOUNT} tokens have been created"));
 				self::_getAdminHeader();
 				$this->load->view("admin/token/tokenbar",$data);
@@ -1602,7 +1570,7 @@ class tokens extends Survey_Common_Controller {
 	{
 		$clang=$this->limesurvey_lang;
 		$this->load->model("tokens_dynamic_model");
-		$tkcount=$this->tokens_dynamic_model->totalTokens($surveyid);
+		$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
 		$this->load->helper("surveytranslator");
 
 		if ($subaction == "edit")
