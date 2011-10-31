@@ -29,7 +29,7 @@ class CI_Model {
     /**
      * @var CI_DB_active_record
      */
-    private $db;
+    public $db;
 
 	/**
 	 * Constructor

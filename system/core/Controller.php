@@ -31,62 +31,62 @@ class CI_Controller {
     /**
      * @var CI_Config
      */
-    private $config;
+    public $config;
 
     /**
      * @var CI_DB_active_record
      */
-    private $db;
+    public $db;
 
     /**
      * @var CI_Email
      */
-    private $email;
+    public $email;
 
     /**
      * @var CI_Form_validation
      */
-    private $form_validation;
+    public $form_validation;
 
     /**
      * @var CI_Input
      */
-    private $input;
+    public $input;
 
     /**
      * @var CI_Loader
      */
-    private $load;
+    public $load;
 
     /**
      * @var CI_Router
      */
-    private $router;
+    public $router;
 
     /**
      * @var CI_Session
      */
-    private $session;
+    public $session;
 
     /**
      * @var CI_Table
      */
-    private $table;
+    public $table;
 
     /**
      * @var CI_Unit_test
      */
-    private $unit;
+    public$unit;
 
     /**
      * @var CI_URI
      */
-    private $uri;
+    public $uri;
 
     /**
      * @var CI_Pagination
      */
-    private $pagination;
+    public $pagination;
 
     private static $instance;
 
