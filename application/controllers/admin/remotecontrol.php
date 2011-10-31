@@ -1,6 +1,26 @@
 <?php
 class remotecontrol extends Survey_Common_Controller {
 
+    /**
+     * @var Surveys_model
+     */
+    private $surveys_model;
+    
+    /**
+     * @var CI_Xmlrpc
+     */
+    private $xmlrpc;
+
+    /**
+     * @var CI_Xmlrpcs
+     */
+    private $xmlrpcs;
+
+    /**
+     * @var Failed_login_attempts_model
+     */
+    private $failed_login_attempts_model;
+
     function __construct()
     {
         parent::__construct();
@@ -87,7 +107,7 @@ class remotecontrol extends Survey_Common_Controller {
         if($this->_checkSessionKey($sSessionKey))
         {
             $iSurveyID=(int)$aParameters['1'];
-            if(bHasSurveyPermission($surveyid,'survey','delete'))
+            if(bHasSurveyPermission($iSurveyID,'survey','delete'))
             {
                 $this->load->model('surveys_model');
                 $this->surveys_model->deleteSurvey($iSurveyID);
