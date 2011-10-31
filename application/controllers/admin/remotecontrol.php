@@ -4,22 +4,22 @@ class remotecontrol extends Survey_Common_Controller {
     /**
      * @var Surveys_model
      */
-    private $surveys_model;
+    public $surveys_model;
     
     /**
      * @var CI_Xmlrpc
      */
-    private $xmlrpc;
+    public $xmlrpc;
 
     /**
      * @var CI_Xmlrpcs
      */
-    private $xmlrpcs;
+    public $xmlrpcs;
 
     /**
      * @var Failed_login_attempts_model
      */
-    private $failed_login_attempts_model;
+    public $failed_login_attempts_model;
 
     function __construct()
     {
@@ -297,12 +297,12 @@ class remotecontrol extends Survey_Common_Controller {
 
 
         $this->load->library('xmlrpc');
-       // $this->xmlrpc->set_debug(TRUE);
+        $this->xmlrpc->set_debug(TRUE);
         $this->xmlrpc->server(site_url('admin/remotecontrol'), 80);
 
 
         $this->xmlrpc->method('get_session_key');
-        $request = array('admin','password');
+        $request = array('admin','1voudig');
         $this->xmlrpc->request($request);
 
         if ( ! $this->xmlrpc->send_request())
