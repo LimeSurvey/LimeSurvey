@@ -57,8 +57,7 @@ class tokens extends Survey_Common_Controller {
 			show_error($clang->gT("The survey you selected does not exist")); // TODO Replace
 		}
 
-        $surveyprivate = $thissurvey['anonymized'];
-        $data['surveyprivate'] = $surveyprivate;
+        $data['surveyprivate'] = $thissurvey['anonymized'];
 		// CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
 		$tokenexists=tableExists('tokens_'.$surveyid);
 		if (!$tokenexists) //If no tokens table exists
@@ -818,7 +817,6 @@ class tokens extends Survey_Common_Controller {
 	 */
 	function email($surveyid,$tokenids=null)
 	{
-		global $maildebug, $maildebugbody;
 		$surveyid = sanitize_int($surveyid);
 		$clang=$this->limesurvey_lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens', 'update'))

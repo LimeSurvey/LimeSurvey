@@ -2,23 +2,23 @@
 class remotecontrol extends Survey_Common_Controller {
 
     /**
-     * @var Surveys_model
-     */
+    * @var Surveys_model
+    */
     public $surveys_model;
-    
+
     /**
-     * @var CI_Xmlrpc
-     */
+    * @var CI_Xmlrpc
+    */
     public $xmlrpc;
 
     /**
-     * @var CI_Xmlrpcs
-     */
+    * @var CI_Xmlrpcs
+    */
     public $xmlrpcs;
 
     /**
-     * @var Failed_login_attempts_model
-     */
+    * @var Failed_login_attempts_model
+    */
     public $failed_login_attempts_model;
 
     function __construct()
@@ -97,7 +97,7 @@ class remotecontrol extends Survey_Common_Controller {
     /**
     * XML-RPC routine to delete a survey
     *
-    * @param array $request Array containing username and password
+    * @param array $request Array containing sessionkey and survey id
     */
     function deleteSurvey($request)
     {
@@ -128,7 +128,7 @@ class remotecontrol extends Survey_Common_Controller {
     * - Session key (string)
     * - Survey ID (integer)
     * - ParticipantData (array)
-    * - CreateToken (boolean)  Sets if a token should be created for each ParticipantData record
+    * - CreateToken (boolean)  Sets if a token should be created for each inserted ParticipantData record
     *
     *
     */
@@ -166,9 +166,17 @@ class remotecontrol extends Survey_Common_Controller {
                     if ($this->tokens_dynamic_model->insertToken($iSurveyID,$aParticipant))
                     {
                         $iNewTokenEntryID=$this->db->insert_id();
-                       $aParticipant=array_merge($aParticipant, array('tid'=>(string)$iNewTokenEntryID,
-                                                                      'token'=>$this->tokens_dynamic_model->createToken($iSurveyID,$iNewTokenEntryID))
-                       );
+                        if ($bCreateTokenKey)
+                        {
+                            $sToken=$this->tokens_dynamic_model->createToken($iSurveyID,$iNewTokenEntryID);
+                        }
+                        else
+                        {
+                            $sToken='';
+                        }
+                        $aParticipant=array_merge($aParticipant, array( 'tid'=>$iNewTokenEntryID,
+                                                                        'token'=>$sToken));
+
                     };
                 }
                 $iTokensInserted=$this->db->affected_rows();
@@ -191,7 +199,7 @@ class remotecontrol extends Survey_Common_Controller {
         $xml_rpc_rows=array();
         for ($i=0;$i<count($array);++$i)
         {
-           $xml_rpc_rows[$i]=array($array[$i],'struct');
+            $xml_rpc_rows[$i]=array($array[$i],'struct');
         }
         return $xml_rpc_rows;
     }
