@@ -825,7 +825,8 @@ function quexml_skipto($qid,$value,$cfieldname = "")
 	$CI =& get_instance();
 	$dbprefix = $CI->db->dbprefix;
 	global $surveyid ;
-	$clang=$CI->limesurvey_lang;
+        global $quexmllang;
+	$qlang = new limesurvey_lang(array($quexmllang));
 
 	$zeros = $CI->db->escape("0000000000");
 
@@ -878,7 +879,7 @@ function quexml_skipto($qid,$value,$cfieldname = "")
 			return $Row['title'];
 	}
 	else
-		return $clang->gT("End");
+		return $qlang->gT("End");
 
 }
 
@@ -891,7 +892,7 @@ function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=fal
 	$CI =& get_instance();
 	$dbprefix = $CI->db->dbprefix;
 	global $quexmllang;
-	$clang=$CI->limesurvey_lang;
+	$qlang = new limesurvey_lang(array($quexmllang));
 
 	if ($labels)
 		$Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
@@ -935,7 +936,7 @@ function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=fal
 		$category = $dom->create_element("category");
 
 		$label = $dom->create_element("label");
-		$label->set_content(quexml_get_lengthth($qid,"other_replace_text","Other"));
+		$label->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
 		$value= $dom->create_element("value");
 
@@ -954,7 +955,7 @@ function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=fal
 		$length = $dom->create_element("length");
 		$text = $dom->create_element("text");
 
-		$text->set_content($clang->gT("Please specify"));
+		$text->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 		$length->set_content(24);
 		$contingentQuestion->append_child($text);
 		$contingentQuestion->append_child($length);
@@ -1000,7 +1001,8 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 	$dbprefix = $CI->db->dbprefix;
 	global $quexmllang ;
 	global $surveyid;
-	$clang=$CI->limesurvey_lang;
+	$qlang = new limesurvey_lang(array($quexmllang));
+
 
 	$Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid  AND language='$quexmllang' ";
 	if ($scale_id != false) $Query .= " AND scale_id = $scale_id ";
@@ -1057,7 +1059,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 		$category = $dom->create_element("category");
 
 		$label = $dom->create_element("label");
-		$label->set_content(quexml_get_lengthth($qid,"other_replace_text","Other"));
+		$label->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 
 		$value= $dom->create_element("value");
 
@@ -1076,7 +1078,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 		$length = $dom->create_element("length");
 		$text = $dom->create_element("text");
 
-		$text->set_content($clang->gT("Please specify"));
+		$text->set_content(quexml_get_lengthth($qid,"other_replace_text",$qlang->gT("Other")));
 		$length->set_content(24);
 		$contingentQuestion->append_child($text);
 		$contingentQuestion->append_child($length);
@@ -1135,6 +1137,7 @@ function quexml_export($surveyi, $quexmllan)
 	$surveyid = $surveyi;
 	$CI =& get_instance();
 	$dbprefix = $CI->db->dbprefix;
+	$qlang = new limesurvey_lang(array($quexmllang));
 
 	$CI->load->helper("admin/domxml_wrapper");
 	$dom = domxml_new_doc("1.0");
@@ -1364,11 +1367,11 @@ function quexml_export($surveyi, $quexmllan)
 				$question->append_child($response);
 				break;
 				case "Y": //YES/NO radio-buttons
-					$response->append_child(quexml_fixed_array(array("Yes" => 1,"No" => 2)));
+					$response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 1,$qlang->gT("No") => 2)));
 				$question->append_child($response);
 				break;
 				case "G": //GENDER drop-down list
-					$response->append_child(quexml_fixed_array(array("Female" => 1,"Male" => 2)));
+					$response->append_child(quexml_fixed_array(array($qlang->gT("Female") => 1,$qlang->gT("Male") => 2)));
 				$question->append_child($response);
 				break;
 				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
@@ -1383,12 +1386,12 @@ function quexml_export($surveyi, $quexmllan)
 				break;
 				case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 					quexml_create_subQuestions($question,$qid,$RowQ['title']);
-				$response->append_child(quexml_fixed_array(array("Yes" => 1,"Uncertain" => 2,"No" => 3)));
+				$response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 1,$qlang->gT("Uncertain") => 2,$qlang->gT("No") => 3)));
 				$question->append_child($response);
 				break;
 				case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
 					quexml_create_subQuestions($question,$qid,$RowQ['title']);
-				$response->append_child(quexml_fixed_array(array("Increase" => 1,"Same" => 2,"Decrease" => 3)));
+				$response->append_child(quexml_fixed_array(array($qlang->gT("Increase") => 1,$qlang->gT("Same") => 2,$qlang->gT("Decrease") => 3)));
 				$question->append_child($response);
 				break;
 				case "F": //ARRAY (Flexible) - Row Format
