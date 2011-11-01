@@ -10,7 +10,7 @@ CREATE TABLE `prefix_answers` (
   `language` varchar(20) default 'en',
   `scale_id` tinyint NOT NULL default '0',
   PRIMARY KEY  (`qid`,`code`,`language`,`scale_id`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -27,7 +27,7 @@ CREATE TABLE `prefix_assessments` (
   `message` text NOT NULL,
   `language` varchar(20) NOT NULL default 'en',
   PRIMARY KEY  (`id`,`language`)
-) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -42,7 +42,7 @@ CREATE TABLE `prefix_conditions` (
   `method` char(5) NOT NULL default '',
   `value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`cid`)
-) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -56,7 +56,7 @@ CREATE TABLE `prefix_defaultvalues` (
   `language` varchar(20) NOT NULL,
   `defaultvalue` text,
   PRIMARY KEY  (`qid` , `scale_id`, `language`, `specialtype`, `sqid` )
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 --
 -- Table structure for table expression_errors
@@ -74,7 +74,7 @@ CREATE TABLE `prefix_expression_errors` (
   `eqn` text,
   `prettyprint` text,
   PRIMARY KEY (`id`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- 
 -- Table structure for table groups
@@ -88,7 +88,7 @@ CREATE TABLE `prefix_groups` (
   `language` varchar(20) default 'en',
   `randomization_group` varchar(20) NOT NULL default '',
   PRIMARY KEY  (`gid`,`language`)
-) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -103,7 +103,7 @@ CREATE TABLE `prefix_labels` (
   `language` varchar(20) default 'en',
   PRIMARY KEY  (`lid`,`sortorder`,`language`),
   KEY `ixcode` (`code`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -114,7 +114,7 @@ CREATE TABLE `prefix_labelsets` (
   `label_name` varchar(100) NOT NULL default '',
   `languages` varchar(200) default 'en',
   PRIMARY KEY  (`lid`)
-) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -127,7 +127,7 @@ CREATE TABLE `prefix_question_attributes` (
   `value` text default NULL,
   `language` varchar(20) default NULL,
   PRIMARY KEY  (`qaid`)
-) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -142,7 +142,7 @@ CREATE TABLE `prefix_quota` (
   `active` int(1) NOT NULL default '1',
   `autoload_url` int(1) NOT NULL default '0',
   PRIMARY KEY  (`id`)
-)  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+)  ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -157,7 +157,7 @@ CREATE TABLE `prefix_quota_languagesettings` (
   `quotals_url` varchar(255),
   `quotals_urldescrip` varchar(255),
   PRIMARY KEY (`quotals_id`)
-)  ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+)  ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -171,7 +171,7 @@ CREATE TABLE `prefix_quota_members` (
   `code` varchar(11) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `sid` (`sid`,`qid`,`quota_id`,`code`)
-)   ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+)   ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -195,7 +195,7 @@ CREATE TABLE `prefix_questions` (
   `same_default` tinyint NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog',
   `relevance` text,
   PRIMARY KEY  (`qid`,`language`)
-) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -214,7 +214,7 @@ CREATE TABLE `prefix_saved_control` (
   `saved_date` datetime NOT NULL,
   `refurl` text,
   PRIMARY KEY  (`scid`)
-) ENGINE=$databasetabletype AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM AUTO_INCREMENT=1 CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -240,7 +240,7 @@ CREATE TABLE `prefix_settings_global` (
   `stg_name` varchar(50) NOT NULL default '',
   `stg_value` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`stg_name`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -303,7 +303,7 @@ CREATE TABLE `prefix_surveys` (
   `nokeyboard` char(1) default 'N',
   `alloweditaftercompletion` char(1) default 'N',
    PRIMARY KEY(`sid`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -334,7 +334,7 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_numberformat` INT NOT NULL DEFAULT 0,
   
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
-) ENGINE = $databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -351,7 +351,7 @@ CREATE TABLE `prefix_survey_permissions` (
     `import_p` tinyint(1) NOT NULL default '0',
     `export_p` tinyint(1) NOT NULL default '0',
 	PRIMARY KEY (sid, uid, permission)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -364,7 +364,7 @@ CREATE TABLE `prefix_survey_url_parameters` (
 	`targetqid` int(10) NULL,
 	`targetsqid` int(10) NULL,
 	PRIMARY KEY (`id`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 -- 
 -- Table structure for table user_groups
@@ -374,7 +374,7 @@ CREATE TABLE `prefix_user_groups` (
 	`name` varchar(20) NOT NULL UNIQUE,
 	`description` TEXT NOT NULL,
 	`owner_id` int(10) unsigned NOT NULL
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -384,7 +384,7 @@ CREATE TABLE `prefix_user_in_groups` (
 	`ugid` int(10) unsigned NOT NULL,
 	`uid` int(10) unsigned NOT NULL,
      PRIMARY KEY  (`ugid`,`uid`)	
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -411,7 +411,7 @@ CREATE TABLE `prefix_users` (
   `questionselectormode` varchar(7) default 'default',
   `one_time_pw` BLOB,
   `dateformat` INT UNSIGNED NOT NULL DEFAULT 1 
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 -- 
@@ -422,7 +422,7 @@ CREATE TABLE `prefix_templates_rights` (
   `folder` varchar(255) NOT NULL,
   `use` int(1) NOT NULL,
   PRIMARY KEY  (`uid`,`folder`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table participants
 -- 
@@ -435,7 +435,7 @@ CREATE TABLE `prefix_participants` (
   `blacklisted` char(1) NOT NULL,
   `owner_uid` int(20) NOT NULL,
   PRIMARY KEY  (`participant_id`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table participant_attribute
 -- 
@@ -444,7 +444,7 @@ CREATE TABLE `prefix_participant_attribute` (
   `attribute_id` int(11) NOT NULL,
   `value` varchar(50) NOT NULL,
   PRIMARY KEY  (`participant_id`,`attribute_id`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table participant_attribute_names_lang
 -- 
@@ -453,7 +453,7 @@ CREATE TABLE `prefix_participant_attribute_names_lang` (
   `attribute_name` varchar(30) NOT NULL,
   `lang` varchar(20) NOT NULL,
    PRIMARY KEY  (`attribute_id`,`lang`)
- ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table participant_attribute_names
 -- 
@@ -462,7 +462,7 @@ CREATE TABLE `prefix_participant_attribute_names` (
   `attribute_type` varchar(4) NOT NULL,
   `visible` char(5) NOT NULL,
   PRIMARY KEY  (`attribute_id`,`attribute_type`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table participant_attribute_names_values
 -- 
@@ -471,7 +471,7 @@ CREATE TABLE `prefix_participant_attribute_values` (
   `attribute_id` int(11) NOT NULL,
   `value` varchar(20) NOT NULL,
   PRIMARY KEY  ( `value_id`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table participant_shares
 -- 
@@ -481,7 +481,7 @@ CREATE TABLE `prefix_participant_shares` (
   `date_added` datetime NOT NULL,
   `can_edit` varchar(5) NOT NULL,
   PRIMARY KEY  (`participant_id`,`share_uid`)
- ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table survey_links
 -- 
@@ -491,7 +491,7 @@ CREATE TABLE `prefix_survey_links` (
   `survey_id` int(11) NOT NULL,
   `date_created` datetime NOT NULL,
    PRIMARY KEY  (`participant_id`,`token_id`,`survey_id`)
- ) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ ) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 -- 
 -- Table structure for table templates
 -- 
@@ -499,7 +499,7 @@ CREATE TABLE `prefix_templates` (
   `folder` varchar(255) NOT NULL,
   `creator` int(11) NOT NULL,
   PRIMARY KEY  (`folder`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 
 --
@@ -512,7 +512,7 @@ CREATE TABLE `prefix_failed_login_attempts` (
   `last_attempt` varchar(20) NOT NULL,
   `number_attempts` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=$databasetabletype CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) ENGINE=MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 --
 -- Secondary indexes 
@@ -536,5 +536,3 @@ create index `parent_qid_idx` on `prefix_questions` (`parent_qid`);
 -- Version Info
 --
 INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '153');
-INSERT INTO `prefix_settings_global` VALUES ('SessionName', '$sessionname');
-

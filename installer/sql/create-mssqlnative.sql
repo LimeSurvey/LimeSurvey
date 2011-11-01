@@ -567,4 +567,3 @@ create index [parent_qid_idx] on [prefix_questions] ([parent_qid]);
 --
 INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '153');
 INSERT INTO [prefix_settings_global] VALUES ('SessionName', '$sessionname');
-

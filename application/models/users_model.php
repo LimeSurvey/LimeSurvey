@@ -99,5 +99,10 @@ class Users_model extends CI_Model {
         $this->db->where(array("uid"=>$uid));
         $this->db->update('users',$data);
     }
+    function insertRecords($data)
+    {
+
+        return $this->db->insert('users',$data);
+    }
 
 }
