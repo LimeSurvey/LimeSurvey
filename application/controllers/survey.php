@@ -285,7 +285,7 @@ class survey extends LSCI_Controller {
             $clang = $this->_loadLimesurveyLang($baselang);
             if(!isset($defaulttemplate))
             {
-                $defaulttemplate="default";
+                $defaulttemplate=$this->config->item("defaulttemplate");
             }
             $languagechanger = makelanguagechanger();
             //Find out if there are any publicly available surveys
