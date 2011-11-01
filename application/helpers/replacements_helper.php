@@ -62,8 +62,9 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     'totalBoilerplatequestions',
     'totalquestions',
     );
-
+    
     $varsPassed = array();
+
     foreach($allowedvars as $var)
     {
         if(isset($redata[$var])) {
@@ -72,17 +73,16 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
         }
     }
     if (count($varsPassed) > 0) {
-//        log_message('debug', 'templatereplace() called from ' . $debugSrc . ' contains: ' . implode(', ', $varsPassed));
+        //log_message('debug', 'templatereplace() called from ' . $debugSrc . ' contains: ' . implode(', ', $varsPassed));
     }
     //    extract($redata);   // creates variables for each of the keys in the array
 
     // Local over-rides in case not set above
-    if (!isset($showgroupinfo)) { $showgroupinfo = 'Y'; }
-    if (!isset($showqnumcode)) { $showqnumcode = ''; }
+    if (!isset($showgroupinfo)) { $showgroupinfo = $CI->config->config['showgroupinfo']; }
+    if (!isset($showqnumcode)) { $showqnumcode = $CI->config->config['showqnumcode']; }
     $_surveyid = (isset($surveyid) ? $surveyid : 0);
-    
     if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
-    if (!isset($showXquestions)) { $showXquestions = 'choose'; }
+    if (!isset($showXquestions)) { $showXquestions = $CI->config->config['showXquestions']; }
     if (!isset($relativeurl)) { $relativeurl = $CI->config->item("relativeurl"); }
     if (!isset($s_lang)) { $s_lang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'); }
     if (!isset($captchapath)) { $captchapath = ''; }
@@ -211,6 +211,8 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
         $_question_class = $question['class'];
         $_question_man_class = $question['man_class'];
         $_question_input_error_class = $question['input_error_class'];
+        $_question_number = $question['number'];
+        $_question_code = $question['code'];
     }
     else
     {
@@ -226,33 +228,27 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
         $_question_class = '';
         $_question_man_class = '';
         $_question_input_error_class = '';
+        $_question_number = '';
+        $_question_code = '';
     };
 
-    if (
+    if (!(
     $showqnumcode == 'both' ||
     $showqnumcode == 'number' ||
     ($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
     ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
     ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'N')
-    )
-    {
-        $_question_number = $question['number'];
-    }
-    else
+    ))
     {
         $_question_number = '';
     };
-    if (
+    if (!(
     $showqnumcode == 'both' ||
     $showqnumcode == 'code' ||
     ($showqnumcode == 'choose' && !isset($thissurvey['showqnumcode'])) ||
     ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'B') ||
     ($showqnumcode == 'choose' && $thissurvey['showqnumcode'] == 'C')
-    )
-    {
-        $_question_code = $question['code'];
-    }
-    else
+    ))
     {
         $_question_code = '';
     }
