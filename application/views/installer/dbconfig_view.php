@@ -72,13 +72,6 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
    </tr>
    <tr>
     <td style="width: 428px;">
-     <b><?php echo $clang->gT("Confirm Password"); ?></b> <br />
-     <div class="description-field"><?php echo $clang->gT("Confirm your database server password."); ?></div>
-    </td>
-    <td style="width: 224px;" align="right"><input name="dbconfirmpwd" value="" type="password" /><?php echo "<br/>".form_error('dbconfirmpwd'); ?></td>
-   </tr>
-   <tr>
-    <td style="width: 428px;">
      <b><?php echo $clang->gT("Database Prefix"); ?></b> <br />
      <div class="description-field"><?php echo $clang->gT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.'); ?></div>
     </td>

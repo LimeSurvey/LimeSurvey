@@ -327,7 +327,6 @@ class Installer extends CI_Controller {
         $this->form_validation->set_rules('dblocation', 'Database Location', 'required');
         $this->form_validation->set_rules('dbname', 'Database Name', 'required');
         $this->form_validation->set_rules('dbuser', 'Database User', 'required');
-        $this->form_validation->set_rules('dbconfirmpwd', 'Confirm Password', 'matches[dbpwd]');
         $this->form_validation->set_rules('dbprefix', 'Database Prefix', 'not required');
 
         //setting custom error message for confirm password field
