@@ -26,6 +26,7 @@ if (isset($surveyprintlang) && !empty($surveyprintlang))
 	else
 	$quexmllang=GetBaseLanguageFromSurveyID($surveyid);
 
+$qlang = new limesurvey_lang($quexmllang);
 
 if (!$surveyid)
 {
@@ -119,7 +120,7 @@ function skipto($qid,$value,$cfieldname = "")
 	global $connect ;
 	global $dbprefix ;
 	global $surveyid ;
-	global $clang ;
+	global $qlang ;
 
 	$zeros = $connect->qstr("0000000000");
 
@@ -172,7 +173,7 @@ function skipto($qid,$value,$cfieldname = "")
 			return $Row['title'];
 	}
 	else
-		return $clang->gT("End");
+		return $qlang->gT("End");
 
 }
 
@@ -184,7 +185,7 @@ function create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=false)
 	global $connect ;
 	global $dbprefix ; 
 	global $quexmllang;
-	global $clang;
+	global $qlang;
 
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 
@@ -230,7 +231,7 @@ function create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=false)
 		$category = $dom->create_element("category");
 
 		$label = $dom->create_element("label");
-		$label->set_content(get_length($qid,"other_replace_text","Other"));
+		$label->set_content(get_length($qid,"other_replace_text",$qlang->gT("Other")));
 
 		$value= $dom->create_element("value");
 
@@ -249,7 +250,7 @@ function create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=false)
 		$length = $dom->create_element("length");
 		$text = $dom->create_element("text");
 
-		$text->set_content($clang->gT("Please specify"));
+		$text->set_content(get_length($qid,"other_replace_text",$qlang->gT("Other")));
 		$length->set_content(24);
 		$contingentQuestion->append_child($text);
 		$contingentQuestion->append_child($length);
@@ -291,7 +292,7 @@ function create_multi(&$question,$qid,$varname,$scale_id = false,$free = false,$
 	global $connect ;
 	global $quexmllang ;
 	global $surveyid;
-	global $clang;
+	global $qlang;
 
 	$ADODB_FETCH_MODE = ADODB_FETCH_ASSOC;
 
@@ -350,7 +351,7 @@ function create_multi(&$question,$qid,$varname,$scale_id = false,$free = false,$
 		$category = $dom->create_element("category");
 
 		$label = $dom->create_element("label");
-		$label->set_content(get_length($qid,"other_replace_text","Other"));
+		$label->set_content(get_length($qid,"other_replace_text",$qlang->gT("Other")));
 
 		$value= $dom->create_element("value");
 
@@ -369,7 +370,7 @@ function create_multi(&$question,$qid,$varname,$scale_id = false,$free = false,$
 		$length = $dom->create_element("length");
 		$text = $dom->create_element("text");
 
-		$text->set_content($clang->gT("Please specify"));
+		$text->set_content(get_length($qid,"other_replace_text",$qlang->gT("Other")));
 		$length->set_content(24);
 		$contingentQuestion->append_child($text);
 		$contingentQuestion->append_child($length);
@@ -647,11 +648,11 @@ while ($Row = $QueryResult->FetchRow())
 			$question->append_child($response);
 			break;
 			case "Y": //YES/NO radio-buttons
-				$response->append_child(fixed_array(array("Yes" => 1,"No" => 2)));
+				$response->append_child(fixed_array(array($qlang->gT("Yes") => 1,$qlang->gT("No") => 2)));
 			$question->append_child($response);
 			break;
 			case "G": //GENDER drop-down list
-				$response->append_child(fixed_array(array("Female" => 1,"Male" => 2)));
+				$response->append_child(fixed_array(array($qlang->gT("Female") => 1,$qlang->gT("Male") => 2)));
 			$question->append_child($response);
 			break;
 			case "A": //ARRAY (5 POINT CHOICE) radio-buttons
@@ -666,12 +667,12 @@ while ($Row = $QueryResult->FetchRow())
 			break;
 			case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
 				create_subQuestions($question,$qid,$RowQ['title']);
-			$response->append_child(fixed_array(array("Yes" => 1,"Uncertain" => 2,"No" => 3)));
+			$response->append_child(fixed_array(array($qlang->gT("Yes") => 1,$qlang->gT("Uncertain") => 2,$qlang->gT("No") => 3)));
 			$question->append_child($response);
 			break;
 			case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
 				create_subQuestions($question,$qid,$RowQ['title']);
-			$response->append_child(fixed_array(array("Increase" => 1,"Same" => 2,"Decrease" => 3)));
+			$response->append_child(fixed_array(array($qlang->gT("Increase") => 1,$qlang->gT("Same") => 2,$qlang->gT("Decrease") => 3)));
 			$question->append_child($response);
 			break;
 			case "F": //ARRAY (Flexible) - Row Format
