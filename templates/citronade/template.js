@@ -52,8 +52,21 @@ function focusFirst(Event)
 
 $(document).ready(function(){
   // focusFirst(); /** Uncomment if you want to use the focusFirst function **/
-  
+  $('.answers input.text[value=""]').addClass('empty');
+  $('.answers textarea.textarea:contains("")').addClass('empty');
+});
 
-})
-
-
+$(".answers input.text").live("blur", function(){ 
+  if ($(this).val() == ""){
+    $(this).addClass('empty');
+  }else{
+    $(this).removeClass('empty');
+  }
+});
+$(".answers textarea.textarea").live("blur", function(){ 
+  if ($(this).val() == ""){
+    $(this).addClass('empty');
+  }else{
+    $(this).removeClass('empty');
+  }  
+});
