@@ -43,6 +43,7 @@ class LimeExpressionManager {
     private $subQrelInfo;   // list of needed sub-question relevance (e.g. array_filter)
 
     private $runtimeTimings;
+    private $initialized=false;
 
     // A private constructor; prevents direct creation of object
     private function __construct()
@@ -843,6 +844,8 @@ class LimeExpressionManager {
         $this->sid= $surveyid;
 
         $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));
+//      LimeExpressionManager::ShowStackTrace();
+
         $now = microtime(true);
 
         if (!isset($fieldmap)) {
@@ -1510,6 +1513,8 @@ class LimeExpressionManager {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
+//      LimeExpressionManager::ShowStackTrace(__METHOD__ . ($LEM->initialized ? '' : '[UNINITIALIZED]') . '(' . $string . ',' . $questionNum . ',' . count($replacementFields) . ')');
+
         if ($noReplacements) {
             $LEM->em->SetPrettyPrintSource($string);
             return $string;
@@ -1761,6 +1766,7 @@ class LimeExpressionManager {
         {
             $LEM->pageTailoringLog .= '<tr><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
         }
+        $LEM->initialized=true;
     }
 
     /**
@@ -1804,6 +1810,8 @@ class LimeExpressionManager {
         $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
         $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+//      LimeExpressionManager::ShowStackTrace();
+
     }
 
     /**
@@ -1821,12 +1829,15 @@ class LimeExpressionManager {
         }
         log_message('debug','Total time attributable to EM = ' . $totalTime);
 //        log_message('debug',print_r($LEM->runtimeTimings,true));
+//      LimeExpressionManager::ShowStackTrace();
+
 //        log_message('debug','**ERRORS**' . print_r($LEM->syntaxErrors,true));
         if (count($LEM->syntaxErrors) > 0)
         {
             $CI =& get_instance();
             $CI->db->insert_batch('expression_errors',$LEM->syntaxErrors);
         }
+        $LEM->initialized=false;    // so detect calls after done
     }
 
     /**
@@ -2169,6 +2180,8 @@ class LimeExpressionManager {
             }
         }
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+//      LimeExpressionManager::ShowStackTrace();
+
         return implode('',$jsParts);
     }
 
@@ -2446,6 +2459,49 @@ EOT;
             print "</div>\n";
         }
         print "</table>";
+    }
+
+    public static function ShowStackTrace($msg=NULL,&$args=NULL)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+
+        $msg = array("**Stack Trace**" . (is_null($msg) ? '' : ' - ' . $msg));
+
+        $count = 0;
+        foreach (debug_backtrace(false) as $log)
+        {
+            if ($count++ == 0){
+                continue;   // skip this call
+            }
+            $LEM->debugStack = array();
+
+            $subargs=array();
+            if (!is_null($args) && $log['function'] == 'templatereplace') {
+                foreach ($args as $arg)
+                {
+                    if (isset($log['args'][2][$arg])) {
+                        $subargs[$arg] = $log['args'][2][$arg];
+                    }
+                }
+                if (count($subargs) > 0) {
+                    $arglist = print_r($subargs,true);
+                }
+                else {
+                    $arglist = '';
+                }
+            }
+            else {
+                $arglist = '';
+            }
+            $msg[] = '  '
+            .   (isset($log['file']) ? '[' . basename($log['file']) . ']': '')
+            .   (isset($log['class']) ? $log['class'] : '')
+            .   (isset($log['type']) ? $log['type'] : '')
+            .   (isset($log['function']) ? $log['function'] : '')
+            .   (isset($log['line']) ? '[' . $log['line'] . ']' : '')
+            .   $arglist;
+        }
+        log_message('debug',implode("\n",$msg));
     }
 }
 ?>

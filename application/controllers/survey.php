@@ -1022,7 +1022,7 @@ class survey extends LSCI_Controller {
         $this->load->helper("database");
         $this->load->helper("frontend");
         $this->load->helper("surveytranslator");
-        $this->load->library("Dtexts");
+//        $this->load->library("Dtexts");
     }
 
     function _loadLimesurveyLang($mvSurveyIdOrBaseLang)

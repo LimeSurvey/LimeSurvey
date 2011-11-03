@@ -1222,7 +1222,7 @@ function submittokens($quotaexit=false)
             if ($thissurvey['anonymized'] == "N")
             {
                 // Survey is not anonymous, we can translate insertAns placeholder
-                $subject=dTexts::run($subject);
+                $subject=dTexts__run($subject);
             }
 
             $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
@@ -1244,7 +1244,7 @@ function submittokens($quotaexit=false)
                 if ($thissurvey['anonymized'] == "N")
                 {
                     // Survey is not anonymous, we can translate insertAns placeholder
-                    $message=dTexts::run($message);
+                    $message=dTexts__run($message);
                 }
 
                 if (!$ishtml)
@@ -1326,7 +1326,7 @@ function SendSubmitNotifications()
         {
             foreach($aRecipient as $sRecipient)
             {
-                $sRecipient=dTexts::run($sRecipient);
+                $sRecipient=dTexts__run($sRecipient);
                 if(validate_email($sRecipient))
                 {
                     $aEmailNotificationTo[]=$sRecipient;
@@ -1352,7 +1352,7 @@ function SendSubmitNotifications()
         {
             foreach($aRecipient as $sRecipient)
             {
-                $sRecipient=dTexts::run($sRecipient);
+                $sRecipient=dTexts__run($sRecipient);
                 if(validate_email($sRecipient))
                 {
                     $aEmailResponseTo[]=$sRecipient;

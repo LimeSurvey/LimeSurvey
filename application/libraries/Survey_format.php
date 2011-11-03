@@ -113,7 +113,7 @@ class Survey_format {
 
                 //Before doing the "templatereplace()" function, check the $thissurvey['url']
                 //field for limereplace stuff, and do transformations!
-                $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
+                $thissurvey['surveyls_url']=dTexts__run($thissurvey['surveyls_url']);
                 $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
                 //Check for assessments
@@ -189,7 +189,7 @@ class Survey_format {
                 if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
                 {
 
-                    $url = dTexts::run($thissurvey['surveyls_url']);
+                    $url = dTexts__run($thissurvey['surveyls_url']);
                     $url = passthruReplace($url, $thissurvey);
                     $url=str_replace("{SAVEDID}",$saved_id, $url);			           // to activate the SAVEDID in the END URL
                     $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL

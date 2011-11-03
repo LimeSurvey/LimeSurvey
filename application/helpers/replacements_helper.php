@@ -72,9 +72,12 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
             $varsPassed[] = $var;
         }
     }
-    if (count($varsPassed) > 0) {
-        //log_message('debug', 'templatereplace() called from ' . $debugSrc . ' contains: ' . implode(', ', $varsPassed));
-    }
+//    if (count($varsPassed) > 0) {
+//        log_message('debug', 'templatereplace() called from ' . $debugSrc . ' contains: ' . implode(', ', $varsPassed));
+//    }
+//    if (isset($redata['question'])) {
+//        LimeExpressionManager::ShowStackTrace('has QID and/or SGA',$allowedvars);
+//    }
     //    extract($redata);   // creates variables for each of the keys in the array
 
     // Local over-rides in case not set above
@@ -785,5 +788,10 @@ function PassthruReplace($line, $thissurvey)
     return $line;
 }
 
+function dTexts__run($text,$questionNum=NULL)
+{
+//    return LimeExpressionManager::ProcessString($text,$questionNum,NULL,true);
+    return $text;
+}
 
 // Closing PHP tag intentionally omitted - yes, it is okay

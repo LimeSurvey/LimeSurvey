@@ -452,6 +452,9 @@ class ExpressionManager {
                 }
                 else
                 {
+//                    if ($token[0] == 'QID' || $token[0] == 'SGQA') {
+//                        LimeExpressionManager::ShowStackTrace($token[0]);
+//                    }
                     if ($this->isValidVariable($token[0]))
                     {
                         $this->varsUsed[] = $token[0];  // add this variable to list of those used in this equation
