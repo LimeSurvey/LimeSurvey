@@ -76,6 +76,7 @@ class Failed_login_attempts_model extends CI_Model {
         {
             $query = $this->db->query("INSERT INTO ".$this->db->dbprefix('failed_login_attempts') . "(ip, number_attempts,last_attempt)"
                 ." VALUES('".$ip."',1,'".$timestamp."')");
+        }
 
         return $query;
     }
