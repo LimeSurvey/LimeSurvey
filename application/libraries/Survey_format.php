@@ -1050,14 +1050,14 @@ END;
                             <!-- NEW QUESTION -->
                             <div id="question'.$qa[4].'" class="'.$q_class.$man_class.'"'.$n_q_display.'>
                             ';
-                            echo templatereplace($question_template,array(),$redata,'Survey_format[1047]');
+                            echo templatereplace($question_template,array(),$redata,'Survey_format[1047]', ($thissurvey['anonymized'] == "Y"), $qa[4]);
                             echo '
                             </div>
                             ';
                         }
                         else
                         {
-                            echo templatereplace($question_template,array(),$redata,'Survey_format[1054]');
+                            echo templatereplace($question_template,array(),$redata,'Survey_format[1054]', ($thissurvey['anonymized'] == "Y"), $qa[4]);
                         };
                     }
                 }
