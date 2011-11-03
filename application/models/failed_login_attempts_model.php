@@ -56,12 +56,12 @@ class Failed_login_attempts_model extends CI_Model {
     */
     function cleanOutOldAttempts()
     {
-        $this->db->where('now() > (last_attempt+'.$this->config->item("timeOutTime").')');
+        $this->db->where('((NOW() - CAST(last_attempt as DATETIME)) > '.$this->config->item("timeOutTime").')');
         return $this->db->delete('failed_login_attempts');
     }
 
 
-	function addAttempt($sIp)
+	function addAttempt($ip)
 	{
 
         $timestamp = date("Y-m-d H:m:s");
@@ -69,14 +69,12 @@ class Failed_login_attempts_model extends CI_Model {
         $oData=$this->db->get('failed_login_attempts');
 	    if ($oData->num_rows()>0)
 		{
-	        //$query = "UPDATE ".db_table_name('failed_login_attempts')
-	        //         ." SET number_attempts=number_attempts+1, last_attempt = '$timestamp' WHERE ip='$sIp'";
 			$query = $this->db->query("UPDATE ".$this->db->dbprefix('failed_login_attempts')
-	                ." SET number_attempts=number_attempts+1, last_attempt = '".$timestamp."' WHERE ip='".$sIp."'");
+	                ." SET number_attempts=number_attempts+1, last_attempt = '".$timestamp."' WHERE ip='".$ip."'");
 		}
 	    else
 	        $query = $this->db->query("INSERT INTO ".$this->db->dbprefix('failed_login_attempts') . "(ip, number_attempts,last_attempt)"
-	                 ." VALUES('".$sIp."',1,'".$timestamp."')");
+	                 ." VALUES('".$ip."',1,'".$timestamp."')");
 
 	    return $query;
 	}
