@@ -47,7 +47,7 @@ class Authentication extends Admin_Controller {
     {
         if(!$this->session->userdata("loginID"))
         {
-            $sIp = $this->session->userdata("ip_address");
+            $sIp = $this->input->ip_address();
             $this->load->model("failed_login_attempts_model");
             $this->failed_login_attempts_model->cleanOutOldAttempts();
             $bCannotLogin=$this->failed_login_attempts_model->isLockedOut($sIp);
@@ -68,6 +68,7 @@ class Authentication extends Admin_Controller {
                     }
                     else
                     {
+                        $this->failed_login_attempts_model->deleteAttempts($sIp);
                         $loginsummary = "<br />".sprintf($clang->gT("Welcome %s!"),$this->session->userdata('full_name'))."<br />&nbsp;";
                         if ($this->session->userdata('redirect_after_login') && strpos($this->session->userdata('redirect_after_login'), "logout") === FALSE)
                         {

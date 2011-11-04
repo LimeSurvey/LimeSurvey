@@ -43,28 +43,43 @@ class Failed_login_attempts_model extends CI_Model {
     */
     function isLockedOut($sIPAddress)
     {
+        $isLockedOut = false;
         $this->db->where('number_attempts >',$this->config->item("maxLoginAttempt"));
-        $this->db->where('ip =',$sIPAddress);
-        $this->db->where('last_attempt >',time()- $this->config->item("timeOutTime"));
+        $this->db->where('ip',$sIPAddress);
         $oQuery = $this->db->get('failed_login_attempts');
-        return ($oQuery->num_rows()>0);
+        
+        if ($oQuery->num_rows()>0)
+        {
+            $row = $oQuery->row_array();
+            $lastattempt=strtotime($row['last_attempt']);
+            if (time() > $lastattempt + $this->config->item("timeOutTime")){
+                $isLockedOut = false;
+                $this->db->where('ip',$sIPAddress);
+                $this->db->delete('failed_login_attempts');
+            }
+            else
+            {
+                $isLockedOut = true;
+            }
+        }
+        return $isLockedOut;
     }
 
     /**
     * This function removes obsolete login attempts
-    *
+    * TODO
     */
     function cleanOutOldAttempts()
     {
-
-        $this->db->where('(last_attempt <'.time()- $this->config->item("timeOutTime").')');
-        return $this->db->delete('failed_login_attempts');
+        // this where select whole part
+        //$this->db->where('now() > (last_attempt+'.$this->config->item("timeOutTime").')');
+        //return $this->db->delete('failed_login_attempts');
     }
 
 
     function addAttempt($ip)
     {
-        $timestamp = time();
+        $timestamp = date("Y-m-d H:m:s");
         $this->db->where('ip', $ip);
         $oData=$this->db->get('failed_login_attempts');
         if ($oData->num_rows()>0)
