@@ -41,6 +41,7 @@ class remotecontrol extends Survey_Common_Controller {
         $config['functions']['release_session_key'] = array('function' => 'remotecontrol.releaseSessionKey');
         $config['functions']['delete_survey'] = array('function' => 'remotecontrol.deleteSurvey');
         $config['functions']['add_participants'] = array('function' => 'remotecontrol.addParticipants');
+        $config['functions']['add_response'] = array('function' => 'remotecontrol.addResponse');
         //        $config['functions']['create_survey'] = array('function' => 'remotecontrol.createSurvey');
 
         $this->xmlrpcs->initialize($config);
@@ -119,6 +120,63 @@ class remotecontrol extends Survey_Common_Controller {
                 return $this->xmlrpc->send_error_message('2', 'No permission');
         }
     }
+
+
+    /**
+    * XML-RPC routing to add a response to the survey table
+    * Returns the id of the inserted survey response
+    *
+    * @param array $request Array containing the following elements (in that order):
+    * - Session key (string)
+    * - Survey ID (integer)
+    * - ResponseData (array)
+    * 
+    */
+    function addResponse($request)
+    {
+        if (!is_object($request)) die();
+        $aParameters = $request->output_parameters();
+
+        if (!isset($aParameters['0'],$aParameters['1'],$aParameters['2']))
+        {
+            return $this->xmlrpc->send_error_message('3', 'Missing parameters');
+        }
+        $sSessionKey=$aParameters['0'];
+        $iSurveyID=(int)$aParameters['1'];
+        $aResponseData=$aParameters['2'];
+
+        if($this->_checkSessionKey($sSessionKey))
+        {
+            if(bHasSurveyPermission($iSurveyID,'response','create'))
+            {
+                if (!$this->db->table_exists('survey_'.$iSurveyID))
+                {
+                    return $this->xmlrpc->send_error_message('12', 'No survey table');
+                }
+ 
+                //set required values if not set
+                if (!isset($aResponseData['submitdate'])) $aResponseData['submitdate'] = date("Y-m-d H:i:s");
+                if (!isset($aResponseData['datestamp'])) $aResponseData['datestamp'] = date("Y-m-d H:i:s");
+                if (!isset($aResponseData['startdate'])) $aResponseData['startdate'] = date("Y-m-d H:i:s");
+                if (!isset($aResponseData['startlanguage'])) $aResponseData['startlanguage'] = GetBaseLanguageFromSurveyID($iSurveyID);
+
+                $this->load->model('surveys_dynamic_model');
+                $iinsert = $this->surveys_dynamic_model->insertRecords($iSurveyID,$aResponseData);
+                if ($iinsert)
+                {
+                    $thisid=$this->db->insert_id();
+                    return $this->xmlrpc->send_response(array($thisid,'integer'));
+                }
+                else
+                {
+                    //Failed to insert return error
+                    return $this->xmlrpc->send_error_message('13', 'Unable to add response');
+                }
+            }
+            else
+                return $this->xmlrpc->send_error_message('2', 'No permission');
+        }
+    } 
 
     /**
     * XML-RPC routine to add a participant to a token table
