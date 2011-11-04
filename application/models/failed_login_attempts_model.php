@@ -47,7 +47,6 @@ class Failed_login_attempts_model extends CI_Model {
         $this->db->where('number_attempts >',$this->config->item("maxLoginAttempt"));
         $this->db->where('ip',$sIPAddress);
         $oQuery = $this->db->get('failed_login_attempts');
-        
         if ($oQuery->num_rows()>0)
         {
             $row = $oQuery->row_array();
@@ -79,7 +78,7 @@ class Failed_login_attempts_model extends CI_Model {
 
     function addAttempt($ip)
     {
-        $timestamp = date("Y-m-d H:m:s");
+        $timestamp = date("Y-m-d H:i:s");
         $this->db->where('ip', $ip);
         $oData=$this->db->get('failed_login_attempts');
         if ($oData->num_rows()>0)
