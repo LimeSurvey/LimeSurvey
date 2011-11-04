@@ -528,9 +528,14 @@ class questiongroup extends Survey_Common_Controller {
 
         LimeExpressionManager::StartProcessingPage(false,true,false);
         $aGrouplist=$this->groups_model->getGroups($iSurveyID);
+        $initializedReplacementFields=false;
         foreach($aGrouplist as $iGID=>$aGroup)
         {
             LimeExpressionManager::StartProcessingGroup($aGroup['gid'],false,$iSurveyID);
+            if (!$initializedReplacementFields) {
+                templatereplace("{SITENAME}");  // Hack to ensure the EM sets values of LimeReplacementFields
+                $initializedReplacementFields = true;
+            }
             $oQuestionData=$this->questions_model->getQuestions($iSurveyID,$aGroup['gid'],$sBaseLanguage);
             $qs = array();
             $junk=array();
