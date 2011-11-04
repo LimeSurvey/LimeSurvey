@@ -886,7 +886,7 @@ function quexml_skipto($qid,$value,$cfieldname = "")
 /**
  * from export_structure_quexml.php
  */
-function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=false)
+function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=false,$varname="")
 {
 	global $dom;
 	$CI =& get_instance();
@@ -940,13 +940,7 @@ function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=fal
 
 		$value= $dom->create_element("value");
 
-		//Get next code
-		if (is_numeric($nextcode))
-			$nextcode++;
-		else if (is_string($nextcode))
-			$nextcode = chr(ord($nextcode) + 1);
-
-		$value->set_content($nextcode);
+		$value->set_content('-oth-');
 
 		$category->append_child($label);
 		$category->append_child($value);
@@ -959,6 +953,7 @@ function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=fal
 		$length->set_content(24);
 		$contingentQuestion->append_child($text);
 		$contingentQuestion->append_child($length);
+		$contingentQuestion->set_attribute("varName",$varname . 'other');
 
 		$category->append_child($contingentQuestion);
 
@@ -1082,6 +1077,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 		$length->set_content(24);
 		$contingentQuestion->append_child($text);
 		$contingentQuestion->append_child($length);
+		$contingentQuestion->set_attribute("varName",$varname . 'other');
 
 		$category->append_child($contingentQuestion);
 
@@ -1294,7 +1290,8 @@ function quexml_export($surveyi, $quexmllan)
 			}
 
 			$response = $dom->create_element("response");
-			$response->set_attribute("varName",quexml_cleanup($RowQ['title']));
+			$sgq = $surveyid . "X" . $gid . "X" . $qid;
+			$response->set_attribute("varName",$sgq);
 
 			switch ($type)
 			{
@@ -1310,20 +1307,20 @@ function quexml_export($surveyi, $quexmllan)
 				$question->append_child($response);
 				break;
 				case "L": //LIST drop-down/radio-button list
-					$response->append_child(quexml_create_fixed($qid,false,false,0,$other));
+					$response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
 				$question->append_child($response);
 				break;
 				case "!": //List - dropdown
-					$response->append_child(quexml_create_fixed($qid,false,false,0,$other));
+					$response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
 				$question->append_child($response);
 				break;
 				case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-					$response->append_child(quexml_create_fixed($qid,false,false,0,$other));
+					$response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
 				$question->append_child($response);
 				//no comment - this should be a separate question
 				break;
 				case "R": //RANKING STYLE
-					quexml_create_subQuestions($question,$qid,$RowQ['title'],true);
+					quexml_create_subQuestions($question,$qid,$sgq,true);
 				$Query = "SELECT COUNT(*) as sc FROM {$dbprefix}answers WHERE qid = $qid AND language='$quexmllang' ";
 				$QRE = db_execute_assoc($Query);
 				//$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
@@ -1333,20 +1330,20 @@ function quexml_export($surveyi, $quexmllan)
 				$question->append_child($response);
 				break;
 				case "M": //Multiple choice checkbox
-					quexml_create_multi($question,$qid,$RowQ['title'],false,false,$other);
+					quexml_create_multi($question,$qid,$sgq,false,false,$other);
 				break;
 				case "P": //Multiple choice with comments checkbox + text
 					//Not yet implemented
-					quexml_create_multi($question,$qid,$RowQ['title'],false,false,$other);
+					quexml_create_multi($question,$qid,$sgq,false,false,$other);
 				//no comments added
 				break;
 				case "Q": //MULTIPLE SHORT TEXT
-					quexml_create_subQuestions($question,$qid,$RowQ['title']);
+					quexml_create_subQuestions($question,$qid,$sgq);
 				$response->append_child(quexml_create_free("text",quexml_get_lengthth($qid,"maximum_chars","10"),""));
 				$question->append_child($response);
 				break;
 				case "K": //MULTIPLE NUMERICAL
-					quexml_create_subQuestions($question,$qid,$RowQ['title']);
+					quexml_create_subQuestions($question,$qid,$sgq);
 				$response->append_child(quexml_create_free("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
 				$question->append_child($response);
 				break;
@@ -1367,73 +1364,73 @@ function quexml_export($surveyi, $quexmllan)
 				$question->append_child($response);
 				break;
 				case "Y": //YES/NO radio-buttons
-					$response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 1,$qlang->gT("No") => 2)));
+					$response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 'Y',$qlang->gT("No") => 'N')));
 				$question->append_child($response);
 				break;
 				case "G": //GENDER drop-down list
-					$response->append_child(quexml_fixed_array(array($qlang->gT("Female") => 1,$qlang->gT("Male") => 2)));
+					$response->append_child(quexml_fixed_array(array($qlang->gT("Female") => 'F',$qlang->gT("Male") => 'M')));
 				$question->append_child($response);
 				break;
 				case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-					quexml_create_subQuestions($question,$qid,$RowQ['title']);
+					quexml_create_subQuestions($question,$qid,$sgq);
 				$response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
 				$question->append_child($response);
 				break;
 				case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-					quexml_create_subQuestions($question,$qid,$RowQ['title']);
+					quexml_create_subQuestions($question,$qid,$sgq);
 				$response->append_child(quexml_fixed_array(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
 				$question->append_child($response);
 				break;
 				case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-					quexml_create_subQuestions($question,$qid,$RowQ['title']);
-				$response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 1,$qlang->gT("Uncertain") => 2,$qlang->gT("No") => 3)));
+					quexml_create_subQuestions($question,$qid,$sgq);
+				$response->append_child(quexml_fixed_array(array($qlang->gT("Yes") => 'Y',$qlang->gT("Uncertain") => 'U',$qlang->gT("No") => 'N')));
 				$question->append_child($response);
 				break;
 				case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-					quexml_create_subQuestions($question,$qid,$RowQ['title']);
-				$response->append_child(quexml_fixed_array(array($qlang->gT("Increase") => 1,$qlang->gT("Same") => 2,$qlang->gT("Decrease") => 3)));
+					quexml_create_subQuestions($question,$qid,$sgq);
+				$response->append_child(quexml_fixed_array(array($qlang->gT("Increase") => 'I',$qlang->gT("Same") => 'S',$qlang->gT("Decrease") => 'D')));
 				$question->append_child($response);
 				break;
 				case "F": //ARRAY (Flexible) - Row Format
 					//select subQuestions from answers table where QID
-					quexml_create_subQuestions($question,$qid,$RowQ['title']);
-				$response->append_child(quexml_create_fixed($qid,false,false,0,$other));
+					quexml_create_subQuestions($question,$qid,$sgq);
+				$response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
 				$question->append_child($response);
 				//select fixed responses from
 				break;
 				case "H": //ARRAY (Flexible) - Column Format
-					quexml_create_subQuestions($question,$RowQ['qid'],$RowQ['title']);
-				$response->append_child(quexml_create_fixed($qid,true,false,0,$other));
+					quexml_create_subQuestions($question,$RowQ['qid'],$sgq);
+				$response->append_child(quexml_create_fixed($qid,true,false,0,$other,$sgq));
 				$question->append_child($response);
 				break;
 				case "1": //Dualscale multi-flexi array
 					//select subQuestions from answers table where QID
-					quexml_create_subQuestions($question,$qid,$RowQ['title']);
+					quexml_create_subQuestions($question,$qid,$sgq);
 				$response = $dom->create_element("response");
-				$response->append_child(quexml_create_fixed($qid,false,false,0,$other));
+				$response->append_child(quexml_create_fixed($qid,false,false,0,$other,$sgq));
 				$response2 = $dom->create_element("response");
-				$response2->set_attribute("varName",quexml_cleanup($RowQ['title']) . "_2");
-				$response2->append_child(quexml_create_fixed($qid,false,false,1,$other));
+				$response2->set_attribute("varName",quexml_cleanup($sgq) . "_2");
+				$response2->append_child(quexml_create_fixed($qid,false,false,1,$other,$sgq));
 				$question->append_child($response);
 				$question->append_child($response2);
 				break;
 				case ":": //multi-flexi array numbers
-					quexml_create_subQuestions($question,$qid,$RowQ['title']);
+					quexml_create_subQuestions($question,$qid,$sgq);
 				//get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
 				$mcb  = quexml_get_lengthth($qid,'multiflexible_checkbox',-1);
 				if ($mcb != -1)
-					quexml_create_multi($question,$qid,$RowQ['title'],1);
+					quexml_create_multi($question,$qid,$sgq,1);
 				else
 				{
 					//get multiflexible_max - if set then make boxes of max this width
 					$mcm = strlen(quexml_get_lengthth($qid,'multiflexible_max',1));
-					quexml_create_multi($question,$qid,$RowQ['title'],1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+					quexml_create_multi($question,$qid,$sgq,1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
 				}
 				break;
 				case ";": //multi-flexi array text
-					quexml_create_subQuestions($question,$qid,$RowQ['title']);
+					quexml_create_subQuestions($question,$qid,$sgq);
 				//foreach question where scale_id = 1 this is a textbox
-				quexml_create_multi($question,$qid,$RowQ['title'],1,array('f' => 'text', 'len' => 10, 'lab' => ''));
+				quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => 10, 'lab' => ''));
 				break;
 				case "^": //SLIDER CONTROL - not supported
 					$response->append_child(quexml_fixed_array(array("NOT SUPPORTED:$type" => 1)));
