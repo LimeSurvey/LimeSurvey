@@ -113,7 +113,7 @@ class Answers_model extends CI_Model {
             $where = "1";
         }
         if (!is_null($lang)) {
-            $lang = " and language='".$lang."'";
+            $lang = " and a.language='".$lang."' and q.language='".$lang."'";
         }
 
         $query = "SELECT a.qid, a.code, a.answer, a.scale_id"
@@ -123,6 +123,7 @@ class Answers_model extends CI_Model {
             ." ORDER BY qid, scale_id, sortorder";
         
         $data = $this->db->query($query);
+//        log_message('debug',$this->db->last_query());
 
         $qans = array();
 

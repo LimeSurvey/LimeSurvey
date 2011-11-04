@@ -840,6 +840,9 @@ class LimeExpressionManager {
     public function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
     {
         $now = microtime(true);
+//        $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
+//        log_message('debug','**Language=' . $LEM->slang);
+        
         $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
         $this->sid= $surveyid;
 
@@ -899,7 +902,7 @@ class LimeExpressionManager {
         $now = microtime(true);
 
         $CI->load->model('answers_model');
-        $qans = $CI->answers_model->getAllAnswersForEM($surveyid);
+        $qans = $CI->answers_model->getAllAnswersForEM($surveyid,NULL,$this->slang);
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAllAnswersForEM',(microtime(true) - $now));
         $now = microtime(true);
