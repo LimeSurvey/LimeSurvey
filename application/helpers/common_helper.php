@@ -2873,7 +2873,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 }
             }
         }
-        $fieldmap[$fieldname]['relevance']=$arow['relevance'];
+        $fieldmap[$fieldname]['relevance'] = isset($arow['relevance']) ? $arow['relevance'] : null;
         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
     }

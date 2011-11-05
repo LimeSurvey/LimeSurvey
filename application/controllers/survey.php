@@ -59,199 +59,122 @@ class survey extends LSCI_Controller {
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
 
+        $clang = $this->_loadLimesurveyLang($surveyid);
+
         if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken) )
         {
-            $clang = $this->_loadLimesurveyLang($surveyid);
             $asMessage = array(
                     $clang->gT('Token mismatch'),
                     $clang->gT('The token you provided doesn\'t match the one in your session.'),
                     $clang->gT('Please wait to begin with a new session.')
                 );
-            $this->_createNewUserSessionAndRedirect($surveyid, $redata, $asMessage);
+            $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
 
         if ( $this->_isSurveyFinished() )
         {
-            $clang = $this->_loadLimesurveyLang($surveyid);
             $asMessage = array(
                     $clang->gT('Previous session is set to be finished.'),
                     $clang->gT('Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning.'),
                     $clang->gT('Please wait to begin with a new session.')
                 );
-            $this->_createNewUserSessionAndRedirect($surveyid, $redata, $asMessage);
+            $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
         }
 
 
-        if ($this->_isPreviewAction($param) && !$this->_canUserPreviewSurvey($surveyid)){
-            $clang = $this->_loadLimesurveyLang($surveyid);
+        if ($this->_isPreviewAction($param) && !$this->_canUserPreviewSurvey($surveyid))
+        {
             $asMessage = array(
                     $clang->gT('Error'),
                     $clang->gT('We are sorry but you don\'t have permissions to do this.')
                 );
-            $this->_killPage($redata, __LINE__, null, $asMessage);
+            $this->_niceExit($redata, __LINE__, null, $asMessage);
         }
 
         if ( $this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists) )
         {
-            // admin session and permission have not already been imported
-            // for this particular survey
-            if ( !$this->_userHasPreviewAccessSession($surveyid) )
-            {
-                // Store initial session name
-                $initial_session_name = session_name();
-
-                // One way (not implemented here) would be to start the
-                // user session from a duplicate of the admin session
-                // - destroy the new session
-                // - load admin session (with correct session name)
-                // - close admin session
-                // - change used session name to default
-                // - open new session (takes admin session id)
-                // - regenerate brand new session id for this session
-
-                // The solution implemented here is to copy some
-                // fields from the admin session to the new session
-                // - first destroy the new (empty) user session
-                // - then open admin session
-                // - record interresting values from the admin session
-                // - duplicate admin session under another name and Id
-                // - destroy the duplicated admin session
-                // - start a brand new user session
-                // - copy interresting values in this user session
-
-                session_destroy();    // make it silent because for
-                // some strange reasons it fails sometimes
-                // which is not a problem
-                // but if it throws an error then future
-                // session functions won't work because
-                // headers are already sent.
-
-                // TODO where is $stg_SessionName comming from?
-                if (!empty($stg_SessionName))
-                {
-                    session_name($stg_SessionName);
-                }
-                else
-                {
-                    session_name('LimeSurveyAdmin');
-                }
-                session_start(); // Loads Admin Session
-
-                $bPreviewRight = $this->_canUserPreviewSurvey($surveyid);
-                $saveSessionVars = $this->_saveSessionVars($surveyid, $bPreviewRight);
-
-                // TODO where is $sessionhandler comming from?
-                $this->_destroyOldSession($initial_session_name, $sessionhandler, $clang);
-
-                // start new session
-                session_start();
-                // regenerate id so that the header geenrated by previous
-                // regenerate_id is overwritten
-                // needed after clearall
-                if ($sessionhandler=='db')
-                {
-                    adodb_session_regenerate_id();
-                }
-                elseif (session_regenerate_id() === false)
-                {
-                    $asMessage = array(
-                        $clang->gT('Error'),
-                        'Error Regenerating Session Id'
-                    );
-                    $this->_killPage($redata, __LINE__, null, $asMessage);
-                }
-
-                $this->_restoreSavedSession($saveSessionVars, $bPreviewRight);
-            }
-            else
-            { // already authorized
-                $bPreviewRight = true;
-            }
+            // TODO where is $stg_SessionName comming from?
+            // TODO where is $sessionhandler comming from?
+            $bPreviewRight = $this->_importAdminSessionForSurveyToGetPreviewAccess($surveyid, $stg_SessionName, $sessionhandler, $clang);
 
             if ($bPreviewRight === false)
             {
-                // print an error message
+                // TODO is this still required (we have the basepath check at the top)
                 if (isset($_REQUEST['rootdir']))
                 {
                     $asMessage = array(
                         $clang->gT('Error'),
                         'You cannot start this script directly'
                     );
-                    $this->_killPage($redata, __LINE__, null, $asMessage);
+                    $this->_niceExit($redata, __LINE__, null, $asMessage);
                 }
-                $clang = $this->_loadLimesurveyLang($surveyid);
-                //A nice exit
-                sendcacheheaders();
-                doHeader();
 
-                $redata = compact(array_keys(get_defined_vars()));
-                $this->_printTemplateContent($this->config->item("standardtemplaterootdir").'/default/startpage.pstpl', $redata, __LINE__);
                 $asMessage = array(
                         $clang->gT("Error"),
                         $clang->gT("We are sorry but you don't have permissions to do this."),
                         sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
                     );
-
-                $this->_killPage($redata, __LINE__, null, $asMessage);
+                $this->_niceExit($redata, __LINE__, null, $asMessage);
             }
         }
 
 
+        // TODO can this be moved to the top?
+        // (Used to be global, used in ExpressionManager, merged into amVars. If not filled in === '')
+        // can this be added in the first computation of $redata?
         if (isset($_SESSION['srid']))
         {
             $saved_id = $_SESSION['srid'];
         }
+        // recompute $redata since $saved_id used to be a global
+        $redata = compact(array_keys(get_defined_vars()));
 
-        if (!isset($_SESSION['s_lang'])  && (isset($move)) )
-        // geez ... a session time out! RUN!
+
+        if ( $this->_didSessionTimeOut() )
         {
+            // TODO is this still required (we have the basepath check at the top)
             if (isset($param['rootdir']))
             {
                 $asMessage = array(
                         $clang->gT('Error'),
                         'You cannot start this script directly'
                     );
-                $this->_killPage($redata, __LINE__, null, $asMessage);
+                $this->_kil_niceExitlPage($redata, __LINE__, null, $asMessage);
             }
-            $clang = $this->_loadLimesurveyLang($surveyid);
-            //A nice exit
-            sendcacheheaders();
-            doHeader();
 
-            $redata = compact(array_keys(get_defined_vars()));
-            $this->_printTemplateContent($this->config->item("standardtemplaterootdir").'/default/startpage.pstpl', $redata, __LINE__);
             $asMessage = array(
                     $clang->gT("Error"),
                     $clang->gT("We are sorry but your session has expired."),
                     $clang->gT("Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."),
                     sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
                 );
-
-            $this->_killPage($redata, __LINE__, null, $asMessage);
+            $this->_niceExit($redata, __LINE__, null, $asMessage);
         };
 
         // Set the language of the survey, either from POST, GET parameter of session var
-        if (isset($_POST['lang']) && $_POST['lang']!='')  // this one comes from the language question
+        $sTempLanguage = null;
+        if ( !empty($_POST['lang']) )
         {
-            $templang = sanitize_languagecode($_POST['lang']);
-            $clang = SetSurveyLanguage( $surveyid, $templang);
-            UpdateSessionGroupList($surveyid, $templang);  // to refresh the language strings in the group list session variable
-
-            UpdateFieldArray();        // to refresh question titles and question text
+            $sTempLanguage = $_POST['lang'];
         }
-        else if (isset($param['lang']) && $surveyid)
+        else if ( isset($param['lang']) && !empty($surveyid) )
         {
-            $templang = sanitize_languagecode($param['lang']);
-            $clang = SetSurveyLanguage( $surveyid, $templang);
-            UpdateSessionGroupList($surveyid, $templang);  // to refresh the language strings in the group list session variable
-            UpdateFieldArray();        // to refresh question titles and question text
+            $sTempLanguage = $param['lang'];
+        }
+
+        if ( $sTempLanguage !== null )
+        {
+            $sTempLanguage = sanitize_languagecode($sTempLanguage);
+            $clang = SetSurveyLanguage( $surveyid, $sTempLanguage);
+            UpdateSessionGroupList($surveyid, $sTempLanguage);         // to refresh the language strings in the group list session variable
+            UpdateFieldArray();                                        // to refresh question titles and question text
         }
 
         if (isset($_SESSION['s_lang']))
         {
             $clang = SetSurveyLanguage( $surveyid, $_SESSION['s_lang']);
         }
-        elseif (isset($surveyid) && $surveyid)
+        elseif (!empty($surveyid))
         {
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             $clang = SetSurveyLanguage( $surveyid, $baselang);
@@ -267,7 +190,7 @@ class survey extends LSCI_Controller {
                     $clang->gT('Error'),
                     'You cannot start this script directly'
                 );
-            $this->_killPage($redata, __LINE__, null, $asMessage);
+            $this->_niceExit($redata, __LINE__, null, $asMessage);
         }
 
 
@@ -398,7 +321,7 @@ class survey extends LSCI_Controller {
 
 
 
-            $this->_killPage($redata, __LINE__);
+            $this->_niceExit($redata, __LINE__);
         }
 
         // Get token
@@ -453,36 +376,27 @@ class survey extends LSCI_Controller {
         //MAKE SURE SURVEY HASN'T EXPIRED
         if ($thissurvey['expiry']!='' and date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)>$thissurvey['expiry'] && $thissurvey['active']!='N')
         {
-
-            sendcacheheaders();
-            doHeader();
-
             $redata = compact(array_keys(get_defined_vars()));
-            $this->_printTemplateContent($thistpl.'/startpage.pstpl', $redata, __LINE__);
             $asMessage = array(
                     $clang->gT("Error"),
                     $clang->gT("This survey is no longer available."),
                     sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
                 );
 
-            $this->_killPage($redata, __LINE__, $thistpl, $asMessage);
+            $this->_niceExit($redata, __LINE__, $thistpl, $asMessage);
         }
 
         //MAKE SURE SURVEY IS ALREADY VALID
         if ($thissurvey['startdate']!='' and  date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust)<$thissurvey['startdate'] && $thissurvey['active']!='N')
         {
-            sendcacheheaders();
-            doHeader();
-
             $redata = compact(array_keys(get_defined_vars()));
-            $this->_printTemplateContent($thistpl.'/startpage.pstpl', $redata, __LINE__);
             $asMessage = array(
                     $clang->gT("Error"),
                     $clang->gT("This survey is not yet started."),
                     sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
                 );
 
-            $this->_killPage($redata, __LINE__, $thistpl, $asMessage);
+            $this->_niceExit($redata, __LINE__, $thistpl, $asMessage);
         }
 
         //CHECK FOR PREVIOUSLY COMPLETED COOKIE
@@ -490,18 +404,14 @@ class survey extends LSCI_Controller {
         $cookiename="PHPSID".returnglobal('sid')."STATUS";
         if (isset($_COOKIE[$cookiename]) && $_COOKIE[$cookiename] == "COMPLETE" && $thissurvey['usecookie'] == "Y" && $tokensexist != 1 && (!isset($param['newtest']) || $param['newtest'] != "Y"))
         {
-            sendcacheheaders();
-            doHeader();
-
             $redata = compact(array_keys(get_defined_vars()));
-            $this->_printTemplateContent($thistpl.'/startpage.pstpl', $redata, __LINE__);
             $asMessage = array(
                     $clang->gT("Error"),
                     $clang->gT("You have already completed this survey."),
                     sprintf($clang->gT("Please contact %s ( %s ) for further assistance."),$thissurvey['adminname'],$thissurvey['adminemail'])
                 );
 
-            $this->_killPage($redata, __LINE__, $thistpl, $asMessage);
+            $this->_niceExit($redata, __LINE__, $thistpl, $asMessage);
         }
 
 
@@ -630,7 +540,7 @@ class survey extends LSCI_Controller {
                         sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
                     );
 
-                $this->_killPage($redata, __LINE__, $thistpl, $asMessage, true);
+                $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
         }
         if ($tokensexist == 1 && isset($token) && $token && db_tables_exist($this->db->dbprefix('tokens_'.$surveyid))) //check if token is in a valid time frame
@@ -661,7 +571,7 @@ class survey extends LSCI_Controller {
                         sprintf($clang->gT("For further information please contact %s"), $thissurvey['adminname']." (<a href='mailto:{$thissurvey['adminemail']}'>"."{$thissurvey['adminemail']}</a>)")
                     );
 
-                $this->_killPage($redata, __LINE__, $thistpl, $asMessage, true);
+                $this->_niceExit($redata, __LINE__, $thistpl, $asMessage, true);
             }
         }
 
@@ -743,7 +653,7 @@ class survey extends LSCI_Controller {
             //Present the clear all page using clearall.pstpl template
             $this->_printTemplateContent($thistpl.'/clearall.pstpl', $redata, __LINE__);
 
-            $this->_killPage($redata, __LINE__, $thistpl);
+            $this->_niceExit($redata, __LINE__, $thistpl);
         }
 
         if (isset($param['newtest']) && $param['newtest'] == "Y")
@@ -981,6 +891,50 @@ class survey extends LSCI_Controller {
         return $saveSessionVars;
     }
 
+    function _loadAdminSession($stg_SessionName) {
+        // Store initial session name
+        $sOriginalSessionName = session_name();
+
+        // One way (not implemented here) would be to start the
+        // user session from a duplicate of the admin session
+        // - destroy the new session
+        // - load admin session (with correct session name)
+        // - close admin session
+        // - change used session name to default
+        // - open new session (takes admin session id)
+        // - regenerate brand new session id for this session
+
+        // The solution implemented here is to copy some
+        // fields from the admin session to the new session
+        // - first destroy the new (empty) user session
+        // - then open admin session
+        // - record interresting values from the admin session
+        // - duplicate admin session under another name and Id
+        // - destroy the duplicated admin session
+        // - start a brand new user session
+        // - copy interresting values in this user session
+
+        session_destroy();    // make it silent because for
+        // some strange reasons it fails sometimes
+        // which is not a problem
+        // but if it throws an error then future
+        // session functions won't work because
+        // headers are already sent.
+
+        if (!empty($stg_SessionName))
+        {
+            session_name($stg_SessionName);
+        }
+        else
+        {
+            session_name('LimeSurveyAdmin');
+        }
+        session_start(); // Loads Admin Session
+
+        return $sOriginalSessionName;
+
+    }
+
     function _destroyOldSession($sInitialSessionName, $sSessionHandler, $clang)
     {
         // change session name and id
@@ -994,24 +948,42 @@ class survey extends LSCI_Controller {
         {
             adodb_session_regenerate_id();
         }
-        elseif (session_regenerate_id() === false)
+        elseif ( session_regenerate_id() === false )
         {
             $asMessage = array(
                 $clang->gT('Error'),
                 'Error Regenerating Session Id'
             );
-            $this->_killPage($redata, __LINE__, null, $asMessage);
+            $this->_niceExit($redata, __LINE__, null, $asMessage);
         }
         session_destroy();
     }
 
-    function _restoreSavedSession($saveSessionVars, $bPreviewRight)
+    function _restoreSavedSession($sSessionHandler, $amSavedSessionVars, $bPreviewRight, $clang)
     {
+        // start new session
+        session_start();
+        // regenerate id so that the header geenrated by previous
+        // regenerate_id is overwritten
+        // needed after clearall
+        if  ( $sSessionHandler == 'db' )
+        {
+            adodb_session_regenerate_id();
+        }
+        elseif ( session_regenerate_id() === false )
+        {
+            $asMessage = array(
+                    $clang->gT('Error'),
+                	'Error Regenerating Session Id'
+                );
+            $this->_niceExit($redata, __LINE__, null, $asMessage);
+        }
+
         if ( $bPreviewRight )
         {
-            foreach ($saveSessionVars as $sessionKey => $sessionValue)
+            foreach ($amSavedSessionVars as $sSessionKey => $mSessionValue)
             {
-                $_SESSION[$sessionKey] = $sessionValue;
+                $_SESSION[$sSessionKey] = $mSessionValue;
             }
         }
     }
@@ -1084,6 +1056,11 @@ class survey extends LSCI_Controller {
         return $surveyid && $bIsSurveyActive === false && $bSurveyExists && isset($bSurveyPreviewRequireAuth) && $bSurveyPreviewRequireAuth == true &&  !$this->_canUserPreviewSurvey($surveyid);
     }
 
+    function _didSessionTimeout()
+    {
+        return !isset($_SESSION['s_lang']);
+    }
+
     function _canUserPreviewSurvey($surveyId)
     {
         if ( !isset($_SESSION['loginID'], $_SESSION['USER_RIGHT_SUPERADMIN']) )
@@ -1107,21 +1084,28 @@ class survey extends LSCI_Controller {
         return (!(isset($_SESSION['USER_RIGHT_PREVIEW']) && ($_SESSION['USER_RIGHT_PREVIEW'] == $surveyId)));
     }
 
-    function _killPage(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array(), $bKillSession = false)
+    function _niceExit(&$redata, $iDebugLine, $sTemplateDir = null, $asMessage = array(), $bKillSession = false)
     {
-        $this->_printMessage($asMessage);
-
-        if ( $sTemplateDir == null )
+        if ( $sTemplateDir === null )
             $sTemplateDir = $this->config->item("standardtemplaterootdir").DIRECTORY_SEPARATOR.'default';
 
+        sendcacheheaders();
+
+        doHeader();
+
+        $this->_printTemplateContent($sTemplateDir.DIRECTORY_SEPARATOR.'startpage.pstpl', $redata, $iDebugLine);
+        $this->_printMessage($asMessage);
         $this->_printTemplateContent($sTemplateDir.DIRECTORY_SEPARATOR.'endpage.pstpl', $redata, $iDebugLine);
+
         doFooter();
+
         if ( $bKillSession )
             killSession();
+
         exit;
     }
 
-    function _createNewUserSessionAndRedirect($surveyId, &$redata, $asMessage = array())
+    function _createNewUserSessionAndRedirect($surveyId, &$redata, $iDebugLine, $asMessage = array())
     {
         $baselang = GetBaseLanguageFromSurveyID($surveyId);
         $this->load->library('Limesurvey_lang',array("langcode"=>$baselang));
@@ -1130,13 +1114,30 @@ class survey extends LSCI_Controller {
         killSession();
         // Let's redirect the client to the same URL after having reseted the session
         //header("Location: $rooturl/index.php?" .$_SERVER['QUERY_STRING']);
-        sendcacheheaders();
-        doHeader();
+        $this->_niceExit($redata, $iDebugLine, null, $asMessage);
+    }
 
-        $template = $this->config->item("standardtemplaterootdir").'/default/startpage.pstpl';
-        $this->_printTemplateContent($template, $redata, __LINE__);
+    function _importAdminSessionForSurveyToGetPreviewAccess($surveyId, $stg_SessionName, $sSessionHandler, $clang)
+    {
+        // admin session and permission have not already been imported
+        // for this particular survey
+        if ( !$this->_userHasPreviewAccessSession($surveyId) )
+        {
+            $sOriginalSessionName = $this->_loadAdminSession($stg_SessionName);
 
-        $this->_killPage($redata, __LINE__, null, $asMessage);
+            $bPreviewRight = $this->_canUserPreviewSurvey($surveyId);
+            $amSavedSessionVars = $this->_saveSessionVars($surveyId, $bPreviewRight);
+
+            $this->_destroyOldSession($sOriginalSessionName, $sSessionHandler, $clang);
+            $this->_restoreSavedSession($sSessionHandler, $amSavedSessionVars, $bPreviewRight, $clang);
+        }
+        else
+        {
+            // already authorized
+            $bPreviewRight = true;
+        }
+
+        return $bPreviewRight;
     }
 
     function _printMessage($asLines)
