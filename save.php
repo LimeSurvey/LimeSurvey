@@ -1,5 +1,5 @@
 <?php
-/*
+    /*
  * LimeSurvey
  * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
  * All rights reserved.
@@ -53,22 +53,22 @@
  2. saved table no longer exists.
  */
 
-if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
+    if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 
-global $connect;
+    global $connect;
 
-//First, save the posted data to session
-//Doing this ensures that answers on the current page are saved as well.
-//CONVERT POSTED ANSWERS TO SESSION VARIABLES
-if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
-{
+    //First, save the posted data to session
+    //Doing this ensures that answers on the current page are saved as well.
+    //CONVERT POSTED ANSWERS TO SESSION VARIABLES
+    if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
+    {
     $postedfieldnames=explode("|", $_POST['fieldnames']);
 
     // Remove invalid fieldnames from fieldnames array
     for($x=count($postedfieldnames)-1;$x>=0;$x--)
     {
-        if (strpos($postedfieldnames[$x],$surveyid.'X')===false)
+            if (!isset($_SESSION['fieldmap'][$postedfieldnames[$x]]))
         {
             array_remval($postedfieldnames[$x],$postedfieldnames);
         }
@@ -82,12 +82,12 @@ if (isset($_POST['fieldnames']) && $_POST['fieldnames'])
         if (isset($_POST[$pf])) {$_SESSION[$pf] = $_POST[$pf];}
         if (!isset($_POST[$pf])) {$_SESSION[$pf] = "";}
     }
-}
-//CHECK FOR TIMER QUESTIONS TO SAVE TIME REMAINING
-if (isset($_POST['timerquestion']))
-{
+    }
+    //CHECK FOR TIMER QUESTIONS TO SAVE TIME REMAINING
+    if (isset($_POST['timerquestion']))
+    {
     $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
-}
+    }
 //CHECK FOR RELEVANCE RESULTS
 $aIrrelevant = array();
 $aRelevance = array();
@@ -110,10 +110,10 @@ foreach ($aRelevance as $key=>$value)
     $_SESSION['relevanceStatus'][$key] = $value;
 }
 
-//Check to see if we should set a submitdate or not
-// this depends on the move, and on quesitons checks
-if (isset($move) && $move == "movesubmit")
-{
+    //Check to see if we should set a submitdate or not
+    // this depends on the move, and on quesitons checks
+    if (isset($move) && $move == "movesubmit")
+    {
     $backok=null;
     $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
     $notvalidated=checkpregs($move,$backok);
@@ -127,15 +127,15 @@ if (isset($move) && $move == "movesubmit")
     {
         $bFinalizeThisAnswer = false;
     }
-}
-else
-{
+    }
+    else
+    {
     $bFinalizeThisAnswer = false;
-}
+    }
 
-// SAVE if on page with questions or on submit page
-if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
-{
+    // SAVE if on page with questions or on submit page
+    if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
+    {
     if ($thissurvey['active'] == "Y")
     {
         $bQuotaMatched=false;
@@ -212,11 +212,11 @@ if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
     {
 		set_answer_time();
     }
-}
+    }
 
-// CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
-if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' button on SAVE FORM
-{
+    // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
+    if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' button on SAVE FORM
+    {
     if ($thissurvey['active'] == "Y") 	// Only save if active
     {
         $flashmessage=savedcontrol();
@@ -229,13 +229,13 @@ if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' 
     {
         $_SESSION['scid'] = 0;		// If not active set to a dummy value to save form does not continue to show.
     }
-}
+    }
 
-// DISPLAY SAVE FORM
-// Displays even if not active just to show how it would look when active (for testing purposes)
-// Show 'SAVE FORM' only when click the 'Save so far' button the first time
-if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SESSION['scid']))
-{
+    // DISPLAY SAVE FORM
+    // Displays even if not active just to show how it would look when active (for testing purposes)
+    // Show 'SAVE FORM' only when click the 'Save so far' button the first time
+    if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SESSION['scid']))
+    {
     if($thissurvey['tokenanswerspersistence'] != 'Y')
     {
         showsaveform();
@@ -244,16 +244,16 @@ if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SES
     {
     	$flashmessage = savedsilent();
     };
-}
-elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_SESSION['scid']) )   //update the saved step only
-{
+    }
+    elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_SESSION['scid']) )   //update the saved step only
+    {
     $connect->Execute("update ".db_table_name("saved_control")." set saved_thisstep=".db_quoteall($thisstep)." where scid=".$_SESSION['scid']);  // Checked
-}
+    }
 
 
 
-function showsaveform()
-{
+    function showsaveform()
+    {
     //Show 'SAVE FORM' only when click the 'Save so far' button the first time, or when duplicate is found on SAVE FORM.
     global $thistpl, $errormsg, $thissurvey, $surveyid, $clang, $clienttoken, $relativeurl, $thisstep;
     sendcacheheaders();
@@ -294,12 +294,12 @@ function showsaveform()
     }
     echo "</html>\n";
     exit;
-}
+    }
 
 
 
-function savedcontrol()
-{
+    function savedcontrol()
+    {
     //This data will be saved to the "saved_control" table with one row per response.
     // - a unique "saved_id" value (autoincremented)
     // - the "sid" for this survey
@@ -422,17 +422,17 @@ function savedcontrol()
         }
         return  $clang->gT('Your survey was successfully saved.');
     }
-}
+    }
 
-/**
+    /**
  * savesilent() saves survey responses when the "Resume later" button
  * is press but has no interaction. i.e. it does not ask for email,
  * username or password or capture.
  *
  * @return string confirming successful save.
  */
-function savedsilent()
-{
+    function savedsilent()
+    {
     global $connect, $surveyid, $dbprefix, $thissurvey, $errormsg, $publicurl, $sitename, $timeadjust, $clang, $clienttoken, $thisstep, $modrewrite;
     submitanswer();
     // Prepare email
@@ -464,12 +464,12 @@ function savedsilent()
         echo "Error: Email failed, this may indicate a PHP Mail Setup problem on your server. Your survey details have still been saved, however you will not get an email with the details. You should note the \"name\" and \"password\" you just used for future reference.";
     };
     return  $clang->gT('Your survey was successfully saved.');
-};
+    };
 
 
-//FUNCTIONS USED WHEN SUBMITTING RESULTS:
-function createinsertquery()
-{
+    //FUNCTIONS USED WHEN SUBMITTING RESULTS:
+    function createinsertquery()
+    {
 
     global $thissurvey, $timeadjust, $move, $thisstep;
     global $deletenonvalues, $thistpl, $tempdir, $uploaddir;
@@ -528,20 +528,23 @@ function createinsertquery()
                     // move the files from tmp to the files folder
 
                     $tmp = $tempdir.'/upload/';
-                    if (!is_null($phparray) && count($phparray) > 0 && file_exists($tmp.$phparray[0]->filename))
+                            if (!is_null($phparray) && count($phparray) > 0)
                     {
-                        // move files from temp to files directory
-
+                                // Move the (unmoved, temp) files from temp to files directory.
+                                // Check all possible file uploads 
                         for ($i = 0; $i < count($phparray); $i++)
                         {
+                                    if (file_exists($tmp.$phparray[$i]->filename))
+                                    {
                             $sDestinationFileName='fu_'.sRandomChars(15);
                             if (!rename($tmp . $phparray[$i]->filename, $target . $sDestinationFileName))
                                 echo "Error moving file to its destination";
                             $phparray[$i]->filename=$sDestinationFileName;
                         }
+                            }
                         $_SESSION[$value] = json_encode($phparray);
                     }
-                    $values[] = $connect->qstr($_SESSION[$value], get_magic_quotes_gpc());
+                        $values[] = $connect->qstr($_SESSION[$value]);
                     // filename is changed from undefined to a random value
                     // update uses $_POST for saving responses
                     $_POST[$value] = $_SESSION[$value];
@@ -643,7 +646,7 @@ function createinsertquery()
             $query .= ", '".$_SESSION['s_lang']."'";
             if ($thissurvey['refurl'] == "Y")
             {
-                $query .= ", '".$_SESSION['refurl']."'";
+                    $query .= ", '".db_quote($_SESSION['refurl'])."'";
             }
             if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
             {
@@ -765,16 +768,16 @@ function createinsertquery()
         echo "</font></center><br /><br />";
         exit;
     }
-}
+    }
 
-// submitanswer sets the submitdate
-// Only used by question.php and group.php if next pages
-// should not display due to conditions and generally used by survey.php
-// In this case all answers have already been updated by save.php
-// but movesubmit status was only set after calling save.php
-// ==> thus we need to update submitdate here.
-function submitanswer()
-{
+    // submitanswer sets the submitdate
+    // Only used by question.php and group.php if next pages
+    // should not display due to conditions and generally used by survey.php
+    // In this case all answers have already been updated by save.php
+    // but movesubmit status was only set after calling save.php
+    // ==> thus we need to update submitdate here.
+    function submitanswer()
+    {
     global $thissurvey,$timeadjust;
     global $surveyid, $connect, $clang, $move;
 
@@ -809,10 +812,10 @@ function submitanswer()
 
     $result=$connect->Execute($query);    // Checked
     return $result;
-}
+    }
 
-function array_remval($val, &$arr)
-{
+    function array_remval($val, &$arr)
+    {
     $array_remval = $arr;
     for($x=0;$x<count($array_remval)-1;$x++)
     {
@@ -821,16 +824,16 @@ function array_remval($val, &$arr)
         $array_remval=array_merge(array_slice($array_remval, 0,$i), array_slice($array_remval, $i+1));
     }
     return $array_remval;
-}
+    }
 
-/**
+    /**
  * This functions saves the answer time for question/group and whole survey.
  * [ It compares current time with the time in $_POST['start_time'] ]
  * The times are saved in table: {prefix}{surveytable}_timings
  * @return void
  */
-function set_answer_time()
-{
+    function set_answer_time()
+    {
 	global $connect, $thissurvey;
     if (isset($_POST['lastanswer']))
     {
@@ -867,5 +870,5 @@ function set_answer_time()
 			." WHERE id = " .$_SESSION['srid'];
 	}
 	$connect->execute($query);
-}
+    }
 ?>

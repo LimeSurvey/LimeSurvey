@@ -1399,6 +1399,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
+    $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
     // Import conditions --------------------------------------------------------------
     if(isset($xml->conditions))
     {
@@ -1422,12 +1423,12 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 if (isset($aQIDReplacements[$insertdata['cqid']]))
                 {
+                    $oldcqid = $insertdata['cqid']; //Save for cfield transformation
                     $insertdata['cqid']=$aQIDReplacements[$insertdata['cqid']]; // remap the qid
                 }
                 else continue; // a problem with this answer record -> don't consider
 
                 list($oldcsid, $oldcgid, $oldqidanscode) = explode("X",$insertdata["cfieldname"],3);
-
                 // replace the gid for the new one in the cfieldname(if there is no new gid in the $aGIDReplacements array it means that this condition is orphan -> error, skip this record)
                 if (!isset($aGIDReplacements[$oldcgid]))
                     continue;
@@ -1440,11 +1441,11 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 if (preg_match("/^\+/",$oldcsid))
                 {
-                    $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                    $newcfieldname = '+'.$newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldcqid));
                 }
                 else
                 {
-                    $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldqid));
+                    $newcfieldname = $newsid . "X" . $aGIDReplacements[$oldcgid] . "X" . $insertdata["cqid"] .substr($oldqidanscode,strlen($oldcqid));
                 }
             }
             else
@@ -1456,6 +1457,19 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             {
                 $insertdata["method"]='==';
             }
+
+            // Now process the value and replace @sgqa@ codes TIBO
+            if (preg_match("/^@(.*)@$/",$insertdata["value"],$cfieldnameInCondValue))
+            {
+                if (isset($aOldNewFieldmap[$cfieldnameInCondValue[1]]))
+                {
+                    $newvalue = '@'.$aOldNewFieldmap[$cfieldnameInCondValue[1]].'@';
+                    $insertdata["value"] = $newvalue;
+                }
+
+            }
+            
+
 
             // now translate any links
             $query=$connect->GetInsertSQL($tablename,$insertdata);
@@ -1561,7 +1575,6 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     GiveAllSurveyPermissions($_SESSION['loginID'],$newsid);
     if ($bTranslateInsertansTags)
     {
-        $aOldNewFieldmap=aReverseTranslateFieldnames($oldsid,$newsid,$aGIDReplacements,$aQIDReplacements);
         TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
     }
 

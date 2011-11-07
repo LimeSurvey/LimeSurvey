@@ -1,5 +1,20 @@
 <?php
-
+/**
+ * PHP Input Filter
+ *  
+ * This file has been modified over time, copyright by the authors.
+ * 
+ * LimeSurvey contrubutions under GPL-2.0+.
+ * 
+ * @project PHP Input Filter
+ * @date 10-05-2005
+ * @version 1.2.2_php4/php5
+ * @author Daniel Morris
+ * @contributors Gianpaolo Racca, Ghislain Picard, Marco Wandschneider, Chris Tobin and Andrew Eddie.
+ * @copyright Daniel Morris <dan@rootcube.com>
+ * @license GNU General Public License (GPL)
+ * @link http://www.phpclasses.org/package/2189
+ */ 
 class InputFilter
 {
     function process( $value )

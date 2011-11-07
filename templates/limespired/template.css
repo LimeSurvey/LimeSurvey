@@ -386,6 +386,8 @@ input.submit:hover {
   font-size: 0.9em
 }
 
+.asterisk {display:none}
+.mandatory .asterisk {display:inline;}
 .asterisk {
   color: #FF0000;
   padding: 0 5px 0 10px;
@@ -393,6 +395,9 @@ input.submit:hover {
 
 span.qnumcode {
 	font-style:italic;
+}
+.showqnumcode-X .qnumcode {
+	display:none;
 }
 
 .questionhelp {
@@ -1167,10 +1172,11 @@ td.statsImageholder {
 }
 
 /* Question Index */
-.outerframe.withindex {
+.outerframe.withindex,.withindex .outerframe{
   margin-left: 1em;
   margin-right: 26em;
 }
+.allinone .withindex{margin:0}
 
 #index {
   position: absolute;

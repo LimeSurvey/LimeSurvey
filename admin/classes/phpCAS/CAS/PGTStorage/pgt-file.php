@@ -14,6 +14,7 @@
  *
  * @ingroup internalPGTStorageFile
  */
+if (!defined('PHPCAS_VERSION')) die();
 
 class PGTStorageFile extends PGTStorage
 {

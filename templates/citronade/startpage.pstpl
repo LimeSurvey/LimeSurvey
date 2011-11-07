@@ -6,14 +6,17 @@
 	<style type="text/css" media="aural tty">
         progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
 	</style>
-	<link rel="stylesheet" type="text/css"  media="all" href="{TEMPLATEURL}base.css" />
 	<!-- The following line includes template.css and if an RTL-language is used template-rtl.css -->
     {TEMPLATECSS}
 	<link rel="stylesheet" type="text/css"  media="print" href="{TEMPLATEURL}print.css" />
 	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
 	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />		
 </head>
-<body>
+<!--[if lt IE 7 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie6"> <![endif]-->
+<!--[if IE 7 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie7"> <![endif]-->
+<!--[if IE 8 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie8"> <![endif]-->
+<!--[if IE 9 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie9"> <![endif]-->
+<!--[if gt IE 9]><!--><body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}"><!--<![endif]-->
 <div id="container">
 	<div id="head">
 		<div class="wrapper">
@@ -22,4 +25,4 @@
 		</div>
 	</div>
 <div id="title"><h2 id="surveytitle" class="wrapper">{SURVEYNAME}</h2></div>
-	<div id="content">
+	<div id="content" class="outerframe">

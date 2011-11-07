@@ -129,7 +129,7 @@ $emailsmtpuser      = '';               // SMTP authorisation username - only se
 $emailsmtppassword  = '';               // SMTP authorisation password - empty password is not allowed
 $emailsmtpssl       = '';               // Set this to 'ssl' or 'tls' to use SSL/TLS for SMTP connection
 
-$emailsmtpdebug     = 0;                // Settings this to 1 activates SMTP debug mode
+$emailsmtpdebug     = 0;                // Settings this to 1 activates SMTP debug mode on errors, set to 2 to always show SMTP debug information
 
 $maxemails          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 

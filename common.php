@@ -61,7 +61,6 @@ $maildebug='';
 define('FIREBUG' , $use_firebug_lite);
 
 define('ADODB_ASSOC_CASE', 2); // needed to set proper upper/lower casing for mssql
-if (!isset($ADODB_QUOTE_FIELDNAMES)){$ADODB_QUOTE_FIELDNAMES=true;} // needed to select/insert the FieldNames with #
 
 ##################################################################################
 

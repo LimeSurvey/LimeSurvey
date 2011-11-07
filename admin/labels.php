@@ -66,8 +66,8 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
     ."\t<img src='$imageurl/seperator.gif' align='left' alt='' />\n"
     ."\t<img src='$imageurl/blank.gif' width='76' align='left' height='20' alt='' />\n"
     ."\t<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
-    ."\t<a href='admin.php?action=labels&amp;subaction=exportmulti' title=\"".$clang->gTview("Export Label Set")."\" >" 
-    ."<img src='$imageurl/dumplabelmulti.png' alt='".$clang->gT("Export multiple label sets")."' align='left' /></a>" 
+    ."\t<a href='admin.php?action=labels&amp;subaction=exportmulti' title=\"".$clang->gTview("Export Label Set")."\" >"
+    ."<img src='$imageurl/dumplabelmulti.png' alt='".$clang->gT("Export multiple label sets")."' align='left' /></a>"
     ."\t</div>\n"
     ."\t<div class='menubar-right'>\n"
     ."\t<img src='$imageurl/blank.gif' width='5' height='20' alt='' />\n"
@@ -110,16 +110,16 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         return;
     }
 
-    
-    if ($subaction == "exportmulti")    
+
+    if ($subaction == "exportmulti")
     {
-            
+
            $labelsoutput.="<script type='text/javascript'>\n"
             ."<!--\n"
             ."var strSelectLabelset='".$clang->gT('You have to select at least one label set.','js')."';\n"
             ."//-->\n"
             ."</script>\n";
-        
+
         $labelsoutput .="<div class='header ui-widget-header'>".$clang->gT('Export multiple label sets')."</div>"
         ."<form method='post' id='exportlabelset' class='form30' action='admin.php'><ul>"
         ."<li><label for='labelsets'>".$clang->gT('Please choose the label sets you want to export:')."<br />".$clang->gT('(Select multiple label sets by using the Ctrl key)')."</label>"
@@ -137,11 +137,11 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         ."</ul><p><input type='submit' id='btnDumpLabelSets' value='".$clang->gT('Export selected label sets')."' />"
         ."<input type='hidden' name='action' value='dumplabel' />"
         ."</form>";
-        
+
 
     }
 
-    
+
     //NEW SET
     if ($action == "newlabelset" || $action == "editlabelset")
     {
@@ -212,7 +212,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
         $tab_content[0].= "</form>\n";
 
-        
+
         if ($action == "newlabelset"){
             $tab_title[1] = $clang->gT("Import label set(s)");
             $tab_content[1] = "<form enctype='multipart/form-data' id='importlabels' name='importlabels' action='admin.php' method='post'>\n"
@@ -235,7 +235,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             ."<input type='hidden' name='action' value='importlabels' />\n"
             ."</form></div>\n";
         }
-        
+
         $labelsoutput .= "<div id='tabs'><ul>";
         foreach($tab_title as $i=>$eachtitle){
             $labelsoutput .= "<li><a href='#neweditlblset$i'>$eachtitle</a></li>";
@@ -264,12 +264,12 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             ."\t<img src='$imageurl/blank.gif' width='40' height='20' border='0' hspace='0' align='left' alt='' />\n"
             ."\t<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
             ."\t<a href='admin.php?action=editlabelset&amp;lid=$lid' title=\"".$clang->gTview("Edit label set")."\" >" .
-			"<img name='EditLabelsetButton' src='$imageurl/edit.png' alt='".$clang->gT("Edit label set")."' align='left'  /></a>" 
+			"<img name='EditLabelsetButton' src='$imageurl/edit.png' alt='".$clang->gT("Edit label set")."' align='left'  /></a>"
 			."\t<a href='#' title='".$clang->gTview("Delete label set")."' onclick=\"if (confirm('".$clang->gT("Do you really want to delete this label set?","js")."')) {".get2post("admin.php?action=deletelabelset&amp;lid=$lid")."}\" >"
 			."<img src='$imageurl/delete.png' border='0' alt='".$clang->gT("Delete label set")."' align='left' /></a>\n"
 			."\t<img src='$imageurl/seperator.gif' border='0' hspace='0' align='left' alt='' />\n"
 			."\t<a href='admin.php?action=dumplabel&amp;lid=$lid' title=\"".$clang->gTview("Export this label set")."\" >" .
-					"<img src='$imageurl/dumplabel.png' alt='".$clang->gT("Export this label set")."' align='left' /></a>" 
+					"<img src='$imageurl/dumplabel.png' alt='".$clang->gT("Export this label set")."' align='left' /></a>"
 					."\t</div>\n"
 					."\t<div class='menubar-right'>\n"
 					."\t<input type='image' src='$imageurl/close.gif' title='".$clang->gT("Close")."'"
@@ -354,9 +354,9 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
                 else
                 {
                     $tab_content[$i].= "\t<input type='hidden' name='oldcode_{$row['sortorder']}' value=\"{$row['code']}\" />\n";
-                    $tab_content[$i].= "\t<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['code']}\" onkeypress=\"if(event.keyCode!=13) {return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyz');}; return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
+                    $tab_content[$i].= "\t<input type='text' id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5' size='5' value=\"{$row['code']}\" onkeypress=\"if(event.keyCode!=13) {return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyz');}; return catchenter(event,'saveallbtn_$lslanguage');\" />\n";
                 }
-                 
+
 
 
 
@@ -364,7 +364,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
                 ."\t<td style='text-align:center;'>\n";
                 if ($first)
                 {
-                    $tab_content[$i].= "\t<input type='text' id='assessmentvalue_{$row['sortorder']}' style='text-align: right;' name='assessmentvalue_{$row['sortorder']}' maxlength='5' size='6' value=\"{$row['assessment_value']}\" "
+                    $tab_content[$i].= "\t<input type='text' id='assessmentvalue_{$row['sortorder']}' style='text-align: right;' name='assessmentvalue_{$row['sortorder']}' maxlength='5' size='5' value=\"{$row['assessment_value']}\" "
                     ." onkeypress=\"if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_$lslanguage').click(); return false;} return goodchars(event,'1234567890-')\" />";
                 }
                 else
@@ -374,12 +374,12 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
                 }
                 $tab_content[$i].= "\t</td>\n"
                 ."\t<td>\n"
-                ."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='3000' size='80' value=\"".html_escape($row['title'])."\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\"/>\n"
+                ."\t<input type='text' name='title_{$row['language']}_{$row['sortorder']}' maxlength='3000' size='75' value=\"".html_escape($row['title'])."\" onkeypress=\"return catchenter(event,'saveallbtn_$lslanguage');\"/>\n"
                 . getEditor("editlabel", "title_{$row['language']}_{$row['sortorder']}", "[".$clang->gT("Label:", "js")."](".$row['language'].")",'','','',$action)
                 ."\t</td>\n"
                 ."\t<td style='text-align:center;'>\n";
                 $tab_content[$i].= "\t<input type='submit' name='method' value='".$clang->gT("Del")."' onclick=\"this.form.sortorder.value='{$row['sortorder']}'\" />\n";
-                 
+
                 $tab_content[$i].= "\t</td>\n"
                 ."\t<td>\n";
                 if ($position > 0)
@@ -413,7 +413,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             ."onkeypress=\"if(event.keyCode==13) {if (event && event.preventDefault) event.preventDefault(); document.getElementById('addnewlabelbtn').click(); return false;} return goodchars(event,'1234567890-')\" />"
             ."\t</td>\n"
             ."\t<td>\n"
-            ."\t<input type='text' maxlength='3000' name='inserttitle' size='80' onkeypress=\"return catchenter(event,'addnewlabelbtn');\"/>\n"
+            ."\t<input type='text' maxlength='3000' name='inserttitle' size='75' onkeypress=\"return catchenter(event,'addnewlabelbtn');\"/>\n"
             . getEditor("addlabel", "inserttitle", "[".$clang->gT("Label:", "js")."](".$lslanguage.")",'','','',$action)
             ."\t</td>\n"
             ."\t<td colspan='2'>\n"
@@ -436,7 +436,7 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
             ."</script>\n"
             ."\t</td>\n"
             ."</tr>\n";
-             
+
             }
             else
             {
@@ -454,14 +454,14 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
 
             $i++;
         }
-        
+
         $labelsoutput .= "<div id='tabs'><ul>";
         foreach($tab_title as $i=>$eachtitle){
             $labelsoutput .= "<li><a href='#neweditlblset$i'>$eachtitle</a></li>";
         }
         $labelsoutput .= "<li><a href='#up_resmgmt'>".$clang->gT("Uploaded Resources Management")."</a></li>";
         $labelsoutput .= "</ul>";
-        
+
         foreach($tab_content as $i=>$eachcontent){
             $labelsoutput .= "<div id='neweditlblset$i'>$eachcontent</div>";
         }
@@ -478,13 +478,13 @@ if($_SESSION['USER_RIGHT_SUPERADMIN'] == 1 || $_SESSION['USER_RIGHT_MANAGE_LABEL
         {
             $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
         }
-        
+
         $labelsoutput.="<div id='up_resmgmt'><div>\t<form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='$scriptname' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
         . "\t<input type='hidden' name='lid' value='$lid' />\n"
         . "\t<input type='hidden' name='action' value='importlabelresources' />\n"
         . "\t<ul style='list-style-type:none; text-align:center'>\n"
         . "\t\t<li><label>&nbsp;</label>\n"
-        . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"$sCKEditorURL/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\"  /></li>\n"
+        . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"{$homeurl}/scripts/kcfinder/browse.php\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\"  /></li>\n"
         . "\t\t<li><label>&nbsp;</label>\n"
         . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"$scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\"  /></li>\n"
         . "\t\t<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"
@@ -592,7 +592,7 @@ function updateset($lid)
 
 /**
 * Deletes a label set alog with its labels
-* 
+*
 * @param mixed $lid Label ID
 * @return boolean Returns always true
 */
@@ -681,7 +681,7 @@ function modlabelsetanswers($lid)
 
                     // Fix bug with FCKEditor saving strange BR types
                     $_POST['inserttitle']=fix_FCKeditor_text($_POST['inserttitle']);
-                     
+
                     $_POST['inserttitle'] = db_quoteall($_POST['inserttitle'],true);
                     $_POST['insertassessmentvalue']=(int)$_POST['insertassessmentvalue'];
                     foreach ($lslanguages as $lslanguage)
@@ -809,8 +809,8 @@ function modlabelsetanswers($lid)
 }
 
 /**
-* Function rewrites the sortorder for a label set  
-* 
+* Function rewrites the sortorder for a label set
+*
 * @param mixed $lid Label set ID
 */
 function fixorder($lid) {

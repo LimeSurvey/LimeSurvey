@@ -66,6 +66,15 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
     {
         $surveyformat = "";
     }
+    /*if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y" && $surveyformat!="allinone" && (isset($_SESSION['step']) && $_SESSION['step']>0)){
+        $surveyformat .= " withindex";
+    }*/
+    if (isset($thissurvey['showprogress']) && $thissurvey['showprogress']=="Y"){
+        $surveyformat .= " showprogress";
+    }
+    if (isset($thissurvey['showqnumcode'])){
+        $surveyformat .= " showqnumcode-".$thissurvey['showqnumcode'];
+    }
     // real survey contact
     if (isset($surveylist['contact']))
     {
@@ -714,4 +723,3 @@ function PassthruReplace($line, $thissurvey)
     return $line;
 }
 
-?>

@@ -1,4 +1,4 @@
-.answertextright {
+.outerframe.answertextright {
   text-align: left;
 }
 
@@ -12,10 +12,16 @@
   text-align: center;
 }
 
+.asterisk {display:none}
+.mandatory .asterisk {display:inline;}
 .asterisk {
   color: red;
   font-size: 9pt;
   font-family: verdana;
+  padding-right:1em;
+}
+.showqnumcode-X .qnumcode {
+	display:none;
 }
 
 .graph {
@@ -1059,10 +1065,11 @@ td.statsImageholder {
 }
 
 /* Question Index */
-.outerframe.withindex {
+.outerframe.withindex,.withindex .outerframe{
   margin-left: 1em;
   margin-right: 26em;
 }
+.allinone .withindex{margin:0}
 
 #index {
   position: absolute;

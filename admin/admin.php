@@ -250,10 +250,10 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'previewgroup')
     {
-	
+
         require_once('../index.php');
         exit;
-    
+
     }
     elseif ($action=='addgroup' || $action=='editgroup' || $action=='ordergroups')
     {
@@ -271,13 +271,13 @@ if(isset($_SESSION['loginID']))
         if(bHasSurveyPermission($surveyid,'translations','read'))    {$_SESSION['FileManagerContext']="edit:translate:$surveyid"; include('translate.php');}
         else { include('access_denied.php'); }
     }
-//</AdV>    
+//</AdV>
     elseif ($action == 'tokens')
     {
-        if(bHasSurveyPermission($surveyid,'tokens','read'))    
+        if(bHasSurveyPermission($surveyid,'tokens','read'))
         {
-            $_SESSION['FileManagerContext']="edit:emailsettings:$surveyid"; 
-            include('tokens.php'); 
+            $_SESSION['FileManagerContext']="edit:emailsettings:$surveyid";
+            include('tokens.php');
         }
         else { include('access_denied.php'); }
     }
@@ -433,11 +433,11 @@ if(isset($_SESSION['loginID']))
         }
     }
     elseif ($action=='ajaxowneredit' || $action == 'ajaxgetusers'){
-        
+
         include('surveylist.php');
     }
     if (!isset($assessmentsoutput) && !isset($statisticsoutput) && !isset($browseoutput) &&
-        !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) && 
+        !isset($savedsurveyoutput) && !isset($listcolumnoutput) && !isset($conditionsoutput) &&
         !isset($importoldresponsesoutput) && !isset($exportroutput) && !isset($vvoutput) &&
         !isset($tokenoutput) && !isset($exportoutput) && !isset($templatesoutput) && !isset($translateoutput) && //<AdV>
         !isset($iteratesurveyoutput) && (substr($action,0,4)!= 'ajax') && ($action!='update') &&
@@ -496,7 +496,7 @@ if(isset($_SESSION['loginID']))
     }
     elseif ($action == 'browse')
     {
-        if(bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read'))
+        if(bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read') || bHasSurveyPermission($surveyid,'responses','export'))
         {
             include('browse.php');
         }
@@ -550,7 +550,7 @@ if(isset($_SESSION['loginID']))
     if (!isset($labelsoutput)  && !isset($templatesoutput) && !isset($printablesurveyoutput) &&
     !isset($assessmentsoutput) && !isset($tokenoutput) && !isset($browseoutput) && !isset($exportspssoutput) &&  !isset($exportroutput) &&
     !isset($dataentryoutput) && !isset($statisticsoutput)&& !isset($savedsurveyoutput)  && !isset($translateoutput) && //<AdV>
-    !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) && 
+    !isset($exportoutput) && !isset($importoldresponsesoutput) && !isset($conditionsoutput) &&
     !isset($vvoutput) && !isset($listcolumnoutput) && !isset($importlabelresources) && !isset($iteratesurveyoutput) &&
     (substr($action,0,4)!= 'ajax') && $action!='update' && $action!='showphpinfo')
     {
@@ -593,7 +593,7 @@ if(isset($_SESSION['loginID']))
     if (isset($editanswer)) {$adminoutput.= $editanswer;}
     if (isset($assessmentsoutput)) {$adminoutput.= $assessmentsoutput;}
     if (isset($sHTMLOutput))     {$adminoutput.= $sHTMLOutput;}
-    
+
 
     if (isset($importsurvey)) {$adminoutput.= $importsurvey;}
     if (isset($importsurveyresourcesoutput)) {$adminoutput.= $importsurveyresourcesoutput;}

@@ -32,8 +32,8 @@
  */
 
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-require_once $homedir.'/classes/pear/PEAR.php';
-require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Workbook.php';
+@require_once $homedir.'/classes/pear/PEAR.php';
+@require_once $homedir.'/classes/pear/Spreadsheet/Excel/Writer/Workbook.php';
 
 /**
  * Class for writing Excel Spreadsheets. This class should change COMPLETELY.

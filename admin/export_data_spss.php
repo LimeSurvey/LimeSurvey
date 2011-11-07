@@ -285,7 +285,7 @@ if  ($subaction=='dlstructure') {
             if (!preg_match ("/^([a-z]|[A-Z])+.*$/", $ftitle)) {
                 $ftitle = "q_" . $ftitle;
             }
-            $ftitle = str_replace(array(" ","-",":",";","!","/","\\"), array("_","_hyph_","_dd_","_dc_","_excl_","_fs_","_bs_"), $ftitle);
+            $ftitle = str_replace(array(" ","-",":",";","!","/","\\","'"), array("_","_hyph_","_dd_","_dc_","_excl_","_fs_","_bs_",'_qu_'), $ftitle);
             if ($ftitle != $field['title']) echo "* Variable name was incorrect and was changed from {$field['title']} to $ftitle .\n";
             echo "RENAME VARIABLE ( " . $field['id'] . " = " . $ftitle . " ).\n";
         }

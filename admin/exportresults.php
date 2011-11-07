@@ -1,17 +1,17 @@
 <?php
 /*
- * LimeSurvey
- * Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
- * All rights reserved.
- * License: GNU/GPL License v2 or later, see LICENSE.php
- * LimeSurvey is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- *
- * $Id$
- */
+* LimeSurvey
+* Copyright (C) 2007 The LimeSurvey Project Team / Carsten Schmitz
+* All rights reserved.
+* License: GNU/GPL License v2 or later, see LICENSE.php
+* LimeSurvey is free software. This version may have been modified pursuant
+* to the GNU General Public License, and as distributed it includes or
+* is derivative of works licensed under the GNU General Public License or
+* other free or open source software licenses.
+* See COPYRIGHT.php for copyright notices and details.
+*
+* $Id$
+*/
 
 
 //Ensure script is not run directly, avoid path disclosure
@@ -564,8 +564,8 @@ if ($type == "doc" || $type == "pdf")
         </style>';
 }
 else
-if ($type == "xls")
-{
+    if ($type == "xls")
+    {
     //var_dump ($firstline);
     $flarray=explode($separator, $firstline);
     $fli=0;
@@ -575,9 +575,9 @@ if ($type == "xls")
         $fli++;
     }
     //print_r($fieldmap);
-}
-else
-{
+    }
+    else
+    {
     $exportoutput .= $firstline; //Sending the header row
 }
 
@@ -609,7 +609,7 @@ if (isset($_POST['answerid']) && $_POST['answerid'] != "NULL") //this applies if
 {
     $where[] = "$surveytable.id=".stripcslashes($_POST['answerid']);
 }
- if (count($where)>0) $dquery .= ' WHERE ' . join(' AND ', $where);
+if (count($where)>0) $dquery .= ' WHERE ' . join(' AND ', $where);
 
 $dquery .= " ORDER BY $surveytable.id";
 
@@ -658,7 +658,7 @@ if ($answers == "short") //Nice and easy. Just dump the data straight
         $rowcounter++;
         if ($type == "csv")
         {
-            $exportoutput .= "\"".implode("\"$separator\"", str_replace("\"", "\"\"", str_replace("\r\n", " ", $drow))) . "\"\n"; //create dump from each row
+            $exportoutput .= "\"".implode("\"$separator\"", str_replace("\"", "\"\"", $drow)) . "\"\n";
         }
         elseif ($type == "xls")
         {
@@ -1097,26 +1097,21 @@ elseif ($answers == "long")        //chose complete answers
 }
 if ($type=='xls')
 {
-//    echo memory_get_peak_usage(true); die();
+    //    echo memory_get_peak_usage(true); die();
     $workbook->close();
 }
 else if($type=='pdf')
-{
+    {
     $pdf->Output($clang->gT($surveyname)." ".$surveyid.".pdf","D");
-}
-else
-{
+    }
+    else
+    {
     echo $exportoutput;
 }
 exit;
 
 
 function strip_tags_full($string) {
-    $string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
-    mb_regex_encoding('utf-8');
-    $pattern = array('\r', '\n', '-oth-');
-    for ($i=0; $i<sizeof($pattern); $i++) {
-        $string = mb_ereg_replace($pattern[$i], '', $string);
-    }
-    return strip_tags($string);
+    $string=str_replace('-oth-','',$string);
+    return FlattenText($string,true,'UTF-8',false);
 }

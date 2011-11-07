@@ -329,14 +329,14 @@ if ($action == "editquestion" || $action=="addquestion")
 	$editquestion .= '<li><a href="#'.$eqrow['language'].'">'.getLanguageNameFromCode($eqrow['language'],false);
     $editquestion .= '('.$clang->gT("Base language").')';
 	$editquestion .= "</a></li>\n";
-    if (!$adding) {
+
 	$addlanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
         foreach  ($addlanguages as $addlanguage)
         {
 		$editquestion .= '<li><a href="#'.$addlanguage.'">'.getLanguageNameFromCode($addlanguage,false);
 	$editquestion .= "</a></li>\n";
 		}
-		}
+
 		$editquestion .= "\n</ul>\n";
 		$editquestion .=  "<form name='frmeditquestion' id='frmeditquestion' action='$scriptname' method='post' onsubmit=\"return isEmpty(document.getElementById('title'), '".$clang->gT("Error: You have to enter a question code.",'js')."');\">\n";
 

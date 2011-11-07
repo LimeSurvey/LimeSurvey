@@ -107,17 +107,19 @@ if  (!isset($subaction))
     ."\t<option value='incomplete' $selectinc>".$clang->gT("Incomplete responses only")."</option>\n"
 	."</select></li>\n";
 
+    $filename = "survey_".$surveyid."_R_syntax_file.R";
+
     $exportroutput .= "<input type='hidden' name='sid' value='$surveyid' />\n"
 	."<input type='hidden' name='action' value='exportr' /></li>\n"
 	."<li><label for='dlstructure'>" . $clang->gT("Step 1:") . "</label><input type='submit' name='dlstructure' id='dlstructure' value='" . $clang->gT("Export R syntax file") . "'/></li>\n"
 	."<li><label for='dldata'/>" . $clang->gT("Step 2:") . "</label><input type='submit' name='dldata' id='dldata' value='" . $clang->gT("Export .csv data file") . "'/></li></ul>\n"
-	."</form>\n" 
-    
+	."</form>\n"
+
     ."<p><div class='messagebox ui-corner-all'><div class='header ui-widget-header'>".$clang->gT("Instructions for the impatient")."</div>"
     ."<br/><ol style='margin:0 auto; font-size:8pt;'>"
     ."<li>".$clang->gT("Download the data and the syntax file.")."</li>"
     ."<li>".$clang->gT("Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)").".</li>"
-    ."<li>".$clang->gT("digit:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")        on the R command window")."</li>"
+    ."<li>".sprintf($clang->gT("digit:       source(\"%s\", encoding = \"UTF-8\")        on the R command window"), $filename)."</li>"
     ."</ol><br />"
     .$clang->gT("Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)\$variable.labels\"), like for foreign:read.spss.")
     ."</div>";
@@ -133,27 +135,27 @@ else
 
 if  ($subaction=='dldata')
 {
-    header("Content-Disposition: attachment; filename=survey_".$surveyid."_data_file.csv");
+    header("Content-Disposition: attachment; filename=survey_".$surveyid."_R_data_file.csv");
     header("Content-type: text/comma-separated-values; charset=UTF-8");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: public");
 
     $na="";	//change to empty string instead of two double quotes to fix warnings on NA
-    spss_export_data($na, true); // this true indicates that the format is .csv
+    spss_export_data($na);
 
     exit;
 }
 
 if  ($subaction=='dlstructure')
 {
-    header("Content-Disposition: attachment; filename=Surveydata_syntax.R");
+    header("Content-Disposition: attachment; filename=survey_".$surveyid."_R_syntax_file.R");
     header("Content-type: application/download; charset=UTF-8");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: public");
 
   echo $headerComment;
   echo "data <- read.table(\"survey_".$surveyid
-      ."_data_file.csv\", sep=\",\", quote = \"'\", "
+      ."_R_data_file.csv\", sep=\",\", quote = \"'\", "
       ."na.strings=c(\"\",\"\\\"\\\"\"), "
       ."stringsAsFactors=FALSE)\n\n";
 //  echo "names(data) <- paste(\"V\",1:dim(data)[2],sep=\"\")\n\n";

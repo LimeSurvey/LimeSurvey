@@ -10,6 +10,7 @@
  Contributed by Interakt Online. Thx Cristian MARIN cristic#interaktonline.com
  */
 
+if (!defined('ADODB_DIR')) die();
 
 require_once ADODB_DIR."/drivers/adodb-sybase.inc.php";
 

@@ -376,12 +376,12 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
 
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
         {
-            $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}'>"
+            $surveysummary .= "<li><a  target='_blank' href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}'>"
             . "<img src='{$imageurl}/print_30.png' name='ShowPrintableSurvey' /> ".$clang->gT("Printable version")."</a></li>";
         }
         else
         {
-            $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}'>"
+            $surveysummary .= "<li><a  target='_blank' href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}'>"
             . "<img src='{$imageurl}/print_30.png' name='ShowPrintableSurvey' /> ".$clang->gT("Printable version")."</a><ul>";
             $tmp_survlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -389,7 +389,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
             rsort($tmp_survlangs);
             foreach ($tmp_survlangs as $tmp_lang)
             {
-                $surveysummary .= "<li><a href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}'><img src='{$imageurl}/print_30.png' /> ".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
+                $surveysummary .= "<li><a target='_blank' href='{$scriptname}?action=showprintablesurvey&amp;sid={$surveyid}&amp;lang={$tmp_lang}'><img src='{$imageurl}/print_30.png' /> ".getLanguageNameFromCode($tmp_lang,false)."</a></li>";
             }
             $surveysummary.='</ul></li>';
         }
@@ -432,7 +432,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         $surveysummary .= "<li><a href='#'><img src='{$imageurl}/responses.png' name='Responses' alt='".$clang->gT("Responses")."' /></a><ul>\n";
 
         //browse responses menu item
-        if (bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read'))
+        if (bHasSurveyPermission($surveyid,'responses','read') || bHasSurveyPermission($surveyid,'statistics','read') || bHasSurveyPermission($surveyid,'responses','export'))
         {
             if ($activated == "Y")
             {
@@ -979,7 +979,7 @@ if (isset($surveyid) && $surveyid && $gid )   // Show the group toolbar
         if ($activated == "Y")
         {
             $groupsummary .= "<img src='$imageurl/add_disabled.png' title='' alt='".$clang->gT("Disabled").' - '.$clang->gT("This survey is currently active.")."' " .
-            " name='AddNewQuestion' onclick=\"window.open('', '_top')\" /></a>\n";
+            " name='AddNewQuestion' />\n";
         }
         elseif(bHasSurveyPermission($surveyid,'surveycontent','create'))
         {

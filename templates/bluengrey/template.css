@@ -251,12 +251,17 @@ input.saveall,input.clearall {
   font-style: italic;
 }
 
+.asterisk {display:none}
+.mandatory .asterisk {display:inline;}
 .asterisk {
   color: red;
   font-size: 9pt;
   font-family: verdana;
+  padding-right:1em;
 }
-
+.showqnumcode-X .qnumcode {
+	display:none;
+}
 .innergraph img {
   height: 12px;
   vertical-align: top;
@@ -1263,10 +1268,11 @@ table.assessments th{
 }
 
 /* Question Index */
-.outerframe.withindex {
+.outerframe.withindex,.withindex .outerframe{
   margin-left: 1em;
   margin-right: 26em;
 }
+.allinone .withindex{margin:0}
 
 #index {
   position: absolute;

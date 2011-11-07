@@ -94,7 +94,8 @@ define('SPREADSHEET_EXCEL_WRITER_NE', "<>");
 
 
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
-require_once $homedir.'/classes/pear/PEAR.php';
+if (!isset($homedir)) die();
+@require_once $homedir.'/classes/pear/PEAR.php';
 
 /**
  * Class for parsing Excel formulas

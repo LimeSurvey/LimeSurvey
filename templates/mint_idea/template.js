@@ -75,8 +75,5 @@ function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
 }
 
 $(document).ready(function(){
-   // If the question code and number are hidden, hide any white space in the span(for dumb browsers)
-   if($('.qnumcode').text().replace(/\s/g, '').length == 0) {
-	   $('.qnumcode').hide();
-   }
+
 });

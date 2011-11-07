@@ -1,4 +1,5 @@
 <?php
+  if (!defined('PHPCAS_VERSION')) die();
 
 /**
  * @file languages/spanish.php

@@ -31,6 +31,7 @@ define('OLE_LONG_INT_SIZE',        4);
 define('OLE_PPS_SIZE',          0x80);
 
 if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
+if (!isset($homedir)) die();
 require_once($homedir.'/classes/pear/PEAR.php');
 require_once $homedir.'/classes/pear/OLE/PPS.php';
 

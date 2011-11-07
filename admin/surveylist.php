@@ -253,14 +253,11 @@ elseif ($action == "ajaxowneredit"){
 elseif ($action == "ajaxgetusers"){
     header('Content-type: application/json');
 
-    $query = "SELECT users_name, uid FROM ".db_table_name('users').";";
-
-    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+    $aSeenUsers = getuserlist();
 
     $aUsers = array();
-    if($result->RecordCount() > 0) {
-        while($rows = $result->FetchRow())
-                $aUsers[] = array($rows['uid'], $rows['users_name']);
+    foreach ($aSeenUsers as $userline) {
+                $aUsers[] = array($userline['uid'], $userline['user']);
     }
     
     $ajaxoutput = json_encode($aUsers) . "\n";

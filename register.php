@@ -99,7 +99,13 @@ if (($result->RecordCount()) > 0)
 $mayinsert = false;
 while ($mayinsert != true)
 {
-    $newtoken = sRandomChars(15);
+	$tlquery = "SELECT tokenlength FROM ".db_table_name("surveys")." WHERE sid=$surveyid";
+	$tlresult = db_execute_assoc($tlquery);
+	while ($tlrow = $tlresult->FetchRow())
+	{
+		$tokenlength = $tlrow['tokenlength'];
+	}
+	$newtoken = sRandomChars($tokenlength);
     $ntquery = "SELECT * FROM {$dbprefix}tokens_$surveyid WHERE token='$newtoken'";
     $ntresult = $connect->Execute($ntquery); //Checked
     if (!$ntresult->RecordCount()) {$mayinsert = true;}

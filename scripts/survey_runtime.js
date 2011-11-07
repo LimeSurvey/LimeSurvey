@@ -15,8 +15,16 @@ $(document).ready(function()
 
     // Keypad functions
     var kp = $("input.num-keypad");
-    if(kp.length) kp.keypad({showAnim: 'fadeIn', keypadOnly: false});
-    kp = $("input.text-keypad");
+    if(kp.length)
+	{ 
+		kp.keypad({
+			showAnim: 'fadeIn', keypadOnly: false,
+			onKeypress: function(key, value, inst) { 
+				$(this).trigger('keyup');
+			}
+		});
+	}
+    kp = $(".text-keypad");
     if(kp.length)
     {
         var spacer = $.keypad.HALF_SPACE;
@@ -31,41 +39,45 @@ $(document).ready(function()
 			    'qwertyuiop\'"' + $.keypad.HALF_SPACE + $.keypad.SPACE + '456',
 			    $.keypad.HALF_SPACE + 'asdfghjkl;:' + $.keypad.SPACE + $.keypad.SPACE + '123',
 			    $.keypad.SPACE + 'zxcvbnm,.?' + $.keypad.SPACE + $.keypad.SPACE + $.keypad.HALF_SPACE + '-0+',
-			    $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER]});
+			    $.keypad.SHIFT + $.keypad.SPACE_BAR + $.keypad.ENTER],
+				onKeypress: function(key, value, inst) { 
+					$(this).trigger('keyup');
+				}
+			});
     }
 
-    $(".location").each(function(index,element){
-        var question = $(element).attr('name');
-        var coordinates = $(element).val();
-        var latLng = coordinates.split(" ");
-        var question_id = question.substr(0,question.length-2);
-        if ($("#mapservice_"+question_id).val()==1){
-            // Google Maps
-			if (gmaps[''+question]==undefined)
-				gmaps[''+question] = GMapsInitialize(question,latLng[0],latLng[1]);
+    // Maps
+	$(".location").each(function(index,element){
+		var question = $(element).attr('name');
+		var coordinates = $(element).val();
+		var latLng = coordinates.split(" ");
+		var question_id = question.substr(0,question.length-2);
+		if ($("#mapservice_"+question_id).val()==1){
+			// Google Maps
+			if (gmaps[''+question] == undefined) {
+				GMapsInitialize(question,latLng[0],latLng[1]);
+			}
 		}
-        else if ($("#mapservice_"+question_id).val()==2){
-            // Open Street Map
-			if (osmaps[''+question]==undefined)
+		else if ($("#mapservice_"+question_id).val()==2){
+			// Open Street Map
+			if (osmaps[''+question]==undefined) {
 				osmaps[''+question] = OSMapInitialize(question,latLng[0],latLng[1]);
-        }
-    });
-    $(".location").live('focusout',function(event){
-        var question = $(event.target).attr('name');
-        var name = question.substr(0,question.length - 2);
-        var coordinates = $(event.target).attr('value');
-        var xy = coordinates.split(" ");
-        var currentMap = gmaps[question];
-        var marker = gmaps["marker__"+question];
-        var markerLatLng = new GLatLng(xy[0],xy[1]);
-        marker.setLatLng(markerLatLng);
-        var geocoder = new GClientGeocoder();
-        geocoder.getLocations(markerLatLng,function(response){
-
-            parseGeocodeAddress(response,name);
-        });
-        currentMap.panTo(markerLatLng);
-    });
+			}
+		}
+	});
+	$(".location").live('focusout',function(event){
+		var question = $(event.target).attr('name');
+		var name = question.substr(0,question.length - 2);
+		var coordinates = $(event.target).attr('value');
+		var xy = coordinates.split(" ");
+		var currentMap = gmaps[question];
+		var marker = gmaps['marker__'+question];
+		var markerLatLng = new google.maps.LatLng(xy[0],xy[1]);
+		geocodeAddress(name, markerLatLng);
+		marker.setPosition(markerLatLng);
+		currentMap.panTo(markerLatLng);
+	});
+	
     if ((typeof(autoArray) != "undefined")){
         if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
             var aListOfQuestions = autoArray.list;
@@ -97,6 +109,14 @@ $(document).ready(function()
             });
         }
     }
+    /*replacement for inline javascript for #index */
+    /*
+    $("#index").parents(".outerframe").addClass("withindex");
+     if ($("#index").size() && $("#index .row.current").size()){
+         var idx = $("#index");
+         var row = $("#index .row.current");
+         idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
+    */
 });
 
 gmaps = new Object;
@@ -122,98 +142,97 @@ function OSMapInitialize(question,lat,lng){
 
 }
 
-// Google Maps Functions
+//// Google Maps Functions (for API V3) ////
+
+// Initialize map
 function GMapsInitialize(question,lat,lng) {
-    if (GBrowserIsCompatible()) {
-        var map = new GMap2(document.getElementById("gmap_canvas_" + question));
-        var center = new GLatLng(lat,lng);
-        map.addControl(new GSmallMapControl());
-
-        var name = question.substr(0,question.length - 2);
-        map.setCenter(center, zoom[name]);
-        var marker = new GMarker(center, {draggable: true});
-        GEvent.addListener(map, "singlerightclick", function(GP) {
-        	var markerLatLng = map.fromContainerPixelToLatLng(GP);
-        	marker.setLatLng(markerLatLng);
-        	var geocoder = new GClientGeocoder();
-            geocoder.getLocations(markerLatLng,function(response){
-
-                parseGeocodeAddress(response,name);
-            });
-            $("#answer"+question).val(Math.round(markerLatLng.lat()*10000)/10000 + " " + Math.round(markerLatLng.lng()*10000)/10000);
-
-        });
-        gmaps['marker__'+question] = marker;
-        GEvent.addListener(marker, "dragend", function() {
-           var markerLatLng = marker.getLatLng();
-           var geocoder = new GClientGeocoder();
-           geocoder.getLocations(markerLatLng,function(response){
-               parseGeocodeAddress(response,name);
-           });
-           $("#answer"+question).val(Math.round(markerLatLng.lat()*10000)/10000 + " " + Math.round(markerLatLng.lng()*10000)/10000);
-        });
-        map.addOverlay(marker);
-    }
-    return map;
+	
+	var name = question.substr(0,question.length - 2);
+	var latlng = new google.maps.LatLng(lat, lng);
+	
+	var mapOptions = {
+		zoom: zoom[name],
+		center: latlng,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	
+	var map = new google.maps.Map(document.getElementById("gmap_canvas_" + question), mapOptions);
+	gmaps[''+question] = map;
+    
+	var marker = new google.maps.Marker({
+		position: latlng,
+		draggable:true,
+		map: map,
+		id: 'marker__'+question
+	});
+	gmaps['marker__'+question] = marker;
+	
+	google.maps.event.addListener(map, 'rightclick', function(event) {
+		marker.setPosition(event.latLng);
+		map.panTo(event.latLng);
+		geocodeAddress(name, event.latLng);
+		$("#answer"+question).val(Math.round(event.latLng.lat()*10000)/10000 + " " + Math.round(event.latLng.lng()*10000)/10000);
+	});
+	
+	google.maps.event.addListener(marker, 'dragend', function(event) {
+		//map.panTo(event.latLng);
+		geocodeAddress(name, event.latLng);
+		$("#answer"+question).val(Math.round(event.latLng.lat()*10000)/10000 + " " + Math.round(event.latLng.lng()*10000)/10000);
+	});
 }
 
-function parseGeocodeAddress(response, name){
+// Reset map when shown by conditions
+function resetMap(qID) {
+	var question = $('#question'+qID+' input.location').attr('name');
+	var name = question.substr(0,question.length - 2);
+	var coordinates = $('#question'+qID+' input.location').attr('value');
+	var xy = coordinates.split(" ");
+	var currentMap = gmaps[question];
+	var marker = gmaps['marker__'+question];
+	var markerLatLng = new google.maps.LatLng(xy[0],xy[1]);
+	marker.setPosition(markerLatLng);
+	google.maps.event.trigger(currentMap, 'resize')
+	currentMap.setCenter(markerLatLng);
+}
+
+// Reverse geocoder
+function geocodeAddress(name, pos) {
+	var geocoder = new google.maps.Geocoder();
+	
 	var city  = '';
 	var state = '';
 	var country = '';
 	var postal = '';
-
-  if (!(!response || response.Status.code != 200)) {
-        place = response.Placemark[0];
-        point = new GLatLng(place.Point.coordinates[1],
-                            place.Point.coordinates[0]);
-        var lat = place.Point.coordinates[1];
-        var lng = place.Point.coordinates[0];
-
-
-
-		try{
-			city = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.LocalityName;
+	
+	geocoder.geocode({
+		latLng: pos
+	}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK && results[0]) {
+			$(results[0].address_components).each(function(i, val) {
+				if($.inArray('locality', val.types) > -1) {
+					city = val.short_name;
+				}
+				else if($.inArray('administrative_area_level_1', val.types) > -1) {
+					state = val.short_name;
+				}
+				else if($.inArray('country', val.types) > -1) {
+					country = val.short_name;
+				}
+				else if($.inArray('postal_code', val.types) > -1) {
+					postal = val.short_name;
+				}
+			});
+			
+			var location = (results[0].geometry.location);
 		}
-		catch(e){
-			city  = '';
-		}
-
-		try{
-			state = place.AddressDetails.Country.AdministrativeArea.AdministrativeAreaName;
-		}
-		catch(e){
-			state  = '';
-		}
-
-		try{
-			country = place.AddressDetails.Country.CountryNameCode;
-		}
-		catch(e){
-			country  = '';
-		}
-
-        try{
-        	postal = place.AddressDetails.Country.AdministrativeArea.SubAdministrativeArea.Locality.PostalCode.PostalCodeNumber;
-        }
-		catch(e){
-			postal  = '';
-		}
-		getInfoToStore(name,lat,lng,city,state,country,postal);
-    }
-	  else{
-		  var latlong = (response.name).split(",");
-
-
-		  getInfoToStore(name,latlong[0],latlong[1],city,state,country,postal);
-	  }
+		getInfoToStore(name, pos.lat(), pos.lng(), city, state, country, postal);
+	});
 }
 
-
-
-// General Function
-function getInfoToStore(name, lat,lng,city,state,country,postal){
-    var boycott = $("#boycott_"+name).val();
+// Store address info
+function getInfoToStore(name, lat, lng, city, state, country, postal){
+    
+	var boycott = $("#boycott_"+name).val();
     // 2 - city; 3 - state; 4 - country; 5 - postal
     if (boycott.indexOf("2")!=-1)
         city = '';
@@ -223,9 +242,8 @@ function getInfoToStore(name, lat,lng,city,state,country,postal){
         country = '';
     if (boycott.indexOf("5")!=-1)
         postal = '';
-
+    
     $("#answer"+name).val(lat + ';' + lng + ';' + city + ';' + state + ';' + country + ';' + postal);
-
 }
 
 Array.prototype.push = function()
@@ -910,4 +928,11 @@ function array_dual_dd_checkconditions(value, name, type, rank, condfunction)
         condfunction(value, dualname, type);
    }
     condfunction(value, name, type);
+}
+
+// Maxlength for textareas
+function textLimit(field, maxlen) { 
+	if (document.getElementById(field).value.length > maxlen) {
+		document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
+	}
 }

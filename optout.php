@@ -58,7 +58,7 @@ else
     }
     elseif ($usresult=='OK')
     {
-        $usquery = "Update ".db_table_name("tokens_{$surveyid}")." set emailstatus='OptOut' where token=".db_quoteall($token,true);
+        $usquery = "Update ".db_table_name("tokens_{$surveyid}")." set emailstatus='OptOut', usesleft=0 where token=".db_quoteall($token,true);
         $usresult = $connect->Execute($usquery);
         $html .= $clang->gT('You have been successfully removed from this survey.');
     }

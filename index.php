@@ -396,8 +396,9 @@ if (!$surveyid)
     $query = "SELECT a.sid, b.surveyls_title, a.publicstatistics
 	          FROM ".db_table_name('surveys')." AS a
 			  INNER JOIN ".db_table_name('surveys_languagesettings')." AS b
-			  ON ( surveyls_survey_id = a.sid )
-			  WHERE surveyls_language='$baselang'
+			  ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language )
+			  WHERE surveyls_survey_id=a.sid
+			  AND surveyls_language=a.language
 			  AND a.active='Y'
 			  AND a.listpublic='Y'
 			  AND ((a.expires >= '".date("Y-m-d H:i")."') OR (a.expires is null))
@@ -409,6 +410,12 @@ if (!$surveyid)
     {
         while($rows = $result->FetchRow())
         {
+            $result2 = db_execute_assoc("Select surveyls_title from ".db_table_name('surveys_languagesettings')." where surveyls_survey_id={$rows['sid']} and surveyls_language='$baselang'");
+            if ($result2->RecordCount())
+            {
+                $languagedetails=$result2->FetchRow();
+                $rows['surveyls_title']=$languagedetails['surveyls_title'];
+            }
             $link = "<li><a href='$rooturl/index.php?sid=".$rows['sid'];
             if (isset($_GET['lang']))
             {
@@ -846,13 +853,15 @@ GetReferringUrl();
 if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !='')
 {
     // load previous answers if any (dataentry with nosubmit)
-    $srquery="SELECT id FROM {$thissurvey['tablename']}"
-    . " WHERE {$thissurvey['tablename']}.token='".db_quote($token)."'\n";
+    $srquery="SELECT id,submitdate FROM {$thissurvey['tablename']}"
+    . " WHERE {$thissurvey['tablename']}.token='".db_quote($token)."' order by id desc";
 
-    $result = $connect->GetOne($srquery);
-    if ($result !== false && !is_null($result))
+    $result = db_select_limit_assoc($srquery,1);
+    if ($result->RecordCount()>0)
     {
-        $_SESSION['srid'] = $result;
+        $row=$result->FetchRow();
+        if($row['submitdate']=='' || ($row['submitdate']!='' && $thissurvey['alloweditaftercompletion'] == 'Y'))
+        $_SESSION['srid'] = $row['id'];
     }
     buildsurveysession();
     loadanswers();
@@ -1801,7 +1810,7 @@ function checkUploadedFileValidity($move, $backok=null)
                     else
                         $filecount = 0;
 
-                    if ($filecount < $validation['min_num_of_files'])
+                    if ($filecount < $validation['min_num_of_files'] && checkquestionfordisplay($fieldmap[$field]['qid']))
                     {
                         $filenotvalidated = array();
                         $filenotvalidated[$field] = $clang->gT("The minimum number of files has not been uploaded.");
@@ -2625,6 +2634,8 @@ function buildsurveysession()
 
             echo '</div>'.templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
             doFooter();
+            unset($_SESSION['srid']);
+
             exit;
         }
     }
@@ -2893,7 +2904,7 @@ function buildsurveysession()
         }
     }
 
-    $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
+    if (isset($_SESSION['fieldarray'])) $_SESSION['fieldarray']=array_values($_SESSION['fieldarray']);
 
     // Check if the current survey language is set - if not set it
     // this way it can be changed later (for example by a special question type)
