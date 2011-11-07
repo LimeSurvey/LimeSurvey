@@ -1,7 +1,3 @@
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
@@ -10,7 +6,7 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-            include 'ExpressionManager.php';
+            include_once('../ExpressionManager.php');
             ExpressionManager::UnitTestTokenizer();
         ?>
     </body>

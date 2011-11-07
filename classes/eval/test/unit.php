@@ -1,7 +1,3 @@
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
@@ -18,10 +14,10 @@ and open the template in the editor.
         </style>
         <title>ExpressionManager:  Unit Test Core Evaluator</title>
     </head>
-    <body>
-<script type="text/javascript" src="ExpressionManager_CoreJSFunctions.js"></script>
+    <body onload="recompute()">
+<script type="text/javascript" src="../em_javascript.js"></script>
         <?php
-            include 'ExpressionManager.php';
+            include_once('../ExpressionManager.php');
             ExpressionManager::UnitTestEvaluator();
         ?>
     </body>
