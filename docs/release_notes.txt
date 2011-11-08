@@ -77,6 +77,18 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.91+ (build 11228) to 1.91+ (build 11343) Nov 8, 2011
+-Fixed issue #5126: CSV export - no new lines (c_schmitz)
+-Fixed issue #5455: INSERTANS not working in Multiple options with comments (c_schmitz)
+-Fixed issue #5508: $printanswershonorsconditions settings doesn't work - all questions are shown in Print Answers page (c_schmitz)
+-Fixed issue #5532: Problem with encoding Polish character "a" (c_schmitz)
+-Fixed issue #5536: Error when clicking "resume later" and token persistence enabled. (c_schmitz)
+-Fixed issue #5538: Further file uploads may fail after first upload processed following Next/Prev question group - patch by litotes (c_schmitz)
+-Fixed issue #5549: queXML: Yes/no and gender questions are not translated (azammitdcarf)
+-Fixed issue #5557: Basic admin notification and Detailed admin notification email templates are blank after upgrade from 1.90 (c_schmitz)
+-Fixed issue: Problems on exporting tokens (c_schmitz)
+-Fixed issue: Slow export of tokens (c_schmitz)
+
 Changes from 1.91+ (build 11136) to 1.91+ (build 11228) Oct 20, 2011
 #Updated translation: Danish by Andreas Christoffersen (c_schmitz)
 #Updated translation: Czech (c_schmitz)
