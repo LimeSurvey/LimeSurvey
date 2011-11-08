@@ -6,6 +6,9 @@
     </head>
     <body>
         <?php
+            require_once("../../../config-defaults.php");
+            require_once("../../../config.php");
+            require_once("../../../common.php");
             include_once('../LimeExpressionManager.php');
             $data = LimeExpressionManager::UnitTestConvertConditionsToRelevance();
             echo count($data) . " question(s) in your database contain conditions.  Below is the mapping of question ID number to generated relevance equation<br/>";

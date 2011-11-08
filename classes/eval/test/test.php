@@ -55,6 +55,14 @@
                 <td><a href="data.php">Running Log - Source Data</a></td>
                 <td>Shows log of mapping of variable names to SGQA and JavaScript names, plus question, and current values.  Note, this is only visible if $debugLEM==true</td>
             </tr>
+            <tr>
+                <td><a href="syntax_errors.php">Log of Syntax Errors</a></td>
+                <td>Show cumulative log of syntax errors</td>
+            </tr>
+            <tr>
+                <td><a href="reset_syntax_error_log.php"><span style='background-color: red;'>**</span>Reset Log of Syntax Errors</a></td>
+                <td><span style='color: red;'>CAUTION: This function changes your database.</span> Remove log of syntax errors</td>
+            </tr>
         </table>
     </body>
 </html>

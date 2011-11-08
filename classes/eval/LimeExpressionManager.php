@@ -74,15 +74,26 @@ class LimeExpressionManager {
      */
     public static function UpgradeRelevanceAttributeToQuestion()
     {
-        $CI =& get_instance();
-        $data = $CI->db->where('attribute','relevance')->select('qid')->select('value')->get('question_attributes');
+//        $CI =& get_instance();
+//        $data = $CI->db->where('attribute','relevance')->select('qid')->select('value')->get('question_attributes');
+//
+//        $queries = array();
+//        foreach($data->result_array() as $row)
+//        {
+//            $info['relevance'] = $row['value'];
+//            $CI->db->where('qid',$row['qid'])->update('questions',$info);
+//            $queries[] = $CI->db->last_query();
+//        }
+//        return $queries;
 
+        $query = "SELECT qid, value from ".db_table_name('question_attributes')." where attribute='relevance'";
+        $qresult = db_execute_assoc($query);
         $queries = array();
-        foreach($data->result_array() as $row)
+        foreach ($qresult->GetRows() as $row)
         {
-            $info['relevance'] = $row['value'];
-            $CI->db->where('qid',$row['qid'])->update('questions',$info);
-            $queries[] = $CI->db->last_query();
+            $query = "UPDATE ".db_table_name('questions')." SET relevance='".$row['value']."' WHERE qid=".$row['qid'];
+            db_execute_assoc($query);
+            $queries[] = $query;
         }
         return $queries;
     }
@@ -101,12 +112,16 @@ class LimeExpressionManager {
             return NULL;
         }
 
-        $CI =& get_instance();
+//        $CI =& get_instance();
         $queries = array();
         foreach ($releqns as $key=>$value) {
-            $info['relevance'] = $value;
-            $CI->db->where('qid',$key)->update('questions',$info);
-            $queries[] = $CI->db->last_query();
+//            $info['relevance'] = $value;
+//            $CI->db->where('qid',$key)->update('questions',$info);
+
+            $query = "UPDATE ".db_table_name('questions')." SET relevance='".addslashes($value)."' WHERE qid=".$key;
+            db_execute_assoc($query);
+//            $queries[] = $CI->db->last_query();
+            $queries[] = $query;
         }
         return $queries;
     }
@@ -124,10 +139,12 @@ class LimeExpressionManager {
             return NULL;
         }
 
-        $CI =& get_instance();
+//        $CI =& get_instance();
         foreach ($releqns as $key=>$value) {
-            $info['relevance'] = '1';
-            $CI->db->where('qid',$key)->update('questions',$info);
+//            $info['relevance'] = '1';
+//            $CI->db->where('qid',$key)->update('questions',$info);
+            $query = "UPDATE ".db_table_name('questions')." SET relevance=1 WHERE qid=".$key;
+            db_execute_assoc($query);
         }
         return count($releqns);
     }
@@ -141,17 +158,17 @@ class LimeExpressionManager {
      */
     public static function ConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
     {
-        $CI =& get_instance();
-    	$CI->load->model('conditions_model');
+//        $CI =& get_instance();
+//    	$CI->load->model('conditions_model');
 
-        $query = $CI->conditions_model->getAllRecordsForSurvey($surveyId,$qid);
+        $query = LimeExpressionManager::getAllRecordsForSurvey($surveyId,$qid);
 
         $_qid = -1;
         $relevanceEqns = array();
         $scenarios = array();
         $relAndList = array();
         $relOrList = array();
-        foreach($query->result_array() as $row)
+        foreach($query->GetRows() as $row)
         {
             if ($row['qid'] != $_qid)
             {
@@ -889,8 +906,8 @@ class LimeExpressionManager {
             'D' => $this->gT("Decrease"),
         );
 
-        $CI->load->model('question_attributes_model');
-        $qattr = $CI->question_attributes_model->getEMRelatedRecordsForSurvey($surveyid);   // what happens if $surveyid is null?
+//        $CI->load->model('question_attributes_model');
+        $qattr = $this->getEMRelatedRecordsForSurvey($surveyid);   // what happens if $surveyid is null?
         $this->qattr = $qattr;
 
 //        log_message('debug', print_r($qattr, true));
@@ -898,8 +915,8 @@ class LimeExpressionManager {
         $this->runtimeTimings[] = array(__METHOD__ . ' - question_attributes_model->getEMRelatedRecordsForSurvey',(microtime(true) - $now));
         $now = microtime(true);
 
-        $CI->load->model('answers_model');
-        $qans = $CI->answers_model->getAllAnswersForEM($surveyid,NULL,$this->slang);
+//        $CI->load->model('answers_model');
+        $qans = $this->getAllAnswersForEM($surveyid,NULL,$this->slang);
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAllAnswersForEM',(microtime(true) - $now));
         $now = microtime(true);
@@ -1836,6 +1853,26 @@ class LimeExpressionManager {
         {
 //            $CI =& get_instance();
 //            $CI->db->insert_batch('expression_errors',$LEM->syntaxErrors);
+
+            global $connect;
+            foreach ($LEM->syntaxErrors as $err)
+            {
+                $query = "INSERT INTO ".db_table_name('expression_errors')." (errortime,sid,gid,qid,gseq,qseq,type,eqn,prettyprint) VALUES("
+                    .db_quoteall($err['errortime'])
+                    .",".$err['sid']
+                    .",".$err['gid']
+                    .",".$err['qid']
+                    .",".$err['gseq']
+                    .",".$err['qseq']
+                    .",".db_quoteall($err['type'])
+                    .",".db_quoteall($err['eqn'])
+                    .",".db_quoteall($err['prettyPrint'])
+                    .")";
+                if (!$connect->Execute($query))
+                {
+                    print $connect->ErrorMsg();
+                }
+            }
         }
         $LEM->initialized=false;    // so detect calls after done
     }
@@ -1880,9 +1917,8 @@ class LimeExpressionManager {
 
         $jsParts=array();
         $allJsVarsUsed=array();
-        $jsParts[] = '<script type="text/javascript" src="../em_javascript.js"></script>';
-        $jsParts[] = '<script type="text/javascript" src="../../../scripts/jquery/jquery.js"></script>';
-        $jsParts[] = "<script type='text/javascript'>\n<!--\n";
+        $jsParts[] = '<script type="text/javascript" src="'.$rooturl.'/classes/eval/em_javascript.js"></script>';
+        $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
         $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
         $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\nreturn;\n}\n";
         $jsParts[] = "if (evt_type == 'onchange' && (typeof last_evt_type != 'undefined' && last_evt_type == 'keydown') && (typeof target_tabIndex != 'undefined' && target_tabIndex == document.activeElement.tabIndex)) {\nreturn;\n}\n";
@@ -2193,8 +2229,12 @@ class LimeExpressionManager {
      */
     static function GetSyntaxErrors()
     {
-        $CI =& get_instance();
-        return $CI->db->get('expression_errors')->result_array();
+//        $CI =& get_instance();
+//        return $CI->db->get('expression_errors')->result_array();
+
+        $query = "SELECT * FROM ".db_table_name('expression_errors');
+        $data = db_execute_assoc($query);
+        return $data->GetRows();
     }
 
     /**
@@ -2203,8 +2243,11 @@ class LimeExpressionManager {
     static function ResetSyntaxErrorLog()
     {
         // truncate the table
-        $CI =& get_instance();
-        $CI->db->truncate('expression_errors');
+//        $CI =& get_instance();
+//        $CI->db->truncate('expression_errors');
+
+        $query = "TRUNCATE TABLE ".db_table_name('expression_errors');
+        db_execute_assoc($query);
     }
 
     /**
@@ -2510,6 +2553,110 @@ EOT;
     {
         // eventually replace this with i8n
         return $string;
+    }
+
+    private static function getAllRecordsForSurvey($surveyid=NULL, $qid=NULL)
+    {
+        if (!is_null($qid)) {
+            $where = " c.qid = ".$qid." and ";
+        }
+        else if (!is_null($surveyid)) {
+            $where = " c.qid in (select qid from ".db_table_name('questions')." where sid = ".$surveyid.") and ";
+        }
+        else {
+            $where = "";
+        }
+
+        $query = "select distinct c.*"
+                .", q.sid, q.type"
+                ." from ".db_table_name('conditions')." as c"
+                .", ".db_table_name('questions')." as q"
+                ." where " . $where
+                ." c.cqid=q.qid"
+                ." union "
+                ." select c.*, q.sid, '' as type"
+                ." from ".db_table_name('conditions')." as c"
+                .", ".db_table_name('questions')." as q"
+                ." where ". $where
+                ." c.cqid = 0 and c.qid = q.qid"
+                ." order by sid, qid, scenario, cqid, cfieldname, value";
+
+		$data = db_execute_assoc($query);
+
+		return $data;
+    }
+
+    private function getEMRelatedRecordsForSurvey($surveyid=NULL,$qid=NULL)
+    {
+        if (!is_null($qid)) {
+            $where = " qid = ".$qid." and ";
+        }
+        else if (!is_null($surveyid)) {
+            $where = " qid in (select qid from ".db_table_name('questions')." where sid = ".$surveyid.") and ";
+        }
+        else {
+            $where = "";
+        }
+
+        // TODO - does this need to be filtered by language
+        $query = "select distinct qid, attribute, value"
+                ." from ".db_table_name('question_attributes')
+                ." where " . $where
+                ." attribute in ('hidden', 'array_filter', 'array_filter_exclude', 'code_filter', 'equals_num_value', 'exclude_all_others', 'exclude_all_others_auto', 'max_answers', 'max_num_value', 'max_num_value_n', 'max_num_value_sgqa', 'min_answers', 'min_num_value', 'min_num_value_n', 'min_num_value_sgqa', 'multiflexible_max', 'multiflexible_min', 'num_value_equals_sgqa', 'show_totals')"
+                ." order by qid, attribute";
+
+//		$data = $this->db->query($query);
+        $data = db_execute_assoc($query);
+        $qattr = array();
+
+        foreach($data->GetRows() as $row) {
+            $qattr[$row['qid']][$row['attribute']] = $row['value'];
+        }
+
+		return $qattr;
+    }
+
+    /**
+     * Return array of language-specific answer codes
+     * @param <type> $surveyid
+     * @param <type> $qid
+     * @return <type>
+     */
+
+    function getAllAnswersForEM($surveyid=NULL,$qid=NULL,$lang=NULL)
+    {
+        if (!is_null($qid)) {
+            $where = "a.qid = ".$qid;
+        }
+        else if (!is_null($surveyid)) {
+            $where = "a.qid = q.qid and q.sid = ".$surveyid;
+        }
+        else {
+            $where = "1";
+        }
+        if (!is_null($lang)) {
+            $lang = " and a.language='".$lang."' and q.language='".$lang."'";
+        }
+
+        $query = "SELECT a.qid, a.code, a.answer, a.scale_id"
+            ." FROM ".db_table_name('answers')." AS a, ".db_table_name('questions')." as q"
+            ." WHERE ".$where
+            .$lang
+            ." ORDER BY qid, scale_id, sortorder";
+
+        $data = db_execute_assoc($query);
+//        log_message('debug',$this->db->last_query());
+
+        $qans = array();
+
+        foreach($data->GetRows() as $row) {
+            if (!isset($qans[$row['qid']])) {
+                $qans[$row['qid']] = array();
+            }
+            $qans[$row['qid']][$row['scale_id'].'~'.$row['code']] = $row['answer'];
+        }
+
+        return $qans;
     }
 }
 ?>

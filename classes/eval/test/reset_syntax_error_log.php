@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>LimeExpressionManager:  Revert Upgrade Conditions to Relevance</title>
+        <title>LimeExpressionManager:  Reset Log of Syntax Errors</title>
     </head>
     <body>
         <?php
@@ -10,13 +10,8 @@
             require_once("../../../config.php");
             require_once("../../../common.php");
             include_once('../LimeExpressionManager.php');
-            $data = LimeExpressionManager::RevertUpgradeConditionsToRelevance();
-            if (is_null($data)) {
-                echo "No conditions found in database.  Nothing to revert.";
-            }
-            else {
-                echo "Found and removed relevance for " . $data . " question(s)";
-            }
+            LimeExpressionManager::ResetSyntaxErrorLog();
         ?>
+        <p>The log of syntax errors has been reset (truncated).</p>
     </body>
 </html>
