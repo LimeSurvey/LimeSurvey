@@ -305,6 +305,122 @@ function db_upgrade($oldversion) {
         modify_database("", "UPDATE prefix_settings_global SET stg_value='146' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
     }
 
+    if ($oldversion < 147)
+    {
+        modify_database("", "ALTER TABLE prefix_users ADD templateeditormode character varying(7) NOT NULL DEFAULT 'default'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("", "ALTER TABLE prefix_users ADD questionselectormode character varying(7) NOT NULL DEFAULT 'default'"); echo $modifyoutput; flush();ob_flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='147' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
+    if ($oldversion < 148)
+    {
+        modify_database("","CREATE TABLE prefix_participants (
+        participant_id VARCHAR( 50 ) NOT NULL,
+        firstname VARCHAR( 40 ) NOT NULL,
+        lastname VARCHAR( 40 ) NOT NULL,
+        email VARCHAR( 80 ) NOT NULL,
+        language VARCHAR( 2 ) NOT NULL,
+        blacklisted VARCHAR( 1 ) NOT NULL,
+        owner_uid integer NOT NULL,
+        PRIMARY KEY (participant_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+
+        modify_database("","CREATE TABLE prefix_participant_attribute (
+        participant_id VARCHAR( 50 ) NOT NULL,
+        attribute_id integer NOT NULL,
+        value integer NOT NULL,
+        PRIMARY KEY (participant_id,attribute_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+
+        modify_database("","CREATE TABLE prefix_participant_attribute_names (
+        attribute_id integer NOT NULL AUTO_INCREMENT,
+        attribute_type VARCHAR( 30 ) NOT NULL,
+        visible CHAR( 5 ) NOT NULL,
+        PRIMARY KEY (attribute_type,attribute_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+
+        modify_database("","CREATE TABLE prefix_participant_attribute_names_lang (
+        id integer NOT NULL AUTO_INCREMENT,
+        attribute_id integer NOT NULL,
+        attribute_name VARCHAR( 30 ) NOT NULL,
+        lang CHAR( 20 ) NOT NULL,
+        PRIMARY KEY (lang,attribute_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+
+        modify_database("","CREATE TABLE prefix_participant_attribute_values (
+        attribute_id integer NOT NULL,
+        value_id integer NOT NULL AUTO_INCREMENT,
+        value VARCHAR( 20 ) NOT NULL,
+        PRIMARY KEY (value_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+
+        modify_database("","CREATE TABLE prefix_participant_shares (
+        participant_id VARCHAR( 50 ) NOT NULL,
+        shared_uid integer NOT NULL,
+        date_added date NOT NULL,
+        can_edit VARCHAR( 5 ) NOT NULL,
+        PRIMARY KEY (lang,attribute_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+
+        modify_database("","CREATE TABLE prefix_survey_links (
+        participant_id VARCHAR( 50 ) NOT NULL,
+        token_id integer NOT NULL,
+        survey_id integer NOT NULL,
+        date_created date NOT NULL,
+        PRIMARY KEY (participant_id,token_id,survey_id)
+        );"); echo $modifyoutput; flush();ob_flush();
+        modify_database("","ALTER TABLE prefix_user ADD participant_panel integer NOT NULL default '0'"); echo $modifyoutput; flush();ob_flush();
+        // add language field to question_attributes table
+        modify_database("","ALTER TABLE prefix_question_attributes ADD language character varying(20)"); echo $modifyoutput; flush();ob_flush();
+        upgrade_question_attributes148();
+        fixSubquestions();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+
+    }
+
+    if ($oldversion < 149)
+    {
+        modify_database("","CREATE TABLE prefix_survey_url_parameters (
+        id serial PRIMARY KEY NOT NULL,
+        sid integer NOT NULL,
+        parameter character varying(50) NOT NULL,
+        targetqid integer NULL,
+        targetsqid integer NULL
+        );"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='149' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+
+    }
+    if ($oldversion < 150)
+    {
+        modify_database("","ALTER TABLE prefix_questions ADD relevance TEXT;"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='150' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
+    if ($oldversion < 151)
+    {
+        modify_database("","ALTER TABLE prefix_groups ADD randomization_group varying(20) NOT NULL DEFAULT '';"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='151' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
+    if ($oldversion < 152)
+    {
+        modify_database("","CREATE INDEX question_attributes_idx3 ON prefix_question_attributes (attribute);"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='152' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
+    if ($oldversion < 153)
+    {
+        modify_database("","CREATE TABLE prefix_expression_errors (
+        id integer NOT NULL AUTO_INCREMENT,
+        errortime varchar(50) DEFAULT NULL,
+        sid integer DEFAULT NULL,
+        gid integer DEFAULT NULL,
+        qid integer DEFAULT NULL,
+        gseq integer DEFAULT NULL,
+        qseq integer DEFAULT NULL,
+        \"type\" character varying(50) ,
+        eqn text,
+        prettyprint text,
+        CONSTRAINT prefix_expression_errors_pkey PRIMARY KEY (id)
+        );"); echo $modifyoutput; flush();@ob_flush();
+        modify_database("", "UPDATE prefix_settings_global SET stg_value='153' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
+    }
 
     echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
     return true;
