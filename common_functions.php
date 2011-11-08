@@ -5926,8 +5926,7 @@ function retrieve_Answer($code, $phpdateformat=null)
         //extracted from a "fieldname" - ie: 1X2X3a
         // also returns question type
 
-        if ($questiondetails['type'] == "M" ||
-        $questiondetails['type'] == "P")
+        if ($questiondetails['type'] == "M" || $questiondetails['type'] == "P")
         {
             if (strpos($code,'comment')>0 && isset($_SESSION[$code]))
             {
