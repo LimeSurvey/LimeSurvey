@@ -6123,7 +6123,10 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             if ($oldgid !== $fname['gid'])
             {
                 $oldgid = $fname['gid'];
-                $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
+                if (checkgroupfordisplay($fname['gid']) || !$bHonorConditions)
+                {
+                    $aResultTable['gid_'.$fname['gid']]=array($fname['group_name']);
+                }
             }
         }
         if (isset($fname['qid']))
@@ -6132,12 +6135,20 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
             if (isset($relevanceStatus[$qid]) && $relevanceStatus[$qid] != 1) {
                 continue;   // skip irrelevant questions
             }
-            if (!empty($fname['qid']))
+            if (isset($fname['qid']) && !empty($fname['qid']))
             {
+                if ($bHonorConditions)
+                {
+                     $bQuestionVisible=checkquestionfordisplay($fname['qid'],null);
+                }
+                else
+                {
+                     $bQuestionVisible=true;
+                }
                 if ($oldqid !== $fname['qid'])
                 {
                     $oldqid = $fname['qid'];
-                    if (($bHonorConditions && checkquestionfordisplay($fname['qid'],null)) || !$bHonorConditions)
+                    if ($bQuestionVisible)
                     {
 
                         if (isset($fname['subquestion']) || isset($fname['subquestion1']) || isset($fname['subquestion2']))
@@ -6173,9 +6184,11 @@ function aGetFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonor
 
         if (isset($fname['subquestion2']))
             $subquestion .= "[{$fname['subquestion2']}]";
-
-        $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
-        $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
+        if ($bQuestionVisible)
+        {
+            $answer=getextendedanswer($iSurveyID, NULL,$fname['fieldname'], $idrow[$fname['fieldname']]);
+            $aResultTable[$fname['fieldname']]=array('',$subquestion,$answer);
+        }
     }
     return $aResultTable;
 }
@@ -8463,5 +8476,89 @@ function array_swap_assoc($key1, $key2, $array) {
     return $newArray;
 }
 
+function checkgroupfordisplay($gid,$anonymized,$surveyid)
+{
+    return LimeExpressionManager::GroupIsRelevant($gid);
+    // TMSW Conditions->Relevance:  The rest of this function is not needed
+
+    //This function checks all the questions in a group to see if they have
+    //conditions, and if the do - to see if the conditions are met.
+    //If none of the questions in the group are set to display, then
+    //the function will return false, to indicate that the whole group
+    //should not display at all.
+    $CI =& get_instance();
+    //$_SESSION = $CI->session->userdata;
+
+    $countQuestionsInThisGroup=0;
+    $countConditionalQuestionsInThisGroup=0;
+    $countQuestionsWithRelevanceIntThisGroup=0;
+
+    // Initialize LimeExpressionManager for this group - this ensures that values from prior pages are available for assessing relevance on this page
+    LimeExpressionManager::StartProcessingPage(false);
+    LimeExpressionManager::StartProcessingGroup($gid,$anonymized,$surveyid);
+
+    foreach ($_SESSION['fieldarray'] as $ia) //Run through all the questions
+
+    {
+        if ($ia[5] == $gid) //If the question is in the group we are checking:
+
+        {
+            // Check if this question is hidden
+            $qidattributes=getQuestionAttributeValues($ia[0]);
+            if ($qidattributes!==false && ($qidattributes['hidden']==0 || $ia[4]=='*'))
+            {
+                $countQuestionsInThisGroup++;
+                if ($ia[7] == "Y") //This question is conditional
+
+                {
+                    $countConditionalQuestionsInThisGroup++;
+                    $QuestionsWithConditions[]=$ia; //Create an array containing all the conditional questions
+                }
+                if (isset($qidattributes['relevance']) && ($qidattributes['relevance'] != 1))
+                {
+                    $countQuestionsWithRelevanceIntThisGroup++;
+                    $QuestionsWithRelevance[]=$qidattributes['relevance'];  // Create an array containing all of the questions whose Relevance Equaation must be processed.
+                }
+            }
+        }
+    }
+    if ($countQuestionsInThisGroup===0)
+    {
+        return false;
+    }
+    elseif ($countQuestionsInThisGroup != $countConditionalQuestionsInThisGroup || !isset($QuestionsWithConditions)
+    && ($countQuestionsInThisGroup != $countQuestionsWithRelevanceIntThisGroup || !isset($QuestionsWithRelevance)))
+    {
+        //One of the questions in this group is NOT conditional, therefore
+        //the group MUST be displayed
+        return true;
+    }
+    else
+    {
+        //All of the questions in this group are conditional. Now we must
+        //check every question, to see if the condition for each has been met.
+        //If 1 or more have their conditions met, then the group should
+        //be displayed.
+        foreach ($QuestionsWithConditions as $cc)
+        {
+            if (checkquestionfordisplay($cc[0], $gid) === true)
+            {
+                return true;
+            }
+        }
+        if (isset($QuestionsWithRelevance)) {
+            foreach ($QuestionsWithRelevance as $relevance)
+            {
+                if (LimeExpressionManager::ProcessRelevance($relevance))
+                {
+                    return true;
+                }
+            }
+        }
+        //Since we made it this far, there mustn't have been any conditions met.
+        //Therefore the group should not be displayed.
+        return false;
+    }
+}
 
 // Closing PHP tag intentionally omitted - yes, it is okay
