@@ -210,7 +210,7 @@ function upgrade_survey_table145()
         $oLanguage = $CI->limesurvey_lang;
         $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
         unset($oLanguage);
-        $aDefaultTexts['admin_detailed_notification_subject']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
+        $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
         $sSurveyUpdateQuery= "update {$CI->db->dbprefix}surveys_languagesettings set
                               email_admin_responses_subj=".$CI->db->escape($aDefaultTexts['admin_detailed_notification_subject']).",
                               email_admin_responses=".$CI->db->escape($aDefaultTexts['admin_detailed_notification']).",
