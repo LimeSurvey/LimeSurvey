@@ -232,6 +232,11 @@ if ($action == "editdefaultvalues")
 if ($action == "editquestion" || $action=="addquestion")
 {
     $adding=($action=="addquestion");
+    if ($adding)
+    {
+        // This is needed to properly color-code content if it contains replacements
+        LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
+    }
     $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     $questlangs[] = $baselang;

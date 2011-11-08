@@ -2241,6 +2241,8 @@ function validate_templatedir($templatename)
 * @return array
 */
 function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
+    // TMSW Conditions->Relevance:  Refactor this function so that doesn't query conditions table, and so that only 3 db calls total to build array (questions, answers, attributes)
+    // TMSW Conditions->Relevance:  'hasconditions' and 'usedinconditions' are no longer needed.
 
     global $dbprefix, $connect, $globalfieldmap, $clang, $aDuplicateQIDs;
     $surveyid=sanitize_int($surveyid);
@@ -2287,70 +2289,70 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $presult=db_execute_assoc($pquery); //Checked
     while($prow=$presult->FetchRow())
     {
-        if ($prow['anonymized'] == "N")
+    if ($prow['anonymized'] == "N")
+    {
+        $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
+        if ($style == "full")
         {
-            $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["token"]['title']="";
-                $fieldmap["token"]['question']=$clang->gT("Token");
-                $fieldmap["token"]['group_name']="";
-            }
+            $fieldmap["token"]['title']="";
+            $fieldmap["token"]['question']=$clang->gT("Token");
+            $fieldmap["token"]['group_name']="";
         }
-        if ($prow['datestamp'] == "Y")
+    }
+    if ($prow['datestamp'] == "Y")
+    {
+        $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
+        'type'=>"datestamp",
+        'sid'=>$surveyid,
+        "gid"=>"",
+        "qid"=>"",
+        "aid"=>"");
+        if ($style == "full")
         {
-            $fieldmap["datestamp"]=array("fieldname"=>"datestamp",
-                                    'type'=>"datestamp",
-                                    'sid'=>$surveyid,
-                                    "gid"=>"",
-                                    "qid"=>"",
-                                    "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["datestamp"]['title']="";
-                $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
-                $fieldmap["datestamp"]['group_name']="";
-            }
-            $fieldmap["startdate"]=array("fieldname"=>"startdate",
-                                     'type'=>"startdate",
-                                     'sid'=>$surveyid,
-                                     "gid"=>"",
-                                     "qid"=>"",
-                                     "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["startdate"]['title']="";
-                $fieldmap["startdate"]['question']=$clang->gT("Date started");
-                $fieldmap["startdate"]['group_name']="";
-            }
+            $fieldmap["datestamp"]['title']="";
+            $fieldmap["datestamp"]['question']=$clang->gT("Date last action");
+            $fieldmap["datestamp"]['group_name']="";
+        }
+        $fieldmap["startdate"]=array("fieldname"=>"startdate",
+        'type'=>"startdate",
+        'sid'=>$surveyid,
+        "gid"=>"",
+        "qid"=>"",
+        "aid"=>"");
+        if ($style == "full")
+        {
+            $fieldmap["startdate"]['title']="";
+            $fieldmap["startdate"]['question']=$clang->gT("Date started");
+            $fieldmap["startdate"]['group_name']="";
+        }
 
-        }
-        if ($prow['ipaddr'] == "Y")
+    }
+    if ($prow['ipaddr'] == "Y")
+    {
+        $fieldmap["ipaddr"]=array("fieldname"=>"ipaddr",
+        'type'=>"ipaddress",
+        'sid'=>$surveyid,
+        "gid"=>"",
+        "qid"=>"",
+        "aid"=>"");
+        if ($style == "full")
         {
-            $fieldmap["ipaddr"]=array("fieldname"=>"ipaddr",
-                                    'type'=>"ipaddress",
-                                    'sid'=>$surveyid,
-                                    "gid"=>"",
-                                    "qid"=>"",
-                                    "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["ipaddr"]['title']="";
-                $fieldmap["ipaddr"]['question']=$clang->gT("IP address");
-                $fieldmap["ipaddr"]['group_name']="";
-            }
+            $fieldmap["ipaddr"]['title']="";
+            $fieldmap["ipaddr"]['question']=$clang->gT("IP address");
+            $fieldmap["ipaddr"]['group_name']="";
         }
-        // Add 'refurl' to fieldmap.
-        if ($prow['refurl'] == "Y")
+    }
+    // Add 'refurl' to fieldmap.
+    if ($prow['refurl'] == "Y")
+    {
+        $fieldmap["refurl"]=array("fieldname"=>"refurl", 'type'=>"url", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
+        if ($style == "full")
         {
-            $fieldmap["refurl"]=array("fieldname"=>"refurl", 'type'=>"url", 'sid'=>$surveyid, "gid"=>"", "qid"=>"", "aid"=>"");
-            if ($style == "full")
-            {
-                $fieldmap["refurl"]['title']="";
-                $fieldmap["refurl"]['question']=$clang->gT("Referrer URL");
-                $fieldmap["refurl"]['group_name']="";
-            }
+            $fieldmap["refurl"]['title']="";
+            $fieldmap["refurl"]['question']=$clang->gT("Referrer URL");
+            $fieldmap["refurl"]['group_name']="";
         }
+    }
     }
 
     //Get list of questions
@@ -2381,8 +2383,12 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     $aquery.=" ORDER BY group_order, question_order";
     $aresult = db_execute_assoc($aquery) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />$query<br />".$connect->ErrorMsg()); //Checked
 
+    $questionSeq=-1; // this is incremental question sequence across all groups
+
     while ($arow=$aresult->FetchRow()) //With each question, create the appropriate field(s)
     {
+        ++$questionSeq;
+
         if ($arow['hasconditions']>0)
         {
             $conditions = "Y";
@@ -2438,6 +2444,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                 $fieldmap[$fieldname]['hasconditions']=$conditions;
                 $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                 if ($qtypes[$arow['type']]['hasdefaultvalues'])
                 {
                     if ($arow['same_default'])
@@ -2460,11 +2468,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
 
                         $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                            'type'=>$arow['type'],
-                            'sid'=>$surveyid,
-                            "gid"=>$arow['gid'],
-                            "qid"=>$arow['qid'],
-                            "aid"=>"other");
+                        'type'=>$arow['type'],
+                        'sid'=>$surveyid,
+                        "gid"=>$arow['gid'],
+                        "qid"=>$arow['qid'],
+                        "aid"=>"other");
                         // dgk bug fix line above. aid should be set to "other" for export to append to the field name in the header line.
                         if ($style == "full")
                         {
@@ -2475,27 +2483,29 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                             $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                             $fieldmap[$fieldname]['hasconditions']=$conditions;
                             $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                            if ($arow['same_default'])
-                            {
+                            $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                            $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                                if ($arow['same_default'])
+                                {
                                 $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."' and specialtype='other'");
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
                                 $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}' and specialtype='other'");
+                                }
                             }
                         }
-                    }
                     break;
                 case "O": //DROPDOWN LIST WITH COMMENT
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}comment";
                     if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
 
                     $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                        'type'=>$arow['type'],
-                        'sid'=>$surveyid,
-                        "gid"=>$arow['gid'],
-                        "qid"=>$arow['qid'],
-                        "aid"=>"comment");
+                    'type'=>$arow['type'],
+                    'sid'=>$surveyid,
+                    "gid"=>$arow['gid'],
+                    "qid"=>$arow['qid'],
+                    "aid"=>"comment");
                     // dgk bug fix line below. aid should be set to "comment" for export to append to the field name in the header line. Also needed set the type element correctly.
                     if ($style == "full")
                     {
@@ -2506,6 +2516,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                        $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                     }
                     break;
             }
@@ -2522,7 +2534,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                 if($abrow['scale_id']==1) {
                     $answerset[]=$abrow;
                     unset($abrows[$key]);
-            }
+                }
             }
             reset($abrows);
             foreach ($abrows as $abrow)
@@ -2532,12 +2544,12 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}_{$answer['title']}";
                     if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
                     $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                                    'type'=>$arow['type'],
-                                    'sid'=>$surveyid,
-                                    "gid"=>$arow['gid'],
-                                    "qid"=>$arow['qid'],
-                                    "aid"=>$abrow['title']."_".$answer['title'],
-                                    "sqid"=>$abrow['qid']);
+                    'type'=>$arow['type'],
+                    'sid'=>$surveyid,
+                    "gid"=>$arow['gid'],
+                    "qid"=>$arow['qid'],
+                    "aid"=>$abrow['title']."_".$answer['title'],
+                    "sqid"=>$abrow['qid']);
                     if ($abrow['other']=="Y") {$alsoother="Y";}
                     if ($style == "full")
                     {
@@ -2549,6 +2561,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                        $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                     }
                 }
             }
@@ -2559,37 +2573,41 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             $abrows = getSubQuestions($surveyid,$arow['qid'],$s_lang);
             foreach ($abrows as $abrow)
             {
-                    $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
+                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#0";
                 if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                    $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>0);
-                    if ($style == "full")
-                    {
-                        $fieldmap[$fieldname]['title']=$arow['title'];
-                        $fieldmap[$fieldname]['question']=$arow['question'];
-                        $fieldmap[$fieldname]['subquestion']=$abrow['question'];
-                        $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                        $fieldmap[$fieldname]['scale']=$clang->gT('Scale 1');
-                        $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                        $fieldmap[$fieldname]['hasconditions']=$conditions;
-                        $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    }
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>0);
+                if ($style == "full")
+                {
+                    $fieldmap[$fieldname]['title']=$arow['title'];
+                    $fieldmap[$fieldname]['question']=$arow['question'];
+                    $fieldmap[$fieldname]['subquestion']=$abrow['question'];
+                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                    $fieldmap[$fieldname]['scale']=$clang->gT('Scale 1');
+                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$fieldname]['hasconditions']=$conditions;
+                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                }
 
-                    $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
+                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}#1";
                 if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                    $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>1);
-                    if ($style == "full")
-                    {
-                        $fieldmap[$fieldname]['title']=$arow['title'];
-                        $fieldmap[$fieldname]['question']=$arow['question'];
-                        $fieldmap[$fieldname]['subquestion']=$abrow['question'];
-                        $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                        $fieldmap[$fieldname]['scale']=$clang->gT('Scale 2');
-                        $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                        $fieldmap[$fieldname]['hasconditions']=$conditions;
-                        $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    }
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title'], "scale_id"=>1);
+                if ($style == "full")
+                {
+                    $fieldmap[$fieldname]['title']=$arow['title'];
+                    $fieldmap[$fieldname]['question']=$arow['question'];
+                    $fieldmap[$fieldname]['subquestion']=$abrow['question'];
+                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                    $fieldmap[$fieldname]['scale']=$clang->gT('Scale 2');
+                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                    $fieldmap[$fieldname]['hasconditions']=$conditions;
+                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                 }
             }
+        }
 
         elseif ($arow['type'] == "R")
         {
@@ -2609,6 +2627,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                 }
             }
         }
@@ -2622,43 +2642,47 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
             for ($i = 1; $i <= $abrow['value']; $i++)
             {
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                    'type'=>$arow['type'],
-                    'sid'=>$surveyid,
-                    "gid"=>$arow['gid'],
-                    "qid"=>$arow['qid'],
-                    "aid"=>''
-                    );
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']=$arow['question'];
-                    $fieldmap[$fieldname]['max_files']=$abrow['value'];
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                }
-                $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
-                    'type'=>$arow['type'],
-                    'sid'=>$surveyid,
-                    "gid"=>$arow['gid'],
-                    "qid"=>$arow['qid'],
-                    "aid"=>"filecount"
-                    );
-                if ($style == "full")
-                {
-                    $fieldmap[$fieldname]['title']=$arow['title'];
-                    $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
-                    //$fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
-                    $fieldmap[$fieldname]['group_name']=$arow['group_name'];
-                    $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
-                    $fieldmap[$fieldname]['hasconditions']=$conditions;
-                    $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                }
+            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
+            $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+            'type'=>$arow['type'],
+            'sid'=>$surveyid,
+            "gid"=>$arow['gid'],
+            "qid"=>$arow['qid'],
+            "aid"=>''
+            );
+            if ($style == "full")
+            {
+                $fieldmap[$fieldname]['title']=$arow['title'];
+                $fieldmap[$fieldname]['question']=$arow['question'];
+                $fieldmap[$fieldname]['max_files']=$abrow['value'];
+                $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                $fieldmap[$fieldname]['hasconditions']=$conditions;
+                $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
             }
+            $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}"."_filecount";
+            $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+            'type'=>$arow['type'],
+            'sid'=>$surveyid,
+            "gid"=>$arow['gid'],
+            "qid"=>$arow['qid'],
+            "aid"=>"filecount"
+            );
+            if ($style == "full")
+            {
+                $fieldmap[$fieldname]['title']=$arow['title'];
+                $fieldmap[$fieldname]['question']="filecount - ".$arow['question'];
+                    //$fieldmap[$fieldname]['subquestion']=$clang->gT("Comment");
+                $fieldmap[$fieldname]['group_name']=$arow['group_name'];
+                $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
+                $fieldmap[$fieldname]['hasconditions']=$conditions;
+                $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+            }
+        }
         }
         else  // Question types with subquestions and one answer per subquestion  (M/A/B/C/E/F/H/P)
         {
@@ -2668,7 +2692,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}";
                 if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
-                $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>$arow['type'], 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>$abrow['title']);
+                $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
+                'type'=>$arow['type'],
+                'sid'=>$surveyid,
+                'gid'=>$arow['gid'],
+                'qid'=>$arow['qid'],
+                'aid'=>$abrow['title'],
+                'sqid'=>$abrow['qid']);
                 if ($style == "full")
                 {
                     $fieldmap[$fieldname]['title']=$arow['title'];
@@ -2678,15 +2708,17 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
-                    if ($arow['same_default'])
-                    {
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                        if ($arow['same_default'])
+                        {
                         $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
-                    }
-                    else
-                    {
+                        }
+                        else
+                        {
                         $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
+                        }
                     }
-                }
                 if ($arow['type'] == "P")
                 {
                     $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}{$abrow['title']}comment";
@@ -2701,6 +2733,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                        $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                     }
                 }
             }
@@ -2718,6 +2752,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                     $fieldmap[$fieldname]['hasconditions']=$conditions;
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                    $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                    $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                 }
                 if ($arow['type']=="P")
                 {
@@ -2733,10 +2769,15 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         $fieldmap[$fieldname]['mandatory']=$arow['mandatory'];
                         $fieldmap[$fieldname]['hasconditions']=$conditions;
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
+                        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+                        $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
                     }
                 }
             }
         }
+        $fieldmap[$fieldname]['relevance']=$arow['relevance'];
+        $fieldmap[$fieldname]['questionSeq']=$questionSeq;
+        $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
     }
     if (isset($fieldmap)) {
         $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;
@@ -2762,7 +2803,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset($timingsFieldMap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
-        return $timingsFieldMap[$surveyid][$style][$clang->langcode];
+        return $timingsFielsdMap[$surveyid][$style][$clang->langcode];
     }
 
     //do something
@@ -6664,6 +6705,9 @@ function recursive_stripslashes($array_or_string)
 */
 function checkquestionfordisplay($qid, $gid=null)
 {
+    // TMSW [DONE] Conditions->Relevance:  not needed (only check relevance)
+    return LimeExpressionManager::QuestionIsRelevant($qid);
+
     global $dbprefix, $connect,$surveyid,$thissurvey;
 
     if (!is_array($thissurvey))

@@ -98,7 +98,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
 
         //Before doing the "templatereplace()" function, check the $thissurvey['url']
         //field for limereplace stuff, and do transformations!
-        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
+        $thissurvey['surveyls_url']=dTexts__run($thissurvey['surveyls_url']);
         $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
         $content='';
@@ -172,7 +172,7 @@ if ((isset($move) && $move == "movesubmit") && (!isset($notanswered) || !$notans
         if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
         {
 
-            $url = dTexts::run($thissurvey['surveyls_url']);
+            $url = dTexts__run($thissurvey['surveyls_url']);
             $url = passthruReplace($url, $thissurvey);
             $url=str_replace("{SAVEDID}",$saved_id, $url);			           // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
@@ -248,7 +248,7 @@ $conditions=array();
 $inputnames=array();
 $groupUnconditionnalQuestionsCount=array();
 
-LimeExpressionManager::StartProcessingPage(true,true);  // means that all variables are on the same page
+LimeExpressionManager::StartProcessingPage(false,true,true);  // means that all variables are on the same page
 
 foreach ($_SESSION['grouplist'] as $gl)
 {
@@ -256,7 +256,7 @@ foreach ($_SESSION['grouplist'] as $gl)
     $groupUnconditionnalQuestionsCount[$gid]=0;
     $qnumber = 0;
 
-    LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"));
+    LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
 
     foreach ($_SESSION['fieldarray'] as $ia)
     {
@@ -267,7 +267,7 @@ foreach ($_SESSION['grouplist'] as $gl)
             $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
             $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
 
-            LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$ia[0],$ia[2],$ia[4],$hidden);
+//            LimeExpressionManager::ProcessRelevance($qidattributes['relevance'],$ia[0],$ia[2],$ia[4],$hidden);
             // TODO - double check this  about expressions - should it continue?
             if ($ia[4] != '*' && ($qidattributes===false || $qidattributes['hidden']==1)) {
                 continue;
@@ -959,7 +959,7 @@ foreach ($_SESSION['grouplist'] as $gl)
     echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
     echo "\n";
 
-    LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"));
+    LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
 
     if ($groupdescription)
     {

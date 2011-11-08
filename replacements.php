@@ -1,5 +1,5 @@
 <?php
-
+global $rootdir;
 include_once($rootdir.'/classes/eval/LimeExpressionManager.php');
 
 /**
@@ -93,7 +93,7 @@ function templatereplace($line, $replacements=array(), $anonymized=false, $quest
     // Only continue in this routine if there are bracketed items to replace {}
     if (strpos($line, "{") === false)
     {
-        return $line;
+        return LimeExpressionManager::ProcessString($line, $questionNum, NULL, false, 1, 1, true);
     }
 
     if (
@@ -723,3 +723,8 @@ function PassthruReplace($line, $thissurvey)
     return $line;
 }
 
+function dTexts__run($text,$questionNum=NULL)
+{
+//    return LimeExpressionManager::ProcessString($text,$questionNum,NULL,true);
+    return $text;
+}

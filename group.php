@@ -155,7 +155,7 @@ else
             {
                 $assessments = doAssessment($surveyid);
             }
-            $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
+            $thissurvey['surveyls_url']=dTexts__run($thissurvey['surveyls_url']);
             if($thissurvey['printanswers'] != 'Y')
             {
                 killSession();
@@ -200,7 +200,7 @@ else
 
             //Before doing the "templatereplace()" function, check the $thissurvey['url']
             //field for limereplace stuff, and do transformations!
-            $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
+            $thissurvey['surveyls_url']=dTexts__run($thissurvey['surveyls_url']);
             $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
             $content='';
@@ -284,7 +284,7 @@ else
                 //Automatically redirect the page to the "url" setting for the survey
 
                 $url = $thissurvey['surveyls_url'];
-                $url = dTexts::run($thissurvey['surveyls_url']);
+                $url = dTexts__run($thissurvey['surveyls_url']);
                 $url = passthruReplace($url, $thissurvey);
                 $url = str_replace("{SAVEDID}",$saved_id, $url);               // to activate the SAVEDID in the END URL
                 $url = str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
@@ -390,8 +390,8 @@ $qtypesarray = array();
 $qnumber = 0;
 
 //This re-starts the group, after checking relevance, so get consistent and unduplcated set of replacement functions
-LimeExpressionManager::StartProcessingPage();
-LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"));
+LimeExpressionManager::StartProcessingPage($thissurvey['allowjumps']=='Y');
+LimeExpressionManager::StartProcessingGroup($gid,($thissurvey['anonymized']!="N"),$thissurvey['sid']);
 
 foreach ($_SESSION['fieldarray'] as $key=>$ia)
 {
@@ -1279,7 +1279,8 @@ if (isset($qanda) && is_array($qanda))
         $eqnAttributes = getQuestionAttributes($qa[4], $qa[8]);
         $hidden = (isset($eqnAttributes['hidden']) ? $eqnAttributes['hidden'] : 0);
         // Want to make the question invisible and have save.php blank out the value if it is irrelevant
-        if (!LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance'],$qa[4],$qa[5],$qa[8],$hidden))
+//        if (!LimeExpressionManager::ProcessRelevance($eqnAttributes['relevance'],$qa[4],$qa[5],$qa[8],$hidden))
+        if (!LimeExpressionManager::QuestionIsRelevant($qa[4]))
         {
             $n_q_display = ' style="display: none;"';;
         }        
@@ -1333,8 +1334,8 @@ echo templatereplace(file_get_contents("$thistpl/endgroup.pstpl"));
 echo "\n";
 
 LimeExpressionManager::FinishProcessingGroup();
-LimeExpressionManager::FinishProcessingPage();
 echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+LimeExpressionManager::FinishProcessingPage();
 
 if (!$previewgrp){
     $navigator = surveymover(); //This gets globalised in the templatereplace function

@@ -1175,6 +1175,9 @@ function makelanguagechanger()
 
 function checkgroupfordisplay($gid)
 {
+    return LimeExpressionManager::GroupIsRelevant($gid);
+    // TMSW Conditions->Relevance:  The rest of this function is not needed
+    // 
     //This function checks all the questions in a group to see if they have
     //conditions, and if the do - to see if the conditions are met.
     //If none of the questions in the group are set to display, then
@@ -1257,6 +1260,10 @@ function checkgroupfordisplay($gid)
 
 function checkconfield($value)
 {
+    // TMSW [DONE] Conditions->Relevance:  this function is not needed.  Use EM to NULL fields that are irrelevant
+    $fieldNameParts = explode('X',$code);
+    return LimeExpressionManager::QuestionIsRelevant($fieldNameParts[2]);
+
     global $dbprefix, $connect,$surveyid,$thissurvey,$qattributes;
     $fieldisdisplayed=true;
     if (!is_array($thissurvey))
@@ -2058,7 +2065,7 @@ function submittokens($quotaexit=false)
             if ($thissurvey['anonymized'] == "N")
             {
                 // Survey is not anonymous, we can translate insertAns placeholder
-                $subject=dTexts::run($subject);
+                $subject=dTexts__run($subject);
             }
 
             $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
@@ -2080,7 +2087,7 @@ function submittokens($quotaexit=false)
                 if ($thissurvey['anonymized'] == "N")
                 {
                     // Survey is not anonymous, we can translate insertAns placeholder
-                    $message=dTexts::run($message);
+                    $message=dTexts__run($message);
                 }
 
                 if (!$ishtml)
@@ -2156,7 +2163,7 @@ function SendSubmitNotifications()
         {
             foreach($aRecipient as $sRecipient)
             {
-                $sRecipient=dTexts::run($sRecipient);
+                $sRecipient=dTexts__run($sRecipient);
                 if(validate_email($sRecipient))
                 {
                     $aEmailNotificationTo[]=$sRecipient;
@@ -2182,7 +2189,7 @@ function SendSubmitNotifications()
         {
             foreach($aRecipient as $sRecipient)
             {
-                $sRecipient=dTexts::run($sRecipient);
+                $sRecipient=dTexts__run($sRecipient);
                 if(validate_email($sRecipient))
                 {
                     $aEmailResponseTo[]=$sRecipient;

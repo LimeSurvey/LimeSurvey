@@ -542,7 +542,7 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
 
     $qtitle=$ia[3];
     //Replace INSERTANS statements with previously provided answers;
-    $qtitle=dTexts::run($qtitle,$name);
+    $qtitle=dTexts__run($qtitle,$name);
 
 
     //GET HELP
@@ -3285,7 +3285,7 @@ function do_multiplechoice($ia)
         {
             $answer .= ' value="'.htmlspecialchars($_SESSION[$myfname],ENT_QUOTES).'"';
         }
-        $answer .= " onkeyup='$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#answer{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) {\$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\");} $numbersonly ".$callmaxanswscriptcheckbox."' />";
+        $answer .= " onkeyup='$checkconditionFunction(this.value, this.name, this.type);if ($.trim($(\"#answer{$myfname}\").val())!=\"\" && !document.getElementById(\"answer{$myfname}cbox\").checked) { \$(\"#answer{$myfname}cbox\").attr(\"checked\",\"checked\"); } $numbersonly ".$callmaxanswscriptcheckbox."' />";
         $answer .= '<input type="hidden" name="java'.$myfname.'" id="java'.$myfname.'" value="';
 
         if ($maxansw > 0)
@@ -5265,7 +5265,7 @@ function do_array_5point($ia)
     {
         $myfname = $ia[1].$ansrow['title'];
 
-        $answertext=dTexts::run($ansrow['question']);
+        $answertext=dTexts__run($ansrow['question']);
         if (strpos($answertext,'|')) {$answertext=substr($answertext,0,strpos($answertext,'|'));}
 
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
@@ -5302,7 +5302,7 @@ function do_array_5point($ia)
             $answer_t_content .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n</label>\n\t</td>\n";
         }
 
-        $answertext2=dTexts::run($ansrow['question']);
+        $answertext2=dTexts__run($ansrow['question']);
         if (strpos($answertext2,'|'))
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
@@ -5420,7 +5420,7 @@ function do_array_10point($ia)
     while ($ansrow = $ansresult->FetchRow())
     {
         $myfname = $ia[1].$ansrow['title'];
-        $answertext=dTexts::run($ansrow['question']);
+        $answertext=dTexts__run($ansrow['question']);
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
          containing a list of unanswered questions, the current question must be in the array,
          and there must be no answer available for the item in this session. */
@@ -5559,7 +5559,7 @@ function do_array_yesnouncertain($ia)
         while ($ansrow = $ansresult->FetchRow())
         {
             $myfname = $ia[1].$ansrow['title'];
-            $answertext=dTexts::run($ansrow['question']);
+            $answertext=dTexts__run($ansrow['question']);
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
              containing a list of unanswered questions, the current question must be in the array,
              and there must be no answer available for the item in this session. */
@@ -5715,7 +5715,7 @@ function do_array_increasesamedecrease($ia)
     while ($ansrow = $ansresult->FetchRow())
     {
         $myfname = $ia[1].$ansrow['title'];
-        $answertext=dTexts::run($ansrow['question']);
+        $answertext=dTexts__run($ansrow['question']);
         /* Check if this item has not been answered: the 'notanswered' variable must be an array,
          containing a list of unanswered questions, the current question must be in the array,
          and there must be no answer available for the item in this session. */
@@ -5920,7 +5920,7 @@ function do_array($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            $answertext=dTexts::run($ansrow['question']);
+            $answertext=dTexts__run($ansrow['question']);
             $answertextsave=$answertext;
             if (strpos($answertext,'|'))
             {
@@ -6403,7 +6403,7 @@ function do_array_multitext($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            $answertext=dTexts::run($ansrow['question']);
+            $answertext=dTexts__run($ansrow['question']);
             $answertextsave=$answertext;
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
              containing a list of unanswered questions, the current question must be in the array,
@@ -6679,7 +6679,7 @@ function do_array_multiflexi($ia)
                 }
             }
             $myfname = $ia[1].$ansrow['title'];
-            $answertext=dTexts::run($ansrow['question']);
+            $answertext=dTexts__run($ansrow['question']);
             $answertextsave=$answertext;
             /* Check if this item has not been answered: the 'notanswered' variable must be an array,
              containing a list of unanswered questions, the current question must be in the array,
@@ -6899,7 +6899,7 @@ function do_arraycolumns($ia)
             while ($ansrow = $ansresult->FetchRow())
             {
                 $anscode[]=$ansrow['title'];
-                $answers[]=dTexts::run($ansrow['question']);
+                $answers[]=dTexts__run($ansrow['question']);
             }
             $trbc = '';
             $odd_even = '';
@@ -7240,7 +7240,7 @@ function do_array_dual($ia)
             }
 
             $trbc = alternation($trbc , 'row');
-            $answertext=dTexts::run($ansrow['question']);
+            $answertext=dTexts__run($ansrow['question']);
             $answertextsave=$answertext;
 
             $dualgroup=0;
@@ -7486,11 +7486,11 @@ function do_array_dual($ia)
 
                 if ((is_array($notanswered)) && (array_search($ia[1], $notanswered) !== FALSE) && ($_SESSION[$myfname] == "" || $_SESSION[$myfname1] == "") )
                 {
-                    $answertext="<span class='errormandatory'>".dTexts::run($ansrow['question'])."</span>";
+                    $answertext="<span class='errormandatory'>".dTexts__run($ansrow['question'])."</span>";
                 }
                 else
                 {
-                    $answertext=dTexts::run($ansrow['question']);
+                    $answertext=dTexts__run($ansrow['question']);
                 }
 
                 $trbc = alternation($trbc , 'row');

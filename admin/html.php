@@ -675,7 +675,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         . "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Description:")."</strong></td>\n<td align='left'>";
 
-        LimeExpressionManager::StartProcessingGroup($gid);  // loads list of replacement values available for this group
+        LimeExpressionManager::StartProcessingGroup($gid,false,$surveyid);  // loads list of replacement values available for this group
 
         if (trim($surveyinfo['surveyls_description'])!='') 
         {
@@ -1286,7 +1286,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
 
         // Color code the question, help, and relevance
 
-        templatereplace($qrrow['question']);
+        templatereplace($qrrow['question'],false,false,$qid);
         $questionsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();
 
         $questionsummary .= "</td></tr>\n"
@@ -1294,7 +1294,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         . $clang->gT("Help:")."</strong></td>\n<td align='left'>";
         if (trim($qrrow['help'])!='')
         {
-            templatereplace($qrrow['help']);
+            templatereplace($qrrow['help'],false,false,$qid);
             $questionsummary .= LimeExpressionManager::GetLastPrettyPrintExpression();            
         }
         $questionsummary .= "</td></tr>\n";
@@ -1358,19 +1358,14 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
             }
             $questionsummary .= "</td></tr>";
         }
-        $questionAttributes = getQuestionAttributes($qid, $qrrow['type']);
-        if (!is_null($questionAttributes['relevance']))
+        if (is_null($qrrow['relevance']) || trim($qrrow['relevance']) == '')
         {
-            $relevance = $questionAttributes['relevance'];
-            if ($relevance !== '' && $relevance !== '1' && $relevance !== '0')
-            {
-                LimeExpressionManager::ProcessString("{" . $relevance . "}");    // tests Relevance equation so can pretty-print it
-                $rel2show = LimeExpressionManager::GetLastPrettyPrintExpression();
-            }
-            else
-            {
-                $rel2show = $relevance;
-            }
+            $rel2show = 1;
+        }
+        else
+        {
+            LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
+            $rel2show = LimeExpressionManager::GetLastPrettyPrintExpression();
             $questionsummary .= "<tr>"
             . "<td align='right' valign='top'><strong>"
             . $clang->gT("Relevance:")."</strong></td>\n"

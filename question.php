@@ -209,7 +209,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         {
             $assessments = doAssessment($surveyid);
         }
-        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
+        $thissurvey['surveyls_url']=dTexts__run($thissurvey['surveyls_url']);
 
         if($thissurvey['printanswers'] != 'Y')
         {
@@ -248,7 +248,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
 
         //Before doing the "templatereplace()" function, check the $thissurvey['url']
         //field for limereplace stuff, and do transformations!
-        $thissurvey['surveyls_url']=dTexts::run($thissurvey['surveyls_url']);
+        $thissurvey['surveyls_url']=dTexts__run($thissurvey['surveyls_url']);
         $thissurvey['surveyls_url']=passthruReplace($thissurvey['surveyls_url'], $thissurvey);
 
         $content='';
@@ -313,7 +313,7 @@ if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notan
         if (isset($thissurvey['autoredirect']) && $thissurvey['autoredirect'] == "Y" && $thissurvey['surveyls_url'])
         {
             //Automatically redirect the page to the "url" setting for the survey
-            $url = dTexts::run($thissurvey['surveyls_url']);
+            $url = dTexts__run($thissurvey['surveyls_url']);
             $url = passthruReplace($url, $thissurvey);
             $url=str_replace("{SAVEDID}",$saved_id, $url);           // to activate the SAVEDID in the END URL
             $url=str_replace("{TOKEN}",$clienttoken, $url);          // to activate the TOKEN in the END URL
