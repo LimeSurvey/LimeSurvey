@@ -215,7 +215,7 @@
     // Show 'SAVE FORM' only when click the 'Save so far' button the first time
     if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SESSION['scid']))
     {
-        if($thissurvey['tokenanswerspersistence'] != 'Y')
+        if($thissurvey['tokenanswerspersistence'] != 'Y' || !tableExists('tokens_'.$surveyid))
         {
             showsaveform();
         }
@@ -504,7 +504,7 @@
                             if (!is_null($phparray) && count($phparray) > 0)
                             {
                                 // Move the (unmoved, temp) files from temp to files directory.
-                                // Check all possible file uploads 
+                                // Check all possible file uploads
                                 for ($i = 0; $i < count($phparray); $i++)
                                 {
                                     if (file_exists($tmp.$phparray[$i]->filename))
