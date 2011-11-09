@@ -623,6 +623,9 @@ while ($degrow = $degresult->FetchRow())
                                 {
                                     $conditions[]=$ansrow['answer'];
                                 }
+                            	if($conrow['value'] == "-oth-") {
+                            	    $conditions[]=$clang->gT("Other");
+                            	}
                                 $conditions = array_unique($conditions);
                                 break;
                             case "M":
