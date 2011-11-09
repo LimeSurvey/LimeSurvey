@@ -916,7 +916,7 @@ class LimeExpressionManager {
         $now = microtime(true);
 
 //        $CI->load->model('answers_model');
-        $qans = $this->getAllAnswersForEM($surveyid,NULL,$this->slang);
+        $qans = $this->getAllAnswersForEM($surveyid,NULL);  // ,$this->slang);  // TODO - will this work for multi-lingual?
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAllAnswersForEM',(microtime(true) - $now));
         $now = microtime(true);

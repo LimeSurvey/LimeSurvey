@@ -675,6 +675,9 @@ if($action == "orderquestions")
 
     $orderquestions	.= "<form method='post' action=''><ul class='movableList'>";
 
+    LimeExpressionManager::StartProcessingPage(false, true);
+    LimeExpressionManager::StartProcessingGroup(1, false, $surveyid);   // will this work?
+
     for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start with 0
     {
         $downdisabled = "";
@@ -759,7 +762,11 @@ if($action == "orderquestions")
             // Fill the sortorder hiddenfield so we know what field is moved down
             $orderquestions.= "\t<input type='image' src='$imageurl/down.png' style='float:right;' name='btndown_$i' onclick=\"$('#sortorder').val('{$oqarray[$i]['question_order']}');$('#questionordermethod').val('down')\" ".$downdisabled."/>\n";
         }
-        $orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ".FlattenText($oqarray[$i]['question']);
+        $orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ";
+        $relevance = ($oqarray[$i]['relevance'] == '') ? 1 : $oqarray[$i]['relevance'];
+        $showme = '[{' . $relevance . '}] ' . $oqarray[$i]['question'];
+        LimeExpressionManager::ProcessString(FlattenText($showme), $oqarray[$i]['qid']);
+        $orderquestions.=LimeExpressionManager::GetLastPrettyPrintExpression();
         $orderquestions.= "</li>\n" ;
     }
 
@@ -771,6 +778,9 @@ if($action == "orderquestions")
     . "\t<input type='hidden' name='action' value='orderquestions' />"
     . "</form>" ;
     $orderquestions .="<br />" ;
+
+    LimeExpressionManager::FinishProcessingGroup();
+    LimeExpressionManager::FinishProcessingPage();
 }
 
 function questionjavascript($type)
