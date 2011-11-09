@@ -777,7 +777,7 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                     $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
                     if($OrigQuestion['type']=="1") {
                         //for a dual scale array question type we have to massage the system
-                        $appendj .= "\t\tdocument.getElementById('$dtbody).value='on';\n";
+                        $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
                     }
                     $appendj .= "\t}\n";
                     $appendj .= "\telse\n";

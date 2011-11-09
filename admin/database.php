@@ -556,7 +556,8 @@ if(isset($surveyid))
                             . "SET type='".db_quote($_POST['type'])."', title='".db_quote($_POST['title'])."', "
                             . "question='".db_quote($_POST['question_'.$qlang])."', preg='".db_quote($_POST['preg'])."', help='".db_quote($_POST['help_'.$qlang])."', "
                             . "gid='".db_quote($postgid)."', other='".db_quote($_POST['other'])."', "
-                            . "mandatory='".db_quote($_POST['mandatory'])."'";
+                            . "mandatory='".db_quote($_POST['mandatory'])."'"
+                            . ", relevance='".db_quote($_POST['relevance'])."'";;
                             if ($oldgid!=$postgid)
                             {
                                 if ( getGroupOrder(returnglobal('sid'),$oldgid) > getGroupOrder(returnglobal('sid'),returnglobal('gid')) )

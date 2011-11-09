@@ -483,6 +483,12 @@ if ($action == "editquestion" || $action=="addquestion")
     . "<input type='text' id='preg' name='preg' size='50' value=\"".$eqrow['preg']."\" />\n"
     . "\t</li>";
 
+    // Relevance
+    $editquestion .=  "<li>
+                    <label for='relevance'>".$clang->gT("Relevance equation:")."</label>
+                    <textarea cols='50' rows='1' id='relevance' name='relevance'>".$eqrow['relevance']."</textarea>
+                </li>";
+
 
     if ($adding)
     {

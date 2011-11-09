@@ -3633,16 +3633,16 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT('Present answers in random order'),
     "caption"=>$clang->gT('Random answer order'));
 
-    $qattributes['relevance']=array(
-    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
-    'category'=>$clang->gT('Display'),
-    'sortorder'=>1,
-    'inputtype'=>'text',
-    'default'=>'1',
-    'help'=>$clang->gT('The Relevance Equation determines whether a question should be shown (if true) or hiddden and marked as Not Applicable (if false).'
-            . '  The Relevance equation can be as complex as you like, using any combination of mathematical operators, nested parentheses,'
-            . ' any variable or token that has already been set, and any of more than 50 functions.  It is parsed by the ExpressionManager.'),
-    'caption'=>$clang->gT('Relevance Equation'));
+//    $qattributes['relevance']=array(
+//    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+//    'category'=>$clang->gT('Display'),
+//    'sortorder'=>1,
+//    'inputtype'=>'text',
+//    'default'=>'1',
+//    'help'=>$clang->gT('The Relevance Equation determines whether a question should be shown (if true) or hiddden and marked as Not Applicable (if false).'
+//            . '  The Relevance equation can be as complex as you like, using any combination of mathematical operators, nested parentheses,'
+//            . ' any variable or token that has already been set, and any of more than 50 functions.  It is parsed by the ExpressionManager.'),
+//    'caption'=>$clang->gT('Relevance Equation'));
 
     $qattributes["slider_layout"]=array(
     "types"=>"K",

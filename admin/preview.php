@@ -127,12 +127,12 @@ $content .= templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
 $question_template = file_get_contents("$thistpl/question.pstpl");
 if(substr_count($question_template , '{QUESTION_ESSENTIALS}') > 0 ) // the following has been added for backwards compatiblity.
 {// LS 1.87 and newer templates
-    $content .= "\n".templatereplace($question_template)."\n";
+    $content .= "\n".templatereplace($question_template,NULL,false,$qid)."\n";
 }
 else
 {// LS 1.86 and older templates
     $content .= '<div '.$question['essentials'].' class="'.$question['class'].$question['man_class'].'">';
-    $content .= "\n".templatereplace($question_template)."\n";
+    $content .= "\n".templatereplace($question_template,NULL,false,$qid)."\n";
     $content .= "\n\t</div>\n";
 };
 
