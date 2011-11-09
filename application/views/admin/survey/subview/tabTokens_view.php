@@ -100,6 +100,22 @@
             </select>
         </li>
 
+        <li>
+            <label for='sendconfirmation'><?php echo $clang->gT("Send confirmation emails?"); ?></label>
+            <select name='sendconfirmation' id='sendconfirmation'>
+                <option value='Y'
+                <?php if ($esrow['sendconfirmation'] == "Y") { ?>
+                    selected='selected'
+                <?php } ?>
+                ><?php echo $clang->gT("Yes"); ?></option>
+                <option value='N'
+                <?php if ($esrow['sendconfirmation'] == "N") { ?>
+                selected='selected'
+                <?php } ?>
+                ><?php echo $clang->gT("No"); ?></option>
+            </select>
+        </li>
+
 
          <li><label for='tokenlength'><?php echo $clang->gT("Set token length to:"); ?></label>
          <input type='text' value="<?php echo $esrow['tokenlength']; ?>" name='tokenlength' id='tokenlength' size='12' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />

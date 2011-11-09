@@ -378,8 +378,13 @@ function db_upgrade($oldversion) {
         modify_database("", "UPDATE prefix_settings_global SET stg_value='148' WHERE stg_name='DBVersion'"); echo $modifyoutput; flush();ob_flush();
 
     }
+    if ($oldversion < 153)
+    {
+        modify_database("","ALTER TABLE `prefix_surveys` ADD `sendconfirmation` CHAR(1) default 'Y'"); echo $modifyoutput; flush();@ob_flush();
+		upgrade_survey_table152();
+    }
 
-    echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br />';
+    echo '<br /><br />'.sprintf($clang->gT('Database update finished (%s)'),date('Y-m-d H:i:s')).'<br /><br />';
     return true;
 }
 

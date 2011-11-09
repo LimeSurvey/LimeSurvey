@@ -164,7 +164,12 @@ class emailtemplates extends Survey_Common_Controller {
             $sHTMLOutput .="</ul></div>"
 
             ."<div id='tab-{$grouplang}-confirmation'>";
-            $sHTMLOutput .= "<ul><li><label for='email_confirm_subj_{$grouplang}'>".$clang->gT("Confirmation email subject:")."</label>\n"
+            $sHTMLOutput .= "<ul>";
+            if($surveyinfo['sendconfirmation'] == 'N')
+			{
+			    $sHTMLOutput .= "<li><span class='warningtext'>".$clang->gT("No confirmation emails will be sent. To send emails see Survey properties.")."</span></li>\n";
+			}
+            $sHTMLOutput .= "<li><label for='email_confirm_subj_{$grouplang}'>".$clang->gT("Confirmation email subject:")."</label>\n"
             . "<input type='text' size='80' name='email_confirm_subj_".$esrow['surveyls_language']."' id='email_confirm_subj_{$grouplang}' value=\"{$esrow['surveyls_email_confirm_subj']}\" />\n"
             . "<input type='hidden' name='email_confirm_subj_default_".$esrow['surveyls_language']."' id='email_confirm_subj_default_{$grouplang}' value='{$aDefaultTexts['confirmation_subject']}' />\n"
             . "<input type='button' value='".$clang->gT("Use default")."' onclick='javascript: fillin(\"email_confirm_subj_{$grouplang}\",\"email_confirm_subj_default_{$grouplang}\")' />\n"

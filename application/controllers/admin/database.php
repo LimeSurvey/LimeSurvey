@@ -1031,6 +1031,7 @@ class Database extends Admin_Controller {
             'showprogress'=> $this->input->post('showprogress'),
             'listpublic'=> $this->input->post('public'),
             'htmlemail'=> $this->input->post('htmlemail'),
+            'sendconfirmation'=> 'N',
             'tokenanswerspersistence'=> $this->input->post('tokenanswerspersistence'),
             'alloweditaftercompletion'=> $this->input->post('alloweditaftercompletion'),
             'usecaptcha'=> $this->input->post('usecaptcha'),

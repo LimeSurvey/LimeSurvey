@@ -1054,6 +1054,14 @@ textarea.updater-changelog {
     color: #121A28;
 }
 
+.form30newtabs li .warningtext,
+.form30 li .warningtext {
+	display: block;
+    margin: 3px 0 10px 30.5%;
+    font-weight: bold;
+    color: #EE0000;
+}
+
 .form30 table {
     width: auto;
     float: left;

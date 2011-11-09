@@ -1152,7 +1152,7 @@ function submittokens($quotaexit=false)
                 $ishtml=false;
             }
 
-            if (trim(strip_tags($thissurvey['email_confirm'])) != "")
+            if (trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y")
             {
                 $message=$thissurvey['email_confirm'];
                 $message=ReplaceFields($message, $fieldsarray, true);
@@ -1180,7 +1180,7 @@ function submittokens($quotaexit=false)
             }
             else
             {
-                //There is nothing in the message, so don't send a confirmation email
+                //There is nothing in the message or "Send confirmation emails" is set to "No" , so don't send a confirmation email
                 //This section only here as placeholder to indicate new feature :-)
             }
         }

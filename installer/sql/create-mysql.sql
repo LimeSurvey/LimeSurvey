@@ -276,6 +276,7 @@ CREATE TABLE `prefix_surveys` (
   `publicgraphs` char(1) default 'N',
   `listpublic` char(1) default 'N',
   `htmlemail` char(1) default 'N',
+  `sendconfirmation` char(1) default 'Y',
   `tokenanswerspersistence` char(1) default 'N',
   `assessments` char(1) default 'N', 
   `usecaptcha` char(1) default 'N',

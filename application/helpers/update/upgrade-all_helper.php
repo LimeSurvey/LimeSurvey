@@ -24,7 +24,7 @@ function db_upgrade_all($oldversion) {
     $CI =& get_instance();
     $CI->load->dbforge();
     $clang = $CI->limesurvey_lang;
-    echo str_pad($clang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".". $clang->gT('Please be patient...')."<br /><br />\n";
+    echo str_pad($clang->gT('The LimeSurvey database is being upgraded').' ('.date('Y-m-d H:i:s').')',14096).".<br /><br />". $clang->gT('Please be patient...')."<br /><br />\n";
 
     if ($oldversion < 143)
     {
@@ -320,6 +320,35 @@ function upgrade_surveypermissions_table145()
                                                                             'uid'=>$aPermissionRow['uid'])
                                                           );
             modify_database("",$sPermissionInsertQuery); echo $modifyoutput; flush();@ob_flush();
+        }
+    }
+}
+
+function upgrade_survey_table152()
+{	
+	$CI =& get_instance();
+    global $modifyoutput, $connect;
+    $sSurveyQuery = "SELECT * FROM {$CI->db->dbprefix}surveys_languagesettings";
+    $oSurveyResult = db_execute_assoc($sSurveyQuery);
+    foreach ( $oSurveyResult->result_array() as $aSurveyRow )
+    {
+		
+        $CI->load->library('Limesurvey_lang',array("langcode"=>$aSurveyRow['surveyls_language']));
+        $oLanguage = $CI->limesurvey_lang;
+        $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
+        unset($oLanguage);
+		
+        if (trim(strip_tags($aSurveyRow['surveyls_email_confirm'])) == '')
+        {
+			
+			$sSurveyUpdateQuery= "update {$CI->db->dbprefix}surveys set sendconfirmation='N' where sid=".$aSurveyRow['surveyls_survey_id'];
+            $connect->execute($sSurveyUpdateQuery);
+			
+			$sSurveyUpdateQuery= "update {$CI->db->dbprefix}surveys_languagesettings set
+                                  surveyls_email_confirm_subj=".$CI->db->escape($aDefaultTexts['confirmation_subject']).",
+                                  surveyls_email_confirm=".$CI->db->escape($aDefaultTexts['confirmation'])."
+                                  where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'];
+            $connect->execute($sSurveyUpdateQuery);
         }
     }
 }

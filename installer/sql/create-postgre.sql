@@ -291,6 +291,7 @@ CREATE TABLE prefix_surveys (
     publicstatistics character(1) DEFAULT 'N'::bpchar,
     publicgraphs character(1) DEFAULT 'N'::bpchar,
     htmlemail character(1) DEFAULT 'N'::bpchar,
+    sendconfirmation character(1) DEFAULT 'Y'::bpchar,
     tokenanswerspersistence character(1) DEFAULT 'N'::bpchar,
     assessments character(1) DEFAULT 'N'::bpchar,
     usecaptcha character(1) DEFAULT 'N'::bpchar,

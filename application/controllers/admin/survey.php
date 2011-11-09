@@ -1380,6 +1380,7 @@ class survey extends Survey_Common_Controller {
             $esrow['usecookie']                = 'N';
             $esrow['usecaptcha']               = 'D';
             $esrow['htmlemail']                = 'Y';
+            $esrow['sendconfirmation']         = 'Y';
             $esrow['emailnotificationto']      = '';
             $esrow['anonymized']               = 'N';
             $esrow['datestamp']                = 'N';
@@ -1771,6 +1772,7 @@ class survey extends Survey_Common_Controller {
             'printanswers'=>$this->input->post('printanswers'),
             'listpublic'=>$this->input->post('public'),
             'htmlemail'=>$this->input->post('htmlemail'),
+            'sendconfirmation'=>$this->input->post('sendconfirmation'),
             'tokenanswerspersistence'=>$this->input->post('tokenanswerspersistence'),
             'alloweditaftercompletion'=>$this->input->post('alloweditaftercompletion'),
             'usecaptcha'=>$this->input->post('usecaptcha'),

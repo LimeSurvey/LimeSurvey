@@ -302,6 +302,7 @@ CREATE TABLE [prefix_surveys] (
   [publicstatistics] char(1) default 'N',
   [publicgraphs] char(1) default 'N',
   [htmlemail] char(1) default 'N',
+  [sendconfirmation] char(1) default 'Y',
   [tokenanswerspersistence] char(1) default 'N',
   [assessments] char(1) default 'N',
   [usecaptcha] char(1) default 'N',
