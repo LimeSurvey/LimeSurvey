@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id: dionet $
- * 
+ *
  */
 
 /**
@@ -23,7 +23,7 @@
  * @subpackage	Backend
  */
 class printablesurvey extends Admin_Controller {
-    
+
 	/**
 	 * Constructor
 	 */
@@ -31,7 +31,7 @@ class printablesurvey extends Admin_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	/**
 	 * Show printable survey
 	 */
@@ -57,19 +57,19 @@ class printablesurvey extends Admin_Controller {
 		{
 		    $surveyprintlang=GetbaseLanguageFromSurveyid($surveyid);
 		}
-		
+
 		// Setting the selected language for printout
 		$clang = new limesurvey_lang(array('lang' => $surveyprintlang));
-		
+
 		$desquery = "SELECT * FROM ".$this->db->dbprefix('surveys')." inner join ".$this->db->dbprefix('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid={$surveyid} and surveyls_language=".$this->db->escape($surveyprintlang); //Getting data for this survey
-		
+
 		$desrow = db_execute_assoc($desquery)->row_array();
-		
+
 		if ($desrow==false || count($desrow)==0)
 		{
 		    safe_die('Invalid survey ID');
 		}
-	
+
 	    //echo '<pre>'.print_r($desrow,true).'</pre>';
 	    $template = $desrow['template'];
 	    $welcome = $desrow['surveyls_welcometext'];
@@ -82,25 +82,25 @@ class printablesurvey extends Admin_Controller {
 	    $surveystartdate = $desrow['startdate'];
 	    $surveyfaxto = $desrow['faxto'];
 	    $dateformattype = $desrow['surveyls_dateformat'];
-	
+
 		if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
-	
-	
+
+
 		$this->load->helper("surveytranslator");
 		$dformat=getDateFormatData($dateformattype);
 		$dformat=$dformat['phpdate'];
-		
+
 		$expirytimestamp = strtotime($surveyexpirydate);
 		$expirytimeofday_h = date('H',$expirytimestamp);
 		$expirytimeofday_m = date('i',$expirytimestamp);
-		
+
 		$surveyexpirydate = date($dformat,$expirytimestamp);
-		
+
 		if(!empty($expirytimeofday_h) || !empty($expirytimeofday_m))
 		{
 		    $surveyexpirydate .= ' &ndash; '.$expirytimeofday_h.':'.$expirytimeofday_m;
 		};
-		
+
 		//define('PRINT_TEMPLATE' , '/templates/print/' , true);
 		if(is_file($this->config->item('usertemplaterootdir').'/'.$template.'/print_survey.pstpl'))
 		{
@@ -112,17 +112,17 @@ class printablesurvey extends Admin_Controller {
 			define('PRINT_TEMPLATE_DIR' , $this->config->item('standardtemplaterootdir').'/default/' , true);
 			define('PRINT_TEMPLATE_URL' , $this->config->item('standardtemplaterooturl').'/default/' , true);
 		}
-	
+
 		$fieldmap=createFieldMap($surveyid);
-		
+
 		$degquery = "SELECT * FROM ".$this->db->dbprefix("groups")." WHERE sid='{$surveyid}' AND language='{$surveyprintlang}' ORDER BY ".$this->db->dbprefix("groups").".group_order";
 		$degresult = db_execute_assoc($degquery);
-		
+
 		if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber))
 		{
 		    $surveyfaxto=$surveyfaxnumber; //Use system fax number if none is set in survey.
 		}
-		
+
 		$pdf_form='';
 		if($this->config->item('usepdfexport') == 1 && !in_array($surveyprintlang,$this->config->item('notsupportlanguages')))
 		{
@@ -134,9 +134,9 @@ class printablesurvey extends Admin_Controller {
 		    </form>
 		    ';
 		}
-	
+
 		$headelements = getPrintableHeader();
-		
+
 		//if $showsgqacode is enabled at config.php show table name for reference
 		$showsgqacode = $this->config->item("showsgqacode");
 		if(isset($showsgqacode) && $showsgqacode == true)
@@ -147,7 +147,7 @@ class printablesurvey extends Admin_Controller {
 		{
 			$surveyname = "";
 		}
-		
+
 		$survey_output = array(
 					 'SITENAME' => $this->config->item("sitename")
 		,'SURVEYNAME' => $surveyname
@@ -165,19 +165,19 @@ class printablesurvey extends Admin_Controller {
 		,'PRIVACY' => ''
 		,'GROUPS' => ''
 		);
-		
+
 		$survey_output['FAX_TO'] ='';
 		if(!empty($surveyfaxto) && $surveyfaxto != '000-00000000') //If no fax number exists, don't display faxing information!
 		{
 		    $survey_output['FAX_TO'] = $clang->gT("Please fax your completed survey to:")." $surveyfaxto";
 		}
-		
-		
+
+
 		if ($surveystartdate!='')
 		{
 		    $survey_output['SUBMIT_BY'] = sprintf($clang->gT("Please submit by %s"), $surveyexpirydate);
 		}
-		
+
 		/**
 		 * Output arrays:
 		 *	$survey_output  =       final vaiables for whole survey
@@ -215,11 +215,11 @@ class printablesurvey extends Admin_Controller {
 		 *		$question['QUESTIONHELP'] = 		content of the question help field.
 		 *
 		 */
-	
+
 		$total_questions = 0;
 		$mapquestionsNumbers=Array();
 		$answertext = '';   // otherwise can throw an error on line 1617
-		
+
 		// =========================================================
 		// START doin the business:
 		$pdfoutput = '';
@@ -227,15 +227,15 @@ class printablesurvey extends Admin_Controller {
 		{
 		    // ---------------------------------------------------
 		    // START doing groups
-		
+
 		    $deqquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$surveyprintlang}' AND parent_qid=0 AND TYPE<>'I' ORDER BY question_order";
 		    $deqresult = db_execute_assoc($deqquery);
 		    $deqrows = array(); //Create an empty array in case FetchRow does not return any rows
 		    foreach ($deqresult->result_array() as $deqrow) {$deqrows[] = $deqrow;} // Get table output into array
-		
+
 		    // Perform a case insensitive natural sort on group name then question title of a multidimensional array
 		    usort($deqrows, 'GroupOrderThenQuestionOrder');
-		
+
 		    if ($degrow['description'])
 		    {
 		        $group_desc = $degrow['description'];
@@ -244,18 +244,18 @@ class printablesurvey extends Admin_Controller {
 		    {
 		        $group_desc = '';
 		    }
-		
+
 		    $group = array(
 					 'GROUPNAME' => $degrow['group_name']
 		    ,'GROUPDESCRIPTION' => $group_desc
 		    ,'QUESTIONS' => '' // templated formatted content if $question is appended to this at the end of processing each question.
 		    );
-		
+
 		    // A group can have only hidden questions. In that case you don't want to see the group's header/description either.
 		    $bGroupHasVisibleQuestions = false;
-		
+
 		    if(isset($_POST['printableexport'])){$pdf->titleintopdf($degrow['group_name'],$degrow['description']);}
-		
+
 		    $gid = $degrow['gid'];
 		    //Alternate bgcolor for different groups
 		    if (!isset($group['ODD_EVEN']) || $group['ODD_EVEN'] == ' g-row-even')
@@ -265,22 +265,22 @@ class printablesurvey extends Admin_Controller {
 		        {
 		            $group['ODD_EVEN'] = ' g-row-even';
 		        }
-		
+
 		        //Loop through questions
 		        foreach ($deqrows as $deqrow)
 		        {
 		            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		            // START doing questions
-		
+
 		            $qidattributes=getQuestionAttributeValues($deqrow['qid'],$deqrow['type']);
 		            if ($qidattributes['hidden']==1)
 		            {
 		                continue;
 		            }
 		            $bGroupHasVisibleQuestions = true;
-		
+
 		            //GET ANY CONDITIONS THAT APPLY TO THIS QUESTION
-		
+
 		            $printablesurveyoutput = '';
 		            $explanation = ''; //reset conditions explanation
 		            $s=0;
@@ -288,7 +288,7 @@ class printablesurvey extends Admin_Controller {
 
 		            $scenarioquery="SELECT DISTINCT ".$this->db->dbprefix("conditions").".scenario FROM ".$this->db->dbprefix("conditions")." WHERE ".$this->db->dbprefix("conditions").".qid={$deqrow['qid']} ORDER BY scenario";
 		            $scenarioresult=db_execute_assoc($scenarioquery);
-		
+
 		            //Loop through distinct scenarios, thus grouping them together.
 		            foreach ($scenarioresult->result_array() as $scenariorow)
 		            {
@@ -300,7 +300,7 @@ class printablesurvey extends Admin_Controller {
 		                {
 		                    $explanation .= '<p class="scenario">'.self::_try_debug(__LINE__).' -------- '.$clang->gT("or")." Scenario {$scenariorow['scenario']} --------</p>\n\n";
 		                }
-		
+
 		                $x=0;
 		                $distinctquery="SELECT cqid, method, cfieldname, value
 		                            FROM ".$this->db->dbprefix("conditions")."
@@ -314,7 +314,7 @@ class printablesurvey extends Admin_Controller {
 		                {
 		                    $subquery='select title, question from '.$this->db->dbprefix("questions")." where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
 		                    $subresult=db_execute_assoc($subquery)->row_array();
-		
+
 		                    if($x > 0)
 		                    {
 		                        $explanation .= ' <em>'.$clang->gT('and').'</em> ';
@@ -323,7 +323,7 @@ class printablesurvey extends Admin_Controller {
 		                    {
 		                        $distinctrow['method']='==';
 		                    }
-		
+
 		                    if($distinctrow['cqid']){ // cqid != 0  ==> previous answer match
 		                        if($distinctrow['method']=='==')
 		                        {
@@ -397,7 +397,7 @@ class printablesurvey extends Admin_Controller {
 		                        }
 		                        $answer_section = $distinctrow['value'];
 		                    }
-		
+
 		                    $conquery="SELECT cid, cqid, q.title,\n"
 		                    ."q.question, value, q.type, cfieldname\n"
 		                    ."FROM ".$this->db->dbprefix("conditions")." c, ".$this->db->dbprefix("questions")." q\n"
@@ -410,7 +410,7 @@ class printablesurvey extends Admin_Controller {
 		                    $conditions=array();
 		                    foreach ($conresult->result_array() as $conrow)
 		                    {
-		
+
 		                        $postans="";
 		                        $value=$conrow['value'];
 		                        switch($conrow['type'])
@@ -487,6 +487,9 @@ class printablesurvey extends Admin_Controller {
 		                                {
 		                                    $conditions[]=$ansrow['answer'];
 		                                }
+		                            	if($conrow['value'] == "-oth-") {
+		                            		$conditions[]=$clang->gT("Other");
+		                            	}
 		                                $conditions = array_unique($conditions);
 		                                break;
 		                            case "M":
@@ -514,7 +517,7 @@ class printablesurvey extends Admin_Controller {
 		                                } // while
 		                                break;
 		                        } // switch
-		
+
 		                        // Now let's complete the answer text with the answer_section
 		                        $answer_section="";
 		                        switch($conrow['type'])
@@ -535,7 +538,7 @@ class printablesurvey extends Admin_Controller {
 		                                    $answer_section=" (".$ansrow['question'].")";
 		                                }
 		                                break;
-		
+
 		                            case "1": // dual: (Label 1), (Label 2)
 		                                $labelIndex=substr($conrow['cfieldname'],-1);
 		                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
@@ -591,7 +594,7 @@ class printablesurvey extends Admin_Controller {
 		                                break;
 		                        }
 		                    }
-		
+
 		                    if (count($conditions) > 1)
 		                    {
 		                        $explanation .=  "'".implode("' ".$clang->gT("or")." '", $conditions)."'";
@@ -623,23 +626,23 @@ class printablesurvey extends Admin_Controller {
 		            {
 		                $explanation = '';
 		            }
-		
+
 		            ++$total_questions;
-		
-		
+
+
 		            //TIBO map question qid to their q number
 		            $mapquestionsNumbers[$deqrow['qid']]=$total_questions;
 		            //END OF GETTING CONDITIONS
-		
+
 		            $qid = $deqrow['qid'];
 		            $fieldname = "$surveyid"."X"."$gid"."X"."$qid";
-		
+
 		        	if(isset($showsgqacode) && $showsgqacode == true)
 					{
 						$deqrow['question'] = $deqrow['question']."<br />".$clang->gT("ID:")." $fieldname <br />".
 											  $clang->gT("Question code:")." ".$deqrow['title'];
 					}
-		
+
 		            $question = array(
 							 'QUESTION_NUMBER' => $total_questions	// content of the question code field
 		            ,'QUESTION_CODE' => $deqrow['title']
@@ -655,41 +658,41 @@ class printablesurvey extends Admin_Controller {
 		            ,'QUESTIONHELP' => ''			// content of the question help field.
 		            ,'ANSWER' => ''				// contains formatted HTML answer
 		            );
-		
-		
+
+
 		            if ($deqrow['mandatory'] == 'Y')
 		            {
 		                $question['QUESTION_MANDATORY'] = $clang->gT('*');
 		                $question['QUESTION_CLASS'] .= ' mandatory';
 		                $pdfoutput .= $clang->gT("*");
 		            }
-		
+
 		            $pdfoutput ='';
-		
+
 		            //DIFFERENT TYPES OF DATA FIELD HERE
-		
-		
+
+
 		            if(isset($_POST['printableexport'])){$pdf->intopdf($deqrow['title']." ".$deqrow['question']);}
-		
+
 		            if ($deqrow['help'])
 		            {
 		                $hh = $deqrow['help'];
 		                $question['QUESTIONHELP'] = $hh;
-		
+
 		                if(isset($_POST['printableexport'])){$pdf->helptextintopdf($hh);}
 		            }
-		
-		
+
+
 		            if ($qidattributes['page_break']!=0)
 		            {
 		                $question['QUESTION_CLASS'] .=' breakbefore ';
 		            }
-		
-		
+
+
 		            if (isset($qidattributes['maximum_chars']) && $qidattributes['maximum_chars']!='') {
 		                $question['QUESTION_CLASS'] ="max-chars-{$qidattributes['maximum_chars']} ".$question['QUESTION_CLASS'];
 		            }
-		
+
 		            switch($deqrow['type'])
 		            {
 		                // ==================================================================
@@ -706,34 +709,34 @@ class printablesurvey extends Admin_Controller {
 		                    }
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($pdfoutput);}
 		                    $question['ANSWER'] .="\t</ul>\n";
-		
+
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "D":  //DATE
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT('Please enter a date:');
 		                    $question['ANSWER'] .= "\t".self::_input_type_image('text',$question['QUESTION_TYPE_HELP'],30,1);
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please enter a date:")." ___________");}
-		
+
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "G":  //GENDER
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
-		
+
 		                    $question['ANSWER'] .= "\n\t<ul>\n";
 		                    $question['ANSWER'] .= "\t\t<li>\n\t\t\t".self::_input_type_image('radio',$clang->gT("Female"))."\n\t\t\t".$clang->gT("Female")." ".self::_addsgqacode("(F)")."\n\t\t</li>\n";
 		                    $question['ANSWER'] .= "\t\t<li>\n\t\t\t".self::_input_type_image('radio',$clang->gT("Male"))."\n\t\t\t".$clang->gT("Male")." ".self::_addsgqacode("(M)")."\n\t\t</li>\n";
 		                    $question['ANSWER'] .= "\t</ul>\n";
-		
+
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Female")." | o ".$clang->gT("Male"));}
-		
+
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "L": //LIST drop-down/radio-button list
-		
+
 		                    // ==================================================================
 		                case "!": //List - dropdown
 		                    if (isset($qidattributes['display_columns']) && trim($qidattributes['display_columns'])!='')
@@ -751,23 +754,23 @@ class printablesurvey extends Admin_Controller {
 		                    {
 		                        unset($optCategorySeparator);
 		                    }
-		
+
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		
+
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
 		                    $deaquery = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
 		                    $dearesult = db_execute_assoc($deaquery);
 		                    $deacount=$dearesult->num_rows();
 		                    if ($deqrow['other'] == "Y") {$deacount++;}
-		
+
 		                    $wrapper = setup_columns(0, $deacount);
-		
+
 		                    $question['ANSWER'] = $wrapper['whole-start'];
-		
+
 		                    $rowcounter = 0;
 		                    $colcounter = 1;
-		
+
 		                    foreach ($dearesult->result_array () as $dearow)
 		                    {
 		                        if (isset($optCategorySeparator))
@@ -781,15 +784,15 @@ class printablesurvey extends Admin_Controller {
 		                            {
 		                                $dearow['answer'] = $answer.self::_addsgqacode(" (".$dearow['code'].")");
 		                            }
-		                            $question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer']."\n".$wrapper['item-end'];                     
+		                            $question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer']."\n".$wrapper['item-end'];
 		                        }
 		                        else
 		                        {
-		                        	$question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer'].self::_addsgqacode(" (".$dearow['code'].")")."\n".$wrapper['item-end'];          	
+		                        	$question['ANSWER'] .= "\t".$wrapper['item-start']."\t\t".self::_input_type_image('radio' , $dearow['answer'])."\n\t\t\t".$dearow['answer'].self::_addsgqacode(" (".$dearow['code'].")")."\n".$wrapper['item-end'];
 		                        }
-		
+
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$dearow['answer']);}
-		
+
 		                        ++$rowcounter;
 		                        if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
 		                        {
@@ -816,7 +819,7 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= $wrapper['whole-end'];
 		                    //Let's break the presentation into columns.
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "O":  //LIST WITH COMMENT
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
@@ -830,17 +833,17 @@ class printablesurvey extends Admin_Controller {
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf($dearow['answer']);}
 		                    }
 		                    $question['ANSWER'] .= "\t</ul>\n";
-		
+
 		                    $question['ANSWER'] .= "\t<p class=\"comment\">\n\t\t".$clang->gT("Make a comment on your choice here:")."\n";
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf("Make a comment on your choice here:");}
 		                    $question['ANSWER'] .= "\t\t".self::_input_type_image('textarea',$clang->gT("Make a comment on your choice here:"),50,8).self::_addsgqacode(" (".$deqrow['sid']."X".$deqrow['gid']."X".$deqrow['qid']."comment)")."\n\t</p>\n";
-		
+
 		                    for($i=0;$i<9;$i++)
 		                    {
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
 		                    }
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "R":  //RANKING Type Question
 		                    $reaquery = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
@@ -856,10 +859,10 @@ class printablesurvey extends Admin_Controller {
 		                    }
 		                    $question['ANSWER'] .= "\n</ul>\n";
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "M":  //Multiple choice (Quite tricky really!)
-		
+
 		                    if (trim($qidattributes['display_columns'])!='')
 		                    {
 		                        $dcols=$qidattributes['display_columns'];
@@ -883,19 +886,19 @@ class printablesurvey extends Admin_Controller {
 		                    $mearesult = db_execute_assoc($meaquery);
 		                    $meacount = $mearesult->num_rows();
 		                    if ($deqrow['other'] == 'Y') {$meacount++;}
-		
+
 		                    $wrapper = setup_columns($dcols, $meacount);
 		                    $question['ANSWER'] = $wrapper['whole-start'];
-		
+
 		                    $rowcounter = 0;
 		                    $colcounter = 1;
-		
+
 		                    foreach ($mearesult->result_array () as $mearow)
 		                    {
 		                        $question['ANSWER'] .= $wrapper['item-start'].self::_input_type_image('checkbox',$mearow['question'])."\n\t\t".$mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].") ").$wrapper['item-end'];
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$mearow['answer']);}
 		                        //						$upto++;
-		
+
 		                        ++$rowcounter;
 		                        if ($rowcounter == $wrapper['maxrows'] && $colcounter < $wrapper['cols'])
 		                        {
@@ -924,7 +927,7 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= $wrapper['whole-end'];
 		                    //				}
 		                    break;
-		
+
 		                     // ==================================================================
 		                case "P":  //Multiple choice with comments
 		                    if (trim($qidattributes['max_answers'])=='') {
@@ -960,22 +963,22 @@ class printablesurvey extends Admin_Controller {
 		                        $pdfoutput[$j][1]=array(" o "."OtherComment"," __________");
 		                        $j++;
 		                    }
-		
+
 		                    $question['ANSWER'] = "\n<ul>\n".$question['ANSWER']."</ul>\n";
 		                    if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 		                    break;
-		
-		
+
+
 		                    // ==================================================================
 		                case "Q":  //MULTIPLE SHORT TEXT
 		                    $width=60;
-		
+
 		                    // ==================================================================
 		                case "K":  //MULTIPLE NUMERICAL
 		                    $question['QUESTION_TYPE_HELP'] = "";
 		                    $width=(isset($width))?$width:16;
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer(s) here:"),"U");}
-		
+
 		                    if (!empty($qidattributes['equals_num_value']))
 		                    {
 		                        $question['QUESTION_TYPE_HELP'] .= "* ".sprintf($clang->gT('Total of all entries must equal %d'),$qidattributes['equals_num_value'])."<br />\n";
@@ -988,12 +991,12 @@ class printablesurvey extends Admin_Controller {
 		                    {
 		                        $question['QUESTION_TYPE_HELP'] .= sprintf($clang->gT('Total of all entries must be at least %s'),$qidattributes['min_num_value'])."<br />\n";
 		                    }
-		
+
 		                    if($question['QUESTION_TYPE_HELP'] != "") {
 		                        $question['QUESTION_TYPE_HELP'] .= "<br />\n";
 		                    }
 		                    $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please write your answer(s) here:");
-		
+
 		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
 		                    $mearesult = db_execute_assoc($meaquery);
 		                    $longest_string = 0;
@@ -1010,8 +1013,8 @@ class printablesurvey extends Admin_Controller {
 		                    }
 		                    $question['ANSWER'] =  "\n<ul>\n".$question['ANSWER']."</ul>\n";
 		                    break;
-		
-		
+
+
 		                    // ==================================================================
 		                case "S":  //SHORT TEXT
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer here:");
@@ -1019,63 +1022,63 @@ class printablesurvey extends Admin_Controller {
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
 		                    break;
-		
-		
+
+
 		                    // ==================================================================
 		                case "T":  //LONG TEXT
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer here:");
 		                    $question['ANSWER'] = self::_input_type_image('textarea',$question['QUESTION_TYPE_HELP'], '100%' , 8);
-		
+
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
 		                    for($i=0;$i<9;$i++)
 		                    {
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
 		                    }
 		                    break;
-		
-		
+
+
 		                    // ==================================================================
 		                case "U":  //HUGE TEXT
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer here:");
 		                    $question['ANSWER'] = self::_input_type_image('textarea',$question['QUESTION_TYPE_HELP'], '100%' , 30);
-		
+
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
 		                    for($i=0;$i<20;$i++)
 		                    {
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
 		                    }
 		                    break;
-		
-		
+
+
 		                    // ==================================================================
 		                case "N":  //NUMERICAL
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please write your answer here:");
 		                    $question['ANSWER'] = self::_input_type_image('text',$question['QUESTION_TYPE_HELP'],20);
-		
+
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please write your answer here:"),"U");}
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf("____________________");}
-		
+
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "Y":  //YES/NO
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
 		                    $question['ANSWER'] = "\n<ul>\n\t<li>\n\t\t".self::_input_type_image('radio',$clang->gT('Yes'))."\n\t\t".$clang->gT('Yes').self::_addsgqacode(" (Y)")."\n\t</li>\n";
 		                    $question['ANSWER'] .= "\n\t<li>\n\t\t".self::_input_type_image('radio',$clang->gT('No'))."\n\t\t".$clang->gT('No').self::_addsgqacode(" (N)")."\n\t</li>\n</ul>\n";
-		
+
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"),"U");}
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("Yes"));}
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$clang->gT("No"));}
 		                    break;
-		
-		
+
+
 		                    // ==================================================================
 		                case "A":  //ARRAY (5 POINT CHOICE)
 		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order";
 		                    $mearesult = db_execute_assoc($meaquery);
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		
+
 		                    $question['ANSWER'] = "
 		<table>
 			<thead>
@@ -1089,7 +1092,7 @@ class printablesurvey extends Admin_Controller {
 				</tr>
 			</thead>
 			<tbody>";
-		
+
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 		                    $pdfoutput = array();
 		                    $j=0;
@@ -1098,7 +1101,7 @@ class printablesurvey extends Admin_Controller {
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 		                        $rowclass = alternation($rowclass,'row');
-		
+
 		                        //semantic differential question type?
 		                        if (strpos($mearow['question'],'|'))
 		                        {
@@ -1109,16 +1112,16 @@ class printablesurvey extends Admin_Controller {
 		                        	$answertext=$mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].")");
 		                        }
 		                        $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
-		
+
 		                        $pdfoutput[$j][0]=$answertext;
 		                        for ($i=1; $i<=5; $i++)
 		                        {
 		                            $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',$i)."</td>\n";
 		                            $pdfoutput[$j][$i]=" o ".$i;
 		                        }
-		
+
 		                        $answertext .= $mearow['question'];
-		
+
 		                        //semantic differential question type?
 		                        if (strpos($mearow['question'],'|'))
 		                        {
@@ -1131,15 +1134,15 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= "\t</tbody>\n</table>\n";
 		                    if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "B":  //ARRAY (10 POINT CHOICE)
 		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
-		
+
 		                    $mearesult = db_execute_assoc($meaquery);
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		
+
 		                    $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
 		                    for ($i=1; $i<=10; $i++)
 		                    {
@@ -1152,10 +1155,10 @@ class printablesurvey extends Admin_Controller {
 		                    $rowclass = 'array1';
 		                    foreach ($mearesult->result_array() as $mearow)
 		                    {
-		
+
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n\t\t\t<th class=\"answertext\">{$mearow['question']}".self::_addsgqacode(" (".$fieldname.$mearow['title'].")")."</th>\n";
 		                        $rowclass = alternation($rowclass,'row');
-		
+
 		                        $pdfoutput[$j][0]=$mearow['question'];
 		                        for ($i=1; $i<=10; $i++)
 		                        {
@@ -1168,14 +1171,14 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= "\t</tbody>\n</table>\n";
 		                    if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "C":  //ARRAY (YES/UNCERTAIN/NO)
 		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
 		                    $mearesult = db_execute_assoc($meaquery);
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		
+
 		                    $question['ANSWER'] = '
 		<table>
 			<thead>
@@ -1191,9 +1194,9 @@ class printablesurvey extends Admin_Controller {
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 		                    $pdfoutput = array();
 		                    $j=0;
-		
+
 		                    $rowclass = 'array1';
-		
+
 		                    foreach ($mearesult->result_array() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
@@ -1202,7 +1205,7 @@ class printablesurvey extends Admin_Controller {
 		                        $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',$clang->gT("Uncertain"))."</td>\n";
 		                        $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',$clang->gT("No"))."</td>\n";
 		                        $question['ANSWER'] .= "\t\t</tr>\n";
-		
+
 		                        $pdfoutput[$j]=array($mearow['question']," o ".$clang->gT("Yes")," o ".$clang->gT("Uncertain")," o ".$clang->gT("No"));
 		                        $j++;
 		                        $rowclass = alternation($rowclass,'row');
@@ -1210,13 +1213,13 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= "\t</tbody>\n</table>\n";
 		                    if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 		                    break;
-		
+
 		                case "E":  //ARRAY (Increase/Same/Decrease)
 		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order";
 		                    $mearesult = db_execute_assoc($meaquery);
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		
+
 		                    $question['ANSWER'] = '
 		<table>
 			<thead>
@@ -1233,7 +1236,7 @@ class printablesurvey extends Admin_Controller {
 		                    $pdfoutput = array();
 		                    $j=0;
 		                    $rowclass = 'array1';
-		
+
 		                    foreach ($mearesult->result_array() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
@@ -1249,7 +1252,7 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= "\t</tbody>\n</table>\n";
 		                    if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 		                    break;
-		
+
 		                    // ==================================================================
 		                case ":": //ARRAY (Multi Flexible) (Numbers)
 		                    $headstyle="style='padding-left: 20px; padding-right: 7px'";
@@ -1271,7 +1274,7 @@ class printablesurvey extends Admin_Controller {
 		                            $maxvalue=$qidattributes['multiflexible_max'];
 		                        }
 		                    }
-		
+
 		                    if (trim($qidattributes['multiflexible_step'])!='') {
 		                        $stepvalue=$qidattributes['multiflexible_step'];
 		                    }
@@ -1286,7 +1289,7 @@ class printablesurvey extends Admin_Controller {
 		                    }
 		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order";
 		                    $mearesult = db_execute_assoc($meaquery);
-		
+
 		                    if ($checkboxlayout === false)
 		                    {
 		                        if ($stepvalue > 1)
@@ -1305,38 +1308,38 @@ class printablesurvey extends Admin_Controller {
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Check any that apply"),"U");}
 		                    }
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		
+
 		                    $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
 		                    $fquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order";
 		                    $fresult = db_execute_assoc($fquery);
-		
+
 		                    $fcount = $fresult->num_rows();
 		                    $fwidth = "120";
 		                    $i=0;
 		                    $pdfoutput = array();
 		                    $pdfoutput[0][0]=' ';
-		
+
 		                    //array to temporary store X axis question codes
 		                    $xaxisarray = array();
 		                    foreach ($fresult->result_array() as $frow)
-							
+
 		                    {
 		                        $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}</th>\n";
 		                        $i++;
 		                        $pdfoutput[0][$i]=$frow['question'];
-		
+
 		                        //add current question code
 		                        $xaxisarray[$i] = $frow['title'];
 		                    }
 		                    $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 		                    $a=1; //Counter for pdfoutput
 		                    $rowclass = 'array1';
-		
+
 		                    foreach ($fresult->result_array() as $frow)
 		                    {
 		                        $question['ANSWER'] .= "\t<tr class=\"$rowclass\">\n";
 		                        $rowclass = alternation($rowclass,'row');
-		
+
 		                        $answertext=$mearow['question'];
 		                        if (strpos($answertext,'|')) {$answertext=substr($answertext,0, strpos($answertext,'|'));}
 		                        $question['ANSWER'] .= "\t\t\t\t\t<th class=\"answertext\">$answertext</th>\n";
@@ -1344,7 +1347,7 @@ class printablesurvey extends Admin_Controller {
 		                        $pdfoutput[$a][0]=$answertext;
 		                        for ($i=1; $i<=$fcount; $i++)
 		                        {
-		
+
 		                            $question['ANSWER'] .= "\t\t\t<td>\n";
 		                            if ($checkboxlayout === false)
 		                            {
@@ -1371,15 +1374,15 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= "\t</tbody>\n</table>\n";
 		                    if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 		                    break;
-		
+
 		                    // ==================================================================
 		                case ";": //ARRAY (Multi Flexible) (text)
 		                    $headstyle="style='padding-left: 20px; padding-right: 7px'";
 		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order";
 		                    $mearesult = db_execute_assoc($meaquery);
-		
+
 		                    $question['QUESTION_TYPE_HELP'] = self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		
+
 		                    $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
 		                    $fquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order";
 		                    $fresult = db_execute_assoc($fquery);
@@ -1388,7 +1391,7 @@ class printablesurvey extends Admin_Controller {
 		                    $i=0;
 		                    $pdfoutput=array();
 		                    $pdfoutput[0][0]='';
-		
+
 		                    //array to temporary store X axis question codes
 		                    $xaxisarray = array();
 		                    foreach ($fresult->result_array() as $frow)
@@ -1396,14 +1399,14 @@ class printablesurvey extends Admin_Controller {
 		                        $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}</th>\n";
 		                        $i++;
 		                        $pdfoutput[0][$i]=$frow['question'];
-		
+
 		                        //add current question code
 		                        $xaxisarray[$i] = $frow['title'];
 		                    }
 		                    $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n<tbody>\n";
 		                    $a=1;
 		                    $rowclass = 'array1';
-		
+
 		                    foreach ($mearesult->result_array() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
@@ -1432,16 +1435,16 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= "\t</tbody>\n</table>\n";
 		                    if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "F": //ARRAY (Flexible Labels)
-		
+
 		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
 		                    $mearesult = db_execute_assoc($meaquery);
-		
+
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		
+
 		                    $fquery = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE scale_id=0 and qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
 		                    $fresult = db_execute_assoc($fquery);
 		                    $fcount = $fresult->num_rows();
@@ -1466,7 +1469,7 @@ class printablesurvey extends Admin_Controller {
 		                    if (count($column_headings)>0)
 		                    {
 		                        $col_width = round($iAnswerWidth / count($column_headings));
-		
+
 		                    }
 		                    else
 		                    {
@@ -1483,13 +1486,13 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 		                    $counter = 1;
 		                    $rowclass = 'array1';
-		
+
 		                    foreach ($mearesult->result_array() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 		                        $rowclass = alternation($rowclass,'row');
 		                        if (trim($answertext)=='') $answertext='&nbsp;';
-		
+
 		                        //semantic differential question type?
 		                        if (strpos($mearow['question'],'|'))
 		                        {
@@ -1499,7 +1502,7 @@ class printablesurvey extends Admin_Controller {
 		                        {
 		                        	$answertext=$mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].")");
 		                        }
-		
+
 		                        if (trim($qidattributes['answer_width'])!='')
 		                        {
 		                            $sInsertStyle=' style="width:'.$qidattributes['answer_width'].'%" ';
@@ -1509,18 +1512,18 @@ class printablesurvey extends Admin_Controller {
 		                            $sInsertStyle='';
 		                        }
 		                        $question['ANSWER'] .= "\t\t\t<th $sInsertStyle class=\"answertext\">$answertext</th>\n";
-		
+
 		                        $pdfoutput[$counter][0]=$answertext;
 		                        for ($i=1; $i<=$fcount; $i++)
 		                        {
 		                            $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio')."</td>\n";
 		                            $pdfoutput[$counter][$i] = "o";
-		
+
 		                        }
 		                        $counter++;
-		
+
 		                        $answertext=$mearow['question'];
-		
+
 		                        //semantic differential question type?
 		                        if (strpos($mearow['question'],'|'))
 		                        {
@@ -1532,23 +1535,23 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= "\t</tbody>\n</table>\n";
 		                    if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "1": //ARRAY (Flexible Labels) multi scale
-		
+
 		                    $leftheader= $qidattributes['dualscale_headerA'];
 		                    $rightheader= $qidattributes['dualscale_headerB'];
-		
+
 		                    $headstyle = 'style="padding-left: 20px; padding-right: 7px"';
 		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
 		                    $mearesult = db_execute_assoc($meaquery);
-		
+
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		
+
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 		                    $question['ANSWER'] .= "\n<table>\n\t<thead>\n";
-		
+
 		                    $fquery = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' AND scale_id=0 ORDER BY sortorder, code";
 		                    $fresult = db_execute_assoc($fquery);
 		                    $fcount = $fresult->num_rows();
@@ -1572,17 +1575,17 @@ class printablesurvey extends Admin_Controller {
 		                    $fcount1 = $fresult1->num_rows();
 		                    $fwidth = "120";
 		                    $l2=0;
-		
+
 		                    //array to temporary store second scale question codes
 		                    $scale2array = array();
 		                    foreach ($fresult1->result_array() as $frow1)
 		                    {
 		                        $printablesurveyoutput2 .="\t\t\t<th>{$frow1['answer']}".self::_addsgqacode(" (".$frow1['code'].")")."</th>\n";
 		                        $pdfoutput[1][$l2]=$frow['answer'];
-		
+
 		                        //add current question code
 		                        $scale2array[$l2] = $frow1['code'];
-		
+
 		                        $l2++;
 		                    }
 		                    // build header if needed
@@ -1590,14 +1593,14 @@ class printablesurvey extends Admin_Controller {
 		                    {
 		                        $myheader = "\t\t\t<td>&nbsp;</td>";
 		                        $myheader .= "\t\t\t<th colspan=\"".$l1."\">$leftheader</th>\n";
-		
+
 		                        if ($rightheader !='')
 		                        {
 		                            // $myheader .= "\t\t\t\t\t" .$myheader2;
 		                            $myheader .= "\t\t\t<td>&nbsp;</td>";
 		                            $myheader .= "\t\t\t<th colspan=\"".$l2."\">$rightheader</td>\n";
 		                        }
-		
+
 		                        $myheader .= "\t\t\t\t</tr>\n";
 		                    }
 		                    else
@@ -1607,9 +1610,9 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= $myheader . "\t\t</tr>\n\n\t\t<tr>\n";
 		                    $question['ANSWER'] .= $printablesurveyoutput2;
 		                    $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
-		
+
 		                    $rowclass = 'array1';
-		
+
 		                    //counter for each subquestion
 		                    $sqcounter = 0;
 		                    foreach ($mearesult->result_array() as $mearow)
@@ -1628,7 +1631,7 @@ class printablesurvey extends Admin_Controller {
 		                        {
 		                            $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio')."</td>\n";
 		                        }
-		
+
 		                        $answertext=$mearow['question'];
 		                        if (strpos($answertext,'|'))
 		                        {
@@ -1636,14 +1639,14 @@ class printablesurvey extends Admin_Controller {
 		                            $question['ANSWER'] .= "\t\t\t<th class=\"answertextright\">$answertext</th>\n";
 		                        }
 		                        $question['ANSWER'] .= "\t\t</tr>\n";
-		
+
 		                        //increase subquestion counter
 		                        $sqcounter++;
 		                    }
 		                    $question['ANSWER'] .= "\t</tbody>\n</table>\n";
 		                    if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 		                    break;
-		
+
 		                    // ==================================================================
 		                case "H": //ARRAY (Flexible Labels) by Column
 		                    //$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
@@ -1669,8 +1672,8 @@ class printablesurvey extends Admin_Controller {
 		                    $question['ANSWER'] .= "\t\t</tr>\n\t</thead>\n\n\t<tbody>\n";
 		                    $a=1;
 		                    $rowclass = 'array1';
-		
-		
+
+
 		                    foreach ($mearesult->result_array() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
@@ -1688,7 +1691,7 @@ class printablesurvey extends Admin_Controller {
 		                        $a++;
 		                    }
 		                    $question['ANSWER'] .= "\t</tbody>\n</table>\n";
-		
+
 		                    if(isset($_POST['printableexport'])){$pdf->tableintopdf($pdfoutput);}
 		                    break;
 		                case "|":   // File Upload
@@ -1697,19 +1700,19 @@ class printablesurvey extends Admin_Controller {
 		                    // === END SWITCH ===================================================
 		            }
 		            if(isset($_POST['printableexport'])){$pdf->ln(5);}
-		
+
 		            $question['QUESTION_TYPE_HELP'] = self::_star_replace($question['QUESTION_TYPE_HELP']);
 		            $group['QUESTIONS'] .= self::_populate_template( 'question' , $question);
-		
+
 		        }
 		        if ($bGroupHasVisibleQuestions)
 		        {
 		            $survey_output['GROUPS'] .= self::_populate_template( 'group' , $group );
 		        }
 		}
-		
+
 		$survey_output['THEREAREXQUESTIONS'] =  str_replace( '{NUMBEROFQUESTIONS}' , $total_questions , $clang->gT('There are {NUMBEROFQUESTIONS} questions in this survey'));
-		
+
 		// START recursive tag stripping.
 		// PHP 5.1.0 introduced the count parameter for preg_replace() and thus allows this procedure to run with only one regular expression.
 		// Previous version of PHP needs two regular expressions to do the same thing and thus will run a bit slower.
@@ -1756,7 +1759,7 @@ class printablesurvey extends Admin_Controller {
 								 , $survey_output['GROUPS']
 								 );
 		    }
-		
+
 		    if($replace_count == 0)
 		    {
 		        ++$rounds;
@@ -1773,14 +1776,14 @@ class printablesurvey extends Admin_Controller {
 								 )
 								 ,$survey_output['GROUPS']
 								 );
-		
+
 		    }
 		}
-		
+
 		$survey_output['GROUPS'] = preg_replace( '/(<div[^>]*>){NOTEMPTY}(<\/div>)/' , '\1&nbsp;\2' , $survey_output['GROUPS']);
-		
+
 		// END recursive empty tag stripping.
-		
+
 		if(isset($_POST['printableexport']))
 		{
 		    if ($surveystartdate!='')
@@ -1794,10 +1797,10 @@ class printablesurvey extends Admin_Controller {
 		    $pdf->titleintopdf($clang->gT("Submit Your Survey."),$clang->gT("Thank you for completing this survey."));
 		    $pdf->write_out($clang->gT($surveyname)." ".$surveyid.".pdf");
 		}
-		
-		echo self::_populate_template( 'survey' , $survey_output );	
+
+		echo self::_populate_template( 'survey' , $survey_output );
 	}
-	
+
 	// TEMP function for debugging
 	function _try_debug($line)
 	{
@@ -1807,8 +1810,8 @@ class printablesurvey extends Admin_Controller {
 	        return '<!-- printablesurvey.php: '.$line.' -->';
 	    }
 	}
-	
-	
+
+
 	function _populate_template( $template , $input  , $line = '')
 	{
 	    global $rootdir, $debug;
@@ -1831,7 +1834,7 @@ class printablesurvey extends Admin_Controller {
 	        if(is_file($full_path))
 	        {
 	            define( $full_constant , file_get_contents($full_path));
-	
+
 	            $template_content = constant($full_constant);
 	            $test_empty = trim($template_content);
 	            if(empty($test_empty))
@@ -1854,7 +1857,7 @@ class printablesurvey extends Admin_Controller {
 	            return "<!--\n\t$full_path\n\tThe template was empty so is useless.\n-->";
 	        }
 	    }
-	
+
 	    if(is_array($input))
 	    {
 	        foreach($input as $key => $value)
@@ -1876,12 +1879,12 @@ class printablesurvey extends Admin_Controller {
 	        }
 	    }
 	}
-	
-	
+
+
 	function _input_type_image( $type , $title = '' , $x = 40 , $y = 1 , $line = '' )
 	{
 	    global $rooturl, $rootdir;
-	
+
 	    if($type == 'other' or $type == 'othercomment')
 	    {
 	        $x = 1;
@@ -1895,7 +1898,7 @@ class printablesurvey extends Admin_Controller {
 	        break;
 	        default:	$x_ = $x / 2;
 	    }
-	
+
 	    if($y < 2)
 	    {
 	        $y_ = 2;
@@ -1904,7 +1907,7 @@ class printablesurvey extends Admin_Controller {
 	    {
 	        $y_ = $y * 2;
 	    }
-	
+
 	    if(!empty($title))
 	    {
 	        $div_title = ' title="'.htmlspecialchars($title).'"';
@@ -1920,7 +1923,7 @@ class printablesurvey extends Admin_Controller {
 	        break;
 	        default:	$style = '';
 	    }
-	
+
 	    switch($type)
 	    {
 	        case 'radio':
@@ -1932,19 +1935,19 @@ class printablesurvey extends Admin_Controller {
 	        }
 	        $output = '<img src="'.PRINT_TEMPLATE_URL.'print_img_'.$type.'.png"'.constant('IMAGE_'.$type.'_SIZE').' alt="'.htmlspecialchars($title).'" class="input-'.$type.'" />';
 	        break;
-	
+
 	        case 'rank':
 	        case 'other':
 	        case 'othercomment':
 	        case 'text':
 	        case 'textarea':$output = '<div class="input-'.$type.'"'.$style.$div_title.'>{NOTEMPTY}</div>';
 	        break;
-	
+
 	        default:	$output = '';
 	    }
 	    return $output;
 	}
-	
+
 	function _star_replace($input)
 	{
 	    return preg_replace(
@@ -1953,7 +1956,7 @@ class printablesurvey extends Admin_Controller {
 				 ,$input
 				 );
 	}
-	
+
 	function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
 	    $clang = $this->limesurvey_lang;
 	    $output = "";
@@ -1977,7 +1980,7 @@ class printablesurvey extends Admin_Controller {
 	    }
 	    return $output;
 	}
-	
+
 	/*
 	 * $code: Text string containing the reference (column heading) for the current (sub-) question
 	 *
@@ -1994,5 +1997,5 @@ class printablesurvey extends Admin_Controller {
 			return $code;
 		}
 	}
-		
+
 }
