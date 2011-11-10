@@ -402,59 +402,18 @@ function  LEMsetTabIndexes()
 {
     if (typeof tabIndexesSet == 'undefined') {
         $(':input[type!=hidden][id!=runonce]').each(function(index){
-            $(this).attr('tabindex',index);
+            if (index==0) {
+                $(this).focus();    // focus on first active element on page
+            }
             $(this).bind('keydown',function(e) {
                 if (e.keyCode == 9) {
                     ExprMgr_process_relevance_and_tailoring(e.type);
-                    LEMmoveNextTabIndex(e.shiftKey);
-                    e.preventDefault();
-                    return false;
+                    return true;
                 }
+                return true;
             })
         })	// MUST DO THIS FIRST
         tabIndexesSet = true;
-        $('[tabindex=0]').focus();
-    }
-}
-
-/**
- * TAB or SHIFT-TAB to the next (prev) relevant form element.
- */
-function LEMmoveNextTabIndex(prev)
-{
-	var currentIndex = document.activeElement.tabIndex;
-    var els, el;
-    try {
-        if (prev) {
-            els= $('div[id^=question]').has('[tabindex]:lt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').add('input[type=button]:enabled,input[type=submit]:enabled').add('button[type=button]:enabled,button[type=submit]:enabled').toArray();
-            for (i=els.length-1;i>=0;--i) {
-                el = els[i];
-                if (el.tabIndex < currentIndex) {
-                    $(el).focus();
-                    target_tabIndex =  el.tabIndex;
-                    return;
-                }
-            }
-            $('[tabindex=' + els[els.length-1].tabIndex + ']').focus();
-            return;
-        }
-        else {
-            els= $('div[id^=question]').has('[tabindex]:gt(' + document.activeElement.tabIndex + ')').has('input[id^=display][value=on]').find('[tabindex]').add('input[type=button]:enabled,input[type=submit]:enabled').add('button[type=button]:enabled,button[type=submit]:enabled').toArray();
-            for (i=0;i<els.length;++i) {
-                el = els[i];
-                if (el.tabIndex > currentIndex) {
-                    $(el).focus();
-                    target_tabIndex =  el.tabIndex;
-                    return;
-                }
-            }
-            // if no match, wrap around to beginnning
-            $('[tabindex=0]').focus();
-            target_tabIndex =  0;
-            return;
-        }
-    } catch (e)  {
-        return;
     }
 }
 
