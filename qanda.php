@@ -3337,7 +3337,7 @@ function do_multiplechoice($ia)
         if (count > max)
         {
             alert('".sprintf($clang->gT("Please choose at most %d answers for question \"%s\"","js"), $maxansw, trim(javascript_escape(str_replace(array("\n", "\r"), "", $ia[3]),true,true)))."');
-            if (me.type == 'checkbox') {me.checked = false;}
+            if (me.type == 'checkbox') { me.checked = false; }
             if (me.type == 'text') {
                 me.value = '';
                 if (document.getElementById('answer'+me.name + 'cbox') ){

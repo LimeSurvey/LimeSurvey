@@ -2365,11 +2365,11 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $s_lang = $sQuestionLanguage;
     }
     $qtypes=getqtypelist('','array');
-    $aquery = "SELECT *, "
-        ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
-        ." WHERE questions.qid = c.qid) AS hasconditions,\n"
-        ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
-        ." WHERE questions.qid = c.cqid) AS usedinconditions\n"
+    $aquery = "SELECT * "
+//        ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
+//        ." WHERE questions.qid = c.qid) AS hasconditions,\n"
+//        ." (SELECT count(1) FROM ".db_table_name('conditions')." c\n"
+//        ." WHERE questions.qid = c.cqid) AS usedinconditions\n"
         ." FROM ".db_table_name('questions')." as questions, ".db_table_name('groups')." as groups"
         ." WHERE questions.gid=groups.gid AND "
         ." questions.sid=$surveyid AND "
@@ -2389,39 +2389,43 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     {
         ++$questionSeq;
 
-        if ($arow['hasconditions']>0)
-        {
-            $conditions = "Y";
-        }
-        else
-        {
-            $conditions = "N";
-        }
-        if ($arow['usedinconditions']>0)
-        {
-            $usedinconditions = "Y";
-        }
-        else
-        {
-            // This question is not directly used in a condition, however we should
-            // check if its SGQA code is not used as a value in another condition
-            // as a @SGQA@ code
-            $atsgqaQuery = "SELECT count(1) as sgqausedincondition "
-            . "FROM ".db_table_name('questions')." as q, "
-            . db_table_name('conditions')." as c "
-            . "WHERE c.qid=q.qid AND q.sid=".$arow['sid']." AND "
-            . "c.value like '@".$arow['sid']."X".$arow['gid']."X".$arow['qid']."%'";
-            $atsgqaResult = db_execute_assoc($atsgqaQuery) or safe_die ("Couldn't get list @sgqa@ conditions in createFieldMap function.<br />$atsgqaQuery<br />".$connect->ErrorMsg()); //Checked
-            $atsgqaRow = $atsgqaResult->FetchRow();
-            if ($atsgqaRow['sgqausedincondition'] == 0 )
-            {
-            $usedinconditions = "N";
-        }
-            else
-            {
-                $usedinconditions = "Y";
-            }
-        }
+//        if ($arow['hasconditions']>0)
+//        {
+//            $conditions = "Y";
+//        }
+//        else
+//        {
+//            $conditions = "N";
+//        }
+//        if ($arow['usedinconditions']>0)
+//        {
+//            $usedinconditions = "Y";
+//        }
+//        else
+//        {
+//            // This question is not directly used in a condition, however we should
+//            // check if its SGQA code is not used as a value in another condition
+//            // as a @SGQA@ code
+//            $atsgqaQuery = "SELECT count(1) as sgqausedincondition "
+//            . "FROM ".db_table_name('questions')." as q, "
+//            . db_table_name('conditions')." as c "
+//            . "WHERE c.qid=q.qid AND q.sid=".$arow['sid']." AND "
+//            . "c.value like '@".$arow['sid']."X".$arow['gid']."X".$arow['qid']."%'";
+//            $atsgqaResult = db_execute_assoc($atsgqaQuery) or safe_die ("Couldn't get list @sgqa@ conditions in createFieldMap function.<br />$atsgqaQuery<br />".$connect->ErrorMsg()); //Checked
+//            $atsgqaRow = $atsgqaResult->FetchRow();
+//            if ($atsgqaRow['sgqausedincondition'] == 0 )
+//            {
+//            $usedinconditions = "N";
+//        }
+//            else
+//            {
+//                $usedinconditions = "Y";
+//            }
+//        }
+
+        // Conditions indicators are obsolete with EM.  However, they are so tightly coupled into LS code that easider to just set values to 'N' for now and refactor later.
+        $conditions = 'N';
+        $usedinconditions = 'N';
 
         // Field identifier
         // GXQXSXA
