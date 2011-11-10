@@ -413,9 +413,30 @@ print <<<END
 
 	function checkconditions(value, name, type)
 	{
+        if (type == 'radio' || type == 'select-one')
+        {
+            var hiddenformname='java'+name;
+            document.getElementById(hiddenformname).value=value;
+        }
 
+        if (type == 'checkbox')
+        {
+            var hiddenformname='java'+name;
+			var chkname='answer'+name;
+            if (document.getElementById(chkname).checked)
+            {
+                document.getElementById(hiddenformname).value='Y';
+            } else
+            {
+		        document.getElementById(hiddenformname).value='';
+            }
+        }
+        ExprMgr_process_relevance_and_tailoring();
+	}
+// -->
+</script>
 END;
-
+/*
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
 if ((isset($conditions) && is_array($conditions)) ||
 (isset($array_filterqs) && is_array($array_filterqs)) ||
@@ -449,6 +470,7 @@ if ((isset($conditions) && is_array($conditions)) ||
 END;
     $java="";
     $cqcount=1;
+ */
 
     /* $conditions element structure
      * $conditions element structure
@@ -462,7 +484,7 @@ END;
      * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
      * $condition[n][8] => group id of the question having the condition set ($condition[n][0])
      */
-
+/*
     foreach ($conditions as $cd)
     {
         if (trim($cd[6])=='') {$cd[6]='==';}
@@ -623,6 +645,7 @@ END;
                     $qid_from_sgq=$qidMatched[3];
                     $q2type=$qtypesarray[$sgq_from_sgqa];
                     $idname2 = retrieveJSidname(Array('',$qid_from_sgq,$comparedfieldname[1],'Y',$q2type,$sgq_from_sgqa));
+ */
                     /***
                     $cqidattributes = getQuestionAttributes($cd[1]);
 
@@ -636,6 +659,7 @@ END;
                         $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && $JSsourceVal $cd[6] document.getElementById('".$idname2."').value";
                     }
                     ****/
+/*
                     if (in_array($cd[6],array("<","<=",">",">=")))
                     { // Numerical comparizons
                         $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
@@ -856,8 +880,9 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                     $appendj .= "\n";
                     $appendj .= "\tif (\n";
                     $appendj .= "\t\t(document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y')\n";
-
+ */
                     /* If this question is a cascading question, then it also needs to check the status of the question that this one relies on */
+/*
                     if(isset($array_filterXqs_cascades[$attralist['qid']]))
                     {
                         $groups=getGroupsByQuestion($surveyid);
@@ -868,7 +893,6 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                             $appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
                         }
                     }
-                    /* */
                     $appendj .= "\t)\n";
                     $appendj .= "\t{\n";
                     $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
@@ -930,6 +954,7 @@ foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
 echo "\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
+ */
 
 //Display the "mandatory" message on page if necessary
 if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)

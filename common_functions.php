@@ -7797,7 +7797,7 @@ function bCheckQuestionForAnswer($q, $aFieldnamesInfoInv)
                 $aid = explode('_',$_SESSION['fieldmap'][$sField]['aid']);
                 $aid = explode('#',$aid[0]);
                 //if a checked answer in the multiple choice is not present
-                if ($_SESSION[$sgqfilter.$aid[0]] == 'Y' && $_SESSION[$sField] == '')
+                if (isset($_SESSION[$sgqfilter.$aid[0]]) && $_SESSION[$sgqfilter.$aid[0]] == 'Y' && $_SESSION[$sField] == '')
                     return false;
     }
             return true;

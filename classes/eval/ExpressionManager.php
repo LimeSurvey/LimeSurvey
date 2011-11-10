@@ -1200,12 +1200,12 @@ class ExpressionManager {
     public function GetJavaScriptFunctionForReplacement($questionNum, $name,$eqn)
     {
         $jsParts = array();
-        $jsParts[] = "\n// Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
-        $jsParts[] = "try{\n";
-        $jsParts[] = "document.getElementById('" . $name . "').innerHTML=\n";
+        $jsParts[] = "\n  // Tailor Question " . $questionNum . " - " . $name . ": { " . $eqn . " }\n";
+        $jsParts[] = "  try{\n";
+        $jsParts[] = "  document.getElementById('" . $name . "').innerHTML=\n    ";
         $jsParts[] = $this->GetJavaScriptEquivalentOfExpression();
         $jsParts[] = ";\n";
-        $jsParts[] = "} catch (e) { }\n";
+        $jsParts[] = "  } catch (e) { }\n";
         return implode('',$jsParts);
     }
 

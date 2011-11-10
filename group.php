@@ -577,10 +577,32 @@ print <<<END
 
 	function checkconditions(value, name, type)
 	{
+        if (type == 'radio' || type == 'select-one')
+        {
+            var hiddenformname='java'+name;
+            document.getElementById(hiddenformname).value=value;
+        }
 
+        if (type == 'checkbox')
+        {
+            var hiddenformname='java'+name;
+			var chkname='answer'+name;
+            if (document.getElementById(chkname).checked)
+            {
+                document.getElementById(hiddenformname).value='Y';
+            } else
+            {
+		        document.getElementById(hiddenformname).value='';
+            }
+        }
+        ExprMgr_process_relevance_and_tailoring();
+	}
+// -->
+</script>
 END;
 
 // If there are conditions or arrray_filter questions then include the appropriate Javascript
+/*
 if ((isset($conditions) && is_array($conditions)) ||
 (isset($array_filterqs) && is_array($array_filterqs)) ||
 (isset($array_filterXqs) && is_array($array_filterXqs)))
@@ -614,7 +636,7 @@ if ((isset($conditions) && is_array($conditions)) ||
 END;
     $java="";
     $cqcount=1;
-
+*/
     /* $conditions element structure
      * $condition[n][0] => question id
      * $condition[n][1] => question with value to evaluate
@@ -626,7 +648,7 @@ END;
      * $condition[n][6] => method used to evaluate *NEW*
      * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
      */
-
+/*
     for ($i=0;$i<count($conditions);$i++)
     {
         $cd=$conditions[$i]; // this is the currently evaluated condition
@@ -757,7 +779,9 @@ END;
                 $localEvaluation = false;
             }
         }
-        elseif (preg_match("/[0-9]+X([0-9]+)X.*/",$cd[2],$sourceQuestionGid))
+ */
+//        elseif (preg_match("/[0-9]+X([0-9]+)X.*/",$cd[2],$sourceQuestionGid))
+/*
         {
             $localEvaluationPossible = false;
             unset($localEvaluation);
@@ -845,10 +869,12 @@ END;
             } // end specific case of M or P questions
             else
             {
+ */
                 /* NEW
                  * If the value is enclossed by @
                  * the value of this question must be evaluated instead.
                  */
+/*
                 if (preg_match('/^@([0-9]+X([0-9]+)X[^@]+)@/', $cd[3], $comparedfieldname) && isset($_SESSION['fieldnamesInfo'][$comparedfieldname[1]]))
                 {
                     $sgq_from_sgqa = $_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
@@ -1153,8 +1179,9 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                     $appendj .= "\n";
                     $appendj .= "\tif (\n";
                     $appendj .= "\t\t(document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y')\n";
-
+*/
                     /* If this question is a cascading question, then it also needs to check the status of the question that this one relies on */
+/*
                     if(isset($array_filterXqs_cascades[$attralist['qid']]))
                     {
 
@@ -1165,7 +1192,6 @@ if ((isset($array_filterqs) && is_array($array_filterqs)) ||
                             $appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
                         }
                     }
-                    /* */
                     $appendj .= "\t)\n";
                     $appendj .= "\t{\n";
                     $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
@@ -1220,6 +1246,7 @@ echo "\n\t\tdocument.getElementById('runonce').value=1;\n"
 . "\t}\n"
 ."\t//-->\n"
 ."\t</script>\n\n"; // End checkconditions javascript function
+ */
 
 echo "\n\n<!-- START THE GROUP -->\n";
 echo templatereplace(file_get_contents("$thistpl/startgroup.pstpl"));
