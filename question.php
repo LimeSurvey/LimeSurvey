@@ -422,11 +422,11 @@ if ($pluscon !== null)
     $conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
 }
 //Build an array containing the conditions that apply for this page
-$plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
-if ($plus_conditions)
-{
-    $conditions = addtoarray_single($conditions, $plus_conditions);
-}
+//$plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
+//if ($plus_conditions)
+//{
+//    $conditions = addtoarray_single($conditions, $plus_conditions);
+//}
 //------------------------END DEVELOPMENT OF QUESTION
 
 if ($thissurvey['showprogress'] == 'Y')

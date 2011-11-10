@@ -234,6 +234,7 @@ if (isset($p_subaction) && $p_subaction == "insertcondition")
             $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
         }
     }
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // UPDATE ENTRY IF THIS IS AN EDIT
@@ -296,20 +297,25 @@ if (isset($p_subaction) && $p_subaction == "updatecondition")
             $result = $connect->Execute($query) or safe_die ("Couldn't insert new condition<br />$query<br />".$connect->ErrorMsg());
         }
     }
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // DELETE ENTRY IF THIS IS DELETE
 if (isset($p_subaction) && $p_subaction == "delete")
 {
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
     $query = "DELETE FROM {$dbprefix}conditions WHERE cid={$p_cid}";
     $result = $connect->Execute($query) or safe_die ("Couldn't delete condition<br />$query<br />".$connect->ErrorMsg());
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // DELETE ALL CONDITIONS IN THIS SCENARIO
 if (isset($p_subaction) && $p_subaction == "deletescenario")
 {
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
     $query = "DELETE FROM {$dbprefix}conditions WHERE qid={$qid} AND scenario={$p_scenario}";
     $result = $connect->Execute($query) or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // UPDATE SCENARIO
@@ -317,11 +323,13 @@ if (isset($p_subaction) && $p_subaction == "updatescenario" && isset($p_newscena
 {
     $query = "UPDATE {$dbprefix}conditions SET scenario=$p_newscenarionum WHERE qid={$qid} AND scenario={$p_scenario}";
     $result = $connect->Execute($query) or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // DELETE ALL CONDITIONS FOR THIS QUESTION
 if (isset($p_subaction) && $p_subaction == "deleteallconditions")
 {
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);
     $query = "DELETE FROM {$dbprefix}conditions WHERE qid={$qid}";
     $result = $connect->Execute($query) or safe_die ("Couldn't delete scenario<br />$query<br />".$connect->ErrorMsg());
 }
@@ -338,7 +346,7 @@ if (isset($p_subaction) && $p_subaction == "renumberscenarios")
         $result2 = $connect->Execute($query2) or safe_die ("Couldn't renumber scenario<br />$query<br />".$connect->ErrorMsg());
         $newindex++;
     }
-
+    LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
 }
 
 // COPY CONDITIONS IF THIS IS COPY
@@ -419,7 +427,7 @@ if (isset($p_subaction) && $p_subaction == "copyconditions")
             $CopyConditionsMessage = "<div class='warningheader'>(".$clang->gT("No conditions could be copied (due to duplicates)").")</div>";
         }
     }
-
+    LimeExpressionManager::UpgradeConditionsToRelevance($surveyid); // do for whole survey, since don't know which questions affected.
 }
 //END PROCESS ACTIONS
 

@@ -1061,6 +1061,9 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL)
 
         }
     }
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
+
     $importresults['importversion']=$importversion;
     $importresults['newsid']=$newsid;
     $importresults['oldsid']=$oldsid;
@@ -1577,6 +1580,9 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     {
         TranslateInsertansTags($newsid,$oldsid,$aOldNewFieldmap);
     }
+
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
 
     return $results;
 }

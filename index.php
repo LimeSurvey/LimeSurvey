@@ -1261,7 +1261,10 @@ function checkgroupfordisplay($gid)
 function checkconfield($value)
 {
     // TMSW [DONE] Conditions->Relevance:  this function is not needed.  Use EM to NULL fields that are irrelevant
-    $fieldNameParts = explode('X',$code);
+    $fieldNameParts = explode('X',$value);
+    if (!isset($fieldNameParts[2])) {
+        return true;    // check this
+    }
     return LimeExpressionManager::QuestionIsRelevant($fieldNameParts[2]);
 
     global $dbprefix, $connect,$surveyid,$thissurvey,$qattributes;
@@ -2693,11 +2696,11 @@ function buildsurveysession()
 
     // Optimized Query
     // Change query to use sub-select to see if conditions exist.
-    $query = "SELECT ".db_table_name('questions').".*, ".db_table_name('groups').".*,\n"
-    ." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
-    ." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".qid) AS hasconditions,\n"
-    ." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
-    ." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".cqid) AS usedinconditions\n"
+    $query = "SELECT ".db_table_name('questions').".*, ".db_table_name('groups').".*\n"
+//    ." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
+//    ." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".qid) AS hasconditions,\n"
+//    ." (SELECT count(1) FROM ".db_table_name('conditions')."\n"
+//    ." WHERE ".db_table_name('questions').".qid = ".db_table_name('conditions').".cqid) AS usedinconditions\n"
     ." FROM ".db_table_name('groups')." INNER JOIN ".db_table_name('questions')." ON ".db_table_name('groups').".gid = ".db_table_name('questions').".gid\n"
     ." WHERE ".db_table_name('questions').".sid=".$surveyid."\n"
     ." AND ".db_table_name('groups').".language='".$_SESSION['s_lang']."'\n"
@@ -2708,7 +2711,7 @@ function buildsurveysession()
     //var_dump($_SESSION);
     $result = db_execute_assoc($query);    //Checked
 
-    $arows = $result->GetRows();
+//    $arows = $result->GetRows();  // Not used?
 
     $totalquestions = $result->RecordCount();
 

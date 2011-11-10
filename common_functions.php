@@ -4726,7 +4726,9 @@ function getArrayFiltersForQuestion($qid)
                 while ($row=$qresult->fetchRow()) {$other=$row['other'];}
                 if($other == "Y")
                 {
-                    if($_SESSION[$fields[1].'other'] != "") {array_push($selected, "other");}
+                    // TMSW - where should this value be set?  buildsurveysession?  createfieldmap?
+                    if(isset($_SESSION[$fields[1].'other']) && $_SESSION[$fields[1].'other'] != "") {array_push($selected, "other");}
+//                    if($_SESSION[$fields[1].'other'] != "") {array_push($selected, "other");}
                 }
                 $cache[$qid] = $selected;
                 return $cache[$qid];

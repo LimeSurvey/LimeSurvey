@@ -24,8 +24,10 @@
 function fixNumbering($fixnumbering)
 {
 
-    global $dbprefix, $connect, $clang;
-     //Fix a question id - requires renumbering a question
+    global $dbprefix, $connect, $clang, $surveyid;
+
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
+ //Fix a question id - requires renumbering a question
     $oldqid = $fixnumbering;
     $query = "SELECT qid FROM {$dbprefix}questions ORDER BY qid DESC";
     $result = db_select_limit_assoc($query, 1) or safe_die($query."<br />".$connect->ErrorMsg());
@@ -63,6 +65,8 @@ function fixNumbering($fixnumbering)
     //Now answers
     $query = "UPDATE {$dbprefix}answers SET qid=$newqid WHERE qid=$oldqid";
     $result = $connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());
+
+    LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
 }
 /**
  * checks consistency of groups

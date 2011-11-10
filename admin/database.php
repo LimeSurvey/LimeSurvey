@@ -166,6 +166,8 @@ if(isset($surveyid))
 
     elseif ($action == "delgroup" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
     {
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
+
         if (!isset($gid)) $gid=returnglobal('gid');
         $query = "SELECT qid FROM ".db_table_name('groups')." g, ".db_table_name('questions')." q WHERE g.gid=q.gid AND g.gid=$gid AND q.parent_qid=0 group by qid";
         if ($result = db_execute_assoc($query)) // Checked
@@ -196,6 +198,7 @@ if(isset($surveyid))
         {
             $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be deleted","js")."\n$error\")\n //-->\n</script>\n";
         }
+        LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
     }
 
     elseif ($action == "insertquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
@@ -414,6 +417,8 @@ if(isset($surveyid))
 
     elseif ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
     {
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
+
         $cqquery = "SELECT type, gid FROM ".db_table_name('questions')." WHERE qid={$postqid}";
         $cqresult=db_execute_assoc($cqquery) or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg()); // Checked
         $cqr=$cqresult->FetchRow();
@@ -648,6 +653,7 @@ if(isset($surveyid))
                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\")\n //-->\n</script>\n";
             }
         }
+        LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
     }
 
     elseif ($action == "copynewquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
@@ -806,6 +812,8 @@ if(isset($surveyid))
     {
         if (!isset($qid)) {$qid=returnglobal('qid');}
         //check if any other questions have conditions which rely on this question. Don't delete if there are.
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);
+
         $ccquery = "SELECT * FROM {$dbprefix}conditions WHERE cqid=$qid";
         $ccresult = db_execute_assoc($ccquery) or safe_die ("Couldn't get list of cqids for this question<br />".$ccquery."<br />".$connect->ErrorMsg()); // Checked
         $cccount=$ccresult->RecordCount();
@@ -861,6 +869,8 @@ if(isset($surveyid))
         $query = "delete from ".db_table_name('answers')." where qid=".db_quote($qid);
         $result = $connect->Execute($query); // Checked
 
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
+
         for ($scale_id=0;$scale_id<$scalecount;$scale_id++)
         {
             $maxcount=(int)$_POST['answercount_'.$scale_id];
@@ -909,6 +919,8 @@ if(isset($surveyid))
             }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
         }  //  for ($scale_id=0;
 
+        LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
+
         if ($invalidCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved","js")."\")\n //-->\n</script>\n";
         if ($duplicateCode == 1) $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Duplicate codes found, these entries won't be updated","js")."\")\n //-->\n</script>\n";
 
@@ -933,6 +945,8 @@ if(isset($surveyid))
 
         // First delete any deleted ids
         $deletedqids=explode(' ', trim($_POST['deletedqids']));
+
+        LimeExpressionManager::RevertUpgradeConditionsToRelevance($surveyid);
 
         foreach ($deletedqids as $deletedqid)
         {
@@ -1030,6 +1044,8 @@ if(isset($surveyid))
 
             }
         }
+        LimeExpressionManager::UpgradeConditionsToRelevance($surveyid);
+
         //include("surveytable_functions.php");
         //surveyFixColumns($surveyid);
         $_SESSION['flashmessage'] = $clang->gT("Subquestions were successfully saved.");

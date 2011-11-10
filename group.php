@@ -462,12 +462,12 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
             $conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
         }
 
-        //Build an array containing the conditions that apply for this page
-        $plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
-        if ($plus_conditions)
-        {
-            $conditions = addtoarray_single($conditions, $plus_conditions);
-        }
+//        //Build an array containing the conditions that apply for this page
+//        $plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
+//        if ($plus_conditions)
+//        {
+//            $conditions = addtoarray_single($conditions, $plus_conditions);
+//        }
     }
     if ($ia[4] == "|")
         $upload_file = TRUE;

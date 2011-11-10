@@ -863,6 +863,9 @@ function CSVImportGroup($sFullFilepath, $newsid)
             $results['conditions']++;
         }
     }
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);
+
     $results['groups']=1;
     $results['newgid']=$newgid;
     return $results;          
@@ -1173,8 +1176,10 @@ function XMLImportGroup($sFullFilepath, $newsid)
             $results['conditions']++;
         }             
     }
-
+    LimeExpressionManager::RevertUpgradeConditionsToRelevance($newsid);
+    LimeExpressionManager::UpgradeConditionsToRelevance($newsid);    
     
+
     $results['newgid']=$newgid;
     $results['labelsets']=0;
     $results['labels']=0;

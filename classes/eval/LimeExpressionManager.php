@@ -282,7 +282,9 @@ class LimeExpressionManager {
         else {
             if (isset($relevanceEqns[$qid]))
             {
-                return $relevanceEqns[$qid];
+                $result = array();
+                $result[$qid] = $relevanceEqns[$qid];
+                return $result;
             }
             else
             {
