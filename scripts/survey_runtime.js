@@ -77,7 +77,8 @@ $(document).ready(function()
 		marker.setPosition(markerLatLng);
 		currentMap.panTo(markerLatLng);
 	});
-	
+
+    /* TMSW - not needed?
     if ((typeof(autoArray) != "undefined")){
         if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
             var aListOfQuestions = autoArray.list;
@@ -109,6 +110,7 @@ $(document).ready(function()
             });
         }
     }
+    */
     /*replacement for inline javascript for #index */
     /*
     $("#index").parents(".outerframe").addClass("withindex");

@@ -457,7 +457,39 @@ class LimeExpressionManager {
             }
 
             // exclude_all_others
-            // TODO
+            if (isset($qattr['exclude_all_others']) && trim($qattr['exclude_all_others']) != '')
+            {
+                $exclusive_option = $qattr['exclude_all_others'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        if ($sq['csuffix'] == $exclusive_option)
+                        {
+                            continue;   // so don't make the excluded option irrelevant
+                        }
+                        switch ($type)
+                        {
+                            case 'M': //Multiple choice checkbox
+                                $sq_name = $qinfo['sgqa'] . $exclusive_option;
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $subQrels[] = array(
+                                'qtype' => $type,
+                                'type' => 'exclude_all_others',
+                                'rowdivid' => $sq['rowdivid'],
+                                'eqn' => '(' . $sq_name . ' == "")',
+                                'qid' => $questionNum,
+                                'sgqa' => $qinfo['sgqa'],
+                            );
+                        }
+                    }
+                }
+            }
 
             // exclude_all_others_auto
             //  TODO
@@ -828,18 +860,50 @@ class LimeExpressionManager {
 //        log_message('debug','**SUBQUESTION RELEVANCE**' . print_r($subQrels,true));
 //        log_message('debug','**VALIDATION EQUATIONS**' . print_r($validationEqn,true));
 
+        // Consolidate logic across array filters
+        $rowdivids = array();
+        $order=0;
         foreach ($subQrels as $sq)
+        {
+            if (isset($rowdivids[$sq['rowdivid']]))
+            {
+                $backup = $rowdivids[$sq['rowdivid']];
+                $rowdivids[$sq['rowdivid']] = array(
+                    'order'=>$backup['order'],
+                    'eqn'=>'(' . $backup['eqn'] . ' and ' . $sq['eqn'] . ')',
+                    'qid'=>$sq['qid'],
+                    'rowdivid'=>$sq['rowdivid'],
+                    'type'=>$backup['type'] . ';' .$sq['type'],
+                    'qtype'=>$sq['qtype'],
+                    'sgqa'=>$sq['sgqa'],
+                );
+            }
+            else
+            {
+                $rowdivids[$sq['rowdivid']] = array(
+                    'order'=>$order++,
+                    'eqn'=>$sq['eqn'],
+                    'qid'=>$sq['qid'],
+                    'rowdivid'=>$sq['rowdivid'],
+                    'type'=>$sq['type'],
+                    'qtype'=>$sq['qtype'],
+                    'sgqa'=>$sq['sgqa'],
+                    );
+            }
+        }
+
+        foreach ($rowdivids as $sq)
         {
             $result = $this->_ProcessSubQRelevance($sq['eqn'], $sq['qid'], $sq['rowdivid'], $sq['type'], $sq['qtype'],  $sq['sgqa']);
         }
-        foreach ($validationEqn as $qvals)
-        {
-            // HACK - this is to generate the error messages
-            foreach ($qvals as $val)
-            {
-//                $result = $this->_ProcessSubQRelevance($val['eqn'], $val['qid'], 'bogus', $val['type']);
-            }
-        }
+//        foreach ($validationEqn as $qvals)
+//        {
+//            // HACK - this is to generate the error messages
+//            foreach ($qvals as $val)
+//            {
+////                $result = $this->_ProcessSubQRelevance($val['eqn'], $val['qid'], 'bogus', $val['type']);
+//            }
+//        }
 
         $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
     }

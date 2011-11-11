@@ -3033,21 +3033,21 @@ function do_multiplechoice($ia)
         $autoArray[$ia[1]]['parent'] = $ia[1];
     }
 
-    if (trim($qidattributes['exclude_all_others'])!='')
-    {
-        $excludeallothers=explode(';',trim($qidattributes['exclude_all_others']));
-        $excludeallotherscript = "
-		<script type='text/javascript'>
-		<!--
-		function excludeAllOthers$ia[1](value, doconditioncheck)
-		{\n";
-        $excludeallotherscripton='';
-        $excludeallotherscriptoff='';
-    }
-    else
-    {
-        $excludeallothers=array();
-    }
+//    if (trim($qidattributes['exclude_all_others'])!='')
+//    {
+//        $excludeallothers=explode(';',trim($qidattributes['exclude_all_others']));
+//        $excludeallotherscript = "
+//		<script type='text/javascript'>
+//		<!--
+//		function excludeAllOthers$ia[1](value, doconditioncheck)
+//		{\n";
+//        $excludeallotherscripton='';
+//        $excludeallotherscriptoff='';
+//    }
+//    else
+//    {
+//        $excludeallothers=array();
+//    }
 
 
     if (((int)$qidattributes['max_answers']>0) && $exclude_all_others_auto=='0')
@@ -3170,38 +3170,38 @@ function do_multiplechoice($ia)
             if ($_SESSION[$myfname] == 'Y')
             {
                 $answer .= CHECKED;
-                if(in_array($ansrow['title'], $excludeallothers))
-                {
-                    $postrow.="\n\n<script type='text/javascript'>\n<!--\nexcludeAllOthers$ia[1]('answer$ia[1]{$ansrow['title']}', 'no');\n-->\n</script>\n";
-                }
+//                if(in_array($ansrow['title'], $excludeallothers))
+//                {
+//                    $postrow.="\n\n<script type='text/javascript'>\n<!--\nexcludeAllOthers$ia[1]('answer$ia[1]{$ansrow['title']}', 'no');\n-->\n</script>\n";
+//                }
             }
         }
         $answer .= " onclick='cancelBubbleThis(event);";
         /* Exclude all others coding */
-        if(in_array($ansrow['title'], $excludeallothers))
-        {
-            $answer .= "excludeAllOthers$ia[1](this.id, \"yes\");"; // was "this.id"
-            $excludeallotherscripton .= "/* SKIPPING QUESTION {$ia[1]} */\n";
-            //			$excludeallotherscripton .= "alert(value+'---'+'answer$ia[1]{$ansrow['code']}');\n";
-            $excludeallotherscripton .= "if( value != 'answer$ia[1]{$ansrow['title']}') {\n"
-            . "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['title']}');\n"
-            . "thiselt.checked='';\n"
-            . "thiselt.disabled='true';\n"
-            . "if (doconditioncheck == 'yes') {\n"
-            . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
-            . "}\n}\n";
-            $excludeallotherscriptoff .= "document.getElementById('answer$ia[1]{$ansrow['title']}').disabled='';\n";
-        }
-        elseif (count($excludeallothers)>0)
-        {
-            $excludeallotherscripton .= "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['title']}');\n"
-            . "thiselt.checked='';\n"
-            . "thiselt.disabled='true';\n"
-            . "if (doconditioncheck == 'yes') {\n"
-            . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
-            . "}\n";
-            $excludeallotherscriptoff.= "document.getElementById('answer$ia[1]{$ansrow['title']}').disabled='';\n";
-        }
+//        if(in_array($ansrow['title'], $excludeallothers))
+//        {
+//            $answer .= "excludeAllOthers$ia[1](this.id, \"yes\");"; // was "this.id"
+//            $excludeallotherscripton .= "/* SKIPPING QUESTION {$ia[1]} */\n";
+//            //			$excludeallotherscripton .= "alert(value+'---'+'answer$ia[1]{$ansrow['code']}');\n";
+//            $excludeallotherscripton .= "if( value != 'answer$ia[1]{$ansrow['title']}') {\n"
+//            . "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['title']}');\n"
+//            . "thiselt.checked='';\n"
+//            . "thiselt.disabled='true';\n"
+//            . "if (doconditioncheck == 'yes') {\n"
+//            . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
+//            . "}\n}\n";
+//            $excludeallotherscriptoff .= "document.getElementById('answer$ia[1]{$ansrow['title']}').disabled='';\n";
+//        }
+//        elseif (count($excludeallothers)>0)
+//        {
+//            $excludeallotherscripton .= "\tthiselt=document.getElementById('answer$ia[1]{$ansrow['title']}');\n"
+//            . "thiselt.checked='';\n"
+//            . "thiselt.disabled='true';\n"
+//            . "if (doconditioncheck == 'yes') {\n"
+//            . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
+//            . "}\n";
+//            $excludeallotherscriptoff.= "document.getElementById('answer$ia[1]{$ansrow['title']}').disabled='';\n";
+//        }
         /* End of exclude all others coding */
 
         $answer .= $callmaxanswscriptcheckbox    	/* Include checkbox for script for maxanswers if that attribute is selected */
@@ -3247,20 +3247,20 @@ function do_multiplechoice($ia)
     {
         $myfname = $ia[1].'other';
         list($htmltbody2, $hiddenfield)=return_array_filter_strings($ia, $qidattributes, $thissurvey, array("code"=>"other"), $myfname, $trbc, $myfname, "li");
-        if(count($excludeallothers) > 0)
-        {
-            $excludeallotherscripton .= "thiselt=document.getElementById('answer{$ia[1]}othercbox');\n"
-            . "thiselt.checked='';\n"
-            . "thiselt.disabled='true';\n";
-            $excludeallotherscripton .= "thiselt=document.getElementById('answer$ia[1]other');\n"
-            . "thiselt.value='';\n"
-            . "thiselt.disabled='true';\n"
-            . "if (doconditioncheck == 'yes') {\n"
-            . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
-            . "}\n";
-            $excludeallotherscriptoff .="document.getElementById('answer$ia[1]other').disabled='';\n";
-            $excludeallotherscriptoff .="document.getElementById('answer{$ia[1]}othercbox').disabled='';\n";
-        }
+//        if(count($excludeallothers) > 0)
+//        {
+//            $excludeallotherscripton .= "thiselt=document.getElementById('answer{$ia[1]}othercbox');\n"
+//            . "thiselt.checked='';\n"
+//            . "thiselt.disabled='true';\n";
+//            $excludeallotherscripton .= "thiselt=document.getElementById('answer$ia[1]other');\n"
+//            . "thiselt.value='';\n"
+//            . "thiselt.disabled='true';\n"
+//            . "if (doconditioncheck == 'yes') {\n"
+//            . "\t$checkconditionFunction(thiselt.value, thiselt.name, thiselt.type);\n"
+//            . "}\n";
+//            $excludeallotherscriptoff .="document.getElementById('answer$ia[1]other').disabled='';\n";
+//            $excludeallotherscriptoff .="document.getElementById('answer{$ia[1]}othercbox').disabled='';\n";
+//        }
         if($wrapper['item-start'] == "\t<li>\n")
         {
             $startitem = "\t$htmltbody2\n";
@@ -3403,22 +3403,22 @@ function do_multiplechoice($ia)
 
     $answer = $minanswscript . $checkotherscript . $answer;
 
-    if (count($excludeallothers)>0)
-    {
-        $excludeallotherscript .= "
-		    if (document.getElementById(value).checked)
-		    {
-		        $excludeallotherscripton
-		    }
-		    else
-		    {
-		        $excludeallotherscriptoff
-		    }
-		}
-		//-->
-		</script>";
-		$answer = $excludeallotherscript . $answer;
-    }
+//    if (count($excludeallothers)>0)
+//    {
+//        $excludeallotherscript .= "
+//		    if (document.getElementById(value).checked)
+//		    {
+//		        $excludeallotherscripton
+//		    }
+//		    else
+//		    {
+//		        $excludeallotherscriptoff
+//		    }
+//		}
+//		//-->
+//		</script>";
+//		$answer = $excludeallotherscript . $answer;
+//    }
     $answer .= $postrow;
     return array($answer, $inputnames);
 }
