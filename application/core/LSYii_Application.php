@@ -33,12 +33,28 @@ class LSYii_Application extends CWebApplication
 	{
 		parent::__construct($config);
 
+		$this->loadHelper('globalsettings');
+		$this->loadHelper('common');
+
 		// Load the default and environmental settings from different files into self.
 		$app_config = require(APPPATH . '/config/application.php');
 		$ls_config = require(APPPATH . '/config/lsconfig.php');
+
 		$settings = array_merge($app_config, $ls_config);
 		foreach ($settings as $key => $value)
 			$this->setConfig($key, $value);
+	}
+
+	/**
+	 * Loads a helper
+	 *
+	 * @access public
+	 * @param string $helper
+	 * @return void
+	 */
+	public function loadHelper($helper)
+	{
+		Yii::import('application.helpers.' . $helper . '_helper', true);
 	}
 
 	/**
@@ -51,7 +67,7 @@ class LSYii_Application extends CWebApplication
 	 */
 	public function setConfig($name, $value)
 	{
-		$this->$config[$name] = $value;
+		$this->config[$name] = $value;
 	}
 
 	/**

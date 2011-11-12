@@ -6013,10 +6013,8 @@ function SSL_redirect($ssl_mode)
 */
 function SSL_mode()
 {
-    $CI =& get_instance();
-
     $https = isset($_SERVER['HTTPS'])?$_SERVER['HTTPS']:'';
-    if($CI->config->item('ssl_emergency_override') !== true )
+    if (Yii::app()->getConfig('ssl_emergency_override') !== true )
     {
         $force_ssl = strtolower(getGlobalSetting('force_ssl'));
     }

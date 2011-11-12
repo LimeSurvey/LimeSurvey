@@ -42,7 +42,6 @@ abstract class LSYii_Controller extends CController
 	 */
 	private function _checkinstallation()
 	{
-		return true;
 		$file_name = '/tmp/sample_installer_file.txt';
 		$installer_file = ROOT . $file_name;
 		if (is_file($installer_file))
@@ -55,8 +54,6 @@ abstract class LSYii_Controller extends CController
 
 	private function _init()
 	{
-		Yii::import('application.helpers.common', true);
-
 		// Check for most necessary requirements
 		// Now check for PHP & db version
 		// Do not localize/translate this!
@@ -145,7 +142,7 @@ abstract class LSYii_Controller extends CController
 
 
 		//SET LOCAL TIME
-		$timeadjust = $this->setConfig("timeadjust");
+		$timeadjust = Yii::app()->setConfig("timeadjust", null);
 		if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
 		if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
 		{

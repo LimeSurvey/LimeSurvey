@@ -121,6 +121,9 @@
  *  Now that we know the path, set the main path constants
  * -------------------------------------------------------------------
  */
+
+	define('YII_DEBUG', true);
+
 	// The name of THIS file
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
