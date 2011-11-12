@@ -1748,7 +1748,7 @@ class LimeExpressionManager {
     }
 
     /**
-     * Create JavaScript needed to process sub-question-level relevance (e.g. for array_filter and array_filter_exclude)
+     * Create JavaScript needed to process sub-question-level relevance (e.g. for array_filter and  _exclude)
      * @param <type> $eqn - the equation to parse
      * @param <type> $questionNum - the question number - needed to align relavance and tailoring blocks
      * @param <type> $rowdivid - the javascript ID that needs to be shown/hidden in order to control array_filter visibility
@@ -1986,7 +1986,7 @@ class LimeExpressionManager {
         $jsParts[] = '<script type="text/javascript" src="'.$rooturl.'/classes/eval/em_javascript.js"></script>';
         $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
         $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
-        $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\nreturn;\n}\n";
+        $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\n}\n";
         $jsParts[] = "if (evt_type == 'onchange' && (typeof last_evt_type != 'undefined' && last_evt_type == 'keydown') && (typeof target_tabIndex != 'undefined' && target_tabIndex == document.activeElement.tabIndex)) {\nreturn;\n}\n";
         $jsParts[] = "last_evt_type = evt_type;\n\n";
 

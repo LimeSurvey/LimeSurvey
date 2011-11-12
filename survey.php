@@ -31,7 +31,8 @@ if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep+1;}
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
-$notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys($move));
+// TMSW Mandatory -> EM
+//$notanswered=addtoarray_single(checkmandatorys($move),checkconditionalmandatorys($move));
 
 //CHECK PREGS
 $notvalidated=checkpregs($move);
@@ -240,11 +241,12 @@ $thissurvey['active'] == "Y")
 
 //GET GROUP DETAILS
 require_once("qanda.php");
-$mandatorys=array();
-$mandatoryfns=array();
-$conmandatorys=array();
-$conmandatoryfns=array();
-$conditions=array();
+// TMSW Mandatory -> EM
+//$mandatorys=array();
+//$mandatoryfns=array();
+//$conmandatorys=array();
+//$conmandatoryfns=array();
+//$conditions=array();
 $inputnames=array();
 $groupUnconditionnalQuestionsCount=array();
 
@@ -286,6 +288,7 @@ foreach ($_SESSION['grouplist'] as $gl)
             }
 
             //Display the "mandatory" popup if necessary
+// TMSW Mandatory -> EM
             if (isset($notanswered))
             {
                 list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
@@ -302,19 +305,21 @@ foreach ($_SESSION['grouplist'] as $gl)
             }
 
             //Get list of mandatory questions
-            list($plusman, $pluscon)=create_mandatorylist($ia);
-            if ($plusman !== null)
-            {
-                list($plus_man, $plus_manfns)=$plusman;
-                $mandatorys=addtoarray_single($mandatorys, $plus_man);
-                $mandatoryfns=addtoarray_single($mandatoryfns, $plus_manfns);
-            }
-            if ($pluscon !== null)
-            {
-                list($plus_conman, $plus_conmanfns)=$pluscon;
-                $conmandatorys=addtoarray_single($conmandatorys, $plus_conman);
-                $conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
-            }
+//// TMSW Mandatory -> EM
+//            list($plusman, $pluscon)=create_mandatorylist($ia);
+//            if ($plusman !== null)
+//            {
+//                list($plus_man, $plus_manfns)=$plusman;
+//                $mandatorys=addtoarray_single($mandatorys, $plus_man);
+//                $mandatoryfns=addtoarray_single($mandatoryfns, $plus_manfns);
+//            }
+//// TMSW Mandatory -> EM
+//            if ($pluscon !== null)
+//            {
+//                list($plus_conman, $plus_conmanfns)=$pluscon;
+//                $conmandatorys=addtoarray_single($conmandatorys, $plus_conman);
+//                $conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
+//            }
 
 //            //Build an array containing the conditions that apply for this page
 //            $plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
@@ -367,25 +372,25 @@ print <<<END
 
 END;
 // Find out if there are any array_filter questions in this group
-$array_filterqs = getArrayFiltersForGroup($surveyid, "");
-$array_filterXqs = getArrayFilterExcludesForGroup($surveyid, "");
-$array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, "");
-// Put in the radio button reset javascript for the array filter unselect
-if (isset($array_filterqs) && is_array($array_filterqs)) {
-    print <<<END
-
-		function radio_unselect(radioObj)
-		{
-			var radioLength = radioObj.length;
-			for(var i = 0; i < radioLength; i++)
-			{
-				radioObj[i].checked = false;
-			}
-		}
-
-END;
-
-}
+//$array_filterqs = getArrayFiltersForGroup($surveyid, "");
+//$array_filterXqs = getArrayFilterExcludesForGroup($surveyid, "");
+//$array_filterXqs_cascades = getArrayFilterExcludesCascadesForGroup($surveyid, "");
+//// Put in the radio button reset javascript for the array filter unselect
+//if (isset($array_filterqs) && is_array($array_filterqs)) {
+//    print <<<END
+//
+//		function radio_unselect(radioObj)
+//		{
+//			var radioLength = radioObj.length;
+//			for(var i = 0; i < radioLength; i++)
+//			{
+//				radioObj[i].checked = false;
+//			}
+//		}
+//
+//END;
+//
+//}
 
 print <<<END
 	function noop_checkconditions(value, name, type)
@@ -436,527 +441,528 @@ print <<<END
 // -->
 </script>
 END;
-/*
-// If there are conditions or arrray_filter questions then include the appropriate Javascript
-if ((isset($conditions) && is_array($conditions)) ||
-(isset($array_filterqs) && is_array($array_filterqs)) ||
-(isset($array_filterXqs) && is_array($array_filterXqs)))
-{
-    if (!isset($endzone))
-    {
-        $endzone="";
-    }
-
-    print <<<END
-        if (type == 'radio' || type == 'select-one')
-        {
-            var hiddenformname='java'+name;
-            document.getElementById(hiddenformname).value=value;
-        }
-        if (type == 'checkbox')
-        {
-            var hiddenformname='java'+name;
-            var chkname='answer'+name;
-            if (document.getElementById(chkname).checked)
-            {
-                document.getElementById(hiddenformname).value='Y';
-            } else
-            {
-		        document.getElementById(hiddenformname).value='';
-            }
-        }
-        ExprMgr_process_relevance_and_tailoring();
-
-END;
-    $java="";
-    $cqcount=1;
- */
-
-    /* $conditions element structure
-     * $conditions element structure
-     * $condition[n][0] => qid = question id
-     * $condition[n][1] => cqid = question id of the target question, or 0 for TokenAttr leftOperand
-     * $condition[n][2] => field name of element [1] (Except for type M or P)
-     * $condition[n][3] => value to be evaluated on answers labeled.
-     * $condition[n][4] => type of question
-     * $condition[n][5] => SGQ code of element [1] (sub-part of [2])
-     * $condition[n][6] => method used to evaluate
-     * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
-     * $condition[n][8] => group id of the question having the condition set ($condition[n][0])
-     */
-/*
-    foreach ($conditions as $cd)
-    {
-        if (trim($cd[6])=='') {$cd[6]='==';}
-        if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
-        {
-            $java .= $endzone;
-            $endzone = "";
-            $cqcount=1;
-            $java .= "\n   if (((";
-        }
-
-        if (!isset($oldcq) || !$oldcq)
-        {
-            $oldcq = $cd[2];
-        }
-
-        $idname=retrieveJSidname($cd);
-
-        // Addition of "scenario" by Ron L.J. van den Burg.
-        // Different scenario's are or-ed; within 1 scenario, conditions are and-ed.
-        if ($cqcount > 1 && isset($oldscenario) && $oldscenario != $cd[7]) // We have an new scenario, so "or" the scenario.
-        {
-            $java .= ")) || ((";
-        }
-        else
-        {
-            if ($cqcount > 1 && $oldcq ==$cd[2])
-            {
-                $java .= " || ";
-            }
-            elseif ($cqcount >1 && $oldcq != $cd[2])
-            {
-                $java .= ") && (";
-            }
-        }
-        $oldscenario = $cd[7];
-
-        // Source of condition can be a token attr
-        // Thus local evaluation of the condition may be possible
-        // Let's try localEval (php),
-        // else set $JSsourceElt and $JSsourceValue and use them in later Javascript evals
-        unset($localEvaluationPossible);
-        unset($localEvaluation);
-        unset($JSsourceElt);
-        unset($JSsourceVal);
-        if ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[2], $sourceconditiontokenattr))
-        { // source is a token attr
-            // first check if token is readable in session
-            if ( isset($_SESSION['token']) &&
-            in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-            {
-                $tokenAttrSourceValue=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
-                // local evaluation avoids transmitting
-                // the comparison values to the client in Javascript
-                // It is possible if target value is not an @SGQA@ answer
-                if (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@/', $cd[3], $comparedfieldname))
-                { // the comparison right operand is a previous answer
-                    $localEvaluationPossible =false;
-                    $JSsourceElt = "document"; // let's use an always existing Elt
-                    $JSsourceVal = "'".javascript_escape($tokenAttrSourceValue)."'";
-
-                }
-                else
-                { // local eval possible
-                    $localEvaluationPossible = true;
-
-                    if ($cd[6] == 'RX')
-                    { // the comparison right operand is a RegExp
-                        if (preg_match('/'.trim($cd[3]).'/',trim($tokenAttrSourceValue)))
-                        {
-                            $localEvaluation = 'true';
-                        }
-                        else
-                        {
-                            $localEvaluation = 'false';
-                        }
-                    }
-                    elseif (preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
-                    { // the comparison right operand is a Token Attribute
-                        if ( isset($_SESSION['token']) &&
-                        in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-                        {
-                            $comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
-                            if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($comparedtokenattrValue)) return true; else return false;'))
-                            {
-                                $localEvaluation = 'true';
-                                //$localEvaluation = "'tokenmatch' == 'tokenmatch'";
-                            }
-                            else
-                            {
-                                $localEvaluation = 'false';
-                            }
-                        }
-                        else
-                        {
-                            $localEvaluation = 'false';
-                        }
-                    }
-                    else
-                    { // the comparison right operand is a constant
-                        if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($cd[3])) return true; else return false;'))
-                        {
-                            $localEvaluation = 'true';
-                        }
-                        else
-                        {
-                            $localEvaluation = 'false';
-                        }
-                    }
-                }
-            }
-            else
-            { // token not available, let's evaluate as false
-                $localEvaluationPossible = true;
-                $localEvaluation = 'false';
-            }
-
-        }
-        else
-        { // this is a normal answer based condition
-            // the source HTML element and value are defined for future use
-            $localEvaluationPossible = false;
-            unset($localEvaluation);
-            $JSsourceElt = "document.getElementById('$idname')";
-            $JSsourceVal = "document.getElementById('$idname').value";
-        }
-
-        if ($localEvaluationPossible == true && isset($localEvaluation))
-        {
-            $java .= "$localEvaluation";
-        }
-        else
-        {
-            if ($cd[3] == '' || $cd[3] == ' ')
-            { // empty == no answer is a specific case and must be evaluated differently
-                if ($cd[6] == '==')
-                {
-                    $java .= "$JSsourceElt != null && ( $JSsourceVal $cd[6] ' ' || !$JSsourceVal )";
-                }
-                else
-                {
-                    $java .= "$JSsourceElt != null && $JSsourceVal";
-                }
-            }
-            elseif($cd[4] == "M" || $cd[4] == "P")
-            { // Type M and P questions are processed specifically
-                $java .= "document.getElementById('$idname') != undefined && document.getElementById('$idname').value $cd[6] 'Y'";
-            }
-            else
-            {
-                // NEW
-                // If the value is enclosed by @
-                // the value of this question must be evaluated instead.
-                if (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@/', $cd[3], $comparedfieldname))
-                { // when the right operand is the answer of a previous question
-                    $sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
-                    preg_match('/^([0-9]+)X([0-9]+)X([0-9]+)$/',$sgq_from_sgqa,$qidMatched);
-                    $qid_from_sgq=$qidMatched[3];
-                    $q2type=$qtypesarray[$sgq_from_sgqa];
-                    $idname2 = retrieveJSidname(Array('',$qid_from_sgq,$comparedfieldname[1],'Y',$q2type,$sgq_from_sgqa));
- */
-                    /***
-                    $cqidattributes = getQuestionAttributes($cd[1]);
-
-                    if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
-                    { // Numerical questions
-
-                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
-                    }
-                    else
-                    {
-                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && $JSsourceVal $cd[6] document.getElementById('".$idname2."').value";
-                    }
-                    ****/
-/*
-                    if (in_array($cd[6],array("<","<=",">",">=")))
-                    { // Numerical comparizons
-                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
-                    }
-                    elseif (preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
-                    { // String comparizons
-                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) ".$matchmethods[1]." parseFloat(document.getElementById('".$idname2."').value)";
-                    }
-                    else
-                    {
-                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) ".$cd[6]." parseFloat(document.getElementById('".$idname2."').value)";
-                    }
-
-                }
-                elseif ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
-                {
-                    if ( isset($_SESSION['token']) &&
-                    in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
-                    {
-                        $comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
-                        //if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
-                        if (in_array($cd[6],array("<","<=",">",">=")))
-                        { // // Numerical comparizons
-                            $java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('".javascript_escape($comparedtokenattrValue)."')";
-                        }
-                        elseif(preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
-                        { // Strings comparizon
-                            $java .= "$JSsourceElt != null && $JSsourceVal ".$matchmethods[1]." '".javascript_escape($comparedtokenattrValue)."'";
-                        }
-                        else
-                        {
-                            $java .= "$JSsourceElt != null && $JSsourceVal $cd[6] '".javascript_escape($comparedtokenattrValue)."'";
-                        }
-                    }
-                    else
-                    {
-                        $java .= " 'impossible to evaluate tokenAttr' == 'tokenAttr'";
-                    }
-                }
-                else
-                {
-                    if ($cd[6] == 'RX')
-                    {
-                        $java .= "$JSsourceElt != null  && match_regex($JSsourceVal,'$cd[3]')";
-                    }
-                    else
-                    {
-                        $cqidattributes = getQuestionAttributes($cd[1]);
-                        //if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
-                        if (in_array($cd[6],array("<","<=",">",">=")))
-                        { // Numerical comparizons
-                            $java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('$cd[3]')";
-                        }
-                        elseif(preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
-                        { // String comaprizons
-                            $java .= "$JSsourceElt != null && $JSsourceVal ".$matchmethods[1]." '$cd[3]'";
-                        }
-                        else
-                        {
-                            $java .= "$JSsourceElt != null && $JSsourceVal $cd[6] '$cd[3]'";
-                        }
-                    }
-                }
-            }
-        }
-
-        if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
-        {
-            $endzone = ")))\n"
-            . "    {\n"
-            . "    document.getElementById('question$cd[0]').style.display='';\n"
-            . "    document.getElementById('display$cd[0]').value='on';\n"
-            . "            if(\$('#question$cd[0] div[id^=\"gmap_canvas\"]').length > 0)\n"
-            . "            {\n"
-            . "                resetMap($cd[0]);\n"
-            . "    }\n"
-            . "        }\n"
-            . "   else\n"
-            . "    {\n"
-            . "    document.getElementById('question$cd[0]').style.display='none';\n"
-            . "    document.getElementById('display$cd[0]').value='';\n"
-            . "    }\n";
-            $cqcount++;
-        }
-        $oldq = $cd[0]; //Update oldq for next loop
-        $oldcq = $cd[2];  //Update oldcq for next loop
-    }
-    $java .= $endzone;
-}
-
-
-if ((isset($array_filterqs) && is_array($array_filterqs)) ||
-(isset($array_filterXqs) && is_array($array_filterXqs)))
-{
-    $qattributes=questionAttributes(1);
-    $array_filter_types=$qattributes['array_filter']['types'];
-    $array_filter_exclude_types=$qattributes['array_filter_exclude']['types'];
-    unset($qattributes);
-    if (!isset($appendj)) {$appendj="";}
-
-    foreach ($array_filterqs as $attralist)
-    {
-        $qbase = $surveyid."X".$attralist['gid']."X".$attralist['qid'];
-        $qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
-        if ($attralist['type'] == "M" || $attralist['type'] == "P")
-        {
-            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
-            $tqresult = db_execute_assoc($tqquery); //Checked
-            $OrigQuestion = $tqresult->FetchRow();
-
-            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
-            {
-                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
-            } else {
-                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid != 0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
-            }
-            $qresult = db_execute_assoc($qquery); //Checked
-            $other=null;
-
-            while ($fansrows = $qresult->FetchRow())
-            {
-                if($fansrows['other']=="Y") $other="Y";
-                if(strpos($array_filter_types, $OrigQuestion['type']) === false) {} else
-                {
-                    $fquestans = "java".$qfbase.$fansrows['title'];
-                    $tbody = "javatbd".$qbase.$fansrows['title'];
-                    if($OrigQuestion['type']=="1") {
-                        //for a dual scale array question type we have to massage the system
-                        $dtbody = "tbdisp".$qbase.$fansrows['title']."#0";
-                        $dtbody2= "tbdisp".$qbase.$fansrows['title']."#1";
-                    } else {
-                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
-                    }
-                    $tbodyae = $qbase.$fansrows['title'];
-                    $appendj .= "\n";
-                    $appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
-                    $appendj .= "\t{\n";
-                    $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
-                    if($OrigQuestion['type']=="1") {
-                        //for a dual scale array question type we have to massage the system
-                        $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
-                    }
-                    $appendj .= "\t}\n";
-                    $appendj .= "\telse\n";
-                    $appendj .= "\t{\n";
-                    $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-                    if($OrigQuestion['type']=="1") {
-                        //for a dual scale array question type we have to massage the system
-                        $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-                    }
-                    // This line resets the text fields in the hidden row
-                    $appendj .= "\t\t$('#$tbody input').val('');\n";
-                    // This line resets any radio group in the hidden row
-                    $appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
-                    $appendj .= "\t}\n";
-                }
-            }
-
-            if($other=="Y") {
-                $fquestans = "answer".$qfbase."other";
-                $tbody = "javatbd".$qbase."other";
-                $dtbody = "tbdisp".$qbase."other";
-                $tbodyae = $qbase."other";
-                $appendj .= "\n";
-                $appendj .= "\tif (document.getElementById('$fquestans').value !== '')\n";
-                $appendj .= "\t{\n";
-                $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
-                $appendj .= "\t}\n";
-                $appendj .= "\telse\n";
-                $appendj .= "\t{\n";
-                $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-                // This line resets the text fields in the hidden row
-                $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
-                // This line resets any radio group in the hidden row
-                $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
-                $appendj .= "\t}\n";
-            }
-        }
-    }
-    $java .= $appendj;
-    foreach ($array_filterXqs as $attralist)
-    {
-        $qbase = $surveyid."X".$attralist['gid']."X".$attralist['qid'];
-        $qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
-        if ($attralist['type'] == "M" || $attralist['type'] == "P")
-        {
-            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
-            $tqresult = db_execute_assoc($tqquery); //Checked
-            $OrigQuestion = $tqresult->FetchRow();
-
-            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
-            {
-                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
-            } else {
-                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
-            }
-            $qresult = db_execute_assoc($qquery); //Checked
-            $other=null;
-            while ($fansrows = $qresult->FetchRow())
-            {
-                if($fansrows['other']== "Y") $other="Y";
-                if(strpos($array_filter_exclude_types, $OrigQuestion['type']) === false) {} else
-                {
-                    $fquestans = "java".$qfbase.$fansrows['title'];
-                    $tbody = "javatbd".$qbase.$fansrows['title'];
-  					if($OrigQuestion['type']=="1") {
-					    //for a dual scale array question type we have to massage the system
-						$dtbody = "tbdisp".$qbase.$fansrows['title']."#0";
-						$dtbody2= "tbdisp".$qbase.$fansrows['title']."#1";
-					} else {
-                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
-					}
-                    $tbodyae = $qbase.$fansrows['title'];
-                    $appendj .= "\n";
-                    $appendj .= "\tif (\n";
-                    $appendj .= "\t\t(document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y')\n";
- */
-                    /* If this question is a cascading question, then it also needs to check the status of the question that this one relies on */
-/*
-                    if(isset($array_filterXqs_cascades[$attralist['qid']]))
-                    {
-                        $groups=getGroupsByQuestion($surveyid);
-                        foreach($array_filterXqs_cascades[$attralist['qid']] as $cascader)
-                        {
-                            $cascadefqa ="java".$surveyid."X".$groups[$cascader]."X".$cascader.$fansrows['title'];
-                            $appendj .= "\t\t||\n";
-                            $appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
-                        }
-                    }
-                    $appendj .= "\t)\n";
-                    $appendj .= "\t{\n";
-                    $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-                    if($OrigQuestion['type']=="1") {
-                        //for a dual scale array question type we have to massage the system
-                        $appendj .= "\t\tdocument.getElementById('$dtbody2').value='off';\n";
-                    }
-                    // This line resets the text fields in the hidden row
-                    $appendj .= "\t\t$('#$tbody input[type=text]').val('');\n";
-                    // This line resets any radio group in the hidden row
-                    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false);\n";
-                    $appendj .= "\t}\n";
-                    $appendj .= "\telse\n";
-                    $appendj .= "\t{\n";
-                    $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
-                    if($OrigQuestion['type']=="1") {
-                        //for a dual scale array question type we have to massage the system
-                        $appendj .= "\t\tdocument.getElementById('$dtbody2').value='on';\n";
-                    }
-                    $appendj .= "\t}\n";
-                }
-            }
-            if($other=="Y") {
-                $fquestans = "answer".$qfbase."other";
-                $tbody = "javatbd".$qbase."other";
-                $dtbody = "tbdisp".$qbase."other";
-                $tbodyae = $qbase."other";
-                $appendj .= "\n";
-                $appendj .= "\tif (document.getElementById('$fquestans').value !== '')\n";
-                $appendj .= "\t{\n";
-                $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
-                $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
-                $appendj .= "\t}\n";
-                $appendj .= "\telse\n";
-                $appendj .= "\t{\n";
-                $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
-                $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
-                // This line resets the text fields in the hidden row
-                $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
-                // This line resets any radio group in the hidden row
-                $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
-                $appendj .= "\t}\n";
-            }
-        }
-    }
-    $java .= $appendj;
-}
-
-if (isset($java)) {echo $java;}
-foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
-{
-    if ($thecount == 0 )
-    {
-        echo "\t\tshow_hide_group({$thegid});\n";
-    }
-}
-echo "\t}\n"
-."\t//-->\n"
-."\t</script>\n\n"; // End checkconditions javascript function
- */
+///*
+//// If there are conditions or arrray_filter questions then include the appropriate Javascript
+//if ((isset($conditions) && is_array($conditions)) ||
+//(isset($array_filterqs) && is_array($array_filterqs)) ||
+//(isset($array_filterXqs) && is_array($array_filterXqs)))
+//{
+//    if (!isset($endzone))
+//    {
+//        $endzone="";
+//    }
+//
+//    print <<<END
+//        if (type == 'radio' || type == 'select-one')
+//        {
+//            var hiddenformname='java'+name;
+//            document.getElementById(hiddenformname).value=value;
+//        }
+//        if (type == 'checkbox')
+//        {
+//            var hiddenformname='java'+name;
+//            var chkname='answer'+name;
+//            if (document.getElementById(chkname).checked)
+//            {
+//                document.getElementById(hiddenformname).value='Y';
+//            } else
+//            {
+//		        document.getElementById(hiddenformname).value='';
+//            }
+//        }
+//        ExprMgr_process_relevance_and_tailoring();
+//
+//END;
+//    $java="";
+//    $cqcount=1;
+// */
+//
+//    /* $conditions element structure
+//     * $conditions element structure
+//     * $condition[n][0] => qid = question id
+//     * $condition[n][1] => cqid = question id of the target question, or 0 for TokenAttr leftOperand
+//     * $condition[n][2] => field name of element [1] (Except for type M or P)
+//     * $condition[n][3] => value to be evaluated on answers labeled.
+//     * $condition[n][4] => type of question
+//     * $condition[n][5] => SGQ code of element [1] (sub-part of [2])
+//     * $condition[n][6] => method used to evaluate
+//     * $condition[n][7] => scenario *NEW BY R.L.J. van den Burg*
+//     * $condition[n][8] => group id of the question having the condition set ($condition[n][0])
+//     */
+///*
+//    foreach ($conditions as $cd)
+//    {
+//        if (trim($cd[6])=='') {$cd[6]='==';}
+//        if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq)) //New if statement
+//        {
+//            $java .= $endzone;
+//            $endzone = "";
+//            $cqcount=1;
+//            $java .= "\n   if (((";
+//        }
+//
+//        if (!isset($oldcq) || !$oldcq)
+//        {
+//            $oldcq = $cd[2];
+//        }
+//
+//        $idname=retrieveJSidname($cd);
+//
+//        // Addition of "scenario" by Ron L.J. van den Burg.
+//        // Different scenario's are or-ed; within 1 scenario, conditions are and-ed.
+//        if ($cqcount > 1 && isset($oldscenario) && $oldscenario != $cd[7]) // We have an new scenario, so "or" the scenario.
+//        {
+//            $java .= ")) || ((";
+//        }
+//        else
+//        {
+//            if ($cqcount > 1 && $oldcq ==$cd[2])
+//            {
+//                $java .= " || ";
+//            }
+//            elseif ($cqcount >1 && $oldcq != $cd[2])
+//            {
+//                $java .= ") && (";
+//            }
+//        }
+//        $oldscenario = $cd[7];
+//
+//        // Source of condition can be a token attr
+//        // Thus local evaluation of the condition may be possible
+//        // Let's try localEval (php),
+//        // else set $JSsourceElt and $JSsourceValue and use them in later Javascript evals
+//        unset($localEvaluationPossible);
+//        unset($localEvaluation);
+//        unset($JSsourceElt);
+//        unset($JSsourceVal);
+//        if ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[2], $sourceconditiontokenattr))
+//        { // source is a token attr
+//            // first check if token is readable in session
+//            if ( isset($_SESSION['token']) &&
+//            in_array(strtolower($sourceconditiontokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+//            {
+//                $tokenAttrSourceValue=GetAttributeValue($surveyid,strtolower($sourceconditiontokenattr[1]),$_SESSION['token']);
+//                // local evaluation avoids transmitting
+//                // the comparison values to the client in Javascript
+//                // It is possible if target value is not an @SGQA@ answer
+//                if (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@/', $cd[3], $comparedfieldname))
+//                { // the comparison right operand is a previous answer
+//                    $localEvaluationPossible =false;
+//                    $JSsourceElt = "document"; // let's use an always existing Elt
+//                    $JSsourceVal = "'".javascript_escape($tokenAttrSourceValue)."'";
+//
+//                }
+//                else
+//                { // local eval possible
+//                    $localEvaluationPossible = true;
+//
+//                    if ($cd[6] == 'RX')
+//                    { // the comparison right operand is a RegExp
+//                        if (preg_match('/'.trim($cd[3]).'/',trim($tokenAttrSourceValue)))
+//                        {
+//                            $localEvaluation = 'true';
+//                        }
+//                        else
+//                        {
+//                            $localEvaluation = 'false';
+//                        }
+//                    }
+//                    elseif (preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
+//                    { // the comparison right operand is a Token Attribute
+//                        if ( isset($_SESSION['token']) &&
+//                        in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+//                        {
+//                            $comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
+//                            if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($comparedtokenattrValue)) return true; else return false;'))
+//                            {
+//                                $localEvaluation = 'true';
+//                                //$localEvaluation = "'tokenmatch' == 'tokenmatch'";
+//                            }
+//                            else
+//                            {
+//                                $localEvaluation = 'false';
+//                            }
+//                        }
+//                        else
+//                        {
+//                            $localEvaluation = 'false';
+//                        }
+//                    }
+//                    else
+//                    { // the comparison right operand is a constant
+//                        if (eval('if (trim($tokenAttrSourceValue) '.$cd[6].' trim($cd[3])) return true; else return false;'))
+//                        {
+//                            $localEvaluation = 'true';
+//                        }
+//                        else
+//                        {
+//                            $localEvaluation = 'false';
+//                        }
+//                    }
+//                }
+//            }
+//            else
+//            { // token not available, let's evaluate as false
+//                $localEvaluationPossible = true;
+//                $localEvaluation = 'false';
+//            }
+//
+//        }
+//        else
+//        { // this is a normal answer based condition
+//            // the source HTML element and value are defined for future use
+//            $localEvaluationPossible = false;
+//            unset($localEvaluation);
+//            $JSsourceElt = "document.getElementById('$idname')";
+//            $JSsourceVal = "document.getElementById('$idname').value";
+//        }
+//
+//        if ($localEvaluationPossible == true && isset($localEvaluation))
+//        {
+//            $java .= "$localEvaluation";
+//        }
+//        else
+//        {
+//            if ($cd[3] == '' || $cd[3] == ' ')
+//            { // empty == no answer is a specific case and must be evaluated differently
+//                if ($cd[6] == '==')
+//                {
+//                    $java .= "$JSsourceElt != null && ( $JSsourceVal $cd[6] ' ' || !$JSsourceVal )";
+//                }
+//                else
+//                {
+//                    $java .= "$JSsourceElt != null && $JSsourceVal";
+//                }
+//            }
+//            elseif($cd[4] == "M" || $cd[4] == "P")
+//            { // Type M and P questions are processed specifically
+//                $java .= "document.getElementById('$idname') != undefined && document.getElementById('$idname').value $cd[6] 'Y'";
+//            }
+//            else
+//            {
+//                // NEW
+//                // If the value is enclosed by @
+//                // the value of this question must be evaluated instead.
+//                if (preg_match('/^@([0-9]+X[0-9]+X[^@]+)@/', $cd[3], $comparedfieldname))
+//                { // when the right operand is the answer of a previous question
+//                    $sgq_from_sgqa=$_SESSION['fieldnamesInfo'][$comparedfieldname[1]];
+//                    preg_match('/^([0-9]+)X([0-9]+)X([0-9]+)$/',$sgq_from_sgqa,$qidMatched);
+//                    $qid_from_sgq=$qidMatched[3];
+//                    $q2type=$qtypesarray[$sgq_from_sgqa];
+//                    $idname2 = retrieveJSidname(Array('',$qid_from_sgq,$comparedfieldname[1],'Y',$q2type,$sgq_from_sgqa));
+// */
+//                    /***
+//                    $cqidattributes = getQuestionAttributes($cd[1]);
+//
+//                    if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
+//                    { // Numerical questions
+//
+//                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
+//                    }
+//                    else
+//                    {
+//                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && $JSsourceVal $cd[6] document.getElementById('".$idname2."').value";
+//                    }
+//                    ****/
+///*
+//                    if (in_array($cd[6],array("<","<=",">",">=")))
+//                    { // Numerical comparizons
+//                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) $cd[6] parseFloat(document.getElementById('".$idname2."').value)";
+//                    }
+//                    elseif (preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+//                    { // String comparizons
+//                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) ".$matchmethods[1]." parseFloat(document.getElementById('".$idname2."').value)";
+//                    }
+//                    else
+//                    {
+//                        $java .= "$JSsourceElt != null && document.getElementById('".$idname2."') !=null && parseFloat($JSsourceVal) ".$cd[6]." parseFloat(document.getElementById('".$idname2."').value)";
+//                    }
+//
+//                }
+//                elseif ($thissurvey['anonymized'] == "N" && preg_match('/^{TOKEN:([^}]*)}$/', $cd[3], $comparedtokenattr))
+//                {
+//                    if ( isset($_SESSION['token']) &&
+//                    in_array(strtolower($comparedtokenattr[1]),GetTokenConditionsFieldNames($surveyid)))
+//                    {
+//                        $comparedtokenattrValue = GetAttributeValue($surveyid,strtolower($comparedtokenattr[1]),$_SESSION['token']);
+//                        //if (in_array($cd[4],array("A","B","K","N","5",":")) || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
+//                        if (in_array($cd[6],array("<","<=",">",">=")))
+//                        { // // Numerical comparizons
+//                            $java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('".javascript_escape($comparedtokenattrValue)."')";
+//                        }
+//                        elseif(preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+//                        { // Strings comparizon
+//                            $java .= "$JSsourceElt != null && $JSsourceVal ".$matchmethods[1]." '".javascript_escape($comparedtokenattrValue)."'";
+//                        }
+//                        else
+//                        {
+//                            $java .= "$JSsourceElt != null && $JSsourceVal $cd[6] '".javascript_escape($comparedtokenattrValue)."'";
+//                        }
+//                    }
+//                    else
+//                    {
+//                        $java .= " 'impossible to evaluate tokenAttr' == 'tokenAttr'";
+//                    }
+//                }
+//                else
+//                {
+//                    if ($cd[6] == 'RX')
+//                    {
+//                        $java .= "$JSsourceElt != null  && match_regex($JSsourceVal,'$cd[3]')";
+//                    }
+//                    else
+//                    {
+//                        $cqidattributes = getQuestionAttributes($cd[1]);
+//                        //if (in_array($cd[4],array("A","B","K","N","5",":"))  || (in_array($cd[4],array("Q",";")) && $cqidattributes['other_numbers_only']==1 ))
+//                        if (in_array($cd[6],array("<","<=",">",">=")))
+//                        { // Numerical comparizons
+//                            $java .= "$JSsourceElt != null && parseFloat($JSsourceVal) $cd[6] parseFloat('$cd[3]')";
+//                        }
+//                        elseif(preg_match("/^a(.*)b$/",$cd[6],$matchmethods))
+//                        { // String comaprizons
+//                            $java .= "$JSsourceElt != null && $JSsourceVal ".$matchmethods[1]." '$cd[3]'";
+//                        }
+//                        else
+//                        {
+//                            $java .= "$JSsourceElt != null && $JSsourceVal $cd[6] '$cd[3]'";
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        if ((isset($oldq) && $oldq != $cd[0]) || !isset($oldq))//Close if statement
+//        {
+//            $endzone = ")))\n"
+//            . "    {\n"
+//            . "    document.getElementById('question$cd[0]').style.display='';\n"
+//            . "    document.getElementById('display$cd[0]').value='on';\n"
+//            . "            if(\$('#question$cd[0] div[id^=\"gmap_canvas\"]').length > 0)\n"
+//            . "            {\n"
+//            . "                resetMap($cd[0]);\n"
+//            . "    }\n"
+//            . "        }\n"
+//            . "   else\n"
+//            . "    {\n"
+//            . "    document.getElementById('question$cd[0]').style.display='none';\n"
+//            . "    document.getElementById('display$cd[0]').value='';\n"
+//            . "    }\n";
+//            $cqcount++;
+//        }
+//        $oldq = $cd[0]; //Update oldq for next loop
+//        $oldcq = $cd[2];  //Update oldcq for next loop
+//    }
+//    $java .= $endzone;
+//}
+//
+//
+//if ((isset($array_filterqs) && is_array($array_filterqs)) ||
+//(isset($array_filterXqs) && is_array($array_filterXqs)))
+//{
+//    $qattributes=questionAttributes(1);
+//    $array_filter_types=$qattributes['array_filter']['types'];
+//    $array_filter_exclude_types=$qattributes['array_filter_exclude']['types'];
+//    unset($qattributes);
+//    if (!isset($appendj)) {$appendj="";}
+//
+//    foreach ($array_filterqs as $attralist)
+//    {
+//        $qbase = $surveyid."X".$attralist['gid']."X".$attralist['qid'];
+//        $qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
+//        if ($attralist['type'] == "M" || $attralist['type'] == "P")
+//        {
+//            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+//            $tqresult = db_execute_assoc($tqquery); //Checked
+//            $OrigQuestion = $tqresult->FetchRow();
+//
+//            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
+//            {
+//                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
+//            } else {
+//                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid != 0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
+//            }
+//            $qresult = db_execute_assoc($qquery); //Checked
+//            $other=null;
+//
+//            while ($fansrows = $qresult->FetchRow())
+//            {
+//                if($fansrows['other']=="Y") $other="Y";
+//                if(strpos($array_filter_types, $OrigQuestion['type']) === false) {} else
+//                {
+//                    $fquestans = "java".$qfbase.$fansrows['title'];
+//                    $tbody = "javatbd".$qbase.$fansrows['title'];
+//                    if($OrigQuestion['type']=="1") {
+//                        //for a dual scale array question type we have to massage the system
+//                        $dtbody = "tbdisp".$qbase.$fansrows['title']."#0";
+//                        $dtbody2= "tbdisp".$qbase.$fansrows['title']."#1";
+//                    } else {
+//                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
+//                    }
+//                    $tbodyae = $qbase.$fansrows['title'];
+//                    $appendj .= "\n";
+//                    $appendj .= "\tif ((document.getElementById('$fquestans') != undefined && document.getElementById('$fquestans').value == 'Y'))\n";
+//                    $appendj .= "\t{\n";
+//                    $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+//                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+//                    if($OrigQuestion['type']=="1") {
+//                        //for a dual scale array question type we have to massage the system
+//                        $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+//                    }
+//                    $appendj .= "\t}\n";
+//                    $appendj .= "\telse\n";
+//                    $appendj .= "\t{\n";
+//                    $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+//                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
+//                    if($OrigQuestion['type']=="1") {
+//                        //for a dual scale array question type we have to massage the system
+//                        $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
+//                    }
+//                    // This line resets the text fields in the hidden row
+//                    $appendj .= "\t\t$('#$tbody input').val('');\n";
+//                    // This line resets any radio group in the hidden row
+//                    $appendj .= "\t\tif (document.forms['limesurvey'].elements['$tbodyae']!=undefined) radio_unselect(document.forms['limesurvey'].elements['$tbodyae']);\n";
+//                    $appendj .= "\t}\n";
+//                }
+//            }
+//
+//            if($other=="Y") {
+//                $fquestans = "answer".$qfbase."other";
+//                $tbody = "javatbd".$qbase."other";
+//                $dtbody = "tbdisp".$qbase."other";
+//                $tbodyae = $qbase."other";
+//                $appendj .= "\n";
+//                $appendj .= "\tif (document.getElementById('$fquestans').value !== '')\n";
+//                $appendj .= "\t{\n";
+//                $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+//                $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+//                $appendj .= "\t}\n";
+//                $appendj .= "\telse\n";
+//                $appendj .= "\t{\n";
+//                $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+//                $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
+//                // This line resets the text fields in the hidden row
+//                $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
+//                // This line resets any radio group in the hidden row
+//                $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+//                $appendj .= "\t}\n";
+//            }
+//        }
+//    }
+//    $java .= $appendj;
+//    foreach ($array_filterXqs as $attralist)
+//    {
+//        $qbase = $surveyid."X".$attralist['gid']."X".$attralist['qid'];
+//        $qfbase = $surveyid."X".$attralist['gid2']."X".$attralist['fid'];
+//        if ($attralist['type'] == "M" || $attralist['type'] == "P")
+//        {
+//            $tqquery = "SELECT type FROM {$dbprefix}questions WHERE qid='".$attralist['qid']."';";
+//            $tqresult = db_execute_assoc($tqquery); //Checked
+//            $OrigQuestion = $tqresult->FetchRow();
+//
+//            if($OrigQuestion['type'] == "L" || $OrigQuestion['type'] == "O")
+//            {
+//                $qquery = "SELECT {$dbprefix}answers.code as title, {$dbprefix}questions.type, {$dbprefix}questions.other FROM {$dbprefix}answers, {$dbprefix}questions WHERE {$dbprefix}answers.qid={$dbprefix}questions.qid AND {$dbprefix}answers.qid='".$attralist['qid']."' AND {$dbprefix}answers.language='".$_SESSION['s_lang']."' order by code;";
+//            } else {
+//                $qquery = "SELECT title, type, other FROM {$dbprefix}questions WHERE (parent_qid='".$attralist['qid']."' OR qid='".$attralist['qid']."') AND parent_qid!=0 AND language='".$_SESSION['s_lang']."' and scale_id=0 order by title;";
+//            }
+//            $qresult = db_execute_assoc($qquery); //Checked
+//            $other=null;
+//            while ($fansrows = $qresult->FetchRow())
+//            {
+//                if($fansrows['other']== "Y") $other="Y";
+//                if(strpos($array_filter_exclude_types, $OrigQuestion['type']) === false) {} else
+//                {
+//                    $fquestans = "java".$qfbase.$fansrows['title'];
+//                    $tbody = "javatbd".$qbase.$fansrows['title'];
+//  					if($OrigQuestion['type']=="1") {
+//					    //for a dual scale array question type we have to massage the system
+//						$dtbody = "tbdisp".$qbase.$fansrows['title']."#0";
+//						$dtbody2= "tbdisp".$qbase.$fansrows['title']."#1";
+//					} else {
+//                    $dtbody = "tbdisp".$qbase.$fansrows['title'];
+//					}
+//                    $tbodyae = $qbase.$fansrows['title'];
+//                    $appendj .= "\n";
+//                    $appendj .= "\tif (\n";
+//                    $appendj .= "\t\t(document.getElementById('$fquestans') != null && document.getElementById('$fquestans').value == 'Y')\n";
+// */
+//                    /* If this question is a cascading question, then it also needs to check the status of the question that this one relies on */
+///*
+//                    if(isset($array_filterXqs_cascades[$attralist['qid']]))
+//                    {
+//                        $groups=getGroupsByQuestion($surveyid);
+//                        foreach($array_filterXqs_cascades[$attralist['qid']] as $cascader)
+//                        {
+//                            $cascadefqa ="java".$surveyid."X".$groups[$cascader]."X".$cascader.$fansrows['title'];
+//                            $appendj .= "\t\t||\n";
+//                            $appendj .= "\t\t(document.getElementById('$cascadefqa') != null && document.getElementById('$cascadefqa').value == 'Y')\n";
+//                        }
+//                    }
+//                    $appendj .= "\t)\n";
+//                    $appendj .= "\t{\n";
+//                    $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+//                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
+//                    if($OrigQuestion['type']=="1") {
+//                        //for a dual scale array question type we have to massage the system
+//                        $appendj .= "\t\tdocument.getElementById('$dtbody2').value='off';\n";
+//                    }
+//                    // This line resets the text fields in the hidden row
+//                    $appendj .= "\t\t$('#$tbody input[type=text]').val('');\n";
+//                    // This line resets any radio group in the hidden row
+//                    $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false);\n";
+//                    $appendj .= "\t}\n";
+//                    $appendj .= "\telse\n";
+//                    $appendj .= "\t{\n";
+//                    $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+//                    $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+//                    if($OrigQuestion['type']=="1") {
+//                        //for a dual scale array question type we have to massage the system
+//                        $appendj .= "\t\tdocument.getElementById('$dtbody2').value='on';\n";
+//                    }
+//                    $appendj .= "\t}\n";
+//                }
+//            }
+//            if($other=="Y") {
+//                $fquestans = "answer".$qfbase."other";
+//                $tbody = "javatbd".$qbase."other";
+//                $dtbody = "tbdisp".$qbase."other";
+//                $tbodyae = $qbase."other";
+//                $appendj .= "\n";
+//                $appendj .= "\tif (document.getElementById('$fquestans').value !== '')\n";
+//                $appendj .= "\t{\n";
+//                $appendj .= "\t\tdocument.getElementById('$tbody').style.display='none';\n";
+//                $appendj .= "\t\tdocument.getElementById('$dtbody').value='on';\n";
+//                $appendj .= "\t}\n";
+//                $appendj .= "\telse\n";
+//                $appendj .= "\t{\n";
+//                $appendj .= "\t\tdocument.getElementById('$tbody').style.display='';\n";
+//                $appendj .= "\t\tdocument.getElementById('$dtbody').value='off';\n";
+//                // This line resets the text fields in the hidden row
+//                $appendj .= "\t\t$('#$tbody input[type=text]').val('');";
+//                // This line resets any radio group in the hidden row
+//                $appendj .= "\t\t$('#$tbody input[type=radio]').attr('checked', false); ";
+//                $appendj .= "\t}\n";
+//            }
+//        }
+//    }
+//    $java .= $appendj;
+//}
+//
+//if (isset($java)) {echo $java;}
+//foreach ($groupUnconditionnalQuestionsCount as $thegid => $thecount)
+//{
+//    if ($thecount == 0 )
+//    {
+//        echo "\t\tshow_hide_group({$thegid});\n";
+//    }
+//}
+//echo "\t}\n"
+//."\t//-->\n"
+//."\t</script>\n\n"; // End checkconditions javascript function
+// */
 
 //Display the "mandatory" message on page if necessary
+// TMSW Mandatory -> EM
 if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
@@ -1002,6 +1008,7 @@ foreach ($_SESSION['grouplist'] as $gl)
             {
                 $q_class = question_class($qa[8]); // render question class (see common.php)
 
+// TMSW Mandatory -> EM
                 if ($qa[9] == 'Y')
                 {
                     $man_class = ' mandatory';
@@ -1077,40 +1084,44 @@ echo "\n";
 if ($thissurvey['active'] != "Y") {echo "<p style='text-align:center' class='error'>".$clang->gT("This survey is currently not active. You will not be able to save your responses.")."</p>\n";}
 
 
-if (is_array($conditions) && count($conditions) != 0 )
-{
-    //if conditions exist, create hidden inputs for 'previously' answered questions
-    // Note that due to move 'back' possibility, there may be answers from next pages
-    // However we make sure that no answer from this page are inserted here
-    foreach (array_keys($_SESSION) as $SESak)
-    {
-        if (in_array($SESak, $_SESSION['insertarray']) && !in_array($SESak, $inputnames))
-        {
-            echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . $_SESSION[$SESak] . "' />\n";
-        }
-    }
-}
+//if (is_array($conditions) && count($conditions) != 0 )
+//{
+//    //if conditions exist, create hidden inputs for 'previously' answered questions
+//    // Note that due to move 'back' possibility, there may be answers from next pages
+//    // However we make sure that no answer from this page are inserted here
+//    foreach (array_keys($_SESSION) as $SESak)
+//    {
+//        if (in_array($SESak, $_SESSION['insertarray']) && !in_array($SESak, $inputnames))
+//        {
+//            echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . $_SESSION[$SESak] . "' />\n";
+//        }
+//    }
+//}
 //SOME STUFF FOR MANDATORY QUESTIONS
-if (remove_nulls_from_array($mandatorys))
-{
-    $mandatory=implode("|", remove_nulls_from_array($mandatorys));
-    echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory' />\n";
-}
-if (remove_nulls_from_array($conmandatorys))
-{
-    $conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
-    echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory' />\n";
-}
-if (remove_nulls_from_array($mandatoryfns))
-{
-    $mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
-    echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn' />\n";
-}
-if (remove_nulls_from_array($conmandatoryfns))
-{
-    $conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
-    echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
-}
+// TMSW Mandatory -> EM
+//if (remove_nulls_from_array($mandatorys))
+//{
+//    $mandatory=implode("|", remove_nulls_from_array($mandatorys));
+//    echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory' />\n";
+//}
+//// TMSW Mandatory -> EM
+//if (remove_nulls_from_array($conmandatorys))
+//{
+//    $conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
+//    echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory' />\n";
+//}
+//// TMSW Mandatory -> EM
+//if (remove_nulls_from_array($mandatoryfns))
+//{
+//    $mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
+//    echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn' />\n";
+//}
+//// TMSW Mandatory -> EM
+//if (remove_nulls_from_array($conmandatoryfns))
+//{
+//    $conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
+//    echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
+//}
 
 LimeExpressionManager::FinishProcessingPage();
 echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();

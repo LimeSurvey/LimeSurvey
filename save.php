@@ -115,6 +115,7 @@ foreach ($aRelevance as $key=>$value)
     if (isset($move) && $move == "movesubmit")
     {
     $backok=null;
+// TMSW Mandatory -> EM
     $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
     $notvalidated=checkpregs($move,$backok);
     $filenotvalidated = checkUploadedFileValidity($move, $backok);

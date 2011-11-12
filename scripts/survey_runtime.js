@@ -78,39 +78,39 @@ $(document).ready(function()
 		currentMap.panTo(markerLatLng);
 	});
 
-    /* TMSW - not needed?
-    if ((typeof(autoArray) != "undefined")){
-        if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
-            var aListOfQuestions = autoArray.list;
-
-            $(aListOfQuestions).each(function(index,element){
-
-                var elementInfo = autoArray[element];
-                var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
-
-                var aJSelectors = strJSelector.split(", ");
-                var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
-
-                $(strJSelector).live('change',function(event){
-
-                    if ($(strCheckedSelector).length == $(strJSelector).length){
-
-                        $("#answer"+elementInfo.focus).trigger('click');
-
-                        eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
-
-                        checkconditions($("#answer"+elementInfo.focus).val(),
-                                        $("#answer"+elementInfo.focus).attr("name"),
-                                        $("#answer"+elementInfo.focus).attr('type')
-                                    );
-
-                    }
-                });
-
-            });
-        }
-    }
-    */
+//    /* TMSW - not needed?
+//    if ((typeof(autoArray) != "undefined")){
+//        if ((autoArray.list != 'undefined') && (autoArray.list.length > 0)){
+//            var aListOfQuestions = autoArray.list;
+//
+//            $(aListOfQuestions).each(function(index,element){
+//
+//                var elementInfo = autoArray[element];
+//                var strJSelector = "#answer" + (elementInfo.children.join(", #answer"));
+//
+//                var aJSelectors = strJSelector.split(", ");
+//                var strCheckedSelector = (aJSelectors.join(":checked ,"))+":checked";
+//
+//                $(strJSelector).live('change',function(event){
+//
+//                    if ($(strCheckedSelector).length == $(strJSelector).length){
+//
+//                        $("#answer"+elementInfo.focus).trigger('click');
+//
+//                        eval("excludeAllOthers"+elementInfo.parent + "('answer"+elementInfo.focus + "', 'yes')");
+//
+//                        checkconditions($("#answer"+elementInfo.focus).val(),
+//                                        $("#answer"+elementInfo.focus).attr("name"),
+//                                        $("#answer"+elementInfo.focus).attr('type')
+//                                    );
+//
+//                    }
+//                });
+//
+//            });
+//        }
+//    }
+//    */
     /*replacement for inline javascript for #index */
     /*
     $("#index").parents(".outerframe").addClass("withindex");
@@ -119,6 +119,7 @@ $(document).ready(function()
          var row = $("#index .row.current");
          idx.scrollTop(row.position().top - idx.height() / 2 - row.height() / 2);
     */
+   ExprMgr_process_relevance_and_tailoring();
 });
 
 gmaps = new Object;

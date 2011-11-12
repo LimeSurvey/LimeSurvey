@@ -1772,6 +1772,7 @@ if (bHasSurveyPermission($surveyid, 'responses','read') || bHasSurveyPermission(
                 $dataentryoutput .= "\t<tr class='$bgc'>\n"
                 ."<td class='data-entry-small-text' valign='top' width='1%'>{$deqrow['title']}</td>\n"
                 ."<td valign='top' align='right' width='30%'>";
+                // TMSW - Mandatory->EM
                 if ($deqrow['mandatory']=="Y") //question is mandatory
                 {
                     $dataentryoutput .= "<font color='red'>*</font>";

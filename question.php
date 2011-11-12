@@ -45,6 +45,7 @@ if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
 
 //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
 //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
+// TMSW Mandatory -> EM
 if ($allowmandbackwards==1 && (
     (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION['prevstep'] == $_SESSION['maxstep']))) ||
     (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
@@ -58,6 +59,7 @@ else
 
 //Now, we check mandatory questions if necessary
 //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
+// TMSW Mandatory -> EM
 $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
 
 //CHECK INPUT
@@ -369,11 +371,12 @@ if ($newgroup == "Y" && trim($groupdescription)!='' &&
 
 
 require_once("qanda.php");
-$mandatorys=array();
-$mandatoryfns=array();
-$conmandatorys=array();
-$conmandatoryfns=array();
-$conditions=array();
+// TMSW Mandatory -> EM
+//$mandatorys=array();
+//$mandatoryfns=array();
+//$conmandatorys=array();
+//$conmandatoryfns=array();
+//$conditions=array();
 $inputnames=array();
 
 list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
@@ -390,6 +393,7 @@ if ($plus_inputnames && !$bIsGroupDescrPage)
 }
 
 //Display the "mandatory" popup if necessary
+// TMSW Mandatory -> EM
 if (isset($notanswered) && $notanswered!=false)
 {
     list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
@@ -408,19 +412,21 @@ if (isset($filenotvalidated))
 }
 
 //Get list of mandatory questions
-list($plusman, $pluscon)=create_mandatorylist($ia);
-if ($plusman !== null)
-{
-    list($plus_man, $plus_manfns)=$plusman;
-    $mandatorys=addtoarray_single($mandatorys, $plus_man);
-    $mandatoryfns=addtoarray_single($mandatoryfns, $plus_manfns);
-}
-if ($pluscon !== null)
-{
-    list($plus_conman, $plus_conmanfns)=$pluscon;
-    $conmandatorys=addtoarray_single($conmandatorys, $plus_conman);
-    $conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
-}
+//// TMSW Mandatory -> EM
+//list($plusman, $pluscon)=create_mandatorylist($ia);
+//if ($plusman !== null)
+//{
+//    list($plus_man, $plus_manfns)=$plusman;
+//    $mandatorys=addtoarray_single($mandatorys, $plus_man);
+//    $mandatoryfns=addtoarray_single($mandatoryfns, $plus_manfns);
+//}
+//// TMSW Mandatory -> EM
+//if ($pluscon !== null)
+//{
+//    list($plus_conman, $plus_conmanfns)=$pluscon;
+//    $conmandatorys=addtoarray_single($conmandatorys, $plus_conman);
+//    $conmandatoryfns=addtoarray_single($conmandatoryfns, $plus_conmanfns);
+//}
 //Build an array containing the conditions that apply for this page
 //$plus_conditions=retrieveConditionInfo($ia); //Returns false if no conditions
 //if ($plus_conditions)
@@ -523,6 +529,7 @@ else
     echo "\t</script>\n\n";
 
     //Display the "mandatory" message on page if necessary
+// TMSW Mandatory -> EM
     if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
     {
         echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
@@ -549,6 +556,7 @@ else
 			echo "<input type='hidden' name='lastanswer' value='$qa[7]' id='lastanswer' />\n";
             $q_class = question_class($qa[8]); // render question class (see common.php)
 
+// TMSW Mandatory -> EM
             if ($qa[9] == 'Y')
             {
                 $man_class = ' mandatory';
@@ -676,42 +684,43 @@ if($thissurvey['allowjumps']=='Y' && !$bIsGroupDescrPage)
     echo "\n";
 }
 
-if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
-{
-    //if conditions exist, create hidden inputs for 'previously' answered questions
-    // Note that due to move 'back' possibility, there may be answers from next pages
-    // However we make sure that no answer from this page are inserted here
-    foreach (array_keys($_SESSION) as $SESak)
-    {
-        if (in_array($SESak, $_SESSION['insertarray']) && !in_array($SESak, $inputnames))
-        {
-            echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . htmlspecialchars($_SESSION[$SESak],ENT_QUOTES) . "' />\n";
-        }
-    }
-}
+//if (isset($conditions) && is_array($conditions) && count($conditions) != 0)
+//{
+//    //if conditions exist, create hidden inputs for 'previously' answered questions
+//    // Note that due to move 'back' possibility, there may be answers from next pages
+//    // However we make sure that no answer from this page are inserted here
+//    foreach (array_keys($_SESSION) as $SESak)
+//    {
+//        if (in_array($SESak, $_SESSION['insertarray']) && !in_array($SESak, $inputnames))
+//        {
+//            echo "<input type='hidden' name='java$SESak' id='java$SESak' value='" . htmlspecialchars($_SESSION[$SESak],ENT_QUOTES) . "' />\n";
+//        }
+//    }
+//}
 
 
 //SOME STUFF FOR MANDATORY QUESTIONS
-if (remove_nulls_from_array($mandatorys) && $newgroup != "Y")
-{
-    $mandatory=implode("|", remove_nulls_from_array($mandatorys));
-    echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory' />\n";
-}
-if (remove_nulls_from_array($conmandatorys))
-{
-    $conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
-    echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory' />\n";
-}
-if (remove_nulls_from_array($mandatoryfns))
-{
-    $mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
-    echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn' />\n";
-}
-if (remove_nulls_from_array($conmandatoryfns))
-{
-    $conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
-    echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
-}
+// TMSW Mandatory -> EM
+//if (remove_nulls_from_array($mandatorys) && $newgroup != "Y")
+//{
+//    $mandatory=implode("|", remove_nulls_from_array($mandatorys));
+//    echo "<input type='hidden' name='mandatory' value='$mandatory' id='mandatory' />\n";
+//}
+//if (remove_nulls_from_array($conmandatorys))
+//{
+//    $conmandatory=implode("|", remove_nulls_from_array($conmandatorys));
+//    echo "<input type='hidden' name='conmandatory' value='$conmandatory' id='conmandatory' />\n";
+//}
+//if (remove_nulls_from_array($mandatoryfns))
+//{
+//    $mandatoryfn=implode("|", remove_nulls_from_array($mandatoryfns));
+//    echo "<input type='hidden' name='mandatoryfn' value='$mandatoryfn' id='mandatoryfn' />\n";
+//}
+//if (remove_nulls_from_array($conmandatoryfns))
+//{
+//    $conmandatoryfn=implode("|", remove_nulls_from_array($conmandatoryfns));
+//    echo "<input type='hidden' name='conmandatoryfn' value='$conmandatoryfn' id='conmandatoryfn' />\n";
+//}
 
 echo "<input type='hidden' name='thisstep' value='{$_SESSION['step']}' id='thisstep' />\n";
 echo "<input type='hidden' name='sid' value='$surveyid' id='sid' />\n";
