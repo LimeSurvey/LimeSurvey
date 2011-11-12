@@ -3,14 +3,14 @@
 <head>
     <?php echo $meta;?>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery.js"></script>
-    <script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery-ui.js"></script>
-    <script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery.qtip.js"></script>
-    <script type="text/javascript" src="<?php echo $this->config->item('generalscripts');?>jquery/jquery.notify.js"></script>
-    <script type="text/javascript" src="<?php echo $this->config->item('adminscripts');?>admin_core.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/jquery.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/jquery-ui.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/jquery.qtip.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/jquery.notify.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->getConfig('adminscripts');?>admin_core.js"></script>
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>
-    <link rel="stylesheet" type="text/css" media="all" href="<?php echo $this->config->item('generalscripts');?>jquery/css/start/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="<?php echo Yii::app()->getConfig('generalscripts');?>jquery/css/start/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/printablestyle.css" media="print" />
     <link rel="stylesheet" type="text/css" href="<?php echo $baseurl;?>styles/admin/<?php echo $admintheme;?>/adminstyle.css" />
     <?php

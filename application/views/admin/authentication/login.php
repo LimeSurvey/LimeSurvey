@@ -1,4 +1,5 @@
-<form name='loginform' id='loginform' method='post' action='<?php echo site_url("admin/authentication/login");?>' >
+<?php $this->_getAdminHeader(); ?>
+<form name='loginform' id='loginform' method='post' action='<?php echo $this->createUrl("admin/authentication/login");?>' >
     <br /><p><strong><?php echo $summary;?></strong><br /><br /></p>
     <ul>
         <li><label for='user'><?php $clang->eT("Username");?></label>
@@ -25,10 +26,10 @@
         <input class='action' type='submit' value='<?php $clang->eT("Login");?>' /><br />&nbsp;
         <br/>
         <?php
-            if ($this->config->item("display_user_password_in_email") === true)
+            if (Yii::app()->getConfig("display_user_password_in_email") === true)
             {
             ?>
-            <a href='<?php echo site_url("admin/authentication/forgotpassword");?>'><?php $clang->eT("Forgot your password?");?></a><br />&nbsp;
+            <a href='<?php echo $this->createUrl("admin/authentication/forgotpassword");?>'><?php $clang->eT("Forgot your password?");?></a><br />&nbsp;
             <?php
             }
         ?>
@@ -36,3 +37,4 @@
 <script type='text/javascript'>
     document.getElementById('user').focus();
        </script>
+<?php $this->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual")) ?>

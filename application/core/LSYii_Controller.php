@@ -37,10 +37,10 @@ abstract class LSYii_Controller extends CController
 	 *
 	 * Will exit the script if not.
 	 *
-	 * @access private
+	 * @access protected
 	 * @return void
 	 */
-	private function _checkinstallation()
+	protected function _checkinstallation()
 	{
 		$file_name = '/tmp/sample_installer_file.txt';
 		$installer_file = ROOT . $file_name;
@@ -52,7 +52,7 @@ abstract class LSYii_Controller extends CController
 		}
 	}
 
-	private function _init()
+	protected function _init()
 	{
 		// Check for most necessary requirements
 		// Now check for PHP & db version

@@ -513,7 +513,7 @@ $config['enableXMLRPCInterface'] = 0;
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
-$config['publicurl']               = Yii::app()->createUrl('/');                          // The public website location (url) of the public survey script
+$config['publicurl']               = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
 $config['homeurl']                 = $config['publicurl']."admin";          // The website location (url) of the admin scripts
 $config['tempurl']                 = $config['publicurl']."tmp";
 $config['imageurl']                = $config['publicurl']."images";         // Location of button bar files for admin script

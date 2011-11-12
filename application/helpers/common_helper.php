@@ -1755,23 +1755,20 @@ function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites th
 */
 function returnglobal($stringname, $urlParam = null)
 {
-    $CI = & get_instance();
-    $useWebserverAuth = $CI->config->item('useWebserverAuth');
-
     if(!isset($urlParam))
     {
         if ((isset($useWebserverAuth) && $useWebserverAuth === true) || $stringname=='sid') // don't read SID from a Cookie
         {
-            if ($CI->input->get_post($stringname)) $urlParam = $CI->input->get_post($stringname);
+            if (!empty($_POST[$stringname])) $urlParam = $_POST[$stringname];
             //if ($this->input->cookie('stringname')) $urlParam = $this->input->cookie('stringname');
         }
-        elseif ($CI->input->get_post($stringname) )
+        elseif (!empty($_GET[$stringname] ))
         {
-            $urlParam = $CI->input->get_post($stringname);
+            $urlParam = $_GET[$stringname];
         }
-        elseif ($CI->input->cookie($stringname))
+        elseif (!empty($_COOKIE[$stringname]))
         {
-            $urlParam = $CI->input->cookie($stringname);
+            $urlParam = $_COOKIE[$stringname];
         }
     }
 

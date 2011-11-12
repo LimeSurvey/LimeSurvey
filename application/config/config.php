@@ -15,12 +15,12 @@ return array(
 
 	'components' => array(
 		'db' => array(
-			'connectionString' => 'mysql:host=localhost;dbname=limesurvey',
+			'connectionString' => 'mysql:host=localhost;dbname=limesurvey_ci',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => '',
 			'charset' => 'utf8',
-			'tablePrefix' => 'prefix_',
+			'tablePrefix' => 'lime_',
 		),
 		/**
 		 Uncomment after implementing the error controller
@@ -31,6 +31,11 @@ return array(
 		'urlManager' => array(
 			'urlFormat' => 'path',
 			'rules' => require('routes.php'), //!!! Completely move it here
+		),
+		'session' => array (
+		    'class' => 'system.web.CDbHttpSession',
+		    'connectionID' => 'db',
+		    'sessionTableName' => 'YiiSession',
 		),
 	),
 );

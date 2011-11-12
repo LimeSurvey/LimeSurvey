@@ -71,7 +71,7 @@
         }
         else
         {
-            $clang = &get_instance()->limesurvey_lang;
+            $clang = new Limesurvey_lang(array('langcode' => Yii::app()->session['adminlang']));
         }
 
         static $supportedLanguages;
@@ -761,10 +761,10 @@
 
     function getLanguageDataRestricted($orderbynative=false) {
         $aLanguageData=getLanguageData($orderbynative);
-        $CI = &get_instance();
-        if (trim($CI->config->item('restrictToLanguages'))!='')
+
+        if (trim(Yii::app()->getConfig('restrictToLanguages'))!='')
         {
-            foreach(explode(' ',trim($CI->config->item('restrictToLanguages'))) AS $key) {
+            foreach(explode(' ',trim(Yii::app()->getConfig('restrictToLanguages'))) AS $key) {
                 $aArray[$key] = $aLanguageData[$key];
             }
         }

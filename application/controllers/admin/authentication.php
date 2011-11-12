@@ -22,65 +22,77 @@
 * @package		LimeSurvey
 * @subpackage	Backend
 */
-class Authentication extends Admin_Controller {
+class Authentication extends CAction
+{
+	/**
+	 * Executes the action based on given input
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function run()
+	{
+		if (isset($_GET['login']))
+			$this->login();
+		elseif (isset($_GET['logout']))
+			$this->logout();
+		else
+			$this->index();
+	}
 
     /**
-    * Constructor
-    */
-    function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-    * Default Controller Action
-    */
-    function index()
+  	 * Default Controller Action
+ 	 *
+     * @access public
+     * @return void
+     */
+    public function index()
     {
         redirect('/admin', 'refresh');
     }
 
     /**
-    * Show login screen and parse login data
+     * Show login screen and parse login data
     */
-    function login()
+    public function login()
     {
-        if(!$this->session->userdata("loginID"))
+        if (Yii::app()->user->getIsGuest())
         {
-            $sIp = $this->input->ip_address();
-            $this->load->model("failed_login_attempts_model");
-            $this->failed_login_attempts_model->cleanOutOldAttempts();
-            $bCannotLogin=$this->failed_login_attempts_model->isLockedOut($sIp);
+            $sIp = Yii::app()->request->getUserHostAddress();
+
+        	$failed_login_attempts = Failed_login_attempts::model();
+            $failed_login_attempts->cleanOutOldAttempts();
+
+            $bCannotLogin = $failed_login_attempts->isLockedOut($sIp);
 
             if (!$bCannotLogin)
             {
-                if($this->input->post('action'))
+                if (!empty($_POST['action']))
                 {
-                    $clang = $this->limesurvey_lang;
+                    $clang = $this->getController()->lang;
 
-                    $data=self::_doLogin($this->input->post("user"), $this->input->post('password'));
+                    $data = self::_doLogin($_POST['user'], $_POST['password']);
                     if (isset($data['errormsg']))
                     {
-                        parent::_getAdminHeader();
-                        $this->load->view('admin/authentication/error', $data);
-                        parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
+                        $this->getController()->_getAdminHeader();
+                        $this->getController()->render('/admin/authentication/error', $data);
+                        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
                     }
                     else
                     {
-                        $this->failed_login_attempts_model->deleteAttempts($sIp);
-                        $loginsummary = "<br />".sprintf($clang->gT("Welcome %s!"),$this->session->userdata('full_name'))."<br />&nbsp;";
-                        if ($this->session->userdata('redirect_after_login') && strpos($this->session->userdata('redirect_after_login'), "logout") === FALSE)
+                        $failed_login_attempts->deleteAttempts($sIp);
+                        $loginsummary = "<br />".sprintf($clang->gT("Welcome %s!"), Yii::app()->session['full_name'])."<br />&nbsp;";
+                        if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], "logout") === FALSE)
                         {
-                            $this->session->set_userdata('metaHeader',"<meta http-equiv=\"refresh\""
-                            . " content=\"1;URL=".site_url($this->session->userdata('redirect_after_login'))."\" />");
+                            Yii::app()->session['metaHeader']  = "<meta http-equiv=\"refresh\""
+                            . " content=\"1;URL=".Yii::app()->session['redirect_after_login']."\" />";
                             $loginsummary = "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
-                            $this->session->unset_userdata('redirect_after_login');
+                            unset(Yii::app()->session['redirect_after_login']);
                         }
-                        self::_GetSessionUserRights($this->session->userdata('loginID'));
-                        $this->session->set_userdata("just_logged_in",true);
-                        $this->session->set_userdata('loginsummary',$loginsummary);
-                        redirect(site_url('/admin'));
+                        self::_GetSessionUserRights(Yii::app()->session['loginID']);
+                    	Yii::app()->session['just_logged_in'] = true;
+                        Yii::app()->session['loginsummary'] = $loginsummary;
+                        $this->getController()->redirect($this->createUrl('/admin'));
                     }
 
                 }
@@ -93,17 +105,15 @@ class Authentication extends Admin_Controller {
             {
                 // wrong or unknown username
                 $data['errormsg']="";
-                $data['maxattempts']=sprintf($this->limesurvey_lang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($this->config->item("timeOutTime")/60))."<br />";
-                $data['clang']=$this->limesurvey_lang;
+                $data['maxattempts'] = sprintf($this->lang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),(Yii::app()->getConfig("timeOutTime")/60))."<br />";
+                $data['clang'] = $this->lang;
 
-                parent::_getAdminHeader();
-                $this->load->view('admin/authentication/error', $data);
-                parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                $this->getController()->render('/admin/authentication/error', $data);
             }
         }
         else
         {
-            redirect('/admin', 'refresh');
+            $this->getController()->redirect($this->getController()->createUrl('/admin'));
         }
     }
 
@@ -121,7 +131,7 @@ class Authentication extends Admin_Controller {
     */
     function forgotpassword()
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         if(!$this->input->post("action"))
         {
             $data['clang'] = $this->limesurvey_lang;
@@ -200,21 +210,18 @@ class Authentication extends Admin_Controller {
     */
     function _showLoginForm($logoutsummary="")
     {
-        $data['clang'] = $this->limesurvey_lang;
+        $data['clang'] = $this->getController()->lang;
 
         if ($logoutsummary=="")
         {
-            $data['summary'] = $this->limesurvey_lang->gT("You have to login first.");
+            $data['summary'] = $this->getController()->lang->gT("You have to login first.");
         }
         else
         {
             $data['summary'] = $logoutsummary;
         }
 
-        parent::_getAdminHeader();
-        $this->load->view('admin/authentication/login', $data);
-        parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
+        $this->getController()->render('/admin/authentication/login', $data);
     }
 
     /**
@@ -225,7 +232,6 @@ class Authentication extends Admin_Controller {
     */
     function _doLogin( $sUsername, $sPassword)
     {
-
         $clang = $this->limesurvey_lang;
         $sUsername = sanitize_user($sUsername);
         $this->load->library('admin/sha256','sha256');
