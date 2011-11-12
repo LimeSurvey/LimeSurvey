@@ -38,9 +38,6 @@
 |
 */
 
-$route['default_controller'] = "survey";
-$route['404_override'] = '';
-
 //Compatibility with classic modrewrite
 $route['(:num)/lang-(:any)/tk-(:any)'] = "survey/sid/$1/lang/$2/token/$3"; //This one must be first
 $route['(:num)/lang-(:any)'] = "survey/sid/$1/lang/$2";
@@ -67,6 +64,7 @@ $route['admin/expressions/test'] = "admin/expressions/index";
 //optout
 $route['optout/(:num)/(:any)/(:any)'] = "optout/index/$1/$2/$3";
 
+return $route;
 //templates
 //$route['admin/templates/screenredirect/(:any)/(:any)/(:any)'] = "admin/templates/index/$1/$3/$2";
 //$route['admin/templates/fileredirect/(:any)/(:any)/(:any)'] = "admin/templates/index/$1/$2/$3";

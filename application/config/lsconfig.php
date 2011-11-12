@@ -511,10 +511,7 @@ $config['enableXMLRPCInterface'] = 0;
 //The following url and dir locations do not need to be modified unless you have a non-standard
 //LimeSurvey installation. Do not change unless you know what you are doing.
 
-//Initialize URL Helper to get base_url();
-get_instance()->load->helper('url');
-
-$config['publicurl']               = base_url();                            // The public website location (url) of the public survey script
+$config['publicurl']               = Yii::app()->createUrl('/');                          // The public website location (url) of the public survey script
 $config['homeurl']                 = $config['publicurl']."admin";          // The website location (url) of the admin scripts
 $config['tempurl']                 = $config['publicurl']."tmp";
 $config['imageurl']                = $config['publicurl']."images";         // Location of button bar files for admin script
@@ -542,8 +539,9 @@ $config['usertemplaterootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."t
 // $relativeurl  is now automatically computed from $rooturl
 if(!isset($cmd_install) || !$cmd_install==true)
 {
-    $parsedurl = parse_url(base_url());
+    $parsedurl = parse_url(Yii::app()->createUrl('/'));
     $config['relativeurl'] = isset($parsedurl['path']) ? $parsedurl['path'] : "";
 }
 
+return $config;
 //settings deleted

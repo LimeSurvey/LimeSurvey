@@ -16,8 +16,6 @@
 
 abstract class LSYii_Controller extends CController
 {
-	protected static $config = array();
-
 	/**
 	 * Basic initialiser to the base controller class
 	 *
@@ -32,31 +30,6 @@ abstract class LSYii_Controller extends CController
 		$this->_checkinstallation();
 		require_once(APPPATH . '/libraries/LS/LS' . EXT);
 		$this->_init();
-	}
-
-	/**
-	 * Sets a configuration variable
-	 *
-	 * @access public
-	 * @param string $name
-	 * @param mixed $value
-	 * @return void
-	 */
-	public function setConfig($name, $value)
-	{
-		self::$config[$name] = $value;
-	}
-
-	/**
-	 * Returns a config variable
-	 *
-	 * @access public
-	 * @param string $name
-	 * @return mixed
-	 */
-	public function getConfig($name)
-	{
-		return isset(self::$config[$name]) ? self::$config[$name] : false;
 	}
 
 	/**
@@ -82,11 +55,7 @@ abstract class LSYii_Controller extends CController
 
 	private function _init()
 	{
-		Yii::import('application.helpers.common_helper', true);
-
-		$config = require(dirname(dirname(__FILE__)) . '/config/application.php');
-		foreach ($config as $key => $value)
-			$this->setConfig($key, $value);
+		Yii::import('application.helpers.common', true);
 
 		// Check for most necessary requirements
 		// Now check for PHP & db version
@@ -94,16 +63,15 @@ abstract class LSYii_Controller extends CController
 
 		$dieoutput='';
 		if (version_compare(PHP_VERSION, '5.1.6', '<'))
-		{
 			$dieoutput .= 'This script can only be run on PHP version 5.1.6 or later! Your version: '.PHP_VERSION.'<br />';
-		}
-		if (!function_exists('mb_convert_encoding'))
-		{
-			$dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://docs.limesurvey.org/tiki-index.php?page=Installation+FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
-		}
-		if ($dieoutput!='') throw new CException($dieoutput);
 
-		if (!isset($debug)) {$debug=0;}  // for some older config.php's
+		if (!function_exists('mb_convert_encoding'))
+			$dieoutput .= "This script needs the PHP Multibyte String Functions library installed: See <a href='http://docs.limesurvey.org/tiki-index.php?page=Installation+FAQ'>FAQ</a> and <a href='http://de.php.net/manual/en/ref.mbstring.php'>PHP documentation</a><br />";
+
+		if ($dieoutput != '')
+			throw new CException($dieoutput);
+
+		if (!isset($debug)) $debug=0;  // for some older config.php's
 
 		//Currently set at root index.php
 		//if ($debug>0) {//For debug purposes - switch on in config.php
@@ -115,13 +83,13 @@ abstract class LSYii_Controller extends CController
 		//    error_reporting(E_ALL | E_STRICT);
 		//}
 
-		if (ini_get("max_execution_time")<1200) @set_time_limit(1200); // Maximum execution time - works only if safe_mode is off
+		if (ini_get("max_execution_time") < 1200) @set_time_limit(1200); // Maximum execution time - works only if safe_mode is off
 		//@ini_set("memory_limit",$memorylimit); // Set Memory Limit for big surveys
 
 		$maildebug='';
 
 		// The following function (when called) includes FireBug Lite if true
-		define('FIREBUG' , $this->config->item('use_firebug_lite'));
+		define('FIREBUG' , Yii::app()->getConfig('use_firebug_lite'));
 
 		define("_PHPVERSION", phpversion()); // This is the same as the server defined 'PHP_VERSION'
 
@@ -161,27 +129,27 @@ abstract class LSYii_Controller extends CController
 			//$updatelastcheck='';
 			//$updatekey='';
 			//$updatekeyvaliduntil='';
-			$this->config->set_item("updateavailable", 0);
+			Yii::app()->setConfig("updateavailable", 0);
 
 		//GlobalSettings Helper
-		$this->load->helper("globalsettings");
+		Yii::import("application.helpers.globalsettings");
 
 		SSL_mode();// This really should be at the top but for it to utilise getGlobalSetting() it has to be here
 
 		//$showXquestions = getGlobalSetting('showXquestions');
 		//$showgroupinfo = getGlobalSetting('showgroupinfo');
 		//$showqnumcode = getGlobalSetting('showqnumcode');
-		$this->config->set_item("showXquestions", getGlobalSetting('showXquestions'));
-		$this->config->set_item("showgroupinfo", getGlobalSetting('showgroupinfo'));
-		$this->config->set_item("showqnumcode", getGlobalSetting('showqnumcode'));
+		Yii::app()->setConfig("showXquestions", getGlobalSetting('showXquestions'));
+		Yii::app()->setConfig("showgroupinfo", getGlobalSetting('showgroupinfo'));
+		Yii::app()->setConfig("showqnumcode", getGlobalSetting('showqnumcode'));
 
 
 		//SET LOCAL TIME
-		$timeadjust = $this->config->item("timeadjust");
+		$timeadjust = $this->setConfig("timeadjust");
 		if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
 		if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
 		{
-			$this->config->set_item("timeadjust",$timeadjust.' hours');
+			Yii::app()->setConfig("timeadjust",$timeadjust.' hours');
 		}
 
 		// SITE STYLES
