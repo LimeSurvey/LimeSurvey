@@ -1,0 +1,56 @@
+
+<div class="survey-list-wrapper">
+	<div class="survey-list-heading">
+             <h1>{SITENAME}</h1>
+         {SURVEYLISTHEADING}
+	</div>
+	<div class="survey-list">
+                <ul>{SURVEYLIST}</ul>
+	</div>
+	<div class="survey-contact">
+             {SURVEYCONTACT}
+	</div>
+	<div class="language-changer">
+	   <p>{LANGUAGECHANGER}</p>
+	    <br />
+       <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey Survey Software" /></a>
+       <br />
+       <a href="http://www.limesurvey.org" target="_blank">The Online Survey Tool</a> - Free &amp; Open Source
+       <br />
+	</div>
+</div>
+
+<!--[if lt IE 7]>
+<script language="JavaScript">
+function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
+{
+   var arVersion = navigator.appVersion.split("MSIE")
+   var version = parseFloat(arVersion[1])
+   if ((version >= 5.5) && (document.body.filters)) 
+   {
+      for(var i=0; i<document.images.length; i++)
+      {
+         var img = document.images[i]
+         var imgName = img.src.toUpperCase()
+         if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
+         {
+            var imgID = (img.id) ? "id='" + img.id + "' " : ""
+            var imgClass = (img.className) ? "class='" + img.className + "' " : ""
+            var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' "
+            var imgStyle = "display:inline-block;" + img.style.cssText 
+            if (img.align == "left") imgStyle = "float:left;" + imgStyle
+            if (img.align == "right") imgStyle = "float:right;" + imgStyle
+            if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle
+            var strNewHTML = "<span " + imgID + imgClass + imgTitle
+            + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
+            + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
+            + "(src=\'" + img.src + "\', sizingMethod='scale');\"></span>" 
+            img.outerHTML = strNewHTML
+            i = i-1
+         }
+      }
+   }    
+}
+window.attachEvent("onload", correctPNG);
+</script>
+<![endif]-->

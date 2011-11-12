@@ -1,0 +1,7 @@
+<div id="clearall" class="note">
+	<ul class="info">
+		<li class="answercleared">{ANSWERSCLEARED}</li>
+		<li class="restart">{RESTART}</li>
+		<li class="closewindow">{CLOSEWINDOW}</li>
+	</ul>
+</div>

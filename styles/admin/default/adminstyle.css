@@ -1,0 +1,1450 @@
+body {
+    font-family: verdana, arial, sans-serif;
+    text-align: left;
+    background-color: #5670A1;
+    margin: 0;
+    font-size: 9pt;
+}
+
+div, form {
+    margin: 0;
+    padding: 0;
+
+}
+
+ul,ol {
+    text-align: left;
+    font-size: 10pt;
+    color: #000;
+}
+
+p {
+    clear: left;
+    text-align:center;
+}
+
+/* Administration footer box */
+.footer {
+    text-align: center;
+    color: #9C0;
+    height: 30px;
+    background: #121a28;
+    margin: 0;
+    padding: 5px;
+    margin-bottom:400px;
+    clear:left;
+}
+
+img {
+    border: 0;
+}
+
+a {
+    color: #328639;
+    text-decoration: underline;
+    cursor:pointer;
+}
+
+a:hover {
+    color: #819D26;
+    text-decoration: underline;
+}
+
+th, p, div {
+    font-size: 10pt;
+}
+
+fieldset {
+    padding:0 6px 0px 6px;
+    margin: 3px;
+    border-color:#D2E0F2 #8195BA #8195BA #D2E0F2;
+    border-style: solid;
+    border-width: 1px;
+}
+
+legend {
+    font-weight: bold;
+    color:#2D466B;
+}
+
+.maintitle {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #328639;
+    text-align: center;
+    background: #C4C4C4;
+    border-top: 2px solid #C9EF50;
+    border-bottom: 2px solid #6a8b03;
+    background-image: url(bkgmaintitle.gif);
+    background-repeat: repeat-x;
+    width:100%;
+}
+
+table.statisticstable {
+    margin: 2px auto;
+}
+
+table.statisticstable span {
+    font-weight:bold;
+}
+
+span.basic {
+    color: #1d2d45;
+}
+
+.statisticstable td {
+    vertical-align: top;
+}
+
+/* Start menubar */
+div.menubar {
+    background-color: #EEF6FF;
+    clear:left;
+    padding:0;
+    margin:3px auto 3px auto;
+    width: 99.5%;
+    min-height: 60px;
+}
+
+div.menubar .ui-widget-header
+{
+    font-weight:normal;
+}
+
+.menubar-main {
+    background-color: #EEF6FF;
+    width: 99.6%;
+    float: left;
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    border-style: solid;
+    border-width: 1px;
+    padding:0 0.2%;
+    min-height: 43px;
+
+}
+
+.menubar img {
+    vertical-align: middle;
+    max-height:40px;
+    border:0;
+    margin:0 -2px;
+}
+
+.menubar-title {
+    background-color: #EEF6FF;
+    float: left;
+    width: 99.6%;
+    font-size: 11px;
+    text-align: left;
+    border-color: #D2E0F2 #8195BA #D2E0F2 #D2E0F2;
+    border-style: solid;
+    border-width: 1px;
+    padding:0 0.2%;
+    min-height:14px;
+}
+
+.menubar-title img {
+    margin-bottom:2px;
+}
+
+.menubar-title-left {
+    float: left;
+    font-size:11px;
+}
+
+.menubar-title-right {
+    float: right;
+}
+
+.menubar-title-right a {
+    font-size:10px;
+    font-weight:bold;
+    color:#ee0000 !important;
+    text-decoration: underline !important;
+}
+
+.menubar-left {
+    background-color: #EEF6FF;
+    text-align: left;
+    float: left;
+    clear: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+.menubar-right {
+    background-color: #EEF6FF;
+    float: right;
+    line-height: 1em;
+    white-space: nowrap;
+}
+
+.menubar-right label{
+    font-weight:bold;
+}
+.menubar select {
+    color: #333;
+    width: 200px;
+}
+
+.menubar-right .arrow-wrapper {
+    display: inline; /* For IE */
+    position: relative;
+    margin: 0 5px 0 5px;
+    width: 20px;
+    vertical-align: bottom;
+}
+
+html>body .menubar-right .arrow-wrapper { /* For real browsers */
+    display: inline-block;
+    padding:0 5px;
+}
+
+.menubar-right .arrow-wrapper a {
+    display: block;
+}
+
+.menubar-right .arrow-wrapper img {
+    display: block;
+    margin: 0;
+}
+
+/* END menubar CSS */
+
+#surveydetails, #groupdetails, #questiondetails {
+    background-color: #FFF;
+    width: 100%;
+    border: 1px solid;
+    border-color: #fff #8195BA #8195BA #D2E0F2;
+    margin-top:-2px;
+    margin-bottom:4px;
+    padding:5px 0;
+    clear:left;
+}
+
+#surveydetails td:first-child,
+#groupdetails td:first-child,
+#questiondetails td:first-child {
+    width:25%;
+    font-weight:bold;
+    text-align:right;
+
+}
+
+#surveydetails td+td,
+#groupdetails td+td,
+#questiondetails td+td {
+    text-align:left;
+}
+
+.outlinetable {
+    border: 1px solid #111;
+}
+
+.outlinetable td {
+    font-size: 10pt;
+    border: 1px solid #483D8B;
+    background: #EEF6FF;
+}
+
+.outlinetable th {
+    font-size: 10pt;
+    color: #1D2D45;
+    background: #CCE6FF;
+}
+
+td {
+    font-size: 10pt;
+    color: #1D2D45;
+}
+
+.btstyle {
+    font-size: 11px;
+}
+
+.disabledbtn {
+    height:20px;
+    color:#999;
+    font-size:11px;
+}
+
+.disabledUpDnBtn {
+    color: #999;
+    font-size: 11px;
+    border: none !important;
+    cursor: default;
+    KHTMLOpacity: 0.5;
+    MozOpacity: 0.5;
+    -khtml-opacity:.50;
+    -ms-filter:"alpha(opacity=50)";
+    -moz-opacity:.50;
+    opacity:.50;
+}
+
+input, select, button {
+    color: navy;
+    font: 10px verdana, arial, sans-serif;
+}
+
+/* Uncomment these styles if you are using a system theme with a dark background
+and are having difficulty seeing text in inputs, textareas and dropdown selects. */
+/*
+input,
+textarea {
+background: #FFF;
+border: 1px solid #DBDFE6;
+border-top-color: #ABADB3;
+border-bottom-color: #E3E9EF;
+padding: 2px;
+}
+
+select {
+background: #FFF;
+border: 1px solid #828790;
+}
+*/
+
+input[disabled], textarea[disabled], select[disabled], button[disabled] {
+    color: #999 !important;
+    background: #EEE !important;
+    border:1px solid #ccc !important;
+}
+
+textarea {
+    font-size: 10px;
+    color: navy;
+    font-family: verdana, arial, sans-serif;
+}
+
+
+.subtitle {
+    font-size: 10px;
+    color: #FFF;
+}
+
+.listboxtemplates {
+    margin-top: 10px;
+    height: 20px;
+    color: #333;
+    width: 180px;
+}
+
+.saveOrderbtn {
+    border: thin solid #00CED1;
+    text-decoration: none;
+    font-weight: 700;
+    color: #B5B0DD;
+    background: #483D8B;
+    border-top: 1px solid #00BFFF;
+    border-left: 1px solid #00BFFF;
+    margin: 5px;
+}
+
+.settingentryhighlight {
+    color: navy;
+    font-weight: 700;
+}
+
+.statusentryhighlight {
+    font-size: 10px;
+    color: #E00;
+}
+
+.annotationasterisk
+{
+    color: #E00;
+}
+
+.annotation {
+    font-size: 10px;
+    color: #E00;
+}
+
+.errortitle {
+    font-weight: 700;
+    color: #FF0F0F;
+}
+
+.warningtitle {
+    font-weight: 700;
+    color: #ee303a;
+}
+
+.successtitle {
+    font-weight: 700;
+    color: #16B700;
+}
+
+.settingentry {
+    float: left;
+    width: 660px;
+    padding-left: 5px;
+    font-size: 13px;
+    text-align: left;
+    clear: right;
+    margin-bottom: 10px;
+    background-color: #F8F8FF;
+    outline: 0 none;
+}
+
+.settingentry span {
+    outline: 0 none;
+}
+
+
+.movableList {
+    padding: 10px 0px;
+    width: 60em;
+    margin:0 auto;
+    background-color: #fdfdff;
+}
+
+
+.langpopup {
+    display:none;
+}
+
+.langpopup ul {
+    font-size: 1em;
+    font-weight:bold;
+    padding-left:1.2em;
+    line-height:1.5em;
+    margin-top:0.5em;
+}
+
+li.cancellink
+{
+    list-style-type:none;
+    margin-top:1em;
+    margin-left:-1.2em;
+    text-align:center;
+}
+
+
+tr.even
+{
+    background-color: #EFF4F9;
+}
+tr.odd,.oddrow {
+    background-color: #E3ECF5;
+}
+
+.choicelist {
+    width: 200px;
+    font-size: 10pt;
+}
+
+.ranklist {
+    width: 200px;
+    margin-top: 3px;
+}
+
+th.admincell {
+    background-color: #F8BDB5;
+}
+
+
+.submit {
+    float: none !important;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.header, .formheader, .headertwo {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    background-color: #D2E0F2;
+    color: #1D2D45;
+}
+
+.header_statistics {
+    height:21px;
+    padding:1px;
+    padding-left:42px;
+}
+
+.btnaddanswer,
+.btndelanswer,
+.header_statistics img {
+    cursor:pointer;
+}
+
+img.handle {
+    cursor:move;
+}
+
+.header_small {
+    margin-top:2px;
+    font-size: 11px;
+}
+
+.formheader
+{
+    width:100%;
+}
+
+a:link, a:visited {
+    color: #819D26;
+    text-decoration: none;
+}
+
+.statisticstable select, .statisticstable textarea {
+    width: 170px;
+}
+
+.alertbox tr:first-child, .evenrow {
+    background-color: #EEF6FF;
+}
+
+.checkboxbtn, .radiobtn {
+    background-color: transparent;
+}
+
+table.alertbox {
+    width: 450px;
+    margin-left:auto;
+    margin-right:auto;
+    border: 1px solid;
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    text-align: left;
+}
+
+.menubar tr {
+    text-align:left;
+}
+
+div.menubar input {
+    margin-left:-5px;
+    vertical-align:top;
+}
+
+a.invalidemail {
+    font-weight: 700;
+    color: red;
+}
+
+a.optoutemail {
+    font-weight: 700;
+    color: orange;
+}
+
+/* Browse response css */
+
+.browsetable {
+    border: 1px solid;
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    clear:left;
+}
+
+.browsetable tr:hover {
+    background-color: #C5D0F2;
+}
+.browsetable td span.content{
+    display:block;
+    height:3em;
+    overflow:hidden;
+}
+.browsetable th strong.content{
+    display:block;
+    height:4em;
+    overflow:hidden;
+}
+
+.quotalist,
+.addquotaanswer,
+.edituser,
+.users,
+.assessmentlist,
+.listsurveys,
+.surveysecurity {
+    text-align:center;
+    margin:0 auto;
+}
+
+.quotalist,
+.addquotaanswer,
+.assessmentlist {
+    width:90%;
+}
+
+.users
+{
+    width:80%;
+}
+
+.listsurveys
+{
+    width:70%;
+}
+
+.surveysecurity
+{
+    width: 90%;
+}
+
+.edituser {
+    width:60%;
+}
+
+.quotalist th,
+.assessmentlist th,
+.edituser th,
+.surveysecurity th,
+.users th,
+.listsurveys th {
+    background-color: #D2E0F2;
+    font-size:0.8em;
+    padding:2px 14px 2px 10px;
+}
+
+.browsetable th {
+    background-color: #D2E0F2;
+    font-size:9pt;
+    padding:2px;
+    text-align: center;
+    min-width:80px;
+}
+
+.browsetable td {
+    font-size:8pt;
+    padding:1px 2px;
+    text-align: center;
+}
+
+.browsetable tfoot td {
+    text-align: left;
+    background-color: #D2E0F2;
+    padding:4px;
+}
+
+.users td,
+.surveysecurity td,
+.listsurveys td {
+    font-size:0.8em;
+    padding:2px 6px;
+}
+
+.users td input
+{
+    margin-left:2px;
+}
+
+.assessmentlist td form,
+#users td form {
+    display:inline;
+}
+
+.browsetable th:first-child {
+    width:20px;
+    min-width: 0px;
+}
+
+.answertable th {
+    font-weight:bold;
+    font-size: 8pt;
+    padding:3px;
+}
+
+.answertable tr {
+    white-space: nowrap;
+}
+
+.answertable th:first-child {
+    text-align:right;
+}
+
+#languagetabs {
+    width:60%;
+    margin:0 auto;
+}
+
+.answertable tr.highlight {
+    background-color:#EAF2FF;
+}
+
+.badtokenlist {
+    width: 400px;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    height: 50px;
+    overflow: auto;
+    text-align: left;
+    margin-bottom: 0px;
+    font-size: 8pt
+}
+
+.browsetokens
+{
+    margin: 5px 2px;
+    border: 1px solid;
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    clear: left;
+}
+
+.browsetokens th {
+    white-space:nowrap;
+    width:auto;
+    padding:2px 15px 2px 5px;
+    font-size:12px;
+    background-color:#D2E0F2;
+    color: #1D2D45;
+    vertical-align:top;
+}
+
+.browsetokens tr {
+    height:32px;
+}
+
+.browsetokens th span{
+    white-space:normal;
+}
+
+
+.browsetokens th img {
+    padding-right:4px;
+}
+
+.browsetokens td {
+    padding:0 5px;
+    color: #1D2D45;
+}
+
+.browsetokens td:first-child {
+    text-align:right;
+    padding-right: 3px;
+}
+
+.tokensummary tr:first-child {
+    font-weight:bold;
+}
+
+.tokensummary tr {
+    margin:0px;
+    padding:0px;
+}
+
+.tokensummary td {
+    outline: 1px solid;
+    outline-color:#D2E0F2;
+    padding: 2px 5px;
+}
+
+#addattribute label,
+#sendinvitation label {
+    font-weight: bold;
+    margin-right: 0.5em;
+}
+
+.annotation
+{
+    font-size:10px;
+}
+
+table.templatecontrol {
+    width: 100%;
+    background-color: #EEF6FF;
+    border-color: #8195BA;
+    border-style: solid;
+    border-width: 1px;
+    text-align: left;
+}
+
+table.templatecontrol select
+{
+    min-width:150px;
+}
+
+.subheader {
+    font-size:10px;
+    font-weight:bold;
+    background-color: #EEF6FF;
+    text-align: left;
+}
+
+.flashmessage
+{
+    font-size:10px;
+    font-weight:bold;
+}
+
+.templatecontrol textarea#changes {
+    font-family: monospace;
+    font-size:0.8em;
+    width:95%;
+}
+
+/* Added by evan to help usability on the user template rights form in useradmin/userrighthandling.php */
+table#user-template-rights
+{
+    width: 50%;
+    border: none;
+    border-collapse: collapse
+}
+
+table#user-template-rights thead{
+}
+
+table#user-template-rights tr.row_odd
+{
+    background-color: #EBF2FA;
+}
+table#user-template-rights tr:hover
+{
+    background-color: #D1D1DF;
+}
+table#user-template-rights tr td
+,table#user-template-rights tr th
+,table#user-template-rights tfoot tr td
+{
+    border: none;
+    text-align: center;
+}
+table#user-template-rights tbody tr td:first-child
+{
+    text-align: left;
+}
+
+
+table.statisticstable, table.statisticssummary {
+    background-color:#EEF6FF;
+    border-collapse:collapse;
+    border-width: 0px;
+    border-style: none;
+    margin: 0 auto;
+    margin-bottom:20px;
+}
+
+.statisticssummary thead th
+{
+    background:#D2E0F2;
+}
+
+.statisticssummary th:first-child,
+.statisticstable td:first-child {
+    text-align:right;
+}
+
+.statisticssummary thead th:first-child
+{
+    text-align:center;
+}
+
+.statisticssummary th, .statisticssummary td, .statisticstable td {
+    padding:3px 10px;
+
+}
+
+.statisticstable tr {
+    border-color: #fff;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.statisticstable thead th {
+    background:#D2E0F2;
+    text-align:center;
+    color:#1D2D45;
+    padding:4px 10px;
+}
+
+.statisticstable tfoot tr {
+    background:#D2E0F2;
+    text-align:center;
+}
+
+div.messagebox {
+    width: 550px;
+    margin:10px auto;
+    border: 1px solid;
+    border-color: #D2E0F2 #8195BA #8195BA #D2E0F2;
+    background-color: #F8F8FF;
+    text-align: center;
+    padding:10px;
+}
+
+div.messagebox .header{
+    padding:10px;
+}
+
+div.successheader{
+    font-weight:bold;
+    color:#008000;
+    background-color: #C0FFC0;
+    margin: 5px 0;
+    padding:2px;
+}
+div.errorheader{
+    font-weight:bold;
+    color:#800000;
+    background-color: #FFC0C0;
+    margin: 5px 0;
+    padding:2px;
+}
+div.warningheader{
+    font-weight:bold;
+    color:#808000;
+    background-color: #FFC0C0;
+    margin: 5px 0;
+    padding:2px;
+}
+div.partialheader{
+    font-weight:bold;
+    color: #CC3300;
+    background-color: #FF9900;
+    margin: 5px 0;
+    padding:2px;
+}
+
+div.messagebox .warningheader {
+    font-weight:bold;
+    color:#ee0000;
+    background-color: #ffeeee;
+    margin: 5px 0;
+    padding:2px;
+}
+
+/* Conditions designer interface */
+
+.condition-tbl-row {
+    width: 100%;
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+.conditioncopy-tbl-row {
+    width: 100%;
+    height: 300px;
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+.condition-tbl-left {
+    width: 24%;
+    float: left;
+    padding: 10px 1% 0 0;
+    text-align: right;
+    font-weight: bold;
+}
+
+.condition-tbl-right {
+    width: 74%;
+    float: left;
+    padding: 10px 0 0 0;
+    text-align: left;
+}
+
+.condition-tbl-full {
+    width: 100%;
+    clear: both;
+    padding: 10px 0 5px 0;
+    text-align: center;
+}
+
+#defaultscenariotxt {
+    display: block;
+    margin-top: 3px;
+}
+
+.tabs-nav {
+    width: 80%;
+}
+
+.tabs-nav select,
+.tabs-nav textarea{
+    font-family: verdana;
+    font-size: 10px;
+    width: 100%;
+}
+
+.conditiontbl td {
+    text-align:left;
+}
+
+.conditiontbl td:first-child {
+    text-align:right;
+}
+
+/* Data entry interface */
+
+.data-entry-small-text {
+    font-size: 8pt;
+}
+
+.data-entry-tbl {
+    margin: 5px 0 0 0;
+}
+
+#conditionsource, #conditiontarget{
+    width: 630px;
+}
+
+#editconditions select{
+    font-size:10px;
+}
+
+.data-entry-tbl td {
+    padding: 3px 5px;
+}
+
+.data-entry-tbl .data-entry-separator td {
+    padding: 0;
+    height: 2px;
+    background-color: #D2E0F2;
+}
+
+.data-entry-explanation {
+    background-color: #FFEEEE;
+}
+
+/* ComfortUpdate interface */
+
+.updater-background {
+    background-color:#f8f8ff;
+    padding:1% 10%;
+}
+
+textarea.updater-changelog {
+    width:800px;
+    height:300px;
+    background-color:#fff;
+    font-family:Monospace;
+    font-size:11px;
+}
+
+
+.form44 li label:first-child,
+#exportspss li label:first-child,
+#importtemplate li label:first-child,
+#tokenimport li label:first-child,
+#statistics_general_filter li label:first-child,
+#vvexport li label:first-child,
+#importlabels li label:first-child,
+#exportdialog li label:first-child,
+#importquestion li label:first-child,
+#bouncesettings li label:first-child,
+#importquestion li label:first-child {
+    width: 44%;
+    text-align: right;
+    margin-right: 0.5em;
+    float: left;
+    font-weight: bold;
+    color: #1d2d45;
+}
+
+#loginform li label:first-child {
+    width: 39%;
+    text-align: right;
+    margin-right: 0.5em;
+    float: left;
+    font-weight: bold;
+    color: #1d2d45;
+}
+
+.form30newtabs li label:first-child,
+.form30 li label:first-child {
+    width: 30%;
+    text-align: right;
+    margin-right: 0.5em;
+    float: left;
+    font-weight: bold;
+    color: #121A28;
+}
+
+.form30newtabs li .warningtext,
+.form30 li .warningtext {
+	display: block;
+    margin: 3px 0 10px 30.5%;
+    font-weight: bold;
+    color: #EE0000;
+}
+
+.form30 table {
+    width: auto;
+    float: left;
+}
+
+.form30newtabs div div div div li{
+    list-style-type: none;
+    clear:left;
+    padding-bottom:5px;
+}
+
+
+
+.form30 li,
+.form44 li,
+#exportstructureQuestion li,
+#exportstructureGroup li,
+#frmeditgroup li,
+#usergroupform li,
+#importtemplate li,
+#frmcopyquestion li,
+#importlabelresources li,
+#loginform li,
+#statistics_general_filter li,
+#tokenimport li,
+#vvexport li,
+#exportstructure li,
+#importlabels li,
+#sendreminder li,
+#sendinvitation li,
+#edittoken li,
+#exportdialog li,
+#addnewsurvey li,
+#newquestiongroup li,
+#importsurvey li,
+#importgroup li,
+#addnewquotaform li,
+#assessmentsform li,
+#importsurveyresources li,
+#labelsetform li,
+#bouncesettings li,
+#exportspss li{
+    list-style-type: none;
+    clear:left;
+    padding-bottom:5px;
+}
+
+.form30 ul.editor-parent {
+	min-width:1000px; 
+}
+
+#frmeditquestion li,
+#importquestion li {
+    list-style-type: none;
+    clear:left;
+    padding-bottom:7px;
+}
+
+#forgotpassword input#user, #forgotpassword input#email
+{
+    width:18em;
+}
+
+div.loader {
+    background-image: url(images/ajax-loader.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    width:80px;
+    margin:0 auto;
+    padding-top:75px;
+}
+
+#wrapper {
+    background-color:#f8f8ff;
+    width:100%;
+    padding:1px 0px;
+}
+
+.background {
+    background-color:#f8f8ff;
+    padding:1% 10%;
+}
+
+
+
+#editsurvey textarea,
+#editsurvey input {
+
+}
+
+#editsurvey td {
+
+}
+
+
+#help
+{
+    float:right;
+}
+
+thead tr .header {
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+}
+
+thead tr .headerSortUp {
+    background-image: url(images/asc.gif);
+}
+thead tr .headerSortDown {
+    background-image: url(images/desc.gif);
+}
+
+thead tr .headerSortDown, thead tr .headerSortUp {
+    background-color: #8195BA;
+}
+
+#tokensearch, #tokenrange, #browseresults{
+    display:inline;
+    line-height:40px;
+    vertical-align:middle;
+    margin-left: 10px;
+}
+
+#tokensearch input, #tokenrange input, #browseresults input{
+    vertical-align:middle;
+    margin-left: 2px;
+}
+
+#questionbottom {
+    clear:both;
+}
+
+div.left
+{
+    float:left;
+    width:300px;
+}
+
+div.right {
+    float:right;
+    width:300px;
+}
+
+.wrap2columns {
+    width:600px;
+    margin:0 auto;
+}
+
+#resultexport ul {
+    list-style-type:none;
+    padding:0;
+}
+
+#resultexport ul li label {
+}
+
+
+#resultexport ul li {
+    line-height: 1.4em;
+}
+
+#advancedquestionsettings fieldset {
+    width:600px;
+    margin:0 auto;
+    display: block;
+}
+
+#advancedquestionsettings textarea{
+    width:200px;
+}
+
+.statistics-tbl-separator td {
+    background-color:#D2E0F2;
+    height:2px;
+    padding:0;
+}
+
+#statistics_general_filter {
+    width:650px;
+    margin:0 auto;
+}
+
+#statistics_general_filter fieldset{
+    clear:both;
+}
+
+
+#statistics_general_filter #left {
+    width:270px;
+    height:125px;
+    float:left;
+    clear:left;
+}
+
+#statistics_general_filter #right {
+    width:330px;
+    height:125px;
+    float:right;
+    clear:none;
+}
+
+#statistics_general_filter #right li label:first-child {
+    width:33%;
+}
+
+.filtertable  {
+    background:#EEF6FF;
+    text-align:center;
+    margin:5px 15px;
+    border:1px #fff solid;
+    padding:3px 10px;
+}
+
+.filtertable td {
+    padding:3px 10px 7px 10px;
+    border-right:1px #fff solid;
+    border-bottom:1px #fff solid;
+    vertical-align: top;
+    border-collapse:collapse !important;
+}
+
+.filtertable td:last-child {
+    border-left:0px #D2E0F2 solid;
+}
+
+.filtertable tr:last-child td {
+    border-top:0px #D2E0F2 solid;
+}
+
+.filtertable span {
+    font-size:10px;
+    font-weight: bold;
+}
+
+.filtertable textarea {
+    width:210px;
+}
+
+.limebutton
+{
+    outline: 0;
+    margin:1px 4px 1px 0;
+    padding: 1px 1em;
+    text-decoration:none !important;
+    cursor:pointer;
+    text-align: center;
+    zoom: 1;
+}
+
+#emailtemplates .ui-tabs-panel .limebutton {
+    margin: 3px 20% 10px 30.5%;
+}
+
+table.limetable thead th{
+    background-color: #D2E0F2;
+    font-size:8pt;
+    padding:2px 14px 2px 10px;
+}
+
+table.limetable tbody tr.highlight {
+    background-color:#EAF2FF;
+}
+
+#surveyhandleright{
+    margin-right:7px;
+}
+
+#surveyhandleleft{
+    margin-left:7px;
+}
+
+#exportstructureQuestion ul,
+#exportstructureGroup ul{
+    margin-left:auto;
+    margin-right:auto;
+    width:400px;
+}
+
+.users td:first-child,.users th:first-child
+{
+    width:10%;
+}
+
+thead th
+{
+    background-color:#E1E7EF;
+}
+
+.usersurveypermissions th{
+    padding:0 2em;
+}
+
+#responsedetail td{
+    padding:3px 5px;
+}
+
+#frmglobalsettings table {
+    float:none;
+}
+
+
+.ui-notify {
+    width:350px;
+    position:fixed;
+    top:35px;
+    left:50%;
+    margin-left: -175px;
+}
+
+div.translate {
+    margin: 2px 1px;
+}
+
+#translateform table {
+    padding: 1px 0;
+    vertical-align: top;
+    width: 90%;
+}
+
+
+#translateform textarea:focus{
+    outline: blue solid thin;
+}
+#gbox_urlparams
+{
+    margin:0 auto;
+}
+
+#loginform input[type='text'], #loginform input[type='password'], #loginform select{
+    width:230px;
+}
+
+.placeholder {
+    background-color: #dfdfdf;
+    width:630px;
+}
+
+.ui-nestedSortable-error {
+    background:#fbe3e4;
+    color:#8a1f11;
+}
+
+
+ol.organizer {
+    padding: 0 auto;
+    list-style-type: none;
+    font-weight: bold;
+    width:800px;
+}
+
+ol.organizer ol {
+    list-style-type: none;
+    font-weight: normal;
+    width:750px;
+
+}
+
+ol.organizer {
+    margin: 1em 0;
+}
+
+.organizer li {
+    margin: 10px 0 0 0;
+    padding: 0;
+}
+
+.organizer li ol li{
+    margin: 3px 0 0 0;
+}
+
+
+.organizer li div  {
+    border: 1px solid #D2E0F2;
+    background-color:#D2E0F2;
+    padding: 3px;
+    margin: 0;
+    cursor: move;
+    width:80%;
+    font-size:11px;
+
+}
+
+.organizer li ol li div{
+    background-color:#EEF6FF;
+}

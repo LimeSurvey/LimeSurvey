@@ -1,0 +1,148 @@
+/* The following styles are for all versions of IE 7 */
+
+/*** Start jQuery UI Theme Styles ***/
+
+.ui-button,
+input.ui-button { 
+	padding: 0.1em 0 0.1em 0; 
+}
+
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	margin-top: -9px;
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	padding: 0 0 0 1.0em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	padding: 0 1.2em 0 0; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	padding: 0 1.0em; 
+}
+
+/*** End jQuery UI Theme Styles ***/
+
+.submit {
+	margin: 0 3px;
+}
+.choice-5-pt-radio ul {
+  margin-left: 2.5em;
+}
+
+.yes-no ul,.gender ul {
+  margin-left: 1em;
+}
+
+.multiple-short-txt ul.numbers-only li span {
+  width: 10em;
+}
+
+.multiple-short-txt ul,.multiple-opt-comments ul,.numeric-multi ul,.multiple-short-txt ul li,.multiple-opt-comments ul li,.numeric-multi ul li
+  {
+  margin-left: 0%;
+  padding-left: 0%;
+}
+
+.multiple-short-txt ul label {
+  margin-left: 0em;
+  float: left;
+  display: block;
+  width: 40%;
+  text-align: right;
+}
+
+.multiple-opt-comments ul li label {
+  float: left;
+  width: 35%;
+  display: block;
+  margin: 0;
+  padding: 0;
+  padding-left: 25px;
+}
+
+.multiple-opt-comments ul li span.comment {
+  float: left;
+  width: 40%;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.multiple-opt-comments ul li span.comment input {
+  width: 200px;
+}
+
+.multiple-short-txt ul li,.multiple-opt-comments ul li {
+  float: left;
+  clear: left;
+  width: 100%;
+}
+
+.innergraph img {
+  height: 16px;
+  vertical-align: top;
+  margin: 0px 0px 0px 0px;
+}
+
+.multiple-short-txt td.answer,.date td.answer,.yes-no td.answer,.list-radio td.answer,.list-radio-flexible td.answer,.choice-5-pt-radio td.answer,.gender td.answer
+  {
+  padding-bottom: 10px;
+}
+
+.choice-5-pt-radio label {
+  margin: 0;
+  padding: 0;
+}
+
+.date button {
+  line-height: 15px;
+  height: 21px;
+  width: 22px;
+}
+
+.numeric-multi ul li label {
+  float: left;
+  width: auto;
+}
+
+.numeric-multi ul li {
+  float: left;
+  clear: left;
+  width: 100%;
+}
+
+.numeric-multi ul li span {
+  padding-left: 0;
+}
+
+.numeric-multi input {
+  padding-left: 1px;
+}
+
+input.submit {
+  padding: 0px;
+}
+
+/** UI Slider **/
+.numeric-multi label.slider-label {
+  margin-top: 1.3em;
+  display: inline;
+  width: 40%;
+}
+
+.slider_lefttext {
+  float: left;
+  padding-top: 1.45em;
+}
+
+.slider_righttext {
+  float: left;
+  padding-top: 1.45em;
+}

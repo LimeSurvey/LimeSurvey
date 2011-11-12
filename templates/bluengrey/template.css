@@ -1,0 +1,1446 @@
+/* Start reset CSS */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td
+  {
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+fieldset,img {
+  border: 0;
+}
+
+address,caption,cite,code,dfn,em,strong,th,var {
+  font-style: normal;
+  font-weight: normal;
+}
+
+.answers ol, .answers ul {
+  list-style: none;
+}
+
+caption,th {
+  text-align: left;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+q:before,q:after {
+  content: '';
+}
+
+abbr,acronym {
+  border: 0;
+}
+
+/* End reset CSS */
+
+/*** Start jQuery UI Theme Styles ***/
+
+button.ui-button::-moz-focus-inner {
+	border: 0; 
+	padding: 0;   /* Get rid of extra padding in focused button in FF */
+}
+
+.ui-button { 
+	position: relative; 
+	padding: 0.1em 0 0.2em 0; 
+	cursor: pointer;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 1.0em;
+	font-weight: normal;
+	line-height: normal;
+}
+
+button.ui-state-default,
+input.ui-state-default {  
+	color: #333333; 
+	border: 1px solid #A0A0A0;
+	background: #FAFAFA none; 
+}
+
+button.ui-state-hover,
+input.ui-state-hover {  
+	color: #212121; 
+	border: 1px solid #999999;
+	background: #EBEBEB none; 
+}
+
+button.ui-state-active,
+input.ui-state-active {  
+	color: #212121; 
+	border: 1px solid #AAAAAA;
+	background: #DCDCDC none;  
+}
+
+.ui-button-icon-only { 
+	width: 2.2em; /* To make room for the icon, a width needs to be set here */
+} 
+
+button.ui-button-icon-only { 
+	width: 2.4em; /* Button elements seem to need a little more width */
+}
+
+.ui-button-icons-only { 
+	width: 3.4em; 
+} 
+
+button.ui-button-icons-only {
+	width: 3.7em; 
+}
+
+/* Button text elements */
+.ui-button-text-only .ui-button-text {
+	padding: 0 1em; 
+}
+
+.ui-button-icon-only .ui-button-text, 
+.ui-button-icons-only .ui-button-text {
+	text-indent: -9999999px; 
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	padding: 0 0.7em 0 1.7em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	padding: 0 1.7em 0 0.7em; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	padding: 0 1.7em; 
+}
+
+input.ui-button {
+	padding: 0 1em 0.1em 1em;  /* No icon support for input elements, provide padding by default */
+}
+
+/* Button icon element(s) */
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px; 
+}
+
+.ui-button-icon-only .ui-icon {
+	left: 50%; 
+	margin-left: -8px; 
+}
+
+.ui-button-text-icon-primary .ui-button-icon-primary, 
+.ui-button-text-icons .ui-button-icon-primary, 
+.ui-button-icons-only .ui-button-icon-primary {
+	left: .4em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-icon-secondary, 
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+/* Button sets*/
+.ui-buttonset {
+	margin-right: 7px; 
+}
+
+.ui-buttonset .ui-button {
+	margin-left: 0;
+	margin-right: -.3em; 
+}
+
+/*** End jQuery UI Theme Styles ***/
+
+body {
+  color: #444;
+  background-color: #2F5376;
+  font-family: Verdana;
+  font-size: 12px;
+  background-image: url(gradient_bg.gif);
+  background-repeat: repeat-x;
+}
+
+label {
+  font-size: 12px;
+}
+
+h3 {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #1D2D45;
+  padding-bottom: 10px;
+}
+
+#answers {
+  margin: 0;
+  width: 90%;
+}
+
+#completed {
+  width: 75%;
+  text-align: center;
+  background-color: #fff;
+  margin: 10px auto;
+  padding-top: 10px;
+  border: 1px solid #2f5376;
+}
+
+div.survey-question-help {
+  font-size: 10px;
+  font-style: italic;
+}
+
+div.survey-question-help img {
+  margin: 0 5px;
+  margin-top: -4px;
+  vertical-align: middle;
+}
+
+div.question {
+  border: 1px solid #2f5376;
+  background-color: #fff;
+  width: 96%;
+  margin: 20px auto;
+  padding: 0.5em;
+}
+
+div.questiontext {
+  font-weight: bold;
+  font-family: verdana;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+div.questiontext ul,
+div.questiontext ol {
+  padding-left: 25px;
+}
+
+#groupheader {
+  margin: 1%;
+  font-style:italic;
+}
+
+#groupdescription {
+  margin: 1%;
+  color: #777777;
+}
+
+#container {
+  width: 85%;
+  margin: 0 auto;
+  border: 1px solid #2f5376;
+  background-color: #E9E9E9;
+  padding: 0% 0% 0.5em 0%;
+}
+
+#welcometext {
+  width: 50%;
+  margin: 0 auto;
+  padding-top: 1em;
+  padding-bottom: 30px;
+  text-align: center;
+}
+
+#welcometext p {
+  padding-bottom: 1em;
+}
+
+#welcome {
+  background-color: #2F5376;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0px;
+  border-top: 5px solid #E9E9E9;
+}
+
+#welcome p {
+  font-size: 0.8em;
+  margin: 6px auto;
+}
+
+input.saveall,
+input.clearall {
+  font-size: 0.8em;
+}
+
+.select {
+  background-color: #EFEFEF;
+  color: #555;
+}
+
+.clearall A:hover {
+  text-decoration: underline;
+}
+
+.graph {
+  border: solid;
+  background-color: #EFEFEF;
+  font-family: Verdana;
+  font-size: 10px;
+  border-color: #FFF;
+  border-width: 1px;
+}
+
+.answertext,.answertextright {
+  font-size: 12px;
+}
+
+.answertextright {
+  text-align: left;
+}
+
+#progress-graph {
+  line-height: 1.5em;
+  font-size: 0.8em;
+  width: 16em;
+  margin: 0 auto;
+  padding: 0.2em 0.5em 0.3em 1em;
+  text-align: left;
+  background-color: #efefef;
+  color: #777777;
+  border: 1px solid #fff;
+}
+
+.hide {
+  font-weight: normal;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+#progress-graph div.zero {
+  width: 3.6em;
+  margin-right: 0%;
+}
+
+#progress-graph div.graph {
+  width: 8em;
+  height: 1.2em;
+  border: 1px solid #000;
+  margin-top: -1.3em;
+  margin-left: 2.8em;
+  margin-right: 0%;
+}
+
+#progress-graph div.cent {
+  width: 3em;
+  margin-top: -1.65em;
+  margin-left: 12.1em;
+  margin-right: 0%;
+}
+
+.array1 {
+  background-color: #D1D1D1;
+  text-align: center;
+}
+
+.array2 {
+  background-color: #EFEFEF;
+  text-align: center;
+}
+
+.question {
+  background-color: #FFF;
+  font-family: Verdana;
+  font-size: 12pt;
+}
+
+.questionhelp {
+  font-size: 10px;
+  font-style: italic;
+}
+
+.asterisk {display:none}
+.mandatory .asterisk {display:inline;}
+.asterisk {
+  color: red;
+  font-size: 9pt;
+  font-family: verdana;
+  padding-right:1em;
+}
+.showqnumcode-X .qnumcode {
+	display:none;
+}
+.innergraph img {
+  height: 12px;
+  vertical-align: top;
+}
+
+.innergraph table {
+  height: 12px;
+  border: 1px solid #000;
+  table-layout: fixed !important;
+}
+
+.innergraph td {
+  height: 12px;
+}
+
+.printouttable {
+  width: 100%;
+}
+
+.printouttable td {
+  border-color: #fff #fff #ddf #000;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.printouttable td:first-child {
+  font-weight: 700;
+  text-align: right;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.printouttitle {
+  padding-right: 5px;
+  padding-left: 5px;
+  font-size: 18px;
+}
+
+.surveytitle {
+  font-size: 1.2em;
+  height: 1.5em;
+}
+
+.surveytitle:hover {
+  background-color: #F0F0FF;
+}
+
+.languagechanger {
+  font-size: 1em;
+}
+
+.warning {
+  display:block;
+}
+.error,.errormandatory,.warningjs {
+  color: red;
+}
+.errormandatory,.warningjs {
+  font-size: 12px;
+  font-weight: 700;
+  color: red;
+}
+
+font,.text {
+  
+}
+
+.clearall
+A:link,.clearall
+A:visited,.clearall
+A:active {
+  text-decoration: none;
+}
+
+table.question tr.array1:hover,table.question tr.array2:hover {
+  background-color: #A7A9D1;
+}
+
+table.question td {
+  padding: 3px 10px;
+}
+
+table.question th {
+  padding: 2px 5px;
+}
+
+table.question tr:first-child td:first-child {
+  background-color: #fff;
+}
+
+td.answertext {
+  padding: 3px 6px;
+}
+
+.dsheader {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.survey-name {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.survey-description {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size:0.8em;
+	margin:6px auto;
+}
+
+.welcome-text {
+}
+
+.x-questions {
+	color: #333333;
+	font-size: 0.8em;
+}
+
+.submit-buttons {
+}
+
+.clear-all {
+}
+
+.save-all {
+}
+
+.assessment-table {
+	margin: 0 auto;
+	width: 75%;
+	border-collapse: collapse;
+	border: 1px solid #2f5376;
+}
+
+.assessment-table th,
+.assessment-table td {
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+
+.assessment-heading {
+	background-color: #DDDDDD;
+	text-align: center;
+	font-size: small;
+	font-weight: bold;
+	border-bottom: 1px solid #2f5376;
+}
+
+.assessments-container {
+	background-color: #FFFFFF;
+}
+
+td.clearall-result {
+	text-align: center;
+}
+
+td.clearall-result .warning-text {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: small;
+	color: #FF0000;
+}
+
+.warning-text {
+	color:#FF0000;
+	font-weight: bold;
+}
+
+.register-message-1 {
+	font-weight: bold;
+}
+
+.register-message-2 {
+}
+
+.load-error {
+	color:#FF0000;
+}
+
+.load-heading {
+}
+
+.load-message {
+}
+
+.load-form {
+}
+
+.return-to-survey {
+}
+
+.save-error{
+	color: #FF0000;
+}
+
+.save-heading{
+}
+
+.save-message{
+}
+
+.save-form{
+}
+
+#listingContent .survey-contact {
+}
+
+#listingContent .language-changer {
+}
+
+#listingContent .language-changer a {
+	color: #000000;
+}
+
+#listingList ul {
+	padding: 0;
+}
+
+#listingList li {
+	list-style: none;
+	padding-bottom: 5px;
+}
+
+
+/* -------------------------------------------------
+   START: Question styles  ------------------------- */
+  /* =====================================
+== Full list of question classes =======
+
+ .boilerplate
+,.numeric
+,.choice-5-pt-radio
+,.yes-no
+,.gender
+,.date
+,.numeric-multi
+,.numeric
+,.list-radio
+,.list-radio-flexible
+,.list-with-comment
+,.list-dropdown
+,.list-dropdown-flexible
+,.ranking
+,.numeric-multi
+,.language
+,.multiple-opt-comments
+,.multiple-short-txt
+,.text-short
+,.text-long
+,.text-huge
+,.numeric-multi
+,.array-5-pt
+,.array-10-pt
+,.array-yes-uncertain-no
+,.array-increase-same-decrease 
+,.array-flexible-row 
+,.array-flexible-column 
+,.slider 
+,.array-multi-flexi 
+,.array-multi-flexi-text
+,.array-flexible-duel-scale 
+*/ /* - - -  - - -  - - -  - - - - - -  - - -  - - - -
+   START: General list styles - - -  - - -  - - - - */
+.choice-5-pt-radio .answers ul,.list-radio-flexible .answers ul,.list-radio .answers ul,.list-with-comment .answers ul,.multiple-opt .answers ul,.multiple-opt-comments .answers ul,.multiple-short-txt .answers ul,.numeric-multi .answers ul,.yes-no .answers ul,.gender .answers ul
+  {
+  margin-left: 0%;
+  padding-left: 0%;
+}
+
+.choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.list-radio .answers li,.list-with-comment .answers li,.multiple-opt .answers li,.multiple-opt-comments .answers li,.multiple-short-txt .answers li,.numeric-multi .answers li,.yes-no .answers li,.gender .answers li
+  {
+  list-style-type: none;
+  text-align: left;
+  margin: 0 0 0.3em 0.5em;
+}
+
+.choice-5-pt-radio .answers li,.list-radio-flexible .answers li,.list-radio .answers li,.list-with-comment .answers li,.yes-no .answers li,.gender .answers li
+  {
+  margin-left: 2em;
+  text-indent: -1.7em;
+}
+
+/* END:  General list styles - - - -  - - -  - - - -
+- - - - -  - - -  - - -  - - - - - -  - - -  - - - - */
+  /* STYLES NOT YET DEFINED - - - - -
+.boilerplate {}
+*/
+.choice-5-pt-radio .answers ul,.yes-no .answers ul,.gender .answers ul {
+  text-align: left;
+  margin-left: 0%;
+  padding-left: 0%;
+  font-size: 90%;
+}
+
+.choice-5-pt-radio .answers ul li,.yes-no .answers ul li,.gender .answers ul li {
+  display: inline;
+  padding: 0% 2em 0% 0%;
+  margin-left: 0%;
+}
+
+/* STYLES NOT YET DEFINED - - - - -
+.date {}
+*/
+.date p.question {
+  margin-left: 1em;
+}
+
+.date p.question select.day {  
+}
+
+.date p.question select.month {  
+}
+
+.date p.question select.year {  
+}
+
+#ui-datepicker-div {
+	z-index: 2 !important;
+}
+
+.date p.tip,.numeric-multi p.tip,.numeric p.tip,.list-with-comment div.list p.tip  {
+  margin-left: 0.9em;
+  font-size: 0.6em;
+  font-style: italic;
+  line-height: 150%;
+  margin-bottom: 10px;
+}
+
+/* Currently numeric-multi table is only the width of the widest box they contain (ul.computed/ul.slider.computed). Because ul.multinumerichelp is floated, it's outside the normal flow, so cannot affect the width of the wrapping table box.
+If you want ul.multinumerichelp to float beside the input boxes, you need to uncomment the following. NOTE: the result makes multi-numeric different from the rest of the question types.*/
+  /*.numeric-multi table { width: 100%; } */
+.numeric-multi p.tip.error,.numeric-multi input.tip.error {
+  color: #f70;
+  font-weight: bold;
+}
+
+.numeric-multi p.tip.good,.numeric-multi input.tip.good {
+  color: #090;
+  font-weight: bold;
+}
+
+.text-short p.question,.numeric p.question,.numeric-multi span,.multiple-short-txt ul li span
+  {
+  font-size: 12px;
+  /*	font-style: italic;*/
+}
+
+.numeric p.question input {
+  margin: 0% 0.2em;
+}
+
+/* DEFINED ABOVE UNDER "General list styles" - - - - -
+.list-radio-flexible
+.list-radio
+*/
+.list-radio .answer li label {
+  display: inline-block;
+  width: 85%;
+}
+
+.list-radio .answer li input {
+  vertical-align: top !important;
+  margin-top: 2px;
+}
+
+ul.cols-2,table.cols-2,ul.cols-3,table.cols-3,ul.cols-4,table.cols-4,ul.cols-5,table.cols-5,ul.cols-6,table.cols-6,ul.cols-7,table.cols-7,ul.cols-8,table.cols-8
+  {
+  width: 98%;
+  margin: 0% auto 0% auto;
+}
+
+ul.cols-2 li,ul.cols-3 li,ul.cols-4 li,ul.cols-5 li,ul.cols-6 li,ul.cols-7 li,ul.cols-8 li
+  {
+  float: left;
+  padding: 0 0.5em;
+  white-space: normal;
+}
+
+ul.cols-2 li,table.cols-2 td {
+  width: 47%
+}
+
+ul.cols-3 li,table.cols-3 td {
+  width: 30%;
+}
+
+ul.cols-4 li,table.cols-4 td {
+  width: 22%;
+}
+
+ul.cols-5 li,table.cols-5 td {
+  width: 17%;
+}
+
+ul.cols-6 li,table.cols-6 td {
+  width: 15.5%;
+}
+
+ul.cols-7 li,table.cols-7 td {
+  width: 12%;
+}
+
+ul.cols-8 li,table.cols-8 td {
+  width: 10%;
+}
+
+/* List/radios displayed in columns */
+ul.cols-2-ul,ul.cols-3-ul,ul.cols-4-ul,ul.cols-5-ul,ul.cols-6-ul,ul.cols-7-ul,ul.cols-8-ul
+  {
+  float: left;
+  width: auto;
+  padding: 0;
+  margin-bottom: 1em;
+}
+
+ul.cols-2-ul li,ul.cols-3-ul li,ul.cols-4-ul li,ul.cols-5-ul li,ul.cols-6-ul li,ul.cols-7-ul li,ul.cols-8-ul li
+  {
+  padding: 0 1.5em 0 0;
+}
+
+ul.cols-2-ul label,ul.cols-3-ul label,ul.cols-4-ul label,ul.cols-5-ul label,ul.cols-6-ul label,ul.cols-7-ul label,ul.cols-8-ul label
+  {
+  text-indent: 0;
+}
+
+.list-dropdown-flexible p.question {
+  margin-left: 1em;
+}
+
+/* STYLES NOT YET DEFINED - - - - -
+.list-dropdown {}
+*/
+.list-with-comment div.list {
+  width: 47%;
+  float: left;
+  padding: 0.5em;
+}
+
+.list-with-comment p.select {
+  width: 47%;
+  float: left;
+  padding: 0.5em;
+  margin: 0%;
+}
+
+.list-with-comment div.list p {
+  margin: 0%;
+  text-align: left;
+}
+
+.list-with-comment p.comment {
+  margin: 0%;
+  padding: 0.5em;
+  text-align: left;
+  float: left;
+  width: 47%;
+}
+
+.list-with-comment p.comment textarea {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.ranking {
+  
+}
+
+/* DEFINED ABOVE UNDER "General list styles" - - - - -
+.multiple-opt
+*/
+.language {
+  
+}
+
+/* The following styles only apply to modern (relatively) complete CSS2 compliant browsers. (Not less than IE 8) */
+.multiple-opt-comments td.answer,.multiple-short-txt td.answer,.numeric-multi td.answer
+  {
+  
+}
+
+.multiple-opt-comments ul,.multiple-short-txt ul,.numeric-multi ul,.numeric-multi.slider ul
+  {
+  display: table;
+  padding: 0%;
+  margin: 1em;
+}
+
+.numeric-multi ul {
+  margin: 0% 1em 1.5em 1em;
+}
+
+.numeric-multi ul.computed {
+  float: left;
+  padding-right: 2em;
+}
+
+.numeric-multi div.multinum-slider {
+  width: auto;
+  float: left;
+  margin-top: 1.5em;
+  margin-bottom: 0.2em;
+}
+
+.numeric-multi ul.slider.computed {
+  width: 13em;
+  margin-bottom: 1em;
+}
+
+.multiple-opt-comments ul li,.multiple-short-txt ul li,.numeric-multi ul li,.numeric-multi.slider ul li
+  {
+  display: table-row;
+  font-size: 90%;
+}
+
+.multiple-opt-comments ul li span.option {
+  padding: 0.3em 1em 0% 1.5em;
+  text-indent: -1.5em;
+  display: table-cell;
+  vertical-align: baseline;
+}
+
+.numeric-multi ul li label,.numeric-multi ul.slider li label {
+  padding: 0.3em 1em 0% 0%;
+  display: table-cell;
+  vertical-align: baseline;
+}
+
+.multiple-short-txt ul li label {
+  padding: 0.3em 1em 0% 0%;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.numeric-multi ul.computed li label
+.numeric-multi ul.slider.computed li label {
+  padding-right: 0%;
+  font-size: 12px;
+}
+
+.multiple-opt-comments ul li span.comment,.multiple-short-txt ul li span,.numeric-multi ul li span,.numeric-multi ul li.slider span
+  {
+  padding: 0.3em 0% 0% 1em;
+  display: table-cell;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.multiple-opt-comments ul li span {
+  padding: 0.3em 1em 0% 0%;
+}
+
+.numeric-multi ul.multiplenumerichelp,.numeric-multi ul.multiplenumerichelp.slider
+  {
+  display: table;
+  font-size: 80%;
+}
+
+.numeric-multi ul.multiplenumerichelp li,.numeric-multi ul.multiplenumerichelp.slider li
+  {
+  display: table-row
+}
+
+.numeric-multi ul.multiplenumerichelp li span,.numeric-multi ul.multiplenumerichelp.slider li span
+  {
+  padding: 0% 0% 0% 0.3em;
+  display: table-cell;
+}
+
+.numeric-multi ul.multiplenumerichelp span input {
+  border: none;
+  background-color: #fff;
+  color: #222;
+  padding: 0%;
+  width: 7em;
+}
+
+.numeric input,.text-short input,.text-long textarea,.text-huge textarea
+  {
+  margin-left: 1em;
+}
+
+/* STYLES NOT YET DEFINED - - - - -
+.yes-no {}
+.gender {}
+*/
+#limesurvey table.question tbody th.arraycaptionleft,
+#limesurvey table.question thead th,
+#limesurvey table.question .repeat th {
+  text-align: center;
+  padding: 3px 10px;
+  background-color: #D1D1D1;
+  vertical-align: middle !important;
+  font-size: 0.6em;
+  font-weight: bold;
+}
+
+#limesurvey .array-flexible-duel-scale table.question tr.repeat th {
+	background-color: #F6F6F6;
+}
+
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text,
+#limesurvey .array-flexible-duel-scale table.question tr.repeat th.header_answer_text,
+#limesurvey .array-flexible-duel-scale table.question .header_separator,
+#limesurvey .array-flexible-duel-scale table.question .header_answer_text_right {
+	background-color: #FFFFFF;
+}
+
+#limesurvey .array-flexible-duel-scale table.question tr.repeat {
+	background-color: #F6F6F6;
+}
+
+#limesurvey table.question .answer tbody td {
+  text-align: center;
+}
+
+#limesurvey table.question tbody th.answertext {
+  text-align: right;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+#limesurvey table.question tbody th.answertextright {
+  text-align: left;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+.array-flexible-column  table.question thead th {
+  font-size: 12px !important;
+  font-weight: normal !important;
+}
+
+.array-flexible-column thead th.odd {
+  background-color: #f1f1f1 !important;
+}
+
+.array-flexible-column col.odd {
+  background-color: #eee;
+}
+
+.array-flexible-column col.even {
+  background-color: #d1d1d1;
+}
+
+.array-flexible-column table.question td {
+  text-align: center;
+}
+
+/** UI Slider **/
+.numeric-multi label.slider-label {
+  display: table-cell;
+  width: auto !important;
+  padding: 0.2em 1em 0 0;
+  margin-top: 1.3em;
+  vertical-align: middle;
+}
+
+.ui-slider .ui-slider-handle {
+    height: 1.0em;
+    width: 1.0em;
+	top: -0.25em;
+}
+
+.ui-slider-disabled .ui-slider-handle {
+  opacity: 0.5;
+  filter: alpha(opacity =           50);
+}
+
+.ui-slider-1 {
+  width: 200px;
+  position: relative;
+  height: 10px;
+}
+
+.multinum-slider .ui-state-default {
+	background: none #2F5376;
+	border:1px solid #2F5376;
+}
+
+.multinum-slider .ui-widget-content {
+	background: none;
+	border:1px solid #2F5376;
+}
+
+.slider_callout {
+  height: 20px;
+  width: 100px;
+  overflow: hidden;
+  position: absolute;
+  top: -20px;
+  margin-left: -3px;
+  color: #284a6e;
+  font-size: 0.75em;
+  font-weight: bold;
+  text-align: left;
+}
+
+.slider_showmin {
+  float: left;
+  width: 50px;
+  margin: 15px -2.5em 0 -0.3em;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 0.7em;
+  font-weight: normal;
+  text-align: left;
+}
+
+.slider_showmax {
+  float: right;
+  width: 50px;
+  margin: 15px -0.3em 0 0;
+  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size: 0.7em;
+  font-weight: normal;
+  text-align: right;
+}
+
+.slider_lefttext {
+  display: table-cell;
+  padding-top: 1.5em;
+  padding-right: 11px;
+  vertical-align: top;
+  text-align: right;
+  font-size: 0.9em;
+}
+
+.slider_righttext {
+  display: table-cell;
+  padding-top: 1.5em;
+  padding-left: 11px;
+  vertical-align: top;
+  font-size: 0.9em;
+}
+
+div.privacynote {
+  text-align: center;
+  background-color: #fff;
+  width: 80%;
+  margin: 10px auto;
+  padding: 5px;
+}
+
+table.navigator {
+  width: 98%;
+  margin-bottom: 5px;
+}
+
+table.navigator td {
+  width: 33%;
+}
+
+div.answers {
+  margin-bottom: 10px;
+}
+
+div.answers table {
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 1px;
+}
+
+.numeric-multi div.input {
+  font-size: 12px;
+}
+
+.choice-5-pt-radio .answers li {
+  display: inline;
+  margin-left: 0.5em;
+}
+
+.choice-5-pt-radio .answers ul {
+  margin-bottom: 10px;
+}
+
+div #loadtable,div #savetable {
+  padding-top: 10px;
+}
+
+#loadtable td,#savetable td {
+  padding-top: 5px;
+  padding-left: 3px;
+}
+
+#loadbutton,#savebutton {
+  padding: 0 10px;
+}
+
+td.rank label,td.rank td strong {
+  font-size: 0.7em;
+}
+
+.ranking select {
+  min-width: 140px;
+  min-height: 60px;
+}
+
+table.rank td.helptext {
+  font-size: 10px;
+  font-style: italic;
+  padding-top: 5px;
+}
+
+li.other .answer-comment {
+  margin-top: -1.65em;
+}
+
+p.captcha {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+form.captcha table td {
+  padding: 5px 5px;
+}
+
+form.captcha label {
+  font-weight: bold
+}
+
+#tokenform {
+  margin-top: 1em;
+}
+
+#tokenform input {
+  
+}
+
+#tokenform label {
+  float: left;
+  width: 20em;
+  margin-right: 0.5em;
+  text-align: right;
+}
+
+#tokenform li {
+  padding-bottom: 5px;
+  list-style: none;
+}
+
+#tokenform img {
+  margin-bottom: -5px;
+  margin-right: 5px;
+}
+
+p#tokenmessage {
+  margin: 20px;
+}
+
+p#tokenmessage {
+  margin: 20px;
+  text-align: center;
+}
+
+div#wrapper {
+  width: 600px;
+  margin: 0 auto;
+}
+
+#tokenform input.submit {
+  margin-left: 18em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+#statsContainer {
+  width: 720px;
+  margin: 8px auto;
+  border: 1px solid #2f5376;
+  background-color: #E9E9E9;
+  padding: 0% 0% 0.5em 0%;
+}
+
+#statsHeader {
+  background-color: #2F5376;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0px;
+  height: 96px;
+}
+
+.statsSurveyTitle {
+  text-align: center;
+  font-size: 1.66em;
+  padding: 15px 0px 10px 0px;
+}
+
+.statsNumRecords {
+  text-align: center;
+  font-size: 1em;
+}
+
+table.statisticstable {
+  width: 690px;
+  border: 0px solid;
+  text-align: left;
+  background-color: #fff;
+  margin: 0px auto;
+  padding-bottom: 8px;
+}
+
+table.statisticstable td {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #CCC;
+}
+
+table.statisticstable strong {
+  font-weight: bold;
+}
+
+table.statisticstable img {
+  margin: 3px auto;
+}
+
+div.fieldSummary {
+  font-size: .9em;
+  padding: 10px 10px 0px 10px;
+  display: block;
+}
+
+div.questionTitle {
+  font-size: 1.2em;
+  padding: 20px 20px 20px 20px;
+  font-weight: bold;
+}
+
+td.statsImageholder {
+  background-color: #fff;
+}
+
+/* Survey listing styles */
+#listingHeader {
+  margin-top: 5px;
+  padding: 10px 0px;
+  background-color: #2F5376;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+#listingContent p {
+  margin: 15px 0;
+  text-align: center;
+  line-height: 150%;
+}
+
+#listingContent .surveyListHeading {
+  font-weight: bold;
+}
+
+#listingList {
+  width: 80%;
+  margin: 0 auto;
+  padding: 5px 0 10px 0;
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+}
+
+#listingList ul {
+  list-style-type: none;
+  text-align: center;
+}
+
+#listingList .surveytitle {
+  font-size: 12px;
+  line-height: 160%;
+}
+
+#listingList a {
+  margin-left: 5px;
+  color: #444444;
+  text-decoration: underline;
+}
+
+#listingList a:hover {
+  text-decoration: none;
+  background-color: transparent;
+}
+
+#listingList a.surveytitle {
+  margin-left: 0px;
+}
+
+table.assessments{
+ width: 100%;
+}
+
+table.assessments td{
+ padding: 0 10px;
+}
+
+table.assessments{
+ width: 100%;
+}
+
+table.assessments th{
+ font-weight:bold;
+ padding: 0 10px;
+}
+
+/* Question Index */
+.withindex .outerframe{
+  margin-left: 1em;
+  margin-right: 26em;
+}
+.allinone .outerframe{
+  margin:0;
+}
+
+#index {
+  position: absolute;
+  right: 0;
+  width: 25em;
+  top: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  background: #E9E9E9;
+  border-left: 1px solid #000;
+}
+
+#index h2 {
+  text-align: center;
+  font-weight: bold;
+  padding: 1em;
+  color: #FFF;
+  background: #2F5376;
+}
+
+#index h3 {
+  margin: 0.5em 0 0 0.5em;
+  color: #444;
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+#index .container {
+  width: 24em;
+}
+
+#index .container .row {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  border-top: 1px solid #fff;
+}
+
+#index .container .row:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
+
+#index .container .row .hdr {
+  width: 3em;
+  text-align: right;
+  display: inline-block;
+  padding: 0 0.5em 0 0;
+}
+
+#index .container .row.odd { background: #CCC; }
+#index .container .row.current { background: #444; color: #fff; }
+#index .container .row.missing { background: #CC0000; color: #fff; }
+#index .container input { margin: 1em; }

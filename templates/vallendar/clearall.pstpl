@@ -1,0 +1,11 @@
+<br />
+<table class="clearall-result">
+  <tr>
+        <td>
+            <span class="warning-text">{ANSWERSCLEARED}</span><br /><br />
+	{RESTART}<br />
+            {CLOSEWINDOW}
+   </td>
+  </tr>
+ </table>
+<br />

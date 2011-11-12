@@ -1,0 +1,4 @@
+{CHECKJAVASCRIPT}
+<div class="survey-description">{SURVEYDESCRIPTION}</div>
+<div class="survey-welcome">{WELCOME}</div>
+<!-- <div class="numquestions">{THEREAREXQUESTIONS}</div> -->

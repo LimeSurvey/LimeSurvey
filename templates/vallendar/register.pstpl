@@ -1,0 +1,11 @@
+
+<table class="register-table">
+	<tr>
+		<td>
+			<p class="warning-text">{REGISTERERROR}</p>
+			<p class="register-message-1">{REGISTERMESSAGE1}</p>
+			<p class="register-message-2">{REGISTERMESSAGE2}</p>
+			<div class="register-form">{REGISTERFORM}</div>
+		</td>
+	</tr>
+</table>

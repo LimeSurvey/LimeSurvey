@@ -1,0 +1,29 @@
+<table class="survey-list-table">
+    <tr>
+    	<td class="site-name">
+			<h1>{SITENAME}</h1>
+            </td>
+    </tr>
+	<tr>
+		<td class="survey-list-heading">
+             {SURVEYLISTHEADING}
+         </td>
+    </tr>
+	<tr>
+		<td class="survey-list">
+                <ul>{SURVEYLIST}</ul>
+                </td>
+               </tr>
+      <tr>
+		<td class="survey-contact">
+             {SURVEYCONTACT}
+            </td>
+      </tr>
+      <tr>
+		<td class="language-changer">
+             <p>{LANGUAGECHANGER}</p>
+             <a href="http://www.limesurvey.org" target="_blank"><img src="{TEMPLATEURL}limesurvey_logo.png" border="0" title="LimeSurvey" /></a><br />
+		 <a href="http://www.limesurvey.org" target="_blank">The Online Survey Tool</a> - Free &amp; Open Source<br />
+            </td>
+      </tr>
+</table>

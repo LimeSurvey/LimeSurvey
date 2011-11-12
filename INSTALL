@@ -1,0 +1,31 @@
+Supported platforms
+===================
+
+LimeSurvey has been reported to run under the following operating 
+systems:
+
+    Unix:
+        Fedora
+
+
+Installation
+============
+
+Installing LimeSurvey is easy: Unpack LimeSurvey into a folder 
+on your webserver. Open the installer with your webbrowser:
+
+http://localhost/limesurvey/index.php/installer
+
+You will be guided step by step through the installation.
+
+
+Common Pitfalls
+===============
+
+* If opening the installer address results in a 404 error message 
+looking different to your server 404 messages, ensure you don't
+have any special characters like spaces in your installation 
+path.
+
+* The previous button is not always helpful as some of your already
+entered data might get lost and you need to enter it again.

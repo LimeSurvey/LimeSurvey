@@ -1,0 +1,18 @@
+#body{background:#FFF;color:#000;}
+#head{background:#FFF;}
+a#link-logo{display:none}
+h1#sitename{margin:0 0 0.2em 1em;}
+
+h2#surveytitle{margin:0 0 0.2em 1em;}
+#exportbutton{display:none;}
+ul#credits{
+	list-style: none ; 
+    text-align: center;
+    margin:0;
+   }
+#poweredby a{text-decoration:none;color:#000}
+#licence{display:none;}
+#donate{display:none;}
+
+.printouttable{margin:0.1em auto;}
+.printouttitle{display: none;}

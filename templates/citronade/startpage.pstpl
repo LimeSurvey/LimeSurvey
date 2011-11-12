@@ -1,0 +1,28 @@
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>{SURVEYNAME} {GROUPNAME} {SITENAME}</title>
+	<meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+
+<!-- The following CSS hides visual elements of the progress bar from screen readers. -->
+	<style type="text/css" media="aural tty">
+        progress-graph .zero, progress-graph .graph, progress-graph .cent { display: none; }
+	</style>
+	<!-- The following line includes template.css and if an RTL-language is used template-rtl.css -->
+    {TEMPLATECSS}
+	<link rel="stylesheet" type="text/css"  media="print" href="{TEMPLATEURL}print.css" />
+	<script type="text/javascript" src="{TEMPLATEURL}template.js"></script>
+	<link rel="shortcut icon" href="{TEMPLATEURL}favicon.ico" />		
+</head>
+<!--[if lt IE 7 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie6"> <![endif]-->
+<!--[if IE 7 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie7"> <![endif]-->
+<!--[if IE 8 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie8"> <![endif]-->
+<!--[if IE 9 ]> <body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT} ie ie9"> <![endif]-->
+<!--[if gt IE 9]><!--><body class="lang-{SURVEYLANGAGE} {SURVEYFORMAT}"><!--<![endif]-->
+<div id="container">
+	<div id="head">
+		<div class="wrapper">
+			<a href="http://www.limesurvey.org" title="The survey software" id="link-logo"><img src="{TEMPLATEURL}logo.png" alt="LimeSurvey" id="logo"/></a>
+			<h1 id="sitename">{SITENAME}</h1>
+		</div>
+	</div>
+<div id="title"><h2 id="surveytitle" class="wrapper">{SURVEYNAME}</h2></div>
+	<div id="content" class="outerframe">

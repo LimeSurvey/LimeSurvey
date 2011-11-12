@@ -1,0 +1,10 @@
+<br />
+<table class="completed-table">
+	<tr>
+		<td class="completed-text">
+			{COMPLETED}
+			<br /><br />
+			<p>{URL}</p>
+		</td>
+	</tr>
+</table>

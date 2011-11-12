@@ -1,0 +1,15 @@
+<table class="welcome-table">
+	<tr>
+		<td class="survey-description">
+        	{CHECKJAVASCRIPT}
+			<h1>{SURVEYNAME}</h1><br />
+			<p class='surveydescription'>{SURVEYDESCRIPTION}</p>
+		</td>
+	</tr>
+	<tr>
+		<td class="survey-welcome">
+			<span class='surveywelcome'>{WELCOME}</span><br />
+			<span class="x-questions">{THEREAREXQUESTIONS}</span>
+		</td>
+	</tr>
+</table>

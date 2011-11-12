@@ -1,0 +1,144 @@
+2006-02-07  Danilo Šegan  <danilo@gnome.org>
+
+	* examples/pigs_dropin.php: comment-out bind_textdomain_codeset
+
+	* gettext.inc (T_bind_textdomain_codeset): bind_textdomain_codeset
+	is available only in PHP 4.2.0+ (thanks to Jens A. Tkotz).
+
+	* Makefile: Include gettext.inc in DIST_FILES, VERSION up to
+	1.0.7.
+
+2006-02-03  Danilo Šegan  <danilo@gnome.org>
+
+	Added setlocale() emulation as well.
+	
+	* examples/pigs_dropin.php: Use T_setlocale() and locale_emulation().
+	* examples/pigs_fallback.php: Use T_setlocale() and locale_emulation().
+
+	* gettext.inc: 	Added globals $EMULATEGETTEXT and $CURRENTLOCALE.
+	(locale_emulation): Whether emulation is active.
+	(_check_locale): Rewrite.
+	(_setlocale): Added emulated setlocale function.
+	(T_setlocale): Wrapper around _setlocale.
+	(_get_reader): Use variables and _setlocale.
+
+2006-02-02  Danilo Šegan  <danilo@gnome.org>
+
+	Fix bug #12192.
+
+	* examples/locale/sr_CS/LC_MESSAGES/messages.po: Correct grammar.
+	* examples/locale/sr_CS/LC_MESSAGES/messages.mo: Rebuild.
+
+2006-02-02  Danilo Šegan  <danilo@gnome.org>
+
+	Fix bug #15419.
+	
+	* streams.php: Support for PHP 5.1.1 fread() which reads most 8kb.
+	(Fix by Piotr Szotkowski <shot@hot.pl>)
+
+2006-02-02  Danilo Šegan  <danilo@gnome.org>
+
+	Merge Steven Armstrong's changes, supporting standard gettext
+	interfaces: 
+
+	* examples/*: Restructured examples.
+	* gettext.inc: Added.
+	* AUTHORS: Added Steven.
+	* Makefile (VERSION): Up to 1.0.6.
+	
+2006-01-28  Nico Kaiser  <nico@siriux.net>
+
+	* gettext.php (select_string): Fix "true" <-> 1 difference of PHP
+
+2005-07-29  Danilo Šegan  <danilo@gnome.org>
+
+	* Makefile (VERSION): Up to 1.0.5.
+
+2005-07-29  Danilo Šegan  <danilo@gnome.org>
+
+	Fixes bug #13850.
+	
+	* gettext.php (gettext_reader): check $Reader->error as well.
+
+2005-07-29  Danilo Šegan  <danilo@gnome.org>
+
+	* Makefile (VERSION): Up to 1.0.4.
+
+2005-07-29  Danilo Šegan  <danilo@gnome.org>
+
+	Fixes bug #13771.
+
+	* gettext.php (gettext_reader->get_plural_forms): Plural forms
+	header extraction regex change.  Reported by Edgar Gonzales.
+	
+2005-02-28  Danilo Šegan  <dsegan@gmx.net>
+
+	* AUTHORS: Added Nico to the list.
+
+	* Makefile (VERSION): Up to 1.0.3.
+
+	* README: Updated.
+
+2005-02-28  Danilo Šegan  <dsegan@gmx.net>
+
+	* gettext.php: Added pre-loading, code documentation, and many
+	code clean-ups by Nico Kaiser <nico@siriux.net>.
+
+2005-02-28  Danilo Šegan  <dsegan@gmx.net>
+
+	* streams.php (FileReader.read): Handle read($bytes = 0).
+
+	* examples/pigs.php: Prefix gettext function names with T or T_.
+
+	* examples/update: Use the same keywords T_ and T_ngettext.
+
+	* streams.php: Added CachedFileReader.
+
+2003-11-11  Danilo Šegan  <dsegan@gmx.net>
+
+	* gettext.php: Added hashing to find_string.
+
+2003-11-01  Danilo Šegan  <dsegan@gmx.net>
+
+	* Makefile (DIST_FILES): Replaced LICENSE with COPYING.
+	(VERSION): Up to 1.0.2.
+
+	* AUTHORS: Minor edits.
+
+	* README: Minor edits.
+
+	* COPYING: Removed LICENSE, added this file.
+
+	* gettext.php: Added copyright notice and disclaimer.
+	* streams.php: Same.
+	* examples/pigs.php: Same.
+
+2003-10-23  Danilo Šegan  <dsegan@gmx.net>
+
+	* Makefile: Upped version to 1.0.1.
+
+	* gettext.php (gettext_reader): Remove a call to set_total_plurals.
+	(set_total_plurals): Removed unused function for some better days.
+
+2003-10-23  Danilo Šegan  <dsegan@gmx.net>
+
+	* Makefile: Added, version 1.0.0.
+
+	* examples/*: Added an example of usage.
+
+	* README: Described all the crap.
+	
+2003-10-22  Danilo Šegan  <dsegan@gmx.net>
+
+	* gettext.php: Plural forms implemented too.
+
+	* streams.php: Added FileReader for direct access to files (no
+	need to keep file in memory).
+
+	* gettext.php: It works, except for plural forms.
+
+	* streams.php: Created abstract class StreamReader.
+	Added StringReader class.
+
+	* gettext.php: Started writing gettext_reader.
+

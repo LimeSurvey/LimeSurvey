@@ -1,0 +1,7 @@
+<table align="center" class='navigator'>
+	<tr>
+	    <td class="save-all">{SAVE}</td> 
+		<td class="submit-buttons" align="center">{NAVIGATOR}</td>
+	    <td class="clear-all" align="right">{CLEARALL}</td> 
+	</tr>
+</table>

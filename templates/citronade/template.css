@@ -1,0 +1,963 @@
+/* This file is part of Lime Survey Template :a free template
+    you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This template is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/* This part don't have to be modified */
+
+/*** Start jQuery UI Theme Styles ***/
+
+button.ui-button::-moz-focus-inner {
+	border: 0; 
+	padding: 0;   /* Get rid of extra padding in focused button in FF */
+}
+
+.ui-corner-all {
+    -moz-border-radius: 4px;
+}
+
+.ui-button { 
+	position: relative; 
+	padding: 0.1em 0 0.1em 0; 
+	cursor: pointer;
+	font-family: FreeSans,Arial,Helvetica,sans-serif;
+	font-size: 1.0em;
+	font-weight: normal;
+	line-height: normal;
+}
+
+.ui-button-icon-only { 
+	width: 2.2em; /* To make room for the icon, a width needs to be set here */
+} 
+
+button.ui-button-icon-only { 
+	width: 2.4em; /* Button elements seem to need a little more width */
+}
+
+.ui-button-icons-only { 
+	width: 3.4em; 
+} 
+
+button.ui-button-icons-only {
+	width: 3.7em; 
+}
+
+/* Button text elements */
+.ui-button-text-only .ui-button-text {
+	padding: 0 1em; 
+}
+
+.ui-button-icon-only .ui-button-text, 
+.ui-button-icons-only .ui-button-text {
+	text-indent: -9999999px; 
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	padding: 0 0.7em 0 1.7em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	padding: 0 1.7em 0 0.7em; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	padding: 0 1.7em; 
+}
+
+input.ui-button {
+	padding: 0.1em 1em 0.1em 1em;  /* No icon support for input elements, provide padding by default */
+}
+
+/* Button icon element(s) */
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	position: absolute;
+	top: 50%;
+	margin-top: -8px; 
+}
+
+.ui-button-icon-only .ui-icon {
+	left: 50%; 
+	margin-left: -8px; 
+}
+
+.ui-button-text-icon-primary .ui-button-icon-primary, 
+.ui-button-text-icons .ui-button-icon-primary, 
+.ui-button-icons-only .ui-button-icon-primary {
+	left: .4em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-icon-secondary, 
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+.ui-button-text-icons .ui-button-icon-secondary, 
+.ui-button-icons-only .ui-button-icon-secondary {
+	right: .4em; 
+}
+
+/* Button sets*/
+.ui-buttonset {
+	margin-right: 7px; 
+}
+
+.ui-buttonset .ui-button {
+	margin-left: 0;
+	margin-right: -.3em; 
+}
+
+/* IE6/7 hacks 8 */
+
+.ui-button,
+input.ui-button { 
+	*padding: 0.1em 0 0.1em 0; 
+}
+
+.ui-button-icon-only .ui-icon,
+.ui-button-text-icon-primary .ui-icon,
+.ui-button-text-icon-secondary .ui-icon,
+.ui-button-text-icons .ui-icon,
+.ui-button-icons-only .ui-icon {
+	*margin-top: -9px;
+}
+
+.ui-button-text-icon-primary .ui-button-text {
+	*padding: 0 0 0 1.0em; 
+}
+
+.ui-button-text-icon-secondary .ui-button-text {
+	*padding: 0 1.2em 0 0; 
+}
+
+.ui-button-text-icons .ui-button-text {
+	*padding: 0 1.0em; 
+}
+
+/*** End jQuery UI Theme Styles ***/
+
+/* Base style only */
+html{font-size:100%}
+body{font-family:Arial, Helvetica, FreeSans, sans-serif;font-size:.85em;line-height:1.4;color:#000;background:#FFF;margin:0;padding:0}
+html,body{height:100%}
+h1,h2,h3,h4,h5,h6{line-height:1.2;font-weight:700;font-style:normal;margin:1em 0 .5em}
+h1{font-size:1.5em}
+h2{font-size:1.3em}
+h3{font-size:1.2em}
+h4{font-size:1.1em}
+ul,ol{margin:.75em 0 .75em 32px;padding:0}
+address{font-style:italic;margin:.75em 0}
+a{text-decoration:underline}
+a:link,a:visited{color:#11C}
+a:visited{color:#339}
+a:hover,a:focus,a:active{color:#00F}
+a:active{outline:none}
+a img{border:none}
+strong{font-weight:700}
+form,fieldset{border:none;margin:0;padding:0}
+input,button,select{vertical-align:middle}
+abbr[title]{border-bottom:1px dotted;cursor:help}
+blockquote{border-left:solid 2px #ddd;margin:.75em 0 .75em 20px;padding:0 0 0 10px}
+q cite,q q{font-style:normal}
+blockquote p,li p{margin:.5em 0}
+dt{font-weight:700;margin:.75em 0 0}
+dd{margin:.25em 0 .25em 32px}
+table{border-collapse:separate;border-spacing:0;border:1px solid gray;margin:0}
+table td,table th{border:1px solid #ccc;vertical-align:top;padding:4px}
+article,aside,dialog,figure,footer,header,hgroup,menu,nav,section{display:block}
+ul#surveylist{list-style:none}
+.hide{position:absolute;top:-9999px;left:-9999px}
+
+#progress-wrapper{width:252px;font-size:12px;height:20px;margin:0 auto}
+#progress-wrapper #progress-pre{float:left;width:45px;text-align:right;margin:0 5px 0 0}
+#progress-wrapper .ui-widget-content{float:left;width:150px;height:1em;text-align:left;border-color:#666;border-style:solid;border-width:1px}
+#progress-wrapper .ui-widget-header{background-color:#AAA;background-image:none;border:1px solid #666}
+#progress-wrapper #progress-post{float:left;width:45px;text-align:left;margin:0 0 0 5px}
+.ui-slider{width:15em;display:inline-block;border:1px solid #666;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;margin:.4em 0 .2em}
+.slider_showmin{float:left;width:3em;font-size:.7em;font-weight:400;text-align:left;color:#666;margin:1.4em 0 0}
+.slider_showmax{float:right;width:3em;font-size:.7em;font-weight:400;text-align:right;color:#666;margin:1.4em 0 0}
+.slider_lefttext{display:inline-block;position:relative;top:-.5em;padding-right:1em;text-align:right;font-size:.9em;color:#666}
+.slider_righttext{display:inline-block;position:relative;top:-.5em;padding-left:1em;font-size:.9em;color:#666}
+.slider_callout{overflow:hidden;position:absolute;top:-1.3em;margin-left:.8em;text-align:right;color:#333;font-size:.9em}
+.ie6 .ui-slider,.ie7 .ui-slider{display:block;float:left;}
+.ie6 .slider_lefttext ,.ie7 .slider_lefttext {float: left;margin-top:1em;}
+.ie6 .slider_righttext ,.ie7 .slider_righttext {float: left;margin-top:1em;}
+
+#percentcomplete{height:20px;display:block;margin:5px 0}
+h5,h6{font-size:1em}
+p,dl{margin:.75em 0}
+em,q,cite{font-style:italic}
+.good{color:#090} 
+.error,.problem{color: #A00};
+.ie .ui-slider{display:inline;}
+/* --------------------------------------------- */
+/* Basic adaptation of the template :            */
+/* color and image                               */
+/* --------------------------------------------- */
+
+body {background:#FEFEFE;color:#444;}
+/* Global margin and with*/
+/* width of limesurvey contents parts */
+.wrapper,#content{padding:0;margin:0 auto;max-width:1024px;width:auto !important; width:1024px}
+
+/* Head decoration */
+#head{
+	border-bottom:2px solid #AAA;
+	border-top:2px solid #CCC;
+	color:#328639;
+	background:#dbdbdb url(header-bkg.png) repeat-x center bottom;}
+
+#head a#link-logo:hover,#head a#link-logo:focus,#head a#link-logo:active{background:transparent;}
+#head a#link-logo {outline: 0;} /* remove the outline on logo click */
+
+#head #sitename a{text-decoration:none;color:#328639;}
+
+/* survey title color */
+#title{color:#FFF;background:#5670A1;border-bottom:2px solid #CCC;}
+
+/* survey list */
+#surveylist-container h3{color:#5670A1} 
+ul#surveylist li a{color:#5670A1;}
+ul#surveylist li a.surveytitle{color:#5670A1;}
+
+/* footer color*/
+#footer{background:#121A28;color:#FFF;}
+#footer a{color:#E5F8A8;}
+#footer a:hover, #footer a:focus, #footer a:active {background-color: #E5F8A8;color: #5670A1;} 
+
+/* survey tool decoration */
+#languagechanger select, 
+	.tools input,
+	.tools a,
+	input.submit,
+	button.submit,
+	input#savebutton,
+	input#loadbutton,
+	input#registercontinue,
+	.navigator input
+		{border:1px solid #BBB;background:#FEFEFE;color:#444;
+  -moz-box-shadow: 2px 2px 5px #ccc;
+  -webkit-box-shadow: 2px 2px 5px #ccc;
+  box-shadow: 2px 2px 5px #ccc;
+
+}
+#languagechanger select:hover,
+	.tools input:hover,
+	.tools a:hover,
+	.navigator input:hover,
+	input.submit:hover,
+	button.submit:hover,
+	input#savebutton:hover,
+	input#loadbutton:hover,
+	input#registercontinue:hover,
+	#languagechanger select:focus,
+	.tools input:focus,
+	.tools a:focus,
+	.navigator input:focus,
+	input.submit:focus,
+	button.submit:focus,
+	input#savebutton:focus,
+	input#loadbutton:focus,
+	input#registercontinue:focus
+		{color:#333;background:#EEE;border-color:#999;
+  -moz-box-shadow: 2px 2px 5px #555;
+  -webkit-box-shadow: 2px 2px 5px #555;
+  box-shadow: 2px 2px 5px #555;
+		}
+#languagechanger select:hover option{background:#FEFEFE;}
+
+/* for disabled tools */
+.tools input[disabled],
+	.navigator input[disabled],
+	input.submit[disabled],
+	button.submit[disabled],
+	input#savebutton[disabled],
+	input#loadbutton[disabled],
+	input#registercontinue[disabled],
+	#languagechanger select[disabled]
+	{border:1px solid #dbdbdb;background:#FEFEFE;color:#dbdbdb;cursor:inherit;}
+
+.ie .tools input,
+	.ie .tools a,
+	.ie .navigator input,
+	.ie input#savebutton,
+	.ie input#loadbutton
+		{height:2em}
+
+/* gloabl information block */
+.note,#tokenmessage{border:#8195BA 1px solid;background:#EEF6FF;}
+
+/* Group decoration */
+.groupdescription{border: 1px solid #5670A1;border-top:0px none #5670A1;background:#EEF6FF;}
+.grouptitle{border: 1px solid #5670A1;border-bottom:0px none #5670A1;background:#5670A1;color:#FEFEFE}
+
+
+/* Question bloc decoration */
+.question-wrapper{background-color:#FEFEFE;border:1px solid #5670A1;}
+.question-wrapper .question-text{background:#5670A1;padding:0.5em 1.5em;color:#FEFEFE}
+.question-wrapper .question-text a{color:#FEFEFE}
+.question-wrapper .question-text a:hover{color:#5670A1}
+.question-wrapper .question-text{font-weight:bold;}
+.question-wrapper .question-text strong,.question-wrapper .question-text b{font-weight:bolder;}/* see for strong and b to add some color */
+.asterisk {display:none}
+.mandatory .asterisk {display:inline;}
+.asterisk {color:#FF8900;padding-right:1em;}
+.showqnumcode-X .qnumcode {display:none;}
+.qnumcode {font-style:italic;padding-right:1em;}
+
+/* input decoration */
+#tokenform input[type=text],.form input[type=text],.answers input[type=text],.answers textarea
+	{border:1px solid #999;}
+#tokenform input:focus{background-color:#F0F0F0;border-color:#666}
+
+/* LimeSurvey form input decoration */
+.answers textarea:focus, .answers input.text:focus{
+  background-color:#F0F0F0;border-color:#666;
+  -moz-box-shadow: 1px 1px 3px #555;
+  -webkit-box-shadow: 1px 1px 3px #555;
+  box-shadow: 1px 1px 3px #555;
+}
+.mandatory .answers textarea.textarea.empty,.mandatory  .answers input.text.empty{
+  background-color:#FFF0F0;border-color:#600;
+}
+
+/* tip color */
+.error{}
+.good{}
+.problem{}
+
+/* If you want some round box, add round style */
+.round{-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
+
+/* limesurvey specific tool */
+/* Replacement of default progress bar */
+#progress-wrapper .ui-widget-content { border-color: #161c28; background: #fefefe; color: #000; }
+#progress-wrapper .ui-widget-header { border-color:#161c28; background: #5670a1; color: #fefefe; font-weight: bold; }
+.ui-slider{border-color:#666;}
+.slider_showmin {color:#666;}
+.slider_showmax {color:#666;}
+.slider_lefttext {color:#666;}
+.slider_righttext {color:#666;}
+.slider_callout {color: #666;}
+
+/* index */
+#index .container{margin-top: 2em;border: 1px solid #5670A1;background:#EEF6FF;}
+#index .container h2{padding:0.2em 1em 0.5em;margin:0 0 0em;font-size:1.1em;}
+#index .container h2{background:#5670A1;color:#FEFEFE;font-size:1.2em}
+#index .hdr{color:#5670A1;padding:0 0.5em;}
+#index .row{padding:0.1em 1em;cursor: pointer;color:#5670A1;text-decoration: underline;}
+#index .current{padding:0.1em 1em;cursor: pointer;color:#5670A1;text-decoration: none;font-weight:bold;}
+#index .missing{/*background: url()*/}
+#index .row:hover, #index .row:focus, #index .row:active {background-color: #E5F8A8;color: #5670A1;text-decoration:none;}
+#index .container .submit{margin:0 auto 0.5em;display:block}
+/* --------------------------------------------- */
+/* More tempate adaptation                       */
+/* --------------------------------------------- */
+#container{margin:0;text-align:center;} /* Global container */
+
+.wrapper,#content{overflow:auto;position:relative;text-align:left;}
+#container{min-height:100%;position:relative;}
+
+#head{position:relative;}
+#head h1{display:inline;}
+#head img#logo{vertical-align:middle;}
+
+/* for the footer */
+#content{padding-bottom:4.8em;}
+#footer {text-align:center;padding:0.8em 0 0.4em;margin:0;font-size:0.8em;font-weight:normal;}
+#footer{border-width:1px 0;}
+#footer{width:100%;position:absolute;bottom:0;left:0;}
+#footer ul#credits{list-style: none outside;margin-top:0;margin-bottom:0;padding:0;text-align:center;overflow:auto;}
+#footer ul#credit a {display: block;}
+#footer ul#credit li a.ui-state-hover {font-weight:normal;}/* to be corrected */
+#footer ul#credits li {list-style: none inside;margin:0;padding:0;text-align:center;}
+#footer ul#credits li{display:inline;}
+#footer ul#credits li#poweredby{position:absolute;top:0;left:0;text-align:center;}
+#footer ul#credits li#donate{position:absolute;top:0;right:0;text-align:center;}
+#footer ul#credits li#licence{margin:0;}
+
+/* survey title bar */
+#title{margin:0;text-align:center;padding:0;}
+
+/* specific decoration */
+p.url{font-size:1.2em;text-align:center;font-weight:bold}
+table.printouttable{width:99%}
+#languagechanger{margin:0.5em 0;text-align:center}
+/* survey list (home page) */
+#surveylist-container{text-align:center}
+h2#surveytitle{font-size:1.2em;text-align:left;line-height:2em;}
+ul#surveylist li a{color:#5670A1;}
+
+/* Tool button and link */
+/* tools input */
+.tools input,.tools a,.navigator input,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
+		{font-family:FreeSans,Arial,Helvetica,sans-serif;font-size:1em;vertical-align:middle;}
+tools input,.tools a,input.submit,button.submit,.navigator input,input#savebutton,input#loadbutton,input#registercontinue
+	{box-sizing: border-box;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;-ms-box-sizing: border-box;}/* same box sizing for link and button */
+.tools input,.tools a,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue,.navigator input
+	{margin:0;padding:3px 6px;text-decoration:none;cursor: pointer;}
+button.submit
+	{margin:0;padding:3px 0;}
+#languagechanger select
+		{margin:0;padding:1px 2px;}
+.tools input,.tools a,.navigator input,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue
+	{outline: 0;}/* try to remove the outline on click : replaced with focus selector*/
+.tools input,.tools a,.navigator input,input.submit,button.submit,input#savebutton,input#loadbutton,input#registercontinue,#languagechanger select
+	{-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}
+/* tools list */
+ul.tools{list-style: none ;margin: 0.5em ; padding: 0 ;text-align: left;}
+ul.tools div,ul.tools li{margin:0.1em 0;padding:0;display:inline;}
+ul.tools li{margin-right:1em;}
+ul.info{list-style: none ;text-align: center;}
+ul.info li{margin:0.5em 0;font-size:1.05em;}
+ul.info a {}
+.navigator{text-align:center;}
+
+/* progress */
+#percentcomplete{height:2em;margin:0.5em 0;}
+#progress-wrapper {height: 2em;}
+
+/*surveylist (home page) */
+#surveylist{margin: 0.5em auto;padding: 0;text-align: left;overflow:auto;display:inline-block;}
+#surveylist li{padding:0.5em 10px;}
+#surveylist li a.surveytitle{display:block;font-weight:bold;font-size:1.2em;padding:3px 10px;margin-bottom: 4px;border-bottom:1px dotted;text-decoration:none;}
+#surveylist li a.surveytitle:hover,#surveylist li a.surveytitle:focus{border-bottom:1px dotted #FFF;}
+/* specific box */
+.note,#tokenmessage{width:80%;margin:0.5em auto;padding:1em;}
+#tokenform ul{list-style: none ;margin: 0.5em auto;padding: 0;text-align: center;}
+#tokenform ul li{}
+/* specific box */
+#privacy{font-size:90%;font-style: italic;}
+#surveydescription{font-size:1.1em;}
+#assessment table{width:80%;margin:0 auto;}
+div.form table{margin:0.4em auto;}
+div.form table td{border:0 none #CCC;}
+div.form table table{border:0 none #CCC;}
+div.form table table td{padding:0;}
+
+/* Group decoration */
+.group{margin-bottom: 2em}
+.groupdescription{padding:1em 1.5em 0.5em;margin:0 0 0.5em;}
+.grouptitle{padding:0.2em 1em 0.5em;margin:0 0 0em;font-size:1.1em;}
+
+
+/* Question decoration */
+.question-wrapper{margin:1em 0;}
+.question-text{border-bottom:none 0px #FFF;}
+.question-wrapper .answers{overflow:auto;overflow-y:hidden;}
+
+/* tips and help */
+.tip{font-size:0.9em;font-style:italic;margin:0;}
+.answers{padding:0.5em 1em;margin:0.5em auto;}
+.question-help,.help{padding:0 1em;margin:0.5em auto 0;clear:both;}
+.question-help img{margin:1px 5px 5px 1px;}
+
+/* error bloc */
+.error-wrapper {display:none;}/* don't diplay error-wrapper if all is OK */
+.input-error .error-wrapper {display:block;padding:0 1em;}/*diplay error-wrapper only if there are error */
+.error-wrapper br:first-child{display:none;}/* don't put linefeed at start of an error box */
+.error-wrapper {margin:0.5em auto;width:96%;}
+.error-wrapper .error,.error-wrapper .errormandatory {padding:0.3em 1em;}
+.error-wrapper {background:transparent url(./exclamation.png) no-repeat center left;padding:4px;padding-left:20px;}
+.error-wrapper {color:#CD0A0A;border:#CD0A0A solid 1px;}
+.error-wrapper {-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius:4px;}
+/* input error */
+input.error,input.problem{font-weight:bold}/* some width problem : todo :fix it */
+
+/* input decoration */
+#tokenform input[type=text],.form input[type=text],.answers input[type=text],.answers textarea
+	{margin:3px;padding:2px;}
+#tokenform input[type=text],.form input[type=text],.answers input[type=text],.answers textarea
+	{-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius:3px;}
+
+/*.answers select
+	{-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;}
+.answers select{color:#333;background:#EEE;border-color:#999;
+		}
+.answers select:hover option{background:#FEFEFE;}*/
+
+/* specific questions color and background*/
+table.question{border-color:#DDD;}
+table.question tbody{border-color:#DDD;}
+table.question tr{border-color:#DDD;}
+table.question th{border-color:#DDD;}
+table.question td{border-color:#EEE;}
+table.question thead td{border-color:#DDD;}
+
+table.question tbody td.ddarrayseparator:hover{background:#EEE;}
+
+.array-flexible-column table.question col.even td {background:#FEFEFE}
+.array-flexible-column table.question col.odd td {background:#F4F4F4}
+table.question tr.array1,table.question tbody tr.array1:hover th {background:#FEFEFE}
+table.question tr.array2,table.question tbody tr.array2:hover th {background:#F4F4F4}
+
+table.question tbody tr:hover {background:#E9E9E0}
+table.question tbody tr td:hover{background:#E0E0E0}
+
+/* for boilerplate color and background */
+.boilerplate {}
+
+/* not using (todo: verify) */
+.printouttitle {}
+.surveytitle {}
+.surveytitle:hover {}
+
+/* --------------------------------------------- */
+/* JQUERY ui replace                             */
+/* --------------------------------------------- */
+
+/* Component containers
+----------------------------------*/
+.ui-widget { font-family: Arial, Helvetica, FreeSans, sans-serif; font-size: 1.1em; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Arial, Helvetica, FreeSans, sans-serif;; font-size: 1em; }
+.ui-widget-content { border: 1px solid #161c28; background: #fefefe; color: #000; }
+.ui-widget-content a { color: #000; }
+.ui-widget-header { border: 1px solid #161c28; background: #5670a1; color: #fefefe; font-weight: bold; }
+.ui-widget-header a { color: #fefefe; }
+
+/* Interaction states
+----------------------------------*/
+.ui-state-default, .ui-widget-content .ui-state-default { border: 1px solid #abb8d1; background: #fefefe; font-weight: normal; color: #5670a1; outline: none; }
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { color: #5670a1; text-decoration: none; outline: none; }
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus { border: 1px solid #abb8d1; background: #eff1f6; font-weight: normal; color: #415479; outline: none; }
+.ui-state-hover a, .ui-state-hover a:hover { color: #415479; text-decoration: none; outline: none; }
+.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #415479; background: #d5dbe7; font-weight: normal; color: #161c28; outline: none; }
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #161c28; outline: none; text-decoration: none; }
+
+/* Interaction Cues
+----------------------------------*/
+.ui-state-highlight, .ui-widget-content .ui-state-highlight {border: 1px solid #fcefa1; background: #fefefe; color: #363636; }
+.ui-state-highlight a, .ui-widget-content .ui-state-highlight a { color: #363636; }
+.ui-state-error, .ui-widget-content .ui-state-error {border: 1px solid #cd0a0a; background: #fef1ec; color: #cd0a0a; }
+.ui-state-error a, .ui-widget-content .ui-state-error a { color: #cd0a0a; }
+.ui-state-error-text, .ui-widget-content .ui-state-error-text { color: #cd0a0a; }
+.ui-state-disabled, .ui-widget-content .ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
+.ui-priority-primary, .ui-widget-content .ui-priority-primary { font-weight: bold; }
+.ui-priority-secondary, .ui-widget-content .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
+
+/* Overlays */
+.ui-widget-overlay { background: #aaaaaa 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); }
+.ui-widget-shadow { margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+
+/* -------------------------------------------------
+   START: Question styles  ------------------------- */
+
+/* =====================================
+== Full list of question classes =======
+
+ .boilerplate
+,.numeric
+,.choice-5-pt-radio
+,.yes-no
+,.gender
+,.date
+,.numeric-multi
+,.numeric
+,.list-radio
+,.list-radio-flexible
+,.list-with-comment
+,.list-dropdown
+,.list-dropdown-flexible
+,.ranking
+,.numeric-multi
+,.language
+,.multiple-opt-comments
+,.multiple-short-txt
+,.text-short
+,.text-long
+,.text-huge
+,.numeric-multi
+,.array-5-pt
+,.array-10-pt
+,.array-yes-uncertain-no
+,.array-increase-same-decrease 
+,.array-flexible-row 
+,.array-flexible-column 
+,.slider 
+,.array-multi-flexi 
+,.array-multi-flexi-text
+,.array-flexible-duel-scale 
+*/
+
+/* answer table */
+table.question{border-width:0 0 1px 0;border-style:solid;width:99%;}
+table.question tbody{border-width:0 1px 0 0;border-style:solid;}
+table.question thead th{border-width:1px 1px 0px 0px;border-style:solid;}
+table.question thead td,table.question thead th:first-child{border-width:0px 1px 0px 0px;border-style:solid;}
+table.question tbody th{border-width:1px 1px 0px 1px;border-style:solid;}
+table.question tbody td{border-width:1px 1px 0px 0px;border-style:solid;}
+
+table.question tbody th.answertext,table.question tbody th.arraycaptionleft{text-align:right;}
+table.question tbody th.answertextright{text-align:left;}
+table.question thead th{text-align:center;}
+table.question tbody td{text-align:center;}
+
+table.question tbody td.ddarrayseparator{border-top-width: 0px;}
+
+
+/* remove the list dot */
+ .choice-5-pt-radio .answers ul
+,.list-radio-flexible .answers ul
+,.list-radio .answers ul
+,.list-with-comment .answers ul
+,.multiple-opt .answers ul
+,.multiple-opt-comments .answers ul
+,.multiple-short-txt .answers ul
+,.numeric-multi .answers ul
+,.yes-no .answers ul
+,.gender .answers ul {
+	list-style: none;
+}
+ .choice-5-pt-radio .answers li
+,.list-radio-flexible .answers li
+,.list-radio .answers li
+,.list-with-comment .answers li
+,.multiple-opt .answers li
+,.multiple-opt-comments .answers li
+,.multiple-short-txt .answers li
+,.numeric-multi .answers li
+,.yes-no .answers li
+,.gender .answers li {
+    list-style-type: none;
+    text-align: left;
+    margin: 1em 0;
+}
+.ie .multiple-opt-comments  .answers,
+	.ie .multiple-short-txt  .answers,
+	.ie .numeric-multi  .answers,
+	.ie .multiple-opt .answers 
+	{overflow:hidden;}
+
+/* some inline list */
+ .choice-5-pt-radio .answers ul li
+,.yes-no .answers ul li
+,.gender .answers ul li
+{
+	display: inline;
+	padding: 0% 1em 0% 0%;
+	text-align:left;
+}
+ .choice-5-pt-radio .answers li
+,.list-radio-flexible .answers li
+,.list-radio .answers li
+,.list-with-comment .answers li
+{
+	margin-left: 3em;
+	text-indent: -1.6em;
+}
+.list-radio-flexible li{width:auto;}
+.list-radio-flexible ul{width:auto;margin:0 auto 0.5em;}
+
+
+ .date p.tip
+,.numeric-multi p.tip
+,.numeric p.tip
+{
+	font-size: 80%;
+	font-style: italic;
+}
+
+table.rank{width:98%;table-layout:fixed;}
+table.rank, table.rank table{border:0px none #FFF;border-collapse:collapse}
+table.rank td{border-width:1px;}
+table.rank table td{border-width:0px;}
+
+  ul.cols-2 , table.cols-2
+, ul.cols-3 , table.cols-3
+, ul.cols-4 , table.cols-4
+, ul.cols-5 , table.cols-5
+, ul.cols-6 , table.cols-6
+, ul.cols-7 , table.cols-7
+, ul.cols-8 , table.cols-8
+{
+	width: 98%;
+	margin: 0% auto 0% auto;
+}
+  ul.cols-2 li , ul.cols-2-ul
+, ul.cols-3 li , ul.cols-3-ul
+, ul.cols-4 li , ul.cols-4-ul
+, ul.cols-5 li , ul.cols-5-ul
+, ul.cols-6 li , ul.cols-6-ul
+, ul.cols-7 li , ul.cols-7-ul
+, ul.cols-8 li , ul.cols-8-ul
+{
+	float: left;
+	padding: 0;
+	white-space: normal
+}
+  ul.cols-2 li , ul.cols-2-ul li
+, ul.cols-3 li , ul.cols-3-ul li
+, ul.cols-4 li , ul.cols-4-ul li
+, ul.cols-5 li , ul.cols-5-ul li
+, ul.cols-6 li , ul.cols-6-ul li
+, ul.cols-7 li , ul.cols-7-ul li
+, ul.cols-8 li , ul.cols-8-ul li
+{
+	padding: 0 0.5em;
+}
+ul.cols-2 li , ul.cols-2-ul , table.cols-2 td { width: 48%; }
+ul.cols-3 li , ul.cols-3-ul , table.cols-3 td { width: 30.5%; }
+ul.cols-4 li , ul.cols-4-ul , table.cols-4 td { width: 23%; }
+ul.cols-5 li , ul.cols-5-ul , table.cols-5 td { width: 19%; }
+ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 15%; }
+ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 13%; }
+ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
+
+.numeric-multi ul.slider.computed
+{
+	width: 14em;
+}
+
+.boilerplate {}
+
+ .choice-5-pt-radio .answers ul
+,.yes-no .answers ul
+,.gender .answers ul
+{
+	text-align: center;
+}
+ .choice-5-pt-radio .answers ul li
+,.yes-no .answers ul li
+,.gender .answers ul li
+{
+	display: inline;
+	padding: 0% 2em 0% 0%;
+text-align:left;
+}
+
+.date p.question { margin-left: 1em;margin-right: 1em; text-align:center;}
+.date p.question select.day {}
+.date p.question select.month {}
+.date p.question select.year {}
+
+ .date p.tip
+,.numeric-multi p.tip
+,.numeric p.tip
+{
+	padding-left: 1.5em;
+	font-size: 80%;
+	font-style: italic;
+	line-height: 150%;
+}
+.numeric p.question
+{
+	 margin-left: 1em;margin-right: 1em;
+	font-weight: normal;
+	text-align:center;
+}
+ .numeric-multi p.tip.error
+,.numeric-multi input.tip.error
+{
+	text-align: left;
+}
+ .numeric-multi p.tip.good
+,.numeric-multi input.tip.good
+{
+	text-align: left;
+}
+
+
+table.rank, table.rank table{border:0px none #FFF;border-collapse:collapse}
+table.rank{margin:0.3em auto;}
+table.rank select{width:99%;min-width:10em;padding-left:0.3em;}
+table.rank td{border:1px solid #D5DBE7}
+table.rank table td{border:0px none #D5DBE7}
+
+/* multi column */
+  ul.cols-2 , table.cols-2
+, ul.cols-3 , table.cols-3
+, ul.cols-4 , table.cols-4
+, ul.cols-5 , table.cols-5
+, ul.cols-6 , table.cols-6
+, ul.cols-7 , table.cols-7
+, ul.cols-8 , table.cols-8
+{
+	width: 98%;
+	margin: 0% auto 0% auto;
+}
+  ul.cols-2 li , ul.cols-2-ul
+, ul.cols-3 li , ul.cols-3-ul
+, ul.cols-4 li , ul.cols-4-ul
+, ul.cols-5 li , ul.cols-5-ul
+, ul.cols-6 li , ul.cols-6-ul
+, ul.cols-7 li , ul.cols-7-ul
+, ul.cols-8 li , ul.cols-8-ul
+{
+	float: left;
+	padding: 0;
+	white-space: normal
+}
+  ul.cols-2 li , ul.cols-2-ul li
+, ul.cols-3 li , ul.cols-3-ul li
+, ul.cols-4 li , ul.cols-4-ul li
+, ul.cols-5 li , ul.cols-5-ul li
+, ul.cols-6 li , ul.cols-6-ul li
+, ul.cols-7 li , ul.cols-7-ul li
+, ul.cols-8 li , ul.cols-8-ul li
+{
+	padding: 0 0.5em;
+}
+ul.cols-2 li , ul.cols-2-ul , table.cols-2 td { width: 48%; }
+ul.cols-3 li , ul.cols-3-ul , table.cols-3 td { width: 30.5%; }
+ul.cols-4 li , ul.cols-4-ul , table.cols-4 td { width: 23%; }
+ul.cols-5 li , ul.cols-5-ul , table.cols-5 td { width: 19%; }
+ul.cols-6 li , ul.cols-6-ul , table.cols-6 td { width: 15%; }
+ul.cols-7 li , ul.cols-7-ul , table.cols-7 td { width: 13%; }
+ul.cols-8 li , ul.cols-8-ul , table.cols-8 td { width: 11.5%; }
+
+
+.list-dropdown-flexible .question, .list-dropdown .question, .language .question
+{
+text-align:center;
+}
+
+.list-with-comment div.list
+{
+	width: 47%;
+	float: left;
+	padding: 0.5em;
+}
+.list-with-comment p.select
+{
+	width: 47%;
+	float: left;
+	padding: 0.5em;
+	margin: 0%;
+}
+.list-with-comment div.list p
+{
+	margin: 0%;
+	text-align: left;
+}
+.list-with-comment p.comment
+{
+	margin: 0%;
+	padding: 0.5em;
+	text-align: left;
+	float: left;
+	width: 47%;
+}
+.list-with-comment p.comment textarea
+{
+	width: 100%;
+}
+
+ .multiple-opt-comments td.answer
+,.multiple-short-txt td.answer
+,.numeric-multi td.answer
+{
+}
+ .multiple-opt-comments ul
+,.multiple-short-txt ul
+,.numeric-multi ul
+,.multiple-opt ul
+{
+	padding: 0 0.5em;
+	margin: 1em 0;
+	width:99%;
+}
+.numeric-multi ul	{	}
+.numeric-multi ul.computed
+{
+	float:left;
+	padding-right: 2em;
+}
+.numeric-multi ul.slider.computed
+{
+	width: 14em;
+}
+
+.numeric-multi ul
+,multiple-opt ul
+,.multiple-opt-comments ul
+,.multiple-short-txt ul
+{
+	display: block;
+	width:99%;
+}
+.numeric-multi ul li
+,.multiple-opt ul li
+,.multiple-opt-comments ul li
+,.multiple-short-txt ul li
+{
+	display: block;
+}
+.numeric-multi ul li label
+,.multiple-opt-comments ul li span.option
+,.multiple-short-txt ul li label
+{
+	clear:left;
+	float:left; 
+	width:45%;
+	padding: 0.3em 1em 0% 0%;
+}
+.numeric-multi ul li label
+,.multiple-short-txt ul li label
+{
+	text-align:right;
+	}
+.multinum-slider{text-align:center;display:inline;}	
+.numeric-multi ul li span.input
+,.multiple-opt-comments ul li span.comment
+,.multiple-short-txt ul li span
+{
+	text-align: left;
+}
+
+.numeric-multi ul.multiplenumerichelp span input {
+    border: none;
+    background-color: #fff;
+    color: #222;
+    padding: 0%;
+    width: 7em;
+}
+
+.multiple-opt .answers ul li input.checkbox
+, .list-radio .answers ul li input.radio
+, .list-with-comment .answers ul li input.radio 
+, .list-radio-flexible .answers ul li input.radio 
+{
+	margin-left:40%;
+}
+.ie .multiple-opt .answers ul li input.checkbox,
+	.ie .list-radio .answers ul li input.radio,
+	.ie .list-with-comment .answers ul li input.radio,
+	.ie .list-radio-flexible .answers ul li input.radio 
+	{margin-left:0;}
+
+ .text-short input
+ ,.text-short textarea
+,.text-long textarea
+,.text-huge textarea
+{
+	margin-left: 1em;
+text-align:left;
+}
+ .text-short .question
+ ,.text-short .answers
+,.text-long .answers
+,.text-huge .answers
+{
+text-align:center;
+}
+/* STYLES NOT YET DEFINED - - - - -
+.yes-no {}
+.gender {}
+*/
+
+
+
+

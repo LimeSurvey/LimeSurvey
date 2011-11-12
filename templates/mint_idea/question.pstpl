@@ -1,0 +1,13 @@
+<div {QUESTION_ESSENTIALS} class="{QUESTION_CLASS}{QUESTION_MAN_CLASS}{QUESTION_INPUT_ERROR_CLASS}">
+	<div class="survey-question">
+		<div class="survey-question-text">
+        	<span class="asterisk">{QUESTION_MANDATORY}</span><span class="qnumcode"> {QUESTION_NUMBER} {QUESTION_CODE} </span>{QUESTION_TEXT}<br /><span class="questionhelp">{QUESTION_HELP}</span>
+			{QUESTION_MAN_MESSAGE}
+			{QUESTION_VALID_MESSAGE}
+			{QUESTION_FILE_VALID_MESSAGE}
+		</div>
+		<div class="survey-question-answer">{ANSWER}</div>
+		<div class="survey-question-help">{QUESTIONHELP}</div>
+	</div>
+	<div class="survey-question-space"></div>
+</div>

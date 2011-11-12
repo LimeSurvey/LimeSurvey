@@ -1,0 +1,96 @@
+body {
+    text-align: right;
+}
+
+ul,ol {
+    text-align: right;
+}
+
+
+.menubar-main {
+    float: right;
+}
+
+
+.menubar-title {
+    float: right;
+    text-align: right;
+}
+
+.menubar-title-left {
+    float: right;
+}
+
+.menubar-title-right {
+    float: left;
+}
+
+
+.menubar-left {
+    text-align: right;
+    float: right;
+}
+
+.menubar-right {
+    float: left;
+}
+
+.form44 li label:first-child,
+.form30 li label:first-child
+{
+    text-align: left;
+    padding-left: 3px;
+    float: right;
+}
+
+
+#surveydetails td + td, #groupdetails td + td, #questiondetails td + td {
+    text-align: right;
+}
+
+#surveydetails td:first-child, #groupdetails td:first-child, #questiondetails td:first-child {
+    text-align: left;
+}
+
+
+/* Superfish menu */
+.sf-menu {
+    float: right;
+}
+
+.sf-menu li {
+    float:right;
+}
+
+.sf-menu li:hover ul,
+.sf-menu li.sfHover ul {
+    right:0;left:auto;
+}
+
+ul.sf-menu li li:hover ul,
+ul.sf-menu li li.sfHover ul {
+    right:10em; left:auto;
+}
+
+ul.sf-menu li li li:hover ul,
+ul.sf-menu li li li.sfHover ul {
+    right:10em; left:auto;
+}
+
+
+/* question type preview combobox */
+.dd {
+    float: right;
+    text-align: right;
+}
+
+
+/* Ckeditor */
+.cke_skin_office2003, .cke_skin_office2003 .cke_wrapper {
+    float: right !important;
+}
+
+#questionbottom li
+{
+    clear:both;
+}

@@ -1,0 +1,16 @@
+
+{CHECKJAVASCRIPT}
+<table class="welcome-table">
+	<tr>
+		<td class="welcome-header">
+			<h2 class="survey-name">{SURVEYNAME}</h2>
+			<span class="survey-description-text">{SURVEYDESCRIPTION}</span>
+		</td>
+	</tr>
+	<tr>
+		<td class="welcome-content">
+			<span class="survey-welcome">{WELCOME}</span>
+			<span class="x-questions">{THEREAREXQUESTIONS}</span>
+		</td>
+	</tr>
+</table>

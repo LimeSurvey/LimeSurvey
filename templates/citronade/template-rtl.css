@@ -1,0 +1,176 @@
+/* This file is part of Lime Survey Template :a free template
+    you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This template is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+body{text-align:right;direction:rtl;}
+
+h2#surveytitle{text-align:right;}
+
+ul.tools{
+    text-align: right;
+   }
+
+ul.tools li{margin-left:1em;}
+ul#surveylist{
+    text-align: right;
+}
+ul#surveylist li{
+    float:right; 
+    clear:right ;
+}
+
+.wrapper,#content{text-align:right;}
+
+.asterisk {padding-right:0;padding-left:1em;}
+.qnumcode{padding-right:0;padding-left:1em;}
+
+table.question tbody th.answertext,table.question tbody th.arraycaptionright{text-align:left;}
+table.question tbody th.answertextleft{text-align:right;}
+
+ .choice-5-pt-radio .answers li
+,.list-radio-flexible .answers li
+,.list-radio .answers li
+,.list-with-comment .answers li
+,.multiple-opt .answers li
+,.multiple-opt-comments .answers li
+,.multiple-short-txt .answers li
+,.numeric-multi .answers li
+,.yes-no .answers li
+,.gender .answers li {
+    text-align: right;
+    margin: 1em 0;
+}
+
+ .choice-5-pt-radio li
+,.list-radio-flexible li
+,.list-radio li
+,.list-with-comment li
+{
+	margin-right: 3em;
+	text-indent: -1.6em;
+}
+
+ .choice-5-pt-radio ul li
+,.yes-no ul li
+,.gender ul li
+{
+	padding: 0% 2em 0% 0%;
+text-align:right;
+}
+
+.date p.question { margin-right: 1em;margin-left: 1em; text-align:center;}
+
+ .date p.tip
+,.numeric-multi p.tip
+,.numeric p.tip
+{
+	padding-right: 1.5em;
+}
+.numeric p.question
+{
+	 margin-right: 1em;margin-left: 1em;
+}
+ .numeric-multi p.tip.error
+,.numeric-multi input.tip.error
+{
+	text-align: right;
+}
+ .numeric-multi p.tip.good
+,.numeric-multi input.tip.good
+{
+	text-align: right;
+}
+
+
+table.rank select{padding-right:0.3em;}
+
+/* STYLES NOT YET DEFINED - - - - -
+.list-dropdown {}
+*/
+.list-with-comment div.list
+{
+	float: right;
+}
+.list-with-comment p.select
+{
+	float: right;
+}
+.list-with-comment div.list p
+{
+	text-align: right;
+}
+.list-with-comment p.comment
+{
+	text-align: right;
+	float: right;
+}
+
+.numeric-multi ul.computed
+{
+	float:right;
+	padding-left: 2em;
+}
+
+.numeric-multi ul li label
+,.multiple-opt-comments ul li span.option
+,.multiple-short-txt ul li label
+{
+	float:right; 
+	width:45%;
+	padding: 0.3em 1em 0% 0%;
+}
+.numeric-multi ul li label
+,.multiple-short-txt ul li label
+{
+	text-align:left;
+	}
+.multinum-slider{text-align:center;display:inline;}	
+.numeric-multi ul li span.input
+,.multiple-opt-comments ul li span.comment
+,.multiple-short-txt ul li span
+{
+	text-align: right;
+}
+
+
+
+.multiple-opt .answers ul li input.checkbox
+, .list-radio .answers ul li input.radio
+, .list-with-comment .answers ul li input.radio 
+, .list-radio-flexible .answers ul li input.radio 
+{
+	margin-right:45%;
+}
+
+
+ .text-short input
+ ,.text-short textarea
+,.text-long textarea
+,.text-huge textarea
+{
+	margin-right: 1em;
+text-align:right;
+}
+ .text-short .question
+ ,.text-short .answers
+,.text-long .answers
+,.text-huge .answers
+{
+text-align:center;
+}
+
+/* Replacement of defautlt jquery-ui */
+.slider_callout { 
+    text-align:left;
+}

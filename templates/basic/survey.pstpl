@@ -1,0 +1,19 @@
+	<table width="100%" cellpadding="2">
+		<tr>
+			<td valign="middle" align="left"><img src="{TEMPLATEURL}Logo-LimeSurvey.png" alt="Logo Image" /></td>
+			<td valign="bottom" align="center" width="100%">
+				<table width="100%">
+					<tr>
+						<td class="survey-name">{SURVEYNAME}</td>
+					</tr>
+					<tr>
+						<td class="graph">{PERCENTCOMPLETE}</td>
+					</tr>
+					<tr>
+						<td align="center">{LANGUAGECHANGER}</td>
+					</tr>
+				</table>
+			</td>
+			<td valign="bottom" align="right" height="100%" width="100%"></td>
+		</tr>
+	</table>

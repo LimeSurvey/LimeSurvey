@@ -1,0 +1,1 @@
+This is a sample file used during installation. In case LimeSurvey can't delete this file due to directory permissions, you should delete this file manually after installation is successful.

@@ -1,0 +1,76 @@
+html, body{
+    height: 100%;
+}
+.main{
+  width: 1200px; 
+  margin: 0 auto;  
+}
+#sep{
+ margin-top: 10px;
+}
+#newcreated{ 
+  
+    float : left;
+    background-color: #D2E0F2;
+ }
+#centralattribute { 
+    float : left;
+    background-color: #D2E0F2;
+    height: 100%;
+    
+}
+#tokenattribute { 
+    float : left;
+    height: 100%;
+    background-color: #D2E0F2;
+    
+}
+.tokenatt li{
+    border-color: #696565;
+    border-style:solid;
+    border-width:1px;  
+    padding : 4px;
+}
+.newcreate ul{
+    padding : 100px;
+}
+
+#newcreated,#centralattribute,#tokenattribute{ 
+    margin-top:10px;
+    width:27%;
+    height: 100%;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    border-color: blue;
+    border-style:solid;
+    border-width: 1px;
+    overflow : auto;
+    text-align:center;
+ }
+
+.heading{
+    background: #EAF2FF;
+    text-decoration: none;
+    color:#5670A1;
+    border-width: 1px;
+    vertical-align: middle;
+    
+}
+li{
+        border:solid 2px #DEDEDE;
+        background:#FFFFFF ;
+        color:#222222;
+        width : 200px;
+        margin-top: 2px;
+        margin-left:6%;
+        margin-bottom: 2px;
+        list-style: none;
+        padding:4px;
+        text-align:center;
+}
+.notsortable li{
+        background:#696565;
+        color: white;
+}
+ 
