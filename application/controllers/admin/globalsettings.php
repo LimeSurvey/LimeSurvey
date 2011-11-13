@@ -20,92 +20,96 @@
 * @package		LimeSurvey
 * @subpackage	Backend
 */
-class GlobalSettings extends Admin_Controller {
+class GlobalSettings extends CAction
+{
+	/**
+	 * Routes to the correct sub-page
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function run()
+	{
+		if (isset($_GET['showphpinfo']))
+			$this->showphpinfo();
+		else
+			$this->index();
+	}
 
-    /**
-    * Constructor
-    */
-    function __construct()
+	/**
+	 * Shows the index page
+	 *
+	 * @access public
+	 * @return void
+	 */
+    public function index()
     {
-        parent::__construct();
-    }
-
-    function index()
-    {
-        if($this->session->userdata('USER_RIGHT_CONFIGURATOR') == 1)
+        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
         {
-            if($this->input->post("action"))
-            {
-                self::_savesettings();
-            }
-            self::_display();
+            if (!empty($_POST['action']))
+                $this->_savesettings();
+            $this->_display();
         }
-        else
-        {
+       // else
             //include("access_denied.php");
-        }
     }
 
     function showphpinfo()
     {
-        if($this->session->userdata('USER_RIGHT_CONFIGURATOR') == 1 && !$this->config->item('demoMode'))
+        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1 && !Yii::app()->getConfig('demoMode'))
         {
             phpinfo();
         }
     }
 
-    function _display()
+    public function _display()
     {
+        $clang = $this->getController()->lang;
 
-        $clang = $this->limesurvey_lang;
-        $this->load->helper('surveytranslator_helper');
+    	Yii::app()->loadHelper('surveytranslator');
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl."scripts/jquery/jquery.selectboxes.min.js");
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl."scripts/admin/globalsettings.js");
 
-        self::_js_admin_includes(base_url()."scripts/jquery/jquery.selectboxes.min.js");
-        self::_js_admin_includes(base_url()."scripts/admin/globalsettings.js");
-
+    	$data['clang'] = $this->getController()->lang;
         $data['title']="hi";
         $data['message']="message";
-        $data['checksettings'] = self::_checksettings();
+        $data['checksettings'] = $this->_checksettings();
         $data['thisupdatecheckperiod']=getGlobalSetting('updatecheckperiod');
-        $data['updatelastcheck'] = $this->config->item("updatelastcheck");
-        $data['updateavailable'] = $this->config->item("updateavailable");
-        $data['updateinfo'] = $this->config->item("updateinfo");
+        $data['updatelastcheck'] = Yii::app()->getConfig("updatelastcheck");
+        $data['updateavailable'] = Yii::app()->getConfig("updateavailable");
+        $data['updateinfo'] = Yii::app()->getConfig("updateinfo");
         $data['allLanguages']=getLanguageData();
-        if (trim($this->config->item('restrictToLanguages'))=='')
+        if (trim(Yii::app()->getConfig('restrictToLanguages'))=='')
         {
             $data['restrictToLanguages']=array_keys($data['allLanguages']);
             $data['excludedLanguages']=array();
         }
         else
         {
-            $data['restrictToLanguages']=explode(' ',trim($this->config->item('restrictToLanguages')));
+            $data['restrictToLanguages']=explode(' ',trim(Yii::app()->getConfig('restrictToLanguages')));
             $data['excludedLanguages']=array_diff(array_keys($data['allLanguages']),$data['restrictToLanguages']);
         }
 
-        self::_getAdminHeader();
-        self::_showadminmenu();
-        $this->load->view('admin/globalSettings_view', $data);
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
+        $this->getController()->render('/admin/globalSettings_view', $data);
     }
 
     function _savesettings()
     {
-        $clang = $this->limesurvey_lang;
-        $this->load->helper('surveytranslator_helper');
+        $clang = $this->getController()->lang;
+        Yii::app()->loadHelper('surveytranslator');
 
-        $action = $this->input->post("action");
+        $action = $_POST['action'];
         if ($action == "globalsettingssave")
         {
-            if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+            if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
-                $maxemails = $this->input->post('maxemails');
-                if (sanitize_int($this->input->post('maxemails'))<1)
+                $maxemails = $_POST['maxemails'];
+                if (sanitize_int($_POST['maxemails'])<1)
                 {
                     $maxemails=1;
                 }
 
-                $aRestrictToLanguages=explode(' ',sanitize_languagecodeS($this->input->post('restrictToLanguages')));
+                $aRestrictToLanguages=explode(' ',sanitize_languagecodeS($_POST['restrictToLanguages']));
                 if  (count(array_diff(array_keys(getLanguageData()),$aRestrictToLanguages))==0)
                 {
                     $aRestrictToLanguages='';
@@ -115,13 +119,13 @@ class GlobalSettings extends Admin_Controller {
                 }
 
                 setGlobalSetting('restrictToLanguages',trim($aRestrictToLanguages));
-                setGlobalSetting('sitename',strip_tags($this->input->post('sitename')));
-                setGlobalSetting('updatecheckperiod',(int)($this->input->post('updatecheckperiod')));
-                setGlobalSetting('addTitleToLinks',sanitize_paranoid_string($this->input->post('addTitleToLinks')));
-                setGlobalSetting('defaultlang',sanitize_languagecode($this->input->post('defaultlang')));
-                setGlobalSetting('defaulthtmleditormode',sanitize_paranoid_string($this->input->post('defaulthtmleditormode')));
-                setGlobalSetting('defaulttemplate',sanitize_paranoid_string($this->input->post('defaulttemplate')));
-                setGlobalSetting('emailmethod',strip_tags($this->input->post('emailmethod')));
+                setGlobalSetting('sitename',strip_tags($_POST['sitename']));
+                setGlobalSetting('updatecheckperiod',(int)($_POST['updatecheckperiod']));
+                setGlobalSetting('addTitleToLinks',sanitize_paranoid_string($_POST['addTitleToLinks']));
+                setGlobalSetting('defaultlang',sanitize_languagecode($_POST['defaultlang']));
+                setGlobalSetting('defaulthtmleditormode',sanitize_paranoid_string($_POST['defaulthtmleditormode']));
+                setGlobalSetting('defaulttemplate',sanitize_paranoid_string($_POST['defaulttemplate']));
+                setGlobalSetting('emailmethod',strip_tags($_POST['emailmethod']));
                 setGlobalSetting('emailsmtphost',strip_tags(returnglobal('emailsmtphost')));
                 if (returnglobal('emailsmtppassword')!='somepassword')
                 {
@@ -139,83 +143,70 @@ class GlobalSettings extends Admin_Controller {
                 setGlobalSetting('emailsmtpssl',sanitize_paranoid_string(returnglobal('emailsmtpssl')));
                 setGlobalSetting('emailsmtpdebug',sanitize_int(returnglobal('emailsmtpdebug')));
                 setGlobalSetting('emailsmtpuser',strip_tags(returnglobal('emailsmtpuser')));
-                setGlobalSetting('filterxsshtml',strip_tags($this->input->post('filterxsshtml')));
-                setGlobalSetting('siteadminbounce',strip_tags($this->input->post('siteadminbounce')));
-                setGlobalSetting('siteadminemail',strip_tags($this->input->post('siteadminemail')));
-                setGlobalSetting('siteadminname',strip_tags($this->input->post('siteadminname')));
-                setGlobalSetting('shownoanswer',sanitize_int($this->input->post('shownoanswer')));
-                setGlobalSetting('showXquestions',($this->input->post('showXquestions')));
-                setGlobalSetting('showgroupinfo',($this->input->post('showgroupinfo')));
-                setGlobalSetting('showqnumcode',($this->input->post('showqnumcode')));
-                $repeatheadingstemp=(int)($this->input->post('repeatheadings'));
+                setGlobalSetting('filterxsshtml',strip_tags($_POST['filterxsshtml']));
+                setGlobalSetting('siteadminbounce',strip_tags($_POST['siteadminbounce']));
+                setGlobalSetting('siteadminemail',strip_tags($_POST['siteadminemail']));
+                setGlobalSetting('siteadminname',strip_tags($_POST['siteadminname']));
+                setGlobalSetting('shownoanswer',sanitize_int($_POST['shownoanswer']));
+                setGlobalSetting('showXquestions',($_POST['showXquestions']));
+                setGlobalSetting('showgroupinfo',($_POST['showgroupinfo']));
+                setGlobalSetting('showqnumcode',($_POST['showqnumcode']));
+                $repeatheadingstemp=(int)($_POST['repeatheadings']);
                 if ($repeatheadingstemp==0)  $repeatheadingstemp=25;
                 setGlobalSetting('repeatheadings',$repeatheadingstemp);
 
                 setGlobalSetting('maxemails',sanitize_int($maxemails));
-                $iSessionExpirationTime=(int)($this->input->post('sess_expiration'));
+                $iSessionExpirationTime=(int)($_POST['sess_expiration']);
                 if ($iSessionExpirationTime==0)  $iSessionExpirationTime=3600;
                 setGlobalSetting('sess_expiration',$iSessionExpirationTime);
-                setGlobalSetting('ipInfoDbAPIKey',$this->input->post('ipInfoDbAPIKey'));
-                setGlobalSetting('googleMapsAPIKey',$this->input->post('googleMapsAPIKey'));
-                setGlobalSetting('force_ssl',$this->input->post('force_ssl'));
-                setGlobalSetting('surveyPreview_require_Auth',$this->input->post('surveyPreview_require_Auth'));
-                setGlobalSetting('enableXMLRPCInterface',$this->input->post('enableXMLRPCInterface'));
-                $savetime=trim(strip_tags((float) $this->input->post('timeadjust')).' hours'); //makes sure it is a number, at least 0
+                setGlobalSetting('ipInfoDbAPIKey',$_POST['ipInfoDbAPIKey']);
+                setGlobalSetting('googleMapsAPIKey',$_POST['googleMapsAPIKey']);
+                setGlobalSetting('force_ssl',$_POST['force_ssl']);
+                setGlobalSetting('surveyPreview_require_Auth',$_POST['surveyPreview_require_Auth']);
+                setGlobalSetting('enableXMLRPCInterface',$_POST['enableXMLRPCInterface']);
+                $savetime=trim(strip_tags((float) $_POST['timeadjust']).' hours'); //makes sure it is a number, at least 0
                 if ((substr($savetime,0,1)!='-') && (substr($savetime,0,1)!='+')) { $savetime = '+'.$savetime;}
                 setGlobalSetting('timeadjust',$savetime);
-                setGlobalSetting('usepdfexport',strip_tags($this->input->post('usepdfexport')));
-                setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($this->input->post('usercontrolSameGroupPolicy')));
+                setGlobalSetting('usepdfexport',strip_tags($_POST['usepdfexport']));
+                setGlobalSetting('usercontrolSameGroupPolicy',strip_tags($_POST['usercontrolSameGroupPolicy']));
 
-                $this->session->set_userdata('flashmessage',$clang->gT("Global settings were saved."));
+                Yii::app()->session['flashmessage'] = $clang->gT("Global settings were saved.");
             }
-            redirect(site_url('admin'));
+            $this->getController()->redirect($this->getController()->createUrl('/admin'));
         }
     }
 
     function _checksettings()
     {
-        $clang = $this->limesurvey_lang;
-        //GET NUMBER OF SURVEYS
-        $this->load->model(("surveys_model"));
-        $this->load->model(("users_model"));
+        $clang = $this->getController()->lang;
 
-        $databasename = $this->db->database;
-        //var_dump($databasename);
+        $surveycount = Survey::model()->count();
 
-        //$query = "SELECT count(sid) FROM ".db_table_name('surveys');
-        $query = $this->surveys_model->getSomeRecords(array("count(sid)"));
-        //$surveycount=$connect->GetOne($query);   //Checked
-        $surveycount=$query->row_array();
-        $surveycount=$surveycount['count(sid)'];
         //var_dump($surveycount);
         //$query = "SELECT count(sid) FROM ".db_table_name('surveys')." WHERE active='Y'";
-        $query = $this->surveys_model->getSomeRecords(array("count(sid)"),array("active"=>"Y"));
-        //$activesurveycount=$connect->GetOne($query);  //Checked
-        $activesurveycount=$query->row_array();
-        $activesurveycount=$activesurveycount['count(sid)'];
+
+        $activesurveycount = Survey::model()->active()->count();
+
         //var_dump($activesurveycount);
         //$query = "SELECT count(users_name) FROM ".db_table_name('users');
-        $query = $this->users_model->getSomeRecords(array("count(users_name)"));
-        //$usercount = $connect->GetOne($query);   //Checked
-        $usercount=$query->row_array();
-        $usercount=$usercount['count(users_name)'];
+    	$usercount = User::model()->count();
         //var_dump($usercount);
 
         if ($activesurveycount==false) $activesurveycount=0;
         if ($surveycount==false) $surveycount=0;
 
-        $tablelist = $this->db->list_tables();
+        $tablelist = Yii::app()->db->schema->getTableNames();
         foreach ($tablelist as $table)
         {
-            if (strpos($table,$this->db->dbprefix("old_tokens_"))!==false)
+            if (strpos($table, Yii::app()->db->tablePrefix . "old_tokens_") !== false)
             {
                 $oldtokenlist[]=$table;
             }
-            elseif (strpos($table,$this->db->dbprefix("tokens_"))!==false)
+            elseif (strpos($table, Yii::app()->db->tablePrefix . "tokens_") !== false)
             {
                 $tokenlist[]=$table;
             }
-            elseif (strpos($table,$this->db->dbprefix("old_survey_"))!==false)
+            elseif (strpos($table, Yii::app()->db->tablePrefix . "old_survey_") !== false)
             {
                 $oldresultslist[]=$table;
             }
@@ -229,9 +220,7 @@ class GlobalSettings extends Admin_Controller {
         {$activetokens=count($tokenlist);} else {$activetokens=0;}
         $cssummary = "<div class='header ui-widget-header'>".$clang->gT("System overview")."</div>\n";
         // Database name & default language
-        $cssummary .= "<br /><table class='statisticssummary'><tr>\n"
-        . "<th width='50%' align='right'>".$clang->gT("Database name").":</th><td>$databasename</td>\n"
-        . "</tr>\n";
+        $cssummary .= "<br /><table class='statisticssummary'>";
         // Other infos
         $cssummary .=  "<tr>\n"
         . "<th align='right'>".$clang->gT("Users").":</th><td>$usercount</td>\n"
@@ -251,17 +240,17 @@ class GlobalSettings extends Admin_Controller {
         . "<tr>\n"
         . "<th align='right'>".$clang->gT("Deactivated token tables").":</th><td>$deactivatedtokens</td>\n"
         . "</tr>\n";
-        if ($this->config->item('iFileUploadTotalSpaceMB')>0)
+        if (Yii::app()->getConfig('iFileUploadTotalSpaceMB')>0)
         {
             $fUsed=fCalculateTotalFileUploadUsage();
             $cssummary .= "<tr>\n"
-            . "<th align='right'>".$clang->gT("Used/free space for file uploads").":</th><td>".sprintf('%01.2F',$fUsed)." MB / ".sprintf('%01.2F',$this->config->item('iFileUploadTotalSpaceMB')-$fUsed)." MB</td>\n"
+            . "<th align='right'>".$clang->gT("Used/free space for file uploads").":</th><td>".sprintf('%01.2F',$fUsed)." MB / ".sprintf('%01.2F',Yii::app()->getConfig('iFileUploadTotalSpaceMB')-$fUsed)." MB</td>\n"
             . "</tr>\n";
         }
         $cssummary .= "</table>\n";
-        if ($this->session->userdata('USER_RIGHT_CONFIGURATOR') == 1)
+        if (Yii::app()->session['USER_RIGHT_CONFIGURATOR'] == 1)
         {
-            $cssummary .= "<p><input type='button' onclick='window.open(\"".site_url("admin/globalsettings/showphpinfo")."\")' value='".$clang->gT("Show PHPInfo")."' />";
+            $cssummary .= "<p><input type='button' onclick='window.open(\"".$this->getController()->createUrl("admin/globalsettings/showphpinfo")."\")' value='".$clang->gT("Show PHPInfo")."' />";
         }
         return $cssummary;
     }

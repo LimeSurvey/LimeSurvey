@@ -302,28 +302,31 @@ function isStandardTemplate($sTemplateName)
 }
 
 /**
-* getsurveylist() Queries the database (survey table) for a list of existing surveys
-*
-* @param mixed $returnarray   boolean - if set to true an array instead of an HTML option list is given back
-*
-* @return string This string is returned containing <option></option> formatted list of existing surveys
-*
-*/
-function getsurveylist($returnarray=false,$returnwithouturl=false, $surveyid=false)
+ * getsurveylist() Queries the database (survey table) for a list of existing surveys
+ *
+ * @param boolean $returnarray if set to true an array instead of an HTML option list is given back
+ * @return string This string is returned containing <option></option> formatted list of existing surveys
+ *
+ */
+function getsurveylist($returnarray=false, $returnwithouturl=false, $surveyid=false)
 {
     static $cached = null;
-    $CI = &get_instance();
 
-    $timeadjust = $CI->config->item("timeadjust");
-    $clang = $CI->limesurvey_lang;
+	$clang = new Limesurvey_lang(array('langcode' => Yii::app()->session['adminlang']));
 
     if(is_null($cached)) {
-        $CI->load->model('surveys_languagesettings_model');
-        $surveyidresult = $CI->surveys_languagesettings_model->getAllSurveys(!bHasGlobalPermission('USER_RIGHT_SUPERADMIN'));
+    	if (!bHasGlobalPermission('USER_RIGHT_SUPERADMIN'))
+    		$surveyidresult = Survey::model()->permission(Yii::app()->user->getId())->with('languagesettings')->findAll();
+    	else
+    		$surveyidresult = Survey::model()->with('languagesettings')->findAll();
 
         if (!$surveyidresult) {return "Database Error";}
-        $surveynames = $surveyidresult->result_array();
-        $cached=$surveynames;
+
+        $surveynames = array();
+    	foreach ($surveyidresult as $result)
+    		$surveynames[] = $result->attributes;
+
+        $cached = $surveynames;
     } else {
         $surveynames = $cached;
     }
@@ -346,7 +349,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false, $surveyid=fal
             if($sv['active']!='Y')
             {
                 $inactivesurveys .= "<option ";
-                if($CI->session->userdata("loginID") == $sv['owner_id'])
+                if(Yii::app()->user->getId() == $sv['owner_id'])
                 {
                     $inactivesurveys .= " style=\"font-weight: bold;\"";
                 }
@@ -356,7 +359,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false, $surveyid=fal
                 }
                 if ($returnwithouturl===false)
                 {
-                    $inactivesurveys .=" value='".site_url("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
+                    $inactivesurveys .=" value='".Yii::app()->createUrl("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -364,7 +367,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false, $surveyid=fal
             } elseif($sv['expires']!='' && $sv['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust))
             {
                 $expiredsurveys .="<option ";
-                if ($CI->session->userdata("loginID") == $sv['owner_id'])
+                if (Yii::app()->user->getId() == $sv['owner_id'])
                 {
                     $expiredsurveys .= " style=\"font-weight: bold;\"";
                 }
@@ -374,7 +377,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false, $surveyid=fal
                 }
                 if ($returnwithouturl===false)
                 {
-                    $expiredsurveys .=" value='".site_url("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
+                    $expiredsurveys .=" value='".Yii::app()->createUrl("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -382,7 +385,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false, $surveyid=fal
             } else
             {
                 $activesurveys .= "<option ";
-                if($CI->session->userdata("loginID") == $sv['owner_id'])
+                if(Yii::app()->user->getId() == $sv['owner_id'])
                 {
                     $activesurveys .= " style=\"font-weight: bold;\"";
                 }
@@ -392,7 +395,7 @@ function getsurveylist($returnarray=false,$returnwithouturl=false, $surveyid=fal
                 }
                 if ($returnwithouturl===false)
                 {
-                    $activesurveys .=" value='".site_url("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
+                    $activesurveys .=" value='".Yii::app()->createUrl("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -496,13 +499,10 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
 */
 function bHasGlobalPermission($sPermission)
 {
-    $CI=& get_instance();
-    //$aSurveyPermissionCache = $CI->config->item("aSurveyPermissionCache");
-
-    if ($CI->session->userdata('loginID')) $iUID = $CI->session->userdata('loginID');
+    if (!Yii::app()->user->getIsGuest()) $iUID = !Yii::app()->user->getId();
     else return false;
-    if ($CI->session->userdata('USER_RIGHT_SUPERADMIN')==1) return true; //Superadmin has access to all
-    if ($CI->session->userdata($sPermission)==1)
+    if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
+    if (Yii::app()->session[$sPermission]==1)
     {
         return true;
     }
@@ -515,9 +515,8 @@ function bHasGlobalPermission($sPermission)
 
 function gettemplatelist()
 {
-    $CI= &get_instance();
-    $usertemplaterootdir=$CI->config->item("usertemplaterootdir");
-    $standardtemplaterootdir=$CI->config->item("standardtemplaterootdir");
+    $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
+    $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
 
     if (!$usertemplaterootdir) {die("gettemplatelist() no template directory");}
     if ($handle = opendir($standardtemplaterootdir))
@@ -5665,8 +5664,7 @@ function strip_javascript($content){
 */
 function cleanTempDirectory()
 {
-    $CI =& get_instance();
-    $dir =  $CI->config->item('tempdir').'/';
+    $dir =  Yii::app()->getConfig('tempdir').'/';
     $dp = opendir($dir) or show_error('Could not open temporary directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
@@ -5701,10 +5699,9 @@ function use_firebug()
 */
 function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 {
-    $CI =& get_instance();
-    //$datetimeobj = new Date_Time_Converter($value , $fromdateformat);
-    $CI->load->library('Date_Time_Converter',array($value, $fromdateformat));
-    return $CI->date_time_converter->convert($todateformat);
+   Yii::import('application.libraries.Date_Time_Converter', true);
+    $date = new Date_Time_Converter(array($value, $fromdateformat));
+    return $date->convert($todateformat);
 }
 
 /**

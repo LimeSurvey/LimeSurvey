@@ -68,7 +68,7 @@ class Failed_login_attempts extends CActiveRecord
 		{
 			$lastattempt = strtotime($row->last_attempt);
 			if (time() > $lastattempt + Yii::app()->getConfig('timeOutTime'))
-				$this->deleteAttemmpts($ip);
+				$this->deleteAttempts($ip);
 			else
 				$isLockedOut = true;
 		}
@@ -91,7 +91,7 @@ class Failed_login_attempts extends CActiveRecord
 	 *
 	 * @access public
 	 * @param string $ip
-	 * @return void
+	 * @return true
 	 */
 	public function addAttempt($ip)
 	{
@@ -100,7 +100,11 @@ class Failed_login_attempts extends CActiveRecord
 		$row = $this->findByAttributes(array('ip' => $ip));
 
 		if ($row !== null)
-			$row->update(array('number_attempts' => $row->number_attempts + 1, 'last_attempt' => $timestamp));
+		{
+			$row->number_attempts = $row->number_attempts + 1;
+			$row->last_attempt = $timestamp;
+			$row->save();
+		}
 		else
 		{
 			$record = new Failed_login_attempts;
@@ -109,5 +113,7 @@ class Failed_login_attempts extends CActiveRecord
 			$record->last_attempt = $timestamp;
 			$record->save();
 		}
+
+		return true;
 	}
 }

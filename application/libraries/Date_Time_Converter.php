@@ -59,7 +59,8 @@ class Date_Time_Converter
      *   ie: ("1152008", "njY") wont work;   ("1/15/2008", "n/j/2008") will work.
      *   Example: $obj = new Date_Time_Calc('12/30/2008 17:40:00', 'm/d/Y H:i:s'); 	*/
     public function __construct($data) {
-        
+
+    	require_once(APPPATH . '/helpers/adodb/adodb-time.inc_helper.php');
         $this->_default_date_time_units();				//set date&time units to default values
         $this->date_time = $data[0];
         $this->date_time_mask = $data[1];
@@ -193,14 +194,11 @@ class Date_Time_Converter
      *   ie: ("1152008", "njY") wont work;   ("1/15/2008", "n/j/2008") will work
      */
     private function _date_to_timestamp($thedate, $mask) {
-
-        $CI =& get_instance();
-        $CI->load->helper('adodb/adodb-time.inc');
         $mask_orig = $mask;
         // define the valid values that we will use to check
         // value => length
         $all = array(
-         
+
         //time
 			's' => 'ss',		// Seconds, with leading zeros
 			'i' => 'ii',		// Minutes with leading zeros
@@ -210,22 +208,22 @@ class Date_Time_Converter
 			'g' => 'gg',  		// 12-hour format of an hour without leading zeros
 			'A' => 'AA',		// Uppercase Ante meridiem and Post meridiem
 			'a' => 'aa',		// Lowercase Ante meridiem and Post meridiem
-         
+
         //year
 			'y' => 'yy',		// A full numeric representation of a year, 4 digits
 			'Y' => 'YYYY', 		// A two digit representation of a year
-         
+
         //month
 			'm' => 'mm', 		// A numeric representation of a month with leading zeros.
 			'M' => 'MMM',		// A textual representation of a month.  3 letters.  ex: Jan, Feb, Mar, Apr...
 			'n' => 'nn',		// Numeric representation of a month, without leading zeros
-         
+
         //days
 			'd' => 'dd',		// Day of the month, 2 digits with leading zeros
 			'j' => 'jj',		// Day of the month without leading zeros
 			'S' => 'SS',		// English ordinal suffix for the day of the month, 2 characters (st, nd, rd, or th. works well with j)
 			'D' => 'DDD'		// Textual representation of day of the week (Sun, Mon, Tue, Wed)
-         
+
         );
 
         // this will give us a mask with full length fields
@@ -371,8 +369,6 @@ class Date_Time_Converter
      * 	Example: $obj->convert("M j Y H:i:s A");
      */
     public function convert($new_mask, $save=true) {
-        $CI =& get_instance();
-        $CI->load->helper('adodb/adodb-time.inc');
         $newdate = adodb_date($new_mask, $this->date_time_stamp);
         //if they want to save and apply this new mask to $this->date_time, save it
         if ($save == true) {

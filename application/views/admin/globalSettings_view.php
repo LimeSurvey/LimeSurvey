@@ -1,3 +1,6 @@
+<?php $this->_getAdminHeader() ?>
+<?php $this->_showadminmenu(); ?>
+
 <script type="text/javascript">
     var msgAtLeastOneLanguageNeeded = '<?php $clang->eT("You must set at last one available language.",'js');?>';
 </script>
@@ -13,7 +16,7 @@
         <li><a href='#language'><?php $clang->eT("Language");?></a></li>
         <li><a href='#interfaces'><?php $clang->eT("Interfaces");?></a></li>
     </ul>
-    <form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='<?php echo site_url("admin/globalsettings");?>' method='post'>
+    <form class='form30' id='frmglobalsettings' name='frmglobalsettings' action='<?php echo $this->createUrl("admin/globalsettings");?>' method='post'>
         <div id='overview'>
             <?php echo $checksettings;?>
 
@@ -35,7 +38,7 @@
                         <option value='30'
                             <?php if ($thisupdatecheckperiod==30) { echo "selected='selected'";} ?>
                             ><?php $clang->eT("Every month");?></option>
-                    </select>&nbsp;<input type='button' onclick="window.open('<?php echo site_url("admin/globalsettings/updatecheck");?>', '_top')" value='<?php echo $clang->gT("Check now");?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck);?></span></li></ul><p>
+                    </select>&nbsp;<input type='button' onclick="window.open('<?php echo $this->createUrl("admin/globalsettings/updatecheck");?>', '_top')" value='<?php echo $clang->gT("Check now");?>' />&nbsp;<span id='lastupdatecheck'><?php echo sprintf($clang->gT("Last check: %s"),$updatelastcheck);?></span></li></ul><p>
 
                 <?php
                     if (isset($updateavailable) && $updateavailable==1)
@@ -56,7 +59,7 @@
 
         <div id='general'>
             <ul>
-                <li><label for='sitename'><?php echo $clang->gT("Site name:").(($this->config->item("demoMode")==true)?'*':'');?></label>
+                <li><label for='sitename'><?php echo $clang->gT("Site name:").((Yii::app()->getConfig("demoMode")==true)?'*':'');?></label>
                     <input type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars(getGlobalSetting('sitename'));?>" /></li>
                 <?php
 
@@ -79,7 +82,7 @@
 
 
                 <?php $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode'); ?>
-                <li><label for='defaulthtmleditormode'><?php echo $clang->gT("Default HTML editor mode:").(($this->config->item("demoMode")==true)?'*':'');?></label>
+                <li><label for='defaulthtmleditormode'><?php echo $clang->gT("Default HTML editor mode:").((Yii::app()->getConfig("demoMode")==true)?'*':'');?></label>
                     <select name='defaulthtmleditormode' id='defaulthtmleditormode'>
                         <option value='default'
                             <?php if ($thisdefaulthtmleditormode=='default') { echo "selected='selected'";} ?>
@@ -94,7 +97,7 @@
                             <?php if ($thisdefaulthtmleditormode=='popup') { echo "selected='selected'";} ?>
                             ><?php echo $clang->gT("Popup HTML editor");?></option>
                     </select></li>
-                <?php $dateformatdata=getDateFormatData($this->session->userdata('dateformat')); ?>
+                <?php $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']); ?>
                 <li><label for='timeadjust'><?php echo $clang->gT("Time difference (in hours):");?></label>
                     <span><input type='text' size='10' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours'),array('',''),getGlobalSetting('timeadjust')));?>" />
                         <?php echo $clang->gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')." - ". $clang->gT("Corrected time :").' '.convertDateTimeFormat(date_shift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i');?>
@@ -238,7 +241,7 @@
                     </select></li>
 
                 <?php $thisfilterxsshtml=getGlobalSetting('filterxsshtml'); ?>
-                <li><label for='filterxsshtml'><?php echo $clang->gT("Filter HTML for XSS:").(($this->config->item("demoMode")==true)?'*':'');?></label>
+                <li><label for='filterxsshtml'><?php echo $clang->gT("Filter HTML for XSS:").((Yii::app()->getConfig("demoMode")==true)?'*':'');?></label>
                     <select id='filterxsshtml' name='filterxsshtml'>
                         <option value='1'
                             <?php if ( $thisfilterxsshtml == true) { echo " selected='selected'";}?>
@@ -362,7 +365,7 @@
         </div>
         <div id='language'>
             <ul>
-                <li><label for='defaultlang'><?php echo $clang->gT("Default site language:").(($this->config->item("demoMode")==true)?'*':'');?></label>
+                <li><label for='defaultlang'><?php echo $clang->gT("Default site language:").((Yii::app()->getConfig("demoMode")==true)?'*':'');?></label>
                     <select name='defaultlang' id='defaultlang'>
                         <?php
                             $actuallang=getGlobalSetting('defaultlang');
@@ -426,7 +429,8 @@
 </div>
 
 <p><input type='button' onclick='$("#frmglobalsettings").submit();' class='standardbtn' value='<?php echo $clang->gT("Save settings");?>' /><br /></p>
-<?php if ($this->config->item("demoMode")==true)
+<?php if (Yii::app()->getConfig("demoMode")==true)
     { ?>
     <p><?php echo $clang->gT("Note: Demo mode is activated. Marked (*) settings can't be changed.");?></p>
     <?php } ?>
+<?php        $this->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));?>

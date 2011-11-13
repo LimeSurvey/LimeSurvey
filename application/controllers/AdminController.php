@@ -30,7 +30,7 @@ class AdminController extends LSYii_Controller
 
 		$updatelastcheck = '';
 
-		self::_sessioncontrol();
+		$this->_sessioncontrol();
 
 		if (Yii::app()->getConfig('buildnumber') != "" && Yii::app()->getConfig('updatecheckperiod') > 0 && $updatelastcheck < date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", "-". Yii::app()->getConfig('updatecheckperiod')." days"))
 			updatecheck();
@@ -65,7 +65,7 @@ class AdminController extends LSYii_Controller
 		$this->lang = new Limesurvey_lang(array('langcode' => Yii::app()->session['adminlang']));
 
 		if (!empty($this->user_id))
-			self::_GetSessionUserRights($this->user_id);
+			$this->_GetSessionUserRights($this->user_id);
 	}
 
 	/**
@@ -108,16 +108,17 @@ class AdminController extends LSYii_Controller
 		return array(
 			'authentication' => 'application.controllers.admin.authentication',
 			'index' => 'application.controllers.admin.index',
+			'globalsettings' => 'application.controllers.admin.globalsettings',
 		);
 	}
 
 	/**
 	 * Set Session User Rights
 	 *
-	 * @access protected
+	 * @access public
 	 * @return void
 	 */
-	protected function _GetSessionUserRights($loginID)
+	public function _GetSessionUserRights($loginID)
 	{
 		$user = User::model()->findByPk($loginID);
 
@@ -240,7 +241,7 @@ class AdminController extends LSYii_Controller
 
 		$data['buildtext']="";
 		if(Yii::app()->getConfig("buildnumber")!="") {
-			$data['buildtext']="Build ".Yii::app()->getConfig("buildnumber");
+			$data['buildtext']= "Build ".Yii::app()->getConfig("buildnumber");
 		}
 
 		//If user is not logged in, don't print the version number information in the footer.
@@ -261,6 +262,57 @@ class AdminController extends LSYii_Controller
 		}
 
 		return $this->render("/admin/super/footer", $data, $return);
+	}
+
+	/**
+	 * Shows a message...box
+	 *
+	 * @access public
+	 * @param string $title
+	 * @param string $message
+	 * @param string $class
+	 * @return void
+	 */
+	public function _showMessageBox($title,$message,$class="header ui-widget-header")
+	{
+		$data['title']=$title;
+		$data['message']=$message;
+		$data['class']=$class;
+		$data['clang']=$this->lang;
+
+		$this->render('/admin/super/messagebox', $data);
+	}
+
+	/**
+	 * _showadminmenu() function returns html text for the administration button bar
+	 *
+	 * @access public
+	 * @global string $homedir
+	 * @global string $scriptname
+	 * @global string $surveyid
+	 * @global string $setfont
+	 * @global string $imageurl
+	 * @param int $surveyid
+	 * @return string $adminmenu
+	 */
+	public function _showadminmenu($surveyid = false)
+	{
+		global $homedir, $scriptname, $setfont, $imageurl, $debug, $action, $updateavailable, $updatebuild, $updateversion, $updatelastcheck, $databasetype;
+
+		$clang = $this->lang;
+		$data['clang']= $clang;
+
+		if (Yii::app()->session['pw_notify'] && Yii::app()->getConfig("debug")<2)  {
+			Yii::app()->session['flashmessage'] = $clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
+		}
+
+		$data['showupdate'] = (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 && Yii::app()->getConfig("updatelastcheck")>0 && Yii::app()->getConfig("updateavailable")==1);
+		$data['updateversion'] = Yii::app()->getConfig("updateversion");
+		$data['updatebuild'] = Yii::app()->getConfig("updatebuild");
+		$data['surveyid'] = $surveyid;
+
+		$this->render("/admin/super/adminmenu", $data);
+
 	}
 
 	public function _css_admin_includes($include)

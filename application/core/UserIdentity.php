@@ -16,33 +16,50 @@
 class UserIdentity extends CUserIdentity
 {
 	protected $id;
+	protected $user;
 
 	/**
 	 * Checks whether this user has correctly entered password or not
 	 *
 	 * @access public
-	 * @param string $username
-	 * @param string $password
 	 * @return bool
 	 */
-	public function authenticate($username, $password)
+	public function authenticate()
 	{
-		$user = User::model()->findByAttribute(array('users_name' => $username));
+		$user = User::model()->findByAttributes(array('users_name' => $this->username));
 
-		if ($record === null)
+		if ($user === null)
 			$this->errorCode = self::ERROR_USERNAME_INVALID;
-		else if ($record->password !== hash('sha256', $this->password))
+		else if ($user->password !== hash('sha256', $this->password))
 			$this->errorCode = self::ERROR_PASSWORD_INVALID;
 		else
 		{
-			$this->id = $record->id;
+			$this->id = $user->uid;
+			$this->user = $user;
 			$this->errorCode = self::ERROR_NONE;
 		}
 		return !$this->errorCode;
 	}
 
+	/**
+	 * Returns the current user's ID
+	 *
+	 * @access public
+	 * @return int
+	 */
 	public function getId()
 	{
 		return $this->id;
+	}
+
+	/**
+	 * Returns the active user's record
+	 *
+	 * @access public
+	 * @return CActiveRecord
+	 */
+	public function getUser()
+	{
+		return $this->user;
 	}
 }

@@ -71,13 +71,10 @@ class Authentication extends CAction
                 {
                     $clang = $this->getController()->lang;
 
-                    $data = self::_doLogin($_POST['user'], $_POST['password']);
+                    $data = $this->_doLogin($_POST['user'], $_POST['password']);
+
                     if (isset($data['errormsg']))
-                    {
-                        $this->getController()->_getAdminHeader();
                         $this->getController()->render('/admin/authentication/error', $data);
-                        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
-                    }
                     else
                     {
                         $failed_login_attempts->deleteAttempts($sIp);
@@ -89,24 +86,21 @@ class Authentication extends CAction
                             $loginsummary = "<p><font size='1'><i>".$clang->gT("Reloading screen. Please wait.")."</i></font>\n";
                             unset(Yii::app()->session['redirect_after_login']);
                         }
-                        self::_GetSessionUserRights(Yii::app()->session['loginID']);
+                        $this->getController()->_GetSessionUserRights(Yii::app()->session['loginID']);
                     	Yii::app()->session['just_logged_in'] = true;
                         Yii::app()->session['loginsummary'] = $loginsummary;
-                        $this->getController()->redirect($this->createUrl('/admin'));
+                        $this->getController()->redirect($this->getController()->createUrl('/admin'));
                     }
-
                 }
                 else
-                {
-                    self::_showLoginForm();
-                }
+                    $this->_showLoginForm();
             }
             else
             {
                 // wrong or unknown username
                 $data['errormsg']="";
-                $data['maxattempts'] = sprintf($this->lang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),(Yii::app()->getConfig("timeOutTime")/60))."<br />";
-                $data['clang'] = $this->lang;
+                $data['maxattempts'] = sprintf($this->getController()->lang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),(Yii::app()->getConfig("timeOutTime")/60))."<br />";
+                $data['clang'] = $this->getController()->lang;
 
                 $this->getController()->render('/admin/authentication/error', $data);
             }
@@ -120,16 +114,16 @@ class Authentication extends CAction
     /**
     * Logout user
     */
-    function logout()
+    public function logout()
     {
-        killSession();
-        self::_showLoginForm('<p>'.$this->limesurvey_lang->gT("Logout successful."));
+        Yii::app()->user->logout();
+        $this->_showLoginForm('<p>'.$this->getController()->lang->gT("Logout successful."));
     }
 
     /**
     * Forgot Password screen
     */
-    function forgotpassword()
+    public function forgotpassword()
     {
         $clang = $this->getController()->lang;
         if(!$this->input->post("action"))
@@ -208,7 +202,7 @@ class Authentication extends CAction
     * Show login screen
     * @param optional message
     */
-    function _showLoginForm($logoutsummary="")
+    protected function _showLoginForm($logoutsummary="")
     {
         $data['clang'] = $this->getController()->lang;
 
@@ -230,81 +224,78 @@ class Authentication extends CAction
     * @param string $sUsername The username to login with
     * @param string $sPassword The password to login with
     */
-    function _doLogin( $sUsername, $sPassword)
+    protected function _doLogin($sUsername, $sPassword)
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         $sUsername = sanitize_user($sUsername);
-        $this->load->library('admin/sha256','sha256');
-        $post_hash = $this->sha256->hashing($sPassword);
 
-        $this->load->model("Users_model");
+        $identity = new UserIdentity($sUsername, $sPassword);
 
-        $query = $this->Users_model->getAllRecords(array("users_name"=>$sUsername, 'password'=>$post_hash));
-
-        if ($query->num_rows() < 1)
+        if (!$identity->authenticate())
         {
-            $this->load->model("failed_login_attempts_model");
-            $query = $this->failed_login_attempts_model->addAttempt($this->input->ip_address());
+            $query = Failed_login_attempts::model()->addAttempt(Yii::app()->request->getUserHostAddress());
 
             if ($query)
             {
                 // wrong or unknown username
                 $data['errormsg']=$clang->gT("Incorrect username and/or password!");
                 $data['maxattempts']="";
-                if ($this->failed_login_attempts_model->isLockedOut($this->input->ip_address()))
-                {
-                    $data['maxattempts']=sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),($this->config->item("timeOutTime")/60))."<br />";
-                }
+                if (Failed_login_attempts::model()->isLockedOut(Yii::app()->request->getUserHostAddress()))
+                    $data['maxattempts']=sprintf($clang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),(Yii::app()->getConfig("timeOutTime")/60))."<br />";
+
                 $data['clang']=$clang;
                 return $data;
             }
         }
+    	// Log the user in
         else
         {
-            // Anmeldung ERFOLGREICH
-            $fields = $query->row_array(); //$result->FetchRow();
+        	$user = $identity->getUser();
+
+        	Yii::app()->user->login($identity);
 
             // Check if the user has changed his default password
-            if (strtolower($this->input->post('password'))=='password')
+            if (strtolower($_POST['password']) == 'password')
             {
-                $this->session->set_userdata('pw_notify',true);
-                $this->session->set_userdata('flashmessage',$clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again."));
+                Yii::app()->session['pw_notify'] = true;
+                Yii::app()->session['flashmessage'] = $clang->gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.");
             }
             else
-            {
-                $this->session->set_userdata('pw_notify',false);
-            }
+                Yii::app()->session['pw_notify'] = false;
 
             $session_data = array(
-            'loginID' => intval($fields['uid']),
-            'user' => $fields['users_name'],
-            'full_name' => $fields['full_name'],
-            'full_name' => $fields['full_name'],
-            'htmleditormode' => $fields['htmleditormode'],
-            'templateeditormode' => $fields['templateeditormode'],
-            'questionselectormode' => $fields['questionselectormode'],
-            'dateformat' => $fields['dateformat'],
-            // Compute a checksession random number to test POSTs
-            'checksessionpost' => sRandomChars(10)
+            	'loginID' => intval($user->uid),
+            	'user' => $user->users_name,
+           		'full_name' => $user->full_name,
+            	'htmleditormode' => $user->htmleditormode,
+            	'templateeditormode' => $user->templateeditormode,
+            	'questionselectormode' => $user->questionselectormode,
+            	'dateformat' => $user->dateformat,
+            	// Compute a checksession random number to test POSTs
+            	'checksessionpost' => sRandomChars(10)
             );
-            $this->session->set_userdata($session_data);
 
-            $postloginlang=sanitize_languagecode($this->input->post('loginlang'));
-            if (isset($postloginlang) && $postloginlang!='default')
+            foreach ($session_data as $k => $v)
+            	Yii::app()->session[$k] = $v;
+
+            $postloginlang = sanitize_languagecode($_POST['loginlang']);
+            if (isset($postloginlang) && $postloginlang != 'default')
             {
-                $this->session->set_userdata('adminlang',$postloginlang);
-                $this->limesurvey_lang->limesurvey_lang(array("langcode"=>$postloginlang));
-                $clang = $this->limesurvey_lang;
-                $this->Users_model->updateLang($this->session->userdata("loginID"),$postloginlang);
+                Yii::app()->session['adminlang'] = $postloginlang;
+                $this->getController()->lang->limesurvey_lang(array("langcode"=>$postloginlang));
+                $clang = $this->getController()->lang;
+
+            	$user->lang = $postloginlang;
+            	$user->save();
             }
             else
             {
-                $this->session->set_userdata('adminlang',$fields['lang']);
-                $this->load->library('Limesurvey_lang',array("langcode"=>$fields['lang']));
-                $clang = $this->limesurvey_lang;
+                Yii::app()->session['adminlang'] = $user->lang;
+
+            	$this->getController()->lang->limesurvey_lang(array("langcode"=>$user->lang));
+                $clang = $this->getController()->lang;
             }
             return true;
-
         }
     }
 }
