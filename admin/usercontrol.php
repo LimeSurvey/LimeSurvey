@@ -73,7 +73,7 @@ if (!isset($_SESSION['loginID']))
                 $subject = $clang->gT("User data","unescaped");
                 $to = $emailaddr;
                 $from = $siteadminemail;
-                $sitename = $siteadminname;
+
 
                 if(SendEmailMessage(null, $body, $subject, $to, $from, $sitename, false,$siteadminbounce))
                 {
@@ -454,25 +454,25 @@ elseif ($action == "adduser" && $_SESSION['USER_RIGHT_CREATE_USER'])
 			"manage_label"=>$srow['manage_label']));
 
             // send Mail
-            $body = sprintf($clang->gT("Hello %s,"), $new_full_name)."<br /><br />\n";
-            $body .= sprintf($clang->gT("this is an automated email to notify that a user has been created for you on the site '%s'."), $sitename)."<br /><br />\n";
-            $body .= $clang->gT("You can use now the following credentials to log into the site:")."<br />\n";
-            $body .= $clang->gT("Username") . ": " . $new_user . "<br />\n";
+            $body = sprintf($clang->gT("Hello %s,",'unescaped'), $new_full_name)."<br /><br />\n";
+            $body .= sprintf($clang->gT("this is an automated email to notify that a user has been created for you on the site '%s'.",'unescaped'), $sitename)."<br /><br />\n";
+            $body .= $clang->gT("You can use now the following credentials to log into the site:",'unescaped')."<br />\n";
+            $body .= $clang->gT("Username",'unescaped') . ": " . $new_user . "<br />\n";
             if ($useWebserverAuth === false)
             { // authent is not delegated to web server
                 // send password (if authorized by config)
                 if ($display_user_password_in_email === true)
                 {
-                    $body .= $clang->gT("Password") . ": " . $new_pass . "<br />\n";
+                    $body .= $clang->gT("Password",'unescaped') . ": " . $new_pass . "<br />\n";
                 }
                 else
                 {
-                    $body .= $clang->gT("Password") . ": " . $clang->gT("Please ask your LimeSurvey administrator for your password.") . "<br />\n";
+                    $body .= $clang->gT("Password",'unescaped') . ": " . $clang->gT("Please ask your LimeSurvey administrator for your password.") . "<br />\n";
                 }
             }
 
-            $body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Click here to log in.")."</a><br /><br />\n";
-            $body .=  sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!'),$siteadminemail)."<br />\n";
+            $body .= "<a href='" . $homeurl . "/admin.php'>".$clang->gT("Click here to log in.",'unescaped')."</a><br /><br />\n";
+            $body .=  sprintf($clang->gT('If you have any questions regarding this mail please do not hesitate to contact the site administrator at %s. Thank you!','unescaped'),$siteadminemail)."<br />\n";
 
             $subject = sprintf($clang->gT("User registration at '%s'","unescaped"),$sitename);
             $to = $new_user." <$new_email>";
