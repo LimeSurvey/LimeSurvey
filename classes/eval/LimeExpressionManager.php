@@ -53,8 +53,12 @@ class LimeExpressionManager {
     }
 
     // The singleton method
-    public static function &singleton()
+    public static function &singleton($ser=NULL)
     {
+        if (!is_null($ser))
+        {
+            self::$instance = unserialize($ser);
+        }
         if (!isset(self::$instance)) {
             $c = __CLASS__;
             self::$instance = new $c;

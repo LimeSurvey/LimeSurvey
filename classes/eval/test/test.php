@@ -63,6 +63,10 @@
                 <td><a href="reset_syntax_error_log.php"><span style='background-color: red;'>**</span>Reset Log of Syntax Errors</a></td>
                 <td><span style='color: red;'>CAUTION: This function changes your database.</span> Remove log of syntax errors</td>
             </tr>
+            <tr>
+                <td><a href="serialize_test.php">Test LEM serialization</td>
+                <td>Tests whether can, and speed of, serializing and unserializing LimeExpressionManager object</td>
+            </tr>
         </table>
     </body>
 </html>
