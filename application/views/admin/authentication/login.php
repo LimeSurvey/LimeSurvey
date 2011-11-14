@@ -1,4 +1,3 @@
-<?php $this->_getAdminHeader(); ?>
 <form name='loginform' id='loginform' method='post' action='<?php echo $this->createUrl("admin/authentication/login");?>' >
     <br /><p><strong><?php echo $summary;?></strong><br /><br /></p>
     <ul>
@@ -37,4 +36,3 @@
 <script type='text/javascript'>
     document.getElementById('user').focus();
        </script>
-<?php $this->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual")) ?>

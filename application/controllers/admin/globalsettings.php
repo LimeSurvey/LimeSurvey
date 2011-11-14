@@ -90,7 +90,11 @@ class GlobalSettings extends CAction
             $data['excludedLanguages']=array_diff(array_keys($data['allLanguages']),$data['restrictToLanguages']);
         }
 
+		$this->getController()->_getAdminHeader();
+    	$this->getController()->_showadminmenu();
         $this->getController()->render('/admin/globalSettings_view', $data);
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+
     }
 
     function _savesettings()

@@ -8,7 +8,6 @@ return array(
 		'application.core.*',
 		'application.models.*',
 		'application.controllers.*',
-		'application.controllers.admin.*',
 	),
 
 	'defaultController' => 'survey',

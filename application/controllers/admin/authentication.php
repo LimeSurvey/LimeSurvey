@@ -102,7 +102,9 @@ class Authentication extends CAction
                 $data['maxattempts'] = sprintf($this->getController()->lang->gT("You have exceeded you maximum login attempts. Please wait %d minutes before trying again"),(Yii::app()->getConfig("timeOutTime")/60))."<br />";
                 $data['clang'] = $this->getController()->lang;
 
-                $this->getController()->render('/admin/authentication/error', $data);
+            	$this->getController()->_getAdminHeader();
+            	$this->getController()->render('/admin/authentication/error', $data);
+                $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $data['clang']->gT("LimeSurvey online manual"));
             }
         }
         else
@@ -189,7 +191,8 @@ class Authentication extends CAction
                     $tmp = str_replace("{NAME}", "<strong>".$fields['users_name']."</strong>", $clang->gT("Email to {NAME} ({EMAIL}) failed."));
                     $data['clang'] = $clang;
                     $data['message'] = "<br />".str_replace("{EMAIL}", $emailaddr, $tmp) . "<br />";
-                    parent::_getAdminHeader();
+
+                    $this->getController()->_getAdminHeader();
                     $this->load->view('admin/authentication/message', $data);
                     parent::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
                 }
@@ -215,7 +218,10 @@ class Authentication extends CAction
             $data['summary'] = $logoutsummary;
         }
 
-        $this->getController()->render('/admin/authentication/login', $data);
+    	$this->getController()->_getAdminHeader();
+    	$this->getController()->render('/admin/authentication/login', $data);
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+
     }
 
     /**

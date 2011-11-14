@@ -1,6 +1,3 @@
-<?php $this->_getAdminHeader() ?>
-<?php $this->_showadminmenu(); ?>
-
 <script type="text/javascript">
     var msgAtLeastOneLanguageNeeded = '<?php $clang->eT("You must set at last one available language.",'js');?>';
 </script>
@@ -433,4 +430,3 @@
     { ?>
     <p><?php echo $clang->gT("Note: Demo mode is activated. Marked (*) settings can't be changed.");?></p>
     <?php } ?>
-<?php        $this->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));?>
