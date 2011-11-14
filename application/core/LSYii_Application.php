@@ -32,10 +32,6 @@ class LSYii_Application extends CWebApplication
 	public function __construct($config = null)
 	{
 		parent::__construct($config);
-
-		$this->loadHelper('globalsettings');
-		$this->loadHelper('common');
-
 		// Load the default and environmental settings from different files into self.
 		$app_config = require(APPPATH . '/config/application.php');
 		$ls_config = require(APPPATH . '/config/lsconfig.php');
@@ -43,6 +39,10 @@ class LSYii_Application extends CWebApplication
 		$settings = array_merge($app_config, $ls_config);
 		foreach ($settings as $key => $value)
 			$this->setConfig($key, $value);
+
+		$this->loadHelper('globalsettings');
+		$this->loadHelper('common');
+
 	}
 
 	/**
