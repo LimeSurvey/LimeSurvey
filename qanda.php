@@ -1678,10 +1678,12 @@ function do_5pointchoice($ia)
         if(value==undefined || value==''){
         $('#$id input').each(function(){ $(this).removeAttr('checked');});
         $('#{$id} #NoAnswer').attr('checked','checked');
+        $checkconditionFunction(value,'$ia[1]','radio');
         }
         else{
         $('#$id input').each(function(){ $(this).removeAttr('checked');});
         $('#answer$ia[1]'+value).attr('checked','checked');
+        $checkconditionFunction(value,'$ia[1]','radio');
         }
         }
 
@@ -1729,6 +1731,7 @@ function do_5pointchoice($ia)
         $('#{$id}img1').show();
         $('#{$id}img2').hide();
         });
+        $checkconditionFunction(value,'$ia[1]','radio');
         }
         });
         $('#{$id}slider a').css('background-image', 'url(\'{$imageurl}/slider.png\')');
