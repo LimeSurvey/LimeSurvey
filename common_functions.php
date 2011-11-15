@@ -5928,7 +5928,7 @@ function retrieve_Answer($code, $phpdateformat=null)
 
         if ($questiondetails['type'] == "M" || $questiondetails['type'] == "P")
         {
-            if (strpos($code,'comment')>0 && isset($_SESSION[$code]))
+            if ((strpos($code,'comment')>0 || strpos($code,'other')>0) && isset($_SESSION[$code]))
             {
                 return $_SESSION[$code];
             }
