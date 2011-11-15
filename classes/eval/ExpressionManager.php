@@ -1309,7 +1309,7 @@ class ExpressionManager {
                             $color = 'red';
                         }
                         else {
-                            $isOnCurrentPage = $this->GetVarAttribute($token[0],'isOnCurrentPage','N');
+//                            $isOnCurrentPage = $this->GetVarAttribute($token[0],'isOnCurrentPage','N');
                             $jsName = $this->GetVarAttribute($token[0],'jsName','');
                             $codeValue = $this->GetVarAttribute($token[0],'codeValue','');
                             $question = $this->GetVarAttribute($token[0], 'question', '');
@@ -1351,38 +1351,44 @@ class ExpressionManager {
                                     $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
                                 }
                             }
-                            // TODO - isOnCurrentPage may now be surpufluous, EXCEPT for fact that LS has different data storage names for on vs. off page.
-                            if ($isOnCurrentPage=='Y')
-                            {
-                                if ($questionSeq == -1 || $this->questionSeq == -1) {
-//                                    log_message('debug','{' . $this->groupSeq . "," . $this->questionSeq . "} " . $token[0] . ": " . $descriptor);
-                                    $color = '#996600'; // tan
-                                }
-                                else if ($questionSeq > $this->questionSeq) {
-                                    if ($groupSeq > $this->groupSeq) {
-                                        $color = '#FF00FF ';     // pink a likely error
-                                    }
-                                    else {
-                                        $color = 'maroon';  // #228b22 - warning
-                                    }
-                                }
-                                else {
-                                    $color = '#4C88BE';    // cyan that goes well with the background color
-                                }
-                            }
-                            else
-                            {
-                                if ($this->groupSeq == -1 || $groupSeq == -1) {
+//                            // TODO - isOnCurrentPage may now be surpufluous, EXCEPT for fact that LS has different data storage names for on vs. off page.
+//                            if ($isOnCurrentPage=='Y')
+//                            {
+//                                if ($questionSeq == -1 || $this->questionSeq == -1) {
+////                                    log_message('debug','{' . $this->groupSeq . "," . $this->questionSeq . "} " . $token[0] . ": " . $descriptor);
+//                                    $color = '#996600'; // tan
+//                                }
+//                                else if ($questionSeq > $this->questionSeq) {
+//                                    if ($groupSeq > $this->groupSeq) {
+//                                        $color = '#FF00FF ';     // pink a likely error
+//                                    }
+//                                    else {
+//                                        $color = 'maroon';  // #228b22 - warning
+//                                    }
+//                                }
+//                                else {
+//                                    $color = '#4C88BE';    // cyan that goes well with the background color
+//                                }
+//                            }
+//                            else
+//                            {
+                                if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
 //                                    log_message('debug','{' . $this->groupSeq . "," . $this->questionSeq . "} " . $token[0] . ": " . $descriptor);
                                     $color = '#996600'; // tan
                                 }
                                 else if ($groupSeq > $this->groupSeq) {
                                     $color = '#FF00FF ';     // pink a likely error
                                 }
-                                else {
+                                else if ($groupSeq < $this->groupSeq) {
                                     $color = 'green';
                                 }
-                            }
+                                else if ($questionSeq > $this->questionSeq) {
+                                    $color = 'maroon';  // #228b22 - warning
+                                }
+                                else {
+                                    $color = '#4C88BE';    // cyan that goes well with the background color
+                                }
+//                            }
                         }
 
                         $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'>";
@@ -1443,9 +1449,20 @@ class ExpressionManager {
             case 'code':
             case 'codeValue':
             case 'NAOK':
-                return (isset($var['codeValue'])) ? $var['codeValue'] : $default;
-            case 'isOnCurrentPage':
+                if (isset($var['codeValue'])) {
+                    return $var['codeValue'];
+                }
+                else {
+                    return (isset($_SESSION[$sgqa])) ? $_SESSION[$sgqa] : $default;
+                }
+//                return (isset($var['codeValue'])) ? $var['codeValue'] : $default;
+//            case 'isOnCurrentPage':
             case 'jsName':
+                if ($this->groupSeq != -1 && isset($var['groupSeq']) && $this->groupSeq == $var['groupSeq']) {
+                    // then on the same page, so return the on-page javaScript name if there is one.
+                    return (isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName'])) ? $var['jsName'] : $default);
+                }
+                return (isset($var['jsName']) ? $var['jsName'] : $default);
             case 'sgqa':
             case 'mandatory':
             case 'qid':
@@ -1458,10 +1475,78 @@ class ExpressionManager {
             case 'groupSeq':
             case 'questionSeq':
             case 'ansList':
+            case 'scale_id':
                 return (isset($var[$attr])) ? $var[$attr] : $default;
             case 'displayValue':
             case 'shown':
-                return (isset($var['displayValue'])) ? $var['displayValue'] : $default;
+                if (isset($var['displayValue']))
+                {
+                    return $var['displayValue'];    // for static values like TOKEN
+                }
+                else
+                {
+                    $type = $var['type'];
+                    $codeValue = $this->GetVarAttribute($name,'codeValue',$default);    // TODO - is this correct?
+                    switch($type)
+                    {
+                        case '!': //List - dropdown
+                        case 'L': //LIST drop-down/radio-button list
+                        case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
+                        case '1': //Array (Flexible Labels) dual scale  // need scale
+                        case 'H': //ARRAY (Flexible) - Column Format
+                        case 'F': //ARRAY (Flexible) - Row Format
+                        case 'R': //RANKING STYLE
+                            $scale_id = $this->GetVarAttribute($name,'scale_id','0');
+                            $which_ans = $scale_id . '~' . $codeValue;
+                            $ansArray = $var['ansArray'];
+                            if (is_null($ansArray))
+                            {
+                                $displayValue=$default;
+                            }
+                            else
+                            {
+                                $displayValue = (isset($ansArray[$which_ans])) ? $ansArray[$which_ans] : $default;
+                            }
+                            break;
+                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                        case ':': //ARRAY (Multi Flexi) 1 to 10
+                        case '5': //5 POINT CHOICE radio-buttons
+                            $displayValue = $codeValue;
+                            break;
+                        case 'N': //NUMERICAL QUESTION TYPE
+                        case 'K': //MULTIPLE NUMERICAL QUESTION
+                        case 'Q': //MULTIPLE SHORT TEXT
+                        case ';': //ARRAY (Multi Flexi) Text
+                        case 'S': //SHORT FREE TEXT
+                        case 'T': //LONG FREE TEXT
+                        case 'U': //HUGE FREE TEXT
+                        case 'M': //Multiple choice checkbox
+                        case 'P': //Multiple choice with comments checkbox + text
+                        case 'D': //DATE
+                        case '*': //Equation
+                        case 'I': //Language Question
+                        case '|': //File Upload
+                        case 'X': //BOILERPLATE QUESTION
+                            $displayValue = $codeValue;
+                            break;
+                        case 'G': //GENDER drop-down list
+                        case 'Y': //YES/NO radio-buttons
+                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            $ansArray = $var['ansArray'];
+                            if (is_null($ansArray))
+                            {
+                                $displayValue=$default;
+                            }
+                            else
+                            {
+                                $displayValue = (isset($ansArray[$codeValue])) ? $ansArray[$codeValue] : $default;
+                            }
+                            break;
+                    }
+                    return $displayValue;
+                }
             case 'relevanceStatus':
                 $qid = (isset($var['qid'])) ? $var['qid'] : -1;
                 if ($qid == -1) {
@@ -1472,7 +1557,8 @@ class ExpressionManager {
                 }
                 return (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0); // should defualt be to show?
             default:
-                log_message('debug','UNDEFINED ATTRIBUTE: ' . $attr);
+                print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
+//                log_message('debug','UNDEFINED ATTRIBUTE: ' . $attr);
                 return $default;
         }
         return $default;    // and throw and error?
@@ -2573,6 +2659,7 @@ EOD;
         $body .= '</table>';
         $body .= "<script type='text/javascript'>\n";
         $body .= "<!--\n";
+        $body .= "var LEMgid=2;\n";
         $body .= "function recompute() {\n";
         $body .= implode("\n",$javaScript);
         $body .= "}\n//-->\n</script>\n";

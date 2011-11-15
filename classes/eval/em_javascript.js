@@ -200,8 +200,8 @@ function LEMval(alias)
     var str = new String(alias);
     var varName = alias;
     var suffix = 'code';    // the default
-    if (str.match(/\.(codeValue|code|displayValue|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type)$/)) {
-        varName = str.replace(/\.(codeValue|code|displayValue|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type)$/,'')
+    if (str.match(/\.(codeValue|code|displayValue|gid|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type)$/)) {
+        varName = str.replace(/\.(codeValue|code|displayValue|gid|jsName|mandatory|NAOK|qid|question|readWrite|relevanceNum|relevanceStatus|relevance|shown|type)$/,'')
         suffix = str.replace(/^(.+)\./,'');
     }
 
@@ -212,6 +212,13 @@ function LEMval(alias)
             return '';
         }
     }
+    var whichJsName;    // correct name whether on- or off-page
+    if (attr.gid == LEMgid) {
+        whichJsName = (typeof attr.jsName_on === 'undefined') ? attr.jsName : attr.jsName_on;
+    }
+    else {
+        whichJsName = attr.jsName;
+    }
     if (str.match(/^INSERTANS:/)) {
         suffix = 'shown';
     }
@@ -219,7 +226,7 @@ function LEMval(alias)
     switch (suffix) {
         case 'displayValue':
         case 'shown': {
-            value = htmlspecialchars_decode(document.getElementById(attr.jsName).value);
+            value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
             switch(attr.type)
             {
                 case 'G': //GENDER drop-down list
@@ -265,8 +272,8 @@ function LEMval(alias)
             }
         }
             return htmlspecialchars_decode(displayValue);
-        case 'qid':
-            return attr.qid;
+        case 'gid':
+            return attr.gid;
         case 'mandatory':
             return attr.mandatory;
         case 'qid':
@@ -287,7 +294,7 @@ function LEMval(alias)
         case 'codeValue':
         case 'NAOK':
         {
-            value = htmlspecialchars_decode(document.getElementById(attr.jsName).value);
+            value = htmlspecialchars_decode(document.getElementById(whichJsName).value);
             if (value === '') {
                 return '';
             }

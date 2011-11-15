@@ -1376,6 +1376,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
         $questionsummary .= "</table>";
     }
 }
+LimeExpressionManager::FinishProcessingPage();
 
 // ============= EDIT ANSWER OPTIONS=====================================
 

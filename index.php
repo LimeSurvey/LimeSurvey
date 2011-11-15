@@ -3518,6 +3518,9 @@ function GetReferringUrl()
     sendcacheheaders();
     doHeader();
 
+    LimeExpressionManager::StartProcessingPage();
+    LimeExpressionManager::StartProcessingGroup(0, false, $surveyid);
+
     echo templatereplace(file_get_contents("$thistpl/startpage.pstpl"));
     echo "\n<form method='post' action='{$publicurl}/index.php' id='limesurvey' name='limesurvey' autocomplete='off'>\n";
 
@@ -3545,6 +3548,9 @@ function GetReferringUrl()
     }
     echo "\n</form>\n";
     echo templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+
+    echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+    LimeExpressionManager::FinishProcessingPage();
     doFooter();
 }
 // Closing PHP tag intentionally left out - yes, it is okay

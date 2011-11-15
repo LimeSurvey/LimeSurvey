@@ -26,7 +26,7 @@ class LimeExpressionManager {
     private $pageTailoringLog;  // Debug log of tailorings done on this page
     private $surveyLogicFile;   // Shows current configuration and data from most recent $fieldmap
 
-    private $maxGroup;  // ID of the maximum group reached
+    private $groupId2groupSeq;  // map of gid to 0-based sequence number of groups
     private $questionId2questionSeq;    // map question # to an incremental count of question order across the whole survey
     private $questionId2groupSeq;   // map question  # to the group it is within, using an incremental count of group order
 
@@ -60,8 +60,13 @@ class LimeExpressionManager {
             self::$instance = unserialize($ser);
         }
         if (!isset(self::$instance)) {
-            $c = __CLASS__;
-            self::$instance = new $c;
+            if (isset($_SESSION['LEMsingleton'])) {
+                self::$instance = unserialize($_SESSION['LEMsingleton']);
+            }
+            else {
+                $c = __CLASS__;
+                self::$instance = new $c;
+            }
         }
         return self::$instance;
     }
@@ -926,6 +931,9 @@ class LimeExpressionManager {
 
     public function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
     {
+        if (!$forceRefresh && isset($this->knownVars)) {
+            return false;   // means that those variables have been cached and no changes needed
+        }
         $now = microtime(true);
 //        $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
 //        log_message('debug','**Language=' . $LEM->slang);
@@ -941,9 +949,9 @@ class LimeExpressionManager {
         if (!isset($fieldmap)) {
             return false; // implies an error occurred
         }
-        if ($allOnOnePage && isset($this->knownVars)) {
-            return false;   // so that does not try to re-compute relevance
-        }
+//        if ($allOnOnePage && isset($this->knownVars)) {
+//            return false;   // so that does not try to re-compute relevance
+//        }
 
         $this->knownVars = array();   // mapping of VarName to Value
         $this->debugLog = array();    // array of mappings among values to confirm their accuracy
@@ -954,6 +962,7 @@ class LimeExpressionManager {
         $this->questionId2questionSeq = array();
         $this->questionId2groupSeq = array();
         $this->questionSeq2relevance = array();
+        $this->groupId2groupSeq = array();
 
         // Since building array of allowable answers, need to know preset values for certain question types
         $presets = array();
@@ -1004,7 +1013,7 @@ class LimeExpressionManager {
             $mandatory = $fielddata['mandatory'];
             $fieldNameParts = explode('X',$code);
             $groupNum = $fieldNameParts[1];
-            $isOnCurrentPage = ($allOnOnePage || ($groupNum != NULL && $groupNum == $this->groupNum)) ? 'Y' : 'N';
+//            $isOnCurrentPage = ($allOnOnePage || ($groupNum != NULL && $groupNum == $this->groupNum)) ? 'Y' : 'N';
 
             $questionId = $fieldNameParts[2];
             $questionNum = $fielddata['qid'];
@@ -1027,11 +1036,8 @@ class LimeExpressionManager {
                 $questionSeq = (isset($fielddata['questionSeq'])) ? $fielddata['questionSeq'] : -1;
                 $this->questionId2questionSeq[$questionNum] = $questionSeq;
             }
-            if ($groupNum == $this->groupNum) {
-                $this->currentGroupSeq = $groupSeq;
-            }
-            if ($groupNum == $this->maxGroup) {
-                $this->maxGroupSeq = $groupSeq;
+            if (!isset($this->groupId2groupSeq[$groupNum])) {
+                $this->groupId2groupSeq[$groupNum] = $groupSeq;
             }
 
             // Create list of codes associated with each question
@@ -1048,10 +1054,10 @@ class LimeExpressionManager {
 
             $readWrite = 'N';
 
-            $codeValue = (isset($_SESSION[$code])) ? $_SESSION[$code] : '';
+//            $codeValue = (isset($_SESSION[$code])) ? $_SESSION[$code] : '';
 
             // Set $displayValue and $ansArray
-            $displayValue = ''; // default to blank or $this->gT("No Answer")?
+//            $displayValue = ''; // default to blank or $this->gT("No Answer")?
             switch($type)
             {
                 case '!': //List - dropdown
@@ -1061,15 +1067,15 @@ class LimeExpressionManager {
                 case 'H': //ARRAY (Flexible) - Column Format
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
-                    $which_ans = $scale_id . '~' . $codeValue;
-                    $displayValue = (isset($qans[$questionNum][$which_ans])) ? $qans[$questionNum][$which_ans] : '';    // what should default be?
+//                    $which_ans = $scale_id . '~' . $codeValue;
+//                    $displayValue = (isset($qans[$questionNum][$which_ans])) ? $qans[$questionNum][$which_ans] : '';    // what should default be?
                     $ansArray = $qans[$questionNum];
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case '5': //5 POINT CHOICE radio-buttons
-                    $displayValue = $codeValue; // what about "no answer"?
+//                    $displayValue = $codeValue; // what about "no answer"?
                     $ansArray=NULL;
                     break;
                 case 'N': //NUMERICAL QUESTION TYPE
@@ -1086,14 +1092,14 @@ class LimeExpressionManager {
                 case 'I': //Language Question
                 case '|': //File Upload
                 case 'X': //BOILERPLATE QUESTION
-                    $displayValue = $codeValue; // TODO - is this correct?
+//                    $displayValue = $codeValue; // TODO - is this correct?
                     $ansArray = NULL;
                     break;
                 case 'G': //GENDER drop-down list
                 case 'Y': //YES/NO radio-buttons
                 case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                 case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                    $displayValue = (isset($presets[$type][$codeValue])) ? $presets[$type][$codeValue] : '';
+//                    $displayValue = (isset($presets[$type][$codeValue])) ? $presets[$type][$codeValue] : '';
                     $ansArray = $presets[$type];
                     break;
             }
@@ -1164,18 +1170,12 @@ class LimeExpressionManager {
                     break;
             }
 
-            // Set $jsVarName (e.g. javaSGQA vs. answerSGQA) - depends upon whether $isOncurrentPage
+            // Set $jsVarName_on (for on-page variables - e.g. answerSGQA) and $jsVarName (for off-page  variables; the primary name - e.g. javaSGQA)
             switch($type)
             {
                 case 'R': //RANKING STYLE
-                    if ($isOnCurrentPage=='Y')
-                    {
-                        $jsVarName = 'fvalue_' . $fieldNameParts[2];
-                    }
-                    else
-                    {
-                        $jsVarName = 'java' . $code;
-                    }
+                    $jsVarName_on = 'fvalue_' . $fieldNameParts[2];
+                    $jsVarName = 'java' . $code;
                     break;
                 case 'D': //DATE
                 case 'N': //NUMERICAL QUESTION TYPE
@@ -1185,14 +1185,8 @@ class LimeExpressionManager {
                 case 'Q': //MULTIPLE SHORT TEXT
                 case 'K': //MULTIPLE NUMERICAL QUESTION
                 case 'X': //BOILERPLATE QUESTION
-                    if ($isOnCurrentPage=='Y')
-                    {
-                        $jsVarName = 'answer' . $code;
-                    }
-                    else
-                    {
-                        $jsVarName = 'java' . $code;
-                    }
+                    $jsVarName_on = 'answer' . $code;
+                    $jsVarName = 'java' . $code;
                     break;
                 case '!': //List - dropdown
                 case '5': //5 POINT CHOICE radio-buttons
@@ -1212,6 +1206,7 @@ class LimeExpressionManager {
                 case ':': //ARRAY (Multi Flexi) 1 to 10
                 case ';': //ARRAY (Multi Flexi) Text
                     $jsVarName = 'java' . $code;
+                    $jsVarName_on = $jsVarName;
                     break;
                 case 'O': //LIST WITH COMMENT drop-down/radio-button list + textarea
                     if (preg_match("/comment$/", $code)) {
@@ -1221,20 +1216,24 @@ class LimeExpressionManager {
                     else {
                         $jsVarName = 'java' . $code;
                     }
+                    $jsVarName_on = $jsVarName;
                     break;
                 case '|': //File Upload
                     // Only want the use the one that ends in '_filecount'
                     $goodcode = preg_replace("/^(.*?)(_filecount)?$/","$1",$code);
                     $jsVarName = $goodcode . '_filecount';
+                    $jsVarName_on = $jsVarName;
                     break;
                 case 'P': //Multiple choice with comments checkbox + text
-                    if (preg_match("/comment$/",$code) && $isOnCurrentPage=='Y')
+                    if (preg_match("/comment$/",$code))
                     {
-                        $jsVarName = 'answer' . $code;  // is this true for survey.php and not for group.php?
+                        $jsVarName_on = 'answer' . $code;  // is this true for survey.php and not for group.php?
+                        $jsVarName = 'java' . $code;
                     }
                     else
                     {
                         $jsVarName = 'java' . $code;
+                        $jsVarName_on = $jsVarName;
                     }
                     break;
             }
@@ -1269,6 +1268,7 @@ class LimeExpressionManager {
                     $q2subqInfo[$questionNum]['subqs'][] = array(
                         'rowdivid' => $rowdivid,
                         'varName' => $varName,
+                        'jsVarName_on' => $jsVarName_on,
                         'jsVarName' => $jsVarName,
                         'csuffix' => $csuffix,
                         'sqsuffix' => $sqsuffix,
@@ -1288,14 +1288,16 @@ class LimeExpressionManager {
 
             // Set mappings of variable names to needed attributes
             $varInfo_Code = array(
-                'codeValue'=>$codeValue,      // TODO - comment
+//                'codeValue'=>$codeValue,      // TODO - comment
+                'jsName_on'=>$jsVarName_on,
                 'jsName'=>$jsVarName,
                 'readWrite'=>$readWrite,
-                'isOnCurrentPage'=>$isOnCurrentPage,
-                'displayValue'=>$displayValue,
+//                'isOnCurrentPage'=>$isOnCurrentPage,
+//                'displayValue'=>$displayValue,
                 'hidden'=>$hidden,
                 'question'=>$question,
                 'qid'=>$questionNum,
+                'gid'=>$groupNum,
                 'relevance'=>$relevance,
                 'relevanceNum'=>'relevance' . $questionNum,
                 'qcode'=>$varName,
@@ -1305,6 +1307,8 @@ class LimeExpressionManager {
                 'sgqa'=>$code,
                 'rowdivid'=>$rowdivid,
                 'ansList'=>$ansList,
+                'ansArray'=>$ansArray,
+                'scale_id'=>$scale_id,
                 );
 
 //            log_message('debug','$varInfoCode:=' . print_r($varInfo_Code,true));
@@ -1315,6 +1319,7 @@ class LimeExpressionManager {
                 'qid'=>$questionNum,
                 'questionSeq'=>$questionSeq,
                 'groupSeq'=>$groupSeq,
+                'jsResultVar_on'=>$jsVarName_on,
                 'jsResultVar'=>$jsVarName,
                 'type'=>$type,
                 'hidden'=>$hidden,
@@ -1329,20 +1334,23 @@ class LimeExpressionManager {
 
             // Create JavaScript arrays
             $this->alias2varName[$varName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $varName . "':'" . $jsVarName . "'");
+            $this->alias2varName[$jsVarName_on] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName_on . "':'" . $jsVarName . "'");
             $this->alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
             $this->alias2varName[$code] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $code . "':'" . $jsVarName . "'");
             $this->alias2varName['INSERTANS:' . $code] = array('jsName'=>$jsVarName, 'jsPart' => "'INSERTANS:" . $code . "':'" . $jsVarName . "'");
 
             $this->varNameAttr[$jsVarName] = "'" . $jsVarName . "':{ "
                 . "'jsName':'" . $jsVarName
+                . "','jsName_on':'" . $jsVarName_on
     //            . "','code':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$codeValue),ENT_QUOTES)
                 . "','sgqa':'" . $code
                 . "','qid':" . $questionNum
+                . ",'gid':" . $groupNum
                 . ",'mandatory':'" . $mandatory
                 . "','question':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$question),ENT_QUOTES)
                 . "','type':'" . $type
                 . "','relevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES)
-                . "','shown':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$displayValue),ENT_QUOTES)
+//                . "','shown':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$displayValue),ENT_QUOTES)
                 . "'".$ansList."}";
 
             if ($this->debugLEM)
@@ -1351,12 +1359,13 @@ class LimeExpressionManager {
                     'code' => $code,
                     'type' => $type,
                     'varname' => $varName,
+                    'jsName_on'=> $jsVarName_on,
                     'jsName' => $jsVarName,
                     'question' => $question,
-                    'codeValue' => ($codeValue=='') ? '&nbsp;' : $codeValue,  // TODO  - comment
-                    'displayValue' => ($displayValue=='') ? '&nbsp;' : $displayValue,
+//                    'codeValue' => ($codeValue=='') ? '&nbsp;' : $codeValue,  // TODO  - comment
+//                    'displayValue' => ($displayValue=='') ? '&nbsp;' : $displayValue,
                     'readWrite' => $readWrite,
-                    'isOnCurrentPage' => $isOnCurrentPage,
+//                    'isOnCurrentPage' => $isOnCurrentPage,
                     'relevance' => $relevance,
                     'hidden' => $hidden,
                     );
@@ -1387,9 +1396,10 @@ class LimeExpressionManager {
                 $key = "TOKEN:" . strtoupper($tokenkey);
                 $this->knownVars[$key] = array(
                     'codeValue'=>$val,
+                    'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
-                    'isOnCurrentPage'=>'N',
+//                    'isOnCurrentPage'=>'N',
                     'relevanceNum'=>'',
                     );
 
@@ -1399,12 +1409,13 @@ class LimeExpressionManager {
                         'code' => $key,
                         'type' => '&nbsp;',
                         'varname' => '&nbsp;',
+                        'jsName_on' => '&nbsp;',
                         'jsName' => '&nbsp;',
                         'question' => '&nbsp;',
-                        'codeValue' => '&nbsp;',
-                        'displayValue' => $val,
+//                        'codeValue' => '&nbsp;',
+//                        'displayValue' => $val,
                         'readWrite'=>'N',
-                        'isOnCurrentPage'=>'N',
+//                        'isOnCurrentPage'=>'N',
                         'relevance'=>'',
                         'hidden'=>'',
                     );
@@ -1416,9 +1427,10 @@ class LimeExpressionManager {
             // Explicitly set all tokens to blank
             $blankVal = array(
                     'codeValue'=>'',
+                    'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
-                    'isOnCurrentPage'=>'N',
+//                    'isOnCurrentPage'=>'N',
                     'relevanceNum'=>'',
                     );
             $this->knownVars['TOKEN:FIRSTNAME'] = $blankVal;
@@ -1441,11 +1453,11 @@ class LimeExpressionManager {
                 $debugLog_html .= "<tr><td>" . $t['code']
                     . "</td><td>" . $t['type']
                     . "</td><td>" . $t['varname']
-                    . "</td><td>" . $t['codeValue']     // TODO - comment
-                    . "</td><td>" . $t['displayValue']
+//                    . "</td><td>" . $t['codeValue']     // TODO - comment
+//                    . "</td><td>" . $t['displayValue']
                     . "</td><td>" . $t['jsName']
                     . "</td><td>" . $t['readWrite']
-                    . "</td><td>" . $t['isOnCurrentPage']
+//                    . "</td><td>" . $t['isOnCurrentPage']
                     . "</td><td>" . $t['relevance']
                     . "</td><td>" . $t['hidden']
                     . "</td><td>" . $t['question']
@@ -1613,9 +1625,10 @@ class LimeExpressionManager {
             foreach ($replacementFields as $key => $value) {
                 $replaceArray[$key] = array(
                     'codeValue'=>$value,
+                    'jsName_on'=>'',
                     'jsName'=>'',
                     'readWrite'=>'N',
-                    'isOnCurrentPage'=>'N',
+//                    'isOnCurrentPage'=>'N',
                 );
             }
             $LEM->em->RegisterVarnamesUsingMerge($replaceArray);   // TODO - is it safe to just merge these in each time, or should a refresh be forced?
@@ -1837,14 +1850,14 @@ class LimeExpressionManager {
         $LEM =& LimeExpressionManager::singleton();
         $LEM->pageRelevanceInfo=array();
         $LEM->pageTailorInfo=array();
-        $LEM->alias2varName=array();
-        $LEM->varNameAttr=array();
+//        $LEM->alias2varName=array();
+//        $LEM->varNameAttr=array();
         $LEM->allOnOnePage=$allOnOnePage;
         $LEM->pageTailoringLog='';
         $LEM->surveyLogicFile='';
         $LEM->navigationIndex=$navigationIndex;
         $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
-        $LEM->q2subqInfo=array();
+//        $LEM->q2subqInfo=array();
         $LEM->subQrelInfo=array();
 
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
@@ -1871,16 +1884,25 @@ class LimeExpressionManager {
         if (!is_null($groupNum))
         {
             $LEM->groupNum = $groupNum;
-            if ($groupNum > $LEM->maxGroup) {
-                $LEM->maxGroup = $groupNum;
-            }
-            $LEM->qid2code = array();   // List of codes for each question - needed to know which to NULL if a question is irrelevant
-            $LEM->jsVar2qid = array();
+//            $LEM->qid2code = array();   // List of codes for each question - needed to know which to NULL if a question is irrelevant
+//            $LEM->jsVar2qid = array();
 
-            if (!is_null($surveyid) && $LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized,$LEM->allOnOnePage))
+            if (!is_null($surveyid))
             {
-                // means that some values changed, so need to update what was registered to ExpressionManager
-                $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
+                if ($LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized,$LEM->allOnOnePage))
+                {
+                    // means that some values changed, so need to update what was registered to ExpressionManager
+                    $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
+                }
+                if (isset ($LEM->groupId2groupSeq[$groupNum]))
+                {
+                    $groupSeq = $LEM->groupId2groupSeq[$groupNum];
+                    $LEM->currentGroupSeq = $groupSeq;
+                    if ($groupSeq > $LEM->maxGroupSeq) {
+                        $LEM->maxGroupSeq = $groupSeq;
+                    }                      
+                }
+
                 $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
                 $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
             }
@@ -1911,8 +1933,12 @@ class LimeExpressionManager {
         $_SESSION['EM_surveyLogicFile'] = $LEM->surveyLogicFile;
 
         $totalTime = 0.;
-        foreach($LEM->runtimeTimings as $unit) {
-            $totalTime += $unit[1];
+        if (isset($LEM->runtimeTimings)) {
+            foreach($LEM->runtimeTimings as $unit) {
+                $totalTime += $unit[1];
+            }
+            echo 'Total time attributable to EM = ' . $totalTime;
+            unset($LEM->runtimeTimings);
         }
 //        log_message('debug','Total time attributable to EM = ' . $totalTime);
 //        log_message('debug',print_r($LEM->runtimeTimings,true));
@@ -1945,6 +1971,7 @@ class LimeExpressionManager {
             }
         }
         $LEM->initialized=false;    // so detect calls after done
+        $_SESSION['LEMsingleton']=serialize($LEM);
     }
 
     /**
@@ -1981,7 +2008,7 @@ class LimeExpressionManager {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
-        $knownVars = $LEM->knownVars;
+        $knownVars =& $LEM->knownVars;
 
 //        log_message('debug',print_r($LEM->pageRelevanceInfo,true));
 
@@ -1989,6 +2016,7 @@ class LimeExpressionManager {
         $allJsVarsUsed=array();
         $jsParts[] = '<script type="text/javascript" src="'.$rooturl.'/classes/eval/em_javascript.js"></script>';
         $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+        $jsParts[] = "var LEMgid=" . $LEM->groupNum . ";\n";    // current group num so can compute isOnCurrentPage
         $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
         $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\n}\n";
         $jsParts[] = "if (evt_type == 'onchange' && (typeof last_evt_type != 'undefined' && last_evt_type == 'keydown') && (typeof target_tabIndex != 'undefined' && target_tabIndex == document.activeElement.tabIndex)) {\nreturn;\n}\n";
@@ -2245,16 +2273,27 @@ class LimeExpressionManager {
         $undeclaredVal = array();
         if (isset($knownVars) && is_array($knownVars))
         {
-            foreach ($knownVars as $knownVar)
+            foreach ($knownVars as $key=>$knownVar)
             {
+                if (!is_numeric($key[0])) {
+                    continue;
+                }
+                if ($knownVar['jsName'] == '') {
+                    continue;
+                }
                 foreach ($allJsVarsUsed as $jsVar)
                 {
                     if ($jsVar == $knownVar['jsName'])
                     {
-                        if ($knownVar['isOnCurrentPage']=='N')
+                        if (!isset($knownVar['gid'])) {
+                            1 + 1;
+                        }
+                        if ($knownVar['gid']!=$LEM->groupNum)
                         {
                             $undeclaredJsVars[] = $jsVar;
-                            $undeclaredVal[$jsVar] = $knownVar['codeValue'];
+                            $code = $knownVar['sgqa'];
+                            $codeValue = (isset($_SESSION[$code])) ? $_SESSION[$code] : '';
+                            $undeclaredVal[$jsVar] = $codeValue;
 
                             if (isset($LEM->jsVar2qid[$jsVar])) {
                                 $qidList[$LEM->jsVar2qid[$jsVar]] = $LEM->jsVar2qid[$jsVar];
@@ -2478,7 +2517,7 @@ EOT;
 
 
         LimeExpressionManager::StartProcessingPage(false,true,true);
-        LimeExpressionManager::StartProcessingGroup();
+        LimeExpressionManager::StartProcessingGroup(1); // pretending this is group 1
 
         // collect variables
         $i=0;
@@ -2517,10 +2556,11 @@ EOT;
             $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
             $jsVarName='java_' . $testArg[0];
+            $jsVarName_on='answer_' . $testArg[0];
 
             $argInfo[] = array(
                 'num' => $i,
-                'name' => $jsVarName,
+                'name' => (($i % 3) == 1) ? $jsVarName_on : $jsVarName,
                 'type' => $testArg[2],
                 'question' => $question,
                 'relevance' => $testArg[1],
@@ -2530,8 +2570,10 @@ EOT;
             $alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
             $varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
                 . "'jsName':'" . $jsVarName
-                . "','qid':'" . $i
-            . "'}";
+                . "','jsName_on':'" . $jsVarName_on
+                . "','qid':" . $i
+                . ",'gid':". ($i % 3)   // so have 3 possible group numbers
+            . "}";
         }
         $LEM->alias2varName = $alias2varName;
         $LEM->varNameAttr = $varNameAttr;

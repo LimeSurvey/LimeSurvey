@@ -39,12 +39,16 @@
             for ($i=0;$i<10;++$i)  {
                 if ($i % 2) {
                     $LEM =& LimeExpressionManager::singleton($LEM2);
+                    LimeExpressionManager::StartProcessingPage();
+                    LimeExpressionManager::StartProcessingGroup(62, false, 37171);
                     LimeExpressionManager::ProcessString($test2,1018);
                     $result = LimeExpressionManager::GetLastPrettyPrintExpression();
                     $size = strlen($LEM2);
                 }
                 else {
                     $LEM =& LimeExpressionManager::singleton($LEM1);
+                    LimeExpressionManager::StartProcessingPage();
+                    LimeExpressionManager::StartProcessingGroup(67, false, 768959);
                     LimeExpressionManager::ProcessString($test1,1037);
                     $result = LimeExpressionManager::GetLastPrettyPrintExpression();
                     $size = strlen($LEM1);

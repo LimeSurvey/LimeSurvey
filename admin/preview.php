@@ -32,7 +32,7 @@ if (!isset($_GET['lang']) || $_GET['lang'] == "")
 }
 
 $_SESSION['s_lang'] = $language;
-$_SESSION['fieldmap']=createFieldMap($surveyid,'full',true,$qid);
+$_SESSION['fieldmap']=createFieldMap($surveyid,'full',false,$qid);
 // Prefill question/answer from defaultvalues
 foreach ($_SESSION['fieldmap'] as $field)
 {
@@ -62,7 +62,7 @@ $ia = array(0 => $qid,
 
 // This is needed to properly detect and color code EM syntax errors
 LimeExpressionManager::StartProcessingPage();
-LimeExpressionManager::StartProcessingGroup($qrows['gid'],false,$surveyid,true);  // loads list of replacement values available for this group
+LimeExpressionManager::StartProcessingGroup($qrows['gid'],false,$surveyid,false);  // loads list of replacement values available for this group
 
 $answers = retrieveAnswers($ia);
 

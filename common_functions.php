@@ -2240,7 +2240,7 @@ function validate_templatedir($templatename)
 * @param int $questionid Limit to a certain qid only (for question preview) - default is false
 * @return array
 */
-function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
+function createFieldMap($surveyid, $style='full', $force_refresh=false, $questionid=false, $sQuestionLanguage=null) {
     // TMSW Conditions->Relevance:  Refactor this function so that doesn't query conditions table, and so that only 3 db calls total to build array (questions, answers, attributes)
     // TMSW Conditions->Relevance:  'hasconditions' and 'usedinconditions' are no longer needed.
 
@@ -2249,6 +2249,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     //checks to see if fieldmap has already been built for this page.
     if (isset($globalfieldmap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
         return $globalfieldmap[$surveyid][$style][$clang->langcode];
+    }
+    if (isset($_SESSION['fieldmap-' . $surveyid . $clang->langcode]) && !$force_refresh) {
+        return $_SESSION['fieldmap-' . $surveyid . $clang->langcode];
     }
 
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2785,6 +2788,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
     if (isset($fieldmap)) {
         $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;
+        $_SESSION['fieldmap-' . $surveyid . $clang->langcode]=$fieldmap;
         return $fieldmap;
     }
 }
