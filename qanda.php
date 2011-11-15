@@ -1731,7 +1731,7 @@ function do_5pointchoice($ia)
         $('#{$id}img1').show();
         $('#{$id}img2').hide();
         });
-        $checkconditionFunction(value,'$ia[1]','radio');
+        $checkconditionFunction(ui.value,'$ia[1]','radio');
         }
         });
         $('#{$id}slider a').css('background-image', 'url(\'{$imageurl}/slider.png\')');
