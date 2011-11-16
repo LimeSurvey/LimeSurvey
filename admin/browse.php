@@ -626,6 +626,7 @@ elseif ($subaction == "all")
         }
         else
         {
+
             if ($surveytable['anonymized'] == "N" && db_tables_exist($tokentable))
                 $dtquery = "SELECT * FROM $surveytable LEFT JOIN $tokentable ON $surveytable.token = $tokentable.token WHERE 1=1 ";
             else
@@ -642,7 +643,7 @@ elseif ($subaction == "all")
             }
             if (stripcslashes($_POST['sql']) !== "")
             {
-                $dtquery .= ' AND '.stripcslashes($_POST['sql'])." ";
+               // $dtquery .= ' AND '.stripcslashes($_POST['sql'])." ";
             }
             $dtquery .= " ORDER BY {$surveytable}.id";
         }
