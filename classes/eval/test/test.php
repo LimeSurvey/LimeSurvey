@@ -67,6 +67,10 @@
                 <td><a href="serialize_test.php">Test LEM serialization</td>
                 <td>Tests whether can, and speed of, serializing and unserializing LimeExpressionManager object</td>
             </tr>
+            <tr>
+                <td><a href="navigation_test.php">Test Navigation</td>
+                <td>Tests whether navigation properly handles relevant and irrelevant groups</td>
+            </tr>
         </table>
     </body>
 </html>

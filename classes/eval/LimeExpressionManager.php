@@ -19,6 +19,8 @@ class LimeExpressionManager {
     private $pageRelevanceInfo;
     private $pageTailorInfo;
     private $allOnOnePage=false;    // internally set to true for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
+    private $surveyMode='group';  // survey mode
+    private $anonymized;
     private $qid2code;  // array of mappings of Question # to list of SGQA codes used within it
     private $jsVar2qid; // reverse mapping of JavaScript Variable name to Question
     private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
@@ -1325,6 +1327,7 @@ class LimeExpressionManager {
                 'type'=>$type,
                 'hidden'=>$hidden,
                 'gid'=>$groupNum,
+                'eqn'=>(($type == '*') ? $question : ''),
                 );
 
             $this->knownVars[$varName] = $varInfo_Code;
@@ -1468,7 +1471,7 @@ class LimeExpressionManager {
             $this->surveyLogicFile = $debugLog_html;
         }
         usort($this->questionSeq2relevance,'self::cmpQuestionSeq');
-
+        
         return true;
     }
 
@@ -1872,6 +1875,233 @@ class LimeExpressionManager {
     }
 
     /**
+     * Initialize a survey so can use EM to manage navigation
+     * @param <type> $surveyid
+     * @param <type> $surveyMode
+     * @param <type> $anonymized
+     * @param <type> $forceRefresh
+     */
+
+    static function StartSurvey($surveyid,$surveyMode='group',$anonymized=false,$forceRefresh=false)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        $LEM->sid=$surveyid;   // TMSW - santize this?
+        $LEM->anonymized=$anonymized;
+        switch ($surveyMode) {
+            case 'survey':
+                $LEM->allOnOnePage=true;
+                $LEM->surveyMode = 'survey';
+                break;
+            case 'question':
+                $LEM->allOnOnePage=false;
+                $LEM->surveyMode = 'question';
+                break;
+            default:
+            case 'group':
+                $LEM->allOnOnePage=false;
+                $LEM->surveyMode = 'group';
+                break;
+        }
+        
+        if ($LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized,$LEM->allOnOnePage))
+        {
+            // means that some values changed, so need to update what was registered to ExpressionManager
+            $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
+            // are the following two lines needed?
+            $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
+            $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
+        }
+        $LEM->currentGroupSeq=-1;
+
+        return array(
+            'hasNext'=>true,
+            'hasPrevious'=>false,
+        );
+    }
+
+    static function NavigateBackwards()
+    {
+        return self::NextRelevantSet(false);
+    }
+    
+    static function NavigateForwards() {
+        return self::NextRelevantSet(true);
+    }
+
+    static function NextRelevantSet($forward=true)
+    {
+        // TMSW - use this to also check whether each question is answered, mandatory, valid?
+        $LEM =& LimeExpressionManager::singleton();
+        $currentQset = array(); // collection of questions on this page (may be survey, group, or question-level)
+        $debug_message='';
+        if ($forward) {
+            switch ($LEM->surveyMode){
+                case 'survey':
+                    break;
+                case 'group':
+                    $debug_message='';
+                    ++$LEM->currentGroupSeq;    // advance to next group
+                    $numQuestions = count($LEM->questionSeq2relevance);
+                    $numGroups = count($LEM->groupId2groupSeq);
+                    if ($LEM->currentGroupSeq < $numGroups) {
+                        for ($i=0; $i<$numQuestions; ++$i)
+                        {
+                            $qInfo = $LEM->questionSeq2relevance[$i];   // this array is by group and question sequence
+                            if ($qInfo['groupSeq'] == $LEM->currentGroupSeq) {
+                                $groupNum = $qInfo['gid'];
+                                $grel=false;  // assume irrelevant until find a relevant question
+                                $ghidden=true;   // assume hidden until find a non-hidden question
+                                $LEM->StartProcessingGroup($groupNum, $LEM->anonymized, $LEM->sid); // analyze the data we have about this group
+//                                $grel = $LEM->GroupIsRelevant($groupNum) ? 'relevant' : 'irrelevant'; // TODO - tihs function  returns wrong value - always true
+                                $debug_gmessage = '';
+                                while($qInfo['groupSeq'] == $LEM->currentGroupSeq) {
+                                    $qrel = $LEM->QuestionIsRelevant($qInfo['qid']);
+                                    $currentQset[] = array(
+                                        'info' => $qInfo,   // collect all questions within the group
+                                        'relStatus' => $qrel,
+                                        'sgqa' => $LEM->qid2code[$qInfo['qid']],
+                                        );
+                                    $qhidden = $qInfo['hidden'];
+                                    if ($qrel) {
+                                        $grel = true;   // at least one question is relevant
+                                    }
+                                    if (!$qhidden) {
+                                        $ghidden = false;    // at least one question is not always-hidden
+                                    }
+                                    $debug_gmessage .= '  [' . $qInfo['questionSeq'] . '][Q:'. $qInfo['qid'] . '][' . $qInfo['type'] . ']: '
+                                        . ($qrel ? 'relevant' : 'irrelevant')
+                                        . ($qhidden ? '/always-hidden' : '')
+                                        . ' (' . $qInfo['relevance'] . ")\n";
+                                    // what are the database question codes for this question?
+                                    $debug_gmessage .= '    => ' . $LEM->qid2code[$qInfo['qid']] . "\n";
+                                    // if there are sub-questions and filters, which of those are irrelevant?
+                                    ++$i;   // advance to next question
+                                    if ($i >= $numQuestions) {
+                                        break;
+                                    }
+                                    $qInfo = $LEM->questionSeq2relevance[$i];
+                                }
+                                $debug_message .= '[' . $LEM->currentGroupSeq . '][G:' . $groupNum . "]:  " . ($grel ? 'relevant' : 'irrelevant') . ($ghidden ? '/always-hidden' : '') . "\n" . $debug_gmessage;
+                                if ($grel == true) {
+                                    if ($ghidden == true) {
+                                        // This group has at least one relevant question, but they are all hidden.
+                                        $updatedValues=array();
+                                        foreach ($currentQset as $qs)
+                                        {
+                                            // Process any relevant equations
+                                            if (($qs['info']['type'] == '*') && $qs['relStatus'] == true) {
+                                                // Process this equation
+                                                $result = $LEM->ProcessString($qs['info']['eqn'], $qs['info']['qid']);
+                                                $sgqa = $qs['sgqa'];   // there will be only one, since Equation
+                                                // Store the result of the Equation in the SESSION
+                                                $_SESSION[$sgqa] = $result;
+                                                $updatedValues[$sgqa] = $result;
+                                                $debug_message .= '   ** Eqn[' . $sgqa . '](' . $qs['info']['eqn'] . ') = ' . $result . "\n";
+                                            }
+                                            // NULL all irrelevant questions
+                                            if ($qs['relStatus'] == false) {
+                                                $sgqas = explode('|',$qs['sgqa']);
+                                                foreach ($sgqas as $sgqa) {
+                                                    $_SESSION[$sgqa] = NULL;    // TMSW - or should it be unset?
+                                                    $updatedValues[$sgqa] = NULL;
+                                                }
+                                            }
+                                        }
+                                        // Update all values (NULL or otherwise) in the database
+                                        if (count($updatedValues) > 0)
+                                        {
+                                            $query = 'UPDATE survey_' . $LEM->sid . " SET ";
+                                            $setter = array();
+                                            foreach ($updatedValues as $key=>$value)
+                                            {
+                                                if (is_null($value)) {
+                                                    $setter[] = '`' . $key . "`=NULL";
+                                                }
+                                                else {
+                                                    $setter[] = '`' . $key . "`='" . addslashes($value) . "'";     // TMSW - what is preferred way to escape entries for DB?
+                                                }
+                                            }
+                                            $query .= implode(', ', $setter);
+                                            $query .= " WHERE ID=???;\n";
+                                            
+                                            $debug_message .= '   ** ' . $query;
+                                        }
+
+                                        // Advance to next group
+                                        ++$LEM->currentGroupSeq;
+                                    }
+                                    else {
+                                        // This is the next relevant group - return something useful
+                                        return array(
+                                            'finished' => false,
+                                            'message' => $debug_message,
+                                            'gid' => $groupNum,
+                                            'gseq' => $LEM->currentGroupSeq,
+                                            'qset' => $currentQset,
+                                        );
+                                    }
+                                }
+                                else {
+                                    // NULL all of the Group's values in the database - they are all irrelevant
+                                    // This group has at least one relevant question, but they are all hidden.
+                                    $updatedValues=array();
+                                    foreach ($currentQset as $qs)
+                                    {
+                                        $sgqas = explode('|',$qs['sgqa']);
+                                        foreach ($sgqas as $sgqa) {
+                                            $_SESSION[$sgqa] = NULL;    // TMSW - or should it be unset?
+                                            $updatedValues[$sgqa] = NULL;
+                                        }
+                                    }
+                                    // Update all values (NULL or otherwise) in the database
+                                    if (count($updatedValues) > 0)
+                                    {
+                                        $query = 'UPDATE survey_' . $LEM->sid . " SET ";
+                                        $setter = array();
+                                        foreach ($updatedValues as $key=>$value)
+                                        {
+                                            if (is_null($value)) {
+                                                $setter[] = '`' . $key ."`=NULL";
+                                            }
+                                            else {
+                                                $setter[] = '`' . $key . "`='" . addslashes($value) . "'";     // TMSW - what is preferred way to escape entries for DB?
+                                            }
+                                        }
+                                        $query .= implode(', ', $setter);
+                                        $query .= " WHERE ID=???;\n";
+
+                                        $debug_message .= '   ** ' . $query;
+                                    }
+//
+                                    // Advance to next group
+                                    ++$LEM->currentGroupSeq;
+                                }
+                            }
+                        }
+                    }
+                    $debug_message .= 'Finished survey #' . $LEM->sid . "\n";
+                    return array(
+                        'finished' => true,
+                        'message' => $debug_message,
+                    );
+                    break;
+                case 'question':
+                    break;
+            }
+        }
+        else {
+            switch ($LEM->surveyMode){
+                case 'survey':
+                    break;
+                case 'group':
+                    break;
+                case 'question':
+                    break;
+            }
+        }
+    }
+
+    /**
      * This should be called each time a new group is started, whether on same or different pages. Sets/Clears needed internal parameters.
      * @param <type> $groupNum - the group number
      * @param <type> $anonymized - whether anonymized
@@ -1942,7 +2172,7 @@ class LimeExpressionManager {
             foreach($LEM->runtimeTimings as $unit) {
                 $totalTime += $unit[1];
             }
-            echo 'Total time attributable to EM = ' . $totalTime;
+//            echo 'Total time attributable to EM = ' . $totalTime;
             unset($LEM->runtimeTimings);
         }
 //        log_message('debug','Total time attributable to EM = ' . $totalTime);
@@ -2771,6 +3001,14 @@ EOT;
         }
 
         return $qans;
+    }
+
+    /**
+     * Validate and/or save
+     */
+    function ProcessCurrentResponses()
+    {
+
     }
 }
 ?>
