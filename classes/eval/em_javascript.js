@@ -213,7 +213,7 @@ function LEMval(alias)
         }
     }
     var whichJsName;    // correct name whether on- or off-page
-    if (attr.gid == LEMgid) {
+    if (LEMallOnOnePage==true || attr.gid == LEMgid) {
         whichJsName = (typeof attr.jsName_on === 'undefined') ? attr.jsName : attr.jsName_on;
     }
     else {

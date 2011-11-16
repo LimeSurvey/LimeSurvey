@@ -44,6 +44,7 @@ class LimeExpressionManager {
 
     private $runtimeTimings;
     private $initialized=false;
+    private $processedRelevance=false;
 
     // A private constructor; prevents direct creation of object
     private function __construct()
@@ -1466,6 +1467,7 @@ class LimeExpressionManager {
             $debugLog_html .= "</table>";
             $this->surveyLogicFile = $debugLog_html;
         }
+        usort($this->questionSeq2relevance,'self::cmpQuestionSeq');
 
         return true;
     }
@@ -1533,7 +1535,6 @@ class LimeExpressionManager {
         // TODO - refactor this to not call a static function
         $this->gid2relevanceStatus = array();
         $_groupSeq = -1;
-        usort($this->questionSeq2relevance,'self::cmpQuestionSeq');
         foreach($this->questionSeq2relevance as $rel)
         {
             $qid = $rel['qid'];
@@ -1859,6 +1860,7 @@ class LimeExpressionManager {
         $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
 //        $LEM->q2subqInfo=array();
         $LEM->subQrelInfo=array();
+        $LEM->processedRelevance=false;
 
         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
@@ -1903,8 +1905,11 @@ class LimeExpressionManager {
                     }                      
                 }
 
-                $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
-                $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
+                if (!$LEM->allOnOnePage || ($LEM->allOnOnePage && !$LEM->processedRelevance)) {
+                    $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
+                    $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
+                    $LEM->processedRelevance=true;
+                }
             }
         }
     }
@@ -2017,6 +2022,7 @@ class LimeExpressionManager {
         $jsParts[] = '<script type="text/javascript" src="'.$rooturl.'/classes/eval/em_javascript.js"></script>';
         $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
         $jsParts[] = "var LEMgid=" . $LEM->groupNum . ";\n";    // current group num so can compute isOnCurrentPage
+        $jsParts[] = "var LEMallOnOnePage=" . (($LEM->allOnOnePage) ? 'true' : 'false') . ";\n";
         $jsParts[] = "function ExprMgr_process_relevance_and_tailoring(evt_type){\n";
         $jsParts[] = "if (typeof LEM_initialized == 'undefined') {\nLEM_initialized=true;\nLEMsetTabIndexes();\n}\n";
         $jsParts[] = "if (evt_type == 'onchange' && (typeof last_evt_type != 'undefined' && last_evt_type == 'keydown') && (typeof target_tabIndex != 'undefined' && target_tabIndex == document.activeElement.tabIndex)) {\nreturn;\n}\n";
@@ -2271,7 +2277,7 @@ class LimeExpressionManager {
         // Now figure out which variables have not been declared (those not on the current page)
         $undeclaredJsVars = array();
         $undeclaredVal = array();
-        if (isset($knownVars) && is_array($knownVars))
+        if (!$LEM->allOnOnePage && isset($knownVars) && is_array($knownVars))
         {
             foreach ($knownVars as $key=>$knownVar)
             {
@@ -2285,9 +2291,6 @@ class LimeExpressionManager {
                 {
                     if ($jsVar == $knownVar['jsName'])
                     {
-                        if (!isset($knownVar['gid'])) {
-                            1 + 1;
-                        }
                         if ($knownVar['gid']!=$LEM->groupNum)
                         {
                             $undeclaredJsVars[] = $jsVar;
@@ -2365,19 +2368,19 @@ class LimeExpressionManager {
     static function UnitTestProcessStringContainingExpressions()
     {
         $vars = array(
-'name' => array('codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'question'=>'What is your first/given name?', 'questionSeq'=>10, 'groupSeq'=>1),
-'surname' => array('codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'question'=>'What is your last/surname?', 'questionSeq'=>20, 'groupSeq'=>1),
-'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'question'=>'How old are you?', 'questionSeq'=>30, 'groupSeq'=>2),
-'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','questionSeq'=>40, 'groupSeq'=>2),
-'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y','question'=>'How many pets do you have?', 'questionSeq'=>50, 'groupSeq'=>2),
-'gender' => array('codeValue'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'questionSeq'=>110, 'groupSeq'=>2),
-'notSetYet' => array('codeValue'=>'?', 'jsName'=>'java61764X3X6', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'shown'=>'Unknown','question'=>'Who will win the next election?', 'questionSeq'=>200, 'groupSeq'=>3),
+'name' => array('codeValue'=>'Peter', 'jsName'=>'java61764X1X1', 'readWrite'=>'N', 'type'=>'X', 'question'=>'What is your first/given name?', 'questionSeq'=>10, 'groupSeq'=>1),
+'surname' => array('codeValue'=>'Smith', 'jsName'=>'java61764X1X1', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'What is your last/surname?', 'questionSeq'=>20, 'groupSeq'=>1),
+'age' => array('codeValue'=>45, 'jsName'=>'java61764X1X2', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How old are you?', 'questionSeq'=>30, 'groupSeq'=>2),
+'numKids' => array('codeValue'=>2, 'jsName'=>'java61764X1X3', 'readWrite'=>'Y', 'type'=>'X', 'question'=>'How many kids do you have?', 'relevance'=>'1', 'qid'=>'40','questionSeq'=>40, 'groupSeq'=>2),
+'numPets' => array('codeValue'=>1, 'jsName'=>'java61764X1X4', 'readWrite'=>'Y', 'type'=>'X','question'=>'How many pets do you have?', 'questionSeq'=>50, 'groupSeq'=>2),
+'gender' => array('codeValue'=>'M', 'jsName'=>'java61764X1X5', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Male','question'=>'What is your gender (male/female)?', 'questionSeq'=>110, 'groupSeq'=>2),
+'notSetYet' => array('codeValue'=>'?', 'jsName'=>'java61764X3X6', 'readWrite'=>'Y', 'type'=>'X', 'shown'=>'Unknown','question'=>'Who will win the next election?', 'questionSeq'=>200, 'groupSeq'=>3),
 // Constants
-'INSERTANS:61764X1X1'   => array('codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y', 'questionSeq'=>70, 'groupSeq'=>2),
-'INSERTANS:61764X1X2'   => array('codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'Y', 'questionSeq'=>80, 'groupSeq'=>2),
-'INSERTANS:61764X1X3'   => array('codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'questionSeq'=>15, 'groupSeq'=>1),
-'INSERTANS:61764X1X4'   => array('codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'questionSeq'=>100, 'groupSeq'=>2),
-'TOKEN:ATTRIBUTE_1'     => array('codeValue'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'INSERTANS:61764X1X1'   => array('codeValue'=> '<Sergei>', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>70, 'groupSeq'=>2),
+'INSERTANS:61764X1X2'   => array('codeValue'=> 45, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>80, 'groupSeq'=>2),
+'INSERTANS:61764X1X3'   => array('codeValue'=> 2, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>15, 'groupSeq'=>1),
+'INSERTANS:61764X1X4'   => array('codeValue'=> 1, 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X', 'questionSeq'=>100, 'groupSeq'=>2),
+'TOKEN:ATTRIBUTE_1'     => array('codeValue'=> 'worker', 'jsName'=>'', 'readWrite'=>'N', 'type'=>'X'),
         );
 
         $tests = <<<EOD
@@ -2475,6 +2478,7 @@ EOST;
         }
         print '</table>';
         LimeExpressionManager::FinishProcessingGroup();
+        $LEM->syntaxErrors=array(); // so doesn't try to write test errors to database
         LimeExpressionManager::FinishProcessingPage();
     }
 
@@ -2524,7 +2528,7 @@ EOT;
         foreach(explode("\n",$tests) as $test)
         {
             $args = explode("~",$test);
-            $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'relevanceNum'=>'relevance' . $i, 'relevanceStatus'=>'1','groupSeq'=>1, 'questionSeq'=>$i);
+            $vars[$args[0]] = array('codeValue'=>'', 'jsName'=>'java_' . $args[0], 'readWrite'=>'Y', 'type'=>'X', 'relevanceNum'=>'relevance' . $i, 'relevanceStatus'=>'1','groupSeq'=>1, 'questionSeq'=>$i);
             $varSeq[] = $args[0];
             $testArgs[] = $args;
             $LEM->questionId2questionSeq[$i] = $i;
@@ -2556,11 +2560,10 @@ EOT;
             $question = LimeExpressionManager::ProcessString($testArg[3], $i, NULL, true, 1, 1);
 
             $jsVarName='java_' . $testArg[0];
-            $jsVarName_on='answer_' . $testArg[0];
 
             $argInfo[] = array(
                 'num' => $i,
-                'name' => (($i % 3) == 1) ? $jsVarName_on : $jsVarName,
+                'name' => $jsVarName,
                 'type' => $testArg[2],
                 'question' => $question,
                 'relevance' => $testArg[1],
@@ -2570,7 +2573,6 @@ EOT;
             $alias2varName[$jsVarName] = array('jsName'=>$jsVarName, 'jsPart' => "'" . $jsVarName . "':'" . $jsVarName . "'");
             $varNameAttr[$jsVarName] = "'" . $jsVarName . "':{"
                 . "'jsName':'" . $jsVarName
-                . "','jsName_on':'" . $jsVarName_on
                 . "','qid':" . $i
                 . ",'gid':". ($i % 3)   // so have 3 possible group numbers
             . "}";

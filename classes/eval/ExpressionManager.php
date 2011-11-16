@@ -46,6 +46,7 @@ class ExpressionManager {
 
     private $questionSeq;   // sequence order of question - so can detect if try to use variable before it is set
     private $groupSeq;  // sequence order of groups - so can detect if try to use variable before it is set
+    private $allOnOnePage=false;
 
     function __construct()
     {
@@ -1458,7 +1459,7 @@ class ExpressionManager {
 //                return (isset($var['codeValue'])) ? $var['codeValue'] : $default;
 //            case 'isOnCurrentPage':
             case 'jsName':
-                if ($this->groupSeq != -1 && isset($var['groupSeq']) && $this->groupSeq == $var['groupSeq']) {
+                if ($this->allOnOnePage || ($this->groupSeq != -1 && isset($var['groupSeq']) && $this->groupSeq == $var['groupSeq'])) {
                     // then on the same page, so return the on-page javaScript name if there is one.
                     return (isset($var['jsName_on']) ? $var['jsName_on'] : (isset($var['jsName'])) ? $var['jsName'] : $default);
                 }
@@ -1700,10 +1701,11 @@ class ExpressionManager {
      * Start processing a group of substitions - will be incrementally numbered
      */
 
-    public function StartProcessingGroup()
+    public function StartProcessingGroup($allOnOnePage=false)
     {
         $this->substitutionNum=0;
         $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
+        $this->allOnOnePage=$allOnOnePage;
     }
 
     /**
@@ -2660,6 +2662,7 @@ EOD;
         $body .= "<script type='text/javascript'>\n";
         $body .= "<!--\n";
         $body .= "var LEMgid=2;\n";
+        $body .= "var LEMallOnOnePage=false;\n";
         $body .= "function recompute() {\n";
         $body .= implode("\n",$javaScript);
         $body .= "}\n//-->\n</script>\n";
