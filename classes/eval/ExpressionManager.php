@@ -1164,7 +1164,7 @@ class ExpressionManager {
         $varsUsed = implode("', '", $nonNAvarsUsed);
         if ($varsUsed != '')
         {
-            $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),''," . $mainClause . ")";
+            $this->jsExpression = "LEMif(LEManyNA('" . $varsUsed . "'),'',(" . $mainClause . "))";
         }
         else
         {
@@ -1434,7 +1434,8 @@ class ExpressionManager {
         if (!isset($this->amVars[$varName]))
         {
 //            echo 'UNDEFINED VARIABLE: ' . $varName;
-            return $default;    // and throw error?
+//            return $default;    // and throw error?
+            return '{' . $name . '}';
         }
         $var = $this->amVars[$varName];
         $sgqa = isset($var['sgqa']) ? $var['sgqa'] : NULL;
@@ -2250,143 +2251,62 @@ EOD;
     {
         // Some test cases for Evaluator
         $vars = array(
-'one' => array('codeValue'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>2,'questionSeq'=>4),
-'two' => array('codeValue'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>2,'questionSeq'=>4),
-'three' => array('codeValue'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>4),
-'four' => array('codeValue'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
-'five' => array('codeValue'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
-'six' => array('codeValue'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
-'seven' => array('codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
-'eight' => array('codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
-'nine' => array('codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
-'ten' => array('codeValue'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'half' => array('codeValue'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'hi' => array('codeValue'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'hello' => array('codeValue'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'a' => array('codeValue'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'b' => array('codeValue'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'c' => array('codeValue'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'d' => array('codeValue'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
-'eleven' => array('codeValue'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'twelve' => array('codeValue'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'one' => array('codeValue'=>1, 'jsName'=>'java_one', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>4),
+'two' => array('codeValue'=>2, 'jsName'=>'java_two', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>4),
+'three' => array('codeValue'=>3, 'jsName'=>'java_three', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>4),
+'four' => array('codeValue'=>4, 'jsName'=>'java_four', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
+'five' => array('codeValue'=>5, 'jsName'=>'java_five', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
+'six' => array('codeValue'=>6, 'jsName'=>'java_six', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>1),
+'seven' => array('codeValue'=>7, 'jsName'=>'java_seven', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
+'eight' => array('codeValue'=>8, 'jsName'=>'java_eight', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
+'nine' => array('codeValue'=>9, 'jsName'=>'java_nine', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>5),
+'ten' => array('codeValue'=>10, 'jsName'=>'java_ten', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
+'half' => array('codeValue'=>.5, 'jsName'=>'java_half', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
+'hi' => array('codeValue'=>'there', 'jsName'=>'java_hi', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
+'hello' => array('codeValue'=>"Tom", 'jsName'=>'java_hello', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
+'a' => array('codeValue'=>0, 'jsName'=>'java_a', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
+'b' => array('codeValue'=>0, 'jsName'=>'java_b', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
+'c' => array('codeValue'=>0, 'jsName'=>'java_c', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
+'d' => array('codeValue'=>0, 'jsName'=>'java_d', 'readWrite'=>'Y', 'groupSeq'=>2,'questionSeq'=>2),
+'eleven' => array('codeValue'=>11, 'jsName'=>'java_eleven', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
+'twelve' => array('codeValue'=>12, 'jsName'=>'java_twelve', 'readWrite'=>'Y', 'groupSeq'=>1,'questionSeq'=>1),
 // Constants
-'ADMINEMAIL' => array('codeValue'=>'value for {ADMINEMAIL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ADMINNAME' => array('codeValue'=>'value for {ADMINNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'AID' => array('codeValue'=>'value for {AID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ANSWERSCLEARED' => array('codeValue'=>'value for {ANSWERSCLEARED}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ANSWER' => array('codeValue'=>'value for {ANSWER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ASSESSMENTS' => array('codeValue'=>'value for {ASSESSMENTS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ASSESSMENT_CURRENT_TOTAL' => array('codeValue'=>'value for {ASSESSMENT_CURRENT_TOTAL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'ASSESSMENT_HEADING' => array('codeValue'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'CHECKJAVASCRIPT' => array('codeValue'=>'value for {CHECKJAVASCRIPT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'CLEARALL' => array('codeValue'=>'value for {CLEARALL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'CLOSEWINDOW' => array('codeValue'=>'value for {CLOSEWINDOW}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'COMPLETED' => array('codeValue'=>'value for {COMPLETED}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'DATESTAMP' => array('codeValue'=>'value for {DATESTAMP}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'EMAILCOUNT' => array('codeValue'=>'value for {EMAILCOUNT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'EMAIL' => array('codeValue'=>'value for {EMAIL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'EXPIRY' => array('codeValue'=>'value for {EXPIRY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'FIRSTNAME' => array('codeValue'=>'value for {FIRSTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'GID' => array('codeValue'=>'value for {GID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'GROUPDESCRIPTION' => array('codeValue'=>'value for {GROUPDESCRIPTION}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'GROUPNAME' => array('codeValue'=>'value for {GROUPNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:123X45X67' => array('displayValue'=>'value for {INSERTANS:123X45X67}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:123X45X67ber' => array('displayValue'=>'value for {INSERTANS:123X45X67ber}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'INSERTANS:123X45X67ber_01a' => array('displayValue'=>'value for {INSERTANS:123X45X67ber_01a}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LANGUAGECHANGER' => array('codeValue'=>'value for {LANGUAGECHANGER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LANGUAGE' => array('codeValue'=>'value for {LANGUAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LANG' => array('codeValue'=>'value for {LANG}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LASTNAME' => array('codeValue'=>'value for {LASTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LOADERROR' => array('codeValue'=>'value for {LOADERROR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LOADFORM' => array('codeValue'=>'value for {LOADFORM}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LOADHEADING' => array('codeValue'=>'value for {LOADHEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'LOADMESSAGE' => array('codeValue'=>'value for {LOADMESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NAME' => array('codeValue'=>'value for {NAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NAVIGATOR' => array('codeValue'=>'value for {NAVIGATOR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NOSURVEYID' => array('codeValue'=>'value for {NOSURVEYID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NOTEMPTY' => array('codeValue'=>'value for {NOTEMPTY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NULL' => array('codeValue'=>'value for {NULL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'NUMBEROFQUESTIONS' => array('codeValue'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'OPTOUTURL' => array('codeValue'=>'value for {OPTOUTURL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'PERCENTCOMPLETE' => array('codeValue'=>'value for {PERCENTCOMPLETE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'PERC' => array('codeValue'=>'value for {PERC}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'PRIVACYMESSAGE' => array('codeValue'=>'value for {PRIVACYMESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'PRIVACY' => array('codeValue'=>'value for {PRIVACY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QID' => array('codeValue'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTIONHELPPLAINTEXT' => array('codeValue'=>'value for {QUESTIONHELPPLAINTEXT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTIONHELP' => array('codeValue'=>'"can single quoted strings" . \'contain nested \'quoted sections\'?', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_CLASS' => array('codeValue'=>'value for {QUESTION_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_CODE' => array('codeValue'=>'value for {QUESTION_CODE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_ESSENTIALS' => array('codeValue'=>'value for {QUESTION_ESSENTIALS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_FILE_VALID_MESSAGE' => array('codeValue'=>'value for {QUESTION_FILE_VALID_MESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_HELP' => array('codeValue'=>'Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_INPUT_ERROR_CLASS' => array('codeValue'=>'value for {QUESTION_INPUT_ERROR_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_MANDATORY' => array('codeValue'=>'value for {QUESTION_MANDATORY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_MAN_CLASS' => array('codeValue'=>'value for {QUESTION_MAN_CLASS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_MAN_MESSAGE' => array('codeValue'=>'value for {QUESTION_MAN_MESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_NUMBER' => array('codeValue'=>'value for {QUESTION_NUMBER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_TEXT' => array('codeValue'=>'value for {QUESTION_TEXT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION_VALID_MESSAGE' => array('codeValue'=>'value for {QUESTION_VALID_MESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'QUESTION' => array('codeValue'=>'value for {QUESTION}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'REGISTERERROR' => array('codeValue'=>'value for {REGISTERERROR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'REGISTERFORM' => array('codeValue'=>'value for {REGISTERFORM}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'REGISTERMESSAGE1' => array('codeValue'=>'value for {REGISTERMESSAGE1}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'REGISTERMESSAGE2' => array('codeValue'=>'value for {REGISTERMESSAGE2}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'RESTART' => array('codeValue'=>'value for {RESTART}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'RETURNTOSURVEY' => array('codeValue'=>'value for {RETURNTOSURVEY}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEALERT' => array('codeValue'=>'value for {SAVEALERT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEDID' => array('codeValue'=>'value for {SAVEDID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEERROR' => array('codeValue'=>'value for {SAVEERROR}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEFORM' => array('codeValue'=>'value for {SAVEFORM}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEHEADING' => array('codeValue'=>'value for {SAVEHEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVEMESSAGE' => array('codeValue'=>'value for {SAVEMESSAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SAVE' => array('codeValue'=>'value for {SAVE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SGQ' => array('codeValue'=>'value for {SGQ}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SID' => array('codeValue'=>'value for {SID}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SITENAME' => array('codeValue'=>'value for {SITENAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SUBMITBUTTON' => array('codeValue'=>'value for {SUBMITBUTTON}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SUBMITCOMPLETE' => array('codeValue'=>'value for {SUBMITCOMPLETE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SUBMITREVIEW' => array('codeValue'=>'value for {SUBMITREVIEW}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYCONTACT' => array('codeValue'=>'value for {SURVEYCONTACT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYDESCRIPTION' => array('codeValue'=>'value for {SURVEYDESCRIPTION}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYFORMAT' => array('codeValue'=>'value for {SURVEYFORMAT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYLANGAGE' => array('codeValue'=>'value for {SURVEYLANGAGE}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYLISTHEADING' => array('codeValue'=>'value for {SURVEYLISTHEADING}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYLIST' => array('codeValue'=>'value for {SURVEYLIST}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYNAME' => array('codeValue'=>'value for {SURVEYNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'SURVEYURL' => array('codeValue'=>'value for {SURVEYURL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TEMPLATECSS' => array('codeValue'=>'value for {TEMPLATECSS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TEMPLATEURL' => array('codeValue'=>'value for {TEMPLATEURL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TEXT' => array('codeValue'=>'value for {TEXT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'THEREAREXQUESTIONS' => array('codeValue'=>'value for {THEREAREXQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TIME' => array('codeValue'=>'value for {TIME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKEN:EMAIL' => array('codeValue'=>'value for {TOKEN:EMAIL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKEN:FIRSTNAME' => array('codeValue'=>'value for {TOKEN:FIRSTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKEN:LASTNAME' => array('codeValue'=>'value for {TOKEN:LASTNAME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKENCOUNT' => array('codeValue'=>'value for {TOKENCOUNT}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKEN_COUNTER' => array('codeValue'=>'value for {TOKEN_COUNTER}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'TOKEN' => array('codeValue'=>'value for {TOKEN}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'URL' => array('codeValue'=>'value for {URL}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
-'WELCOME' => array('codeValue'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N'),
+'ASSESSMENT_HEADING' => array('codeValue'=>'"Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"', 'jsName'=>'', 'readWrite'=>'N'),
+'QID' => array('codeValue'=>'value for {QID}', 'jsName'=>'', 'readWrite'=>'N'),
+'QUESTIONHELP' => array('codeValue'=>'"can single quoted strings" . \'contain nested \'quoted sections\'?', 'jsName'=>'', 'readWrite'=>'N'),
+'QUESTION_HELP' => array('codeValue'=>'Can strings have embedded <tags> like <html>, or even unbalanced "quotes or entities without terminal semicolons like &amp and  &lt?', 'jsName'=>'', 'readWrite'=>'N'),
+'NUMBEROFQUESTIONS' => array('codeValue'=>'value for {NUMBEROFQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
+'THEREAREXQUESTIONS' => array('codeValue'=>'value for {THEREAREXQUESTIONS}', 'jsName'=>'', 'readWrite'=>'N'),
+'TOKEN:FIRSTNAME' => array('codeValue' => 'value for {TOKEN:FIRSTNAME}', 'jsName' => '', 'readWrite' => 'N'),
+'WELCOME' => array('codeValue'=>'value for {WELCOME}', 'jsName'=>'', 'readWrite'=>'N'),
 // also include SGQA values and read-only variable attributes
-'12X34X56'  => array('codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'12X3X5lab1_ber'    => array('codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
-'q5pointChoice'    => array('codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>12,'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>12),
-'qArrayNumbers_ls1_min'    => array('codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'isOnCurrentPage'=>'Y', 'groupSeq'=>2,'questionSeq'=>6),
-'12X3X5lab1_ber#1'  => array('codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'isOnCurrentPage'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'12X34X56'  => array('codeValue'=>5, 'jsName'=>'', 'readWrite'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'12X3X5lab1_ber'    => array('codeValue'=>10, 'jsName'=>'', 'readWrite'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'q5pointChoice'    => array('codeValue'=>3, 'jsName'=>'java_q5pointChoice', 'readWrite'=>'N','displayValue'=>'Father', 'relevance'=>1, 'type'=>'5', 'question'=>'(question for q5pointChoice)', 'qid'=>13,'groupSeq'=>2,'questionSeq'=>13),
+'qArrayNumbers_ls1_min'    => array('codeValue'=> 7, 'jsName'=>'java_qArrayNumbers_ls1_min', 'readWrite'=>'N','displayValue'=> 'I love LimeSurvey', 'relevance'=>1, 'type'=>'A', 'question'=>'(question for qArrayNumbers)', 'qid'=>6,'groupSeq'=>2,'questionSeq'=>6),
+'12X3X5lab1_ber#1'  => array('codeValue'=> 15, 'jsName'=>'', 'readWrite'=>'N', 'groupSeq'=>1,'questionSeq'=>1),
+'zero' => array('codeValue'=>0, 'jsName'=>'java_zero', 'groupSeq'=>0,'questionSeq'=>0),
+'empty' => array('codeValue'=>'', 'jsName'=>'java_empty', 'groupSeq'=>0,'questionSeq'=>0),
         );
 
         // Syntax for $tests is
         // expectedResult~expression
         // if the expected result is an error, use NULL for the expected result
         $tests  = <<<EOD
+0~zero
+~empty
+1~is_empty(empty)
+1~five > zero
+1~five > empty
+1~empty < 16
+1~zero == empty
 3~q5pointChoice.code
 5~q5pointChoice.type
 (question for q5pointChoice)~q5pointChoice.question
 1~q5pointChoice.relevance
 4~q5pointChoice.NAOK + 1
 NULL~q5pointChoice.bogus
-12~q5pointChoice.qid
+13~q5pointChoice.qid
 7~qArrayNumbers_ls1_min.code
 6~max(five,(one + (two * four)- three))
 6~max((one + (two * four)- three))
@@ -2447,8 +2367,10 @@ there~hi
 9~floor(9.9)
 15~sum(one,two,three,four,five)
 5~count(one,two,three,four,five)
-0~a='',b='',c=0
-1~count(a,b,c)
+0~a='hello',b='',c=0
+hello~a
+0~c
+2~count(a,b,c)
 5~intval(5.7)
 1~is_float(pi())
 0~is_float(5)
@@ -2467,7 +2389,6 @@ NULL~(one * two + (three - four)
 NULL~(one * two + (three - four)))
 NULL~++a
 NULL~--b
-value for {INSERTANS:123X45X67}~INSERTANS:123X45X67
 value for {QID}~QID
 "Can strings contain embedded \"quoted passages\" (and parentheses + other characters?)?"~ASSESSMENT_HEADING
 "can single quoted strings" . 'contain nested 'quoted sections'?~QUESTIONHELP
