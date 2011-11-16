@@ -462,7 +462,7 @@ class ExpressionManager {
                         $relStatus = $this->GetVarAttribute($token[0],'relevanceStatus',1);
                         if ($relStatus==1)
                         {
-                            $result = array($this->GetVarAttribute($token[0],NULL,0),$token[1],'NUMBER');
+                            $result = array($this->GetVarAttribute($token[0],NULL,''),$token[1],'NUMBER');
                         }
                         else
                         {
