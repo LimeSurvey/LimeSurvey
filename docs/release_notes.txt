@@ -77,6 +77,18 @@ HOW TO UPGRADE from a LimeSurvey 1.70(+) version to the latest 1.9x
 
 Thank you to everyone who helped with this new release!
 
+Changes from 1.91+ (build 11343) to 1.91+ (build 11379) Nov 16, 2011
+-Fixed issue #5580: conditions don't work when using slider with emoticons and evaluation is done on the same page (lemeur)
+-Fixed issue #5570: INSERTANS does not return other comment in multiple questions with Other activated (c_schmitz)
+-Fixed issue #5574: Error in printable survey with Postgres/MSSQL (c_schmitz)
+-Fixed issue #5576: Quick-translation adds backslashes before quotes and double-quotes when magic_quotes are activated (c_schmitz)
+-Fixed issue #5578: $sitename not loaded (c_schmitz)
+-Fixed issue: Printable survey was not displaying 'Other' when other was selected as a condition (jcleeland)
+-Fixed issue: Languages in language changer select box were not sorted by the current language (c_schmitz)
+-Fixed issue: Memory issue in integrity check (c_schmitz)
+-Fixed issue: XSS injection due to improper quoting in tool tips - thanks for reporting to Joshua Tiago via Secunia Vulnerability Coordination Reward Program (SVCRP) (c_schmitz)
+
+
 Changes from 1.91+ (build 11228) to 1.91+ (build 11343) Nov 8, 2011
 -Fixed issue #5126: CSV export - no new lines (c_schmitz)
 -Fixed issue #5455: INSERTANS not working in Multiple options with comments (c_schmitz)
