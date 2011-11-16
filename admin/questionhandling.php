@@ -326,6 +326,7 @@ if ($action == "editquestion" || $action=="addquestion")
         $eqrow['other']='N';
         $eqrow['mandatory']='N';
         $eqrow['preg']='';
+        $eqrow['relevance']='1';
     }
    $editquestion .= "<div id='tabs'><ul>";
 
@@ -765,7 +766,7 @@ if($action == "orderquestions")
         $orderquestions.= "<a href='admin.php?sid=$surveyid&amp;gid=$gid&amp;qid={$oqarray[$i]['qid']}' title='".$clang->gT("View Question")."'>".$oqarray[$i]['title']."</a>: ";
         $relevance = ($oqarray[$i]['relevance'] == '') ? 1 : $oqarray[$i]['relevance'];
         $showme = '[{' . $relevance . '}] ' . $oqarray[$i]['question'];
-        LimeExpressionManager::ProcessString(FlattenText($showme), $oqarray[$i]['qid']);
+        LimeExpressionManager::ProcessString($showme, $oqarray[$i]['qid']);
         $orderquestions.=LimeExpressionManager::GetLastPrettyPrintExpression();
         $orderquestions.= "</li>\n" ;
     }

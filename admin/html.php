@@ -1079,7 +1079,7 @@ if (isset($surveyid) && $surveyid && $gid && $qid)  // Show the question toolbar
 
     while ($qrrow = $qrresult->FetchRow())
     {
-        $qrrow = array_map('FlattenText', $qrrow);
+//        $qrrow = array_map('FlattenText', $qrrow);
         //$qrrow = array_map('htmlspecialchars', $qrrow);
         $questionsummary .= "<div class='menubar-title ui-widget-header'>\n"
         . "<strong>". $clang->gT("Question")."</strong> <span class='basic'>{$qrrow['question']} (".$clang->gT("ID").":$qid)</span>\n"
