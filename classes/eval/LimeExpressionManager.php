@@ -37,6 +37,8 @@ class LimeExpressionManager {
 
     private $questionSeq2relevance; // keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
     private $currentGroupSeq;
+    private $currentQset=NULL;   // set of the current set of questions to be displayed - at least one must be relevant
+
     private $maxGroupSeq;  // the maximum groupSeq reached -  this is needed for Index
     private $navigationIndex=false; // whether to build an index showing groups that have relevant questions // TODO - color code whether any visible questions are unanswered?
     private $slang='en';
@@ -883,30 +885,31 @@ class LimeExpressionManager {
                 $backup = $rowdivids[$sq['rowdivid']];
                 $rowdivids[$sq['rowdivid']] = array(
                     'order'=>$backup['order'],
-                    'eqn'=>'(' . $backup['eqn'] . ' and ' . $sq['eqn'] . ')',
                     'qid'=>$sq['qid'],
                     'rowdivid'=>$sq['rowdivid'],
                     'type'=>$backup['type'] . ';' .$sq['type'],
                     'qtype'=>$sq['qtype'],
                     'sgqa'=>$sq['sgqa'],
+                    'eqns' => array_merge($backup['eqns'],array($sq['eqn'])),
                 );
             }
             else
             {
                 $rowdivids[$sq['rowdivid']] = array(
                     'order'=>$order++,
-                    'eqn'=>$sq['eqn'],
                     'qid'=>$sq['qid'],
                     'rowdivid'=>$sq['rowdivid'],
                     'type'=>$sq['type'],
                     'qtype'=>$sq['qtype'],
                     'sgqa'=>$sq['sgqa'],
+                    'eqns'=>array($sq['eqn']),
                     );
             }
         }
 
         foreach ($rowdivids as $sq)
         {
+            $sq['eqn'] = '(' . implode(' and ', array_unique($sq['eqns'])) . ')';   // without array_unique, get duplicate of filters for question types 1, :, and ;
             $result = $this->_ProcessSubQRelevance($sq['eqn'], $sq['qid'], $sq['rowdivid'], $sq['type'], $sq['qtype'],  $sq['sgqa']);
         }
 
@@ -2010,17 +2013,217 @@ class LimeExpressionManager {
                                         $ghidden = false;    // at least one relevant question should be shown
                                     }
 
-                                    // check that all mandatories have been fully answered (but don't require answers for sub-questions that are irrelevant
-                                    $unansweredSQs = array();   // list of sub-questions that weren't answered
-                                    if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y')) {
+                                    // identify the relevant subquestions (array_filter and array_filter_exclude may make some irrelevant)
+                                    $relevantSQs=array();
+                                    $irrelevantSQs=array();
+                                    $prettyPrintSQRelEqns=array();
+                                    if (!$qrel) {
+                                        // All sub-questions are irrelevant
+                                        $irrelevantSQs = explode('|', $LEM->qid2code[$qid]);
+                                    }
+                                    else {
+                                        // Check filter status to determine which subquestions are relevant
                                         $sgqas = explode('|',$LEM->qid2code[$qid]);
+                                        $sqRelResultCache=array();    // to avoid running same test more than once.
                                         foreach ($sgqas as $sgqa) {
-                                            if (!isset($_SESSION[$sgqa]) || ($_SESSION[$sgqa] == '' || is_null($_SESSION[$sgqa]))) {
-                                                // then a relevant, visible, mandatory question hasn't been answered
-                                                $gmandViolation=true;
-                                                $unansweredSQs[] = $sgqa;
+                                            // for each subq, see if it is part of an array_filter or array_filter_exclude
+                                            if (!isset($LEM->subQrelInfo))  {
+                                                $relevantSQs[] = $sgqa;
+                                                continue;
+                                            }
+                                            $foundSQrelevance=false;
+                                            foreach ($LEM->subQrelInfo as $sq) {
+                                                if ($sq['qid'] == $qid) {
+                                                    switch ($sq['qtype'])
+                                                    {
+                                                        case '1':   //Array (Flexible Labels) dual scale
+                                                            if ($sgqa == ($sq['rowdivid'] . '#0') || $sgqa == ($sq['rowdivid'] . '#1')) {
+                                                                $foundSQrelevance=true;
+                                                                if (isset($sqRelResultCache[$sq['eqn']])) {
+                                                                    $sqrel = $sqRelResultCache[$sq['eqn']]['result'];
+                                                                    if ($debug) {
+                                                                        $prettyPrintSQRelEqns[] = $sqRelResultCache[$sq['eqn']]['prettyPrint'];
+                                                                    }
+                                                                }
+                                                                else {
+                                                                    $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
+                                                                    $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                                                    if ($LEM->em->HasErrors()) {
+                                                                        $sqrel=false;  // default to invalid so that can show the error
+                                                                    }
+                                                                    if ($debug) {
+                                                                        $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
+                                                                        $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
+                                                                    }
+                                                                    $sqRelResultCache[$sq['rowdivid']] = array(
+                                                                        'result'=>$sqrel,
+                                                                        'prettyPrint'=>$prettyPrintSQRelEqn,
+                                                                        );
+                                                                }
+                                                                if ($sqrel) {
+                                                                    $relevantSQs[] = $sgqa;
+                                                                }
+                                                                else {
+                                                                    $irrelevantSQs[] = $sgqa;
+                                                                }
+                                                            }
+                                                            break;
+                                                        case ':': //ARRAY (Multi Flexi) 1 to 10
+                                                        case ';': //ARRAY (Multi Flexi) Text
+                                                            if (preg_match('/^' . $sq['rowdivid'] . '/', $sgqa)) {
+                                                                $foundSQrelevance=true;
+                                                                if (isset($sqRelResultCache[$sq['eqn']])) {
+                                                                    $sqrel = $sqRelResultCache[$sq['eqn']]['result'];
+                                                                    if ($debug) {
+                                                                        $prettyPrintSQRelEqns[] = $sqRelResultCache[$sq['eqn']]['prettyPrint'];
+                                                                    }
+                                                                }
+                                                                else {
+                                                                    $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
+                                                                    $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                                                    if ($LEM->em->HasErrors()) {
+                                                                        $sqrel=false;  // default to invalid so that can show the error
+                                                                    }
+                                                                    if ($debug) {
+                                                                        $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
+                                                                        $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
+                                                                    }
+                                                                    $sqRelResultCache[$sq['rowdivid']] = array(
+                                                                        'result'=>$sqrel,
+                                                                        'prettyPrint'=>$prettyPrintSQRelEqn,
+                                                                        );
+                                                                }
+                                                                if ($sqrel) {
+                                                                    $relevantSQs[] = $sgqa;
+                                                                }
+                                                                else {
+                                                                    $irrelevantSQs[] = $sgqa;
+                                                                }
+                                                            }
+                                                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                                                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                                                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                                                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                                                        case 'F': //ARRAY (Flexible) - Row Format
+                                                        case 'M': //Multiple choice checkbox
+                                                        case 'P': //Multiple choice with comments checkbox + text
+                                                            // Note, for M and P, Mandatory should mean that at least one answer was picked - not that all were checked
+                                                            if ($sgqa == $sq['rowdivid'] 
+                                                                    || $sgqa == ($sq['rowdivid'] . 'comment')) {    // to catch case 'P'
+                                                                $foundSQrelevance=true;
+                                                                if (isset($sqRelResultCache[$sq['eqn']])) {
+                                                                    $sqrel = $sqRelResultCache[$sq['eqn']]['result'];
+                                                                    if ($debug) {
+                                                                        $prettyPrintSQRelEqns[] = $sqRelResultCache[$sq['eqn']]['prettyPrint'];
+                                                                    }
+                                                                }
+                                                                else {
+                                                                    $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
+                                                                    $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                                                    if ($LEM->em->HasErrors()) {
+                                                                        $sqrel=false;  // default to invalid so that can show the error
+                                                                    }
+                                                                    if ($debug) {
+                                                                        $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
+                                                                        $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
+                                                                    }
+                                                                    $sqRelResultCache[$sq['rowdivid']] = array(
+                                                                        'result'=>$sqrel,
+                                                                        'prettyPrint'=>$prettyPrintSQRelEqn,
+                                                                        );
+                                                                }
+                                                                if ($sqrel) {
+                                                                    $relevantSQs[] = $sgqa;
+                                                                }
+                                                                else {
+                                                                    $irrelevantSQs[] = $sgqa;
+                                                                }
+                                                            }
+                                                            break;
+                                                        case 'L': //LIST drop-down/radio-button list
+                                                            // TODO - these filters are supposed to ensure that the value doesn't equal a filtered value
+                                                            // TODO - isn't catching 'other' filter
+                                                            if ($sgqa == $sq['sgqa']) {
+                                                                $foundSQrelevance=true;
+                                                                if (isset($sqRelResultCache[$sq['eqn']])) {
+                                                                    $sqrel = $sqRelResultCache[$sq['eqn']]['result'];
+                                                                    if ($debug) {
+                                                                        $prettyPrintSQRelEqns[] = $sqRelResultCache[$sq['eqn']]['prettyPrint'];
+                                                                    }
+                                                                }
+                                                                else {
+                                                                    $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
+                                                                    $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                                                    if ($LEM->em->HasErrors()) {
+                                                                        $sqrel=false;  // default to invalid so that can show the error
+                                                                    }
+                                                                    if ($debug) {
+                                                                        $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
+                                                                        $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
+                                                                    }
+                                                                    $sqRelResultCache[$sq['rowdivid']] = array(
+                                                                        'result'=>$sqrel,
+                                                                        'prettyPrint'=>$prettyPrintSQRelEqn,
+                                                                        );
+                                                                }
+                                                                if ($sqrel) {
+                                                                    $relevantSQs[] = $sgqa;
+                                                                }
+                                                                else {
+                                                                    $irrelevantSQs[] = $sgqa;
+                                                                }
+                                                            }
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                            if (!$foundSQrelevance) {
+                                                // then this question is relevant
+                                                $relevantSQs[] = $sgqa;
                                             }
                                         }
+                                    }
+                                    if ($debug)  {
+                                        $prettyPrintSQRelEqns = array_unique($prettyPrintSQRelEqns);
+                                    }
+                                    // These array_unique only apply to array_filter of type L (list)
+                                    $relevantSQs = array_unique($relevantSQs);
+                                    $irrelevantSQs = array_unique($irrelevantSQs);
+
+                                    // TODO - NULL out values of any irrelevant subquestions
+
+                                    // check that all mandatories have been fully answered (but don't require answers for sub-questions that are irrelevant
+                                    $unansweredSQs = array();   // list of sub-questions that weren't answered
+                                    foreach ($relevantSQs as $sgqa) {
+                                        if (!isset($_SESSION[$sgqa]) || ($_SESSION[$sgqa] == '' || is_null($_SESSION[$sgqa]))) {
+                                            // then a relevant, visible, mandatory question hasn't been answered
+                                            $unansweredSQs[] = $sgqa;
+                                        }
+                                    }
+
+                                    // Detect any violations of  mandatory rules
+                                    $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
+                                    if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y')) {
+                                        switch ($qInfo['type']) {
+                                            case 'M':
+                                            case 'P':
+                                                // If at least one checkbox is checked, we're OK
+                                                if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs))) {
+                                                    $qmandViolation = true;
+                                                }
+                                                break;
+                                            default:
+                                                // In general, if any relevant questions aren't answered, then it violates the mandatory rule
+                                                if (count($unansweredSQs) > 0) {
+                                                    $qmandViolation = true; // TODO - what about 'other'?
+                                                }
+                                                break;
+                                        }
+                                    }
+                                    if ($qmandViolation) {
+                                        $gmandViolation=true;    // if one question violates mandatory, then the group does too
                                     }
 
                                     // check validity of responses
@@ -2058,6 +2261,10 @@ class LimeExpressionManager {
                                         'unansweredSQs' => implode('|',$unansweredSQs),
                                         'valid' => $qvalid,
                                         'validEqn' => $prettyPrintValidEqn,
+                                        'relevantSQs' => implode('|',$relevantSQs),
+                                        'irrelevantSQs' => implode('|',$irrelevantSQs),
+                                        'subQrelEqn' => implode('<br/>',$prettyPrintSQRelEqns),
+                                        'qmandViolation' => $qmandViolation,
                                         );
 
                                     if ($debug) {
@@ -2068,7 +2275,7 @@ class LimeExpressionManager {
                                             . ($qhidden ? $ALWAYS_HIDDEN : ' ')
                                             . (($qInfo['mandatory'] == 'Y')? ' mandatory' : ' ')
                                             . (($hasValidationEqn) ? (!$qvalid ? $INVALID : ' valid') : '')
-                                            . ((count($unansweredSQs) > 0) ? $MANDVIOLATION : ' ')
+                                            . ($qmandViolation ? $MANDVIOLATION : ' ')
                                             . $prettyPrintRelEqn
                                             . "<br/>\n";
                                         if ($prettyPrintValidEqn != '') {
@@ -2081,8 +2288,34 @@ class LimeExpressionManager {
                                         $LEM->ProcessString($subQList, $qid);
                                         $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
                                         $debug_gmessage .= '----SubQs=> ' . $prettyPrintSubQList . "<br/>\n";
+
+                                        if (count($prettyPrintSQRelEqns) > 0) {
+                                            $debug_gmessage .= "----Array Filters Applied:<br/>\n" . implode('<br/>',$prettyPrintSQRelEqns) . "<br/>\n";
+                                        }
+                                        
+                                        if (count($relevantSQs) > 0) {
+                                            $subQList = '{' . implode('}, {', $relevantSQs) . '}';
+                                            // pretty-print them
+                                            $LEM->ProcessString($subQList, $qid);
+                                            $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+                                            $debug_gmessage .= '----Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+                                        }
+                                        
+                                        if (count($irrelevantSQs) > 0) {
+                                            $subQList = '{' . implode('}, {', $irrelevantSQs) . '}';
+                                            // pretty-print them
+                                            $LEM->ProcessString($subQList, $qid);
+                                            $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+                                            $debug_gmessage .= '----Irrelevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+                                        }
+
+                                        // show which relevant subQs were not answered
                                         if (count($unansweredSQs) > 0) {
-                                            $debug_gmessage .= '----Unanswered SubQs: ' . implode('|',$unansweredSQs) . "<br/>\n";
+                                            $subQList = '{' . implode('}, {', $unansweredSQs) . '}';
+                                            // pretty-print them
+                                            $LEM->ProcessString($subQList, $qid);
+                                            $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+                                            $debug_gmessage .= '----Unanswered Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
                                         }
                                     }
 
@@ -2176,16 +2409,18 @@ class LimeExpressionManager {
                                         // Advance to next group
                                         ++$LEM->currentGroupSeq;
                                         --$i;   // to avoid a double increment from the for loop
+                                        $currentQset=array();   // finished processing that group, so get ready for another one
                                         continue;
                                     }
                                     else {
                                         // This is the next relevant group - return something useful
+                                        $LEM->currentQset=$currentQset;
                                         return array(
                                             'finished' => false,
                                             'message' => $debug_message,
                                             'gid' => $groupNum,
                                             'gseq' => $LEM->currentGroupSeq,
-                                            'qset' => $currentQset,
+//                                            'qset' => $currentQset,
                                         );
                                     }
                                 }
@@ -2226,11 +2461,13 @@ class LimeExpressionManager {
                                     // Advance to next group
                                     ++$LEM->currentGroupSeq;
                                     --$i; // to avoid a double increment from the for loop
+                                    $currentQset=array();   // finished processing that group, so get ready for another one
                                     continue;
                                 }
                             }
                         }
                     }
+                    $LEM->currentQset=NULL;
                     return array(
                         'finished' => true,
                         'message' => $debug_message,
