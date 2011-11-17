@@ -1,4 +1,4 @@
-q<?php
+<?php
 /**
  * Description of LimeExpressionManager
  * This is a wrapper class around ExpressionManager that implements a Singleton and eases
@@ -1931,66 +1931,77 @@ class LimeExpressionManager {
         );
     }
 
-    static function NavigateBackwards()
+    static function NavigateBackwards($debug=false)
     {
-        return self::NextRelevantSet(false);
+        return self::NextRelevantSet(false,$debug);
     }
     
-    static function NavigateForwards() {
-        return self::NextRelevantSet(true);
+    static function NavigateForwards($debug=false) {
+        return self::NextRelevantSet(true,$debug);
     }
 
-    static function NextRelevantSet($forward=true)
+    static function NextRelevantSet($forward=true,$debug=false)
     {
         // For each question in the group, need to know the following:
-        // (a) mandatory
+        // (a) mandatory - if so, then all relevant sub-questions must be answered (e.g. pay attention to array_filter and array_filter_exclude)
         // (b) always-hidden
         // (c) relevance status - including sub-question-level relevance
-        // (d) answered
-        // (e) validity
+        // (d) answered - if $_SESSION[sgqa]=='' or NULL, then it is not answered
+        // (e) validity - whether relevant questions pass their validity tests
         $LEM =& LimeExpressionManager::singleton();
         $currentQset = array(); // collection of questions on this page (may be survey, group, or question-level)
         $debug_message='';
-        $IRRELEVANT=" <span style='color:red'>irrelevant</span> ";
-        $ALWAYS_HIDDEN=" <span style='color:red'>always-hidden</span> ";
-        $INVALID=" <span style='color:red'>invalid</span> ";
-        $MANDVIOLATION=" <span style='color:red'>missing mandatory</span> ";
-        $MANDATORY=" <span style='color:red'>mandatory</span> ";
+        if ($debug || true) {
+            $IRRELEVANT=" <span style='color:red'>irrelevant</span> ";
+            $ALWAYS_HIDDEN=" <span style='color:red'>always-hidden</span> ";
+            $INVALID=" <span style='color:red'>(a relevant Q fails validation tests)</span> ";
+            $MANDVIOLATION=" <span style='color:red'>(missing a relevant mandatory)</span> ";
+        }
         if ($forward) {
             switch ($LEM->surveyMode){
                 case 'survey':
                     break;
                 case 'group':
-                    $debug_message='';
                     ++$LEM->currentGroupSeq;    // advance to next group
                     $numQuestions = count($LEM->questionSeq2relevance);
                     $numGroups = count($LEM->groupId2groupSeq);
                     if ($LEM->currentGroupSeq < $numGroups) {
                         for ($i=0; $i<$numQuestions; ++$i)
                         {
+                            // iterate over all questions, just processing those in the next relevant group
                             $qInfo = $LEM->questionSeq2relevance[$i];   // this array is by group and question sequence
                             if ($qInfo['groupSeq'] == $LEM->currentGroupSeq) {
                                 $groupNum = $qInfo['gid'];
                                 $grel=false;  // assume irrelevant until find a relevant question
-                                $ghidden=true;   // assume hidden until find a non-hidden question
+                                $ghidden=true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
                                 $gmandViolation=false;  // assume that the group contains no manditory questions that have not been fully answered
                                 $gvalid=true;   // assume valid until discover otherwise
                                 $LEM->StartProcessingGroup($groupNum, $LEM->anonymized, $LEM->sid); // analyze the data we have about this group
 //                                $grel = $LEM->GroupIsRelevant($groupNum) ? 'relevant' : $IRRELEVANT; // TODO - tihs function  returns wrong value - always true
                                 $debug_gmessage = '';
+                                // Once find the next potentially relevant group, process all questions and sub-questions within it.
                                 while($qInfo['groupSeq'] == $LEM->currentGroupSeq) {
-//                                    $qrel = $LEM->QuestionIsRelevant($qInfo['qid']);
                                     // Check relevance - via equation, or from $SESSION?
                                     $qrel=true;   // assume relevant unless discover otherwise
                                     $prettyPrintRelEqn='';    //  assume no relevance eqn by default
-                                    if ($qInfo['relevance']) {
-                                        $stringToParse = htmlspecialchars_decode($qInfo['relevance'],ENT_QUOTES);  // TODO is this needed?
-                                        $qrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
-                                        if ($LEM->em->HasErrors()) {
-                                            $qrel=false;  // default to invalid so that can show the error
-                                        }
+                                    $qid=$qInfo['qid'];
+
+                                    if (!isset($qInfo['relevance']) || $qInfo['relevance'] == '') {
+                                        $relevanceEqn = 1;
+                                    }
+                                    else {
+                                        $relevanceEqn = $qInfo['relevance'];
+                                    }
+                                    $relevanceEqn = htmlspecialchars_decode($relevanceEqn,ENT_QUOTES);  // TODO is this needed?
+                                    $qrel = $LEM->em->ProcessBooleanExpression($relevanceEqn,$qInfo['groupSeq'], $qInfo['questionSeq']);    // assumes safer to re-process relevance and not trust POST values
+                                    if ($LEM->em->HasErrors()) {
+                                        $qrel=false;  // default to invalid so that can show the error
+                                    }
+                                    if ($debug) {
                                         $prettyPrintRelEqn = $LEM->em->GetPrettyPrintString();
                                     }
+
+                                    // Check always-hidden status
                                     $qhidden = $qInfo['hidden'];
                                     if ($qrel) {
                                         $grel = true;   // at least one question is relevant
@@ -1998,56 +2009,83 @@ class LimeExpressionManager {
                                     if (!$qhidden && $qrel) {
                                         $ghidden = false;    // at least one relevant question should be shown
                                     }
+
                                     // check that all mandatories have been fully answered (but don't require answers for sub-questions that are irrelevant
                                     $unansweredSQs = array();   // list of sub-questions that weren't answered
-                                    if ($qrel && !$qhidden && $qInfo['mandatory']) {
-                                        $sgqas = explode('|',$LEM->qid2code[$qInfo['qid']]);
+                                    if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y')) {
+                                        $sgqas = explode('|',$LEM->qid2code[$qid]);
                                         foreach ($sgqas as $sgqa) {
-                                            if (isset($_SESSION[$sgqa]) && $_SESSION[$sgqa] == '') {
+                                            if (!isset($_SESSION[$sgqa]) || ($_SESSION[$sgqa] == '' || is_null($_SESSION[$sgqa]))) {
                                                 // then a relevant, visible, mandatory question hasn't been answered
                                                 $gmandViolation=true;
                                                 $unansweredSQs[] = $sgqa;
                                             }
                                         }
                                     }
-                                    // check validity
+
+                                    // check validity of responses
                                     $qvalid=true;   // assume valid unless discover otherwise
+                                    $hasValidationEqn=false;
                                     $prettyPrintValidEqn='';    //  assume no validation eqn by default
-                                    if ($qrel && !$qhidden && isset($LEM->qid2validationEqn[$qInfo['qid']])) {
-                                        $stringToParse = htmlspecialchars_decode($LEM->qid2validationEqn[$qInfo['qid']],ENT_QUOTES);  // TODO is this needed?
-                                        $qvalid = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
-                                        if ($LEM->em->HasErrors()) {
-                                            $qvalid=false;  // default to invalid so that can show the error
+                                    if (isset($LEM->qid2validationEqn[$qid])) {
+                                        $hasValidationEqn=true;
+                                        if ($qrel && !$qhidden) {
+                                            $stringToParse = htmlspecialchars_decode($LEM->qid2validationEqn[$qid],ENT_QUOTES);  // TODO is this needed?
+                                            $qvalid = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                            if ($LEM->em->HasErrors()) {
+                                                $qvalid=false;  // default to invalid so that can show the error
+                                            }
+                                            if ($debug) {
+                                                $prettyPrintValidEqn = $LEM->em->GetPrettyPrintString();
+                                            }
                                         }
-                                        $prettyPrintValidEqn = $LEM->em->GetPrettyPrintString();
+                                        else {
+                                            if ($debug) {
+                                                $prettyPrintValidEqn = 'Question is Irrelevant, so no need to further validate it';
+                                            }
+                                        }
                                     }
                                     if (!$qvalid) {
                                         $gvalid=false;  //so know of at least one validation error for the group
                                     }
 
+                                    // Store metadata needed for subsequent processing and display purposes
                                     $currentQset[] = array(
                                         'info' => $qInfo,   // collect all questions within the group - includes mandatory and always-hiddden status
                                         'relStatus' => $qrel,
                                         'relEqn' => $prettyPrintRelEqn,
-                                        'sgqa' => $LEM->qid2code[$qInfo['qid']],
+                                        'sgqa' => $LEM->qid2code[$qid],
                                         'unansweredSQs' => implode('|',$unansweredSQs),
                                         'valid' => $qvalid,
                                         'validEqn' => $prettyPrintValidEqn,
                                         );
-                                    $debug_gmessage .= '  [' . $qInfo['questionSeq'] . '][Q:'. $qInfo['qid'] . '][' . $qInfo['type'] . ']: '
-                                        . ($qrel ? 'relevant' : $IRRELEVANT)
-                                        . ($qhidden ? $ALWAYS_HIDDEN : ' ')
-                                        . ($qInfo['mandatory'] ? $MANDATORY : ' ')
-                                        . (!$qvalid ? $INVALID : ' ')
-                                        . ((count($unansweredSQs) > 0) ? $MANDVIOLATION : ' ')
-                                        . $prettyPrintRelEqn . ' '
-                                        . $prettyPrintValidEqn . ' '
-                                        . "\n";
-                                    // what are the database question codes for this question?
-                                    $debug_gmessage .= '    => ' . $LEM->qid2code[$qInfo['qid']] . "\n";
-                                    if (count($unansweredSQs) > 0) {
-                                        $debug_message .= '    Unanswered: ' . implode('|',$unansweredSQs);
+
+                                    if ($debug) {
+                                        $debug_gmessage .= '--[Q#' . $qInfo['questionSeq'] . ']'
+                                            . "[<a href='../../../admin/admin.php?sid={$LEM->sid}&gid=$groupNum&qid=$qid'>"
+                                            . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
+                                            . ($qrel ? 'relevant' : $IRRELEVANT)
+                                            . ($qhidden ? $ALWAYS_HIDDEN : ' ')
+                                            . (($qInfo['mandatory'] == 'Y')? ' mandatory' : ' ')
+                                            . (($hasValidationEqn) ? (!$qvalid ? $INVALID : ' valid') : '')
+                                            . ((count($unansweredSQs) > 0) ? $MANDVIOLATION : ' ')
+                                            . $prettyPrintRelEqn
+                                            . "<br/>\n";
+                                        if ($prettyPrintValidEqn != '') {
+                                            $debug_gmessage .= '----Validation Eqn: ' . $prettyPrintValidEqn . "<br/>\n";
+                                        }
+
+                                        // what are the database question codes for this question?
+                                        $subQList = '{' . implode('}, {', explode('|',$LEM->qid2code[$qid])) . '}';
+                                        // pretty-print them
+                                        $LEM->ProcessString($subQList, $qid);
+                                        $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+                                        $debug_gmessage .= '----SubQs=> ' . $prettyPrintSubQList . "<br/>\n";
+                                        if (count($unansweredSQs) > 0) {
+                                            $debug_gmessage .= '----Unanswered SubQs: ' . implode('|',$unansweredSQs) . "<br/>\n";
+                                        }
                                     }
+
                                     // if there are sub-questions and filters, which of those are irrelevant?
                                     ++$i;   // advance to next question
                                     if ($i >= $numQuestions) {
@@ -2055,15 +2093,39 @@ class LimeExpressionManager {
                                     }
                                     $qInfo = $LEM->questionSeq2relevance[$i];
                                 }
-                                $debug_message .= '[' . $LEM->currentGroupSeq . '][G:' . $groupNum . "]:  " 
-                                        . ($grel ? 'relevant ' : $IRRELEVANT)
-                                        . ($ghidden ? $ALWAYS_HIDDEN : ' ')
-                                        . ($gmandViolation ? $MANDVIOLATION : ' ')
-                                        . ($gvalid ? 'valid ' : $INVALID)
-                                        . "\n" . $debug_gmessage;
+
+                                // Done processing all questions/sub-questions in the potentially relevant group
+                                // Now check whether the group as a whole is relevant, valid, and/or hidden
+                                if (true || $debug) {   // always want to see this
+                                    $debug_message .= '<br/>[G#' . $LEM->currentGroupSeq . ']'
+                                            . "[<a href='../../../admin/admin.php?action=orderquestions&sid={$LEM->sid}&gid=$groupNum'>"
+                                            .  'GID:' . $groupNum . "</a>]:  "
+                                            . ($grel ? 'relevant ' : $IRRELEVANT)
+                                            . (($ghidden && $grel) ? $ALWAYS_HIDDEN : ' ')
+                                            . ($gmandViolation ? $MANDVIOLATION : ' ')
+                                            . ($gvalid ? '' : $INVALID)
+                                            . "<br/>\n" . $debug_gmessage;
+                                }
+
                                 if ($grel == true) {
+                                    if (!$gvalid) {
+                                        // At least one question is invalid, so re-show this group
+                                        // Validation logic needs to happen before trying to move to the next group
+                                        if ($debug) {
+                                            $debug_message .= "----At least one relevant question was invalid, so re-show this group<br/>\n";
+                                        }
+                                    }
+                                    if ($gmandViolation) {
+                                        // At least one releavant question was mandatory but not answered
+                                        // Mandatory logic needs to happen before trying to move to the next group
+                                        if ($debug) {
+                                            $debug_message .= "----At least one relevant question was mandatory but unanswered, so re-show this group<br/>\n";
+                                        }
+                                    }
+
                                     if ($ghidden == true) {
                                         // This group has at least one relevant question, but they are all hidden.
+                                        // NULL irrelevant values and process + save the result of any relevant equations
                                         $updatedValues=array();
                                         foreach ($currentQset as $qs)
                                         {
@@ -2075,7 +2137,10 @@ class LimeExpressionManager {
                                                 // Store the result of the Equation in the SESSION
                                                 $_SESSION[$sgqa] = $result;
                                                 $updatedValues[$sgqa] = $result;
-                                                $debug_message .= '   ** Eqn[' . $sgqa . '](' . $qs['info']['eqn'] . ') = ' . $result . "\n";
+                                                if ($debug) {
+                                                    $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
+                                                    $debug_message .= '----** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br/>\n";
+                                                }
                                             }
                                             // NULL all irrelevant questions
                                             if ($qs['relStatus'] == false) {
@@ -2086,7 +2151,7 @@ class LimeExpressionManager {
                                                 }
                                             }
                                         }
-                                        // Update all values (NULL or otherwise) in the database
+                                        // Update these values in the database
                                         if (count($updatedValues) > 0)
                                         {
                                             $query = 'UPDATE survey_' . $LEM->sid . " SET ";
@@ -2101,13 +2166,17 @@ class LimeExpressionManager {
                                                 }
                                             }
                                             $query .= implode(', ', $setter);
-                                            $query .= " WHERE ID=???;\n";
-                                            
-                                            $debug_message .= '   ** ' . $query;
+                                            $query .= " WHERE ID=?";
+
+                                            if ($debug) {
+                                                $debug_message .= '----** Page is relevant but hidden, so NULL irrelevant values and save relevant Equation results:</br>' . $query . "<br/>\n";
+                                            }
                                         }
 
                                         // Advance to next group
                                         ++$LEM->currentGroupSeq;
+                                        --$i;   // to avoid a double increment from the for loop
+                                        continue;
                                     }
                                     else {
                                         // This is the next relevant group - return something useful
@@ -2121,18 +2190,18 @@ class LimeExpressionManager {
                                     }
                                 }
                                 else {
-                                    // NULL all of the Group's values in the database - they are all irrelevant
-                                    // This group has at least one relevant question, but they are all hidden.
+                                    // This group contains no relevant questions
+                                    // NULL all of the Group's values in the database
                                     $updatedValues=array();
                                     foreach ($currentQset as $qs)
                                     {
                                         $sgqas = explode('|',$qs['sgqa']);
                                         foreach ($sgqas as $sgqa) {
-                                            $_SESSION[$sgqa] = NULL;    // TMSW - or should it be unset?
+                                            $_SESSION[$sgqa] = NULL;
                                             $updatedValues[$sgqa] = NULL;
                                         }
                                     }
-                                    // Update all values (NULL or otherwise) in the database
+                                    // Update these values in the database
                                     if (count($updatedValues) > 0)
                                     {
                                         $query = 'UPDATE survey_' . $LEM->sid . " SET ";
@@ -2147,18 +2216,21 @@ class LimeExpressionManager {
                                             }
                                         }
                                         $query .= implode(', ', $setter);
-                                        $query .= " WHERE ID=???;\n";
+                                        $query .= " WHERE ID=?";
 
-                                        $debug_message .= '   ** ' . $query;
+                                        if ($debug) {
+                                            $debug_message .= '----** Page is irrelevant, so NULL all questions in this group:<br/>' . $query . "<br/>\n";
+                                        }
                                     }
 //
                                     // Advance to next group
                                     ++$LEM->currentGroupSeq;
+                                    --$i; // to avoid a double increment from the for loop
+                                    continue;
                                 }
                             }
                         }
                     }
-                    $debug_message .= 'Finished survey #' . $LEM->sid . "\n";
                     return array(
                         'finished' => true,
                         'message' => $debug_message,
@@ -2168,7 +2240,7 @@ class LimeExpressionManager {
                     break;
             }
         }
-        else {
+        else {  // go backwards
             switch ($LEM->surveyMode){
                 case 'survey':
                     break;

@@ -18,23 +18,28 @@
             $surveys = array(
                 768959,
                 37171,
-                27246,
+//                27246,
+//                26834,
+//                24811,
                 );
 
             foreach ($surveys as $surveyid)
             {
+                print '<h3>Starting survey ' . $surveyid . "</h3>";
+                $now = microtime(true);
                 LimeExpressionManager::StartSurvey($surveyid, 'group', false, true);
-                print "<pre>\n";
-                print 'Starting survey ' . $surveyid . "\n";
+                print '<b>[StartSurvey() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
+
                 while(true) {
-                    $result = LimeExpressionManager::NavigateForwards();
+                    $now = microtime(true);
+                    $result = LimeExpressionManager::NavigateForwards(true);
+                    print $result['message'] . "<br/>";
+                    print '<b>[NavigateForwards() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
                     if (is_null($result) || $result['finished'] == true) {
                         break;
                     }
-                    print $result['message'];
                 }
-                print $result['message'];
-                print "</pre>\n";
+                print "<h3>Finished survey " . $surveyid . "</h3>";
             }
         ?>
     </body>
