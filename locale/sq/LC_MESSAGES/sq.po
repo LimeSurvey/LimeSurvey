@@ -1,18 +1,19 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: LimeSurvey German language file\n"
+"Project-Id-Version: LimeSurvey\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-31 01:22+0200\n"
-"PO-Revision-Date: 2009-06-20 17:24+0100\n"
-"Last-Translator: Gjergj Sheldija <gjergj.sheldija@gmail.com>\n"
+"PO-Revision-Date: 2011-11-17 17:04+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: D:\\web\\xampp\\htdocs\\stable_plus\n"
-"X-Poedit-Country: german\n"
+"X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\stable_plus\n"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:34
@@ -8085,33 +8086,45 @@ msgstr "Asnje SID nuk eshte siguruar. S'mund te kalosh tek kerkimi"
 
 #~ msgid "(XML module only in PHP 4 available)"
 #~ msgstr "(moduli XML i gatshem vetem ne PHP 4)"
+
 #~ msgid "Check Settings"
 #~ msgstr "Kontrollo vendosjet"
+
 #~ msgid "Save Survey and Return"
 #~ msgstr "Ruaj kontrollin dhe Kthehu"
+
 #~ msgid "Please contact"
 #~ msgstr "Te lutem kontakto"
+
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "Dies ist eine Umfrage mit geschlossenem Teilnehmerkreis - Sie müssen "
 #~ "einen Zugangsschlüssel angeben um teilzunehmen."
+
 #~ msgid "prev"
 #~ msgstr "E meparshme"
+
 #~ msgid "last"
 #~ msgstr "E fundit"
+
 #~ msgid "answers"
 #~ msgstr "Pergjigjet"
+
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "per te hequr hyrjen e fundit ne listen tuaj te renditur"
+
 #~ msgid "Please choose at most"
 #~ msgstr "Te lutem zgjidh shumicen"
+
 #~ msgid "answer(s) for question"
 #~ msgstr "Pergjigje(et) per pyetje"
+
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Jeni i sigurte se doni ta fshini kete hyrje"
+
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Tabela \"token\" qe ju siguruat nuk eshte e vlefshme"
+
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Pergjigjet e kerkimit tuaj nuk jane ruajtur me kujdes"
-

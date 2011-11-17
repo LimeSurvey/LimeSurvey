@@ -8,6 +8,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 
 #msgstr "Сохранить ответы и вернуться позже"
 #: /home/megaterik/lime/limesurvey_dev/question.php:50
