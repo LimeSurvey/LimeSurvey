@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: LimeSurvey\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-31 01:22+0200\n"
-"PO-Revision-Date: 2008-06-05 00:32+0900\n"
-"Last-Translator: Lee <paradise_dw@nate.com>\n"
+"PO-Revision-Date: 2011-11-17 17:05+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Korean <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-Bookmarks: 1356,1296,-1,-1,-1,-1,-1,-1,-1,-1\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SearchPath-0: C:\\LimeSurvey_Sources\\source\\limesurvey\n"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:34
@@ -35,11 +36,8 @@ msgstr "죄송합니다. 일치하는 설문이 없습니다."
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:612
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:257
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:760
-msgid ""
-"This survey is not currently active. You will not be able to save your "
-"responses."
-msgstr ""
-"이 설문은 현재 활성화 되어 있지 않습니다. 당신의 응답을 저장할 수 없습니다."
+msgid "This survey is not currently active. You will not be able to save your responses."
+msgstr "이 설문은 현재 활성화 되어 있지 않습니다. 당신의 응답을 저장할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:294
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:74
@@ -51,11 +49,8 @@ msgstr "저장되지 않음"
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:295
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:75
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:108
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
-msgstr ""
-"당신의 설문에 대한 응답은 저장되지 않았습니다. 이 조사는 활성화 되어 있지 않"
-"습니다."
+msgid "Your survey responses have not been recorded. This survey is not yet active."
+msgstr "당신의 설문에 대한 응답은 저장되지 않았습니다. 이 조사는 활성화 되어 있지 않습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:296
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:76
@@ -301,12 +296,8 @@ msgid "Vietnamese"
 msgstr "베트남어"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:240
-msgid ""
-"Warning: You are still using the default password ('password'). Please "
-"change your password and re-login again."
-msgstr ""
-"경고: 당신은 초기설정값인 비밀번호를 쓰고 있습니다('password'). 비밀번호를 바"
-"꾸고 다시 로그인 해 주십시오."
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "경고: 당신은 초기설정값인 비밀번호를 쓰고 있습니다('password'). 비밀번호를 바꾸고 다시 로그인 해 주십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:242
 msgid "Administration"
@@ -1203,13 +1194,8 @@ msgid "Comment"
 msgstr "해설"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2161
-msgid ""
-"Caution: JavaScript execution is disabled in your browser. You may not be "
-"able to answer all questions in this survey. Please, verify your browser "
-"parameters."
-msgstr ""
-"주의: JavaScript 가  당신의 브라우저에서 실행되지 않습니다. 당신은 이 설문에"
-"서 모든 질문에 답변할 수 없습니다. 당신의 브라우저의 매개변수를 확인하십시오."
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "주의: JavaScript 가  당신의 브라우저에서 실행되지 않습니다. 당신은 이 설문에서 모든 질문에 답변할 수 없습니다. 당신의 브라우저의 매개변수를 확인하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2176
 msgid "There are no questions in this survey"
@@ -1241,23 +1227,8 @@ msgid "This survey is anonymous."
 msgstr "이 설문은 익명으로 진행됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
-msgid ""
-"The record kept of your survey responses does not contain any identifying "
-"information about you unless a specific question in the survey has asked for "
-"this. If you have responded to a survey that used an identifying token to "
-"allow you to access the survey, you can rest assured that the identifying "
-"token is not kept with your responses. It is managed in a separate database, "
-"and will only be updated to indicate that you have (or haven't) completed "
-"this survey. There is no way of matching identification tokens with survey "
-"responses in this survey."
-msgstr ""
-"만약 당신의 신원 정보에 대한 구체적인 질문이 설문에 없다면, 당신이 설문에 응"
-"답한 자료는 신원 정보를 포함하지 않습니다. 당신의 신원을 확인하여 설문에 참여"
-"할 수 있게 하는 토큰을 사용하는 설문에 응답하는 경우에, 신원확인 토큰이 응답"
-"에 포함되지 않음은 신경쓰지 않으셔도 됩니다. 토큰은 다른 데이터베이스에서 따"
-"로 관리하고, 당신이 설문을 완수하거나 완수하지 않았다는 것을 알려주기 위한 경"
-"우에 갱신됩니다. 이 설문에서는 설문에 응답한 사람의 신원정보를 알 수 없습니"
-"다."
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "만약 당신의 신원 정보에 대한 구체적인 질문이 설문에 없다면, 당신이 설문에 응답한 자료는 신원 정보를 포함하지 않습니다. 당신의 신원을 확인하여 설문에 참여할 수 있게 하는 토큰을 사용하는 설문에 응답하는 경우에, 신원확인 토큰이 응답에 포함되지 않음은 신경쓰지 않으셔도 됩니다. 토큰은 다른 데이터베이스에서 따로 관리하고, 당신이 설문을 완수하거나 완수하지 않았다는 것을 알려주기 위한 경우에 갱신됩니다. 이 설문에서는 설문에 응답한 사람의 신원정보를 알 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2240
 msgid "Are you sure you want to clear all your responses?"
@@ -1290,13 +1261,8 @@ msgid "Click on 'Submit' now to complete the process and save your answers."
 msgstr "'제출’을 클릭하여 전 과정을 완료하고 당신의 답변을 저장하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2338
-msgid ""
-"If you want to check any of the answers you have made, and/or change them, "
-"you can do that now by clicking on the [<< prev] button and browsing through "
-"your responses."
-msgstr ""
-"당신이 답변한 질문들을 검사하거나 바꾸고 싶다면, 당신은 [<< 이전] 버튼을 클릭"
-"하고 당신의 답변을 열어본 뒤 수정하십시오."
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "당신이 답변한 질문들을 검사하거나 바꾸고 싶다면, 당신은 [<< 이전] 버튼을 클릭하고 당신의 답변을 열어본 뒤 수정하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2359
 msgid "Answers Cleared"
@@ -1316,20 +1282,12 @@ msgid "Enter a name and password for this survey and click save below."
 msgstr "설문에서 이름과 비밀번호를 기재하고, 아래의 저장을 클릭하시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"Your survey will be saved using that name and password, and can be completed "
-"later by logging in with the same name and password."
-msgstr ""
-"이름과 비밀번호를 사용하여 당신의 설문을 저장하고, 다시 그 이름과 비밀번호로 "
-"로그인하여 설문을 완료할 수 있습니다."
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "이름과 비밀번호를 사용하여 당신의 설문을 저장하고, 다시 그 이름과 비밀번호로 로그인하여 설문을 완료할 수 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"If you give an email address, an email containing the details will be sent "
-"to you."
-msgstr ""
-"만약 당신이 이메일 주소를 기재하면 상세한 설명이 첨부된 이메일이 당신에게 갈 "
-"것입니다."
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "만약 당신이 이메일 주소를 기재하면 상세한 설명이 첨부된 이메일이 당신에게 갈 것입니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2384
 msgid "Return To Survey"
@@ -1408,12 +1366,8 @@ msgid "You may register for this survey if you wish to take part."
 msgstr "만약 당신이 참여하기를 원하다면, 설문을 위해 등록할 수 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
-msgid ""
-"Enter your details below, and an email containing the link to participate in "
-"this survey will be sent immediately."
-msgstr ""
-"세부사항을 아래에 기재하면, 이 설문에 참여할 수 있도록 링크되어 있는 이메일"
-"이 즉시 당신에게 갈 것입니다."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
+msgstr "세부사항을 아래에 기재하면, 이 설문에 참여할 수 있도록 링크되어 있는 이메일이 즉시 당신에게 갈 것입니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2441
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:809
@@ -1580,11 +1534,8 @@ msgid "The answer to the security question is incorrect"
 msgstr "보안 질문에 대한 응답이 잘못되었습니다"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:248
-msgid ""
-"This name has already been used for this survey. You must use a unique save "
-"name."
-msgstr ""
-"이 이름은 이번 설문에서 이미 사용되었습니다. 다른 이름을 사용해주십시오."
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "이 이름은 이번 설문에서 이미 사용되었습니다. 다른 이름을 사용해주십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:304
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:418
@@ -1594,21 +1545,13 @@ msgstr "저장된 설문 세부사항"
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:305
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:419
 #, fuzzy
-msgid ""
-"Thank you for saving your survey in progress.  The following details can be "
-"used to return to this survey and continue where you left off.  Please keep "
-"this e-mail for your reference - we cannot retrieve the password for you."
-msgstr ""
-"당신, 또는 당신의 이메일 주소를 사용하는 사람이 설문을 중간에 저장하였습니"
-"다. 아래의 세부사항들은 이 설문으로 돌아올 경우에 사용되고 당신이 나가는 곳까"
-"지 계속됩니다."
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
+msgstr "당신, 또는 당신의 이메일 주소를 사용하는 사람이 설문을 중간에 저장하였습니다. 아래의 세부사항들은 이 설문으로 돌아올 경우에 사용되고 당신이 나가는 곳까지 계속됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:309
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:423
 #, fuzzy
-msgid ""
-"Reload your survey by clicking on the following link (or pasting it into "
-"your browser):"
+msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr "다음의 URL을 클릭하여 설문 재업로드하기:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:542
@@ -1616,26 +1559,12 @@ msgid "Cannot submit results - there are none to submit."
 msgstr "제출이 불가능합니다 - 제출할 것이 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-"이런 오류는 이미 결과를 제출했을 경우 발생합니다. 브라우저 상에서 ‘새로고"
-"침’을 누르십시오. 이런 경우 당신의 결과는 이미 저장되어 있습니다."
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "이런 오류는 이미 결과를 제출했을 경우 발생합니다. 브라우저 상에서 ‘새로고침’을 누르십시오. 이런 경우 당신의 결과는 이미 저장되어 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr ""
-"설문을 완성하는 도중에 이 메시지를 받았다면, 브라우저 상에서 ‘<-뒤로’를 선택"
-"하고 전페이지를 새로 여십시오. 마지막 페이지에서의 응답들이 지워지더라도 다"
-"른 응답들은 그대로 있게 됩니다. 이런 문제는 웹서버에 한꺼번에 많은 사람들이 "
-"접속할 경우 발생합니다. 이에 대해 사과드립니다. "
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "설문을 완성하는 도중에 이 메시지를 받았다면, 브라우저 상에서 ‘<-뒤로’를 선택하고 전페이지를 새로 여십시오. 마지막 페이지에서의 응답들이 지워지더라도 다른 응답들은 그대로 있게 됩니다. 이런 문제는 웹서버에 한꺼번에 많은 사람들이 접속할 경우 발생합니다. 이에 대해 사과드립니다. "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:174
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:203
@@ -1665,12 +1594,8 @@ msgstr "죄송하지만 당신의 작업시간이 만료되었습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:204
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:46
-msgid ""
-"Either you have been inactive for too long, you have cookies disabled for "
-"your browser, or there were problems with your connection."
-msgstr ""
-"너무 오랫동안 프로그램을 사용하지 않았거나, 당신의 브라우저에서 사용할 수 없"
-"는 쿠키가 있거나, 당신의 접속에 문제가 있습니다."
+msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
+msgstr "너무 오랫동안 프로그램을 사용하지 않았거나, 당신의 브라우저에서 사용할 수 없는 쿠키가 있거나, 당신의 접속에 문제가 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:291
 msgid "No available surveys"
@@ -1705,16 +1630,13 @@ msgstr "비밀번호를 입력하지 않았습니다."
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:513
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:107
 #, fuzzy
-msgid ""
-"This is a closed-access survey, so you must supply a valid token.  Please "
-"contact the administrator for assistance."
+msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
 msgstr "이 설문은 접속이 제한되었습니다. 유효한 토큰을 제공해야 합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:514
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1681
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1717
-msgid ""
-"The token you have provided is either not valid, or has already been used."
+msgid "The token you have provided is either not valid, or has already been used."
 msgstr "당신이 받은 토큰은 유효하지 않거나 이미 사용되었습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:515
@@ -1746,11 +1668,9 @@ msgstr "완료"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"This email is to confirm that you have completed the survey titled "
-"{SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"If you have any further questions about this email, please contact "
-"{ADMINNAME} on {ADMINEMAIL}.\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
 "Sincerely,\n"
 "\n"
@@ -1758,12 +1678,9 @@ msgid ""
 msgstr ""
 "친애하는 {FIRSTNAME},\n"
 "\n"
-"이 메일은 당신이 {SURVEYNAME}으로 이름 붙여진 설문을 완성했다는 것을 알리기 "
-"위함이며, 당신의 응답이 저장되었음을 알려드리는 바입니다. 협력해주셔서 감사합"
-"니다.\n"
+"이 메일은 당신이 {SURVEYNAME}으로 이름 붙여진 설문을 완성했다는 것을 알리기 위함이며, 당신의 응답이 저장되었음을 알려드리는 바입니다. 협력해주셔서 감사합니다.\n"
 "\n"
-"만약 당신이 이 메일과 관련하여 궁금한 사항이 있다면,  {ADMINEMAIL}을 이용하"
-"여 {ADMINNAME}와(과) 연락해 보시기 바랍니다.\n"
+"만약 당신이 이 메일과 관련하여 궁금한 사항이 있다면,  {ADMINEMAIL}을 이용하여 {ADMINNAME}와(과) 연락해 보시기 바랍니다.\n"
 "\n"
 "감사합니다\n"
 "\n"
@@ -1802,12 +1719,8 @@ msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "부적절한 오류가 발생하여 당신의 응답을 저장할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1514
-msgid ""
-"Your responses have not been lost and have been emailed to the survey "
-"administrator and will be entered into our database at a later point."
-msgstr ""
-"당신의 응답은 없어지지 않고 설문조사 관리자에게 이메일로 발송되어 데이터베이"
-"스에 저장되게 됩니다."
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "당신의 응답은 없어지지 않고 설문조사 관리자에게 이메일로 발송되어 데이터베이스에 저장되게 됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1515
 msgid "An error occurred saving a response to survey id"
@@ -1834,47 +1747,30 @@ msgid "Try to submit again"
 msgstr "제출 재시도"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1587
-msgid ""
-"Please confirm access to survey by answering the security question below and "
-"click continue."
-msgstr ""
-"아래의 보안 질문에 대한 응답을 하여 설문의 접근에 대해 확인을 받고 계속하기"
-"를 클릭하십시오."
+msgid "Please confirm access to survey by answering the security question below and click continue."
+msgstr "아래의 보안 질문에 대한 응답을 하여 설문의 접근에 대해 확인을 받고 계속하기를 클릭하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1635
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1680
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1716
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1753
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr ""
-"이 설문은 통제된 설문입니다. 참여하기 위해서는 유효한 토큰이 필요합니다."
+msgstr "이 설문은 통제된 설문입니다. 참여하기 위해서는 유효한 토큰이 필요합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1636
-msgid ""
-"If you have been issued a token, please enter it in the box below and click "
-"continue."
-msgstr ""
-"토큰을 발행받았다면, 토큰을 아래의 박스에 입력하고 계속하기를 클릭하십시오."
+msgid "If you have been issued a token, please enter it in the box below and click continue."
+msgstr "토큰을 발행받았다면, 토큰을 아래의 박스에 입력하고 계속하기를 클릭하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1758
-msgid ""
-"If you have been issued with a token, please enter it in the box below and "
-"click continue."
-msgstr ""
-"토큰을 발행받았다면, 토큰을 아래의 박스에 넣고 계속하기를 클릭하십시오."
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
+msgstr "토큰을 발행받았다면, 토큰을 아래의 박스에 넣고 계속하기를 클릭하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1770
-msgid ""
-"Please confirm the token by answering the security question below and click "
-"continue."
-msgstr ""
-"아래 부분의 보안 질문에 대한 응답을 하여 토큰을 확인하고 계속하기를 클릭하십"
-"시오."
+msgid "Please confirm the token by answering the security question below and click continue."
+msgstr "아래 부분의 보안 질문에 대한 응답을 하여 토큰을 확인하고 계속하기를 클릭하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1873
-msgid ""
-"This survey does not yet have any questions and cannot be tested or "
-"completed."
+msgid "This survey does not yet have any questions and cannot be tested or completed."
 msgstr "이 설문에는 아직 질문이 없어서 실행 또는 완성할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2169
@@ -1908,12 +1804,8 @@ msgid "Thank you for registering to participate in this survey."
 msgstr "이 설문에 참가하기 위해 등록해주셔서 감사합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
-msgid ""
-"An email has been sent to the address you provided with access details for "
-"this survey. Please follow the link in that email to proceed."
-msgstr ""
-"당신이 이 설문을 위해 입력하였던 주소로 이메일이 발송되었습니다. 진행하기 위"
-"해서는 그 이메일에 나타난 링크를 따라 진행해 주십시오"
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "당신이 이 설문을 위해 입력하였던 주소로 이메일이 발송되었습니다. 진행하기 위해서는 그 이메일에 나타난 링크를 따라 진행해 주십시오"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
 msgid "Survey Administrator"
@@ -1982,20 +1874,12 @@ msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "하나 또는 여러 개의 질문에 내용을 입력하지 않으면 진행할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:548
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed"
-msgstr ""
-"하나 또는 여러 개의 필수 질문이 응답되지 않았습니다. 이것들이 완성될 때가지 "
-"당신은 진행할 수 없습니다.  "
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "하나 또는 여러 개의 필수 질문이 응답되지 않았습니다. 이것들이 완성될 때가지 당신은 진행할 수 없습니다.  "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:571
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid"
-msgstr ""
-"하나 또는 여러 개의 질문이 유효한 방법으로 답변되지 않았습니다. 이 응답들이 "
-"유효해질 때까지 당신은 설문을 진행할 수 없습니다."
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "하나 또는 여러 개의 질문이 유효한 방법으로 답변되지 않았습니다. 이 응답들이 유효해질 때까지 당신은 설문을 진행할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:631
 msgid "Day"
@@ -2098,8 +1982,7 @@ msgstr "선택해주세요."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:930
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1174
-msgid ""
-"Error: The labelset used for this question is not available in this language."
+msgid "Error: The labelset used for this question is not available in this language."
 msgstr "오류: 이 문항에 사용된 레이블세트는 이 언어에 적용될 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1237
@@ -2122,8 +2005,7 @@ msgstr "좌측에 있는 목록 중 하나를 클릭하고, 시작하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1523
 msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr ""
-"가장 높은 순위의 항목부터 가장 낮은 순위의 항목 순서로 옮기시면 됩니다."
+msgstr "가장 높은 순위의 항목부터 가장 낮은 순위의 항목 순서로 옮기시면 됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1528
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:936
@@ -2140,9 +2022,7 @@ msgstr "당신의 순위"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1551
 #, fuzzy
-msgid ""
-"Click on the scissors next to each item on the right to remove the last "
-"entry in your ranked list"
+msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "우측에 있는 각 항목 옆의 가위표시를 클릭하시면"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1745
@@ -2193,16 +2073,13 @@ msgstr "나머지:"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2204
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2213
-msgid ""
-"Answer is invalid. The total of all entries should not add up to more than "
-msgstr ""
-"답변이 유효하지 않습니다. 모든 기재사항의 총계가 더이상 추가되면 안됩니다."
+msgid "Answer is invalid. The total of all entries should not add up to more than "
+msgstr "답변이 유효하지 않습니다. 모든 기재사항의 총계가 더이상 추가되면 안됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2185
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2191
 msgid "Answer is invalid. The total of all entries should add up to at least "
-msgstr ""
-"답변이 유효하지 않습니다. 모든 기재사항의 총계가 이상으로 추가되어야 합니다."
+msgstr "답변이 유효하지 않습니다. 모든 기재사항의 총계가 이상으로 추가되어야 합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2269
 msgid "Only numbers may be entered in this field"
@@ -2211,12 +2088,8 @@ msgstr "오직 숫자만이 이 항에 기재될 수 있습니다."
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3236
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3356
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3926
-msgid ""
-"Error: The labelset used for this question is not available in this language "
-"and/or does not exist."
-msgstr ""
-"오류: 이 문항에 사용된 레이블 세트는 이 언어에서 사용될 수 없거나 존재하지 않"
-"습니다."
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "오류: 이 문항에 사용된 레이블 세트는 이 언어에서 사용될 수 없거나 존재하지 않습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3349
 msgid "Error: There are no answers defined for this question."
@@ -2329,8 +2202,7 @@ msgstr "자료 일관성 확인"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:306
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
+msgid "If errors are showing up you might have to execute this script repeatedly."
 msgstr "오류가 나타나면 이 스크립트를 반복하여 수행해주시기 바랍니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:53
@@ -2572,12 +2444,8 @@ msgstr "제거"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:166
 #, fuzzy
-msgid ""
-"You cannot remove this item since you need at least one language in a "
-"labelset."
-msgstr ""
-"레이블 세트에 한 개 이상의 언어가 필요하기 때문에 이 항목을 제거할수 없습니"
-"다."
+msgid "You cannot remove this item since you need at least one language in a labelset."
+msgstr "레이블 세트에 한 개 이상의 언어가 필요하기 때문에 이 항목을 제거할수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:184
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:206
@@ -2744,12 +2612,8 @@ msgid "Inserting New labels must be done on the first language folder."
 msgstr "새로운 레이블 삽입은 반드시 첫 번째 언어 폴더에서 이루어져야 합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
-msgid ""
-"You cannot change codes, add or delete entries in this label set because it "
-"is being used by an active survey."
-msgstr ""
-"이 레이블세트는 사용 중이므로 이 레이블에 코드를 바꾸거나 입력된 내용의 추"
-"가, 삭제를 할 수 없습니다."
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "이 레이블세트는 사용 중이므로 이 레이블에 코드를 바꾸거나 입력된 내용의 추가, 삭제를 할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:449
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:462
@@ -2797,13 +2661,8 @@ msgid "Fix Sort"
 msgstr "정렬상태 고정"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:499
-msgid ""
-"Some surveys currently use this label set. Modifying the codes, adding or "
-"deleting entries to this label set may produce undesired results in other "
-"surveys."
-msgstr ""
-"몇몇 조사가 이 레이블세트를 통해 이루어지고 있으므로 코드변경, 입력된 정보의 "
-"추가,삭제는 바람직하지 못한 결과를 낳을 수 있습니다."
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "몇몇 조사가 이 레이블세트를 통해 이루어지고 있으므로 코드변경, 입력된 정보의 추가,삭제는 바람직하지 못한 결과를 낳을 수 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:570
 msgid "Failed to Copy already defined labels to added languages"
@@ -2818,12 +2677,8 @@ msgid "Update of Label Set failed"
 msgstr "레이블세트 업데이트 실패"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:612
-msgid ""
-"Couldn't Delete Label Set - There are questions that rely on this. You must "
-"delete these questions first."
-msgstr ""
-"레이블세트를 삭제할 수 없습니다. 이 레이블세트에 포함된 질문이 있어, 그 질문"
-"들을 먼저 삭제해야 합니다."
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "레이블세트를 삭제할 수 없습니다. 이 레이블세트에 포함된 질문이 있어, 그 질문들을 먼저 삭제해야 합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:648
 msgid "Insert of Label Set failed"
@@ -2842,12 +2697,8 @@ msgid "Failed to insert label"
 msgstr "레이블 삽입 실패"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:718
-msgid ""
-"This label code is already used in this labelset. Please choose another code "
-"or rename the existing one."
-msgstr ""
-"이 레이블 코드는 이미 이 레이블세트에서 사용 중입니다. 다른 코드를 사용하거"
-"나 이름을 바꿔주십시오."
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "이 레이블 코드는 이미 이 레이블세트에서 사용 중입니다. 다른 코드를 사용하거나 이름을 바꿔주십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:779
 msgid "Failed to update label"
@@ -2876,12 +2727,8 @@ msgstr "그룹 가져오기"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/http_importsurvey.php:33
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:31
 #, php-format
-msgid ""
-"An error occurred uploading your file. This may be caused by incorrect "
-"permissions in your %s folder."
-msgstr ""
-"업로드하는 과정에서 오류가 발생하였습니다. 이것은 %s 폴더 내 올바르지 않은 허"
-"가에 의해서 발생했을 수 있습니다."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
+msgstr "업로드하는 과정에서 오류가 발생하였습니다. 이것은 %s 폴더 내 올바르지 않은 허가에 의해서 발생했을 수 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:31
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:41
@@ -2982,36 +2829,25 @@ msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "이 파일은 라임서베이용 그룹 파일이 아닙니다. 불러오기에 실패했습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:249
-msgid ""
-"You can't import a group which doesn't support the current survey's base "
-"language."
+msgid "You can't import a group which doesn't support the current survey's base language."
 msgstr "현재 설문의 기본 언어가 지원되지 않는 그룹을 불러올 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:265
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language."
+msgid "You can't import a question which doesn't support the current survey's base language."
 msgstr "현재 설문의 기본 언어가 지원되지 않는 질문을 불러올 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:281
-msgid ""
-"You can't import label sets which don't support the current survey's base "
-"language"
-msgstr ""
-"현재 설문의 기본 언어가 지원되지 않는 레이블 세트를 불러올 수 없습니다."
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "현재 설문의 기본 언어가 지원되지 않는 레이블 세트를 불러올 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:641
 msgid "Import partially successful."
 msgstr "가져오기가 부분적으로 성공하였습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:642
-msgid ""
-"The following languages in this group were not imported since the survey "
-"does not contain such a language: "
-msgstr ""
-"설문에 다음과 같은 언어가 포함되지 않았기 때문에, 이 그룹내에 언어들을 불러"
-"올 수 없습니다:"
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
+msgstr "설문에 다음과 같은 언어가 포함되지 않았기 때문에, 이 그룹내에 언어들을 불러올 수 없습니다:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:653
 msgid "Group Import Summary"
@@ -3315,12 +3151,8 @@ msgid "Important Note:"
 msgstr "중요 사항:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:271
-msgid ""
-"Do NOT refresh this page, as this will import the file again and produce "
-"duplicates"
-msgstr ""
-"절대 이 페이지를 새로고침하지 마십시오. 이것은 파일을 다시 불러와서 복사본을 "
-"만들 것입니다."
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "절대 이 페이지를 새로고침하지 마십시오. 이것은 파일을 다시 불러와서 복사본을 만들 것입니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:273
 msgid "Total records imported:"
@@ -3431,12 +3263,8 @@ msgid "Disabled"
 msgstr "사용할 수 없게 함"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1272
-msgid ""
-"Don't consider NON completed responses (only works when Filter incomplete "
-"answers is Disable)"
-msgstr ""
-"불완전한 응답을 고려하지 마십시오(불완전한 응답을 걸러내는것이 불가능할 때만 "
-"가능합니다)"
+msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
+msgstr "불완전한 응답을 고려하지 마십시오(불완전한 응답을 걸러내는것이 불가능할 때만 가능합니다)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1277
 msgid "Show Graphs"
@@ -3679,23 +3507,14 @@ msgid "Tokens have not been initialised for this survey."
 msgstr "이 설문을 위한 토큰이 초기화 되지 않았습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:347
-msgid ""
-"If you initialise tokens for this survey, the survey will only be accessible "
-"to users who have been assigned a token."
-msgstr ""
-"이 설문을 위한 토큰을 초기화하면, 토큰을 설정한 사용자만이 설문에 접근할 수 "
-"있습니다."
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
+msgstr "이 설문을 위한 토큰을 초기화하면, 토큰을 설정한 사용자만이 설문에 접근할 수 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:354
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2456
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3062
-msgid ""
-"If you turn on the -Anonymous answers- option and create a tokens table, "
-"LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
-"time to ensure the anonymity of your participants."
-msgstr ""
-"-익명의 답- 옵션을 선택하고 토큰 테이블을 만들면, LimeSurvey는 참가자의 익명"
-"성을 지키기 위해 완성된 토큰을 날짜/시간 대신에 'Y'로만 표시합니다."
+msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "-익명의 답- 옵션을 선택하고 토큰 테이블을 만들면, LimeSurvey는 참가자의 익명성을 지키기 위해 완성된 토큰을 날짜/시간 대신에 'Y'로만 표시합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:358
 msgid "Do you want to create a tokens table for this survey?"
@@ -3908,8 +3727,7 @@ msgid ""
 "\n"
 "Recently we invited you to participate in a survey.\n"
 "\n"
-"We note that you have not yet completed the survey, and wish to remind you "
-"that the survey is still available should you wish to take part.\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
 "\n"
 "The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
@@ -3930,8 +3748,7 @@ msgstr ""
 "\n"
 "최근에 우리는 당신이 설문에 참여하도록 초대했습니다.\n"
 "\n"
-"우리는 당신이 아직 설문을 완료하지 않았음을 알려드리는 바입니다. 그리고 그 설"
-"문은 아직 진행 중이므로 당신이 참여해 주셨으면 합니다.\n"
+"우리는 당신이 아직 설문을 완료하지 않았음을 알려드리는 바입니다. 그리고 그 설문은 아직 진행 중이므로 당신이 참여해 주셨으면 합니다.\n"
 "\n"
 "설문에 표제가 있습니다:\n"
 "\"{SURVEYNAME}\"\n"
@@ -3990,29 +3807,23 @@ msgstr "공개 기명 이메일:"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"You, or someone using your email address, have registered to participate in "
-"an online survey titled {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
 "To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"If you have any questions about this survey, or if you did not register to "
-"participate and believe this email is in error, please contact {ADMINNAME} "
-"at {ADMINEMAIL}."
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 "{FIRSTNAME}에게,\n"
 "\n"
-"{SURVEYNAME} 온라인 설문에 참여하기 위해 당신이 등록한 이메일 주소는 당신 또"
-"는 다른 누군가에 의해 사용되고 있습니다.\n"
+"{SURVEYNAME} 온라인 설문에 참여하기 위해 당신이 등록한 이메일 주소는 당신 또는 다른 누군가에 의해 사용되고 있습니다.\n"
 "\n"
 "이 설문을 완성하기 위해서는 다음 URL을 클릭해주시기 바랍니다. URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"이 설문에 대해 질문이 있거나, 당신이 설문을 위해 이메일을 등록하지 않았고 이 "
-"이메일에 문제가 있다고 생각한다면, {ADMINEMAIL}을 이용하여 {ADMINNAME}와(과) "
-"연락해 보시기 바랍니다."
+"이 설문에 대해 질문이 있거나, 당신이 설문을 위해 이메일을 등록하지 않았고 이 이메일에 문제가 있다고 생각한다면, {ADMINEMAIL}을 이용하여 {ADMINNAME}와(과) 연락해 보시기 바랍니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:634
 msgid "Token Email Settings have been saved."
@@ -4193,40 +4004,24 @@ msgid "Delete Tokens Table"
 msgstr "토큰 테이블 삭제"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"If you delete this table tokens will no longer be required to access this "
-"survey."
-msgstr ""
-"이 토큰 테이블을 삭제하시면 이 설문조사에 응하기 위해서 더이상 토큰 테이블이 "
-"필요하지 않게 됩니다."
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "이 토큰 테이블을 삭제하시면 이 설문조사에 응하기 위해서 더이상 토큰 테이블이 필요하지 않게 됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"A backup of this table will be made if you proceed. Your system "
-"administrator will be able to access this table."
-msgstr ""
-"계속 진행하면 이 표의 백업이 만들어집니다. 당신의 시스템 관리자가 이 표에 접"
-"근할수 있게 됩니다."
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "계속 진행하면 이 표의 백업이 만들어집니다. 당신의 시스템 관리자가 이 표에 접근할수 있게 됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:974
 msgid "Delete Tokens"
 msgstr "토큰 삭제"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"The tokens table has now been removed and tokens are no longer required to "
-"access this survey."
-msgstr ""
-"토큰 테이블이 제거되었습니다. 이 설문조사에 접근하기위해 더 이상 토큰이 필요"
-"하지 않게 됩니다."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "토큰 테이블이 제거되었습니다. 이 설문조사에 접근하기위해 더 이상 토큰이 필요하지 않게 됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"A backup of this table has been made and can be accessed by your system "
-"administrator."
-msgstr ""
-"이 표의 백업이 만들어졌습니다. 당신의 시스템 관리자는 이 표에 접근할 수 있게 "
-"됩니다."
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "이 표의 백업이 만들어졌습니다. 당신의 시스템 관리자는 이 표에 접근할 수 있게 됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1027
 msgid "Email Invitation"
@@ -4274,18 +4069,12 @@ msgstr "다음 사람에게 보내어진 초대:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1209
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1450
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
-msgstr ""
-"{FIRSTNAME} {LASTNAME} ({EMAIL}) 에게 메일 보내기를 실패하였습니다. 오류 메시"
-"지:"
+msgstr "{FIRSTNAME} {LASTNAME} ({EMAIL}) 에게 메일 보내기를 실패하였습니다. 오류 메시지:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1224
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1467
-msgid ""
-"There are more emails pending than can be sent in one batch. Continue "
-"sending emails by clicking below."
-msgstr ""
-"남아있는 보류중인 이메일을 일괄처리할 수 있습니다. 아래를 클릭하여 이메일 전"
-"송을 계속합니다."
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
+msgstr "남아있는 보류중인 이메일을 일괄처리할 수 있습니다. 아래를 클릭하여 이메일 전송을 계속합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1225
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1468
@@ -4293,14 +4082,8 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "전송 중인 이메일이 {EMAILCOUNT} 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1245
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, not having been sent an "
-"invitation already, having already completed the survey and having a token."
-msgstr ""
-"전송하기 알맞은 이메일이 없었습니다. 이것은 이메일 주소를 가지고 있거나 초대"
-"장이 전송되지 않았거나 이미 설문조사를 마쳤거나 토큰을 가지고 있는지에 대한 "
-"기준을 만족시키지 못했기 때문입니다."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
+msgstr "전송하기 알맞은 이메일이 없었습니다. 이것은 이메일 주소를 가지고 있거나 초대장이 전송되지 않았거나 이미 설문조사를 마쳤거나 토큰을 가지고 있는지에 대한 기준을 만족시키지 못했기 때문입니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1261
 msgid "Email Reminder"
@@ -4337,26 +4120,16 @@ msgid "Reminder sent to:"
 msgstr "다음사람에게 독촉을 보냈습니다:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1490
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, having been sent an invitation, "
-"but not having yet completed the survey."
-msgstr ""
-"전송하기 알맞은 이메일이 없었습니다. 이것은 이메일 주소가 없거나 초대장을 보"
-"냈거나 설문조사를 아직 마치지 않았는지에 대한 기준을 아무도 만족시키지 못했"
-"기 때문입니다."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "전송하기 알맞은 이메일이 없었습니다. 이것은 이메일 주소가 없거나 초대장을 보냈거나 설문조사를 아직 마치지 않았는지에 대한 기준을 아무도 만족시키지 못했기 때문입니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1506
 msgid "Create Tokens"
 msgstr "토큰 만들기"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1510
-msgid ""
-"Clicking yes will generate tokens for all those in this token list that have "
-"not been issued one. Is this OK?"
-msgstr ""
-"'예' 를 누르시면 이 토큰 목록의 모든 사람을 위한 토큰을 만들게 됩니다. 괜찮습"
-"니까?"
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "'예' 를 누르시면 이 토큰 목록의 모든 사람을 위한 토큰을 만들게 됩니다. 괜찮습니까?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1537
 msgid "{TOKENCOUNT} tokens have been created"
@@ -4383,12 +4156,8 @@ msgid "Auto"
 msgstr "자동"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1633
-msgid ""
-"You can leave this blank, and automatically generate tokens using 'Create "
-"Tokens'"
-msgstr ""
-"이 빈칸을 내버려둘 수 있으며, 이 경우 '토큰 만들기'를 이용하여 자동적으로 토"
-"큰이 만들어 집니다."
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "이 빈칸을 내버려둘 수 있으며, 이 경우 '토큰 만들기'를 이용하여 자동적으로 토큰이 만들어 집니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1689
 msgid "Update Token"
@@ -4411,12 +4180,8 @@ msgstr "실패"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1748
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1796
-msgid ""
-"There is already an entry with that exact token in the table. The same token "
-"cannot be used in multiple entries."
-msgstr ""
-"이미 표의 토큰 목록에 토큰이 있습니다. 같은 토큰은 여러개의 목록에 사용될 수 "
-"없습니다."
+msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
+msgstr "이미 표의 토큰 목록에 토큰이 있습니다. 같은 토큰은 여러개의 목록에 사용될 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1749
 msgid "Show this token entry"
@@ -4437,34 +4202,20 @@ msgid "Note:"
 msgstr "알림:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1818
-msgid ""
-"File should be a standard CSV (comma delimited) file with double quotes "
-"around values (default for openoffice and excel). The first line should "
-"contain header information (will be removed). Data should be ordered as "
-"\"firstname, lastname, email, [emailstatus], [token], [language code], "
-"[attribute1], [attribute2]\"."
-msgstr ""
-"파일은 따옴표 인용부를 가지는(openoffice와 excel의 기본값) 표준 CSV (comma "
-"delimited) 파일이어야 합니다. 첫 줄은 헤더 정보를(삭제될) 담고 있어야 합니"
-"다. 자료는 \"firstname, lastname, email, [emailstatus], [token], [language "
-"code], [attribute1], [attribute2]\" 순서로 정렬되어야 합니다."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
+msgstr "파일은 따옴표 인용부를 가지는(openoffice와 excel의 기본값) 표준 CSV (comma delimited) 파일이어야 합니다. 첫 줄은 헤더 정보를(삭제될) 담고 있어야 합니다. 자료는 \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\" 순서로 정렬되어야 합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1833
 msgid "Upload LDAP entries"
 msgstr "LDAP 목록 업로드"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1840
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
 msgstr "LDAP 질문은 관리자에 의해 config-ldap.php 파일로 규정되었습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1870
-msgid ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
-msgstr ""
-"업로드 파일이 발견되지 않았습니다. 허가 여부 혹은 업로드 디렉토리 경로를 확인"
-"하십시오."
+msgid "Upload file not found. Check your permissions and path for the upload directory"
+msgstr "업로드 파일이 발견되지 않았습니다. 허가 여부 혹은 업로드 디렉토리 경로를 확인하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1875
 msgid "Importing CSV File"
@@ -4612,10 +4363,7 @@ msgid "Start Language:"
 msgstr "시작 언어:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:395
-msgid ""
-"Your survey responses have been saved successfully.  You will be sent a "
-"confirmation e-mail. Please make sure to save your password, since we will "
-"not be able to retrieve it for you."
+msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:409
@@ -4710,8 +4458,7 @@ msgstr "이 질문에 대한 도움"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:2439
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr ""
-"이 설문은 아직 활성화 되어 있지 않습니다. 당신의 응답을 저장할 수 없습니다."
+msgstr "이 설문은 아직 활성화 되어 있지 않습니다. 당신의 응답을 저장할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:83
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/fck_LimeReplacementFields.php:98
@@ -4997,8 +4744,7 @@ msgid "Preview:"
 msgstr "미리보기:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:39
-msgid ""
-"Import responses from an old (deactivated) survey table into an active survey"
+msgid "Import responses from an old (deactivated) survey table into an active survey"
 msgstr "오래된(비활성화된) 설문으로부터 활성화된 설문으로 응답을 가져오시오,"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:43
@@ -5018,13 +4764,8 @@ msgid "Export database"
 msgstr "데이터베이스 내보내기"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpdb.php:56
-msgid ""
-"The database export is only available for MySQL databases. For other "
-"database types please use the according backup mechanism to create a "
-"database dump."
-msgstr ""
-"데이터베이스 전송은  MySQL database에서만 가능합니다. 다른 유형의 데이터베이"
-"스는 데이터베이스 출력을 만드는 백업 메카니즘에 따라 사용해 주십시오."
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "데이터베이스 전송은  MySQL database에서만 가능합니다. 다른 유형의 데이터베이스는 데이터베이스 출력을 만드는 백업 메카니즘에 따라 사용해 주십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:22
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1814
@@ -5042,37 +4783,20 @@ msgid "You are about to delete this survey"
 msgstr "당신은 설문을 삭제하려 하고 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:43
-msgid ""
-"This process will delete this survey, and all related groups, questions "
-"answers and conditions."
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
 msgstr "이 과정은 이 설문과 관련된 그룹, 질문, 응답, 조건들을 모두 삭제합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:44
-msgid ""
-"We recommend that before you delete this survey you export the entire survey "
-"from the main administration screen."
-msgstr ""
-"이 설문을 삭제하기 전에 주 관리 화면에서 전체 설문을 내보내시기 바랍니다."
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
+msgstr "이 설문을 삭제하기 전에 주 관리 화면에서 전체 설문을 내보내시기 바랍니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:48
-msgid ""
-"This survey is active and a responses table exists. If you delete this "
-"survey, these responses will be deleted. We recommend that you export the "
-"responses before deleting this survey."
-msgstr ""
-"이 설문은 진행중이고 응답표가 존재합니다. 만일 이 설문을 지운다면 이 응답표"
-"도 모두 삭제됩니다. 당신이 이 설문을 삭제하기 전에 이 응답표를 전송하기를 추"
-"천합니다."
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "이 설문은 진행중이고 응답표가 존재합니다. 만일 이 설문을 지운다면 이 응답표도 모두 삭제됩니다. 당신이 이 설문을 삭제하기 전에 이 응답표를 전송하기를 추천합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:53
-msgid ""
-"This survey has an associated tokens table. If you delete this survey this "
-"tokens table will be deleted. We recommend that you export or backup these "
-"tokens before deleting this survey."
-msgstr ""
-"이 설문은 관련된 토큰 테이블을 가지고 있습니다. 이 설문을 삭제한다면 토큰 테"
-"이블도 삭제됩니다. 따라서 이 설문을 삭제하기 전에 토큰 테이블을 따로 전송하거"
-"나 백업하기를 추천합니다."
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
+msgstr "이 설문은 관련된 토큰 테이블을 가지고 있습니다. 이 설문을 삭제한다면 토큰 테이블도 삭제됩니다. 따라서 이 설문을 삭제하기 전에 토큰 테이블을 따로 전송하거나 백업하기를 추천합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:122
 msgid "This survey has been deleted."
@@ -5388,19 +5112,12 @@ msgid "This file is not a LimeSurvey question file. Import failed."
 msgstr "이 파일은 라임서베이용 질문파일이 아닙니다. 가져오기에 실패했습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:107
-msgid ""
-"Sorry, importing questions is limited to the same version. Import failed."
-msgstr ""
-"죄송합니다, 질문 가져오기는 같은 버전으로만 제한되어있습니다. 가져오기에 실패"
-"했습니다."
+msgid "Sorry, importing questions is limited to the same version. Import failed."
+msgstr "죄송합니다, 질문 가져오기는 같은 버전으로만 제한되어있습니다. 가져오기에 실패했습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:240
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language"
-msgstr ""
-"당신은 현재 진행중인 설문의 기본 언어가 지원되지 않는 질문은 가져올 수 없습니"
-"다."
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "당신은 현재 진행중인 설문의 기본 언어가 지원되지 않는 질문은 가져올 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:496
 msgid "Question Import Summary"
@@ -5478,8 +5195,7 @@ msgstr "불러온 파일 목록"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:151
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:330
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr ""
-"이 ZIP파일은 유효한 리소스 파일들을 포함하고 있지 않습니다. 불러오기 실패."
+msgstr "이 ZIP파일은 유효한 리소스 파일들을 포함하고 있지 않습니다. 불러오기 실패."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:152
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:331
@@ -5688,9 +5404,7 @@ msgstr "PHPInfo 보기"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:415
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:417
-msgid ""
-"Survey cannot be activated. Either you have no permission or there are no "
-"questions."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
 msgstr "설문이 활성화될 수 없습니다. 사용 권한이 없거나 질문이 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:458
@@ -5780,11 +5494,8 @@ msgid "Activate/Edit Tokens for this Survey"
 msgstr "이 설문을 위한 토큰의 활성화/편집"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:712
-msgid ""
-"Adding/editing tokens is not possible because this survey is not activated."
-msgstr ""
-"토큰의 추가/편집이 가능하지 않습니다. 이 설문이 활성화 되지 않았기 때문입니"
-"다."
+msgid "Adding/editing tokens is not possible because this survey is not activated."
+msgstr "토큰의 추가/편집이 가능하지 않습니다. 이 설문이 활성화 되지 않았기 때문입니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:745
 msgid "Add New Group to Survey"
@@ -5957,12 +5668,8 @@ msgid "Edit Current Group"
 msgstr "현재 그룹 편집"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:993
-msgid ""
-"Deleting this group will also delete any questions and answers it contains. "
-"Are you sure you want to continue?"
-msgstr ""
-"이 그룹을 삭제하면 그룹이 포함하고 있는 질문과 응답도 함께 삭제됩니다. 계속하"
-"시겠습니까?"
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr "이 그룹을 삭제하면 그룹이 포함하고 있는 질문과 응답도 함께 삭제됩니다. 계속하시겠습니까?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:996
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1005
@@ -5970,12 +5677,8 @@ msgid "Delete Current Group"
 msgstr "현재 그룹 삭제"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1002
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr ""
-"이 그룹의 항목을 조건으로 하는 질문이 적어도 한 개 있기 때문에, 이 그룹을 삭"
-"제할 수 없습니다"
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "이 그룹의 항목을 조건으로 하는 질문이 적어도 한 개 있기 때문에, 이 그룹을 삭제할 수 없습니다"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1020
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1021
@@ -6012,24 +5715,16 @@ msgid "Edit Current Question"
 msgstr "현재 질문 편집"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1162
-msgid ""
-"Deleting this question will also delete any answers it includes. Are you "
-"sure you want to continue?"
-msgstr ""
-"이 질문을 삭제하면 질문이 포함하고 있는 모든 응답이 삭제됩니다. 계속하시겠습"
-"니까?"
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "이 질문을 삭제하면 질문이 포함하고 있는 모든 응답이 삭제됩니다. 계속하시겠습니까?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1164
 msgid "Delete Current Question"
 msgstr "현재 질문 삭제"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1171
-msgid ""
-"Impossible to delete this question because  there is at least one question "
-"having a condition on it"
-msgstr ""
-"이 질문을 조건으로 하는 질문이 적어도 한 개 있기 때문에 이 질문을 삭제할 수 "
-"없습니다."
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "이 질문을 조건으로 하는 질문이 적어도 한 개 있기 때문에 이 질문을 삭제할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1174
 #, fuzzy
@@ -6194,12 +5889,8 @@ msgid "Add new Answer"
 msgstr "새로운 답 추가"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1650
-msgid ""
-"You cannot add answers or edit answer codes for this question type because "
-"the survey is active."
-msgstr ""
-"설문이 진행중이기 때문에 이 질문 유형에 응답을 추가하거나 응답코드를 편집할 "
-"수 없습니다."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "설문이 진행중이기 때문에 이 질문 유형에 응답을 추가하거나 응답코드를 편집할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1687
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1741
@@ -6416,12 +6107,8 @@ msgid "Use HTML format for token emails?"
 msgstr "토큰 이메일에 HTML포맷을 사용하겠습니까?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2415
-msgid ""
-"If you switch email mode, you'll have to review your email templates to fit "
-"the new format"
-msgstr ""
-"이메일 모드를 바꾸면, 새로운 서식에 맞추기 위해 이메일 템플릿을 다시 확인해"
-"야 합니다."
+msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
+msgstr "이메일 모드를 바꾸면, 새로운 서식에 맞추기 위해 이메일 템플릿을 다시 확인해야 합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2431
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3043
@@ -6439,9 +6126,7 @@ msgid "Anonymous answers?"
 msgstr "익명의 답으로 합니까?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2451
-msgid ""
-"You can't use Anonymous answers when Token-based answers persistence is "
-"enabled."
+msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2466
@@ -6500,11 +6185,8 @@ msgid "This option can't be set if Anonymous answers are used"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
-msgstr ""
-"삭제되는 언어의 모든 질문, 보기, 기타 그 외의 것들이 사라집니다. 삭제하시겠습"
-"니까?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "삭제되는 언어의 모든 질문, 보기, 기타 그 외의 것들이 사라집니다. 삭제하시겠습니까?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
 msgid "Save and Continue"
@@ -6524,13 +6206,8 @@ msgid "Current survey has questions with conditions outside their own group"
 msgstr "현재 설문은 자신의 그룹 외부의 조건과 연관된 질문을 가지고 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
-msgstr ""
-"질문이 조건 세트를 가지는 이후에 조건에 기초한 질문들이 재정렬되지 않도록 하"
-"기 위해 재정렬된 그룹은 제한됩니다."
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "질문이 조건 세트를 가지는 이후에 조건에 기초한 질문들이 재정렬되지 않도록 하기 위해 재정렬된 그룹은 제한됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
 msgid "The following groups are concerned"
@@ -6616,12 +6293,8 @@ msgid "You are about to delete all conditions on this survey's questions"
 msgstr "이 설문의 질문들과 관련한 모든 조건들을 지우려하고 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:43
-msgid ""
-"We recommend that before you proceed, you export the entire survey from the "
-"main administration screen."
-msgstr ""
-"이 작업을 수행하기 전에, 주 관리 화면에서 모든 설문을 따로 저장해두시기를 추"
-"천합니다."
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
+msgstr "이 작업을 수행하기 전에, 주 관리 화면에서 모든 설문을 따로 저장해두시기를 추천합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:67
 msgid "All conditions in this survey have been deleted."
@@ -6794,13 +6467,8 @@ msgid "Total"
 msgstr "전체"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:128
-msgid ""
-"If you create any assessments in this page, for the currently selected "
-"survey, the assessment will be performed at the end of the survey after "
-"submission"
-msgstr ""
-"이 페이지에서 현재 선택된 설문을 위한 평가를 만들면, 설문이 제출된 후에 평가"
-"가 실행될 것입니다."
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
+msgstr "이 페이지에서 현재 선택된 설문을 위한 평가를 만들면, 설문이 제출된 후에 평가가 실행될 것입니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:129
 #, fuzzy
@@ -6813,12 +6481,8 @@ msgid "The defined LimeSurvey database does not exist"
 msgstr "정의된 설문자 데이터베이스가 존재하지 않습니다"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:70
-msgid ""
-"Either your selected database has not yet been created or there is a problem "
-"accessing it."
-msgstr ""
-"귀하가 선택한 데이터베이스가 만들어지지 않았거나, 그것에 접근하는 데 문제가있"
-"습니다."
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
+msgstr "귀하가 선택한 데이터베이스가 만들어지지 않았거나, 그것에 접근하는 데 문제가있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:82
 msgid "You have not selected a survey to browse."
@@ -6923,31 +6587,16 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "진행하기 전에 이것을 주의깊게 읽으시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:34
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
-msgstr ""
-"활성화된 설문에서 표는 모든 데이터목록 기록을 저장하기 위해 만들어졌습니다."
+msgid "In an active survey, a table is created to store all the data-entry records."
+msgstr "활성화된 설문에서 표는 모든 데이터목록 기록을 저장하기 위해 만들어졌습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:35
-msgid ""
-"When you deactivate a survey all the data entered in the original table will "
-"be moved elsewhere, and when you activate the survey again, the table will "
-"be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr ""
-"당신이 설문을 비활성화하면 원래의 표에 입력한 모든 데이터는 다른 장소로 옮겨"
-"집니다. 그리고 나중에 다시 활성화 했을때 그 표는 비어있을 것입니다. 당신은 라"
-"임서베이를 통해서 더이상 이 데이터에 접근 할 수 없게 됩니다."
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "당신이 설문을 비활성화하면 원래의 표에 입력한 모든 데이터는 다른 장소로 옮겨집니다. 그리고 나중에 다시 활성화 했을때 그 표는 비어있을 것입니다. 당신은 라임서베이를 통해서 더이상 이 데이터에 접근 할 수 없게 됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:36
-msgid ""
-"Deactivated survey data can only be accessed by system administrators using "
-"a Database data access tool like phpmyadmin. If your survey uses tokens, "
-"this table will also be renamed and will only be accessible by system "
-"administrators."
-msgstr ""
-"비활성화된 설문의 데이터는 시스템 관리자만이 phpmyadmin 같은 데이터베이스 접"
-"근 장치를 통해서 접근할 수 있습니다. 만약  당신의 설문조사가 토큰을 이용할다"
-"면 이 표는 새 이름이 붙여지고 시스템 관리자만이 접근할 수 있게 됩니다."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "비활성화된 설문의 데이터는 시스템 관리자만이 phpmyadmin 같은 데이터베이스 접근 장치를 통해서 접근할 수 있습니다. 만약  당신의 설문조사가 토큰을 이용할다면 이 표는 새 이름이 붙여지고 시스템 관리자만이 접근할 수 있게 됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:37
 msgid "Your responses table will be renamed to:"
@@ -6970,9 +6619,7 @@ msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr "더이상 이 설문에 대한 응답을 라임서베이를 통해서 할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:134
-msgid ""
-"You should note the name of this table in case you need to access this "
-"information later."
+msgid "You should note the name of this table in case you need to access this information later."
 msgstr "이 정보를 나중에 얻기 위해서는 이 표의 이름을 알아야 합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:137
@@ -6996,18 +6643,12 @@ msgid "This question requires a second Labelset, but none is set."
 msgstr "이 질문은 두 번째 레이블세트가 필요한데 레이블세트가 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:128
-msgid ""
-"The labelset used in this question does not exists or is missing a "
-"translation."
+msgid "The labelset used in this question does not exists or is missing a translation."
 msgstr "이 질문에 사용되는 레이블세트가 없거나 번역이 잘못되었습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:184
-msgid ""
-"This question has a condition set, however the condition is based on a "
-"question that appears after it."
-msgstr ""
-"이 질문은 조건 세트를 가집니다. 하지만 그 조건은 다음에 오는 질문을 기초로 하"
-"였습니다."
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "이 질문은 조건 세트를 가집니다. 하지만 그 조건은 다음에 오는 질문을 기초로 하였습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:219
 msgid "Survey does not pass consistency check"
@@ -7022,12 +6663,8 @@ msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "이 설문은 이 문제들이 해결되기 전까지 실행되지 못합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:250
-msgid ""
-"You should only activate a survey when you are absolutely certain that your "
-"survey setup is finished and will not need changing."
-msgstr ""
-"설문 설정이 끝났으며 변경할 필요가 없다는 확신이 있을 때 설문을 활성화하시기 "
-"바랍니다."
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "설문 설정이 끝났으며 변경할 필요가 없다는 확신이 있을 때 설문을 활성화하시기 바랍니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:251
 msgid "Once a survey is activated you can no longer:"
@@ -7058,24 +6695,16 @@ msgid "Edit (change) your group names"
 msgstr "그룹 이름의 편집(변경)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
-msgid ""
-"Add, Remove or Edit pre-defined question answers (except for Multi-answer "
-"questions)"
-msgstr ""
-"이미 정의된 질문에 대한 응답들의 추가, 삭제, 편집(다중응답형 질문 예외)"
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "이미 정의된 질문에 대한 응답들의 추가, 삭제, 편집(다중응답형 질문 예외)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
 msgid "Change survey name or description"
 msgstr "설문의 이름이나 설명 변경"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:253
-msgid ""
-"Once data has been entered into this survey, if you want to add or remove "
-"groups or questions, you will need to de-activate this survey, which will "
-"move all data that has already been entered into a separate archived table."
-msgstr ""
-"자료가 이 설문에 입력되면, 당신이 그룹이나 질문을 추가 또는 삭제하기 위해서"
-"는 먼저 분할기록표에 입력된 자료가 이동할 설문을 비활성화할 필요가 있습니다."
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "자료가 이 설문에 입력되면, 당신이 그룹이나 질문을 추가 또는 삭제하기 위해서는 먼저 분할기록표에 입력된 자료가 이동할 설문을 비활성화할 필요가 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:488
 msgid "Survey could not be actived."
@@ -7086,8 +6715,7 @@ msgid "Survey has been activated. Results table has been successfully created."
 msgstr "설문이 활성화되었습니다. 결과표가 성공적으로 작성되었습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:534
-msgid ""
-"This survey allows public registration. A token table must also be created."
+msgid "This survey allows public registration. A token table must also be created."
 msgstr "이 설문은 공식 기록이 허용됩니다. 토큰테이블이 작성되어야합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:540
@@ -7103,12 +6731,8 @@ msgid "No invitation code is needed to complete the survey."
 msgstr "설문을 완성하기 위해 초대 코드는 필요하지 않습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:541
-msgid ""
-"You can switch to the closed-access mode by initialising a token table with "
-"the button below."
-msgstr ""
-"아래에 있는 버튼으로 토큰 테이블을 초기화함으로써 접근제한 모드로 바꿀 수 있"
-"습니다."
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "아래에 있는 버튼으로 토큰 테이블을 초기화함으로써 접근제한 모드로 바꿀 수 있습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:543
 msgid "Optional"
@@ -7121,8 +6745,7 @@ msgstr "접근제한 모드로 변환"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:51
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:59
 msgid "This file is not a LimeSurvey survey file. Import failed."
-msgstr ""
-"이 파일은 라임서베이의 설문파일이 아닙니다. 파일을 가져오기에 실패했습니다."
+msgstr "이 파일은 라임서베이의 설문파일이 아닙니다. 파일을 가져오기에 실패했습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:372
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:381
@@ -7138,24 +6761,17 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "파일이 정확한 체제로 된 라임서베이 자료를 포함하고 있지 않습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:761
-msgid ""
-"A group in the CSV/SQL file is not part of the same survey. The import of "
-"the survey was stopped."
-msgstr ""
-"CSV/SQL 파일에 있는 그룹은 같은 설문의 일부가 아닙니다. 설문을 들여오는 것이 "
-"중지되었습니다."
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
+msgstr "CSV/SQL 파일에 있는 그룹은 같은 설문의 일부가 아닙니다. 설문을 들여오는 것이 중지되었습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:826
 #, fuzzy, php-format
-msgid ""
-"Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
 msgstr "이 질문의 형식이 알려지지 않아 들여올 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:832
 #, fuzzy, php-format
-msgid ""
-"Question \"%s - %s\" was imported but the type was set to '%s' because it is "
-"the most similiar one."
+msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr "가져온 파일이 '%s'로 설정되었습니다. 이것이 가장 유사한 형식입니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1220
@@ -7170,12 +6786,8 @@ msgstr "가져오지 않은 레이블세트"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
-msgid ""
-"(Label Sets were not imported since you do not have the permission to create "
-"new label sets.)"
-msgstr ""
-"(새로운 레이블세트를 작성하기 위한 권한이 없으므로, 레이블세트를 가져오지 않"
-"았습니다.)"
+msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
+msgstr "(새로운 레이블세트를 작성하기 위한 권한이 없으므로, 레이블세트를 가져오지 않았습니다.)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1235
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1261
@@ -7203,9 +6815,13 @@ msgstr "경고"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:120
 msgid ""
-"Group could not be added.\\n\\nIt is missing the group name for the "
-"following languages"
-msgstr "그룹이 추가될 수 없습니다.\\n\\n다음 언어로는 그룹 이름이 누락됩니다."
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
+msgstr ""
+"그룹이 추가될 수 없습니다.\\n"
+"\\n"
+"다음 언어로는 그룹 이름이 누락됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:171
 msgid "Error: The database reported the following error:"
@@ -7223,10 +6839,8 @@ msgstr "그룹을 삭제할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:297
 #, php-format
-msgid ""
-"Answer could not be added. You must insert a code in the mandatory field (%s)"
-msgstr ""
-"응답이 추가될 수 없습니다. 당신은 필수 필드에 코드를 삽입해야합니다. (%s)"
+msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
+msgstr "응답이 추가될 수 없습니다. 당신은 필수 필드에 코드를 삽입해야합니다. (%s)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:384
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:708
@@ -7235,15 +6849,8 @@ msgid "Question could not be created."
 msgstr "질문을 생성할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:490
-msgid ""
-"Question could not be updated. There are conditions for other questions that "
-"rely on the answers to this question and changing the type will cause "
-"problems. You must delete these conditions before you can change the type of "
-"this question."
-msgstr ""
-"질문을 업데이트 할 수 없습니다. 이 질문에 대한 응답에 기초하고 있는 다른 질문"
-"들과 관련한 조건들이 있으며, 그 질문의 유형을 바꾸는 것은 문제를 야기시킬 수 "
-"있습니다. 이 질문의 유형을 변경시키려면 우선 이 조건들을 삭제해야 합니다."
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "질문을 업데이트 할 수 없습니다. 이 질문에 대한 응답에 기초하고 있는 다른 질문들과 관련한 조건들이 있으며, 그 질문의 유형을 바꾸는 것은 문제를 야기시킬 수 있습니다. 이 질문의 유형을 변경시키려면 우선 이 조건들을 삭제해야 합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:645
@@ -7255,11 +6862,8 @@ msgid "Answers can't be deleted"
 msgstr "응답을 삭제할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:617
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
-msgstr ""
-"이 질문은 다른 질문들의 답과 관련이 있으며 그룹ID 위로 이동할 수 없습니다."
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "이 질문은 다른 질문들의 답과 관련이 있으며 그룹ID 위로 이동할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:618
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:630
@@ -7272,26 +6876,17 @@ msgid "See conditions:"
 msgstr "조건 보기:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:629
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
-msgstr ""
-"어떤 질문들은 이 질문의 답과 관련이 있으며 그룹ID 아래로 이동할 수 없습니다."
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "어떤 질문들은 이 질문의 답과 관련이 있으며 그룹ID 아래로 이동할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:655
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
+msgid "Question could not be added. You must insert a code in the mandatory field"
 msgstr "질문을 추가할 수 없습니다. 당신은 필수 필드에 코드를 삽입해야합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:813
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:854
-msgid ""
-"Question could not be deleted. There are conditions for other questions that "
-"rely on this question. You cannot delete this question until those "
-"conditions are removed"
-msgstr ""
-"질문을 삭제할 수 없습니다. 이 질문에 관련되는 다른 질문의 조건들이 있습니다. "
-"이러한 조건들을 삭제하기 전까지는 위 질문을 삭제할 수 없습니다."
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "질문을 삭제할 수 없습니다. 이 질문에 관련되는 다른 질문의 조건들이 있습니다. 이러한 조건들을 삭제하기 전까지는 위 질문을 삭제할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:838
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:875
@@ -7300,9 +6895,7 @@ msgstr "질문을 삭제할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:904
 msgid "Error adding answer: You can't use the same answer code more than once."
-msgstr ""
-"답을 추가하는데 오류가 있습니다: 같은 응답 코드를 한 번 이상 사용할 수 없습니"
-"다."
+msgstr "답을 추가하는데 오류가 있습니다: 같은 응답 코드를 한 번 이상 사용할 수 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:932
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:954
@@ -7318,11 +6911,8 @@ msgid "Failed to update answers"
 msgstr "응답을 업데이트하는 데 실패했습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1058
-msgid ""
-"Answers with a code of 0 (zero) or blank code are not allowed, and will not "
-"be saved"
-msgstr ""
-"0 코드나 공란 코드를 사용하는 응답은 허용되지 않으며, 저장되지 않습니다."
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "0 코드나 공란 코드를 사용하는 응답은 허용되지 않으며, 저장되지 않습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1059
 msgid "Duplicate codes found, these entries won't be updated"
@@ -7449,13 +7039,8 @@ msgid "Current group is using conditional questions"
 msgstr "현재 그룹은 조건부 질문을 사용중입니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
-msgstr ""
-"이 그룹내에서 설문들을 재배열하는것은, 조건들이 기초하고 있는 질문들이 조건세"
-"트를 가진 후에 재배열되지 않도록 하기 위하여 제한됩니다."
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "이 그룹내에서 설문들을 재배열하는것은, 조건들이 기초하고 있는 질문들이 조건세트를 가진 후에 재배열되지 않도록 하기 위하여 제한됩니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
 msgid "See the conditions marked on the following questions"
@@ -7506,9 +7091,7 @@ msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:115
-msgid ""
-"Edit the 4th line and complete the filename with a full path to he "
-"downloaded data file."
+msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:116
@@ -7626,24 +7209,12 @@ msgid "Security Alert"
 msgstr "보안 경고"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
-msgid ""
-"Someone may be trying to use your LimeSurvey session (CSRF attack "
-"suspected). If you just clicked on a malicious link, please report this to "
-"your system administrator."
-msgstr ""
-"누군가가 당신의 설문을 사용하려고 하고 있습니다.(CSRF 공격이 의심됩니다.) 만"
-"약 당신이 악의적인 링크를 클릭하였다면, 이것을 당신의 시스템 관리자에게 알려"
-"주시기 바랍니다."
+msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "누군가가 당신의 설문을 사용하려고 하고 있습니다.(CSRF 공격이 의심됩니다.) 만약 당신이 악의적인 링크를 클릭하였다면, 이것을 당신의 시스템 관리자에게 알려주시기 바랍니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
-msgid ""
-"Someone may be trying to use your LimeSurvey session by using dangerous GET "
-"requests (CSRF attack suspected). If you just clicked on a malicious link, "
-"please report this to your system administrator."
-msgstr ""
-"누군가가 위험한 GET 요구를 이용함으로써 당신의 설문을 사용하려고 하고 있습니"
-"다.(CSRF 공격이 의심됩니다.) 만약 당신이 악의적인 링크를 클릭하였다면, 이것"
-"을 당신의 시스템 관리자에게 알려주시기 바랍니다."
+msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "누군가가 위험한 GET 요구를 이용함으로써 당신의 설문을 사용하려고 하고 있습니다.(CSRF 공격이 의심됩니다.) 만약 당신이 악의적인 링크를 클릭하였다면, 이것을 당신의 시스템 관리자에게 알려주시기 바랍니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:128
 msgid "You are not allowed to perform this operation!"
@@ -7697,12 +7268,8 @@ msgid "You logged in successfully."
 msgstr "성공적으로 로그인 되었습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:172
-msgid ""
-"LimeSurvey is setup to use the webserver authentication, but it seems you "
-"have not already been authenticated"
-msgstr ""
-"웹서버 인증을 위하여 라임서베이가 설치되었지만, 당신은 아직 인증되지 않았습니"
-"다"
+msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
+msgstr "웹서버 인증을 위하여 라임서베이가 설치되었지만, 당신은 아직 인증되지 않았습니다"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:173
 msgid "Please contact your system administrator"
@@ -7932,13 +7499,8 @@ msgid "You have not selected a Question."
 msgstr "질문을 선택하지 않았습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:68
-msgid ""
-"Your condition could not be added! It did not include the question and/or "
-"answer upon which the condition was based. Please ensure you have selected a "
-"question and an answer."
-msgstr ""
-"당신의 조건은 추가될 수 없습니다. 그 조건을 기초로 하는 질문이나 응답을 선택"
-"하지 않았습니다. 질문이나 응답을 선택해주시기 바랍니다."
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "당신의 조건은 추가될 수 없습니다. 그 조건을 기초로 하는 질문이나 응답을 선택하지 않았습니다. 질문이나 응답을 선택해주시기 바랍니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:148
 msgid "Did not copy questions"
@@ -8005,9 +7567,7 @@ msgid "copy to"
 msgstr "복사"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
-msgid ""
-"Are you sure you want to copy these condition(s) to the questions you have "
-"selected?"
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
 msgstr "당신이 선택한 질문으로 이 조건들을 복사할 것이 확실합니까?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:950
@@ -8016,12 +7576,8 @@ msgid "Add Condition"
 msgstr "조건 추가"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1000
-msgid ""
-"NOTE: If you use a pre-defined answer as your condition, only the equals or "
-"not-equal-to conditions apply."
-msgstr ""
-"알림: 만일 당신의 조건대로 미리 정의된 응답을 사용하고자 한다면 equals 또는 "
-"not-equal-to 조건을 적용시키십시오."
+msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
+msgstr "알림: 만일 당신의 조건대로 미리 정의된 응답을 사용하고자 한다면 equals 또는 not-equal-to 조건을 적용시키십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1010
 msgid "Constant Value or Regular Expression"
@@ -8100,14 +7656,8 @@ msgid "Choose Columns"
 msgstr "열 선택"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:274
-msgid ""
-"Your survey contains more than 255 columns of responses. Spreadsheet "
-"applications such as Excel are limited to loading no more than 255. Select "
-"the columns you wish to export in the list below."
-msgstr ""
-"귀하의 설문 조사에는 255 개 이상의 응답의 열을 포함합니다. Excel과 같은 스프"
-"레드 시트 응용 프로그램은 제한을 255개 이상의 로딩을 제한합니다. 아래 목록에"
-"서 내보내기를 원하는 열을 선택하십시오."
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "귀하의 설문 조사에는 255 개 이상의 응답의 열을 포함합니다. Excel과 같은 스프레드 시트 응용 프로그램은 제한을 255개 이상의 로딩을 제한합니다. 아래 목록에서 내보내기를 원하는 열을 선택하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:280
 msgid "Choose the columns you wish to export."
@@ -8118,12 +7668,8 @@ msgid "Choose Token Fields"
 msgstr "토큰 필드 선택"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:331
-msgid ""
-"Your survey can export associated token data with each response. Select any "
-"additional fields you would like to export."
-msgstr ""
-"당신의 설문은 각 응답에 연관된 토큰 자료를 내보낼 수 있습니다. 내보내고자 하"
-"는 추가 필드를 선택하십시오."
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "당신의 설문은 각 응답에 연관된 토큰 자료를 내보낼 수 있습니다. 내보내고자 하는 추가 필드를 선택하십시오."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:401
 msgid "General information in language: "
@@ -8158,8 +7704,7 @@ msgstr "토큰 문제 - 토큰 테이블이 없습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr ""
-"이 파일은 LimeSurvey 레이블 세트 파일이 아닙니다. 불러오기가 실패하였습니다."
+msgstr "이 파일은 LimeSurvey 레이블 세트 파일이 아닙니다. 불러오기가 실패하였습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:56
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:212
@@ -8167,12 +7712,8 @@ msgid "Return to Labels Admin"
 msgstr "레이블 관리로 돌아갑니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:193
-msgid ""
-"There was a duplicate labelset, so this set was not imported. The duplicate "
-"will be used instead."
-msgstr ""
-"똑같은 레이블 세트가 있어 이 세트를 불러오지 않습니다. 기존의 레이블 세트를 "
-"사용합니다."
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
+msgstr "똑같은 레이블 세트가 있어 이 세트를 불러오지 않습니다. 기존의 레이블 세트를 사용합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:201
 msgid "Label Set Import Summary"
@@ -8224,8 +7765,7 @@ msgid "A database named \"%s\" already exists."
 msgstr "\"%s\" 이름으로 된 데이터베이스가 이미 존재합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:53
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "필요한 표를 만들어서 데이터베이스를 지금 저장하시겠습니까?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:85
@@ -8238,12 +7778,8 @@ msgid "Database `%s` has been successfully populated."
 msgstr "'%s' 데이터베이스가 성공적으로 채워졌습니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:53
-msgid ""
-"Database Information not provided. This script must be run from admin.php "
-"only."
-msgstr ""
-"데이터베이스 정보가 제공되지 않습니다. 이 스크립트는 admin.php 형식으로 실행"
-"되어야 합니다."
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "데이터베이스 정보가 제공되지 않습니다. 이 스크립트는 admin.php 형식으로 실행되어야 합니다."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:77
 msgid "Database has been created."

@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: pt-BR\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-06 12:00+0100\n"
-"PO-Revision-Date: 2011-01-11 10:34-0300\n"
-"Last-Translator: Eziquiel Menta <ementa@gmail.com>\n"
+"PO-Revision-Date: 2011-11-17 16:54+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: pt-BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -14,9 +14,10 @@ msgstr ""
 "X-Poedit-Basepath: /home/multimeios/Download\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\limesurvey\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:115
@@ -2011,7 +2012,7 @@ msgstr "Exportar um arquivo de questionário VV"
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:43
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:60
 msgid "Iterate survey"
-msgstr "Repetir questionário"
+msgstr "Repetir questionário "
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:63
 msgid "The defined LimeSurvey database does not exist"
@@ -4506,7 +4507,7 @@ msgstr "O questionário foi apagado."
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:147
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:164
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:196
-msgid "Firstname from token"
+msgid "First name from token"
 msgstr "Primeiro nome do código de acesso"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:123
@@ -12758,48 +12759,70 @@ msgstr "Atributo %s"
 
 #~ msgid "Modify Quota"
 #~ msgstr "Modificar quota"
+
 #~ msgid "Quota Name"
 #~ msgstr "Nome da quota"
+
 #~ msgid "Quota Limit"
 #~ msgstr "Limite da quota"
+
 #~ msgid "Quota Action"
 #~ msgstr "Ação da quota"
+
 #~ msgid "Terminate Survey"
 #~ msgstr "Concluir questionário"
+
 #~ msgid "Terminate Survey With Warning"
 #~ msgstr "Concluir o questionário e exibir aviso"
+
 #~ msgid "Base Language"
 #~ msgstr "Idioma base"
+
 #~ msgid "Update Quota"
 #~ msgstr "Atualizar quota"
+
 #~ msgid "Modify"
 #~ msgstr "Modificar"
+
 #~ msgid "Cannot be modified"
 #~ msgstr "Não pode ser modificado"
+
 #~ msgid "Update Entry"
 #~ msgstr "Atualizar participante"
+
 #~ msgid "IP-Address"
 #~ msgstr "Endereço IP"
+
 #~ msgid "Label 1"
 #~ msgstr "Legenda 1"
+
 #~ msgid "Label 2"
 #~ msgstr "Legenda 2"
+
 #~ msgid "Iterate surevey"
 #~ msgstr "Repetir questionário"
+
 #~ msgid "First Name"
 #~ msgstr "Nome"
+
 #~ msgid "Last Name"
 #~ msgstr "Sobrenome"
+
 #~ msgid "Records Displayed:"
 #~ msgstr "Registros exibidos:"
+
 #~ msgid "Starting From:"
 #~ msgstr "Começando a partir de:"
+
 #~ msgid "IP Address"
 #~ msgstr "Endereço IP"
+
 #~ msgid "Email Address"
 #~ msgstr "E-mail"
+
 #~ msgid "Export Results"
 #~ msgstr "Exportar resultados"
+
 #~ msgid "Token Control"
 #~ msgstr "Controle de códigos de acesso"
 
@@ -13292,18 +13315,25 @@ msgstr "Atributo %s"
 #, fuzzy
 #~ msgid "Label set:"
 #~ msgstr "Conjunto de legendas:"
+
 #~ msgid "Second Label Set:"
 #~ msgstr "Segundo conjunto de legendas:"
+
 #~ msgid "Copy Answers?"
 #~ msgstr "Copiar respostas?"
+
 #~ msgid "Copy Attributes?"
 #~ msgstr "Copiar atributos?"
+
 #~ msgid "Select CSV File"
 #~ msgstr "Selecionar arquivo CSV"
+
 #~ msgid "Don't consider NON completed responses"
 #~ msgstr "Não considerar respostas incompletas"
+
 #~ msgid "OR between"
 #~ msgstr "OU entre"
+
 #~ msgid ""
 #~ "There were no eligible emails to send. This will be because none "
 #~ "satisfied the criteria of - having an email address, not having been sent "
@@ -13314,8 +13344,9 @@ msgstr "Atributo %s"
 #~ "dos seguintes critérios não foram atendidos: campo e-mail preenchido, não "
 #~ "ter sido enviado nenhum convite ainda, não ter concluído o questionário "
 #~ "ou ter um código de acesso. "
+
 #~ msgid "Stop at Token ID:"
 #~ msgstr "Parar no código de acesso de número:"
+
 #~ msgid "Added New Token"
 #~ msgstr "Novo participante adicionado"
-

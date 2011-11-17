@@ -1,10 +1,10 @@
 # Nandor Licker <lickernandor@yahoo.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: LimeSurvey Hungay Language file\n"
+"Project-Id-Version: LimeSurvey Hungarian Language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-21 20:14+0100\n"
-"PO-Revision-Date: 2010-12-25 01:10+0100\n"
+"PO-Revision-Date: 2011-11-17 16:51+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: gnome-ro\n"
 "Language: hu\n"
@@ -13,12 +13,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.5.2\n"
-"X-Poedit-Basepath: F:\\Install\\Limesurvey\\Limes_installer\\LsInst\\\n"
+"X-Poedit-Basepath: d:\\!_Telepítők\\! PHP rendszerek\\Survey\\svn\\limesurvey\\\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: gT\n"
 "X-Poedit-Bookmarks: -1,-1,-1,-1,292,-1,-1,-1,-1,-1\n"
-"X-Poedit-SearchPath-0: F:\\Install\\Limesurvey\\Limes_installer\\LsInst\n"
-"X-Poedit-SearchPath-1: D:\\web\\xampp\\htdocs\\limesurvey\n"
+"X-Poedit-Language: Hungarian\n"
+"X-Poedit-Country: HUNGARY\n"
+"X-Poedit-SearchPath-0: d:\\!_Telepítők\\! PHP rendszerek\\Survey\\svn\\limesurvey\\hu\\LC_MESSAGES\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:115
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5436
@@ -537,9 +538,9 @@ msgid ""
 "\\n"
 "It is missing a quota message for the following languages"
 msgstr ""
-"A kvotát nem lehetet hozzáadni.\\n"
+"A kvótát nem lehetet hozzáadni.\\n"
 "\\n"
-"Hiányzik a kvotaüzenet a következő nyelvekhez:"
+"Hiányzik a kvótaüzenet a következő nyelvekhez:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quota.php:396
 msgid "Edit quota"
@@ -884,7 +885,7 @@ msgstr "Általános szűrők"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:226
 msgid "You do not have the GD Library installed. Showing charts requires the GD library to function properly."
-msgstr "GD könyvtár nincs betelepítve. A GD könyvtár szükséges a diagrammák helyes megjelenítéséhez."
+msgstr "GD könyvtár nincs betelepítve. A GD könyvtár szükséges a diagramok helyes megjelenítéséhez."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:227
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:231
@@ -893,7 +894,7 @@ msgstr "látogassa meg a http://us2.php.net/manual/en/ref.image.php oldalt tová
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:230
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
-msgstr "Freetype könyvtár nincs betelepítve. A Freetype könyvtár szükséges a diagrammák helyes megjelenítéséhez."
+msgstr "Freetype könyvtár nincs betelepítve. A Freetype könyvtár szükséges a diagramok helyes megjelenítéséhez."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:258
 msgid "Data selection"
@@ -936,7 +937,7 @@ msgstr "Minden mező összesítésének megtekintése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:275
 msgid "Count stats for each question based only on the total number of responses for which the question was displayed"
-msgstr "Minden kérdés statistikájának szémolása csak az összes olyan felelet számátol fuggően, amelyhet a kérdes meg volt jelenítve."
+msgstr "Minden kérdés statisztikájának számolása csak az összes olyan felelet számától függően, amelyhez a kérdés meg volt jelenítve."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:275
 msgid "Subtotals based on displayed questions"
@@ -944,7 +945,7 @@ msgstr "Részösszeg a megjelenített kérdések alapján"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:293
 msgid "Statistics report language"
-msgstr "Statistia jelentés nyelv"
+msgstr "Statisztika jelentés nyelv"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:298
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2212
@@ -961,7 +962,7 @@ msgstr "Kisebb mint:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:315
 msgid "Submission date"
-msgstr "Bekuldés dátuma"
+msgstr "Beküldés dátuma"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:316
 msgid "Equals:"
@@ -1033,11 +1034,11 @@ msgstr "Fájlok száma, melyek nagyobbak mint"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:706
 msgid "Number of files less than"
-msgstr "Fájlok száma, melyek kissebbek mint"
+msgstr "Fájlok száma, melyek kisebbek mint"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:751
 msgid "Date (YYYY-MM-DD) equals"
-msgstr "Dátum (ÉÉÉÉ-HH-NN) ugyanaz, mint"
+msgstr "Dátum (ÉÉÉÉ-HH-NN) egyenlő"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:757
 msgid "Date is"
@@ -1184,7 +1185,7 @@ msgstr "Bejegyzés szerkesztése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:150
 msgid "This surveys uses anonymized responses, so you can't update your response."
-msgstr "Ez a kérdőív névtelen válaszokat hazsnál, tehát nem frissítheti a válaszát."
+msgstr "Ez a kérdőív névtelen válaszokat használ, tehát nem frissítheti a válaszát."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:171
 #: /var/lib/limesurvey-svn/subversion1x/save.php:299
@@ -1605,11 +1606,11 @@ msgstr "Segítség erről a kérdésről"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1827
 msgid "Label 1"
-msgstr "1.Címke"
+msgstr "1. Címke"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1827
 msgid "Label 2"
-msgstr "2.Címke"
+msgstr "2. Címke"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1836
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1848
@@ -1629,7 +1630,7 @@ msgstr "2.Címke"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5621
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:5657
 msgid "Please choose..."
-msgstr "Kérem, válasszon ..."
+msgstr "Kérem, válasszon..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/dataentry.php:1972
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2441
@@ -1691,19 +1692,19 @@ msgstr "és"
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:442
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:470
 msgid "Answer was"
-msgstr "A válasz vol"
+msgstr "A válasz volt"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:446
 msgid "Answer was NOT"
-msgstr "Válaszok NEM volt"
+msgstr "Válasz NEM volt"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:450
 msgid "Answer was less than"
-msgstr "A válasz kissebb volt mint"
+msgstr "A válasz kisebb volt mint"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:454
 msgid "Answer was less than or equal to"
-msgstr "A válasz kissebb vagy egyenlő volt mint"
+msgstr "A válasz kisebb vagy egyenlő volt mint"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:458
 msgid "Answer was greater than or equal to"
@@ -1715,21 +1716,21 @@ msgstr "A válasz nagyobb volt mint"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:466
 msgid "Answer matched (regexp)"
-msgstr "Válasz találtatva (regexp)"
+msgstr "Válasz egyeztetve (regexp)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:622
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:629
 #, php-format
 msgid "Label %s"
-msgstr "%s cimke"
+msgstr "%s címke"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:654
 msgid "RANK"
-msgstr "HELYEZET"
+msgstr "RANG"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:672
 msgid "at question"
-msgstr ""
+msgstr "kérdésnél"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:680
 msgid "Only answer this question if the following conditions are met:"
@@ -1787,7 +1788,7 @@ msgstr "Kérem, válaszzon ki *mindent*, ami érvényes:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:927
 #, php-format
 msgid "Please choose *at most* %s answers:"
-msgstr "Kérem, válasszon *legtöbb* %s választ:"
+msgstr "Kérem, válasszon *legfeljebb* %s választ:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:978
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:979
@@ -1822,19 +1823,19 @@ msgstr "Kérem, írja ide a válaszait:"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4511
 #, php-format
 msgid "Total of all entries must equal %d"
-msgstr "Az összes bejegyzés száma ugyanannyi kell legyen, mint %d"
+msgstr "A bejegyzések összegének %d-nek kell lennie."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1032
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4507
 #, php-format
 msgid "Total of all entries must not exceed %d"
-msgstr "Az összes bejegyzés száma nem lépheti túl %d-t"
+msgstr "Az összes bejegyzés száma nem lehet több, mint %d"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1036
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4515
 #, php-format
 msgid "Total of all entries must be at least %s"
-msgstr "A bejegyzések őszszáma legalább %s kell legyen"
+msgstr "A bejegyzések összege legalább %s kell legyen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1064
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1066
@@ -1949,11 +1950,11 @@ msgstr "Export SPSS syntaxfájlba"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:112
 msgid "Import answers from a deactivated survey table"
-msgstr "Deaktivált kérdőív választáblájának importálása"
+msgstr "Deaktívált kérdőív választáblájának importálása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:121
 msgid "View Saved but not submitted Responses"
-msgstr "Kérdőív elmentett, de le nem adott válaszainak megtekintése"
+msgstr "Elmentett, de le nem adott válaszok megtekintése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:128
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:80
@@ -1963,7 +1964,7 @@ msgstr "VV-felmérésfile importálása"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:135
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvexport.php:50
 msgid "Export a VV survey file"
-msgstr "VV-kérdőívfile exportálása"
+msgstr "VV-felmérésfile exportálása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html_functions.php:142
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:28
@@ -1971,7 +1972,7 @@ msgstr "VV-kérdőívfile exportálása"
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:43
 #: /var/lib/limesurvey-svn/subversion1x/admin/iterate_survey.php:60
 msgid "Iterate survey"
-msgstr "Kérdőívkészítés"
+msgstr "Felmérés készítés"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:63
 msgid "The defined LimeSurvey database does not exist"
@@ -1983,7 +1984,7 @@ msgstr "Lehet, hogy az adatbázis nem került létrehozásra, vagy probléma van
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:75
 msgid "You have not selected a survey to browse."
-msgstr "Nem adott meg kérdőív-azonosítót"
+msgstr "Nem adott meg felmérés-azonosítót"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:112
 msgid "This survey has not been activated. There are no results to browse."
@@ -1991,13 +1992,13 @@ msgstr "Ez a kérdőív egyelőre nem aktív, ezért a válaszokat nem lehet meg
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:127
 msgid "There is no matching survey."
-msgstr "Nincs ilyen kérdőív."
+msgstr "Nincs ilyen felmérés."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:156
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:599
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:926
 msgid "Token ID"
-msgstr "Token ID"
+msgstr "Zseton ID"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:157
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:600
@@ -2142,7 +2143,7 @@ msgstr "Adatnézet-vezérlő"
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1080
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:931
 msgid "Show start..."
-msgstr "Első meglejenítése..."
+msgstr "Első megjelenítése..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:835
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:1083
@@ -2207,7 +2208,7 @@ msgstr "Válasz törlése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:914
 msgid "Edit this token"
-msgstr "Zsetonelem szerkesztése"
+msgstr "Zseton szerkesztése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/browse.php:967
 msgid "Time statistics"
@@ -2334,7 +2335,7 @@ msgstr "Kérdőív importálása befejeződött"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:99
 msgid "Go to question"
-msgstr "Odalépés a kérdéshez"
+msgstr "Ugrás a kérdéshez"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:141
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:119
@@ -2360,7 +2361,7 @@ msgstr "Nem importálhat olyan kérdéscsoportot, amely legalább a jelenlegi k�
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:310
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:351
 msgid "You can't import label sets which don't support the current survey's base language"
-msgstr "Nem importálhat olyan kérdést, amely nem támogatja a kurrens kérdőív alapnyelvét"
+msgstr "Nem importálhat olyan kérdést, amely nem támogatja az aktuális kérdőív alapnyelvét"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importquestion.php:580
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:683
@@ -2476,11 +2477,11 @@ msgstr "Válasz kódok"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:120
 msgid "Convert Y to"
-msgstr ""
+msgstr "Y konvertálása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:123
 msgid "Convert N to"
-msgstr ""
+msgstr "N konvertálása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:127
 msgid "Full Answers"
@@ -2626,7 +2627,7 @@ msgstr "N/A"
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1197
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:1198
 msgid "Tokens problem - token table missing"
-msgstr "Zsetonprobléma - a zsetontábla nincs meg"
+msgstr "Zseton probléma - a zsetontábla nincs meg"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:48
 msgid "Your personal settings"
@@ -2689,11 +2690,11 @@ msgstr "Ez a kérdőív pillanatnyilag nem aktív."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:157
 msgid "Activate this Survey"
-msgstr "A kérdőív aktiválása"
+msgstr "A kérdőív aktíválása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:162
 msgid "Survey cannot be activated. Either you have no permission or there are no questions."
-msgstr "A kérdőívet nem lehetett aktiválni. Vagy nincs hozzáférése, vagy nincsenek kérdések benne."
+msgstr "A kérdőívet nem lehetett aktíválni. Vagy nincs hozzáférése, vagy nincsenek kérdések benne."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:170
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveylist.php:123
@@ -2727,11 +2728,11 @@ msgstr "A kérdőív végrehajtása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:243
 msgid "Survey properties"
-msgstr "Kérdőv tulajdonságai"
+msgstr "Kérdőív tulajdonságai"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:249
 msgid "Edit text elements"
-msgstr "Szövegelemensek szerkesztése"
+msgstr "Szövegelemek szerkesztése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:256
 msgid "General settings"
@@ -2822,7 +2823,7 @@ msgstr "Nyomtatható verzió"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:401
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:406
 msgid "QueXML export"
-msgstr "‮"
+msgstr "QueXML export"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:427
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveylist.php:26
@@ -2958,7 +2959,7 @@ msgstr "Ebben a formátumban a kérdés indexe nem lesz megjelenítve."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:622
 msgid "A question index will be shown; participants will be able to jump between viewed questions."
-msgstr "A kérdések indexe meg lesz jelenítve; a résztvevők átszökhetnek a kérdések között."
+msgstr "A kérdések indexe meg lesz jelenítve; a résztvevők ugorhatnak a kérdések között."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:624
 msgid "Responses will be date stamped"
@@ -2986,7 +2987,7 @@ msgstr "Résztvevők elmenthetik a részlegesen befejezett kérdőíveket"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:632
 msgid "Basic email notification is sent to:"
-msgstr ""
+msgstr "Alap email értesítés küldve ide:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:636
 msgid "Detailed email notification with response data is sent to:"
@@ -3016,7 +3017,7 @@ msgstr "Kérdőív URL-je"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:658
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:665
 msgid "Survey URL for language:"
-msgstr "Kérdőív URL-je a nyelv"
+msgstr "Kérdőív URL e nyelvhez:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:658
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:665
@@ -3141,7 +3142,7 @@ msgstr "Nem lehet törölni ezt a kérdéscsoportot, mert legalább egy kérdés
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:893
 msgid "Export this question group"
-msgstr "Kérdéscoport exportálása"
+msgstr "Kérdéscsoport exportálása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:907
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:640
@@ -3188,7 +3189,7 @@ msgstr "Ehhez a csoporthoz tartozó kérdések kondíciókkal együtt"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1077
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1082
 msgid "Preview This Question"
-msgstr "Kérdés bemutatása"
+msgstr "Kérdés előnézete"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1113
 msgid "Edit Current Question"
@@ -3324,11 +3325,11 @@ msgstr "Figyelmeztetés"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1284
 msgid "You need to add answer options to this question"
-msgstr "Kell adjon válaszopciókat ehhez a kérdéshez"
+msgstr "Adnia kell válaszopciókat ehhez a kérdéshez"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1296
 msgid "You need to add subquestions to this question"
-msgstr "Kell adjon alkérdéseket ehhez a kérdéshez"
+msgstr "Adnia kell alkérdéseket ehhez a kérdéshez"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1306
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:75
@@ -3427,7 +3428,7 @@ msgstr "Felhasználói név"
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:666
 #: /var/lib/limesurvey-svn/subversion1x/admin/userrighthandling.php:982
 msgid "Success!"
-msgstr "Siker!"
+msgstr "Sikeres!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1486
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:596
@@ -3438,12 +3439,12 @@ msgstr "Felhasználó törlése sikertelen. Felhasználó nem volt megadva"
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1512
 #, php-format
 msgid "Edit survey permissions for user %s"
-msgstr "%s felhasználo kérdőív engedélyeinek szerkesztése"
+msgstr "%s felhasználó kérdőív engedélyeinek szerkesztése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1517
 #, php-format
 msgid "Edit survey permissions for group %s"
-msgstr "%s csoport kérdőívengedélyeinek szerkesztése"
+msgstr "%s csoport kérdőív engedélyeinek szerkesztése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1523
 msgid "Permission"
@@ -3455,7 +3456,7 @@ msgstr "Létrehozás"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1526
 msgid "View/read"
-msgstr "Vizualizálás/Olvasás"
+msgstr "Nézet/Olvasás"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1527
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:202
@@ -3509,7 +3510,7 @@ msgstr "Mentés Lsrc - nek (*.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1619
 msgid "Export To File"
-msgstr "Exportálása fájlba"
+msgstr "Exportálás fájlba"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:1631
 msgid "Export group structure"
@@ -3704,7 +3705,7 @@ msgstr "Egy vagy több kérdéscsoport létrehozása az új kérdéscsoporton be
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2134
 #, php-format
 msgid "Done. Test your survey using the %s icon."
-msgstr "Kész! Próbáld ki a kérdőívedet a %s ikonnal"
+msgstr "Kész! Próbálja ki a kérdőívet a %s ikonnal"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:2134
 msgid "Test survey"
@@ -3726,7 +3727,7 @@ msgstr "Hiba: az adatbázis a következő hibaüzenetet adta:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:116
 msgid "New question group was saved."
-msgstr "Új kérdéscoport lementve."
+msgstr "Új kérdéscsoport lementve."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:158
 msgid "Group could not be updated"
@@ -3757,7 +3758,7 @@ msgstr "A kérdést a %s nyelvben nem lehetett létrehozni."
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:677
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:706
 msgid "Question could not be created."
-msgstr "A kérdést nem lehetett létrehozni"
+msgstr "A kérdést nem lehetett létrehozni."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:297
 msgid "Question was successfully added."
@@ -3797,7 +3798,7 @@ msgstr "helyen"
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:603
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:615
 msgid "See conditions:"
-msgstr "Lásd az ugrási feltételeket:"
+msgstr "Lásd a feltételeket:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:613
 msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
@@ -3813,7 +3814,7 @@ msgstr "A kérdés másolása sikerült."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:796
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
-msgstr "A kérdést nem lehetett törölni. Más kérdések számára olyan feltételek vannak, amelyek az itteni válaszalternatívákon alapulnak, hogy ha törli a kérdést, problémák származnának belőle. A hivatkozó feltételeket törölni kell, mielőtt a kérdést törölni akarná."
+msgstr "A kérdést nem lehetett törölni. Más kérdések számára olyan feltételek vannak, melyek az itteni válaszalternatívákon alapulnak, ezért ha törli a kérdést, problémák származnának belőle. A kérdés törlése előtt a hivatkozó feltételeket kell törölni."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:814
 msgid "Question was successfully deleted."
@@ -3821,7 +3822,7 @@ msgstr "A kérdés törlése sikerült."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:876
 msgid "Failed to update answers"
-msgstr "A kérdések frissítése sikertelen"
+msgstr "A válaszok frissítése sikertelen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:882
 msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
@@ -3837,7 +3838,7 @@ msgstr "Válaszopciók mentése sikerült."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:915
 msgid "Failed to delete answer"
-msgstr "A kérdéstörlés sikertelen"
+msgstr "A kérdés törlése sikertelen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:992
 msgid "Subquestions were successfully saved."
@@ -3853,7 +3854,7 @@ msgstr "Kérdőívet nem lehetett frissíteni"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1183
 msgid "Email templates successfully saved."
-msgstr "Felhasználói e-mail sablonok sikeresen le voltak mentve."
+msgstr "Felhasználói e-mail sablonok mentése sikerült."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1197
 msgid "ERROR deleting Survey id"
@@ -3861,7 +3862,7 @@ msgstr "HIBA az alábbi kérdőív törlésekor (ID):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1256
 msgid "Survey text elements successfully saved."
-msgstr "Kérdőív szövegelemeseinek mentése sikerült."
+msgstr "Kérdőív szövegelemeinek mentése sikerült."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/database.php:1275
 msgid "Survey could not be created because it did not have a title"
@@ -3879,13 +3880,13 @@ msgstr "A személyes beállításainak mentése sikerült."
 #: /var/lib/limesurvey-svn/subversion1x/admin/remotecontrol/lsrc.helper.php:2120
 #, php-format
 msgid "This is your personal statistic sheet for survey #%s"
-msgstr "Ez a személyes statistikalapja a #%s kérdőivhez"
+msgstr "Ez a személyes statisztika lapja a #%s kérdőivhez"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/remotecontrol/lsrc.helper.php:2116
 #: /var/lib/limesurvey-svn/subversion1x/admin/remotecontrol/lsrc.helper.php:2121
 #, php-format
 msgid "Statistics Survey #%s"
-msgstr "#%s statisztikai kérdőív"
+msgstr "#%s kérdőív statisztikája"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:21
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:215
@@ -3900,7 +3901,7 @@ msgstr "Címkekészlet-importálási összefoglaló"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:56
 msgid "Uploaded label set file needs to have an .lsl extension."
-msgstr "A feltöltött címkeszetfájlnak egy .lsl végződése kell legyen"
+msgstr "A feltöltött címkekészlet fájlnak .lsl kiterjesztésűnek kell lennie"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:57
 #: /var/lib/limesurvey-svn/subversion1x/admin/importlabel.php:79
@@ -4013,7 +4014,7 @@ msgstr "Kipipálva"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:212
 msgid "Use same default value across languages:"
-msgstr "Azonos alapértelmezett érték használata több nyelvenben:"
+msgstr "Azonos alapértelmezett érték használata több nyelvben:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:302
 msgid "Edit question"
@@ -4062,7 +4063,7 @@ msgstr "További beállítások elrejtése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:515
 msgid "Loading..."
-msgstr "Töltődik..."
+msgstr "Betöltés..."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questionhandling.php:540
 msgid "...or import a question"
@@ -4154,7 +4155,7 @@ msgstr "Hibás felhasználónév és/vagy jelszó!"
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:322
 #, php-format
 msgid "You have exceeded you maximum login attempts. Please wait %d minutes before trying again"
-msgstr "Túllépte a maximális bejelentkezési próbálkozások számat. Kérem, várjon %d percet mielőtt újra próbálkozik."
+msgstr "Túllépte a maximális bejelentkezési próbálkozások számát. Kérem, várjon %d percet mielőtt újra próbálkozik."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:199
 msgid "Logged in"
@@ -4173,7 +4174,7 @@ msgstr "A képernyő újratöltődik. Kérem várjon."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:239
 msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
-msgstr "A LimeSurvey-t úgy telepítették, hogy webszerver-autentikációt használjon, de úgy látszik, Ön még nem lett autentikálva"
+msgstr "A LimeSurvey-t úgy telepítették, hogy webszerver-hitelesítést használjon, de úgy látszik, Ön még nem lett hitelesítve"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:240
 msgid "Please contact your system administrator"
@@ -4261,7 +4262,7 @@ msgstr "Az első Szuperadmin nem törölhető!"
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:559
 #, php-format
 msgid "All of the user's surveys were transferred to %s."
-msgstr "A felhasználó összes kérdőíve át voltak víve %s - hez."
+msgstr "A felhasználó összes kérdőíve átkerült %s - hez."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/usercontrol.php:566
 msgid "Transfer the user's surveys to: "
@@ -4492,7 +4493,7 @@ msgstr "Csak az előző oldalak válaszait lehet elérni."
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:420
 #, php-format
 msgid "Survey mode is set to %s:"
-msgstr "Kérdőív üzemmódja átállt erre: %s"
+msgstr "Kérdőív üzemmódja átállítva erre: %s"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:420
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:262
@@ -4746,7 +4747,7 @@ msgstr "Kérdés exportálása"
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:21
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:54
 msgid "ARMSCII-8 Armenian"
-msgstr "ARMSCII-8 Örmény"
+msgstr "ARMSCII-8 örmény"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:22
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:55
@@ -4771,7 +4772,7 @@ msgstr "Bináris álkarakterkészlet"
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:26
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:59
 msgid "Windows Central European"
-msgstr "Windows Közép-európai"
+msgstr "Windows közép-európai"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:27
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:60
@@ -4801,22 +4802,22 @@ msgstr "DOS Közép-európai"
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:32
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:65
 msgid "DOS Russian"
-msgstr "DOS orosz"
+msgstr "DOS Orosz"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:33
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:66
 msgid "SJIS for Windows Japanese"
-msgstr "SJIS windows japán"
+msgstr "SJIS Windows japán"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:34
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:67
 msgid "DEC West European"
-msgstr "DEC Nyugat-európai"
+msgstr "DEC nyugat-európai"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:35
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:68
 msgid "UJIS for Windows Japanese"
-msgstr "UJIS windows japán"
+msgstr "UJIS Windows japán"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:36
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:69
@@ -4871,7 +4872,7 @@ msgstr "KOI8-U ukrán"
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:46
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:79
 msgid "cp1252 West European"
-msgstr "cp1252 Nyugat-európai"
+msgstr "cp1252 nyugat-európai"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:47
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:80
@@ -4911,7 +4912,7 @@ msgstr "7bit svéd"
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:54
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:87
 msgid "TIS620 Thai"
-msgstr "TIS620 Thai"
+msgstr "TIS620 thai"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:55
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:88
@@ -4980,7 +4981,7 @@ msgstr "Vissza a Válaszimportálás menübe"
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:271
 #, php-format
 msgid "Record ID %d was skipped because of duplicate ID."
-msgstr "Bejegyzés ID %d át volt ugorva ismétlődő ID miatt."
+msgstr "Bejegyzés ID %d átugorva ismétlődő ID miatt."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/vvimport.php:306
 #, php-format
@@ -5024,7 +5025,7 @@ msgstr "Ez nem egy érvényes ZIP-fájl. Importálás sikertelen."
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:286
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:480
 msgid "Copy failed"
-msgstr "Másolás sikertelen."
+msgstr "Másolás sikertelen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:112
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:295
@@ -5135,17 +5136,17 @@ msgstr "Jegyezze meg, nem támogassunk az alkönyvtárakat a ZIP archívumokban.
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:551
 msgid "Imported template files for"
-msgstr ""
+msgstr "Importált sablonfájl ehhez:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_resources_zip.php:583
 msgid "Open imported template"
-msgstr "Importélt sablon megnyitása"
+msgstr "Importált sablon megnyitása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:19
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:38
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:85
 msgid "Import question group"
-msgstr "Kérdéscsoport megnyitása"
+msgstr "Kérdéscsoport importálása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importgroup.php:77
 msgid "Question group import summary"
@@ -5202,7 +5203,7 @@ msgstr "(A címkekészletek nem kerültek importálásra, mivel nincs engedélye
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:86
 msgid "Question attributes"
-msgstr "Kérdéstulajdonságok"
+msgstr "Kérdés tulajdonságok"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importsurvey.php:88
 msgid "quota members"
@@ -5277,15 +5278,15 @@ msgstr "Excelben való könnyű megjelenítéshez cserélje a végződést `tab`
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:61
 msgid "Survey List Page"
-msgstr "Kérdőívlista-oldal"
+msgstr "Felméréslista-oldal"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:62
 msgid "Welcome Page"
-msgstr "Üdvözlésoldal"
+msgstr "Üdvözlő oldal"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:63
 msgid "Question Page"
-msgstr "Kérdésoldal"
+msgstr "Kérdés oldal"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:64
 msgid "Completed Page"
@@ -5313,7 +5314,7 @@ msgstr "Nyomtasd ki a válaszlapot"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:70
 msgid "Printable survey page"
-msgstr "Nyomtatható kérdőívlap"
+msgstr "Nyomtatható felmérés lap"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:206
 #, php-format
@@ -5369,7 +5370,7 @@ msgstr "Sablon minta"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:411
 msgid "This is a sample survey description. It could be quite long."
-msgstr "Ez egy kérdőív leírás minta. Lehet eléggé hosszú."
+msgstr "Ez egy felmérés leírás minta. Lehet eléggé hosszú."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:411
 msgid "But this one isn't."
@@ -5377,11 +5378,11 @@ msgstr "De ez nem az."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:412
 msgid "Welcome to this sample survey"
-msgstr "Üdvözöljük a mintakérdőívben"
+msgstr "Üdvözöljük a minta felmérésben"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:412
 msgid "You should have a great time doing this"
-msgstr "Jol fogja érezni magát a kitöltés közben"
+msgstr "Jól fogja érezni magát a kitöltés közben"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:419
 msgid "Some URL description"
@@ -5422,7 +5423,7 @@ msgstr "Válaszait rögzítettük"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:435
 msgid "Assessment heading"
-msgstr "Kiértés feljéce"
+msgstr "Kiértékelés feljéce"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:435
 msgid "Assessment details"
@@ -5430,7 +5431,7 @@ msgstr "Kiértékelés részletei"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:435
 msgid "Note that this assessment section will only show if assessment rules have been set and assessment mode is activated."
-msgstr "Vegye figyelembe, hogy ez a kiértékelő rész csak akkor jelenik mage, ha a kiértékelő szabályok be voltak állítva és a kiértékelő mód aktválva van."
+msgstr "Vegye figyelembe, hogy ez a kiértékelő rész csak akkor jelenik meg, ha a kiértékelő szabályok be voltak állítva és a kiértékelő mód aktíválva van."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:436
 msgid "Survey name (ID)"
@@ -5457,7 +5458,7 @@ msgstr "Nem adott meg kérdőív-azonosítót"
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2778
 #, php-format
 msgid "Please contact %s ( %s ) for further assistance."
-msgstr "Kérjük, problémájával forduljon %s ( %s ) munkatársunkhoz."
+msgstr "Kérjük, problémájával forduljon %s (%s) munkatársunkhoz."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:474
 #: /var/lib/limesurvey-svn/subversion1x/index.php:432
@@ -5471,16 +5472,16 @@ msgstr "Magyarázzon el valamit részletesen:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:686
 msgid "Submit your survey."
-msgstr "Küldje be a kérdőíjét."
+msgstr "Küldje be felmérését."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:690
 msgid "This is the survey end message."
-msgstr "Ez a kérdőív végi üzenet."
+msgstr "Ez a felmérés végi üzenet."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:811
 #, php-format
 msgid "Note: This is a standard template. If you want to edit it %s please copy it first%s."
-msgstr "Megjegyzés: Ez egy standard sablon. Ha módósítani akarja %s, kérem előszőr másolja át %s."
+msgstr "Megjegyzés: Ez egy standard sablon. Ha módosítani akarja %s, kérem előszőr másolja át %s."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:811
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:876
@@ -5498,7 +5499,7 @@ msgstr "Írja be a másolt sablon nevét:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:875
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:884
 msgid "copy_of_"
-msgstr "masolata_ennek_"
+msgstr "masolat_"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:824
 msgid "Create new template called:"
@@ -5701,7 +5702,7 @@ msgstr "Módosítsa a kérdeinek kódjait/címeit/szövegét és további opció
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:74
 msgid "Edit your group names or descriptions"
-msgstr "Módosítsa a csoportneveit vagy leírásaikat"
+msgstr "Módosítsa a csoportneveket vagy leírásaikat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:74
 msgid "Add, remove or edit answer options"
@@ -5792,7 +5793,7 @@ msgstr "Címkekészlet(ek) importálása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:223
 msgid "Select label set file (*.lsl,*.csv):"
-msgstr "Válasszon egy címkeszetfájlt (*.lsl, *.csv)"
+msgstr "Válasszon egy címkekészlet fájlt (*.lsl, *.csv)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:227
 msgid "Don't import if label set already exists:"
@@ -5872,7 +5873,7 @@ msgstr "Új címke hozzáadása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:446
 msgid "Note: Inserting new labels must be done on the first language tab."
-msgstr "Megjegyzés: Új címkekészletek hozzáadása az elsődleges nyelv lapján kell történjen."
+msgstr "Megjegyzés: Új címkekészletek hozzáadásának az elsődleges nyelv lapján kell történnie."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/labels.php:462
 msgid "Uploaded Resources Management"
@@ -5933,12 +5934,12 @@ msgstr "Címke törlése sikertelen"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:343
 #, php-format
 msgid "%s messages were scanned out of which %s were marked as bounce by the system."
-msgstr "%s üzenet be volt olvasva, amiből %s visszatükrözésként volt megjelölve a rendszer által."
+msgstr "%s üzenet beolvasva, amiből %s visszatükrözésként volt megjelölve a rendszer által."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:347
 #, php-format
 msgid "%s messages were scanned, none were marked as bounce by the system."
-msgstr "%s üzenet be volt olvasva, egyik sem volt megjelölve visszatükrözésként."
+msgstr "%s üzenet beolvasva, egyik sem volt megjelölve visszatükrözésként."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:352
 msgid "Please check your settings"
@@ -6012,7 +6013,7 @@ msgstr "Köszönöm, nem."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:532
 msgid "You don't have the permission to activate tokens."
-msgstr "Nincs engedélye a zsetonok aktiválásához."
+msgstr "Nincs engedélye a zsetonok aktíválásához."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:534
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:615
@@ -6026,7 +6027,7 @@ msgstr "Opciók visszaállítása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:543
 msgid "The following old token tables could be restored:"
-msgstr "A következő régi tokentáblákat lehetett visszaállítani:"
+msgstr "A következő régi zsetontáblákat lehetett visszaállítani:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:550
 msgid "Restore"
@@ -6053,7 +6054,7 @@ msgstr "Új zsetonelem hozzáadása"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2417
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2572
 msgid "Add dummy tokens"
-msgstr "Bábuzsetonok hozzáadása"
+msgstr "Színlelt zsetonok hozzáadása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:600
 msgid "Manage additional attribute fields"
@@ -6122,7 +6123,7 @@ msgstr "Összes meghívó kiküldve"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:689
 msgid "Total opted out"
-msgstr "Kijelenkezések összáma"
+msgstr "Kijelenkezések összesen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:694
 msgid "Total surveys completed"
@@ -6208,7 +6209,7 @@ msgstr "A lenti beállítások felhasználása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:806
 msgid "Use global settings"
-msgstr "Globális beállításaok alkalmazása"
+msgstr "Globális beállítások alkalmazása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:809
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:334
@@ -6324,7 +6325,7 @@ msgstr "Azt választotta, hogy ne használjon tükrözési beállításokat"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:924
 msgid "Bounce processing"
-msgstr "Visszatukrözések feldolgozás"
+msgstr "Visszatükrözések feldolgozása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:946
 msgid "Search"
@@ -6423,7 +6424,7 @@ msgstr "Érvényes"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1123
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1124
 msgid "Valid until"
-msgstr ""
+msgstr "Érvényes"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1180
 msgid "Invalid email address:"
@@ -6572,7 +6573,7 @@ msgid ""
 "If you do not want to participate in this survey and don't want to receive any more invitations please click the following link:\n"
 "{OPTOUTURL}"
 msgstr ""
-"Ha nem akar részt venni ebben a felmérésben és nem akar több meghívást kapni, kérem, menjen a következő linkre:\n"
+"Ha nem akar részt venni ebben a felmérésben és nem akar több meghívást kapni, kérem, kattintson a következő linkre:\n"
 "{OPTOUTURL}"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1420
@@ -6727,7 +6728,7 @@ msgstr "Emlékeztető e-mail:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1727
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1740
 msgid "Send reminder to token ID(s):"
-msgstr "Emlékeztetés küldése a zseton ID(k) - hoz:"
+msgstr "Emlékeztetés küldése a zseton ID(k) - hez:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1731
 msgid "Sending to:"
@@ -6743,7 +6744,7 @@ msgstr "Ennél a zsetonnál kezdje:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1750
 msgid "Min days between reminders"
-msgstr "Az emlékeztetők között minimálisan eltelő idő"
+msgstr "Az emlékeztetők közötti napok száma legalább"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:1754
 msgid "Max reminders"
@@ -6832,7 +6833,7 @@ msgstr "Hozzáadandó tulajdonságmezők száma:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2133
 msgid "Add fields"
-msgstr "Mszők hozzáadása"
+msgstr "Mezők hozzáadása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2154
 msgid "Update token attribute descriptions"
@@ -6897,7 +6898,7 @@ msgstr "Megmaradt felhasználások száma:"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2313
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2396
 msgid "until"
-msgstr ""
+msgstr "-ig"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2319
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2402
@@ -6968,7 +6969,7 @@ msgstr "CSV bemenet formátum"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2630
 msgid "File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order."
-msgstr "A fáj egy standard CSV (vezző által elválasztott) fájl kéne legyen, dupla idézőjelekkel a válaszok körül (alapértelmezett OpenOffice-ban és Excel-ben). Az első sor a mezők nevét kell tartalmazza. A mezők akármilyen sorrendben lehetnek."
+msgstr "A fájlnak szabványos CSV (vesszővel elválasztott) fájlnak kell lennie, dupla idézőjelekkel a válaszok körül (alapértelmezett OpenOffice-ban és Excel-ben). Az első sornak a mezők nevét kell tartalmaznia. A mezők akármilyen sorrendben lehetnek."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2630
 msgid "Mandatory fields:"
@@ -7045,7 +7046,7 @@ msgstr "Lista"
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2855
 #, php-format
 msgid "%s lines had a mismatching number of fields."
-msgstr "%s vonalnak nem volt egy megfelelő mezőszáma."
+msgstr "%s sornak nem volt megfelelő mezőszáma."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2865
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3092
@@ -7087,7 +7088,7 @@ msgstr "Automatikus felismerés"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3132
 msgid "Comma"
-msgstr "Veszző"
+msgstr "Vessző"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:3134
 msgid "Semicolon"
@@ -7129,16 +7130,16 @@ msgstr "Kérem, válasszon LDAP lekérdezést:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:46
 msgid "Data for username and one time password was received but the usage of one time passwords is disabled at your configuration settings. Please add the following line to config.php to enable one time passwords: "
-msgstr "Adatok a felhasználóról és egyhasználatú kulcsszóról megérkeztek, de az egyhasználatú kulcsszó használata ki van kapcsolva a konfigurációs beállításoknál. Kérem, adja hozzá a következő vonalat a config.php-hez egyhasználatú kulcsszavak engedélyezéséért."
+msgstr "Adatok a felhasználóról és egyszer használatos jelszóról megérkeztek, de az egyszer használatos jelszó használata ki van kapcsolva a konfigurációs beállításoknál. Kérem, adja hozzá a következő sort a config.php-hez egyszer használatos jelszavak engedélyezéséért."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:64
 #, php-format
 msgid "No one-time password found for user %s"
-msgstr "Nincs egyhasználatú kulcszó a(z) %s felhasználóhoz"
+msgstr "Nincs egyszer használatos jelszó a(z) %s felhasználóhoz"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:84
 msgid "Passed single-use password was wrong or user doesn't exist"
-msgstr "Megadott egyhasználatú kulcsszó hibás vagy a felhasználó nem létezik"
+msgstr "Megadott egyszer használatos jelszó hibás vagy a felhasználó nem létezik"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/login_check.php:156
 msgid "You have to enter user name and email."
@@ -7167,7 +7168,7 @@ msgstr "Nem léteznek elérhető csoportok."
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:126
 #, php-format
 msgid "Notice: Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."
-msgstr "Jegyezze meg: a kiértékelési mód ehhez a kérdőívhez nem volt aktiválva. Aktiválhatja a %s kérdőív beállítás %s - nél ('Figyelmeztetés és adatkezelés' lap)."
+msgstr "Jegyezze meg: a kiértékelési mód ehhez a kérdőívhez nem volt aktíválva. Aktíválhatja a %s kérdőív beállítás %s - nél ('Figyelmeztetés és adatkezelés' lap)."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/assessments.php:134
 msgid "No SID Provided"
@@ -7235,7 +7236,7 @@ msgstr "Nem készíthet kérdőívet!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:47
 msgid "You are not allowed to delete this survey!"
-msgstr "Kérdőív nem törölhető!"
+msgstr "Nem törölheti a kérdőívet!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:52
 msgid "You are not allowed to add new questions for this survey!"
@@ -7243,15 +7244,15 @@ msgstr "Nem adhat hozzá új kérdéseket ehhez a kérdőívhez!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:57
 msgid "You are not allowed to activate this survey!"
-msgstr "Kérdőív nem aktiválható!"
+msgstr "Nem aktíválhatja a kérdőívet!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:62
 msgid "You are not allowed to deactivate this survey!"
-msgstr "Kérdőív nem deaktiválható!"
+msgstr "Nem kapcsolhatja ki a kérdőívet!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:67
 msgid "You are not allowed to add a group to this survey!"
-msgstr "Kérdőívhez nem lehet csoportot hozzáadni!"
+msgstr "Nem adhat csoportot a kérdőívhez!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:72
 msgid "You are not allowed to order groups in this survey!"
@@ -7259,11 +7260,11 @@ msgstr "Nem adhat hozzá kérdéscsoportokat ehhez a kérdőívhez!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:77
 msgid "You are not allowed to edit this survey!"
-msgstr "Kérdőív nem szerkeszthető!"
+msgstr "Nem szerkesztheti a kérdőívet!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:82
 msgid "You are not allowed to edit groups in this survey!"
-msgstr "Kérdőív csoportjai nem szerkeszthetők!"
+msgstr "Nem szerkesztheti a kérdőív csoportjait!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:87
 msgid "You are not allowed to browse responses!"
@@ -7271,7 +7272,7 @@ msgstr "Nem tekintheti meg a válaszokat!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:92
 msgid "You are not allowed to set assessment rules!"
-msgstr "Nem nézheti meg a kiértékelési szabályokat!"
+msgstr "Nem állíthatja be a kiértékelési szabályokat!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:97
 msgid "You are not allowed to delete this group!"
@@ -7280,7 +7281,7 @@ msgstr "Nem törölheti ezt a kérdéscsoportot!"
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:102
 #: /var/lib/limesurvey-svn/subversion1x/admin/cmdline_importsurvey.php:80
 msgid "You are not allowed to import a survey!"
-msgstr "Kérdőív nem importálható!"
+msgstr "Nem importálhat kérdőívet!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/access_denied.php:108
 msgid "You are not allowed to import a group!"
@@ -7313,11 +7314,11 @@ msgstr "Nem végezheti el ezt a műveletet!"
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:34
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:111
 msgid "Deactivate Survey"
-msgstr "A kérdőív deaktiválása"
+msgstr "A kérdőív deaktíválása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:29
 msgid "In an active survey, a table is created to store all the data-entry records."
-msgstr "Az aktivált kérdőívhez egy tábla készül a kitöltött kérdőívek adatainak tárolásához."
+msgstr "Az aktívált kérdőívhez egy tábla készül a kitöltött kérdőívek adatainak tárolásához."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:30
 msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
@@ -7337,7 +7338,7 @@ msgstr "Ezért javasoljuk, hogy a deaktiválás előtt exportálja adatait."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:112
 msgid "Survey Has Been Deactivated"
-msgstr "Kérdőív deaktiválva"
+msgstr "Kérdőív deaktíválva"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:115
 msgid "The responses table has been renamed to: "
@@ -7357,7 +7358,7 @@ msgstr "A kérdőívvel összekapcsolt zsetontábla erre a névre lesz átnevezv
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/deactivate.php:122
 msgid "Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"
-msgstr "Megjegyzés: Ha hibából kikapcsolta a kérdőívet, könnyen vissza lehet szerezni az adatokat ha nem módosítsa a kérdőív struktúráját. Forduljon a LimeSurvey dokumentációjához további részletekért."
+msgstr "Megjegyzés: Ha hibából kikapcsolta a kérdőívet, könnyen visszanyerhetők az adatok, ha nem módosítja a kérdőív struktúráját. Forduljon a LimeSurvey dokumentációjához további részletekért."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:48
 msgid "Quick Statistics"
@@ -7365,7 +7366,7 @@ msgstr "Gyorsstatisztika"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:51
 msgid "Import responses from an deactivated survey table"
-msgstr "Válaszok importálása egy deaktivált kédőívtáblázatból"
+msgstr "Válaszok importálása egy deaktívált kérdőívtáblázatból"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:55
 msgid "Target survey ID:"
@@ -7385,7 +7386,7 @@ msgstr "Biztos benne?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/importoldresponses.php:69
 msgid "You can import all old responses with the same amount of columns as in your active survey. YOU have to make sure, that this responses corresponds to the questions in your active survey."
-msgstr "Importálhassa az összes régi feleletet ugyanazzal az oszlopszámmal az aktív kérdőívbe. ÖN kell ellenőrizze,  hogy ezek a válaszok találnak az aktív kérdőív kérdéseihez."
+msgstr "Importálhatja az összes régi választ ugyanazzal az oszlopszámmal az aktív kérdőívbe. ÖNNEK kell ellenőriznie, hogy ezek a válaszok megfelelnek az aktív kérdőív kérdéseinek."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:37
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:45
@@ -7399,7 +7400,7 @@ msgstr "Szerkesztő bezárása"
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:87
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:137
 msgid "Editing"
-msgstr "Épp ezt szerkesztem:"
+msgstr "Szerkesztés"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/htmleditor-popup.php:168
 msgid "Do you want to save your changes ?"
@@ -7548,7 +7549,7 @@ msgstr "A következő kérdőív-nyelvbeállításokat kéne törölni"
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:352
 #, php-format
 msgid "SLID `%s` because the related survey is missing."
-msgstr "SLID `%s` mert a hozzáfüggő kérdőív hiányzik."
+msgstr "SLID `%s` mert a kapcsolódó kérdőív hiányzik."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:358
 msgid "All survey language settings meet consistency standards"
@@ -7593,7 +7594,7 @@ msgstr "A következő régi kérdőívtáblázatokat ki kellene törölni, mivel
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:472
 msgid "All old survey tables meet consistency standards"
-msgstr "Minden régi kérdőivtáblázat betartja a konzisztencia szabályokat."
+msgstr "Minden régi kérdőívtáblázat betartja a konzisztencia szabályokat."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:533
 msgid "The following old token tables should be deleted because their parent survey no longer exists"
@@ -7647,7 +7648,7 @@ msgstr "Megjelölt tételek törlése!"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:685
 msgid "Note that you cannot undo a delete if you proceed. The data will be gone."
-msgstr "Jegyezze meg, hogy a törlési műveletet nem lehet visszavonni. Az adatok el fognak tűnni."
+msgstr "Jegyezze meg, hogy a törlési műveletet nem lehet visszavonni. A törölt adatok végleg elvesznek."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:723
 msgid "Deleting orphaned default values."
@@ -7676,7 +7677,7 @@ msgstr "Régi kérdőívek eredménytáblázatainak  törlődnek"
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:893
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:903
 msgid "Deleting"
-msgstr "Törlődik"
+msgstr "Törlés"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:771
 msgid "Deleting Surveys"
@@ -7832,7 +7833,7 @@ msgstr "Tudnivalók türelmetlen egyének számára"
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:117
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:140
 msgid "Download the data and the syntax file."
-msgstr "Töltse le az adat- és syntaxfájlt."
+msgstr "Töltse le az adat- és szintaxis fájlt."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:118
 msgid "Save both of them on the R working directory (use getwd() and setwd() on the R command window to get and set it)"
@@ -7844,7 +7845,7 @@ msgstr "szám:       source(\"Surveydata_syntax.R\", encoding = \"UTF-8\")      
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:121
 msgid "Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)$variable.labels\"), like for foreign:read.spss."
-msgstr "Az adatai most kéne importálódjanak, a data.frame neve \"data\", variable.labels a (\"attributes(data)$variable.labels\") adatok tulajdonságai, mint foreign:read.spss-nek."
+msgstr "Az adatait most kell importálni, a data.frame neve \"data\", variable.labels a (\"attributes(data)$variable.labels\") adatok tulajdonságai, mint foreign:read.spss-nek."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:63
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:79
@@ -7859,7 +7860,7 @@ msgstr "Kisebb vagy egyenlő"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:65
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:81
 msgid "equals"
-msgstr "Ugyanaz, mint"
+msgstr "Egyenlő"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:66
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:82
@@ -7922,7 +7923,7 @@ msgstr "A feltételeket lemásoltuk"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:419
 msgid "No conditions could be copied (due to duplicates)"
-msgstr "Nem lehetet a feltételeket másolni (duplikátok miatt)"
+msgstr "Nem lehetet a feltételeket másolni (duplikátumok miatt)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:424
 msgid "Did not copy questions"
@@ -7938,7 +7939,7 @@ msgstr "Nincs feltétel kiválasztva a másolás helyére"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:874
 msgid "Group of checkboxes"
-msgstr "Jelölönégyzetcsoport"
+msgstr "Jelölőnégyzetcsoport"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:890
 msgid "Single checkbox"
@@ -7976,7 +7977,7 @@ msgstr "LimeSurvey kézikönyv"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1161
 msgid "Only show question {QID} IF"
-msgstr "Csak akkor mutassa meg a {QID} kérdést, HA"
+msgstr "Csak akkor mutassa a {QID} kérdést, HA"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1182
 msgid "Are you sure you want to delete all conditions set to the questions you have selected?"
@@ -8017,7 +8018,7 @@ msgstr "Felhasználó szerkesztése"
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1385
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1458
 msgid "From token table"
-msgstr ""
+msgstr "Zseton táblából"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1389
 #: /var/lib/limesurvey-svn/subversion1x/admin/conditionshandling.php:1462
@@ -8325,7 +8326,7 @@ msgstr "ComfortUpdate %s lépés"
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:502
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:510
 msgid "On requesting the update information from limesurvey.org there has been an error:"
-msgstr "A frissítés információjának kérése közben limesurvey.org-tól egy hiba akadt:"
+msgstr "A frissítés információjának kérése közben limesurvey.org-tól egy hiba történt:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:293
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:425
@@ -8468,7 +8469,7 @@ msgstr "Az oldal neve"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:662
 msgid "Root URL"
-msgstr "Gyokér URL"
+msgstr "Gyökér URL"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/update/updater.php:665
 msgid "Click here to continue"
@@ -8522,7 +8523,7 @@ msgstr "Átlagos fájlméret"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:891
 msgid "Average size per respondent"
-msgstr "Átlagos méret válaszadóként"
+msgstr "Átlagos méret válaszadónként"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:915
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics_function.php:937
@@ -8761,7 +8762,7 @@ msgstr "3-Kattintás ComfortUpdate"
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:169
 #, php-format
 msgid "There was an error on update check (%s)"
-msgstr "Egy hiba akadt a frissítés ellenőrzése kozben (%s)"
+msgstr "Hiba történt a frissítés ellenőrzése közben (%s)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:175
 msgid "There is currently no newer LimeSurvey version available."
@@ -8789,7 +8790,7 @@ msgstr "Alapértelmezett HTML-szerkesztő üzemmód"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:232
 msgid "Time difference (in hours):"
-msgstr "Időkülombség (órákban):"
+msgstr "Időkülönbség (órákban):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:234
 msgid "Server time:"
@@ -8797,7 +8798,7 @@ msgstr "Szerveridő:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:234
 msgid "Corrected time :"
-msgstr "Kijavított idő :"
+msgstr "Korrigált idő :"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:238
 msgid "PDF export available:"
@@ -8887,7 +8888,7 @@ msgstr "Mindig"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:325
 msgid "Email batch size:"
-msgstr "E-mail halom mérete:"
+msgstr "E-mail köteg mérete:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:332
 msgid "Default site bounce email:"
@@ -8931,7 +8932,7 @@ msgstr "Ne kényszerítse a bekapcsolást vagy kikapcsolást"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:446
 msgid "Show 'no answer' option for non-mandatory questions:"
-msgstr "'felelet nélkül' opció megjelenítése a nem kötelező kérdéseknél"
+msgstr "'Nincs válasz' opció megjelenítése a nem kötelező kérdéseknél"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:450
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:470
@@ -8952,14 +8953,14 @@ msgstr "\"A kérdőívben X kérdés létezik\" megjelenítése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:487
 msgid "Show question group name and/or description"
-msgstr "Kérdéscoport nevének és/vagy leírásának megjelenítése"
+msgstr "Kérdéscsoport nevének és/vagy leírásának megjelenítése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:489
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:507
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:491
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:528
 msgid "Show both"
-msgstr "Minkettő megjelenítése"
+msgstr "Mindkettő megjelenítése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:490
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:492
@@ -8994,7 +8995,7 @@ msgstr "Csak a csoport kódjának a megjelenítése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:526
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
-msgstr "Megjegyzés: Próba mód ki van kapcsolva. (*)-al jelölt beállítások nem módósíthatok."
+msgstr "Megjegyzés: Próba mód ki van kapcsolva. (*)-al jelölt beállítások nem módosíthatók."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:619
 msgid "System overview"
@@ -9010,7 +9011,7 @@ msgstr "Aktív kérdőívek"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:635
 msgid "Deactivated result tables"
-msgstr "Deaktivált eredménytáblázatok"
+msgstr "Deaktívált eredménytáblázatok"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:638
 msgid "Active token tables"
@@ -9018,7 +9019,7 @@ msgstr "Aktív zsetontáblázatok"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:641
 msgid "Deactivated token tables"
-msgstr "Deaktivált zsetontáblázatok"
+msgstr "Deaktívált zsetontáblázatok"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:647
 msgid "Show PHPInfo"
@@ -9032,7 +9033,7 @@ msgstr "Ez a csoport nem tartalmaz egy kérdést sem."
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:195
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:133
 msgid "This question is a subquestion type question but has no configured subquestions."
-msgstr "A kérdés alkérdés típusú, de nem birtokol beállított alkérdéseket."
+msgstr "A kérdés alkérdés típusú, de nincsenek beállított alkérdései."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:205
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:143
@@ -9065,11 +9066,11 @@ msgstr "Kérdéscsoport hozzáadása"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:51
 msgid "Error: You have to enter a group title for each language."
-msgstr "Hiba: Meg kell adjon egy csoportcímet minden nyelvhez."
+msgstr "Hiba: Adjon meg egy csoportcímet minden nyelvhez."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:65
 msgid "Save question group"
-msgstr "Kérdésekcsoport mentése"
+msgstr "Kérdéscsoport mentése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:81
 msgid "Select question group file (*.lsg/*.csv):"
@@ -9102,7 +9103,7 @@ msgstr "A következő csoportok tartoznak ide"
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:270
 #, php-format
 msgid "Group %s depends on group %s, see the marked conditions on:"
-msgstr "A %s csoport a %s csoportra épül rá, nézze meg a beszínezett feltételeket:"
+msgstr "A %s csoport a %s csoportra épül, nézze meg a beszínezett feltételeket:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/questiongrouphandling.php:275
 msgid "QID"
@@ -9160,11 +9161,11 @@ msgstr "Inaktív"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveylist.php:131
 msgid "This survey is active - click here to deactivate this survey."
-msgstr "Ez a kérdőív aktív - kattintson ide a deaktiválásához."
+msgstr "Ez a kérdőív aktív - kattintson ide a deaktíválásához."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveylist.php:143
 msgid "This survey is currently not active - click here to activate this survey."
-msgstr "Ez a kérdőív jelenleg inaktív - kattinson ide az aktiválásához."
+msgstr "Ez a kérdőív jelenleg inaktív - kattinson ide az aktíválásához."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveylist.php:147
 msgid "This survey is currently not active."
@@ -9185,7 +9186,7 @@ msgstr "Egy hiba akadt a Google API használata közben."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/translate.php:133
 msgid "Detailed Error"
-msgstr "Részletes hiba"
+msgstr "Hiba részletezése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/translate.php:135
 msgid "Loading translations"
@@ -9201,7 +9202,7 @@ msgstr "Semmi fordítanivaló ezen az oldalon"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveytextelements.php:29
 msgid "Edit survey text elements"
-msgstr "Kérdőív szövegelemenseinek szerkesztése"
+msgstr "Kérdőív szövegelemeinek szerkesztése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveytextelements.php:47
 msgid "Survey title"
@@ -9273,7 +9274,7 @@ msgstr "Alkérdések szerkesztése"
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:116
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:119
 msgid "Error: You are trying to use duplicate answer codes."
-msgstr "Hiba: duplikált válaszkódokat akar használni."
+msgstr "Hiba: Duplikált válaszkódokat akar használni."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:149
 msgid "Y-Scale"
@@ -9319,7 +9320,7 @@ msgstr "Adja meg az alkérdéseit:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:251
 msgid "Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon/tab."
-msgstr "Adjon meg egy alkérdést vonalanként. Megadhat egy kódot elválasztva a kód és az alkérdés szövegét egy pontosvessző vagy tab által. Többnyelvű felhasználói felület esetén a fordítás(okat) adja hozzá ugyanazon vonalhoz, pontosvessző/tab által elválasztva."
+msgstr "Adjon meg egy alkérdést soronként. Megadhat egy kódot, a kód és az alkérdés szövegét, pontosvessző vagy tab elválasztással. Többnyelvű felhasználói felület esetén a fordítás(okat) adja hozzá ugyanazon sorhoz, pontosvessző/tab elválasztással."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsubquestions.php:257
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:257
@@ -9619,7 +9620,7 @@ msgstr "Adatbázishiba:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:457
 msgid "Survey has been activated. Results table has been successfully created."
-msgstr "A kérdőív aktiválva! A válaszokat tároló tábla sikeresen elkészült."
+msgstr "A kérdőív aktíválva! A válaszokat tároló tábla sikeresen elkészült."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate_functions.php:463
 msgid "The required directory for saving the uploaded files couldn't be created. Please check file premissions on the limesurvey/upload/surveys directory."
@@ -9651,7 +9652,7 @@ msgstr "Zártkörű elérési módra váltás"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/translate_functions.php:144
 msgid "Translate to"
-msgstr "Fordítatas a következő nyelvre:"
+msgstr "Fordítás a következő nyelvre:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/translate_functions.php:212
 msgid "Survey title and description"
@@ -9770,7 +9771,7 @@ msgstr "Üdvözlő képernyő megjelenítése?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:313
 msgid "Navigation delay (seconds):"
-msgstr "Navigációs késleltetés (mésodperc)"
+msgstr "Navigációs késleltetés (másodperc)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:318
 msgid "Show [<< Prev] button"
@@ -9806,11 +9807,11 @@ msgstr "URL betöltése automatikusan amikor a felmérés befejeződött?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:439
 msgid "Yes (Forced by the system administrator)"
-msgstr "Igen (Rendszermérnök által kényszerítve)"
+msgstr "Igen (Rendszergazda által kényszerítve)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:442
 msgid "No (Forced by the system administrator)"
-msgstr "Nem (Rendszermérnök által kényszerítve)"
+msgstr "Nem (Rendszergazda által kényszerítve)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:464
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:489
@@ -9820,20 +9821,20 @@ msgstr "Csoport nevének és/vagy leírásának megjelenítése"
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:468
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:514
 msgid "Show both (Forced by the system administrator)"
-msgstr "Mindkettő megjelenítése (Rendszermérnök által kötelezve)"
+msgstr "Mindkettő megjelenítése (Rendszergazda által kötelezve)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:471
 msgid "Show group name only (Forced by the system administrator)"
-msgstr "Csak a csoportnév megjelenítése (Adminisztrátor által kötelezve)"
+msgstr "Csak a csoportnév megjelenítése (Rendszergazda által kötelezve)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:474
 msgid "Show group description only (Forced by the system administrator)"
-msgstr "Csak a leírás megjelenítése (Adminisztrátor által kötelezve)"
+msgstr "Csak a leírás megjelenítése (Rendszergazda által kötelezve)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:477
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:505
 msgid "Hide both (Forced by the system administrator)"
-msgstr "Mindkettő rejtése (Rendszermérnök által kötelezve)"
+msgstr "Mindkettő rejtése (Rendszergazda által kötelezve)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:501
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:526
@@ -9842,32 +9843,32 @@ msgstr "Kérdés számának és/vagy kódjának a megjelenítése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:508
 msgid "Show question number only (Forced by the system administrator)"
-msgstr "Csak a kérdés számának a megjelenítése (Adminisztrátor által kötelezve)"
+msgstr "Csak a kérdés számának a megjelenítése (Rendszergazda által kötelezve)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:511
 msgid "Show question code only (Forced by the system administrator)"
-msgstr "Csak a kérdés kódjának a megjelenítése (Rendszermérnök által kötelezve)"
+msgstr "Csak a kérdés kódjának a megjelenítése (Rendszergazda által kötelezve)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:539
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:554
 msgid "Show \"No answer\""
-msgstr "\"Nincs felelet\" megjelenítése"
+msgstr "\"Nincs válasz\" megjelenítése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:543
 msgid "Off (Forced by the system administrator)"
-msgstr "Kikapcsolva (Rendszermérnök által kötelezve)"
+msgstr "Kikapcsolva (Rendszergazda által kötelezve)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:561
 msgid "On (Forced by the system administrator)"
-msgstr "Bekapcsolva (Rendszermérnök által kötelezve)"
+msgstr "Bekapcsolva (Rendszergazda által kötelezve)"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:572
 msgid "List survey publicly:"
-msgstr "A kérdőív publikus hirdetése:"
+msgstr "A kérdőív nyilvános felsorolása:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:588
 msgid "Allow public registration?"
-msgstr "Publikus regisztráció engedélyezése?"
+msgstr "Nyilvános regisztráció engedélyezése?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:623
 msgid "Set cookie to prevent repeated participation?"
@@ -9893,7 +9894,7 @@ msgstr "Mentés & betöltés"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:689
 msgid "Use HTML format for token emails?"
-msgstr "Használjon HTML-formátumot a token-emailekhez?"
+msgstr "Használjon HTML-formátumot a zseton-emailekhez?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:690
 msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
@@ -9917,7 +9918,7 @@ msgstr "Nem használhatja az Animizált válaszokat amikort a Zsetonalapú vála
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:736
 msgid "If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
-msgstr "Ha bekapcsolja az -Anonim válaszok- opciót ehhez a kérdőívhez, LimeSurvey a befejezett zsetonokat csak egy 'Y'-al jelöli meg a dátum/idő helyett a résztvevők anonimításának biztosításáért."
+msgstr "Ha bekapcsolja a 'Névtelen válaszok' opciót ehhez a kérdőívhez, LimeSurvey a befejezett zsetonokat csak egy 'Y'-al jelöli meg a dátum/idő helyett a résztvevők anonimításának biztosításáért."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:748
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:776
@@ -9945,11 +9946,11 @@ msgstr "IP-cím mentése?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:801
 msgid "Responses will not have the IP address logged."
-msgstr "A válaszokban nem lesznek benne IP-címek"
+msgstr "A válaszokban nem lesznek benne az IP-címek"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:803
 msgid "Responses will have the IP address logged"
-msgstr "A válaszokban benne lesznek IP-címek"
+msgstr "A válaszokban benne lesznek az IP-címek"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:826
 msgid "Save Referring URL?"
@@ -9965,7 +9966,7 @@ msgstr "A válaszok tartalmazni fogják a hivatkozási URL-t."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:856
 msgid "Enable assessment mode?"
-msgstr "Akarja engedélyezni a felmérési módot?"
+msgstr "Engedélyezi a kiértékelési módot?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:871
 msgid "Allow editing answers after completion?"
@@ -9997,11 +9998,11 @@ msgstr "Engedélyezi a zsetonalapú válaszállandóságot?"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:927
 msgid "This option can't be set if the `Anonymized responses` option is active."
-msgstr "Ezt az opciót nem lehet bekapcsolni ha az `Anonimizált válaszok` opció aktív."
+msgstr "Ezt az opciót nem lehet bekapcsolni ha az 'Anonimizált válaszok' opció aktív."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:941
 msgid "Set token length to:"
-msgstr "Zsetok hosszának beállítása:"
+msgstr "Zsetonok hosszának beállítása:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:967
 msgid "Select survey structure file (*.lss, *.csv):"
@@ -10038,11 +10039,11 @@ msgstr "A törölt nyelvhez tartozó összes kérdés, válasz stb. törlésre k
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editsurveysettings.php:1048
 msgid "Save & edit survey text elements"
-msgstr "A kérdőív szövegelemeseinek lementése és szerkesztése"
+msgstr "A kérdőív szövegelemeinek lementése és szerkesztése"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/quexmlsurvey.php:74
 msgid "This archive contains a PDF file of the survey, the queXML file of the survey and a queXF banding XML file which can be used with queXF: http://quexf.sourceforge.net/ for processing scanned surveys."
-msgstr "Ez az archívum tartalmazza a kérdőív egyik PDF fájlját, egyik queXML fájlját és egy queXF fájlt, amelyik használható queXF-el (http://quexf.sourceforge.net/) a beolvasott kérdőívek feldolgozásához."
+msgstr "Ez az archívum tartalmazza a kérdőív PDF fájlját, egy queXML fájlt és egy queXF fájlt, ami queXF-el használható (http://quexf.sourceforge.net/) a beolvasott kérdőívek feldolgozásához."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_functions.php:62
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_functions.php:70
@@ -10064,7 +10065,7 @@ msgstr "Ebben a fájlban nem helyesen szerepelnek a LimeSurvey adatai."
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_functions.php:428
 #, php-format
 msgid "Template %s not found, please review when activating."
-msgstr "%s sablon nem található, kérem nézze át aktiválás közben."
+msgstr "%s sablon nem található, kérem nézze át aktíválás közben."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/import_functions.php:612
 msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
@@ -10101,7 +10102,7 @@ msgstr "Válasz:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:250
 msgid "Enter your answers:"
-msgstr "Adja meg a feleletét:"
+msgstr "Adja meg a válaszát:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/editansweroptions.php:251
 msgid "Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon/tab."
@@ -10121,7 +10122,7 @@ msgstr "Baszk"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:176
 msgid "Belarusian"
-msgstr "Belarusz"
+msgstr "Belorusz"
 
 #: /var/lib/limesurvey-svn/subversion1x/classes/core/surveytranslator.php:183
 msgid "Bosnian"
@@ -10381,7 +10382,7 @@ msgstr "Küldje be a feleleteit"
 
 #: /var/lib/limesurvey-svn/subversion1x/group.php:341
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
-msgstr "Nincs több kérdés. Kérem, kattintson a  <Beküldés> gombra a kérdőív befejezéséhez."
+msgstr "Nincs több kérdés. Kérem, kattintson a  [ Beküldés ] gombra a kérdőív befejezéséhez."
 
 #: /var/lib/limesurvey-svn/subversion1x/group.php:1205
 #: /var/lib/limesurvey-svn/subversion1x/survey.php:900
@@ -10395,7 +10396,7 @@ msgstr "Egy vagy több kötelező kérdés nem volt megválaszolva. Nem léphet 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:527
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1024
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
-msgstr "Egy vagy több kötelező kérdés nem volt megválaszolva egy érvényes módon. Nem léphet tovább amíg be nem fejezi őket."
+msgstr "Egy vagy több kötelező kérdés nem volt megválaszolva egy érvényes módon. Nem léphet tovább amíg nem ad rá megfelelő választ."
 
 #: /var/lib/limesurvey-svn/subversion1x/group.php:1217
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
@@ -10445,7 +10446,7 @@ msgstr "A kérdőívet mentettük."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:425
 msgid "Thank you for saving your survey in progress. You can return to the survey at the same point you saved it at any time using the link from this or any previous email sent to regarding this survey."
-msgstr "Köszönom, hogy lementette a kérdőívet kitöltés közben. Visszatérhet a kérdőívhez ugyanabba a pontba, ahol lementette, felhasználva a linket ezzel a kérdőívvel kapcsolatos emailekből."
+msgstr "Köszönöm, hogy lementette a kérdőívet kitöltés közben. Visszatérhet a kérdőívhez ugyanoda, ahol lementette, felhasználva a linket ebből vagy bármely korábbi, kérdőívvel kapcsolatos emailből."
 
 #: /var/lib/limesurvey-svn/subversion1x/save.php:734
 msgid "Cannot submit results - there are none to submit."
@@ -10473,15 +10474,15 @@ msgstr "Elnézést, de lejárt a munkamenetére adható maximális időkeret."
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:76
 #: /var/lib/limesurvey-svn/subversion1x/index.php:322
 msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
-msgstr "Vagy túl sokáig volt tétlen, vagy kikapcsolta a sütikezelést a böngészőjében, vagy internetkapcsolati problémák léptek föl."
+msgstr "Vagy túl sokáig volt tétlen, vagy kikapcsolta a sütikezelést a böngészőjében, vagy internetkapcsolati problémák léptek fel."
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:173
 msgid "Survey Name (ID)"
-msgstr "Kérdőív ID-je"
+msgstr "Kérdőív neve (ID)"
 
 #: /var/lib/limesurvey-svn/subversion1x/printanswers.php:175
 msgid "Survey name (ID):"
-msgstr "Kérdőív neve (ID)"
+msgstr "Kérdőív neve (ID):"
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:533
 msgid "One or more uploaded files do not satisfy the criteria"
@@ -10489,7 +10490,7 @@ msgstr "Egy vagy több feltöltött fájl nem felel meg a feltételeknek"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:123
 msgid "Token mismatch"
-msgstr "Zseton-félrekapcsolás"
+msgstr "Zseton eltérés"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:124
 msgid "The token you provided doesn't match the one in your session."
@@ -10556,7 +10557,7 @@ msgstr "A megadott kód érvénytelen vagy már valaki felhasználta egy kérdő
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2664
 #, php-format
 msgid "For further information please contact %s"
-msgstr "További információkért kérem, lépjen kapcsolatba %s-el."
+msgstr "További információkért kérem, lépjen kapcsolatba %s munkatársunkkal."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:706
 msgid "We are sorry but you are not allowed to enter this survey."
@@ -10568,7 +10569,7 @@ msgstr "A zsetonja érvényesnek tűnik, de csak egy bizonyos idő alatt haszná
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:878
 msgid "Your responses were successfully saved."
-msgstr "A válaszai sikeresen lementődtek."
+msgstr "A válaszait sikeresen lementettük."
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:920
 msgid "There is no matching saved survey"
@@ -10644,7 +10645,7 @@ msgstr "Zseton:"
 
 #: /var/lib/limesurvey-svn/subversion1x/index.php:2663
 msgid "This survey does not yet have any questions and cannot be tested or completed."
-msgstr "Ez a kérdőív egyelőre nem tartalmaz kérdéseket, ezért nem lehet kipróbálnivagy kitölteni."
+msgstr "Ez a kérdőív egyelőre nem tartalmaz kérdéseket, ezért nem lehet kipróbálni vagy kitölteni."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:602
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:603
@@ -10746,13 +10747,13 @@ msgstr "A kérdés megválaszolására engedélyezett idő majdnem lejárt. {TIM
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1269
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1300
 msgid "hours"
-msgstr "ora"
+msgstr "óra"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1252
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1270
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1301
 msgid "mins"
-msgstr "percek"
+msgstr "perc"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1253
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1271
@@ -10763,11 +10764,11 @@ msgstr "másodperc"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1738
 msgid "Day"
-msgstr "Nap"
+msgstr "nap"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1755
 msgid "Month"
-msgstr "Hónap"
+msgstr "hónap"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1757
 msgid "Jan"
@@ -10819,7 +10820,7 @@ msgstr "Dec"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1785
 msgid "Year"
-msgstr "Év"
+msgstr "év"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:1896
 msgid "Date picker"
@@ -10866,7 +10867,7 @@ msgstr "A  \"más\" mezőt jelölte ki a \"%s\" kérdésre. Kérem, töltse ki a
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:5620
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:7455
 msgid "Error: This question has no answers."
-msgstr "Hiba: Erre a kérdésre nem léteznek válaszok."
+msgstr "Hiba: Erre a kérdésre nincsenek válaszok."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4503
 msgid "Only numbers may be entered in these fields"
@@ -10874,7 +10875,7 @@ msgstr "Ezekbe a mezőkbe csak számokat írhat"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4523
 msgid "Remaining: "
-msgstr "Hátralevő:"
+msgstr "Hátralévő:"
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4525
 msgid "Total: "
@@ -10885,13 +10886,13 @@ msgstr "Összesen:"
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4613
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4624
 msgid "Answer is invalid. The total of all entries should not add up to more than "
-msgstr "A válasz érvénytelen. Az válaszok összege nem lehet több, mint "
+msgstr "A válasz érvénytelen. A válaszok összege nem lehet több, mint "
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4590
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4598
 #, php-format
 msgid "Answer is invalid. The total of all entries should add up to at least %s."
-msgstr "A válasz érvénytelen. Az válaszok összege legalább %s kell legyen."
+msgstr "A válasz érvénytelen. A válaszok összege legalább %s legyen."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:4726
 msgid "Only numbers may be entered in this field"
@@ -10916,7 +10917,7 @@ msgstr "..."
 
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:7028
 msgid "Error: There are no answers defined for this question."
-msgstr "Hiba: Nem adott meg válaszalternatívákat ehhez a kérdéshez."
+msgstr "Hiba: Nem adott meg válaszokat ehhez a kérdéshez."
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:79
 msgid "The email you used is not valid. Please try again."
@@ -10932,7 +10933,7 @@ msgstr "Köszönjük, hogy elfogadta kérésünket, és részt vesz a felmérés
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:168
 msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
-msgstr "A kérdőív elérésével kapcsolatos információkat az Ön által megadott e-mail címre megküldtük (legfeljebb pár percen belül biztosan megkapja). A levélben lévő linkre kattintva a kérdőív kitöltését akár azonnal meg is kezdheti!"
+msgstr "A kérdőív elérésével kapcsolatos információkat az Ön által megadott e-mail címre elküldtük (rövidesen biztosan megkapja). A levélben lévő linkre kattintva a kérdőív kitöltését akár azonnal meg is kezdheti!"
 
 #: /var/lib/limesurvey-svn/subversion1x/register.php:168
 msgid "Survey Administrator"
@@ -10964,15 +10965,15 @@ msgstr "Úgy tűnik, hogy ez a kérdőív nem létezik."
 
 #: /var/lib/limesurvey-svn/subversion1x/optout.php:57
 msgid "You are not a participant in this survey."
-msgstr "Ön nem egy résztvevő ebben a kérdőívben."
+msgstr "Ön nem résztvevő ebben a kérdőívben."
 
 #: /var/lib/limesurvey-svn/subversion1x/optout.php:63
 msgid "You have been successfully removed from this survey."
-msgstr "Sikeresen el volt távolítva a kérdőívből."
+msgstr "Sikeresen eltávolítva a felmérésből."
 
 #: /var/lib/limesurvey-svn/subversion1x/optout.php:67
 msgid "You have been already removed from this survey."
-msgstr "Már el volt távolítva a kérdőívből."
+msgstr "Már eltávolítva a felmérésből."
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:31
 msgid "Permission to create/view/update/delete assessments rules for a survey"
@@ -11104,11 +11105,11 @@ msgstr "Sor"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:147
 msgid "Gender"
-msgstr "Nemre irányuló kérdés"
+msgstr "Neme"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:153
 msgid "Array by column"
-msgstr "Sor oszlopok szerint"
+msgstr "Sor oszloponként"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:159
 msgid "Language Switch"
@@ -11116,19 +11117,19 @@ msgstr "Nyelvválasztó kapcsoló"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:165
 msgid "Multiple Numerical Input"
-msgstr "Egyszerre több számot bekérő kérdés"
+msgstr "Több számot bekérő kérdés"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:171
 msgid "List (Radio)"
-msgstr "Csak egy válasz lehetséges"
+msgstr "Lista (Rádió jelölő)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:177
 msgid "Multiple Options"
-msgstr "Több válasz lehetséges"
+msgstr "Több lehetőség"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:183
 msgid "Numerical Input"
-msgstr "Számjegyes nyílt válasz"
+msgstr "Számjegy bevitel"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:189
 msgid "List with comment"
@@ -11136,23 +11137,23 @@ msgstr "Lista megjegyzéssel"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:195
 msgid "Multiple Options With Comments"
-msgstr "Több válasz megjegyzéssel"
+msgstr "Több lehetőség megjegyzéssel"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:201
 msgid "Multiple Short Text"
-msgstr "Többszörös nyílt kérdés"
+msgstr "Több rövid szöveg"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:213
 msgid "Short Free Text"
-msgstr "Rövid szöveges válasz"
+msgstr "Rövid szabad szöveg"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:219
 msgid "Long Free Text"
-msgstr "Hosszú szöveges válasz"
+msgstr "Hosszú szabad szöveg"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:225
 msgid "Huge Free Text"
-msgstr "Óriási nyílt (szöveges) kérdés"
+msgstr "Óriás szabad szöveg"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:231
 msgid "Text display"
@@ -11160,7 +11161,7 @@ msgstr "Szövegkijelzés"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:237
 msgid "Yes/No"
-msgstr "Eldöntendő kérdés"
+msgstr "Igen / Nem"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:243
 msgid "List (Dropdown)"
@@ -11233,7 +11234,7 @@ msgstr "Más megjegyzés"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2804
 msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
-msgstr "Vigyázat: a JavaScriptet kikapcsolták a böngészőjében! Nem biztos, hogy minden kérdésre választ tud majd adni ebben a kérdőívben. Kérjük, nézze át a böngészője beállításait!"
+msgstr "Vigyázat: A JavaScript ki van kapcsolva a böngészőjében! Nem biztos, hogy minden kérdésre választ tud majd adni ebben a kérdőívben. Kérjük, nézze át a böngészője beállításait!"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:2908
 msgid "There are no questions in this survey"
@@ -11506,11 +11507,11 @@ msgstr "Előtag|Utótag"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3741
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
-msgstr "Válasz-Küldés-Szeparátor|Legördülőválasztóközi-Szeparátor legördülő listákhoz"
+msgstr "Válasz utáni elválasztó|Legördülő listán belüli elválasztó legördülő listákhoz"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3742
 msgid "Dropdown separators"
-msgstr "Legördülő lista választó"
+msgstr "Legördülő lista elválasztók"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3749
 msgid "Enter a header text for scale A"
@@ -11573,7 +11574,7 @@ msgstr "Kizárólagos opció automatikus megjelölése ha az összes többi meg 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3873
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3881
 msgid "Location"
-msgstr ""
+msgstr "Hely"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3797
 msgid "Store the city?"
@@ -11597,7 +11598,7 @@ msgstr "Irányítószám mentése?"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3820
 msgid "Postal code"
-msgstr "irányítószám"
+msgstr "Irányítószám"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3830
 msgid "Store the country?"
@@ -11609,11 +11610,11 @@ msgstr "Ország"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3839
 msgid "Google Maps"
-msgstr "Google Maps"
+msgstr "Google Térképek"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3840
 msgid "Activate this to show a map above the input field where the user can select a location"
-msgstr "Aktiválja ezt ahhoz, hogy jelenítsen meg egy térképet az a bementi mező fölött, ahol a felhasználó egy helyszínt választhat"
+msgstr "Aktíválja ezt ahhoz, hogy egy térképet jelenítsen meg a beviteli mező fölött, ahol a felhasználó egy helyszínt választhat"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3841
 msgid "Use mapping service"
@@ -11621,7 +11622,7 @@ msgstr "Térképezési szolgáltatás használata"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3849
 msgid "Width of the map in pixel"
-msgstr "Térkép szélessége pixelekben"
+msgstr "Térkép szélessége pixelben"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3850
 msgid "Width"
@@ -11629,7 +11630,7 @@ msgstr "Szélesség"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3858
 msgid "Height of the map in pixel"
-msgstr "Térkep magassága pixelben"
+msgstr "Térkép magassága pixelben"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3859
 msgid "Height"
@@ -11669,7 +11670,7 @@ msgstr "Tipp elrejétse"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3909
 msgid "Hide this question at any time. This is useful for including data using answer prefilling."
-msgstr "Rejtse el ezt a kérdést bármikor. Ez hasznos adatok befoglalásához használva a feleletek élőkitöltését."
+msgstr "Rejtse el ezt a kérdést bármikor. Ez adatok befoglalásához hasznos a válaszok előkitöltésére használva."
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3910
 msgid "Always hide this question"
@@ -11734,7 +11735,7 @@ msgstr "Minimális összeg"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3973
 msgid "Minimum value of the numeric input"
-msgstr "Numerikus bemenet minimális értéke"
+msgstr "Numerikus bevitel minimális értéke"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3974
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3998
@@ -11751,11 +11752,11 @@ msgstr "Maximális értek SGQA-tól"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3989
 msgid "Maximum value for array(mult-flexible) question type"
-msgstr "Maximális érték a sor(multi-rugalmas) kérdéstipushoz"
+msgstr "Maximális érték a sor(multi-rugalmas) kérdéstípushoz"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:3997
 msgid "Minimum value for array(multi-flexible) question type"
-msgstr "Minimális érték a sor(multi-rugalmas) kérdéstipushoz"
+msgstr "Minimális érték a sor(multi-rugalmas) kérdéstípushoz"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4005
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4006
@@ -11788,7 +11789,7 @@ msgstr "Érték egyenlő SGQA-val"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4047
 msgid "Restrict input to integer values"
-msgstr "Bemenet korlátozása egész számokra"
+msgstr "Bevitel korlátozása egész számokra"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4048
 msgid "Integer only"
@@ -11796,11 +11797,11 @@ msgstr "Csak egész számok"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4060
 msgid "Allow only numerical input"
-msgstr "Egyszerre több számot bekérő kérdés"
+msgstr "Csak számjegy bevitel megengedett"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4061
 msgid "Numbers only"
-msgstr "Szám kisebb mint"
+msgstr "Csak számok"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4069
 msgid "none"
@@ -11816,15 +11817,15 @@ msgstr "Oszlopok"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4072
 msgid "Both rows and columns"
-msgstr "Oszlopok és sorok is"
+msgstr "Sorok és oszlopok"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4075
 msgid "Show totals either rows, columns or both rows and columns"
-msgstr "Csak sorok, oszlopok vagy mindkettő megjelenítése"
+msgstr "Összegek mutatása akár sorokban, oszlopokban vagy mindkettőben"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4076
 msgid "Show totals for"
-msgstr ""
+msgstr "Összegek mutatása"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4089
 msgid "Show grand total for either columns or rows"
@@ -11836,11 +11837,11 @@ msgstr "Végösszeg megjelenítése"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4101
 msgid "Present as text input boxes instead of dropdown lists"
-msgstr "Bemutatás szövegbevivő mezőkként legördülő listák helyett"
+msgstr "Megjelenítés szövegbeviteli mezőkként legördülő listák helyett"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4102
 msgid "Text inputs"
-msgstr "Szöveges bemenetek"
+msgstr "Szöveges bevitelek"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4112
 msgid "Make the 'Other:' comment field mandatory when the 'Other:' option is active"
@@ -11860,7 +11861,7 @@ msgstr "Csak számok a 'Más'-hoz"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4131
 msgid "Replaces the label of the 'Other:' answer option with a custom text"
-msgstr "A 'Más:' felelet címkéjének kicserélése egy egyéni értékkel"
+msgstr "A 'Más:' válasz címkéjének kicserélése egyéni értékkel"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4132
 msgid "Label for 'Other:' option"
@@ -11868,11 +11869,11 @@ msgstr "Címke a 'Más:' opcióhoz"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4142
 msgid "Insert a page break before this question in printable view by setting this to Yes."
-msgstr "Az beállítást Igen-re állítva a nyomtatható nézetben a kérdés elé egy oldalszakító kerül"
+msgstr "A beállítást Igen-re állítva a nyomtatható nézetben a kérdés elé egy oldaltörés kerül"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4143
 msgid "Insert page break in printable view"
-msgstr "Oldalszakító beillesztése a nyomtatható nézetben"
+msgstr "Oldaltörés beillesztése a nyomtatható nézetben"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4150
 msgid "Add a prefix to the answer field"
@@ -11959,15 +11960,15 @@ msgstr "Minimális és maximális érték megjelenítése a csúszka alatt"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4253
 msgid "Display slider min and max value"
-msgstr "Csúska minimális és maximális értéke"
+msgstr "Csúszka minimális és maximális értéke"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4260
 msgid "Answer|Left-slider-text|Right-slider-text separator character"
-msgstr "Felelet|Bal-csúszka-szöveg|Jobb-csúszka-szöveg szeparátor"
+msgstr "Válasz|Bal-csúszka-szöveg|Jobb-csúszka-szöveg elválasztó karakter"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4261
 msgid "Slider left/right text separator"
-msgstr "Csúszka bal/jobb szeparátor"
+msgstr "Csúszka bal/jobb elválasztó"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4268
 msgid "Add a suffix to the answer field"
@@ -12188,7 +12189,7 @@ msgstr "Fájl metaadatok"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4455
 msgid "Is the participant required to give a title to the uploaded file?"
-msgstr "Kell a felhasználó adjon egy címet a feltöltött fájlnak?"
+msgstr "Adjon-e a felhasználó címet a feltöltött fájlnak?"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4456
 msgid "Show title"
@@ -12196,7 +12197,7 @@ msgstr "Cím megjelenítése"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4466
 msgid "Is the participant required to give a comment to the uploaded file?"
-msgstr "Kell a felhasználó hagyjon egy megjegyzést a feltöltött fájllal kapcsolatban?"
+msgstr "Adjon-e a felhasználó megjegyzést a feltöltött fájllal kapcsolatban?"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4467
 msgid "Show comment"
@@ -12220,7 +12221,7 @@ msgstr "Fájlok maximális száma"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4494
 msgid "Minimum number of files that the participant must upload for this question"
-msgstr "Minimális fájlok száma, amelyeket a felhasználó fel kel töltsön ehhez a kérdéshez"
+msgstr "Minimális fájlok száma, amelyeket a felhasználónak fel kell tölteni ehhez a kérdéshez"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4495
 msgid "Min number of files"
@@ -12232,11 +12233,11 @@ msgstr "Megengedett fájltípusok vesszővel elválasztva. pl.: pdf,doc,odt"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4504
 msgid "Allowed file types"
-msgstr "Engedélyezett fájltipusok"
+msgstr "Engedélyezett fájltípusok"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4511
 msgid "Place questions into a specified randomization group, all questions included in the specified group will appear in a random order"
-msgstr "Helyezzen kérdéseket egy meghatározott véletlenszerűsítő csoportba, a meghatározott csoportból minden kérdés egy véletlenszerű sorrendben fog megjelenni"
+msgstr "Tegyen kérdéseket egy meghatározott véletlenszerű csoportba, a meghatározott csoportban lévő kérdések véletlenszerű sorrendben fognak megjelenni"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4512
 msgid "Randomization group name:"
@@ -12252,7 +12253,7 @@ msgstr "Online használati utasítás"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4696
 msgid "Support this project - Donate to "
-msgstr "Támogassa a Projektet, kérem, adakozzon ennek a szervezetnek: "
+msgstr "Támogassa a Projektet - adakozzon a szervezetnek: "
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:4699
 msgid "Visit our website!"
@@ -12284,7 +12285,7 @@ msgstr "Utolsó emlékeztetés küldési dátuma"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7561
 msgid "Total numbers of sent reminders"
-msgstr "Emlékeztetések összáma"
+msgstr "Emlékeztetések száma"
 
 #: /var/lib/limesurvey-svn/subversion1x/common_functions.php:7581
 #, php-format

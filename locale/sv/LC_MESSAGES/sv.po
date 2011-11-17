@@ -3,17 +3,18 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Swedish language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-02 12:00+0100\n"
-"PO-Revision-Date: 2011-01-20 17:36+0100\n"
-"Last-Translator: Daniel Tamm <daniel@tamm-tamm.de>\n"
+"PO-Revision-Date: 2011-11-17 16:56+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Swedish <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Country: SWEDEN\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: sv\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "X-Poedit-Bookmarks: 1530,1128,-1,-1,-1,-1,-1,-1,-1,-1\n"
 "X-Poedit-Language: Swedish\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:115
 #: /var/lib/limesurvey-svn/subversion1x/common.php:5070
@@ -875,7 +876,7 @@ msgstr "Du har inte FreeType-biblioteket installerat. För att visa diagram mås
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:257
 msgid "Data selection"
-msgstr "Data urval"
+msgstr "Dataurval"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/statistics.php:258
 msgid "Include:"
@@ -2395,7 +2396,7 @@ msgstr "PDF"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:169
 msgid "Column control"
-msgstr "Kolumn kontroll"
+msgstr "Kolumnkontroll"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/exportresults.php:185
 msgid "Choose Columns"
@@ -4002,7 +4003,7 @@ msgstr "Välj en enkät att kopiera:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3499
 msgid "New survey title:"
-msgstr "Ny enkät titel:"
+msgstr "Ny enkättitel:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/html.php:3504
 msgid "Exclude quotas?"
@@ -5924,7 +5925,7 @@ msgstr "Föregående"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:425
 msgid "This is some help text."
-msgstr "Det här är en hjälp text."
+msgstr "Det här är en hjälptext."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/templates.php:428
 #: /var/lib/limesurvey-svn/subversion1x/group.php:190
@@ -6179,7 +6180,7 @@ msgstr "Denna fråga är av typ delfrågor men har inga konfigurerade delfrågor
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:114
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:205
 msgid "This question is a multiple answer type question but has no answers."
-msgstr "Denna fråga är av flersvars typ men har inga svar."
+msgstr "Denna fråga är av flersvarstyp men har inga svar."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:124
 #: /var/lib/limesurvey-svn/subversion1x/admin/surveytable_functions.php:215
@@ -6276,7 +6277,7 @@ msgstr "Enkäten kunde inte aktiveras."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:381
 msgid "Database error:"
-msgstr "Databas fel:"
+msgstr "Databasfel:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/activate.php:415
 msgid "Survey has been activated. Results table has been successfully created."
@@ -6693,7 +6694,7 @@ msgstr "Inte inbjuden"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:573
 msgid "Reminder status:"
-msgstr "Påminnelse status:"
+msgstr "Påminnelsestatus:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:575
 msgid "Reminder(s) sent"
@@ -7364,7 +7365,7 @@ msgstr "Ladda upp fil med behörighetskoder"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2310
 msgid "Upload file not found. Check your permissions and path for the upload directory"
-msgstr "Filen hittades inte. Kontrollera dina rättigheter och sökväg till uppladdnings mappen"
+msgstr "Filen hittades inte. Kontrollera dina rättigheter och sökväg till uppladdningsmappen"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/tokens.php:2315
 msgid "Uploaded CSV file successfully"
@@ -8019,7 +8020,7 @@ msgstr "Raderar ensamma språkinställningar."
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:871
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:881
 msgid "Deleting old survey result tables"
-msgstr "Raderar gamla enkäters resultat tabeller"
+msgstr "Raderar gamla enkäters resultattabeller"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:753
 #: /var/lib/limesurvey-svn/subversion1x/admin/integritycheck.php:763
@@ -8154,7 +8155,7 @@ msgstr "Exportera resultat till R"
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:103
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:119
 msgid "Data selection:"
-msgstr "Data urval:"
+msgstr "Dataurval:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_r.php:111
 #: /var/lib/limesurvey-svn/subversion1x/admin/export_data_spss.php:133
@@ -9051,7 +9052,7 @@ msgstr "Standardmall:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:196
 msgid "Default HTML editor mode:"
-msgstr "Standard läge för HTML-redigerare:"
+msgstr "Standardläge för HTML-redigerare:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:200
 msgid "Default HTML editor mode"
@@ -9063,7 +9064,7 @@ msgstr "Tidsskillnad (i timmar):"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:215
 msgid "Server time:"
-msgstr "Server tid:"
+msgstr "Servertid:"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/globalsettings.php:215
 msgid "Corrected time :"
@@ -10692,7 +10693,7 @@ msgstr "Minsta värdet för frågan av typ samling (flera flexibla etiketter)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3711
 msgid "Minimum value"
-msgstr "Min värde"
+msgstr "Minvärde"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3718
 #: /var/lib/limesurvey-svn/subversion1x/common.php:3719
@@ -11013,7 +11014,7 @@ msgstr "Hur länge 1:a varningen för tidsbegränsning skall visas"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4047
 msgid "The message to display as a 'time limit warning' (a default warning will display if this is left blank)"
-msgstr "Meddelandet som skall visas som varning för tidsbegränsning (en standard varning kommer att visas om detta lämnas blankt)"
+msgstr "Meddelandet som skall visas som varning för tidsbegränsning (en standardvarning kommer att visas om detta lämnas blankt)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4048
 msgid "1st Time limit warning message"
@@ -11045,7 +11046,7 @@ msgstr "Hur länge 2:a varningen för tidsbegränsning skall visas"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4079
 msgid "The 2nd message to display as a 'time limit warning' (a default warning will display if this is left blank)"
-msgstr "Det andra meddelandet att visa som varning för tidsbegränsning (ett standard meddelande kommer att visas om detta lämnas blankt)"
+msgstr "Det andra meddelandet att visa som varning för tidsbegränsning (ett standardmeddelande kommer att visas om detta lämnas blankt)"
 
 #: /var/lib/limesurvey-svn/subversion1x/common.php:4080
 msgid "2nd Time limit warning message"
@@ -11155,26 +11156,36 @@ msgstr "Du har redan tagits bort från denna enkät."
 #, fuzzy
 #~ msgid "Match language"
 #~ msgstr "Grundspråk"
+
 #~ msgid "Answers can't be deleted"
 #~ msgstr "Svaren kan inte tas bort"
+
 #~ msgid "Passed one time password doesn't match one time password for user %s"
 #~ msgstr ""
 #~ "Det angivna lösenordet stämmer inte överens med engångslösenordet för "
 #~ "användaren %s"
+
 #~ msgid "No matching qid"
 #~ msgstr "Ingen passande qid"
+
 #~ msgid "The following question attributes should be deleted"
 #~ msgstr "Följande frågeattribut bör raderas"
+
 #~ msgid "Date Stamp"
 #~ msgstr "Datumstämpel"
+
 #~ msgid "First Scale"
 #~ msgstr "Första skalan"
+
 #~ msgid "Second Scale"
 #~ msgstr "Andra skalan"
+
 #~ msgid "Your Answer"
 #~ msgstr "Ditt svar"
+
 #~ msgid "Minimum dropdown year"
 #~ msgstr "Första året i rullgardinslistan"
+
 #~ msgid "Maximum dropdown year"
 #~ msgstr "Sista året i rullgardinslistan"
 
@@ -11185,227 +11196,319 @@ msgstr "Du har redan tagits bort från denna enkät."
 #, fuzzy
 #~ msgid "Edit/add answer options for this question"
 #~ msgstr "Ändra/lägg till svar för denna fråga"
+
 #~ msgid "Show System Summary"
 #~ msgstr "Visa systemsammanfattning"
+
 #~ msgid "Edit/Add Label Sets"
 #~ msgstr "Ändra/lägg till etikettsamling"
+
 #~ msgid "Create or Import New Survey"
 #~ msgstr "Skapa ny eller importera enkät"
+
 #~ msgid "Array (Flexible Labels) by Column"
 #~ msgstr "Samling (flexibla etiketter) efter kolumn"
+
 #~ msgid "List (Flexible Labels) (Dropdown)"
 #~ msgstr "Lista (flexibla etiketter) (rullgardinslista)"
+
 #~ msgid "List (Flexible Labels) (Radio)"
 #~ msgstr "Lista (flexibla etiketter) (radio)"
+
 #~ msgid "Array (Multi Flexible) (Text)"
 #~ msgstr "Samling (flexibla etiketter) (text)"
+
 #~ msgid "Return to Survey Administration"
 #~ msgstr "Tillbaka till enkät-administrationen"
+
 #~ msgid "Export result to a SPSS/PASW command file"
 #~ msgstr "Exportera resultat till kommandofil för SPSS/PASW"
+
 #~ msgid "Preset"
 #~ msgstr "Förinställning"
+
 #~ msgid "Filter an array's answers from a Multiple Options Question"
 #~ msgstr "Filtrera svaren för en samling"
+
 #~ msgid "Number of columns to display"
 #~ msgstr "Antal kolumner som skall visas"
+
 #~ msgid "Excludes all other options if this is selected"
 #~ msgstr "Uteslut andra val om detta alternativ har valts"
+
 #~ msgid "Step value for array (multi-flexible) question type"
 #~ msgstr ""
 #~ "Stegvärde i rullgardinslistan för frågan samling (flexibla etiketter)"
+
 #~ msgid "Use Checkbox layout for array (multi-flexible) question type"
 #~ msgstr ""
 #~ "Använd layout med kryssrutor för frågetypen samling (flexibla etiketter)"
+
 #~ msgid "\"Other\" caption"
 #~ msgstr "Rubrik för \"Annat\""
+
 #~ msgid "1=nominal 2=ordinal 3=scale."
 #~ msgstr "1=nominal 2=ordinal 3=skala."
+
 #~ msgid "Export scale type 1=nominal 2=ordinal 3=scale."
 #~ msgstr "Typ på exportskalan: 1=nominal 2=ordinal 3=skala."
+
 #~ msgid "Survey Saved"
 #~ msgstr "Enkäten sparad"
+
 #~ msgid "Survey Submitted"
 #~ msgstr "Enkäten skickad"
+
 #~ msgid "Other text"
 #~ msgstr "Annan text"
+
 #~ msgid "Please choose one of the following"
 #~ msgstr "Välj ett av de följande"
+
 #~ msgid ""
 #~ "Error: The labelset used for this question is not available in this "
 #~ "language and/or does not exist."
 #~ msgstr ""
 #~ "Fel: Etikettsamlingen som används i frågan är inte tillgänglig för detta "
 #~ "språk och/eller finns inte."
+
 #~ msgid "Field summary for"
 #~ msgstr "Sammanfattning av fält för"
+
 #~ msgid ""
 #~ "The labelset used in this question does not exists or is missing a "
 #~ "translation."
 #~ msgstr ""
 #~ "Etikettsamlingen som används i frågan saknas helt eller saknar en "
 #~ "översättning."
+
 #~ msgid "Edit (change) your group names"
 #~ msgstr "Ändra gruppernas namn"
+
 #~ msgid ""
 #~ "Add, Remove or Edit pre-defined question answers (except for Multi-answer "
 #~ "questions)"
 #~ msgstr ""
 #~ "Lägga till, ta bort eller ändra fördefinierade svar på frågor (utom för "
 #~ "flersvars-frågor)"
+
 #~ msgid "1. scale"
 #~ msgstr "1. skala"
+
 #~ msgid "2. scale"
 #~ msgstr "2. skala"
+
 #~ msgid "Data View Control"
 #~ msgstr "Hantering av rättigheter"
+
 #~ msgid "Completed Records Only"
 #~ msgstr "Endast avslutade poster"
+
 #~ msgid "All Records"
 #~ msgstr "Alla poster"
+
 #~ msgid "Incomplete Records Only"
 #~ msgstr "Endast icke-avslutade poster"
+
 #~ msgid "%d responses for this survey"
 #~ msgstr "%d svar i enkäten"
+
 #~ msgid "%d full responses"
 #~ msgstr "%d fullständiga svar"
+
 #~ msgid "%d responses not completely filled out"
 #~ msgstr "%d svar är inte fullständigt ifyllda"
+
 #~ msgid "Condition"
 #~ msgstr "Villkor"
+
 #~ msgid "Question could not be deleted"
 #~ msgstr "Svar kunde inte tas bort"
+
 #~ msgid "Add new Answer"
 #~ msgstr "Lägg till nytt svar"
+
 #~ msgid ""
 #~ "Error adding answer: You can't use the same answer code more than once."
 #~ msgstr ""
 #~ "Fel när svar lades till: Du kan inte använda samma svarskoder flera "
 #~ "gånger."
+
 #~ msgid "Failed to insert answer"
 #~ msgstr "Lyckades inte lägga till svaret"
+
 #~ msgid "Invalid or empty answer code supplied"
 #~ msgstr "Ogiltig eller tom svarskod angavs"
+
 #~ msgid "Failed to make answer not default"
 #~ msgstr "Misslyckades att göra svaret till inte förvalt"
+
 #~ msgid "Failed to make answer default"
 #~ msgstr "Misslyckades att ange svar till förvalt"
+
 #~ msgid "No LID has been provided. Cannot dump label set."
 #~ msgstr "Inget LID finns. Kan inte dumpa etikettsamling."
+
 #~ msgid "No QID has been provided. Cannot dump question."
 #~ msgstr "Inget QID har lämnats. Kan inte dumpa fråga."
+
 #~ msgid "Export SPSS syntax file"
 #~ msgstr "Exportera till SPSS-syntaxfil"
+
 #~ msgid "Export SPSS data file"
 #~ msgstr "Exportera till SPSS-datafil"
+
 #~ msgid "Export responses"
 #~ msgstr "Exportera svar"
+
 #~ msgid "Columns"
 #~ msgstr "Kolumner"
+
 #~ msgid "Include"
 #~ msgstr "Inkludera"
+
 #~ msgid "from"
 #~ msgstr "från"
+
 #~ msgid "Import Group"
 #~ msgstr "Importera grupp"
+
 #~ msgid "Select CSV File:"
 #~ msgstr "Välj CSV-fil:"
+
 #~ msgid "Closed-access"
 #~ msgstr "Stängd åtkomst"
+
 #~ msgid "Open-access"
 #~ msgstr "Öppen åtkomst"
+
 #~ msgid "This survey is active but expired"
 #~ msgstr "Denna enkät är aktiv men har upphört att gälla"
+
 #~ msgid "LimeSurvey System Summary"
 #~ msgstr "LimeSurvey system-sammanfattning"
+
 #~ msgid "De-activated Surveys"
 #~ msgstr "Aktiverade enkäter"
+
 #~ msgid "disabled"
 #~ msgstr "avstängd"
+
 #~ msgid "You need to add groups"
 #~ msgstr "Du måste lägga till grupper"
+
 #~ msgid "Edit Current Group"
 #~ msgstr "Ändra denna grupp"
+
 #~ msgid "Delete Current Group"
 #~ msgstr "Radera denna grupp"
+
 #~ msgid "Disabled"
 #~ msgstr "Avstängd"
+
 #~ msgid "Export Current Group"
 #~ msgstr "Exportera denna grupp"
+
 #~ msgid "Copy question is not possible in an Active survey"
 #~ msgstr "Kopiera fråga går inte i en aktiv enkät"
+
 #~ msgid "You need to choose a label set for this question!"
 #~ msgstr "Du måste välja en etikettsamling för denna fråga!"
+
 #~ msgid "Second Label Set"
 #~ msgstr "Andra etikettsamlingen"
+
 #~ msgid "You need to choose a second label set for this question!"
 #~ msgstr "Du måste välja en anddra etikettsamling för denna fråga!"
+
 #~ msgid "Edit/Add second Label Sets"
 #~ msgstr "Ändra/lägg till en andra etikettsamling"
+
 #~ msgid "Only users with tokens may enter the survey?"
 #~ msgstr "Endast användare med behörighetskod får svara på enkäten?"
+
 #~ msgid "(This field is mandatory.)"
 #~ msgstr "(Detta fält är obligatoriskt.)"
+
 #~ msgid "Select CSV/SQL File:"
 #~ msgstr "Välj CSV/SQL-fil:"
+
 #~ msgid "No SID (Survey) has been provided. Cannot import group."
 #~ msgstr "Inget SID (enkät) finns. Kan inte importera gruppen."
+
 #~ msgid "This file is not a LimeSurvey group file. Import failed."
 #~ msgstr "Denna fil är inte en LimeSurvey gruppfil. Importen misslyckades."
+
 #~ msgid "Import partially successful."
 #~ msgstr "Importen delvis lyckad."
+
 #~ msgid ""
 #~ "The following languages in this group were not imported since the survey "
 #~ "does not contain such a language: "
 #~ msgstr ""
 #~ "Följande språk i gruppen importerades inte eftersom enkäten inte "
 #~ "innehåller det språket:"
+
 #~ msgid "Group Import Summary"
 #~ msgstr "Sammanfattning av grupp-import"
+
 #~ msgid "Groups:"
 #~ msgstr "Grupper:"
+
 #~ msgid "Question Attributes: "
 #~ msgstr "Frågeattribut:"
+
 #~ msgid "Import of group is completed."
 #~ msgstr "Import av grupp är klar."
+
 #~ msgid "Go to group"
 #~ msgstr "Gå till grupp"
+
 #~ msgid "Return to Labels Admin"
 #~ msgstr "Tillbaka till etiketthanteraren"
+
 #~ msgid ""
 #~ "There was a duplicate labelset, so this set was not imported. The "
 #~ "duplicate will be used instead."
 #~ msgstr ""
 #~ "Det fanns en dublett av etikettsamlingen och samlingen importerades inte. "
 #~ "Dubletten kommer att användas istället"
+
 #~ msgid "Label Sets"
 #~ msgstr "Etikettsamlingar"
+
 #~ msgid ""
 #~ "You can't import a question which doesn't support the current survey's "
 #~ "base language"
 #~ msgstr ""
 #~ "Du kan inte importera en fråga som inte stöder den nuvarande enkätens "
 #~ "huvudspråk"
+
 #~ msgid ""
 #~ "Question \"%s - %s\" was NOT imported because the question type is "
 #~ "unknown."
 #~ msgstr "Fråga \"%s - %s\" importerades INTE eftersom frågans typ är okänd."
+
 #~ msgid ""
 #~ "Question \"%s - %s\" was imported but the type was set to '%s' because it "
 #~ "is the most similiar one."
 #~ msgstr ""
 #~ "Fråga \"%s - %s\" importerades men typen sattes till  \"%s\" eftersom det "
 #~ "är den mest snarlika."
+
 #~ msgid "Condition for %d skipped (%d does not exist)"
 #~ msgstr "Hoppade över villkor för %d (%d finns inte)"
+
 #~ msgid "Add new label set"
 #~ msgstr "Lägg till ny etikettsamling"
+
 #~ msgid ""
 #~ "You cannot change codes, add or delete entries in this label set because "
 #~ "it is being used by an active survey."
 #~ msgstr ""
 #~ "Du kan inte ändra koder, lägga till eller ta bort poster i denna "
 #~ "etikettsamling eftersom den används av en aktiv enkät."
+
 #~ msgid ""
 #~ "Some surveys currently use this label set. Modifying the codes, adding or "
 #~ "deleting entries to this label set may produce undesired results in other "
@@ -11414,34 +11517,47 @@ msgstr "Du har redan tagits bort från denna enkät."
 #~ "Några enkäter använder för närvarande denna etikettsamling. Om du ändrar "
 #~ "koder, lägger till eller tar bort poster i etikettsamlingen kan detta "
 #~ "leda till oönskade resultat i andra enkäter. "
+
 #~ msgid ""
 #~ "Couldn't Delete Label Set - There are questions that rely on this. You "
 #~ "must delete these questions first."
 #~ msgstr ""
 #~ "Kunde inte radera etikettsamlingen - det finns frågor som är beroende av "
 #~ "etiketterna. Du måste radera dessa frågor först."
+
 #~ msgid "Insert of Label Set failed"
 #~ msgstr "Uppdatering av etikettsamlingen misslyckades"
+
 #~ msgid "answers:"
 #~ msgstr "svar:"
+
 #~ msgid "Label Set:"
 #~ msgstr "Etikettsamling:"
+
 #~ msgid "Second Label Set:"
 #~ msgstr "Andra etikettsamlingen:"
+
 #~ msgid "Copy Attributes?"
 #~ msgstr "Kopiera attribut?"
+
 #~ msgid "Select CSV File"
 #~ msgstr "Välj CSV-fil"
+
 #~ msgid "Filter settings"
 #~ msgstr "Filterinställningar"
+
 #~ msgid "OR between"
 #~ msgstr "ELLER mellan"
+
 #~ msgid "All records"
 #~ msgstr "Alla poster"
+
 #~ msgid "Don't consider NON completed responses"
 #~ msgstr "Ta inte med ofullständiga enkätsvar"
+
 #~ msgid "Getting result count ..."
 #~ msgstr "Hämtar antal resultat..."
+
 #~ msgid ""
 #~ "There were no eligible emails to send. This will be because none "
 #~ "satisfied the criteria of - having an email address, not having been sent "
@@ -11451,147 +11567,209 @@ msgstr "Du har redan tagits bort från denna enkät."
 #~ "Det fanns inga lämpliga e-postmeddelanden att skicka. Detta beror på att "
 #~ "inget uppfyllde kraven att: ha en e-postadress, inte redan ha fått en "
 #~ "inbjudan, redan slutfört enkäten och ha en behörighetskod."
+
 #~ msgid "Email Reminder"
 #~ msgstr "Påminnelse med e-post"
+
 #~ msgid "Stop at Token ID:"
 #~ msgstr "Avbryt vid behörighetskod nummer:"
+
 #~ msgid "Add or Edit Token Entry"
 #~ msgstr "Lägg till eller ändra behörighetskod"
+
 #~ msgid "Added New Token"
 #~ msgstr "La till ny behörighetskod"
+
 #~ msgid "Importing CSV File"
 #~ msgstr "Importerar CSV-fil"
+
 #~ msgid "Creating Token Entries"
 #~ msgstr "Skapar behörighetskoder"
+
 #~ msgid "Your data:"
 #~ msgstr "Dina uppgifter:"
+
 #~ msgid "Welcome {NAME}"
 #~ msgstr "Välkommen {NAME}"
+
 #~ msgid "Modifying User"
 #~ msgstr "Modifierar användare"
+
 #~ msgid "Update user rights successful."
 #~ msgstr "Ändringen av användares behörigheter lyckades."
+
 #~ msgid "Save Settings"
 #~ msgstr "Spara inställningar"
+
 #~ msgid "Export Responses"
 #~ msgstr "Exportera svar"
+
 #~ msgid "Token Attribute Names:"
 #~ msgstr "Attribut för behörighetskoder:"
+
 #~ msgid "Attribute 2"
 #~ msgstr "Attribut 2"
 
 #, fuzzy
 #~ msgid "Total score for this assessment rule"
 #~ msgstr "Du har inte behörighet att ange regler för utvärdering!"
+
 #~ msgid ""
 #~ "It appears as if some tables or fields are missing from your database."
 #~ msgstr "Det verkar som några fält saknas i din databas."
+
 #~ msgid "Check Database Fields"
 #~ msgstr "Kontrollera Databas Fält"
+
 #~ msgid "Date is not valid!"
 #~ msgstr "Datumet är inte giltigt."
+
 #~ msgid "Please complete all parts of the date"
 #~ msgstr "Du måste fylla i alla delar av datumet"
+
 #~ msgid "Format: YYYY-MM-DD"
 #~ msgstr "Format: åååå-MM-DD"
+
 #~ msgid "(eg: 2003-12-25 for Christmas day)"
 #~ msgstr "(tex: 2004-12-24 för Julafton)"
+
 #~ msgid "Click on an item in the list on the left, starting with your"
 #~ msgstr "Klicka på ett objekt i listan till vänster, börja med ditt"
+
 #~ msgid "Always display this condition"
 #~ msgstr "Visa alltid detta villkor"
+
 #~ msgid "Advanced"
 #~ msgstr "Avancerat"
+
 #~ msgid "Save All"
 #~ msgstr "Spara alla"
+
 #~ msgid "Attribute_1 from token"
 #~ msgstr "Attribute_1  från behörighetskod"
+
 #~ msgid "Attribute_2 from token"
 #~ msgstr "Attribute_2 från behörighetskod"
+
 #~ msgid "Answer Privacy"
 #~ msgstr "Svarssekretess"
+
 #~ msgid "Anonymous"
 #~ msgstr "Anonym"
+
 #~ msgid "Not Anonymous"
 #~ msgstr "Inte anonym"
+
 #~ msgid "Current Language"
 #~ msgstr "Aktuellt språk"
+
 #~ msgid "Preferred HTML editor mode"
 #~ msgstr "Önskat läge för HTML-redigerare"
+
 #~ msgid "Activate/Edit Tokens for this Survey"
 #~ msgstr "Aktivera/ändra berhörighetskoder för denna enkät"
+
 #~ msgid ""
 #~ "Adding/editing tokens is not possible because this survey is not "
 #~ "activated."
 #~ msgstr ""
 #~ "Att lägga till eller redigera behörighetskoder är inte möjligt då denna "
 #~ "enkät inte har aktiverats."
+
 #~ msgid "Timed start?"
 #~ msgstr "Schemalagd start?"
+
 #~ msgid "Expires?"
 #~ msgstr "Upphör att gälla?"
+
 #~ msgid "Use Cookies?"
 #~ msgstr "Använd cookies?"
+
 #~ msgid "URL Description:"
 #~ msgstr "Länkbeskrivning:"
+
 #~ msgid ""
 #~ "Import responses from an old (deactivated) survey table into an active "
 #~ "survey"
 #~ msgstr ""
 #~ "Importera svar från en gammal (avaktiverad) enkät till en aktiv enkät"
+
 #~ msgid "Fix Order"
 #~ msgstr "Åtgärda ordning"
+
 #~ msgid "Fix Sort"
 #~ msgstr "Ordna sortering"
+
 #~ msgid "if you answered"
 #~ msgstr "om du svarat"
+
 #~ msgid "if you have NOT answered"
 #~ msgstr "om du inte har svarat"
+
 #~ msgid "Only answer this question %s"
 #~ msgstr "Svara bara på denna fråga %s"
+
 #~ msgid "Group:"
 #~ msgstr "Grupp:"
+
 #~ msgid "This template can be modified"
 #~ msgstr "Den här mallen kan ändras"
+
 #~ msgid "This template cannot be modified"
 #~ msgstr "Den här mallen kan inte ändras"
+
 #~ msgid "Make a copy of this template"
 #~ msgstr "Skapa en kopia av denna mall"
+
 #~ msgid "File Control:"
 #~ msgstr "Filkontroll:"
+
 #~ msgid "Now editing:"
 #~ msgstr "Nu ändras:"
+
 #~ msgid "%s %% complete"
 #~ msgstr "%s %% komplett"
+
 #~ msgid "Email Invitation"
 #~ msgstr "Inbjudan med e-post"
+
 #~ msgid "Update Token"
 #~ msgstr "Uppdatera behörighetskod"
+
 #~ msgid "Add Token"
 #~ msgstr "Lägg till ny behörighetskod"
+
 #~ msgid "Updated Token"
 #~ msgstr "Uppdatera behörighetskoder"
+
 #~ msgid "Username and/or email address already exists."
 #~ msgstr "Användarnamn och/eller e-postadressen finns redan."
+
 #~ msgid "Filter incomplete answers"
 #~ msgstr "Filtrera ofullständiga svar"
+
 #~ msgid "Enable"
 #~ msgstr "Sätt på"
+
 #~ msgid "Ignore the new record."
 #~ msgstr "Ignorera den nya posten."
+
 #~ msgid "Filter incomplete answers:"
 #~ msgstr "Filtrera ofullständiga svar:"
+
 #~ msgid ""
 #~ "Answer could not be added. You must insert a code in the mandatory field "
 #~ "(%s)"
 #~ msgstr ""
 #~ "Svaret kunde inte läggas till. Du måste fylla i en kod i det "
 #~ "obligatoriska fältet (%s)"
+
 #~ msgid ""
 #~ "Sorry, importing questions is limited to the same version. Import failed."
 #~ msgstr ""
 #~ "Tyvärr, frågor kan bara importeras till samma version. Importen "
 #~ "misslyckades."
+
 #~ msgid ""
 #~ "If you create any assessments in this page, for the currently selected "
 #~ "survey, the assessment will be performed at the end of the survey after "
@@ -11599,96 +11777,135 @@ msgstr "Du har redan tagits bort från denna enkät."
 #~ msgstr ""
 #~ "Om du skapat bedömningar för den valda enkäten kommer de att genomföras i "
 #~ "slutet av enkäten efter att den skickats."
+
 #~ msgid "Record ID"
 #~ msgstr "Post ID"
+
 #~ msgid "Start Date"
 #~ msgstr "Startdatum"
+
 #~ msgid "Edit Current Survey"
 #~ msgstr "Ändra nuvarande enkät"
+
 #~ msgid "Public statistics:"
 #~ msgstr "Publik statistik:"
+
 #~ msgid "Add New Label Set"
 #~ msgstr "Lägg till ny etikettsamling"
+
 #~ msgid ""
 #~ "Failed! Reason:\n"
 #~ " "
 #~ msgstr "Misslyckades! Orsak:"
+
 #~ msgid "Condition designer"
 #~ msgstr "Villkorsredigerare"
+
 #~ msgid "You have not selected a survey."
 #~ msgstr "Du har inte valt någon enkät."
+
 #~ msgid "You cannot run this script directly."
 #~ msgstr "Du kan inte köra detta skript direkt."
+
 #~ msgid "copy to"
 #~ msgstr "kopiera till"
+
 #~ msgid ""
 #~ "NOTE: If you use a pre-defined answer as your condition, only the equals "
 #~ "or not-equal-to conditions apply."
 #~ msgstr ""
 #~ "NOTERA: Om du använder fördefinierade svar som villkor kommer bara "
 #~ "villkoren lika-med och inte-lika-med att användas."
+
 #~ msgid "Constant value or regular expression"
 #~ msgstr "Konstant värde eller reguljärt uttryck"
+
 #~ msgid "Close window"
 #~ msgstr "Stäng fönster"
+
 #~ msgid "Switch to Add Mode"
 #~ msgstr "Byt till läget \"Lägg till\""
+
 #~ msgid "Switch to Copy Mode"
 #~ msgstr "Byt till läget \"Kopiera\""
 
 #, fuzzy
 #~ msgid "Delete all conditions for this scenario"
 #~ msgstr "Ange villkor för denna fråga"
+
 #~ msgid "All answers have been set to not completed."
 #~ msgstr "Status för alla svar har ändrats till 'inte slutförd'."
+
 #~ msgid "You have not selected a Survey."
 #~ msgstr "Du har inte valt en enkät."
+
 #~ msgid "Disabled - Change Group Order"
 #~ msgstr "Avstängd - Ändra gruppordning"
+
 #~ msgid "Participiants may print answers?"
 #~ msgstr "Deltagare kan skriva ut svar?"
+
 #~ msgid "Split up results"
 #~ msgstr "Dela upp svar"
+
 #~ msgid "Enabled"
 #~ msgstr "Påslagen"
+
 #~ msgid "You were signed in on the site %s"
 #~ msgstr "Du har registrerats på webbplatsen %s"
+
 #~ msgid "Login here"
 #~ msgstr "Logga in här"
+
 #~ msgid ""
 #~ "Don't consider NON completed responses (only works when Filter incomplete "
 #~ "answers is Disable)"
 #~ msgstr ""
 #~ "Ta inte med INTE ofullständiga svar  (fungerar bara när Filtrera "
 #~ "ofullständiga svar är avstängt)"
+
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Är det säkert att du vill radera denna inmatning"
+
 #~ msgid "Failed to copy"
 #~ msgstr "Misslyckades kopiera"
+
 #~ msgid "Directory with the name"
 #~ msgstr "Katalog med namnet"
+
 #~ msgid "(XML module only in PHP 4 available)"
 #~ msgstr "(XML-modulen är bara tillgänglig i PHP 4)"
+
 #~ msgid "depends on group"
 #~ msgstr "beror på grupp"
+
 #~ msgid "No matching Group"
 #~ msgstr "Ingen passande grupp"
+
 #~ msgid "No matching Survey!"
 #~ msgstr "Ingen passande enkät!"
+
 #~ msgid "Email address ist not valid."
 #~ msgstr "E-postadressen är inte giltig."
+
 #~ msgid "answers"
 #~ msgstr "svar"
+
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "för att ta bort den sista inmatningen i din rangordnade lista"
+
 #~ msgid "Please choose at most"
 #~ msgstr "Välj som mest"
+
 #~ msgid "Farsi"
 #~ msgstr "Farsi (persiska)"
+
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Behörighetskoden du angett är ogiltig."
+
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Dina enkätsvar har sparats"
+
 #~ msgid ""
 #~ "You, someone using your email address, or the administrator has saved a "
 #~ "survey in progress. The following details can be used to return to this "
@@ -11697,86 +11914,119 @@ msgstr "Du har redan tagits bort från denna enkät."
 #~ "Du, eller någon annan som angett din e-postadress, har sparat en "
 #~ "oavslutad enkät. Följande uppgifter kan användas för att återvända till "
 #~ "enkäten och fortsätta där du lämnade den."
+
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "Detta är en kontrollerad enkät. Du behöver en giltig behörigetskod för "
 #~ "att delta."
+
 #~ msgid "prev"
 #~ msgstr "tillbaka"
+
 #~ msgid "next"
 #~ msgstr "nästa"
+
 #~ msgid ""
 #~ "The uploaded file is bigger than the upload_max_filesize directive in php."
 #~ "ini"
 #~ msgstr ""
 #~ "Den uppladdade filens storlek är större än vad som är angivet i "
 #~ "upload_max_filesize i php.ini"
+
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "Filen laddades bara delvis upp"
+
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "Fel i filöverföringen. Du måste väla en CSV-fil"
+
 #~ msgid "You need to upload the file"
 #~ msgstr "Du måste ladda upp filen"
+
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Du måste ladda upp en CSV-fil"
+
 #~ msgid "Upload CSV file"
 #~ msgstr "Ladda upp CSV-fil"
+
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr "Det är omöjligt att ladda upp filer av annan typ än CSV"
+
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "Du kan inte ladda upp en tom fil"
+
 #~ msgid "Uploading CSV file"
 #~ msgstr "Laddar upp CSV-fil"
+
 #~ msgid "Visualization:"
 #~ msgstr "Visualisering:"
+
 #~ msgid "Select the field number you would like to use for your answers:"
 #~ msgstr "Välj det fältnummer du vill använda för dina svar:"
+
 #~ msgid "Select all"
 #~ msgstr "Välj alla"
+
 #~ msgid "Proceed"
 #~ msgstr "Fortsätt"
+
 #~ msgid "Question List"
 #~ msgstr "Frågelista"
+
 #~ msgid "Like"
 #~ msgstr "Som"
+
 #~ msgid "Not Equals"
 #~ msgstr "Är inte lika med"
+
 #~ msgid "Filter Conditions"
 #~ msgstr "Filtervillkor"
+
 #~ msgid "Huge free text"
 #~ msgstr "Mycket lång fri text"
+
 #~ msgid "Save Survey and Return"
 #~ msgstr "Spara enkäten och återgå"
+
 #~ msgid "Please contact"
 #~ msgstr "Var god kontakta"
+
 #~ msgid "Export Current Survey"
 #~ msgstr "Exportera nuvarande enkät"
+
 #~ msgid "Update tokens table with new fields"
 #~ msgstr "Uppdatera tabellen med behörighetskoder med nya fält"
+
 #~ msgid "{TOKENCOUNT} Records Created"
 #~ msgstr "{TOKENCOUNT} Records Skapade"
+
 #~ msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 #~ msgstr "CSV-fil (UTF-8 textkodning - använd denna för icke-latinska språk)"
+
 #~ msgid "Move User"
 #~ msgstr "Flytta användare"
+
 #~ msgid "type"
 #~ msgstr "Typ"
+
 #~ msgid ""
 #~ "You can't import label sets which don't support the current survey's base "
 #~ "language."
 #~ msgstr ""
 #~ "Du kan inte importera en etikettsamling som inte stöder den nuvarande "
 #~ "enkätens huvudspråk."
+
 #~ msgid "Answer could not be added. There is already an answer with this code"
 #~ msgstr ""
 #~ "Svaret kunde inte läggas till. Det finns redan ett svar med denna kod"
+
 #~ msgid ""
 #~ "Answer could not be updated. There is already an answer with this code"
 #~ msgstr ""
 #~ "Svaret kunde inte uppdateras. Det finns redan ett svar med denna kod"
+
 #~ msgid "to TokenID No"
 #~ msgstr "till behörighetskod-ID nr"
+
 #~ msgid "Check Settings"
 #~ msgstr "Kontrollera Inställningar"
-

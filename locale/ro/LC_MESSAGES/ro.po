@@ -6,18 +6,18 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Romanian language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-01 18:00+0100\n"
-"PO-Revision-Date: 2011-01-01 21:48+0200\n"
-"Last-Translator: Andrei  <potranslate@tiut.info>\n"
+"PO-Revision-Date: 2011-11-17 16:54+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: A\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ro\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2);;\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 "X-Poedit-Basepath: D:\\web\\xampp\\htdocs\\limesurvey\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\limesurvey\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:115
@@ -4442,7 +4442,7 @@ msgstr "Acest sondaj a fost şters."
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:164
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:196
 #, fuzzy
-msgid "Firstname from token"
+msgid "First name from token"
 msgstr "Prenumele din jetoane"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/fck_LimeReplacementFields.php:123
