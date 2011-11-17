@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-15 01:44+0200\n"
-"PO-Revision-Date: 2008-11-13 13:30+0100\n"
-"Last-Translator: Miroslav Jovanovic <jmiroslav@softhome.net>\n"
+"PO-Revision-Date: 2011-11-17 17:16+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Serbian\n"
 "X-Poedit-Country: Serbia\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/question.php:34
 #: /var/lib/limesurvey-svn/subversion1x/group.php:37
@@ -7766,89 +7768,127 @@ msgstr "SID није обезбеђен. Немогуће уклањање ан�
 
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Da li ste sigurni da želite da obrišete ovaj zapis."
+
 #~ msgid "Failed to copy"
 #~ msgstr "Greška u kopiranju"
+
 #~ msgid "Directory with the name"
 #~ msgstr "Direktorijum sa imenom"
+
 #~ msgid "CSV File (UTF-8 charset - use this for non-latin languages)"
 #~ msgstr ""
 #~ "CSV datoteka (UTF-8 set karaktera - koristiti za ne-latinične jezike)"
+
 #~ msgid "Responses"
 #~ msgstr "Odgovora"
+
 #~ msgid "Export Current Survey"
 #~ msgstr "Izvezi trenutni upitnik"
+
 #~ msgid "depends on group"
 #~ msgstr "zavisi od grupe pitanja"
+
 #~ msgid ""
 #~ "The uploaded file is bigger than the upload_max_filesize directive in php."
 #~ "ini"
 #~ msgstr ""
 #~ "Datoteka koja se šalje je veća od upload_max_filesize direktive u php.ini-"
 #~ "ju"
+
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "Ova datoteka je parcijalno poslata"
+
 #~ msgid "No file was uploaded"
 #~ msgstr "Nijedna datoteka nije poslata"
+
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "Greška u slanju podataka. Morate izabrati CSV tip datoteke"
+
 #~ msgid "You need to upload the file"
 #~ msgstr "Morate poslati datoteku"
+
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Morate poslati CSV datoteku"
+
 #~ msgid "Upload CSV file"
 #~ msgstr "Pošaljite CSV datoteku"
+
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr "Nemoguće je poslati datoteku koja nije u CSV formatu"
+
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "Nemoguće je poslati praznu datoteku"
+
 #~ msgid "Uploading CSV file"
 #~ msgstr "Slanje CSV datoteke"
+
 #~ msgid "Visualization:"
 #~ msgstr "Vizuelizacija:"
+
 #~ msgid "Select the field number you would like to use for your answers:"
 #~ msgstr "Izaberite broj polje koji želite da koristite za vaše odgovore:"
+
 #~ msgid "Move User"
 #~ msgstr "Pomeri korisnika"
+
 #~ msgid "Setting new Parent"
 #~ msgstr "Postavi novu višu vezu"
+
 #~ msgid "was imported, but the type was set to \""
 #~ msgstr "JE uvezen, ali je tip podešen na \""
+
 #~ msgid "type"
 #~ msgstr "tip"
+
 #~ msgid "\", because is the closest one"
 #~ msgstr "\", zato što je bio najpribližniji"
+
 #~ msgid ""
 #~ "You can't import label sets which don't support the current survey's base "
 #~ "language."
 #~ msgstr ""
 #~ "Ne možete uvesti set markera koji ne podržavaju trenutni jezik upitnika."
+
 #~ msgid "Answer could not be added. There is already an answer with this code"
 #~ msgstr "Odgovor se ne može dodati. Već postoji odgovor sa ovim kodom."
+
 #~ msgid ""
 #~ "Answer could not be updated. There is already an answer with this code"
 #~ msgstr "Odgovor se ne može promeniti. Već postoji odgovor sa ovim kodom."
+
 #~ msgid "Select all"
 #~ msgstr "Izaberi sve"
+
 #~ msgid "Proceed"
 #~ msgstr "Nastavi"
+
 #~ msgid "Question List"
 #~ msgstr "Lista pitanja"
+
 #~ msgid "Like"
 #~ msgstr "Kao"
+
 #~ msgid "Numerical"
 #~ msgstr "Numerički"
+
 #~ msgid "Huge free text"
 #~ msgstr "Veliki slobodan tekst"
+
 #~ msgid "Update tokens table with new fields"
 #~ msgstr "Dodaj tabeli tokena nova polja"
+
 #~ msgid "to TokenID No"
 #~ msgstr "ka token ID-u broj"
+
 #~ msgid "{TOKENCOUNT} Records Created"
 #~ msgstr "{TOKENCOUNT} zapisa kreirano"
+
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Token koji ste obezbedili nije validan."
+
 #~ msgid "Your survey responses have been saved succesfully"
 #~ msgstr "Vaši odgovori u upitniku su uspešno snimljeni"
+
 #~ msgid ""
 #~ "You, someone using your email address, or the administrator has saved a "
 #~ "survey in progress. The following details can be used to return to this "
@@ -7857,35 +7897,49 @@ msgstr "SID није обезбеђен. Немогуће уклањање ан�
 #~ "Vi, neko ko koristi vašu email adresu, ili administrator je snimio "
 #~ "upitnik koji je u toku. Sledeći detalji se mogu koristiti kako bi se "
 #~ "vratili ovom upitnikui nastavili gde ste stali."
+
 #~ msgid "Please contact"
 #~ msgstr "Molimo vas kontaktirajte"
+
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "Ovo je upitnik zatvorenog tipa. Potreban vam je validan  token za učešće."
+
 #~ msgid "prev"
 #~ msgstr "pret"
+
 #~ msgid "last"
 #~ msgstr "posl"
+
 #~ msgid "answers"
 #~ msgstr "odgovora"
+
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "kako bi uklonili poslednji unos u vašoj list"
+
 #~ msgid "Please choose at most"
 #~ msgstr "Molimo izaberite najviše"
+
 #~ msgid "answer(s) for question"
 #~ msgstr "odgovor(a) na pitanje"
+
 #~ msgid "Check Settings"
 #~ msgstr "Proveri podešavanja"
+
 #~ msgid "Save Survey and Return"
 #~ msgstr "Snimi upitnik i vrati se"
+
 #~ msgid "CSV Comma Delimited"
 #~ msgstr "CSV razgraničena datoteka zarezima"
+
 #~ msgid "Survey is not currently active."
 #~ msgstr "Upitnik nije trenutno aktivan."
+
 #~ msgid "This is not an anonymous survey. A token table must also be created."
 #~ msgstr ""
 #~ "Ovaj upitnik nije anoniman. Tabela tokena takođe mora biti kreirana."
+
 #~ msgid ""
 #~ "You should export your responses before de-activating. Click \"Cancel\" "
 #~ "to return to the main admin screen without de-activating this survey."
@@ -7893,6 +7947,6 @@ msgstr "SID није обезбеђен. Немогуће уклањање ан�
 #~ "Trebali bi izvesti datoteku sa odgovorima pre de-aktiviranja. Izaberite  "
 #~ "\"Prekini\" kako bi se vratili u glavni ekran bez de-aktiviranja ovog "
 #~ "upitnika."
+
 #~ msgid "De-Activate Survey"
 #~ msgstr "Deaktiviraj upitnik"
-

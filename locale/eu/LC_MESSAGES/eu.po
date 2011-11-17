@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-08-31 01:22+0200\n"
-"PO-Revision-Date: 2008-06-13 17:14+0100\n"
-"Last-Translator: inforbek13 <inforbek13@eps.mondragon.edu>\n"
+"PO-Revision-Date: 2011-11-17 17:05+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: BaiDfeiz <info@axular.ikastola.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "X-Poedit-Basepath: .\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: k\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-Language: Basque\n"
 "X-Poedit-Country: Euskal Herria\n"
 "X-Poedit-SearchPath-0: D:\\web\\TechPlat\\apache\\htdocs\\limesurvey\n"
@@ -40,9 +40,7 @@ msgstr "Barkatu. Ez dago holako inkestarik."
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:612
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:257
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:760
-msgid ""
-"This survey is not currently active. You will not be able to save your "
-"responses."
+msgid "This survey is not currently active. You will not be able to save your responses."
 msgstr "Inkesta hau ez dago indarrean. Ezingo dituzu erantzunak gorde."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:294
@@ -55,8 +53,7 @@ msgstr "Ez da gorde"
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:295
 #: /var/www/virtual/limesurvey.org/subversion1x/survey.php:75
 #: /var/www/virtual/limesurvey.org/subversion1x/group.php:108
-msgid ""
-"Your survey responses have not been recorded. This survey is not yet active."
+msgid "Your survey responses have not been recorded. This survey is not yet active."
 msgstr "Zure erantzunak ez dira gorde inkesta oraindik aktibatu ez delako."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/question.php:296
@@ -350,12 +347,8 @@ msgid "Vietnamese"
 msgstr "Vietnamera"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:240
-msgid ""
-"Warning: You are still using the default password ('password'). Please "
-"change your password and re-login again."
-msgstr ""
-"Kontuz! Oraindik lehenetsitako pasahitza ('password') erabiltzen ari zara. "
-"Mesedez, zure pasahitza aldatu eta berriz logeatu."
+msgid "Warning: You are still using the default password ('password'). Please change your password and re-login again."
+msgstr "Kontuz! Oraindik lehenetsitako pasahitza ('password') erabiltzen ari zara. Mesedez, zure pasahitza aldatu eta berriz logeatu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:242
 msgid "Administration"
@@ -1403,14 +1396,8 @@ msgstr "Iruzkina"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1768
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2161
-msgid ""
-"Caution: JavaScript execution is disabled in your browser. You may not be "
-"able to answer all questions in this survey. Please, verify your browser "
-"parameters."
-msgstr ""
-"Oharra: Zure nabigatzaileak ez du JavaScript onartzen. Aktibatzen ez baduzu, "
-"seguru asko inkestaren galdera guztiak ezingo dituzu erantzun. Zure "
-"nabigatzailearen ezarpenak berrikusi, mesedez."
+msgid "Caution: JavaScript execution is disabled in your browser. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
+msgstr "Oharra: Zure nabigatzaileak ez du JavaScript onartzen. Aktibatzen ez baduzu, seguru asko inkestaren galdera guztiak ezingo dituzu erantzun. Zure nabigatzailearen ezarpenak berrikusi, mesedez."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2176
 msgid "There are no questions in this survey"
@@ -1443,21 +1430,8 @@ msgstr "Inkesta hau anonimoa da."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/common.php:1822
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2230
-msgid ""
-"The record kept of your survey responses does not contain any identifying "
-"information about you unless a specific question in the survey has asked for "
-"this. If you have responded to a survey that used an identifying token to "
-"allow you to access the survey, you can rest assured that the identifying "
-"token is not kept with your responses. It is managed in a separate database, "
-"and will only be updated to indicate that you have (or haven't) completed "
-"this survey. There is no way of matching identification tokens with survey "
-"responses in this survey."
-msgstr ""
-"Inkestan eman dituzun erantzunen erregistroek ezin zaituzte inolaz ere "
-"identifikatu, galdera batek esplizituki egiten ez badu. Inkesta honetan "
-"gonbidapen-kodearen bidez parte hartzen baduzu, seguru egon zaitezke zure "
-"nortasuna ez dela erantzunekin lotuko. Ez dago zure erantzunak zureak direla "
-"jakiteko modurik."
+msgid "The record kept of your survey responses does not contain any identifying information about you unless a specific question in the survey has asked for this. If you have responded to a survey that used an identifying token to allow you to access the survey, you can rest assured that the identifying token is not kept with your responses. It is managed in a separate database, and will only be updated to indicate that you have (or haven't) completed this survey. There is no way of matching identification tokens with survey responses in this survey."
+msgstr "Inkestan eman dituzun erantzunen erregistroek ezin zaituzte inolaz ere identifikatu, galdera batek esplizituki egiten ez badu. Inkesta honetan gonbidapen-kodearen bidez parte hartzen baduzu, seguru egon zaitezke zure nortasuna ez dela erantzunekin lotuko. Ez dago zure erantzunak zureak direla jakiteko modurik."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2240
 msgid "Are you sure you want to clear all your responses?"
@@ -1493,13 +1467,8 @@ msgstr "\"Bidali\" sakatu prozesua osatu eta zure erantzunak gordetzeko."
 
 # D:\xampp\xampp\htdocs\limesurvey/clienttext.php:170
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2338
-msgid ""
-"If you want to check any of the answers you have made, and/or change them, "
-"you can do that now by clicking on the [<< prev] button and browsing through "
-"your responses."
-msgstr ""
-"Zure erantzunen bat aztertu edo/eta aldatu nahi baduzu, orain egin dezakezu "
-"[<< Aurrekoa] botoiaren bidez."
+msgid "If you want to check any of the answers you have made, and/or change them, you can do that now by clicking on the [<< prev] button and browsing through your responses."
+msgstr "Zure erantzunen bat aztertu edo/eta aldatu nahi baduzu, orain egin dezakezu [<< Aurrekoa] botoiaren bidez."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2359
 msgid "Answers Cleared"
@@ -1521,21 +1490,13 @@ msgstr "Inkesta honetarako izen eta pasahitza aukeratu eta \"Gorde\" sakatu."
 
 # D:\xampp\xampp\htdocs\limesurvey/clienttext.php:203
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"Your survey will be saved using that name and password, and can be completed "
-"later by logging in with the same name and password."
-msgstr ""
-"Zure inkesta izen eta pasahitza horiekin gordeko da. Pasahitz eta izen "
-"horietaz baliatuz aurrerago osatu ahal izango duzu."
+msgid "Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password."
+msgstr "Zure inkesta izen eta pasahitza horiekin gordeko da. Pasahitz eta izen horietaz baliatuz aurrerago osatu ahal izango duzu."
 
 # D:\xampp\xampp\htdocs\limesurvey/clienttext.php:205
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2376
-msgid ""
-"If you give an email address, an email containing the details will be sent "
-"to you."
-msgstr ""
-"Zure helbide elektronikoa ematen badiguzu, mezu bat bidaliko dizugu "
-"xehetasun guztiekin."
+msgid "If you give an email address, an email containing the details will be sent to you."
+msgstr "Zure helbide elektronikoa ematen badiguzu, mezu bat bidaliko dizugu xehetasun guztiekin."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2384
 msgid "Return To Survey"
@@ -1616,9 +1577,7 @@ msgstr "Parte hartu nahi baduzu, inkestan erregistratu behar duzu."
 
 # D:\xampp\xampp\htdocs\limesurvey/clienttext.php:154
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2434
-msgid ""
-"Enter your details below, and an email containing the link to participate in "
-"this survey will be sent immediately."
+msgid "Enter your details below, and an email containing the link to participate in this survey will be sent immediately."
 msgstr "Zure datuak idatzi eta mezu elektronikoa berehala bidaliko zaizu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/common.php:2441
@@ -1794,12 +1753,8 @@ msgid "The answer to the security question is incorrect"
 msgstr "Segurtasun-galderaren erantzuna ez da zuzena izan."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:248
-msgid ""
-"This name has already been used for this survey. You must use a unique save "
-"name."
-msgstr ""
-"Izen hau inkesta honetan jadanik erabili da. Gordetzeko izen bakarra erabili "
-"behar duzu."
+msgid "This name has already been used for this survey. You must use a unique save name."
+msgstr "Izen hau inkesta honetan jadanik erabili da. Gordetzeko izen bakarra erabili behar duzu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:304
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:418
@@ -1811,21 +1766,13 @@ msgstr "Gordetako Inkestaren Xehetasunak"
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:305
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:419
 #, fuzzy
-msgid ""
-"Thank you for saving your survey in progress.  The following details can be "
-"used to return to this survey and continue where you left off.  Please keep "
-"this e-mail for your reference - we cannot retrieve the password for you."
-msgstr ""
-"Zeuk, edo zeure helbide eleketronikoa erabili duen norbaitek, inkesta gorde "
-"du(zu). Xehetasun hauek inkestara itzuli eta utzi zenuen puntutik "
-"jarraitzeko erabil daitezke."
+msgid "Thank you for saving your survey in progress.  The following details can be used to return to this survey and continue where you left off.  Please keep this e-mail for your reference - we cannot retrieve the password for you."
+msgstr "Zeuk, edo zeure helbide eleketronikoa erabili duen norbaitek, inkesta gorde du(zu). Xehetasun hauek inkestara itzuli eta utzi zenuen puntutik jarraitzeko erabil daitezke."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:309
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:423
 #, fuzzy
-msgid ""
-"Reload your survey by clicking on the following link (or pasting it into "
-"your browser):"
+msgid "Reload your survey by clicking on the following link (or pasting it into your browser):"
 msgstr "Zure inkesta berriro kargatzeko URL honetan klik egin:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:542
@@ -1834,28 +1781,12 @@ msgstr "Emaitzak ezin dira bidali - ez dago emaitzik bidaltzeko."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/save.php:449
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"This error can occur if you have already submitted your responses and "
-"pressed 'refresh' on your browser. In this case, your responses have already "
-"been saved."
-msgstr ""
-"Errore hau gerta daiteke zure erantzunak bidali badituzu eta zure "
-"nabigatzailearen  \"Berriro kargatu\" botoia sakatu baduzu. Kasu horretan, "
-"zure erantzunak gordeta zeuden."
+msgid "This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved."
+msgstr "Errore hau gerta daiteke zure erantzunak bidali badituzu eta zure nabigatzailearen  \"Berriro kargatu\" botoia sakatu baduzu. Kasu horretan, zure erantzunak gordeta zeuden."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/save.php:543
-msgid ""
-"If you receive this message in the middle of completing a survey, you should "
-"choose '<- BACK' on your browser and then refresh/reload the previous page. "
-"While you will lose answers from the last page all your others will still "
-"exist. This problem can occur if the webserver is suffering from overload or "
-"excessive use. We apologise for this problem."
-msgstr ""
-"Inkesta baten erdian zaudela errore hau jasotzen baduzu, zure "
-"nabigatzailearen '<-Atzera' botoia erabili beharko zenuke eta aurreko orria "
-"berriz kargatu. Azken orriko erantzunak galdu arren, beste guztiak "
-"mantenduko dira. Baliteke zure zerbitzaria lanpetuta egotea. Barkatu "
-"eragozpenak."
+msgid "If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem."
+msgstr "Inkesta baten erdian zaudela errore hau jasotzen baduzu, zure nabigatzailearen '<-Atzera' botoia erabili beharko zenuke eta aurreko orria berriz kargatu. Azken orriko erantzunak galdu arren, beste guztiak mantenduko dira. Baliteke zure zerbitzaria lanpetuta egotea. Barkatu eragozpenak."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:68
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/index.php:117
@@ -1893,9 +1824,7 @@ msgstr "Barkatu, baina zure saioa amaitu da."
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:204
 #: /var/www/virtual/limesurvey.org/subversion1x/printanswers.php:46
 #, fuzzy
-msgid ""
-"Either you have been inactive for too long, you have cookies disabled for "
-"your browser, or there were problems with your connection."
+msgid "Either you have been inactive for too long, you have cookies disabled for your browser, or there were problems with your connection."
 msgstr "Ez duzu luzaroan ezer egin, edo zure konexioarekin arazoak egon dira."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:291
@@ -1932,18 +1861,13 @@ msgstr "Ez duzu pasahitzik eman"
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:513
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:107
 #, fuzzy
-msgid ""
-"This is a closed-access survey, so you must supply a valid token.  Please "
-"contact the administrator for assistance."
-msgstr ""
-"Inkesta hau atzipen mugatukoa, hortaz, gonbidapen-kode egokia sartu behar "
-"duzu. Mesedez jarri kontaktuan administratzailearekin lagundu zatzan."
+msgid "This is a closed-access survey, so you must supply a valid token.  Please contact the administrator for assistance."
+msgstr "Inkesta hau atzipen mugatukoa, hortaz, gonbidapen-kode egokia sartu behar duzu. Mesedez jarri kontaktuan administratzailearekin lagundu zatzan."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:514
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1681
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1717
-msgid ""
-"The token you have provided is either not valid, or has already been used."
+msgid "The token you have provided is either not valid, or has already been used."
 msgstr "Eman zaizun pasahitza ez da zuzena edo beste norbaitek erabili du."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:515
@@ -1975,11 +1899,9 @@ msgstr "osatua"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"This email is to confirm that you have completed the survey titled "
-"{SURVEYNAME} and your response has been saved. Thank you for participating.\n"
+"This email is to confirm that you have completed the survey titled {SURVEYNAME} and your response has been saved. Thank you for participating.\n"
 "\n"
-"If you have any further questions about this email, please contact "
-"{ADMINNAME} on {ADMINEMAIL}.\n"
+"If you have any further questions about this email, please contact {ADMINNAME} on {ADMINEMAIL}.\n"
 "\n"
 "Sincerely,\n"
 "\n"
@@ -1987,13 +1909,11 @@ msgid ""
 msgstr ""
 "{FIRSTNAME} {LASTNAME} lagun agurgarri hori:\n"
 "\n"
-"Mezu honen bidez \"{SURVEYNAME}\" inkesta bete duzula baieztatu nahi dizugu. "
-"Zure erantzunak ongo gorde dira.\n"
+"Mezu honen bidez \"{SURVEYNAME}\" inkesta bete duzula baieztatu nahi dizugu. Zure erantzunak ongo gorde dira.\n"
 "\n"
 "Eskerrik asko parte hartzeagatik!.\n"
 "\n"
-"Edozein zalantza edo kontsulta egiteko,arduradunarekin: {ADMINNAME} e-mail "
-"honen bidez: {ADMINEMAIL} harremanetan jarri, mesedez.\n"
+"Edozein zalantza edo kontsulta egiteko,arduradunarekin: {ADMINNAME} e-mail honen bidez: {ADMINEMAIL} harremanetan jarri, mesedez.\n"
 "\n"
 "Jaso ezazu gure agurrik beroena.\n"
 "\n"
@@ -2033,12 +1953,8 @@ msgid "An unexpected error has occurred and your responses cannot be saved."
 msgstr "Uste gabeko errorea dela eta, zure erantzunak ezin izan dira gorde."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1514
-msgid ""
-"Your responses have not been lost and have been emailed to the survey "
-"administrator and will be entered into our database at a later point."
-msgstr ""
-"Zure erantzunak ez dira galdu, inkestaren kudeatzaileari emailez bidali "
-"zaizkio datubasean sar ditzan."
+msgid "Your responses have not been lost and have been emailed to the survey administrator and will be entered into our database at a later point."
+msgstr "Zure erantzunak ez dira galdu, inkestaren kudeatzaileari emailez bidali zaizkio datubasean sar ditzan."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1515
 msgid "An error occurred saving a response to survey id"
@@ -2066,48 +1982,32 @@ msgid "Try to submit again"
 msgstr "Berriz ere bidaltzen saia zaitez"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1587
-msgid ""
-"Please confirm access to survey by answering the security question below and "
-"click continue."
-msgstr ""
-"Mesedez, inkestarako sarrera egiaztatu hurrengo segurtasun galderari "
-"erantzunaz, eta sakatu 'Jarraitu' botoia."
+msgid "Please confirm access to survey by answering the security question below and click continue."
+msgstr "Mesedez, inkestarako sarrera egiaztatu hurrengo segurtasun galderari erantzunaz, eta sakatu 'Jarraitu' botoia."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1635
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1680
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1716
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1753
 msgid "This is a controlled survey. You need a valid token to participate."
-msgstr ""
-"Inkesta honek sarbide-kontrola dauka. Parte hartzeko pasahitza behar duzu."
+msgstr "Inkesta honek sarbide-kontrola dauka. Parte hartzeko pasahitza behar duzu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1636
 #, fuzzy
-msgid ""
-"If you have been issued a token, please enter it in the box below and click "
-"continue."
+msgid "If you have been issued a token, please enter it in the box below and click continue."
 msgstr "Pasahitza eman bazaizu, testu-laukian idatzi eta jarrai ezazu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1758
-msgid ""
-"If you have been issued with a token, please enter it in the box below and "
-"click continue."
+msgid "If you have been issued with a token, please enter it in the box below and click continue."
 msgstr "Pasahitza eman bazaizu, testu-laukian idatzi eta jarrai ezazu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1770
-msgid ""
-"Please confirm the token by answering the security question below and click "
-"continue."
-msgstr ""
-"Mesedez, egiaztatu pasaitza ondorengo testu kaxan idazten, eta sakatu "
-"jarraitu botoia"
+msgid "Please confirm the token by answering the security question below and click continue."
+msgstr "Mesedez, egiaztatu pasaitza ondorengo testu kaxan idazten, eta sakatu jarraitu botoia"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:1873
-msgid ""
-"This survey does not yet have any questions and cannot be tested or "
-"completed."
-msgstr ""
-"Inkesta honek oraindik ez du galderarik eta ezin da probatu ezta gorde ere."
+msgid "This survey does not yet have any questions and cannot be tested or completed."
+msgstr "Inkesta honek oraindik ez du galderarik eta ezin da probatu ezta gorde ere."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/index.php:2169
 msgid "Previous"
@@ -2142,11 +2042,8 @@ msgid "Thank you for registering to participate in this survey."
 msgstr "Mila esker inkesta honetan parte hartzeagatik."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
-msgid ""
-"An email has been sent to the address you provided with access details for "
-"this survey. Please follow the link in that email to proceed."
-msgstr ""
-"Inkestan parte hartzeko datuak dituen mezu elektroniko bat bidali zaizu."
+msgid "An email has been sent to the address you provided with access details for this survey. Please follow the link in that email to proceed."
+msgstr "Inkestan parte hartzeko datuak dituen mezu elektroniko bat bidali zaizu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/register.php:153
 msgid "Survey Administrator"
@@ -2219,20 +2116,12 @@ msgid "You cannot proceed until you enter some text for one or more questions."
 msgstr "Galdera bat edo gehiago bete arte ezin duzu jarraitu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:548
-msgid ""
-"One or more mandatory questions have not been answered. You cannot proceed "
-"until these have been completed"
-msgstr ""
-"Nahitaezko galdera bat edo gehiago ez d(ir)a erantzun. Hauek bete arte "
-"ezingo duzu aurrera jo"
+msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed"
+msgstr "Nahitaezko galdera bat edo gehiago ez d(ir)a erantzun. Hauek bete arte ezingo duzu aurrera jo"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:571
-msgid ""
-"One or more questions have not been answered in a valid manner. You cannot "
-"proceed until these answers are valid"
-msgstr ""
-"Galdera bat edo gehiago ez dira zuzen erantzun. Egoki erantzun arte ezingo "
-"duzu aurrera jo"
+msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid"
+msgstr "Galdera bat edo gehiago ez dira zuzen erantzun. Egoki erantzun arte ezingo duzu aurrera jo"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:631
 msgid "Day"
@@ -2400,11 +2289,8 @@ msgstr "Aukeratu, mesedez"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:930
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1174
-msgid ""
-"Error: The labelset used for this question is not available in this language."
-msgstr ""
-"Errorea: Galdera honetan erabilitako etiketa mota ezin da hizkuntza honetan "
-"erabili."
+msgid "Error: The labelset used for this question is not available in this language."
+msgstr "Errorea: Galdera honetan erabilitako etiketa mota ezin da hizkuntza honetan erabili."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1237
 msgid "Please choose one of the following"
@@ -2426,8 +2312,7 @@ msgstr "Ezker aldeko zerrendako elementu batean sakatu, hemendik hasita: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1523
 msgid "highest ranking item, moving through to your lowest ranking item."
-msgstr ""
-"sailkapenean maila gorenean dagoen elementutik behe-behean dagoen elementura."
+msgstr "sailkapenean maila gorenean dagoen elementutik behe-behean dagoen elementura."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1528
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:936
@@ -2444,9 +2329,7 @@ msgstr "Zure sailkapena"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1551
 #, fuzzy
-msgid ""
-"Click on the scissors next to each item on the right to remove the last "
-"entry in your ranked list"
+msgid "Click on the scissors next to each item on the right to remove the last entry in your ranked list"
 msgstr "Elementu bakoitzaren eskuin aldean dauden goraizeetan sakatu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:1745
@@ -2500,8 +2383,7 @@ msgstr "Gainontzekoak:"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2174
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2204
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2213
-msgid ""
-"Answer is invalid. The total of all entries should not add up to more than "
+msgid "Answer is invalid. The total of all entries should not add up to more than "
 msgstr "Erantzuna ez da egokia. Sarreren gehiengo kopurua"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:2185
@@ -2516,12 +2398,8 @@ msgstr "Eremu honetan zenbakiak baino ez dira onartzen"
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3236
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3356
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3926
-msgid ""
-"Error: The labelset used for this question is not available in this language "
-"and/or does not exist."
-msgstr ""
-"Errorea: Galdera honetan erabilitako etiketa mota ezin da hizkuntza honetan "
-"erabili edo/eta ez da existitzen."
+msgid "Error: The labelset used for this question is not available in this language and/or does not exist."
+msgstr "Errorea: Galdera honetan erabilitako etiketa mota ezin da hizkuntza honetan erabili edo/eta ez da existitzen."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/qanda.php:3349
 #, fuzzy
@@ -2648,10 +2526,8 @@ msgstr "Datuen egokitasunaren baieztapena"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:32
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:306
-msgid ""
-"If errors are showing up you might have to execute this script repeatedly."
-msgstr ""
-"Errorerik agertzekotan, prozesu hau aldi batzuetan errepikatu beharko duzu."
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr "Errorerik agertzekotan, prozesu hau aldi batzuetan errepikatu beharko duzu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/integritycheck.php:53
 msgid "No matching Cqid"
@@ -2903,12 +2779,8 @@ msgstr "Kendu"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:160
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:166
 #, fuzzy
-msgid ""
-"You cannot remove this item since you need at least one language in a "
-"labelset."
-msgstr ""
-"Item hauek ezin dira ezabatu, etiketa-multzoetan gutxienez hizkuntza bat "
-"beharrezkoa delako."
+msgid "You cannot remove this item since you need at least one language in a labelset."
+msgstr "Item hauek ezin dira ezabatu, etiketa-multzoetan gutxienez hizkuntza bat beharrezkoa delako."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:184
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:206
@@ -3075,17 +2947,11 @@ msgstr "Kontuz"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:383
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:420
 msgid "Inserting New labels must be done on the first language folder."
-msgstr ""
-"Etiketa berriak eranstekotan, lehenego hizkuntzaren direktorioan egin behar "
-"duzu."
+msgstr "Etiketa berriak eranstekotan, lehenego hizkuntzaren direktorioan egin behar duzu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:429
-msgid ""
-"You cannot change codes, add or delete entries in this label set because it "
-"is being used by an active survey."
-msgstr ""
-"Ezin dira kodeak aldatu, ezta etiketa-multzo honen erregistrorik erantsi edo "
-"ezabatu ere, inkesta aktibo batean erabiltzen ari delako."
+msgid "You cannot change codes, add or delete entries in this label set because it is being used by an active survey."
+msgstr "Ezin dira kodeak aldatu, ezta etiketa-multzo honen erregistrorik erantsi edo ezabatu ere, inkesta aktibo batean erabiltzen ari delako."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:449
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:462
@@ -3134,14 +3000,8 @@ msgid "Fix Sort"
 msgstr "Ordena zuzendu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:499
-msgid ""
-"Some surveys currently use this label set. Modifying the codes, adding or "
-"deleting entries to this label set may produce undesired results in other "
-"surveys."
-msgstr ""
-"Inkesta batzuk etiketa-multzo hau erabiltzen ari dira. Multzo honen kodeak "
-"aldatzeak, baita erregistroak erantsi edo ezabatzeak ere, ondorio txarrak "
-"ekar ditzake."
+msgid "Some surveys currently use this label set. Modifying the codes, adding or deleting entries to this label set may produce undesired results in other surveys."
+msgstr "Inkesta batzuk etiketa-multzo hau erabiltzen ari dira. Multzo honen kodeak aldatzeak, baita erregistroak erantsi edo ezabatzeak ere, ondorio txarrak ekar ditzake."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:482
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:570
@@ -3158,12 +3018,8 @@ msgid "Update of Label Set failed"
 msgstr "Etiketa-multzoa ezin izan da eguneratu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:612
-msgid ""
-"Couldn't Delete Label Set - There are questions that rely on this. You must "
-"delete these questions first."
-msgstr ""
-"Etiketa-multzoa ezin izan da ezabatu - Beren menpeko galderak daude. Lehenik "
-"eta behin galdera horiek ezabatu behar dituzu."
+msgid "Couldn't Delete Label Set - There are questions that rely on this. You must delete these questions first."
+msgstr "Etiketa-multzoa ezin izan da ezabatu - Beren menpeko galderak daude. Lehenik eta behin galdera horiek ezabatu behar dituzu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:648
 msgid "Insert of Label Set failed"
@@ -3184,12 +3040,8 @@ msgstr "Etiketa-multzoa ezin izan da erantsi"
 
 # C:/documentos/www/docs/limesurvey15/admin/labels.php:610
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:718
-msgid ""
-"This label code is already used in this labelset. Please choose another code "
-"or rename the existing one."
-msgstr ""
-"Etiketaren kodea multzo honetan erabiltzen ari zen. Mesedez, beste kode bat "
-"aukeratu edo aurrekoa berrizenda ezazu."
+msgid "This label code is already used in this labelset. Please choose another code or rename the existing one."
+msgstr "Etiketaren kodea multzo honetan erabiltzen ari zen. Mesedez, beste kode bat aukeratu edo aurrekoa berrizenda ezazu."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/labels.php:615
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/labels.php:779
@@ -3221,12 +3073,8 @@ msgstr "Taldea inportatu"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/http_importsurvey.php:33
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:31
 #, php-format
-msgid ""
-"An error occurred uploading your file. This may be caused by incorrect "
-"permissions in your %s folder."
-msgstr ""
-"Fitxategia igotzean akats bat egon da. Baliteke zure %s direktorioaren "
-"baimenak desegokiak izatea."
+msgid "An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."
+msgstr "Fitxategia igotzean akats bat egon da. Baliteke zure %s direktorioaren baimenak desegokiak izatea."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:31
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:41
@@ -3327,29 +3175,17 @@ msgid "This file is not a LimeSurvey group file. Import failed."
 msgstr "Fitxategiak ez du LimeSurvey-ren moduko formato onargarririk."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:249
-msgid ""
-"You can't import a group which doesn't support the current survey's base "
-"language."
-msgstr ""
-"Ezin duzu talde bat inportatu inkestaren oinarrizko hizkuntza onartzen ez "
-"badu"
+msgid "You can't import a group which doesn't support the current survey's base language."
+msgstr "Ezin duzu talde bat inportatu inkestaren oinarrizko hizkuntza onartzen ez badu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:265
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language."
-msgstr ""
-"Ezin duzu galdera bat inportatu inkestaren oinarrizko hizkuntza onartzen ez "
-"badu"
+msgid "You can't import a question which doesn't support the current survey's base language."
+msgstr "Ezin duzu galdera bat inportatu inkestaren oinarrizko hizkuntza onartzen ez badu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:283
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:281
-msgid ""
-"You can't import label sets which don't support the current survey's base "
-"language"
-msgstr ""
-"Ezin duzu etiketa bat inportatu inkestaren oinarrizko hizkuntza onartzen ez "
-"badu"
+msgid "You can't import label sets which don't support the current survey's base language"
+msgstr "Ezin duzu etiketa bat inportatu inkestaren oinarrizko hizkuntza onartzen ez badu"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/importgroup.php:566
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:641
@@ -3358,9 +3194,7 @@ msgstr "Inportazioa zati batean arrakastaz egin da."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/importgroup.php:567
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:642
-msgid ""
-"The following languages in this group were not imported since the survey "
-"does not contain such a language: "
+msgid "The following languages in this group were not imported since the survey does not contain such a language: "
 msgstr "Hurrengo hizkuntza hauek ez dira inportatu inkestak ez dituelako:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importgroup.php:653
@@ -3644,9 +3478,7 @@ msgstr "Erregistroaren IDa gaitzetsi?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:88
 msgid "When an imported record matches an existing record ID:"
-msgstr ""
-"Inportaturiko erregistroaren eta jadanik zegoen erregistro baten IDak bat "
-"datozenean:"
+msgstr "Inportaturiko erregistroaren eta jadanik zegoen erregistro baten IDak bat datozenean:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:89
 msgid "Report an error (and skip the new record)."
@@ -3708,12 +3540,8 @@ msgid "Important Note:"
 msgstr "Ohar garrantzitsua:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:271
-msgid ""
-"Do NOT refresh this page, as this will import the file again and produce "
-"duplicates"
-msgstr ""
-"Orri hau berriz EZ kargatu, fitxategia berriro inportatu eta, ondorioz, "
-"bikoiztuko litzateke."
+msgid "Do NOT refresh this page, as this will import the file again and produce duplicates"
+msgstr "Orri hau berriz EZ kargatu, fitxategia berriro inportatu eta, ondorioz, bikoiztuko litzateke."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/vvimport.php:273
 msgid "Total records imported:"
@@ -3832,12 +3660,8 @@ msgid "Disabled"
 msgstr "Ezgaiturik"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1272
-msgid ""
-"Don't consider NON completed responses (only works when Filter incomplete "
-"answers is Disable)"
-msgstr ""
-"Ez eduki kontuan guztiz bete gabeko erantzunak (Erantzun osatu gabeak "
-"iragazi aukera Disable modura dagoenean soilik funtzionatzen du)"
+msgid "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)"
+msgstr "Ez eduki kontuan guztiz bete gabeko erantzunak (Erantzun osatu gabeak iragazi aukera Disable modura dagoenean soilik funtzionatzen du)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/statistics.php:1277
 msgid "Show Graphs"
@@ -4087,25 +3911,14 @@ msgid "Tokens have not been initialised for this survey."
 msgstr "Gonbidapen-kodeak ez dira berrabiarazi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:347
-msgid ""
-"If you initialise tokens for this survey, the survey will only be accessible "
-"to users who have been assigned a token."
-msgstr ""
-"Inkesta honetako gonbidapen-kodeak berrabiarazten badituzu, gonbidapen duten "
-"erabiltzaileentzat soilik izango da eskuragarria."
+msgid "If you initialise tokens for this survey, the survey will only be accessible to users who have been assigned a token."
+msgstr "Inkesta honetako gonbidapen-kodeak berrabiarazten badituzu, gonbidapen duten erabiltzaileentzat soilik izango da eskuragarria."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:354
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2456
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3062
-msgid ""
-"If you turn on the -Anonymous answers- option and create a tokens table, "
-"LimeSurvey will mark your completed tokens only with a 'Y' instead of date/"
-"time to ensure the anonymity of your participants."
-msgstr ""
-"Inkesta anonimo bezala konfiguratua izan bada eta sarbide mugatuko inkesta "
-"sortu baduzu (inkestatu taula batekin), LimeSurveyk inkestatu batek inkesta "
-"osatzen duenean, hau 'Y' batez markatuko du, ez dataz eta denboraz. Horrela "
-"partaideen anonimatoa ziurtatuko da."
+msgid "If you turn on the -Anonymous answers- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
+msgstr "Inkesta anonimo bezala konfiguratua izan bada eta sarbide mugatuko inkesta sortu baduzu (inkestatu taula batekin), LimeSurveyk inkestatu batek inkesta osatzen duenean, hau 'Y' batez markatuko du, ez dataz eta denboraz. Horrela partaideen anonimatoa ziurtatuko da."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:358
 msgid "Do you want to create a tokens table for this survey?"
@@ -4122,8 +3935,7 @@ msgstr "Berreskurapen-aukerak"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:378
 msgid "The following old token tables could be restored:"
-msgstr ""
-"Hurrengo gonbidapen-kodeen taula zaharrak berreskuratu beharko lirateke:"
+msgstr "Hurrengo gonbidapen-kodeen taula zaharrak berreskuratu beharko lirateke:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:385
 msgid "Restore"
@@ -4319,8 +4131,7 @@ msgid ""
 "\n"
 "Recently we invited you to participate in a survey.\n"
 "\n"
-"We note that you have not yet completed the survey, and wish to remind you "
-"that the survey is still available should you wish to take part.\n"
+"We note that you have not yet completed the survey, and wish to remind you that the survey is still available should you wish to take part.\n"
 "\n"
 "The survey is titled:\n"
 "\"{SURVEYNAME}\"\n"
@@ -4345,8 +4156,7 @@ msgstr ""
 "\n"
 "«{SURVEYDESCRIPTION}»\n"
 "\n"
-"Oraindik burutu ez duzula konturatu gara. Hori dela eta, parte hartu nahi "
-"bazenu oraindik ere garaiz zaudela gogorarazi nahi dizugu.\n"
+"Oraindik burutu ez duzula konturatu gara. Hori dela eta, parte hartu nahi bazenu oraindik ere garaiz zaudela gogorarazi nahi dizugu.\n"
 "\n"
 "Esteka honetan klik eginez inkesta bete ahal izango duzu.\n"
 "\n"
@@ -4398,30 +4208,23 @@ msgstr "Harpidetza publikoaren mezua:"
 msgid ""
 "Dear {FIRSTNAME},\n"
 "\n"
-"You, or someone using your email address, have registered to participate in "
-"an online survey titled {SURVEYNAME}.\n"
+"You, or someone using your email address, have registered to participate in an online survey titled {SURVEYNAME}.\n"
 "\n"
 "To complete this survey, click on the following URL:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"If you have any questions about this survey, or if you did not register to "
-"participate and believe this email is in error, please contact {ADMINNAME} "
-"at {ADMINEMAIL}."
+"If you have any questions about this survey, or if you did not register to participate and believe this email is in error, please contact {ADMINNAME} at {ADMINEMAIL}."
 msgstr ""
 "{FIRSTNAME} {LASTNAME} lagun agurgarri hori:\n"
 "\n"
-"Zeu, edo zure helbidea erabili duen norbaitek, inkesta honetan: "
-"\"{SURVEYNAME}\" parte hartzeko izena eman du(zu).\n"
+"Zeu, edo zure helbidea erabili duen norbaitek, inkesta honetan: \"{SURVEYNAME}\" parte hartzeko izena eman du(zu).\n"
 "\n"
 "Inkesta betetzeko esteka honetan klik egin, mesedez:\n"
 "\n"
 "{SURVEYURL}\n"
 "\n"
-"Inkesta honi buruzko zalantzarik bazenu, edo parte hartzeko erregistratu ez "
-"bazara eta mezu hau errore bat dela uste baduzu, pertsona honekin: "
-"{ADMINNAME} e-mail honetan: {ADMINEMAIL} harremanetan jarri, mesedez. "
-"Eskerrik asko."
+"Inkesta honi buruzko zalantzarik bazenu, edo parte hartzeko erregistratu ez bazara eta mezu hau errore bat dela uste baduzu, pertsona honekin: {ADMINNAME} e-mail honetan: {ADMINEMAIL} harremanetan jarri, mesedez. Eskerrik asko."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:634
 msgid "Token Email Settings have been saved."
@@ -4433,8 +4236,7 @@ msgstr "Gonbidapen-kode guztiak ezabatu dira."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:661
 msgid "All invite entries have been set to 'Not Invited'."
-msgstr ""
-"Gonbidapena bidali direneko erregistro guztiak Ez bidali bezala ezarri dira."
+msgstr "Gonbidapena bidali direneko erregistro guztiak Ez bidali bezala ezarri dira."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:673
 msgid "All unique token numbers have been removed."
@@ -4446,9 +4248,7 @@ msgstr "Gonbidapenen datubasearen kudeaketa-aukerak"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:693
 msgid "Are you really sure you want to reset all invitation records to NO?"
-msgstr ""
-"Gonbidapen guztietan bidalketa-estatusa berrabiarazi nahi duzula ziur al "
-"zaude?"
+msgstr "Gonbidapen guztietan bidalketa-estatusa berrabiarazi nahi duzula ziur al zaude?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:693
 msgid "Set all entries to 'No invitation sent'."
@@ -4606,39 +4406,24 @@ msgstr "Gonbidapen-taula ezabatu"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:675
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"If you delete this table tokens will no longer be required to access this "
-"survey."
-msgstr ""
-"Gonbidapen-taula ezabatzen baduzu ez da koderik eskatuko inkesta betetzeko."
+msgid "If you delete this table tokens will no longer be required to access this survey."
+msgstr "Gonbidapen-taula ezabatzen baduzu ez da koderik eskatuko inkesta betetzeko."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:970
-msgid ""
-"A backup of this table will be made if you proceed. Your system "
-"administrator will be able to access this table."
-msgstr ""
-"Jarraitzen baduzu segurtasun-kopia egingo da. Sistemaren kudeatzaileak taula "
-"honetarako sarbidea izango du."
+msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
+msgstr "Jarraitzen baduzu segurtasun-kopia egingo da. Sistemaren kudeatzaileak taula honetarako sarbidea izango du."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:974
 msgid "Delete Tokens"
 msgstr "Gonbidapenak ezabatu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"The tokens table has now been removed and tokens are no longer required to "
-"access this survey."
-msgstr ""
-"Gonbidapen-taula ezabatu da. Hori dela eta, gonbidapen-kodeak ez dira "
-"beharrezkoak inkesta hau betetzeko."
+msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
+msgstr "Gonbidapen-taula ezabatu da. Hori dela eta, gonbidapen-kodeak ez dira beharrezkoak inkesta hau betetzeko."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:998
-msgid ""
-"A backup of this table has been made and can be accessed by your system "
-"administrator."
-msgstr ""
-"Taula honen segurtasun-kopia egin da. Sistemaren kudeatzaileak taula "
-"honetarako sarbidea izango du."
+msgid "A backup of this table has been made and can be accessed by your system administrator."
+msgstr "Taula honen segurtasun-kopia egin da. Sistemaren kudeatzaileak taula honetarako sarbidea izango du."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1027
 msgid "Email Invitation"
@@ -4671,8 +4456,7 @@ msgstr "TID zenbakira bidaltzen:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1099
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1335
 msgid "Bypass token with failing email addresses"
-msgstr ""
-"Ez artu kontutan posta elektroniko helbide okerrak dituzten erregistroak"
+msgstr "Ez artu kontutan posta elektroniko helbide okerrak dituzten erregistroak"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1105
 msgid "Send Invitations"
@@ -4690,17 +4474,12 @@ msgstr "Gonbidapen bat erabiltzaile honi bidali zaio:"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1209
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1450
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:"
-msgstr ""
-"{FIRSTNAME} {LASTNAME} pertsonari ({EMAIL}) helbidera bidalitako mezuak huts "
-"egin du."
+msgstr "{FIRSTNAME} {LASTNAME} pertsonari ({EMAIL}) helbidera bidalitako mezuak huts egin du."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1224
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1467
-msgid ""
-"There are more emails pending than can be sent in one batch. Continue "
-"sending emails by clicking below."
-msgstr ""
-"Batera bidal daitezkeen mezu gehiago dago. Jarraitzeko klik egin behealdean."
+msgid "There are more emails pending than can be sent in one batch. Continue sending emails by clicking below."
+msgstr "Batera bidal daitezkeen mezu gehiago dago. Jarraitzeko klik egin behealdean."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1225
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1468
@@ -4708,14 +4487,8 @@ msgid "There are {EMAILCOUNT} emails still to be sent."
 msgstr "{EMAILCOUNT} mezu dago bidali gabe."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1245
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, not having been sent an "
-"invitation already, having already completed the survey and having a token."
-msgstr ""
-"Ez dago inor mezurik bidaltzeko. Horren zergatia irizpide batzuk ez "
-"betetzean datza: email helbideak izan, lehenago gonbidapenik jaso ez izana, "
-"inkesta bete izana eta gonbidapen-kodea izatea."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, not having been sent an invitation already, having already completed the survey and having a token."
+msgstr "Ez dago inor mezurik bidaltzeko. Horren zergatia irizpide batzuk ez betetzean datza: email helbideak izan, lehenago gonbidapenik jaso ez izana, inkesta bete izana eta gonbidapen-kodea izatea."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1261
 msgid "Email Reminder"
@@ -4763,26 +4536,16 @@ msgid "Reminder sent to:"
 msgstr "Erabiltzaile honi oroigarria bidali zaio:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1490
-msgid ""
-"There were no eligible emails to send. This will be because none satisfied "
-"the criteria of - having an email address, having been sent an invitation, "
-"but not having yet completed the survey."
-msgstr ""
-"Ez dago inor mezurik bidaltzeko. Horren zergatia irizpide batzuk ez "
-"betetzean datza: email helbideak izan, lehenago gonbidapenik jaso ez izana, "
-"inkesta bete izana eta gonbidapen-kodea izatea."
+msgid "There were no eligible emails to send. This will be because none satisfied the criteria of - having an email address, having been sent an invitation, but not having yet completed the survey."
+msgstr "Ez dago inor mezurik bidaltzeko. Horren zergatia irizpide batzuk ez betetzean datza: email helbideak izan, lehenago gonbidapenik jaso ez izana, inkesta bete izana eta gonbidapen-kodea izatea."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1506
 msgid "Create Tokens"
 msgstr "Gonbidapenak sortu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1510
-msgid ""
-"Clicking yes will generate tokens for all those in this token list that have "
-"not been issued one. Is this OK?"
-msgstr ""
-"'Baí' aukeratuz zerrendan dauden eta aldez aurretik holakorik izan ez "
-"dutenentzako gonbidapenak sortuko dituzu."
+msgid "Clicking yes will generate tokens for all those in this token list that have not been issued one. Is this OK?"
+msgstr "'Baí' aukeratuz zerrendan dauden eta aldez aurretik holakorik izan ez dutenentzako gonbidapenak sortuko dituzu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1537
 msgid "{TOKENCOUNT} tokens have been created"
@@ -4811,12 +4574,8 @@ msgid "Auto"
 msgstr "Automatikoa"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1633
-msgid ""
-"You can leave this blank, and automatically generate tokens using 'Create "
-"Tokens'"
-msgstr ""
-"Zuriz utz dezakezu eta geroxeago automatikoki sortu 'Gonbidapen-kodeak "
-"sortu' aukeraren bidez"
+msgid "You can leave this blank, and automatically generate tokens using 'Create Tokens'"
+msgstr "Zuriz utz dezakezu eta geroxeago automatikoki sortu 'Gonbidapen-kodeak sortu' aukeraren bidez"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1689
 msgid "Update Token"
@@ -4839,12 +4598,8 @@ msgstr "Huts egin du"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1748
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1796
-msgid ""
-"There is already an entry with that exact token in the table. The same token "
-"cannot be used in multiple entries."
-msgstr ""
-"Badago jada taulan beste ikestatu bat pasahitz berdinarekin. Ezin da erabili "
-"pasahitz berdina inkestatu desberdinentzat."
+msgid "There is already an entry with that exact token in the table. The same token cannot be used in multiple entries."
+msgstr "Badago jada taulan beste ikestatu bat pasahitz berdinarekin. Ezin da erabili pasahitz berdina inkestatu desberdinentzat."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1749
 msgid "Show this token entry"
@@ -4867,19 +4622,8 @@ msgstr "Oharra:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1818
 #, fuzzy
-msgid ""
-"File should be a standard CSV (comma delimited) file with double quotes "
-"around values (default for openoffice and excel). The first line should "
-"contain header information (will be removed). Data should be ordered as "
-"\"firstname, lastname, email, [emailstatus], [token], [language code], "
-"[attribute1], [attribute2]\"."
-msgstr ""
-"Fitxategiak CSV estandarra UNICODE UTF-8 formatokoa izan behar du (kontuz MS "
-"Windows erabiltzen baduzu!), kakotxaz eta komatxo bikoitzez mugatua testuen "
-"kasuan (OpenOffice eta Excel lehenetsiak). Lehen lerroan goialdeko "
-"informazioa joango da (ezabatu egingo dena). Datuak honela ordenatuta egongo "
-"dira «izena, deitura, posta elektronikoa, [pasahitza], [hizkuntza], "
-"[ezarpen1], [ezarpen2]»."
+msgid "File should be a standard CSV (comma delimited) file with double quotes around values (default for openoffice and excel). The first line should contain header information (will be removed). Data should be ordered as \"firstname, lastname, email, [emailstatus], [token], [language code], [attribute1], [attribute2]\"."
+msgstr "Fitxategiak CSV estandarra UNICODE UTF-8 formatokoa izan behar du (kontuz MS Windows erabiltzen baduzu!), kakotxaz eta komatxo bikoitzez mugatua testuen kasuan (OpenOffice eta Excel lehenetsiak). Lehen lerroan goialdeko informazioa joango da (ezabatu egingo dena). Datuak honela ordenatuta egongo dira «izena, deitura, posta elektronikoa, [pasahitza], [hizkuntza], [ezarpen1], [ezarpen2]»."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1279
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1833
@@ -4888,19 +4632,12 @@ msgstr "LDAP erregistroak igo"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/tokens.php:1286
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1840
-msgid ""
-"LDAP queries are defined by the administrator in the config-ldap.php file"
-msgstr ""
-"LDAPen oinarritutako kontsultak kudeatzaileak config-ldap.php fitxategian "
-"ezarri ditu."
+msgid "LDAP queries are defined by the administrator in the config-ldap.php file"
+msgstr "LDAPen oinarritutako kontsultak kudeatzaileak config-ldap.php fitxategian ezarri ditu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1870
-msgid ""
-"Upload file not found. Check your permissions and path for the upload "
-"directory"
-msgstr ""
-"Igotako fitxategia ez da aurkitu. Zure baimenak eta ibilbidea aztertu "
-"igotako fitxategietarako direktoriorik ote dagoen jakiteko."
+msgid "Upload file not found. Check your permissions and path for the upload directory"
+msgstr "Igotako fitxategia ez da aurkitu. Zure baimenak eta ibilbidea aztertu igotako fitxategietarako direktoriorik ote dagoen jakiteko."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/tokens.php:1875
 msgid "Importing CSV File"
@@ -5012,8 +4749,7 @@ msgstr "Eman zaizun pasahitza ez da zuzena edo beste norbaitek erabili du."
 # C:/documentos/www/docs/limesurvey15/admin/dataentry.php:122
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:115
 msgid "There is already a recorded answer for this token"
-msgstr ""
-"Gonbidapen-kodearen ID hau erabiliz honez gero norbaitek bete du inkesta."
+msgstr "Gonbidapen-kodearen ID hau erabiliz honez gero norbaitek bete du inkesta."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:118
 msgid "Follow the following link to update it"
@@ -5060,14 +4796,8 @@ msgid "Start Language:"
 msgstr "Hasierako hizkuntza:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:395
-msgid ""
-"Your survey responses have been saved successfully.  You will be sent a "
-"confirmation e-mail. Please make sure to save your password, since we will "
-"not be able to retrieve it for you."
-msgstr ""
-"Ikestaren erantzunak ondo gorde dira. Konfirmazio mezu bat bidali zaizu zure "
-"posta helbidera. Ez ahaztu eman zaizun pasahitza mesedez, ezin izango baita "
-"berreskuratu."
+msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
+msgstr "Ikestaren erantzunak ondo gorde dira. Konfirmazio mezu bat bidali zaizu zure posta helbidera. Ez ahaztu eman zaizun pasahitza mesedez, ezin izango baita berreskuratu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dataentry.php:409
 msgid "A token entry for the saved survey has been created too."
@@ -5464,10 +5194,8 @@ msgstr "Aurrebista:"
 
 # D:\xampp\xampp\htdocs\limesurvey/admin/importoldresponses.php:58
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:39
-msgid ""
-"Import responses from an old (deactivated) survey table into an active survey"
-msgstr ""
-"Inkesta zahar (indargabetu) baten erantzunak inkesta aktibo batera inportatu."
+msgid "Import responses from an old (deactivated) survey table into an active survey"
+msgstr "Inkesta zahar (indargabetu) baten erantzunak inkesta aktibo batera inportatu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importoldresponses.php:43
 msgid "Target Survey ID"
@@ -5486,14 +5214,8 @@ msgid "Export database"
 msgstr "Datubasea esportatu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/dumpdb.php:56
-msgid ""
-"The database export is only available for MySQL databases. For other "
-"database types please use the according backup mechanism to create a "
-"database dump."
-msgstr ""
-"Datubase-esportazioa  bakarrik MySQL datubaseekin erabil daiteke. Beste "
-"datubaseetarako segurtasun-kopia erabili inportatzeko moduko datubasea "
-"sortzeko."
+msgid "The database export is only available for MySQL databases. For other database types please use the according backup mechanism to create a database dump."
+msgstr "Datubase-esportazioa  bakarrik MySQL datubaseekin erabil daiteke. Beste datubaseetarako segurtasun-kopia erabili inportatzeko moduko datubasea sortzeko."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:22
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1814
@@ -5511,39 +5233,20 @@ msgid "You are about to delete this survey"
 msgstr "Inkesta ezabatzear zaude."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:43
-msgid ""
-"This process will delete this survey, and all related groups, questions "
-"answers and conditions."
-msgstr ""
-"Prozesu honek inkesta ezabatuko du, dagozkion talde, galdera, erantzun eta "
-"menpeko baldintza guztiekin batera."
+msgid "This process will delete this survey, and all related groups, questions answers and conditions."
+msgstr "Prozesu honek inkesta ezabatuko du, dagozkion talde, galdera, erantzun eta menpeko baldintza guztiekin batera."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:44
-msgid ""
-"We recommend that before you delete this survey you export the entire survey "
-"from the main administration screen."
-msgstr ""
-"Inkesta ezabatu aurretik kudeaketa-orritik guztiz esportatzeko aholkatzen "
-"dizugu."
+msgid "We recommend that before you delete this survey you export the entire survey from the main administration screen."
+msgstr "Inkesta ezabatu aurretik kudeaketa-orritik guztiz esportatzeko aholkatzen dizugu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:48
-msgid ""
-"This survey is active and a responses table exists. If you delete this "
-"survey, these responses will be deleted. We recommend that you export the "
-"responses before deleting this survey."
-msgstr ""
-"Inkesta hau aktiboa da eta erantzunak ditu. Ezabatzen baduzu, erantzunak ere "
-"galduko dira.Ezabatu baino lehen esporta ditzazun aholkatzen dizugu."
+msgid "This survey is active and a responses table exists. If you delete this survey, these responses will be deleted. We recommend that you export the responses before deleting this survey."
+msgstr "Inkesta hau aktiboa da eta erantzunak ditu. Ezabatzen baduzu, erantzunak ere galduko dira.Ezabatu baino lehen esporta ditzazun aholkatzen dizugu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:53
-msgid ""
-"This survey has an associated tokens table. If you delete this survey this "
-"tokens table will be deleted. We recommend that you export or backup these "
-"tokens before deleting this survey."
-msgstr ""
-"Inkesta hau aktiboa da eta gonbidapen-taula ere badauka. Ezabatzen baduzu, "
-"gonbidapen-kodeak ere galduko dira. Ezabatu baino lehen esporta ditzazun "
-"aholkatzen dizugu."
+msgid "This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."
+msgstr "Inkesta hau aktiboa da eta gonbidapen-taula ere badauka. Ezabatzen baduzu, gonbidapen-kodeak ere galduko dira. Ezabatu baino lehen esporta ditzazun aholkatzen dizugu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deletesurvey.php:122
 msgid "This survey has been deleted."
@@ -5581,9 +5284,7 @@ msgstr "Erabiltzaile-talde berria erantsi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:120
 msgid "Set templates that this user may access"
-msgstr ""
-"Establecer las plantillas a las que este/a usuario/a puede accederDefinitu "
-"erabultzaile honek eskuragarri izango dituen txantiloia"
+msgstr "Establecer las plantillas a las que este/a usuario/a puede accederDefinitu erabultzaile honek eskuragarri izango dituen txantiloia"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/userrighthandling.php:134
 msgid "Template Name"
@@ -5886,24 +5587,15 @@ msgstr "Ez da GIDik zehaztu (Talderik). Galdera ezin izan da inportatu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:97
 msgid "This file is not a LimeSurvey question file. Import failed."
-msgstr ""
-"Hau ez da LimeSurvey moduko galdera-fitxategi onargarria. Inportazioak huts "
-"egin du."
+msgstr "Hau ez da LimeSurvey moduko galdera-fitxategi onargarria. Inportazioak huts egin du."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:107
-msgid ""
-"Sorry, importing questions is limited to the same version. Import failed."
-msgstr ""
-"Sentitzen dugu, baina ezin da inportatu bertsio desberdin bateko galdera "
-"zerranda. Inportazioak kale egin du."
+msgid "Sorry, importing questions is limited to the same version. Import failed."
+msgstr "Sentitzen dugu, baina ezin da inportatu bertsio desberdin bateko galdera zerranda. Inportazioak kale egin du."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:240
-msgid ""
-"You can't import a question which doesn't support the current survey's base "
-"language"
-msgstr ""
-"Ezin duzu galdera bat inportatu inkestaren oinarrizko hizkuntza onartzen ez "
-"badu"
+msgid "You can't import a question which doesn't support the current survey's base language"
+msgstr "Ezin duzu galdera bat inportatu inkestaren oinarrizko hizkuntza onartzen ez badu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importquestion.php:496
 msgid "Question Import Summary"
@@ -5956,8 +5648,7 @@ msgstr "Baimen okerrak %s fitxategian."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:82
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:261
 msgid "This file is not a valid ZIP file archive. Import failed."
-msgstr ""
-"Fitxategi hau ez da ZIP formatuko fitxategi egokia. Inportazioa kale egin du."
+msgstr "Fitxategi hau ez da ZIP formatuko fitxategi egokia. Inportazioa kale egin du."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:103
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:282
@@ -5984,9 +5675,7 @@ msgstr "Inportaturiko fitxategien zerrenda"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:151
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:330
 msgid "This ZIP archive contains no valid Resources files. Import failed."
-msgstr ""
-"Fitxategiaren formatoa ez da LimeSurvey-ren modukoa. Inportazioak kale egin "
-"du."
+msgstr "Fitxategiaren formatoa ez da LimeSurvey-ren modukoa. Inportazioak kale egin du."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:152
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/import_resources_zip.php:331
@@ -6199,12 +5888,8 @@ msgstr "PHPInfo erakutsi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:415
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:417
-msgid ""
-"Survey cannot be activated. Either you have no permission or there are no "
-"questions."
-msgstr ""
-"Inkesta ezin da aktibatu, horretarako baimenik ez duzulako edo galderarik ez "
-"duelako."
+msgid "Survey cannot be activated. Either you have no permission or there are no questions."
+msgstr "Inkesta ezin da aktibatu, horretarako baimenik ez duzulako edo galderarik ez duelako."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:458
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:460
@@ -6300,8 +5985,7 @@ msgid "Activate/Edit Tokens for this Survey"
 msgstr "Inkesta honetarako gonbidapen-kodeen IDak aktibatu/editatu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:712
-msgid ""
-"Adding/editing tokens is not possible because this survey is not activated."
+msgid "Adding/editing tokens is not possible because this survey is not activated."
 msgstr "Ezin da inkestaturik gehitu ezta editatu ere inkesta aktibatu arte."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:745
@@ -6368,8 +6052,7 @@ msgstr "Sarbide-kontrolerako cookieak erabiltzen dira."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:798
 msgid "If tokens are used, the public may register for this survey"
-msgstr ""
-"Gonbidapen-kodeak erabiliz gero, publikoak inkesta egiteko alta eska dezake."
+msgstr "Gonbidapen-kodeak erabiliz gero, publikoak inkesta egiteko alta eska dezake."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:799
 msgid "Participants can save partially finished surveys"
@@ -6478,12 +6161,8 @@ msgid "Edit Current Group"
 msgstr "Aukeratutako taldea editatu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:993
-msgid ""
-"Deleting this group will also delete any questions and answers it contains. "
-"Are you sure you want to continue?"
-msgstr ""
-"Talde hau ezabatzerakoan dagozkion galdera eta erantzun guztiak ere ezabatu "
-"egingo dira. Jarraitu nahi duzula ziur al zaude?"
+msgid "Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?"
+msgstr "Talde hau ezabatzerakoan dagozkion galdera eta erantzun guztiak ere ezabatu egingo dira. Jarraitu nahi duzula ziur al zaude?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:996
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1005
@@ -6492,12 +6171,8 @@ msgstr "Taldea ezabatu"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:879
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1002
-msgid ""
-"Impossible to delete this group because there is at least one question "
-"having a condition on its content"
-msgstr ""
-"Taldea ezin da ezabatu gutxienez bere galderetako bat baldintza batekin "
-"lotuta dagoelako."
+msgid "Impossible to delete this group because there is at least one question having a condition on its content"
+msgstr "Taldea ezin da ezabatu gutxienez bere galderetako bat baldintza batekin lotuta dagoelako."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1020
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1021
@@ -6534,12 +6209,8 @@ msgid "Edit Current Question"
 msgstr "Aukeratutako galdera editatu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1162
-msgid ""
-"Deleting this question will also delete any answers it includes. Are you "
-"sure you want to continue?"
-msgstr ""
-"Galdera hau ezabatzekotan legozkiokeen erantzunak ere ezabatuko lirateke. "
-"Jarraitu nahi duzula ziur al zaude?"
+msgid "Deleting this question will also delete any answers it includes. Are you sure you want to continue?"
+msgstr "Galdera hau ezabatzekotan legozkiokeen erantzunak ere ezabatuko lirateke. Jarraitu nahi duzula ziur al zaude?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1164
 msgid "Delete Current Question"
@@ -6547,12 +6218,8 @@ msgstr "Aukeratutako galdera ezabatu"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:1039
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1171
-msgid ""
-"Impossible to delete this question because  there is at least one question "
-"having a condition on it"
-msgstr ""
-"Galdera hau ezin da ezabatu gutxienez beste galdera batek bere menpeko "
-"baldintza duelako."
+msgid "Impossible to delete this question because  there is at least one question having a condition on it"
+msgstr "Galdera hau ezin da ezabatu gutxienez beste galdera batek bere menpeko baldintza duelako."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1174
 #, fuzzy
@@ -6718,12 +6385,8 @@ msgid "Add new Answer"
 msgstr "Erantzun berria erantsi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1650
-msgid ""
-"You cannot add answers or edit answer codes for this question type because "
-"the survey is active."
-msgstr ""
-"Galdera mota honetarako ezin da erantzunik erantsi ezta aldatu ere inkesta "
-"aktibo batean erabiltzen ari direlako."
+msgid "You cannot add answers or edit answer codes for this question type because the survey is active."
+msgstr "Galdera mota honetarako ezin da erantzunik erantsi ezta aldatu ere inkesta aktibo batean erabiltzen ari direlako."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1687
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:1741
@@ -6944,12 +6607,8 @@ msgid "Use HTML format for token emails?"
 msgstr "Inkestatuen postarentzat HTML formatua erabili?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2415
-msgid ""
-"If you switch email mode, you'll have to review your email templates to fit "
-"the new format"
-msgstr ""
-"Posta helbideen formatua aldatzen baduzu, txantiloiak berrikusi beharko "
-"dituzu helbideen formatura egokitzeko"
+msgid "If you switch email mode, you'll have to review your email templates to fit the new format"
+msgstr "Posta helbideen formatua aldatzen baduzu, txantiloiak berrikusi beharko dituzu helbideen formatura egokitzeko"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2431
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:3043
@@ -6967,9 +6626,7 @@ msgid "Anonymous answers?"
 msgstr "Erantzunen anonimotasuna gorde?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2451
-msgid ""
-"You can't use Anonymous answers when Token-based answers persistence is "
-"enabled."
+msgid "You can't use Anonymous answers when Token-based answers persistence is enabled."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2466
@@ -7033,11 +6690,8 @@ msgstr ""
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2083
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
-msgid ""
-"All questions, answers, etc for removed languages will be lost. Are you sure?"
-msgstr ""
-"Ezabatutako hizkuntzei dagozkien galderak, erantzunak, etab. galduko dira. "
-"Ziur al zaude?"
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Ezabatutako hizkuntzei dagozkien galderak, erantzunak, etab. galduko dira. Ziur al zaude?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2621
 msgid "Save and Continue"
@@ -7056,18 +6710,12 @@ msgstr "URLaren deskribapena:"
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2264
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
 msgid "Current survey has questions with conditions outside their own group"
-msgstr ""
-"Inkesta honek bere taldetik kanpoko baldintzak dituzten gaderak dauzka."
+msgstr "Inkesta honek bere taldetik kanpoko baldintzak dituzten gaderak dauzka."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2264
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
-msgid ""
-"Re-ordering groups is restricted to ensure that questions on which "
-"conditions are based aren't reordered after questions having the conditions "
-"set"
-msgstr ""
-"Taldeak berriz antolatzea murrizten da, baldintzetan oinarritutako galderak "
-"beren menpekoen ondoren berriro ez direla ordenatuko ziurtatzearren."
+msgid "Re-ordering groups is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Taldeak berriz antolatzea murrizten da, baldintzetan oinarritutako galderak beren menpekoen ondoren berriro ez direla ordenatuko ziurtatzearren."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/html.php:2766
 msgid "The following groups are concerned"
@@ -7165,12 +6813,8 @@ msgstr "Inkesta hontako baldintza guztiak ezabatzear zaude."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:43
 #, fuzzy
-msgid ""
-"We recommend that before you proceed, you export the entire survey from the "
-"main administration screen."
-msgstr ""
-"Inkesta ezabatu aurretik kudeaketa-orritik guztiz esportatzeko aholkatzen "
-"dizugu."
+msgid "We recommend that before you proceed, you export the entire survey from the main administration screen."
+msgstr "Inkesta ezabatu aurretik kudeaketa-orritik guztiz esportatzeko aholkatzen dizugu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/resetsurveylogic.php:67
 msgid "All conditions in this survey have been deleted."
@@ -7220,15 +6864,11 @@ msgstr "Mesedez, data idatzi:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:448
 msgid "Please number each box in order of preference from 1 to"
-msgstr ""
-"Mesedez, karratutxoak ordenatu zure lehentasunaren arabera 1etik hasita "
-"honaino: "
+msgstr "Mesedez, karratutxoak ordenatu zure lehentasunaren arabera 1etik hasita honaino: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:449
 msgid "Please number each box in order of preference from 1 to "
-msgstr ""
-"Mesedez, karratutxoak ordenatu zure lehentasunaren arabera 1etik hasita "
-"honaino: "
+msgstr "Mesedez, karratutxoak ordenatu zure lehentasunaren arabera 1etik hasita honaino: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:469
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/printablesurvey.php:470
@@ -7355,13 +6995,8 @@ msgid "Total"
 msgstr "Guztira"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:128
-msgid ""
-"If you create any assessments in this page, for the currently selected "
-"survey, the assessment will be performed at the end of the survey after "
-"submission"
-msgstr ""
-"Aukeratutako inkestarako orri honetan ebaluaziorik sortuz gero, ebaluazioa "
-"bukaeran egingo da, inkesta bidalitakoan alegia."
+msgid "If you create any assessments in this page, for the currently selected survey, the assessment will be performed at the end of the survey after submission"
+msgstr "Aukeratutako inkestarako orri honetan ebaluaziorik sortuz gero, ebaluazioa bukaeran egingo da, inkesta bidalitakoan alegia."
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/exportresults.php:788
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/assessments.php:129
@@ -7375,9 +7010,7 @@ msgid "The defined LimeSurvey database does not exist"
 msgstr "Inkesta honek ez du datubaserik."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:70
-msgid ""
-"Either your selected database has not yet been created or there is a problem "
-"accessing it."
+msgid "Either your selected database has not yet been created or there is a problem accessing it."
 msgstr "Aukeratutako basea ez da oraindik sortu, edo sartzeko arazorik dago."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/browse.php:82
@@ -7484,31 +7117,16 @@ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
 msgstr "JARRAITU AURRETIK ONDOKOA ARRETAZ IRAKURRI"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:34
-msgid ""
-"In an active survey, a table is created to store all the data-entry records."
+msgid "In an active survey, a table is created to store all the data-entry records."
 msgstr "Inkesta aktibo batean erantzunak gordetzeko taula sortzen da."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:35
-msgid ""
-"When you deactivate a survey all the data entered in the original table will "
-"be moved elsewhere, and when you activate the survey again, the table will "
-"be empty. You will not be able to access this data using LimeSurvey any more."
-msgstr ""
-"Inkesta bat indargabetzen duzunean datu guztiak beste taula batean kopiatzen "
-"dira, eta berriz aktibatzen denean, taula hutsik izango da. Ezingo dituzu "
-"datu horiek LimeSurveyren bidez ikusi."
+msgid "When you deactivate a survey all the data entered in the original table will be moved elsewhere, and when you activate the survey again, the table will be empty. You will not be able to access this data using LimeSurvey any more."
+msgstr "Inkesta bat indargabetzen duzunean datu guztiak beste taula batean kopiatzen dira, eta berriz aktibatzen denean, taula hutsik izango da. Ezingo dituzu datu horiek LimeSurveyren bidez ikusi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:36
-msgid ""
-"Deactivated survey data can only be accessed by system administrators using "
-"a Database data access tool like phpmyadmin. If your survey uses tokens, "
-"this table will also be renamed and will only be accessible by system "
-"administrators."
-msgstr ""
-"Indargabetu den inkesta baten datuak datubasera sar daitekeen erabiltzaile "
-"batek baino ezingo ditu ikusi. Zure inkestak gonbidapenak erabiltzen baditu, "
-"taula hori ere berrizendatuko da eta sistemaren kudeatzaileek soilik ikusiko "
-"dute."
+msgid "Deactivated survey data can only be accessed by system administrators using a Database data access tool like phpmyadmin. If your survey uses tokens, this table will also be renamed and will only be accessible by system administrators."
+msgstr "Indargabetu den inkesta baten datuak datubasera sar daitekeen erabiltzaile batek baino ezingo ditu ikusi. Zure inkestak gonbidapenak erabiltzen baditu, taula hori ere berrizendatuko da eta sistemaren kudeatzaileek soilik ikusiko dute."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:37
 msgid "Your responses table will be renamed to:"
@@ -7516,8 +7134,7 @@ msgstr "Erantzun-taula honela izendatuko da berriz:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:38
 msgid "Also you should export your responses before deactivating."
-msgstr ""
-"Inkesta indargabetu aurretik erantzunak esportatzeko iradokitzen dizugu."
+msgstr "Inkesta indargabetu aurretik erantzunak esportatzeko iradokitzen dizugu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:127
 msgid "Survey Has Been Deactivated"
@@ -7532,9 +7149,7 @@ msgid "The responses to this survey are no longer available using LimeSurvey."
 msgstr "LimeSurvey-k ezin ditu erantzunak berriro erakutsi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:134
-msgid ""
-"You should note the name of this table in case you need to access this "
-"information later."
+msgid "You should note the name of this table in case you need to access this information later."
 msgstr "Berriro ere taula honetara sartzeko izena apuntatu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/deactivate.php:137
@@ -7543,8 +7158,7 @@ msgstr "Inkestari dagokion gonbidapen-kodeen taula honela berrizendatu da: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:84
 msgid "This question is a multiple answer type question but has no answers."
-msgstr ""
-"Galdera hau erantzun anitzekoa da, baina oraindik ez zaio erantzunik erantsi."
+msgstr "Galdera hau erantzun anitzekoa da, baina oraindik ez zaio erantzunik erantsi."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:93
 msgid "This question does not have a question 'type' set."
@@ -7556,23 +7170,16 @@ msgstr "Galdera honek etiketa-multzoa behar du, baina ez dago bat ere prest."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:110
 msgid "This question requires a second Labelset, but none is set."
-msgstr ""
-"Galdera honek bigarren etiketa-multzo bat behar du, baina ez dago jarrita."
+msgstr "Galdera honek bigarren etiketa-multzo bat behar du, baina ez dago jarrita."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:128
 #, fuzzy
-msgid ""
-"The labelset used in this question does not exists or is missing a "
-"translation."
+msgid "The labelset used in this question does not exists or is missing a translation."
 msgstr "Galdera honetan erabilitako etiketari itzulpena falta zaio."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:184
-msgid ""
-"This question has a condition set, however the condition is based on a "
-"question that appears after it."
-msgstr ""
-"Galdera hau baldintzatuta dago, baina baldintza bere ondorengo galdera "
-"batean oinarritzen da."
+msgid "This question has a condition set, however the condition is based on a question that appears after it."
+msgstr "Galdera hau baldintzatuta dago, baina baldintza bere ondorengo galdera batean oinarritzen da."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:219
 msgid "Survey does not pass consistency check"
@@ -7587,12 +7194,8 @@ msgid "The survey cannot be activated until these problems have been resolved."
 msgstr "Inkesta ezingo da aktibatu arazo guztiak konpondu arte."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:250
-msgid ""
-"You should only activate a survey when you are absolutely certain that your "
-"survey setup is finished and will not need changing."
-msgstr ""
-"Inkesta aktibatu behar duzu bakarrik ezarpenak zuzenak direla eta aldaketa "
-"gehiagorik izango ez duela guztiz ziur zaudenean."
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "Inkesta aktibatu behar duzu bakarrik ezarpenak zuzenak direla eta aldaketa gehiagorik izango ez duela guztiz ziur zaudenean."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:241
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:251
@@ -7629,12 +7232,8 @@ msgstr "Zure taldeen izena editatu (aldatu)"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
-msgid ""
-"Add, Remove or Edit pre-defined question answers (except for Multi-answer "
-"questions)"
-msgstr ""
-"Aurrez ezarritako erantzunak erantsi, editatu edo ezabatu (erantzun anitzak "
-"izan ezik)."
+msgid "Add, Remove or Edit pre-defined question answers (except for Multi-answer questions)"
+msgstr "Aurrez ezarritako erantzunak erantsi, editatu edo ezabatu (erantzun anitzak izan ezik)."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/activate.php:242
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:252
@@ -7642,14 +7241,8 @@ msgid "Change survey name or description"
 msgstr "Inkestaren izena edo deskribapena aldatu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:253
-msgid ""
-"Once data has been entered into this survey, if you want to add or remove "
-"groups or questions, you will need to de-activate this survey, which will "
-"move all data that has already been entered into a separate archived table."
-msgstr ""
-"Inkesta gutxienez behin bete denean taldeak eta galderak erantsi edo ezabatu "
-"nahi badituzu, indargabetu beharko duzu. Horrela informazioa beste taula "
-"batera mugituko duzu gorde dadin."
+msgid "Once data has been entered into this survey, if you want to add or remove groups or questions, you will need to de-activate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr "Inkesta gutxienez behin bete denean taldeak eta galderak erantsi edo ezabatu nahi badituzu, indargabetu beharko duzu. Horrela informazioa beste taula batera mugituko duzu gorde dadin."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:488
 msgid "Survey could not be actived."
@@ -7660,11 +7253,8 @@ msgid "Survey has been activated. Results table has been successfully created."
 msgstr "Inkesta aktibatu da. Emaitzen taula arrakastaz sortu da."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:534
-msgid ""
-"This survey allows public registration. A token table must also be created."
-msgstr ""
-"Inkesta honek erregistro publikoa onartzen du. Gonbidapen-kodeen taula ere "
-"sortu behar zaio."
+msgid "This survey allows public registration. A token table must also be created."
+msgstr "Inkesta honek erregistro publikoa onartzen du. Gonbidapen-kodeen taula ere sortu behar zaio."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:540
 msgid "This survey is now active, and responses can be recorded."
@@ -7679,13 +7269,8 @@ msgid "No invitation code is needed to complete the survey."
 msgstr "Inkesta betetzeko ez da gonbidapen-koderik behar."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:541
-msgid ""
-"You can switch to the closed-access mode by initialising a token table with "
-"the button below."
-msgstr ""
-"Inkesta modu itxira pasatzeko, hau da, soilik dagokion pasahitza duten "
-"pertsonek egin ahal izateko, botoi hau sakatu eta gonbidapen-taula sortuko "
-"da."
+msgid "You can switch to the closed-access mode by initialising a token table with the button below."
+msgstr "Inkesta modu itxira pasatzeko, hau da, soilik dagokion pasahitza duten pertsonek egin ahal izateko, botoi hau sakatu eta gonbidapen-taula sortuko da."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/activate.php:543
 msgid "Optional"
@@ -7698,8 +7283,7 @@ msgstr "Modu itxiko inkestara pasa"
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:51
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:59
 msgid "This file is not a LimeSurvey survey file. Import failed."
-msgstr ""
-"Fitxategiaren formatoa ez da LimeSurvey-ren modukoa. Ezin izan da inportatu."
+msgstr "Fitxategiaren formatoa ez da LimeSurvey-ren modukoa. Ezin izan da inportatu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:372
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:381
@@ -7715,24 +7299,17 @@ msgid "File does not contain LimeSurvey data in the correct format."
 msgstr "Fitxategiaren formatoa ez da LimeSurvey-ren modukoa."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:761
-msgid ""
-"A group in the CSV/SQL file is not part of the same survey. The import of "
-"the survey was stopped."
-msgstr ""
-"Inketaren inportazioa eten egin da, fitxategiko CSV/SQL talde bat ez delako "
-"inkesta berekoa."
+msgid "A group in the CSV/SQL file is not part of the same survey. The import of the survey was stopped."
+msgstr "Inketaren inportazioa eten egin da, fitxategiko CSV/SQL talde bat ez delako inkesta berekoa."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:826
 #, fuzzy, php-format
-msgid ""
-"Question \"%s - %s\" was NOT imported because the question type is unknown."
+msgid "Question \"%s - %s\" was NOT imported because the question type is unknown."
 msgstr "EZ da inportatu galdera mota ezezaguna delako"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:832
 #, fuzzy, php-format
-msgid ""
-"Question \"%s - %s\" was imported but the type was set to '%s' because it is "
-"the most similiar one."
+msgid "Question \"%s - %s\" was imported but the type was set to '%s' because it is the most similiar one."
 msgstr "inportatu da, baina mota honela ezarri da: '%s'"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1220
@@ -7747,12 +7324,8 @@ msgstr "Etiketa-multzoa ez da inportatu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1233
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1260
-msgid ""
-"(Label Sets were not imported since you do not have the permission to create "
-"new label sets.)"
-msgstr ""
-"(Etiketa multzo berriak sortzeko baimenik ez duzunez, ezin izan dira etiketa "
-"multzoak inportatu)"
+msgid "(Label Sets were not imported since you do not have the permission to create new label sets.)"
+msgstr "(Etiketa multzo berriak sortzeko baimenik ez duzunez, ezin izan dira etiketa multzoak inportatu)"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1235
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importsurvey.php:1261
@@ -7780,11 +7353,13 @@ msgstr "Oharrak"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:120
 msgid ""
-"Group could not be added.\\n\\nIt is missing the group name for the "
-"following languages"
+"Group could not be added.\\n"
+"\\n"
+"It is missing the group name for the following languages"
 msgstr ""
-"Ezin izan da taldea erantsi.\\n\\nHizkuntza hauetarako taldearen izena falta "
-"da:"
+"Ezin izan da taldea erantsi.\\n"
+"\\n"
+"Hizkuntza hauetarako taldearen izena falta da:"
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:143
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:171
@@ -7803,8 +7378,7 @@ msgstr "Ezin izan da taldea ezabatu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:297
 #, fuzzy, php-format
-msgid ""
-"Answer could not be added. You must insert a code in the mandatory field (%s)"
+msgid "Answer could not be added. You must insert a code in the mandatory field (%s)"
 msgstr "Erantzuna ezin izan da erantsi. Kodea nahitaezkoa da."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:384
@@ -7814,15 +7388,8 @@ msgid "Question could not be created."
 msgstr "Ezin izan da galdera sortu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:490
-msgid ""
-"Question could not be updated. There are conditions for other questions that "
-"rely on the answers to this question and changing the type will cause "
-"problems. You must delete these conditions before you can change the type of "
-"this question."
-msgstr ""
-"Ezin izan da galdera eguneratu. Beste galdera batzuetan honen erantzunen "
-"menpeko baldintzak daude, eta galdera-mota aldatuz gero, arazoak egongo "
-"dira. Galdera mota aldatzetu aurretik baldintzak ezabatu behar dira."
+msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
+msgstr "Ezin izan da galdera eguneratu. Beste galdera batzuetan honen erantzunen menpeko baldintzak daude, eta galdera-mota aldatuz gero, arazoak egongo dira. Galdera mota aldatzetu aurretik baldintzak ezabatu behar dira."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:645
@@ -7835,12 +7402,8 @@ msgstr "Erantzunak ezin dira ezabatu"
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/database.php:442
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:617
-msgid ""
-"This question relies on other question's answers and can't be moved above "
-"groupId:"
-msgstr ""
-"Galdera hau beste baten erantzunaren menpekoa da eta ezin da hau baino "
-"lehenago aurkeztu:"
+msgid "This question relies on other question's answers and can't be moved above groupId:"
+msgstr "Galdera hau beste baten erantzunaren menpekoa da eta ezin da hau baino lehenago aurkeztu:"
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/database.php:443
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/database.php:455
@@ -7856,29 +7419,17 @@ msgstr "Baldintzak ikusi:"
 
 # C:/documentos/www/docs/activa-cro.com.ar/public_html/crf/admin/database.php:454
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:629
-msgid ""
-"Some questions rely on this question's answers. You can't move this question "
-"below groupId:"
-msgstr ""
-"Galdera batzuk zure erantzunaren araberakokak dira. Galdera hau ezin da "
-"beste hauen onodren aurkeztu:"
+msgid "Some questions rely on this question's answers. You can't move this question below groupId:"
+msgstr "Galdera batzuk zure erantzunaren araberakokak dira. Galdera hau ezin da beste hauen onodren aurkeztu:"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:655
-msgid ""
-"Question could not be added. You must insert a code in the mandatory field"
-msgstr ""
-"Galdera ezin izan da erantsi. Nahitaezko eremuan kodea erantsi behar duzu."
+msgid "Question could not be added. You must insert a code in the mandatory field"
+msgstr "Galdera ezin izan da erantsi. Nahitaezko eremuan kodea erantsi behar duzu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:813
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:854
-msgid ""
-"Question could not be deleted. There are conditions for other questions that "
-"rely on this question. You cannot delete this question until those "
-"conditions are removed"
-msgstr ""
-"Galdera ezin izan da ezabatu. Beste galdera batzuetan honen menpeko "
-"baldintzak daude. Galdera ezabatzeko aldez aurretik baldintzak kendu behar "
-"dira."
+msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
+msgstr "Galdera ezin izan da ezabatu. Beste galdera batzuetan honen menpeko baldintzak daude. Galdera ezabatzeko aldez aurretik baldintzak kendu behar dira."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:838
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:875
@@ -7888,8 +7439,7 @@ msgstr "Ezin izan da galdera ezabatu."
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/database.php:587
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:904
 msgid "Error adding answer: You can't use the same answer code more than once."
-msgstr ""
-"Erantzuna eranstean errorea: Ezin da kode berbera bi galderatan erabili."
+msgstr "Erantzuna eranstean errorea: Ezin da kode berbera bi galderatan erabili."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:580
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:588
@@ -7910,12 +7460,8 @@ msgstr "Erantzunen eguneratzeak huts egin du."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:659
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1058
-msgid ""
-"Answers with a code of 0 (zero) or blank code are not allowed, and will not "
-"be saved"
-msgstr ""
-"0 (zero) kodea duten erantzunak edo zuriz daudenak ezin dira onartu eta ez "
-"dira gordeko."
+msgid "Answers with a code of 0 (zero) or blank code are not allowed, and will not be saved"
+msgstr "0 (zero) kodea duten erantzunak edo zuriz daudenak ezin dira onartu eta ez dira gordeko."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/database.php:660
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/database.php:1059
@@ -8051,14 +7597,8 @@ msgstr "Talde hau galdera baldintzatuak erabiltzen ari da."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/questionhandling.php:586
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
-msgid ""
-"Re-ordering questions in this group is restricted to ensure that questions "
-"on which conditions are based aren't reordered after questions having the "
-"conditions set"
-msgstr ""
-"Talde honetako galderak berriz ordenatzea murrizten da, baldintzetan "
-"oinarritutako galderak beren menpekoen ondoren berriro ez direla ordenatuko "
-"ziurtatzearren."
+msgid "Re-ordering questions in this group is restricted to ensure that questions on which conditions are based aren't reordered after questions having the conditions set"
+msgstr "Talde honetako galderak berriz ordenatzea murrizten da, baldintzetan oinarritutako galderak beren menpekoen ondoren berriro ez direla ordenatuko ziurtatzearren."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/questionhandling.php:714
 msgid "See the conditions marked on the following questions"
@@ -8109,9 +7649,7 @@ msgid "Open the syntax file in SPSS in Unicode mode"
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:115
-msgid ""
-"Edit the 4th line and complete the filename with a full path to he "
-"downloaded data file."
+msgid "Edit the 4th line and complete the filename with a full path to he downloaded data file."
 msgstr ""
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/spss.php:116
@@ -8233,24 +7771,12 @@ msgid "Security Alert"
 msgstr "Segurtasun Alerta"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:118
-msgid ""
-"Someone may be trying to use your LimeSurvey session (CSRF attack "
-"suspected). If you just clicked on a malicious link, please report this to "
-"your system administrator."
-msgstr ""
-"Norbait zure LimeSurvey sesioa erabiltzen saiatzen ari da ( CSRF eraso bat "
-"ziurrenik ). Loturaren bat sakatu baduzu, mesedez, eman abisua sistema "
-"administratzaileari."
+msgid "Someone may be trying to use your LimeSurvey session (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "Norbait zure LimeSurvey sesioa erabiltzen saiatzen ari da ( CSRF eraso bat ziurrenik ). Loturaren bat sakatu baduzu, mesedez, eman abisua sistema administratzaileari."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:123
-msgid ""
-"Someone may be trying to use your LimeSurvey session by using dangerous GET "
-"requests (CSRF attack suspected). If you just clicked on a malicious link, "
-"please report this to your system administrator."
-msgstr ""
-"Norbait zure LimeSurvey sesioa erabiltzen saiatzen ari da GET eskaera "
-"arriskutsuak erabiliaz ( CSRF eraso bat ziurrenik ). Loturaren bat sakatu "
-"baduzu, mesedez, eman abisua sistema administratzaileari."
+msgid "Someone may be trying to use your LimeSurvey session by using dangerous GET requests (CSRF attack suspected). If you just clicked on a malicious link, please report this to your system administrator."
+msgstr "Norbait zure LimeSurvey sesioa erabiltzen saiatzen ari da GET eskaera arriskutsuak erabiliaz ( CSRF eraso bat ziurrenik ). Loturaren bat sakatu baduzu, mesedez, eman abisua sistema administratzaileari."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/access_denied.php:137
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/access_denied.php:128
@@ -8288,9 +7814,7 @@ msgstr "Mezu elektronikoa bidali zaizu datuekin."
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:88
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:382
 msgid "Email to {NAME} ({EMAIL}) failed."
-msgstr ""
-"{FIRSTNAME} {LASTNAME} erabiltzaileari ({EMAIL}) helbidera bidalitako mezuak "
-"huts egin du."
+msgstr "{FIRSTNAME} {LASTNAME} erabiltzaileari ({EMAIL}) helbidera bidalitako mezuak huts egin du."
 
 # C:\documentos\www\docs\activa-cro.com.ar\public_html\crf/admin/usercontrol.php:93
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:97
@@ -8316,12 +7840,8 @@ msgid "You logged in successfully."
 msgstr "Arrakastaz sartu zara."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:172
-msgid ""
-"LimeSurvey is setup to use the webserver authentication, but it seems you "
-"have not already been authenticated"
-msgstr ""
-"LimeSurvey web bidezko autentikazioa erabiltzeko konfiguratua izan da, baina "
-"dirudienez ez zara oraindik autentikatu"
+msgid "LimeSurvey is setup to use the webserver authentication, but it seems you have not already been authenticated"
+msgstr "LimeSurvey web bidezko autentikazioa erabiltzeko konfiguratua izan da, baina dirudienez ez zara oraindik autentikatu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/usercontrol.php:173
 msgid "Please contact your system administrator"
@@ -8574,13 +8094,8 @@ msgstr "Ez duzu galderarik aukeratu."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/conditions.php:88
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:68
-msgid ""
-"Your condition could not be added! It did not include the question and/or "
-"answer upon which the condition was based. Please ensure you have selected a "
-"question and an answer."
-msgstr ""
-"Zure baldintza ezin da erantsi! Hau ez dagokie baldintzaren galdera edo eta "
-"erantzunari. Mesedez, galdera eta erantzuna aukeratu dituzula ziurtatu."
+msgid "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer."
+msgstr "Zure baldintza ezin da erantsi! Hau ez dagokie baldintzaren galdera edo eta erantzunari. Mesedez, galdera eta erantzuna aukeratu dituzula ziurtatu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:148
 msgid "Did not copy questions"
@@ -8648,12 +8163,8 @@ msgid "copy to"
 msgstr "hona kopiatu: "
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:932
-msgid ""
-"Are you sure you want to copy these condition(s) to the questions you have "
-"selected?"
-msgstr ""
-"Aukeratu dituzun galderetan baldintza hauek kopiatu nahi dituzula ziur al "
-"zaude?"
+msgid "Are you sure you want to copy these condition(s) to the questions you have selected?"
+msgstr "Aukeratu dituzun galderetan baldintza hauek kopiatu nahi dituzula ziur al zaude?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:950
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1018
@@ -8661,12 +8172,8 @@ msgid "Add Condition"
 msgstr "Baldintza erantsi"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1000
-msgid ""
-"NOTE: If you use a pre-defined answer as your condition, only the equals or "
-"not-equal-to conditions apply."
-msgstr ""
-"Oharra: baldintza bezala aurrez definituriko aukera hautatu baduzu, "
-"berdintasun edo ezberdintasun baldintzak bakarrik erabili ahalko dituzu."
+msgid "NOTE: If you use a pre-defined answer as your condition, only the equals or not-equal-to conditions apply."
+msgstr "Oharra: baldintza bezala aurrez definituriko aukera hautatu baduzu, berdintasun edo ezberdintasun baldintzak bakarrik erabili ahalko dituzu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/conditions.php:1010
 msgid "Constant Value or Regular Expression"
@@ -8747,32 +8254,20 @@ msgid "Choose Columns"
 msgstr "Zutabeak aukeratu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:274
-msgid ""
-"Your survey contains more than 255 columns of responses. Spreadsheet "
-"applications such as Excel are limited to loading no more than 255. Select "
-"the columns you wish to export in the list below."
-msgstr ""
-"Zure inkestak erantzunen 255 zutabe baino gehiago dauka. Excel bezalako "
-"kalkulu-orriek 255 zutabeko muga dute. Zerrenda honetatik esportatu nahi "
-"dituzun zutabeak aukeratu."
+msgid "Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below."
+msgstr "Zure inkestak erantzunen 255 zutabe baino gehiago dauka. Excel bezalako kalkulu-orriek 255 zutabeko muga dute. Zerrenda honetatik esportatu nahi dituzun zutabeak aukeratu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:280
 msgid "Choose the columns you wish to export."
-msgstr ""
-"Esportatu nahi dituzun zutabeak aukeratu. Guztiak esportatzeko ez egin "
-"inolako aukerarik."
+msgstr "Esportatu nahi dituzun zutabeak aukeratu. Guztiak esportatzeko ez egin inolako aukerarik."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:325
 msgid "Choose Token Fields"
 msgstr "Gonbidapen-kodeen eremuak aukeratu"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:331
-msgid ""
-"Your survey can export associated token data with each response. Select any "
-"additional fields you would like to export."
-msgstr ""
-"Galdera bakoitzari dagozkion gonbidapen-kodeen datuak esporta daitezke. "
-"Esportatu nahi dituzun eremuak aukeratu."
+msgid "Your survey can export associated token data with each response. Select any additional fields you would like to export."
+msgstr "Galdera bakoitzari dagozkion gonbidapen-kodeen datuak esporta daitezke. Esportatu nahi dituzun eremuak aukeratu."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/exportresults.php:401
 msgid "General information in language: "
@@ -8808,9 +8303,7 @@ msgstr "Inkestatu arazoa - ezin da topatu inkestatuen taula"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:55
 msgid "This file is not a LimeSurvey label set file. Import failed."
-msgstr ""
-"Fitxategi hau ez da LimeSurvey formatoko galdera-fitxategi egokia. "
-"Inportazioa okerra izan da."
+msgstr "Fitxategi hau ez da LimeSurvey formatoko galdera-fitxategi egokia. Inportazioa okerra izan da."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:56
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:212
@@ -8818,12 +8311,8 @@ msgid "Return to Labels Admin"
 msgstr "Etiketen kudeaketara itzuli"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:193
-msgid ""
-"There was a duplicate labelset, so this set was not imported. The duplicate "
-"will be used instead."
-msgstr ""
-"Etiketa-multzo bikoiztua zegoenez, taldea ez da inportatu. Bere ordez, "
-"bikoiztutakoa erabiliko da."
+msgid "There was a duplicate labelset, so this set was not imported. The duplicate will be used instead."
+msgstr "Etiketa-multzo bikoiztua zegoenez, taldea ez da inportatu. Bere ordez, bikoiztutakoa erabiliko da."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/importlabel.php:201
 msgid "Label Set Import Summary"
@@ -8878,8 +8367,7 @@ msgstr "\"%s\" izeneko datubasea honez gero badago."
 
 # C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/install/index.php:69
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:53
-msgid ""
-"Do you want to populate that database now by creating the necessary tables?"
+msgid "Do you want to populate that database now by creating the necessary tables?"
 msgstr "Datubasea orain bete nahi duzu behar diren taulak sortuz?"
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/index.php:85
@@ -8892,12 +8380,8 @@ msgid "Database `%s` has been successfully populated."
 msgstr "`%s` datubasea sortu da."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:53
-msgid ""
-"Database Information not provided. This script must be run from admin.php "
-"only."
-msgstr ""
-"Datubasera sartzeko informaziorik ez da eman. Gidoi hau admin.php "
-"fitxategitik soilik egikari daiteke."
+msgid "Database Information not provided. This script must be run from admin.php only."
+msgstr "Datubasera sartzeko informaziorik ez da eman. Gidoi hau admin.php fitxategitik soilik egikari daiteke."
 
 #: /var/www/virtual/limesurvey.org/subversion1x/admin/install/createdb.php:77
 msgid "Database has been created."
@@ -8917,42 +8401,3 @@ msgstr "Ez da SIDik zehaztu. Ezin da inkesta esportatu."
 
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Erregistro hau ezabatu nahi duzula ziur al zaude?"
-
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:95
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:211
-#~ msgid "Failed to copy"
-#~ msgstr "Ezin izan da kopiatu"
-
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/templates.php:101
-#~ msgid "Directory with the name"
-#~ msgstr "Izeneko direktorioa"
-
-#~ msgid "(XML module only in PHP 4 available)"
-#~ msgstr "(XML modulua PHP 4 moduan soilik eskuragarri)"
-
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/html.php:2269
-#~ msgid "depends on group"
-#~ msgstr "Taldearen menpekoa"
-
-#~ msgid "No matching Group"
-#~ msgstr "Bila zabiltzan taldea ez da aurkitu"
-
-#~ msgid "No matching Survey!"
-#~ msgstr "Bila zabiltzan inkesta ez da aurkitu."
-
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:164
-# C:\documentos\Estudio\activa\gador\phpsurvey.dev/admin/usercontrol.php:322
-#~ msgid "Email address ist not valid."
-#~ msgstr "Helbide elektronikoa ez da zuzena"
-
-#~ msgid "answers"
-#~ msgstr "erantzunak"
-
-#~ msgid "to remove the last entry in your ranked list"
-#~ msgstr "zure sailkapeneko azken erregistroa ezabatzeko"
-
-#~ msgid "Please choose at most"
-#~ msgstr "Gehienez aukeratu"
-
-#~ msgid "answer(s) for question"
-#~ msgstr "galderarako erantzuna(k)"

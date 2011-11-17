@@ -8,16 +8,17 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Project Icelandic Translation\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-05-24 18:00+0200\n"
-"PO-Revision-Date: 2011-05-28 17:38-0000\n"
-"Last-Translator: Jóhann Friðriksson <johannfr@arskoli.is>\n"
+"PO-Revision-Date: 2011-11-17 16:51+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Jóhann Friðriksson <johannfr@arskoli.is>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: gT;ngT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-Language: Icelandic\n"
 "X-Poedit-Country: ICELAND\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SearchPath-0: /home/johannfr/Downloads/lime/limesurvey\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:115
@@ -12356,61 +12357,86 @@ msgstr "Er að vinna niðurstöður ..."
 
 #~ msgid "Boilerplate Question"
 #~ msgstr "Skýringartexti"
+
 #~ msgid "Please Choose..."
 #~ msgstr "Vinsamlegast veldu..."
+
 #~ msgid "Thank You!"
 #~ msgstr "Þakka þér fyrir!"
+
 #~ msgid "First Name"
 #~ msgstr "Fornafn"
+
 #~ msgid "Last Name"
 #~ msgstr "Föðurnafn"
+
 #~ msgid "Email Address"
 #~ msgstr "Netfang"
+
 #~ msgid "Display select boxes"
 #~ msgstr "Sýna valbox"
+
 #~ msgid "Prefix|Suffix"
 #~ msgstr "Forskeyti|Viðskeyti"
+
 #~ msgid "Enter a header text for scale B"
 #~ msgstr "Settu inn fyrirsagnartexta fyrir skala B"
+
 #~ msgid "Header scale B"
 #~ msgstr "Fyrirsögn skala B"
+
 #~ msgid "Dual dropdown"
 #~ msgstr "Tvöfaldu fellilisti"
+
 #~ msgid "2nd Time limit display time"
 #~ msgstr "Önnur viðvörun um að tímamörk séu að renna út (hve lengi í sek)"
+
 #~ msgid "2nd Time Limit Warning CSS Style"
 #~ msgstr "CSS style fyrir aðra tímamörks viðvörun"
+
 #~ msgid "Failed! Reason: "
 #~ msgstr "Tókst ekki! Ástæða:"
+
 #~ msgid "Hello!"
 #~ msgstr "Halló!"
+
 #~ msgid "A new response was submitted for your survey."
 #~ msgstr "Ný svörun var framkvæmd í könnun þinni."
+
 #~ msgid "Click the following link to reload the survey:"
 #~ msgstr "Smelltu á eftirfarandi hlekk til að endurhlaða könnunina:"
+
 #~ msgid "Click the following link to see the individual response:"
 #~ msgstr "Smelltu á hlekkinn til að sjá viðkomandi svar"
+
 #~ msgid "Click the following link to edit the individual response:"
 #~ msgstr "Smelltu á hlekkinn til að lagfæra viðkomandi svar"
+
 #~ msgid "View statistics by clicking here:"
 #~ msgstr "Sýna stöðu með því að smella hér:"
+
 #~ msgid ""
 #~ "This email contains confirmation of the responses you made to the survey"
 #~ msgstr ""
 #~ "Þessi póstur inniheldur staðfestingu á svörun sem þú framkvæmdir í "
 #~ "könnuninni"
+
 #~ msgid "Survey submission confirmation"
 #~ msgstr "Staðfesting á skráningu í könnun"
+
 #~ msgid "For further information contact %s"
 #~ msgstr "Fyrir frekari upplýsingar hafðu samband við %s"
+
 #~ msgid ""
 #~ "If you have been issued with a token, please enter it in the box below "
 #~ "and click continue."
 #~ msgstr ""
 #~ "Ef þér hefur verið úthlutað kenni, vinsamlegast settu það í kassan hér "
 #~ "neðar og smelltu á Áfram."
+
 #~ msgid "Survey Name (ID)"
 #~ msgstr "Nafn könnunar (ID)"
+
 #~ msgid ""
 #~ "One or more questions have not been answered in a valid manner. You "
 #~ "cannot proceed until these answers are valid"
@@ -12418,151 +12444,219 @@ msgstr "Er að vinna niðurstöður ..."
 #~ "Einni eða fleirum spurningum hefur ekki verið svarað á réttan hátt. Þú "
 #~ "getur ekki haldið áfram fyrr en þessum spurningum hefur verið svarað á "
 #~ "réttan hátt."
+
 #~ msgid "Modify Quota"
 #~ msgstr "Breyta kvóta"
+
 #~ msgid "Quota Name"
 #~ msgstr "Nafn kvóta"
+
 #~ msgid "Quota Limit"
 #~ msgstr "Takmörkun kvóta"
+
 #~ msgid "Quota Action"
 #~ msgstr "Aðgerð kvóta"
+
 #~ msgid "Terminate Survey"
 #~ msgstr "Stöðva könnun"
+
 #~ msgid "Terminate Survey With Warning"
 #~ msgstr "Stöðva könnun með viðvörun"
+
 #~ msgid "Base Language"
 #~ msgstr "Grunn tungumál"
+
 #~ msgid "Update Quota"
 #~ msgstr "Uppfæra kvóta"
+
 #~ msgid "Modify"
 #~ msgstr "Breyta/laga"
+
 #~ msgid "Import Survey"
 #~ msgstr "Flytja inn könnun"
+
 #~ msgid "Data redundancy Check"
 #~ msgstr "Athugun á hvort gögn standist kröfur"
+
 #~ msgid "Import answers from a deactivated survey table"
 #~ msgstr "Flytja inn svör úr óvirkri könnunartöflu"
+
 #~ msgid "Iterate surevey"
 #~ msgstr "Ítreka könnun"
+
 #~ msgid "Anonymous answers"
 #~ msgstr "Nafnlaus (órekjanleg svör)"
+
 #~ msgid "This survey is not currently active"
 #~ msgstr "Þessi könnun er ekki virk núna"
+
 #~ msgid "This survey is currently active"
 #~ msgstr "Þessi könnun er virk núna"
+
 #~ msgid "Delete Current Survey"
 #~ msgstr "Eyða virkri könnun"
+
 #~ msgid "Browse Responses For This Survey"
 #~ msgstr "Fletta svörum þessarar könnunar"
+
 #~ msgid "Advanced survey options"
 #~ msgstr "Ítarstillingar könnunar"
+
 #~ msgid "Set Assessment Rules"
 #~ msgstr "Setja reglur álits (mats) "
+
 #~ msgid "Set Survey Quotas"
 #~ msgstr "Setja kvóta könnunar"
+
 #~ msgid "Responses will be date stamped"
 #~ msgstr "Svörun verður merkt dagsetningu"
+
 #~ msgid "Base Language:"
 #~ msgstr "Grunn tungumál"
+
 #~ msgid "Exit Link"
 #~ msgstr "Veffang við lok könnunar"
+
 #~ msgid "Failed to add User."
 #~ msgstr "Ekki tókst að bæta við notanda"
+
 #~ msgid "Define Questions"
 #~ msgstr "Búa til spurningu"
+
 #~ msgid "Delete Survey"
 #~ msgstr "Eyða könnun"
+
 #~ msgid "Edit Survey Property"
 #~ msgstr "Lagfæra stillingar könnunar"
+
 #~ msgid "Browse Response"
 #~ msgstr "Fletta svörun"
+
 #~ msgid "Update survey rights successful."
 #~ msgstr "Uppfærsla réttinda könnunar tókst"
+
 #~ msgid "Edit survey settings - Step 1 of 2"
 #~ msgstr "Lagfæra könnun - skref 1 af 2"
+
 #~ msgid "Fax To:"
 #~ msgstr "Fax til:"
+
 #~ msgid "Allow Saves?"
 #~ msgstr "Á að leyfa vistun?"
+
 #~ msgid "Admin Notification:"
 #~ msgstr "Tilkynning stjórnanda:"
+
 #~ msgid "Email responses to:"
 #~ msgstr "Senda svörun til:"
+
 #~ msgid "Anonymous answers?"
 #~ msgstr "Nafnlaus (órekjanleg svör)?"
+
 #~ msgid "Save and Continue"
 #~ msgstr "Vista og halda áfram"
+
 #~ msgid "Edit survey settings - Step 2 of 2"
 #~ msgstr "Lagfæra könnun - skref 2 af 2"
+
 #~ msgid "Error: You have to select a survey to copy."
 #~ msgstr "Villa: Þú hefur ekki valið könnun til að afrita."
+
 #~ msgid "Start date:"
 #~ msgstr "Ræsidagssetning:"
+
 #~ msgid "Date format: %s"
 #~ msgstr "Form dagsetningar: %s"
+
 #~ msgid "Expiry Date:"
 #~ msgstr "Lokadagsetning:"
+
 #~ msgid "Miscellaneous"
 #~ msgstr "Ýmislegt"
+
 #~ msgid ""
 #~ "Number of answers to show before repeating the headings in array "
 #~ "questions:"
 #~ msgstr ""
 #~ "Sýna fjölda svara áður en endurteknar eru fyrisagnir í raðspurningum:"
+
 #~ msgid "Survey Import Summary"
 #~ msgstr "Niðurstöður innflutnings könnunar."
+
 #~ msgid "Not imported Label Sets"
 #~ msgstr "Ekki innflutt táknmyndasöfn"
+
 #~ msgid ""
 #~ "(Label Sets were not imported since you do not have the permission to "
 #~ "create new label sets.)"
 #~ msgstr ""
 #~ "(Táknmyndasett var ekki innflutt þar sem þú hefur ekki leyfi til að búa "
 #~ "til ný táknmyndasöfn.)"
+
 #~ msgid "Answers can't be deleted"
 #~ msgstr "Svörum ekki hægt að eyða"
+
 #~ msgid "Confirmation of completed survey"
 #~ msgstr "Staðfesting á lokinni könnun"
+
 #~ msgid "Survey Registration Confirmation"
 #~ msgstr "Staðfesting á skráningu í könnun"
+
 #~ msgid "Survey could not be created"
 #~ msgstr "Ekki hægt að búa til könnun"
+
 #~ msgid "Set Template Rights"
 #~ msgstr "Setja réttindi sniðmáts"
+
 #~ msgid ""
 #~ "Either your selected database has not yet been created or there is a "
 #~ "problem accessing it."
 #~ msgstr ""
 #~ "Annað hvort hefur þú valið gagnagrunn sem ekki er til eða erfiðleikar að "
 #~ "nálgast hann."
+
 #~ msgid "Records Displayed:"
 #~ msgstr "Færslur sýndar:"
+
 #~ msgid "Starting From:"
 #~ msgstr "Byrja frá:"
+
 #~ msgid "Initialise Tokens"
 #~ msgstr "Frumstilli kenni"
+
 #~ msgid "Labelsets"
 #~ msgstr "Táknmyndasöfn"
+
 #~ msgid "Edit Label Set"
 #~ msgstr "Lagfæra táknmyndasafn"
+
 #~ msgid "Convert resources links?"
 #~ msgstr "Umbreyta efnis hlekkjum?"
+
 #~ msgid "Close Window"
 #~ msgstr "Loka glugga"
+
 #~ msgid "IP Address"
 #~ msgstr "IP vistfang"
+
 #~ msgid "Remember that we do not support subdirectories in ZIP Archive."
 #~ msgstr "Mundu að við styðjum ekki undirskrár í Zip skráarformi."
+
 #~ msgid "Import Template"
 #~ msgstr "Flytja inn sniðmát"
+
 #~ msgid "Edit email settings"
 #~ msgstr "Lagfæra stillingar pósts"
+
 #~ msgid "Email reminder subject:"
 #~ msgstr "Efnislína (subject) áminningar pósts:"
+
 #~ msgid "Invite sent?"
 #~ msgstr "Þátttökuboð sent?"
+
 #~ msgid "Invitation Email:"
 #~ msgstr "Þátttökuboðs póstur:"
+
 #~ msgid ""
 #~ "There were no eligible emails to send. This will be because none "
 #~ "satisfied the criteria of - having an email address, having been sent an "
@@ -12571,20 +12665,26 @@ msgstr "Er að vinna niðurstöður ..."
 #~ "Engin nothæf netföng til að senda. Þetta er vegna þess að eftirfarandi "
 #~ "skilyrði eru ekki uppfyllt - netfang er til staðar, þátttökuboð ekki "
 #~ "verið sent, en  hefur ekki  þegar lokið könnun"
+
 #~ msgid "Display Tokens"
 #~ msgstr "Sýna kenni"
+
 #~ msgid ""
 #~ "Upload file not found. Check your permissions and path for the upload "
 #~ "directory"
 #~ msgstr ""
 #~ "Finn ekki innflutnigs skrá. Athugaðu réttindi þín og slóð að innflutnings "
 #~ "möppu"
+
 #~ msgid "Cannot be modified"
 #~ msgstr "Ekki hægt að breyta"
+
 #~ msgid "Survey is currently active."
 #~ msgstr "Könnun er virk núna."
+
 #~ msgid "Update Question"
 #~ msgstr "Uppfæra spurningu"
+
 #~ msgid ""
 #~ "Someone may be trying to use your LimeSurvey session by using dangerous "
 #~ "GET requests (CSRF attack suspected). If you just clicked on a malicious "
@@ -12594,115 +12694,163 @@ msgstr "Er að vinna niðurstöður ..."
 #~ "að nota hættulega GET beiðni  (CSRF árás grunuð). Ef þú hefur aðeins "
 #~ "smellt á \"óvinveittan\" hlekk, vinsamlegast tilkynntu kerfisstjóranum "
 #~ "þetta."
+
 #~ msgid "LimeSurvey Online Manual"
 #~ msgstr "LimeSurvey handbók á netinu"
+
 #~ msgid "Export Results"
 #~ msgstr "Flytja út niðurstöður"
+
 #~ msgid "Token Control"
 #~ msgstr "Kenni stjórnun"
+
 #~ msgid "IP-Address"
 #~ msgstr "IP-vistfang"
+
 #~ msgid "Referring URL"
 #~ msgstr "Tilvísað URL"
+
 #~ msgid "Survey expiration date (DD-MM-YYYY)"
 #~ msgstr "Könnun rennur út (DD-MM-YYYY)"
+
 #~ msgid "Survey expiration date (MM-DD-YYYY)"
 #~ msgstr "Könnun rennur út (MM-DD-YYYY)"
+
 #~ msgid "No condition selected to copy from"
 #~ msgstr "Engin skilyrði valin til að afrita úr"
+
 #~ msgid "No question selected to copy condition to"
 #~ msgstr "Engin spurning valin til að afrita skilyrði í"
+
 #~ msgid "LimeSurvey manual"
 #~ msgstr "LimeSurvey handbók á netinu"
+
 #~ msgid ""
 #~ "Are you sure you want to copy these condition(s) to the questions you "
 #~ "have selected?"
 #~ msgstr ""
 #~ "Ertu viss um að þú viljir afrita þessi skilyrði yfir í spurningar sem þú "
 #~ "hefur valið?"
+
 #~ msgid "Equals"
 #~ msgstr "Jafnt og"
+
 #~ msgid "Update Entry"
 #~ msgstr "Uppfæra atriði"
+
 #~ msgid "Label 1"
 #~ msgstr "Táknmynd 1"
+
 #~ msgid "Label 2"
 #~ msgstr "Táknmynd 2"
+
 #~ msgid "Export database"
 #~ msgstr "Flytja út gagnagrunn"
+
 #~ msgid "ComfortUpdate Step 3"
 #~ msgstr "Þægindauppfærsla skref 3"
+
 #~ msgid "ComfortUpdate Step 4"
 #~ msgstr "Þægindauppfærsla skref 4"
+
 #~ msgid "Date is not valid!"
 #~ msgstr "Dagsetning ekki leyfileg!"
+
 #~ msgid "Show System Summary"
 #~ msgstr "Sýna stöðu kerfisins"
+
 #~ msgid "Edit/Add Label Sets"
 #~ msgstr "Laga/bæta við táknmyndasafn"
+
 #~ msgid "Create or Import New Survey"
 #~ msgstr "Búa til eða flytja inn nýja könnun"
+
 #~ msgid "Array (Flexible Labels) by Column"
 #~ msgstr "Röð (Breytilegar táknmyndir) í dálkum"
+
 #~ msgid "List (Flexible Labels) (Dropdown)"
 #~ msgstr "Listi (Breytilegar táknmyndir) (Felligluggi)"
+
 #~ msgid "List (Flexible Labels) (Radio)"
 #~ msgstr "Listi (Breytilegar táknmyndir) (Radio)"
+
 #~ msgid ""
 #~ "It appears as if some tables or fields are missing from your database."
 #~ msgstr ""
 #~ "Það lítur út fyrir að einhverjar töflur eða svæði vanti í gagnagrunninn "
 #~ "þinn."
+
 #~ msgid "Check Database Fields"
 #~ msgstr "Athuga gagnasafns svæði"
+
 #~ msgid "Preset"
 #~ msgstr "Forstilla"
+
 #~ msgid "Date Stamp"
 #~ msgstr "Dagsetning"
+
 #~ msgid "Survey Saved"
 #~ msgstr "Könnun vistuð"
+
 #~ msgid "%s %% complete"
 #~ msgstr "%s %% lokið"
+
 #~ msgid "Survey Submitted"
 #~ msgstr "Könnun lokið"
+
 #~ msgid "Please complete all parts of the date"
 #~ msgstr "Vinsamlega fylltu inn alla hluta dagsetningar"
+
 #~ msgid "Format: YYYY-MM-DD"
 #~ msgstr "Form: ÁÁÁÁ-MM-DD"
+
 #~ msgid "(eg: 2003-12-25 for Christmas day)"
 #~ msgstr "(T.d. 2003-12-25 fyrir jóladag)"
+
 #~ msgid "Please choose one of the following"
 #~ msgstr "Vinsamlega veldu eitt af eftirfarandi"
+
 #~ msgid "Click on an item in the list on the left, starting with your"
 #~ msgstr "Smelltu á atriði í listanum til vinstri, byrjaðu á því sem þú gefur"
+
 #~ msgid ""
 #~ "Error: The labelset used for this question is not available in this "
 #~ "language and/or does not exist."
 #~ msgstr ""
 #~ "Villa: Táknmyndasafnið sem notað er fyrir þessa spurningu er ekki tiltækt "
 #~ "á þessu tungumáli  og/eða ekki til."
+
 #~ msgid "No matching qid"
 #~ msgstr "Ekkert samsvarandi qid"
+
 #~ msgid "The following question attributes should be deleted"
 #~ msgstr "Eftirfarandi eigindum spurninga ætti að eyða"
+
 #~ msgid "Add New Label Set"
 #~ msgstr "Bæta við nýju táknmyndasafni"
+
 #~ msgid "Add new label set"
 #~ msgstr "Bæta við nýju táknmyndasafni"
+
 #~ msgid "Select CSV File:"
 #~ msgstr "Veldu CSV skrá:"
+
 #~ msgid "Save All"
 #~ msgstr "Vista allt"
+
 #~ msgid "Fix Order"
 #~ msgstr "Laga röð"
+
 #~ msgid ""
 #~ "You cannot change codes, add or delete entries in this label set because "
 #~ "it is being used by an active survey."
 #~ msgstr ""
 #~ "Þú getur ekki breytt kóda, bætt við eða eytt atriðum í þessu "
 #~ "táknmyndasafni þar sem það er notað í virkri könnun."
+
 #~ msgid "Fix Sort"
 #~ msgstr "Laga röðun"
+
 #~ msgid ""
 #~ "Some surveys currently use this label set. Modifying the codes, adding or "
 #~ "deleting entries to this label set may produce undesired results in other "
@@ -12711,58 +12859,79 @@ msgstr "Er að vinna niðurstöður ..."
 #~ "Einhverjar kannanir eru núna að nota þetta táknmyndasafn. Breyting á "
 #~ "kódum, viðbótum eða eyðingu atriða í þessu táknmyndasafni getur haft "
 #~ "óæskileg áhrif á niðurstöður í öðrum könnunum."
+
 #~ msgid ""
 #~ "Couldn't Delete Label Set - There are questions that rely on this. You "
 #~ "must delete these questions first."
 #~ msgstr ""
 #~ "Gat ekki eytt táknmyndasafni - Það eru spurningar sem byggja á því. Þú "
 #~ "verður fyrst að eyða spurningunni."
+
 #~ msgid "Insert of Label Set failed"
 #~ msgstr "Innsetning táknmyndasafns mistókst"
+
 #~ msgid "Import Group"
 #~ msgstr "Flytja inn flokk"
+
 #~ msgid "No SID (Survey) has been provided. Cannot import group."
 #~ msgstr "Ekkert SID(könnun) hefur verið gefið upp. Get ekki flutt inn flokk."
+
 #~ msgid "This file is not a LimeSurvey group file. Import failed."
 #~ msgstr "Þessi skrá er ekki LimeSurvey flokkaskrá. Innflutningur tókst ekki."
+
 #~ msgid "Import partially successful."
 #~ msgstr "Innflutningur tókst að hluta."
+
 #~ msgid ""
 #~ "The following languages in this group were not imported since the survey "
 #~ "does not contain such a language: "
 #~ msgstr ""
 #~ "Eftirfarandi tungumál í þessum flokk voru ekki flutt inn þar sem könnunin "
 #~ "inniheldur ekki þannig tungumál."
+
 #~ msgid "Group Import Summary"
 #~ msgstr "Yfirlit um innflutning flokka"
+
 #~ msgid "Question Attributes: "
 #~ msgstr "Eigindi spurninga:"
+
 #~ msgid "Import of group is completed."
 #~ msgstr "Innflutningur flokks er lokið."
+
 #~ msgid "Ignore the new record."
 #~ msgstr "Hunsa nýju færsluna"
+
 #~ msgid "Filter Settings"
 #~ msgstr "Síu stillingar"
+
 #~ msgid "OR between"
 #~ msgstr "Eða milli"
+
 #~ msgid "Filter incomplete answers:"
 #~ msgstr "Sía út óloknum svörum:"
+
 #~ msgid "Enabled"
 #~ msgstr "Virkt"
+
 #~ msgid ""
 #~ "Don't consider NON completed responses (only works when Filter incomplete "
 #~ "answers is Disable)"
 #~ msgstr ""
 #~ "Ekki taka með óloknum svörunum ( virkar aðeins ef slökkt er á síu fyrir "
 #~ "ólokin svör)"
+
 #~ msgid "Getting Result Count ..."
 #~ msgstr "Svör talin..."
+
 #~ msgid "Non completed"
 #~ msgstr "Engu lokið"
+
 #~ msgid "Attribute 2"
 #~ msgstr "Nafn 2"
+
 #~ msgid "Email Invitation"
 #~ msgstr "Þátttökuboðs póstur"
+
 #~ msgid ""
 #~ "There were no eligible emails to send. This will be because none "
 #~ "satisfied the criteria of - having an email address, not having been sent "
@@ -12772,123 +12941,175 @@ msgstr "Er að vinna niðurstöður ..."
 #~ "Engin nothæf netföng til að senda. Þetta er vegna þess að  eftirfarandi "
 #~ "skilyrði eru ekki uppfyllt - netfang er til staðar, þátttökuboð ekki "
 #~ "verið sent, hefur þegar lokið könnun og hefur kenni."
+
 #~ msgid "Stop at Token ID:"
 #~ msgstr "Stoppa á kennis ID:"
+
 #~ msgid "Add or Edit Token Entry"
 #~ msgstr "Bæta við eða laga Kenni færslu"
+
 #~ msgid "Updated Token"
 #~ msgstr "Uppfært kenni"
+
 #~ msgid "Added New Token"
 #~ msgstr "Bæta við nýju kenni"
+
 #~ msgid "Importing CSV File"
 #~ msgstr "Er að flytja inn CSV skrá"
+
 #~ msgid "Creating Token Entries"
 #~ msgstr "Er að útbúa kennis atriði"
+
 #~ msgid "Attribute_1 from token"
 #~ msgstr "Aukasvæði 1 frá kenni"
+
 #~ msgid "Attribute_2 from token"
 #~ msgstr "Aukasvæði 2 frá kenni"
+
 #~ msgid "This template can be modified"
 #~ msgstr "Þessu sniðmáti er hægt að breyta"
+
 #~ msgid "This template cannot be modified"
 #~ msgstr "Þessu sniðmáti er ekki hægt að breyta"
+
 #~ msgid "Make a copy of this template"
 #~ msgstr "Gera afrit af þessu sniðmáti"
+
 #~ msgid "File Control:"
 #~ msgstr "Skráarstjórn"
+
 #~ msgid "Now editing:"
 #~ msgstr "Er að breyta"
+
 #~ msgid ""
 #~ "Import responses from an old (deactivated) survey table into an active "
 #~ "survey"
 #~ msgstr ""
 #~ "Flytja inn svörun frá eldri (afvirkjaðri) könnunar töflu inn í virka "
 #~ "könnun."
+
 #~ msgid "Modifying User"
 #~ msgstr "Er að breyta notanda"
+
 #~ msgid ""
 #~ "Sorry, importing questions is limited to the same version. Import failed."
 #~ msgstr ""
 #~ "Því miður er innflutningur einskorðaður við sömu útgáfu. Innflutningur "
 #~ "tókst ekki."
+
 #~ msgid ""
 #~ "You can't import a question which doesn't support the current survey's "
 #~ "base language"
 #~ msgstr ""
 #~ "Þú getur ekki flutt inn spurningu sem styður ekki grunn tungumál gildandi "
 #~ "könnunar"
+
 #~ msgid "Label Sets"
 #~ msgstr "Táknmyndasafn"
+
 #~ msgid "Anonymous"
 #~ msgstr "Ókunnur"
+
 #~ msgid "Not Anonymous"
 #~ msgstr "Ekki ókunnur"
+
 #~ msgid "Closed-access"
 #~ msgstr "Lokaður - aðgangur"
+
 #~ msgid "Open-access"
 #~ msgstr "Opinn - aðgangur"
+
 #~ msgid "This survey is active but expired"
 #~ msgstr "Þessi könnun er virk en er útrunnin"
+
 #~ msgid "LimeSurvey System Summary"
 #~ msgstr "LimeSurvey System yfirlit"
+
 #~ msgid "Current Language"
 #~ msgstr "Núgildandi tungumál"
+
 #~ msgid "Preferred HTML editor mode"
 #~ msgstr "Stilla högun HTML editors "
+
 #~ msgid "De-activated Surveys"
 #~ msgstr "Óvirkar kannanir"
+
 #~ msgid "Edit Current Survey"
 #~ msgstr "Lagfæra virka könnun"
+
 #~ msgid "Disabled - Change Group Order"
 #~ msgstr "Afvirkja - Breyta röðun flokka"
+
 #~ msgid "Activate/Edit Tokens for this Survey"
 #~ msgstr "Virkja/lagfæra kenni fyrir þessa könnun"
+
 #~ msgid ""
 #~ "Adding/editing tokens is not possible because this survey is not "
 #~ "activated."
 #~ msgstr ""
 #~ "Að bæta við eða laga kenni er ekki hægt vegna þess að þessi könnun er "
 #~ "ekki virk"
+
 #~ msgid "You need to add groups"
 #~ msgstr "Þú verður að bæta við flokk"
+
 #~ msgid "Edit Current Group"
 #~ msgstr "Lagfæra núgildandi flokk"
+
 #~ msgid "Delete Current Group"
 #~ msgstr "Eyða núgildandi flokk"
+
 #~ msgid "Export Current Group"
 #~ msgstr "Flytja út núgildandi flokk"
+
 #~ msgid "Copy question is not possible in an Active survey"
 #~ msgstr "Ekki er hægt að afrita spurningu í könnun sem er virk"
+
 #~ msgid "You need to choose a label set for this question!"
 #~ msgstr "Þú verður að velja táknmyndasafn fyrir þessa spurningu!"
+
 #~ msgid "Second Label Set"
 #~ msgstr "Annað táknmyndasafn"
+
 #~ msgid "You need to choose a second label set for this question!"
 #~ msgstr "Þú verður að velja annað táknmyndasafn fyrir þessa spurningu!"
+
 #~ msgid "Edit/Add second Label Sets"
 #~ msgstr "Lagfæra/bæta við annað táknmyndasafn"
+
 #~ msgid "Add new Answer"
 #~ msgstr "Bæta við nýju svari"
+
 #~ msgid "Expires?"
 #~ msgstr "Á könnun að renna út?"
+
 #~ msgid "Use Cookies?"
 #~ msgstr "Á að nota kökur (Cookies)?"
+
 #~ msgid "(This field is mandatory.)"
 #~ msgstr "(Þessu verður að svara.)"
+
 #~ msgid "Participiants may print answers?"
 #~ msgstr "Mega þátttakendur prenta svör?"
+
 #~ msgid "Select CSV/SQL File:"
 #~ msgstr "Veldu CSV/SQL skrá:"
+
 #~ msgid "Filter incomplete answers"
 #~ msgstr "Sía út óloknum svörum"
+
 #~ msgid "Export Responses"
 #~ msgstr "Flytja út svör"
+
 #~ msgid "if you have NOT answered"
 #~ msgstr "ef þú hefur ekki svarað"
+
 #~ msgid "Only answer this question %s"
 #~ msgstr "Svaraðu aðeins þessari spurningu %s"
+
 #~ msgid "answers:"
 #~ msgstr "svör:"
+
 #~ msgid ""
 #~ "If you create any assessments in this page, for the currently selected "
 #~ "survey, the assessment will be performed at the end of the survey after "
@@ -12896,160 +13117,220 @@ msgstr "Er að vinna niðurstöður ..."
 #~ msgstr ""
 #~ "Ef þú býrð til eitthvert mat á þessari síðu, fyrir núgildandi könnun, "
 #~ "verður matið framsett að lokinni könnun."
+
 #~ msgid "1. scale"
 #~ msgstr "1. skali"
+
 #~ msgid "2. scale"
 #~ msgstr "2. skali"
+
 #~ msgid "%d full responses"
 #~ msgstr "%d full svörun"
+
 #~ msgid "%d responses not completely filled out"
 #~ msgstr "%d svaranir ekki  útfylltar að fullu"
+
 #~ msgid "No QID has been provided. Cannot dump question."
 #~ msgstr "Ekkert QID gefið upp. Get ekki dembt (dump) spurningu."
+
 #~ msgid ""
 #~ "The labelset used in this question does not exists or is missing a "
 #~ "translation."
 #~ msgstr ""
 #~ "Táknmyndasafn sem notað er í þessari spurningu er ekki til eða þýðingu "
 #~ "vantar."
+
 #~ msgid "Edit (change) your group names"
 #~ msgstr "Breytt nafni á flokki"
+
 #~ msgid ""
 #~ "Add, Remove or Edit pre-defined question answers (except for Multi-answer "
 #~ "questions)"
 #~ msgstr ""
 #~ "Bætt við, taka út eða lagfært svör spurninga með fyrirfram gefnum svörum "
 #~ "(að undanskildum fjölsvara spurningum)"
+
 #~ msgid ""
 #~ "Question \"%s - %s\" was NOT imported because the question type is "
 #~ "unknown."
 #~ msgstr ""
 #~ " Spurning \"%s - %s\"  var ekki innflutt vegna þess að gerð spurningar er "
 #~ "óþekkt"
+
 #~ msgid ""
 #~ "Question \"%s - %s\" was imported but the type was set to '%s' because it "
 #~ "is the most similiar one."
 #~ msgstr ""
 #~ " Spurning \"%s - %s\" var innflutt, en gerð spurningar var ákveðin '%s' "
 #~ "þar sem hún var líklegust."
+
 #~ msgid ""
 #~ "Answer could not be added. You must insert a code in the mandatory field "
 #~ "(%s)"
 #~ msgstr ""
 #~ "Ekki var hægt að bæta við svari. Þú verður að setja kóda í skyldureitinn  "
 #~ "(%s)"
+
 #~ msgid "Question could not be deleted"
 #~ msgstr "Ekki hægt að eyða spurningu"
+
 #~ msgid ""
 #~ "Error adding answer: You can't use the same answer code more than once."
 #~ msgstr ""
 #~ "Villa við að bæta við svari: Þú getur ekki notað svar kóda nema einu "
 #~ "sinni."
+
 #~ msgid "Failed to insert answer"
 #~ msgstr "Ekki tókst að setja inn svar"
+
 #~ msgid "Invalid or empty answer code supplied"
 #~ msgstr "Óleyfilegur eða ekki uppgefinn svar kódi"
+
 #~ msgid "Failed to make answer not default"
 #~ msgstr "Ekki tókst að gera svar \"ekki sjálfgefið\""
+
 #~ msgid "Failed to make answer default"
 #~ msgstr "Ekki tókst að gera svar sjálfgefið"
+
 #~ msgid "Label Set:"
 #~ msgstr "Táknmyndasafn:"
+
 #~ msgid "Second Label Set:"
 #~ msgstr "Annað táknmyndasafn:"
+
 #~ msgid "Group:"
 #~ msgstr "Flokkur:"
+
 #~ msgid "Copy Attributes?"
 #~ msgstr "Afrita eigindi?"
+
 #~ msgid "No LID has been provided. Cannot dump label set."
 #~ msgstr ""
 #~ "Ekkert LID hefur verið gefið upp. get ekki dembt (dump) táknmyndasafni"
+
 #~ msgid "Record ID"
 #~ msgstr "Færslu ID"
+
 #~ msgid "Welcome {NAME}"
 #~ msgstr "Velkomin(n) {NAME}"
+
 #~ msgid "You were signed in on the site %s"
 #~ msgstr "Þú varst skráð(ur) inn á svæðið  %s"
+
 #~ msgid "Login here"
 #~ msgstr "Skráðu inn hér"
+
 #~ msgid "Username and/or email address already exists."
 #~ msgstr "Notendanafn og/eða netfang er þegar til."
+
 #~ msgid "Update user rights successful."
 #~ msgstr "Uppfærsla notenda réttinda tókst."
+
 #~ msgid "You have not selected a Survey."
 #~ msgstr "Þú hefur ekki valið könnun"
+
 #~ msgid "You cannot run this script directly."
 #~ msgstr "Þú getur ekki keyrt þessa skriftu beint."
+
 #~ msgid "Condition"
 #~ msgstr "Skilyrði"
+
 #~ msgid "copy to"
 #~ msgstr "afrita í"
+
 #~ msgid ""
 #~ "NOTE: If you use a pre-defined answer as your condition, only the equals "
 #~ "or not-equal-to conditions apply."
 #~ msgstr ""
 #~ "ATH!: Ef þú notar fyrirfram gerð svör sem skilyrði, aðeins jafnt-og eða "
 #~ "ekki- jafnt-og skilyrði verða sett."
+
 #~ msgid "Constant Value or Regular Expression"
 #~ msgstr "Fast gildi eða ákveðin sögn"
+
 #~ msgid "Return to Labels Admin"
 #~ msgstr "Fara aftur í táknmyndastjórnun"
+
 #~ msgid ""
 #~ "There was a duplicate labelset, so this set was not imported. The "
 #~ "duplicate will be used instead."
 #~ msgstr ""
 #~ "Samsvarandi táknmyndasafn til fyrir, svo þetta var ekki flutt inn. Það "
 #~ "sem til er fyrir verður notað í staðinn."
+
 #~ msgid "answers"
 #~ msgstr "svör"
+
 #~ msgid "to remove the last entry in your ranked list"
 #~ msgstr "til að fjarlægja síðastu færslu úr einkunnalista"
+
 #~ msgid "Please choose at most"
 #~ msgstr "Vinsamlega veldu í mesta lagi"
+
 #~ msgid "Are you sure you want to delete this entry."
 #~ msgstr "Ertu viss um að þu viljir eyða þessu atriði."
+
 #~ msgid "(XML module only in PHP 4 available)"
 #~ msgstr "(XML modul aðeins tiltækur fyrir PHP 4)"
+
 #~ msgid "depends on group"
 #~ msgstr "veltur á flokki"
+
 #~ msgid "No matching Group"
 #~ msgstr "Enginn samsvarandi flokkur"
+
 #~ msgid "No matching Survey!"
 #~ msgstr "Engin samsvarandi könnun!"
+
 #~ msgid "Failed to copy"
 #~ msgstr "Ekki tókst að afrita"
+
 #~ msgid "Directory with the name"
 #~ msgstr "Mappa með nafninu"
+
 #~ msgid "Email address ist not valid."
 #~ msgstr "Netfang er ekki samþykkt."
+
 #~ msgid ""
 #~ "The uploaded file is bigger than the upload_max_filesize directive in php."
 #~ "ini"
 #~ msgstr ""
 #~ "Skráin sem þú reyndir að hlaða upp er stærri en upload_max_filesize "
 #~ "stillingin segir til um í php.ini"
+
 #~ msgid "The file was only partially uploaded"
 #~ msgstr "Skráin var aðeins  hlaðin upp að hluta"
+
 #~ msgid "Error on file transfer. You must select a CSV file"
 #~ msgstr "Villa í skráarflutningi. Þú verður að velja CSV skrá"
+
 #~ msgid "You need to upload the file"
 #~ msgstr "Þú verður að hlaða upp skránni"
+
 #~ msgid "You must upload a CSV file"
 #~ msgstr "Þú verður að hlaða upp CSV skrá"
+
 #~ msgid "Upload CSV file"
 #~ msgstr "Hlaða upp CSV skrá"
+
 #~ msgid "It is impossible to upload a file other than CSV type"
 #~ msgstr "Það er ómögulegt að hlaða inn skrám öðrum en CSV gerð"
+
 #~ msgid "It is impossible to upload an empty file"
 #~ msgstr "Það er ekki hægt að hlaða upp tómum skrám"
+
 #~ msgid "Uploading CSV file"
 #~ msgstr "Hleð upp CSV skrá"
+
 #~ msgid "Visualization:"
 #~ msgstr "Ásýnd:"
+
 #~ msgid "Select the field number you would like to use for your answers:"
 #~ msgstr "Veldu númer svæðisins sem þú vilt nota fyrir svör þín:"
+
 #~ msgid "The token you have provided is not valid."
 #~ msgstr "Kennið sem þú gefur upp er ekki leyfilegt."
+
 #~ msgid ""
 #~ "You, someone using your email address, or the administrator has saved a "
 #~ "survey in progress. The following details can be used to return to this "
@@ -13058,13 +13339,15 @@ msgstr "Er að vinna niðurstöður ..."
 #~ "Þú eða einhver sem notar netfangið þitt, eða aðalstjórnandi hefur vistað "
 #~ "könnun í gangi. Eftirfarandi atriði má nota til að snúa aftur í könnunina "
 #~ "og halda áfram þar sem frá var horfið."
+
 #~ msgid ""
 #~ "This is a closed-access survey. You need a valid token to participate."
 #~ msgstr ""
 #~ "Þetta er könnun með \"lokuðum aðgangi\". Þú þarft leyfilegt kenni til að "
 #~ "taka þátt."
+
 #~ msgid "prev"
 #~ msgstr "fyrra"
+
 #~ msgid "next"
 #~ msgstr "næst"
-

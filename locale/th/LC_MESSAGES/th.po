@@ -10,15 +10,16 @@ msgstr ""
 "Project-Id-Version: limesurvey\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-05 11:15+0100\n"
-"PO-Revision-Date: 2010-01-05 11:16+0100\n"
-"Last-Translator: Carsten Schmitz <carsten.schmitz@limesurvey.org>\n"
+"PO-Revision-Date: 2011-11-17 17:15+0100\n"
+"Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team:  <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"X-Poedit-KeywordsList: gT\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2\n"
 "X-Poedit-Basepath: D:\\web\\xampp\\htdocs\\limesurvey\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\limesurvey\n"
 
 #: D:\web\xampp\htdocs\limesurvey/common.php:250
@@ -9461,38 +9462,54 @@ msgstr "เวียดนาม"
 
 #~ msgid "Deactivated surveys"
 #~ msgstr "แบบสำรวจที่ไม่ทำงาน"
+
 #~ msgid "Label Set:"
 #~ msgstr "ป้ายรายการ:"
+
 #~ msgid "Format: YYYY-MM-DD"
 #~ msgstr "รูปแบบ: ปปปป-ดด-วว"
+
 #~ msgid "Please choose one of the following"
 #~ msgstr "กรุณาเลือก 1 ข้อ จากรายการ"
+
 #~ msgid "Add New Label Set"
 #~ msgstr "เพิ่มชุดป้ายชื่อ"
+
 #~ msgid "Save All"
 #~ msgstr "บันทึกทั้งหมด"
+
 #~ msgid "Fix Sort"
 #~ msgstr "จัดเรียงคงที่"
+
 #~ msgid "This template can be modified"
 #~ msgstr "ตัวแบบนี้สามารถแก้ไขได้"
+
 #~ msgid "Make a copy of this template"
 #~ msgstr "ทำซ้ำตัวแบบนี้"
+
 #~ msgid "Now editing:"
 #~ msgstr "การแก้ไขปัจจุบัน"
+
 #~ msgid "Modifying User"
 #~ msgstr "แก้ไขผู้ใช้งาน"
+
 #~ msgid "Not Anonymous"
 #~ msgstr "ไม่ระบุชื่อ"
+
 #~ msgid "Edit Current Survey"
 #~ msgstr "แก้ไขแบบสำรวจนี้"
+
 #~ msgid "Edit Current Group"
 #~ msgstr "แก้ไขกลุ่มนี้"
+
 #~ msgid "Expires?"
 #~ msgstr "กำหนดให้หมดอายุหรือไม่ ?"
+
 #~ msgid "Use Cookies?"
 #~ msgstr "ใช้คุกกี้ ?"
+
 #~ msgid "Group:"
 #~ msgstr "กลุ่ม :"
+
 #~ msgid "Update user rights successful."
 #~ msgstr "ปรับปรุงสิทธิ์ผู้ใช้เรียบร้อยแล้ว"
-
