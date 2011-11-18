@@ -69,7 +69,6 @@ class ExpressionManager {
 
         $this->sExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n|\s+)' .
                 '.*?' .
-//                '(' . $regex_dq_string . '|' . $regex_sq_string . '|.*?)*' .  // this led to parsing failures when there were more than about 10 SGQA + strings in an expression
                 '(?<!\\\\)(?<!\n|\r|\r\n|\s)' . '}' . ')#';
 
 
@@ -453,9 +452,6 @@ class ExpressionManager {
                 }
                 else
                 {
-//                    if ($token[0] == 'QID' || $token[0] == 'SGQA') {
-//                        LimeExpressionManager::ShowStackTrace($token[0]);
-//                    }
                     if ($this->isValidVariable($token[0]))
                     {
                         $this->varsUsed[] = $token[0];  // add this variable to list of those used in this equation
@@ -1310,7 +1306,6 @@ class ExpressionManager {
                             $color = 'red';
                         }
                         else {
-//                            $isOnCurrentPage = $this->GetVarAttribute($token[0],'isOnCurrentPage','N');
                             $jsName = $this->GetVarAttribute($token[0],'jsName','');
                             $codeValue = $this->GetVarAttribute($token[0],'codeValue','');
                             $question = $this->GetVarAttribute($token[0], 'question', '');
@@ -1352,44 +1347,21 @@ class ExpressionManager {
                                     $messages[] = 'value=' . htmlspecialchars($codeValue,ENT_QUOTES,'UTF-8',false);
                                 }
                             }
-//                            // TODO - isOnCurrentPage may now be surpufluous, EXCEPT for fact that LS has different data storage names for on vs. off page.
-//                            if ($isOnCurrentPage=='Y')
-//                            {
-//                                if ($questionSeq == -1 || $this->questionSeq == -1) {
-////                                    log_message('debug','{' . $this->groupSeq . "," . $this->questionSeq . "} " . $token[0] . ": " . $descriptor);
-//                                    $color = '#996600'; // tan
-//                                }
-//                                else if ($questionSeq > $this->questionSeq) {
-//                                    if ($groupSeq > $this->groupSeq) {
-//                                        $color = '#FF00FF ';     // pink a likely error
-//                                    }
-//                                    else {
-//                                        $color = 'maroon';  // #228b22 - warning
-//                                    }
-//                                }
-//                                else {
-//                                    $color = '#4C88BE';    // cyan that goes well with the background color
-//                                }
-//                            }
-//                            else
-//                            {
-                                if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
-//                                    log_message('debug','{' . $this->groupSeq . "," . $this->questionSeq . "} " . $token[0] . ": " . $descriptor);
-                                    $color = '#996600'; // tan
-                                }
-                                else if ($groupSeq > $this->groupSeq) {
-                                    $color = '#FF00FF ';     // pink a likely error
-                                }
-                                else if ($groupSeq < $this->groupSeq) {
-                                    $color = 'green';
-                                }
-                                else if ($questionSeq > $this->questionSeq) {
-                                    $color = 'maroon';  // #228b22 - warning
-                                }
-                                else {
-                                    $color = '#4C88BE';    // cyan that goes well with the background color
-                                }
-//                            }
+                            if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
+                                $color = '#996600'; // tan
+                            }
+                            else if ($groupSeq > $this->groupSeq) {
+                                $color = '#FF00FF ';     // pink a likely error
+                            }
+                            else if ($groupSeq < $this->groupSeq) {
+                                $color = 'green';
+                            }
+                            else if ($questionSeq > $this->questionSeq) {
+                                $color = 'maroon';  // #228b22 - warning
+                            }
+                            else {
+                                $color = '#4C88BE';    // cyan that goes well with the background color
+                            }
                         }
 
                         $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'>";
@@ -1457,8 +1429,6 @@ class ExpressionManager {
                 else {
                     return (isset($_SESSION[$sgqa])) ? $_SESSION[$sgqa] : $default;
                 }
-//                return (isset($var['codeValue'])) ? $var['codeValue'] : $default;
-//            case 'isOnCurrentPage':
             case 'jsName':
                 if ($this->allOnOnePage || ($this->groupSeq != -1 && isset($var['groupSeq']) && $this->groupSeq == $var['groupSeq'])) {
                     // then on the same page, so return the on-page javaScript name if there is one.
@@ -1560,7 +1530,6 @@ class ExpressionManager {
                 return (isset($_SESSION['relevanceStatus'][$qid]) ? $_SESSION['relevanceStatus'][$qid] : 0); // should defualt be to show?
             default:
                 print 'UNDEFINED ATTRIBUTE: ' . $attr . "<br/>\n";
-//                log_message('debug','UNDEFINED ATTRIBUTE: ' . $attr);
                 return $default;
         }
         return $default;    // and throw and error?
@@ -2618,8 +2587,6 @@ EOD;
             foreach ($varInfo as $k=>$v) {
                 if ($k == 'codeValue') {
                     continue;   // will access it from hidden node
-//                    $k = 'code';
-//                    $v = htmlspecialchars(preg_replace("/[[:space:]]/",' ',$v),ENT_QUOTES);
                 }
                if ($k == 'displayValue') {
                     $k = 'shown';
