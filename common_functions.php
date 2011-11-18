@@ -3138,14 +3138,14 @@ function questionAttributes($returnByName=false)
     'inputtype'=>'text',
     "help"=>$clang->gT('Category separator'),
     "caption"=>$clang->gT('Category separator'));
-
-    $qattributes["code_filter"]=array(
-    "types"=>"WZ",
-    'category'=>$clang->gT('Logic'),
-    'sortorder'=>100,
-    'inputtype'=>'text',
-    "help"=>$clang->gT('Filter the available answers by this value'),
-    "caption"=>$clang->gT('Code filter'));
+//  Question types 'W' (list-dropdown-flexible) and 'Z'(list-radio-flexible) are no longer supported, so neither is code_filter
+//    $qattributes["code_filter"]=array(
+//    "types"=>"WZ",
+//    'category'=>$clang->gT('Logic'),
+//    'sortorder'=>100,
+//    'inputtype'=>'text',
+//    "help"=>$clang->gT('Filter the available answers by this value'),
+//    "caption"=>$clang->gT('Code filter'));
 
     $qattributes["display_columns"]=array(
     "types"=>"GLMZ",
