@@ -2852,7 +2852,7 @@ function do_ranking($ia)
     $maxselectlength=0;
     $choicelist = "<select size=\"$anscount\" name=\"CHOICES_{$ia[0]}\" ";
     if (isset($choicewidth)) {$choicelist.=$choicewidth;}
-    $choicelist .= " id=\"CHOICES_{$ia[0]}\" onChange=\"alert (77);if (this.options.length>0 && this.selectedIndex<0) {this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
+    $choicelist .= " id=\"CHOICES_{$ia[0]}\" onChange=\"if (this.options.length>0 && this.selectedIndex<0) {this.options[this.options.length-1].selected=true;}; rankthis_{$ia[0]}(this.options[this.selectedIndex].value, this.options[this.selectedIndex].text)\" class=\"select\">\n";
 
     foreach ($answers as $ans)
     {
