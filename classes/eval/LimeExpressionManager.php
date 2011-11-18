@@ -593,7 +593,34 @@ class LimeExpressionManager {
             }
 
             // max_num_value_n
-            // TODO - note, has no subqs
+            // Validation:= N <= value (which could be an expression).
+            if (isset($qattr['max_num_value_n']) && trim($qattr['max_num_value_n']) != '')
+            {
+                $max_num_value_n = $qattr['max_num_value_n'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    switch ($type)
+                    {
+                        case 'N': //NUMERICAL QUESTION TYPE
+                            $sq_name = $sq['varName'];
+                            break;
+                        default:
+                            break;
+                    }
+                    if (!is_null($sq_name)) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'max_num_value_n',
+                            'eqn' => '(' . $sq_name . ' <= (' . $max_num_value_n . '))',
+                            'qid' => $questionNum
+                        );
+                    }
+                }
+            }
 
             // max_num_value_sgqa
             // Validation:= sum(sq1,...,sqN) <= value (which could be an expression).
@@ -716,7 +743,34 @@ class LimeExpressionManager {
             }
 
             // min_num_value_n
-            // TODO - note has no subqs
+            // Validation:= N >= value (which could be an expression).
+            if (isset($qattr['min_num_value_n']) && trim($qattr['min_num_value_n']) != '')
+            {
+                $min_num_value_n = $qattr['min_num_value_n'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    switch ($type)
+                    {
+                        case 'N': //NUMERICAL QUESTION TYPE
+                            $sq_name = $sq['varName'];
+                            break;
+                        default:
+                            break;
+                    }
+                    if (!is_null($sq_name)) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'min_num_value_n',
+                            'eqn' => '(' . $sq_name . ' >= (' . $min_num_value_n . '))',
+                            'qid' => $questionNum
+                        );
+                    }
+                }
+            }
 
             // min_num_value_sgqa
             // Validation:= sum(sq1,...,sqN) >= value (which could be an expression).
@@ -1254,7 +1308,7 @@ class LimeExpressionManager {
                     }
                     break;
             }
-            if (!is_null($rowdivid) || $type == 'L') {
+            if (!is_null($rowdivid) || $type == 'L' || $type == 'N') {
                 if (!isset($q2subqInfo[$questionNum])) {
                     $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -1279,6 +1333,12 @@ class LimeExpressionManager {
                             'sqsuffix' => '_' . $parts[1],
                             );
                     }
+                }
+                else if ($type == 'N')
+                {
+                    $q2subqInfo[$questionNum]['subqs'] = array(
+                        'varName' => $varName,
+                        );
                 }
                 else
                 {
