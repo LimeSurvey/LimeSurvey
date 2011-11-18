@@ -68,6 +68,7 @@ class ExpressionManager {
         $regex_andor = '\band\b|\bor\b|&&|\|\|';
 
         $this->sExpressionRegex = '#((?<!\\\\)' . '{' . '(?!\s*\n\|\s*\r\|\s*\r\n|\s+)' .
+//                '(' . $regex_dq_string . '|' . $regex_sq_string . '|.*?)*' .    // This line lets you have braces embedded in strings - like RegExp - but it crashes the compiler when there are many tokens
                 '.*?' .
                 '(?<!\\\\)(?<!\n|\r|\r\n|\s)' . '}' . ')#';
 
@@ -1074,10 +1075,10 @@ class ExpressionManager {
             switch ($token[2])
             {
                 case 'DQ_STRING':
-                    $stringParts[] = '"' . addcslashes($token[0],'"') . '"'; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
+                    $stringParts[] = '"' . addcslashes($token[0],'\"') . '"'; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
                     break;
                 case 'SQ_STRING':
-                    $stringParts[] = "'" . addcslashes($token[0],"'") . "'"; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
+                    $stringParts[] = "'" . addcslashes($token[0],"\'") . "'"; // htmlspecialchars($token[0],ENT_QUOTES,'UTF-8',false) . "'";
                     break;
                 case 'SGQA':
                 case 'WORD':
@@ -2137,6 +2138,7 @@ What if there is a { space after the opening brace?}
 What about a {space before the closing brace }?
 What about an { expression nested {within a string} that has white space after the opening brace}?
 Can {expressions contain 'single' or "double" quoted strings}?
+Can an expression contain a perl regular expression like this {'/^\d{3}-\d{2}-\d{4}$/'}?
 [img src="images/mine_{Q1}.png"/]
 [img src="images/mine_" + {Q1} + ".png"/]
 [img src={implode('','"images/mine_',Q1,'.png"')}/]
@@ -2146,6 +2148,7 @@ Can {expressions contain 'single' or "double" quoted strings}?
 Since you have more {if((INSERT61764X1X3 > INSERT61764X1X4),'children','pets')} than you do {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')}, do you feel that the {if((INSERT61764X1X3 > INSERT61764X1X4),'pets','children')} are at a disadvantage?
 Here is a String that failed to parse prior to fixing the preg_split() command to avoid recursive search of sub-strings: [{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Here is the question.
 EOD;
+// Here is a String that failed to parse prior to fixing the preg_split() command to avoid recursive search of sub-strings: [{((617167X9X3241 == "Y" or 617167X9X3242 == "Y" or 617167X9X3243 == "Y" or 617167X9X3244 == "Y" or 617167X9X3245 == "Y" or 617167X9X3246 == "Y" or 617167X9X3247 == "Y" or 617167X9X3248 == "Y" or 617167X9X3249 == "Y") and (617167X9X3301 == "Y" or 617167X9X3302 == "Y" or 617167X9X3303 == "Y" or 617167X9X3304 == "Y" or 617167X9X3305 == "Y" or 617167X9X3306 == "Y" or 617167X9X3307 == "Y" or 617167X9X3308 == "Y" or 617167X9X3309 == "Y"))}] Here is the question.
 
         $em = new ExpressionManager();
 
@@ -2421,14 +2424,14 @@ hi there!~strtolower(c)
 1~c == 'Hi there!'
 1~c == "Hi there!"
 1~strpos(c,'there')>1
-1~regexMatch('there',c)
-1~regexMatch('^.*there.*$',c)
-0~regexMatch('joe',c)
-1~regexMatch('(?:dog|cat)food','catfood stinks')
-1~regexMatch('(?:dog|cat)food','catfood stinks')
-1~regexMatch('[0-9]{3}-[0-9]{2}-[0-9]{4}','123-45-6789')
-1~regexMatch('\d{3}-\d{2}-\d{4}','123-45-6789')
-1~regexMatch('(?:\(\d{3}\))\s*\d{3}-\d{4}','(212) 555-1212')
+1~regexMatch('/there/',c)
+1~regexMatch('/^.*there.*$/',c)
+0~regexMatch('/joe/',c)
+1~regexMatch('/(?:dog|cat)food/','catfood stinks')
+1~regexMatch('/(?:dog|cat)food/','catfood stinks')
+1~regexMatch('/[0-9]{3}-[0-9]{2}-[0-9]{4}/','123-45-6789')
+1~regexMatch('/\d{3}-\d{2}-\d{4}/','123-45-6789')
+1~regexMatch('/(?:\(\d{3}\))\s*\d{3}-\d{4}/','(212) 555-1212')
 11~eleven
 144~twelve * twelve
 4~if(5 > 7,2,4)
@@ -2789,7 +2792,14 @@ function expr_mgr_htmlspecialchars_decode($string)
  */
 function exprmgr_regexMatch($pattern, $input)
 {
-    return preg_match("/" . $pattern . "/", $input);
+    try {
+        $result = preg_match($pattern, $input);
+    } catch (Exception $e) {
+        $result = false;
+        // How should errors be logged?
+        print 'Invalid PERL Regular Expression: ' . htmlspecialchars($pattern);
+    }
+    return $result;
 }
 
 ?>

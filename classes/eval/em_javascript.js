@@ -133,12 +133,17 @@ function LEMimplode()
 }
 
 /*
- * Returns true if within matches the pattern
+ * Returns true if within matches the pattern.  Pattern must start and end with the '/' character
  */
 function LEMregexMatch(pattern,within)
 {
-    var str = new String(within);
-    return (str.match(pattern) !== null);
+    try {
+        var reg = new RegExp(pattern.substr(1,pattern.length-2));
+        return reg.test(within);
+    }
+    catch (err) {
+        return false;
+    }
 }
 
 function LEMstrlen(a)

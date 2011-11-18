@@ -2570,6 +2570,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                        $fieldmap[$fieldname]['preg']=$arow['preg'];
                     }
                 }
             }
@@ -2717,6 +2718,8 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                    $fieldmap[$fieldname]['preg']=$arow['preg'];
+
                         if ($arow['same_default'])
                         {
                         $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
@@ -2785,6 +2788,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
         $fieldmap[$fieldname]['relevance']=$arow['relevance'];
         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+        $fieldmap[$fieldname]['preg']=$arow['preg'];
     }
     if (isset($fieldmap)) {
         $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;

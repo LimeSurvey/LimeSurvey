@@ -578,7 +578,7 @@ class LimeExpressionManager {
             {
                 $max_num_value_n = $qattr['max_num_value_n'];
                 if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
+                    $sq = $qinfo['subqs'][0];
                     switch ($type)
                     {
                         case 'N': //NUMERICAL QUESTION TYPE
@@ -732,7 +732,7 @@ class LimeExpressionManager {
             {
                 $min_num_value_n = $qattr['min_num_value_n'];
                 if ($hasSubqs) {
-                    $subqs = $qinfo['subqs'];
+                    $sq = $qinfo['subqs'][0];
                     switch ($type)
                     {
                         case 'N': //NUMERICAL QUESTION TYPE
@@ -840,6 +840,49 @@ class LimeExpressionManager {
             // TODO?  How does it work?
             // The assesment value (referenced how?) = count(sq1,...,sqN) * assessment_value
             // Since there are easy work-arounds to this, skipping it for now
+
+            // preg - a PHP Regular Expression to validate text input fields
+            if (isset($qinfo['preg']) && !is_null($qinfo['preg']))
+            {
+                $preg = $qinfo['preg'];
+                if ($hasSubqs) {
+                    $subqs = $qinfo['subqs'];
+                    $sq_names = array();
+                    foreach ($subqs as $sq) {
+                        $sq_name = NULL;
+                        switch ($type)
+                        {
+                            case 'N': //NUMERICAL QUESTION TYPE
+                            case 'K': //MULTIPLE NUMERICAL QUESTION
+                            case 'Q': //MULTIPLE SHORT TEXT
+                            case ';': //ARRAY (Multi Flexi) Text
+                            case 'S': //SHORT FREE TEXT
+                            case 'T': //LONG FREE TEXT
+                            case 'U': //HUGE FREE TEXT
+                                $sq_name = '(!regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
+                                break;
+                            default:
+                                break;
+                        }
+                        if (!is_null($sq_name)) {
+                            $sq_names[] = $sq_name;
+                        }
+                    }
+                    if (count($sq_names) > 0) {
+                        if (!isset($validationEqn[$questionNum]))
+                        {
+                            $validationEqn[$questionNum] = array();
+                        }
+                        $validationEqn[$questionNum][] = array(
+                            'qtype' => $type,
+                            'type' => 'preg',
+                            'eqn' => '(count(' . implode(', ', $sq_names) . ') > 0)',
+                            'qid' => $questionNum,
+                            'tip' => $this->gT('All entries must conform to this regular expression:') . " " . str_replace(array('{','}'),array('{ ',' }'), $preg),
+                        );
+                    }
+                }
+            }
         }
 //        log_message('debug','**SUBQUESTION RELEVANCE**' . print_r($subQrels,true));
 //        log_message('debug','**VALIDATION EQUATIONS**' . print_r($validationEqn,true));
@@ -995,6 +1038,10 @@ class LimeExpressionManager {
             $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
             $hidden = (isset($qattr[$questionNum]['hidden'])) ? $qattr[$questionNum]['hidden'] : 'N';
             $scale_id = (isset($fielddata['scale_id'])) ? $fielddata['scale_id'] : '0';
+            $preg = (isset($fielddata['preg'])) ? $fielddata['preg'] : NULL; // a perl regular exrpession validation function
+            if (trim($preg) == '') {
+                $preg = NULL;
+            }
 
             if (isset($this->questionId2groupSeq[$questionNum])) {
                 $groupSeq = $this->questionId2groupSeq[$questionNum];
@@ -1204,7 +1251,7 @@ class LimeExpressionManager {
                     }
                     break;
             }
-            if (!is_null($rowdivid) || $type == 'L' || $type == 'N') {
+            if (!is_null($rowdivid) || $type == 'L' || $type == 'N' || !is_null($preg)) {
                 if (!isset($q2subqInfo[$questionNum])) {
                     $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
@@ -1212,7 +1259,8 @@ class LimeExpressionManager {
                         'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
                         'varName' => $varName,
                         'type' => $type,
-                        'fieldname' => $code
+                        'fieldname' => $code,
+                        'preg' => $preg,
                         );
                 }
                 if (!isset($q2subqInfo[$questionNum]['subqs'])) {
@@ -1230,9 +1278,10 @@ class LimeExpressionManager {
                             );
                     }
                 }
-                else if ($type == 'N')
+                else if ($type == 'N'
+                        || $type == 'S' || $type == 'T' || $type == 'U')    // for $preg
                 {
-                    $q2subqInfo[$questionNum]['subqs'] = array(
+                    $q2subqInfo[$questionNum]['subqs'][] = array(
                         'varName' => $varName,
                         );
                 }
@@ -2130,6 +2179,7 @@ class LimeExpressionManager {
 
                                     // Detect any violations of  mandatory rules
                                     $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
+                                    $mandatoryTip = '';
                                     if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y')) {
                                         switch ($qInfo['type']) {
                                             case 'M':
@@ -2137,12 +2187,14 @@ class LimeExpressionManager {
                                                 // If at least one checkbox is checked, we're OK
                                                 if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs))) {
                                                     $qmandViolation = true;
+                                                    $mandatoryTip = $LEM->gT('Please check at least one item.');
                                                 }
                                                 break;
                                             default:
                                                 // In general, if any relevant questions aren't answered, then it violates the mandatory rule
                                                 if (count($unansweredSQs) > 0) {
                                                     $qmandViolation = true; // TODO - what about 'other'?
+                                                    $mandatoryTip = $LEM->gT('Please complete all parts');
                                                 }
                                                 break;
                                         }
@@ -2158,7 +2210,8 @@ class LimeExpressionManager {
                                     if (isset($LEM->qid2validationEqn[$qid])) {
                                         $hasValidationEqn=true;
                                         if ($qrel && !$qhidden) {
-                                            $stringToParse = htmlspecialchars_decode($LEM->qid2validationEqn[$qid]['eqn'],ENT_QUOTES);  // TODO is this needed?
+//                                            $stringToParse = htmlspecialchars_decode($LEM->qid2validationEqn[$qid]['eqn'],ENT_QUOTES);  // TODO is this needed?
+                                            $stringToParse = $LEM->qid2validationEqn[$qid]['eqn'];
                                             $qvalid = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
                                             if ($LEM->em->HasErrors()) {
                                                 $qvalid=false;  // default to invalid so that can show the error
@@ -2167,7 +2220,7 @@ class LimeExpressionManager {
                                                 $prettyPrintValidEqn = $LEM->em->GetPrettyPrintString();
                                                 
                                                 // Also preview the Validation Tip
-                                                $stringToParse = htmlspecialchars_decode(implode('<br/>',$LEM->qid2validationEqn[$qid]['tips']),ENT_QUOTES);  // TODO is this needed?
+                                                $stringToParse = implode('<br/>',$LEM->qid2validationEqn[$qid]['tips']);
                                                 // pretty-print them
                                                 $LEM->ProcessString($stringToParse, $qid);
                                                 $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();                                            }
@@ -2210,8 +2263,12 @@ class LimeExpressionManager {
                                             . $prettyPrintRelEqn
                                             . "<br/>\n";
 
+                                        if ($mandatoryTip != '') {
+                                            $debug_gmessage .= '----Mandatory Tip: ' . $mandatoryTip . "<br/>\n";
+                                        }
+
                                         if ($prettyPrintValidTip != '') {
-                                            $debug_gmessage .= '----Validation Tip: ' . $prettyPrintValidTip . "<br>\n";
+                                            $debug_gmessage .= '----Validation Tip: ' . $prettyPrintValidTip . "<br/>\n";
                                         }
 
                                         if ($prettyPrintValidEqn != '') {
@@ -2393,7 +2450,6 @@ class LimeExpressionManager {
                                             $debug_message .= '----** Page is irrelevant, so NULL all questions in this group:<br/>' . $query . "<br/>\n";
                                         }
                                     }
-//
                                     // Advance to next group
                                     ++$LEM->currentGroupSeq;
                                     --$i; // to avoid a double increment from the for loop
