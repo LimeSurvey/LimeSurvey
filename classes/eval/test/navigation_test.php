@@ -32,7 +32,7 @@
 
                 while(true) {
                     $now = microtime(true);
-                    $result = LimeExpressionManager::NavigateForwards(true);
+                    $result = LimeExpressionManager::NavigateForwards(true,false);
                     print $result['message'] . "<br/>";
                     print '<b>[NavigateForwards() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
                     if (is_null($result) || $result['finished'] == true) {

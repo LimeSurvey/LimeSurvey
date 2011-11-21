@@ -31,12 +31,14 @@ class LimeExpressionManager {
     private $groupId2groupSeq;  // map of gid to 0-based sequence number of groups
     private $questionId2questionSeq;    // map question # to an incremental count of question order across the whole survey
     private $questionId2groupSeq;   // map question  # to the group it is within, using an incremental count of group order
+    private $groupSeqInfo;  // array of info about each Group, indexed by GroupSeq
 
     private $gid2relevanceStatus;   // tracks which groups have at least one relevant, non-hidden question
     private $qid2validationEqn;     // maps question # to the validation equation for that question.
 
     private $questionSeq2relevance; // keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
-    private $currentGroupSeq;
+    private $currentGroupSeq;   // current Group sequence (0-based index)
+    private $currentQuestionSeq;    // for Question-by-Question mode, the 0-based index
     private $currentQset=NULL;   // set of the current set of questions to be displayed - at least one must be relevant
 
     private $maxGroupSeq;  // the maximum groupSeq reached -  this is needed for Index
@@ -56,6 +58,12 @@ class LimeExpressionManager {
     {
         self::$instance =& $this;
         $this->em = new ExpressionManager();
+        
+        // some common debug messages
+        define('IRRELEVANT'," <span style='color:red'>irrelevant</span> ");
+        define('ALWAYS_HIDDEN'," <span style='color:red'>always-hidden</span> ");
+        define('INVALID'," <span style='color:red'>(a relevant Q fails validation tests)</span> ");
+        define('MANDVIOLATION'," <span style='color:red'>(missing a relevant mandatory)</span> ");
     }
 
     // The singleton method
@@ -986,6 +994,7 @@ class LimeExpressionManager {
         $this->questionSeq2relevance = array();
         $this->groupId2groupSeq = array();
         $this->qid2validationEqn = array();
+        $this->groupSeqInfo = array();
 
         // Since building array of allowable answers, need to know preset values for certain question types
         $presets = array();
@@ -1061,6 +1070,17 @@ class LimeExpressionManager {
             if (!isset($this->groupId2groupSeq[$groupNum])) {
                 $this->groupId2groupSeq[$groupNum] = $groupSeq;
             }
+
+            if (!isset($this->groupSeqInfo[$groupSeq])) {
+                $this->groupSeqInfo[$groupSeq] = array(
+                    'qstart' => $questionSeq,
+                    'qend' => $questionSeq,
+                );
+            }
+            else {
+                $this->groupSeqInfo[$groupSeq]['qend'] = $questionSeq;  // with each question, update so know ending value
+            }
+
 
             // Create list of codes associated with each question
             $codeList = (isset($this->qid2code[$questionNum]) ? $this->qid2code[$questionNum] : '');
@@ -1471,6 +1491,8 @@ class LimeExpressionManager {
             $this->surveyLogicFile = $debugLog_html;
         }
         usort($this->questionSeq2relevance,'self::cmpQuestionSeq');
+        $this->numQuestions = count($this->questionSeq2relevance);
+        $this->numGroups = count($this->groupId2groupSeq);
         
         return true;
     }
@@ -1906,579 +1928,724 @@ class LimeExpressionManager {
         );
     }
 
-    static function NavigateBackwards($debug=false)
+     static function NavigateBackwards($debug=false)
     {
         return self::NextRelevantSet(false,$debug);
     }
-    
-    static function NavigateForwards($debug=false) {
-        return self::NextRelevantSet(true,$debug);
+
+    /**
+     *
+     * @param <type> $force - if true, continue to go forward even if there are violations to the mandatory and/or validity rules
+     * @param <type> $debug - if true, show more detailed debug messages
+     */
+    static function NavigateForwards($force=false,$debug=false) {
+        $LEM =& LimeExpressionManager::singleton();
+        $previousGroupSeq = $LEM->currentGroupSeq;   // so know where started
+
+        $currentGInfo = array();
+        $LEM->RelevanceResultCache=array();    // to avoid running same test more than once for a given group
+
+        // $LEM->ProcessCurrentResponses();
+        switch ($LEM->surveyMode)
+        {
+            case 'survey':
+                break;
+            case 'group':
+                // First validate the current group
+                if (!$force)
+                {
+                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,$debug);
+                    if ($result['mandViolation'] || !$result['valid'])
+                    {
+                        // redisplay the current group
+
+                    }
+                }
+                $message = '';
+                while (true)
+                {
+                    $result = $LEM->_ValidateGroup(++$LEM->currentGroupSeq,  $debug);
+                    $message .= $result['message'];
+                    if ($LEM->currentGroupSeq > $LEM->numGroups)
+                    {
+                        return array(
+                            'finished'=>true,
+                            'message'=>$message,
+                        );
+                    }
+                    else if (!$result['relevant'] || $result['hidden'])
+                    {
+                        // then skip this group - assume already saved?
+                        continue;
+                    }
+                    else
+                    {
+                        // display new group
+                        return array(
+                            'finished'=>false,
+                            'message'=>$message,
+                        );
+                    }
+                }
+                break;
+            case 'question':
+                break;
+        }
     }
 
-    static function NextRelevantSet($forward=true,$debug=false)
+    /**
+     *
+     * @param <type> $groupSeq - the index-0 sequence number for this group
+     * @param <type> $debug - if true, generate detailed debug messages.
+     * @return <array> - detailed information about this group
+     */
+    function _ValidateGroup($groupSeq, $debug=false)
     {
-        // For each question in the group, need to know the following:
-        // (a) mandatory - if so, then all relevant sub-questions must be answered (e.g. pay attention to array_filter and array_filter_exclude)
-        // (b) always-hidden
-        // (c) relevance status - including sub-question-level relevance
-        // (d) answered - if $_SESSION[sgqa]=='' or NULL, then it is not answered
-        // (e) validity - whether relevant questions pass their validity tests
-        $LEM =& LimeExpressionManager::singleton();
-        $currentQset = array(); // collection of questions on this page (may be survey, group, or question-level)
-        $debug_message='';
-        if ($debug || true) {
-            $IRRELEVANT=" <span style='color:red'>irrelevant</span> ";
-            $ALWAYS_HIDDEN=" <span style='color:red'>always-hidden</span> ";
-            $INVALID=" <span style='color:red'>(a relevant Q fails validation tests)</span> ";
-            $MANDVIOLATION=" <span style='color:red'>(missing a relevant mandatory)</span> ";
+        $LEM =& $this;
+
+        if ($groupSeq < 0 || $groupSeq >= $LEM->numGroups) {
+            return NULL;    // TODO - what is desired behavior?
         }
-        if ($forward) {
-            switch ($LEM->surveyMode){
-                case 'survey':
-                    break;
-                case 'group':
-                    ++$LEM->currentGroupSeq;    // advance to next group
-                    $numQuestions = count($LEM->questionSeq2relevance);
-                    $numGroups = count($LEM->groupId2groupSeq);
-                    if ($LEM->currentGroupSeq < $numGroups) {
-                        for ($i=0; $i<$numQuestions; ++$i)
+        $groupSeqInfo = $LEM->groupSeqInfo[$groupSeq];
+        $qInfo = $LEM->questionSeq2relevance[$groupSeqInfo['qstart']];
+        $gid = $qInfo['gid'];
+        $LEM->StartProcessingGroup($gid, $LEM->anonymized, $LEM->sid); // analyze the data we have about this group
+
+        $grel=false;  // assume irrelevant until find a relevant question
+        $ghidden=true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
+        $gmandViolation=false;  // assume that the group contains no manditory questions that have not been fully answered
+        $gvalid=true;   // assume valid until discover otherwise
+        $debug_message = '';
+        $messages = array();
+        $currentQset = array();
+
+        for ($i=$groupSeqInfo['qstart'];$i<=$groupSeqInfo['qend']; ++$i)
+        {
+            $qStatus = $LEM->_ValidateQuestion($i, $debug);
+
+            if ($qStatus['relStatus']==true) {
+                $grel = true;   // at least one question relevant
+            }
+            if ($qStatus['info']['hidden']==false) {
+                $ghidden=false; // at least one question is visible
+            }
+            if ($qStatus['qmandViolation']==true) {
+                $gmandViolation=true;   // at least one relevant question fails mandatory test
+            }
+            if ($qStatus['valid']==false) {
+                $gvalid=false;  // at least one question fails validity constraints
+            }
+            $currentQset[] = $qStatus;
+            $messages[] = $qStatus['message'];
+        }
+
+        // Done processing all questions/sub-questions in the potentially relevant group
+        // Now check whether the group as a whole is relevant, valid, and/or hidden
+        if ($debug)    // always want to see this
+        {
+            $debug_message .= '<br/>[G#' . $LEM->currentGroupSeq . ']'
+                    . '[' . $groupSeqInfo['qstart'] . '-' . $groupSeqInfo['qend'] . ']'
+                    . "[<a href='../../../admin/admin.php?action=orderquestions&sid={$LEM->sid}&gid=$gid'>"
+                    .  'GID:' . $gid . "</a>]:  "
+                    . ($grel ? 'relevant ' : IRRELEVANT)
+                    . (($ghidden && $grel) ? ALWAYS_HIDDEN : ' ')
+                    . ($gmandViolation ? MANDVIOLATION : ' ')
+                    . ($gvalid ? '' : INVALID)
+                    . "<br/>\n"
+                    . implode('', $messages);
+        }
+
+        if ($grel == true)
+        {
+            if (!$gvalid)
+            {
+                // At least one question is invalid, so re-show this group
+                // Validation logic needs to happen before trying to move to the next group
+                if ($debug)
+                {
+                    $debug_message .= "----At least one relevant question was invalid, so re-show this group<br/>\n";
+                }
+            }
+            if ($gmandViolation)
+            {
+                // At least one releavant question was mandatory but not answered
+                // Mandatory logic needs to happen before trying to move to the next group
+                if ($debug)
+                {
+                    $debug_message .= "----At least one relevant question was mandatory but unanswered, so re-show this group<br/>\n";
+                }
+            }
+
+            if ($ghidden == true)
+            {
+                // This group has at least one relevant question, but they are all hidden.
+                // NULL irrelevant values and process + save the result of any relevant equations
+                $updatedValues=array();
+                foreach ($currentQset as $qs)
+                {
+                    // Process any relevant equations
+                    if (($qs['info']['type'] == '*') && $qs['relStatus'] == true)
+                    {
+                        // Process this equation
+                        $result = $LEM->ProcessString($qs['info']['eqn'], $qs['info']['qid']);
+                        $sgqa = $qs['sgqa'];   // there will be only one, since Equation
+                        // Store the result of the Equation in the SESSION
+                        $_SESSION[$sgqa] = $result;
+                        $updatedValues[$sgqa] = $result;
+                        if ($debug)
                         {
-                            // iterate over all questions, just processing those in the next relevant group
-                            $qInfo = $LEM->questionSeq2relevance[$i];   // this array is by group and question sequence
-                            if ($qInfo['groupSeq'] == $LEM->currentGroupSeq) {
-                                $groupNum = $qInfo['gid'];
-                                $grel=false;  // assume irrelevant until find a relevant question
-                                $ghidden=true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
-                                $gmandViolation=false;  // assume that the group contains no manditory questions that have not been fully answered
-                                $gvalid=true;   // assume valid until discover otherwise
-                                $LEM->StartProcessingGroup($groupNum, $LEM->anonymized, $LEM->sid); // analyze the data we have about this group
-//                                $grel = $LEM->GroupIsRelevant($groupNum) ? 'relevant' : $IRRELEVANT; // TODO - tihs function  returns wrong value - always true
-                                $debug_gmessage = '';
-                                // Once find the next potentially relevant group, process all questions and sub-questions within it.
-                                while($qInfo['groupSeq'] == $LEM->currentGroupSeq) {
-                                    // Check relevance - via equation, or from $SESSION?
-                                    $qrel=true;   // assume relevant unless discover otherwise
-                                    $prettyPrintRelEqn='';    //  assume no relevance eqn by default
-                                    $qid=$qInfo['qid'];
-
-                                    if (!isset($qInfo['relevance']) || $qInfo['relevance'] == '') {
-                                        $relevanceEqn = 1;
-                                    }
-                                    else {
-                                        $relevanceEqn = $qInfo['relevance'];
-                                    }
-                                    $relevanceEqn = htmlspecialchars_decode($relevanceEqn,ENT_QUOTES);  // TODO is this needed?
-                                    $qrel = $LEM->em->ProcessBooleanExpression($relevanceEqn,$qInfo['groupSeq'], $qInfo['questionSeq']);    // assumes safer to re-process relevance and not trust POST values
-                                    if ($LEM->em->HasErrors()) {
-                                        $qrel=false;  // default to invalid so that can show the error
-                                    }
-                                    if ($debug) {
-                                        $prettyPrintRelEqn = $LEM->em->GetPrettyPrintString();
-                                    }
-
-                                    // Check always-hidden status
-                                    $qhidden = $qInfo['hidden'];
-                                    if ($qrel) {
-                                        $grel = true;   // at least one question is relevant
-                                    }
-                                    if (!$qhidden && $qrel) {
-                                        $ghidden = false;    // at least one relevant question should be shown
-                                    }
-
-                                    // identify the relevant subquestions (array_filter and array_filter_exclude may make some irrelevant)
-                                    $relevantSQs=array();
-                                    $irrelevantSQs=array();
-                                    $prettyPrintSQRelEqns=array();
-                                    $prettyPrintSQRelEqn='';
-                                    $prettyPrintValidTip='';
-                                    if (!$qrel) {
-                                        // All sub-questions are irrelevant
-                                        $irrelevantSQs = explode('|', $LEM->qid2code[$qid]);
-                                    }
-                                    else {
-                                        // Check filter status to determine which subquestions are relevant
-                                        $sgqas = explode('|',$LEM->qid2code[$qid]);
-                                        $sqRelResultCache=array();    // to avoid running same test more than once.
-                                        foreach ($sgqas as $sgqa) {
-                                            // for each subq, see if it is part of an array_filter or array_filter_exclude
-                                            if (!isset($LEM->subQrelInfo))  {
-                                                $relevantSQs[] = $sgqa;
-                                                continue;
-                                            }
-                                            $foundSQrelevance=false;
-                                            foreach ($LEM->subQrelInfo as $sq) {
-                                                if ($sq['qid'] == $qid) {
-                                                    switch ($sq['qtype'])
-                                                    {
-                                                        case '1':   //Array (Flexible Labels) dual scale
-                                                            if ($sgqa == ($sq['rowdivid'] . '#0') || $sgqa == ($sq['rowdivid'] . '#1')) {
-                                                                $foundSQrelevance=true;
-                                                                if (isset($sqRelResultCache[$sq['eqn']])) {
-                                                                    $sqrel = $sqRelResultCache[$sq['eqn']]['result'];
-                                                                    if ($debug) {
-                                                                        $prettyPrintSQRelEqns[] = $sqRelResultCache[$sq['eqn']]['prettyPrint'];
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
-                                                                    $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
-                                                                    if ($LEM->em->HasErrors()) {
-                                                                        $sqrel=false;  // default to invalid so that can show the error
-                                                                    }
-                                                                    if ($debug) {
-                                                                        $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
-                                                                        $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
-                                                                    }
-                                                                    $sqRelResultCache[$sq['rowdivid']] = array(
-                                                                        'result'=>$sqrel,
-                                                                        'prettyPrint'=>$prettyPrintSQRelEqn,
-                                                                        );
-                                                                }
-                                                                if ($sqrel) {
-                                                                    $relevantSQs[] = $sgqa;
-                                                                }
-                                                                else {
-                                                                    $irrelevantSQs[] = $sgqa;
-                                                                }
-                                                            }
-                                                            break;
-                                                        case ':': //ARRAY (Multi Flexi) 1 to 10
-                                                        case ';': //ARRAY (Multi Flexi) Text
-                                                            if (preg_match('/^' . $sq['rowdivid'] . '/', $sgqa)) {
-                                                                $foundSQrelevance=true;
-                                                                if (isset($sqRelResultCache[$sq['eqn']])) {
-                                                                    $sqrel = $sqRelResultCache[$sq['eqn']]['result'];
-                                                                    if ($debug) {
-                                                                        $prettyPrintSQRelEqns[] = $sqRelResultCache[$sq['eqn']]['prettyPrint'];
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
-                                                                    $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
-                                                                    if ($LEM->em->HasErrors()) {
-                                                                        $sqrel=false;  // default to invalid so that can show the error
-                                                                    }
-                                                                    if ($debug) {
-                                                                        $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
-                                                                        $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
-                                                                    }
-                                                                    $sqRelResultCache[$sq['rowdivid']] = array(
-                                                                        'result'=>$sqrel,
-                                                                        'prettyPrint'=>$prettyPrintSQRelEqn,
-                                                                        );
-                                                                }
-                                                                if ($sqrel) {
-                                                                    $relevantSQs[] = $sgqa;
-                                                                }
-                                                                else {
-                                                                    $irrelevantSQs[] = $sgqa;
-                                                                }
-                                                            }
-                                                        case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
-                                                        case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
-                                                        case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                                                        case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
-                                                        case 'F': //ARRAY (Flexible) - Row Format
-                                                        case 'M': //Multiple choice checkbox
-                                                        case 'P': //Multiple choice with comments checkbox + text
-                                                            // Note, for M and P, Mandatory should mean that at least one answer was picked - not that all were checked
-                                                            if ($sgqa == $sq['rowdivid'] 
-                                                                    || $sgqa == ($sq['rowdivid'] . 'comment')) {    // to catch case 'P'
-                                                                $foundSQrelevance=true;
-                                                                if (isset($sqRelResultCache[$sq['eqn']])) {
-                                                                    $sqrel = $sqRelResultCache[$sq['eqn']]['result'];
-                                                                    if ($debug) {
-                                                                        $prettyPrintSQRelEqns[] = $sqRelResultCache[$sq['eqn']]['prettyPrint'];
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
-                                                                    $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
-                                                                    if ($LEM->em->HasErrors()) {
-                                                                        $sqrel=false;  // default to invalid so that can show the error
-                                                                    }
-                                                                    if ($debug) {
-                                                                        $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
-                                                                        $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
-                                                                    }
-                                                                    $sqRelResultCache[$sq['rowdivid']] = array(
-                                                                        'result'=>$sqrel,
-                                                                        'prettyPrint'=>$prettyPrintSQRelEqn,
-                                                                        );
-                                                                }
-                                                                if ($sqrel) {
-                                                                    $relevantSQs[] = $sgqa;
-                                                                }
-                                                                else {
-                                                                    $irrelevantSQs[] = $sgqa;
-                                                                }
-                                                            }
-                                                            break;
-                                                        case 'L': //LIST drop-down/radio-button list
-                                                            // TODO - these filters are supposed to ensure that the value doesn't equal a filtered value
-                                                            // TODO - isn't catching 'other' filter
-                                                            if ($sgqa == $sq['sgqa']) {
-                                                                $foundSQrelevance=true;
-                                                                if (isset($sqRelResultCache[$sq['eqn']])) {
-                                                                    $sqrel = $sqRelResultCache[$sq['eqn']]['result'];
-                                                                    if ($debug) {
-                                                                        $prettyPrintSQRelEqns[] = $sqRelResultCache[$sq['eqn']]['prettyPrint'];
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
-                                                                    $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
-                                                                    if ($LEM->em->HasErrors()) {
-                                                                        $sqrel=false;  // default to invalid so that can show the error
-                                                                    }
-                                                                    if ($debug) {
-                                                                        $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
-                                                                        $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
-                                                                    }
-                                                                    $sqRelResultCache[$sq['rowdivid']] = array(
-                                                                        'result'=>$sqrel,
-                                                                        'prettyPrint'=>$prettyPrintSQRelEqn,
-                                                                        );
-                                                                }
-                                                                if ($sqrel) {
-                                                                    $relevantSQs[] = $sgqa;
-                                                                }
-                                                                else {
-                                                                    $irrelevantSQs[] = $sgqa;
-                                                                }
-                                                            }
-                                                            break;
-                                                        default:
-                                                            break;
-                                                    }
-                                                }
-                                            }
-                                            if (!$foundSQrelevance) {
-                                                // then this question is relevant
-                                                $relevantSQs[] = $sgqa;
-                                            }
-                                        }
-                                    }
-                                    if ($debug)  {
-                                        $prettyPrintSQRelEqns = array_unique($prettyPrintSQRelEqns);
-                                    }
-                                    // These array_unique only apply to array_filter of type L (list)
-                                    $relevantSQs = array_unique($relevantSQs);
-                                    $irrelevantSQs = array_unique($irrelevantSQs);
-
-                                    // TODO - NULL out values of any irrelevant subquestions
-
-                                    // check that all mandatories have been fully answered (but don't require answers for sub-questions that are irrelevant
-                                    $unansweredSQs = array();   // list of sub-questions that weren't answered
-                                    foreach ($relevantSQs as $sgqa) {
-                                        if (!isset($_SESSION[$sgqa]) || ($_SESSION[$sgqa] == '' || is_null($_SESSION[$sgqa]))) {
-                                            // then a relevant, visible, mandatory question hasn't been answered
-                                            $unansweredSQs[] = $sgqa;
-                                        }
-                                    }
-
-                                    // Detect any violations of  mandatory rules
-                                    $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
-                                    $mandatoryTip = '';
-                                    if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y')) {
-                                        switch ($qInfo['type']) {
-                                            case 'M':
-                                            case 'P':
-                                                // If at least one checkbox is checked, we're OK
-                                                if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs))) {
-                                                    $qmandViolation = true;
-                                                    $mandatoryTip = $LEM->gT('Please check at least one item.');
-                                                }
-                                                break;
-                                            default:
-                                                // In general, if any relevant questions aren't answered, then it violates the mandatory rule
-                                                if (count($unansweredSQs) > 0) {
-                                                    $qmandViolation = true; // TODO - what about 'other'?
-                                                    $mandatoryTip = $LEM->gT('Please complete all parts');
-                                                }
-                                                break;
-                                        }
-                                    }
-                                    if ($qmandViolation) {
-                                        $gmandViolation=true;    // if one question violates mandatory, then the group does too
-                                    }
-
-                                    // check validity of responses
-                                    $qvalid=true;   // assume valid unless discover otherwise
-                                    $hasValidationEqn=false;
-                                    $prettyPrintValidEqn='';    //  assume no validation eqn by default
-                                    if (isset($LEM->qid2validationEqn[$qid])) {
-                                        $hasValidationEqn=true;
-                                        if ($qrel && !$qhidden) {
-//                                            $stringToParse = htmlspecialchars_decode($LEM->qid2validationEqn[$qid]['eqn'],ENT_QUOTES);  // TODO is this needed?
-                                            $stringToParse = $LEM->qid2validationEqn[$qid]['eqn'];
-                                            $qvalid = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
-                                            if ($LEM->em->HasErrors()) {
-                                                $qvalid=false;  // default to invalid so that can show the error
-                                            }
-                                            if ($debug) {
-                                                $prettyPrintValidEqn = $LEM->em->GetPrettyPrintString();
-                                                
-                                                // Also preview the Validation Tip
-                                                $stringToParse = implode('<br/>',$LEM->qid2validationEqn[$qid]['tips']);
-                                                // pretty-print them
-                                                $LEM->ProcessString($stringToParse, $qid);
-                                                $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();                                            }
-                                        }
-                                        else {
-                                            if ($debug) {
-                                                $prettyPrintValidEqn = 'Question is Irrelevant, so no need to further validate it';
-                                            }
-                                        }
-                                    }
-                                    if (!$qvalid) {
-                                        $gvalid=false;  //so know of at least one validation error for the group
-                                    }
-
-                                    // Store metadata needed for subsequent processing and display purposes
-                                    $currentQset[] = array(
-                                        'info' => $qInfo,   // collect all questions within the group - includes mandatory and always-hiddden status
-                                        'relStatus' => $qrel,
-                                        'relEqn' => $prettyPrintRelEqn,
-                                        'sgqa' => $LEM->qid2code[$qid],
-                                        'unansweredSQs' => implode('|',$unansweredSQs),
-                                        'valid' => $qvalid,
-                                        'validEqn' => $prettyPrintValidEqn,
-                                        'validTip' => $prettyPrintValidTip,
-                                        'relevantSQs' => implode('|',$relevantSQs),
-                                        'irrelevantSQs' => implode('|',$irrelevantSQs),
-                                        'subQrelEqn' => implode('<br/>',$prettyPrintSQRelEqns),
-                                        'qmandViolation' => $qmandViolation,
-                                        );
-
-                                    if ($debug) {
-                                        $debug_gmessage .= '--[Q#' . $qInfo['questionSeq'] . ']'
-                                            . "[<a href='../../../admin/admin.php?sid={$LEM->sid}&gid=$groupNum&qid=$qid'>"
-                                            . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
-                                            . ($qrel ? 'relevant' : $IRRELEVANT)
-                                            . ($qhidden ? $ALWAYS_HIDDEN : ' ')
-                                            . (($qInfo['mandatory'] == 'Y')? ' mandatory' : ' ')
-                                            . (($hasValidationEqn) ? (!$qvalid ? $INVALID : ' valid') : '')
-                                            . ($qmandViolation ? $MANDVIOLATION : ' ')
-                                            . $prettyPrintRelEqn
-                                            . "<br/>\n";
-
-                                        if ($mandatoryTip != '') {
-                                            $debug_gmessage .= '----Mandatory Tip: ' . $mandatoryTip . "<br/>\n";
-                                        }
-
-                                        if ($prettyPrintValidTip != '') {
-                                            $debug_gmessage .= '----Validation Tip: ' . $prettyPrintValidTip . "<br/>\n";
-                                        }
-
-                                        if ($prettyPrintValidEqn != '') {
-                                            $debug_gmessage .= '----Validation Eqn: ' . $prettyPrintValidEqn . "<br/>\n";
-                                        }
-
-                                        // what are the database question codes for this question?
-                                        $subQList = '{' . implode('}, {', explode('|',$LEM->qid2code[$qid])) . '}';
-                                        // pretty-print them
-                                        $LEM->ProcessString($subQList, $qid);
-                                        $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                                        $debug_gmessage .= '----SubQs=> ' . $prettyPrintSubQList . "<br/>\n";
-
-                                        if (count($prettyPrintSQRelEqns) > 0) {
-                                            $debug_gmessage .= "----Array Filters Applied:<br/>\n" . implode('<br/>',$prettyPrintSQRelEqns) . "<br/>\n";
-                                        }
-                                        
-                                        if (count($relevantSQs) > 0) {
-                                            $subQList = '{' . implode('}, {', $relevantSQs) . '}';
-                                            // pretty-print them
-                                            $LEM->ProcessString($subQList, $qid);
-                                            $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                                            $debug_gmessage .= '----Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
-                                        }
-                                        
-                                        if (count($irrelevantSQs) > 0) {
-                                            $subQList = '{' . implode('}, {', $irrelevantSQs) . '}';
-                                            // pretty-print them
-                                            $LEM->ProcessString($subQList, $qid);
-                                            $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                                            $debug_gmessage .= '----Irrelevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
-                                        }
-
-                                        // show which relevant subQs were not answered
-                                        if (count($unansweredSQs) > 0) {
-                                            $subQList = '{' . implode('}, {', $unansweredSQs) . '}';
-                                            // pretty-print them
-                                            $LEM->ProcessString($subQList, $qid);
-                                            $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                                            $debug_gmessage .= '----Unanswered Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
-                                        }
-                                    }
-
-                                    // if there are sub-questions and filters, which of those are irrelevant?
-                                    ++$i;   // advance to next question
-                                    if ($i >= $numQuestions) {
-                                        break;
-                                    }
-                                    $qInfo = $LEM->questionSeq2relevance[$i];
-                                }
-
-                                // Done processing all questions/sub-questions in the potentially relevant group
-                                // Now check whether the group as a whole is relevant, valid, and/or hidden
-                                if (true || $debug) {   // always want to see this
-                                    $debug_message .= '<br/>[G#' . $LEM->currentGroupSeq . ']'
-                                            . "[<a href='../../../admin/admin.php?action=orderquestions&sid={$LEM->sid}&gid=$groupNum'>"
-                                            .  'GID:' . $groupNum . "</a>]:  "
-                                            . ($grel ? 'relevant ' : $IRRELEVANT)
-                                            . (($ghidden && $grel) ? $ALWAYS_HIDDEN : ' ')
-                                            . ($gmandViolation ? $MANDVIOLATION : ' ')
-                                            . ($gvalid ? '' : $INVALID)
-                                            . "<br/>\n" . $debug_gmessage;
-                                }
-
-                                if ($grel == true) {
-                                    if (!$gvalid) {
-                                        // At least one question is invalid, so re-show this group
-                                        // Validation logic needs to happen before trying to move to the next group
-                                        if ($debug) {
-                                            $debug_message .= "----At least one relevant question was invalid, so re-show this group<br/>\n";
-                                        }
-                                    }
-                                    if ($gmandViolation) {
-                                        // At least one releavant question was mandatory but not answered
-                                        // Mandatory logic needs to happen before trying to move to the next group
-                                        if ($debug) {
-                                            $debug_message .= "----At least one relevant question was mandatory but unanswered, so re-show this group<br/>\n";
-                                        }
-                                    }
-
-                                    if ($ghidden == true) {
-                                        // This group has at least one relevant question, but they are all hidden.
-                                        // NULL irrelevant values and process + save the result of any relevant equations
-                                        $updatedValues=array();
-                                        foreach ($currentQset as $qs)
-                                        {
-                                            // Process any relevant equations
-                                            if (($qs['info']['type'] == '*') && $qs['relStatus'] == true) {
-                                                // Process this equation
-                                                $result = $LEM->ProcessString($qs['info']['eqn'], $qs['info']['qid']);
-                                                $sgqa = $qs['sgqa'];   // there will be only one, since Equation
-                                                // Store the result of the Equation in the SESSION
-                                                $_SESSION[$sgqa] = $result;
-                                                $updatedValues[$sgqa] = $result;
-                                                if ($debug) {
-                                                    $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
-                                                    $debug_message .= '----** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br/>\n";
-                                                }
-                                            }
-                                            // NULL all irrelevant questions
-                                            if ($qs['relStatus'] == false) {
-                                                $sgqas = explode('|',$qs['sgqa']);
-                                                foreach ($sgqas as $sgqa) {
-                                                    $_SESSION[$sgqa] = NULL;    // TMSW - or should it be unset?
-                                                    $updatedValues[$sgqa] = NULL;
-                                                }
-                                            }
-                                        }
-                                        // Update these values in the database
-                                        if (count($updatedValues) > 0)
-                                        {
-                                            $query = 'UPDATE survey_' . $LEM->sid . " SET ";
-                                            $setter = array();
-                                            foreach ($updatedValues as $key=>$value)
-                                            {
-                                                if (is_null($value)) {
-                                                    $setter[] = '`' . $key . "`=NULL";
-                                                }
-                                                else {
-                                                    $setter[] = '`' . $key . "`='" . addslashes($value) . "'";     // TMSW - what is preferred way to escape entries for DB?
-                                                }
-                                            }
-                                            $query .= implode(', ', $setter);
-                                            $query .= " WHERE ID=?";
-
-                                            if ($debug) {
-                                                $debug_message .= '----** Page is relevant but hidden, so NULL irrelevant values and save relevant Equation results:</br>' . $query . "<br/>\n";
-                                            }
-                                        }
-
-                                        // Advance to next group
-                                        ++$LEM->currentGroupSeq;
-                                        --$i;   // to avoid a double increment from the for loop
-                                        $currentQset=array();   // finished processing that group, so get ready for another one
-                                        continue;
-                                    }
-                                    else {
-                                        // This is the next relevant group - return something useful
-                                        $LEM->currentQset=$currentQset;
-                                        return array(
-                                            'finished' => false,
-                                            'message' => $debug_message,
-                                            'gid' => $groupNum,
-                                            'gseq' => $LEM->currentGroupSeq,
-//                                            'qset' => $currentQset,
-                                        );
-                                    }
-                                }
-                                else {
-                                    // This group contains no relevant questions
-                                    // NULL all of the Group's values in the database
-                                    $updatedValues=array();
-                                    foreach ($currentQset as $qs)
-                                    {
-                                        $sgqas = explode('|',$qs['sgqa']);
-                                        foreach ($sgqas as $sgqa) {
-                                            $_SESSION[$sgqa] = NULL;
-                                            $updatedValues[$sgqa] = NULL;
-                                        }
-                                    }
-                                    // Update these values in the database
-                                    if (count($updatedValues) > 0)
-                                    {
-                                        $query = 'UPDATE survey_' . $LEM->sid . " SET ";
-                                        $setter = array();
-                                        foreach ($updatedValues as $key=>$value)
-                                        {
-                                            if (is_null($value)) {
-                                                $setter[] = '`' . $key ."`=NULL";
-                                            }
-                                            else {
-                                                $setter[] = '`' . $key . "`='" . addslashes($value) . "'";     // TMSW - what is preferred way to escape entries for DB?
-                                            }
-                                        }
-                                        $query .= implode(', ', $setter);
-                                        $query .= " WHERE ID=?";
-
-                                        if ($debug) {
-                                            $debug_message .= '----** Page is irrelevant, so NULL all questions in this group:<br/>' . $query . "<br/>\n";
-                                        }
-                                    }
-                                    // Advance to next group
-                                    ++$LEM->currentGroupSeq;
-                                    --$i; // to avoid a double increment from the for loop
-                                    $currentQset=array();   // finished processing that group, so get ready for another one
-                                    continue;
-                                }
-                            }
+                            $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
+                            $debug_message .= '----** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br/>\n";
                         }
                     }
-                    $LEM->currentQset=NULL;
-                    return array(
-                        'finished' => true,
-                        'message' => $debug_message,
-                    );
+                    // NULL all irrelevant questions
+                    if ($qs['relStatus'] == false)
+                    {
+                        $sgqas = explode('|',$qs['sgqa']);
+                        foreach ($sgqas as $sgqa)
+                        {
+                            $_SESSION[$sgqa] = NULL;    // TMSW - or should it be unset?
+                            $updatedValues[$sgqa] = NULL;
+                        }
+                    }
+                }
+                // Update these values in the database
+                if (count($updatedValues) > 0)
+                {
+                    $query = 'UPDATE survey_' . $LEM->sid . " SET ";
+                    $setter = array();
+                    foreach ($updatedValues as $key=>$value)
+                    {
+                        if (is_null($value))
+                        {
+                            $setter[] = '`' . $key . "`=NULL";
+                        }
+                        else
+                        {
+                            $setter[] = '`' . $key . "`='" . addslashes($value) . "'";     // TMSW - what is preferred way to escape entries for DB?
+                        }
+                    }
+                    $query .= implode(', ', $setter);
+                    $query .= " WHERE ID=?";
+
+                    if ($debug)
+                    {
+                        $debug_message .= '----** Page is relevant but hidden, so NULL irrelevant values and save relevant Equation results:</br>' . $query . "<br/>\n";
+                    }
+                }
+            }
+        }
+        else
+        {
+            // This group contains no relevant questions
+            // NULL all of the Group's values in the database
+            $updatedValues=array();
+            foreach ($currentQset as $qs)
+            {
+                $sgqas = explode('|',$qs['sgqa']);
+                foreach ($sgqas as $sgqa)
+                {
+                    $_SESSION[$sgqa] = NULL;
+                    $updatedValues[$sgqa] = NULL;
+                }
+            }
+            // Update these values in the database
+            if (count($updatedValues) > 0)
+            {
+                $query = 'UPDATE survey_' . $LEM->sid . " SET ";
+                $setter = array();
+                foreach ($updatedValues as $key=>$value)
+                {
+                    if (is_null($value))
+                    {
+                        $setter[] = '`' . $key ."`=NULL";
+                    }
+                    else
+                    {
+                        $setter[] = '`' . $key . "`='" . addslashes($value) . "'";     // TMSW - what is preferred way to escape entries for DB?
+                    }
+                }
+                $query .= implode(', ', $setter);
+                $query .= " WHERE ID=?";
+
+                if ($debug)
+                {
+                    $debug_message .= '----** Page is irrelevant, so NULL all questions in this group:<br/>' . $query . "<br/>\n";
+                }
+            }
+        }
+
+        $currentGroupInfo = array(
+            'gid' => $gid,
+            'gseq' => $groupSeq,
+            'message' => $debug_message,
+            'relevant' => $grel,
+            'hidden' => $ghidden,
+            'mandViolation' => $gmandViolation,
+            'valid' => $gvalid,
+            'qset' => $currentQset,
+        );
+
+        return $currentGroupInfo;
+    }
+
+
+
+    /**
+     * For the current set of questions (whether in survey, gtoup, or question-by-question mode), assesses the following:
+     * (a) mandatory - if so, then all relevant sub-questions must be answered (e.g. pay attention to array_filter and array_filter_exclude)
+     * (b) always-hidden
+     * (c) relevance status - including sub-question-level relevance
+     * (d) answered - if $_SESSION[sgqa]=='' or NULL, then it is not answered
+     * (e) validity - whether relevant questions pass their validity tests
+     * @param <type> $questionSeq - the 0-index sequence number for this question
+     * @param <type> $debug - if true, generate detailed debug messages
+     * @return <array> of information about this question and its sub-questions
+     */
+
+    function _ValidateQuestion($questionSeq, $debug=false)
+    {
+        $LEM =& $this;
+        $qInfo = $LEM->questionSeq2relevance[$questionSeq];   // this array is by group and question sequence
+        // Check relevance - via equation, or from $SESSION?
+        $qrel=true;   // assume relevant unless discover otherwise
+        $prettyPrintRelEqn='';    //  assume no relevance eqn by default
+        $qid=$qInfo['qid'];
+        $gid=$qInfo['gid'];
+        $debug_qmessage='';
+
+        if (!isset($qInfo['relevance']) || $qInfo['relevance'] == '')
+        {
+            $relevanceEqn = 1;
+        }
+        else
+        {
+            $relevanceEqn = $qInfo['relevance'];
+        }
+
+        // cache results
+        $relevanceEqn = htmlspecialchars_decode($relevanceEqn,ENT_QUOTES);  // TODO is this needed?
+        if (isset($LEM->RelevanceResultCache[$relevanceEqn]))
+        {
+            $qrel = $LEM->RelevanceResultCache[$relevanceEqn]['result'];
+            if ($debug)
+            {
+                $prettyPrintRelEqn = $LEM->RelevanceResultCache[$relevanceEqn]['prettyPrint'];
+            }
+        }
+        else
+        {
+            $qrel = $LEM->em->ProcessBooleanExpression($relevanceEqn,$qInfo['groupSeq'], $qInfo['questionSeq']);    // assumes safer to re-process relevance and not trust POST values
+            if ($LEM->em->HasErrors())
+            {
+                $qrel=false;  // default to invalid so that can show the error
+            }
+            if ($debug)
+            {
+                $prettyPrintRelEqn = $LEM->em->GetPrettyPrintString();
+            }
+            $LEM->RelevanceResultCache[$relevanceEqn] = array(
+                'result'=>$qrel,
+                'prettyPrint'=>$prettyPrintRelEqn,
+                );            
+        }
+
+        // Check always-hidden status
+        $qhidden = $qInfo['hidden'];
+        if ($qrel)
+        {
+            $grel = true;   // at least one question is relevant
+        }
+        if (!$qhidden && $qrel)
+        {
+            $ghidden = false;    // at least one relevant question should be shown
+        }
+
+        // identify the relevant subquestions (array_filter and array_filter_exclude may make some irrelevant)
+        $relevantSQs=array();
+        $irrelevantSQs=array();
+        $prettyPrintSQRelEqns=array();
+        $prettyPrintSQRelEqn='';
+        $prettyPrintValidTip='';
+        if (!$qrel)
+        {
+            // All sub-questions are irrelevant
+            $irrelevantSQs = explode('|', $LEM->qid2code[$qid]);
+        }
+        else
+        {
+            // Check filter status to determine which subquestions are relevant
+            $sgqas = explode('|',$LEM->qid2code[$qid]);
+            foreach ($sgqas as $sgqa)
+            {
+                // for each subq, see if it is part of an array_filter or array_filter_exclude
+                if (!isset($LEM->subQrelInfo))
+                {
+                    $relevantSQs[] = $sgqa;
+                    continue;
+                }
+                $foundSQrelevance=false;
+                foreach ($LEM->subQrelInfo as $sq)
+                {
+                    if ($sq['qid'] == $qid)
+                    {
+                        switch ($sq['qtype'])
+                        {
+                            case '1':   //Array (Flexible Labels) dual scale
+                                if ($sgqa == ($sq['rowdivid'] . '#0') || $sgqa == ($sq['rowdivid'] . '#1')) {
+                                    $foundSQrelevance=true;
+                                    if (isset($LEM->RelevanceResultCache[$sq['eqn']]))
+                                    {
+                                        $sqrel = $LEM->RelevanceResultCache[$sq['eqn']]['result'];
+                                        if ($debug)
+                                        {
+                                            $prettyPrintSQRelEqns[] = $LEM->RelevanceResultCache[$sq['eqn']]['prettyPrint'];
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
+                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                        if ($LEM->em->HasErrors())
+                                        {
+                                            $sqrel=false;  // default to invalid so that can show the error
+                                        }
+                                        if ($debug)
+                                        {
+                                            $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
+                                            $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
+                                        }
+                                        $LEM->RelevanceResultCache[$sq['eqn']] = array(
+                                            'result'=>$sqrel,
+                                            'prettyPrint'=>$prettyPrintSQRelEqn,
+                                            );
+                                    }
+                                    if ($sqrel)
+                                    {
+                                        $relevantSQs[] = $sgqa;
+                                    }
+                                    else
+                                    {
+                                        $irrelevantSQs[] = $sgqa;
+                                    }
+                                }
+                                break;
+                            case ':': //ARRAY (Multi Flexi) 1 to 10
+                            case ';': //ARRAY (Multi Flexi) Text
+                                if (preg_match('/^' . $sq['rowdivid'] . '/', $sgqa))
+                                {
+                                    $foundSQrelevance=true;
+                                    if (isset($LEM->RelevanceResultCache[$sq['eqn']]))
+                                    {
+                                        $sqrel = $LEM->RelevanceResultCache[$sq['eqn']]['result'];
+                                        if ($debug)
+                                        {
+                                            $prettyPrintSQRelEqns[] = $LEM->RelevanceResultCache[$sq['eqn']]['prettyPrint'];
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
+                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                        if ($LEM->em->HasErrors())
+                                        {
+                                            $sqrel=false;  // default to invalid so that can show the error
+                                        }
+                                        if ($debug)
+                                        {
+                                            $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
+                                            $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
+                                        }
+                                        $LEM->RelevanceResultCache[$sq['eqn']] = array(
+                                            'result'=>$sqrel,
+                                            'prettyPrint'=>$prettyPrintSQRelEqn,
+                                            );
+                                    }
+                                    if ($sqrel)
+                                    {
+                                        $relevantSQs[] = $sgqa;
+                                    }
+                                    else
+                                    {
+                                        $irrelevantSQs[] = $sgqa;
+                                    }
+                                }
+                            case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
+                            case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
+                            case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                            case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
+                            case 'F': //ARRAY (Flexible) - Row Format
+                            case 'M': //Multiple choice checkbox
+                            case 'P': //Multiple choice with comments checkbox + text
+                                // Note, for M and P, Mandatory should mean that at least one answer was picked - not that all were checked
+                                if ($sgqa == $sq['rowdivid'] || $sgqa == ($sq['rowdivid'] . 'comment'))     // to catch case 'P'
+                                {
+                                    $foundSQrelevance=true;
+                                    if (isset($LEM->RelevanceResultCache[$sq['eqn']]))
+                                    {
+                                        $sqrel = $LEM->RelevanceResultCache[$sq['eqn']]['result'];
+                                        if ($debug)
+                                        {
+                                            $prettyPrintSQRelEqns[] = $LEM->RelevanceResultCache[$sq['eqn']]['prettyPrint'];
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
+                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                        if ($LEM->em->HasErrors())
+                                        {
+                                            $sqrel=false;  // default to invalid so that can show the error
+                                        }
+                                        if ($debug)
+                                        {
+                                            $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
+                                            $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
+                                        }
+                                        $LEM->RelevanceResultCache[$sq['eqn']] = array(
+                                            'result'=>$sqrel,
+                                            'prettyPrint'=>$prettyPrintSQRelEqn,
+                                            );
+                                    }
+                                    if ($sqrel)
+                                    {
+                                        $relevantSQs[] = $sgqa;
+                                    }
+                                    else
+                                    {
+                                        $irrelevantSQs[] = $sgqa;
+                                    }
+                                }
+                                break;
+                            case 'L': //LIST drop-down/radio-button list
+                                // TODO - these filters are supposed to ensure that the value doesn't equal a filtered value
+                                // TODO - isn't catching 'other' filter
+                                if ($sgqa == $sq['sgqa'])
+                                {
+                                    $foundSQrelevance=true;
+                                    if (isset($LEM->RelevanceResultCache[$sq['eqn']]))
+                                    {
+                                        $sqrel = $LEM->RelevanceResultCache[$sq['eqn']]['result'];
+                                        if ($debug)
+                                        {
+                                            $prettyPrintSQRelEqns[] = $LEM->RelevanceResultCache[$sq['eqn']]['prettyPrint'];
+                                        }
+                                    }
+                                    else
+                                    {
+                                        $stringToParse = htmlspecialchars_decode($sq['eqn'],ENT_QUOTES);  // TODO is this needed?
+                                        $sqrel = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                                        if ($LEM->em->HasErrors())
+                                        {
+                                            $sqrel=false;  // default to invalid so that can show the error
+                                        }
+                                        if ($debug)
+                                        {
+                                            $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
+                                            $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
+                                        }
+                                        $LEM->RelevanceResultCache[$sq['eqn']] = array(
+                                            'result'=>$sqrel,
+                                            'prettyPrint'=>$prettyPrintSQRelEqn,
+                                            );
+                                    }
+                                    if ($sqrel)
+                                    {
+                                        $relevantSQs[] = $sgqa;
+                                    }
+                                    else
+                                    {
+                                        $irrelevantSQs[] = $sgqa;
+                                    }
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }   // end foreach($LEM->subQrelInfo) [checking array-filters]
+                if (!$foundSQrelevance)
+                {
+                    // then this question is relevant
+                    $relevantSQs[] = $sgqa; // TODO - check this
+                }
+            } // end foreach($sgqa) [assessing each sub-question]
+        } // end of processing relevant question
+
+        if ($debug)
+        {
+            $prettyPrintSQRelEqns = array_unique($prettyPrintSQRelEqns);
+        }
+        // These array_unique only apply to array_filter of type L (list)
+        $relevantSQs = array_unique($relevantSQs);
+        $irrelevantSQs = array_unique($irrelevantSQs);
+
+        // TODO - NULL out values of any irrelevant subquestions
+
+        // check that all mandatories have been fully answered (but don't require answers for sub-questions that are irrelevant
+        $unansweredSQs = array();   // list of sub-questions that weren't answered
+        foreach ($relevantSQs as $sgqa)
+        {
+            if (!isset($_SESSION[$sgqa]) || ($_SESSION[$sgqa] == '' || is_null($_SESSION[$sgqa])))
+            {
+                // then a relevant, visible, mandatory question hasn't been answered
+                $unansweredSQs[] = $sgqa;
+            }
+        }
+
+        // Detect any violations of  mandatory rules
+        $qmandViolation = false;    // assume there is no mandatory violation until discover otherwise
+        $mandatoryTip = '';
+        if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y'))
+        {
+            switch ($qInfo['type'])
+            {
+                case 'M':
+                case 'P':
+                    // If at least one checkbox is checked, we're OK
+                    if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs)))
+                    {
+                        $qmandViolation = true;
+                        $mandatoryTip = $LEM->gT('Please check at least one item.');
+                    }
                     break;
-                case 'question':
+                default:
+                    // In general, if any relevant questions aren't answered, then it violates the mandatory rule
+                    if (count($unansweredSQs) > 0)
+                    {
+                        $qmandViolation = true; // TODO - what about 'other'?
+                        $mandatoryTip = $LEM->gT('Please complete all parts');
+                    }
                     break;
             }
         }
-        else {  // go backwards
-            switch ($LEM->surveyMode){
-                case 'survey':
-                    break;
-                case 'group':
-                    break;
-                case 'question':
-                    break;
+
+        // check validity of responses
+        $qvalid=true;   // assume valid unless discover otherwise
+        $hasValidationEqn=false;
+        $prettyPrintValidEqn='';    //  assume no validation eqn by default
+        if (isset($LEM->qid2validationEqn[$qid]))
+        {
+            $hasValidationEqn=true;
+            if ($qrel && !$qhidden)
+            {
+                $stringToParse = $LEM->qid2validationEqn[$qid]['eqn'];
+                $qvalid = $LEM->em->ProcessBooleanExpression($stringToParse,$qInfo['groupSeq'], $qInfo['questionSeq']);
+                if ($LEM->em->HasErrors())
+                {
+                    $qvalid=false;  // default to invalid so that can show the error
+                }
+                if ($debug)
+                {
+                    $prettyPrintValidEqn = $LEM->em->GetPrettyPrintString();
+
+                    // Also preview the Validation Tip
+                    $stringToParse = implode('<br/>',$LEM->qid2validationEqn[$qid]['tips']);
+                    // pretty-print them
+                    $LEM->ProcessString($stringToParse, $qid);
+                    $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();                                            }
+            }
+            else
+            {
+                if ($debug)
+                {
+                    $prettyPrintValidEqn = 'Question is Irrelevant, so no need to further validate it';
+                }
             }
         }
+        if (!$qvalid)
+        {
+            $gvalid=false;  //so know of at least one validation error for the group
+        }
+
+        if ($debug)
+        {
+            $debug_qmessage .= '--[Q#' . $qInfo['questionSeq'] . ']'
+                . "[<a href='../../../admin/admin.php?sid={$LEM->sid}&gid=$gid&qid=$qid'>"
+                . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
+                . ($qrel ? 'relevant' : IRRELEVANT)
+                . ($qhidden ? ALWAYS_HIDDEN : ' ')
+                . (($qInfo['mandatory'] == 'Y')? ' mandatory' : ' ')
+                . (($hasValidationEqn) ? (!$qvalid ? INVALID : ' valid') : '')
+                . ($qmandViolation ? MANDVIOLATION : ' ')
+                . $prettyPrintRelEqn
+                . "<br/>\n";
+
+            if ($mandatoryTip != '')
+            {
+                $debug_qmessage .= '----Mandatory Tip: ' . $mandatoryTip . "<br/>\n";
+            }
+
+            if ($prettyPrintValidTip != '')
+            {
+                $debug_qmessage .= '----Validation Tip: ' . $prettyPrintValidTip . "<br/>\n";
+            }
+
+            if ($prettyPrintValidEqn != '')
+            {
+                $debug_qmessage .= '----Validation Eqn: ' . $prettyPrintValidEqn . "<br/>\n";
+            }
+
+            // what are the database question codes for this question?
+            $subQList = '{' . implode('}, {', explode('|',$LEM->qid2code[$qid])) . '}';
+            // pretty-print them
+            $LEM->ProcessString($subQList, $qid);
+            $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+            $debug_qmessage .= '----SubQs=> ' . $prettyPrintSubQList . "<br/>\n";
+
+            if (count($prettyPrintSQRelEqns) > 0)
+            {
+                $debug_qmessage .= "----Array Filters Applied:<br/>\n" . implode('<br/>',$prettyPrintSQRelEqns) . "<br/>\n";
+            }
+
+            if (count($relevantSQs) > 0)
+            {
+                $subQList = '{' . implode('}, {', $relevantSQs) . '}';
+                // pretty-print them
+                $LEM->ProcessString($subQList, $qid);
+                $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+                $debug_qmessage .= '----Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+            }
+
+            if (count($irrelevantSQs) > 0)
+            {
+                $subQList = '{' . implode('}, {', $irrelevantSQs) . '}';
+                // pretty-print them
+                $LEM->ProcessString($subQList, $qid);
+                $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+                $debug_qmessage .= '----Irrelevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+            }
+
+            // show which relevant subQs were not answered
+            if (count($unansweredSQs) > 0)
+            {
+                $subQList = '{' . implode('}, {', $unansweredSQs) . '}';
+                // pretty-print them
+                $LEM->ProcessString($subQList, $qid);
+                $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+                $debug_qmessage .= '----Unanswered Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+            }
+        }
+
+
+        // Store metadata needed for subsequent processing and display purposes
+        $qStatus = array(
+            'info' => $qInfo,   // collect all questions within the group - includes mandatory and always-hiddden status
+            'relStatus' => $qrel,
+            'relEqn' => $prettyPrintRelEqn,
+            'sgqa' => $LEM->qid2code[$qid],
+            'unansweredSQs' => implode('|',$unansweredSQs),
+            'valid' => $qvalid,
+            'validEqn' => $prettyPrintValidEqn,
+            'validTip' => $prettyPrintValidTip,
+            'relevantSQs' => implode('|',$relevantSQs),
+            'irrelevantSQs' => implode('|',$irrelevantSQs),
+            'subQrelEqn' => implode('<br/>',$prettyPrintSQRelEqns),
+            'qmandViolation' => $qmandViolation,
+            'message' => $debug_qmessage,
+            );
+
+        return $qStatus;
     }
 
     /**
