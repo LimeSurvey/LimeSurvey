@@ -130,7 +130,7 @@ class survey extends LSCI_Controller {
         $redata = compact(array_keys(get_defined_vars()));
 
 
-        if ( $this->_didSessionTimeOut() )
+        if (1==2 )
         {
             // TODO is this still required (we have the basepath check at the top)
             if (isset($param['rootdir']))
