@@ -340,6 +340,12 @@ if ($grapherror!='')
 }
 $statisticsoutput.="</li>\n";
 
+//Show text responses inline
+$statisticsoutput .= "<li>
+    <label>".$clang->gT("Show text responses inline").":</label>
+    <input type='checkbox' id='showtextinline' name='showtextinline' ";
+if(isset($_POST['showtextinline'])) { $statisticsoutput .= "checked='checked'"; }
+$statisticsoutput .= "/><br /></li>\n";
 //Output selector
 $statisticsoutput .= "<li>"
 ."<label>"

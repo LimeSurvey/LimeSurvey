@@ -2066,8 +2066,26 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $TotalCompleted -=$row[0];
                             }
                             $fname="$al[1]";
-                            if ($browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid={$surveyid}&amp;column={$ColumnName_RM}', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
-                        }
+                            if (!isset($_POST['showtextinline']) && $browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid={$surveyid}&amp;column={$ColumnName_RM}', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                        	if(isset($_POST['showtextinline']) && ($qtype != "S" && $qtype != "U" && $qtype != "T" && $qtype != "Q")) {
+                        		//Generate list of 'other' text entries for display
+                        		$headPDF2=array();
+                        		$headPDF2[]=array($statlang->gt("'Other' Responses"));
+                        		$tablePDF2=array();
+                        		$query2 = "SELECT ".db_quote_id($al[2])." FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                        		$query2 .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        		$result2=db_execute_num($query2) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                        		$fnamelast = "<div id='textresponses_$fname' class='textresponses' style='text-align: center;'>\n";
+                        		$fnamelast .= "<b>".$clang->gT("'Other' Responses")."</b><br />\n";
+                        		//$fname .= $query2;
+                        		while ($row2=$result2->FetchRow())
+                        		{
+                        			$fnamelast .= $row2[0]."<br />\n";
+                        			$tablePDF2[]=array($row2[0]);
+                        		}
+                        		$fnamelast .= "</div>\n";
+                        	}
+						}
 
                         /*
                          * text questions:
@@ -2086,7 +2104,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             if ($al[0] == "Answers")
                             {
                                 $fname= "$al[1]";
-                                if ($browse===true) $fname .= " <input type='submit' value='"
+                                if (!isset($_POST['showtextinline']) && $browse===true) $fname .= " <input type='submit' value='"
                                 . $statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                             }
                             elseif ($al[0] == "NoAnswer")
@@ -2100,6 +2118,25 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							."\t\t<th width='25%' align='center' >"
 							."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
 							."\t</tr></thead>\n";
+
+                        	if (isset($_POST['showtextinline'])) {
+                        		$headPDF2=array();
+                        		$headPDF2[]=array($statlang->gt("Responses"));
+                        		$tablePDF2=array();
+                        		$query2 = "SELECT ".db_quote_id($al[2])." FROM ".db_table_name("survey_$surveyid")." WHERE ";
+                        		$query2 .= ($connect->databaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        		$result2=db_execute_num($query2) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                        		$fnamelast = "<div id='textresponses_$fname' class='textresponses' style='text-align: center;'>\n";
+								$fnamelast .= "<b>".$clang->gT("Responses")."</b><br />\n";
+                        		//$fname .= $query2;
+                        		while ($row2=$result2->FetchRow())
+                        		{
+                        			$fnamelast .= $row2[0]."<br />\n";
+                        			$tablePDF2[]=array($row2[0]);
+                        		}
+                        		$fnamelast .= "</div>\n";
+
+                        	}
                         }
 
 
@@ -2907,7 +2944,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $itemcounter++;
 
                 }	//end while
-
+            	if(isset($fnamelast)) {
+            		$statisticsoutput.= "<tr><td colspan='3'>".$fnamelast."</td></tr>\n";
+            		unset($fnamelast);
+            	}
                 //only show additional values when this setting is enabled
                 if(isset($showaggregateddata) && $showaggregateddata == 1 )
                 {
@@ -3032,6 +3072,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //$tablePDF = array();
                     $tablePDF = array_merge_recursive($tablePDF, $footPDF);
                     $pdf->headTable($headPDF,$tablePDF);
+                	if(isset($headPDF2)) {
+                		$tablePDF = array_merge_recursive($headPDF2, $tablePDF2);
+                		$pdf->headTable($headPDF2, $tablePDF2);
+                		unset($headPDF2, $tablePDF2);
+                	}
                     //$pdf->tableintopdf($tablePDF);
 
                     //				if(isset($footPDF))
