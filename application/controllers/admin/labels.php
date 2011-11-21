@@ -606,7 +606,7 @@
 
                 $labelsoutput .= "<div id='quickadd' name='{$clang->gT('Quick add')}'style='display:none;'><div style='float:left;'>
                               <label for='quickadd'>".$clang->gT('Enter your labels:')."</label>
-                              <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one label per line. You can provide a code by separating code and label text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.')."' rows='30' cols='100' style='width:570px;'></textarea>
+                              <br /><textarea id='quickaddarea' class='tipme' title='".$clang->gT('Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or space.')."' rows='30' cols='100' style='width:570px;'></textarea>
                               <br /><button id='btnqareplace' type='button'>".$clang->gT('Replace')."</button>
                               <button id='btnqainsert' type='button'>".$clang->gT('Add')."</button>
                               <button id='btnqacancel' type='button'>".$clang->gT('Cancel')."</button></div>

@@ -140,7 +140,7 @@ function sanitize_cquestions($string, $min='', $max='')
 }
 
 function sanitize_email($email) {
-    // Handles now emails separated with a semikolon
+    // Handles now emails separated with a semicolon
     $emailarray=explode(';',$email);
     for ($i = 0; $i <= count($emailarray)-1; $i++)
     {

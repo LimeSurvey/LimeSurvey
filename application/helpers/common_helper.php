@@ -3437,7 +3437,7 @@ function questionAttributes($returnByName=false)
     'category'=>$clang->gT('Logic'),
     'sortorder'=>130,
     'inputtype'=>'text',
-    "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semikolon.'),
+    "help"=>$clang->gT('Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semicolon.'),
     "caption"=>$clang->gT('Exclusive option'));
 
     $qattributes["exclude_all_others_auto"]=array(
@@ -4321,7 +4321,7 @@ function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
 
 /**
 * This function mails a text $body to the recipient $to.
-* You can use more than one recipient when using a semikolon separated string with recipients.
+* You can use more than one recipient when using a semicolon separated string with recipients.
 *
 * @param string $body Body text of the email in plain text or HTML
 * @param mixed $subject Email subject

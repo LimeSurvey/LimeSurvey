@@ -163,7 +163,7 @@
                        <div id='labelsetpreview' style='float:right;width:500px;'></div></div>
         <div id='quickadd' style='display:none;'><div style='float:left;'>
                           <label for='quickadd'><?php echo $clang->gT('Enter your answers:'); ?></label>
-                          <br /><textarea id='quickaddarea' class='tipme' title='<?php echo $clang->gT('Enter one answer per line. You can provide a code by separating code and answer text with a semikolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semikolon or space.'); ?>' cols='100' rows='30' style='width:570px;'></textarea>
+                          <br /><textarea id='quickaddarea' class='tipme' title='<?php echo $clang->gT('Enter one answer per line. You can provide a code by separating code and answer text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or space.'); ?>' cols='100' rows='30' style='width:570px;'></textarea>
                           <br /><button id='btnqareplace' type='button'><?php echo $clang->gT('Replace'); ?></button>
                           <button id='btnqainsert' type='button'><?php echo $clang->gT('Add'); ?></button>
                           <button id='btnqacancel' type='button'><?php echo $clang->gT('Cancel'); ?></button></div>
