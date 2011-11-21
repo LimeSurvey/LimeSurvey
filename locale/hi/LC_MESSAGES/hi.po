@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-21 18:34+0100\n"
-"PO-Revision-Date: 2011-11-21 18:36+0100\n"
+"PO-Revision-Date: 2011-11-21 23:28+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -752,7 +752,9 @@ msgstr "आप पहली बार प्रवेश किया है."
 msgid ""
 "You need to upload %s more files for this question.\n"
 "Are you sure you want to exit?"
-msgstr "आप को और फिल्स %s अपलोड करनी है इस प्रशन के लिए. \n"
+msgstr ""
+"आप को और फिल्स %s अपलोड करनी\n"
+" है इस प्रशन के लिए. "
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:1193
 msgid "You will be redirected in about 5 secs. If not, click "
@@ -2360,11 +2362,6 @@ msgstr "सफलता"
 #, php-format
 msgid "Survey ID %d saved at %s containing %d record(s)"
 msgstr "Survey ID %d स्वेद %s कांतैनिंग %d रिकॉर्ड(स) "
-
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:549
-#, php-format
-msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
-msgstr "सर्वेक्षण आईडी %d %s इधर स्वेद है %s जिस में %d रिकॉर्ड(स) (%s)"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:149
 msgid "Survey ID:"
@@ -7005,7 +7002,7 @@ msgstr "डेटाबेस के प्रकार"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/update/upgrade-mssql_helper.php:551
 #, php-format
 msgid "Database update finished (%s)"
-msgstr "डाटाबेस का अद्यतन खतम हो चूका है (%स) "
+msgstr "डाटाबेस का अद्यतन खतम हो चूका है (%s) "
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/update/update_helper.php:61
 msgid "Database upgrade"
@@ -7230,7 +7227,7 @@ msgstr "औसत मूल्य"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/update/upgrade-all_helper.php:32
 #, php-format
 msgid "Moving user templates to new location at %s..."
-msgstr "उसेर तेम्प्लातेस को दुसरे जगह पर हटाया जा रहा है "
+msgstr "उसेर तेम्प्लातेस को दुसरे जगह पर हटाया जा रहा है%s "
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:160
 msgid "Natural logarithm"
