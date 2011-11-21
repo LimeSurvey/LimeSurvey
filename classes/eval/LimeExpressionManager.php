@@ -1559,6 +1559,7 @@ class LimeExpressionManager {
      */
     function ProcessAllNeededRelevance($onlyThisQseq=NULL)
     {
+        // TODO - in a running survey, only need to process the current Group.  For Admin mode, do we need to process all prior questions or not?
         $now = microtime(true);
 
         $this->gid2relevanceStatus = array();
@@ -1951,9 +1952,44 @@ class LimeExpressionManager {
         switch ($LEM->surveyMode)
         {
             case 'survey':
+                $LEM->StartProcessingPage(false,true);
+                /* What is right way to check validity after a submit?
+                if ($LEM->currentGroupSeq != -1) {
+                    // then a repeated showing of survey
+                    if (!$force)
+                    {
+                        $result = $LEM->_ValidateSurvey($debug);
+                        if ($result['mandViolation'] || !$result['valid'])
+                        {
+                            // redisplay the current group
+
+                        }
+                    }
+                    // have submitted the survey
+                    return array(
+                        'finished'=>true,
+                        'message'=>$result['message'],
+                    );                    
+                }
+                 */
+
+                $result = $LEM->_ValidateSurvey($debug);
+                if (!$result['relevant'] || $result['hidden'])
+                {
+                    // then there are no relevant, visible questions in the survey
+                }
+                else
+                {
+                    // display the survey
+                    return array(
+                        'finished'=>true,
+                        'message'=>$result['message'],
+                    );
+                }
                 break;
             case 'group':
                 // First validate the current group
+                $LEM->StartProcessingPage();
                 if (!$force)
                 {
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,$debug);
@@ -1992,6 +2028,7 @@ class LimeExpressionManager {
                 }
                 break;
             case 'question':
+                $LEM->StartProcessingPage();
                 if (!$force)
                 {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$debug);
@@ -2041,6 +2078,46 @@ class LimeExpressionManager {
                 }
                 break;
         }
+    }
+
+    function _ValidateSurvey($debug=false)
+    {
+        $LEM =& $this;
+
+        $message = '';
+        $srel=false;
+        $shidden=true;
+        $smandViolation=false;
+        $svalid=true;
+
+        for ($i=0;$i<$LEM->numGroups;++$i) {
+            $LEM->currentGroupSeq=$i;
+            $gStatus = $LEM->_ValidateGroup($i,$debug);
+            $message .= $gStatus['message'];
+
+            if ($gStatus['relevant']) {
+                $srel = true;
+            }
+            if (!$gStatus['hidden']) {
+                $shidden=false;
+            }
+            if ($gStatus['mandViolation']) {
+                $smandViolation = true;
+            }
+            if (!$gStatus['valid']) {
+                $svalid=false;
+            }
+
+            // TODO - Note, this is needed to generate proper JavaScript - will this prevent tailoring of questions and answers since it closes the group?
+            $LEM->FinishProcessingGroup();
+        }
+        return array(
+            'relevant' => $srel,
+            'hidden' => $shidden,
+            'mandViolation' => $smandViolation,
+            'valid' => $svalid,
+            'message' => $message,
+        );
     }
 
     /**

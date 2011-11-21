@@ -17,7 +17,7 @@
             // List surveys to test here
             $surveys = array(
                 768959,
-                37171,
+//                37171,
 //                27246,
 //                26834,
 //                24811,
@@ -27,12 +27,12 @@
             {
                 print '<h3>Starting survey ' . $surveyid . "</h3>";
                 $now = microtime(true);
-                LimeExpressionManager::StartSurvey($surveyid, 'question', false, true);
+                LimeExpressionManager::StartSurvey($surveyid, 'survey', false, true);
                 print '<b>[StartSurvey() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
 
                 while(true) {
                     $now = microtime(true);
-                    LimeExpressionManager::StartProcessingPage();
+//                    LimeExpressionManager::StartProcessingPage();
                     $result = LimeExpressionManager::NavigateForwards(true,true);
                     print $result['message'] . "<br/>";
                     LimeExpressionManager::FinishProcessingGroup(); // move this internally?  This is what is needed to save group data so visible to GetRelevanceAndTailoringJavaScript()
