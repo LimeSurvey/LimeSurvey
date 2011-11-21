@@ -842,7 +842,7 @@ class LimeExpressionManager {
         $now = microtime(true);
 //        $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
 //        log_message('debug','**Language=' . $LEM->slang);
-        
+
         $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh);
         $this->sid= $surveyid;
 
@@ -868,8 +868,7 @@ class LimeExpressionManager {
         $this->questionId2groupSeq = array();
         $this->questionSeq2relevance = array();
 
-        $CI =& get_instance();
-        $clang = $CI->limesurvey_lang;
+        $clang = Yii::app()->lang;
 
         // Since building array of allowable answers, need to know preset values for certain question types
         $presets = array();
@@ -891,18 +890,46 @@ class LimeExpressionManager {
             'S' => $clang->gT("Same"),
             'D' => $clang->gT("Decrease"),
         );
+    	$where = " qid in (select qid from {{questions}} where sid = ".$surveyid.") and ";
+    	$query = "select distinct qid, attribute, value"
+    	        ." from {{question_attributes}}"
+    	        ." where " . $where
+    	        ." attribute in ('hidden', 'array_filter', 'array_filter_exclude', 'code_filter', 'equals_num_value', 'exclude_all_others', 'exclude_all_others_auto', 'max_answers', 'max_num_value', 'max_num_value_n', 'max_num_value_sgqa', 'min_answers', 'min_num_value', 'min_num_value_n', 'min_num_value_sgqa', 'multiflexible_max', 'multiflexible_min', 'num_value_equals_sgqa', 'show_totals')"
+    	        ." order by qid, attribute";
 
-        $CI->load->model('question_attributes_model');
-        $qattr = $CI->question_attributes_model->getEMRelatedRecordsForSurvey($surveyid);   // what happens if $surveyid is null?
-        $this->qattr = $qattr;
+    	$data = Yii::app()->db->createCommand($query)->query();
+    	$qattr = array();
+
+    	foreach($data->readAll() as $row) {
+    		$qattr[$row['qid']][$row['attribute']] = $row['value'];
+    	}
+       $this->qattr = $qattr;
 
 //        log_message('debug', print_r($qattr, true));
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - question_attributes_model->getEMRelatedRecordsForSurvey',(microtime(true) - $now));
         $now = microtime(true);
 
-        $CI->load->model('answers_model');
-        $qans = $CI->answers_model->getAllAnswersForEM($surveyid,NULL,$this->slang);
+    	$where = "a.qid = q.qid and q.sid = ".$surveyid;
+		$lang = $this->slang;
+		$lang = " and a.language='".$lang."' and q.language='".$lang."'";
+		$query = "SELECT a.qid, a.code, a.answer, a.scale_id"
+		    ." FROM {{answers}} AS a, {{questions}} as q"
+		    ." WHERE ".$where
+		    .$lang
+		    ." ORDER BY qid, scale_id, sortorder";
+
+		$data = Yii::app()->db->createCommand($query)->query();
+		//        log_message('debug',$this->db->last_query());
+
+		$qans = array();
+
+		foreach($data->readAll() as $row) {
+			if (!isset($qans[$row['qid']])) {
+				$qans[$row['qid']] = array();
+			}
+			$qans[$row['qid']][$row['scale_id'].'~'.$row['code']] = $row['answer'];
+		}
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - answers_model->getAllAnswersForEM',(microtime(true) - $now));
         $now = microtime(true);

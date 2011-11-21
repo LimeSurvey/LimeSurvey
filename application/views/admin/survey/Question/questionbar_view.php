@@ -2,7 +2,7 @@
     <div class="langpopup" id="previewquestionpopup"><?php echo $clang->gT("Please select a language:"); ?><ul>
     <?php foreach ($tmp_survlangs as $tmp_lang)
     { ?>
-        <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo site_url("admin/question/preview/".$surveyid."/".$qid."/".$tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
+        <li><a target='_blank' onclick="$('#previewquestion').qtip('hide');" href='<?php echo $this->createUrl("admin/question/preview/".$surveyid."/".$qid."/".$tmp_lang); ?>' accesskey='d'><?php echo getLanguageNameFromCode($tmp_lang,false); ?></a></li>
     <?php } ?>
     </ul></div>
 <?php } ?>
@@ -17,7 +17,7 @@
             {
                 if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 0)
                 { ?>
-                    <a href="#" accesskey='q' onclick="window.open('<?php echo site_url("admin/question/preview/$surveyid/$qid/");?>', '_blank')"
+                    <a href="#" accesskey='q' onclick="window.open('<?php echo $this->createUrl("admin/question/preview/$surveyid/$qid/");?>', '_blank')"
                     title="<?php echo $clang->gTview("Preview This Question"); ?>">
                     <img src='<?php echo $this->config->item('imageurl'); ?>/preview.png' alt='<?php echo $clang->gT("Preview This Question"); ?>' name='previewquestionimg' /></a>
                     <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt='' />
@@ -34,7 +34,7 @@
            <?php  if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
 
-                <a href='<?php echo site_url("admin/question/editquestion/".$surveyid."/".$gid."/".$qid); ?>'
+                <a href='<?php echo $this->createUrl("admin/question/editquestion/".$surveyid."/".$gid."/".$qid); ?>'
                  title="<?php echo $clang->gTview("Edit current question"); ?>">
                 <img src='<?php echo $this->config->item('imageurl'); ?>/edit.png' alt='<?php echo $clang->gT("Edit Current Question"); ?>' name='EditQuestion' /></a>
             <?php } ?>
@@ -47,7 +47,7 @@
                 if (is_null($condarray))
                 { ?>
                     <a href='#'
-    				onclick="if (confirm('<?php echo $clang->gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo get2post(site_url('admin/question/deletequestion')."/$surveyid/$gid/$qid"); ?>}">
+    				onclick="if (confirm('<?php echo $clang->gT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>')) { <?php echo get2post($this->createUrl('admin/question/deletequestion')."/$surveyid/$gid/$qid"); ?>}">
     				<img src='<?php echo $this->config->item('imageurl'); ?>/delete.png' name='DeleteWholeQuestion' alt='<?php echo $clang->gT("Delete current question"); ?>'
     				border='0' hspace='0' /></a>
                 <?php }
@@ -55,7 +55,7 @@
                             // TMSW Conditions->Relevance:  not needed - should be allowed to delete questions even if others depend upon it - use separate view to see exceptions
 
                 { ?>
-                    <a href='<?php echo site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
+                    <a href='<?php echo $this->createUrl('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
     				onclick="alert('<?php echo $clang->gT("It's impossible to delete this question because there is at least one question having a condition on it.","js"); ?>')"
     				title="<?php echo $clang->gTview("Disabled - Delete current question"); ?>">
     				<img src='<?php echo $this->config->item('imageurl'); ?>/delete_disabled.png' name='DeleteWholeQuestion' alt='<?php echo $clang->gT("Disabled - Delete current question"); ?>' /></a>
@@ -72,7 +72,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
-                <a href='<?php echo site_url("admin/export/question/$surveyid/$gid/$qid");?>'
+                <a href='<?php echo $this->createUrl("admin/export/question/$surveyid/$gid/$qid");?>'
                  title="<?php echo $clang->gTview("Export this question"); ?>" >
                 <img src='<?php echo $this->config->item('imageurl'); ?>/dumpquestion.png' alt='<?php echo $clang->gT("Export this question"); ?>' name='ExportQuestion' /></a>
             <?php } ?>
@@ -106,7 +106,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
-                <a href='#' onclick="window.open('<?php echo site_url("admin/conditions/editconditionsform/$surveyid/$gid/$qid");?>', '_top')"
+                <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/editconditionsform/$surveyid/$gid/$qid");?>', '_top')"
                  title="<?php echo $clang->gTview("Set/view conditions for this question"); ?>">
                 <img src='<?php echo $this->config->item('imageurl'); ?>/conditions.png' alt='<?php echo $clang->gT("Set conditions for this question"); ?>'  name='SetQuestionConditions' /></a>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt='' />
@@ -124,7 +124,7 @@
             {
                 if ($qtypes[$qrrow['type']]['subquestions'] >0)
                 { ?>
-                    <a href='<?php echo site_url('admin/question/subquestions/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
+                    <a href='<?php echo $this->createUrl('admin/question/subquestions/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
                     title='<?php echo $clang->gTview("Edit subquestions for this question"); ?>'>
                     <img src='<?php echo $this->config->item('imageurl'); ?>/subquestions.png' alt='<?php echo $clang->gT("Edit subquestions for this question"); ?>' name='EditSubquestions' /></a>
                 <?php }
@@ -139,7 +139,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['answerscales'] >0)
             { ?>
-                <a href='<?php echo site_url('admin/question/answeroptions/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
+                <a href='<?php echo $this->createUrl('admin/question/answeroptions/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
                 title="<?php echo $clang->gTview("Edit answer options for this question"); ?>">
                 <img src='<?php echo $this->config->item('imageurl'); ?>/answers.png' alt='<?php echo $clang->gT("Edit answer options for this question"); ?>' name='EditAnswerOptions' /></a>
             <?php }
@@ -153,7 +153,7 @@
 
             if(bHasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0)
             { ?>
-                <a href='<?php echo site_url('admin/question/editdefaultvalues/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
+                <a href='<?php echo $this->createUrl('admin/question/editdefaultvalues/'.$surveyid.'/'.$gid.'/'.$qid); ?>'
                 title="<?php echo $clang->gTview("Edit default answers for this question"); ?>">
                 <img src='<?php echo $this->config->item('imageurl'); ?>/defaultanswers.png' alt='<?php echo $clang->gT("Edit default answers for this question"); ?>' name='EditDefaultAnswerOptions' /></a>
             <?php } ?>
@@ -167,7 +167,7 @@
             onclick='document.getElementById("questiondetails").style.display="";' />
             <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' title='
             <?php echo $clang->gT("Close this Question"); ?>' alt='<?php echo $clang->gT("Close this Question"); ?>' name='CloseQuestionWindow'
-            onclick="window.open('<?php echo site_url("admin/survey/view/".$surveyid."/".$gid); ?>', '_top')" />
+            onclick="window.open('<?php echo $this->createUrl("admin/survey/view/".$surveyid."/".$gid); ?>', '_top')" />
             </div>
             </div>
             </div>
@@ -217,7 +217,7 @@
             { ?>
                 <tr ><td></td><td align='left'>
                 <span class='statusentryhighlight'>
-                <?php echo $clang->gT("Warning"); ?>: <a href='<?php echo site_url('admin/question/answeroptions/'.$surveyid."/".$gid."/".$qid); ?>'><?php echo $clang->gT("You need to add answer options to this question"); ?>
+                <?php echo $clang->gT("Warning"); ?>: <a href='<?php echo $this->createUrl('admin/question/answeroptions/'.$surveyid."/".$gid."/".$qid); ?>'><?php echo $clang->gT("You need to add answer options to this question"); ?>
                 <img src='<?php echo $this->config->item('imageurl'); ?>/answers_20.png' title='
                 <?php echo $clang->gT("Edit answer options for this question"); ?>' name='EditThisQuestionAnswers'/></a></span></td></tr>
             <?php }
@@ -227,8 +227,8 @@
             { ?>
                <tr ><td></td><td align='left'>
                 <span class='statusentryhighlight'>
-                <?php echo $clang->gT("Warning"); ?>: <a href='<?php echo site_url('admin/question/subquestions/'.$surveyid."/".$gid."/".$qid); ?>'><?php echo $clang->gT("You need to add subquestions to this question"); ?>
-                <img src='<?php echo $this->config->item('imageurl'); ?>/subquestions_20.png' title='
+                <?php echo $clang->gT("Warning"); ?>: <a href='<?php echo $this->createUrl('admin/question/subquestions/'.$surveyid."/".$gid."/".$qid); ?>'><?php echo $clang->gT("You need to add subquestions to this question"); ?>
+                <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/subquestions_20.png' title='
                 <?php echo $clang->gT("Edit subquestions for this question"); ?>' name='EditThisQuestionAnswers' /></a></span></td></tr>
             <?php }
 

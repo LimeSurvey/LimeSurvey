@@ -9,9 +9,9 @@
  * is derivative of works licensed under the GNU General Public License or
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
- * 
+ *
  * $Id: quotas.php 11128 2011-10-08 22:23:24Z dionet $
- * 
+ *
  */
 
 /**
@@ -22,73 +22,75 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class quotas extends Survey_Common_Controller {
-    
+class quotas extends Survey_Common_Action {
+
 	/**
-	 * Constructor
+	 * Base function
+	 *
+	 * @access publlic
+	 * @param int $surveyid
+	 * @param string $subaction
+	 * @return void
 	 */
-	function __construct()
+	public function run($surveyid, $subaction = null)
 	{
-		parent::__construct();
-	}
-	
-	public function _remap($method, $params = array())
-	{
-		array_unshift($params, $method);
-	    return call_user_func_array(array($this, "action"), $params);
-	}
-	
-	function action($surveyid, $subaction = null)
-	{
+
 		$surveyid = sanitize_int($surveyid);
-		
-		self::_js_admin_includes($this->config->item("generalscripts").'/jquery/jquery.tablesorter.min.js');
-		self::_js_admin_includes($this->config->item("adminscripts").'/quotas.js');
+
+		$this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'/jquery/jquery.tablesorter.min.js');
+		$this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts").'/quotas.js');
 
 		if(!bHasSurveyPermission($surveyid, 'quotas','read'))
 		{
 			show_error("no permissions");
 		}
-		
-		$_POST = $this->input->post();
-		$clang = $this->limesurvey_lang;
-		$this->load->helper("database");
-		$this->load->helper("surveytranslator");
-		$data = array();
-		
+
+		$clang = $this->getController()->lang;
+		$conn = Yii::app()->db;
+
+		Yii::app()->loadHelper('surveytranslator');
+
+		$data = array('clang' => $clang, 'surveyid' => $surveyid);
+
 	    if (isset($_POST['quotamax'])) $_POST['quotamax']=sanitize_int($_POST['quotamax']);
 	    if (!isset($action)) $action=returnglobal('action');
-	    if (!isset($action)) $action="quotas";		
+	    if (!isset($action)) $action="quotas";
 	    if (!isset($subaction)) $subaction=returnglobal('subaction');
 	    //if (!isset($quotasoutput)) $quotasoutput = "";
 	    if (!isset($_POST['autoload_url']) || empty($_POST['autoload_url'])) {$_POST['autoload_url']=0;}
-		
+
 		//Get the languages used in this survey
         $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
+		$data['baselang'] = $baselang;
         array_push($langs, $baselang);
-		
-		$css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-		$this->config->set_item("css_admin_includes", $css_admin_includes);
-		self::_getAdminHeader();
-        self::_showadminmenu();
-        self::_surveybar($surveyid); 
-				
+
+		$css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+		Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+		$this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu();
+        $this->_surveybar($surveyid);
+
 	    if($subaction == "insertquota" && bHasSurveyPermission($surveyid, 'quotas','create'))
 	    {
 	  		if(!isset($_POST['quota_limit']) || $_POST['quota_limit'] < 0 || empty($_POST['quota_limit']) || !is_numeric($_POST['quota_limit']))
 	        {
 	            $_POST['quota_limit'] = 0;
-	          
+
 	        }
-	            
-	        array_walk( $_POST, array($this->db, "escape"), true);
-	
-	        $query = "INSERT INTO ".$this->db->dbprefix('quota')." (sid,name,qlimit,action,autoload_url)
-			          VALUES ('$surveyid','{$_POST['quota_name']}','{$_POST['quota_limit']}','{$_POST['quota_action']}', '{$_POST['autoload_url']}')";
-	        db_execute_assoc($query) or safe_die("Error inserting limit".$connect->ErrorMsg());
-	        $quotaid=$this->db->insert_id();//$connect->Insert_Id($this->db->dbprefix_nq('quota'),"id");
-	
+
+	    	$comm = $conn->createCommand("INSERT INTO {{quota}} (sid,name,qlimit,action,autoload_url)
+			          VALUES (:surveyid, :quota_name, :quota_limit, :quota_action, :autoload_url)");
+	    	$comm->execute(array(
+	    		':surveyid' => $surveyid,
+	    		':quota_name' => $_POST['quota_name'],
+	    		':quota_limit' => $_POST['quota_limit'],
+	    		':quota_action' => $_POST['quota_action'],
+	    		':autoload_url' => $_POST['autoload_url'],
+	    	));
+
+	        $quotaid = $conn->lastInsertID;//$connect->Insert_Id($this->db->dbprefix_nq('quota'),"id");
+
 	        //Get the languages used in this survey
 	        $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	        $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -106,35 +108,49 @@ class quotas extends Survey_Common_Controller {
 	        else
 	        //All the required quota messages exist, now we can insert this info into the database
 	        {
-	
+
 	            foreach ($langs as $lang) //Iterate through each language
 	            {
 	                //Clean XSS - Automatically provided by CI input class
 	                $_POST['quotals_message_'.$lang] = html_entity_decode($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
-	
+
 	                // Fix bug with FCKEditor saving strange BR types
 	                $_POST['quotals_message_'.$lang]=fix_FCKeditor_text($_POST['quotals_message_'.$lang]);
-	
-	                //Now save the language to the database:
-	                $query = "INSERT INTO ".$this->db->dbprefix('quota_languagesettings')." (quotals_quota_id, quotals_language, quotals_name, quotals_message, quotals_url, quotals_urldescrip)
-			        	      VALUES ('$quotaid', '$lang', ".$this->db->escape($_POST['quota_name'],true).", ".$this->db->escape($_POST['quotals_message_'.$lang],true).", ".$this->db->escape($_POST['quotals_url_'.$lang],true).", ".$this->db->escape($_POST['quotals_urldescrip_'.$lang],true).")";
-	                db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+
+	            	$comm = $conn->createCommand("
+						INSERT INTO {{quota_languagesettings}} (quotals_quota_id, quotals_language, quotals_name, quotals_message, quotals_url, quotals_urldescrip)
+	            	VALUES (:quotaid, :lang, :quota_name, :quotal_message, :quotal_url, :quotal_urldesc)");
+	            	$comm->execute(array(
+	            		':quotaid' => $quotaid,
+	            		':lang' => $lang,
+	            		':quota_name' => $_POST['quota_name'],
+	            		':quotal_message' => $_POST['quotals_message_' . $lang],
+	            		':quotal_url' => $_POST['quotals_url_' . $lang],
+	            		':quotal_urldesc' => $_POST['quotals_urldescrip_' . $lang],
+	            	));
 	            }
 	        } //End insert language based components
 	        $viewquota = "1";
-	
+
 	    } //End foreach $lang
-	
+
 	    if($subaction == "modifyquota" && bHasSurveyPermission($surveyid, 'quotas','update'))
 	    {
-	        $query = "UPDATE ".$this->db->dbprefix('quota')."
-				      SET name=".$this->db->escape($_POST['quota_name'],true).",
-					  qlimit=".$this->db->escape($_POST['quota_limit'],true).",
-					  action=".$this->db->escape($_POST['quota_action'],true).",
-					  autoload_url=".$this->db->escape($_POST['autoload_url'],true)."
-					  WHERE id=".$this->db->escape($_POST['quota_id'],true);
-	        db_execute_assoc($query) or safe_die("Error modifying quota".$connect->ErrorMsg());
-	
+	    	$query = "
+				UPDATE {{quota}}
+				SET name=:name,
+					qlimit=:limit,
+					action=:action,
+					autoload_url=:autoload_url
+				WHERE id=:id";
+	    	$conn->createCommand($query)->execute(array(
+	    		':name' => $_POST['quota_name'],
+	    		':limit' => $_POST['quota_limit'],
+	    		':action' => $_POST['quota_action'],
+	    		':autoload_url' => $_POST['autoload_url'],
+	    		':id' => $_POST['quota_id'],
+	    	));
+
 	        //Get the languages used in this survey
 	        $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	        $baselang = GetBaseLanguageFromSurveyID($surveyid);
@@ -152,36 +168,50 @@ class quotas extends Survey_Common_Controller {
 	        else
 	        //All the required quota messages exist, now we can insert this info into the database
 	        {
-	
+
 	            foreach ($langs as $lang) //Iterate through each language
 	            {
 	                //Clean XSS - Automatically provided by CI
 	                $_POST['quotals_message_'.$lang] = html_entity_decode($_POST['quotals_message_'.$lang], ENT_QUOTES, "UTF-8");
-	
+
 	                // Fix bug with FCKEditor saving strange BR types
 	                $_POST['quotals_message_'.$lang]=fix_FCKeditor_text($_POST['quotals_message_'.$lang]);
-	
-	                //Now save the language to the database:
-	                $query = "UPDATE ".$this->db->dbprefix('quota_languagesettings')."
-					          SET quotals_name=".$this->db->escape($_POST['quota_name'],true).",
-							  quotals_message=".$this->db->escape($_POST['quotals_message_'.$lang],true).",
-							  quotals_url=".$this->db->escape($_POST['quotals_url_'.$lang],true).",
-							  quotals_urldescrip=".$this->db->escape($_POST['quotals_urldescrip_'.$lang],true)."
-					          WHERE quotals_quota_id =".$this->db->escape($_POST['quota_id'],true)."
-							  AND quotals_language = '$lang'";
-	                db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+
+	            	$query = "
+						UPDATE {{quota_languagesettings}}
+						SET quotals_name=:name,
+							quotals_message=:message,
+							quotals_url=:url,
+							quotals_urldescrip=:desc
+						WHERE
+							quotals_quota_id=:id
+							AND quotals_language=:lang";
+	            	$conn->createCommand($query)->execute(array(
+	            		':name' => $_POST['quota_name'],
+	            		':message' => $_POST['quotals_message_' . $lang],
+	            		':url' => $_POST['quotals_url_' . $lang],
+	            		':desc' => $_POST['quotals_urldescrip_' . $lang],
+	            		':id' => $_POST['quota_id'],
+	            		':lang' => $lang,
+	            	));
 	            }
 	        } //End insert language based components
-	
-	
+
+
 	        $viewquota = "1";
 	    }
-	
+
 	    if($subaction == "insertquotaanswer" && bHasSurveyPermission($surveyid, 'quotas','create'))
 	    {
-	        array_walk( $_POST, array($this->db, "escape"), true);
-	        $query = "INSERT INTO ".$this->db->dbprefix('quota_members')." (sid,qid,quota_id,code) VALUES ('$surveyid','{$_POST['quota_qid']}','{$_POST['quota_id']}','{$_POST['quota_anscode']}')";
-	        db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+			$query = "INSERT INTO {{quota_members}} (sid, qid, quota_id, code)
+					  VALUES (:survey_id, :quota_qid, :quota_id, :quota_anscode)";
+	    	$conn->createCommand($query)->execute(array(
+	    		':survey_id' => $surveyid,
+	    		':quota_qid' => $_POST['quota_qid'],
+	    		':quota_id' => $_POST['quota_id'],
+	    		':quota_anscode' => $_POST['quota_anscode'],
+	    	));
+
 			if(isset($_POST['createanother']) && $_POST['createanother'] == "on") {
 				$_POST['action']="quotas";
 				$_POST['subaction']="new_answer";
@@ -190,81 +220,82 @@ class quotas extends Survey_Common_Controller {
 				$viewquota = "1";
 			}
 	    }
-	
+
 	    if($subaction == "quota_delans" && bHasSurveyPermission($surveyid, 'quotas','delete'))
 	    {
-	        array_walk( $_POST, array($this->db, "escape"), true);
-	        $query = "DELETE FROM ".$this->db->dbprefix('quota_members')."
-				      WHERE id = '{$_POST['quota_member_id']}'
-					  AND qid='{$_POST['quota_qid']}' and code='{$_POST['quota_anscode']}'";
-	        db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+			$query = "DELETE FROM {{quota_members}} WHERE id = :quota_member_id AND qid = :quota_qid AND code = :quota_anscode";
+	    	$conn->createCommand($query)->execute(array(
+	    		':quota_member_id' => $_POST['quota_member_id'],
+	    		':quota_qid' => $_POST['quota_qid'],
+	    		':quota_anscode' => $_POST['quota_anscode'],
+	    	));
 	        $viewquota = "1";
-	
+
 	    }
-	
+
 	    if($subaction == "quota_delquota" && bHasSurveyPermission($surveyid, 'quotas','delete'))
 	    {
-	        array_walk( $_POST, array($this->db, "escape"), true);
-	        $query = "DELETE FROM ".$this->db->dbprefix('quota')." WHERE id='{$_POST['quota_id']}'";
-	        db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
-	        $query = "DELETE FROM ".$this->db->dbprefix('quota_languagesettings')." WHERE quotals_quota_id='{$_POST['quota_id']}'";
-	        db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
-	        $query = "DELETE FROM ".$this->db->dbprefix('quota_members')." WHERE quota_id='{$_POST['quota_id']}'";
-	        db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+	    	$query = "DELETE FROM {{quota}} WHERE id=:quota_id";
+	    	$conn->createCommand($query)->execute(array(':quota_id' => $_POST['quota_id']));
+
+			$query = "DELETE FROM {{quota_languagesettings}} WHERE quotals_quota_id=:quota_id";
+	    	$conn->createCommand($query)->execute(array(':quota_id' => $_POST['quota_id']));
+
+	    	$query = "DELETE FROM {{quota_members}} WHERE quota_id=:quota_id";
+	    	$conn->createCommand($query)->execute(array(':quota_id' => $_POST['quota_id']));
+
 	        $viewquota = "1";
 	    }
-	
+
 	    if ($subaction == "quota_editquota" && bHasSurveyPermission($surveyid, 'quotas','update'))
 	    {
-	        array_walk( $_POST, array($this->db, "escape"), true);
-	        $query = "SELECT * FROM ".$this->db->dbprefix('quota')."
-			          WHERE id='{$_POST['quota_id']}'";
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	        $quotainfo = $result->row_array();
-	
+	        $query = "SELECT * FROM {{quota}}
+			          WHERE id=:quota_id";
+	    	$comm = $conn->createCommand($query);
+	    	$reader = $comm->query(array(':quota_id' => $_POST['quota_id']));
+	        $quotainfo = $reader->read();
+
 	        $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	        $baselang = GetBaseLanguageFromSurveyID($surveyid);
 	        array_push($langs,$baselang);
-			
+
 			$data['quotainfo'] = $quotainfo;
-			$this->load->view("admin/quotas/editquota_view",$data);
+			$this->getController()->render("/admin/quotas/editquota_view",$data);
 
 	        foreach ($langs as $lang)
 	        {
-	            //Get this one
-	            $langquery = "SELECT * FROM ".$this->db->dbprefix('quota_languagesettings')." WHERE quotals_quota_id='{$_POST['quota_id']}' AND quotals_language = '$lang'";
-	            $langresult = db_execute_assoc($langquery) or safe_die($connect->ErrorMsg());
-	            $langquotainfo = $langresult->row_array();
-				
+	        	$langquery = "SELECT * FROM {{quota_languagesettings}} WHERE quotals_quota_id=:quota_id AND quotals_language=:lang";
+	        	$comm = $conn->createCommand($langquery);
+	        	$reader = $comm->query(array(':lang' => $lang, ':quota_id' => $_POST['quota_id']));
+	        	$langquotainfo = $reader->read();
+
 				$data['langquotainfo'] = $langquotainfo;
 				$data['lang'] = $lang;
-	        	$this->load->view("admin/quotas/editquotalang_view",$data);
-	
+	        	$this->getController()->render("/admin/quotas/editquotalang_view",$data);
+
 	        };
-	        $this->load->view("admin/quotas/editquotafooter_view",$data);
+	        $this->getController()->render("/admin/quotas/editquotafooter_view",$data);
 	    }
-	
+
 	    $totalquotas=0;
 	    $totalcompleted=0;
 	    $csvoutput=array();
 	    if (($action == "quotas" && !isset($subaction)) || isset($viewquota))
 	    {
-	        $query = "SELECT * FROM ".$this->db->dbprefix('quota')." , ".$this->db->dbprefix('quota_languagesettings')."
-			          WHERE ".$this->db->dbprefix('quota').".id = ".$this->db->dbprefix('quota_languagesettings').".quotals_quota_id
-			          AND sid='".$surveyid."'
-					  AND quotals_language = '".$baselang."'
+			$query = "SELECT * FROM {{quota}} AS q
+						LEFT JOIN {{quota_languagesettings}} as qls ON (q.id = qls.quotals_quota_id)
+					  WHERE sid=:survey
+					  	AND quotals_language=:lang
 					  ORDER BY name";
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
-			$this->load->view("admin/quotas/viewquotas_view",$data);
-	
+	    	$result = $conn->createCommand($query)->query(array(':survey' => $surveyid, ':lang' => $baselang));
+
+			$this->getController()->render("/admin/quotas/viewquotas_view",$data);
+
 	        //if there are quotas let's proceed
-	        if ($result->num_rows() > 0)
+	        if ($result->getRowCount() > 0)
 	        {
 	            //loop through all quotas
-	            foreach ($result->result_array() as $quotalisting)
+	            foreach ($result->readAll() as $quotalisting)
 	            {
 	            	$totalquotas+=$quotalisting['qlimit'];
 					$completed=get_quotaCompletedCount($surveyid, $quotalisting['id']);
@@ -277,34 +308,38 @@ class quotas extends Survey_Common_Controller {
 					$data['completed'] = $completed;
 					$data['totalquotas'] = $totalquotas;
 					$data['totalcompleted'] = $totalcompleted;
-					$this->load->view("admin/quotas/viewquotasrow_view",$data);
-	
+					$this->getController()->render("/admin/quotas/viewquotasrow_view",$data);
+
 	                //check how many sub-elements exist for a certain quota
-	                $query = "SELECT id,code,qid FROM ".$this->db->dbprefix('quota_members')." where quota_id='".$quotalisting['id']."'";
-	                $result2 = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
-	                if ($result2->num_rows() > 0)
+	                $query = "SELECT id,code,qid FROM {{quota_members}} where quota_id=:id";
+	            	$result2 = $conn->createCommand($query)->query(array('id' => $quotalisting['id']));
+
+	                if ($result2->getRowCount() > 0)
 	                {
 	                    //loop through all sub-parts
-	                    foreach ($result2->result_array() as $quota_questions )
+	                    foreach ($result2->readAll() as $quota_questions )
 	                    {
 	                        $question_answers = self::getQuotaAnswers($quota_questions['qid'],$surveyid,$quotalisting['id']);
 							$data['question_answers'] = $question_answers;
-							$this->load->view("admin/quotas/viewquotasrowsub_view",$data);
+	                    	$data['quota_questions'] = $quota_questions;
+							$this->getController()->render("/admin/quotas/viewquotasrowsub_view",$data);
 	                    }
 	                }
-	
+
 	            }
-	
+
 	        }
 	        else
 	        {
 	        	// No quotas have been set for this survey
-	        	$this->load->view("admin/quotas/viewquotasempty_view",$data);
+	        	$this->getController()->render("/admin/quotas/viewquotasempty_view",$data);
 	        }
-			$this->load->view("admin/quotas/viewquotasfooter_view",$data);
+
+	    	$data['totalquotas'] = $totalquotas;
+	    	$data['totalcompleted'] = $totalcompleted;
+
+			$this->getController()->render("/admin/quotas/viewquotasfooter_view",$data);
 	    }
-	
 	    if(isset($_GET['quickreport']) && $_GET['quickreport'])
 	    {
 	        header("Content-Disposition: attachment; filename=results-survey".$surveyid.".csv");
@@ -320,55 +355,54 @@ class quotas extends Survey_Common_Controller {
 	    if(($subaction == "new_answer" || ($subaction == "new_answer_two" && !isset($_POST['quota_qid']))) && bHasSurveyPermission($surveyid,'quotas','create'))
 	    {
 	        if ($subaction == "new_answer_two") $_POST['quota_id'] = $_POST['quota_id'];
-	
+
 	        $allowed_types = "(type ='G' or type ='M' or type ='Y' or type ='A' or type ='B' or type ='I' or type = 'L' or type='O' or type='!')";
-	
-	        $query = "SELECT name FROM ".$this->db->dbprefix('quota')." WHERE id='".$_POST['quota_id']."'";
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	        foreach ($result->result_array() as $quotadetails) 
+
+	        $query = "SELECT name FROM {{quota}} WHERE id=:quota_id";
+	        $result = $conn->createCommand($query)->query(array(':quota_id' => $_POST['quota_id']));
+	        foreach ($result->readAll() as $quotadetails)
 	        {
 	            $quota_name=$quotadetails['name'];
 	        }
-	        
-	        $query = "SELECT qid, title, question FROM ".$this->db->dbprefix('questions')." WHERE $allowed_types AND sid='$surveyid' AND language='{$baselang}'";
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	        if ($result->num_rows() == 0)
+
+	        $query = "SELECT qid, title, question FROM {{questions}} WHERE $allowed_types AND sid=:surveyid AND language=:lang";
+	    	$result = $conn->createCommand($query)->query(array(':surveyid' => $surveyid, ':lang' => $baselang));
+	        if ($result->getRowCount() == 0)
 	        {
-				$this->load->view("admin/quotas/newanswererror_view", $data);
+				$this->getController()->render("/admin/quotas/newanswererror_view", $data);
 	        } else
 	        {
-	        	$data['newanswer_result'] = $result->result_array();
+	        	$data['newanswer_result'] = $result->readAll();
 				$data['quota_name'] = $quota_name;
-				$this->load->view("admin/quotas/newanswer_view", $data);
+				$this->getController()->render("/admin/quotas/newanswer_view", $data);
 	        }
 	    }
-	
+
 	    if($subaction == "new_answer_two" && isset($_POST['quota_qid']) && bHasSurveyPermission($surveyid, 'quotas','create'))
 	    {
-	        array_walk( $_POST, array($this->db, "escape"), true);
-	
-	        $query = "SELECT name FROM ".$this->db->dbprefix('quota')." WHERE id='".$_POST['quota_id']."'";
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	        foreach ($result->result_array() as $quotadetails) 
+	        $query = "SELECT name FROM {{quota}} WHERE id=:id";
+	        $result = $conn->createCommand($query)->query(array(':id' => $_POST['quota_qid']));
+	        foreach ($result->readAll() as $quotadetails)
 	        {
 	            $quota_name=$quotadetails['name'];
 	        }
-	
+
 	        $question_answers = self::getQuotaAnswers($_POST['quota_qid'],$surveyid,$_POST['quota_id']);
 	        $x=0;
-	
+
 	        foreach ($question_answers as $qacheck)
 	        {
 	            if (isset($qacheck['rowexists'])) $x++;
 	        }
-	
+
 	        reset($question_answers);
 			$data['question_answers'] = $question_answers;
 			$data['x'] = $x;
-		    $this->load->view("admin/quotas/newanswertwo_view", $data);
-			
+	    	$data['quota_name'] = $quota_name;
+		    $this->getController()->render("/admin/quotas/newanswertwo_view", $data);
+
 	    }
-	
+
 	    if ($subaction == "new_quota" && bHasSurveyPermission($surveyid, 'quotas','create'))
 	    {
 	        $langs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -377,104 +411,95 @@ class quotas extends Survey_Common_Controller {
 	        $thissurvey=getSurveyInfo($surveyid);
 			$data['thissurvey'] = $thissurvey;
 			$data['langs'] = $langs;
-			$this->load->view("admin/quotas/newquota_view", $data);
+			$this->getController()->render("/admin/quotas/newquota_view", $data);
 
 	    }
-		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));	
+		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 	}
-	
+
 	function getQuotaAnswers($qid,$surveyid,$quota_id)
 	{
-	    $clang = $this->limesurvey_lang;
+	    $clang = $this->getController()->lang;
+		$conn = Yii::app()->db;
 	    $baselang = GetBaseLanguageFromSurveyID($surveyid);
-	    $query = "SELECT type, title FROM ".$this->db->dbprefix('questions')." WHERE qid='{$qid}' AND language='{$baselang}'";
-	    $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	    $qtype = $result->row_array();
-	
+		$query = "SELECT type, title FROM {{questions}} WHERE qid=:id AND language=:lang";
+		$result = $conn->createCommand($query)->query(array(':id' => $qid, ':lang' => $baselang));
+	    $qtype = $result->read();
+
 	    if ($qtype['type'] == 'G')
 	    {
-	        $query = "SELECT * FROM ".$this->db->dbprefix('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-	
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
+	        $query = "SELECT * FROM {{quota_members}} WHERE sid=:sid and qid=:qid and quota_id=:quota_id";
+			$result = $conn->createCommand($query)->query(array(':sid' => $surveyid, ':qid' => $qid, ':quota_id' => $quota_id));
+
 	        $answerlist = array('M' => array('Title' => $qtype['title'], 'Display' => $clang->gT("Male"), 'code' => 'M'),
 			'F' => array('Title' => $qtype['title'],'Display' => $clang->gT("Female"), 'code' => 'F'));
-	
-	        if ($result->num_rows() > 0)
+
+	        if ($result->getRowCount() > 0)
 	        {
-	            foreach ($result->result_array() as $quotalist)
+	            foreach ($result->readAll() as $quotalist)
 	            {
 	                $answerlist[$quotalist['code']]['rowexists'] = '1';
 	            }
-	
+
 	        }
 	    }
-	
+
 	    if ($qtype['type'] == 'M')
 	    {
-	        $query = "SELECT * FROM ".$this->db->dbprefix('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
-	        $query = "SELECT title,question FROM ".$this->db->dbprefix('questions')." WHERE parent_qid='{$qid}'";
-	        $ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
+	        $query = "SELECT title,question FROM {{questions}} WHERE parent_qid=:qid";
+	    	$result = $conn->createCommand($query)->query(array(':qid' => $qid));
+
 	        $answerlist = array();
-	
-	        while ($dbanslist = $ansresult->result_array())
+
+	        while ($dbanslist = $result->read())
 	        {
 	            $tmparrayans = array('Title' => $qtype['title'], 'Display' => substr($dbanslist['question'],0,40), 'code' => $dbanslist['title']);
 	            $answerlist[$dbanslist['title']]	= $tmparrayans;
 	        }
-	
-	        if ($result->RecordCount() > 0)
+
+	    	$query = "SELECT * FROM {{quota_members}} WHERE sid=:sid and qid=:qid and quota_id=:quota_id";
+	    	$result = $conn->createCommand($query)->query(array(':sid' => $surveyid, ':qid' => $qid, ':quota_id' => $quota_id));
+
+	        if ($result->getRowCount() > 0)
 	        {
-	            while ($quotalist = $result->result_array())
+	            while ($quotalist = $result->read())
 	            {
 	                $answerlist[$quotalist['code']]['rowexists'] = '1';
 	            }
-	
+
 	        }
 	    }
-	
+
 	    if ($qtype['type'] == 'L' || $qtype['type'] == 'O' || $qtype['type'] == '!')
 	    {
-	        $query = "SELECT * FROM ".$this->db->dbprefix('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
-	        $query = "SELECT code,answer FROM ".$this->db->dbprefix('answers')." WHERE qid='{$qid}'";
-	        $ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
+	        $query = "SELECT * FROM {{quota_members}} WHERE sid=:sid and qid=:qid and quota_id=:quota_id";
+	        $result = $conn->createCommand($query)->query(array(':sid' => $surveyid, ':qid' => $qid, ':quota_id' => $quota_id));
+
+	        $query = "SELECT code,answer FROM {{answers}} WHERE qid=:qid";
+	        $ansresult = $conn->createCommand($query)->query(array(':qid' => $qid));
+
 	        $answerlist = array();
-	
-	        foreach ($ansresult->result_array() as $dbanslist)
+
+	        foreach ($ansresult->readAll() as $dbanslist)
 	        {
 	            $answerlist[$dbanslist['code']] = array('Title'=>$qtype['title'],
 			                                                  'Display'=>substr($dbanslist['answer'],0,40),
 			                                                  'code'=>$dbanslist['code']);
 	        }
-	
-	        if ($result->RecordCount() > 0)
-	        {
-	            while ($quotalist = $result->result_array())
-	            {
-	                $answerlist[$quotalist['code']]['rowexists'] = '1';
-	            }
-	
-	        }
-	
+
 	    }
-	
+
 	    if ($qtype['type'] == 'A')
 	    {
-	        $query = "SELECT * FROM ".$this->db->dbprefix('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
-	        $query = "SELECT title,question FROM ".$this->db->dbprefix('questions')." WHERE parent_qid='{$qid}'";
-	        $ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
+	    	$query = "SELECT * FROM {{quota_members}} WHERE sid=:sid and qid=:qid and quota_id=:quota_id";
+	    	$result = $conn->createCommand($query)->query(array(':sid' => $surveyid, ':qid' => $qid, ':quota_id' => $quota_id));
+
+	        $query = "SELECT title,question FROM {{questions}} WHERE parent_qid=:qid";
+	    	$ansresult = $conn->createCommand($query)->query(array(':qid' => $qid));
+
 	        $answerlist = array();
-	
-	        foreach ($ansresult->result_array() as $dbanslist)
+
+	        foreach ($ansresult->readAll() as $dbanslist)
 	        {
 	            for ($x=1; $x<6; $x++)
 	            {
@@ -482,28 +507,28 @@ class quotas extends Survey_Common_Controller {
 	                $answerlist[$dbanslist['title']."-".$x]	= $tmparrayans;
 	            }
 	        }
-	
-	        if ($result->num_rows() > 0)
+
+	        if ($result->getRowCount() > 0)
 	        {
-	            foreach ($result->result_array() as $quotalist)
+	            foreach ($result->readAll() as $quotalist)
 	            {
 	                $answerlist[$quotalist['code']]['rowexists'] = '1';
 	            }
-	
+
 	        }
 	    }
-	
+
 	    if ($qtype['type'] == 'B')
 	    {
-	        $query = "SELECT * FROM ".$this->db->dbprefix('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
-	        $query = "SELECT code,answer FROM ".$this->db->dbprefix('answers')." WHERE qid='{$qid}'";
-	        $ansresult = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
+	    	$query = "SELECT * FROM {{quota_members}} WHERE sid=:sid and qid=:qid and quota_id=:quota_id";
+	    	$result = $conn->createCommand($query)->query(array(':sid' => $surveyid, ':qid' => $qid, ':quota_id' => $quota_id));
+
+	        $query = "SELECT code,answer FROM {{answers}} WHERE qid=:qid";
+	        $ansresult = $conn->createCommand($query)->query(array('qid' => $qid));
+
 	        $answerlist = array();
-	
-	        foreach ($ansresult->result_array() as $dbanslist)
+
+	        foreach ($ansresult->readAll() as $dbanslist)
 	        {
 	            for ($x=1; $x<11; $x++)
 	            {
@@ -511,61 +536,60 @@ class quotas extends Survey_Common_Controller {
 	                $answerlist[$dbanslist['code']."-".$x]	= $tmparrayans;
 	            }
 	        }
-	
-	        if ($result->num_rows() > 0)
+
+	        if ($result->getRowCount() > 0)
 	        {
-	            foreach ($result->result_array() as $quotalist)
+	            foreach ($result->readAll() as $quotalist)
 	            {
 	                $answerlist[$quotalist['code']]['rowexists'] = '1';
 	            }
-	
+
 	        }
 	    }
-	
+
 	    if ($qtype['type'] == 'Y')
 	    {
-	        $query = "SELECT * FROM ".$this->db->dbprefix('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-	
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
+	    	$query = "SELECT * FROM {{quota_members}} WHERE sid=:sid and qid=:qid and quota_id=:quota_id";
+	    	$result = $conn->createCommand($query)->query(array(':sid' => $surveyid, ':qid' => $qid, ':quota_id' => $quota_id));
+
 	        $answerlist = array('Y' => array('Title' => $qtype['title'], 'Display' => $clang->gT("Yes"), 'code' => 'Y'),
 			'N' => array('Title' => $qtype['title'],'Display' => $clang->gT("No"), 'code' => 'N'));
-	
-	        if ($result->num_rows() > 0)
+
+	        if ($result->getRowCount() > 0)
 	        {
-	            foreach ($ansresult->result_array() as $quotalist)
+	            foreach ($ansresult->readAll() as $quotalist)
 	            {
 	                $answerlist[$quotalist['code']]['rowexists'] = '1';
 	            }
-	
+
 	        }
 	    }
-	
+
 	    if ($qtype['type'] == 'I')
 	    {
-	
+
 	        $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	        array_unshift($slangs,$baselang);
-	
-	        $query = "SELECT * FROM ".$this->db->dbprefix('quota_members')." WHERE sid='{$surveyid}' and qid='{$qid}' and quota_id='{$quota_id}'";
-	        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-	
+
+	    	$query = "SELECT * FROM {{quota_members}} WHERE sid=:sid and qid=:qid and quota_id=:quota_id";
+	    	$result = $conn->createCommand($query)->query(array(':sid' => $surveyid, ':qid' => $qid, ':quota_id' => $quota_id));
+
 	        while(list($key,$value) = each($slangs))
 	        {
 	            $tmparrayans = array('Title' => $qtype['title'], 'Display' => getLanguageNameFromCode($value,false), $value);
 	            $answerlist[$value]	= $tmparrayans;
 	        }
-	
-	        if ($result->num_rows() > 0)
+
+	        if ($result->getRowCount() > 0)
 	        {
-	            foreach ($result->result_array() as $quotalist)
+	            foreach ($result->readAll() as $quotalist)
 	            {
 	                $answerlist[$quotalist['code']]['rowexists'] = '1';
 	            }
-	
+
 	        }
 	    }
-	
+
 	    if (!isset($answerlist))
 	    {
 	        return array();
@@ -575,6 +599,6 @@ class quotas extends Survey_Common_Controller {
 	        return $answerlist;
 	    }
 	}
-		
-	
+
+
 }

@@ -63,6 +63,7 @@ class AdminController extends LSYii_Controller
 
 		Yii::import('application.libraries.Limesurvey_lang');
 		$this->lang = new Limesurvey_lang(array('langcode' => Yii::app()->session['adminlang']));
+		Yii::app()->setLang($this->lang);
 
 		if (!empty($this->user_id))
 			$this->_GetSessionUserRights($this->user_id);
@@ -109,6 +110,7 @@ class AdminController extends LSYii_Controller
 			'authentication' => 'application.controllers.admin.authentication',
 			'index' => 'application.controllers.admin.index',
 			'globalsettings' => 'application.controllers.admin.globalsettings',
+			'quotas' => 'application.controllers.admin.quotas',
 		);
 	}
 

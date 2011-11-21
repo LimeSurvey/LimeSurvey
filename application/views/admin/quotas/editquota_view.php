@@ -1,4 +1,4 @@
-<form action="<?php echo site_url("admin/quotas/$surveyid");?>" method="post">
+<form action="<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/subaction/modifyquota");?>" method="post">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
 		<tr>
 			<td valign="top">

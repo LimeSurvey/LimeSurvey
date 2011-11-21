@@ -50,18 +50,9 @@ function aComparePermission($aPermissionA,$aPermissionB)
 */
 function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
 {
-    $CI =& get_instance();
-    $publicurl = $CI->config->item('publicurl');
-    $clang = $CI->limesurvey_lang;
+    $publicurl = Yii::app()->getConfig('publicurl');
+    $clang = Yii::app()->lang;
 
-
-    if (!isset($clang))
-    {
-        $lang = array('en');
-        $CI->load->library('Limesurvey_lang',$lang);
-
-        $clang = $CI->limesurvey_lang;
-    }
     $group['Arrays'] = $clang->gT('Arrays');
     $group['MaskQuestions'] = $clang->gT("Mask questions");
     $group['SinChoiceQues'] = $clang->gT("Single choice questions");
@@ -446,29 +437,27 @@ function getsurveylist($returnarray=false, $returnwithouturl=false, $surveyid=fa
 */
 function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
 {
-    $CI =&get_instance();
-
     if (!in_array($sCRUD,array('create','read','update','delete','import','export'))) return false;
     $sCRUD=$sCRUD.'_p';
     $iSID = (int)$iSID;
     if ($iSID==0) return false;
-    $aSurveyPermissionCache = $CI->config->item("aSurveyPermissionCache");
+    $aSurveyPermissionCache = Yii::app()->getConfig("aSurveyPermissionCache");
 
     if (is_null($iUID))
     {
-        if ($CI->session->userdata('loginID')) $iUID = $CI->session->userdata('loginID');
+        if (!Yii::app()->user->getIsGuest()) $iUID = Yii::app()->session['loginID'];
         else return false;
-        if ($CI->session->userdata('USER_RIGHT_SUPERADMIN')==1) return true; //Superadmin has access to all
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN']==1) return true; //Superadmin has access to all
     }
 
     if (!isset($aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]))
     {
-        $CI->load->model("survey_permissions_model");
-        $query = $CI->survey_permissions_model->getSomeRecords(array($sCRUD),array("sid"=>$iSID,"uid"=>$iUID,"permission"=>$sPermission));
+    	//!!! Convert this model
+        $query = Survey_permissions::model()->findByAttributes(array("sid"=> $iSID,"uid"=> $iUID,"permission"=>$sPermission));
         //$sSQL = "SELECT {$sCRUD} FROM " . db_table_name('survey_permissions') . "
         //        WHERE sid={$iSID} AND uid = {$iUID}
         //        and permission=".db_quoteall($sPermission); //Getting rights for this survey
-        $bPermission = $query->row_array(); //$connect->GetOne($sSQL);
+        $bPermission = $query->attributes; //$connect->GetOne($sSQL);
         if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
         {
             $bPermission=false;
@@ -479,7 +468,7 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
         }
         $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD]=$bPermission;
     }
-    $CI->config->set_item("aSurveyPermissionCache", $aSurveyPermissionCache);
+    Yii::app()->setConfig("aSurveyPermissionCache", $aSurveyPermissionCache);
     return $aSurveyPermissionCache[$iSID][$iUID][$sPermission][$sCRUD];
 }
 
@@ -555,18 +544,16 @@ function gettemplatelist()
 */
 function getQuestions($surveyid,$gid,$selectedqid)
 {
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+	$clang = Yii::app()->lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('questions_model');
-    $qresult = $CI->questions_model->getQuestions($surveyid,$gid,$s_lang);
-    $qrows = $qresult->result_array();
+	$qrows = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang));
 
     if (!isset($questionselecter)) {$questionselecter="";}
     foreach ($qrows as $qrow)
     {
+    	$qrow = $qrow->attributes;
         $qrow['title'] = strip_tags($qrow['title']);
-        $link = site_url("admin/survey/view/".$surveyid."/".$gid."/".$qrow['qid']);
+        $link = $this->createUrl("admin/survey/view/".$surveyid."/".$gid."/".$qrow['qid']);
         $questionselecter .= "<option value='{$link}'";
         if ($selectedqid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
         $questionselecter .=">{$qrow['title']}:";
@@ -600,30 +587,22 @@ function getQuestions($surveyid,$gid,$selectedqid)
 */
 function getGidPrevious($surveyid, $gid)
 {
-    $CI =& get_instance();
-    $clang =  $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
 
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups_model');
-    //$gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
-    $qresult = $CI->groups_model->getGroupID($surveyid,$s_lang); //checked
-    $qrows = $qresult->result_array();
+    $qresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang)); //checked
 
     $i = 0;
     $iPrev = -1;
-
-    if ($qresult->num_rows() > 0)
-    {
-
-        foreach ($qrows as $qrow)
+        foreach ($qresult as $qrow)
         {
+        	$qrow = $qrow->attributes;
             if ($gid == $qrow['gid']) {$iPrev = $i - 1;}
             $i += 1;
         }
-    }
 
-    if ($iPrev >= 0) {$GidPrev = $qrows[$iPrev]['gid'];}
+    if ($iPrev >= 0) {$GidPrev = $qresult[$iPrev]->gid;}
     else {$GidPrev = "";}
     return $GidPrev;
 }
@@ -650,32 +629,26 @@ function getQidPrevious($surveyid, $gid, $qid)
     $qresult = $CI->questions_model->getQuestionID($surveyid,$gid,$s_lang); //checked)
     $qrows = $qresult->result_array();
     var_dump($qrows);*/
-
-
-    $CI= &get_instance();
-    $CI->load->helper("database");
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     //$CI->load->model('questions_model');
     //$qquery = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
     //$qresult = db_execute_assoc($qquery) ;
-    $qresult = $CI->questions_model->getQuestionID($surveyid,$gid,$s_lang); //checked)
-    $qrows = $qresult->result_array();
-
+	$qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang));
 
     $i = 0;
     $iPrev = -1;
-    if ($qresult->num_rows() > 0)
+    if (count($qrows) > 0)
     {
 
         foreach ($qrows as $qrow)
         {
-
+			$qrow = $qrow->attributes;
             if ($qid == $qrow['qid']) {$iPrev = $i - 1;}
             $i += 1;
         }
     }
-    if ($iPrev >= 0) {$QidPrev = $qrows[$iPrev]['qid'];}
+    if ($iPrev >= 0) {$QidPrev = $qrows[$iPrev]->qid;}
     else {$QidPrev = "";}
 
 
@@ -692,27 +665,27 @@ function getQidPrevious($surveyid, $gid, $qid)
 */
 function getGidNext($surveyid, $gid)
 {
-    $CI =& get_instance();
-    $clang =  $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     if (!$surveyid) {$surveyid=returnglobal('sid');}
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups_model');
+
     //$gquery = "SELECT gid FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
-    $qresult = $CI->groups_model->getGroupID($surveyid,$s_lang); //checked
-    $qrows = $qresult->result_array();
+
+	$qresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang)); //checked
 
     $GidNext="";
     $i = 0;
     $iNext = 1;
-    if ($qresult->num_rows() > 0)
-    {
-        foreach ($qrows as $qrow)
+
+        foreach ($qresult as $qrow)
         {
+        	$qrow = $qrow->attributes;
+
             if ($gid == $qrow['gid']) {$iNext = $i + 1;}
             $i += 1;
         }
-    }
-    if ($iNext < count($qrows)) {$GidNext = $qrows[$iNext]['gid'];}
+
+    if ($iNext < count($qresult)) {$GidNext = $qresult[$iNext]->gid;}
     else {$GidNext = "";}
     return $GidNext;
 }
@@ -728,27 +701,25 @@ function getGidNext($surveyid, $gid)
 */
 function getQidNext($surveyid, $gid, $qid)
 {
-    $CI= &get_instance();
-    $CI->load->helper("database");
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
     //$CI->load->model('questions_model');
     //$qquery = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
     //$qresult = db_execute_assoc($qquery) ;
-    $qresult = $CI->questions_model->getQuestionID($surveyid,$gid,$s_lang); //checked)
-    $qrows = $qresult->result_array();
+	$qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang));
+
 
     $i = 0;
     $iNext = 1;
-    if ($qresult->num_rows() > 0)
+    if (count($qrows) > 0)
     {
         foreach ($qrows as $qrow)
         {
-            if ($qid == $qrow['qid']) {$iNext = $i + 1;}
+            if ($qid == $qrow->qid) {$iNext = $i + 1;}
             $i += 1;
         }
     }
-    if ($iNext < count($qrows)) {$QidNext = $qrows[$iNext]['qid'];}
+    if ($iNext < count($qrows)) {$QidNext = $qrows[$iNext]->qid;}
     else {$QidNext = "";}
     return $QidNext;
 }
@@ -821,14 +792,11 @@ function iGetDirectorySize($directory) {
 */
 function getGroupSum($surveyid, $lang)
 {
-    $CI= &get_instance();
-    $CI->load->model('groups_model');
     //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
     $condn = array('sid'=>$surveyid,'language'=>$lang);
-    $sumresult3 = $CI->groups_model->getAllRecords($condn); //Checked)
-    $groupscount = $sumresult3->num_rows();
+    $sumresult3 = count(Groups::model()->findAllByAttributes($condn)); //Checked)
 
-    return $groupscount ;
+    return $sumresult3 ;
 }
 
 
@@ -1355,20 +1323,20 @@ function getgrouplist3($gid,$surveyid)
 */
 function getgrouplistlang($gid, $language,$surveyid)
 {
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
 
-    $CI->load->model('groups_model');
+    $clang = Yii::app()->lang;
+
     $groupselecter="";
     if (!$surveyid) {$surveyid=returnglobal('sid');}
 
     //$gidquery = "SELECT gid, group_name FROM ".$CI->db->prefix('groups')." WHERE sid=$surveyid AND language='".$language."' ORDER BY group_order";
-    $gidresult = $CI->groups_model->getGroupAndID($surveyid,$language) or safe_die("Couldn't get group list in common_helper.php<br />");   //Checked)
-    foreach ($gidresult->result_array() as $gv)
+    $gidresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $language));   //Checked)
+    foreach ($gidresult as $gv)
     {
+    	$gv = $gv->attributes;
         $groupselecter .= "<option";
         if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-        $link = site_url("admin/survey/view/".$surveyid."/".$gv['gid']);
+        $link = Yii::app()->createUrl("admin/survey/view/".$surveyid."/".$gv['gid']);
         $groupselecter .= " value='{$link}'>";
         if (strip_tags($gv['group_name']))
         {
@@ -1380,7 +1348,7 @@ function getgrouplistlang($gid, $language,$surveyid)
     }
     if ($groupselecter)
     {
-        $link = site_url("admin/survey/view/".$surveyid);
+        $link = Yii::app()->createUrl("admin/survey/view/".$surveyid);
         if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
         else {$groupselecter .= "<option value='{$link}'>".$clang->gT("None")."</option>\n";}
     }
@@ -1479,7 +1447,6 @@ function getuserlist($outputformat='fullinfoarray')
 function getSurveyInfo($surveyid, $languagecode='')
 {
     global $siteadminname, $siteadminemail, $languagechanger;
-    $CI =& get_instance();
     $surveyid=sanitize_int($surveyid);
     $languagecode=sanitize_languagecode($languagecode);
     $thissurvey=false;
@@ -1491,12 +1458,17 @@ function getSurveyInfo($surveyid, $languagecode='')
     }
 
     //$query="SELECT * FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
-    $CI->load->model('surveys_languagesettings_model');
 
-    $result=$CI->surveys_languagesettings_model->getAllData($surveyid,$languagecode); //or safe_die ("Couldn't access survey settings<br />");   //Checked
-    foreach ($result->result_array() as $row)
+	$result = Surveys_languagesettings::model()->with('survey')->findAllByAttributes(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
+    foreach ($result as $row)
     {
-        $thissurvey=$row;
+        $thissurvey=array();
+    	foreach ($row as $k => $v)
+    		$thissurvey[$k] = $v;
+    	foreach ($row->survey as $k => $v)
+    		$thissurvey[$k] = $v;
+
+
         // now create some stupid array translations - needed for backward compatibility
         // Newly added surveysettings don't have to be added specifically - these will be available by field name automatically
         $thissurvey['name']=$thissurvey['surveyls_title'];
@@ -1504,7 +1476,7 @@ function getSurveyInfo($surveyid, $languagecode='')
         $thissurvey['welcome']=$thissurvey['surveyls_welcometext'];
         $thissurvey['templatedir']=$thissurvey['template'];
         $thissurvey['adminname']=$thissurvey['admin'];
-        $thissurvey['tablename']=$CI->db->dbprefix.'survey_'.$thissurvey['sid'];
+        $thissurvey['tablename']='{{survey_'.$thissurvey['sid'] . '}}';
         $thissurvey['urldescrip']=$thissurvey['surveyls_urldescription'];
         $thissurvey['url']=$thissurvey['surveyls_url'];
         $thissurvey['expiry']=$thissurvey['expires'];
@@ -2307,9 +2279,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     // TMSW Conditions->Relevance:  'hasconditions' and 'usedinconditions' are no longer needed.
 
     global $globalfieldmap, $aDuplicateQIDs;
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+
+    $clang = Yii::app()->lang;
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset($globalfieldmap[$surveyid][$style][$clang->langcode]) && $force_refresh==false) {
@@ -2349,17 +2320,17 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 
     // Select which question IDs have default values
-    $CI->load->model('defaultvalues_model');
-    $oQuery=$CI->defaultvalues_model->getSurveyDefaultValues(array('defaultvalues.qid'),$surveyid);
-    $aDefaultValues=$oQuery->result_array();
+	$_aDefaultValues = Defaultvalues::model()->with(array('question' => array('condition' => 'question.sid=' . $surveyid)))->findAll();
+	$aDefaultValues = array();
+	foreach ($_aDefaultValues as $k => $v)
+		$aDefaultValues[] = $v->qid;
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
     //$pquery = "SELECT anonymized, datestamp, ipaddr, refurl FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-    $CI->load->model('surveys_model');
     $fieldtoselect = array('anonymized', 'datestamp', 'ipaddr', 'refurl','language');
     $conditiontoselect = array('sid' => $surveyid); //"WHERE sid=$surveyid";
-    $oResult=$CI->surveys_model->getSomeRecords($fieldtoselect,$conditiontoselect); //Checked)
-    $prow=$oResult->row_array();
+    $prow = Survey::model()->findByPk($surveyid); //Checked)
+    $prow=$prow->attributes;
     if ($prow['anonymized'] == "N")
     {
         $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2436,12 +2407,27 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
     $qtypes=getqtypelist('','array');
 
-    $CI->load->model('conditions_model');
-    $aresult = $CI->conditions_model->getConditions($surveyid,$questionid,$s_lang) or safe_die ("Couldn't get list of questions in createFieldMap function.<br />".$CI->db->last_query()."<br />"); //Checked
-
+	$language = $s_lang;
+	$aquery = "SELECT questions.*, groups.group_order, groups.group_name,"
+	." (SELECT count(1) FROM {{conditions}} c\n"
+	." WHERE questions.qid = c.qid) AS hasconditions,\n"
+	." (SELECT count(1) FROM {{conditions}} c\n"
+	." WHERE questions.qid = c.cqid) AS usedinconditions\n"
+	." FROM {{questions}} as questions, {{groups}} as groups"
+	." WHERE questions.gid=groups.gid AND "
+	." questions.sid=$surveyid AND "
+	." questions.language='{$language}' AND "
+	." questions.parent_qid=0 AND "
+	." groups.language='{$language}' ";
+	if ($questionid!==false)
+	{
+		$aquery.=" and questions.qid={$questionid} ";
+	}
+	$aquery.=" ORDER BY group_order, question_order";
+    $aresult = Yii::app()->db->createCommand($aquery)->query();
     $questionSeq=-1; // this is incremental question sequence across all groups
 
-    foreach ($aresult->result_array() as $arow) //With each question, create the appropriate field(s))
+    foreach ($aresult->readAll() as $arow) //With each question, create the appropriate field(s))
     {
         ++$questionSeq;
         if ($arow['hasconditions']>0)
@@ -2495,8 +2481,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         'scale_id' => 0,
                         'language' => GetBaseLanguageFromSurveyID($surveyid)
                         ); //"WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-                        $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
-                        $data  = $data->row_array();
+                        $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
+                        $data  = $data->attributes;
                         $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
                     }
                     else
@@ -2507,10 +2493,10 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         'scale_id' => 0,
                         'language' => $clang->langcode
                         );
-                        $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
+                        $data = Defaultvalues::model()->findAllByAttributes($conditiontoselect);
 
-                        $row  = $data->row_array();
-                        if ($data->num_rows() >0)
+                        $row  = $data[0]->attributes;
+                        if (count($data) >0)
                             $fieldmap[$fieldname]['defaultvalue']=$row['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
                         else
                             $fieldmap[$fieldname]['defaultvalue']='';
@@ -2555,8 +2541,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                                     'scale_id' => 0,
                                     'language' => GetBaseLanguageFromSurveyID($surveyid)
                                     );
-                                    $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
-                                    $data  = $data->row_array();
+                                    $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
+                                    $data  = $data->attributes;
                                     if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
                                     $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
                                 }
@@ -2568,8 +2554,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                                     'scale_id' => 0,
                                     'language' => $clang->langcode
                                     );
-                                    $data = $CI->defaultvalues_model->getSomeRecords($fieldtoselect,$conditiontoselect);
-                                    $data  = $data->row_array();
+                                    $data = Defaultvalues::model()->findByAttributes($conditiontoselect);
+                                    $data  = $data->attributes;
                                     if (!isset($data['defaultvalue'])) $data['defaultvalue']=null;
                                     $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];//$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'");
                                 }
@@ -2694,10 +2680,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         elseif ($arow['type'] == "R")
         {
             //MULTI ENTRY
-            $CI->load->model('answers_model');
-            $data = $CI->answers_model->getCountOfCode($arow['qid'],$s_lang);
-            $data = $data->row_array();
-            $slots=$data['codecount'];//$connect->GetOne("select count(code) from ".db_table_name('answers')." where qid={$arow['qid']} and language='{$s_lang}'");
+            $data = Answers::model()->findAllByAttributes(array('qid' => $arow['qid'], 'language' => $s_lang));
+            $data = count($data);
+            $slots=$data;//$connect->GetOne("select count(code) from ".db_table_name('answers')." where qid={$arow['qid']} and language='{$s_lang}'");
             for ($i=1; $i<=$slots; $i++)
             {
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}$i";
@@ -2790,9 +2775,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         if ($arow['same_default'])
                         {
                             $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'";
-                            $CI->load->model("defaultvalues_model");
-                            $data = $CI->defaultvalues_model->getSomeRecords(array("defaultvalue"),$conditiontoselect);
-                            $data  = $data->row_array();
+
+                            $data = Defaultvalues::model()->find($conditiontoselect);
+                            $data  = $data->attributes;
                             if(isset($data['defaultvalue']))
                                 $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
                             //$fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE sqid={$abrow['qid']} and qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."'");
@@ -2800,9 +2785,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         else
                         {
                             $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
-                            $CI->load->model("defaultvalues_model");
-                            $data = $CI->defaultvalues_model->getSomeRecords(array("defaultvalue"),$conditiontoselect);
-                            $data  = $data->row_array();
+                            $data = Defaultvalues::model()->find($conditiontoselect);
+                            $data  = $data->attributes;
                             if(isset($data['defaultvalue']))
                                 $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
 
@@ -3015,14 +2999,11 @@ function GetBaseLanguageFromSurveyID($surveyid)
 {
     //if(empty($surveyid)) var_dump(debug_backtrace());
     static $cache = array();
-    $CI=& get_instance();
     $surveyid=(int)($surveyid);
     if (!isset($cache[$surveyid])) {
-        $fields = array('language');
         $condition = array('sid' => $surveyid);//"sid=$surveyid";
-        $CI->load->model('surveys_model');
-        $query = $CI->surveys_model->getSomeRecords($fields,$condition);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
-        $surveylanguage = $query->row_array(); //Checked)
+        $surveylanguage = Survey::model()->findByPk($surveyid);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
+        $surveylanguage = $surveylanguage->attributes; //Checked)
 
         if (!isset($surveylanguage['language']) || is_null($surveylanguage))
         {
@@ -3043,15 +3024,11 @@ function GetBaseLanguageFromSurveyID($surveyid)
 function GetAdditionalLanguagesFromSurveyID($surveyid)
 {
     static $cache = array();
-    $CI = &get_instance();
-    $surveyid=sanitize_int($surveyid);
     if (!isset($cache[$surveyid])) {
-        $fields = array('additional_languages');
-        $condition = array("sid"=>$surveyid);
-        $CI->load->model('surveys_model');
-        $result = $CI->surveys_model->getSomeRecords($fields,$condition);
+        $result = Survey::model()->findByAttributes(array('sid' => (int) $surveyid));
+
+    	$additional_languages = $result->attributes;
         //$query = "SELECT additional_languages FROM ".db_table_name('surveys')." WHERE sid=$surveyid";
-        $additional_languages = $result->row_array();
         $additional_languages = $additional_languages['additional_languages'];
         if (trim($additional_languages)=='')
         {
@@ -3163,16 +3140,14 @@ function buildLabelSetCheckSumArray()
 */
 function getQuestionAttributeValues($qid, $type='')
 {
-    $CI = &get_instance();
     static $cache = array();
     static $availableattributesarr = null;
 
     if (isset($cache[$qid])) {
         return $cache[$qid];
     }
-    $CI->load->model('questions_model');
-    $result = $CI->questions_model->getSomeRecords(array('type','sid'),array('qid'=>$qid)) or safe_die("Error finding question attributes");  //Checked
-    $row=$result->row_array();
+    $result = Questions::model()->findByPk($qid) or safe_die("Error finding question attributes");  //Checked
+    $row=$result->attributes;
     if ($row===false) // Question was deleted while running the survey
     {
         $cache[$qid]=false;
@@ -3214,11 +3189,12 @@ function getQuestionAttributeValues($qid, $type='')
     $fields = array('attribute', 'value', 'language');
     $condition = "qid = $qid";
     $CI->load->model('question_attributes_model');
-    $result = $CI->question_attributes_model->getSomeRecords($fields,$condition) or safe_die("Error finding question attributes");  //Checked)
+    $result = Question_attributes::model()->findAll($condition) or safe_die("Error finding question attributes");  //Checked)
     $setattributes=array();
 
-    foreach ($result->result_array() as $row)
+    foreach ($result as $row)
     {
+    	$row = $row->attributes;
         if (!isset($availableattributes[$row['attribute']])) continue; // Sort out attribuets not belonging to this question type
         if (!($availableattributes[$row['attribute']]['i18n']))
         {
@@ -3265,8 +3241,7 @@ function getQuestionAttributeValue($questionAttributeArray, $attributeName, $lan
 */
 function questionAttributes($returnByName=false)
 {
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     //For each question attribute include a key:
     // name - the display name
     // types - a string with one character representing each question typy to which the attribute applies
@@ -5671,7 +5646,7 @@ function cleanTempDirectory()
             @unlink($dir.$file);
         }
     }
-    $dir=  $CI->config->item('tempdir').'/uploads/';
+    $dir=  Yii::app()->getConfig('tempdir').'/uploads/';
     $dp = opendir($dir) or die ('Could not open temporary directory');
     while ($file = readdir($dp)) {
         if (is_file($dir.$file) && (filemtime($dir.$file)) < (strtotime('-1 days')) && $file!='index.html' && $file!='readme.txt' && $file!='..' && $file!='.' && $file!='.svn') {
@@ -6034,12 +6009,12 @@ function SSL_mode()
 */
 function get_quotaCompletedCount($surveyid, $quotaid)
 {
-    $CI =& get_instance();
+
     $result ="N/A";
     $quota_info = getQuotaInformation($surveyid,GetBaseLanguageFromSurveyID($surveyid),$quotaid);
     $quota = $quota_info[0];
 
-    if ( db_tables_exist($CI->db->dbprefix('survey_'.$surveyid))  &&
+	if (Yii::app()->db->schema->getTable('{{survey_' . $surveyid . '}}') &&
     count($quota['members']) > 0)
     {
         $fields_list = array(); // Keep a list of fields for easy reference
@@ -6054,7 +6029,7 @@ function get_quotaCompletedCount($surveyid, $quotaid)
                     $fields_list[] = $fieldname;
                     $fields_query[$fieldname] = array();
                 }
-                $fields_query[$fieldname][]= db_quote_id($fieldname)." = '{$member['value']}'";
+                $fields_query[$fieldname][]= $fieldname." = '{$member['value']}'";
             }
         }
 
@@ -6067,9 +6042,9 @@ function get_quotaCompletedCount($surveyid, $quotaid)
         //$querysel = "SELECT count(id) as count FROM ".db_table_name('survey_'.$surveyid)." WHERE ".implode(' AND ',$querycond)." "." AND submitdate IS NOT NULL";
         //$result = db_execute_assoc($querysel) or safe_die($connect->ErrorMsg()); //Checked
         //$quota_check = $result->FetchRow();
-        $CI->load->model('Survey_dynamic_model');
-        $query=$CI->Survey_dynamic_model->quotaCompletedCount($sid,$querycond);
-        $result = $query->num_rows();
+
+        $query = Survey_dynamic::model($sid)->findAll(implode('', $querycond));
+        $result = count($query);
         //$result = $quota_check['count'];
     }
 
@@ -6327,7 +6302,6 @@ function vIncludeKeypad()
 function getQuotaInformation($surveyid,$language,$quotaid='all')
 {
     global $clienttoken;
-    $CI = &get_instance();
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
     /*$query = "SELECT * FROM ".db_table_name('quota').", ".db_table_name('quota_languagesettings')."
@@ -6341,10 +6315,8 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
 
     $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());    //Checked
     */
-    $CI->load->model('questions_model');
-    $CI->load->model('quota_model');
-    $CI->load->model('quota_members_model');
-    $result = $CI->quota_model->getQuotaInformation($surveyid,$language,$quotaid);
+
+    $result = Quota::model()->with(array('languagesettings' => array('condition' => "quotals_language='$language'")))->findAllByAttributes(array('sid' => $surveyid, 'id' =>$quotaid));
     $quota_info = array();
     $x=0;
 
@@ -6352,39 +6324,45 @@ function getQuotaInformation($surveyid,$language,$quotaid='all')
 
     // Check all quotas for the current survey
     //if ($result->RecordCount() > 0)
-    if ($result->num_rows() > 0)
+    if (count($result) > 0)
     {
         //while ($survey_quotas = $result->FetchRow())
-        foreach ($result->result_array() as $survey_quotas)
+        foreach ($result as $_survey_quotas)
         {
+        	$survey_quotas = $_survey_quotas->attributes;
+        	// !!! Doubting this
+        	foreach ($_survey_quotas->languagesettings[0] as $k => $v)
+        		$survey_quotas[$k] = $v;
+
             //Modify the URL - thanks janokary
-            $survey_quotas['quotals_url']=str_replace("{SAVEDID}",$CI->session->userdata('srid') ? $CI->session->userdata('srid') : '', $survey_quotas['quotals_url']);
+            $survey_quotas['quotals_url']=str_replace("{SAVEDID}",!empty(Yii::app()->session['srid']) ? Yii::app()->session['srid'] : '', $survey_quotas['quotals_url']);
             $survey_quotas['quotals_url']=str_replace("{SID}", $surveyid, $survey_quotas['quotals_url']);
-            $survey_quotas['quotals_url']=str_replace("{LANG}", $CI->limesurvey_lang->getlangcode(), $survey_quotas['quotals_url']);
+            $survey_quotas['quotals_url']=str_replace("{LANG}", Yii::app()->lang->getlangcode(), $survey_quotas['quotals_url']);
             $survey_quotas['quotals_url']=str_replace("{TOKEN}",$clienttoken, $survey_quotas['quotals_url']);
 
             array_push($quota_info,array('Name' => $survey_quotas['name'],
             'Limit' => $survey_quotas['qlimit'],
             'Action' => $survey_quotas['action'],
             'Message' => $survey_quotas['quotals_message'],
-            'Url' => passthruReplace(insertansReplace($survey_quotas['quotals_url']), $surveyinfo),
+            'Url' => $survey_quotas['quotals_url'],
             'UrlDescrip' => $survey_quotas['quotals_urldescrip'],
             'AutoloadUrl' => $survey_quotas['autoload_url']));
             //$query = "SELECT * FROM ".db_table_name('quota_members')." WHERE quota_id='{$survey_quotas['id']}'";
             //$result_qe = db_execute_assoc($query) or safe_die($connect->ErrorMsg());      //Checked
-            $result_qe = $CI->quota_members_model->getAllRecords(array('quota_id'=>$survey_quotas['id']));
+            $result_qe = Quota_members::model()->findAllByAttributes(array('quota_id'=>$survey_quotas['id']));
             $quota_info[$x]['members'] = array();
-            if ($result_qe->num_rows() > 0)
+            if (count($result_qe) > 0)
             //if ($result_qe->RecordCount() > 0)
             {
                 //while ($quota_entry = $result_qe->FetchRow())
-                foreach ($result_qe->result_array() as $quota_entry)
+                foreach ($result_qe as $quota_entry)
                 {
+                	$quota_entry = $quota_entry->attributes;
                     //$query = "SELECT type, title,gid FROM ".db_table_name('questions')." WHERE qid='{$quota_entry['qid']}' AND language='{$baselang}'";
                     //$result_quest = db_execute_assoc($query) or safe_die($connect->ErrorMsg());     //Checked
                     //$qtype = $result_quest->FetchRow();
-                    $result_quest=$CI->questions_model->getSomeRecords("type, title, gid",array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
-                    $qtype=$result_quest->row_array();
+                    $result_quest=Questions::model()->findByAttributes(array('qid'=>$quota_entry['qid'], 'language'=>$baselang));
+                    $qtype=$result_quest->attributes;
 
                     $fieldnames = "0";
 
@@ -7505,11 +7483,8 @@ function db_switchIDInsert($table,$state)
 */
 function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="by-depgid")
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
     $sid=sanitize_int($sid);
     $condarray = Array();
-    $CI->load->helper('database');
     $sqldepgid="";
     $sqltarggid="";
     if ($depgid != "all") { $depgid = sanitize_int($depgid); $sqldepgid="AND tq.gid=$depgid";}
@@ -7518,18 +7493,18 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
     $baselang = GetBaseLanguageFromSurveyID($sid);
     $condquery = "SELECT tg.gid as depgid, tg.group_name as depgpname, "
     . "tg2.gid as targgid, tg2.group_name as targgpname, tq.qid as depqid, tc.cid FROM "
-    . $CI->db->dbprefix."conditions AS tc, "
-    . $CI->db->dbprefix."questions AS tq, "
-    . $CI->db->dbprefix."questions AS tq2, "
-    . $CI->db->dbprefix."groups AS tg ,"
-    . $CI->db->dbprefix."groups AS tg2 "
+    . "{{conditions}} AS tc, "
+    . "{{questions}} AS tq, "
+    . "{{questions}} AS tq2, "
+    . "{{groups}} AS tg ,"
+    . "{{groups}} AS tg2 "
     . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tg.language='{$baselang}' AND tg2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND tq.gid = tg.gid AND tg2.gid = tq2.gid "
     . "AND tq2.qid=tc.cqid AND tq.gid != tg2.gid $sqldepgid $sqltarggid";
-    $condresult=db_execute_assoc($condquery);// or safe_die($connect->ErrorMsg());   //Checked
+	$condresult = Yii::app()->db->createCommand($condquery)->query();
 
-    if ($condresult->num_rows() > 0) {
-        foreach ($condresult->result_array() as $condrow)
+    if ($condresult->getRowCount() > 0) {
+        foreach ($condresult->readAll() as $condrow)
         {
 
             switch ($indexby)
@@ -7595,9 +7570,7 @@ function GetGroupDepsForConditions($sid,$depgid="all",$targgid="all",$indexby="b
 */
 function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",$indexby="by-depqid", $searchscope="samegroup")
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     $condarray = Array();
 
     $baselang = GetBaseLanguageFromSurveyID($sid);
@@ -7610,14 +7583,13 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
     if ($targqid != "all") {$targqid = sanitize_int($targqid); $sqltargqid="AND tq2.qid=$targqid";}
     if ($searchscope == "samegroup") {$sqlsearchscope="AND tq2.gid=tq.gid";}
 
-    $condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid FROM ".$CI->db->dbprefix."conditions AS tc, ".$CI->db->dbprefix."questions AS tq, ".$CI->db->dbprefix."questions AS tq2 "
-    . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
-    . "AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
-
-    $condresult=db_execute_assoc($condquery); // or safe_die($connect->ErrorMsg());    //Checked
-
-    if ($condresult->num_rows() > 0) {
-        foreach ($condresult->result_array() as $condrow)
+    $condquery = "SELECT tq.qid as depqid, tq2.qid as targqid, tc.cid
+    	FROM {{conditions}} AS tc, {{questions}} AS tq, {{questions}} AS tq2
+    	WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid='$sid'
+    	AND  tq2.qid=tc.cqid $sqlsearchscope $sqlgid $sqldepqid $sqltargqid";
+	$condresult=Yii::app()->db->createCommand($condquery)->query();
+    if ($condresult->getRowCount() > 0) {
+        foreach ($condresult->readAll() as $condrow)
         {
             $depqid=$condrow['depqid'];
             $targetqid=$condrow['targqid'];

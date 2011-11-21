@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php echo $clang->gT("New quota");?></div>
-<form class="form30" action="<?php echo site_url("admin/quotas/$surveyid");?>" method="post" id="addnewquotaform" name="addnewquotaform">
+<form class="form30" action="<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/subaction/insertquota");?>" method="post" id="addnewquotaform" name="addnewquotaform">
 <ul>
 		<li>
 			<label for="quota_name"><?php echo $clang->gT("Quota name");?>:</label>

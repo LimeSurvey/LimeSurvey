@@ -24,7 +24,7 @@
 	<td align="center" <?php echo $highlight;?>><?php echo $completed;?></td>
 	<td align="center" style="padding: 3px;">
 <?php if (bHasSurveyPermission($surveyid, 'quotas','update')) { ?>
-    <form action="<?php echo site_url("admin/quotas/$surveyid");?>" method="post">
+    <form action="<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/subaction/quota_editquota");?>" method="post">
                         <input name="submit" type="submit" class="submit" value="<?php echo $clang->gT("Edit");?>" />
                         <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
                         <input type="hidden" name="action" value="quotas" />
@@ -32,7 +32,7 @@
                         <input type="hidden" name="subaction" value="quota_editquota" />
                     </form>
 <?php } if (bHasSurveyPermission($surveyid, 'quotas','delete')) { ?>
-    <form action="<?php echo site_url("admin/quotas/$surveyid/quota_delquota");?>" method="post">
+    <form action="<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/subaction/quota_delquota");?>" method="post">
 			            <input name="submit" type="submit" class="submit" value="<?php echo $clang->gT("Remove");?>" />
 			            <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
 			            <input type="hidden" name="action" value="quotas" />
@@ -50,7 +50,7 @@
 	<td align="center">&nbsp;</td>
 	<td style="padding: 3px;" align="center">
 <?php if (bHasSurveyPermission($surveyid, 'quotas','update')) { ?>
-    <form action="<?php echo site_url("admin/quotas/$surveyid/new_answer");?>" method="post">
+    <form action="<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/subaction/new_answer");?>" method="post">
                         <input name="submit" type="submit" class="quota_new" value="<?php echo $clang->gT("Add Answer");?>" />
                         <input type="hidden" name="sid" value="<?php echo $surveyid;?>" />
                         <input type="hidden" name="action" value="quotas" />

@@ -21,6 +21,7 @@ class LSYii_Application extends CWebApplication
 {
 	protected $config = array();
 	protected $registry = array();
+	public $lang = null;
 
 	/**
 	 * Initiates the application
@@ -93,6 +94,18 @@ class LSYii_Application extends CWebApplication
 	public function setRegistry($name, $value)
 	{
 		$this->registry[$name] = $value;
+	}
+
+	/**
+	 * For future use, cache the language app wise as well.
+	 *
+	 * @access public
+	 * @param Limesurvey_lang
+	 * @return void
+	 */
+	public function setLang(Limesurvey_lang $lang)
+	{
+		$this->lang = $lang;
 	}
 
 	/**

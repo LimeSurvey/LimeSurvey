@@ -21,7 +21,7 @@
     		<td align="center">&nbsp;</td>
     		<td align="center">&nbsp;</td>
     		<td align="center">&nbsp;</td>
-    		<td align="center" style="padding: 3px;"><input type="button" value="<?php echo $clang->gT("Quick CSV report");?>" onClick="window.open('admin.php?action=quotas&amp;sid=<?php echo $surveyid;?>&amp;quickreport=y', '_top')" /></td>
+    		<td align="center" style="padding: 3px;"><input type="button" value="<?php echo $clang->gT("Quick CSV report");?>" onClick="window.open('<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/quickreport/y") ?>', '_top')" /></td>
   		</tr>
 	</tfoot>
 	<tbody>

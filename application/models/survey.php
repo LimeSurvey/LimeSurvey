@@ -45,7 +45,7 @@ class Survey extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'languagesettings' => array(self::HAS_MANY, 'Surveys_languagesettings', '',
+			'languagesettings' => array(self::HAS_ONE, 'Surveys_languagesettings', '',
 				'on' => 't.sid = languagesettings.surveyls_survey_id AND t.language = languagesettings.surveyls_language'),
 			'owner' => array(self::BELONGS_TO, 'User', '', 'on' => 't.owner_id = owner.uid'),
 		);

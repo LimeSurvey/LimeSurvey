@@ -2,12 +2,12 @@
 <div class="header"><?php echo $clang->gT("Add Answer");?>: <?php echo $clang->gT("Question Selection");?></div><br />
 	<div class="messagebox">
 		<?php echo $clang->gT("All answers are already selected in this quota.");?>
-		<br/><br/><input type="submit" onclick="window.open('<?php echo site_url("admin/quotas/$surveyid");?>', '_top')" value="<?php echo $clang->gT("Continue");?>"/>
+		<br/><br/><input type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/$surveyid");?>', '_top')" value="<?php echo $clang->gT("Continue");?>"/>
 	</div>
 <?php } else { ?>
 <div class="header ui-widget-header"><?php echo $clang->gT("Survey Quota");?>: <?php echo $clang->gT("Add Answer");?></div><br />
 	<div class="messagebox ui-corner-all" style="width: 600px">
-		<form action="<?php echo site_url("admin/quotas/$surveyid");?>#quota_<?php echo $_POST['quota_id'];?>" method="post">
+		<form action="<?php echo $this->createUrl("admin/quotas/surveyid/$surveyid/subaction/insertquotaanswer");?>#quota_<?php echo $_POST['quota_id'];?>" method="post">
 			<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
 				<tbody>
 					<thead>

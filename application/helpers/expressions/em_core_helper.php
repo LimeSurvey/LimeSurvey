@@ -118,8 +118,7 @@ class ExpressionManager {
         $this->asCategorizeTokensRegex[] = '/.+/';
         $this->asTokenType[] = 'OTHER';
 
-        $CI =& get_instance();
-        $clang = $CI->limesurvey_lang;
+        $clang = Yii::app()->lang;
 
         // Each allowed function is a mapping from local name to external name + number of arguments
         // Functions can have a list of serveral allowable #s of arguments.
@@ -211,8 +210,7 @@ class ExpressionManager {
      */
     private function AddError($errMsg, $token)
     {
-        $CI =& get_instance();
-        $clang = $CI->limesurvey_lang;
+        $clang = Yii::app()->lang;
         $this->errs[] = array($clang->gT($errMsg), $token);
     }
 
@@ -1603,7 +1601,7 @@ class ExpressionManager {
     {
         $this->groupSeq = $groupSeq;
         $this->questionSeq = $questionSeq;
-        
+
         $status = $this->Evaluate($expr);
         if (!$status) {
             return false;    // if there are errors in the expression, hide it?

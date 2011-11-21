@@ -1,6 +1,6 @@
 <div class="header ui-widget-header"><?php echo $clang->gT("Survey Quota");?>: <?php echo $clang->gT("Add Answer");?></div><br />
 	<div class="messagebox ui-corner-all" style="width: 600px">
-		<form action="<?php echo site_url("admin/quotas/$surveyid");?>" method="post">
+		<form action="<?php echo $this->createUrl("/admin/quotas/surveyid/$surveyid/subaction/new_answer_two");?>" method="post">
 			<table class="addquotaanswer" border="0" cellpadding="0" cellspacing="0" bgcolor="#F8F8FF">
 				<thead>
 				<tr>
