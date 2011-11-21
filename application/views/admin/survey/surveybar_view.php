@@ -105,11 +105,11 @@
                         <?php } ?>
                     <?php if(1) { ?>
                         <li><a href='<?php echo site_url("admin/survey/showsyntaxerrors/$surveyid");?>' >
-                            <?php echo $clang->gT("Show Log of Syntax Errors");?></a></li>
+                            <?php echo $clang->gT("Show log of syntax errors");?></a></li>
                         <?php } ?>
                     <?php if(1) { ?>
                         <li><a href='<?php echo site_url("admin/survey/resetsyntaxerrorlog/$surveyid");?>' >
-                            <?php echo $clang->gT("Delete Log of Syntax Errors");?></a></li>
+                            <?php echo $clang->gT("Delete log of syntax Errors");?></a></li>
                         <?php } ?>
                 </ul></li>
             <li><a href='#'>

@@ -8,13 +8,13 @@
 <ul>
  <li>
   <label for="fileupload" id="fileupload">
-   <?php echo $clang->gT("Choose the file to Upload:");?>
+   <?php echo $clang->gT("Choose the file to upload:");?>
   </label>
   <input type="file" name="userfile" size="50" />
  </li>
  <li>
   <label for="characterset" id="characterset">
-   <?php echo $clang->gT("Characterset of File:");?>
+   <?php echo $clang->gT("Character set of file:");?>
   </label>
    <?php
       $encodingsarray = array("armscii8"=>$clang->gT("ARMSCII-8 Armenian")
@@ -59,10 +59,10 @@
  </li>
  <li>
   <label for="seperatorused" id="seperatorused">
-   <?php  echo $clang->gT("Seperator Used:");?>
+   <?php  echo $clang->gT("Seperator used:");?>
   </label>
    <?php
-     $seperatorused = array( "auto"=>$clang->gT("Auto Detected")
+     $seperatorused = array( "auto"=>$clang->gT("Auto detected")
                              ,"comma"=>$clang->gT("Comma")
                              ,"semicolon"=>$clang->gT("Semicolon"));
      echo form_dropdown('seperatorused', $seperatorused, 'auto');
@@ -75,14 +75,14 @@
    ?>
   </label>
    <?php
-    echo form_checkbox('filterbea','accept', TRUE); 
+    echo form_checkbox('filterbea','accept', TRUE);
    ?>
  </li>
  <li>
      <p><input type="submit" value="upload" /></p>
  </li>
 </ul>
- <?php 
+ <?php
   echo form_close();
  ?>
 <div class="messagebox ui-corner-all">

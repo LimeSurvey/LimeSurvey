@@ -2,7 +2,7 @@
  <div class='header ui-widget-header'>
    <strong>
      <?php
-      echo $clang->gT("Global Participant Settings"); 
+      echo $clang->gT("Global participant settings");
      ?>
    </strong>
  </div>
@@ -29,15 +29,15 @@
    </li>
   </ul>
   <p>
-     <?php 
-       echo form_submit('submit', 'Submit'); 
+     <?php
+       echo form_submit('submit', 'Submit');
      ?>
   </p>
    <?php
       echo form_close();
      }
      else
-     {  
+     {
         echo "<div class='messagebox ui-corner-all'>".$clang->gT("You don't have sufficient permissions")."</div>";
      }
    ?>

@@ -99,7 +99,7 @@ var surveyUrl = "<?php echo site_url("admin/participants/addToToken"); ?>";
 var postUrl = "<?php echo site_url("admin/participants/setSession"); ?>";
 var ajaxUrl = "<?php echo site_url("images/ajax-loader.gif"); ?>";
 var redUrl = "<?php echo site_url("admin/participants/displayParticipants");?>";
-var colNames = '["participant_id","can_edit","<?php echo $clang->gT("First Name") ?>","<?php echo $clang->gT("Last Name") ?>","<?php echo $clang->gT("E-Mail") ?>","<?php echo $clang->gT("Blacklisted") ?>","<?php echo $clang->gT("Surveys") ?>","<?php echo $clang->gT("Language") ?>","<?php echo $clang->gT("Owner Name") ?>"<?php echo $columnNames; ?>]';
+var colNames = '["participant_id","can_edit","<?php echo $clang->gT("First name") ?>","<?php echo $clang->gT("Last name") ?>","<?php echo $clang->gT("E-mail") ?>","<?php echo $clang->gT("Blacklisted") ?>","<?php echo $clang->gT("Surveys") ?>","<?php echo $clang->gT("Language") ?>","<?php echo $clang->gT("Owner name") ?>"<?php echo $columnNames; ?>]';
 var colModels = '[{ "name":"participant_id", "index":"participant_id", "width":100, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"can_edit", "index":"can_edit", "width":10, "align":"center", "sorttype":"int", "sortable": true, "editable":false, "hidden":true},';
     colModels += '{ "name":"firstname", "index":"firstname", "sorttype":"string", "sortable": true, "width":120, "align":"center", "editable":true},';
@@ -247,10 +247,10 @@ if(isset($allattributes) && count($allattributes) > 0) // Add attribute names to
 <div id="notauthorised" title="notauthorised" style="display:none">
 	<p>
 	<?php echo $clang->gT("This is shared participant and you are not authorised to edit it"); ?></p>
-    
+
 </div>
 <div id="exportcsv" title="exportcsv" style="display:none">
-    <?php echo $clang->gT("Select the attribute to be exported"); ?><br/><br/>   
+    <?php echo $clang->gT("Select the attribute to be exported"); ?><br/><br/>
      <select id="attributes" name="attributes" multiple="multiple">
         <?php
             foreach($allattributes as $key=>$value)

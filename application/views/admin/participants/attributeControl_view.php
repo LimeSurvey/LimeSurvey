@@ -2,12 +2,12 @@
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('adminscripts')."attributeControl.js" ?>" type="text/javascript"></script>
 <script type="text/javascript">
-  var saveVisibleMsg = "<?php echo $clang->gT("Attribute Visiblity Changed") ?>";    
+  var saveVisibleMsg = "<?php echo $clang->gT("Attribute visiblity changed") ?>";
   var saveVisible = "<?php echo site_url("admin/participants/saveVisible");?>";
 </script>
 <div class='header ui-widget-header'>
   <strong>
-    <?php echo $clang->gT("Attribute Control"); ?>
+    <?php echo $clang->gT("Attribute control"); ?>
   </strong>
 </div>
 <?php
@@ -19,12 +19,12 @@
   <li>
     <table id='atttable'class='hovertable'>
     <tr>
-      <th><?php echo $clang->gT("Attribute Name"); ?></th>
-      <th><?php echo $clang->gT("Attribute Type"); ?></th>
+      <th><?php echo $clang->gT("Attribute name"); ?></th>
+      <th><?php echo $clang->gT("Attribute type"); ?></th>
       <th><?php echo $clang->gT("Visible in participant panel"); ?></th>
       <th><?php echo $clang->gT("Actions"); ?></th>
     </tr>
-    <?php 
+    <?php
     foreach($result as $row=>$value)
     {
     ?>
@@ -38,7 +38,7 @@
       <?php
         if($value['attribute_type']=='DD')
         {
-          echo $clang->gT("Drop Down");
+          echo $clang->gT("Dropdown");
         }
         elseif($value['attribute_type']=='DP')
         {
@@ -46,7 +46,7 @@
         }
         else
         {
-          echo $clang->gT("Text Box");
+          echo $clang->gT("Text box");
         }
       ?>
       </td>

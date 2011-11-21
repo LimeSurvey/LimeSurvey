@@ -1,8 +1,8 @@
 <div class='header header_statistics'>
-        <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' align='right' 
+        <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' align='right'
         onclick="window.open('<?php echo site_url("admin/labels/view/".$lid); ?>', '_top')" />
         <?php if ($action == "newlabelset") { echo $clang->gT("Create or import new label set(s)");}
-        else {echo $clang->gT("Edit Label Set"); } ?>
+        else {echo $clang->gT("Edit label set"); } ?>
 </div>
 
 <div id='tabs'>
@@ -21,7 +21,7 @@
         <input type='hidden' name='languageids' id='languageids' value='<?php echo $langids; ?>' />
         <input type='text' id='label_name' name='label_name' maxlength='100' size='50' value='<?php if (isset($lbname)) { echo $lbname;} ?>' />
         </li>
-        
+
         <li><label><?php echo $clang->gT("Languages:"); ?></label>
         <table><tr><td align='left'><select multiple='multiple' style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>
         <?php foreach ($langidsarray as $langid)
@@ -30,11 +30,11 @@
             ><?php echo getLanguageNameFromCode($langid,false); ?></option>
         <?php } ?>
 
-        
+
         </select></td>
         <td align='left'><input type="button" value="<< <?php echo $clang->gT("Add"); ?>" onclick="DoAdd()" id="AddBtn" /><br /> <input type="button" value="<?php echo $clang->gT("Remove"); ?> >>" onclick="DoRemove(1,'<?php echo $clang->gT("You cannot remove this item since you need at least one language in a labelset.", "js"); ?>')" id="RemoveBtn"  /></td>
 
-        
+
         <td align='left'><select size='5' style='min-width:220px;' id='available_languages' name='available_languages'>
         <?php foreach (getLanguageData() as  $langkey=>$langname)
         {
@@ -47,7 +47,7 @@
 
         </select></td>
         </tr></table></li></ul>
-        <p><input type='submit' value='<?php if ($action == "newlabelset") {echo $clang->gT("Save");} 
+        <p><input type='submit' value='<?php if ($action == "newlabelset") {echo $clang->gT("Save");}
         else {echo $clang->gT("Update");} ?>' />
         <input type='hidden' name='action' value='<?php if ($action == "newlabelset") {echo "insertlabelset";} else {echo "updateset";} ?>' />
 
@@ -56,8 +56,8 @@
         <?php } ?>
 
         </form>
-        
-        </div> 
+
+        </div>
         <?php if ($action == "newlabelset"){ ?>
             <div id='neweditlblset1'>
                 <form enctype='multipart/form-data' id='importlabels' name='importlabels' action='<?php echo site_url('admin/labels/import'); ?>' method='post'>
@@ -79,9 +79,9 @@
                 <p><input type='submit' value='<?php echo $clang->gT("Import label set(s)"); ?>' />
                 <input type='hidden' name='action' value='importlabels' />
                 </form></div>
-            
-            
-            
+
+
+
             </div>
         <?php } ?>
         </div>

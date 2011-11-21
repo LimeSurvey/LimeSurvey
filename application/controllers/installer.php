@@ -126,7 +126,7 @@ class Installer extends CI_Controller {
         function check_PathWriteable($path, $type, &$data, $base, $keyError)
         {
             $result = false;
-            $data[$base.'Present'] = 'Not Found';
+            $data[$base.'Present'] = 'Not found';
             $data[$base.'Writable'] = '';
             switch($type) {
                 case 1:
@@ -323,11 +323,11 @@ class Installer extends CI_Controller {
         $this->load->library('form_validation');
 
         //setting form validation rules.
-        $this->form_validation->set_rules('dbtype', 'Database Type', 'required');
-        $this->form_validation->set_rules('dblocation', 'Database Location', 'required');
-        $this->form_validation->set_rules('dbname', 'Database Name', 'required');
-        $this->form_validation->set_rules('dbuser', 'Database User', 'required');
-        $this->form_validation->set_rules('dbprefix', 'Database Prefix', 'not required');
+        $this->form_validation->set_rules('dbtype', 'Database type', 'required');
+        $this->form_validation->set_rules('dblocation', 'Database location', 'required');
+        $this->form_validation->set_rules('dbname', 'Database name', 'required');
+        $this->form_validation->set_rules('dbuser', 'Database user', 'required');
+        $this->form_validation->set_rules('dbprefix', 'Database prefix', 'not required');
 
         //setting custom error message for confirm password field
         $this->form_validation->set_message('matches',$clang->gT('Passwords do not match!'));
@@ -544,7 +544,7 @@ class Installer extends CI_Controller {
                     $connect->database = $this->input->post('dbname');
                     $connect->Execute("USE DATABASE `$databasename`");
                     $output=CheckForDBUpgrades();
-                    if ($output== '') {$values['adminoutput'].='<br />'.$clang->gT('LimeSurvey Database is up to date. No action needed');}
+                    if ($output== '') {$values['adminoutput'].='<br />'.$clang->gT('LimeSurvey database is up to date. No action needed');}
                     else {$values['adminoutput'].=$output;}
                     $values['adminoutput'].="<br />Please ".anchor("admin","log in.");
                 }

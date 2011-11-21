@@ -15,10 +15,10 @@
 <div id="tokenattribute">
     <div class="heading">Token Attributes</div>
         <ul id="tokenatt">
-            <?php 
-            
+            <?php
+
         foreach($tokenattribute as $key=>$value)
-        { 
+        {
             echo "<li id='t_".$value."' name=\"$key\">".$value."</li>"; //Passing attribute description as name of the attribute
         }?>
       </ul>
@@ -31,15 +31,15 @@
        ?>
     </ul>
 </div>
-<?php } ?>    
+<?php } ?>
 <?php if(!empty($tokenattribute)) { ?>
-<div id="newcreated"><div class="heading">Attribute's to be created</div> 
+<div id="newcreated"><div class="heading">Attributes to be created</div>
      <ul class="newcreate" id="sortable" style ="height: 40px">
     </ul>
 </div>
-<?php } ?>    
+<?php } ?>
  <?php if(!empty($tokenattribute)) { ?>
-<div id="centralattribute"><div class="heading">Central Attribute</div>
+<div id="centralattribute"><div class="heading">Central attribute</div>
      <ul class="centralatt">
         <?php
              if(!empty($attribute))
@@ -52,7 +52,7 @@
          ?>
      </ul>
 </div>
-<?php } ?>    
+<?php } ?>
     <p> <input type="button" name="attmap" id="attmap" value="Continue" /></p>
     <?php $ajaxloader = array(
           'src' => 'images/ajax-loader.gif',

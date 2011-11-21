@@ -1,28 +1,28 @@
 <script type="text/javascript">
   var url = "<?php echo site_url("admin/participants/getAttributeBox");?>";
-  var attname = "<?php echo $clang->gT("Attribute Name:"); ?>";
+  var attname = "<?php echo $clang->gT("Attribute name:"); ?>";
   removeitem = new Array(); // Array to hold values that are to be removed from langauges option
 </script>
 <script src="<?php echo $this->config->item('adminscripts')."admin_core.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
 <script src="<?php echo $this->config->item('adminscripts')."viewAttribute.js" ?>" type="text/javascript"></script>
-<div class='header ui-widget-header'><strong><?php echo $clang->gT("Attribute Settings"); ?></strong></div><br/>
+<div class='header ui-widget-header'><strong><?php echo $clang->gT("Attribute settings"); ?></strong></div><br/>
 <?php
   $hidden = array();
   echo form_open('/admin/participants/saveAttribute/'.$this->uri->segment(4),"",$hidden);
   $plus = array('src'    => base_url()."images/plus.png",
-                'alt'    => 'Add Language',
-                'title'  => 'Add Language',
+                'alt'    => 'Add language',
+                'title'  => 'Add language',
                 'id'     => 'add',
                 'hspace' => 2,
                 'vspace' => -6);
 ?>
-<div id="addlang"> 
-  <?php echo $clang->gT('Add a Language:')?>
-  <?php 
+<div id="addlang">
+  <?php echo $clang->gT('Add a language:')?>
+  <?php
   $options = array();
-  $options[''] = $clang->gT('<---Select One--->');
+  $options[''] = $clang->gT('Select one...');
   foreach (getLanguageData () as $langkey2 => $langname)
   {
     $options[$langkey2] = $langname['description'];
@@ -35,7 +35,7 @@
  <div id='tabs'>
   <ul>
   <?php
-  foreach($attributenames as $key=>$value)  
+  foreach($attributenames as $key=>$value)
   {
   ?>
     <li>
@@ -44,20 +44,20 @@
       </a>
     </li>
     <script type='text/javascript'>
-      removeitem.push('<?php echo $value['lang']?>'); 
+      removeitem.push('<?php echo $value['lang']?>');
     </script>
   <?php
   }
   ?>
   </ul>
   <?php
-  foreach($attributenames as $key=>$value)  
+  foreach($attributenames as $key=>$value)
   {
   ?>
   <div id="<?php echo $value['lang']?>">
    <p>
         <label for='attname' id='attname'>
-            <?php echo $clang->gT('Attribute Name:'); ?>
+            <?php echo $clang->gT('Attribute name:'); ?>
         </label>
         <?php echo form_input($value['lang'],$value['attribute_name']); ?>
    </p>
@@ -69,25 +69,25 @@
  </div>
  <div class='header ui-widget-header'>
     <strong>
-        <?php echo $clang->gT("Common Settings"); ?>
+        <?php echo $clang->gT("Common settings"); ?>
     </strong>
  </div>
  <br/>
  <div id="comsettingdrop">
     <label for='atttype' id='atttype'>
-      <?php echo $clang->gT('Attribute Type:'); ?>
+      <?php echo $clang->gT('Attribute type:'); ?>
     </label>
-    <?php 
-      $options = array('DD' => 'Drop Down',
+    <?php
+      $options = array('DD' => 'Dropdown',
                        'DP' => 'Date',
-                       'TB' => 'Text Box');
+                       'TB' => 'Text box');
       echo form_dropdown('attribute_type', $options,$attributes->attribute_type,'id="attribute_type"');
     ?>
     <br/><br/>
  </div>
  <div id="comsettingcheck">
  <label for='attvisible' id='attvisible'>
-  <?php echo $clang->gT('Attribute Visible:') ?>
+  <?php echo $clang->gT('Attribute visible:') ?>
  </label>
   <?php
     if($attributes->visible =="TRUE")
@@ -106,7 +106,7 @@
   <div id='dd'>
    <table id='ddtable' class='hovertable'>
      <tr>
-       <th><?php echo $clang->gT('Value Name'); ?></th>
+       <th><?php echo $clang->gT('Value name'); ?></th>
      </tr>
      <?php
      foreach($attributevalues as $row=>$value)
@@ -124,20 +124,20 @@
                       'alt'    => 'Delete',
                       'width'  => '15',
                       'height' => '15',
-                      'title'  => 'Delete Atribute Value' );
+                      'title'  => 'Delete attribute value' );
         $edit = array('src' => 'images/token_edit.png',
                       'alt' => 'Edit',
                       'width' => '15',
                       'id' => 'edit',
                       'name' => $value['value_id'],
                       'height' => '15',
-                      'title' => 'Edit Atribute');
+                      'title' => 'Edit attribute');
         echo img($edit);
         echo anchor('admin/participants/delAttributeValues/'.$attributes->attribute_id.'/'.$value['value_id'],img($del));
       ?>
       </td>
     </tr>
-    <?php  
+    <?php
     }
     ?>
    </table>
@@ -154,4 +154,3 @@
     echo form_close()
    ?>
  </p>
- 

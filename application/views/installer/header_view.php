@@ -34,13 +34,13 @@ $clang = &get_instance()->limesurvey_lang;
 
  	</script>
 	<link rel="icon" href="<?php echo base_url(); ?>images/favicon.ico" />
-	<title>LimeSurvey Installer</title>
+	<title>LimeSurvey installer</title>
 </head>
 
 <body class="body">
 
 <div class="container_6">
-<div class="grid_6" style="color: #328639; font-size: 14pt; font-weight: 700; -moz-border-radius:15px; border-radius:15px; border-top: 2px solid #F7F7F7; border-bottom: 2px solid #F7F7F7; background: #F7F7F7;; background-image:url('<?php echo base_url(); ?>installer/images/bkgmaintitle.gif');"><center><b><?php echo $clang->gT("LimeSurvey Installer"); ?></b></center></div>
+<div class="grid_6" style="color: #328639; font-size: 14pt; font-weight: 700; -moz-border-radius:15px; border-radius:15px; border-top: 2px solid #F7F7F7; border-bottom: 2px solid #F7F7F7; background: #F7F7F7;; background-image:url('<?php echo base_url(); ?>installer/images/bkgmaintitle.gif');"><center><b><?php echo $clang->gT("LimeSurvey installer"); ?></b></center></div>
 
 </div>
 <div class="container_6">

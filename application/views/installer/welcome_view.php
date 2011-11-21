@@ -52,7 +52,7 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
    <tr>
     <td align="left" style="width: 227px;">&nbsp;</td>
     <td align="center" style="width: 227px;">&nbsp;</td>
-    <td align="right" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="<?php echo $clang->gT('Start Installation'); ?>" /></td>
+    <td align="right" style="width: 227px;"><input class='ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only' type="submit" value="<?php echo $clang->gT('Start installation'); ?>" /></td>
    </tr>
   </tbody>
  </table>

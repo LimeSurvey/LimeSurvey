@@ -28,25 +28,25 @@ foreach ($userlist as $usr) {
         if($row['uid'] == $this->session->userdata('loginID'))
         { // RENAMED AS SUPERADMIN
             echo "<th align='center' class='admincell'>".$clang->gT("SuperAdministrator")."</th>\n";
-            echo "<th align='center' >".$clang->gT("Participant Panel")."</th>\n";
+            echo "<th align='center' >".$clang->gT("Participant panel")."</th>\n";
         }
         if($parent['create_survey']) {
-            echo "<th align='center'>".$clang->gT("Create Survey")."</th>\n";
+            echo "<th align='center'>".$clang->gT("Create survey")."</th>\n";
         }
         if($parent['configurator']) {
             echo "<th align='center'>".$clang->gT("Configurator")."</th>\n";
         }
         if($parent['create_user']) {
-            echo "<th align='center'>".$clang->gT("Create User")."</th>\n";
+            echo "<th align='center'>".$clang->gT("Create user")."</th>\n";
         }
         if($parent['delete_user']) {
-            echo "<th align='center'>".$clang->gT("Delete User")."</th>\n";
+            echo "<th align='center'>".$clang->gT("Delete user")."</th>\n";
         }
         if($parent['manage_template']) {
             echo "<th align='center'>".$clang->gT("Use all/manage templates")."</th>\n";
         }
         if($parent['manage_label']) {
-            echo "<th align='center'>".$clang->gT("Manage Labels")."</th>\n";
+            echo "<th align='center'>".$clang->gT("Manage labels")."</th>\n";
         }
 		?>
 

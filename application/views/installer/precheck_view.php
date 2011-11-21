@@ -13,7 +13,7 @@ function dirReport($dir,$write)
     } else
     {
        $error = 1;
-       $a = $clang->gT("Not Found");
+       $a = $clang->gT("Not found");
     }
 
     if ($write == "Writable")
@@ -73,27 +73,27 @@ function dirReport($dir,$write)
 </tr>
 <tr>
        <td style="width: 209px;">/application/config/database.php <?php echo $clang->gT("file"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
+       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($databasePresent,$databaseWritable); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/application/config/autoload.php <?php echo $clang->gT("file"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
+       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($autoloadPresent,$autoloadWritable); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/tmp <?php echo $clang->gT("directory"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
+       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($tmpdirPresent,$tmpdirWritable); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/upload <?php echo $clang->gT("directory"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
+       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($uploaddirPresent,$uploaddirWritable); ?></td>
 </tr>
 <tr>
        <td style="width: 209px;">/templates <?php echo $clang->gT("directory"); ?></td>
-       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & Writable"); ?></td>
+       <td align="center" style="width: 225px;"><?php echo $clang->gT("Found & writable"); ?></td>
        <td align="center" style="width: 225px;"><?php  echo dirReport($templatedirPresent,$templatedirWritable); ?></td>
 </tr>
 

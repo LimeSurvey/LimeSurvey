@@ -3,7 +3,7 @@
 <thead>
 <tr>
 <th><?php echo $clang->gT("Action");?></th>
-	    
+
 <th width='20%'><?php echo $clang->gT("Username");?></th>
 <th width='20%'><?php echo $clang->gT("Email");?></th>
 <th width='20%'><?php echo $clang->gT("Full name");?></th>
@@ -72,7 +72,7 @@
     <?php }
     if ($this->session->userdata('loginID') == "1" && $usr['parent_id'] !=1 ) { ?>
         <form method='post' action='<?php echo $scriptname;?>'>
-        <input type='submit' value='<?php echo $clang->gT("Take Ownership");?>' />
+        <input type='submit' value='<?php echo $clang->gT("Take ownership");?>' />
         <input type='hidden' name='action' value='setasadminchild' />
         <input type='hidden' name='user' value='<?php echo $usr['user'];?>' />
         <input type='hidden' name='uid' value='<?php echo $usr['uid'];?>' />
@@ -106,9 +106,9 @@
     $uresult = db_execute_assoc($uquery); //Checked
     $userlist = array();
     $srow = $uresult->row_array();
-    
+
     $usr['parent'] = $srow['users_name']; ?>
-    
+
     <?php if (isset($usr['parent_id'])) { ?>
         <td align='center'><?php echo $usr['parent'];?></td>
     <?php } else { ?>
@@ -116,7 +116,7 @@
     <?php } ?>
 
     </tr>
-    <?php $row++; 
+    <?php $row++;
 } ?>
 </tbody></table><br />
 

@@ -7,7 +7,7 @@
      redUrl = "<?php echo site_url("admin/tokens/browse").'/'.$survey_id;?>";
     }
     var copyUrl = "<?php echo site_url("admin/participants/addToTokenattmap");?>";
-    var participant_id = "<?php echo $participant_id; ?>";   
+    var participant_id = "<?php echo $participant_id; ?>";
 </script>
 <div class='header ui-widget-header'>
     <strong>
@@ -16,11 +16,11 @@
 </div>
 <div class="main">
  <?php
- if(!empty($selectedcentralattribute)) 
- { 
+ if(!empty($selectedcentralattribute))
+ {
  ?>
  <div id="centralattribute">
-   <div class="heading"><?php echo $clang->gT("Already Mapped"); ?></div>
+   <div class="heading"><?php echo $clang->gT("Already mapped"); ?></div>
     <ul id="cpdbatt">
     <?php
      foreach($selectedcentralattribute as $key=>$value)
@@ -44,22 +44,22 @@
  </div>
  <?php
  if(!empty($selectedcentralattribute))
-  { 
+  {
  ?>
   <div id="newcreated">
       <div class="heading"><?php echo $clang->gT("Attributes to be created"); ?></div>
       <ul class="newcreate" id="sortable" style ="height:40px">
       </ul>
   </div>
-  <?php 
-  } 
+  <?php
+  }
  }
  if(!empty($selectedtokenattribute))
  {
   ?>
     <div id="tokenattribute">
         <div class="heading">
-         <?php echo $clang->gT("Token Table Attribute");?>
+         <?php echo $clang->gT("Token table attribute");?>
         </div>
         <ul class="tokenatt">
         <?php
@@ -79,7 +79,7 @@
           'alt' => 'Ajax Loader',
           'title' => 'Ajax Loader'
           );?>
-    <div id="processing" title="<?php echo $clang->gT("Processing .....") ?>" style="display:none">
+    <div id="processing" title="<?php echo $clang->gT("Processing...") ?>" style="display:none">
     <?php echo img($ajaxloader); ?>
     </div>
  </div>
