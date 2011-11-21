@@ -1,4 +1,4 @@
-<form id='vvexport' method='post' action='<?php echo site_url("admin/export/vvexport/$surveyid/export");?>'>
+<form id='vvexport' method='post' action='<?php echo $this->createUrl("admin/export/sa/vvexport/surveyid/$surveyid/subaction/export");?>'>
 <div class='header ui-widget-header'><?php echo $clang->gT("Export a VV survey file");?></div>
 <ul>
 <li>

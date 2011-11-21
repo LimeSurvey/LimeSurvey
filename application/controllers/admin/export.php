@@ -15,24 +15,26 @@
 */
 
 /**
-* Export Controller
+* Export Action
 *
 * This controller performs export actions
 *
 * @package		LimeSurvey
 * @subpackage	Backend
 */
-class export extends Survey_Common_Controller {
+class export extends Survey_Common_Action {
 
     /**
-    * Constructor
-    */
-    function __construct()
-    {
-        parent::__construct();
-        $this->load->helper("export");
-        $this->load->helper("database");
-    }
+     * Run, routes it down to valid sub-action
+	 *
+     * @access public
+     * @return void
+     */
+	public function run($sa, $surveyid = null, $subaction = null)
+	{
+		if ($sa == 'vvexport')
+			$this->vvexport($surveyid, $subaction);
+	}
 
     function survey($action,$sSurveyID)
     {
@@ -948,19 +950,19 @@ class export extends Survey_Common_Controller {
 
     }
 
-    function vvexport($surveyi, $subaction = null)
+    function vvexport($surveyid, $subaction = null)
     {
-        $surveyid = (int) $surveyi;
-        $dbprefix = $this->db->dbprefix;
+        $surveyid = (int) $surveyid;
+
         //Exports all responses to a survey in special "Verified Voting" format.
-        $clang = $this->limesurvey_lang;
-        $_POST = $this->input->post();
+        $clang = $this->getController()->lang;
+
         if (!bHasSurveyPermission($surveyid, 'responses','export'))
         {
             return;
         }
 
-        if (!$subaction == "export")
+        if ($subaction != "export")
         {
             if(incompleteAnsFilterstate() == "inc")
             {
@@ -981,15 +983,16 @@ class export extends Survey_Common_Controller {
                 $selectinc="";
             }
 
-            self::_getAdminHeader();
-            self::_browsemenubar($surveyid, $clang->gT("Export VV file"));
+            $this->getController()->_getAdminHeader();
+			$this->_browsemenubar($surveyid, $clang->gT("Export VV file"));
 
-            $data["clang"] = $this->limesurvey_lang;
+            $data["clang"] = $clang;
             $data['selectinc'] = $selectinc;
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
-            $this->load->view("admin/export/vv_view",$data);
-            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        	$data['surveyid'] = $surveyid;
+            $this->getController()->render("/admin/export/vv_view", $data);
+            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
         }
         elseif (isset($surveyid) && $surveyid)
         {
@@ -1002,11 +1005,11 @@ class export extends Survey_Common_Controller {
             $s="\t";
 
             $fieldmap=createFieldMap($surveyid, "full");
-            $surveytable = "{$dbprefix}survey_$surveyid";
+            $surveytable = "{{survey_$surveyid}}";
 
             GetBaseLanguageFromSurveyID($surveyid);
 
-            $fieldnames = array_values($this->db->list_fields("survey_$surveyid"));
+            $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
 
             //Create the human friendly first line
             $firstline="";
@@ -1033,9 +1036,9 @@ class export extends Survey_Common_Controller {
             {
                 $query .= " WHERE submitdate >= '01/01/1980' ";
             }
-            $result = db_execute_assoc($query) or safe_die("Error:<br />$query<br />".$connect->ErrorMsg()); //Checked
+            $result = Yii::app()->db->createCommand($query)->query();
 
-            foreach ($result->result_array() as $row)
+            foreach ($result->readAll() as $row)
             {
                 foreach ($fieldnames as $field)
                 {

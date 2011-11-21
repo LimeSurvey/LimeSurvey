@@ -5040,25 +5040,24 @@ function incompleteAnsFilterstate()
     $letsfilter='';
     $letsfilter = returnglobal('filterinc'); //read get/post filterinc
 
-    $CI =& get_instance();
 
     // first let's initialize the incompleteanswers session variable
     if ($letsfilter != '')
     { // use the read value if not empty
-        $CI->session->set_userdata('incompleteanswers', $letsfilter);
+        Yii::app()->session['incompleteanswers'] = $letsfilter;
     }
-    elseif (!$CI->session->userdata('incompleteanswers'))
+    elseif (empty(Yii::app()->session['incompleteanswers']))
     { // sets default variable value from config file
-        $CI->session->set_userdata('incompleteanswers', $filterout_incomplete_answers);
+        Yii::app()->session['incompleteanswers'] = $filterout_incomplete_answers;
     }
 
-    if  ($CI->session->userdata('incompleteanswers')=='filter') {
+    if  (Yii::app()->session['incompleteanswers']=='filter') {
         return "filter"; //COMPLETE ANSWERS ONLY
     }
-    elseif ($CI->session->userdata('incompleteanswers')=='show') {
+    elseif (Yii::app()->session['incompleteanswers']=='show') {
         return false; //ALL ANSWERS
     }
-    elseif ($CI->session->userdata('incompleteanswers')=='incomplete') {
+    elseif (Yii::app()->session['incompleteanswers']=='incomplete') {
         return "inc"; //INCOMPLETE ANSWERS ONLY
     }
     else
@@ -5876,24 +5875,23 @@ function sGetTemplateURL($sTemplateName)
 * @param $sLanguage Language of the subquestion text
 */
 function getSubQuestions($sid, $qid, $sLanguage) {
-    $CI = &get_instance();
-    $clang = $CI->limesurvey_lang;
+
+    $clang = Yii::app()->lang;
     static $subquestions;
 
     if (!isset($subquestions[$sid])) {
-        $sid = sanitize_int($sid);
-        /*$query = "SELECT sq.*, q.other FROM {$dbprefix}questions as sq, {$dbprefix}questions as q"
-        ." WHERE sq.parent_qid=q.qid AND q.sid=$sid"
-        ." AND sq.language='".$sLanguage. "' "
-        ." AND q.language='".$sLanguage. "' "
-        ." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
-        $result=db_execute_assoc($query) or safe_die ("Couldn't get perform answers query<br />$query<br />".$connect->ErrorMsg());    //Checked
-        */
-        $CI->load->model('questions_model');
-        $query = $CI->questions_model->getSubQuestions($sid,$sLanguage);
+
+    	$query = "SELECT sq.*, q.other FROM {{questions}} as sq, {{questions}} as q"
+    		." WHERE sq.parent_qid=q.qid AND q.sid=".$sid
+	    	." AND sq.language='".$sLanguage. "' "
+	    	." AND q.language='".$sLanguage. "' "
+    		." ORDER BY sq.parent_qid, q.question_order,sq.scale_id , sq.question_order";
+
+        $query = Yii::app()->db->createCommand($query)->query();
+
         $resultset=array();
         //while ($row=$result->FetchRow())
-        foreach ($query->result_array() as $row)
+        foreach ($query->readAll() as $row)
         {
             $resultset[$row['parent_qid']][] = $row;
         }

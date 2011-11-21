@@ -34,7 +34,6 @@ class quotas extends Survey_Common_Action {
 	 */
 	public function run($surveyid, $subaction = null)
 	{
-
 		$surveyid = sanitize_int($surveyid);
 
 		$this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'/jquery/jquery.tablesorter.min.js');
