@@ -310,7 +310,7 @@ class LimeExpressionManager {
      * (1) Sub-question-level  relevance:  e.g. array_filter, array_filter_exclude
      * (2) Validations: e.g. min/max number of answers; min/max/eq sum of answers
      */
-    public function _CreateSubQLevelRelevanceAndValidationEqns()
+    public function _CreateSubQLevelRelevanceAndValidationEqns($onlyThisQseq=NULL)
     {
         $now = microtime(true);
 
@@ -323,7 +323,10 @@ class LimeExpressionManager {
         // Associate these with $qid so that can be nested under appropriate question-level relevance?
         foreach ($this->q2subqInfo as $qinfo)
         {
-            if (!$this->allOnOnePage && $this->groupNum != $qinfo['gid']) {
+            if (!is_null($onlyThisQseq) && $onlyThisQseq != $qinfo['qSeq']) {
+                continue;
+            }
+            else if (!$this->allOnOnePage && $this->groupNum != $qinfo['gid']) {
                 continue; // only need subq relevance for current page.
             }
             $questionNum = $qinfo['qid'];
@@ -1275,6 +1278,7 @@ class LimeExpressionManager {
                 if (!isset($q2subqInfo[$questionNum])) {
                     $q2subqInfo[$questionNum] = array(
                         'qid' => $questionNum,
+                        'qSeq' => $questionSeq,
                         'gid' => $groupNum,
                         'sgqa' => $surveyid . 'X' . $groupNum . 'X' . $questionNum,
                         'varName' => $varName,
@@ -1553,15 +1557,17 @@ class LimeExpressionManager {
      * Check the relevance status of all questions on or before the current group.
      * This generates needed JavaScript for dynamic relevance, and sets flags about which questions and groups are relevant
      */
-    function ProcessAllNeededRelevance()
+    function ProcessAllNeededRelevance($onlyThisQseq=NULL)
     {
         $now = microtime(true);
 
-        // TODO - refactor this to not call a static function
         $this->gid2relevanceStatus = array();
         $_groupSeq = -1;
         foreach($this->questionSeq2relevance as $rel)
         {
+            if (!is_null($onlyThisQseq) && $onlyThisQseq!=$rel['questionSeq']) {
+                continue;
+            }
             $qid = $rel['qid'];
             $gid = $rel['gid'];
             if ($this->allOnOnePage) {
@@ -1916,11 +1922,9 @@ class LimeExpressionManager {
         {
             // means that some values changed, so need to update what was registered to ExpressionManager
             $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
-            // are the following two lines needed?
-            $LEM->ProcessAllNeededRelevance();  // TODO - what if this is called using Survey or Data Entry format?
-            $LEM->_CreateSubQLevelRelevanceAndValidationEqns();
         }
         $LEM->currentGroupSeq=-1;
+        $LEM->currentQuestionSeq=-1;    // for question-by-question mode
 
         return array(
             'hasNext'=>true,
@@ -1940,9 +1944,7 @@ class LimeExpressionManager {
      */
     static function NavigateForwards($force=false,$debug=false) {
         $LEM =& LimeExpressionManager::singleton();
-        $previousGroupSeq = $LEM->currentGroupSeq;   // so know where started
 
-        $currentGInfo = array();
         $LEM->RelevanceResultCache=array();    // to avoid running same test more than once for a given group
 
         // $LEM->ProcessCurrentResponses();
@@ -1964,16 +1966,17 @@ class LimeExpressionManager {
                 $message = '';
                 while (true)
                 {
-                    $result = $LEM->_ValidateGroup(++$LEM->currentGroupSeq,  $debug);
-                    $message .= $result['message'];
-                    if ($LEM->currentGroupSeq > $LEM->numGroups)
+                    if (++$LEM->currentGroupSeq >= $LEM->numGroups)
                     {
                         return array(
                             'finished'=>true,
                             'message'=>$message,
                         );
                     }
-                    else if (!$result['relevant'] || $result['hidden'])
+
+                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,  $debug);
+                    $message .= $result['message'];
+                    if (!$result['relevant'] || $result['hidden'])
                     {
                         // then skip this group - assume already saved?
                         continue;
@@ -1989,6 +1992,53 @@ class LimeExpressionManager {
                 }
                 break;
             case 'question':
+                if (!$force)
+                {
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$debug);
+                    if ($result['mandViolation'] || !$result['valid'])
+                    {
+                        // redisplay the current question
+                    }
+                }
+                $message = '';
+                while (true)
+                {
+                    if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
+                    {
+                        return array(
+                            'finished'=>true,
+                            'message'=>$message,
+                        );
+                    }
+
+                    // Set certain variables normally set by StartProcessingGroup()
+                    $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
+                    $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
+                    $LEM->currentGroupSeq=$qInfo['groupSeq'];
+                    $LEM->groupNum=$qInfo['gid'];
+                    if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
+                        $LEM->maxGroupSeq = $LEM->currentGroupSeq;
+                    }
+
+                    $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
+                    $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,  $debug);
+                    $message .= $result['message'];
+
+                    if (!$result['relevant'] || $result['hidden'])
+                    {
+                        // then skip this question - assume already saved?
+                        continue;
+                    }
+                    else
+                    {
+                        // display new question
+                        return array(
+                            'finished'=>false,
+                            'message'=>$message,
+                        );
+                    }
+                }
                 break;
         }
     }
@@ -2023,10 +2073,10 @@ class LimeExpressionManager {
         {
             $qStatus = $LEM->_ValidateQuestion($i, $debug);
 
-            if ($qStatus['relStatus']==true) {
+            if ($qStatus['relevant']==true) {
                 $grel = true;   // at least one question relevant
             }
-            if ($qStatus['info']['hidden']==false) {
+            if ($qStatus['hidden']==false) {
                 $ghidden=false; // at least one question is visible
             }
             if ($qStatus['qmandViolation']==true) {
@@ -2084,7 +2134,7 @@ class LimeExpressionManager {
                 foreach ($currentQset as $qs)
                 {
                     // Process any relevant equations
-                    if (($qs['info']['type'] == '*') && $qs['relStatus'] == true)
+                    if (($qs['info']['type'] == '*') && $qs['relevant'] == true)
                     {
                         // Process this equation
                         $result = $LEM->ProcessString($qs['info']['eqn'], $qs['info']['qid']);
@@ -2099,7 +2149,7 @@ class LimeExpressionManager {
                         }
                     }
                     // NULL all irrelevant questions
-                    if ($qs['relStatus'] == false)
+                    if ($qs['relevant'] == false)
                     {
                         $sgqas = explode('|',$qs['sgqa']);
                         foreach ($sgqas as $sgqa)
@@ -2631,7 +2681,8 @@ class LimeExpressionManager {
         // Store metadata needed for subsequent processing and display purposes
         $qStatus = array(
             'info' => $qInfo,   // collect all questions within the group - includes mandatory and always-hiddden status
-            'relStatus' => $qrel,
+            'relevant' => $qrel,
+            'hidden' => $qInfo['hidden'],
             'relEqn' => $prettyPrintRelEqn,
             'sgqa' => $LEM->qid2code[$qid],
             'unansweredSQs' => implode('|',$unansweredSQs),

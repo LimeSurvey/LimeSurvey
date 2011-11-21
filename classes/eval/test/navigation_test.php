@@ -27,13 +27,17 @@
             {
                 print '<h3>Starting survey ' . $surveyid . "</h3>";
                 $now = microtime(true);
-                LimeExpressionManager::StartSurvey($surveyid, 'group', false, true);
+                LimeExpressionManager::StartSurvey($surveyid, 'question', false, true);
                 print '<b>[StartSurvey() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
 
                 while(true) {
                     $now = microtime(true);
-                    $result = LimeExpressionManager::NavigateForwards(true,false);
+                    LimeExpressionManager::StartProcessingPage();
+                    $result = LimeExpressionManager::NavigateForwards(true,true);
                     print $result['message'] . "<br/>";
+                    LimeExpressionManager::FinishProcessingGroup(); // move this internally?  This is what is needed to save group data so visible to GetRelevanceAndTailoringJavaScript()
+                    LimeExpressionManager::FinishProcessingPage();
+                    print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
                     print '<b>[NavigateForwards() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
                     if (is_null($result) || $result['finished'] == true) {
                         break;
