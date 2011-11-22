@@ -28,8 +28,9 @@ $(document).ready(function(){
             $('#vertical_slide2').show();               
      })
      
-     
-     
+     for (var i in aGMapData) {
+     		gMapInit("statisticsmap_" + i, aGMapData[i]);
+	  }  
 });
 
 function showhidefilters(value) {
@@ -53,7 +54,41 @@ function selectCheckboxes(Div, CheckBoxName, Button)
 		nInput[i].checked = Value;
 	}
 }
+
 function nographs()
 {
 	document.getElementById('usegraph').checked = false;
+}
+
+function gMapInit(id, data)
+{
+    if (!data || !data["coord"] || !data["zoom"])
+    {
+        return;
+    }
+    
+    var latlng;
+    if (data["coord"].length > 0) {
+        var c = data["coord"][0].split(" ");
+        latlng = new google.maps.LatLng(parseFloat(c[0]), parseFloat(c[1]));
+    } else {   
+        latLng = new google.maps.LatLng(0, 0); 	
+    }
+    
+    var myOptions = {
+        zoom: parseFloat(data["zoom"]),
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    var map = new google.maps.Map(document.getElementById(id), myOptions);
+
+    for (var i = 0; i < data["coord"].length; ++i) {
+        var c = data["coord"][i].split(" ");
+          	     	  
+        var marker = new google.maps.Marker({    
+            position: new google.maps.LatLng(parseFloat(c[0]), parseFloat(c[1])),    
+            map: map    
+        });  	
+    }
 }

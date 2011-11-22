@@ -79,14 +79,18 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     //$allfields ="";
     global $rooturl, $rootdir, $homedir, $homeurl, $scriptname,
     $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize;
-	$CI =& get_instance();
-	$imagedir = $CI->config->item("imagedir");
-	$tempdir = $CI->config->item("tempdir");
-	$tempurl = $CI->config->item("tempurl");
-	$clang = $CI->limesurvey_lang;
-	$dbprefix = $CI->db->dbprefix;
-    $fieldmap=createFieldMap($surveyid, "full");
-
+	 $CI =& get_instance();
+	 $imagedir = $CI->config->item("imagedir");
+	 $tempdir = $CI->config->item("tempdir");
+	 $tempurl = $CI->config->item("tempurl");
+	 $clang = $CI->limesurvey_lang;
+	 $dbprefix = $CI->db->dbprefix;
+     $fieldmap=createFieldMap($surveyid, "full");
+     
+     // Used for getting coordinates for google maps
+     $agmapdata = array();		
+     $CI->load->model('Surveys_dynamic_model');
+		
     if (is_null($statlangcode))
     {
         $statlang=$clang;
@@ -754,7 +758,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
 
                 $mfield=substr($rt, 1, strlen($rt));
-
+										
                 //Text questions either have an answer, or they don't. There's no other way of quantising the results.
                 // So, instead of building an array of predefined answers like we do with lists & other types,
                 // we instead create two "types" of possible answer - either there is a response.. or there isn't.
@@ -1944,6 +1948,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
                 echo '';
                 //loop thorugh the array which contains all answer data
+                
+    			$sDatabaseType = $CI->db->platform();
                 foreach ($alist as $al)
                 {
                     //picks out alist that come from the multiple list above
@@ -1978,6 +1984,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         elseif ($qtype == "U" || $qtype == "T" || $qtype == "S" || $qtype == "Q" || $qtype == ";")
                         {
+                    			 
                             //free text answers
                             if($al[0]=="Answers")
                             {
@@ -3278,8 +3285,27 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                             break;
                         case 'html':
+                        
                             $statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1' /></td></tr>";
+                            
+                            $aattr = getQuestionAttributeValues($qqid, $firstletter);	
+                            if ($aattr["location_mapservice"] == "1") {
+                                $statisticsoutput .= "<tr><td colspan='4'><div style=\"margin:auto;width:{$aattr['location_mapwidth']}px;height:{$aattr['location_mapheight']}px;\" id=\"statisticsmap_$fld\" class=\"statisticsmap\"></div></td></tr>";
+                            
+                                $aresult = $CI->Surveys_dynamic_model->getSomeRecords(array($fld), $surveyid)->result();
+                                
+                                $agmapdata[$fld] = array (
+                                    "zoom" => $aattr['location_mapzoom'],
+                                    "coord" => array()
+                                );
 
+                                //loop through question data
+                                foreach ($aresult as $arow)
+                                {
+                                    $alocation = explode(";", $arow->$fld);                        
+                                    $agmapdata[$fld]["coord"][] = "{$alocation[0]} {$alocation[1]}";
+                                }
+                            }
                             break;
                         default:
 
@@ -3341,6 +3367,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
             break;
         case 'html':
+			$statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>"
+								."<script type=\"text/javascript\">var aGMapData=".json_encode($agmapdata)	.";</script>";
             return $statisticsoutput;
 
             break;
