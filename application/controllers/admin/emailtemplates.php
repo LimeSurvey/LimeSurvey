@@ -88,8 +88,9 @@ class emailtemplates extends Survey_Common_Controller {
         {
             // this one is created to get the right default texts fo each language
             $bplang = new limesurvey_lang(array($grouplang));
-            $esquery = "SELECT * FROM ".$this->db->dbprefix."surveys_languagesettings WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
-            $esresult = db_execute_assoc($esquery);
+            $this->load->model('surveys_languagesettings_model');
+            $condition = array('surveyls_survey_id' => $surveyid, 'surveyls_language' =>$grouplang);
+            $esresult = $this->surveys_languagesettings_model->getAllRecords($condition);
             $esrow = $esresult->row_array();
             $aDefaultTexts=aTemplateDefaultTexts($bplang);
             if ($ishtml==true){
@@ -233,19 +234,32 @@ class emailtemplates extends Survey_Common_Controller {
             //$_POST  = array_map('db_quote', $_POST);
             $languagelist = GetAdditionalLanguagesFromSurveyID($surveyid);
             $languagelist[]=GetBaseLanguageFromSurveyID($surveyid);
+            $this->load->model('surveys_languagesettings_model');
             foreach ($languagelist as $langname)
             {
                 if ($langname)
                 {
-                    $usquery = "UPDATE ".$this->db->dbprefix."surveys_languagesettings \n"
-                    . "SET surveyls_email_invite_subj='".$_POST['email_invite_subj_'.$langname]."', surveyls_email_invite='".$_POST['email_invite_'.$langname]."',"
-                    . "surveyls_email_remind_subj='".$_POST['email_remind_subj_'.$langname]."', surveyls_email_remind='".$_POST['email_remind_'.$langname]."',"
-                    . "surveyls_email_register_subj='".$_POST['email_register_subj_'.$langname]."', surveyls_email_register='".$_POST['email_register_'.$langname]."',"
-                    . "surveyls_email_confirm_subj='".$_POST['email_confirm_subj_'.$langname]."', surveyls_email_confirm='".$_POST['email_confirm_'.$langname]."',"
-                    . "email_admin_notification_subj='".$_POST['email_admin_notification_subj_'.$langname]."', email_admin_notification='".$_POST['email_admin_notification_'.$langname]."',"
-                    . "email_admin_responses_subj='".$_POST['email_admin_responses_subj_'.$langname]."', email_admin_responses='".$_POST['email_admin_responses_'.$langname]."' "
-                    . "WHERE surveyls_survey_id=".$surveyid." and surveyls_language='".$langname."'";
-                    $usresult = db_execute_assoc($usquery) or show_error("Error updating<br />".$usquery."<br /><br />");
+                    $data = array(
+                        'surveyls_email_invite_subj' => $_POST['email_invite_subj_'.$langname],
+                        'surveyls_email_invite' => $_POST['email_invite_'.$langname],
+                        'surveyls_email_remind_subj' => $_POST['email_remind_subj_'.$langname],
+                        'surveyls_email_remind' => $_POST['email_remind_'.$langname],
+                        'surveyls_email_register_subj' => $_POST['email_register_subj_'.$langname],
+                        'surveyls_email_register' => $_POST['email_register_'.$langname],
+                        'surveyls_email_confirm_subj' => $_POST['email_confirm_subj_'.$langname],
+                        'surveyls_email_confirm' => $_POST['email_confirm_'.$langname],
+                        'email_admin_notification_subj' => $_POST['email_admin_notification_subj_'.$langname],
+                        'email_admin_notification' => $_POST['email_admin_notification_'.$langname],
+                        'email_admin_responses_subj' => $_POST['email_admin_responses_subj_'.$langname],
+                        'email_admin_responses' => $_POST['email_admin_responses_'.$langname]
+                    );
+                    
+                    $condition = array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $langname);
+                    $usresult = $this->surveys_languagesettings_model->updateRecords($data,$condition);
+                    if (!$usresult)
+                    {
+                        show_error("Error updating<br />");
+                    }
                 }
             }
             $this->session->set_userdata('flashmessage', $clang->gT("Email templates successfully saved."));

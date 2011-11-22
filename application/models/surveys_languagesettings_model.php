@@ -83,4 +83,21 @@ class Surveys_languagesettings_model extends CI_Model {
         return $query;
     }
 
+    function updateRecords($data,$condition=FALSE)
+    {
+        if ($condition != FALSE)
+        {
+            $this->db->where($condition);
+        }
+
+        $this->db->update('surveys_languagesettings',$data);
+
+        if ($this->db->affected_rows() <= 0)
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
 }
