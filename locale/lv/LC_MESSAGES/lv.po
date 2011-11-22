@@ -6,10 +6,10 @@
 # Marcis Trapencieris <marcis@sociology.lv>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: lv\n"
+"Project-Id-Version: LimeSurvey\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-22 16:28+0100\n"
-"PO-Revision-Date: 2011-11-22 16:29+0100\n"
+"POT-Creation-Date: 2011-11-22 22:43+0100\n"
+"PO-Revision-Date: 2011-11-22 22:43+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Latvian\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,6 @@ msgstr ""
 "X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
 "X-Poedit-Language: Latvian\n"
 "X-Poedit-Country: LATVIA\n"
-"X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: D:\\web\\xampp\\htdocs\\limesurvey_ci\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\limesurvey_ci\n"
 
@@ -7046,19 +7045,19 @@ msgstr "minūtes"
 msgid "seconds"
 msgstr "sekundes"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1318
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1328
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1291
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1301
 #, fuzzy
 msgid "1st quartile (Q1)"
 msgstr "1st Quartile (Q1)"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1349
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1322
 #, fuzzy
 msgid "2nd quartile (Median)"
 msgstr "2nd Quartile (Median)"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1390
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1400
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1363
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1373
 #, fuzzy
 msgid "3rd quartile (Q3)"
 msgstr "3rd Quartile (Q3)"
@@ -7087,27 +7086,27 @@ msgstr ""
 msgid "Arc tangent of two variables"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3053
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3057
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3067
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3073
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3026
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3030
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3040
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3046
 msgid "Arithmetic mean"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1234
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1207
 #, fuzzy
 msgid "Average"
 msgstr "Average"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:961
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:934
 msgid "Average file size"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:936
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:909
 msgid "Average no. of files per respondent"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:962
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:935
 msgid "Average size per respondent"
 msgstr ""
 
@@ -7120,8 +7119,8 @@ msgid "Binary safe string comparison"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:645
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2126
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2147
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2099
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2120
 msgid "Browse"
 msgstr "Pārlūkot"
 
@@ -7137,14 +7136,14 @@ msgstr ""
 msgid "Calculates the exponent of e"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:996
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:998
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1011
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1022
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1126
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1128
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1141
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1151
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:969
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:971
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:984
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:995
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1099
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1101
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1114
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1124
 msgid "Calculation"
 msgstr "Aprēķins"
 
@@ -7161,8 +7160,8 @@ msgstr ""
 msgid "Click here to continue"
 msgstr "Nospiest šeit, lai izdrukātu atbildes."
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1900
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2118
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1873
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2091
 msgid "Comments"
 msgstr "Komentāri"
 
@@ -7205,21 +7204,21 @@ msgstr ""
 msgid "Cosine"
 msgstr "Aizvērt"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1281
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2140
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2157
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2176
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2180
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2188
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1254
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2113
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2130
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2149
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2153
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2161
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2168
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2191
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2195
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2218
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2222
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2230
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2237
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2319
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2323
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2330
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2337
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2203
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2210
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2292
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2296
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2303
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2310
 msgid "Count"
 msgstr "Skaits"
 
@@ -7310,16 +7309,15 @@ msgstr "Nav izdevies izdzēst noņemto valodu apzīmējumus"
 msgid "Faulty line in import - fields and data don't match"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:765
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:986
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1008
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1018
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1116
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1138
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1147
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1929
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1947
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1963
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:959
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:981
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:991
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1089
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1111
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1120
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1902
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1920
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1936
 #, php-format
 msgid "Field summary for %s"
 msgstr ""
@@ -7462,7 +7460,7 @@ msgstr ""
 msgid "Make a string uppercase"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1360
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1333
 msgid "Median value"
 msgstr ""
 
@@ -7475,35 +7473,35 @@ msgstr ""
 msgid "Natural logarithm"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2440
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2472
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2413
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2445
 msgid "Not completed or Not displayed"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2444
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2476
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2417
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2449
 #, fuzzy
 msgid "Not displayed"
 msgstr "Parādīti ieraksti:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1499
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1502
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1510
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1522
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1472
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1475
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1483
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1495
 msgid "Not enough values for calculation"
 msgstr "Nav pietiekami daudz vērtību, lai veikt aprēķinus"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1447
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1451
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1457
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1473
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1420
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1424
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1430
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1446
 msgid "Null values are ignored in calculations"
 msgstr "Nulles vērtības aprēķinos tiek ignorētas"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2851
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2859
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2867
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2878
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2886
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2894
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2905
 msgid "Number of cases"
 msgstr ""
 
@@ -7522,20 +7520,20 @@ msgstr ""
 msgid "Page"
 msgstr "Lapa"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2140
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2159
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2176
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2181
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2188
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2197
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2218
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2223
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2230
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2239
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2319
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2324
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2330
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2339
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2113
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2132
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2149
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2154
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2161
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2170
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2191
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2196
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2203
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2212
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2292
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2297
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2303
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2312
 msgid "Percentage"
 msgstr "Procenti"
 
@@ -7555,10 +7553,10 @@ msgstr "Lūdzu uzgaidīt ..."
 msgid "Please verify the following information before continuing with the database upgrade:"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1449
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1452
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1458
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1474
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1422
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1425
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1431
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1447
 #, fuzzy, php-format
 msgid "Q1 and Q3 calculated using %s"
 msgstr "Q1 and Q3 calculated using"
@@ -7576,14 +7574,14 @@ msgstr "Atkārtot paroli"
 msgid "Replace all occurrences of the search string with the replacement string"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:996
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:999
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1011
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1024
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:969
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:972
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:984
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:997
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1099
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1102
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1114
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1126
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1129
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1141
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1153
 msgid "Result"
 msgstr "Rezultāts"
 
@@ -7655,11 +7653,11 @@ msgstr ""
 msgid "Square root"
 msgstr "Pētījuma kvota"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1233
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3054
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3061
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3068
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3075
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1206
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3027
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3034
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3041
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3048
 #, fuzzy
 msgid "Standard deviation"
 msgstr "Standard Deviation"
@@ -7684,23 +7682,23 @@ msgstr ""
 msgid "Strip whitespace (or other characters) from the end of a string"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1232
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2176
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2182
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2188
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2199
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2877
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2881
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2893
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2899
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1205
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2149
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2155
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2161
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2172
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2850
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2854
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2866
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2872
 msgid "Sum"
 msgstr "Summa"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:261
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:599
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3370
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3371
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3374
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3362
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3363
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3366
 msgid "Survey"
 msgstr "Pētījums"
 
@@ -7769,7 +7767,7 @@ msgstr "Šis fails nav derīgs ZIP arhīvs.  Importēšana nav izdevusies."
 msgid "This is not a valid token data XML file."
 msgstr "Šis fails nav derīgs ZIP arhīvs.  Importēšana nav izdevusies."
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:935
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:908
 #, fuzzy
 msgid "Total number of files"
 msgstr "Kopā importēti faili"
@@ -7781,7 +7779,7 @@ msgstr "Kopā importēti faili"
 msgid "Total records in survey:"
 msgstr "Ieraksti kopā"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:960
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:933
 #, fuzzy
 msgid "Total size of files"
 msgstr "Kopā importēti faili"
@@ -7825,10 +7823,10 @@ msgstr ""
 msgid "addslashes"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1449
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1452
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1458
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1474
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1422
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1425
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1431
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1447
 #, fuzzy
 msgid "minitab method"
 msgstr "minitab method"
@@ -8056,6 +8054,10 @@ msgstr "Iespējamās valodas"
 msgid "Check Data"
 msgstr "Pārbaudīt datus"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:21
+msgid "Check for updates:"
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:38
 msgid "Check now"
 msgstr "Pārbaudīt tagad"
@@ -8095,6 +8097,10 @@ msgstr "Šablons pēc noklusējuma:"
 msgid "Display:"
 msgstr "Parādīti ieraksti:"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:286
+msgid "Don't force on or off"
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/browse/browseallrow_view.php:9
 msgid "Download all files in this response as a zip file"
 msgstr ""
@@ -8113,6 +8119,10 @@ msgstr "E-pasts nav nosūtīts!"
 msgid "Email method:"
 msgstr "minitab method"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:9
+msgid "Email settings"
+msgstr "E-pasta iestatījumi"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:214
 msgid "Encryption type:"
 msgstr "Kodējuma tips:"
@@ -8125,6 +8135,22 @@ msgstr ""
 msgid "Enter your hostname and port, e.g.: my.smtp.com:25"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:34
+msgid "Every 2 weeks"
+msgstr "Katras 2 nedēļas"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:28
+msgid "Every day"
+msgstr "Katru dienu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:37
+msgid "Every month"
+msgstr "Katru mēnesi"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:31
+msgid "Every week"
+msgstr "Katru nedēļu"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:241
 msgid "Filter HTML for XSS:"
 msgstr ""
@@ -8133,6 +8159,20 @@ msgstr ""
 msgid "Force HTTPS:"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/authentication/login.php:31
+#, fuzzy
+msgid "Forgot your password?"
+msgstr "Aizmirsāt paroli?"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:8
+msgid "General"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:4
+#, fuzzy
+msgid "Global settings"
+msgstr "Saglabāt iestatījumus"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:128
 msgid "Google Maps API key:"
 msgstr ""
@@ -8140,6 +8180,10 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/limeReplacementFields_view.php:125
 msgid "Group by Group"
 msgstr "Katra grupa savā lapā"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:252
+msgid "Group member can only see own group:"
+msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/assessments_view.php:116
 #, fuzzy
@@ -8172,10 +8216,23 @@ msgstr ""
 msgid "Inline HTML editor"
 msgstr "Inline HTML editor"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:14
+msgid "Interfaces"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:13
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/authentication/login.php:8
+msgid "Language"
+msgstr "Valoda"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:38
 #, php-format
 msgid "Last check: %s"
 msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/authentication/login.php:25
+msgid "Login"
+msgstr "Login"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/assessments_view.php:31
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/assessments_view.php:118
@@ -8185,6 +8242,10 @@ msgstr "Paziņojums"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/assessments_view.php:133
 msgid "Message:"
 msgstr "Ziņa:"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:25
+msgid "Never"
+msgstr "Nekad"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:89
 #, fuzzy
@@ -8206,6 +8267,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:108
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:119
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:284
 msgid "On"
 msgstr "Ieslēgts"
 
@@ -8217,6 +8279,10 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/limeReplacementFields_view.php:126
 msgid "Only Previous pages answers are available"
 msgstr "Pieejamas tikai iepriekšējas lapas atbildes"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:7
+msgid "Overview & update"
+msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:104
 msgid "PDF export available:"
@@ -8246,6 +8312,10 @@ msgstr "Lūdzu atzīmēt vismaz vienu"
 msgid "Popup HTML editor"
 msgstr "Popup HTML editor"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:12
+msgid "Presentation"
+msgstr "Prezentācija"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/limeReplacementFields_view.php:68
 msgid "Previous Answers Fields"
 msgstr "Iepriekšējie atbilžu lauki"
@@ -8258,6 +8328,10 @@ msgstr "E-pasts"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:394
 msgid "Remove"
 msgstr "Noņemt"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:304
+msgid "Repeating headings in array questions every X subquestions:"
+msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/assessments_view.php:27
 msgid "SID"
@@ -8302,6 +8376,10 @@ msgstr "Saglabāt iestatījumus"
 msgid "Screen reader compatibility mode:"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:11
+msgid "Security"
+msgstr "Drošība"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:149
 #, fuzzy
 msgid "Sendmail"
@@ -8323,6 +8401,15 @@ msgstr ""
 msgid "Session lifetime (seconds):"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:317
+#, fuzzy
+msgid "Show \"There are X questions in this survey\""
+msgstr "Šajā pētījumā nav jautājumu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:296
+msgid "Show 'no answer' option for non-mandatory questions:"
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:333
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:352
 msgid "Show both"
@@ -8339,6 +8426,15 @@ msgstr "Rādīt tikai grupas nosaukumu"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:354
 msgid "Show question code only"
 msgstr "Rādīt tikai jautājuma kodu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:331
+#, fuzzy
+msgid "Show question group name and/or description"
+msgstr "Mainīt pētījuma nosaukumu vai aprakstu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:350
+msgid "Show question number and/or question code"
+msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:353
 msgid "Show question number only"
@@ -8362,6 +8458,7 @@ msgstr "Standarta lauki"
 msgid "Survey Format is %s:"
 msgstr "Aptaujas formāts ir %s:"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:300
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:321
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:337
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:356
@@ -8415,6 +8512,10 @@ msgstr ""
 msgid "Total"
 msgstr "Kopā"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:20
+msgid "Updates"
+msgstr "Atjauninājumi"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:209
 msgid "User name:"
 msgstr "Lietotājvārds:"
@@ -8436,6 +8537,10 @@ msgstr ""
 msgid "You have to enter user name and email."
 msgstr "Jums jānorāda lietotāja vārds un parole."
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:2
+msgid "You must set at last one available language."
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:267
 msgid "check if this link works."
 msgstr ""
@@ -8452,6 +8557,62 @@ msgstr ""
 msgid "Add and edit conditions"
 msgstr "Pievienot un rediģēt nosacījumus"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:100
+msgid "All answers meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:83
+msgid "All assessments meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:21
+msgid "All conditions meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:39
+msgid "All default values meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:169
+msgid "All groups meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:186
+msgid "All old survey tables meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:203
+msgid "All old token tables meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:30
+msgid "All question attributes meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:152
+msgid "All questions meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:57
+msgid "All quota language settings meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:66
+msgid "All quota quota members meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:48
+msgid "All quotas meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:134
+msgid "All survey language settings meet consistency standards."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:117
+msgid "All surveys meet consistency standards."
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/exportresults_view.php:39
 msgid "Answer Codes"
 msgstr "Atbilžu kodi"
@@ -8465,9 +8626,18 @@ msgstr "Vai Jūs tiešām vēlaties ģenerēt jautājuma kodus no jauna?"
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:76
+#, fuzzy
+msgid "Assessment:"
+msgstr "Vērtējumi"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/exportresults_view.php:63
 msgid "CSV File (All charsets)"
 msgstr "CSV File (All charsets)"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/fix_view.php:12
+msgid "Check database again?"
+msgstr "Vēlreiz pārbaudīt datubāzi?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/exportresults_view.php:82
 msgid "Choose Columns"
@@ -8481,6 +8651,10 @@ msgstr "Izvēlēties kolonnas, kuras Jūs vēlaties eksportēt."
 #, fuzzy
 msgid "Choose token fields"
 msgstr "Izvēlēties kolonnas"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:93
+msgid "Code:"
+msgstr "Kods:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/exportresults_view.php:73
 #, fuzzy
@@ -8509,6 +8683,15 @@ msgstr ""
 msgid "Convert spaces in question text to underscores"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:2
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/fix_view.php:2
+msgid "Data consistency check"
+msgstr "Datu atbilstības pārbaude"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:220
+msgid "Data redundancy check"
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/r_view.php:3
 #, fuzzy
 msgid "Data selection:"
@@ -8522,6 +8705,11 @@ msgstr "Datestamp"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/conditions/conditionslist_view.php:24
 msgid "Delete all conditions"
 msgstr "Izdzēst visus nosacījumus"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:258
+#, fuzzy
+msgid "Delete checked items!"
+msgstr "Lūdzu pārbaudiet sekojošos"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/browse/browseidheader_view.php:12
 msgid "Delete this entry"
@@ -8600,10 +8788,6 @@ msgstr ""
 msgid "Full responses:"
 msgstr "Pilnas atbildes:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/exportresults_view.php:8
-msgid "General"
-msgstr ""
-
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/exportresults_view.php:85
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/exportresults_view.php:91
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/exportresults_view.php:119
@@ -8613,6 +8797,11 @@ msgstr "Palīdzība"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/dataentry/content_view.php:22
 msgid "Help about this question"
 msgstr "Palīdzība par šo jautājumu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:3
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/fix_view.php:3
+msgid "If errors are showing up you might have to execute this script repeatedly."
+msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/browse/browseindex_view.php:6
 msgid "Incomplete responses:"
@@ -8636,6 +8825,15 @@ msgstr "Microsoft Excel (All charsets)"
 msgid "Microsoft Word (Latin charset)"
 msgstr "Microsoft Word (Latin charset)"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:208
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:224
+msgid "No database action required!"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:259
+msgid "Note that you cannot undo a delete if you proceed. The data will be gone."
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/exportresults_view.php:66
 msgid "PDF"
 msgstr "PDF"
@@ -8651,6 +8849,12 @@ msgid "Range:"
 msgstr "Ranžēšana"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:14
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:76
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:93
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:110
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:127
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:144
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:162
 msgid "Reason:"
 msgstr "Iemesls:"
 
@@ -8671,6 +8875,10 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/question_view.php:10
 msgid "Save for Lsrc (*.csv)"
 msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:211
+msgid "Should we proceed with the delete?"
+msgstr "Vai turpināt izdzēšanas darbību?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/conditions/conditionshead_view.php:13
 #, fuzzy
@@ -8693,6 +8901,60 @@ msgstr "Pirmais solis:"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/r_view.php:12
 msgid "Step 2:"
 msgstr "Otrais solis:"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:89
+#, fuzzy
+msgid "The following answers should be deleted:"
+msgstr "Sekojošas atbildes ir jāizdzēš"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:72
+#, fuzzy
+msgid "The following assessments should be deleted:"
+msgstr "Sekojošas atbildes ir jāizdzēš"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:11
+msgid "The following conditions should be deleted:"
+msgstr "Sekojošos nosacījumus nepieciešams izdzēst:"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:158
+#, fuzzy
+msgid "The following groups should be deleted:"
+msgstr "Sekojošas grupas ir jāizdzēš"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:232
+msgid "The following old survey response tables exist and may be deleted if no longer required:"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:175
+msgid "The following old survey tables should be deleted because they contain no records or their parent survey no longer exists:"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:246
+msgid "The following old token list tables exist and may be deleted if no longer required:"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:192
+msgid "The following old token tables should be deleted because they contain no records or their parent survey no longer exists:"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:140
+#, fuzzy
+msgid "The following questions should be deleted:"
+msgstr "Sekojoši jautājumi ir jāizdzēš"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:123
+#, fuzzy
+msgid "The following survey language settings should be deleted:"
+msgstr "Sēkojošus pētījumus nepieciešams izdzēst"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:106
+#, fuzzy
+msgid "The following surveys should be deleted:"
+msgstr "Sēkojošus pētījumus nepieciešams izdzēst"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:221
+msgid "The redundancy check looks for tables leftover after deactivating a survey. You can delete these if you no longer require them."
+msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:35
 #, php-format
@@ -8731,6 +8993,10 @@ msgstr "Atbildes kopā:"
 #, fuzzy, php-format
 msgid "View response ID %d"
 msgstr "Apskatīt atbildi"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/checkintegrity/check_view.php:214
+msgid "Yes - Delete Them!"
+msgstr "Jā - izdzēst!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/browse/browseidheader_view.php:14
 #, fuzzy
@@ -9066,10 +9332,6 @@ msgstr ""
 #, fuzzy
 msgid "Label sets:"
 msgstr "Apzīmējumu kopas"
-
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:102
-msgid "Language"
-msgstr "Valoda"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/editlabel_view.php:25
 msgid "Languages:"
@@ -9465,11 +9727,6 @@ msgstr ""
 msgid "Global participant settings"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/adminmenu.php:39
-#, fuzzy
-msgid "Global settings"
-msgstr "Saglabāt iestatījumus"
-
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/saved/savedlist_view.php:4
 msgid "Identifier"
 msgstr "Identifikators"
@@ -9603,20 +9860,96 @@ msgid "You don't have sufficient permissions"
 msgstr " Jums nav pietiekamas tiesības."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:43
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:48
 #, fuzzy
 msgid "(Label sets were not imported since you do not have the permission to create new label sets.)"
 msgstr "(Apzīmējumu kopas netika importētas, jo Jums nav tiesību izveidot jaunas apzīmējumu kopas.)"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editSurvey_view.php:35
+#, fuzzy
+msgid "(No target question)"
+msgstr "Nav atbilstoša jautājuma"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:22
+msgid "A deactivated survey is not accessible to participants (only a message appears that they are not permitted to see this survey)."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:13
+msgid "Ability to change of questions, groups and parameters is still limited."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:24
+msgid "Access"
+msgstr "Pieeja"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:41
+msgid "Add or delete groups"
+msgstr "Pievienot vai izdzēst grupas"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:41
+msgid "Add or delete questions"
+msgstr "Pievienot vai izdzēst jautājumus"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:41
+#, fuzzy
+msgid "Add or delete subquestions or change their codes"
+msgstr "Pievienot vai izdzēst jautājumus"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/firststeps.php:5
 msgid "Add survey"
 msgstr "Pievienot aptauju"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/organizeGroupsAndQuestions_view.php:4
+msgid "After you are done please click the bottom 'Save' button to save your changes."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:21
+msgid "All participant information is lost."
+msgstr "Zaudēta visa dalībnieku informācija."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editSurvey_view.php:26
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editSurvey_view.php:27
+msgid "All questions, answers, etc for removed languages will be lost. Are you sure?"
+msgstr "Noņemtajām valodām visi jautājumi, atbildes, u.c. tiks pazaudētas.  Vai Jūs tiešām esat pārliecināts?"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:23
+msgid "All questions, groups and parameters are editable again."
+msgstr "Visus jautājumus, grupas un parametrus atkal ir iespējams rediģēt."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:20
+msgid "All responses are not accessible anymore with LimeSurvey)."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:24
+msgid "Also you should export your responses before deactivating."
+msgstr "Kā ārī pirms deaktivizēšanas vēlams eksportēt savas atbildes."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:14
+msgid "An expired survey is not accessible to participants (they only see a message that the survey has expired)."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:25
+#, fuzzy
+msgid "Anonymized responses"
+msgstr "Saglabātās atbildes:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:48
 #, fuzzy
 msgid "Anonymized responses?"
 msgstr "Anonīmas atbildes?"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:5
+#, fuzzy
+msgid "Are you sure you want to delete these surveys?"
+msgstr "Vai Jūs tiešām vēlaties izdzēst šo ierakstu?"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:6
+#, fuzzy
+msgid "Are you sure you want to expire these surveys?"
+msgstr "Vai Jūs tiešām vēlaties izdzēst šo ierakstu?"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:60
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:82
 msgid "Copy of survey is completed."
 msgstr "Aptuajas kopēšana pabeigta"
 
@@ -9634,15 +9967,44 @@ msgstr ""
 msgid "Create one or more questions inside the new question group."
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/newSurvey_view.php:6
+#, fuzzy
+msgid "Create, import, or copy survey"
+msgstr "Izveidot vai importēt pētījumu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:22
+msgid "Date created"
+msgstr "Izveidošanas datums"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editLocalSettings_view.php:23
 msgid "Date format:"
 msgstr "Datuma formāts:"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:74
+#, fuzzy
+msgid "Date stamp?"
+msgstr "Datestamp"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:46
+msgid "Deactivate Survey"
+msgstr "Deaktivizēt pētījumu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:35
+#, fuzzy
+msgid "Deactivate survey"
+msgstr "Deaktivizēt pētījumu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:9
+#, fuzzy
+msgid "Deactivation"
+msgstr "Apraksts:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editLocalSettings_view.php:35
 msgid "Decimal mark:"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:31
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:36
 #, fuzzy
 msgid "Default answers"
 msgstr "Izdzēš atbildes"
@@ -9657,11 +10019,43 @@ msgstr "Dzēst aptauju"
 msgid "Done. Test your survey using the %s icon."
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:42
+msgid "Download archive"
+msgstr "Lejupielādēt arhīvu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editSurvey_view.php:1
+msgid "Edit survey settings"
+msgstr "Rediģēt aptaujas uzstādījumus"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editLocalSettings_view.php:17
 msgid "End URL:"
 msgstr "Beigu adrese:"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/newSurvey_view.php:26
+msgid "Error: You have to enter a title for this survey."
+msgstr "Kļūda:  Jānorāda pētījuma nosaukums."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:9
+#, fuzzy
+msgid "Expiration"
+msgstr "Eksportēt jautājumu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:40
+#, fuzzy
+msgid "Expire"
+msgstr "Beidzies"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:30
+#, fuzzy
+msgid "Expire survey"
+msgstr "Eksportēt pētījumu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:26
+msgid "Full"
+msgstr "Pilns"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:62
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:84
 msgid "Go to survey"
 msgstr "Iet uz aptauju"
 
@@ -9669,37 +10063,138 @@ msgstr "Iet uz aptauju"
 msgid "If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:78
+msgid "Import of survey is completed."
+msgstr "Aptaujas importēšana pabeigta."
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deleteSurvey_view.php:22
 msgid "It will also delete any resources/files that have been uploaded for this survey."
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:15
+msgid "It's still possible to perform statistics on responses using LimeSurvey."
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:21
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:25
 msgid "Languages"
 msgstr "Valodas"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:12
+msgid "No participant information lost."
+msgstr "Dalībnieku informācija nav zaudēta."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:11
+msgid "No responses are lost."
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:43
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:48
 #, fuzzy
 msgid "Not imported label sets"
 msgstr "Neimportētās apzīmējumu kopas"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:57
+msgid "Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:41
+msgid "Once a survey is activated you can no longer:"
+msgstr "Līdz ko pētījums ir aktivizēts Jūs nevarat:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/footer.php:3
 #, fuzzy
 msgid "Online Manual"
 msgstr "Online Manual"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/organizeGroupsAndQuestions_view.php:1
+msgid "Organize question groups/questions"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:23
+msgid "Owner"
+msgstr "Īpašnieks"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editSurvey_view.php:32
+msgid "Parameter name:"
+msgstr "Parametra nosaukums:"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:45
+msgid "Please check these settings now, then click the button below."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:134
+msgid "Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:45
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:28
 #, fuzzy
 msgid "Question attributes"
 msgstr "Jautājumu lapa"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:38
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:6
+msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
+msgstr "UZMANĪGI IZLASIET PIRMS TURPINĀT"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:57
+#, fuzzy
+msgid "Response import summary"
+msgstr "Jautājuma importēšanas kopsavilkums"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:30
+#, fuzzy
+msgid "Response rate"
+msgstr "Turpināt vēlāk"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editSurvey_view.php:27
+msgid "Save & edit survey text elements"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:136
+#, fuzzy
+msgid "Save / Activate survey"
+msgstr "Aktivizēt pētījumu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:90
+msgid "Save IP address?"
+msgstr "Saglabāt IP adresi?"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:107
+msgid "Save referrer URL?"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:122
+#, fuzzy
+msgid "Save timings?"
+msgstr "Saglabāt iestatījumus"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:38
+#, fuzzy
+msgid "Selected survey(s):"
+msgstr "Izdzēst pētījumu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/firststeps.php:3
 msgid "Some piece-of-cake steps to create your very own first survey:"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:4
+msgid "Stop this survey"
+msgstr "Pārtraukt aptauju"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/footer.php:4
 #, fuzzy
 msgid "Support this project - Donate to "
 msgstr "Support this project - Donate to "
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:47
+msgid "Survey Has Been Deactivated"
+msgstr "Pētījums deaktivizēts"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:7
+msgid "Survey does not pass consistency check"
+msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:16
 #, fuzzy
@@ -9710,9 +10205,47 @@ msgstr "Pētījuma importēšanas kopsavilkums"
 msgid "Survey title"
 msgstr "Aptaujas nosaukums"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editSurvey_view.php:34
+#, fuzzy
+msgid "Target (sub-)question:"
+msgstr "uz jautājumu"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/firststeps.php:8
 msgid "Test survey"
 msgstr "Pārbaudīt aptauju"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:9
+msgid "The following problems have been found:"
+msgstr "Atrastas sekojošas problēmas:"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:43
+#, fuzzy
+msgid "The following settings cannot be changed when the survey is active."
+msgstr "Šo iestatījumu vēlāk mainīt nav iespējams!"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:50
+msgid "The responses table has been renamed to: "
+msgstr "Atbilžu tabula pārdēvēta par:"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:51
+msgid "The responses to this survey are no longer available using LimeSurvey."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:26
+msgid "The survey cannot be activated until these problems have been resolved."
+msgstr "Pētījumu nav iespējams aktivizēt, kamēr šīs problēmas nav atrisinātas."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:55
+msgid "The tokens table associated with this survey has been renamed to: "
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:8
+msgid "There are two ways to stop a survey. Please read carefully on the two options below and choose the right one for you."
+msgstr "Ir divas iespējas, kā pārtraukt aptauju. Lūdzu izlasiet uzmanīgi zemāk minētos variantus un izvēlieties vispiemērotāko."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:7
+msgid "This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to contine?"
+msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deleteSurvey_view.php:21
 msgid "This process will delete this survey, and all related groups, questions answers and conditions."
@@ -9726,10 +10259,44 @@ msgstr ""
 msgid "This survey has been deleted."
 msgstr "Šis pētījums ir izdzēsts."
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:76
+msgid "This survey is active - click here to stop this survey."
+msgstr "Šī aptauja pašlaik ir aktīva - spiest šeit, lai to pārtrauktu."
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deleteSurvey_view.php:27
 #, fuzzy
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses (and files) will be deleted. We recommend that you export the responses before deleting this survey."
 msgstr "Šis pētījums ir aktīvs un tam ir piesaistīta atbilžu tabula.  Ja Jūs izdzēsīsiet šo pētījumu, tiks izdzēstas arī tā atbildes.  Pirms pētījuma izdzēšanas Ir ieteicams eksportēt atbildes."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:65
+msgid "This survey is active but expired."
+msgstr "Šis aptauja ir aktīva, taču jau beigusies."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:69
+#, fuzzy
+msgid "This survey is active but has a start date."
+msgstr "Šis aptauja ir aktīva, taču jau beigusies."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:80
+msgid "This survey is currently active."
+msgstr "Šī aptauja pašlaik ir aktīva."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:89
+msgid "This survey is currently not active - click here to activate this survey."
+msgstr "Šī aptauja pašlaik nav aktīva - spiest šeit, lai to aktivizētu."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:93
+msgid "This survey is currently not active."
+msgstr "Šī aptauja pašlaik ir aktīva."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/organizeGroupsAndQuestions_view.php:3
+msgid "To reorder questions/questiongroups just drag the question/group with your mouse to the desired position."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:29
+#, fuzzy
+msgid "Tokens available"
+msgstr "Pētījumi nav pieejami"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/editLocalSettings_view.php:20
 msgid "URL description:"
@@ -9764,16 +10331,26 @@ msgstr "Jūs tūlīt izdzēsīsiet šo pētījumu"
 msgid "You have not selected a survey to delete"
 msgstr "Jūs neesat izvēlējies, kuru pētījumu izdzēst"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:52
+msgid "You should note the name of this table in case you need to access this information later."
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:40
+msgid "You should only activate a survey when you are absolutely certain that your survey setup is finished and will not need changing."
+msgstr "Pētījumu vēlams aktivizēt tikai tad, kad Jūs esat pilnīgi drošs, ka visi sagatavošanas darbi ir pabeigti un nebūs nepieciešams veikt kādas izmaiņas."
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:20
 #, fuzzy
 msgid "Your response table will be renamed to:"
 msgstr "Atbilžu tabula tiks pārdēvēta kā:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:47
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:51
 msgid "quota language settings"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:47
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:51
 #, fuzzy
 msgid "quota members"
 msgstr "Kvotas nosaukums"
@@ -9788,6 +10365,11 @@ msgstr "*Nepieciešams"
 msgid "*This setting cannot be changed later!"
 msgstr "*Šo iestatījumu vēlāk mainīt nav iespējams!"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:234
+#, fuzzy
+msgid "...or import a question"
+msgstr "Importēt jautājumu"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:13
 msgid "Activate this Survey"
 msgstr "Aktivizēt šo pētījumu"
@@ -9795,6 +10377,10 @@ msgstr "Aktivizēt šo pētījumu"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:115
 msgid "Add New Question to Group"
 msgstr "Pievienot grupai jautājumu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:13
+msgid "Add a new question"
+msgstr "Pievienot jautājumu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:279
 #, fuzzy
@@ -9808,6 +10394,10 @@ msgstr "Pievienot jautājumu grupu"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:7
 msgid "Additional Languages"
 msgstr "Papildus valodas"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveySummary_view.php:100
+msgid "Additional languages:"
+msgstr "Papildus valodas:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:60
 msgid "Admin Email:"
@@ -9835,6 +10425,14 @@ msgstr "Atbilžu kodi"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:128
 msgid "Answer:"
 msgstr "Atbilde:"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:190
+msgid "At beginning"
+msgstr "Sākumā"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:189
+msgid "At end"
+msgstr "Beigās"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:157
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:148
@@ -9864,6 +10462,10 @@ msgstr "Jūsu e-pasts"
 msgid "Cannot be changed (survey is active)"
 msgstr "Nav iespējams veikt izmaiņas (Pētījums ir aktīvs)"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/resetSyntaxErrorLog_view.php:2
+msgid "Cleared log of syntax errors"
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:126
 msgid "Close this Group"
 msgstr "Aizvērt šo grupu"
@@ -9885,15 +10487,12 @@ msgstr "Aizvērt šo pētījumu"
 msgid "Code"
 msgstr "Kods"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:178
-msgid "Code:"
-msgstr "Kods:"
-
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabCopy_view.php:10
 #, fuzzy
 msgid "Convert resource links and INSERTANS fields?"
 msgstr "Convert Resources links and INSERTANS fields ?"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:242
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/addGroup_view.php:59
 #, fuzzy
 msgid "Convert resource links?"
@@ -9963,6 +10562,10 @@ msgstr "PDF eksportēšana"
 msgid "Edit Current Question"
 msgstr "Rediģēt šo jautājumu"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/editGroup_view.php:3
+msgid "Edit Group"
+msgstr "Rediģēt grupu"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:3
 #, fuzzy
 msgid "Edit answer options"
@@ -9983,6 +10586,10 @@ msgstr "Rediģēt šo jautājumu"
 #, fuzzy
 msgid "Edit default answers for this question"
 msgstr "Rediģēt/pielikt atbildes šim jautājumam"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:11
+msgid "Edit question"
+msgstr "Rediģēt jautājumu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:15
 #, fuzzy
@@ -10040,6 +10647,11 @@ msgstr "Kļūda: Jūs meģināt izmantot dublicējošus atbilžu kodus."
 msgid "Error: You have to enter a group title for each language."
 msgstr "Kļūda:  Jānorāda pētījuma nosaukums."
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:34
+#, fuzzy
+msgid "Error: You have to enter a question code."
+msgstr "Kļūda: šim jautājumam jānorāda kods."
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabCopy_view.php:14
 #, fuzzy
 msgid "Exclude answers?"
@@ -10082,8 +10694,11 @@ msgstr "Atzīme"
 msgid "General settings"
 msgstr "Galvenie iestatījumi:"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:44
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:46
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:66
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:68
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:86
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:88
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:198
 msgid "Help:"
@@ -10096,6 +10711,10 @@ msgstr "Noslēpt šīs grupas detaļas"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:163
 msgid "Hide Details of this Question"
 msgstr "Noslēpt šī jautājuma detaļas"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:206
+msgid "Hide advanced settings"
+msgstr "Paslēpt iestatījumus"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:284
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:285
@@ -10127,10 +10746,16 @@ msgstr "Nav iespējams izdzēst šo jautājumu, jo ir saistītais(-ie) jautājum
 msgid "Label set browser"
 msgstr "Apzīmējumu kopas"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:208
+#, fuzzy
+msgid "Loading..."
+msgstr "Pieslēdzos..."
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:183
 msgid "Mandatory Question"
 msgstr "Obligātais jautājums"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:157
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:254
 msgid "Mandatory:"
 msgstr "Obligāts:"
@@ -10175,6 +10800,7 @@ msgstr "Jautājumu/grupu skaits"
 msgid "Number of questions/groups"
 msgstr "Jautājumu/grupu skaits"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:134
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:239
 msgid "Option 'Other':"
 msgstr "Cits variants:"
@@ -10192,6 +10818,10 @@ msgstr "Citi jautājumi, kuriem ir saistīti nosacījumi ar šo jautājumu:"
 #, fuzzy
 msgid "Partial (saved) responses"
 msgstr "Daļējas atbildes"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:187
+msgid "Position:"
+msgstr "Vieta:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:142
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:135
@@ -10229,17 +10859,29 @@ msgstr "Pētījuma izdrukas versija"
 msgid "QueXML export"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:95
+msgid "Question Type:"
+msgstr "Jautājuma tips:"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:207
 msgid "Question group/question organizer disabled"
 msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:119
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:128
+msgid "Question group:"
+msgstr "Jautājumu grupa:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:229
 #, fuzzy
 msgid "Question groups:"
 msgstr "Jautājuma tips:"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:40
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:42
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:62
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:64
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:82
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:84
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:191
 msgid "Question:"
@@ -10267,10 +10909,15 @@ msgid "Quick-translation"
 msgstr "Ātrais tulkojums."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/addGroup_view.php:40
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/editGroup_view.php:33
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:159
 #, fuzzy
 msgid "Randomization group:"
 msgstr "Nav atbilstošas grupas"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:170
+msgid "Relevance equation:"
+msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:214
 msgid "Reorder question groups / questions"
@@ -10316,6 +10963,11 @@ msgstr "Saglabāt izmaiņas"
 msgid "Save question group"
 msgstr "Jautājumu/grupu skaits"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:238
+#, fuzzy
+msgid "Select LimeSurvey question file (*.lsq/*.csv)"
+msgstr "LimeSurvey Survey File (*.csv)"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/addGroup_view.php:57
 msgid "Select question group file (*.lsg/*.csv):"
 msgstr ""
@@ -10337,6 +10989,10 @@ msgstr "Parādīt šīs grupas detaļas"
 msgid "Show Details of this Question"
 msgstr "Parādīt šī jautājuma detaļas"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:206
+msgid "Show advanced settings"
+msgstr "Parādīt iestatījumus"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:123
 #, fuzzy
 msgid "Show details of this group"
@@ -10352,13 +11008,14 @@ msgstr "Parādīt šī pētījuma detaļas"
 msgid "Show log of syntax errors"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:12
+#, fuzzy
+msgid "Source Expression"
+msgstr "Regular Expression"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveySummary_view.php:68
 msgid "Start date/time:"
 msgstr "Sākt datums/laiks:"
-
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:29
-msgid "Stop this survey"
-msgstr "Pārtraukt aptauju"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:66
 #, fuzzy
@@ -10407,6 +11064,10 @@ msgstr "Eksportēt pētījuma struktūru"
 msgid "Survey table name"
 msgstr "Pētījuma tabulas nosaukums"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:13
+msgid "Syntax Highlighted"
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveySummary_view.php:149
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveySummary_view.php:154
 msgid "Table column usage"
@@ -10423,22 +11084,6 @@ msgstr "Šablons:"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:4
 msgid "This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey."
 msgstr ""
-
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:20
-msgid "This survey is active but expired."
-msgstr "Šis aptauja ir aktīva, taču jau beigusies."
-
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:22
-#, fuzzy
-msgid "This survey is active but has a start date."
-msgstr "Šis aptauja ir aktīva, taču jau beigusies."
-
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:24
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:207
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:271
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:108
-msgid "This survey is currently active."
-msgstr "Šī aptauja pašlaik ir aktīva."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:9
 #, fuzzy
@@ -10471,10 +11116,15 @@ msgstr ""
 msgid "Tools"
 msgstr "Rīki"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:11
+msgid "Type"
+msgstr "Tips"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:214
 msgid "Type:"
 msgstr "Tips:"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:175
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:209
 msgid "Validation:"
 msgstr ""
@@ -10522,10 +11172,38 @@ msgstr "Šim jautājumam Jums jāpievieno atbildes"
 msgid "You need to add subquestions to this question"
 msgstr "Šim jautājumam Jums jāpievieno atbildes"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:7
+msgid "gid"
+msgstr "gid"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:9
+msgid "gseq"
+msgstr "qseq"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:8
+msgid "qid"
+msgstr "qid"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:10
+msgid "qseq"
+msgstr "qseq"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:140
 #, fuzzy
 msgid "queXML format (*.xml)"
 msgstr "queXML Survey XML Format (*.xml)"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:6
+msgid "sid"
+msgstr "sid"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:5
+msgid "time"
+msgstr "laiks"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:12
+msgid "Add URL parameter"
+msgstr "Pievienot adreses parametru"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/addtokenpost.php:7
 #, fuzzy
@@ -10534,6 +11212,18 @@ msgstr "Pievienot jaunu ierakstu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/addtokenpost.php:12
 msgid "Add new token entry"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:298
+msgid "Add participant to CPDB"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:290
+msgid "Add participants to central database"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:297
+msgid "Add to CPDB"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/addtokenpost.php:1
@@ -10548,6 +11238,16 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabTokens_view.php:71
 msgid "Allow public registration?"
 msgstr "Atļaut publisku reģistrēšanos?"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:262
+#, fuzzy
+msgid "Are you sure you want to delete the selected entries?"
+msgstr "Vai Jūs tiešām vēlaties izdzēst šo ierakstu?"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:10
+#, fuzzy
+msgid "Are you sure you want to delete this URL parameter?"
+msgstr "Vai Jūs tiešām vēlaties izdzēst šo ierakstu?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templatesummary_view.php:61
 msgid "Are you sure you want to delete this file?"
@@ -10565,6 +11265,10 @@ msgstr "Auto"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPresentation_view.php:197
 msgid "Automatically load URL when survey complete?"
 msgstr "Automātiski ielādēt URL, kad pētījums pabeigts?"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:17
+msgid "Bounce processing"
+msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/bounce.php:6
 msgid "Bounce settings to be used"
@@ -10591,6 +11295,7 @@ msgid "Changes cannot be saved to a standard template."
 msgstr "Noklusētajā šablonā izmaiņas nevar tikt saglabātas."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:108
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:109
 msgid "Completed?"
 msgstr "Pabeigts?"
 
@@ -10624,9 +11329,33 @@ msgstr "Izveidot jaunu šablonu ar nosaukumu:"
 msgid "Date Stamp?"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:261
+#, fuzzy
+msgid "Delete the selected entries"
+msgstr "Izdzēst šo ierakstu"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:90
 msgid "Delete this template"
 msgstr "Dzēst šablonu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:219
+#, fuzzy
+msgid "Delete token entry"
+msgstr "Izdzēst šo ierakstu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:207
+#, fuzzy
+msgid "Do survey"
+msgstr "Piedalīties pētījumā"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:13
+msgid "Edit URL parameter"
+msgstr "Rediģēt adreses parametru"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:214
+#, fuzzy
+msgid "Edit token entry"
+msgstr "Rediģēt šo ierakstu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templatesummary_view.php:9
 #, php-format
@@ -10634,6 +11363,7 @@ msgid "Editing template '%s' - File '%s'"
 msgstr "Rediģēt šablonu '%s' - File '%s'"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:80
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:81
 msgid "Email status"
 msgstr "E-pasta statuss"
 
@@ -10682,7 +11412,13 @@ msgstr "Ja tu vēlies to labot, %s lūdzu vispirms to nokopē%s."
 msgid "Import survey"
 msgstr "Importēt aptauju"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:178
+#, fuzzy
+msgid "Invalid email address:"
+msgstr "E-pasta adrese"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:93
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:94
 #, fuzzy
 msgid "Invitation sent?"
 msgstr "Uzaicinājums nosūtīts:"
@@ -10712,6 +11448,19 @@ msgstr "Jauns šablons"
 msgid "No (Forced by the system administrator)"
 msgstr "Pētījuma administratora vārds"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:9
+msgid "No parameters defined"
+msgstr "Nav definēti parametri"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:262
+#, fuzzy
+msgid "No tokens selected"
+msgstr "Nav izvēlēts"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:55
+msgid "Note: This is a standard template."
+msgstr "Piezīme: Šis ir standarta šablons."
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tab_view.php:6
 #, fuzzy
 msgid "Notification & data management"
@@ -10740,6 +11489,10 @@ msgstr "Citi faili:"
 #, fuzzy
 msgid "Panel integration"
 msgstr "Nosūtīt uzaicinājumu pa e-pastu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:6
+msgid "Parameter"
+msgstr "Parametrs"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:138
 #, fuzzy
@@ -10775,6 +11528,15 @@ msgstr "Lai ieslēgtu šo opciju, lūdzu nomaini direktoriju atļaujas mapēm /t
 msgid "Please enter the name for the copied template:"
 msgstr "Lūdzu norādīt datumu:"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:341
+#, fuzzy
+msgid "Please select at least one participant to be added"
+msgstr "Lūdzu atzīmēt vismaz vienu"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:350
+msgid "Please select the attributes that are to be added to the central database"
+msgstr ""
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tab_view.php:4
 #, fuzzy
 msgid "Presentation & navigation"
@@ -10798,11 +11560,13 @@ msgid "Question by Question"
 msgstr "Katrs jautājums savā lapā"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:104
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:105
 #, fuzzy
 msgid "Reminder count"
 msgstr "Atgādinājums nosūtīts:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:99
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:100
 #, fuzzy
 msgid "Reminder sent?"
 msgstr "Atgādinājums nosūtīts:"
@@ -10850,15 +11614,6 @@ msgstr "Saglabāt un ielādēt"
 msgid "Save IP Address?"
 msgstr "Saglabāt IP adresi?"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:73
-msgid "Save referrer URL?"
-msgstr ""
-
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:100
-#, fuzzy
-msgid "Save timings?"
-msgstr "Saglabāt iestatījumus"
-
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:114
 msgid "Screen:"
 msgstr "Ekrāns:"
@@ -10891,6 +11646,24 @@ msgstr "Detalizēts e-pasta paziņojums ar atbilžu kodiem"
 msgid "Send email invitations"
 msgstr "Nosūtīt uzaicinājumu pa e-pastu"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:240
+msgid "Send invitation email to this entry"
+msgstr "Nosūtīt uzaicinājuma e-pastu šim ierakstam"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:270
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:271
+msgid "Send invitation emails to the selected entries (if they have not yet been sent an invitation email)"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:275
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:276
+msgid "Send reminder email to the selected entries (if they have already received the invitation email)"
+msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:245
+msgid "Send reminder email to this entry"
+msgstr "Nosūtīt atgādinājuma e-pastu šim ierakstam"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/emailpost.php:3
 #, fuzzy
 msgid "Sending invitations..."
@@ -10921,14 +11694,6 @@ msgstr "Uzaicinājums nosūtīts:"
 #, fuzzy
 msgid "Show \"No answer\""
 msgstr "Nav atbildes"
-
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPresentation_view.php:214
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPresentation_view.php:219
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPresentation_view.php:224
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPresentation_view.php:238
-#, fuzzy
-msgid "Show \"There are X questions in this survey\""
-msgstr "Šajā pētījumā nav jautājumu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPresentation_view.php:74
 msgid "Show [<< Prev] button"
@@ -10993,6 +11758,20 @@ msgstr ""
 msgid "Show welcome screen?"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:62
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:67
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:71
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:75
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:80
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:84
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:89
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:93
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:99
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:104
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:108
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:113
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:117
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:121
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:130
 msgid "Sort by: "
 msgstr "Šķirot pēc:"
@@ -11016,6 +11795,11 @@ msgstr "Pētījuma piekļuve"
 #, fuzzy
 msgid "Survey bounce email:"
 msgstr "Pētījuma formāts ir"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:7
+#, fuzzy
+msgid "Target question"
+msgstr "uz jautājumu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPresentation_view.php:45
 msgid "Template Preview:"
@@ -11044,6 +11828,11 @@ msgstr ""
 msgid "This option can't be set if the `Anonymized responses` option is active."
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:184
+#, fuzzy
+msgid "This participant opted out of this survey."
+msgstr "Paldies par reģistrēšanos, lai piedalītos šajā aptaujā."
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/email.php:8
 #, fuzzy
 msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
@@ -11061,6 +11850,10 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/dummytokenform.php:11
 msgid "Token length"
 msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:8
+msgid "URL parameters"
+msgstr "Adreses parametri"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templatesummary_view.php:78
 msgid "Upload"
@@ -11093,13 +11886,20 @@ msgid "Uses left:"
 msgstr "Izmantot noklusēto"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:117
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:118
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/dummytokenform.php:25
 msgid "Valid from"
 msgstr "Derīgs kopš"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:121
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:122
 msgid "Valid until"
 msgstr "Derīgs līdz"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:234
+#, fuzzy
+msgid "View/Update last response"
+msgstr "Papildināt atbildi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/email.php:8
 msgid "Warning!"
@@ -11117,6 +11917,16 @@ msgstr "Rādīt sasveicināšanās logu?"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabTokens_view.php:10
 msgid "You can't use Anonymized responses when Token-based answers persistence is enabled."
 msgstr ""
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:13
+#, fuzzy
+msgid "You have selected not to use any bounce settings"
+msgstr "Jūs neesat izvēlējies jautājumu."
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:11
+#, fuzzy
+msgid "You have to enter a valid parameter name."
+msgstr "Jums jānorāda lietotāja vārds un parole."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:57
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:70
@@ -11234,11 +12044,6 @@ msgstr ""
 msgid "Edit this user"
 msgstr "Rediģēt šo lietotāju"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/tokenform.php:4
-#, fuzzy
-msgid "Edit token entry"
-msgstr "Rediģēt šo ierakstu"
-
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/user/editusers.php:18
 msgid "Edit user"
 msgstr "Rediģēt lietotāju"
@@ -11323,11 +12128,6 @@ msgstr "Ielūgtie"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/translate/translateformheader_view.php:1
 msgid "Loading translations"
 msgstr "Ielādē tulkojumus"
-
-#: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/translate/translatetabs_view.php:6
-#, fuzzy
-msgid "Loading..."
-msgstr "Pieslēdzos..."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/tokenbar.php:36
 msgid "Manage additional attribute fields"
@@ -11691,6 +12491,10 @@ msgstr ""
 msgid "LimeSurvey installer"
 msgstr "LimeSurvey instalētājs"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/views/installer/dbsettings_view.php:21
+msgid "LimeSurvey setup"
+msgstr "LimeSurvey uzstādīšana"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/installer/success_view.php:25
 msgid "LimeSurvey tried to delete the following file but couldn't succeed. You will have to remove the file or else you will not be able to log in."
 msgstr ""
@@ -11840,419 +12644,6 @@ msgstr "fails"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/installer/welcome_view.php:55
 msgid "Start installation"
 msgstr "Sākt instalāciju"
-
-#~ msgid "Note: This is a standard template."
-#~ msgstr "Piezīme: Šis ir standarta šablons."
-
-#~ msgid "Data consistency check"
-#~ msgstr "Datu atbilstības pārbaude"
-
-#~ msgid "The following conditions should be deleted:"
-#~ msgstr "Sekojošos nosacījumus nepieciešams izdzēst:"
-
-#, fuzzy
-#~ msgid "The following assessments should be deleted:"
-#~ msgstr "Sekojošas atbildes ir jāizdzēš"
-
-#, fuzzy
-#~ msgid "Assessment:"
-#~ msgstr "Vērtējumi"
-
-#, fuzzy
-#~ msgid "The following answers should be deleted:"
-#~ msgstr "Sekojošas atbildes ir jāizdzēš"
-
-#, fuzzy
-#~ msgid "The following surveys should be deleted:"
-#~ msgstr "Sēkojošus pētījumus nepieciešams izdzēst"
-
-#, fuzzy
-#~ msgid "The following survey language settings should be deleted:"
-#~ msgstr "Sēkojošus pētījumus nepieciešams izdzēst"
-
-#, fuzzy
-#~ msgid "The following questions should be deleted:"
-#~ msgstr "Sekojoši jautājumi ir jāizdzēš"
-
-#, fuzzy
-#~ msgid "The following groups should be deleted:"
-#~ msgstr "Sekojošas grupas ir jāizdzēš"
-
-#~ msgid "Should we proceed with the delete?"
-#~ msgstr "Vai turpināt izdzēšanas darbību?"
-
-#~ msgid "Yes - Delete Them!"
-#~ msgstr "Jā - izdzēst!"
-
-#, fuzzy
-#~ msgid "Delete checked items!"
-#~ msgstr "Lūdzu pārbaudiet sekojošos"
-
-#~ msgid "Check database again?"
-#~ msgstr "Vēlreiz pārbaudīt datubāzi?"
-
-#~ msgid "Additional languages:"
-#~ msgstr "Papildus valodas:"
-
-#~ msgid "Edit survey settings"
-#~ msgstr "Rediģēt aptaujas uzstādījumus"
-
-#~ msgid ""
-#~ "All questions, answers, etc for removed languages will be lost. Are you "
-#~ "sure?"
-#~ msgstr ""
-#~ "Noņemtajām valodām visi jautājumi, atbildes, u.c. tiks pazaudētas.  Vai "
-#~ "Jūs tiešām esat pārliecināts?"
-
-#~ msgid "Parameter name:"
-#~ msgstr "Parametra nosaukums:"
-
-#, fuzzy
-#~ msgid "Target (sub-)question:"
-#~ msgstr "uz jautājumu"
-
-#, fuzzy
-#~ msgid "(No target question)"
-#~ msgstr "Nav atbilstoša jautājuma"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete these surveys?"
-#~ msgstr "Vai Jūs tiešām vēlaties izdzēst šo ierakstu?"
-
-#, fuzzy
-#~ msgid "Are you sure you want to expire these surveys?"
-#~ msgstr "Vai Jūs tiešām vēlaties izdzēst šo ierakstu?"
-
-#~ msgid "Date created"
-#~ msgstr "Izveidošanas datums"
-
-#~ msgid "Owner"
-#~ msgstr "Īpašnieks"
-
-#~ msgid "Access"
-#~ msgstr "Pieeja"
-
-#, fuzzy
-#~ msgid "Anonymized responses"
-#~ msgstr "Saglabātās atbildes:"
-
-#~ msgid "Full"
-#~ msgstr "Pilns"
-
-#, fuzzy
-#~ msgid "Tokens available"
-#~ msgstr "Pētījumi nav pieejami"
-
-#, fuzzy
-#~ msgid "Response rate"
-#~ msgstr "Turpināt vēlāk"
-
-#, fuzzy
-#~ msgid "Selected survey(s):"
-#~ msgstr "Izdzēst pētījumu"
-
-#, fuzzy
-#~ msgid "Expire"
-#~ msgstr "Beidzies"
-
-#~ msgid "Download archive"
-#~ msgstr "Lejupielādēt arhīvu"
-
-#~ msgid "This survey is active - click here to stop this survey."
-#~ msgstr "Šī aptauja pašlaik ir aktīva - spiest šeit, lai to pārtrauktu."
-
-#~ msgid ""
-#~ "This survey is currently not active - click here to activate this survey."
-#~ msgstr "Šī aptauja pašlaik nav aktīva - spiest šeit, lai to aktivizētu."
-
-#~ msgid "This survey is currently not active."
-#~ msgstr "Šī aptauja pašlaik ir aktīva."
-
-#~ msgid "Edit question"
-#~ msgstr "Rediģēt jautājumu"
-
-#~ msgid "Add a new question"
-#~ msgstr "Pievienot jautājumu"
-
-#, fuzzy
-#~ msgid "Error: You have to enter a question code."
-#~ msgstr "Kļūda: šim jautājumam jānorāda kods."
-
-#~ msgid "Question Type:"
-#~ msgstr "Jautājuma tips:"
-
-#~ msgid "Question group:"
-#~ msgstr "Jautājumu grupa:"
-
-#~ msgid "Position:"
-#~ msgstr "Vieta:"
-
-#~ msgid "At end"
-#~ msgstr "Beigās"
-
-#~ msgid "At beginning"
-#~ msgstr "Sākumā"
-
-#~ msgid "Show advanced settings"
-#~ msgstr "Parādīt iestatījumus"
-
-#~ msgid "Hide advanced settings"
-#~ msgstr "Paslēpt iestatījumus"
-
-#, fuzzy
-#~ msgid "...or import a question"
-#~ msgstr "Importēt jautājumu"
-
-#, fuzzy
-#~ msgid "Select LimeSurvey question file (*.lsq/*.csv)"
-#~ msgstr "LimeSurvey Survey File (*.csv)"
-
-#, fuzzy
-#~ msgid "Response import summary"
-#~ msgstr "Jautājuma importēšanas kopsavilkums"
-
-#~ msgid "Import of survey is completed."
-#~ msgstr "Aptaujas importēšana pabeigta."
-
-#~ msgid "READ THIS CAREFULLY BEFORE PROCEEDING"
-#~ msgstr "UZMANĪGI IZLASIET PIRMS TURPINĀT"
-
-#~ msgid ""
-#~ "There are two ways to stop a survey. Please read carefully on the two "
-#~ "options below and choose the right one for you."
-#~ msgstr ""
-#~ "Ir divas iespējas, kā pārtraukt aptauju. Lūdzu izlasiet uzmanīgi zemāk "
-#~ "minētos variantus un izvēlieties vispiemērotāko."
-
-#, fuzzy
-#~ msgid "Expiration"
-#~ msgstr "Eksportēt jautājumu"
-
-#, fuzzy
-#~ msgid "Deactivation"
-#~ msgstr "Apraksts:"
-
-#~ msgid "No participant information lost."
-#~ msgstr "Dalībnieku informācija nav zaudēta."
-
-#~ msgid "All participant information is lost."
-#~ msgstr "Zaudēta visa dalībnieku informācija."
-
-#~ msgid "All questions, groups and parameters are editable again."
-#~ msgstr "Visus jautājumus, grupas un parametrus atkal ir iespējams rediģēt."
-
-#~ msgid "Also you should export your responses before deactivating."
-#~ msgstr "Kā ārī pirms deaktivizēšanas vēlams eksportēt savas atbildes."
-
-#, fuzzy
-#~ msgid "Expire survey"
-#~ msgstr "Eksportēt pētījumu"
-
-#, fuzzy
-#~ msgid "Deactivate survey"
-#~ msgstr "Deaktivizēt pētījumu"
-
-#~ msgid "Deactivate Survey"
-#~ msgstr "Deaktivizēt pētījumu"
-
-#~ msgid "Survey Has Been Deactivated"
-#~ msgstr "Pētījums deaktivizēts"
-
-#~ msgid "The responses table has been renamed to: "
-#~ msgstr "Atbilžu tabula pārdēvēta par:"
-
-#~ msgid "time"
-#~ msgstr "laiks"
-
-#~ msgid "sid"
-#~ msgstr "sid"
-
-#~ msgid "gid"
-#~ msgstr "gid"
-
-#~ msgid "qid"
-#~ msgstr "qid"
-
-#~ msgid "gseq"
-#~ msgstr "qseq"
-
-#~ msgid "qseq"
-#~ msgstr "qseq"
-
-#~ msgid "Type"
-#~ msgstr "Tips"
-
-#, fuzzy
-#~ msgid "Source Expression"
-#~ msgstr "Regular Expression"
-
-#~ msgid "Edit Group"
-#~ msgstr "Rediģēt grupu"
-
-#~ msgid "The following problems have been found:"
-#~ msgstr "Atrastas sekojošas problēmas:"
-
-#~ msgid ""
-#~ "The survey cannot be activated until these problems have been resolved."
-#~ msgstr ""
-#~ "Pētījumu nav iespējams aktivizēt, kamēr šīs problēmas nav atrisinātas."
-
-#~ msgid ""
-#~ "You should only activate a survey when you are absolutely certain that "
-#~ "your survey setup is finished and will not need changing."
-#~ msgstr ""
-#~ "Pētījumu vēlams aktivizēt tikai tad, kad Jūs esat pilnīgi drošs, ka visi "
-#~ "sagatavošanas darbi ir pabeigti un nebūs nepieciešams veikt kādas "
-#~ "izmaiņas."
-
-#~ msgid "Once a survey is activated you can no longer:"
-#~ msgstr "Līdz ko pētījums ir aktivizēts Jūs nevarat:"
-
-#~ msgid "Add or delete groups"
-#~ msgstr "Pievienot vai izdzēst grupas"
-
-#~ msgid "Add or delete questions"
-#~ msgstr "Pievienot vai izdzēst jautājumus"
-
-#, fuzzy
-#~ msgid "Add or delete subquestions or change their codes"
-#~ msgstr "Pievienot vai izdzēst jautājumus"
-
-#, fuzzy
-#~ msgid "The following settings cannot be changed when the survey is active."
-#~ msgstr "Šo iestatījumu vēlāk mainīt nav iespējams!"
-
-#, fuzzy
-#~ msgid "Date stamp?"
-#~ msgstr "Datestamp"
-
-#~ msgid "Save IP address?"
-#~ msgstr "Saglabāt IP adresi?"
-
-#, fuzzy
-#~ msgid "Save / Activate survey"
-#~ msgstr "Aktivizēt pētījumu"
-
-#~ msgid "Parameter"
-#~ msgstr "Parametrs"
-
-#, fuzzy
-#~ msgid "Target question"
-#~ msgstr "uz jautājumu"
-
-#~ msgid "URL parameters"
-#~ msgstr "Adreses parametri"
-
-#~ msgid "No parameters defined"
-#~ msgstr "Nav definēti parametri"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete this URL parameter?"
-#~ msgstr "Vai Jūs tiešām vēlaties izdzēst šo ierakstu?"
-
-#, fuzzy
-#~ msgid "You have to enter a valid parameter name."
-#~ msgstr "Jums jānorāda lietotāja vārds un parole."
-
-#~ msgid "Add URL parameter"
-#~ msgstr "Pievienot adreses parametru"
-
-#~ msgid "Edit URL parameter"
-#~ msgstr "Rediģēt adreses parametru"
-
-#, fuzzy
-#~ msgid "Create, import, or copy survey"
-#~ msgstr "Izveidot vai importēt pētījumu"
-
-#~ msgid "Error: You have to enter a title for this survey."
-#~ msgstr "Kļūda:  Jānorāda pētījuma nosaukums."
-
-#~ msgid "Login"
-#~ msgstr "Login"
-
-#, fuzzy
-#~ msgid "Forgot your password?"
-#~ msgstr "Aizmirsāt paroli?"
-
-#, fuzzy
-#~ msgid "You have selected not to use any bounce settings"
-#~ msgstr "Jūs neesat izvēlējies jautājumu."
-
-#, fuzzy
-#~ msgid "Invalid email address:"
-#~ msgstr "E-pasta adrese"
-
-#, fuzzy
-#~ msgid "This participant opted out of this survey."
-#~ msgstr "Paldies par reģistrēšanos, lai piedalītos šajā aptaujā."
-
-#, fuzzy
-#~ msgid "Do survey"
-#~ msgstr "Piedalīties pētījumā"
-
-#, fuzzy
-#~ msgid "Delete token entry"
-#~ msgstr "Izdzēst šo ierakstu"
-
-#, fuzzy
-#~ msgid "View/Update last response"
-#~ msgstr "Papildināt atbildi"
-
-#~ msgid "Send invitation email to this entry"
-#~ msgstr "Nosūtīt uzaicinājuma e-pastu šim ierakstam"
-
-#~ msgid "Send reminder email to this entry"
-#~ msgstr "Nosūtīt atgādinājuma e-pastu šim ierakstam"
-
-#, fuzzy
-#~ msgid "Delete the selected entries"
-#~ msgstr "Izdzēst šo ierakstu"
-
-#, fuzzy
-#~ msgid "Are you sure you want to delete the selected entries?"
-#~ msgstr "Vai Jūs tiešām vēlaties izdzēst šo ierakstu?"
-
-#, fuzzy
-#~ msgid "No tokens selected"
-#~ msgstr "Nav izvēlēts"
-
-#, fuzzy
-#~ msgid "Please select at least one participant to be added"
-#~ msgstr "Lūdzu atzīmēt vismaz vienu"
-
-#~ msgid "Email settings"
-#~ msgstr "E-pasta iestatījumi"
-
-#~ msgid "Security"
-#~ msgstr "Drošība"
-
-#~ msgid "Presentation"
-#~ msgstr "Prezentācija"
-
-#~ msgid "Updates"
-#~ msgstr "Atjauninājumi"
-
-#~ msgid "Never"
-#~ msgstr "Nekad"
-
-#~ msgid "Every day"
-#~ msgstr "Katru dienu"
-
-#~ msgid "Every week"
-#~ msgstr "Katru nedēļu"
-
-#~ msgid "Every 2 weeks"
-#~ msgstr "Katras 2 nedēļas"
-
-#~ msgid "Every month"
-#~ msgstr "Katru mēnesi"
-
-#, fuzzy
-#~ msgid "Show question group name and/or description"
-#~ msgstr "Mainīt pētījuma nosaukumu vai aprakstu"
-
-#~ msgid "LimeSurvey setup"
-#~ msgstr "LimeSurvey uzstādīšana"
 
 #~ msgid "Date is not valid!"
 #~ msgstr "Datums nav pareizs!"
