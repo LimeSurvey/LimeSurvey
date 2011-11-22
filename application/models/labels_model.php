@@ -14,7 +14,7 @@ class Labels_model extends CI_Model {
 		return $data;
 	}
 
-	function getSomeRecords($fields,$condition=FALSE)
+	function getSomeRecords($fields,$condition=FALSE,$max_field=false)
 	{
 		foreach ($fields as $field)
 		{
@@ -24,6 +24,13 @@ class Labels_model extends CI_Model {
 		{
 			$this->db->where($condition);	
 		}
+        if ($max_field != false)
+        {
+            foreach ($max_field as $key => $maxfield)
+            {
+                $this->db->select_max($maxfield,$key);
+            }
+        }
 		
 		$data = $this->db->get('labels');
 		
@@ -42,6 +49,13 @@ class Labels_model extends CI_Model {
     {
         
         return $this->db->insert('labels',$data);
+    }
+
+    function getLanguageRecords($condition)
+    {
+        $this->db->where($condition);
+        $this->db->order_by('sortorder,code');
+        return $this->db->get('labels');
     }
 
 }

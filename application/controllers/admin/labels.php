@@ -376,8 +376,10 @@
         {
             if ($action == "editlabelset")
             {
-                $query = "SELECT label_name, ".$this->db->dbprefix."labelsets.lid, languages FROM ".$this->db->dbprefix."labelsets WHERE lid=".$lid;
-                $result=db_execute_assoc($query);
+                $this->load->model('labelsets_model');
+                $fields = array('label_name','labelsets.lid','languages');
+                $condition = array('lid' => $lid);
+                $result = $this->labelsets_model->getSomeRecords($fields,$condition);
                 foreach ($result->result_array() as $row) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages'];}
                 $data['lbname'] = $lbname;
                 $data['lblid'] = $lblid;
@@ -458,9 +460,11 @@
                 $this->load->helper("admin/htmleditor");
 
                 PrepareEditorScript(true);
-
-                $maxquery = "SELECT max(sortorder) as maxsortorder, sortorder FROM ".$this->db->dbprefix."labels WHERE lid=$lid and language='{$lslanguages[0]}'";
-                $maxresult = db_execute_assoc($maxquery); // or safe_die($connect->ErrorMsg());
+                $this->load->model('labels_model');
+                $fields = array('sortorder');
+                $condition = array('lid' => $lid,'language' => $lslanguages[0]);
+                $max_field = array('maxsortorder' => 'sortorder');
+                $maxresult = $this->labels_model->getSomeRecords($fields,$condition,$max_field);                
                 $msorow=$maxresult->row_array();
                 $maxsortorder=$msorow['maxsortorder']+1;
                 $labelsoutput = "\n<script type=\"text/javascript\">\n<!--\n var ci_path = '".$this->config->item('imageurl')."'; //-->\n</script>\n";
@@ -478,8 +482,8 @@
                 {
 
                     $position=0;
-                    $query = "SELECT * FROM ".$this->db->dbprefix."labels WHERE lid=$lid and language='$lslanguage' ORDER BY sortorder, code";
-                    $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());
+                    $condition = array('lid' => $lid, 'language' => $lslanguage);
+                    $result = $this->labels_model->getLanguageRecords($condition);
                     $labelcount = $result->num_rows();
                     $tab_title[$i] = getLanguageNameFromCode($lslanguage,false);
 
