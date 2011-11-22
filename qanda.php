@@ -1652,12 +1652,12 @@ function do_5pointchoice($ia)
 
     if ($ia[6] != "Y"  && SHOW_NO_ANSWER == 1) // Add "No Answer" option if question is not mandatory
     {
-        $answer .= "\t<li>\n<input class=\"radio\" type=\"radio\" name=\"$ia[1]\" id=\"NoAnswer\" value=\"\"";
+        $answer .= "\t<li>\n<input class=\"radio noAnswer\" type=\"radio\" name=\"$ia[1]\" id=\"answer".$ia[1]."NANS\" value=\"\"";
         if (!$_SESSION[$ia[1]])
         {
             $answer .= CHECKED;
         }
-        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"NoAnswer\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
+        $answer .= " onclick=\"$checkconditionFunction(this.value, this.name, this.type)\" />\n<label for=\"answer".$ia[1]."NANS\" class=\"answertext\">".$clang->gT('No answer')."</label>\n\t</li>\n";
 
     }
     $answer .= "</ul>\n<input type=\"hidden\" name=\"java$ia[1]\" id=\"java$ia[1]\" value=\"{$_SESSION[$ia[1]]}\" />\n";
@@ -1677,7 +1677,7 @@ function do_5pointchoice($ia)
         callback: function(value,link){
         if(value==undefined || value==''){
         $('#$id input').each(function(){ $(this).removeAttr('checked');});
-        $('#{$id} #NoAnswer').attr('checked','checked');
+        $('#{$id} input.noAnswer').attr('checked','checked');
         $checkconditionFunction(value,'$ia[1]','radio');
         }
         else{
