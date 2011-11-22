@@ -1,6 +1,6 @@
 <div class='header ui-widget-header'><?php echo $clang->gT("Export results");?></div>
 <div class='wrap2columns'>
-<form id='resultexport' action='<?php echo site_url("admin/export/exportresults/$surveyid");?>' method='post'><div class='left'>
+<form id='resultexport' action='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid");?>' method='post'><div class='left'>
 
 <?php 	if (isset($_POST['sql'])) {echo" - ".$clang->gT("Filtered from statistics script");}
 		if (returnglobal('id')<>'') {echo " - ".$clang->gT("Single response");} ?>
@@ -78,10 +78,10 @@
 <?php }
 if (returnglobal('id')<>'') { ?>
     <input type='hidden' name='answerid' value="<?php echo stripcslashes(returnglobal('id'));?>" />
-<?php } 
+<?php }
 echo $clang->gT("Choose Columns");?>:
 
-<?php if ($afieldcount > 255) { 
+<?php if ($afieldcount > 255) {
     echo "\t<img src='$imageurl/help.gif' alt='".$clang->gT("Help")."' onclick='javascript:alert(\""
     .$clang->gT("Your survey contains more than 255 columns of responses. Spreadsheet applications such as Excel are limited to loading no more than 255. Select the columns you wish to export in the list below.","js")
     ."\")' />";
@@ -113,7 +113,7 @@ foreach($excesscols as $ec)
 } ?>
 </select>
 <br />&nbsp;</fieldset>
-<?php if ($thissurvey['anonymized'] == "N" && tableExists("tokens_$surveyid")) { ?>
+<?php if ($thissurvey['anonymized'] == "N" && Yii::app()->db->schema->getTable("{{tokens_$surveyid}}")) { ?>
         <fieldset><legend><?php echo $clang->gT("Token control");?></legend>
         <?php echo $clang->gT("Choose token fields");?>:
         <img src='<?php echo $imageurl;?>/help.gif' alt='<?php echo $clang->gT("Help");?>' onclick='javascript:alert("<?php

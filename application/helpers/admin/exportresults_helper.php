@@ -205,9 +205,8 @@ class SurveyDao
     */
     public function loadSurveyById($id)
     {
-        $CI=& get_instance();
-        $survey = new Survey();
-        $clang = $CI->limesurvey_lang;
+        $survey = new SurveyObj();
+        $clang = Yii::app()->lang;
 
         $intId = sanitize_int($id);
         $survey->id = $intId;
@@ -224,34 +223,32 @@ class SurveyDao
 
 
         //Load groups
-        $sql = 'SELECT g.* FROM '.$CI->db->dbprefix('groups').' AS g '.
+        $sql = 'SELECT g.* FROM {{groups}} AS g '.
         'WHERE g.sid = '.$intId.' '.
         'ORDER BY g.group_order;';
-        $recordSet = db_execute_assoc($sql);
-        $survey->groups = $recordSet->result_array();
+        $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+        $survey->groups = $recordSet;
 
         //Load questions
-        $sql = 'SELECT q.* FROM '.$CI->db->dbprefix('questions').' AS q '.
-        'JOIN '.$CI->db->dbprefix('groups').' AS g ON q.gid = g.gid '.
+        $sql = 'SELECT q.* FROM {{questions}} AS q '.
+        'JOIN {{groups}} AS g ON q.gid = g.gid '.
         'WHERE q.sid = '.$intId.' AND q.language = \''.$lang.'\' '.
         'ORDER BY g.group_order, q.question_order;';
-        $recordSet = db_execute_assoc($sql);
-        $survey->questions = $recordSet->result_array();
+        $survey->questions = Yii::app()->db->createCommand($sql)->query()->readAll();
 
         //Load answers
-        $sql = 'SELECT DISTINCT a.* FROM '.$CI->db->dbprefix('answers').' AS a '.
-        'JOIN '.$CI->db->dbprefix('questions').' AS q ON a.qid = q.qid '.
+        $sql = 'SELECT DISTINCT a.* FROM {{answers}} AS a '.
+        'JOIN {{questions}} AS q ON a.qid = q.qid '.
         'WHERE q.sid = '.$intId.' AND a.language = \''.$lang.'\' '.
         'ORDER BY a.qid, a.sortorder;';
-        $recordSet = db_execute_assoc($sql);
-        $survey->answers = $recordSet->result_array();
+        $survey->answers = Yii::app()->db->createCommand($sql)->query()->readAll();
 
         //Load tokens
-        if (tableExists('tokens_'.$survey->id))
+        if (Yii::app()->db->schema->getTable('{{tokens_' . $intId . '}}'))
         {
-            $sql = 'SELECT t.* FROM '.$CI->db->dbprefix('tokens_'.$intId).' AS t;';
-            $recordSet = db_execute_assoc($sql);
-            $survey->tokens = $recordSet->result_array();
+            $sql = 'SELECT t.* FROM {{tokens_' . $intId . '}} AS t;';
+            $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+            $survey->tokens = $recordSet;
         }
         else
         {
@@ -259,9 +256,9 @@ class SurveyDao
         }
 
         //Load language settings
-        $sql = 'SELECT * FROM '.$CI->db->dbprefix('surveys_languagesettings').' WHERE surveyls_survey_id = '.$intId.';';
-        $recordSet = db_execute_assoc($sql);
-        $survey->languageSettings = $recordSet->result_array();
+        $sql = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.';';
+        $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
+        $survey->languageSettings = $recordSet;
 
         return $survey;
     }
@@ -276,15 +273,15 @@ class SurveyDao
     * @param int $minRecord
     * @param int $maxRecord
     */
-    public function loadSurveyResults(Survey $survey, $minRecord = null, $maxRecord = null)
+    public function loadSurveyResults(SurveyObj $survey, $minRecord = null, $maxRecord = null)
     {
-        $CI=& get_instance();
+
         /* @var $recordSet ADORecordSet */
-        $sql = 'SELECT * FROM '.$CI->db->dbprefix('survey_'.$survey->id);
+        $sql = 'SELECT * FROM {{survey_' . $survey->id . '}}';
         if (!isset($minRecord) && !isset($maxRecord))
         {
             //Neither min or max is set, load it all.
-            $recordSet = db_execute_assoc($sql);
+            $recordSet = Yii::app()->db->createCommand($sql)->query()->readAll();
         }
         elseif (!isset($minRecord) xor !isset($maxRecord))
         {
@@ -294,14 +291,14 @@ class SurveyDao
         else
         {
             //Both min and max are set.
-            $recordSet = db_select_limit_assoc($sql, $maxRecord - $minRecord + 1, $minRecord);
+            $recordSet = Yii::app()->db->createCommand($sql)->limit($maxRecord - $minRecord + 1, $minRecord)->query()->readAll();
         }
         //Convert the data in the recordSet to a 2D array and stuff it in $responses.
-        $survey->responses = $recordSet->result_array(-1);
+        $survey->responses = $recordSet;
     }
 }
 
-class Survey
+class SurveyObj
 {
     /**
     * @var int
@@ -815,7 +812,7 @@ interface IWriter
     * @param string $languagecode
     * @param FormattingOptions $options
     */
-    public function write(Survey $survey, $languageCode, FormattingOptions $options);
+    public function write(SurveyObj $survey, $languageCode, FormattingOptions $options);
     public function close();
 }
 
@@ -841,7 +838,7 @@ abstract class Writer implements IWriter
         return $this->translator->translateHeading($column, $languageCode);
     }
 
-    private final function initialize(Survey $survey, $languageCode, FormattingOptions $options)
+    private final function initialize(SurveyObj $survey, $languageCode, FormattingOptions $options)
     {
         $this->languageCode = $languageCode;
         $this->translator = new Translator();
@@ -857,7 +854,7 @@ abstract class Writer implements IWriter
     * @param mixed $languageCode
     * @param FormattingOptions $options
     */
-    protected function init(Survey $survey, $languageCode, FormattingOptions $options)
+    protected function init(SurveyObj $survey, $languageCode, FormattingOptions $options)
     {
         //This implementation does nothing.
     }
@@ -900,7 +897,7 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string
     */
-    public function getAbbreviatedHeading(Survey $survey, $fieldName)
+    public function getAbbreviatedHeading(SurveyObj $survey, $fieldName)
     {
         $question = $survey->getQuestionArray($fieldName);
         if ($question)
@@ -927,7 +924,7 @@ abstract class Writer implements IWriter
     * @param string $fieldName
     * @return string (or false)
     */
-    public function getFullHeading(Survey $survey, FormattingOptions $options, $fieldName)
+    public function getFullHeading(SurveyObj $survey, FormattingOptions $options, $fieldName)
     {
         $question = $survey->getQuestionArray($fieldName);
         $heading = $question['question'];
@@ -936,7 +933,7 @@ abstract class Writer implements IWriter
         return $heading;
     }
 
-    public function getCodeHeading(Survey $survey, FormattingOptions $options, $fieldName)
+    public function getCodeHeading(SurveyObj $survey, FormattingOptions $options, $fieldName)
     {
         $question = $survey->getQuestionArray($fieldName);
         $heading = $question['title'];
@@ -945,7 +942,7 @@ abstract class Writer implements IWriter
         return $heading;
     }
 
-    public function getCodeFieldSubHeading(Survey $survey, FormattingOptions $options, $fieldName)
+    public function getCodeFieldSubHeading(SurveyObj $survey, FormattingOptions $options, $fieldName)
     {
         $field = $survey->fieldMap[$fieldName];
         $answerCode = $field['aid'];
@@ -1033,7 +1030,7 @@ abstract class Writer implements IWriter
         return rtrim($subHeading);
     }
 
-    public function getFullFieldSubHeading(Survey $survey, FormattingOptions $options, $fieldName)
+    public function getFullFieldSubHeading(SurveyObj $survey, FormattingOptions $options, $fieldName)
     {
         $field = $survey->fieldMap[$fieldName];
         $answerCode = $field['aid'];
@@ -1221,7 +1218,7 @@ abstract class Writer implements IWriter
     * @param string $languageCode
     * @param FormattingOptions $options
     */
-    final public function write(Survey $survey, $languageCode, FormattingOptions $options)
+    final public function write(SurveyObj $survey, $languageCode, FormattingOptions $options)
     {
         $this->initialize($survey, $languageCode, $options);
 
@@ -1393,7 +1390,7 @@ class DocWriter extends Writer
         $this->isBeginning = true;
     }
 
-    public function init(Survey $survey, $languageCode, FormattingOptions $options)
+    public function init(SurveyObj $survey, $languageCode, FormattingOptions $options)
     {
         //header("Content-Disposition: attachment; filename=results-survey".$survey->id.".doc");
         //header("Content-type: application/vnd.ms-word");
@@ -1483,17 +1480,16 @@ class ExcelWriter extends Writer
     */
     public function __construct($filename = null)
     {
-        $CI=& get_instance();
-        $CI->load->library('admin/pear/Spreadsheet/Excel/Xlswriter');
+        Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
         if (!empty($filename))
         {
-            $this->workbook = $CI->xlswriter;
+            $this->workbook = new xlswriter;
             $this->outputToFile = true;
             $this->fileName = $filename;
         }
         else
         {
-            $this->workbook = $CI->xlswriter;
+            $this->workbook = new xlswriter;
             $this->outputToFile = false;
         }
 
@@ -1502,7 +1498,7 @@ class ExcelWriter extends Writer
         $this->rowCounter = 1;
     }
 
-    protected function init(Survey $survey, $languageCode, FormattingOptions $options)
+    protected function init(SurveyObj $survey, $languageCode, FormattingOptions $options)
     {
         $this->workbook->send('results-survey'.$survey->id.'.xls');
         $worksheetName = $survey->languageSettings[0]['surveyls_title'];
@@ -1592,7 +1588,7 @@ class PdfWriter extends Writer
         $this->rowCounter = 0;
     }
 
-    protected function init(Survey $survey, $languageCode, FormattingOptions $options)
+    protected function init(SurveyObj $survey, $languageCode, FormattingOptions $options)
     {
         $this->surveyName = $survey->languageSettings[0]['surveyls_title'];
         $this->pdf->titleintopdf($this->surveyName, $survey->languageSettings[0]['surveyls_description']);

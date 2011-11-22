@@ -30,10 +30,18 @@ class export extends Survey_Common_Action {
      * @access public
      * @return void
      */
-	public function run($sa, $surveyid = null, $subaction = null)
+	public function run($sa)
 	{
-		if ($sa == 'vvexport')
-			$this->vvexport($surveyid, $subaction);
+		Yii::app()->loadHelper('export');
+
+		if ($sa == 'question')
+			$this->route('question', array('surveyid', 'gid', 'qid'));
+		elseif ($sa == 'vvexport')
+			$this->route('vvexport', array('surveyid', 'subaction'));
+		elseif ($sa == 'group')
+			$this->route('group', array('surveyid', 'gid'));
+		elseif ($sa == 'exportresults')
+			$this->route('exportresults', array('surveyid'));
 	}
 
     function survey($action,$sSurveyID)
@@ -214,21 +222,21 @@ class export extends Survey_Common_Action {
     {
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
-        if($this->config->item("export4lsrc") === true && bHasSurveyPermission($surveyid,'survey','export')) {
-            if($this->input->post("action"))
+        if(Yii::app()->getConfig("export4lsrc") === true && bHasSurveyPermission($surveyid,'survey','export')) {
+            if(!empty($_POST['action']))
             {
-                group_export($this->input->post("action"), $surveyid, $gid);
+                group_export($_POST['action'], $surveyid, $gid);
                 return;
             }
-            $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-            $this->config->set_item("css_admin_includes", $css_admin_includes);
-            self::_getAdminHeader();
-            self::_showadminmenu($surveyid);
-            self::_surveybar($surveyid,$gid);
-            self::_questiongroupbar($surveyid,$gid,null,"exportstructureGroup");
-            $this->load->view("admin/export/group_view", array("surveyid" => $surveyid, "gid" => $gid));
-            self::_loadEndScripts();
-            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+            $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+            Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+            $this->getController()->_getAdminHeader();
+            $this->getController()->_showadminmenu($surveyid);
+            $this->_surveybar($surveyid,$gid);
+            $this->_questiongroupbar($surveyid,$gid,null,"exportstructureGroup");
+            $this->getController()->render("/admin/export/group_view", array("surveyid" => $surveyid, "gid" => $gid));
+            $this->getController()->_loadEndScripts();
+            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
         }
         else
         {
@@ -242,21 +250,21 @@ class export extends Survey_Common_Action {
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
         $qid = sanitize_int($qid);
-        if($this->config->item("export4lsrc") === true && bHasSurveyPermission($surveyid,'survey','export')) {
-            if($this->input->post("action"))
+        if(Yii::app()->getConfig('export4lsrc') === true && bHasSurveyPermission($surveyid,'survey','export')) {
+            if(!empty($_POST['action']))
             {
-                question_export($this->input->post("action"), $surveyid, $gid, $qid);
+                question_export($_POST['action'], $surveyid, $gid, $qid);
                 return;
             }
-            $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-            $this->config->set_item("css_admin_includes", $css_admin_includes);
-            self::_getAdminHeader();
-            self::_showadminmenu($surveyid);
-            self::_surveybar($surveyid,$gid);
-            self::_questiongroupbar($surveyid,$gid,$qid,"exportstructureGroup");
-            $this->load->view("admin/export/question_view", array("surveyid" => $surveyid, "gid" => $gid, "qid" =>$qid));
-            self::_loadEndScripts();
-            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+            $css_admin_includes[] = Yii::app()->getConfig('styleurl') . "admin/default/superfish.css";
+            Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+            $this->getController()->_getAdminHeader();
+            $this->getController()->_showadminmenu($surveyid);
+            $this->_surveybar($surveyid,$gid);
+            $this->_questiongroupbar($surveyid,$gid,$qid,"exportstructureGroup");
+            $this->getController()->render("/admin/export/question_view", array("surveyid" => $surveyid, "gid" => $gid, "qid" =>$qid));
+            $this->getController()->_loadEndScripts();
+            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
         }
         else
         {
@@ -277,9 +285,7 @@ class export extends Survey_Common_Action {
         if (!isset($convertnto2)) {$convertnto2=returnglobal('convertnto2');}
         if (!isset($convertspacetous)) {$convertspacetous=returnglobal('convertspacetous');}
 
-        $clang = $this->limesurvey_lang;
-        $_POST = $this->input->post();
-        $dbprefix = $this->db->dbprefix;
+        $clang = Yii::app()->lang;
 
         if (!bHasSurveyPermission($surveyid, 'responses','export'))
         {
@@ -289,7 +295,7 @@ class export extends Survey_Common_Action {
         //include_once(dirname(__FILE__)."/classes/phpexcel/PHPExcel.php");
         //include_once(dirname(__FILE__)."/classes/tcpdf/extensiontcpdf.php");
         //include_once(dirname(__FILE__)."/exportresults_objects.php");
-        $this->load->helper("admin/exportresults");
+        Yii::app()->loadHelper("admin/exportresults");
 
         $surveybaselang=GetBaseLanguageFromSurveyID($surveyid);
         $exportoutput="";
@@ -307,8 +313,8 @@ class export extends Survey_Common_Action {
 
 
             $afieldcount = count($excesscols);
-            self::_getAdminHeader();
-            self::_browsemenubar($surveyid, $clang->gT("Export results"));
+            $this->getController()->_getAdminHeader();
+            $this->_browsemenubar($surveyid, $clang->gT("Export results"));
 
             if (incompleteAnsFilterstate() == "filter")
             {
@@ -336,13 +342,17 @@ class export extends Survey_Common_Action {
 
             //get max number of datasets
 
-            $max_datasets_query = "SELECT COUNT(id) FROM {$dbprefix}survey_$surveyid";
-            $max_datasets = reset(db_execute_assoc($max_datasets_query)->row_array());
+            $max_datasets_query = Yii::app()->db->createCommand("SELECT COUNT(id) AS count FROM {{survey_$surveyid}}")->query()->read();
+            $max_datasets = $max_datasets_query['count'];
 
             $data['clang'] = $clang;
             $data['max_datasets'] = $max_datasets;
-            $this->load->view("admin/export/exportresults_view", $data);
-            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        	$data['surveyid'] = $surveyid;
+        	$data['imageurl'] = Yii::app()->getConfig('imageurl');
+        	$data['thissurvey'] = $thissurvey;
+
+            $this->getController()->render("/admin/export/exportresults_view", $data);
+            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
             return;
         }
 
@@ -364,7 +374,7 @@ class export extends Survey_Common_Action {
         $options->convertN = $convertnto2;
         if ($options->convertN)
         {
-            $options->nValue = $convertnto;
+            $options->nValue = $convertnto2;
         }
         $options->convertY = $convertyto1;
         if ($options->convertY)
@@ -379,29 +389,32 @@ class export extends Survey_Common_Action {
         //If we have no data for the filter state then default to show all.
         if (empty($options->responseCompletionState))
         {
+        	if (!isset($_POST['attribute_select']))
+        		$_POST['attribute_select'] = array();
+
             $options->responseCompletionState = 'show';
             if (in_array('first_name',$_POST['attribute_select']))
             {
-                $dquery .= ", {$dbprefix}tokens_$surveyid.firstname";
+                $dquery .= ", {{tokens_$surveyid}}.firstname";
             }
             if (in_array('last_name',$_POST['attribute_select']))
             {
-                $dquery .= ", {$dbprefix}tokens_$surveyid.lastname";
+                $dquery .= ", {{tokens_$surveyid}}.lastname";
             }
             if (in_array('email_address',$_POST['attribute_select']))
             {
-                $dquery .= ", {$dbprefix}tokens_$surveyid.email";
+                $dquery .= ", {{tokens_$surveyid}}.email";
             }
             if (in_array('token',$_POST['attribute_select']))
             {
-                $dquery .= ", {$dbprefix}tokens_$surveyid.token";
+                $dquery .= ", {{tokens_$surveyid}}.token";
             }
-
-            foreach ($attributeFields as $attr_name)
+			$attributeFields=GetTokenFieldsAndNames($surveyid,true);
+            foreach ($attributeFields as $attr_name=>$attr_desc)
             {
                 if (in_array($attr_name,$_POST['attribute_select']))
                 {
-                    $dquery .= ", {$dbprefix}tokens_$surveyid.$attr_name";
+                    $dquery .= ", {{tokens_$surveyid}}.$attr_name";
                 }
             }
         }

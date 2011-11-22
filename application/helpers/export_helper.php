@@ -481,10 +481,8 @@ function spss_getquery() {
 function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 {
     $iChunkSize=3000; // This works even for very large result sets and leaves a minimal memory footprint
-	$CI =& get_instance();
-    $dbprefix = $CI->db->dbprefix;
-    $CI->load->helper('database');
-    preg_match('/\bfrom\b\s*(\w+)/i', $Query, $MatchResults);
+
+    preg_match('/\bfrom\b\s*{{(\w+)}}/i', $Query, $MatchResults);
     if ($tagname!='')
     {
         $TableName=$tagname;
@@ -492,7 +490,6 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
     else
     {
         $TableName = $MatchResults[1];
-        $TableName = substr($TableName, strlen($dbprefix), strlen($TableName));
     }
 
 
@@ -502,21 +499,22 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
     do
     {
    //     debugbreak();
-        $QueryResult = db_select_limit_assoc($Query,$iChunkSize,$iStart) or safe_die ("ERROR: $QueryResult<br />".$connect->ErrorMsg()); //safe
-        if ($iStart==0 && $QueryResult->num_rows()>0)
+    	$QueryResult = Yii::app()->db->createCommand($Query)->limit($iChunkSize, $iStart)->query();
+    	$result = $QueryResult->readAll();
+        if ($iStart==0 && $QueryResult->getRowCount()>0)
         {
             $exclude = array_flip($excludes);    //Flip key/value in array for faster checks
             $xmlwriter->startElement($TableName);
             $xmlwriter->startElement('fields');
-            $aColumninfo = $QueryResult->field_data();
+            $aColumninfo = array_keys($result[0]);
             foreach ($aColumninfo as $fieldname)
             {
-                if (!isset($exclude[$fieldname->name])) $xmlwriter->writeElement('fieldname',$fieldname->name);
+                if (!isset($exclude[$fieldname])) $xmlwriter->writeElement('fieldname',$fieldname);
             }
             $xmlwriter->endElement(); // close columns
             $xmlwriter->startElement('rows');
         }
-        foreach($QueryResult->result_array() as $Row)
+        foreach($result as $Row)
         {
             $xmlwriter->startElement('row');
             foreach ($Row as $Key=>$Value)
@@ -536,10 +534,9 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
             $xmlwriter->endElement(); // close row
         }
         $iStart=$iStart+$iChunkSize;
-    } while ($QueryResult->num_rows()==$iChunkSize);
-    if ($QueryResult->num_rows()>0)
+    } while ($QueryResult->getRowCount()==$iChunkSize);
+    if ($QueryResult->getRowCount()>0)
     {
-        $QueryResult->free_result();
         $xmlwriter->endElement(); // close rows
         $xmlwriter->endElement(); // close tablename
     }
@@ -1642,28 +1639,24 @@ function group_export($action, $surveyid, $gid)
 {
 	$fn = "limesurvey_group_$gid.lsg";
 	$xml = getXMLWriter();
-	$CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
 
 
 	if($action=='exportstructureLsrcCsvGroup')
 	{
-	    include_once($homedir.'/remotecontrol/lsrc.config.php');
+	    include_once(APPPATH.'/remotecontrol/lsrc.config.php');
 	    //Select group_name as Filename and save
-	    $groupTitleSql = "SELECT group_name
-	                     FROM {$dbprefix}groups
-	                     WHERE sid=$surveyid AND gid=$gid ";
-	    $groupTitle = $connect->GetOne($groupTitleSql);
+	    $group = Groups::model()->findByAttributes(array('surveyid' => $surveyid, 'gid' => $gid));
+	    $groupTitle = $group->title;
 	    $xml->openURI('remotecontrol/'.$queDir.substr($groupTitle,0,20).".lsq");
 	}
 	else
 	{
-	    header("Content-Type: text/html/force-download");
-	    header("Content-Disposition: attachment; filename=$fn");
-	    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-	    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-	    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-	    header("Pragma: cache");                          // HTTP/1.0
+		header("Content-Type: text/html/force-download");
+		header("Content-Disposition: attachment; filename=$fn");
+		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Pragma: cache");                // HTTP/1.0
 
 	    $xml->openURI('php://output');
 	}
@@ -1672,15 +1665,13 @@ function group_export($action, $surveyid, $gid)
 	$xml->startDocument('1.0', 'UTF-8');
 	$xml->startElement('document');
 	$xml->writeElement('LimeSurveyDocType','Group');
-	$xml->writeElement('DBVersion',$CI->config->item("dbversionnumber"));
+	$xml->writeElement('DBVersion', getGlobalSetting("DBVersion"));
 	$xml->startElement('languages');
-	$lquery = "SELECT language
-	           FROM {$dbprefix}groups
-	           WHERE gid=$gid group by language";
-	$lresult=db_execute_assoc($lquery);
-	foreach($lresult->result_array() as $row)
+
+	$lresult = Groups::model()->findAllByAttributes(array('gid' => $gid), array('group' => 'language'));
+	foreach($lresult as $row)
 	{
-	    $xml->writeElement('language',$row['language']);
+	    $xml->writeElement('language',$row->language);
 	}
 	$xml->endElement();
 	group_getXMLStructure($xml,$gid);
@@ -1691,36 +1682,34 @@ function group_export($action, $surveyid, $gid)
 
 function group_getXMLStructure($xml,$gid)
 {
-	$CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
     // Groups
     $gquery = "SELECT *
-               FROM {$dbprefix}groups
+               FROM {{groups}}
                WHERE gid=$gid";
     BuildXMLFromQuery($xml,$gquery);
 
     // Questions table
     $qquery = "SELECT *
-               FROM {$dbprefix}questions
+               FROM {{questions}}
                WHERE gid=$gid and parent_qid=0 order by question_order, language, scale_id";
     BuildXMLFromQuery($xml,$qquery);
 
     // Questions table - Subquestions
     $qquery = "SELECT *
-               FROM {$dbprefix}questions
+               FROM {{questions}}
                WHERE gid=$gid and parent_qid>0 order by question_order, language, scale_id";
     BuildXMLFromQuery($xml,$qquery,'subquestions');
 
     //Answers
-    $aquery = "SELECT DISTINCT {$dbprefix}answers.*
-               FROM {$dbprefix}answers, {$dbprefix}questions
-               WHERE ({$dbprefix}answers.qid={$dbprefix}questions.qid)
-               AND ({$dbprefix}questions.gid=$gid)";
+    $aquery = "SELECT DISTINCT {{answers}}.*
+               FROM {{answers}}, {{questions}}
+               WHERE ({{answers}}.qid={{questions}}.qid)
+               AND ({{questions}}.gid=$gid)";
     BuildXMLFromQuery($xml,$aquery);
 
     //Conditions - THIS CAN ONLY EXPORT CONDITIONS THAT RELATE TO THE SAME GROUP
     $cquery = "SELECT DISTINCT c.*
-               FROM {$dbprefix}conditions c, {$dbprefix}questions q, {$dbprefix}questions b
+               FROM {{conditions}} c, {{questions}} q, {{questions}} b
                WHERE (c.cqid=q.qid)
                AND (c.qid=b.qid)
                AND (q.gid={$gid})
@@ -1728,28 +1717,29 @@ function group_getXMLStructure($xml,$gid)
     BuildXMLFromQuery($xml,$cquery,'conditions');
 
     //Question attributes
-    $surveyid=db_execute_assoc("select sid from {$dbprefix}groups where gid={$gid}");
-    $surveyid=reset($surveyid->row_array());
+    $surveyid=Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query()->read();
+    $surveyid=$surveyid['sid'];
     $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
-    if ($CI->db->platform() == 'odbc_mssql' || $CI->db->platform() == 'odbtp' || $CI->db->platform() == 'mssql_n' || $CI->db->platform() =='mssqlnative')
+	$platform = Yii::app()->db->getDriverName();
+    if ($platform == 'odbc_mssql' || $platform == 'odbtp' || $platform == 'mssql_n' || $platform =='mssqlnative')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
+          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
     else {
         $query="SELECT qa.qid, qa.attribute, qa.value
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
+          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.gid={$gid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
     BuildXMLFromQuery($xml,$query,'question_attributes');
 
     // Default values
     $query = "SELECT dv.*
-                FROM {$dbprefix}defaultvalues dv
-                JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = dv.qid
-                AND {$dbprefix}questions.language=dv.language
-                AND {$dbprefix}questions.gid=$gid
+                FROM {{defaultvalues}} dv
+                JOIN {{questions}} ON {{questions}}.qid = dv.qid
+                AND {{questions}}.language=dv.language
+                AND {{questions}}.gid=$gid
                 order by dv.language, dv.scale_id";
     BuildXMLFromQuery($xml,$query,'defaultvalues');
 }
@@ -1766,28 +1756,24 @@ function question_export($action, $surveyid, $gid, $qid)
 {
 	$fn = "limesurvey_question_$qid.lsq";
 	$xml = getXMLWriter();
-	$CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
 
 	if($action=='exportstructureLsrcCsvQuestion')
 	{
-	    include_once($homedir.'/remotecontrol/lsrc.config.php');
+	    include_once(APPPATH.'/remotecontrol/lsrc.config.php');
 	    //Select title as Filename and save
-	    $questionTitleSql = "SELECT title
-	                     FROM {$dbprefix}questions
-	                     WHERE qid=$qid AND sid=$surveyid AND gid=$gid ";
-	    $questionTitle = $connect->GetOne($questionTitleSql);
+	    $question = Questions::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'qid' => $qid));
+	    $questionTitle = $question->title;
 	    $xml->openURI('remotecontrol/'.$queDir.substr($questionTitle,0,20).".lsq");
 	}
 	else
 	{
-	    header("Content-Type: text/html/force-download");
-	    header("Content-Disposition: attachment; filename=$fn");
-	    header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-	    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-	    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-	    header("Pragma: cache");                          // HTTP/1.0
-
+		header("Content-Type: text/html/force-download");
+		header("Content-Disposition: attachment; filename=$fn");
+		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Pragma: cache");
+                       // HTTP/1.0
 	    $xml->openURI('php://output');
 	}
 
@@ -1795,16 +1781,12 @@ function question_export($action, $surveyid, $gid, $qid)
 	$xml->startDocument('1.0', 'UTF-8');
 	$xml->startElement('document');
 	$xml->writeElement('LimeSurveyDocType','Question');
-	$xml->writeElement('DBVersion',$CI->config->item("dbversionnumber"));
+	$xml->writeElement('DBVersion', getGlobalSetting('DBVersion'));
 	$xml->startElement('languages');
-	$lquery = "SELECT language
-	           FROM {$dbprefix}questions
-	           WHERE qid=$qid or parent_qid=$qid group by language";
-	$lresult=db_execute_assoc($lquery);
-	foreach($lresult->result_array() as $row)
-	{
-	    $xml->writeElement('language',$row['language']);
-	}
+
+	$questions = Questions::model()->find('qid=:qid or parent_qid=:pqid', array(':qid' => $qid, ':pqid' => $qid));
+	$xml->writeElement('language',$questions->language);
+
 	$xml->endElement();
 	question_getXMLStructure($xml,$gid,$qid);
 	$xml->endElement(); // close columns
@@ -1814,50 +1796,49 @@ function question_export($action, $surveyid, $gid, $qid)
 
 function question_getXMLStructure($xml,$gid,$qid)
 {
-	$CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
-
     // Questions table
     $qquery = "SELECT *
-               FROM {$dbprefix}questions
+               FROM {{questions}}
                WHERE qid=$qid and parent_qid=0 order by language, scale_id, question_order";
     BuildXMLFromQuery($xml,$qquery);
 
     // Questions table - Subquestions
     $qquery = "SELECT *
-               FROM {$dbprefix}questions
+               FROM {{questions}}
                WHERE parent_qid=$qid order by language, scale_id, question_order";
     BuildXMLFromQuery($xml,$qquery,'subquestions');
 
 
     // Answers table
     $aquery = "SELECT *
-               FROM {$dbprefix}answers
+               FROM {{answers}}
                WHERE qid = $qid order by language, scale_id, sortorder";
     BuildXMLFromQuery($xml,$aquery);
 
 
 
     // Question attributes
-    $surveyid=db_execute_assoc("select sid from {$dbprefix}groups where gid={$gid}");
-    $surveyid=reset($surveyid->row_array());
+    $surveyid=Yii::app()->db->createCommand("select sid from {{groups}} where gid={$gid}")->query();
+    $surveyid=$surveyid->read();
+	$surveyid=$surveyid['sid'];
     $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
-    if ($CI->db->platform() == 'odbc_mssql' || $CI->db->platform() == 'odbtp' || $CI->db->platform() == 'mssql_n' || $CI->db->platform() =='mssqlnative')
+	$platform = Yii::app()->db->getDriverName();
+    if ($platform == 'odbc_mssql' || $platform == 'odbtp' || $platform == 'mssql_n' || $platform =='mssqlnative')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
+          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
     else {
         $query="SELECT qa.qid, qa.attribute, qa.value
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
+          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid} and q.qid={$qid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
     BuildXMLFromQuery($xml,$query);
 
     // Default values
     $query = "SELECT *
-              FROM {$dbprefix}defaultvalues
+              FROM {{defaultvalues}}
               WHERE qid=$qid  order by language, scale_id";
     BuildXMLFromQuery($xml,$query);
 

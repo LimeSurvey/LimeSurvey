@@ -1728,11 +1728,9 @@ function returnglobal($stringname, $urlParam = null)
 {
     if(!isset($urlParam))
     {
-        if ((isset($useWebserverAuth) && $useWebserverAuth === true) || $stringname=='sid') // don't read SID from a Cookie
-        {
-            if (!empty($_POST[$stringname])) $urlParam = $_POST[$stringname];
+        if (!empty($_POST[$stringname]))
+			$urlParam = $_POST[$stringname];
             //if ($this->input->cookie('stringname')) $urlParam = $this->input->cookie('stringname');
-        }
         elseif (!empty($_GET[$stringname] ))
         {
             $urlParam = $_GET[$stringname];
@@ -5524,9 +5522,8 @@ function GetTokenConditionsFieldNames($surveyid)
 */
 function GetTokenFieldsAndNames($surveyid, $onlyAttributes=false)
 {
-    $CI= &get_instance();
-    $clang=$CI->limesurvey_lang;
-    if (tableExists('tokens_'.$surveyid) === false)
+    $clang = Yii::app()->lang;
+    if (!Yii::app()->db->schema->getTable("{{token_$surveyid}}"))
     {
         return Array();
     }

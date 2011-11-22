@@ -24,6 +24,23 @@
  */
  class Survey_Common_Action extends CAction {
 
+ 	/**
+ 	 * Routes the action into correct subaction
+ 	 *
+ 	 * @access protected
+ 	 * @param string $sa
+ 	 * @param array $get_vars
+ 	 * @return void
+ 	 */
+ 	protected function route($sa, array $get_vars)
+ 	{
+ 		$func_args = array();
+ 		foreach ($get_vars as $k => $var)
+ 			if (isset($_GET[$var]))
+ 				$func_args[$k] = $_GET[$var];
+
+ 		return call_user_func_array(array($this, $sa), $func_args);
+ 	}
     /**
 	 * Shows admin menu for question
 	 * @param int Survey id

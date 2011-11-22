@@ -14,7 +14,7 @@ return array(
 
 	'components' => array(
 		'db' => array(
-			'connectionString' => 'mysql:host=localhost;dbname=limesurvey_ci',
+			'connectionString' => 'mysql:host=localhost;dbname=2_survey',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => '',
