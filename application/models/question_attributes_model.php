@@ -66,4 +66,11 @@ class Question_attributes_model extends CI_Model {
 
 		return $qattr;
     }
+
+    function deleteRecords($condition)
+    {
+        $this->db->where($condition);
+
+        return $this->db->delete('question_attribute');
+    }
 }

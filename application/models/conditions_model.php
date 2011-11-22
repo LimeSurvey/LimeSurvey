@@ -134,4 +134,11 @@ class Conditions_model extends CI_Model {
         return $this->db->insert('conditions',$data);
     }
 
+    function deleteRecords($condition)
+    {
+        $this->db->where($condition);
+
+        return $this->db->delete('condition');
+    }
+
 }

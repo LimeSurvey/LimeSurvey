@@ -136,4 +136,11 @@ class Answers_model extends CI_Model {
 
         return $qans;
     }
+
+    function deleteRecords($condition)
+    {
+        $this->db->where($condition);
+
+        return $this->db->delete('answers');
+    }
 }

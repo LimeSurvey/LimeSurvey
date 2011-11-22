@@ -50,4 +50,11 @@ class Defaultvalues_model extends CI_Model {
         return $this->db->insert('defaultvalues',$data);
     }
 
+    function deleteRecords($condition)
+    {
+        $this->db->where($condition);
+
+        return $this->db->delete('defaultvalues');
+    }
+
 }

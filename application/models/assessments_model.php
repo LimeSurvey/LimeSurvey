@@ -72,4 +72,11 @@ class Assessments_model extends CI_Model {
 	    return $output;
 	}
 
+    function deleteRecords($condition)
+    {
+        $this->db->where($condition);
+
+        return $this->db->delete('assessments');
+    }
+
 }

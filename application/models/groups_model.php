@@ -144,4 +144,28 @@ class Groups_model extends CI_Model {
         return $output;
     }
 
+    function getCommonQuestionId($condition=FALSE)
+    {
+        $this->db->select('qid');
+        $this->db->from('groups g, questions q');
+        $this->db->where($condition);
+        $this->db->group_by('qid');
+
+        $data = $this->db->get();
+
+        if ($data->num_rows() > 0)
+        {
+            return $data;
+        }
+
+        return false;
+    }
+
+    function deleteRecords($condition)
+    {
+        $this->db->where($condition);
+
+        return $this->db->delete('groups');
+    }
+
 }

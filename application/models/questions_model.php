@@ -221,4 +221,18 @@ class Questions_model extends CI_Model {
         return $aAttributeNames;
     }
 
+    function deleteRecords($condition,$orwhere=FALSE)
+    {
+        if ($orwhere)
+        {
+            $this->db->or_where($condition);
+        }
+        else
+        {
+            $this->db->where($condition);
+        }
+
+        return $this->db->delete('questions');
+    }
+
 }

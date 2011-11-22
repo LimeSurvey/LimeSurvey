@@ -302,24 +302,37 @@ class questiongroup extends Survey_Common_Controller {
         if ($action == "delgroup" && bHasSurveyPermission($surveyid, 'surveycontent','delete'))
         {
             $this->load->helper('database');
-            $query = "SELECT qid FROM ".$this->db->dbprefix."groups g, ".$this->db->dbprefix."questions q WHERE g.gid=q.gid AND g.gid=$gid AND q.parent_qid=0 group by qid";
-            if ($result = db_execute_assoc($query)) // Checked
+            $this->load->model('groups_model');            
+            $this->load->model('assessments_model');
+
+            $condition = array('g.gid' => 'q.gid', 'g.gid' => $gid, 'q.parent_qid' => '0');
+            $result = $this->groups_model->getCommonQuestionId($condition);            
+            if ($result) // Checked
             {
+                $this->load->model('conditions_model');
+                $this->load->model('question_attributes_model');
+                $this->load->model('answers_model');
+                $this->load->model('questions_model');
+                $this->load->model('defaultvalues_model');
+                $this->load->model('quota_members_model');
+
                 foreach ($result->result_array() as $row)
                 {
-                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."conditions WHERE qid={$row['qid']}");    // Checked
-                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."question_attributes WHERE qid={$row['qid']}"); // Checked
-                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."answers WHERE qid={$row['qid']}"); // Checked
-                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."questions WHERE qid={$row['qid']} or parent_qid={$row['qid']}"); // Checked
-                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."defaultvalues WHERE qid={$row['qid']}"); // Checked
-                    db_execute_assoc("DELETE FROM ".$this->db->dbprefix."quota_members WHERE qid={$row['qid']}");
+                    $condition = array('qid' => $row['qid']);
+                    $this->conditions_model->deleteRecords($condition);
+                    $this->question_attributes_model->deleteRecords($condition);
+                    $this->answers_model->deleteRecords($condition);             
+                    $this->defaultvalues_model->deleteRecords($condition);
+                    $this->quota_members_model->deleteRecords($condition);
+                    $condition = array('qid' => $row['qid'],'parent_qid' => $row['qid']);
+                    $this->questions_model->deleteRecords($condition,true);                    
                 }
             }
-            $query = "DELETE FROM ".$this->db->dbprefix."assessments WHERE sid=$surveyid AND gid=$gid";
-            $result = db_execute_assoc($query) ; //or safe_die($connect->ErrorMsg());  // Checked
-
-            $query = "DELETE FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid";
-            $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());  // Checked
+            $condition = array('sid' => $surveyid, 'gid' => $gid);
+            $result = $this->assessments_model->deleteRecords($condition);            
+            
+            $condition = array('sid' => $surveyid, 'gid' => $gid);
+            $result = $this->groups_model->deleteRecords($condition);                        
             if ($result)
             {
                 $gid = "";
@@ -373,14 +386,15 @@ class questiongroup extends Survey_Common_Controller {
 
                 $grplangs=array_flip($aLanguages);
                 // Check out the intgrity of the language versions of this group
-                $egquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid";
-                $egresult = db_execute_assoc($egquery);
+                $this->load->model('groups_model');
+                $condition = array('sid' => $surveyid, 'gid' => $gid);
+                $egresult = $this->groups_model->getAllRecords($condition);
                 foreach ($egresult->result_array() as $esrow)
                 {
                     if(!in_array($esrow['language'], $aLanguages)) // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
                     {
-                        $egquery = "DELETE FROM ".$this->db->dbprefix."groups WHERE sid='{$surveyid}' AND gid='{$gid}' AND language='".$esrow['language']."'";
-                        $egresultD = db_execute_assoc($egquery);
+                        $condition = array('sid' => $surveyid, 'gid' => $gid, 'language' => $language);
+                        $egresultD = $this->groups_model->deleteRecords($condition); 
                     } else {
                         $grplangs[$esrow['language']] = 'exists';
                     }

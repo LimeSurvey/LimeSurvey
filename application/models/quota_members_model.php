@@ -40,4 +40,11 @@ class Quota_members_model extends CI_Model {
         return $this->db->insert('quota_members',$data);
     }
 
+    function deleteRecords($condition)
+    {
+        $this->db->where($condition);
+
+        return $this->db->delete('quota_members');
+    }
+
 }
