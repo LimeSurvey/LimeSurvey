@@ -53,6 +53,10 @@ else
     {
 //        $_SESSION['step'] = $thisstep-1;
         $moveResult = LimeExpressionManager::NavigateBackwards();
+        if ($moveResult['at_start']) {
+            $_SESSION['step']=0;
+            unset($moveResult); // so display welcome page again
+        }
     }
     if (isset($move) && $move == "movenext")
     {
@@ -463,13 +467,13 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
         //Display the "mandatory" popup if necessary
     // TMSW Mandatory -> EM
         // TMSW - get question-level error messages - don't call **_popup() directly
-        if (isset($notanswered))
+        if (isset($notanswered) && $notanswered && $_SESSION['maxstep'] != $_SESSION['step'])
         {
             list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
         }
 
         //Display the "validation" popup if necessary
-        if (isset($notvalidated))
+        if (isset($notvalidated) && $notvalidated && $_SESSION['maxstep'] != $_SESSION['step'])
         {
             list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
         }

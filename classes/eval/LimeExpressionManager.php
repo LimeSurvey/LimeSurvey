@@ -1931,7 +1931,139 @@ class LimeExpressionManager {
 
      static function NavigateBackwards($debug=false)
     {
-        return self::NextRelevantSet(false,$debug);
+        $LEM =& LimeExpressionManager::singleton();
+
+        $LEM->RelevanceResultCache=array();    // to avoid running same test more than once for a given group
+
+        // $LEM->ProcessCurrentResponses();
+        switch ($LEM->surveyMode)
+        {
+            case 'survey':
+                $LEM->StartProcessingPage(false,true);
+                /* What is right way to check validity after a submit?
+                if ($LEM->currentGroupSeq != -1) {
+                    // then a repeated showing of survey
+                    if (!$force)
+                    {
+                        $result = $LEM->_ValidateSurvey($debug);
+                        if ($result['mandViolation'] || !$result['valid'])
+                        {
+                            // redisplay the current group
+
+                        }
+                    }
+                    // have submitted the survey
+                    return array(
+                        'finished'=>true,
+                        'message'=>$result['message'],
+                    );                    
+                }
+                 */
+
+                $LEM->currentQset = array();    // reset active list of questions
+                $result = $LEM->_ValidateSurvey($debug);
+                if (!$result['relevant'] || $result['hidden'])
+                {
+                    // then there are no relevant, visible questions in the survey
+                }
+                else
+                {
+                    // display the survey
+                    return array(
+                        'finished'=>true,
+                        'message'=>$result['message'],
+                    );
+                }
+                break;
+            case 'group':
+                // First validate the current group
+                $LEM->StartProcessingPage();
+                $message = '';
+                while (true)
+                {
+                    $LEM->currentQset = array();    // reset active list of questions
+                    if (--$LEM->currentGroupSeq < 0)
+                    {
+                        return array(
+                            'at_start'=>true,
+                            'finished'=>false,
+                            'message'=>$message,
+                        );
+                    }
+
+                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,  $debug);
+                    $message .= $result['message'];
+                    if (!$result['relevant'] || $result['hidden'])
+                    {
+                        // then skip this group - assume already saved?
+                        continue;
+                    }
+                    else
+                    {
+                        // display new group
+                        return array(
+                            'at_start'=>false,
+                            'finished'=>false,
+                            'message'=>$message,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                        );
+                    }
+                }
+                break;
+            case 'question':
+                $LEM->StartProcessingPage();
+                if (!$force)
+                {
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$debug);
+                    if ($result['mandViolation'] || !$result['valid'])
+                    {
+                        // redisplay the current question
+                    }
+                }
+                $message = '';
+                while (true)
+                {
+                    $LEM->currentQset = array();    // reset active list of questions
+                    if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
+                    {
+                        return array(
+                            'finished'=>true,
+                            'message'=>$message,
+                        );
+                    }
+
+                    // Set certain variables normally set by StartProcessingGroup()
+                    $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
+                    $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
+                    $LEM->currentGroupSeq=$qInfo['groupSeq'];
+                    $LEM->groupNum=$qInfo['gid'];
+                    if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
+                        $LEM->maxGroupSeq = $LEM->currentGroupSeq;
+                    }
+
+                    $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
+                    $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,  $debug);
+                    $message .= $result['message'];
+
+                    if (!$result['relevant'] || $result['hidden'])
+                    {
+                        // then skip this question - assume already saved?
+                        continue;
+                    }
+                    else
+                    {
+                        // display new question
+                        return array(
+                            'finished'=>false,
+                            'message'=>$message,
+                        );
+                    }
+                }
+                break;
+        }
     }
 
     /**
@@ -2011,6 +2143,9 @@ class LimeExpressionManager {
                         return array(
                             'finished'=>true,
                             'message'=>$message,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                            'valid'=>(isset($result['valid']) ? $result['valid'] : false),
                         );
                     }
 
