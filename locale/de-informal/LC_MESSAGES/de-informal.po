@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: gT;ngT:1,2\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SearchPath-0: d:\\web\\xampp\\htdocs\\limesurvey\n"
 

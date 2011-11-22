@@ -17,7 +17,7 @@ msgstr ""
 "X-Generator: Virtaal 0.6.1\n"
 "X-Poedit-Basepath: D:\\web\\xampp\\htdocs\\limesurvey\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: gT;ngT:1,2\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
 "X-Poedit-SearchPath-0: D:\\web\\xampp\\htdocs\\limesurvey\n"
 
 #: /tmp/translationstatus_v2/application/views/admin/templates/templatesummary_view.php:9

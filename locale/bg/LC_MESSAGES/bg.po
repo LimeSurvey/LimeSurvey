@@ -14,7 +14,7 @@ msgstr ""
 "X-Poedit-Country: bulgarian\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Poedit-KeywordsList: gT;ngT:1,2\n"
+"X-Poedit-KeywordsList: gT;ngT:1,2;eT;neT:1,2\n"
 "X-Poedit-SearchPath-0: D:\\xampp\\xampp\\htdocs\\limesurvey\n"
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/install/cmd_install.php:115
