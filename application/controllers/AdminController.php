@@ -112,6 +112,8 @@ class AdminController extends LSYii_Controller
 			'globalsettings' => 'application.controllers.admin.globalsettings',
 			'quotas' => 'application.controllers.admin.quotas',
 			'export' => 'application.controllers.admin.export',
+			'survey' => 'application.controllers.admin.surveyaction',
+			'assessments' =>'application.controllers.admin.assessments',
 		);
 	}
 
@@ -263,8 +265,11 @@ class AdminController extends LSYii_Controller
 		{
 			$data['js_admin_includes'] = array_unique(Yii::app()->getConfig("js_admin_includes"));
 		}
+		if (Yii::app()->getConfig("css_admin_includes"))
+			$data['css_admin_includes'] = array_unique(Yii::app()->getConfig("css_admin_includes"));
 
 		return $this->render("/admin/super/footer", $data, $return);
+
 	}
 
 	/**
@@ -334,6 +339,10 @@ class AdminController extends LSYii_Controller
 
 	public function _loadEndScripts()
 	{
+		static $out = false;
+		if ($out)
+			return true;
+		$out = true;
 		if (empty(Yii::app()->session['metaHeader']))
 			Yii::app()->session['metaHeader'] = '';
 
@@ -344,6 +353,6 @@ class AdminController extends LSYii_Controller
 
 		$data['checksessionpost'] = Yii::app()->session['checksessionpost'];
 
-		return $this->render('//views/admin/endScripts_view', $data);
+		return $this->render('/admin/endScripts_view', $data);
 	}
 }

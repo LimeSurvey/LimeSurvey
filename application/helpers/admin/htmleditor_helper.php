@@ -33,47 +33,45 @@ function sTranslateLangCode2CK($sLanguageCode){
 }
 
 
-function PrepareEditorScript($load=false)
+function PrepareEditorScript($load=false, $controller)
 {
-    $CI =& get_instance();
-    $js_admin_includes = $CI->config->item("js_admin_includes");
-    $clang = $CI->limesurvey_lang;
+    $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
+    $clang = Yii::app()->lang;
     $data['clang'] = $clang;
-    $js_admin_includes[]=$CI->config->item('sCKEditorURL').'/ckeditor.js';
-    $CI->config->set_item("js_admin_includes", $js_admin_includes);
-    
+    $js_admin_includes[]=Yii::app()->getConfig('sCKEditorURL').'/ckeditor.js';
+    Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
+
     if ($load == false)
     {
-        
-        return $CI->load->view('admin/survey/prepareEditorScript_view',$data,true);
+
+        return $controller->render('/admin/survey/prepareEditorScript_view',$data,true);
     }
     else
     {
-        $CI->load->view('admin/survey/prepareEditorScript_view',$data);
+        $controller->render('/admin/survey/prepareEditorScript_view',$data);
     }
 }
 
 function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
     //error_log("TIBO fieldtype=$fieldtype,fieldname=$fieldname,fieldtext=$fieldtext,surveyID=$surveyID,gID=$gID,qID=$qID,action=$action");
-    $CI =& get_instance(); 
-    $CI->load->helper('common');
-    if ($CI->session->userdata('htmleditormode') &&
-    $CI->session->userdata('htmleditormode') == 'none')
+	$session = &Yii::app()->session;
+    if ($session['htmleditormode'] &&
+    $session['htmleditormode'] == 'none')
     {
         return '';
     }
 
 
-    if (!$CI->session->userdata('htmleditormode') ||
-    ($CI->session->userdata('htmleditormode') != 'inline' &&
-    $CI->session->userdata('htmleditormode') != 'popup') )
+    if (!$session['htmleditormode'] ||
+    ($session['htmleditormode'] != 'inline' &&
+    $session['htmleditormode'] != 'popup') )
     {
-        $htmleditormode = $CI->config->item('defaulthtmleditormode');
+        $htmleditormode = Yii::app()->getConfig('defaulthtmleditormode');
     }
     else
     {
-        $htmleditormode = $CI->session->userdata('htmleditormode');
+        $htmleditormode = $session['htmleditormode'];
     }
 
     if ( ($fieldtype == 'email-inv' ||
@@ -130,7 +128,6 @@ function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=nu
 
 function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
 {
-    $CI =& get_instance(); 
     $htmlcode = '';
     $imgopts = '';
     $toolbarname = 'inline';
@@ -149,7 +146,7 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
     }
     else
     {
-        $ckeditexpandtoolbar = $CI->config->item('ckeditexpandtoolbar');
+        $ckeditexpandtoolbar = Yii::app()->getConfig('ckeditexpandtoolbar');
         if (!isset($ckeditexpandtoolbar) ||  $ckeditexpandtoolbar == true)
         {
             $toolbaroption = ",toolbarStartupExpanded:true\n"
@@ -171,17 +168,17 @@ function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=n
     $htmlcode .= ""
     . "<script type=\"text/javascript\">\n"
     . "$(document).ready(function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
-                                                                 customConfig : \"".$CI->config->item('sCKEditorURL')."/limesurvey-config.js\"
+                                                                 customConfig : \"".Yii::app()->getConfig('sCKEditorURL')."/limesurvey-config.js\"
                                                                 ,LimeReplacementFieldsType : \"".$fieldtype."\"
                                                                 ,LimeReplacementFieldsSID : \"".$surveyID."\"
                                                                 ,LimeReplacementFieldsGID : \"".$gID."\"
                                                                 ,LimeReplacementFieldsQID : \"".$qID."\"
                                                                 ,LimeReplacementFieldsType : \"".$fieldtype."\"
                                                                 ,LimeReplacementFieldsAction : \"".$action."\"
-                                                                ,LimeReplacementFieldsPath : \"".site_url("admin/fck_LimeReplacementFields/index/")."\"
+                                                                ,LimeReplacementFieldsPath : \"".Yii::app()->createUrl("admin/fck_LimeReplacementFields/index/")."\"
                                                                 ,width:'660'
-                                                                ,language:'".sTranslateLangCode2CK($CI->session->userdata('adminlang'))."'
-                                                                ,smiley_path : \"".$CI->config->item('uploadurl')."/images/smiley/msn/\"\n"
+                                                                ,language:'".sTranslateLangCode2CK(Yii::app()->getConfig('adminlang'))."'
+                                                                ,smiley_path : \"".Yii::app()->getConfig('uploadurl')."/images/smiley/msn/\"\n"
                                                                 . $htmlformatoption
                                                                 . $toolbaroption
                                                             ."});

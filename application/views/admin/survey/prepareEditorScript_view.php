@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo $this->config->item('sCKEditorURL'); ?>/ckeditor.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL'); ?>/ckeditor.js"></script>
 <script type='text/javascript'>
     <!--
     var editorwindowsHash = new Object();
@@ -15,7 +15,7 @@
     }
     return null;
     }
-    
+
     function start_popup_editor(fieldname, fieldtext, sid, gid, qid, fieldtype, action)
     {
     controlidena = fieldname + '_popupctrlena';
@@ -28,32 +28,32 @@
     document.getElementsByName(fieldname)[0].className='readonly';
     document.getElementById(controlidena).style.display='none';
     document.getElementById(controliddis).style.display='';
-    
+
     if (fieldname == '')
     fieldname='0';
-    
+
     if (fieldtext == '')
     fieldtext='0';
-    
+
     if (fieldtype == '')
     fieldtype='0';
-    
+
     if (action == '')
     action='0';
-    
+
     if (sid == '')
     sid='0';
-    
+
     if (gid == '')
     gid='0';
-    
+
     if (qid == '')
     qid='0';
-    
-    
-    
-    popup = window.open('<?php echo site_url('admin/htmleditor_pop/index'); ?>/'+fieldname+'/'+fieldtext+'/'+fieldtype+'/'+action+'/'+sid+'/'+gid+'/'+qid+'/<?php echo $clang->getlangcode(); ?>','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
-    
+
+
+
+    popup = window.open('<?php echo $this->createUrl('admin/htmleditor_pop/index'); ?>/'+fieldname+'/'+fieldtext+'/'+fieldtype+'/'+action+'/'+sid+'/'+gid+'/'+qid+'/<?php echo $clang->getlangcode(); ?>','', 'location=no, status=yes, scrollbars=auto, menubar=no, resizable=yes, width=690, height=500');
+
     editorwindowsHash[fieldname] = popup;
     }
     else
@@ -61,7 +61,7 @@
     activepopup.focus();
     }
     }
-    
+
     function updateCKeditor(fieldname,value)
     {
     var mypopup= editorwindowsHash[fieldname];
@@ -77,6 +77,6 @@
     oMyEditor.setData(value);
     }
     }
-    
+
     -->
 </script>

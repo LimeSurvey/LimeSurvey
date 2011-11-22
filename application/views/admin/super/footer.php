@@ -14,6 +14,12 @@
         <?php
         }
     }
+if(isset($css_admin_includes)) {
+foreach ($css_admin_includes as $cssinclude)
+{?>
+            <link rel="stylesheet" type="text/css" media="all" href="<?php echo$cssinclude;?>" />
+            <?php }
+}
 ?>
 </body>
 </html>

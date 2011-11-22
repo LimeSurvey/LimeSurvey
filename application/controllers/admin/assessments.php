@@ -22,40 +22,36 @@
 * @package		LimeSurvey
 * @subpackage	Backend
 */
-class assessments extends Survey_Common_Controller {
+class Assessments extends Survey_Common_Action {
 
     /**
-    * Constructor
-    */
-    function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-    * Shows Assessment Controller page
-    */
-    function index($surveyid)
-    {
+     * Routes to the correct sub-action
+     *
+     * @access public
+     * @param int $surveyid
+     * @return void
+     */
+	public function run($surveyid)
+	{
         $surveyid = sanitize_int($surveyid);
-        $action=$this->input->post("action");
-        $_POST=$this->input->post();
+        $action=!empty($_POST['action']) ? $_POST['action'] : '';
+
         $assessmentlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
+
         array_unshift($assessmentlangs,$baselang);      // makes an array with ALL the languages supported by the survey -> $assessmentlangs
-        $this->config->set_item("baselang",$baselang);
-        $this->config->set_item("assessmentlangs", $assessmentlangs);
-        if($this->input->post('action')=="assessmentadd")
+        Yii::app()->setConfig("baselang",$baselang);
+        Yii::app()->setConfig("assessmentlangs", $assessmentlangs);
+        if($action=="assessmentadd")
             self::_add($surveyid);
-        if($this->input->post('action')=="assessmentupdate")
+        if($action=="assessmentupdate")
             self::_update($surveyid);
-        if($this->input->post('action')=="assessmentdelete")
+        if($action=="assessmentdelete")
             self::_delete($surveyid, $_POST['id']);
-        $this->load->model("assessments_model");
-        $this->load->model("groups_model");
+
         if (bHasSurveyPermission($surveyid, 'assessments','read'))
         {
-            $clang=$this->limesurvey_lang;
+            $clang=$this->getController()->lang;
 
 
             if ($surveyid == "") {
@@ -63,11 +59,12 @@ class assessments extends Survey_Common_Controller {
                 exit;
             }
 
-            $assessments=$this->assessments_model->getAssessments($surveyid);
+            $assessments=Assessment::model()->findAllByAttributes(array('sid' => $surveyid));
             //$assessmentsoutput.= "<pre>";print_r($assessments);echo "</pre>";
-            $groups=$this->groups_model->getGroups($surveyid);
+            $groups=Groups::model()->findAllByAttributes(array('sid' => $surveyid));
             $groupselect="<select name='gid' id='gid'>\n";
             foreach($groups as $group) {
+            	$group = $group->attributes;
                 $groupselect.="<option value='".$group['gid']."'>".$group['group_name']."</option>\n";
             }
             $groupselect .="</select>\n";
@@ -77,11 +74,10 @@ class assessments extends Survey_Common_Controller {
             $thisid="";
 
             if ($action == "assessmentedit" && bHasSurveyPermission($surveyid, 'assessments','update')) {
-                $this->load->helper("database");
-                $query = "SELECT * FROM ".$this->db->dbprefix('assessments')." WHERE id=".sanitize_int($_POST['id'])." and language='$baselang'";
-                $results = db_execute_assoc($query);
-                foreach ($results->result_array() as $row) {
-                    $editdata=$row;
+            	$results = Assessment::model()->findAllByAttributes(array('id' => $_POST['id'], 'language' => $baselang));
+
+                foreach ($results as $row) {
+                    $editdata=$row->attributes;
                 }
                 $groupselect=str_replace("'".$editdata['gid']."'", "'".$editdata['gid']."' selected", $groupselect);
                 $actiontitle=$clang->gT("Edit");
@@ -93,29 +89,30 @@ class assessments extends Survey_Common_Controller {
 
             $surveyinfo=getSurveyInfo($surveyid);
 
-            self::_js_admin_includes($this->config->item("adminscripts").'assessments.js');
-            self::_js_admin_includes($this->config->item("generalscripts").'jquery/jquery.tablesorter.min.js');
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig("adminscripts").'assessments.js');
+            $this->getController()->_js_admin_includes(Yii::app()->getConfig("generalscripts").'jquery/jquery.tablesorter.min.js');
 
             $data['clang']=$clang;
             $data['surveyinfo']=$surveyinfo;
-            $data['imageurl'] = $this->config->item('imageurl');
+            $data['imageurl'] = Yii::app()->getConfig('imageurl');
             $data['surveyid']=$surveyid;
             $data['headings']=$headings;
             $data['assessments']=$assessments;
             $data['actionvalue']=$actionvalue;
             $data['actiontitle']=$actiontitle;
             $data['groupselect']=$groupselect;
-            $data['assessmentlangs']=$this->config->item("assessmentlangs");
-            $data['baselang']=$this->config->item("baselang");
+            $data['assessmentlangs']=Yii::app()->getConfig("assessmentlangs");
+            $data['baselang']=Yii::app()->getConfig("baselang");
             $data['action']=$action;
-            $data['gid']=$this->input->post("gid");
+            $data['gid']=empty($_POST['gid']) ? '' : $_POST['gid'];
             if(isset($editdata)) $data['editdata']=$editdata;
             $data['thisid']=$thisid;
             $data['groups']=$groups;
 
-            self::_getAdminHeader();
-            $this->load->view("admin/assessments_view",$data);
-            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        	Yii::app()->loadHelper('admin/htmleditor');
+            $this->getController()->_getAdminHeader();
+            $this->getController()->render("/admin/assessments_view",$data);
+            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 
 
         }
@@ -127,17 +124,14 @@ class assessments extends Survey_Common_Controller {
     */
     function _add($surveyid)
     {
-        $_POST = $this->input->post();
-        $this->load->model("assessments_model");
         if (bHasSurveyPermission($surveyid, 'assessments','create')) {
-            $inserttable=$this->db->dbprefix("assessments");
             $first=true;
-            $assessmentlangs=$this->config->item("assessmentlangs");
+            $assessmentlangs=Yii::app()->getConfig("assessmentlangs");
             foreach ($assessmentlangs as $assessmentlang)
             {
                 if (!isset($_POST['gid'])) $_POST['gid']=0;
 
-                $datarray=array(
+                $dataarray=array(
                 'sid' => $surveyid,
                 'scope' => $_POST['scope'],
                 'gid' => $_POST['gid'],
@@ -149,16 +143,18 @@ class assessments extends Survey_Common_Controller {
 
                 if ($first==false)
                 {
-                    $datarray['id']=$aid;
+                    $dataarray['id']=$aid;
                 }
-
-                $this->assessments_model->insertRecords($datarray);
+				$assessment = new Assessment;
+            	foreach ($dataarray as $k => $v)
+            		$assessment->$k = $v;
+            	$assessment->save();
                 //$query = $connect->GetInsertSQL($inserttable, $datarray, get_magic_quotes_gpc());
                 //$result=$connect->Execute($query) or safe_die("Error inserting<br />$query<br />".$connect->ErrorMsg());
                 if ($first==true)
                 {
                     $first=false;
-                    $aid=$this->db->insert_id();
+                    $aid=$assessment->id;
                     //$connect->Insert_ID(db_table_name_nq('assessments'),"id");
                 }
             }
@@ -170,21 +166,30 @@ class assessments extends Survey_Common_Controller {
     */
     function _update($surveyid)
     {
-        $_POST = $this->input->post();
-        $this->load->model("assessments_model");
         if (bHasSurveyPermission($surveyid, 'assessments','update')) {
 
-            $assessmentlangs=$this->config->item("assessmentlangs");
+            $assessmentlangs=Yii::app()->getConfig("assessmentlangs");
             foreach ($assessmentlangs as $assessmentlang)
             {
 
                 if (!isset($_POST['gid'])) $_POST['gid']=0;
-                if ($this->config->item('filterxsshtml'))
+                if (Yii::app()->getConfig('filterxsshtml'))
                 {
-                    $_POST['name_'.$assessmentlang]=$this->security->xss_clean($_POST['name_'.$assessmentlang]);
-                    $_POST['assessmentmessage_'.$assessmentlang]=$this->security->xss_clean($_POST['assessmentmessage_'.$assessmentlang]);
+                    $_POST['name_'.$assessmentlang]=htmlspecialchars($_POST['name_'.$assessmentlang]);
+                    $_POST['assessmentmessage_'.$assessmentlang]=htmlspecialchars($_POST['assessmentmessage_'.$assessmentlang]);
                 }
-                $this->assessments_model->updateRecord($_POST, $assessmentlang);
+
+            	$assessment = Assessment::model()->findByAttributes(array('id' => $_POST['id'], 'language' => $assessmentlang));
+            	if (!is_null($assessment))
+            	{
+            		$assessment->scope = $_POST['scope'];
+            		$assessment->gid = $_POST['gid'];
+            		$assessment->minimum = $_POST['minimum'];
+            		$assessment->maximum = $_POST['maximum'];
+            		$assessment->name = $_POST['name_' . $assessmentlang];
+            		$assessment->message = $_POST['assessmentmessage_' . $assessmentlang];
+            		$assessment->save();
+            	}
             }
         }
     }
@@ -196,8 +201,7 @@ class assessments extends Survey_Common_Controller {
     {
         if (bHasSurveyPermission($surveyid, 'assessments','delete'))
         {
-            $this->load->model("assessments_model");
-            $this->assessments_model->dropRecord($id);
+            Assessment::model()->deleteAllByAttributes(array('id' => $id));
         }
     }
 

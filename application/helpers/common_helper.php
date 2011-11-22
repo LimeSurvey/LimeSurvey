@@ -303,6 +303,7 @@ function getsurveylist($returnarray=false, $returnwithouturl=false, $surveyid=fa
 {
     static $cached = null;
 
+	$timeadjust = getGlobalSetting('timeadjust');
 	$clang = new Limesurvey_lang(array('langcode' => Yii::app()->session['adminlang']));
 
     if(is_null($cached)) {
@@ -315,7 +316,7 @@ function getsurveylist($returnarray=false, $returnwithouturl=false, $surveyid=fa
 
         $surveynames = array();
     	foreach ($surveyidresult as $result)
-    		$surveynames[] = $result->attributes;
+    		$surveynames[] = array_merge($result->attributes, $result->languagesettings->attributes);
 
         $cached = $surveynames;
     } else {
@@ -553,7 +554,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
     {
     	$qrow = $qrow->attributes;
         $qrow['title'] = strip_tags($qrow['title']);
-        $link = $this->createUrl("admin/survey/view/".$surveyid."/".$gid."/".$qrow['qid']);
+        $link = Yii::app()->createUrl("/admin/survey/sa/view/surveyid".$surveyid."/gid".$gid."/qid".$qrow['qid']);
         $questionselecter .= "<option value='{$link}'";
         if ($selectedqid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
         $questionselecter .=">{$qrow['title']}:";
@@ -1358,17 +1359,14 @@ function getgrouplistlang($gid, $language,$surveyid)
 
 function getuserlist($outputformat='fullinfoarray')
 {
+	$clang = Yii::app()->lang;
 
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $CI->load->helper("database");
-
-    if ($CI->session->userdata('loginID'))
+    if (!empty(Yii::app()->session['loginID']))
     {
-        $myuid=sanitize_int($CI->session->userdata('loginID'));
+        $myuid=sanitize_int(Yii::app()->session['loginID']);
     }
-    $usercontrolSameGroupPolicy = $CI->config->item('usercontrolSameGroupPolicy');
-    if ($CI->session->userdata('USER_RIGHT_SUPERADMIN') != 1 && isset($usercontrolSameGroupPolicy) &&
+    $usercontrolSameGroupPolicy = Yii::app()->getConfig('usercontrolSameGroupPolicy');
+    if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && isset($usercontrolSameGroupPolicy) &&
     $usercontrolSameGroupPolicy == true)
     {
         if (isset($myuid))
@@ -1376,13 +1374,13 @@ function getuserlist($outputformat='fullinfoarray')
             // List users from same group as me + all my childs
             // a subselect is used here because MSSQL does not like to group by text
             // also Postgres does like this one better
-            $uquery = " SELECT * from ".$CI->db->dbprefix."users where uid in (
-            SELECT uid from ".$CI->db->dbprefix."user_in_groups where ugid in (
-            SELECT ugid from ".$CI->db->dbprefix."user_in_groups where uid=$myuid
+            $uquery = " SELECT * from {{users}} where uid in (
+            SELECT uid from {{user_in_groups}} where ugid in (
+            SELECT ugid from {{user_in_groups}} where uid=$myuid
             )
             )
             UNION
-            SELECT * from ".$CI->db->dbprefix."users where users.parent_id=$myuid";
+            SELECT * from {{users}} where users.parent_id=$myuid";
         }
         else
         {
@@ -1392,26 +1390,26 @@ function getuserlist($outputformat='fullinfoarray')
     }
     else
     {
-        $uquery = "SELECT * FROM ".$CI->db->dbprefix."users ORDER BY uid";
+        $uquery = "SELECT * FROM {{users}} ORDER BY uid";
     }
 
-    $uresult = db_execute_assoc($uquery); //Checked
+    $uresult = Yii::app()->db->createCommand($uquery)->query(); //Checked
 
-    if ($uresult->num_rows()==0)
+    if ($uresult->getRowCount()==0)
     //user is not in a group and usercontrolSameGroupPolicy is activated - at least show his own userinfo
     {
-        $uquery = "SELECT u.* FROM ".$CI->db->dbprefix."users AS u WHERE u.uid=".$myuid;
-        $uresult = db_execute_assoc($uquery);//Checked
+        $uquery = "SELECT u.* FROM {{users}} AS u WHERE u.uid=".$myuid;
+        $uresult = Yii::app()->db->createCommand($uquery)->query();//Checked
     }
 
     $userlist = array();
     $userlist[0] = "Reserved for logged in user";
     //while ($srow = $uresult->result_array())
-    foreach ($uresult->result_array() as $srow)
+    foreach ($uresult->readAll() as $srow)
     {
         if ($outputformat != 'onlyuidarray')
         {
-            if ($srow['uid'] != $CI->session->userdata('loginID'))
+            if ($srow['uid'] != Yii::app()->session['loginID'])
             {
                 $userlist[] = array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'], "password"=>$srow['password'], "full_name"=>$srow['full_name'], "parent_id"=>$srow['parent_id'], "create_survey"=>$srow['create_survey'], "participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'], "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'], "manage_label"=>$srow['manage_label']);           //added by Dennis modified by Moses
             }
@@ -1422,7 +1420,7 @@ function getuserlist($outputformat='fullinfoarray')
         }
         else
         {
-            if ($srow['uid'] != $CI->session->userdata('loginID'))
+            if ($srow['uid'] != Yii::app()->session['loginID'])
             {
                 $userlist[] = $srow['uid'];
             }
@@ -3144,7 +3142,7 @@ function getQuestionAttributeValues($qid, $type='')
     if (isset($cache[$qid])) {
         return $cache[$qid];
     }
-    $result = Questions::model()->findByPk($qid) or safe_die("Error finding question attributes");  //Checked
+    $result = Questions::model()->findByAttributes(array('qid' => $qid)) or safe_die("Error finding question attributes");  //Checked
     $row=$result->attributes;
     if ($row===false) // Question was deleted while running the survey
     {
@@ -3186,8 +3184,8 @@ function getQuestionAttributeValues($qid, $type='')
     $qid=sanitize_int($qid);
     $fields = array('attribute', 'value', 'language');
     $condition = "qid = $qid";
-    $CI->load->model('question_attributes_model');
-    $result = Question_attributes::model()->findAll($condition) or safe_die("Error finding question attributes");  //Checked)
+
+    $result = Question_attributes::model()->findAll($condition);  //Checked)
     $setattributes=array();
 
     foreach ($result as $row)

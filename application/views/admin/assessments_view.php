@@ -1,6 +1,6 @@
-<?php echo PrepareEditorScript(); ?>
+<?php echo PrepareEditorScript(false, $this); ?>
 <script type="text/javascript">
-<!-- 
+<!--
     var strnogroup='<?php echo $clang->gT("There are no groups available.", "js");?>';
 --></script>
 <div class='menubar'>
@@ -9,7 +9,7 @@
 	</div>
 	<div class='menubar-main'>
 		<div class='menubar-left'>
-			<a href="#" onclick="window.open('<?php echo site_url("admin/survey/view/$surveyid");?>', '_top')" title='<?php echo $clang->gTview("Return to survey administration");?>'> 
+			<a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid");?>', '_top')" title='<?php echo $clang->gTview("Return to survey administration");?>'>
 			<img name='Administration' src='<?php echo $imageurl;?>/home.png' alt='<?php echo $clang->gT("Return to survey administration");?>' /></a>
 			<img src='$imageurl/blank.gif' alt='' width='11'  />
 			<img src='$imageurl/seperator.gif' alt='' />
@@ -38,15 +38,15 @@ else {echo "<tr class='evenrow'>\n";} ?>
 <td><?php echo $assess['id'];?></td>
 <td>
 <?php if (bHasSurveyPermission($surveyid, 'assessments','update')) { ?>
-    <form method='post' action='<?php echo site_url("admin/assessments/index/$surveyid");?>'>
+    <form method='post' action='<?php echo $this->createUrl("admin/assessments/surveyid/$surveyid");?>'>
         <input type='image' src='<?php echo $imageurl;?>/token_edit.png' alt='<?php echo $clang->gT("Edit");?>' />
         <input type='hidden' name='action' value='assessmentedit' />
-        <input type='hidden' name='id' value='"<?php echo $assess['id'];?>' />
+        <input type='hidden' name='id' value="<?php echo $assess['id'];?>" />
     </form>
 <?php } ?>
 
 <?php if (bHasSurveyPermission($surveyid, 'assessments','delete')) { ?>
-     <form method='post' action='<?php echo site_url("admin/assessments/index/$surveyid");?>'>
+     <form method='post' action='<?php echo $this->createUrl("admin/assessments/surveyid/$surveyid");?>'>
      <input type='image' src='<?php echo $imageurl;?>/token_delete.png' alt='<?php echo $clang->gT("Delete");?>' onclick='return confirm("<?php echo $clang->gT("Are you sure you want to delete this entry?","js");?>")' />
      <input type='hidden' name='action' value='assessmentdelete' />
      <input type='hidden' name='id' value='<?php echo $assess['id'];?>' />
@@ -72,7 +72,7 @@ else {echo "<tr class='evenrow'>\n";} ?>
 </tbody></table>
 
 <?php if ((bHasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (bHasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")) { ?>
-<br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='<?php echo site_url("admin/assessments/index/$surveyid");?>'>
+<br /><form method='post' class='form30' id='assessmentsform' name='assessmentsform' action='<?php echo $this->createUrl("admin/assessments/surveyid/$surveyid");?>'>
 	<div class='header ui-widget-header'><?php echo $actiontitle;?></div>
 	<ul><li><label><?php echo $clang->gT("Scope");?></label>
 	<input type='radio' id='radiototal' name='scope' value='T' <?php
@@ -104,10 +104,9 @@ else {echo "<tr class='evenrow'>\n";} ?>
 	    $heading=''; $message='';
 	    if ($action == "assessmentedit")
 	    {
-		    $query = "SELECT * FROM ".$this->db->dbprefix('assessments')." WHERE id=".sanitize_int($_POST['id'])." and language='$assessmentlang'";
-		    $results = db_execute_assoc($query);
-		    foreach ($results->result_array() as $row) {
-		        $editdata=$row;
+	    	$results = Assessment::model()->findAllByAttributes(array('id' => $_POST['id'], 'language' => $assessmentlang));
+		    foreach ($results as $row) {
+		        $editdata=$row->attributes;
 		    }
 		    $heading=htmlspecialchars($editdata['name'],ENT_QUOTES);
 		    $message=htmlspecialchars($editdata['message']);
