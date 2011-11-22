@@ -43,7 +43,7 @@ class Admin_Controller extends LSCI_Controller {
         If (tableExists('surveys'))
         {
             $usrow = getGlobalSetting('DBVersion');
-            if (intval($usrow)<$this->config->item('dbversionnumber') && $this->router->class != "update" && $this->router->class != "authentication") {
+            if (intval($usrow)<$this->config->item('dbversionnumber') && $this->router->class != "update") {
                 redirect('/admin/update/db', 'refresh');
             }
         }
