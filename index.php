@@ -870,7 +870,7 @@ if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) &
 // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
 if (isset($move) || isset($_POST['saveprompt']))
 {
-    require_once("save.php");
+    require_once("save1.php");
 
     // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
     if ($thissurvey['active'] == "Y" &&
@@ -896,7 +896,7 @@ switch ($thissurvey['format'])
         require_once("question.php");
         break;
     case "G": //Group at a time
-        require_once("group.php");
+        require_once("group1.php");
         break;
     default:
         require_once("question.php");

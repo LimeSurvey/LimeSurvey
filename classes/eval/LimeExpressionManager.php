@@ -58,12 +58,6 @@ class LimeExpressionManager {
     {
         self::$instance =& $this;
         $this->em = new ExpressionManager();
-        
-        // some common debug messages
-        define('IRRELEVANT'," <span style='color:red'>irrelevant</span> ");
-        define('ALWAYS_HIDDEN'," <span style='color:red'>always-hidden</span> ");
-        define('INVALID'," <span style='color:red'>(a relevant Q fails validation tests)</span> ");
-        define('MANDVIOLATION'," <span style='color:red'>(missing a relevant mandatory)</span> ");
     }
 
     // The singleton method
@@ -1054,6 +1048,7 @@ class LimeExpressionManager {
             if (trim($preg) == '') {
                 $preg = NULL;
             }
+            $help = (isset($fielddata['help'])) ? $fielddata['help']: '';
 
             if (isset($this->questionId2groupSeq[$questionNum])) {
                 $groupSeq = $this->questionId2groupSeq[$questionNum];
@@ -1366,6 +1361,7 @@ class LimeExpressionManager {
                 'gid'=>$groupNum,
                 'mandatory'=>$mandatory,
                 'eqn'=>(($type == '*') ? $question : ''),
+                'help'=>$help,
                 );
 
             $this->knownVars[$varName] = $varInfo_Code;
@@ -1973,6 +1969,7 @@ class LimeExpressionManager {
                 }
                  */
 
+                $LEM->currentQset = array();    // reset active list of questions
                 $result = $LEM->_ValidateSurvey($debug);
                 if (!$result['relevant'] || $result['hidden'])
                 {
@@ -1993,15 +1990,22 @@ class LimeExpressionManager {
                 if (!$force)
                 {
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,$debug);
-                    if ($result['mandViolation'] || !$result['valid'])
+                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current group
-
+                        return array(
+                            'finished'=>false,
+                            'message'=>$result['message'],
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'mandViolation'=>$result['mandViolation'],
+                            'valid'=>$result['valid'],
+                        );
                     }
                 }
                 $message = '';
                 while (true)
                 {
+                    $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentGroupSeq >= $LEM->numGroups)
                     {
                         return array(
@@ -2023,6 +2027,9 @@ class LimeExpressionManager {
                         return array(
                             'finished'=>false,
                             'message'=>$message,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                         );
                     }
                 }
@@ -2040,6 +2047,7 @@ class LimeExpressionManager {
                 $message = '';
                 while (true)
                 {
+                    $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
                     {
                         return array(
@@ -2174,10 +2182,10 @@ class LimeExpressionManager {
                     . '[' . $groupSeqInfo['qstart'] . '-' . $groupSeqInfo['qend'] . ']'
                     . "[<a href='../../../admin/admin.php?action=orderquestions&sid={$LEM->sid}&gid=$gid'>"
                     .  'GID:' . $gid . "</a>]:  "
-                    . ($grel ? 'relevant ' : IRRELEVANT)
-                    . (($ghidden && $grel) ? ALWAYS_HIDDEN : ' ')
-                    . ($gmandViolation ? MANDVIOLATION : ' ')
-                    . ($gvalid ? '' : INVALID)
+                    . ($grel ? 'relevant ' : " <span style='color:red'>irrelevant</span> ")
+                    . (($ghidden && $grel) ? " <span style='color:red'>always-hidden</span> " : ' ')
+                    . ($gmandViolation ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' ')
+                    . ($gvalid ? '' : " <span style='color:red'>(missing a relevant mandatory)</span> ")
                     . "<br/>\n"
                     . implode('', $messages);
         }
@@ -2402,7 +2410,12 @@ class LimeExpressionManager {
         else
         {
             // Check filter status to determine which subquestions are relevant
-            $sgqas = explode('|',$LEM->qid2code[$qid]);
+            if ($qInfo['type'] == 'X') {
+                $sgqas = array();   // Boilerplate questions can be ignored
+            }
+            else {
+                $sgqas = explode('|',$LEM->qid2code[$qid]);
+            }
             foreach ($sgqas as $sgqa)
             {
                 // for each subq, see if it is part of an array_filter or array_filter_exclude
@@ -2629,12 +2642,16 @@ class LimeExpressionManager {
             {
                 case 'M':
                 case 'P':
+                case '!': //List - dropdown
+                case 'L': //LIST drop-down/radio-button list
                     // If at least one checkbox is checked, we're OK
                     if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs)))
                     {
                         $qmandViolation = true;
                         $mandatoryTip = $LEM->gT('Please check at least one item.');
                     }
+                    break;
+                case 'X':   // Boilerplate can never be mandatory
                     break;
                 default:
                     // In general, if any relevant questions aren't answered, then it violates the mandatory rule
@@ -2690,11 +2707,11 @@ class LimeExpressionManager {
             $debug_qmessage .= '--[Q#' . $qInfo['questionSeq'] . ']'
                 . "[<a href='../../../admin/admin.php?sid={$LEM->sid}&gid=$gid&qid=$qid'>"
                 . 'QID:'. $qid . '</a>][' . $qInfo['type'] . ']: '
-                . ($qrel ? 'relevant' : IRRELEVANT)
-                . ($qhidden ? ALWAYS_HIDDEN : ' ')
+                . ($qrel ? 'relevant' : " <span style='color:red'>irrelevant</span> ")
+                . ($qhidden ? " <span style='color:red'>always-hidden</span> " : ' ')
                 . (($qInfo['mandatory'] == 'Y')? ' mandatory' : ' ')
-                . (($hasValidationEqn) ? (!$qvalid ? INVALID : ' valid') : '')
-                . ($qmandViolation ? MANDVIOLATION : ' ')
+                . (($hasValidationEqn) ? (!$qvalid ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' valid') : '')
+                . ($qmandViolation ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' ')
                 . $prettyPrintRelEqn
                 . "<br/>\n";
 
@@ -2770,10 +2787,23 @@ class LimeExpressionManager {
             'irrelevantSQs' => implode('|',$irrelevantSQs),
             'subQrelEqn' => implode('<br/>',$prettyPrintSQRelEqns),
             'qmandViolation' => $qmandViolation,
+            'qmandTip' => $mandatoryTip,
             'message' => $debug_qmessage,
             );
 
+        $LEM->currentQset[$qid] = $qStatus;
+
         return $qStatus;
+    }
+
+    static function GetQuestionStatus($qid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        if (isset($LEM->currentQset[$qid]))
+        {
+            return $LEM->currentQset[$qid];
+        }
+        return NULL;
     }
 
     /**
@@ -2984,7 +3014,8 @@ class LimeExpressionManager {
                 if (($relevance == '' || $relevance == '1') && count($tailorParts) == 0 && count($subqParts) == 0)
                 {
                     // Only show constitutively true relevances if there is tailoring that should be done.
-                    $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
+//                    $jsParts[] = "document.getElementById('relevance" . $arg['qid'] . "').value='1'; // always true\n";
+                    $jsParts[] = "$('#relevance" . $arg['qid'] . "').val('1');  // always true\n";
                     continue;
                 }
                 $relevance = ($relevance == '') ? '1' : $relevance;
@@ -3009,8 +3040,10 @@ class LimeExpressionManager {
                     switch ($sq['qtype'])
                     {
                         case '1': //Array (Flexible Labels) dual scale
-                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#0').value = 'on';\n";
-                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#1').value = 'on';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#0').value = 'on';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#1').value = 'on';\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('on');\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('on');\n";
                             break;
                         case ':': //ARRAY (Multi Flexi) 1 to 10
                         case ';': //ARRAY (Multi Flexi) Text
@@ -3022,7 +3055,8 @@ class LimeExpressionManager {
                         case 'L': //LIST drop-down/radio-button list
                         case 'M': //Multiple choice checkbox
                         case 'P': //Multiple choice with comments checkbox + text
-                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'on';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'on';\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('on');\n";
                             break;
                         default:
                             break;
@@ -3032,20 +3066,24 @@ class LimeExpressionManager {
                     switch ($sq['qtype'])
                     {
                         case '1': //Array (Flexible Labels) dual scale
-                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#0').value = 'off';\n";
-                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#1').value = 'off';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#0').value = 'off';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "#1').value = 'off';\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#0').val('off');\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "#1').val('off');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#0').val('');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "#1').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=radio]').attr('checked',false);\n";
                             $jsParts[] = "    $('#answer" . $sq['rowdivid'] . "#0-').attr('checked',true);\n";
                             break;
                         case ';': //ARRAY (Multi Flexi) Text
-                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
                             break;
                         case ':': //ARRAY (Multi Flexi) 1 to 10
-                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " select').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=checkbox]').attr('checked',false);\n";
@@ -3056,20 +3094,23 @@ class LimeExpressionManager {
                         case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                         case 'E': //ARRAY (Increase/Same/Decrease) radio-buttons
                         case 'F': //ARRAY (Flexible) - Row Format
-                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=radio]').attr('checked',false);\n";
                             $jsParts[] = "    $('#answer" . $sq['rowdivid'] . "-').attr('checked',true);\n";
                             break;
                         case 'M': //Multiple choice checkbox
                         case 'P': //Multiple choice with comments checkbox + text
-                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $jsParts[] = "    $('#java" . $sq['rowdivid'] . "').val('');\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=checkbox]').attr('checked',false);\n";
                             $jsParts[] = "    $('#javatbd" . $sq['rowdivid'] . " input[type=text]').val('');\n";
                             break;
                         case 'L': //LIST drop-down/radio-button list
-                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+//                            $jsParts[] = "    document.getElementById('tbdisp" . $sq['rowdivid'] . "').value = 'off';\n";
+                            $jsParts[] = "    $('#tbdisp" . $sq['rowdivid'] . "').val('off');\n";
                             $listItem = substr($sq['rowdivid'],strlen($sq['sgqa']));    // gets the part of the rowdiv id past the end of the sgqa code.
                             $jsParts[] = "    if ($('#java" . $sq['sgqa'] ."').val() == '" . $listItem . "'){\n";
                             $jsParts[] = "      $('#java" . $sq['sgqa'] . "').val('');\n";
@@ -3091,24 +3132,29 @@ class LimeExpressionManager {
                 if ($arg['hidden'] == 1) {
                     $jsParts[] = "  // This question should always be hidden\n";
                     $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
+//                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
+                    $jsParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
                 }
                 else {
                     $jsParts[] = "  $('#question" . $arg['qid'] . "').show();\n";
-                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
+//                    $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='on';\n";
+                    $jsParts[] = "  $('#display" . $arg['qid'] . "').val('on');\n";
                 }
                 // If it is an equation, and relevance is true, then write the value from the question to the answer field storing the result
                 if ($arg['type'] == '*')
                 {
                     $jsParts[] = "  // Write value from the question into the answer field\n";
-                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
-
+//                    $jsParts[] = "  document.getElementById('" . $jsResultVar . "').value=escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' ');\n";
+                    $jsParts[] = "  $('#" . substr($jsResultVar,1,-1) . "').val(escape(jQuery.trim(LEMstrip_tags($('#question" . $arg['qid'] . " .questiontext').find('span').next().next().html()))).replace(/%20/g,' '));\n";
                 }
-                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
+//                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='1';\n";
+                $jsParts[] = "  $('#relevance" . $arg['qid'] . "').val('1');\n";
                 $jsParts[] = "}\nelse {\n";
                 $jsParts[] = "  $('#question" . $arg['qid'] . "').hide();\n";
-                $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
-                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
+//                $jsParts[] = "  document.getElementById('display" . $arg['qid'] . "').value='';\n";
+                $jsParts[] = "  $('#display" . $arg['qid'] . "').val('');\n";
+//                $jsParts[] = "  document.getElementById('relevance" . $arg['qid'] . "').value='0';\n";
+                $jsParts[] = "  $('#relevance" . $arg['qid'] . "').val('0');\n";
                 $jsParts[] = "}\n";
 
                 $vars = explode('|',$arg['relevanceVars']);
@@ -3666,9 +3712,33 @@ EOT;
     /**
      * Validate and/or save
      */
-    function ProcessCurrentResponses()
+    static function ProcessCurrentResponses()
     {
-
+        $LEM =& LimeExpressionManager::singleton();
+        if (!isset($LEM->currentQset)) {
+            return;
+        }
+        foreach ($LEM->currentQset as $qinfo)
+        {
+            $relevant=false;
+            $qid = $qinfo['info']['qid'];
+            $relevant = (isset($_POST['relevance' . $qid]) ? ($_POST['relevance' . $qid] == 1) : false);
+            $_SESSION['relevanceStatus'][$qid] = $relevant;
+            foreach (explode('|',$qinfo['sgqa']) as $sq)
+            {
+                if ($relevant && isset($_POST[$sq]))
+                {
+                    $_SESSION[$sq] = $_POST[$sq];
+                }
+                else {
+                    $_SESSION[$sq] = "";
+                }
+            }
+        }
+        if (isset($_POST['timerquestion']))
+        {
+        $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
+        }
     }
 }
 ?>
