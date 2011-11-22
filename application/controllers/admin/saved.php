@@ -88,27 +88,29 @@
         $srid=$this->input->post('srid');
         $scid=$this->input->post('scid');
         $subaction=$this->input->post('subaction');
-        $surveytable = $this->db->dbprefix."survey_".$surveyid;
 
         if ($subaction == "delete" && $surveyid && $scid)
         {
-            $query = "DELETE FROM ".$this->db->dbprefix."saved_control
-        			  WHERE scid=$scid
-        			  AND sid=$surveyid
-        			  ";
-            $this->load->helper('database');
-            if ($result = db_execute_assosc($query))
-            {
-                //If we were succesful deleting the saved_control entry,
-                //then delete the rest
-                $query = "DELETE FROM {$surveytable} WHERE id={$srid}";
-                $result = db_execute_assosc($query) or die("Couldn't delete");
+            $this->load->model('saved_control_model');
+            $condition = array('scid' => $scid, 'sid' => $surveyid);
+            $result = $this->saved_control_model->deleteSurveyRecords($condition);
 
+            if ($result)
+            {
+                $this->load->model('surveys_dynamic_model');
+                $condition = array('id' => $srid);
+                $result = $this->surveys_dynamic_model->deleteRecords($surveyid,$condition);
+
+                if(!$result)
+                {
+                    show_error("Couldn't delete from survey table<br /><br />");
+                }
             }
             else
             {
-                show_error("Couldn't delete<br />$query<br />");
+                show_error("Couldn't delete from saved_control table<br /><br />");
             }
+
         }
         redirect("admin/saved/view/".$surveyid,'refresh');
     }
@@ -122,12 +124,9 @@
     function _showSavedList($surveyid)
     {
         $this->load->helper('database');
-
-        $query = "SELECT scid, srid, identifier, ip, saved_date, email, access_code\n"
-        ."FROM ".$this->db->dbprefix."saved_control\n"
-        ."WHERE sid=$surveyid\n"
-        ."ORDER BY saved_date desc";
-        $result = db_execute_assoc($query) or safe_die ("Couldn't summarise saved entries<br />$query<br />");
+        $this->load->model('saved_control_model');        
+        $condition = array('sid' => $surveyid);        
+        $result = $this->saved_control_model->getSavedList($condition);
         if ($result->num_rows() > 0)
         {
 
@@ -136,6 +135,9 @@
             $data['surveyid'] = $surveyid;
 
             $this->load->view('admin/saved/savedlist_view',$data);
+        }
+        else {
+            show_error("Couldn't summarise saved entries<br /><br />");
         }
     }
 

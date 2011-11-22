@@ -23,11 +23,12 @@ class Saved_control_model extends CI_Model {
 		if ($condition != FALSE)
 		{
 			$this->db->where($condition);	
-		}
-		
+		}        
+                
 		$data = $this->db->get('saved_control');
-		
-		return $data;
+
+        return $data;
+
 	}
     
     function getCountOfAll($sid)
@@ -41,6 +42,27 @@ class Saved_control_model extends CI_Model {
     function insertRecords($data)
     {
         return $this->db->insert('saved_control', $data); 
+    }
+
+    function deleteSurveyRecords($condition=FALSE) {
+        if ($condition != FALSE && is_array($condition))
+        {            
+            $this->db->where($condition);
+            return $this->db->delete('saved_control');
+        }
+        
+        return false;
+    }
+
+    function getSavedList($condition)
+    {
+        $this->db->select('scid, srid, identifier, ip, saved_date, email, access_code');
+        $this->db->where($condition);
+        $this->db->order_by('saved_date','desc');
+
+        $data = $this->db->get('saved_control');
+
+        return $data;
     }
 
 }

@@ -45,5 +45,11 @@ class Surveys_dynamic_model extends CI_Model {
         return $this->db->insert('survey_'.$iSurveyID, $data);
     }
 
+    function deleteRecords($iSurveyID,$condition)
+    {
+        $this->db->where($condition);
+        return $this->db->delete('survey_'.$iSurveyID);
+    }
+
 
 }
