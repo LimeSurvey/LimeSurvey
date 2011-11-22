@@ -1110,7 +1110,7 @@ textarea.updater-changelog {
 }
 
 .form30 ul.editor-parent {
-	min-width:1000px; 
+	min-width:1000px;
 }
 
 #frmeditquestion li,
@@ -1447,4 +1447,11 @@ ol.organizer {
 
 .organizer li ol li div{
     background-color:#EEF6FF;
+}
+
+.textresponses {
+	text-align: center;
+	border: 1px solid #eee;
+	height: 200px;
+	overflow: auto;
 }

@@ -86,11 +86,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 	 $clang = $CI->limesurvey_lang;
 	 $dbprefix = $CI->db->dbprefix;
      $fieldmap=createFieldMap($surveyid, "full");
-     
+
      // Used for getting coordinates for google maps
-     $agmapdata = array();		
+     $agmapdata = array();
      $CI->load->model('Surveys_dynamic_model');
-		
+
     if (is_null($statlangcode))
     {
         $statlang=$clang;
@@ -758,7 +758,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
 
                 $mfield=substr($rt, 1, strlen($rt));
-										
+
                 //Text questions either have an answer, or they don't. There's no other way of quantising the results.
                 // So, instead of building an array of predefined answers like we do with lists & other types,
                 // we instead create two "types" of possible answer - either there is a response.. or there isn't.
@@ -1948,7 +1948,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
                 echo '';
                 //loop thorugh the array which contains all answer data
-                
+
     			$sDatabaseType = $CI->db->platform();
                 foreach ($alist as $al)
                 {
@@ -1984,7 +1984,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         elseif ($qtype == "U" || $qtype == "T" || $qtype == "S" || $qtype == "Q" || $qtype == ";")
                         {
-                    			 
+
                             //free text answers
                             if($al[0]=="Answers")
                             {
@@ -2096,7 +2096,25 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $TotalCompleted -=$row[0];
                             }
                             $fname="$al[1]";
-                            if ($browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                            if (!isset($_POST['showtextinline']) && $browse===true) $fname .= " <input type='button' value='".$statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&amp;sid=$surveyid&amp;column=$ColumnName_RM&amp;sql=".urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
+                        	if(isset($_POST['showtextinline']) && ($qtype != "S" && $qtype != "U" && $qtype != "T" && $qtype != "Q")) {
+                        		//Generate list of 'other' text entries for display
+                        		$headPDF2=array();
+                        		$headPDF2[]=array($statlang->gt("'Other' Responses"));
+                        		$tablePDF2=array();
+                        		$query2 = "SELECT ".db_quote_id($al[2])." FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ";
+                        		$query2 .= ($sDatabaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        		$result2=db_execute_assoc($query2) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                        		$fnamelast = "<div id='textresponses_$fname' class='textresponses' style='text-align: center;'>\n";
+                        		$fnamelast .= "<b>".$clang->gT("'Other' Responses")."</b><br />\n";
+                        		//$fname .= $query2;
+                        		foreach($result2->result_array() as $row2)
+                        		{
+                        			$fnamelast .= $row2[$al[2]]."<br />\n";
+                        			$tablePDF2[]=array($row2[$al[2]]);
+                        		}
+                        		$fnamelast .= "</div>\n";
+                        	}
                         }
 
                         /*
@@ -2116,7 +2134,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             if ($al[0] == "Answers")
                             {
                                 $fname= "$al[1]";
-                                if ($browse===true) $fname .= " <input type='submit' value='"
+                                if (!isset($_POST['showtextinline']) && $browse===true) $fname .= " <input type='submit' value='"
                                 . $statlang->gT("Browse")."' onclick=\"window.open('admin.php?action=listcolumn&sid=$surveyid&amp;column=$al[2]&amp;sql="
                                 . urlencode($sql)."', 'results', 'width=460, height=500, left=50, top=50, resizable=yes, scrollbars=yes, menubar=no, status=no, location=no, toolbar=no')\" />";
                             }
@@ -2131,6 +2149,25 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 							."\t\t<th width='25%' align='center' >"
 							."<strong>".$statlang->gT("Percentage")."</strong></th>\n"
 							."\t</tr></thead>\n";
+
+                        	if (isset($_POST['showtextinline'])) {
+                        		$headPDF2=array();
+                        		$headPDF2[]=array($statlang->gt("Responses"));
+                        		$tablePDF2=array();
+                        		$query2 = "SELECT ".db_quote_id($al[2])." FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ";
+                        		$query2 .= ($sDatabaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
+                        		$result2=db_execute_assoc($query2) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                        		$fnamelast = "<div id='textresponses_$fname' class='textresponses' style='text-align: center;'>\n";
+                        		$fnamelast .= "<b>".$clang->gT("Responses")."</b><br />\n";
+                        		//$fname .= $query2;
+                        		foreach($result2->result_array() as $row2)
+                        		{
+                        			$fnamelast .= $row2[$al[2]]."<br />\n";
+                        			$tablePDF2[]=array($row2[$al[2]]);
+                        		}
+                        		$fnamelast .= "</div>\n";
+
+                        	}
                         }
 
 
@@ -2937,7 +2974,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $itemcounter++;
 
                 }	//end while
-
+            	if(isset($fnamelast)) {
+            		$statisticsoutput.= "<tr><td colspan='3'>".$fnamelast."</td></tr>\n";
+            		unset($fnamelast);
+            	}
                 //only show additional values when this setting is enabled
                 if($CI->config->item('showaggregateddata') == 1 )
                 {
@@ -3062,6 +3102,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //$tablePDF = array();
                     $tablePDF = array_merge_recursive($tablePDF, $footPDF);
                     $pdf->headTable($headPDF,$tablePDF);
+                	if(isset($headPDF2)) {
+                		$tablePDF = array_merge_recursive($headPDF2, $tablePDF2);
+                		$pdf->headTable($headPDF2, $tablePDF2);
+                		unset($headPDF2, $tablePDF2);
+                	}
                     //$pdf->tableintopdf($tablePDF);
 
                     //				if(isset($footPDF))
@@ -3285,15 +3330,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                             break;
                         case 'html':
-                        
+
                             $statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1' /></td></tr>";
-                            
-                            $aattr = getQuestionAttributeValues($qqid, $firstletter);	
-                            if ($aattr["location_mapservice"] == "1") {
+
+                            $aattr = getQuestionAttributeValues($qqid, $firstletter);
+                            if (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1") {
                                 $statisticsoutput .= "<tr><td colspan='4'><div style=\"margin:auto;width:{$aattr['location_mapwidth']}px;height:{$aattr['location_mapheight']}px;\" id=\"statisticsmap_$fld\" class=\"statisticsmap\"></div></td></tr>";
-                            
+
                                 $aresult = $CI->Surveys_dynamic_model->getSomeRecords(array($fld), $surveyid)->result();
-                                
+
                                 $agmapdata[$fld] = array (
                                     "zoom" => $aattr['location_mapzoom'],
                                     "coord" => array()
@@ -3302,7 +3347,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 //loop through question data
                                 foreach ($aresult as $arow)
                                 {
-                                    $alocation = explode(";", $arow->$fld);                        
+                                    $alocation = explode(";", $arow->$fld);
                                     $agmapdata[$fld]["coord"][] = "{$alocation[0]} {$alocation[1]}";
                                 }
                             }
