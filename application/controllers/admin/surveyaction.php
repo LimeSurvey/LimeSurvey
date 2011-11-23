@@ -56,7 +56,7 @@ class SurveyAction extends Survey_Common_Action {
 		$iSurveyIDs = array_map('intval', $iSurveyIDs);
 		$iSurveyIDs = array_filter($iSurveyIDs);
 		$clang = $this->getController()->lang;
-        $actioncount = 0;
+		$actioncount = 0;
 		$message = $clang->gT('You did not choose any surveys.');
 		foreach ($iSurveyIDs as $iSurveyID) {
 			if (Survey::model()->findByPk($iSurveyID) === null)
