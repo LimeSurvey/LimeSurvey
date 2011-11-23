@@ -1,14 +1,9 @@
-# LIMESURVEY LANGUAGE FILE.
-# Copyright (C) 2008 LimeSurvey Team
-# This file is distributed under the same license as the LimeSurvey package.
-# FIRST AUTHOR c_schmitz@users.sourceforge.net, 2008.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-22 23:02+0100\n"
-"PO-Revision-Date: 2011-11-22 23:03+0100\n"
+"POT-Creation-Date: 2011-11-23 10:03+0100\n"
+"PO-Revision-Date: 2011-11-23 10:03+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: Nguyen Vinh <ninjaprox@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -25,7 +20,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:534
 #, php-format
 msgid "A database named \"%s\" already exists."
-msgstr "Cơ sở dữ liệu tên \"%s\" đã tồn tại."
+msgstr "Cơ sở dữ liệu tên \"%s\" thực sự đã tồn tại."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:541
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:768
@@ -62,7 +57,7 @@ msgstr "Đóng"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:271
 msgid "Comment"
-msgstr "Chú thích"
+msgstr "Bình luận"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/statistics_user.php:464
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:176
@@ -70,11 +65,11 @@ msgstr "Chú thích"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:476
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:479
 msgid "Completed"
-msgstr "Đã hoàn thành"
+msgstr "Hoàn thành"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:521
 msgid "Create Database"
-msgstr "Tạo cơ sở dữ liệu"
+msgstr "Tạo Cơ sở dữ liệu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:829
 msgid "Data view control"
@@ -96,11 +91,11 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:516
 msgid "Database doesn't exist!"
-msgstr ""
+msgstr "Cơ sở dữ liệu không tồn tại!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:889
 msgid "Database has been created."
-msgstr "Cơ sỡ dữ liệu đã được tạo."
+msgstr "Cở sở dữ liệu đã được tạo."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:497
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:498
@@ -124,7 +119,7 @@ msgstr "Xoá phản hồi này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:1192
 msgid "Directory is not writable"
-msgstr ""
+msgstr "Thư mục không thể ghi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:726
 msgid "Do you really want to delete all marked responses?"
@@ -245,15 +240,15 @@ msgstr "Giấy phép"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:518
 msgid "LimeSurvey can attempt to create this database for you."
-msgstr "LimeSurvey có thể tạo cơ sở dữ liệu cho bạn"
+msgstr "LimeSurvey không thể tạo cơ sở dữ liệu này cho bạn."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:547
 msgid "LimeSurvey database is up to date. No action needed"
-msgstr ""
+msgstr "Cơ sở dữ liệu LimeSurvey đã được cập nhật. Không cần làm gì"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:779
 msgid "LimeSurvey has been installed successfully."
-msgstr ""
+msgstr "LimeSurvey đã được cài đặt thành công."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/assessments.php:118
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/authentication.php:66
@@ -280,7 +275,7 @@ msgstr "Thoát ra thành công."
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:98
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:110
 msgid "Main Admin Screen"
-msgstr "Màn hình quản trị chính"
+msgstr "Màn hình Quản trị chính"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/assessments.php:74
 msgid "Maximum"
@@ -316,7 +311,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/printanswers.php:202
 msgid "PDF Export"
-msgstr "Xuất ra PDF"
+msgstr "Xuất PDF"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:333
 msgid "Passwords do not match!"
@@ -324,7 +319,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:793
 msgid "Passwords don't match."
-msgstr ""
+msgstr "Mật khẩu không khớp."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/printanswers.php:109
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:115
@@ -353,7 +348,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:276
 #, php-format
 msgid "Please upload %s more file(s)."
-msgstr ""
+msgstr "Vui lòng tải lên %s tập tin nữa."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/statistics_user.php:396
 msgid "Please wait ..."
@@ -362,7 +357,7 @@ msgstr "Vui lòng chờ..."
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:69
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:79
 msgid "Please wait to begin with a new session."
-msgstr "Vui lòng đợi để bắt đầu một phiên làm việc mới"
+msgstr "Vui lòng chờ để bắt đầu phiên làm việc mới."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:538
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:892
@@ -412,7 +407,7 @@ msgstr "Phạm vi"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:275
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:303
 msgid "Select file"
-msgstr ""
+msgstr "Chọn tập tin"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:861
 msgid "Show"
@@ -448,32 +443,32 @@ msgstr "Hiện Kết quả Lọc"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:272
 msgid "Sorry, no more files can be uploaded!"
-msgstr ""
+msgstr "Rất tiếc, không thể tải lên thêm tập tin!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:273
 #, php-format
 msgid "Sorry, only %s files can be uploaded for this question!"
-msgstr ""
+msgstr "Rất tiếc, chỉ %s tập tin có thể được tải lên cho câu hỏi này!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:221
 msgid "Sorry, there was an error uploading your file"
-msgstr ""
+msgstr "Rất tiếc, đã có lỗi trong khi tải tập tin của bạn lên"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:141
 #, php-format
 msgid "Sorry, this file extension (%s) is not allowed!"
-msgstr ""
+msgstr "Rất tiếc, định dạng tập tin này (%s) không được cho phép!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:186
 #, php-format
 msgid "Sorry, this file is too large. Only files up to %s KB are allowed."
-msgstr ""
+msgstr "Rất tiếc, tập tin này quá lớn. Chỉ tập tin không quá %s KB được cho phép."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:155
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:231
 #, php-format
 msgid "Sorry, this file is too large. Only files upto %s KB are allowed."
-msgstr ""
+msgstr "Rất tiếc, tập tin này quá lớn. Chỉ tập tin không quá %s KB được cho phép."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:860
 msgid "Starting from:"
@@ -493,11 +488,11 @@ msgstr "Người quản lý khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/printanswers.php:212
 msgid "Survey name (ID)"
-msgstr "Tên khảo sát (ID)"
+msgstr "Tên Khảo sát (ID)"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/printanswers.php:214
 msgid "Survey name (ID):"
-msgstr ""
+msgstr "Tên Khảo sát (iD):"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/register.php:251
 msgid "Thank you for registering to participate in this survey."
@@ -510,7 +505,7 @@ msgstr "Câu trả lời cho câu hỏi bảo mật không chính xác."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:517
 msgid "The database you specified does not exist:"
-msgstr ""
+msgstr "Cơ sở dữ liệu bạn xác định không tồn tại."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:467
 msgid "The database you specified is up to date."
@@ -531,7 +526,7 @@ msgstr "Email bạn dùng không hợp lệ. Vui lòng thử lại."
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:170
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:208
 msgid "The file has been successfuly uploaded."
-msgstr ""
+msgstr "Tập tin đã được tải lên thành công."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:284
 msgid "The following surveys are available:"
@@ -540,7 +535,7 @@ msgstr "Những khảo sát sau tồn tại:"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:278
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:279
 msgid "The maximum number of files has been uploaded. You may return back to survey."
-msgstr ""
+msgstr "Số tập tin tối đã được được tải lên. Bạn có thể quay trở lại khảo sát."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:68
 msgid "The token you provided doesn't match the one in your session."
@@ -548,7 +543,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:109
 msgid "There is no matching survey."
-msgstr "Không có khảo sát nào khớp."
+msgstr "Khôngn có khảo sát trùng khớp."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:539
 msgid "This is a controlled survey. You need a valid token to participate."
@@ -611,11 +606,11 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:240
 msgid "Unknown error"
-msgstr ""
+msgstr "Lỗi không biết"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:274
 msgid "Uploading"
-msgstr ""
+msgstr "Đang tải lên"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/authentication.php:165
 msgid "User data"
@@ -645,7 +640,7 @@ msgstr "Cảnh báo: Bạn vẫn sử dụng mật khẩu mặc định ('passwo
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:194
 msgid "We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator."
-msgstr ""
+msgstr "Chúng tôi rất tiếc nhưng đã có lỗi hệ thống và tập tin của bạn đã không được lưu. Một email đã được gửi để thông báo đến người quản trị khảo sát."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:569
 msgid "We are sorry but you are not allowed to enter this survey."
@@ -659,7 +654,7 @@ msgstr "Chúng tôi xin lỗi nhưng bạn không có quyền làm việc này."
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/printanswers.php:108
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:147
 msgid "We are sorry but your session has expired."
-msgstr "Chúng tôi rất tiếc, phiên làm việc của bạn đã hết hạn."
+msgstr "Chúng tôi rất tiếc nhưng phiên làm việc của bạn đã hết hạn."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:241
 msgid "Welcome"
@@ -686,7 +681,7 @@ msgstr "Bạn không phải người tham gia khảo sát này."
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/uploader.php:306
 #, php-format
 msgid "You can upload %s under %s KB each."
-msgstr ""
+msgstr "Bạn có tải lên %s dưới %s KB mỗi cái."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:462
 msgid "You did not provide a name"
@@ -737,14 +732,16 @@ msgid ""
 "You need to upload %s more files for this question.\n"
 "Are you sure you want to exit?"
 msgstr ""
+"Bạn cần tải lên %s tập tin nữa cho câu hỏi này. \n"
+"Bạn có chắc muốn thoát?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:1193
 msgid "You will be redirected in about 5 secs. If not, click "
-msgstr ""
+msgstr "Bạn sẽ được chuyển hướng trong 5 giây. Nếu không, nhấp"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/printanswers.php:233
 msgid "Your answer"
-msgstr "Tên của bạn"
+msgstr "Câu trả lời của bạn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:78
 msgid "Your browser reports that it was used previously to answer this survey. We are resetting the session so that you can start from the beginning."
@@ -816,11 +813,11 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2348
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2453
 msgid "AND"
-msgstr "AND"
+msgstr "VÀ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:84
 msgid "ARMSCII-8 Armenian"
-msgstr "ARMSCII-8 Armenian"
+msgstr "ARMSII-8 Armenian"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/globalsettings.php:243
 msgid "Active surveys"
@@ -832,7 +829,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2134
 msgid "Add Another Record"
-msgstr "Thêm một mẫu tin khác"
+msgstr "Thêm Mẫu tin Khác"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:1659
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:1897
@@ -843,15 +840,15 @@ msgstr "Thêm điều kiện"
 msgid "Add scenario"
 msgstr "Thêm kịch bản"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:116
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:117
 msgid "Admin confirmation email body:"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:111
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:112
 msgid "Admin confirmation email subject:"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:118
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:119
 msgid "Admin notification email:"
 msgstr ""
 
@@ -873,7 +870,7 @@ msgstr "Lỗi trong quá trình tải tập tin của bạn lên. Lỗi này có
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:1779
 msgid "Answer"
-msgstr "Câu trả lời"
+msgstr "Trả lời"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/printablesurvey.php:354
 msgid "Answer matched (regexp)"
@@ -881,7 +878,7 @@ msgstr "Câu trả lời đã trùng (regexp)"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/database.php:236
 msgid "Answer options were successfully saved."
-msgstr ""
+msgstr "Tuỳ chọn trả lời đã được lưu thành công."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/printablesurvey.php:330
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/printablesurvey.php:358
@@ -958,9 +955,9 @@ msgstr "Trở về Nhập tài nguyên"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:83
 msgid "Base language"
-msgstr "Ngôn ngữ gốc:"
+msgstr "Ngôn ngữ cơ sở"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:106
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:107
 msgid "Basic admin notification"
 msgstr ""
 
@@ -978,16 +975,16 @@ msgstr "Binary pseudo charset"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2142
 msgid "Browse Saved Responses"
-msgstr "Tìm đến các response đã lưu"
+msgstr "Duyệt Các phản hồi Đã lưu"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:596
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:600
 msgid "Browse Uploaded Resources"
 msgstr "Duyệt tài nguyên tải lên"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:1186
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:612
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:616
 msgid "Cancel"
-msgstr "Thôi"
+msgstr "Huỷ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:172
 msgid "Cannot import the VVExport file."
@@ -1032,21 +1029,21 @@ msgstr "Sao chép điều kiện thành công (một vài cái đã bị bỏ qu
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1884
 msgid "Confirm Password:"
-msgstr "Xác nhận lại mật khẩu:"
+msgstr "Xác nhận Mật khẩu:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:104
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:105
 msgid "Confirmation"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:179
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:180
 msgid "Confirmation email"
 msgstr "Email xác nhận"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:172
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:173
 msgid "Confirmation email subject:"
 msgstr "Tiêu đề email xác nhận"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:177
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:178
 msgid "Confirmation email:"
 msgstr "Email xác nhận:"
 
@@ -1071,7 +1068,7 @@ msgstr "Sao chép thất bại"
 msgid "Copy the selected conditions to"
 msgstr "Sao chép điều kiện đã chọn đến"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:392
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:394
 msgid "Create New Label Set"
 msgstr "Tạo mới tập nhãn"
 
@@ -1168,7 +1165,7 @@ msgstr "Xóa kịch bản này"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:151
 #, php-format
 msgid "Deleting answers: %u answers deleted"
-msgstr ""
+msgstr "Đang xoá câu trả lời: %u câu trả lời đã được xoá"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:143
 #, php-format
@@ -1178,12 +1175,12 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:99
 #, php-format
 msgid "Deleting conditions: %u conditions deleted"
-msgstr ""
+msgstr "Đang xoá điều kiện: %u điều kiện đã được xoá"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:184
 #, php-format
 msgid "Deleting groups: %u groups deleted"
-msgstr ""
+msgstr "Đang xoá nhóm: %u nhóm đã được xoá"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:192
 msgid "Deleting orphan survey table:"
@@ -1217,7 +1214,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:175
 #, php-format
 msgid "Deleting questions: %u questions deleted"
-msgstr ""
+msgstr "Đang xoá câu hỏi: %u câu hỏi đã được xoá"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:167
 #, php-format
@@ -1226,12 +1223,12 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:70
 msgid "Deleting survey table:"
-msgstr ""
+msgstr "Đang xoá bảng khảo sát:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:159
 #, php-format
 msgid "Deleting surveys: %u surveys deleted"
-msgstr ""
+msgstr "Đang xoá khảo sát: %u khảo sát đã được xoá"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:61
 msgid "Deleting token table:"
@@ -1248,15 +1245,15 @@ msgstr ""
 msgid "Description of the survey"
 msgstr "Mô tả của khảo sát"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:107
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:108
 msgid "Detailed admin notification"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:130
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:131
 msgid "Detailed admin notification email:"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:125
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:126
 msgid "Detailed admin notification subject:"
 msgstr ""
 
@@ -1288,7 +1285,7 @@ msgstr "Sửa giá trị trả lời mặc định"
 msgid "Edit email templates"
 msgstr "Sửa mẫu email"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:393
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:395
 msgid "Edit label set"
 msgstr "Sửa bộ nhãn"
 
@@ -1316,12 +1313,12 @@ msgstr "Đang sửa"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/htmleditor_pop.php:107
 #, php-format
 msgid "Editing %s"
-msgstr ""
+msgstr "Đang sửa %s"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:702
 #, php-format
 msgid "Editing response (ID %s)"
-msgstr "Sửa trả lời (ID %s)"
+msgstr "Đang sửa phản hồi (ID %s)"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/fck_LimeReplacementFields.php:74
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/fck_LimeReplacementFields.php:93
@@ -1336,12 +1333,12 @@ msgstr "Địa chỉ email của người quản lý khảo lý"
 msgid "Email from the token"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:158
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:160
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:159
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:161
 msgid "Email reminder:"
 msgstr "Email nhắc nhở:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:251
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:265
 msgid "Email templates successfully saved."
 msgstr ""
 
@@ -1349,11 +1346,11 @@ msgstr ""
 msgid "Email:"
 msgstr "Email:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:609
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:613
 msgid "Enter one label per line. You can provide a code by separating code and label text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or space."
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:608
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:612
 msgid "Enter your labels:"
 msgstr ""
 
@@ -1362,11 +1359,11 @@ msgstr ""
 msgid "Error Files List"
 msgstr "Danh sách tập tin lỗi"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:469
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:473
 msgid "Error: 'other' is a reserved keyword."
-msgstr "Lỗi: 'other' là một từ khóa đã được đặt được."
+msgstr "Lỗi: 'khác' là một từ khoá đã được đặt trước."
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:469
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:473
 msgid "Error: You are trying to use duplicate label codes."
 msgstr "Lỗi: Bạn đang cố sử dụng mã nhãn trùng lắp."
 
@@ -1380,7 +1377,7 @@ msgstr "Loại trừ các mẫy tin ID?"
 msgid "Export %s participant(s) to CSV  "
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:598
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:602
 msgid "Export Resources As ZIP Archive"
 msgstr "Xuất tài nguyên thành ZIP Archive"
 
@@ -1396,7 +1393,7 @@ msgstr "Xuất kết quả"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/database.php:278
 msgid "Failed to delete answer"
-msgstr "Xóa câu trả lời thấ bại"
+msgstr "Xoá câu hỏi thất bại"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/database.php:220
 msgid "Failed to update answers"
@@ -1421,7 +1418,7 @@ msgstr "Tập tin"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:291
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/question.php:107
 msgid "File upload succeeded."
-msgstr "Tập tin upload thành công."
+msgstr "Tải tập tin lên thành công."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:148
 msgid "File:"
@@ -1548,13 +1545,13 @@ msgstr "Nhập bản ghi %d thất bại vì [%s]"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:51
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:275
 msgid "Import Label Set"
-msgstr "Nhập khẩu tập nhãn"
+msgstr "Nhập Bộ Nhãn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/question.php:62
 msgid "Import Question"
 msgstr "Nhập Câu hỏi"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:602
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:606
 msgid "Import Resources ZIP Archive"
 msgstr "Nhập tài nguyên từ ZIP Archive"
 
@@ -1624,17 +1621,17 @@ msgstr "Tăng"
 msgid "Inexistant token table"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:102
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:103
 msgid "Invitation"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:139
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:140
 msgid "Invitation email subject:"
 msgstr "Tiêu đề thư mời:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:132
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:144
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:146
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:133
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:145
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:147
 msgid "Invitation email:"
 msgstr "Thư mời:"
 
@@ -1663,13 +1660,13 @@ msgstr "Tổng kết việc nhập bộ nhãn"
 msgid "Label sets"
 msgstr "Bộ nhãn"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:540
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:544
 msgid "Label:"
 msgstr "Nhãn:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:332
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:342
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:468
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:472
 msgid "Labels"
 msgstr "Nhãn"
 
@@ -1808,13 +1805,13 @@ msgstr "Không cung cấp mã SID(khảo sát) Không thể nhạp khẩu câu h
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:1427
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1397
 msgid "No answer"
-msgstr "Không có câu trả lời"
+msgstr "Không trả lời"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:436
 msgid "No conditions could be copied (due to duplicates)"
 msgstr "Không có điều kiện có thể được sao chép (do trùng lắp)"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:170
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:171
 msgid "No confirmation emails will be sent. To send emails see Survey properties."
 msgstr ""
 
@@ -1829,15 +1826,15 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:408
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:464
 msgid "No matching group"
-msgstr "Không có nhóm phù hợp"
+msgstr "Không có nhóm trùng khớp"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:423
 msgid "No matching question"
-msgstr "Không có câu hỏi phù hợp"
+msgstr "Không có câu hỏi trùng khớp"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:396
 msgid "No matching survey"
-msgstr "Không có khảo sát phù hợp"
+msgstr "Không có khảo sát trùng khớp"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:1566
 msgid "No questions selected"
@@ -1919,7 +1916,7 @@ msgstr "Mật khẩu:"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1266
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2699
 msgid "Please choose"
-msgstr "Xin chọn"
+msgstr "Vui lòng chọn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/printablesurvey.php:875
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/printablesurvey.php:876
@@ -2000,8 +1997,8 @@ msgstr "Vui lòng điền vào mỗi ô theo thứ tự từ 1 đến "
 msgid "Please number each box in order of preference from 1 to "
 msgstr "Vui lòng đánh số tứ tự mỗi hộp theo tứ tự ưu tiên từ 1 đến"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:585
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:591
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:589
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:595
 msgid "Please select a file to import!"
 msgstr "Vui lòng chọn một tập tin để nhập!"
 
@@ -2045,12 +2042,12 @@ msgstr "Xác định trước tùy chọn trả lời cho câu hỏi này"
 msgid "Previous questions"
 msgstr "Câu hỏi trước"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:186
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:187
 msgid "Public registration email subject:"
 msgstr "Tiêu đề email đăng kí công khai:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:191
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:193
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:192
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:194
 msgid "Public registration email:"
 msgstr "Công khai email đang kí"
 
@@ -2064,7 +2061,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/database.php:507
 msgid "Question could not be created."
-msgstr "Câu hỏi không thể được tạo ra"
+msgstr "Câu hỏi đã không thể được tạo."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/question.php:889
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed"
@@ -2091,11 +2088,11 @@ msgstr "Tổng kết nhập câu hỏi"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/database.php:496
 #, php-format
 msgid "Question in language %s could not be created."
-msgstr "Câu hỏi dùng ngôn ngữ %s không thể được tạo."
+msgstr "Câu hỏi ở ngôn ngữ %s đã không thể được tạo."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/database.php:536
 msgid "Question was successfully added."
-msgstr ""
+msgstr "Câu hỏi đã được tạo thành công."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/question.php:911
 msgid "Question was successfully deleted."
@@ -2103,21 +2100,21 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/database.php:795
 msgid "Question was successfully saved."
-msgstr ""
+msgstr "Câu hỏi đã được lưu thành công."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:1829
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/question.php:135
 msgid "Questions"
 msgstr "Câu hỏi"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:555
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:559
 msgid "Quick add..."
-msgstr "Thêm nhanh..."
+msgstr "Thêm nhanh"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:460
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:576
 msgid "Quick statistics"
-msgstr "Thông kê nhanh"
+msgstr "Thống kê nhanh"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/printablesurvey.php:591
 msgid "RANK"
@@ -2128,7 +2125,7 @@ msgstr "RANK"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:292
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/question.php:108
 msgid "Reading file.."
-msgstr "Đang đọc tập tin.."
+msgstr "Đang đọc tập tin..."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1608
 msgid "Record Deleted"
@@ -2147,7 +2144,7 @@ msgstr "Mẫu tin đã được cập nhật."
 msgid "RegExp"
 msgstr "RegExp"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:105
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:106
 msgid "Registration"
 msgstr "Đăng kí"
 
@@ -2170,11 +2167,11 @@ msgstr "Tải lại khảo sát của bạn bằng cách click vào liên kết 
 msgid "Remember that we do not support subdirectories in ZIP archives."
 msgstr "Hãy nhớ rằng chúng không hỗ trợ thư mục con trong Zip archives."
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:103
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:104
 msgid "Reminder"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:153
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:154
 msgid "Reminder email subject:"
 msgstr ""
 
@@ -2187,7 +2184,7 @@ msgstr "Xoá mục này"
 msgid "Renumber the new record."
 msgstr "Đánh số lại mẫu tin mới."
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:610
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:614
 msgid "Replace"
 msgstr "Thay thế"
 
@@ -2212,7 +2209,7 @@ msgstr "Trở lại Quản lý bộ nhãn"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:174
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2135
 msgid "Return to survey administration"
-msgstr "Trở lại Quản lý khảo sát"
+msgstr "Trở về quản trị khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:96
 msgid "SJIS for Windows Japanese"
@@ -2229,12 +2226,12 @@ msgstr "Không đổi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1500
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1505
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:203
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:204
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/question.php:311
 msgid "Save"
 msgstr "Lưu"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:557
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:561
 msgid "Save Changes"
 msgstr "Lưu các thay đổi"
 
@@ -2244,7 +2241,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2103
 msgid "Saved Survey Details"
-msgstr "Thông tin lưu khảo sát"
+msgstr "Thông tin chi tiết Khảo sát đã lưu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:1682
 msgid "Scenario"
@@ -2255,7 +2252,7 @@ msgstr "Kịch bản"
 msgid "See conditions:"
 msgstr "Xem điều kiện:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:599
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:603
 msgid "Select ZIP File:"
 msgstr "Chọn tập tin ZIP"
 
@@ -2308,11 +2305,11 @@ msgstr "Gửi khảo sát của bạn."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/question.php:136
 msgid "Subquestions"
-msgstr "Câu hỏi con"
+msgstr "Câu hỏi phụ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/database.php:368
 msgid "Subquestions were successfully saved."
-msgstr ""
+msgstr "Câu hỏi phụ đã được lưu thành công."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:197
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1740
@@ -2330,12 +2327,12 @@ msgstr "Thành công"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:612
 #, php-format
 msgid "Survey ID %d saved at %s containing %d record(s)"
-msgstr ""
+msgstr "ID Khảo sát %d đã được lưu lúc %s chứa %d mẫu tin"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:549
 #, php-format
 msgid "Survey ID %d saved at %s containing %d record(s) (%s)"
-msgstr ""
+msgstr "ID Khảo sát %d đã được lưu lúc %s chứa %d mẫu tin (%s)"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:149
 msgid "Survey ID:"
@@ -2391,11 +2388,11 @@ msgstr "Mẫu entry được gán bởi mẫu tin có id: "
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/database.php:389
 msgid "The question could not be added. You must enter at least enter a question code."
-msgstr "Câu hỏi không thể thêm. Bạn phải nhập ít nhất mã câu hỏi."
+msgstr "Câu hỏi đã không thể được tạo. Bạn phải nhập ít nhất một mã câu hỏi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:449
 msgid "The related survey is missing."
-msgstr ""
+msgstr "Thiết khảo sát liên quan."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1836
 msgid "The token you have provided is not valid or has already been used."
@@ -2565,7 +2562,7 @@ msgstr "Cập nhật điều kiện"
 msgid "Update scenario"
 msgstr "Cập nhật kịch bản"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:569
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:573
 msgid "Uploaded Resources Management"
 msgstr "Quản lý tài nguyên tải lên"
 
@@ -2573,18 +2570,18 @@ msgstr "Quản lý tài nguyên tải lên"
 msgid "Uploaded label set file needs to have an .lsl extension."
 msgstr "Tập tin bộ nhãn được tải lên cần có phần mở là .lsl."
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:114
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:120
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:128
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:134
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:142
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:148
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:156
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:162
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:175
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:181
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:189
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:195
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:115
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:121
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:129
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:135
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:143
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:149
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:157
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:163
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:176
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:182
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:190
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/emailtemplates.php:196
 msgid "Use default"
 msgstr "Sử dụng mặc định"
 
@@ -2603,7 +2600,7 @@ msgstr "Các người dùng"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1742
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2138
 msgid "View This Record"
-msgstr "Thể hiện mẫu tin này"
+msgstr "Xem Mẫu tin Này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/fck_LimeReplacementFields.php:60
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/fck_LimeReplacementFields.php:78
@@ -2613,7 +2610,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:706
 #, php-format
 msgid "Viewing response (ID %s)"
-msgstr "Xem trả lời (ID %s)"
+msgstr "Đang xem phản hồi (ID %s)"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:490
 msgid "Warning"
@@ -2687,11 +2684,11 @@ msgstr "Bạn phải cung cấp một mật khẩu để lưu lại."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1081
 msgid "Your Choices"
-msgstr "Những lựa chọn của bạn"
+msgstr "Lựa chọn của bạn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1086
 msgid "Your Ranking"
-msgstr "Bảng sắp hạng :"
+msgstr "Thứ hạn của bạn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:190
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:266
@@ -2700,7 +2697,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:1872
 msgid "Your passwords do not match."
-msgstr "Hai mật khẩu của bạn không giống nhau."
+msgstr "Mật khẩu của bạn không trùng khớp."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2078
 msgid "Your survey responses have been saved successfully.  You will be sent a confirmation e-mail. Please make sure to save your password, since we will not be able to retrieve it for you."
@@ -2782,7 +2779,7 @@ msgstr "hoặc"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:528
 msgid "responses"
-msgstr ""
+msgstr "phản hồi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/conditions.php:1566
 msgid "selected"
@@ -2794,14 +2791,14 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:535
 msgid "timings"
-msgstr ""
+msgstr "thời gian"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2470
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:2475
 msgid "to question {QUESTION}, answer {ANSWER}"
 msgstr "cho câu hỏi {QUESTION}, câu trả lời {ANSWER}"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:588
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/labels.php:592
 msgid "zip library not supported by PHP, Import ZIP Disabled"
 msgstr "zip library không được hỗ trợ bởi PHP, Nhập ZIP đã tắt"
 
@@ -2850,7 +2847,7 @@ msgstr "Bảng toke đã được tạo nên cho khảo sát này."
 msgid "A username was not supplied or the username is invalid."
 msgstr "Tên người dùng không được hỗ trợ hoặc tên người dùng không hợp jlệ"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:805
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:811
 msgid "AND/OR Date is"
 msgstr "Và/Hoặc ngày là"
 
@@ -2934,7 +2931,7 @@ msgstr "Trở lại menu chính"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/survey.php:1095
 msgid "Base Language"
-msgstr "Ngôn ngữ gốc:"
+msgstr "Ngôn ngữ cơ sở"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/tokens.php:1552
 msgid "Bounce settings"
@@ -3096,11 +3093,11 @@ msgstr "Lựa chọn dữ liệu"
 msgid "Database backup functionality is currently not available for your database type. Before proceeding please backup your database using a backup tool!"
 msgstr "Chức năng sao lưu cơ sở dữ liệu hiện không tồn tại cho loại cơ sở dữ liệu của bạn. Trước khi tiếp tục, vui lòng sao lưu cơ sở dữ liệu của bạn bằng một công cụ sao lưu!"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:793
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:799
 msgid "Date (YYYY-MM-DD) equals"
 msgstr "Ngày (YYYY-MM-DD) bằng"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:799
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:805
 msgid "Date is"
 msgstr "Ngày"
 
@@ -3350,15 +3347,15 @@ msgid ""
 "\\n"
 "It is missing the group name for the following languages"
 msgstr ""
-"Nhóm không thể được thêm.\\n"
+"Nhóm đã không thể được thêm.\\n"
 "\\n"
-"Thiếu tên nhóm cho những ngôn ngữ sau"
+"Thiết tên nhóm cho ngôn ngữ dưới đây"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/questiongroup.php:332
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/questiongroup.php:345
 msgid "Group could not be deleted"
 msgstr "Nhóm không thể xóa được"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/questiongroup.php:480
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/questiongroup.php:494
 msgid "Group could not be updated"
 msgstr "Nhóm không thể được cập nhật"
 
@@ -3453,8 +3450,8 @@ msgstr ""
 msgid "Invitation sent to:"
 msgstr "Thư mời gửi đến:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:1435
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:1524
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:1441
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:1530
 msgid "Label"
 msgstr "Nhãn"
 
@@ -3539,21 +3536,21 @@ msgstr "Chưa được kích hoạt"
 msgid "Note that this assessment section will only show if assessment rules have been set and assessment mode is activated."
 msgstr "Lưu ý, phần đánh giá này sẽ chỉ hiển thị nếu các quy tắc đánh giá đã được thiết lập và chế độ đánh giá đã được kích hoạt."
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:602
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:718
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:608
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:724
 msgid "Number greater than"
 msgstr "Số lớn hơn"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:608
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:724
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:614
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:730
 msgid "Number less than"
 msgstr "Số nhỏ hơn"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:742
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:748
 msgid "Number of files greater than"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:748
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:754
 msgid "Number of files less than"
 msgstr ""
 
@@ -3612,7 +3609,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/translate.php:383
 msgid "Please choose..."
-msgstr "Vui lòng chọn..."
+msgstr "Vui lòng chọn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/update.php:76
 msgid "Please enter a valid update-key:"
@@ -3666,7 +3663,7 @@ msgstr "Nhập nhóm câu hỏi hoàn thành."
 msgid "Question group import summary"
 msgstr "Tổng kết nhập nhóm câu hỏi"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/questiongroup.php:485
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/questiongroup.php:499
 msgid "Question group successfully saved."
 msgstr ""
 
@@ -3714,14 +3711,14 @@ msgstr "Thư nhắc nhở gửi đến:"
 msgid "Response ID"
 msgstr "ID trả lời"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:396
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:402
 msgid "Response filters"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:649
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:679
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:702
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:1128
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:655
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:685
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:708
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:1134
 msgid "Responses containing"
 msgstr "Câu trả lời có chứa"
 
@@ -3745,7 +3742,7 @@ msgstr "Trả lời đã lưu"
 msgid "Saved Responses:"
 msgstr "Các phản hồi đã được lưu:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:384
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:390
 msgid "Select output format"
 msgstr "Chọn định dạng xuất"
 
@@ -3781,6 +3778,11 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:372
 msgid "Show graphs"
 msgstr "Hiện biểu đồ"
+
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:383
+#, fuzzy
+msgid "Show text responses inline"
+msgstr "Chỉ phản hồi hoàn thành"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/tokens.php:523
 msgid "Show this token entry"
@@ -3861,7 +3863,7 @@ msgstr "Mẫu '%s' đã được xóa thành công."
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/templates.php:195
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/templates.php:246
 msgid "Template Editor"
-msgstr "Thiết kế các mẫu template"
+msgstr "Trình soạn thảo mẫu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/templates.php:904
 msgid "Template Sample"
@@ -3904,11 +3906,11 @@ msgstr "Các tập tin sau sẽ được thêm bằng cách cập nhật nhưng 
 msgid "The following steps will be done by this update:"
 msgstr "Những bước sau sẽ được làm bởi cập nhật này:"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/questiongroup.php:520
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/questiongroup.php:534
 msgid "The new question group/question order was successfully saved."
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/questiongroup.php:328
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/questiongroup.php:341
 msgid "The question group was deleted."
 msgstr ""
 
@@ -3918,7 +3920,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/tokens.php:57
 msgid "The survey you selected does not exist"
-msgstr "Khảo sát bạn chọn không tồn tại"
+msgstr "Khảo sát bạn đã chọn không tồn tại"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/tokens.php:507
 msgid "The token entry was successfully updated."
@@ -4093,8 +4095,8 @@ msgstr "Phiên bản"
 msgid "Version file is not writable (%s). Please set according file permissions."
 msgstr "Phiên bản tập tin không thể ghi (%s). Vui lòng thiết lập quyền truy cập tập tin"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:389
-#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:1647
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:395
+#: D:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:1653
 msgid "View stats"
 msgstr "Xem thống kê"
 
@@ -4292,7 +4294,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:444
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:498
 msgid "Activate Survey"
-msgstr "Kích hoạt khảo sát"
+msgstr "Kích hoạt Khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:3507
 msgid "Activate this to show a map above the input field where the user can select a location"
@@ -4659,7 +4661,7 @@ msgstr "Danish"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:447
 msgid "Database error!!"
-msgstr ""
+msgstr "Lỗi Cơ sở dữ liệu!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:2391
 msgid "Date last action"
@@ -4930,7 +4932,7 @@ msgstr "THÔNG ĐIỆP LỖI"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:5571
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/replacements_helper.php:567
 msgid "Email address"
-msgstr "Địa chỉ Email"
+msgstr "Địa chỉ email"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:4365
 msgid "Email was not sent because demo-mode is activated."
@@ -5954,7 +5956,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/core/Survey_Common_Controller.php:424
 msgid "Responses will be date stamped."
-msgstr "Trả lời sẽ được gắn thêm thời gian."
+msgstr "Phản hồi sẽ được dán nhãn ngày."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/replacements_helper.php:438
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/replacements_helper.php:447
@@ -6255,11 +6257,11 @@ msgstr "Khảo sát chưa được kích hoạt"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:445
 msgid "Survey could not be actived."
-msgstr "Khảo sát không thê được kích hoạt."
+msgstr "Khảo sát không thể được kích hoạt."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:499
 msgid "Survey has been activated. Results table has been successfully created."
-msgstr "Khảo sát đã được kích hoạt. Bảng kết quả đã được tạo thành công."
+msgstr "Khảo sát này đã được kích hoạt. Bảng kết quả được tạo thành công."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:1589
 msgid "Survey registration confirmation"
@@ -6372,7 +6374,7 @@ msgstr "Câu hỏi này chưa có câu hỏi nào thuộc loại tập hợp."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:229
 msgid "This question has a condition set, however the condition is based on a question that appears after it."
-msgstr "Câu hỏi này có 1 tập hợp các điều kiện.Tuy nhiên điều kiện dựa vào câu hỏi ngay sau nó."
+msgstr "Câu hỏi này có một thiết lập điều kiện, tuy nhiên điều kiện dựa trên một câu hỏi xuất hiện trước đó."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:141
 msgid "This question is a multiple answer type question but has no answers."
@@ -6392,11 +6394,11 @@ msgstr "Câu hỏi này phải được trả lời chính xác"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:171
 msgid "This question requires a second answer set but none is set."
-msgstr "Câu hỏi này yêu cầu câu trả lời thứ hai nhưng hiện không được trả lời"
+msgstr "Câu hỏi này yêu cầu một câu trả lời thứ hai, nhưng nó chưa được trả lời."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:163
 msgid "This question requires answers, but none are set."
-msgstr "Câu hỏi này yêu cầu trả lời, nhưng hiện không được trả lời."
+msgstr "Câu hỏi này yêu cầu phải trả lời, nhưng nó chưa được trả lời."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:522
 msgid "This survey allows public registration. A token table must also be created."
@@ -6416,7 +6418,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:529
 msgid "This survey is now active, and responses can be recorded."
-msgstr "Khảo sát này đang hoạt động, và các phản hồi đang được ghi nhận lại."
+msgstr "Khảo sát này hiện đang kích hoạt, và các phản hồi có thể được ghi nhận lại."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:4004
 msgid "Time limit"
@@ -6601,7 +6603,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7072
 msgid "You are not allowed export a label set!"
-msgstr "Bạn không được phép xuất bộ nhãn!"
+msgstr "Bạn không được phép xuất một bộ nhãn!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7097
 msgid "You are not allowed to activate this survey!"
@@ -6609,19 +6611,19 @@ msgstr "Bạn không được phép kích hoạt khảo sát này!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7107
 msgid "You are not allowed to add a group to this survey!"
-msgstr "Bạn không được phép thêm nhóm vào khảo sát này!"
+msgstr "Bạn không được phép thêm một nhóm vào khảo sát này!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7092
 msgid "You are not allowed to add new questions for this survey!"
-msgstr "Bạn không được phép thêm câu hỏi mới trong khảo sát này!"
+msgstr "Bạn không được phép thêm câu hỏi mới cho khảo sát này!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7129
 msgid "You are not allowed to browse responses!"
-msgstr "Bạn không được phép duyệt câu trả lời!"
+msgstr "Bạn không được phép xem các phản hồi!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7077
 msgid "You are not allowed to change user data!"
-msgstr "Bạn không được phép sửa dữ liệu người dùng!"
+msgstr "Bạn không được phép thay đổi dữ liệ người dùng!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7082
 msgid "You are not allowed to create new surveys!"
@@ -6629,11 +6631,11 @@ msgstr "Bạn không được phép tạo khảo sát mới!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7139
 msgid "You are not allowed to delete this group!"
-msgstr "Bạn không được phép xóa nhóm này!"
+msgstr "Bạn không được phép xoá nhóm này!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7087
 msgid "You are not allowed to delete this survey!"
-msgstr "Bạn không được phép xóa khảo sát này!"
+msgstr "Bạn không được phép xoá khảo sát này!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7124
 msgid "You are not allowed to edit groups in this survey!"
@@ -6665,7 +6667,7 @@ msgstr "Bạn không được phép thiết lập các quy tắc đánh giá!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7102
 msgid "You are not allowed to stop this survey!"
-msgstr ""
+msgstr "Bạn không được phép dùng khảo sát này!"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:7155
 msgid "You are not allowed to to import a question!"
@@ -6686,7 +6688,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/frontend_helper.php:163
 #, php-format
 msgid "You have completed %s%% of this survey"
-msgstr "Bạn đã hoàn thành %s%% khảo sát này"
+msgstr "Bạn đã hoàn thành %s%% của khảo sát này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/replacements_helper.php:671
 msgid "You have completed answering the questions in this survey."
@@ -6768,6 +6770,11 @@ msgstr "phút"
 msgid "seconds"
 msgstr "giây"
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2109
+#, fuzzy
+msgid "'Other' Responses"
+msgstr "Xóa các phản hồi"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1291
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1301
 msgid "1st quartile (Q1)"
@@ -6788,28 +6795,28 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:129
 msgid "Absolute value"
-msgstr ""
+msgstr "Giá trị chính xác"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:130
 msgid "Arc cosine"
-msgstr ""
+msgstr "Arc cosine"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:132
 msgid "Arc sine"
-msgstr ""
+msgstr "Arc sine"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:133
 msgid "Arc tangent"
-msgstr ""
+msgstr "Arc tangent"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:134
 msgid "Arc tangent of two variables"
-msgstr ""
+msgstr "Arc tangent của hai biến"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3026
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3030
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3040
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3046
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3066
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3070
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3080
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3086
 msgid "Arithmetic mean"
 msgstr ""
 
@@ -6839,9 +6846,9 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:645
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2099
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2120
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2138
 msgid "Browse"
-msgstr "Đi đến"
+msgstr "Duyệt"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:179
 msgid "Calculate the Sample Standard Deviation for the list of numbers"
@@ -6853,7 +6860,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:140
 msgid "Calculates the exponent of e"
-msgstr ""
+msgstr "Tính luỹ thừa của e"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:969
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:971
@@ -6881,7 +6888,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1873
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2091
 msgid "Comments"
-msgstr ""
+msgstr "Bình luận"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:173
 msgid "Compare a string to a regular expression pattern"
@@ -6917,29 +6924,29 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:137
 msgid "Cosine"
-msgstr ""
+msgstr "Cosin"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1254
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2113
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2130
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2149
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2153
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2161
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2168
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2191
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2195
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2203
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2210
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2292
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2296
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2303
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2310
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2131
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2148
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2186
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2190
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2198
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2205
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2228
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2232
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2240
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2247
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2329
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2333
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2340
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2347
 msgid "Count"
 msgstr "Đếm"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:138
 msgid "Count the number of answered questions in the list"
-msgstr ""
+msgstr "Đếm số câu hỏi đã được trả lời trong danh sách"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/update/update_helper.php:46
 #, php-format
@@ -7085,11 +7092,11 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:142
 msgid "Format a GMT date/time"
-msgstr ""
+msgstr "Định dạng ngày/giờ GMT"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:139
 msgid "Format a local date/time"
-msgstr ""
+msgstr "ĐỊnh dạng ngày/giờ địa phương"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:147
 msgid "Format a local time/date as integer"
@@ -7180,13 +7187,13 @@ msgstr ""
 msgid "Natural logarithm"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2413
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2445
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2450
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2482
 msgid "Not completed or Not displayed"
-msgstr "Không hoàn thành hoặc Không hiển thị"
+msgstr "Chưa hoàn thành hoặc Không hiển thị"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2417
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2449
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2454
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2486
 msgid "Not displayed"
 msgstr "Không hiển thị"
 
@@ -7195,7 +7202,7 @@ msgstr "Không hiển thị"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1483
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1495
 msgid "Not enough values for calculation"
-msgstr "Không đủ giá trị để tính toán"
+msgstr "Không đủ giá trị cho tính toán"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1420
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1424
@@ -7204,10 +7211,10 @@ msgstr "Không đủ giá trị để tính toán"
 msgid "Null values are ignored in calculations"
 msgstr "Giá trị rỗng được bỏ qua trong tính toán"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2851
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2859
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2867
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2878
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2888
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2896
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2904
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2915
 msgid "Number of cases"
 msgstr "Số trường hợp"
 
@@ -7215,7 +7222,7 @@ msgstr "Số trường hợp"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:590
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:609
 msgid "Number of records in this query:"
-msgstr "Số bản ghi trong truy vấn này:"
+msgstr "Số mẫu tin trong khảo sát này:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:180
 msgid "Pad a string to a certain length with another string"
@@ -7223,22 +7230,22 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:239
 msgid "Page"
-msgstr ""
+msgstr "Trang"
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2113
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2132
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2149
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2154
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2161
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2170
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2131
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2150
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2186
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2191
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2196
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2203
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2212
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2292
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2297
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2303
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2312
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2198
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2207
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2228
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2233
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2240
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2249
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2329
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2334
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2340
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2349
 msgid "Percentage"
 msgstr "Phần trăm"
 
@@ -7246,7 +7253,7 @@ msgstr "Phần trăm"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:594
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:618
 msgid "Percentage of total:"
-msgstr "Tỷ lệ phần trăm trên tổng số:"
+msgstr "Phần trăm trong tổng số:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/update/upgrade-all_helper.php:27
 msgid "Please be patient..."
@@ -7276,6 +7283,10 @@ msgstr ""
 msgid "Replace all occurrences of the search string with the replacement string"
 msgstr ""
 
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2161
+msgid "Responses"
+msgstr "Phản hồi"
+
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:969
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:972
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:984
@@ -7291,7 +7302,7 @@ msgstr "Kết quả"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:599
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:608
 msgid "Results"
-msgstr "Các kết quả"
+msgstr "Kết quả"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:177
 msgid "Return a formatted string"
@@ -7323,7 +7334,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:141
 msgid "Round fractions down"
-msgstr ""
+msgstr "Làm tròn phân số xuống"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:135
 msgid "Round fractions up"
@@ -7354,10 +7365,10 @@ msgid "Square root"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1206
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3027
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3034
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3041
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3048
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3067
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3074
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3081
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3088
 msgid "Standard deviation"
 msgstr "Độ lệch chuẩn"
 
@@ -7382,22 +7393,22 @@ msgid "Strip whitespace (or other characters) from the end of a string"
 msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1205
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2149
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2155
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2161
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2172
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2850
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2854
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2866
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2872
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2186
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2192
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2198
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2209
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2887
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2891
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2903
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2909
 msgid "Sum"
 msgstr "Tổng"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:261
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:599
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3362
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3363
-#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3366
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3407
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3408
+#: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3411
 msgid "Survey"
 msgstr "Khảo sát"
 
@@ -7463,13 +7474,13 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:908
 msgid "Total number of files"
-msgstr ""
+msgstr "Tổng số tập tin"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:574
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:591
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:611
 msgid "Total records in survey:"
-msgstr "Tổng số mẫu tin trong khảo sát"
+msgstr "Tổng cố mẫu tin trong khảo sát:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:933
 msgid "Total size of files"
@@ -7673,10 +7684,6 @@ msgstr ""
 msgid "Quotas"
 msgstr ""
 
-#: D:\web\xampp\htdocs\limesurvey_ci/application/models/survey_permissions_model.php:22
-msgid "Responses"
-msgstr "Trả lời"
-
 #: D:\web\xampp\htdocs\limesurvey_ci/application/models/survey_permissions_model.php:23
 msgid "Statistics"
 msgstr ""
@@ -7839,7 +7846,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/authentication/login.php:31
 msgid "Forgot your password?"
-msgstr ""
+msgstr "Quên mật khẩu của bạn?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:8
 msgid "General"
@@ -7906,7 +7913,7 @@ msgstr "Lần kiểm tra cuối cùng: %s"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/authentication/login.php:25
 msgid "Login"
-msgstr "Đăng nhập"
+msgstr "Đang nhập"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/assessments_view.php:31
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/assessments_view.php:118
@@ -8036,7 +8043,7 @@ msgstr "SSL"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:428
 msgid "Save settings"
-msgstr "Thiết lập lưu"
+msgstr "Lưu thiết lập"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:115
 msgid "Screen reader compatibility mode:"
@@ -8196,7 +8203,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/authentication/forgotpassword.php:2
 msgid "You have to enter user name and email."
-msgstr "Bạn phải nhập tên người dùng và email."
+msgstr "Bạn phải nhập tên người dùng và email"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/globalSettings_view.php:2
 msgid "You must set at last one available language."
@@ -8353,7 +8360,7 @@ msgstr "Lựa chọn dữ liệu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/dataentry/caption_view.php:60
 msgid "Datestamp"
-msgstr "Tem thời gian"
+msgstr "Nhãn ngày"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/conditions/conditionslist_view.php:24
 msgid "Delete all conditions"
@@ -8373,11 +8380,11 @@ msgstr "Tải xuống những tập tin cho mẫu tin này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/r_view.php:17
 msgid "Download the data and the syntax file."
-msgstr "Tải xuống tập tin cú pháp và dữ liệu."
+msgstr "Tải xuống tập tin dữ liệu và cú pháp."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/r_view.php:12
 msgid "Export .csv data file"
-msgstr " Xuất tập tin dữ liệu .csv"
+msgstr "Xuất tập tin dữ liệu .csv"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/r_view.php:11
 msgid "Export R syntax file"
@@ -8389,7 +8396,7 @@ msgstr "Xuất dữ liệu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/group_view.php:2
 msgid "Export group structure"
-msgstr "Xuất cấu trúc nhóm"
+msgstr "Xuất câu trúc nhóm"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/question_view.php:2
 msgid "Export question structure"
@@ -8406,7 +8413,7 @@ msgstr "Xuất Phản hồi này"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/group_view.php:14
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/question_view.php:14
 msgid "Export to file"
-msgstr "Xuất tập tin"
+msgstr "Xuất thành tập tin"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/exportresults_view.php:5
 msgid "Filtered from statistics script"
@@ -8615,7 +8622,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/dataentry/active_html_view.php:81
 msgid "This survey is not yet active. Your response cannot be saved"
-msgstr "Khảo sát này chưa được kích hoạt.Các phản hồi của bạn chưa thể được lưu lại"
+msgstr "Khảo sát chưa được kích hoạt. Phản hồi của bạn không thể được lưu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/browse/browseindex_view.php:3
 msgid "Total responses:"
@@ -8657,19 +8664,19 @@ msgstr "đến"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/spss_view.php:14
 msgid "16 or up"
-msgstr ""
+msgstr "16 hoặc hơn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/spss_view.php:27
 msgid "Choose 'Run/All' from the menu to run the import"
-msgstr ""
+msgstr "Chọn 'Chạy/Tất cả' từ menu để nhập"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/spss_view.php:24
 msgid "Download the data and the syntax file"
-msgstr ""
+msgstr "Tải xuống tập tin dữ liệu và cú pháp"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/spss_view.php:26
 msgid "Edit the 4th line and complete the filename with a full path to the downloaded data file"
-msgstr ""
+msgstr "Sửa dòng thứ 4 và hoàn thành tên tập tin với một đường dẫn đầy đủ đến tập tin dữ liệu có thể tải xuống"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/spss_view.php:1
 msgid "Export result data to SPSS"
@@ -8681,11 +8688,11 @@ msgstr "Xuất cú pháp"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/vv_view.php:17
 msgid "File Extension"
-msgstr "Phần mở rộng"
+msgstr "Định dạng tập tin"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/vv_view.php:25
 msgid "For easy opening in MS Excel, change the extension to 'tab' or 'txt'"
-msgstr "Để dễ dàng mở bằng MS Excel, thay đổi phần mở rộng thành 'tab' or 'txt'"
+msgstr "Để dễ mở bằng MS Excel, thay đổi định dạng sang 'tab' hoặc 'txt'"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/spss_view.php:25
 msgid "Open the syntax file in SPSS in Unicode mode"
@@ -8701,27 +8708,27 @@ msgstr "Phiên bản SPSS:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/export/spss_view.php:29
 msgid "Your data should be imported now"
-msgstr ""
+msgstr "Dữ liệu của bạn nên được nhập bây giờ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/uploadSummary_view.php:37
 #, php-format
 msgid "%s duplicate records removed"
-msgstr "%s bản ghi trùng lắp đã xóa"
+msgstr "%s mẫu tin trùng lắp đã xoá"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/uploadSummary_view.php:28
 #, php-format
 msgid "%s records have blank madatory fields"
-msgstr ""
+msgstr "%s mẫu tin có trường bắt buộc trống"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/uploadSummary_view.php:57
 #, php-format
 msgid "%s records have incomplete or wrong attribute values"
-msgstr ""
+msgstr "%s mẫu tin có giá trị chưa hoàn thành hoặc thuộc tính sai"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/uploadSummary_view.php:31
 #, php-format
 msgid "%s records imported"
-msgstr "%s mẫu tin đã được nhập"
+msgstr "%s mẫu tin đã nhập"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/uploadSummary_view.php:24
 #, php-format
@@ -8731,12 +8738,12 @@ msgstr "%s mẫu tin trong CSV"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/uploadSummary_view.php:30
 #, php-format
 msgid "%s records met minumum requirements"
-msgstr "%s bản ghi đạt yêu cầu tối thiểu"
+msgstr "%s mẫu tin thoả điều kiện tối thiểu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/uploadSummary_view.php:47
 #, php-format
 msgid "%s records with invalid email address removed"
-msgstr "%s bản ghi với địa chỉ email không hợp lệ đã xóa"
+msgstr "%s mẫu tin với địa chỉ email không hợp lệ đã xoá"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/exportmulti_view.php:9
 msgid "(Select multiple label sets by using the Ctrl key)"
@@ -8745,7 +8752,7 @@ msgstr "(Chọn nhiều bộ nhãn bằng cách sử dụng phím Ctrl)"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:186
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:220
 msgid "---Select One---"
-msgstr ""
+msgstr "---Chọn Một---"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:62
 msgid "Add participant to Survey"
@@ -8786,7 +8793,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:65
 msgid "Auto detected"
-msgstr ""
+msgstr "Tự động nhận diện"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/blacklist_view.php:4
 msgid "Blacklist control"
@@ -8794,7 +8801,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:102
 msgid "Blacklisted"
-msgstr ""
+msgstr "Danh sách đen"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/summary_view.php:40
 msgid "Blacklisted participants"
@@ -8810,7 +8817,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:90
 msgid "CSV input format"
-msgstr "Định dạng nhập CSV"
+msgstr "Định dạng CSV đầu vào"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/attributeMapCSV_view.php:42
 msgid "Central attribute"
@@ -8822,11 +8829,11 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:17
 msgid "Character set of file:"
-msgstr ""
+msgstr "Bộ kí tự của tập tin:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:11
 msgid "Choose the file to upload:"
-msgstr ""
+msgstr "Chọn tập tin để tải lên:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/labelbar_view.php:18
 msgid "Close Window"
@@ -8834,7 +8841,7 @@ msgstr "Đóng Cửa sổ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:66
 msgid "Comma"
-msgstr ""
+msgstr "Phẩy"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/editlabel_view.php:76
 msgid "Convert resources links?"
@@ -8867,7 +8874,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/labelbar_view.php:11
 msgid "Do you really want to delete this label set?"
-msgstr "Bạn thực sự muốn xóa bộ nhãn này?"
+msgstr "Bạn thực sự muốn xoá bộ nhãn này?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/editlabel_view.php:72
 msgid "Don't import if label set already exists:"
@@ -8879,7 +8886,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:102
 msgid "E-mail"
-msgstr ""
+msgstr "E-mail"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:63
 msgid "Either you don't own a survey or it doesn't have token table"
@@ -8891,7 +8898,7 @@ msgstr "Lỗi: Bạn phải nhập tên cho bộ nhãn này."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:67
 msgid "Export CSV"
-msgstr ""
+msgstr "Xuất CSV"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/exportmulti_view.php:7
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/labelsetsbar_view.php:14
@@ -8920,7 +8927,7 @@ msgstr "Lọc những địa chỉ email trống:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:2
 msgid "Import CSV"
-msgstr ""
+msgstr "Nhập CSV"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/editlabel_view.php:13
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/editlabel_view.php:65
@@ -8954,7 +8961,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:102
 msgid "Owner name"
-msgstr ""
+msgstr "Tên người sở hữu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/summary_view.php:16
 msgid "Participants owned by you"
@@ -8986,11 +8993,11 @@ msgstr "Vui lòng chọn bộ nhãn bạn muốn xuất:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:173
 msgid "Please select a condition"
-msgstr ""
+msgstr "Vui lòng chọn một điều kiện"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:168
 msgid "Please select a field"
-msgstr ""
+msgstr "Vui lòng chọn một trường"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:70
 msgid "Please select a survey to add participants to"
@@ -9007,7 +9014,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/attributeMapCSV_view.php:62
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/attributeMapToken_view.php:62
 msgid "Processing ....."
-msgstr ""
+msgstr "Đang xử lý ....."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/attributeMap_view.php:82
 msgid "Processing..."
@@ -9023,7 +9030,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:80
 msgid "Search"
-msgstr "Tìm kiếm"
+msgstr "Tìm"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/attributeMapCSV_view.php:26
 #, php-format
@@ -9036,7 +9043,7 @@ msgstr "Chọn tập tin bộ nhãn (*.lsl,*.csv):"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:74
 msgid "Select one of the three options"
-msgstr ""
+msgstr "Chọn một trong ba tuỳ chọn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:253
 msgid "Select the attribute to be exported"
@@ -9044,7 +9051,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:67
 msgid "Semicolon"
-msgstr ""
+msgstr "Chấm phẩy"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:62
 msgid "Seperator used:"
@@ -9052,11 +9059,11 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/editlabel_view.php:20
 msgid "Set name:"
-msgstr "Thiết lập tên:"
+msgstr "Tên bộ:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:181
 msgid "Share"
-msgstr ""
+msgstr "Chia sẻ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/sharePanel_view.php:6
 msgid "Share panel"
@@ -9121,7 +9128,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/uploadSummary_view.php:16
 msgid "Uploaded CSV file successfully"
-msgstr "Tải lên tập tin CSV thành công"
+msgstr "Đã tải lên tập tin CSV thành công"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:183
 msgid "User with whom the participants are to be shared"
@@ -9157,7 +9164,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:75
 msgid "You have no row selected"
-msgstr ""
+msgstr "Bạn chưa chọn dòng"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/blacklist_view.php:44
 msgid "You have successfully blacklisted from any survey on this server"
@@ -9190,11 +9197,11 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:97
 msgid "blacklist,language"
-msgstr ""
+msgstr "danh sách đen, ngôn ngữ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:95
 msgid "firstname, lastname, email"
-msgstr ""
+msgstr "họ, tên, email"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:243
 msgid "only the participants I have selected"
@@ -9206,7 +9213,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/newanswer_view.php:1
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/viewquotasrow_view.php:54
 msgid "Add Answer"
-msgstr "Thêm câu trả lời"
+msgstr "Thêm Câu trả lời"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/newquota_view.php:54
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/viewquotasfooter_view.php:10
@@ -9249,7 +9256,7 @@ msgstr "Tự động mở URL"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/adminmenu.php:57
 msgid "Backup Entire Database"
-msgstr "Sao lưu dự phòng có sở dữ liệu"
+msgstr "Sao lưu Toàn bộ Cơ sở dữ liệu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/adminmenu.php:45
 msgid "Check Data Integrity"
@@ -9285,7 +9292,7 @@ msgstr "Xóa mẫu tin"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/adminmenu.php:100
 msgid "Detailed list of surveys"
-msgstr ""
+msgstr "Danh sách chi tiết của khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/saved/savedlist_view.php:18
 msgid "Edit entry"
@@ -9366,7 +9373,7 @@ msgstr "Lưu cái này, sau đó tạo cái khác:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/newanswertwo_view.php:23
 msgid "Select Answer"
-msgstr "Chọn câu trả lời"
+msgstr "Chọn Câu trả lời"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/newanswer_view.php:16
 msgid "Select Question"
@@ -9378,7 +9385,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/newanswererror_view.php:3
 msgid "Sorry there are no supported question types in this survey."
-msgstr "Rất tiếc, không có loại câu hỏi không được hỗ trợ trong khảo sát này"
+msgstr "Rất tiếc, không có loại câu hỏi được hỗ trợ trong khảo sát này."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/viewquotas_view.php:9
 msgid "Status"
@@ -9459,15 +9466,15 @@ msgstr "Truy cập"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:41
 msgid "Add or delete groups"
-msgstr "Thêm hoặc xóa nhóm"
+msgstr "Thêm hoặc xoá nhóm"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:41
 msgid "Add or delete questions"
-msgstr "Thêm hoặc xóa câu hỏi"
+msgstr "Thêm hoặc xoá câu hỏi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:41
 msgid "Add or delete subquestions or change their codes"
-msgstr "Thêm hoặc xóa câu hỏi con hoặc thay đổi mã của chúng"
+msgstr "Thêm hoặc xoá câu hỏi phụ hoặc thay đổi mã của chúng"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/firststeps.php:5
 msgid "Add survey"
@@ -9530,7 +9537,7 @@ msgstr "Tạo một nhóm câu hỏi mới trong khảo sát của bạn."
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/firststeps.php:5
 #, php-format
 msgid "Create a new survey clicking on the %s icon in the upper right."
-msgstr "Bạn khảo sát mới bằng cách click vào biểu tượng %s ở phía trên bên trái."
+msgstr "Tạo một khảo sát mới bằng cách nhấn vào biểu tượng %s phía trên phải."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/firststeps.php:7
 msgid "Create one or more questions inside the new question group."
@@ -9554,11 +9561,11 @@ msgstr "Nhãn thời gian?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:46
 msgid "Deactivate Survey"
-msgstr "Khử kích hoạt khảo sát"
+msgstr "Tắt Khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:35
 msgid "Deactivate survey"
-msgstr ""
+msgstr "Tắt khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:9
 msgid "Deactivation"
@@ -9576,7 +9583,7 @@ msgstr "Câu trả lời mặc định"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deleteSurvey_view.php:3
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deleteSurvey_view.php:36
 msgid "Delete survey"
-msgstr "Xóa khảo sát"
+msgstr "Xoá khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/firststeps.php:8
 #, php-format
@@ -9609,7 +9616,7 @@ msgstr "Hết hạn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:30
 msgid "Expire survey"
-msgstr ""
+msgstr "Hết hạn khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:26
 msgid "Full"
@@ -9639,7 +9646,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:21
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:25
 msgid "Languages"
-msgstr "Ngôn ngữ:"
+msgstr "Ngôn ngữ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:12
 msgid "No participant information lost."
@@ -9652,7 +9659,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/copySurvey_view.php:43
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/importSurvey_view.php:48
 msgid "Not imported label sets"
-msgstr "Bộ nhãn không được nhập"
+msgstr "Đã không nhập bộ nhãn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:57
 msgid "Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"
@@ -9680,7 +9687,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:45
 msgid "Please check these settings now, then click the button below."
-msgstr ""
+msgstr "Vui lòng kiểm tra những thiết lập bây giờ, sau đó nhấp vào nút bên dưới."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:134
 msgid "Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
@@ -9742,7 +9749,7 @@ msgstr "Hỗ trợ dự án này - Đóng góp"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:47
 msgid "Survey Has Been Deactivated"
-msgstr "Khảo sát đã tắt"
+msgstr "Khảo sát đã được tắt"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:7
 msgid "Survey does not pass consistency check"
@@ -9770,11 +9777,11 @@ msgstr "Những vần đề sau được tìm thấy :"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/activateSurvey_view.php:43
 msgid "The following settings cannot be changed when the survey is active."
-msgstr ""
+msgstr "Thiết lập sau không thể được thay đổi khi khảo sát được kích hoạt."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:50
 msgid "The responses table has been renamed to: "
-msgstr "Bảng response (phản hồi) được đổi tên thành : "
+msgstr "Bảng phản hồi đã được sửa tên thành:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deactivateSurvey_view.php:51
 msgid "The responses to this survey are no longer available using LimeSurvey."
@@ -9810,7 +9817,7 @@ msgstr "Khảo sát này đã bị xoá."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:76
 msgid "This survey is active - click here to stop this survey."
-msgstr ""
+msgstr "Khảo sát này được kích hoạt - nhấn vào đây để dừng khảo sát này."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/deleteSurvey_view.php:27
 msgid "This survey is active and a responses table exists. If you delete this survey, these responses (and files) will be deleted. We recommend that you export the responses before deleting this survey."
@@ -9818,23 +9825,23 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:65
 msgid "This survey is active but expired."
-msgstr "Khảo sát hoạt động nhưng đã hết hạn."
+msgstr "Khảo sát này được kích hoạt nhưng đã hết hạn."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:69
 msgid "This survey is active but has a start date."
-msgstr "Khảo sát này hoạt động, nhưng có một ngày bắt đầu"
+msgstr "Khảo sát này được kích hoạt nhưng chưa đến ngày bắt đầu."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:80
 msgid "This survey is currently active."
-msgstr "Hiện tại, khảo sát này hoạt động"
+msgstr "Khảo sát này hiện được kích hoạt."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:89
 msgid "This survey is currently not active - click here to activate this survey."
-msgstr "Hiện tại, khảo sát hiện hông hoạt động - click vào đây để bật khảo sát này."
+msgstr "Khảo sát này hiện không được kích hoạt - nhấn vào đây để kích hoạt khảo sát này."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/listSurveys_view.php:93
 msgid "This survey is currently not active."
-msgstr "Hiện tại, khảo sát không hoạt động"
+msgstr "Khảo sát này hiện không được kích hoạt."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/organizeGroupsAndQuestions_view.php:3
 msgid "To reorder questions/questiongroups just drag the question/group with your mouse to the desired position."
@@ -9985,7 +9992,7 @@ msgstr "Bộ nhãn tồn tại:"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:4
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:4
 msgid "Base language:"
-msgstr ""
+msgstr "Ngôn ngữ cơ sở:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:62
 msgid "Bounce Email:"
@@ -10059,7 +10066,7 @@ msgstr "Xoá câu hỏi hiện tại"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:39
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:48
 msgid "Delete current question group"
-msgstr "Xóa nhóm câu hỏi hiện tại"
+msgstr "Xoá nhóm câu hỏi hiện tại"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:112
 msgid "Delete log of syntax Errors"
@@ -10071,7 +10078,7 @@ msgstr "Xóa nhóm này đồng nghĩa với xóa các câu hỏi và các câu 
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:50
 msgid "Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?"
-msgstr "Xóa câu hỏi này cũng sẽ xóa bất kì tùy chọn trả lời và câu hỏi con nào mà nó bao gồm. Bạn có chắc muốn tiếp tục?"
+msgstr "Xoá câu hỏi này cũng sẽ xoá bất kì tuỳ chọn câu hỏi và câu hỏi phụ nào nó bao gồm. Bạn có chắc muốn tiếp tục?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:271
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:108
@@ -10096,7 +10103,7 @@ msgstr "Sửa Nhóm"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:3
 msgid "Edit answer options"
-msgstr "Sửa tùy chọn câu trả lời"
+msgstr "Sửa tuỳ chọn trả lời"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:144
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:222
@@ -10117,7 +10124,7 @@ msgstr "Sửa câu hỏi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:15
 msgid "Edit subquestions"
-msgstr "Sửa câu hỏi con"
+msgstr "Sửa câu hỏi phụ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:129
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:232
@@ -10150,16 +10157,16 @@ msgstr "Nhập câu trả lời của bạn:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:159
 msgid "Enter your subquestions:"
-msgstr "Nhập câu hỏi con của bạn:"
+msgstr "Nhập câu hỏi phụ của bạn:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:23
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:17
 msgid "Error: You are trying to use duplicate answer codes."
-msgstr "Lỗi: Bạn đang dùng mã câu hỏi giống nhau."
+msgstr "Lỗi: Bạn đang cố sử dụng mã câu trả lời trùng lắp."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:9
 msgid "Error: You are trying to use duplicate subquestion codes."
-msgstr "Lỗi: Bạn đang cố sử dụng mã câu hỏi con trùng lắp."
+msgstr "Lỗi: Bạn đang cố sử dụng mã câu hỏi phụ trùng lắp."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/addGroup_view.php:25
 msgid "Error: You have to enter a group title for each language."
@@ -10187,11 +10194,11 @@ msgstr "Xuất câu hỏi này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:60
 msgid "Export this question group"
-msgstr "Xuất nhóm câu hỏi hiện tại"
+msgstr "Xuất nhóm câu hỏi này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:119
 msgid "Export..."
-msgstr ""
+msgstr "Xuất..."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveySummary_view.php:59
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabGeneralEditSurvey_view.php:50
@@ -10253,7 +10260,7 @@ msgstr "Không thể xóa câu hỏi này vì có ít nhất một câu hỏi c�
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:20
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:7
 msgid "Label set browser"
-msgstr "Trình duyệt bộ nhãn"
+msgstr "Trình duyệt bộ nhãn."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/editQuestion_view.php:208
 msgid "Loading..."
@@ -10271,7 +10278,7 @@ msgstr "Bắt buộc:"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:16
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:3
 msgid "New answer option"
-msgstr "Tùy chọn câu trả lời mới"
+msgstr "Tuỳ chọn trả lời mới"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabCopy_view.php:7
 msgid "New survey title:"
@@ -10279,7 +10286,7 @@ msgstr "Tiêu đề khảo sát mới:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:94
 msgid "Next question"
-msgstr ""
+msgstr "Câu hỏi tiếp"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:252
 msgid "Next question group"
@@ -10287,7 +10294,7 @@ msgstr "Nhóm câu hỏi tiếp theo"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:100
 msgid "No next question"
-msgstr ""
+msgstr "Không có câu hỏi tiếp"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:258
 msgid "No next question group"
@@ -10295,7 +10302,7 @@ msgstr "Không có nhóm câu hỏi tiếp theo"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:84
 msgid "No previous question"
-msgstr ""
+msgstr "Không có câu hỏi trước"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:243
 msgid "No previous question group"
@@ -10312,11 +10319,11 @@ msgstr "Tuỳ chọn 'Khác':"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:186
 msgid "Optional Question"
-msgstr "Câu hỏi tùy chọn"
+msgstr "Câu hỏi tuỳ chọn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:275
 msgid "Other questions having conditions on this question:"
-msgstr "Câu hỏi khác có điều kiện trên câu hỏi này:"
+msgstr "Câu hỏi khác có điều kiện dựa trên câu hỏi này:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:195
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:198
@@ -10330,7 +10337,7 @@ msgstr "Vị trí:"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:142
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:135
 msgid "Predefined label sets..."
-msgstr "Định nghĩa trước bộ nhãn..."
+msgstr "Định nghĩa lại bộ nhãn..."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:22
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:27
@@ -10339,11 +10346,11 @@ msgstr "Xem trước Câu hỏi Này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:14
 msgid "Preview current question group"
-msgstr ""
+msgstr "Xem trước nhóm câu hỏi hiện tại"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:78
 msgid "Previous question"
-msgstr ""
+msgstr "Câu hỏi trước"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:239
 msgid "Previous question group"
@@ -10392,15 +10399,15 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:64
 msgid "Questions:"
-msgstr ""
+msgstr "Câu hỏi:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:21
 msgid "Quick-add answers"
-msgstr ""
+msgstr "Thêm nhanh câu trả lời"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:8
 msgid "Quick-add subquestions"
-msgstr "Thêm nhanh câu hỏi con"
+msgstr "Thêm nhanh câu hỏi phụ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:91
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:94
@@ -10431,7 +10438,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:100
 msgid "Reset conditions"
-msgstr ""
+msgstr "Thiết lập lại điều kiện"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabCopy_view.php:16
 msgid "Reset conditions?"
@@ -10491,7 +10498,7 @@ msgstr "Hiện chi tiết của nhóm này"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:288
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:289
 msgid "Show details of this survey"
-msgstr "Hiện chi tiết của kháo sát này"
+msgstr "Hiện chi tiết của khảo sát này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:108
 msgid "Show log of syntax errors"
@@ -10507,11 +10514,11 @@ msgstr "Ngày/Giờ bắt đầu:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:66
 msgid "Subquestion"
-msgstr "Câu hỏi con"
+msgstr "Câu hỏi phụ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:114
 msgid "Subquestion:"
-msgstr "Câu hỏi con:"
+msgstr "Câu hỏi phục:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveySummary_view.php:12
 msgid "Survey URL"
@@ -10565,7 +10572,7 @@ msgstr "Mẫu:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:4
 msgid "This is the base language of your survey and it can't be changed later. You can add more languages after you have created the survey."
-msgstr "Đây là ngôn ngữ gốc của khảo sát của bạn và nó không thể thay đổi sau này. Bạn có thể thêm những ngôn ngữ khác sau khi bạn tạo khảo sát."
+msgstr "Đây là ngôn ngữ cơ sở của khảo sát của bạn và nó không thể được thay đổi sau này. Bạn có thể thêm ngôn ngữ sau khi bạn đã tạo khảo sát."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:9
 msgid "This survey is currently not active"
@@ -10593,7 +10600,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/surveybar_view.php:83
 msgid "Tools"
-msgstr ""
+msgstr "Công cụ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:11
 msgid "Type"
@@ -10626,23 +10633,23 @@ msgstr "Bạn không thể sao chép một câu hỏi nếu khảo sát đang ho
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:173
 msgid "You cannot add/remove subquestions or edit their codes because the survey is active."
-msgstr "Bạn không thể thêm/xóa câu hỏi con hoặc sửa mã của chúng vì khảo sát đang hoạt động."
+msgstr "Bạn không thể thêm/xoá câu hỏi phụ hoặc sửa mã của chúng vì khảo sát đang kích hoạt."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/answerOptions_view.php:19
 msgid "You cannot delete the last answer option."
-msgstr "Bạn không thể xóa tùy chọn câu trả lời cuối cùng"
+msgstr "Bạn không thể xoá tuỳ chọn trả lời cuối cùng."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/subQuestion_view.php:6
 msgid "You cannot delete the last subquestion."
-msgstr "Bạn không thể xóa câu hỏi con cuối cùng."
+msgstr "Bạn không thế xoá câu hỏi phụ cuối cùng."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:220
 msgid "You need to add answer options to this question"
-msgstr "Bạn cần thêm tùy chọn câu trả lời vào câu hỏi này"
+msgstr "Bạn cần thêm tuỳ chọn câu hỏi vào câu hỏi này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/Question/questionbar_view.php:230
 msgid "You need to add subquestions to this question"
-msgstr "Bạn cần thêm câu hỏi con vào câu hỏi này"
+msgstr "Bạn cần thêm câu hỏi phụ vào câu hỏi này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/showSyntaxErrors_view.php:7
 msgid "gid"
@@ -10710,11 +10717,11 @@ msgstr "Cho phép đăng kí công cộng?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:262
 msgid "Are you sure you want to delete the selected entries?"
-msgstr "Bạn có chắc muốn xóa những mục đã chọn?"
+msgstr "Bạn có chắc muốn xoá những mẫu tin đã chọn?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:10
 msgid "Are you sure you want to delete this URL parameter?"
-msgstr ""
+msgstr "Bạn có chắc muốn xoá tham số URL này?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templatesummary_view.php:61
 msgid "Are you sure you want to delete this file?"
@@ -10754,7 +10761,7 @@ msgstr "Tập tin CSS & Javascript"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:105
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabTokens_view.php:26
 msgid "Cannot be changed"
-msgstr "Không thể thay đổi"
+msgstr "Không thể được thay đổi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templatesummary_view.php:32
 msgid "Changes cannot be saved to a standard template."
@@ -10763,7 +10770,7 @@ msgstr "Thay đổi không được lưu vào mẫu chuẩn."
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:108
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:109
 msgid "Completed?"
-msgstr "Đã hoàn tất?"
+msgstr "Hoàn thành?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tab_view.php:10
 msgid "Copy"
@@ -10773,7 +10780,7 @@ msgstr "Sao chép"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:71
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:102
 msgid "Copy Template"
-msgstr "Sao chép mẫu"
+msgstr "Sao chép Mẫu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:80
 msgid "Copy template"
@@ -10785,7 +10792,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:120
 msgid "Create new template"
-msgstr "Tạo mới template"
+msgstr "Tạo mẫu mới"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:118
 msgid "Create new template called:"
@@ -10797,7 +10804,7 @@ msgstr "Tem thời gian?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:261
 msgid "Delete the selected entries"
-msgstr "Xóa mẫu tin đã chọn"
+msgstr "Xoá những mẫu tin đã chọn"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:90
 msgid "Delete this template"
@@ -10809,7 +10816,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:207
 msgid "Do survey"
-msgstr ""
+msgstr "Làm khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:13
 msgid "Edit URL parameter"
@@ -10827,7 +10834,7 @@ msgstr "Đang sửa mẫu '%s' - Tập tin '%s'"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:80
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:81
 msgid "Email status"
-msgstr ""
+msgstr "Trạng thái email"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:123
 msgid "Enable assessment mode?"
@@ -10839,7 +10846,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:67
 msgid "Export Template"
-msgstr "Xuất khẩu mẫu"
+msgstr "Xuất Mẫu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:78
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:97
@@ -10866,7 +10873,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:56
 #, php-format
 msgid "If you want to edit it %s please copy it first%s."
-msgstr ""
+msgstr "Nếu bạn muốn sửa nó %s vui lòng sao chép nó trước %s."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabImport_view.php:11
 msgid "Import survey"
@@ -10874,12 +10881,12 @@ msgstr "Nhập khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:178
 msgid "Invalid email address:"
-msgstr "Địa chỉ email không hợp lệ"
+msgstr "Địa chỉ email không hợp lệ:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:93
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:94
 msgid "Invitation sent?"
-msgstr ""
+msgstr "Gửi lời mời?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPresentation_view.php:110
 msgid "Keyboard-less operation"
@@ -10899,7 +10906,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:118
 msgid "NewTemplate"
-msgstr "NewTemplate"
+msgstr "MẫuMới"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPresentation_view.php:225
 msgid "No (Forced by the system administrator)"
@@ -10915,7 +10922,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:55
 msgid "Note: This is a standard template."
-msgstr ""
+msgstr "Ghi chú: Đây không phải là một mẫu chuẩn."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tab_view.php:6
 msgid "Notification & data management"
@@ -10968,13 +10975,13 @@ msgstr "Vui lòng thay đổi quyền truy cập thư mục của thư mục %s 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:78
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:80
 msgid "Please change the directory permissions of the folders /tmp and /upload/templates in order to enable this option."
-msgstr "Vui lòng thay đổi quyền truy cập thư mục của thư mục/tmp and /upload/templates để bật tùy chọn này."
+msgstr "Vui lòng thay đổi quyền thư mục của /tmp và /upload/templates để mở tuỳ chọn này."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:57
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:70
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:101
 msgid "Please enter the name for the copied template:"
-msgstr "Vui lòng nhập tên của mẫu đã sao chép:"
+msgstr "Vui lòng nhập tên cho mẫu đã được sao chép:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:341
 msgid "Please select at least one participant to be added"
@@ -11012,7 +11019,7 @@ msgstr ""
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:99
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:100
 msgid "Reminder sent?"
-msgstr "Thư nhắc nhở đã gửi?"
+msgstr "Gửi nhắc nhở?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:87
 msgid "Rename this template"
@@ -11020,7 +11027,7 @@ msgstr "Đổi tên template này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:86
 msgid "Rename this template to:"
-msgstr "Đổi tên template này thành:"
+msgstr "Sửa tên mẫu này thành:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tab_view.php:14
 msgid "Resources"
@@ -11036,7 +11043,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:20
 msgid "Responses will not be date stamped."
-msgstr "Trả lời sẽ không được gắn thêm thời gian."
+msgstr "Phản hồi sẽ không được dán nhãn ngày."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:48
 msgid "Responses will not have the IP address logged."
@@ -11055,7 +11062,7 @@ msgstr "Lưu & Mở"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:44
 msgid "Save IP Address?"
-msgstr "Lưu địa chỉ IP?"
+msgstr "Lưu Địa chỉ IP?"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:114
 msgid "Screen:"
@@ -11063,11 +11070,11 @@ msgstr "Màn hình:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabImport_view.php:6
 msgid "Select survey structure file (*.lss, *.csv) or survey archive (*.zip):"
-msgstr ""
+msgstr "Chọn tập tin cấu trúc khảo sát (*.lss, *.csv) hoặc tập tin nén khảo sát (*.zip):"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/email.php:96
 msgid "Send Invitations"
-msgstr "Gửi thư mời"
+msgstr "Gửi Thư mời"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:5
 msgid "Send basic admin notification email to:"
@@ -11087,7 +11094,7 @@ msgstr "Gửi thư mời"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:240
 msgid "Send invitation email to this entry"
-msgstr "Gửi thư mời cho entry này"
+msgstr "Gửi thư mời đến mẫu tin này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:270
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:271
@@ -11101,7 +11108,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:245
 msgid "Send reminder email to this entry"
-msgstr "Gửi thư nhắc nhở đên entry này"
+msgstr "Gửi nhắc nhở đến mẫu tin này"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/emailpost.php:3
 msgid "Sending invitations..."
@@ -11205,7 +11212,7 @@ msgstr "Hiện màn hình chào?"
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:121
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:130
 msgid "Sort by: "
-msgstr "Sắp xếp theo: "
+msgstr "Sắp xếp bởi:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templatesummary_view.php:13
 msgid "Standard files:"
@@ -11213,7 +11220,7 @@ msgstr "Tập tin chuẩn:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/email.php:77
 msgid "Subject"
-msgstr "Tiêu đề"
+msgstr "Chủ đề"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPublication_view.php:55
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPublication_view.php:61
@@ -11236,7 +11243,7 @@ msgstr "Xem lại mẫu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:43
 msgid "Template editor"
-msgstr ""
+msgstr "Trình soạn thảo mẫu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPresentation_view.php:46
 msgid "Template preview image"
@@ -11261,15 +11268,15 @@ msgstr "Người tham gia này đã làm khảo sát này."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/email.php:8
 msgid "This survey is not yet activated and so your participants won't be able to fill out the survey."
-msgstr "Khảo sát này chưa được kích hoạt và người tham gia của bạn sẽ không thể điền vào khảo sát."
+msgstr "Khảo sát này chưa được kích hoạt nên người tham gia của bạn sẽ không thể điền khảo sát."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:104
 msgid "Timings will be saved."
-msgstr ""
+msgstr "Thời gian sẽ được lưu."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabNotification_view.php:103
 msgid "Timings will not be saved."
-msgstr ""
+msgstr "Thời gian sẽ không được lưu."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/dummytokenform.php:11
 msgid "Token length"
@@ -11320,7 +11327,7 @@ msgstr "Có giá trị đến"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/browse.php:234
 msgid "View/Update last response"
-msgstr ""
+msgstr "Xem/Cập nhật phả hồi cuối cùng"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/email.php:8
 msgid "Warning!"
@@ -11344,7 +11351,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/survey/subview/tabPanelIntegration_view.php:11
 msgid "You have to enter a valid parameter name."
-msgstr ""
+msgstr "Bạn phải nhập một tên tham số hợp lệ."
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:57
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/templates/templateeditorbar_view.php:70
@@ -11362,15 +11369,15 @@ msgstr "đến khi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/user/personalsettings.php:32
 msgid "(Autodetect)"
-msgstr ""
+msgstr "(Tự nhận diện)"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/managetokenattributes.php:21
 msgid "<no data>"
-msgstr "<không có dữ liệu>"
+msgstr "<không dữ liệu>"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/managetokenattributes.php:42
 msgid "Add fields"
-msgstr "Thêm trường:"
+msgstr "Thêm trường"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/managetokenattributes.php:33
 msgid "Add token attributes"
@@ -11464,7 +11471,7 @@ msgstr "Trạng thái Email"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/managetokenattributes.php:4
 msgid "Example data"
-msgstr "Dữ liệu mẫu"
+msgstr "Dữ liệu ví dụ"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/exportdialog.php:31
 msgid "Export tokens"
@@ -11476,7 +11483,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/managetokenattributes.php:4
 msgid "Field description"
-msgstr "Mô tả trường:"
+msgstr "Mô tả trường"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/exportdialog.php:27
 msgid "Filter by email address"
@@ -11520,7 +11527,7 @@ msgstr "Ngôn ngữ giao diện"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/exportdialog.php:11
 msgid "Invitation status:"
-msgstr "Trạng thái mời:"
+msgstr "Trạng thái lời mời:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/exportdialog.php:13
 msgid "Invited"
@@ -11552,7 +11559,7 @@ msgstr "Số thứ tự của khảo sát"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/exportdialog.php:19
 msgid "No reminder(s) sent"
-msgstr "Không có thử nhắc nhở đã gửi"
+msgstr "Không có nhắc nhở đã gửi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/exportdialog.php:14
 msgid "Not invited"
@@ -11588,11 +11595,11 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/exportdialog.php:16
 msgid "Reminder status:"
-msgstr "Trạng thái nhắc nhỏ:"
+msgstr "Trạng thái nhắc nhở:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/exportdialog.php:18
 msgid "Reminder(s) sent"
-msgstr "Thư nhắc nhở đã gửi"
+msgstr "Nhắc nhở đã gửi"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/tokenwarning.php:43
 msgid "Restore"
@@ -11727,7 +11734,7 @@ msgstr ""
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/user/editusers.php:1
 msgid "User control"
-msgstr "Điều khiển người dùng"
+msgstr "Điều kiển người dùng"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/token/tokenform.php:39
 msgid "You can leave this blank, and automatically generate tokens using 'Generate Tokens'"
@@ -11835,7 +11842,7 @@ msgstr "Sửa Nhóm Người dùng Hiện tại"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/user/setusertemplates.php:2
 msgid "Edit template permissions"
-msgstr "Sửa điều khoản mẫu"
+msgstr "Sửa quyền mẫu"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/usergroup/editUserGroup_view.php:1
 #, php-format
@@ -11925,11 +11932,11 @@ msgstr "Gửi tôi một bản sao chép:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/user/setuserrights.php:6
 msgid "Set User Rights"
-msgstr "Thiết lập quyền người dùng"
+msgstr "Thiết lập Quyền Người dùng"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/user/setusertemplates.php:7
 msgid "Set templates that this user may access"
-msgstr ""
+msgstr "Thiết lập quyền mẫu để người dùng có thể truy cập"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/installer/dbconfig_view.php:48
 msgid "Set this to the IP/net location of your database server. In most cases \"localhost\" will work."
@@ -11941,7 +11948,7 @@ msgstr "Chủ đề:"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/user/setuserrights.php:30
 msgid "SuperAdministrator"
-msgstr ""
+msgstr "Người Siêu Quản trị"
 
 #: D:\web\xampp\htdocs\limesurvey_ci/application/views/admin/user/setusertemplates.php:23
 msgid "Template name"
