@@ -16,7 +16,7 @@
 
             // List surveys to test here
             $surveys = array(
-                768959,
+                35966,
 //                37171,
 //                27246,
 //                26834,
@@ -27,7 +27,7 @@
             {
                 print '<h3>Starting survey ' . $surveyid . "</h3>";
                 $now = microtime(true);
-                LimeExpressionManager::StartSurvey($surveyid, 'survey', false, true);
+                LimeExpressionManager::StartSurvey($surveyid, 'group', false, true);
                 print '<b>[StartSurvey() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
 
                 while(true) {

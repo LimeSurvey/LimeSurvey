@@ -1978,6 +1978,7 @@ class LimeExpressionManager {
             case 'group':
                 // First validate the current group
                 $LEM->StartProcessingPage();
+                $LEM->ProcessCurrentResponses();
                 $message = '';
                 while (true)
                 {
@@ -1988,6 +1989,8 @@ class LimeExpressionManager {
                             'at_start'=>true,
                             'finished'=>false,
                             'message'=>$message,
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
                         );
                     }
 
@@ -2008,6 +2011,8 @@ class LimeExpressionManager {
                             'gseq'=>$LEM->currentGroupSeq,
                             'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
                             'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
                         );
                     }
                 }
@@ -2119,6 +2124,7 @@ class LimeExpressionManager {
             case 'group':
                 // First validate the current group
                 $LEM->StartProcessingPage();
+                $LEM->ProcessCurrentResponses();
                 if (!$force)
                 {
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,$debug);
@@ -2131,6 +2137,8 @@ class LimeExpressionManager {
                             'gseq'=>$LEM->currentGroupSeq,
                             'mandViolation'=>$result['mandViolation'],
                             'valid'=>$result['valid'],
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
                         );
                     }
                 }
@@ -2146,6 +2154,8 @@ class LimeExpressionManager {
                             'gseq'=>$LEM->currentGroupSeq,
                             'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
                             'valid'=>(isset($result['valid']) ? $result['valid'] : false),
+                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                         );
                     }
 
@@ -2165,6 +2175,8 @@ class LimeExpressionManager {
                             'gseq'=>$LEM->currentGroupSeq,
                             'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
                             'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
                         );
                     }
                 }
@@ -2288,6 +2300,8 @@ class LimeExpressionManager {
         $debug_message = '';
         $messages = array();
         $currentQset = array();
+        $unansweredSQs = array();
+        $invalidSQs = array();
 
         for ($i=$groupSeqInfo['qstart'];$i<=$groupSeqInfo['qend']; ++$i)
         {
@@ -2307,7 +2321,15 @@ class LimeExpressionManager {
             }
             $currentQset[] = $qStatus;
             $messages[] = $qStatus['message'];
+            if (strlen($qStatus['unansweredSQs']) > 0) {
+                $unansweredSQs[] = $qStatus['unansweredSQs'];
+            }
+            if (strlen($qStatus['invalidSQs']) > 0) {
+                $invalidSQs[] = $qStatus['invalidSQs'];
+            }
         }
+        $unansweredSQList = implode('|',$unansweredSQs);
+        $invalidSQList = implode('|',$invalidSQs);
 
         // Done processing all questions/sub-questions in the potentially relevant group
         // Now check whether the group as a whole is relevant, valid, and/or hidden
@@ -2333,7 +2355,8 @@ class LimeExpressionManager {
                 // Validation logic needs to happen before trying to move to the next group
                 if ($debug)
                 {
-                    $debug_message .= "----At least one relevant question was invalid, so re-show this group<br/>\n";
+                    $debug_message .= "**At least one relevant question was invalid, so re-show this group<br/>\n";
+                    $debug_message .= "**Validity Violators: " . implode(', ', explode('|',$invalidSQList)) . "<br/>\n";
                 }
             }
             if ($gmandViolation)
@@ -2342,7 +2365,8 @@ class LimeExpressionManager {
                 // Mandatory logic needs to happen before trying to move to the next group
                 if ($debug)
                 {
-                    $debug_message .= "----At least one relevant question was mandatory but unanswered, so re-show this group<br/>\n";
+                    $debug_message .= "**At least one relevant question was mandatory but unanswered, so re-show this group<br/>\n";
+                    $debug_message .= '**Mandatory Violators: ' . implode(', ', explode('|',$unansweredSQList)). "<br/>\n";
                 }
             }
 
@@ -2365,7 +2389,7 @@ class LimeExpressionManager {
                         if ($debug)
                         {
                             $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
-                            $debug_message .= '----** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br/>\n";
+                            $debug_message .= '** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br/>\n";
                         }
                     }
                     // NULL all irrelevant questions
@@ -2400,7 +2424,7 @@ class LimeExpressionManager {
 
                     if ($debug)
                     {
-                        $debug_message .= '----** Page is relevant but hidden, so NULL irrelevant values and save relevant Equation results:</br>' . $query . "<br/>\n";
+                        $debug_message .= '** Page is relevant but hidden, so NULL irrelevant values and save relevant Equation results:</br>' . $query . "<br/>\n";
                     }
                 }
             }
@@ -2440,7 +2464,7 @@ class LimeExpressionManager {
 
                 if ($debug)
                 {
-                    $debug_message .= '----** Page is irrelevant, so NULL all questions in this group:<br/>' . $query . "<br/>\n";
+                    $debug_message .= '** Page is irrelevant, so NULL all questions in this group:<br/>' . $query . "<br/>\n";
                 }
             }
         }
@@ -2454,6 +2478,8 @@ class LimeExpressionManager {
             'mandViolation' => $gmandViolation,
             'valid' => $gvalid,
             'qset' => $currentQset,
+            'unansweredSQs' => $unansweredSQList,
+            'invalidSQs' => $invalidSQList,
         );
 
         return $currentGroupInfo;
@@ -2803,6 +2829,7 @@ class LimeExpressionManager {
         $qvalid=true;   // assume valid unless discover otherwise
         $hasValidationEqn=false;
         $prettyPrintValidEqn='';    //  assume no validation eqn by default
+        // TODO - when there are multiple questions which each use the same validation, need to know which sub-questions are invalid
         if (isset($LEM->qid2validationEqn[$qid]))
         {
             $hasValidationEqn=true;
@@ -2835,6 +2862,7 @@ class LimeExpressionManager {
         if (!$qvalid)
         {
             $gvalid=false;  //so know of at least one validation error for the group
+            $invalidSQs = $LEM->qid2code[$qid]; // TODO - currently invalidates all - should only invalidate those that truly fail validation rules.
         }
 
         if ($debug)
@@ -2918,6 +2946,7 @@ class LimeExpressionManager {
             'valid' => $qvalid,
             'validEqn' => $prettyPrintValidEqn,
             'validTip' => $prettyPrintValidTip,
+            'invalidSQs' => (isset($invalidSQs) ? $invalidSQs : ''),
             'relevantSQs' => implode('|',$relevantSQs),
             'irrelevantSQs' => implode('|',$irrelevantSQs),
             'subQrelEqn' => implode('<br/>',$prettyPrintSQRelEqns),

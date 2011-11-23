@@ -109,11 +109,17 @@ else
     //Now, we check mandatory questions if necessary
     //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 //    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
-    $notanswered = $moveResult['mandViolation'];
+    $unansweredSQList = $moveResult['unansweredSQs'];
+    if (strlen($unansweredSQList) > 0 ) {
+        $notanswered = explode('|',$unansweredSQList);
+    }
 
     //CHECK INPUT
 //    $notvalidated=checkpregs($move,$backok);
-    $notvalidated = !$moveResult['valid'];
+    $invalidSQList = $moveResult['invalidSQs'];
+    if (strlen($invalidSQList) > 0) {
+        $notvalidated = explode('|',$invalidSQList);
+    }
 
     // CHECK UPLOADED FILES
     // TMSW - Move this into LEM::NavigateForwards
@@ -158,7 +164,7 @@ else
 //    }
 
     //SUBMIT ###############################################################################
-    if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || !$notanswered) && (!isset($notvalidated) || !$notvalidated ) && (!isset($filenotvalidated) || !$filenotvalidated))
+    if ((isset($move) && $move == "movesubmit")  && (!isset($notanswered) || is_array($notanswered)) && (!isset($notvalidated) || is_array($notvalidated) ) && (!isset($filenotvalidated) || !$filenotvalidated))
     {
         setcookie ("limesurvey_timers", "", time() - 3600);// remove the timers cookies
         if ($thissurvey['refurl'] == "Y")
@@ -533,7 +539,7 @@ if (isset($popup)) {echo $popup;}
 if (isset($vpopup)) {echo $vpopup;}
 if (isset($fpopup)) {echo $fpopup;}
 
-// echo $LEMmsg;
+ echo $LEMmsg;
 
 //foreach(file("$thistpl/startpage.pstpl") as $op)
 //{

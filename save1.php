@@ -124,13 +124,12 @@
 //    $notvalidated=checkpregs($move,$backok);
 //    $filenotvalidated = checkUploadedFileValidity($move, $backok);
 
-//    if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) && (!is_array($filenotvalidated) || count($filenotvalidated) == 0))
     $moveResult = LimeExpressionManager::NavigateForwards(false,true);  // TODO -needed?  Does validation
-    $notanswered = $moveResult['mandViolation'];
-    $notvalidated = !$moveResult['valid'];
+    $notanswered = explode('|',$moveResult['unansweredSQs']);
+    $notvalidated = explode('|',$moveResult['invalidSQs']);
     $filenotvalidated = checkUploadedFileValidity($move, $backok);
 
-    if (!$notanswered && !$notvalidated && !$filenotvalidated)
+    if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) && (!is_array($filenotvalidated) || count($filenotvalidated) == 0))
     {
         $bFinalizeThisAnswer = true;
     }
