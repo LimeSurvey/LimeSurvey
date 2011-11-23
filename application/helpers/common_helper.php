@@ -727,7 +727,6 @@ function getQidNext($surveyid, $gid, $qid)
 
 function get2post($url)
 {
-    $CI= &get_instance();
     $url = preg_replace('/&amp;/i','&',$url);
     $stack = explode('?',$url);
     $calledscript = array_shift($stack);
@@ -748,7 +747,7 @@ function get2post($url)
     //	$Valuelist = "[" . implode(",",$arrayVal) . "]";
     $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
     $Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
-    $callscript = "sendPost('$calledscript','".$CI->session->userdata('checksessionpost')."',$Paramlist,$Valuelist);";
+    $callscript = "sendPost('$calledscript','".Yii::app()->session['checksessionpost']."',$Paramlist,$Valuelist);";
     return $callscript;
 }
 

@@ -22,16 +22,66 @@
 * @version $Id: survey.php 11349 2011-11-09 21:49:00Z tpartner $
 * @access public
 */
-class survey extends Survey_Common_Controller {
+class SurveyAction extends Survey_Common_Action {
 
     /**
-    * survey::__construct()
-    * Constructor
-    * @return
+	* Base function
+	*
+	* This functions receives the form data from listsurveys and executes
+	* according mass actions, like survey deletions, etc.
+    * Only superadmins are allowed to do this!
+	*
+    * @access public
+    * @return void
     */
-    function __construct()
-    {
-        parent::__construct();
+   public function run($action = '', $sid = 0)
+   {
+
+        if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+        {
+            die();
+        }
+		if (empty($action) && !empty($_POST['action']))
+		{
+			$sSurveysAction = $_POST['action'];
+		} else {
+			$sSurveysAction = $action;
+		}
+		if (empty($sid) && !empty($_POST['sid']))
+		{
+			$iSurveyIDs = (array) $_POST['sid'];
+		} else {
+			$iSurveyIDs = (array) $sid;
+		}
+		$iSurveyIDs = array_map('intval', $iSurveyIDs);
+		$iSurveyIDs = array_filter($iSurveyIDs);
+		$clang = $this->getController()->lang;
+        $actioncount = 0;
+		$message = $clang->gT('You did not choose any surveys.');
+		foreach ($iSurveyIDs as $iSurveyID) {
+			if (Survey::model()->findByPk($iSurveyID) === null)
+				continue;
+			switch ($sSurveysAction){
+				case 'confirmdelete':
+					$this->getController()->_getAdminHeader();
+					$this->getController()->_showadminmenu();
+					$this->getController()->render("/admin/survey/deleteSurvey_view", array('clang' => $clang, 'surveyid' => $sid));
+					$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+					return;
+				case 'delete': $this->_deleteSurvey($iSurveyID);
+					$message=$clang->gT('%s survey(s) were successfully deleted.');
+					$actioncount++;
+					break;
+				case 'expire': if ($this->_expireSurvey($iSurveyID)) $actioncount++;;
+					$message=$clang->gT('%s survey(s) were successfully expired.');
+					break;
+				case 'archive': Yii::app()->session['sids'] = $aSurveyID;
+					redirect('admin/export/surveyarchives');
+					break;
+			}
+		}
+        Yii::app()->session['flashmessage'] = sprintf($message, $actioncount);
+        $this->getController()->render('admin/survey/listsurveys');
     }
 
     /**
@@ -53,7 +103,7 @@ class survey extends Survey_Common_Controller {
         self::_getAdminHeader();
         self::_showadminmenu();;
         $this->load->helper('surveytranslator');
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
 
         $esrow = self::_fetchSurveyInfo('newsurvey');
         $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
@@ -67,7 +117,7 @@ class survey extends Survey_Common_Controller {
         $data = array_merge($data,self::_tabTokens($esrow));
         $this->load->view('admin/survey/newSurvey_view',$data);
         self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -100,7 +150,7 @@ class survey extends Survey_Common_Controller {
 
         $this->load->helper('text');
         $this->load->helper('surveytranslator');
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
 
         $esrow = array();
         $editsurvey = '';
@@ -124,7 +174,7 @@ class survey extends Survey_Common_Controller {
         $data['action'] = "editsurveysettings";
         $this->load->view('admin/survey/editSurvey_view',$data);
         self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -134,7 +184,7 @@ class survey extends Survey_Common_Controller {
     */
     function importsurveyresources()
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         $action = $this->input->post('action');
         $surveyid = $this->input->post('sid');
         self::_getAdminHeader();
@@ -335,7 +385,7 @@ class survey extends Survey_Common_Controller {
         self::_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -380,7 +430,7 @@ class survey extends Survey_Common_Controller {
 
         $this->load->view('admin/survey/showSyntaxErrors_view',$data);
         self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     function resetsyntaxerrorlog($surveyid)
@@ -410,7 +460,7 @@ class survey extends Survey_Common_Controller {
 
         $this->load->view('admin/survey/resetSyntaxErrorLog_view');
         self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -443,7 +493,7 @@ class survey extends Survey_Common_Controller {
             self::_loadEndScripts();
 
 
-            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+            self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
         }
         else
@@ -463,7 +513,7 @@ class survey extends Survey_Common_Controller {
                 self::_loadEndScripts();
 
 
-                self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
             }
             else
@@ -481,7 +531,7 @@ class survey extends Survey_Common_Controller {
                     self::_loadEndScripts();
 
 
-                    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                    self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
                 }
 
@@ -519,7 +569,7 @@ class survey extends Survey_Common_Controller {
         {
             $postsid = $surveyid;
         }
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         $date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
         $_POST = $this->input->post();
         if (!isset($_POST['ok']) || !$_POST['ok'])
@@ -624,7 +674,7 @@ class survey extends Survey_Common_Controller {
         self::_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -664,7 +714,7 @@ class survey extends Survey_Common_Controller {
             $failedgroupcheck = checkGroup($iSurveyID);
             $failedcheck = checkQuestions($iSurveyID, $iSurveyID, $qtypes);
 
-            $data['clang'] = $this->limesurvey_lang;
+            $data['clang'] = $this->getController()->lang;
             $data['surveyid'] =  $iSurveyID;
             $data['$failedcheck'] = $failedcheck;
             $data['failedgroupcheck'] = $failedgroupcheck;
@@ -692,7 +742,7 @@ class survey extends Survey_Common_Controller {
         self::_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -775,7 +825,7 @@ class survey extends Survey_Common_Controller {
     */
     function listsurveys()
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         $this->load->helper('database');
         $this->load->helper('surveytranslator');
 
@@ -965,45 +1015,8 @@ class survey extends Survey_Common_Controller {
         $data['imageurl']=$this->config->item('imageurl');
         $this->load->view('admin/survey/listSurveys_view',$data);
         self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
-
-    /**
-    * This functions receives the form data from listsurveys and executes accroding mass actions, like survey deletions, etc.
-    * Only superadmins are allowed to do this!
-    */
-
-    function surveyactions()
-    {
-        if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
-        {
-            die();
-        }
-        $aSurveyIDs=$this->input->post('surveyids');
-        $sSurveysAction=$this->input->post('surveysaction');
-        $actioncount=0; $message=$this->limesurvey_lang->gT('You did not choose any surveys.');
-        if (is_array($aSurveyIDs))
-            foreach($aSurveyIDs as $iSurveyID)
-            {
-                $iSurveyID= (int)$iSurveyID;
-                switch ($sSurveysAction){
-                    case 'delete': $this->_deleteSurvey($iSurveyID);
-                        $message=$this->limesurvey_lang->gT('%s survey(s) were successfully deleted.');
-                        $actioncount++;
-                        break;
-                    case 'expire': if ($this->_expireSurvey($iSurveyID)) $actioncount++;;
-                        $message=$this->limesurvey_lang->gT('%s survey(s) were successfully expired.');
-                        break;
-                    case 'archive': $this->session->set_flashdata('sids', $aSurveyIDs);
-                        redirect('admin/export/surveyarchives');
-                        break;
-                }
-        }
-        $this->session->set_userdata('flashmessage',sprintf($message, $actioncount));
-        redirect('admin/survey/listsurveys');
-    }
-
-
 
     /**
     * survey::delete()
@@ -1012,38 +1025,38 @@ class survey extends Survey_Common_Controller {
     */
     function delete()
     {
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-        self::_getAdminHeader();
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->getController()->_getAdminHeader();
         $data['surveyid'] = $surveyid = (int) $this->input->post('sid');
-        if (!$this->input->post('deleteok'))
+        if (!$_POST['deleteok'])
         {
-            self::_showadminmenu($surveyid);
-            self::_surveybar($surveyid);
+            $this->getController()->_showadminmenu($surveyid);
+            $this->getController()->_surveybar($surveyid);
         }
 
         if(bHasSurveyPermission($surveyid,'survey','delete'))
         {
-            $data['deleteok'] = $deleteok = $this->input->post('deleteok');
-            $data['clang'] = $this->limesurvey_lang;
-            $data['link'] = site_url("admin/survey/delete");
+            $data['deleteok'] = $deleteok = $_POST['deleteok'];
+            $data['clang'] = $this->getController()->lang;
+            $data['link'] = Yii::app()->createUrl("admin/survey/delete");
 
 
             if (!(!isset($deleteok) || !$deleteok))
             {
-                self::_deleteSurvey($surveyid);
-                self::_showadminmenu(false);
+                $this->getController()->_deleteSurvey($surveyid);
+                $this->getController()->_showadminmenu(false);
             }
-            $this->load->view('admin/survey/deleteSurvey_view',$data);
+            $this->getController()->render('/admin/survey/deleteSurvey_view',$data);
         }
         else {
             //include('access_denied.php');
             $finaldata['display'] = access_denied("editsurvey",$surveyid);
-            $this->load->view('survey_view',$finaldata);
+            $this->getController()->render('survey_view',$finaldata);
         }
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $data['clang']->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -1056,7 +1069,7 @@ class survey extends Survey_Common_Controller {
     {
         $surveyid = sanitize_int($surveyid);
 
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
 
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -1081,10 +1094,10 @@ class survey extends Survey_Common_Controller {
             foreach ($grplangs as $grouplang)
             {
                 // this one is created to get the right default texts fo each language
-                $this->load->library('Limesurvey_lang',array($grouplang));
+                $this->load->library('lang',array($grouplang));
                 $this->load->helper('database');
                 $this->load->helper('surveytranslator');
-                $bplang = $this->limesurvey_lang;//new limesurvey_lang($grouplang);
+                $bplang = $this->getController()->lang;//new lang($grouplang);
                 $esquery = "SELECT * FROM ".$this->db->dbprefix."surveys_languagesettings WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
                 $esresult = db_execute_assoc($esquery); //Checked
                 $esrow = $esresult->row_array();
@@ -1133,7 +1146,7 @@ class survey extends Survey_Common_Controller {
             //echo $editsurvey;
             $finaldata['display'] = $editsurvey;
             $this->load->view('survey_view',$finaldata);
-            //self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+            //self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
         }
         else
@@ -1146,7 +1159,7 @@ class survey extends Survey_Common_Controller {
         self::_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -1167,7 +1180,7 @@ class survey extends Survey_Common_Controller {
             {
                 $sTransLinks = true;
             }
-            $clang = $this->limesurvey_lang;
+            $clang = $this->getController()->lang;
 
             // Start the HTML
             if ($action == 'importsurvey')
@@ -1346,7 +1359,7 @@ class survey extends Survey_Common_Controller {
         self::_getAdminHeader();
         self::_showadminmenu();;
         $this->load->view('admin/survey/importSurvey_view',$aData);
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -1419,7 +1432,7 @@ class survey extends Survey_Common_Controller {
     function _generalTabNewSurvey()
     {
         global $siteadminname,$siteadminemail;
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
 
         $condition = array('users_name' => $this->session->userdata('user'));
         $fieldstoselect = array('full_name', 'email');
@@ -1456,7 +1469,7 @@ class survey extends Survey_Common_Controller {
     function _generalTabEditSurvey($surveyid,$esrow)
     {
         global $siteadminname,$siteadminemail;
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         $data['action'] = "editsurveysettings";
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
@@ -1472,7 +1485,7 @@ class survey extends Survey_Common_Controller {
     */
     function _tabPresentationNavigation($esrow)
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         global $showXquestions,$showgroupinfo,$showqnumcode;
 
         $this->load->helper('globalsettings');
@@ -1497,7 +1510,7 @@ class survey extends Survey_Common_Controller {
     */
     function _tabPublicationAccess($esrow)
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
         $startdate='';
         if (trim($esrow['startdate']) != '') {
@@ -1529,7 +1542,7 @@ class survey extends Survey_Common_Controller {
     */
     function _tabNotificationDataManagement($esrow)
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
 
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
@@ -1546,7 +1559,7 @@ class survey extends Survey_Common_Controller {
     */
     function _tabTokens($esrow)
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
 
         $data['clang'] = $clang;
         $data['esrow'] = $esrow;
@@ -1592,7 +1605,7 @@ class survey extends Survey_Common_Controller {
     */
     function _tabResourceManagement($surveyid)
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         global $sCKEditorURL;
         // TAB Uploaded Resources Management
         $ZIPimportAction = " onclick='if (validatefilename(this.form,\"".$clang->gT('Please select a file to import!','js')."\")) { this.form.submit();}'";
@@ -1621,7 +1634,7 @@ class survey extends Survey_Common_Controller {
         {
             die();
         }
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         $this->session->set_userdata('flashmessage',$clang->gT("The survey was successfully expired by setting an expiration date in the survey settings."));
         _expireSurvey($iSurveyID);
         $this->load->model('surveys_model');
@@ -1687,9 +1700,8 @@ class survey extends Survey_Common_Controller {
     */
     function _deleteSurvey($iSurveyID)
     {
-        $this->load->model('surveys_model');
-        $this->surveys_model->deleteSurvey($iSurveyID);
-        rmdirr($this->config->item("uploaddir").'/surveys/'.$iSurveyID);
+		Survey::model()->deleteByPk($iSurveyID);
+        rmdirr(Yii::app()->getConfig("uploaddir").'/surveys/'.$iSurveyID);
     }
 
     /**
@@ -1814,7 +1826,7 @@ class survey extends Survey_Common_Controller {
             $sWelcome=fix_FCKeditor_text($sWelcome);
 
             // Load default email templates for the chosen language
-            $oLanguage = new limesurvey_lang(array($this->input->post('language')));
+            $oLanguage = new lang(array($this->input->post('language')));
             $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
             unset($oLanguage);
 
@@ -1856,7 +1868,7 @@ class survey extends Survey_Common_Controller {
 
             $this->load->model('surveys_languagesettings_model');
             $this->surveys_languagesettings_model->insertNewSurvey($aInsertData);
-            $this->session->set_userdata('flashmessage',$this->limesurvey_lang->gT("Survey was successfully added."));
+            $this->session->set_userdata('flashmessage',$this->getController()->lang->gT("Survey was successfully added."));
 
             // Update survey permissions
             $this->load->model('survey_permissions_model');

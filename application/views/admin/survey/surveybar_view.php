@@ -80,9 +80,9 @@
                         <?php } ?>
                 </ul></li>
             <li><a href="#">
-                    <img src='<?php echo $imageurl;?>/tools.png' name='SorveyTools' alt='<?php echo $clang->gT("Tools");?>' /></a><ul>
+                    <img src='<?php echo $imageurl;?>/tools.png' name='SurveyTools' alt='<?php echo $clang->gT("Tools");?>' /></a><ul>
                     <?php if ($surveydelete) { ?>
-                        <li><a href="#" onclick="<?php echo $this->createUrl("admin/survey/delete")."?action=deletesurvey&amp;sid={$surveyid}";?>">
+                        <li><a href="<?php echo $this->createUrl("admin/survey/delete")."?action=confirmdelete&amp;sid={$surveyid}";?>">
                             <img src='<?php echo $imageurl;?>/delete_30.png' name='DeleteSurvey' alt=''/> <?php echo $clang->gT("Delete survey");?></a></li>
                         <?php } ?>
                     <?php if ($surveytranslate) {
