@@ -65,7 +65,8 @@
      	$sqrq = Questions::model()->findAllByAttributes(array('qid' => $qid, 'language' => $baselang));
     	$data['sqct'] = $sqct = count($sqrq);
 
-     	$qrresult = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $baselang));
+     	$qrresult = Questions::model()->findAllByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $surveyid, 'language' => $baselang));
+
         $questionsummary = "<div class='menubar'>\n";
 
         // Check if other questions in the Survey are dependent upon this question
@@ -83,7 +84,7 @@
 
         foreach ($qrresult as $qrrow)
         {
-        	$qrrow = $qrrow->attributes();
+        	$qrrow = $qrrow->attributes;
             $qrrow = array_map('FlattenText', $qrrow);
             if(bHasSurveyPermission($surveyid,'surveycontent','read'))
             {
@@ -116,7 +117,7 @@
             $data['clang'] = $clang;
             $data['qrrow'] = $qrrow;
             $data['baselang'] = $baselang;
-            $aAttributesWithValues=Question::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $surveyid, $baselang);
+            $aAttributesWithValues=Questions::model()->getAdvancedSettingsWithValues($qid, $qrrow['type'], $surveyid, $baselang);
             $DisplayArray=array();
             foreach ($aAttributesWithValues as $aAttribute)
             {
@@ -150,10 +151,11 @@
                 $data['relevance'] = LimeExpressionManager::GetLastPrettyPrintExpression();
             }
             $data['advancedsettings']=$DisplayArray;
-
+			$data['condarray'] = $condarray;
             $questionsummary .= $this->getController()->render("/admin/survey/Question/questionbar_view",$data,true);
         }
         $finaldata['display'] = $questionsummary;
+
         $this->getController()->render('/survey_view',$finaldata);
      }
 
@@ -376,8 +378,6 @@
         $data['GidNext'] = $GidNext = getGidNext($surveyid, $gid);
 
         $this->getController()->render("/admin/survey/surveybar_view",$data);
-
-
     }
 
 	/**

@@ -1,12 +1,12 @@
 <br />
 <script type='text/javascript'>
-    var getuserurl = '<?php echo site_url('admin/survey/ajaxgetusers'); ?>';
-    var ownerediturl = '<?php echo site_url('admin/survey/ajaxowneredit'); ?>';
+    var getuserurl = '<?php echo $this->createUrl('admin/survey/sa/ajaxgetusers'); ?>';
+    var ownerediturl = '<?php echo $this->createUrl('admin/survey/sa/ajaxowneredit'); ?>';
     sConfirmationDeleteMessage='<?php $clang->eT("Are you sure you want to delete these surveys?",'js');?>';
     sConfirmationExpireMessage='<?php $clang->eT("Are you sure you want to expire these surveys?",'js');?>';
     sConfirmationArchiveMessage='<?php $clang->eT("This function creates a ZIP archive of several survey archives and can take some time - please be patient! Do you want to contine?",'js');?>';
 </script>
-<form action="<?php echo site_url('admin/survey/surveyactions');?>" id='frmListSurveys' method='post'>
+<form action="<?php echo $this->createUrl('admin/survey/sa/surveyactions');?>" id='frmListSurveys' method='post'>
     <table class='listsurveys'>
         <thead>
             <tr>
@@ -72,7 +72,7 @@
                                 {
                                     if ($aSurveyEntry['mayupdate'])
                                     {?>
-                                    <a href="<?php echo site_url('admin/survey/deactivate/'.$aSurveyEntry['surveyid']);?>">
+                                    <a href="<?php echo $this->createUrl('admin/survey/deactivate/'.$aSurveyEntry['surveyid']);?>">
                                         <img src='<?php echo $imageurl;?>/active.png' alt='<?php $clang->eT("This survey is active - click here to stop this survey.");?>'/>
                                     </a> <?php
                                     } else
@@ -85,7 +85,7 @@
                                 {
                                     if ( $aSurveyEntry['questioncount'] && $aSurveyEntry['mayupdate'] )
                                     {?>
-                                    <a href="<?php echo site_url('admin/survey/activate/'.$aSurveyEntry['surveyid']);?>">
+                                    <a href="<?php echo $this->createUrl('admin/survey/sa/activate/surveyid/'.$aSurveyEntry['surveyid']);?>">
                                         <img src='<?php echo $imageurl;?>/inactive.png' title='' alt='<?php $clang->eT("This survey is currently not active - click here to activate this survey.");?>' />
                                     </a><?php
                                     } else
@@ -98,7 +98,7 @@
                         <td align='center'><a href='<?php echo $aSurveyEntry['viewurl'];?>'><?php echo $aSurveyEntry['surveyid'];?></a></td>
                         <td align='left'><a href='<?php echo $aSurveyEntry['viewurl'];?>'><?php echo $aSurveyEntry['sSurveyTitle'];?></a></td>
                         <td><?php echo $aSurveyEntry['datecreated'];?></td>
-                        <td><?php echo $aSurveyEntry['ownername'];?> (<a href='#' class='ownername_edit' id='ownername_edit_<?php echo $aSurveyEntry['iSurveyID'];?>'>Edit</a>)</td>
+                        <td><?php echo $aSurveyEntry['ownername'];?> (<a href='#' class='ownername_edit' translate_to='<?php echo $clang->gT('Edit') ?>' id='ownername_edit_<?php echo $aSurveyEntry['iSurveyID'];?>'>Edit</a>)</td>
                         <td><?php echo $aSurveyEntry['visibility'];?></td>
                         <td><?php echo $aSurveyEntry['privacy'];?></td>
                         <?php if($aSurveyEntry['dbactive'])

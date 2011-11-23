@@ -2996,6 +2996,7 @@ function GetBaseLanguageFromSurveyID($surveyid)
     static $cache = array();
     $surveyid=(int)($surveyid);
     if (!isset($cache[$surveyid])) {
+
         $condition = array('sid' => $surveyid);//"sid=$surveyid";
         $surveylanguage = Survey::model()->findByPk($surveyid);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
         $surveylanguage = $surveylanguage->attributes; //Checked)
@@ -3195,7 +3196,7 @@ function getQuestionAttributeValues($qid, $type='')
         {
             $setattributes[$row['attribute']]=$row['value'];
         }
-        elseif($row['language']!=''){
+        elseif(!empty($row['language'])){
             $setattributes[$row['attribute']][$row['language']]=$row['value'];
         }
     }

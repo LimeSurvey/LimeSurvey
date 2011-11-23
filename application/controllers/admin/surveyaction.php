@@ -34,13 +34,24 @@ class SurveyAction extends Survey_Common_Action {
     * @access public
     * @return void
     */
-   public function run($action = '', $sid = 0)
+   public function run($sa = '', $action = '', $sid = 0)
    {
-
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
         {
             die();
         }
+
+   		if (!empty($sa))
+   		{
+   			if ($sa == 'listsurveys')
+   				$this->route('listsurveys', array());
+			elseif ($sa == 'ajaxgetusers')
+				$this->route('ajaxgetusers', array());
+   			elseif ($sa == 'ajaxowneredit')
+   				$this->route('ajaxowneredit', array('newowner', 'surveyid'));
+   			return;
+   		}
+
 		if (empty($action) && !empty($_POST['action']))
 		{
 			$sSurveysAction = $_POST['action'];
@@ -755,15 +766,14 @@ class SurveyAction extends Survey_Common_Action {
     function ajaxgetusers()
     {
         header('Content-type: application/json');
-        $this->load->helper('database');
 
-        $query = "SELECT users_name, uid FROM ".$this->db->dbprefix."users";
+        $query = "SELECT users_name, uid FROM {{users}}";
 
-        $result = db_execute_assoc($query) or show_error("Couldn't execute $query");
+        $result =Yii::app()->db->createCommand($query)->query();
 
         $aUsers = array();
-        if($result->num_rows() > 0) {
-            foreach($result->result_array() as $rows)
+        if($result->getRowCount() > 0) {
+            foreach($result->readAll() as $rows)
                 $aUsers[] = array($rows['uid'], $rows['users_name']);
         }
 
@@ -781,34 +791,34 @@ class SurveyAction extends Survey_Common_Action {
     function ajaxowneredit($newowner,$surveyid)
     {
         header('Content-type: application/json');
-        $this->load->helper('database');
+
         //if (isset($_REQUEST['newowner'])) {$intNewOwner=sanitize_int($_REQUEST['newowner']);}
         //if (isset($_REQUEST['survey_id'])) {$intSurveyId=sanitize_int($_REQUEST['survey_id']);}
         $intNewOwner = sanitize_int($newowner);
         $intSurveyId = sanitize_int($surveyid);
-        $owner_id = $this->session->userdata('loginID');
+        $owner_id = Yii::app()->session['loginID'];
 
         header('Content-type: application/json');
 
-        $query = "UPDATE ".$this->db->dbprefix."surveys SET owner_id = $intNewOwner WHERE sid=$intSurveyId";
+        $query = "UPDATE {{surveys}} SET owner_id = $intNewOwner WHERE sid=$intSurveyId";
         if (bHasGlobalPermission("USER_RIGHT_SUPERADMIN"))
             $query .="";
         else
             $query .=" AND owner_id=$owner_id";
 
-        $result = db_execute_assoc($query) or show_error("Couldn't execute $query");
+        $result = Yii::app()->db->createCommand($query)->execute();
 
-        $query = "SELECT b.users_name FROM ".$this->db->dbprefix."surveys as a"
-        ." INNER JOIN  ".$this->db->dbprefix."users as b ON a.owner_id = b.uid   WHERE sid=$intSurveyId AND owner_id=$intNewOwner;";
-        $result = db_execute_assoc($query) or show_error("Couldn't execute $query");
-        $intRecordCount = $result->num_rows();
+        $query = "SELECT b.users_name FROM {{surveys}} as a"
+        ." INNER JOIN  {{users}} as b ON a.owner_id = b.uid   WHERE sid=$intSurveyId AND owner_id=$intNewOwner;";
+        $result = Yii::app()->db->createCommand($queyr)->query();
+        $intRecordCount = $result->readAll();
 
         $aUsers = array(
         'record_count' => $intRecordCount,
         );
 
-        if($result->num_rows() > 0) {
-            foreach($result->result_array() as $rows)
+        if($result->getRowCount() > 0) {
+            foreach($result->readAll() as $rows)
                 $aUsers['newowner'] = $rows['users_name'];
         }
         $ajaxoutput = json_encode($aUsers) . "\n";
@@ -818,205 +828,190 @@ class SurveyAction extends Survey_Common_Action {
     }
 
 
-    /**
-    * survey::listsurveys()
-    * Function that load list of surveys and it's few quick properties.
-    * @return
-    */
-    function listsurveys()
-    {
-        $clang = $this->getController()->lang;
-        $this->load->helper('database');
-        $this->load->helper('surveytranslator');
+	/**
+	 * survey::listsurveys()
+	 * Function that load list of surveys and it's few quick properties.
+	 * @return
+	 */
+	function listsurveys()
+	{
+		$clang = Yii::app()->lang;
+		Yii::app()->loadHelper('surveytranslator');
 
 
-        self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
-        self::_js_admin_includes(base_url().'scripts/admin/listsurvey.js');
+		$this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/jquery/jquery.tablesorter.min.js');
+		$this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/admin/listsurvey.js');
+
+		$query = " SELECT a.*, c.*, u.users_name FROM {{surveys}} as a "
+			." INNER JOIN {{surveys_languagesettings}} as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid AND surveyls_language=a.language "
+			." INNER JOIN {{users}} as u ON (u.uid=a.owner_id) ";
+
+		if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
+		{
+			$query .= "WHERE a.sid in (select sid from {{survey_permissions}} WHERE uid=".Yii::app()->session['loginID']." AND permission='survey' AND read_p=1) ";
+			$data['issuperadmin']=false;
+		}
+		else
+		{
+			$data['issuperadmin']=true;
+		}
+		$query .= " ORDER BY surveyls_title";
+		$result = Yii::app()->db->createCommand($query)->query();
+
+		if($result->getRowCount() > 0) {
+
+			$dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
+			$listsurveys = "";
+			$first_time = true;
+			foreach ($result->readAll() as $rows)
+			{
+				$aSurveyEntry['dbactive']=($rows['active']=="Y");
+				$aSurveyEntry['surveyid']=$rows['sid'];
+				$aSurveyEntry['mayupdate']=bHasSurveyPermission($rows['sid'],'surveyactivation','update');
 
 
-
-        $query = " SELECT a.*, c.*, u.users_name FROM ".$this->db->dbprefix."surveys as a "
-        ." INNER JOIN ".$this->db->dbprefix."surveys_languagesettings as c ON ( surveyls_survey_id = a.sid AND surveyls_language = a.language ) AND surveyls_survey_id=a.sid AND surveyls_language=a.language "
-        ." INNER JOIN ".$this->db->dbprefix."users as u ON (u.uid=a.owner_id) ";
-
-        if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
-        {
-            $query .= "WHERE a.sid in (select sid from ".$this->db->dbprefix."survey_permissions WHERE uid=".$this->session->userdata('loginID')." AND permission='survey' AND read_p=1) ";
-            $data['issuperadmin']=false;
-        }
-        else
-        {
-            $data['issuperadmin']=true;
-        }
-        $query .= " ORDER BY surveyls_title";
-        $result = db_execute_assoc($query);
-
-        if($result->num_rows() > 0) {
-
-            $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
-            $listsurveys = "";
-            $first_time = true;
-            foreach ($result->result_array() as $rows)
-            {
-                $aSurveyEntry['dbactive']=($rows['active']=="Y");
-                $aSurveyEntry['surveyid']=$rows['sid'];
-                $aSurveyEntry['mayupdate']=bHasSurveyPermission($rows['sid'],'surveyactivation','update');
+				if($rows['anonymized']=="Y")
+				{
+					$aSurveyEntry['privacy']=$clang->gT("Yes") ;
+				}
+				else
+				{
+					$aSurveyEntry['privacy']=$clang->gT("No") ;
+				}
 
 
-                if($rows['anonymized']=="Y")
-                {
-                    $aSurveyEntry['privacy']=$clang->gT("Yes") ;
-                }
-                else
-                {
-                    $aSurveyEntry['privacy']=$clang->gT("No") ;
-                }
+				if (Yii::app()->db->schema->getTable('{{tokens_'.$rows['sid'] . '}}'))
+				{
+					$aSurveyEntry['visibility'] = $clang->gT("Closed");
+				}
+				else
+				{
+					$aSurveyEntry['visibility'] = $clang->gT("Open");
+				}
+
+				if($rows['active']=="Y")
+				{
+					$aSurveyEntry['bActive']=true;
+					if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
+					{
+						$aSurveyEntry['statusText']=$clang->gT("Expired") ;
+						$aSurveyEntry['status']='expired' ;
+					}
+					elseif ($rows['startdate']!='' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')))
+					{
+						$aSurveyEntry['statusText']=$clang->gT("Not yet active") ;
+						$aSurveyEntry['status']='notyetactive' ;
+					}
+					else {
+						$aSurveyEntry['statusText']=$clang->gT("Active") ;
+						$aSurveyEntry['status']='active' ;
+					}
+
+					// Complete Survey Responses - added by DLR
+					$gnquery = "SELECT COUNT(id) AS countofid FROM {{survey_".$rows['sid']."}} WHERE submitdate IS NULL";
+					$gnresult = Yii::app()->db->createCommand($gnquery)->query(); //Checked)
+
+					foreach ($gnresult->readAll() as $gnrow)
+					{
+						$aSurveyEntry['partial_responses']=$gnrow['countofid'];
+					}
+					$gnquery = "SELECT COUNT(id) AS countofid FROM {{survey_".$rows['sid'] . "}}";;
+					$gnresult = Yii::app()->db->createCommand($gnquery)->query(); //Checked
+					foreach ($gnresult->readAll() as $gnrow)
+					{
+						$aSurveyEntry['responses']=$gnrow['countofid'];
+					}
+
+				}
+				else
+				{
+					$aSurveyEntry['statusText'] = $clang->gT("Inactive") ;
+					$aSurveyEntry['status']='inactive' ;
+				}
+
+				Yii::import('application.libraries.Date_Time_Converter', true);
+				$datetimeobj = new Date_Time_Converter(array($rows['datecreated'], "Y-m-d H:i:s"));
+
+				$aSurveyEntry['datecreated']=$datetimeobj->convert($dateformatdetails['phpdate']);
+
+				if (in_array($rows['owner_id'],getuserlist('onlyuidarray')))
+				{
+					$aSurveyEntry['ownername']=$rows['users_name'] ;
+				}
+				else
+				{
+					$aSurveyEntry['ownername']="---";
+				}
+
+				$questionsCountQuery = "SELECT qid FROM {{questions}} WHERE sid={$rows['sid']} AND language='".$rows['language']."'"; //Getting a count of questions for this survey
+				$questionsCountResult = Yii::app()->db->createCommand($questionsCountQuery)->query(); //($connect->Execute($questionsCountQuery); //Checked)
+				$aSurveyEntry['questioncount'] = $questionsCountResult->getRowCount();
 
 
-                if (tableExists('tokens_'.$rows['sid']))
-                {
-                    $aSurveyEntry['visibility'] = $clang->gT("Closed");
-                }
-                else
-                {
-                    $aSurveyEntry['visibility'] = $clang->gT("Open");
-                }
-
-                if($rows['active']=="Y")
-                {
-                    $aSurveyEntry['bActive']=true;
-                    if ($rows['expires']!='' && $rows['expires'] < date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')))
-                    {
-                        $aSurveyEntry['statusText']=$clang->gT("Expired") ;
-                        $aSurveyEntry['status']='expired' ;
-                    }
-                    elseif ($rows['startdate']!='' && $rows['startdate'] > date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')))
-                    {
-                        $aSurveyEntry['statusText']=$clang->gT("Not yet active") ;
-                        $aSurveyEntry['status']='notyetactive' ;
-                    }
-                    else {
-                        $aSurveyEntry['statusText']=$clang->gT("Active") ;
-                        $aSurveyEntry['status']='active' ;
-                    }
-
-                    // Complete Survey Responses - added by DLR
-                    $gnquery = "SELECT COUNT(id) AS countofid FROM ".$this->db->dbprefix."survey_".$rows['sid']." WHERE submitdate IS NULL";
-                    $gnresult = db_execute_assoc($gnquery); //Checked)
-
-                    foreach ($gnresult->result_array() as $gnrow)
-                    {
-                        $aSurveyEntry['partial_responses']=$gnrow['countofid'];
-                    }
-                    $gnquery = "SELECT COUNT(id) AS countofid FROM ".$this->db->dbprefix."survey_".$rows['sid'];
-                    $gnresult = db_execute_assoc($gnquery); //Checked
-                    foreach ($gnresult->result_array() as $gnrow)
-                    {
-                        $aSurveyEntry['responses']=$gnrow['countofid'];
-                    }
-
-                }
-                else
-                {
-                    $aSurveyEntry['statusText'] = $clang->gT("Inactive") ;
-                    $aSurveyEntry['status']='inactive' ;
-                }
-
-                if ($first_time) // can't use same instance of Date_Time_Converter library every time!
-                {
-                    $this->load->library('Date_Time_Converter',array($rows['datecreated'], "Y-m-d H:i:s"));
-                    $datetimeobj = $this->date_time_converter ; // new Date_Time_Converter($rows['datecreated'] , "Y-m-d H:i:s");
-                    $first_time = false;
-
-                }
-                else
-                {
-                    // no need to load the library again, just make a new instance!
-                    $datetimeobj = new Date_Time_Converter(array($rows['datecreated'], "Y-m-d H:i:s"));
-
-                }
+				$aSurveyEntry['viewurl'] = $this->getController()->createUrl("/admin/survey/sa/view/surveyid/".$rows['sid']);
+				$aSurveyEntry['iSurveyID']=$rows['sid'];
+				$aSurveyEntry['sSurveyTitle']=$rows['surveyls_title'];
 
 
-                $aSurveyEntry['datecreated']=$datetimeobj->convert($dateformatdetails['phpdate']);
+				if ($rows['active']=="Y" && Yii::app()->db->schema->getTable("{{tokens_".$rows['sid'] . "}}"))
+				{
+					//get the number of tokens for each survey
+					$tokencountquery = "SELECT COUNT(tid) AS countoftid FROM {{tokens_".$rows['sid'] . "}}";
+					$tokencountresult = Yii::app()->db->createCommand($tokencountquery)->query(); //Checked)
+					foreach ($tokencountresult->readAll() as $tokenrow)
+					{
+						$aSurveyEntry['tokencount'] = $tokenrow['countoftid'];
+					}
 
-                if (in_array($rows['owner_id'],getuserlist('onlyuidarray')))
-                {
-                    $aSurveyEntry['ownername']=$rows['users_name'] ;
-                }
-                else
-                {
-                    $aSurveyEntry['ownername']="---";
-                }
+					//get the number of COMLETED tokens for each survey
+					$tokencompletedquery = "SELECT COUNT(tid) AS countoftid FROM {{tokens_".$rows['sid']."}} WHERE completed!='N'";
+					$tokencompletedresult = Yii::app()->db->createCommand($tokencompletedquery)->query(); //Checked
+					foreach ($tokencompletedresult->readAll() as $tokencompletedrow)
+					{
+						$tokencompleted = $tokencompletedrow['countoftid'];
+					}
 
-                $questionsCountQuery = "SELECT qid FROM ".$this->db->dbprefix."questions WHERE sid={$rows['sid']} AND language='".$rows['language']."'"; //Getting a count of questions for this survey
-                $questionsCountResult = db_execute_assoc($questionsCountQuery); //($connect->Execute($questionsCountQuery); //Checked)
-                $aSurveyEntry['questioncount'] = $questionsCountResult->num_rows();
+					//calculate percentage
 
+					//prevent division by zero problems
+					if($tokencompleted != 0 && $aSurveyEntry['tokencount'] != 0)
+					{
+						$aSurveyEntry['tokenpercentage'] = round(($tokencompleted / $aSurveyEntry['tokencount']) * 100, 1);
+					}
+					else
+					{
+						$aSurveyEntry['tokenpercentage'] = 0;
+					}
 
-                $aSurveyEntry['viewurl'] = site_url("admin/survey/view/".$rows['sid']);
-                $aSurveyEntry['iSurveyID']=$rows['sid'];
-                $aSurveyEntry['sSurveyTitle']=$rows['surveyls_title'];
+				}
+				else
+				{
+					$aSurveyEntry['tokenpercentage'] = '&nbsp;';
+					$aSurveyEntry['tokencount'] = '&nbsp;';
+				}
 
+				$listsurveys .= "</tr>" ;
+				$data['aSurveyEntries'][]=$aSurveyEntry;
+			}
 
-                if ($rows['active']=="Y" && tableExists("tokens_".$rows['sid']))
-                {
-                    //get the number of tokens for each survey
-                    $tokencountquery = "SELECT COUNT(tid) AS countoftid FROM ".$this->db->dbprefix."tokens_".$rows['sid'];
-                    $tokencountresult = db_execute_assoc($tokencountquery); //Checked)
-                    foreach ($tokencountresult->result_array() as $tokenrow)
-                    {
-                        $aSurveyEntry['tokencount'] = $tokenrow['countoftid'];
-                    }
+			$listsurveys.="</tbody>";
+			$listsurveys.="</table><br />" ;
+			$data['clang'] = $clang;
 
-                    //get the number of COMLETED tokens for each survey
-                    $tokencompletedquery = "SELECT COUNT(tid) AS countoftid FROM ".$this->db->dbprefix."tokens_".$rows['sid']." WHERE completed!='N'";
-                    $tokencompletedresult = db_execute_assoc($tokencompletedquery); //Checked
-                    foreach ($tokencompletedresult->result_array() as $tokencompletedrow)
-                    {
-                        $tokencompleted = $tokencompletedrow['countoftid'];
-                    }
+		}
+		else
+		{
+			$data['sSurveyEntries']=array();
+			$listsurveys ="<p><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
+		}
 
-                    //calculate percentage
-
-                    //prevent division by zero problems
-                    if($tokencompleted != 0 && $aSurveyEntry['tokencount'] != 0)
-                    {
-                        $aSurveyEntry['tokenpercentage'] = round(($tokencompleted / $aSurveyEntry['tokencount']) * 100, 1);
-                    }
-                    else
-                    {
-                        $aSurveyEntry['tokenpercentage'] = 0;
-                    }
-
-                }
-                else
-                {
-                    $aSurveyEntry['tokenpercentage'] = '&nbsp;';
-                    $aSurveyEntry['tokencount'] = '&nbsp;';
-                }
-
-                $listsurveys .= "</tr>" ;
-                $data['aSurveyEntries'][]=$aSurveyEntry;
-            }
-
-            $listsurveys.="</tbody>";
-            $listsurveys.="</table><br />" ;
-            $data['clang'] = $clang;
-
-        }
-        else
-        {
-            $data['sSurveyEntries']=array();
-            $listsurveys ="<p><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
-        }
-
-        self::_getAdminHeader();
-        self::_showadminmenu(false);;
-        $data['imageurl']=$this->config->item('imageurl');
-        $this->load->view('admin/survey/listSurveys_view',$data);
-        self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
-    }
+		$this->getController()->_getAdminHeader();
+		$this->getController()->_showadminmenu(false);;
+		$data['imageurl'] = Yii::app()->getConfig('imageurl');
+		$this->getController()->render('/admin/survey/listSurveys_view',$data);
+		$this->getController()->_loadEndScripts();
+		$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+	}
 
     /**
     * survey::delete()

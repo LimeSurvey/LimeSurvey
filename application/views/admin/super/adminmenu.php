@@ -20,7 +20,7 @@
 	</div>
     <div class='menubar-main'>
     <div class='menubar-left'>
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin");?>', '_top')" title="<?php echo $clang->gTview("Default Administration Page");?>">
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("/admin");?>', '_top')" title="<?php echo $clang->gTview("Default Administration Page");?>">
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/home.png' name='HomeButton' alt='<?php echo $clang->gT("Default Administration Page");?>' width='40' height='40'/></a>
 
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/blank.gif' alt='' width='11' />
@@ -93,13 +93,10 @@
 	</div>
 	<div class='menubar-right'>
         <label for='surveylist'><?php echo $clang->gT("Surveys:");?></label>
-        <?php
-        /*
 	    <select id='surveylist' name='surveylist' onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 	    <?php echo getsurveylist(false, false, $surveyid); ?>
 	    </select>
-       */?>
-        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/listsurveys");?>', '_top')" title="<?php echo $clang->gTview("Detailed list of surveys");?>" >
+        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/listsurveys");?>', '_top')" title="<?php echo $clang->gTview("Detailed list of surveys");?>" >
         <img src='<?php echo Yii::app()->getConfig('imageurl');?>/surveylist.png' name='ListSurveys' alt='<?php echo $clang->gT("Detailed list of surveys");?>' />
         </a>
 

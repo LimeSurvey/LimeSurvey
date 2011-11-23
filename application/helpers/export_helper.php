@@ -55,13 +55,13 @@ function spss_export_data ($na = null) {
     //Now get the query string with all fields to export
     $query = spss_getquery();
 
-    $result=db_execute_assoc($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
-    $num_fields =  count($result->row_array());
+    $result=Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
+	$num_fields = isset($result[0]) ? count($result[0]) : 0;
 
     //This shouldn't occur, but just to be safe:
     if (count($fields)<>$num_fields) safe_die("Database inconsistency error");
 
-    foreach ($result->result_array() as $row) {
+    foreach ($result as $row) {
     	$row = array_change_key_case($row,CASE_UPPER);
         //$row = $result->GetRowAssoc(true);	//Get assoc array, use uppercase
         reset($fields);	//Jump to the first element in the field array
@@ -170,7 +170,7 @@ function spss_export_data ($na = null) {
  */
 function spss_getvalues ($field = array(), $qidattributes = null ) {
     global $surveyid, $dbprefix, $connect, $language, $length_vallabel;
-	$clang =& get_instance()->limesurvey_lang;
+	$clang = Yii::app()->lang;
 
     if (!isset($field['LStype']) || empty($field['LStype'])) return false;
     $answers=array();
@@ -178,22 +178,22 @@ function spss_getvalues ($field = array(), $qidattributes = null ) {
         if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
             //We have a comment field, so free text
         } else {
-            $query = "SELECT {$dbprefix}answers.code, {$dbprefix}answers.answer,
-			{$dbprefix}questions.type FROM {$dbprefix}answers, {$dbprefix}questions WHERE";
+            $query = "SELECT {{answers}}.code, {{answers}}.answer,
+			{{questions}}.type FROM {{answers}}, {{questions}} WHERE";
 
-            if (isset($field['scale_id'])) $query .= " {$dbprefix}answers.scale_id = " . (int) $field['scale_id'] . " AND";
+            if (isset($field['scale_id'])) $query .= " {{answers}}.scale_id = " . (int) $field['scale_id'] . " AND";
 
-            $query .= " {$dbprefix}answers.qid = '".$field["qid"]."' and {$dbprefix}questions.language='".$language."' and  {$dbprefix}answers.language='".$language."'
-			    and {$dbprefix}questions.qid='".$field['qid']."' ORDER BY sortorder ASC";
-            $result=db_execute_assoc($query) or safe_die("Couldn't lookup value labels<br />$query<br />".$connect->ErrorMsg()); //Checked
-            $num_results = $result->num_rows();
+            $query .= " {{answers}}.qid = '".$field["qid"]."' and {{questions}}.language='".$language."' and  {{answers}}.language='".$language."'
+			    and {{questions}}.qid='".$field['qid']."' ORDER BY sortorder ASC";
+            $result= Yii::app()->db->createCommand($query)->query(); //Checked
+            $num_results = $result->getRowCount();
             if ($num_results > 0)
             {
                 $displayvaluelabel = 0;
                 # Build array that has to be returned
                 for ($i=0; $i < $num_results; $i++)
                 {
-                    $row = $result->row_array();
+                    $row = $result->read();
                     $answers[] = array('code'=>$row['code'], 'value'=>mb_substr(strip_tags_full($row["answer"]),0,$length_vallabel));
                 }
             }
@@ -282,20 +282,19 @@ function spss_fieldmap($prefix = 'V') {
     global $surveyid, $dbprefix, $typeMap, $connect, $clang;
     global $surveyprivate, $tokensexist, $language;
 
-	$CI =& get_instance();
     $fieldmap = createFieldMap($surveyid, 'full');		//Create a FULL fieldmap
 
     #See if tokens are being used
-    $tokensexist = tableExists('tokens_'.$surveyid);
+    $tokensexist = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}');
 
     #Lookup the names of the attributes
-    $query="SELECT sid, anonymized, language FROM {$dbprefix}surveys WHERE sid=$surveyid";
-    $result=db_execute_assoc($query) or safe_die("Couldn't count fields<br />$query<br />".$connect->ErrorMsg());  //Checked
-    $num_results = $result->num_rows();
+    $query="SELECT sid, anonymized, language FROM {{surveys}} WHERE sid=$surveyid";
+    $result=Yii::app()->db->createCommand($query)->query();  //Checked
+    $num_results = $result->getRowCount();
     $num_fields = $num_results;
     # Build array that has to be returned
     for ($i=0; $i < $num_results; $i++) {
-        $row = $result->row_array();
+        $row = $result->read();
         $surveyprivate=$row['anonymized'];
         $language=$row['language'];
     }
@@ -319,7 +318,7 @@ function spss_fieldmap($prefix = 'V') {
     }
 
     $tempArray = array();
-    $fieldnames = array_values($CI->db->list_fields("survey_$surveyid"));
+    $fieldnames = Yii::app()->db->schema->getTable("{{survey_$surveyid}}")->getColumnNames();
     $num_results = count($fieldnames);
     $num_fields = $num_results;
     $diff = 0;
@@ -447,15 +446,15 @@ function spss_getquery() {
         foreach ($tokenattributes as $attributefield=>$attributedescription) {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
-                $query .= "{$dbprefix}tokens_$surveyid.$attributefield, ";
+                $query .= "{{tokens_$surveyid}}.$attributefield, ";
             }
         }
-        $query .= "{$dbprefix}survey_$surveyid.*
-	    FROM {$dbprefix}survey_$surveyid
-	    LEFT JOIN {$dbprefix}tokens_$surveyid ON {$dbprefix}survey_$surveyid.token = {$dbprefix}tokens_$surveyid.token";
+        $query .= "{{survey_$surveyid}}.*
+	    FROM {{survey_$surveyid}}
+	    LEFT JOIN {{tokens_$surveyid}} ON {{survey_$surveyid}}.token = {{tokens_$surveyid}}.token";
     } else {
         $query = "SELECT *
-	    FROM {$dbprefix}survey_$surveyid";
+	    FROM {{survey_$surveyid}}";
     }
     switch (incompleteAnsFilterstate()) {
         case 'inc':
@@ -547,78 +546,73 @@ function BuildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
  */
 function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
 {
-
-	$CI =& get_instance();
-
     $sdump = "";
-
-	$dbprefix = $CI->db->dbprefix;
-
     if ((!isset($exclude) && $exclude['answers'] !== true) || empty($exclude))
     {
         //Answers table
-        $aquery = "SELECT {$dbprefix}answers.*
-           FROM {$dbprefix}answers, {$dbprefix}questions
-		   WHERE {$dbprefix}answers.language={$dbprefix}questions.language
-		   AND {$dbprefix}answers.qid={$dbprefix}questions.qid
-		   AND {$dbprefix}questions.sid=$surveyid";
+        $aquery = "SELECT {{answers}}.*
+           FROM {{answers}}, {{questions}}
+		   WHERE {{answers}}.language={{questions}}.language
+		   AND {{answers}}.qid={{questions}}.qid
+		   AND {{questions}}.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$aquery);
     }
 
     // Assessments
-    $query = "SELECT {$dbprefix}assessments.*
-          FROM {$dbprefix}assessments
-          WHERE {$dbprefix}assessments.sid=$surveyid";
+    $query = "SELECT {{assessments}}.*
+          FROM {{assessments}}
+          WHERE {{assessments}}.sid=$surveyid";
     BuildXMLFromQuery($xmlwriter,$query);
 
     if ((!isset($exclude) && $exclude['conditions'] !== true) || empty($exclude))
     {
         //Conditions table
-        $cquery = "SELECT DISTINCT {$dbprefix}conditions.*
-           FROM {$dbprefix}conditions, {$dbprefix}questions
-		   WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid
-		   AND {$dbprefix}questions.sid=$surveyid";
+        $cquery = "SELECT DISTINCT {{conditions}}.*
+           FROM {{conditions}}, {{questions}}
+		   WHERE {{conditions}}.qid={{questions}}.qid
+		   AND {{questions}}.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$cquery);
     }
 
     //Default values
-    $query = "SELECT {$dbprefix}defaultvalues.*
-          FROM {$dbprefix}defaultvalues JOIN {$dbprefix}questions ON {$dbprefix}questions.qid = {$dbprefix}defaultvalues.qid AND {$dbprefix}questions.sid=$surveyid AND {$dbprefix}questions.language={$dbprefix}defaultvalues.language ";
+    $query = "SELECT {{defaultvalues}}.*
+          FROM {{defaultvalues}} JOIN {{questions}} ON {{questions}}.qid = {{defaultvalues}}.qid AND {{questions}}.sid=$surveyid AND {{questions}}.language={{defaultvalues}}.language ";
 
     BuildXMLFromQuery($xmlwriter,$query);
 
     // Groups
     $gquery = "SELECT *
-           FROM {$dbprefix}groups
+           FROM {{groups}}
            WHERE sid=$surveyid
            ORDER BY gid";
     BuildXMLFromQuery($xmlwriter,$gquery);
 
     //Questions
     $qquery = "SELECT *
-           FROM {$dbprefix}questions
+           FROM {{questions}}
            WHERE sid=$surveyid and parent_qid=0
            ORDER BY qid";
     BuildXMLFromQuery($xmlwriter,$qquery);
 
     //Subquestions
     $qquery = "SELECT *
-           FROM {$dbprefix}questions
+           FROM {{questions}}
            WHERE sid=$surveyid and parent_qid>0
            ORDER BY qid";
     BuildXMLFromQuery($xmlwriter,$qquery,'subquestions');
 
     //Question attributes
     $sBaseLanguage=GetBaseLanguageFromSurveyID($surveyid);
-    if ($CI->db->platform() == 'odbc_mssql' || $CI->db->platform() == 'odbtp' || $CI->db->platform() == 'mssql_n' || $CI->db->platform() =='mssqlnative')
+	$platform = Yii::app()->db->getDriverName();
+    if ($platform == 'odbc_mssql' || $platform == 'odbtp' || $platform == 'mssql_n' || $platform =='mssqlnative')
     {
         $query="SELECT qa.qid, qa.attribute, cast(qa.value as varchar(4000)) as value
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid}
+          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute,  cast(qa.value as varchar(4000))";
     }
     else {
         $query="SELECT qa.qid, qa.attribute, qa.value
-          FROM {$dbprefix}question_attributes qa JOIN {$dbprefix}questions  q ON q.qid = qa.qid AND q.sid={$surveyid}
+          FROM {{question_attributes}} qa JOIN {{questions}}  q ON q.qid = qa.qid AND q.sid={$surveyid}
           where q.language='{$sBaseLanguage}' group by qa.qid, qa.attribute, qa.value";
     }
 
@@ -627,41 +621,41 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
     if ((!isset($exclude) && $exclude['quotas'] !== true) || empty($exclude))
     {
         //Quota
-        $query = "SELECT {$dbprefix}quota.*
-          FROM {$dbprefix}quota
-		  WHERE {$dbprefix}quota.sid=$surveyid";
+        $query = "SELECT {{quota}}.*
+          FROM {{quota}}
+		  WHERE {{quota}}.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$query);
 
         //1Quota members
-        $query = "SELECT {$dbprefix}quota_members.*
-          FROM {$dbprefix}quota_members
-		  WHERE {$dbprefix}quota_members.sid=$surveyid";
+        $query = "SELECT {{quota_members}}.*
+          FROM {{quota_members}}
+		  WHERE {{quota_members}}.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$query);
 
         //Quota languagesettings
-        $query = "SELECT {$dbprefix}quota_languagesettings.*
-          FROM {$dbprefix}quota_languagesettings, {$dbprefix}quota
-		  WHERE {$dbprefix}quota.id = {$dbprefix}quota_languagesettings.quotals_quota_id
-		  AND {$dbprefix}quota.sid=$surveyid";
+        $query = "SELECT {{quota_languagesettings}}.*
+          FROM {{quota_languagesettings}}, {{quota}}
+		  WHERE {{quota}}.id = {{quota_languagesettings}}.quotals_quota_id
+		  AND {{quota}}.sid=$surveyid";
         BuildXMLFromQuery($xmlwriter,$query);
     }
 
     // Surveys
     $squery = "SELECT *
-           FROM {$dbprefix}surveys
+           FROM {{surveys}}
            WHERE sid=$surveyid";
     //Exclude some fields from the export
     BuildXMLFromQuery($xmlwriter,$squery,'',array('owner_id','active','datecreated'));
 
     // Survey language settings
     $slsquery = "SELECT *
-             FROM {$dbprefix}surveys_languagesettings
+             FROM {{surveys_languagesettings}}
              WHERE surveyls_survey_id=$surveyid";
     BuildXMLFromQuery($xmlwriter,$slsquery);
 
     // Survey url parameters
     $slsquery = "SELECT *
-             FROM {$dbprefix}survey_url_parameters
+             FROM {{survey_url_parameters}}
              WHERE sid={$surveyid}";
     BuildXMLFromQuery($xmlwriter,$slsquery);
 
@@ -672,14 +666,13 @@ function survey_getXMLStructure($surveyid, $xmlwriter, $exclude=array())
  */
 function survey_getXMLData($surveyid, $exclude = array())
 {
-    $CI =& get_instance();
     $xml = getXMLWriter();
     $xml->openMemory();
     $xml->setIndent(true);
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType','Survey');
-    $xml->writeElement('DBVersion',$CI->config->item("dbversionnumber"));
+    $xml->writeElement('DBVersion',getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
     $surveylanguages=GetAdditionalLanguagesFromSurveyID($surveyid);
     $surveylanguages[]=GetBaseLanguageFromSurveyID($surveyid);
@@ -705,7 +698,6 @@ function survey_getXMLData($surveyid, $exclude = array())
 */
 function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTagName='', $sFileName='', $bSetIndent=true)
 {
-    $CI =& get_instance();
     $xml = getXMLWriter();
     if ($sFileName=='')
     {
@@ -719,7 +711,7 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
     $xml->startDocument('1.0', 'UTF-8');
     $xml->startElement('document');
     $xml->writeElement('LimeSurveyDocType',$sDocType);
-    $xml->writeElement('DBVersion',$CI->config->item("dbversionnumber"));
+    $xml->writeElement('DBVersion',getGlobalSetting("DBVersion"));
     $xml->startElement('languages');
     $aSurveyLanguages=GetAdditionalLanguagesFromSurveyID($iSurveyID);
     $aSurveyLanguages[]=GetBaseLanguageFromSurveyID($iSurveyID);
@@ -728,7 +720,8 @@ function getXMLDataSingleTable($iSurveyID, $sTableName, $sDocType, $sXMLTableTag
         $xml->writeElement('language',$sSurveyLanguage);
     }
     $xml->endElement();
-    $aquery = "SELECT * FROM {$CI->db->dbprefix}$sTableName";
+    $aquery = "SELECT * FROM {{{$sTableName}}}";
+
     BuildXMLFromQuery($xml,$aquery, $sXMLTableTagName);
     $xml->endElement(); // close columns
     $xml->endDocument();
@@ -819,16 +812,15 @@ function quexml_fixed_array($array)
 function quexml_skipto($qid,$value,$cfieldname = "")
 {
 	global $connect ;
-	$CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
+
 	global $surveyid ;
         global $quexmllang;
 	$qlang = new limesurvey_lang(array($quexmllang));
 
-	$zeros = $CI->db->escape("0000000000");
+	$zeros = "0000000000";
 
 	$Query = "SELECT q.*," . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." as globalorder
-                  FROM {$dbprefix}questions as q, {$dbprefix}questions as q2, {$dbprefix}groups as g, {$dbprefix}groups as g2
+                  FROM {{questions}} as q, {{questions}} as q2, {{groups}} as g, {{groups}} as g2
                   WHERE q.parent_qid = 0
                   AND q2.parent_qid = 0
                   AND q.sid=$surveyid
@@ -839,12 +831,12 @@ function quexml_skipto($qid,$value,$cfieldname = "")
                   AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." > " . concat("RIGHT(" . concat($zeros,'g2.gid') . ",10)","RIGHT(". concat($zeros,'q2.question_order') .",10)") ."
                   ORDER BY globalorder";
 
-	$QueryResult = db_execute_assoc($Query);
+	$QueryResult = Yii::app()->db->createCommand($Query)->query();
 
 	$nextqid="";
 	$nextorder="";
 
-	$Row = $QueryResult->row_array();
+	$Row = $QueryResult->read();
 	if ($Row)
 	{
 		$nextqid = $Row['qid'];
@@ -855,9 +847,9 @@ function quexml_skipto($qid,$value,$cfieldname = "")
 
 
 	$Query = "SELECT q.*
-		FROM {$dbprefix}questions as q
-		JOIN {$dbprefix}groups as g ON (g.gid = q.gid)
-		LEFT JOIN {$dbprefix}conditions as c ON (c.cqid = '$qid' AND c.qid = q.qid AND c.method LIKE '==' AND c.value NOT LIKE '$value' $cfieldname)
+		FROM {{questions}} as q
+		JOIN {{groups}} as g ON (g.gid = q.gid)
+		LEFT JOIN {{conditions}} as c ON (c.cqid = '$qid' AND c.qid = q.qid AND c.method LIKE '==' AND c.value NOT LIKE '$value' $cfieldname)
 		WHERE q.sid = $surveyid
 		AND q.parent_qid = 0
 		AND " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)") ." >= $nextorder
@@ -865,9 +857,9 @@ function quexml_skipto($qid,$value,$cfieldname = "")
 		ORDER BY  " . concat("RIGHT(" . concat($zeros,'g.gid') . ",10)","RIGHT(". concat($zeros,'q.question_order') .",10)");
 
 
-	$QueryResult = db_execute_assoc($Query);
+	$QueryResult = Yii::app()->db->createCommand($Query)->query();
 
-	$Row = $QueryResult->row_array();
+	$Row = $QueryResult->read();
 	if ($Row)
 	{
 		if ($nextqid == $Row['qid'])
@@ -886,23 +878,22 @@ function quexml_skipto($qid,$value,$cfieldname = "")
 function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=false,$varname="")
 {
 	global $dom;
-	$CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
+
 	global $quexmllang;
 	$qlang = new limesurvey_lang(array($quexmllang));
 
 	if ($labels)
-		$Query = "SELECT * FROM {$dbprefix}labels WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
+		$Query = "SELECT * FROM {{labels}} WHERE lid = $labels  AND language='$quexmllang' ORDER BY sortorder ASC";
 	else
-		$Query = "SELECT code,answer as title,sortorder FROM {$dbprefix}answers WHERE qid = $qid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
+		$Query = "SELECT code,answer as title,sortorder FROM {{answers}} WHERE qid = $qid AND scale_id = $scale  AND language='$quexmllang' ORDER BY sortorder ASC";
 
-	$QueryResult = db_execute_assoc($Query);
+	$QueryResult = Yii::app()->db->createCommand($Query)->query();
 
 	$fixed = $dom->create_element("fixed");
 
 	$nextcode = "";
 
-	foreach($QueryResult->result_array() as $Row)
+	foreach($QueryResult->readAll() as $Row)
 	{
 		$category = $dom->create_element("category");
 
@@ -968,14 +959,12 @@ function quexml_create_fixed($qid,$rotate=false,$labels=true,$scale=0,$other=fal
 function quexml_get_lengthth($qid,$attribute,$default)
 {
 	global $dom;
-	$CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
 
-	$Query = "SELECT value FROM {$dbprefix}question_attributes WHERE qid = $qid AND attribute = '$attribute'";
+	$Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND attribute = '$attribute'";
 	//$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
-	$QueryResult = db_execute_assoc($Query);
+	$QueryResult = Yii::app()->db->createCommand($Query)->query();
 
-	$Row = $QueryResult->row_array();
+	$Row = $QueryResult->read();
 	if ($Row && !empty($Row['value']))
 		return $Row['value'];
 	else
@@ -989,22 +978,20 @@ function quexml_get_lengthth($qid,$attribute,$default)
 function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = false,$other = false)
 {
 	global $dom;
-	$CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
 	global $quexmllang ;
 	global $surveyid;
 	$qlang = new limesurvey_lang(array($quexmllang));
 
 
-	$Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid  AND language='$quexmllang' ";
+	$Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid  AND language='$quexmllang' ";
 	if ($scale_id != false) $Query .= " AND scale_id = $scale_id ";
 	$Query .= " ORDER BY question_order ASC";
 	//$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
-	$QueryResult = db_execute_assoc($Query);
+	$QueryResult = Yii::app()->db->createCommand($Query)->query();
 
 	$nextcode = "";
 
-	foreach($QueryResult->result_array() as $Row)
+	foreach($QueryResult->readAll() as $Row)
 	{
 		$response = $dom->create_element("response");
 		if ($free == false)
@@ -1098,16 +1085,14 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 function quexml_create_subQuestions(&$question,$qid,$varname,$use_answers = false)
 {
 	global $dom;
-	$CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
 	global $quexmllang ;
 
 	if ($use_answers)
-		$Query = "SELECT answer as question, code as title FROM {$dbprefix}answers WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
+		$Query = "SELECT answer as question, code as title FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
 	else
-		$Query = "SELECT * FROM {$dbprefix}questions WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
-	$QueryResult = db_execute_assoc($Query);
-	foreach($QueryResult->result_array() as $Row)
+		$Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
+	$QueryResult = Yii::app()->db->createCommand($Query)->query();
+	foreach($QueryResult->readAll() as $Row)
 	{
 		$subQuestion = $dom->create_element("subQuestion");
 		$text = $dom->create_element("text");
@@ -1128,20 +1113,19 @@ function quexml_export($surveyi, $quexmllan)
 	global $dom, $quexmllang, $surveyid;
 	$quexmllang = $quexmllan;
 	$surveyid = $surveyi;
-	$CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
+
 	$qlang = new limesurvey_lang(array($quexmllang));
 
-	$CI->load->helper("admin/domxml_wrapper");
+	Yii::app()->loadHelper("admin/domxml_wrapper");
 	$dom = domxml_new_doc("1.0");
 
 	//Title and survey id
 	$questionnaire = $dom->create_element("questionnaire");
 	$title = $dom->create_element("title");
 
-	$Query = "SELECT * FROM {$dbprefix}surveys,{$dbprefix}surveys_languagesettings WHERE sid=$surveyid and surveyls_survey_id=sid and surveyls_language='".$quexmllang."'";
-	$QueryResult = db_execute_assoc($Query);
-	$Row = $QueryResult->row_array();
+	$Query = "SELECT * FROM {{surveys}},{{surveys_languagesettings}} WHERE sid=$surveyid and surveyls_survey_id=sid and surveyls_language='".$quexmllang."'";
+	$QueryResult = Yii::app()->db->createCommand($Query)->query();
+	$Row = $QueryResult->read();
 	$questionnaire->set_attribute("id", $Row['sid']);
 	$title->set_content(quexml_cleanup($Row['surveyls_title']));
 	$questionnaire->append_child($title);
@@ -1175,11 +1159,11 @@ function quexml_export($surveyi, $quexmllan)
 	//section == group
 
 
-	$Query = "SELECT * FROM {$dbprefix}groups WHERE sid=$surveyid AND language='$quexmllang' order by group_order ASC";
-	$QueryResult = db_execute_assoc($Query);
+	$Query = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND language='$quexmllang' order by group_order ASC";
+	$QueryResult = Yii::app()->db->createCommand($Query)->query();
 
 	//for each section
-	foreach($QueryResult->result_array() as $Row)
+	foreach($QueryResult->readAll() as $Row)
 	{
 		$gid = $Row['gid'];
 
@@ -1221,9 +1205,9 @@ function quexml_export($surveyi, $quexmllan)
 		$section->set_attribute("id", $gid);
 
 		//boilerplate questions convert to sectionInfo elements
-		$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
-		$QR = db_execute_assoc($Query);
-		foreach($QR->result_array() as $RowQ)
+		$Query = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid = $gid AND type LIKE 'X'  AND language='$quexmllang' ORDER BY question_order ASC";
+		$QR = Yii::app()->db->createCommand($Query)->query();
+		foreach($QR->readAll() as $RowQ)
 		{
 			$sectionInfo = $dom->create_element("sectionInfo");
 			$position = $dom->create_element("position");
@@ -1243,9 +1227,9 @@ function quexml_export($surveyi, $quexmllan)
 
 
 		//foreach question
-		$Query = "SELECT * FROM {$dbprefix}questions WHERE sid=$surveyid AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
-		$QR = db_execute_assoc($Query);
-		foreach($QR->result_array() as $RowQ)
+		$Query = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid = $gid AND parent_qid=0 AND language='$quexmllang' AND type NOT LIKE 'X' ORDER BY question_order ASC";
+		$QR = Yii::app()->db->createCommand($Query)->query();
+		foreach($QR->readAll() as $RowQ)
 		{
 			$question = $dom->create_element("question");
 			$type = $RowQ['type'];
@@ -1318,11 +1302,11 @@ function quexml_export($surveyi, $quexmllan)
 				break;
 				case "R": //RANKING STYLE
 					quexml_create_subQuestions($question,$qid,$sgq,true);
-				$Query = "SELECT COUNT(*) as sc FROM {$dbprefix}answers WHERE qid = $qid AND language='$quexmllang' ";
-				$QRE = db_execute_assoc($Query);
+				$Query = "SELECT COUNT(*) as sc FROM {{answers}} WHERE qid = $qid AND language='$quexmllang' ";
+				$QRE = Yii::app()->db->createCommand($Query)->query();
 				//$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
 				//$QROW = mysql_fetch_assoc($QRE);
-				$QROW = $QRE->row_array();
+				$QROW = $QRE->read();
 				$response->append_child(quexml_create_free("integer",strlen($QROW['sc']),""));
 				$question->append_child($response);
 				break;
@@ -1489,8 +1473,6 @@ function lsrccsv_export($surveyid)
 	// 11. Quota
 	// 12. Quota Members
 
-	include_once("login_check.php");
-
 	if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
 
 
@@ -1513,6 +1495,7 @@ function lsrccsv_export($surveyid)
 	    exit;
 	}
 
+	$dbversionnumber = getGlobalSetting('DBVersion');
 	$dumphead = "# LimeSurvey Survey Dump\n"
 	. "# DBVersion $dbversionnumber\n"
 	. "# This is a dumped survey from the LimeSurvey Script\n"
@@ -1521,112 +1504,107 @@ function lsrccsv_export($surveyid)
 
 	//1: Surveys table
 	$squery = "SELECT *
-	           FROM {$dbprefix}surveys
+	           FROM {{surveys}}
 			   WHERE sid=$surveyid";
 	$sdump = BuildCSVFromQuery($squery);
 
 	//2: Surveys Languagsettings table
 	$slsquery = "SELECT *
-	             FROM {$dbprefix}surveys_languagesettings
+	             FROM {{surveys_languagesettings}}
 				 WHERE surveyls_survey_id=$surveyid";
 	$slsdump = BuildCSVFromQuery($slsquery);
 
 	//3: Groups Table
 	$gquery = "SELECT *
-	           FROM {$dbprefix}groups
+	           FROM {{groups}}
 			   WHERE sid=$surveyid
 			   ORDER BY gid";
 	$gdump = BuildCSVFromQuery($gquery);
 
 	//4: Questions Table
 	$qquery = "SELECT *
-	           FROM {$dbprefix}questions
+	           FROM {{questions}}
 			   WHERE sid=$surveyid
 			   ORDER BY qid";
 	$qdump = BuildCSVFromQuery($qquery);
 
 	//5: Answers table
-	$aquery = "SELECT {$dbprefix}answers.*
-	           FROM {$dbprefix}answers, {$dbprefix}questions
-			   WHERE {$dbprefix}answers.language={$dbprefix}questions.language
-			   AND {$dbprefix}answers.qid={$dbprefix}questions.qid
-			   AND {$dbprefix}questions.sid=$surveyid";
+	$aquery = "SELECT {{answers}}.*
+	           FROM {{answers}}, {{questions}}
+			   WHERE {{answers}}.language={{questions}}.language
+			   AND {{answers}}.qid={{questions}}.qid
+			   AND {{questions}}.sid=$surveyid";
 	$adump = BuildCSVFromQuery($aquery);
 
 	//6: Conditions table
-	$cquery = "SELECT DISTINCT {$dbprefix}conditions.*
-	           FROM {$dbprefix}conditions, {$dbprefix}questions
-			   WHERE {$dbprefix}conditions.qid={$dbprefix}questions.qid
-			   AND {$dbprefix}questions.sid=$surveyid";
+	$cquery = "SELECT DISTINCT {{conditions}}.*
+	           FROM {{conditions}}, {{questions}}
+			   WHERE {{conditions}}.qid={{questions}}.qid
+			   AND {{questions}}.sid=$surveyid";
 	$cdump = BuildCSVFromQuery($cquery);
 
 	//7: Label Sets
-	$lsquery = "SELECT DISTINCT {$dbprefix}labelsets.lid, label_name, {$dbprefix}labelsets.languages
-	            FROM {$dbprefix}labelsets, {$dbprefix}questions
-				WHERE ({$dbprefix}labelsets.lid={$dbprefix}questions.lid or {$dbprefix}labelsets.lid={$dbprefix}questions.lid1)
+	$lsquery = "SELECT DISTINCT {{labelsets}}.lid, label_name, {{labelsets}}.languages
+	            FROM {{labelsets}}, {{questions}}
+				WHERE ({{labelsets}}.lid={{questions}}.lid or {{labelsets}}.lid={{questions}}.lid1)
 				AND type IN ('F', 'H', 'W', 'Z', '1', ':', ';')
 				AND sid=$surveyid";
 	$lsdump = BuildCSVFromQuery($lsquery);
 
 	//8: Labels
-	$lquery = "SELECT {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language
-	           FROM {$dbprefix}labels, {$dbprefix}questions
-			   WHERE ({$dbprefix}labels.lid={$dbprefix}questions.lid or {$dbprefix}labels.lid={$dbprefix}questions.lid1)
+	$lquery = "SELECT {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language
+	           FROM {{labels}}, {{questions}}
+			   WHERE ({{labels}}.lid={{questions}}.lid or {{labels}}.lid={{questions}}.lid1)
 			   AND type in ('F', 'W', 'H', 'Z', '1', ':', ';')
 			   AND sid=$surveyid
-			   GROUP BY {$dbprefix}labels.lid, {$dbprefix}labels.code, {$dbprefix}labels.title, {$dbprefix}labels.sortorder,{$dbprefix}labels.language";
+			   GROUP BY {{labels}}.lid, {{labels}}.code, {{labels}}.title, {{labels}}.sortorder,{{labels}}.language";
 	$ldump = BuildCSVFromQuery($lquery);
 
 	//9: Question Attributes
-	$query = "SELECT DISTINCT {$dbprefix}question_attributes.*
-	          FROM {$dbprefix}question_attributes, {$dbprefix}questions
-			  WHERE {$dbprefix}question_attributes.qid={$dbprefix}questions.qid
-			  AND {$dbprefix}questions.sid=$surveyid";
+	$query = "SELECT DISTINCT {{question_attributes}}.*
+	          FROM {{question_attributes}}, {{questions}}
+			  WHERE {{question_attributes}}.qid={{questions}}.qid
+			  AND {{questions}}.sid=$surveyid";
 	$qadump = BuildCSVFromQuery($query);
 
 	//10: Assessments;
-	$query = "SELECT {$dbprefix}assessments.*
-	          FROM {$dbprefix}assessments
-			  WHERE {$dbprefix}assessments.sid=$surveyid";
+	$query = "SELECT {{assessments}}.*
+	          FROM {{assessments}}
+			  WHERE {{assessments}}.sid=$surveyid";
 	$asdump = BuildCSVFromQuery($query);
 
 	//11: Quota;
-	$query = "SELECT {$dbprefix}quota.*
-	          FROM {$dbprefix}quota
-			  WHERE {$dbprefix}quota.sid=$surveyid";
+	$query = "SELECT {{quota}}.*
+	          FROM {{quota}}
+			  WHERE {{quota}}.sid=$surveyid";
 	$quotadump = BuildCSVFromQuery($query);
 
 	//12: Quota Members;
-	$query = "SELECT {$dbprefix}quota_members.*
-	          FROM {$dbprefix}quota_members
-			  WHERE {$dbprefix}quota_members.sid=$surveyid";
+	$query = "SELECT {{quota_members}}.*
+	          FROM {{quota_members}}
+			  WHERE {{quota_members}}.sid=$surveyid";
 	$quotamemdump = BuildCSVFromQuery($query);
-
-	$fn = "limesurvey_survey_$surveyid.csv";
-
-	//header("Content-Type: application/download");
-	//header("Content-Disposition: attachment; filename=$fn");
-	//header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-	//header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-	//header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-	//header("Pragma: cache");                          // HTTP/1.0
-
-	//include("../config.php");
-	include_once("../config-defaults.php");
-	include_once("../common.php");
-	include("remotecontrol/lsrc.config.php");
 
 	$lsrcString = $dumphead. $sdump. $gdump. $qdump. $adump. $cdump. $lsdump. $ldump. $qadump. $asdump. $slsdump. $quotadump. $quotamemdump."\n";
 
 	//Select title as Filename and save
 	$surveyTitleSql = "SELECT surveyls_title
-		             FROM {$dbprefix}surveys_languagesettings
+		             FROM {{surveys_languagesettings}}
 					 WHERE surveyls_survey_id=$surveyid";
-	$surveyTitleRs = db_execute_assoc($surveyTitleSql);
-	$surveyTitle = $surveyTitleRs->FetchRow();
-	file_put_contents("remotecontrol/".$coreDir.$surveyTitle['surveyls_title'].".csv",$lsrcString);
+	$surveyTitleRs = Yii::app()->createCommand($surveyTitleSql)->query();
+	$surveyTitle = $surveyTitleRs->fetch();
 
-	header("Location: $scriptname?sid=$surveyid");
+	$fn = "$surveyTitle[surveyls_title].csv";
+
+	header("Content-Type: application/download");
+	header("Content-Disposition: attachment; filename=$fn");
+	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	header("Pragma: cache");                          // HTTP/1.0
+
+	echo $lsrcString;
+	//header("Location: $scriptname?sid=$surveyid");
 	exit;
 }
 

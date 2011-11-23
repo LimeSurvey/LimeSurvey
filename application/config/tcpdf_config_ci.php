@@ -74,8 +74,8 @@
 	 *
 	 * ADD TRAILING SLASH!
 	 ***********************************************************/
-    $CI =& get_instance();
-	$tcpdf['image_directory'] = $CI->config->item('imagedir').DIRECTORY_SEPARATOR;
+
+	$tcpdf['image_directory'] = Yii::app()->getConfig('imagedir').DIRECTORY_SEPARATOR;
 
 
 	/************************************************************

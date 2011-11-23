@@ -32,7 +32,7 @@
         <?php } ?>
 
         <p>
-        <input type='submit'  value='<?php echo $clang->gT("Delete survey"); ?>' onclick="window.open('<?php echo Yii::app()->createUrl("admin/survey/delete") . "?action=delete&amp;sid=$surveyid"; ?>', '_top')" />
+        <input type='submit'  value='<?php echo $clang->gT("Delete survey"); ?>' onclick="window.open('<?php echo Yii::app()->createUrl("admin/survey/delete") . "?action=delete&amp;sid=$surveyid"; ?>')" />
         <input type='submit'  value='<?php echo $clang->gT("Cancel"); ?>' onclick="window.open('<?php echo Yii::app()->createUrl("admin/survey/view/$surveyid"); ?>', '_top')" />
     <?php } ?>
 </div><br />&nbsp;

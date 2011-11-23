@@ -10,7 +10,7 @@
    * other free or open source software licenses.
    * See COPYRIGHT.php for copyright notices and details.
    *
-   *	$Id: LSCI_Controller.php 11188 2011-10-17 14:28:02Z mot3 $
+   *	$Id: AdminController.php 11413 2011-11-21 22:08:16Z dragooongarg $
 */
 
 class AdminController extends LSYii_Controller
@@ -112,8 +112,9 @@ class AdminController extends LSYii_Controller
 			'globalsettings' => 'application.controllers.admin.globalsettings',
 			'quotas' => 'application.controllers.admin.quotas',
 			'export' => 'application.controllers.admin.export',
-			'survey' => 'application.controllers.admin.surveyaction',
 			'assessments' =>'application.controllers.admin.assessments',
+			'survey' => 'application.controllers.admin.surveyaction',
+			'printablesurvey' => 'application.controllers.admin.printablesurvey',
 		);
 	}
 

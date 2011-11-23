@@ -242,7 +242,7 @@ $(document).ready(function(){
        var newowner = $("#ownername_select_"+survey_id).val();
        var translate_to = $(this).attr('value');
 
-       $.getJSON(ownerediturl+'/' + newowner + '/' + survey_id,'', function (data){
+       $.getJSON(ownerediturl+'/newowner/' + newowner + '/surveyid/' + survey_id,'', function (data){
 
            var objToUpdate = $($(oldThis).parent());
 

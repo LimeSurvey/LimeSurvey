@@ -22,28 +22,21 @@
  * @package		LimeSurvey
  * @subpackage	Backend
  */
-class printablesurvey extends Admin_Controller {
-
-	/**
-	 * Constructor
-	 */
-	function __construct()
-	{
-		parent::__construct();
-	}
+class printablesurvey extends CAction
+{
 
 	/**
 	 * Show printable survey
 	 */
-	function index($surveyid, $lang = null)
+	function run($surveyid, $lang = null)
 	{
 		$surveyid = sanitize_int($surveyid);
-		$this->load->helper("database");
+
 		//echo '<pre>'.print_r($_SESSION,true).'</pre>';
 		// PRESENT SURVEY DATAENTRY SCREEN
 		if(isset($_POST['printableexport']))
 		{
-			$this->load->library("admin/pdf");
+			Yii::import("application.libraries.admin.pdf");
 		    $pdf = new PDF ($pdforientation,'mm','A4');
 		    $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
 		    $pdf->AddPage();
@@ -55,15 +48,15 @@ class printablesurvey extends Admin_Controller {
 		    if ($lang) $surveyprintlang = $lang;
 		} else
 		{
-		    $surveyprintlang=GetbaseLanguageFromSurveyid($surveyid);
+		    $surveyprintlang=GetbaseLanguageFromSurveyid((int) $surveyid);
 		}
 
 		// Setting the selected language for printout
 		$clang = new limesurvey_lang(array('lang' => $surveyprintlang));
 
-		$desquery = "SELECT * FROM ".$this->db->dbprefix('surveys')." inner join ".$this->db->dbprefix('surveys_languagesettings')." on (surveyls_survey_id=sid) WHERE sid={$surveyid} and surveyls_language=".$this->db->escape($surveyprintlang); //Getting data for this survey
+		$desquery = "SELECT * FROM {{surveys}} inner join {{surveys_languagesettings}} on (surveyls_survey_id=sid) WHERE sid={$surveyid} and surveyls_language=:lang"; //Getting data for this survey
 
-		$desrow = db_execute_assoc($desquery)->row_array();
+		$desrow = Yii::app()->db->createCommand($desquery)->query(array('lang' => $surveyprintlang))->read();
 
 		if ($desrow==false || count($desrow)==0)
 		{
@@ -77,7 +70,7 @@ class printablesurvey extends Admin_Controller {
 	    $surveyname = $desrow['surveyls_title'];
 	    $surveydesc = $desrow['surveyls_description'];
 	    $surveyactive = $desrow['active'];
-	    $surveytable = $this->db->dbprefix("survey_".$desrow['sid']);
+	    $surveytable = "{{survey_".$desrow['sid']."}}";
 	    $surveyexpirydate = $desrow['expires'];
 	    $surveystartdate = $desrow['startdate'];
 	    $surveyfaxto = $desrow['faxto'];
@@ -86,7 +79,7 @@ class printablesurvey extends Admin_Controller {
 		if(isset($_POST['printableexport'])){$pdf->titleintopdf($surveyname,$surveydesc);}
 
 
-		$this->load->helper("surveytranslator");
+		Yii::app()->loadHelper('surveytranslator');
 		$dformat=getDateFormatData($dateformattype);
 		$dformat=$dformat['phpdate'];
 
@@ -102,21 +95,21 @@ class printablesurvey extends Admin_Controller {
 		};
 
 		//define('PRINT_TEMPLATE' , '/templates/print/' , true);
-		if(is_file($this->config->item('usertemplaterootdir').'/'.$template.'/print_survey.pstpl'))
+		if(is_file(Yii::app()->getConfig('usertemplaterootdir').'/'.$template.'/print_survey.pstpl'))
 		{
-			define('PRINT_TEMPLATE_DIR' , $this->config->item('usertemplaterootdir').'/'.$template.'/' , true);
-			define('PRINT_TEMPLATE_URL' , $this->config->item('usertemplaterooturl').'/'.$template.'/' , true);
+			define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('usertemplaterootdir').'/'.$template.'/' , true);
+			define('PRINT_TEMPLATE_URL' , Yii::app()->getConfig('usertemplaterooturl').'/'.$template.'/' , true);
 		}
 		else
 		{
-			define('PRINT_TEMPLATE_DIR' , $this->config->item('standardtemplaterootdir').'/default/' , true);
-			define('PRINT_TEMPLATE_URL' , $this->config->item('standardtemplaterooturl').'/default/' , true);
+			define('PRINT_TEMPLATE_DIR' , Yii::app()->getConfig('standardtemplaterootdir').'/default/' , true);
+			define('PRINT_TEMPLATE_URL' , Yii::app()->getConfig('standardtemplaterooturl').'/default/' , true);
 		}
 
 		$fieldmap=createFieldMap($surveyid);
 
-		$degquery = "SELECT * FROM ".$this->db->dbprefix("groups")." WHERE sid='{$surveyid}' AND language='{$surveyprintlang}' ORDER BY ".$this->db->dbprefix("groups").".group_order";
-		$degresult = db_execute_assoc($degquery);
+		$degquery = "SELECT * FROM {{groups}} WHERE sid='{$surveyid}' AND language='{$surveyprintlang}' ORDER BY {{groups}}.group_order";
+		$degresult = Yii::app()->db->createCommand($degquery)->query();
 
 		if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber))
 		{
@@ -124,12 +117,12 @@ class printablesurvey extends Admin_Controller {
 		}
 
 		$pdf_form='';
-		if($this->config->item('usepdfexport') == 1 && !in_array($surveyprintlang,$this->config->item('notsupportlanguages')))
+		if(Yii::app()->getConfig('usepdfexport') == 1 && !in_array($surveyprintlang,Yii::app()->getConfig('notsupportlanguages')))
 		{
 		    $pdf_form = '
-		    <form action="'.site_url('admin/printablesurvey/index/'.$surveyid.'/'.$surveyprintlang.'/').'" method="post">
+		    <form action="'.$this->getController()->createUrl('admin/printablesurvey/surveyid/'.$surveyid.'/lang/'.$surveyprintlang.'/').'" method="post">
 			    <input type="submit" value="'.$clang->gT('PDF Export').'"/>
-			    <input type="hidden" name="checksessionbypost" value="'.htmlspecialchars($this->session->userdata('checksessionpost')).'"/>
+			    <input type="hidden" name="checksessionbypost" value="'.htmlspecialchars(Yii::app()->session['checksessionpost']).'"/>
 			    <input type="hidden" name="printableexport" value="true"/>
 		    </form>
 		    ';
@@ -138,7 +131,7 @@ class printablesurvey extends Admin_Controller {
 		$headelements = getPrintableHeader();
 
 		//if $showsgqacode is enabled at config.php show table name for reference
-		$showsgqacode = $this->config->item("showsgqacode");
+		$showsgqacode = Yii::app()->getConfig("showsgqacode");
 		if(isset($showsgqacode) && $showsgqacode == true)
 		{
 			$surveyname =  $surveyname."<br />[".$clang->gT('Database')." ".$clang->gT('table').": $surveytable]";
@@ -149,7 +142,7 @@ class printablesurvey extends Admin_Controller {
 		}
 
 		$survey_output = array(
-					 'SITENAME' => $this->config->item("sitename")
+					 'SITENAME' => Yii::app()->getConfig("sitename")
 		,'SURVEYNAME' => $surveyname
 		,'SURVEYDESCRIPTION' => $surveydesc
 		,'WELCOME' => $welcome
@@ -223,15 +216,15 @@ class printablesurvey extends Admin_Controller {
 		// =========================================================
 		// START doin the business:
 		$pdfoutput = '';
-		foreach ($degresult->result_array() as $degrow)
+		foreach ($degresult->readAll() as $degrow)
 		{
 		    // ---------------------------------------------------
 		    // START doing groups
 
-		    $deqquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$surveyprintlang}' AND parent_qid=0 AND TYPE<>'I' ORDER BY question_order";
-		    $deqresult = db_execute_assoc($deqquery);
+		    $deqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid={$degrow['gid']} AND language='{$surveyprintlang}' AND parent_qid=0 AND TYPE<>'I' ORDER BY question_order";
+		    $deqresult = Yii::app()->db->createCommand($deqquery)->query();
 		    $deqrows = array(); //Create an empty array in case FetchRow does not return any rows
-		    foreach ($deqresult->result_array() as $deqrow) {$deqrows[] = $deqrow;} // Get table output into array
+		    foreach ($deqresult->readAll() as $deqrow) {$deqrows[] = $deqrow;} // Get table output into array
 
 		    // Perform a case insensitive natural sort on group name then question title of a multidimensional array
 		    usort($deqrows, 'GroupOrderThenQuestionOrder');
@@ -286,13 +279,13 @@ class printablesurvey extends Admin_Controller {
 		            $s=0;
                     // TMSW Conditions->Relevance:  show relevance instead of this whole section to create $explanation
 
-		            $scenarioquery="SELECT DISTINCT ".$this->db->dbprefix("conditions").".scenario FROM ".$this->db->dbprefix("conditions")." WHERE ".$this->db->dbprefix("conditions").".qid={$deqrow['qid']} ORDER BY scenario";
-		            $scenarioresult=db_execute_assoc($scenarioquery);
+		            $scenarioquery="SELECT DISTINCT {{conditions}}.scenario FROM {{conditions}} WHERE {{conditions}}.qid={$deqrow['qid']} ORDER BY scenario";
+		            $scenarioresult=Yii::app()->db->createCommand($scenarioquery)->query();
 
 		            //Loop through distinct scenarios, thus grouping them together.
-		            foreach ($scenarioresult->result_array() as $scenariorow)
+		            foreach ($scenarioresult->readAll() as $scenariorow)
 		            {
-		                if($s == 0 && $scenarioresult->num_rows() > 1)
+		                if($s == 0 && $scenarioresult->getRowCount() > 1)
 		                {
 		                    $explanation .= '<p class="scenario">'.self::_try_debug(__LINE__)." -------- Scenario {$scenariorow['scenario']} --------</p>\n\n";
 		                }
@@ -303,17 +296,17 @@ class printablesurvey extends Admin_Controller {
 
 		                $x=0;
 		                $distinctquery="SELECT cqid, method, cfieldname, value
-		                            FROM ".$this->db->dbprefix("conditions")."
-		                            WHERE  ".$this->db->dbprefix("conditions").".qid={$deqrow['qid']}
-		                                AND ".$this->db->dbprefix("conditions").".scenario={$scenariorow['scenario']}
+		                            FROM {{conditions}}
+		                            WHERE  {{conditions}}.qid={$deqrow['qid']}
+		                                AND {{conditions}}.scenario={$scenariorow['scenario']}
 		                            group by cqid, method
 		                            ORDER BY cqid";
-		                $distinctresult=db_execute_assoc($distinctquery);
+		                $distinctresult=Yii::app()->db->createCommand($distinctquery)->query();
 		                //Loop through each condition for a particular scenario.
-		                foreach ($distinctresult->result_array() as $distinctrow)
+		                foreach ($distinctresult->readAll() as $distinctrow)
 		                {
-		                    $subquery='select title, question from '.$this->db->dbprefix("questions")." where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
-		                    $subresult=db_execute_assoc($subquery)->row_array();
+		                    $subquery="select title, question from {{questions}} where qid={$distinctrow['cqid']} AND parent_qid=0 AND language='{$surveyprintlang}'";
+		                    $subresult=Yii::app()->db->createCommand($subquery)->query()->read();
 
 		                    if($x > 0)
 		                    {
@@ -400,15 +393,15 @@ class printablesurvey extends Admin_Controller {
 
 		                    $conquery="SELECT cid, cqid, q.title,\n"
 		                    ."q.question, value, q.type, cfieldname\n"
-		                    ."FROM ".$this->db->dbprefix("conditions")." c, ".$this->db->dbprefix("questions")." q\n"
+		                    ."FROM {{conditions}} c, {{questions}} q\n"
 		                    ."WHERE c.cqid=q.qid\n"
 		                    ."AND c.cqid={$distinctrow['cqid']}\n"
 		                    ."AND c.qid={$deqrow['qid']} \n"
 		                    ."AND c.scenario={$scenariorow['scenario']} \n"
 		                    ."AND language='{$surveyprintlang}'";
-		                    $conresult=db_execute_assoc($conquery) or safe_die("$conquery<br />".htmlspecialchars($connect->ErrorMsg()));
+		                    $conresult=Yii::app()->db->createCommand($conquery)->query();
 		                    $conditions=array();
-		                    foreach ($conresult->result_array() as $conrow)
+		                    foreach ($conresult->readAll() as $conrow)
 		                    {
 
 		                        $postans="";
@@ -454,11 +447,11 @@ class printablesurvey extends Admin_Controller {
 		                                $labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
 		                                if ($labelIndex == 0)
 		                                { // TIBO
-		                                    $fquery = "SELECT * FROM ".$this->db->dbprefix("answers")."\n"
+		                                    $fquery = "SELECT * FROM {{answers}}\n"
 		                                    . "WHERE qid='{$conrow['cqid']}'\n"
 		                                    . "AND code='{$conrow['value']}' and scale_id=0 AND language='{$surveyprintlang}'";
-		                                    $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
-		                                    foreach($fresult->result_array() as $frow)
+		                                    $fresult=Yii::app()->db->createCommand($fquery)->query();
+		                                    foreach($fresult->readAll() as $frow)
 		                                    {
 		                                        $postans=$frow['answer'];
 		                                        $conditions[]=$frow['answer'];
@@ -466,11 +459,11 @@ class printablesurvey extends Admin_Controller {
 		                                }
 		                                elseif ($labelIndex == 1)
 		                                {
-		                                    $fquery = "SELECT * FROM ".$this->db->dbprefix("answers")."\n"
+		                                    $fquery = "SELECT * FROM {{answers}}\n"
 		                                    . "WHERE qid='{$conrow['cqid']}'\n"
 		                                    . "AND code='{$conrow['value']}' and scale_id=1 AND language='{$surveyprintlang}'";
-		                                    $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
-		                                    foreach($fresult->result_array() as $frow)
+		                                    $fresult=Yii::app()->db->createCommand($fquery)->query();
+		                                    foreach($fresult->readAll() as $frow)
 		                                    {
 		                                        $postans=$frow['answer'];
 		                                        $conditions[]=$frow['answer'];
@@ -481,9 +474,9 @@ class printablesurvey extends Admin_Controller {
 		                            case "!":
 		                            case "O":
 		                            case "R":
-		                                $ansquery="SELECT answer FROM ".$this->db->dbprefix("answers")." WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
-		                                $ansresult=db_execute_assoc($ansquery);
-		                                foreach ($ansresult->result_array () as $ansrow)
+		                                $ansquery="SELECT answer FROM {{answers}} WHERE qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
+		                                $ansresult=Yii::app()->db->createCommand($ansquery)->query();
+		                                foreach ($ansresult->readAll() as $ansrow)
 		                                {
 		                                    $conditions[]=$ansrow['answer'];
 		                                }
@@ -494,9 +487,9 @@ class printablesurvey extends Admin_Controller {
 		                                break;
 		                            case "M":
 		                            case "P":
-		                                $ansquery="SELECT question FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}' AND language='{$surveyprintlang}'";
-		                                $ansresult=db_execute_assoc($ansquery);
-		                                foreach ($ansresult->result_array () as $ansrow)
+		                                $ansquery="SELECT question FROM {{questions}} WHERE parent_qid='{$conrow['cqid']}' AND title='{$conrow['value']}' AND language='{$surveyprintlang}'";
+		                                $ansresult=Yii::app()->db->createCommand($ansquery)->query();
+		                                foreach ($ansresult->readAll() as $ansrow)
 		                                {
 		                                    $conditions[]=$ansrow['question'];
 		                                }
@@ -506,11 +499,11 @@ class printablesurvey extends Admin_Controller {
 		                            case "H":
 		                            default:
 		                                $value=substr($conrow['cfieldname'], strpos($conrow['cfieldname'], "X".$conrow['cqid'])+strlen("X".$conrow['cqid']), strlen($conrow['cfieldname']));
-		                                $fquery = "SELECT * FROM ".$this->db->dbprefix("answers")."\n"
+		                                $fquery = "SELECT * FROM {{answers}}\n"
 		                                . "WHERE qid='{$conrow['cqid']}'\n"
 		                                . "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
-		                                $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
-		                                foreach ($fresult->result_array () as $frow)
+		                                $fresult=Yii::app()->db->createCommand($fquery)->query();
+		                                foreach ($fresult->readAll() as $frow)
 		                                {
 		                                    $postans=$frow['answer'];
 		                                    $conditions[]=$frow['answer'];
@@ -530,10 +523,10 @@ class printablesurvey extends Admin_Controller {
 		                            case "H":
 		                            case "K":
 		                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
-		                                $ansquery="SELECT question FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
+		                                $ansquery="SELECT question FROM {{questions}} WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
 		                                //$ansquery="SELECT question FROM ".$this->db->dbprefix("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
-		                                $ansresult=db_execute_assoc($ansquery);
-		                                foreach ($ansresult->result_array () as $ansrow)
+		                                $ansresult=Yii::app()->db->createCommand($ansquery)->query();
+		                                foreach ($ansresult->readAll() as $ansrow)
 		                                {
 		                                    $answer_section=" (".$ansrow['question'].")";
 		                                }
@@ -542,9 +535,9 @@ class printablesurvey extends Admin_Controller {
 		                            case "1": // dual: (Label 1), (Label 2)
 		                                $labelIndex=substr($conrow['cfieldname'],-1);
 		                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
-		                                $ansquery="SELECT question FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
+		                                $ansquery="SELECT question FROM {{questions}} WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
 		                                //$ansquery="SELECT question FROM ".$this->db->dbprefix("questions")." WHERE qid='{$conrow['cqid']}' AND language='{$surveyprintlang}'";
-		                                $ansresult=db_execute_assoc($ansquery);
+		                                $ansresult=Yii::app()->db->createCommand($ansquery)->query();
 		                                $cqidattributes = getQuestionAttributeValues($conrow['cqid'], $conrow['type']);
 		                                if ($labelIndex == 0)
 		                                {
@@ -562,7 +555,7 @@ class printablesurvey extends Admin_Controller {
 		                                        $header = '2';
 		                                    }
 		                                }
-		                                foreach ($ansresult->result_array () as $ansrow)
+		                                foreach ($ansresult->readAll() as $ansrow)
 		                                {
 		                                    $answer_section=" (".$ansrow['question']." ".sprintf($clang->gT("Label %s"),$header).")";
 		                                }
@@ -570,15 +563,15 @@ class printablesurvey extends Admin_Controller {
 		                            case ":":
 		                            case ";": //multi flexi: ( answer [label] )
 		                                $thiscquestion=$fieldmap[$conrow['cfieldname']];
-		                                $ansquery="SELECT question FROM ".$this->db->dbprefix("questions")." WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
-		                                $ansresult=db_execute_assoc($ansquery);
-		                                foreach ($ansresult->result_array () as $ansrow)
+		                                $ansquery="SELECT question FROM {{questions}} WHERE parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$surveyprintlang}'";
+		                                $ansresult=Yii::app()->db->createCommand($ansquery)->query();
+		                                foreach ($ansresult->readAll() as $ansrow)
 		                                {
-		                                    $fquery = "SELECT * FROM ".$this->db->dbprefix("answers")."\n"
+		                                    $fquery = "SELECT * FROM {{answers}}\n"
 		                                    . "WHERE qid='{$conrow['cqid']}'\n"
 		                                    . "AND code='{$conrow['value']}' AND language='{$surveyprintlang}'";
-		                                    $fresult=db_execute_assoc($fquery) or safe_die("$fquery<br />".htmlspecialchars($connect->ErrorMsg()));
-		                                    foreach ($fresult->result_array () as $frow)
+		                                    $fresult=Yii::app()->db->createCommand($fquery)->query();
+		                                    foreach ($fresult->readAll() as $frow)
 		                                    {
 		                                        //$conditions[]=$frow['title'];
 		                                        $answer_section=" (".$ansrow['question']."[".$frow['answer']."])";
@@ -646,7 +639,7 @@ class printablesurvey extends Admin_Controller {
 		            $question = array(
 							 'QUESTION_NUMBER' => $total_questions	// content of the question code field
 		            ,'QUESTION_CODE' => $deqrow['title']
-		            ,'QUESTION_TEXT' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is' , '' , tokenReplace($deqrow['question']))	// content of the question field
+		            ,'QUESTION_TEXT' => preg_replace('/(?:<br ?\/?>|<\/(?:p|h[1-6])>)$/is' , '' , $deqrow['question'])	// content of the question field
 		            ,'QUESTION_SCENARIO' => $explanation	// if there are conditions on a question, list the conditions.
 		            ,'QUESTION_MANDATORY' => ''		// translated 'mandatory' identifier
 		            ,'QUESTION_ID' => $deqrow['qid']    // id to be added to wrapping question div
@@ -759,9 +752,9 @@ class printablesurvey extends Admin_Controller {
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"));}
-		                    $deaquery = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
-		                    $dearesult = db_execute_assoc($deaquery);
-		                    $deacount=$dearesult->num_rows();
+		                    $deaquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+		                    $dearesult = Yii::app()->db->createCommand($deaquery)->query();
+		                    $deacount=$dearesult->getRowCount();
 		                    if ($deqrow['other'] == "Y") {$deacount++;}
 
 		                    $wrapper = setup_columns(0, $deacount);
@@ -771,7 +764,7 @@ class printablesurvey extends Admin_Controller {
 		                    $rowcounter = 0;
 		                    $colcounter = 1;
 
-		                    foreach ($dearesult->result_array () as $dearow)
+		                    foreach ($dearesult->readAll() as $dearow)
 		                    {
 		                        if (isset($optCategorySeparator))
 		                        {
@@ -824,10 +817,10 @@ class printablesurvey extends Admin_Controller {
 		                case "O":  //LIST WITH COMMENT
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *only one* of the following:");
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *only one* of the following:"),"U");}
-		                    $deaquery = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer ";
-		                    $dearesult = db_execute_assoc($deaquery);
+		                    $deaquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer ";
+		                    $dearesult = Yii::app()->db->createCommand($deaquery)->query();
 		                    $question['ANSWER'] = "\t<ul>\n";
-		                    foreach ($dearesult->result_array () as $dearow)
+		                    foreach ($dearesult->readAll() as $dearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<li>\n\t\t\t".self::_input_type_image('radio',$dearow['answer'])."\n\t\t\t".$dearow['answer'].self::_addsgqacode(" (".$dearow['code'].")")."\n\t\t</li>\n";
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf($dearow['answer']);}
@@ -846,13 +839,13 @@ class printablesurvey extends Admin_Controller {
 
 		                    // ==================================================================
 		                case "R":  //RANKING Type Question
-		                    $reaquery = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
-		                    $rearesult = db_execute_assoc($reaquery) or safe_die ("Couldn't get ranked answers<br />".$connect->ErrorMsg());
-		                    $reacount = $rearesult->num_rows();
+		                    $reaquery = "SELECT * FROM {{answers}} WHERE qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY sortorder, answer";
+		                    $rearesult = Yii::app()->db->createCommand($reaquery)->query();
+		                    $reacount = $rearesult->getRowCount();
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please number each box in order of preference from 1 to")." $reacount";
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please number each box in order of preference from 1 to ").$reacount,"U");}
 		                    $question['ANSWER'] = "\n<ul>\n";
-		                    foreach ($rearesult->result_array () as $rearow)
+		                    foreach ($rearesult->readAll() as $rearow)
 		                    {
 		                        $question['ANSWER'] .="\t<li>\n\t".self::_input_type_image('rank','',4,1)."\n\t\t&nbsp;".$rearow['answer'].self::_addsgqacode(" (".$fieldname.$rearow['code'].")")."\n\t</li>\n";
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf("__ ".$rearow['answer']);}
@@ -881,10 +874,10 @@ class printablesurvey extends Admin_Controller {
 		                        $question['QUESTION_TYPE_HELP'] = sprintf($clang->gT('Please choose *at most* %s answers:' ),'<span class="num">'.$maxansw.'</span>');
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf(sprintf($clang->gT('Please choose *at most* %s answers:' ),$maxansw),"U");}
 		                    }
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}' ORDER BY question_order";
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		                    $mearesult = db_execute_assoc($meaquery);
-		                    $meacount = $mearesult->num_rows();
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
+		                    $meacount = $mearesult->getRowCount();
 		                    if ($deqrow['other'] == 'Y') {$meacount++;}
 
 		                    $wrapper = setup_columns($dcols, $meacount);
@@ -893,7 +886,7 @@ class printablesurvey extends Admin_Controller {
 		                    $rowcounter = 0;
 		                    $colcounter = 1;
 
-		                    foreach ($mearesult->result_array () as $mearow)
+		                    foreach ($mearesult->readAll() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= $wrapper['item-start'].self::_input_type_image('checkbox',$mearow['question'])."\n\t\t".$mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].") ").$wrapper['item-end'];
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf(" o ".$mearow['answer']);}
@@ -940,14 +933,14 @@ class printablesurvey extends Admin_Controller {
 		                        $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose *at most* ").'<span class="num">'.$maxansw.'</span> '.$clang->gT("answers and provide a comment:");
 		                        if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose *at most* ").$maxansw.$clang->gT("answers and provide a comment:"),"U");}
 		                    }
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
-		                    $mearesult = db_execute_assoc($meaquery);
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
 		                    //				$printablesurveyoutput .="\t\t\t<u>".$clang->gT("Please choose all that apply and provide a comment:")."</u><br />\n";
 		                    $pdfoutput=array();
 		                    $j=0;
 		                    $longest_string = 0;
-							foreach ($mearesult->result_array() as $mearow)
+							foreach ($mearesult->readAll() as $mearow)
 		                    {
 		                        $longest_string = longest_string($mearow['question'] , $longest_string );
 		                        $question['ANSWER'] .= "\t<li><span>\n\t\t".self::_input_type_image('checkbox',$mearow['question']).$mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].") ")."</span>\n\t\t".self::_input_type_image('text','comment box',60).self::_addsgqacode(" (".$fieldname.$mearow['title']."comment) ")."\n\t</li>\n";
@@ -997,10 +990,10 @@ class printablesurvey extends Admin_Controller {
 		                    }
 		                    $question['QUESTION_TYPE_HELP'] .= $clang->gT("Please write your answer(s) here:");
 
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
-		                    $mearesult = db_execute_assoc($meaquery);
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
 		                    $longest_string = 0;
-		                    foreach ($mearesult->result_array() as $mearow)
+		                    foreach ($mearesult->readAll() as $mearow)
 		                    {
 		                        $longest_string = longest_string($mearow['question'] , $longest_string );
 		                        if (isset($qidattributes['slider_layout']) && $qidattributes['slider_layout']==1)
@@ -1074,8 +1067,8 @@ class printablesurvey extends Admin_Controller {
 
 		                    // ==================================================================
 		                case "A":  //ARRAY (5 POINT CHOICE)
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order";
-		                    $mearesult = db_execute_assoc($meaquery);
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order";
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
@@ -1097,7 +1090,7 @@ class printablesurvey extends Admin_Controller {
 		                    $pdfoutput = array();
 		                    $j=0;
 		                    $rowclass = 'array1';
-		                    foreach ($mearesult->result_array() as $mearow)
+		                    foreach ($mearesult->readAll() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 		                        $rowclass = alternation($rowclass,'row');
@@ -1137,9 +1130,9 @@ class printablesurvey extends Admin_Controller {
 
 		                    // ==================================================================
 		                case "B":  //ARRAY (10 POINT CHOICE)
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
 
-		                    $mearesult = db_execute_assoc($meaquery);
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
@@ -1153,7 +1146,7 @@ class printablesurvey extends Admin_Controller {
 		                    $pdfoutput=array();
 		                    $j=0;
 		                    $rowclass = 'array1';
-		                    foreach ($mearesult->result_array() as $mearow)
+		                    foreach ($mearesult->readAll() as $mearow)
 		                    {
 
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n\t\t\t<th class=\"answertext\">{$mearow['question']}".self::_addsgqacode(" (".$fieldname.$mearow['title'].")")."</th>\n";
@@ -1174,8 +1167,8 @@ class printablesurvey extends Admin_Controller {
 
 		                    // ==================================================================
 		                case "C":  //ARRAY (YES/UNCERTAIN/NO)
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
-		                    $mearesult = db_execute_assoc($meaquery);
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
@@ -1197,7 +1190,7 @@ class printablesurvey extends Admin_Controller {
 
 		                    $rowclass = 'array1';
 
-		                    foreach ($mearesult->result_array() as $mearow)
+		                    foreach ($mearesult->readAll() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 		                        $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['question']}".self::_addsgqacode(" (".$fieldname.$mearow['title'].")")."</th>\n";
@@ -1215,8 +1208,8 @@ class printablesurvey extends Admin_Controller {
 		                    break;
 
 		                case "E":  //ARRAY (Increase/Same/Decrease)
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order";
-		                    $mearesult = db_execute_assoc($meaquery);
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$surveyprintlang}'  ORDER BY question_order";
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
@@ -1237,7 +1230,7 @@ class printablesurvey extends Admin_Controller {
 		                    $j=0;
 		                    $rowclass = 'array1';
 
-		                    foreach ($mearesult->result_array() as $mearow)
+		                    foreach ($mearesult->readAll() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 		                        $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">{$mearow['question']}".self::_addsgqacode(" (".$fieldname.$mearow['title'].")")."</th>\n";
@@ -1287,8 +1280,8 @@ class printablesurvey extends Admin_Controller {
 		                    } else {
 		                        $checkboxlayout=false;
 		                    }
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order";
-		                    $mearesult = db_execute_assoc($meaquery);
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
 
 		                    if ($checkboxlayout === false)
 		                    {
@@ -1310,10 +1303,10 @@ class printablesurvey extends Admin_Controller {
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 		                    $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
-		                    $fquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order";
-		                    $fresult = db_execute_assoc($fquery);
+		                    $fquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $fresult = Yii::app()->db->createCommand($fquery)->query();
 
-		                    $fcount = $fresult->num_rows();
+		                    $fcount = $fresult->getRowCount();
 		                    $fwidth = "120";
 		                    $i=0;
 		                    $pdfoutput = array();
@@ -1321,7 +1314,8 @@ class printablesurvey extends Admin_Controller {
 
 		                    //array to temporary store X axis question codes
 		                    $xaxisarray = array();
-		                    foreach ($fresult->result_array() as $frow)
+		                	$result = $fresult->readAll();
+		                    foreach ($result as $frow)
 
 		                    {
 		                        $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}</th>\n";
@@ -1335,7 +1329,7 @@ class printablesurvey extends Admin_Controller {
 		                    $a=1; //Counter for pdfoutput
 		                    $rowclass = 'array1';
 
-		                    foreach ($fresult->result_array() as $frow)
+		                    foreach ($result as $frow)
 		                    {
 		                        $question['ANSWER'] .= "\t<tr class=\"$rowclass\">\n";
 		                        $rowclass = alternation($rowclass,'row');
@@ -1378,15 +1372,15 @@ class printablesurvey extends Admin_Controller {
 		                    // ==================================================================
 		                case ";": //ARRAY (Multi Flexible) (text)
 		                    $headstyle="style='padding-left: 20px; padding-right: 7px'";
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order";
-		                    $mearesult = db_execute_assoc($meaquery);
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
 
 		                    $question['QUESTION_TYPE_HELP'] = self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
 		                    $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
-		                    $fquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order";
-		                    $fresult = db_execute_assoc($fquery);
-		                    $fcount = $fresult->num_rows();
+		                    $fquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND scale_id=1 AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $fresult = Yii::app()->db->createCommand($fquery)->query();
+		                    $fcount = $fresult->getRowCount();
 		                    $fwidth = "120";
 		                    $i=0;
 		                    $pdfoutput=array();
@@ -1394,7 +1388,7 @@ class printablesurvey extends Admin_Controller {
 
 		                    //array to temporary store X axis question codes
 		                    $xaxisarray = array();
-		                    foreach ($fresult->result_array() as $frow)
+		                    foreach ($fresult->readAll() as $frow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}</th>\n";
 		                        $i++;
@@ -1407,7 +1401,7 @@ class printablesurvey extends Admin_Controller {
 		                    $a=1;
 		                    $rowclass = 'array1';
 
-		                    foreach ($mearesult->result_array() as $mearow)
+		                    foreach ($mearesult->readAll() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 		                        $rowclass = alternation($rowclass,'row');
@@ -1439,22 +1433,22 @@ class printablesurvey extends Admin_Controller {
 		                    // ==================================================================
 		                case "F": //ARRAY (Flexible Labels)
 
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
-		                    $mearesult = db_execute_assoc($meaquery);
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
 
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
 
-		                    $fquery = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE scale_id=0 and qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
-		                    $fresult = db_execute_assoc($fquery);
-		                    $fcount = $fresult->num_rows();
+		                    $fquery = "SELECT * FROM {{answers}} WHERE scale_id=0 and qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+		                    $fresult = Yii::app()->db->createCommand($fquery)->query();
+		                    $fcount = $fresult->getRowCount();
 		                    $fwidth = "120";
 		                    $i=1;
 		                    $pdfoutput = array();
 		                    $pdfoutput[0][0]='';
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 		                    $column_headings = array();
-		                    foreach ($fresult->result_array() as $frow)
+		                    foreach ($fresult->readAll() as $frow)
 		                    {
 		                        $column_headings[] = $frow['answer'].self::_addsgqacode(" (".$frow['code'].")");
 		                    }
@@ -1487,7 +1481,7 @@ class printablesurvey extends Admin_Controller {
 		                    $counter = 1;
 		                    $rowclass = 'array1';
 
-		                    foreach ($mearesult->result_array() as $mearow)
+		                    foreach ($mearesult->readAll() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 		                        $rowclass = alternation($rowclass,'row');
@@ -1539,12 +1533,12 @@ class printablesurvey extends Admin_Controller {
 		                    // ==================================================================
 		                case "1": //ARRAY (Flexible Labels) multi scale
 
-		                    $leftheader= $qidattributes['dualscale_headerA'];
-		                    $rightheader= $qidattributes['dualscale_headerB'];
+		                    $leftheader= $qidattributes['dualscale_headerA'][$surveyprintlang];
+		                    $rightheader= $qidattributes['dualscale_headerB'][$surveyprintlang];
 
 		                    $headstyle = 'style="padding-left: 20px; padding-right: 7px"';
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
-		                    $mearesult = db_execute_assoc($meaquery);
+		                    $meaquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order";
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
 
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $surveyprintlang, $surveyid);
@@ -1552,16 +1546,16 @@ class printablesurvey extends Admin_Controller {
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 		                    $question['ANSWER'] .= "\n<table>\n\t<thead>\n";
 
-		                    $fquery = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' AND scale_id=0 ORDER BY sortorder, code";
-		                    $fresult = db_execute_assoc($fquery);
-		                    $fcount = $fresult->num_rows();
+		                    $fquery = "SELECT * FROM {{answers}} WHERE qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' AND scale_id=0 ORDER BY sortorder, code";
+		                    $fresult = Yii::app()->db->createCommand($fquery)->query();
+		                    $fcount = $fresult->getRowCount();
 		                    $fwidth = "120";
 		                    $l1=0;
 		                    $printablesurveyoutput2 = "\t\t\t<td>&nbsp;</td>\n";
 		                    $myheader2 = '';
 		                    $pdfoutput = array();
 		                    $pdfoutput[0][0]='';
-		                    foreach ($fresult->result_array() as $frow)
+		                    foreach ($fresult->readAll() as $frow)
 		                    {
 		                        $printablesurveyoutput2 .="\t\t\t<th>{$frow['answer']}".self::_addsgqacode(" (".$frow['code'].")")."</th>\n";
 		                        $myheader2 .= "<td></td>";
@@ -1570,15 +1564,15 @@ class printablesurvey extends Admin_Controller {
 		                    }
 		                    // second scale
 		                    $printablesurveyoutput2 .="\t\t\t<td>&nbsp;</td>\n";
-		                    $fquery1 = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' AND scale_id=1 ORDER BY sortorder, code";
-		                    $fresult1 = db_execute_assoc($fquery1);
-		                    $fcount1 = $fresult1->num_rows();
+		                    $fquery1 = "SELECT * FROM {{answers}} WHERE qid='{$deqrow['qid']}'  AND language='{$surveyprintlang}' AND scale_id=1 ORDER BY sortorder, code";
+		                    $fresult1 = Yii::app()->db->createCommand($fquery1)->query();
+		                    $fcount1 = $fresult1->getRowCount();
 		                    $fwidth = "120";
 		                    $l2=0;
 
 		                    //array to temporary store second scale question codes
 		                    $scale2array = array();
-		                    foreach ($fresult1->result_array() as $frow1)
+		                    foreach ($fresult1->readAll() as $frow1)
 		                    {
 		                        $printablesurveyoutput2 .="\t\t\t<th>{$frow1['answer']}".self::_addsgqacode(" (".$frow1['code'].")")."</th>\n";
 		                        $pdfoutput[1][$l2]=$frow['answer'];
@@ -1615,7 +1609,7 @@ class printablesurvey extends Admin_Controller {
 
 		                    //counter for each subquestion
 		                    $sqcounter = 0;
-		                    foreach ($mearesult->result_array() as $mearow)
+		                    foreach ($mearesult->readAll() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 		                        $rowclass = alternation($rowclass,'row');
@@ -1651,19 +1645,19 @@ class printablesurvey extends Admin_Controller {
 		                case "H": //ARRAY (Flexible Labels) by Column
 		                    //$headstyle="style='border-left-style: solid; border-left-width: 1px; border-left-color: #AAAAAA'";
 		                    $headstyle="style='padding-left: 20px; padding-right: 7px'";
-		                    $fquery = "SELECT * FROM ".$this->db->dbprefix("questions")." WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, title";
-		                    $fresult = db_execute_assoc($fquery);
+		                    $fquery = "SELECT * FROM {{questions}} WHERE parent_qid={$deqrow['qid']}  AND language='{$surveyprintlang}' ORDER BY question_order, title";
+		                    $fresult = Yii::app()->db->createCommand($fquery)->query();
 		                    $question['QUESTION_TYPE_HELP'] = $clang->gT("Please choose the appropriate response for each item:");
 		                    if(isset($_POST['printableexport'])){$pdf->intopdf($clang->gT("Please choose the appropriate response for each item:"),"U");}
 		                    $question['ANSWER'] .= "\n<table>\n\t<thead>\n\t\t<tr>\n\t\t\t<td>&nbsp;</td>\n";
-		                    $meaquery = "SELECT * FROM ".$this->db->dbprefix("answers")." WHERE qid='{$deqrow['qid']}' AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY sortorder, code";
-		                    $mearesult = db_execute_assoc($meaquery);
-		                    $fcount = $fresult->num_rows();
+		                    $meaquery = "SELECT * FROM {{answers}} WHERE qid='{$deqrow['qid']}' AND scale_id=0 AND language='{$surveyprintlang}' ORDER BY sortorder, code";
+		                    $mearesult = Yii::app()->db->createCommand($meaquery)->query();
+		                    $fcount = $fresult->getRowCount();
 		                    $fwidth = "120";
 		                    $i=0;
 		                    $pdfoutput = array();
 		                    $pdfoutput[0][0]='';
-		                    foreach ($fresult->result_array() as $frow)
+		                    foreach ($fresult->readAll() as $frow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t\t<th>{$frow['question']}".self::_addsgqacode(" (".$fieldname.$frow['title'].")")."</th>\n";
 		                        $i++;
@@ -1674,7 +1668,7 @@ class printablesurvey extends Admin_Controller {
 		                    $rowclass = 'array1';
 
 
-		                    foreach ($mearesult->result_array() as $mearow)
+		                    foreach ($mearesult->readAll() as $mearow)
 		                    {
 		                        $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
 		                        $rowclass = alternation($rowclass,'row');
@@ -1804,7 +1798,7 @@ class printablesurvey extends Admin_Controller {
 	// TEMP function for debugging
 	function _try_debug($line)
 	{
-	    $debug = $this->config->item("debug");
+	    $debug = Yii::app()->getConfig("debug");
 	    if($debug > 0)
 	    {
 	        return '<!-- printablesurvey.php: '.$line.' -->';
@@ -1958,22 +1952,22 @@ class printablesurvey extends Admin_Controller {
 	}
 
 	function _array_filter_help($qidattributes, $surveyprintlang, $surveyid) {
-	    $clang = $this->limesurvey_lang;
+	    $clang = $this->getController()->lang;
 	    $output = "";
 	    if(!empty($qidattributes['array_filter']))
 	    {
-	        $newquery="SELECT question FROM ".$this->db->dbprefix("questions")." WHERE title='{$qidattributes['array_filter']}' AND language='{$surveyprintlang}' AND sid = '$surveyid'";
-	        $newresult=db_execute_assoc($newquery);
-	        $newquestiontext=$newresult->row_array();
+	        $newquery="SELECT question FROM {{questions}} WHERE title='{$qidattributes['array_filter']}' AND language='{$surveyprintlang}' AND sid = '$surveyid'";
+	        $newresult=Yii::app()->db->createCommand($newquery)->query();
+	        $newquestiontext=$newresult->read();
 	        $output .= "\n<p class='extrahelp'>
 			    ".sprintf($clang->gT("Only answer this question for the items you selected in question %d ('%s')"),$qidattributes['array_filter'], br2nl($newquestiontext['question']))."
 			</p>\n";
 	    }
 	    if(!empty($qidattributes['array_filter_exclude']))
 	    {
-	        $newquery="SELECT question FROM ".$this->db->dbprefix("questions")." WHERE title='{$qidattributes['array_filter_exclude']}' AND language='{$surveyprintlang}' AND sid = '$surveyid'";
-	        $newresult=db_execute_assoc($newquery);
-	        $newquestiontext=$newresult->row_array();
+	        $newquery="SELECT question FROM {{questions}} WHERE title='{$qidattributes['array_filter_exclude']}' AND language='{$surveyprintlang}' AND sid = '$surveyid'";
+	        $newresult=Yii::app()->db->createCommand($newquery)->query();
+	        $newquestiontext=$newresult->read();
 	        $output .= "\n    <p class='extrahelp'>
 			    ".sprintf($clang->gT("Only answer this question for the items you did not select in question %d ('%s')"),$qidattributes['array_filter_exclude'], br2nl($newquestiontext['question']))."
 			</p>\n";
@@ -1991,7 +1985,7 @@ class printablesurvey extends Admin_Controller {
 	 */
 	function _addsgqacode($code)
 	{
-		$showsgqacode = $this->config->item('showsgqacode');
+		$showsgqacode = Yii::app()->getConfig('showsgqacode');
 		if(isset($showsgqacode) && $showsgqacode == true)
 		{
 			return $code;
