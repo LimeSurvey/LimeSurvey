@@ -110,7 +110,7 @@ $codeids='';
                     <?php } ?>
 
                     </td><td>
-                    <input type='text' size='100' id='answer_<?php echo $row['language']; ?>_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' name='answer_<?php echo $row['language']; ?>_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['question']; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" />
+                    <input type='text' size='100' id='answer_<?php echo $row['language']; ?>_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' name='answer_<?php echo $row['language']; ?>_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['question']; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;}" onblur="if (this.value == '') {this.value = '<?php echo $clang->gT('Some example subquestion'); ?>';}" onfocus="if (this.value=='<?php echo $clang->gT('Some example subquestion'); ?>'){this.value='';} "/>
                     <?php echo  getEditor("editanswer","answer_".$row['language']."_".$row['qid']."_{$row['scale_id']}", "[".$clang->gT("Subquestion:", "js")."](".$row['language'].")",$surveyid,$gid,$qid,'editanswer'); ?>
                     </td>
                     <td>

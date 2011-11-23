@@ -4,6 +4,20 @@ $(document).ready(function(){
     $("#template").change(templatechange);
     $("#template").keyup(templatechange);
     $("#copysurveyform").submit(copysurvey);
+    
+    // hide save button for Import and Copy tabs
+    $("#tabs").bind("tabsselect", function(event, ui) {
+	    var selectedTab = ui.panel.id;
+	   	if ((selectedTab == "import")||(selectedTab == "copy")) {
+	   		// hide save button
+	   		// from what I can tell .standardbtn seems to be unique to save buttons, which is why it is used here 
+	   		$(".standardbtn").hide();
+	   	} else {
+	   		// show save button
+	   		$(".standardbtn").show();
+	   	}
+	});
+
     $("#urlparams").jqGrid({ url:jsonUrl,
         datatype: "json",
         colNames:[sAction,'','',sParameter,'','',sTargetQuestion],
