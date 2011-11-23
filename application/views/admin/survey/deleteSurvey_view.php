@@ -3,7 +3,7 @@
     <div class='header ui-widget-header'><?php echo $clang->gT("Delete survey"); ?>
     </div>
 
-    <?php if (!isset($surveyid) || !$surveyid)
+    <?php if (empty($surveyid) || Survey::model()->findByPk($surveyid) === null)
     { ?>
         <font color='red'><strong><?php echo $clang->gT("Error"); ?></strong></font>
         <?php echo $clang->gT("You have not selected a survey to delete"); ?>
