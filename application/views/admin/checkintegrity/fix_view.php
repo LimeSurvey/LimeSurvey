@@ -10,5 +10,5 @@
 
 
     <p><?php $clang->eT("Check database again?"); ?><br />
-    <a href='<?php echo site_url('admin/checkintegrity');?>'><?php $clang->eT("Check again"); ?></a><br />
+    <a href='<?php echo $this->createUrl('admin/checkintegrity');?>'><?php $clang->eT("Check again"); ?></a><br />
 </div>

@@ -8407,14 +8407,12 @@ EOS;
 */
 function fixSubquestions()
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $surveyidresult=$CI->db->query("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
-    from ".$CI->db->dbprefix('questions')." sq JOIN ".$CI->db->dbprefix('questions')." q on sq.parent_qid=q.qid
-    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)");
-    foreach($surveyidresult->result_array() as $sv)
+    $surveyidresult=Yii::app()->db->createCommand("select sq.qid, sq.parent_qid, sq.gid as sqgid, q.gid, sq.type as sqtype, q.type
+    from {{questions}} sq JOIN {{questions}} q on sq.parent_qid=q.qid
+    where sq.parent_qid>0 and  (sq.gid!=q.gid or sq.type!=q.type)")->query();
+    foreach($surveyidresult->readAll() as $sv)
     {
-        $CI->db->query('update '.$CI->db->dbprefix('questions')." set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}");
+        Yii::app()->db->createCommand("update {{questions}} set type='{$sv['type']}', gid={$sv['gid']} where qid={$sv['qid']}")->query();
     }
 
 }

@@ -113,6 +113,7 @@ class AdminController extends LSYii_Controller
 			'quotas' => 'application.controllers.admin.quotas',
 			'export' => 'application.controllers.admin.export',
 			'assessments' =>'application.controllers.admin.assessments',
+			'checkintegrity' => 'application.controllers.admin.checkintegrity',
 			'survey' => 'application.controllers.admin.surveyaction',
 			'printablesurvey' => 'application.controllers.admin.printablesurvey',
 			'tokens' => 'application.controllers.admin.tokens',

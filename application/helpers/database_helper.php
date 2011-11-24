@@ -1,24 +1,34 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$CI =& get_instance();
-
-
 function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
-	$CI = &get_instance();
     //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
+	try {
     if($inputarr)
     {
-        $dataset=$CI->db->query($sql,$inputarr);    //Checked
+			$dataset=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query();	//Checked
     }
     else
     {
-        $dataset=$CI->db->query($sql);
+			$dataset=Yii::app()->db->createCommand($sql)->query();
 
     }
+	} catch(CDbException $e) {
+		$dataset=false;
+	}
 
     if (!$silent && !$dataset)  {safe_die('Error executing query in db_execute_assoc:'.$sql);}
     return $dataset;
+}
+
+function &db_query_or_false($sql)
+{
+	try {
+        $dataset=Yii::app()->db->createCommand($sql)->query();
+	} catch(CDbException $e) {
+		$dataset=false;
+	}
+	return $dataset;
 }
 
 function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
@@ -157,6 +167,28 @@ function db_table_name_nq($name)
     return $dbprefix.$name;
 }
 */
+/**
+ *  Return a sql statement for finding LIKE named tables
+ *  Be aware that you have to escape underscor chars by using a backslash
+ * otherwise you might get table names returned you don't want
+ *
+ * @param mixed $table
+ */
+function db_select_tables_like($table)
+{
+    switch (Yii::app()->db->getDriverName()) {
+        case 'mysqli':
+        case 'mysql' :
+            return "SHOW TABLES LIKE '$table'";
+        case 'mssql' :
+        case 'odbc' :
+            return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
+        case 'postgre' :
+            $table=str_replace('\\','\\\\',$table);
+            return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
+        default: safe_die ("Couldn't create 'select tables like' query for connection type 'databaseType'");
+    }
+}
 
 
 /**

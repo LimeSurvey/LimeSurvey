@@ -124,7 +124,7 @@
             <ul>
                 <?php
                     foreach ($surveylanguagesettings as $surveylanguagesetting) {?>
-                    <li>SLID:<?php echo $surveylanguagesettings['slid'];?> <?php $clang->eT("Reason:");?> <?php echo $surveylanguagesettings['reason'];?></li><?php
+                    <li>SLID:<?php echo $surveylanguagesetting['slid'];?> <?php $clang->eT("Reason:");?> <?php echo $surveylanguagesetting['reason'];?></li><?php
                 }?>
             </ul>
             <?php
@@ -209,7 +209,7 @@
         <?php } else
         {?>
         <br /><?php $clang->eT("Should we proceed with the delete?"); ?> <br />
-        <form action='<?php echo site_url('admin/checkintegrity/fixintegrity'); ?>' method='post'>
+        <form action='<?php echo $this->createUrl('admin/checkintegrity/fixintegrity'); ?>' method='post'>
             <input type='hidden' name='ok' value='Y' />
             <input type='submit' value='<?php $clang->eT("Yes - Delete Them!"); ?>' />
         </form>
@@ -224,7 +224,7 @@
         <br /> <?php $clang->eT("No database action required!"); ?>
         <?php } else
         {?>
-        <form action='<?php echo site_url('admin/checkintegrity/fixredundancy'); ?>' method='post'>
+        <form action='<?php echo $this->createUrl('admin/checkintegrity/fixredundancy'); ?>' method='post'>
             <ul>
                 <?php
                     if (isset($redundantsurveytables))
