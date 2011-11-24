@@ -344,7 +344,7 @@ myform.submit();
 <?php $ajaxloader = array('src' => 'images/ajax-loader.gif',
                           'alt' => 'Ajax Loader',
                           'title' => 'Ajax Loader'); ?>
- <div id="processing" title="<?php $clang->eT("Processing .....") ?>" style="display:none">
+ <div id="processing" title="<?php $clang->eT("Processing...") ?>" style="display:none">
 <?php echo img($ajaxloader); ?>
 <div id="addcpdb" title="addsurvey" style="display:none">
   <p><?php $clang->eT("Please select the attributes that are to be added to the central database"); ?></p>
