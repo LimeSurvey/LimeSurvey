@@ -17,13 +17,13 @@
 			echo $clang->gT("Do you want to create a token table for this survey?");
 			?>
             <br /><br />
-            <input type='submit' value='<?php echo $clang->gT("Initialise tokens");?>' onclick="<?php echo get2post(site_url("admin/tokens/index/$surveyid")."?action=tokens&amp;sid=$surveyid&amp;createtable=Y");?>" />
-            <input type='submit' value='<?php echo $clang->gT("No, thanks.");?>' onclick="window.open('<?php echo site_url("admin/survey/view/$surveyid");?>', '_top')" /></div>
+            <input type='submit' value='<?php echo $clang->gT("Initialise tokens");?>' onclick="<?php echo get2post($this->createUrl("admin/tokens/sa/index/surveyid/$surveyid")."?action=tokens&amp;sid=$surveyid&amp;createtable=Y");?>" />
+            <input type='submit' value='<?php echo $clang->gT("No, thanks.");?>' onclick="window.open('<?php echo$this->createUrl("admin/survey/sa/view/surveyid/$surveyid");?>', '_top')" /></div>
         <?php }
         else
         {
             echo $clang->gT("You don't have the permission to activate tokens.");?>
-            <input type='submit' value='<?php echo $clang->gT("Back to main menu");?>' onclick="window.open('<?php echo site_url("admin/survey/view/$surveyid");?>', '_top')" /></div>
+            <input type='submit' value='<?php echo $clang->gT("Back to main menu");?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/view/surveyid/$surveyid");?>', '_top')" /></div>
 
         <?php }
 
@@ -58,12 +58,12 @@ document.forms[i].appendChild(el);
 
 	function addHiddenElement(theform,thename,thevalue)
 	{
-var myel = document.createElement('input');
-myel.type = 'hidden';
-myel.name = thename;
-theform.appendChild(myel);
-myel.value = thevalue;
-return myel;
+		var myel = document.createElement('input');
+		myel.type = 'hidden';
+		myel.name = thename;
+		theform.appendChild(myel);
+		myel.value = thevalue;
+		return myel;
 	}
 
 	function sendPost(myaction,checkcode,arrayparam,arrayval)

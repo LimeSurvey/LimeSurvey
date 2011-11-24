@@ -3204,7 +3204,28 @@ function getQuestionAttributeValues($qid, $type='')
     $cache[$qid]=$qid_attributes;
     return $qid_attributes;
 }
-
+/**
+ *  Return a sql statement for finding LIKE named tables
+ *  Be aware that you have to escape underscor chars by using a backslash
+ * otherwise you might get table names returned you don't want
+ *
+ * @param mixed $table
+ */
+function db_select_tables_like($table)
+{
+	switch (Yii::app()->db->getDriverName()) {
+		case 'mysqli':
+		case 'mysql' :
+			return "SHOW TABLES LIKE '$table'";
+		case 'mssql' :
+		case 'odbc' :
+			return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
+		case 'postgre' :
+			$table=str_replace('\\','\\\\',$table);
+			return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
+		default: safe_die ("Couldn't create 'select tables like' query for connection type 'databaseType'");
+	}
+}
 /**
 *
 * Returns the questionAttribtue value set or '' if not set
@@ -5489,12 +5510,11 @@ function filterforattributes ($fieldname)
 */
 function GetAttributeFieldNames($surveyid)
 {
-    $CI = &get_instance();
-    if (tableExists('tokens_'.$surveyid) === false)
+    if (($table = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}')) === false)
     {
         return Array();
     }
-    $tokenfieldnames = array_values($CI->db->list_fields("tokens_$surveyid"));
+    $tokenfieldnames = $table->getColumnNames();
     return array_filter($tokenfieldnames,'filterforattributes');
 }
 
@@ -7013,10 +7033,8 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 */
 function access_denied($action,$sid='')
 {
-    $CI =& get_instance();
-
-    $clang = $CI->limesurvey_lang;
-    if ($CI->session->userdata('loginID'))
+    $clang = Yii::app()->lang;
+    if (Yii::app()->session['loginID'])
     {
         $ugid = $CI->config->item('ugid');
         $accesssummary = "<p><strong>".$clang->gT("Access denied!")."</strong><br />\n";
@@ -8278,36 +8296,34 @@ function retrieve_Answer($surveyid, $code, $phpdateformat=null)
 */
 function sGetSurveyUserlist($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surveyid)
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     $surveyid=sanitize_int($surveyid);
 
-    $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM ".$CI->db->dbprefix."users AS a
-    LEFT OUTER JOIN (SELECT uid AS id FROM ".$CI->db->dbprefix."survey_permissions WHERE sid = {$surveyid}) AS b ON a.uid = b.id
+    $sSurveyIDQuery = "SELECT a.uid, a.users_name, a.full_name FROM {{users}} AS a
+    LEFT OUTER JOIN (SELECT uid AS id FROM {{survey_permissions}} WHERE sid = {$surveyid}) AS b ON a.uid = b.id
     WHERE id IS NULL ";
     if (!$bIncludeSuperAdmins)
     {
         $sSurveyIDQuery.='and superadmin=0 ';
     }
     $sSurveyIDQuery.= 'ORDER BY a.users_name';
-    $surveyidresult = db_execute_assoc($sSurveyIDQuery);  //Checked
+    $surveyidresult = Yii::app()->db->createCommand($sSurveyIDQuery)->query();  //Checked
 
     //if ($surveyidresult->num_rows() == 0) {return "Database Error";}
     $surveyselecter = "";
     //$surveynames = $surveyidresult->GetRows();
 
-    if ($CI->config->item('usercontrolSameGroupPolicy') == true)
+    if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
     {
 
         $authorizedUsersList = getuserlist('onlyuidarray');
     }
 
-    if ($surveyidresult->num_rows() > 0)
+    if ($surveyidresult->getRowCount() > 0)
     {
-        foreach($surveyidresult->result_array() as $sv)
+        foreach($surveyidresult->readAll() as $sv)
         {
-            if ($CI->config->item('usercontrolSameGroupPolicy') == false ||
+            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
             in_array($sv['uid'],$authorizedUsersList))
             {
                 $surveyselecter .= "<option";
@@ -8323,27 +8339,25 @@ function sGetSurveyUserlist($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surv
 
 function getsurveyusergrouplist($outputformat='htmloptions',$surveyid)
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     $surveyid=sanitize_int($surveyid);
 
-    $surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da FROM ".$CI->db->dbprefix."user_groups AS a LEFT JOIN (SELECT b.ugid FROM ".$CI->db->dbprefix."user_in_groups AS b LEFT JOIN (SELECT * FROM ".$CI->db->dbprefix."survey_permissions WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
-    $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
+	$surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da FROM {{user_groups}} AS a LEFT JOIN (SELECT b.ugid FROM {{user_in_groups}} AS b LEFT JOIN (SELECT * FROM {{survey_permissions}} WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
+    $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query();  //Checked
     //if ($surveyidresult->num_rows() == 0) {return "Database Error";}
     $surveyselecter = "";
     //$surveynames = $surveyidresult->GetRows();
 
-    if ($CI->config->item('usercontrolSameGroupPolicy') == true)
+    if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
     {
         $authorizedGroupsList=getusergrouplist('simplegidarray');
     }
 
-    if ($surveyidresult->num_rows() > 0)
+    if ($surveyidresult->getRowCount() > 0)
     {
-        foreach($surveyidresult->result_array() as $sv)
+        foreach($surveyidresult->readAll() as $sv)
         {
-            if ($CI->config->item('usercontrolSameGroupPolicy') == false ||
+            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
             in_array($sv['ugid'],$authorizedGroupsList))
             {
                 $surveyselecter .= "<option";

@@ -4,25 +4,25 @@
 	</div>
 	<div class='menubar-main'>
     	<div class='menubar-left'>
-    		<a href="<?php echo site_url("admin/survey/view/$surveyid");?>" title='<?php echo $clang->gTview("Return to survey administration");?>'>
+    		<a href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid");?>" title='<?php echo $clang->gTview("Return to survey administration");?>'>
     			<img name='HomeButton' src='<?php echo $imageurl;?>/home.png' alt='<?php echo $clang->gT("Return to survey administration");?>' />
     		</a>
 		    <img src='<?php echo $imageurl;?>/blank.gif' alt='' width='11' />
 		    <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-		    <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/index/$surveyid");?>', '_top')" title='<?php echo $clang->gTview("Show token summary");?>' >
+		    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid");?>', '_top')" title='<?php echo $clang->gTview("Show token summary");?>' >
     			<img name='SummaryButton' src='<?php echo $imageurl;?>/summary.png' alt='<?php echo $clang->gT("Show token summary");?>' />
     		</a>
     		<img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-    		<a href="#" onclick="window.open('<?php echo site_url("admin/tokens/browse/$surveyid");?>', '_top')"
+    		<a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid");?>', '_top')"
     			title='<?php echo $clang->gTview("Display tokens");?>' >
     			<img name='ViewAllButton' src='<?php echo $imageurl;?>/document.png' alt='<?php echo $clang->gT("Display tokens");?>' />
     		</a>
 		    <?php if (bHasSurveyPermission($surveyid, 'tokens','create')) { ?>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/addnew/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Add new token entry");?>' >
 		        	<img name='AddNewButton' src='<?php echo $imageurl;?>/add.png' title='' alt='<?php echo $clang->gT("Add new token entry");?>' />
 		        </a>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/adddummys/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/adddummys/surveyid/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Add dummy tokens");?>' >
 		        	<img name='AddNewDummyButton' src='<?php echo $imageurl;?>/create_dummy_token.png' title='' alt='<?php echo $clang->gT("Add dummy tokens");?>' />
 		        </a>
@@ -31,7 +31,7 @@
 		    if (bHasSurveyPermission($surveyid, 'tokens','update'))
 		    { ?>
 		        <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/managetokenattributes/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/managetokenattributes/surveyid/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Manage additional attribute fields");?>'>
 		        	<img name='ManageAttributesButton' src='<?php echo $imageurl;?>/token_manage.png' title='' alt='<?php echo $clang->gT("Manage additional attribute fields");?>' />
 		        </a>
@@ -50,7 +50,7 @@
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'tokens','export'))
 		    { ?>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/exportdialog/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Export tokens to CSV file");?>'>
 			    	<img name='ExportButton' src='<?php echo $imageurl;?>/exportcsv.png' alt='<?php echo $clang->gT("Export tokens to CSV file");?>' />
 			    </a>
@@ -58,19 +58,19 @@
 		    if (bHasSurveyPermission($surveyid, 'tokens','update'))
 		    { ?>
 		        <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-		        <a href='<?php echo site_url("admin/emailtemplates/edit/$surveyid");?>' title='<?php echo $clang->gTview("Edit email templates");?>'>
+		        <a href='<?php echo $this->createUrl("admin/emailtemplates/edit/$surveyid");?>' title='<?php echo $clang->gTview("Edit email templates");?>'>
 		        	<img name='EmailTemplatesButton' src='<?php echo $imageurl;?>/emailtemplates.png' alt='<?php echo $clang->gT("Edit email templates");?>' />
 		        </a>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/email/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/email/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Send email invitation");?>'>
 		        	<img name='InviteButton' src='<?php echo $imageurl;?>/invite.png' alt='<?php echo $clang->gT("Send email invitation");?>' />
 		        </a>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/remind/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/remind/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Send email reminder");?>'>
 		        	<img name='RemindButton' src='<?php echo $imageurl;?>/remind.png' alt='<?php echo $clang->gT("Send email reminder");?>' />
 		        </a>
 		        <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/tokenify/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/tokenify/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Generate tokens");?>'>
 		        	<img name='TokenifyButton' src='<?php echo $imageurl;?>/tokenify.png' alt='<?php echo $clang->gT("Generate tokens");?>' />
 		        </a>
@@ -78,7 +78,7 @@
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'surveyactivation','update'))
 		    { ?>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/kill/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/kill/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Drop tokens table");?>' >
 		        	<img name='DeleteParticipantTable' src='<?php echo $imageurl;?>/delete.png' alt='<?php echo $clang->gT("Drop tokens table");?>' />
 		        </a>
@@ -86,18 +86,18 @@
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'tokens','update'))
 		    { ?>
-		        <a href="#" onclick="window.open('<?php echo site_url("admin/tokens/bouncesettings/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/bouncesettings/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Bounce processing settings");?>' >
 		        	<img name='BounceSettings' src='<?php echo $imageurl;?>/bounce_settings.png' alt='<?php echo $clang->gT("Bounce settings");?>' />
 		        </a>
 		    <?php } ?>
                         <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
                         <?php $participantpanel = array(
-                        'src' => base_url().'images/tokens.png',
+                        'src' => Yii::app()->baseUrl.'/images/tokens.png',
                         'alt' => 'Central Participant Panel',
                         'title' => 'Central Participant Panel',
                           );
-                        echo anchor('admin/participants/index',img($participantpanel));
+                        echo '<a href="', $this->createUrl('admin/participants/sa/index'), '"><img src="', $participantpanel['src'], '" alt="Central Participant Panel" title="Central Participant panel" /></a>';
                         ?>
     	</div>
     	<div class='menubar-right'><a href="#" onclick="showhelp('show')" title='<?php echo $clang->gTview("Show help");?>'>

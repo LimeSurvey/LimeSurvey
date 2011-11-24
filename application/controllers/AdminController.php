@@ -115,6 +115,8 @@ class AdminController extends LSYii_Controller
 			'assessments' =>'application.controllers.admin.assessments',
 			'survey' => 'application.controllers.admin.surveyaction',
 			'printablesurvey' => 'application.controllers.admin.printablesurvey',
+			'tokens' => 'application.controllers.admin.tokens',
+			'surveypermission' => 'application.controllers.admin.surveypermission',
 		);
 	}
 

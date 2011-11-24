@@ -157,29 +157,7 @@ function db_table_name_nq($name)
     return $dbprefix.$name;
 }
 */
-/**
- *  Return a sql statement for finding LIKE named tables
- *  Be aware that you have to escape underscor chars by using a backslash
- * otherwise you might get table names returned you don't want
- *
- * @param mixed $table
- */
-function db_select_tables_like($table)
-{
-	$CI = &get_instance();
-    switch ($CI->db->dbdriver) {
-        case 'mysqli':
-        case 'mysql' :
-            return "SHOW TABLES LIKE '$table'";
-        case 'mssql' :
-        case 'odbc' :
-            return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
-        case 'postgre' :
-            $table=str_replace('\\','\\\\',$table);
-            return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
-        default: safe_die ("Couldn't create 'select tables like' query for connection type 'databaseType'");
-    }
-}
+
 
 /**
  *  Return a boolean stating if the table(s) exist(s)
