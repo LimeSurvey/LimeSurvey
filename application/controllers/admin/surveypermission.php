@@ -21,18 +21,29 @@
 * @version $Id$
 * @access public
 */
-class surveypermission extends Survey_Common_Controller {
-
-
-    /**
-    * surveypermission::__construct()
-    * Constructor
-    * @return
-    */
-    function __construct()
-    {
-        parent::__construct();
-    }
+class surveypermission extends Survey_Common_Action {
+	/**
+	 * Routes to current subview
+	 *
+	 * @access public
+	 * @param string $sa
+	 * @return
+	 */
+	public function run($sa)
+	{
+		if ($sa == 'view')
+			$this->route('view', array('surveyid'));
+		elseif ($sa == 'addusergroup')
+			$this->route('addusergroup', array('surveyid'));
+		elseif ($sa == 'adduser')
+			$this->route('adduser', array('surveyid'));
+		elseif ($sa == 'set')
+			$this->route('set', array('surveyid'));
+		elseif ($sa == 'delete')
+			$this->route('delete', array('surveyid'));
+		elseif ($sa == 'surveyright')
+			$this->route('surveyright', array('surveyid'));
+	}
 
     /**
     * surveypermission::view()
@@ -43,40 +54,38 @@ class surveypermission extends Survey_Common_Controller {
     function view($surveyid)
     {
         $surveyid = sanitize_int($surveyid);
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
 
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);
-        self::_surveybar($surveyid,NULL);
-        self::_surveysummary($surveyid,'surveysecurity');
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($surveyid);
+        $this->_surveybar($surveyid,NULL);
+        $this->_surveysummary($surveyid,'surveysecurity');
 
-        $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
-        $imageurl = $this->config->item('imageurl');
+        $clang = Yii::app()->lang;
+        $imageurl = Yii::app()->getConfig('imageurl');
 
         if(bHasSurveyPermission($surveyid,'survey','read'))
         {
-            $this->load->model('survey_permissions_model');
-            $aBaseSurveyPermissions=$this->survey_permissions_model->aGetBaseSurveyPermissions();
+            $aBaseSurveyPermissions=Survey_permissions::getBasePermissions();
 
-            self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
-            self::_js_admin_includes(base_url().'scripts/admin/surveysecurity.js');
+            $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/jquery/jquery.tablesorter.min.js');
+            $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/admin/surveysecurity.js');
 
-            $query2 = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM ".$this->db->dbprefix."survey_permissions AS p INNER JOIN ".$this->db->dbprefix."users  AS u ON p.uid = u.uid
-            WHERE p.sid = {$surveyid} AND u.uid != ".$this->session->userdata('loginID') ."
+            $query2 = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM {{survey_permissions}} AS p INNER JOIN {{users}}  AS u ON p.uid = u.uid
+            WHERE p.sid = {$surveyid} AND u.uid != ".Yii::app()->session['loginID'] ."
             GROUP BY p.sid, p.uid, u.users_name, u.full_name
             ORDER BY u.users_name";
-            $result2 = db_execute_assoc($query2); //Checked
+            $result2 = Yii::app()->db->createCommand($query2)->query(); //Checked
 
             $surveysecurity ="<div class='header ui-widget-header'>".$clang->gT("Survey permissions")."</div>\n"
-            . "<table class='surveysecurity'><thead>"
-            . "<tr>\n"
-            . "<th>".$clang->gT("Action")."</th>\n"
-            . "<th>".$clang->gT("Username")."</th>\n"
-            . "<th>".$clang->gT("User Group")."</th>\n"
-            . "<th>".$clang->gT("Full name")."</th>\n";
+	            . "<table class='surveysecurity'><thead>"
+	            . "<tr>\n"
+	            . "<th>".$clang->gT("Action")."</th>\n"
+	            . "<th>".$clang->gT("Username")."</th>\n"
+	            . "<th>".$clang->gT("User Group")."</th>\n"
+	            . "<th>".$clang->gT("Full name")."</th>\n";
             foreach ($aBaseSurveyPermissions as $sPermission=>$aSubPermissions )
             {
                 $surveysecurity.="<th align=\"center\"><img src=\"{$imageurl}/{$aSubPermissions['img']}_30.png\" alt=\"<span style='font-weight:bold;'>".$aSubPermissions['title']."</span><br />".$aSubPermissions['description']."\" /></th>\n";
@@ -85,26 +94,24 @@ class surveypermission extends Survey_Common_Controller {
 
             // Foot first
 
-            if ($this->config->item('usercontrolSameGroupPolicy') == true)
+            if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == true)
             {
-                $authorizedGroupsList=getusergrouplist(NULL,'simplegidarray');
+                $authorizedGroupsList = getusergrouplist(NULL,'simplegidarray');
             }
 
             $surveysecurity .= "<tbody>\n";
-            if($result2->num_rows() > 0)
+            if($result2->getRowCount() > 0)
             {
-
                 //	output users
                 $row = 0;
 
-                foreach ($result2->result_array() as $PermissionRow)
+                foreach ($result2->readAll() as $PermissionRow)
                 {
-
-                    $query3 = "SELECT a.ugid FROM ".$this->db->dbprefix."user_in_groups AS a RIGHT OUTER JOIN ".$this->db->dbprefix."users AS b ON a.uid = b.uid WHERE b.uid = ".$PermissionRow['uid'];
-                    $result3 = db_execute_assoc($query3); //Checked
-                    foreach ($result3->result_array() as $resul3row)
+                    $query3 = "SELECT a.ugid FROM {{user_in_groups}} AS a RIGHT OUTER JOIN {{users}} AS b ON a.uid = b.uid WHERE b.uid = ".$PermissionRow['uid'];
+                    $result3 = Yii::app()->db->createCommand($query3)->query(); //Checked
+                    foreach ($result3->readAll() as $resul3row)
                     {
-                        if ($this->config->item('usercontrolSameGroupPolicy') == false ||
+                        if (Yii::app()->getConfig('usercontrolSameGroupPolicy') == false ||
                         in_array($resul3row['ugid'],$authorizedGroupsList))
                         {
                             $group_ids[] = $resul3row['ugid'];
@@ -116,10 +123,10 @@ class surveypermission extends Survey_Common_Controller {
                         $group_ids_query = implode(" OR ugid=", $group_ids);
                         unset($group_ids);
 
-                        $query4 = "SELECT name FROM ".$this->db->dbprefix."user_groups WHERE ugid = ".$group_ids_query;
-                        $result4 = db_execute_assoc($query4); //Checked
+                        $query4 = "SELECT name FROM {{user_groups}} WHERE ugid = ".$group_ids_query;
+                        $result4 = Yii::app()->db->createCommand($query4)->query(); //Checked
 
-                        foreach ($result4->result_array() as $resul4row)
+                        foreach ($result4->readAll() as $resul4row)
                         {
                             $group_names[] = $resul4row['name'];
                         }
@@ -130,13 +137,13 @@ class surveypermission extends Survey_Common_Controller {
                     $surveysecurity .= "<tr>\n";
 
                     $surveysecurity .= "<td>\n";
-                    $surveysecurity .= "<form style='display:inline;' method='post' action='".site_url('admin/surveypermission/set/'.$surveyid)."'>"
+                    $surveysecurity .= "<form style='display:inline;' method='post' action='".$this->getController()->createUrl('admin/surveypermission/sa/set/surveyid/'.$surveyid)."'>"
                     ."<input type='image' src='{$imageurl}/token_edit.png' title='".$clang->gT("Edit permissions")."' />"
                     ."<input type='hidden' name='action' value='setsurveysecurity' />"
                     ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
                     ."<input type='hidden' name='uid' value='{$PermissionRow['uid']}' />"
                     ."</form>\n";
-                    $surveysecurity .= "<form style='display:inline;' method='post' action='".site_url('admin/surveypermission/delete/'.$surveyid)."'>"
+                    $surveysecurity .= "<form style='display:inline;' method='post' action='".$this->getController()->createUrl('admin/surveypermission/sa/delete/surveyid/'.$surveyid)."'>"
                     ."<input type='image' src='{$imageurl}/token_delete.png' title='".$clang->gT("Delete")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
                     ."<input type='hidden' name='action' value='delsurveysecurity' />"
                     ."<input type='hidden' name='user' value='{$PermissionRow['users_name']}' />"
@@ -196,14 +203,14 @@ class surveypermission extends Survey_Common_Controller {
 
             $surveysecurity .= "</tbody>\n"
             . "</table>\n"
-            . "<form class='form44' action='".site_url('admin/surveypermission/adduser/'.$surveyid)."' method='post'><ul>\n"
+            . "<form class='form44' action='".$this->getController()->createUrl('admin/surveypermission/sa/adduser/surveyid/'.$surveyid)."' method='post'><ul>\n"
             . "<li><label for='uidselect'>".$clang->gT("User").": </label><select id='uidselect' name='uid'>\n"
             . sGetSurveyUserlist(false,false,$surveyid)
             . "</select>\n"
             . "<input style='width: 15em;' type='submit' value='".$clang->gT("Add User")."'  onclick=\"if (document.getElementById('uidselect').value == -1) { alert('".$clang->gT("Please select a user first","js")."'); return false;}\"/>"
             . "<input type='hidden' name='action' value='addsurveysecurity' />"
             . "</li></ul></form>\n"
-            . "<form class='form44' action='".site_url('admin/surveypermission/addusergroup/'.$surveyid)."' method='post'><ul><li>\n"
+            . "<form class='form44' action='".$this->getController()->createUrl('admin/surveypermission/sa/addusergroup/surveyid/'.$surveyid)."' method='post'><ul><li>\n"
             . "<label for='ugidselect'>".$clang->gT("Groups").": </label><select id='ugidselect' name='ugid'>\n"
             . getsurveyusergrouplist('htmloptions',$surveyid)
             . "</select>\n"
@@ -212,7 +219,7 @@ class surveypermission extends Survey_Common_Controller {
             . "</li></ul></form>";
 
             $data['display'] = $surveysecurity;
-            $this->load->view('survey_view',$data);
+            $this->getController()->render('/survey_view',$data);
         }
         else
         {
@@ -220,10 +227,10 @@ class surveypermission extends Survey_Common_Controller {
 
         }
 
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -237,21 +244,21 @@ class surveypermission extends Survey_Common_Controller {
     {
         $surveyid = sanitize_int($surveyid);
 
-        $action = $this->input->post('action');
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $action = $_POST['action'];
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."/admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
 
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);
-        self::_surveybar($surveyid,NULL);
-        self::_surveysummary($surveyid,'addsurveysecurity');
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($surveyid);
+        $this->_surveybar($surveyid,NULL);
+        $this->_surveysummary($surveyid,'addsurveysecurity');
 
-        $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
-        $imageurl = $this->config->item('imageurl');
-        $dbprefix = $this->db->dbprefix;
-        $postusergroupid = $this->input->post('gid');
+        $clang = Yii::app()->lang;
+
+        $imageurl = Yii::app()->getConfig('imageurl');
+
+        $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : false;
 
 
         if($action == "addusergroupsurveysecurity")
@@ -259,20 +266,20 @@ class surveypermission extends Survey_Common_Controller {
             $addsummary = "<div class=\"header\">".$clang->gT("Add user group")."</div>\n";
             $addsummary .= "<div class=\"messagebox ui-corner-all\" >\n";
 
-            $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID');
-            $result = db_execute_assoc($query); //Checked
-            if( ($result->num_rows() > 0 && in_array($postusergroupid,getsurveyusergrouplist('simpleugidarray'))) || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+            $query = "SELECT sid, owner_id FROM {{surveys}} WHERE sid = {$surveyid} AND owner_id = ".Yii::app()->session['loginID'];
+            $result = Yii::app()->db->createCommand($query)->query(); //Checked
+            if( ($result->getRowCount() > 0 && in_array($postusergroupid,getsurveyusergrouplist('simpleugidarray'))) ||Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
                 if($postusergroupid > 0){
-                    $query2 = "SELECT b.uid FROM (SELECT uid FROM ".$this->db->dbprefix."survey_permissions WHERE sid = {$surveyid}) AS c RIGHT JOIN ".$this->db->dbprefix."user_in_groups AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$postusergroupid}";
-                    $result2 = db_execute_assoc($query2); //Checked
-                    if($result2->num_rows() > 0)
+                    $query2 = "SELECT b.uid FROM (SELECT uid FROM {{survey_permissions}} WHERE sid = {$surveyid}) AS c RIGHT JOIN {{user_in_groups}} AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$postusergroupid}";
+                    $result2 = Yii::app()->db->createCommand($query2)->query(); //Checked
+                    if($result2->getRowCount() > 0)
                     {
-                        while ($row2 = $result2->FetchRow())
+                        while ($row2 = $result2->read())
                         {
                             $uid_arr[] = $row2['uid'];
                             $isrquery = "INSERT INTO {$dbprefix}survey_permissions (sid,uid,permission,read_p) VALUES ({$surveyid}, {$row2['uid']},'survey',1) ";
-                            $isrresult = db_execute_assoc($isrquery); //Checked
+                            $isrresult = Yii::app()->db->createCommand($isrquery)->query(); //Checked
                             if (!$isrresult) break;
                         }
 
@@ -280,7 +287,7 @@ class surveypermission extends Survey_Common_Controller {
                         {
                             $addsummary .= "<div class=\"successheader\">".$clang->gT("User Group added.")."</div>\n";
                             $_SESSION['uids'] = $uid_arr;
-                            $addsummary .= "<br /><form method='post' action='".site_url('admin/surveypermission/set/'.$surveyid)."'>"
+                            $addsummary .= "<br /><form method='post' action='".$this->getController()->createUrl('admin/surveypermission/sa/set/surveyid/'.$surveyid)."'>"
                             ."<input type='submit' value='".$clang->gT("Set Survey Rights")."' />"
                             ."<input type='hidden' name='action' value='setusergroupsurveysecurity' />"
                             ."<input type='hidden' name='ugid' value='{$postusergroupid}' />"
@@ -290,21 +297,21 @@ class surveypermission extends Survey_Common_Controller {
                         {
                             // Error while adding user to the database
                             $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User Group.")."</div>\n";
-                            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/surveypermission/view/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                         }
                     }
                     else
                     {
                         // no user to add
                         $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add User Group.")."</div>\n";
-                        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/surveypermission/view/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                     }
                 }
                 else
                 {
                     $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
                     . "<br />" . $clang->gT("No Username selected.")."<br />\n";
-                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/surveypermission/view/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                 }
             }
             else
@@ -313,10 +320,10 @@ class surveypermission extends Survey_Common_Controller {
             }
             $addsummary .= "</div>\n";
         }
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
 
 
     }
@@ -330,46 +337,43 @@ class surveypermission extends Survey_Common_Controller {
     */
     function adduser($surveyid)
     {
-
         $surveyid = sanitize_int($surveyid);
 
-        $action = $this->input->post('action');
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $action = $_POST['action'];
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
 
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);
-        self::_surveybar($surveyid,NULL);
-        self::_surveysummary($surveyid,'addsurveysecurity');
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($surveyid);
+        $this->_surveybar($surveyid,NULL);
+        $this->_surveysummary($surveyid,'addsurveysecurity');
 
-        $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
-        $imageurl = $this->config->item('imageurl');
-        $dbprefix = $this->db->dbprefix;
-        $postuserid = $this->input->post('uid');
+        $clang = Yii::app()->lang;
+        $imageurl = Yii::app()->getConfig('imageurl');
+        $postuserid = $_POST['uid'];
 
         if($action == "addsurveysecurity")
         {
             $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add User")."</div>\n";
             $addsummary .= "<div class=\"messagebox ui-corner-all\">\n";
 
-            $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID')." AND owner_id != ".$postuserid;
-            $result = db_execute_assoc($query); //Checked
-            if( ($result->num_rows() > 0 && in_array($postuserid,getuserlist('onlyuidarray'))) ||
-            $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+            $query = "SELECT sid, owner_id FROM {{surveys}} WHERE sid = {$surveyid} AND owner_id = ". Yii::app()->session['loginID']." AND owner_id != ".$postuserid;
+            $result = Yii::app()->db->createCommand($query)->query(); //Checked
+            if( ($result->getRowCount() > 0 && in_array($postuserid,getuserlist('onlyuidarray'))) ||
+            Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
 
                 if($postuserid > 0){
 
-                    $isrquery = "INSERT INTO {$dbprefix}survey_permissions (sid,uid,permission,read_p) VALUES ( {$surveyid}, {$postuserid}, 'survey', 1)";
-                    $isrresult = db_execute_assoc($isrquery); //Checked
+                    $isrquery = "INSERT INTO {{survey_permissions}} (sid,uid,permission,read_p) VALUES ( {$surveyid}, {$postuserid}, 'survey', 1)";
+                    $isrresult = Yii::app()->db->createCommand($isrquery)->query(); //Checked
 
                     if($isrresult)
                     {
 
                         $addsummary .= "<div class=\"successheader\">".$clang->gT("User added.")."</div>\n";
-                        $addsummary .= "<br /><form method='post' action='".site_url('admin/surveypermission/set/'.$surveyid)."'>"
+                        $addsummary .= "<br /><form method='post' action='".$this->getController()->createUrl('admin/surveypermission/sa/set/surveyid/'.$surveyid)."'>"
                         ."<input type='submit' value='".$clang->gT("Set survey permissions")."' />"
                         ."<input type='hidden' name='action' value='setsurveysecurity' />"
                         ."<input type='hidden' name='uid' value='{$postuserid}' />"
@@ -380,14 +384,14 @@ class surveypermission extends Survey_Common_Controller {
                         // Username already exists.
                         $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
                         . "<br />" . $clang->gT("Username already exists.")."<br />\n";
-                        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/surveypermission/view/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                        $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                     }
                 }
                 else
                 {
                     $addsummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add user.")."</div>\n"
                     . "<br />" . $clang->gT("No Username selected.")."<br />\n";
-                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/surveypermission/view/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                    $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
                 }
             }
             else
@@ -398,12 +402,12 @@ class surveypermission extends Survey_Common_Controller {
             $addsummary .= "</div>\n";
 
             $data['display'] = $addsummary;
-            $this->load->view('survey_view',$data);
+            $this->getController()->render('/survey_view',$data);
         }
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -416,59 +420,57 @@ class surveypermission extends Survey_Common_Controller {
     {
         $surveyid = sanitize_int($surveyid);
 
-        $action = $this->input->post('action');
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $action = $_POST['action'];
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->getConfig("css_admin_includes", $css_admin_includes);
 
 
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);
-        self::_surveybar($surveyid,NULL);
-        self::_surveysummary($surveyid,'addsurveysecurity');
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($surveyid);
+        $this->_surveybar($surveyid,NULL);
+        $this->_surveysummary($surveyid,'addsurveysecurity');
 
-        $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
-        $imageurl = $this->config->item('imageurl');
-        $dbprefix = $this->db->dbprefix;
-        $postuserid = $this->input->post('uid');
-        $postusergroupid = $this->input->post('gid');
+        $clang = Yii::app()->lang;
+        $imageurl = Yii::app()->getConfig('imageurl');
+        $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : null;
+        $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : null;
 
         if($action == "setsurveysecurity" || $action == "setusergroupsurveysecurity")
         {
-            $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID');
+            $query = "SELECT sid, owner_id FROM {{surveys}} WHERE sid = {$surveyid} AND owner_id = ".Yii::app()->session['loginID'];
             if ($action == "setsurveysecurity")
             {
                 $query.=  " AND owner_id != ".$postuserid;
             }
-            $result = db_execute_assoc($query); //Checked
-            if($result->num_rows() > 0 || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+            $result = Yii::app()->db->createCommand($query)->query(); //Checked
+            if($result->getRowCount() > 0 || Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
                 //$js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
                 //$js_admin_includes[]='scripts/surveysecurity.js';
-                self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
-                self::_js_admin_includes(base_url().'scripts/admin/surveysecurity.js');
+                $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/jquery/jquery.tablesorter.min.js');
+                $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'/scripts/admin/surveysecurity.js');
                 if ($action == "setsurveysecurity")
                 {
-                    $query = "select users_name from ".$this->db->dbprefix."users where uid={$postuserid}";
-                    $res = db_execute_assoc($query);
-                    $resrow = $res->row_array();
-                    $sUsername=$resrow['users_name']; //$connect->GetOne("select users_name from ".$this->db->dbprefix."users where uid={$postuserid}");
+                    $query = "select users_name from {{users}} where uid={$postuserid}";
+                    $res = Yii::app()->db->createCommand($query)->query();
+                    $resrow = $res->read();
+                    $sUsername=$resrow['users_name']; //$connect->GetOne("select users_name from {{users}} where uid={$postuserid}");
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div>";
                 }
                 else
                 {
-                    $query = "select name from ".$this->db->dbprefix."user_groups where ugid={$postusergroupid}";
-                    $res = db_execute_assoc($query);
-                    $resrow = $res->row_array();
-                    $sUsergroupName=$resrow['name']; //$connect->GetOne("select name from ".$this->db->dbprefix."user_groups where ugid={$postusergroupid}");
+                    $query = "select name from {{user_groups}} where ugid={$postusergroupid}";
+                    $res = Yii::app()->db->createCommand($query)->query();
+                    $resrow = $res->read();
+                    $sUsergroupName=$resrow['name']; //$connect->GetOne("select name from {{user_groups}} where ugid={$postusergroupid}");
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for group %s"),"<span style='font-style:italic'>".$sUsergroupName."</span>")."</div>";
                 }
-                $usersummary .= "<br /><form action='".site_url('admin/surveypermission/surveyright/'.$surveyid)."' method='post'>\n"
+                $usersummary .= "<br /><form action='".$this->getController()->createUrl('admin/surveypermission/sa/surveyright/surveyid/'.$surveyid)."' method='post'>\n"
                 . "<table style='margin:0 auto;' border='0' class='usersurveypermissions'><thead>\n";
 
                 $usersummary .= ""
                 . "<tr><th></th><th align='center'>".$clang->gT("Permission")."</th>\n"
-                . "<th align='center'><input type='button' id='btnToggleAdvanced' value='&gt;&gt;' /></th>\n"
+                . "<th align='center'><input type='button' id='btnToggleAdvanced' value='<<' /></th>\n"
                 . "<th align='center' class='extended'>".$clang->gT("Create")."</th>\n"
                 . "<th align='center' class='extended'>".$clang->gT("View/read")."</th>\n"
                 . "<th align='center' class='extended'>".$clang->gT("Update")."</th>\n"
@@ -478,8 +480,7 @@ class surveypermission extends Survey_Common_Controller {
                 . "</tr></thead>\n";
 
                 //content
-                $this->load->model('survey_permissions_model');
-                $aBasePermissions=$this->survey_permissions_model->aGetBaseSurveyPermissions();
+                $aBasePermissions=Survey_permissions::getBasePermissions();
 
                 $oddcolumn=false;
                 foreach($aBasePermissions as $sPermissionKey=>$aCRUDPermissions)
@@ -525,7 +526,7 @@ class surveypermission extends Survey_Common_Controller {
                 $usersummary .= "</form>\n";
 
                 $data['display'] = $usersummary;
-                $this->load->view('survey_view',$data);
+                $this->getController()->render('/survey_view',$data);
             }
             else
             {
@@ -533,10 +534,10 @@ class surveypermission extends Survey_Common_Controller {
             }
         }
 
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -551,37 +552,35 @@ class surveypermission extends Survey_Common_Controller {
 
         $surveyid = sanitize_int($surveyid);
 
-        $action = $this->input->post('action');
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $action = $_POST['action'];
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
 
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);
-        self::_surveybar($surveyid,NULL);
-        self::_surveysummary($surveyid,'addsurveysecurity');
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($surveyid);
+        $this->_surveybar($surveyid,NULL);
+        $this->_surveysummary($surveyid,'addsurveysecurity');
 
-        $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
-        $imageurl = $this->config->item('imageurl');
-        $dbprefix = $this->db->dbprefix;
-        $postuserid = $this->input->post('uid');
-        $postusergroupid = $this->input->post('gid');
-        $_POST = $this->input->post();
+        $clang = Yii::app()->lang;
+        $imageurl = Yii::app()->getConfig('imageurl');
+        $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
+        $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : false;
+
 
         if($action == "delsurveysecurity")
         {
             $addsummary = "<div class=\"header\">".$clang->gT("Deleting User")."</div>\n";
             $addsummary .= "<div class=\"messagebox\">\n";
 
-            $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID')." AND owner_id != ".$postuserid;
-            $result = db_execute_assoc($query); //Checked
-            if($result->num_rows() > 0 || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+            $query = "SELECT sid, owner_id FROM {{surveys}} WHERE sid = {$surveyid} AND owner_id = ".Yii::app()->session['loginID']." AND owner_id != ".$postuserid;
+            $result = Yii::app()->db->createCommand($query)->query(); //Checked
+            if($result->getRowCount() > 0 || Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
                 if (isset($postuserid))
                 {
-                    $dquery="DELETE FROM ".$this->db->dbprefix."survey_permissions WHERE uid={$postuserid} AND sid={$surveyid}";	//	added by Dennis
-                    $dresult=db_execute_assoc($dquery); //Checked
+                    $dquery="DELETE FROM {{survey_permissions}} WHERE uid={$postuserid} AND sid={$surveyid}";	//	added by Dennis
+                    $dresult=Yii::app()->db->createCommand($dquery)->query(); //Checked
 
                     $addsummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string($_POST['user'])."<br /><br />\n";
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
@@ -590,7 +589,7 @@ class surveypermission extends Survey_Common_Controller {
                 {
                     $addsummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user. User was not supplied.")."</div>\n";
                 }
-                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/surveypermission/view/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
             }
             else
             {
@@ -599,13 +598,13 @@ class surveypermission extends Survey_Common_Controller {
             $addsummary .= "</div>\n";
 
             $data['display'] = $addsummary;
-            $this->load->view('survey_view',$data);
+            $this->getController()->render('/survey_view',$data);
         }
 
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -618,23 +617,20 @@ class surveypermission extends Survey_Common_Controller {
     {
         $surveyid = sanitize_int($surveyid);
 
-        $action = $this->input->post('action');
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $action = $_POST['action'];
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."/admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
 
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);
-        self::_surveybar($surveyid,NULL);
-        self::_surveysummary($surveyid,'addsurveysecurity');
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($surveyid);
+        $this->_surveybar($surveyid,NULL);
+        $this->_surveysummary($surveyid,'addsurveysecurity');
 
-        $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
-        $imageurl = $this->config->item('imageurl');
-        $dbprefix = $this->db->dbprefix;
-        $postuserid = $this->input->post('uid');
-        $postusergroupid = $this->input->post('gid');
-        $_POST = $this->input->post();
+        $clang = Yii::app()->lang;
+        $imageurl = Yii::app()->getConfig('imageurl');
+        $postuserid = !empty($_POST['uid']) ? $_POST['uid'] : false;
+        $postusergroupid = !empty($_POST['gid']) ? $_POST['gid'] : false;
 
         if ($action == "surveyrights")
         {
@@ -642,25 +638,24 @@ class surveypermission extends Survey_Common_Controller {
             $addsummary .= "<div class='messagebox ui-corner-all'>\n";
 
             if(isset($postuserid)){
-                $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid}";
-                if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
+                $query = "SELECT sid, owner_id FROM {{surveys}} WHERE sid = {$surveyid}";
+                if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
                 {
-                    $query.=" AND owner_id != {$postuserid} AND owner_id = ".$this->session->userdata('loginID');
+                    $query.=" AND owner_id != {$postuserid} AND owner_id = ".Yii::app()->session['loginID'];
                 }
             }
             else{
-                $sQuery = "SELECT owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid}";
-                if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
+                $sQuery = "SELECT owner_id FROM {{surveys}} WHERE sid = {$surveyid}";
+                if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
                 {
-                    $query.=" AND owner_id = ".$this->session->userdata('loginID');
+                    $query.=" AND owner_id = ".Yii::app()->session['loginID'];
                 }
-                $res= db_execute_assoc($sQuery);
-                $resrow=$res->row_array();
+                $res= Yii::app()->db->createCommand($sQuery)->query();
+                $resrow=$res->read();
                 $iOwnerID=$resrow['owner_id']; //$connect->GetOne($sQuery);
             }
-            $this->load->model('survey_permissions_model');
 
-            $aBaseSurveyPermissions=$this->survey_permissions_model->aGetBaseSurveyPermissions();
+            $aBaseSurveyPermissions = Survey_permissions::getBasePermissions();
             $aPermissions=array();
             foreach ($aBaseSurveyPermissions as $sPermissionKey=>$aCRUDPermissions)
             {
@@ -682,22 +677,20 @@ class surveypermission extends Survey_Common_Controller {
             }
             if (isset($postusergroupid) && $postusergroupid>0)
             {
-                $sQuery = "SELECT uid from ".$this->db->dbprefix."user_in_groups where ugid = {$postusergroupid} and uid<>{$_SESSION['loginID']} AND uid<>{$iOwnerID}";
-                $oResult = db_execute_assoc($sQuery); //Checked
-                if($oResult->num_rows() > 0)
+                $sQuery = "SELECT uid from {{user_in_groups}} where ugid = {$postusergroupid} and uid<>{$_SESSION['loginID']} AND uid<>{$iOwnerID}";
+                $oResult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
+                if($oResult->getRowCount() > 0)
                 {
-                    foreach ($oResult->result_array() as $aRow)
+                    foreach ($oResult->readAll() as $aRow)
                     {
-                        $this->survey_permissions_model->setSurveyPermissions($aRow['uid'], $surveyid, $aPermissions);
+						Survey_permissions::setPermission($aRow['uid'], $surveyid, $aPermissions);
                     }
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions for all users in this group were successfully updated.")."</div>\n";
                 }
             }
             else
             {
-                $this->load->helper('admin/import');
-                $this->load->model('survey_permissions_model');
-                if($this->survey_permissions_model->setSurveyPermissions($postuserid, $surveyid, $aPermissions))
+                if (Survey_permissions::setPermission($postuserid, $surveyid, $aPermissions))
                 {
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Survey permissions were successfully updated.")."</div>\n";
                 }
@@ -707,16 +700,16 @@ class surveypermission extends Survey_Common_Controller {
                 }
 
             }
-            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/surveypermission/view/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+            $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
             $addsummary .= "</div>\n";
             $data['display'] = $addsummary;
-            $this->load->view('survey_view',$data);
+            $this->getController()->render('/survey_view',$data);
         }
 
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
 
     }
 

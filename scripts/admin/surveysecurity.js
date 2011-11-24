@@ -73,29 +73,29 @@ $(document).ready(function(){
 
     $('#btnToggleAdvanced').click(function(){
         extendoptionsvisible=$('.usersurveypermissions .extended').is(':visible');
-        if (extendoptionsvisible==false) 
+        if (extendoptionsvisible==false)
         {
-            $('.usersurveypermissions .extended').fadeIn('slow');   
+            $('.usersurveypermissions .extended').fadeIn('slow');
         }
         else
         {
-            $('.usersurveypermissions .extended').fadeOut();   
-        } 
-        updateExtendedButton(!extendoptionsvisible);  
+            $('.usersurveypermissions .extended').fadeOut();
+        }
+        updateExtendedButton(!extendoptionsvisible);
         $.cookie('surveysecurityas',!extendoptionsvisible);
     })
-    updateExtendedButton();  
+    updateExtendedButton(true);
 });
 
 function updateExtendedButton(bVisible)
 {
     if (bVisible==true)
     {
-        $('#btnToggleAdvanced').val('<<');    
+        $('#btnToggleAdvanced').val('<<');
     }
     else
-    {    
-        $('#btnToggleAdvanced').val('>>');    
-    } 
+    {
+        $('#btnToggleAdvanced').val('>>');
+    }
 
 }

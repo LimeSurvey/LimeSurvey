@@ -418,7 +418,7 @@ function getsurveylist($returnarray=false, $returnwithouturl=false, $surveyid=fa
     {
         if ($returnwithouturl===false)
         {
-            $surveyselecter = "<option value='".site_url("admin")."'>".$clang->gT("None")."</option>\n".$surveyselecter;
+            $surveyselecter = "<option value='".Yii::app()->createUrl("/admin")."'>".$clang->gT("None")."</option>\n".$surveyselecter;
         } else
         {
             $surveyselecter = "<option value=''>".$clang->gT("None")."</option>\n".$surveyselecter;
@@ -458,7 +458,7 @@ function bHasSurveyPermission($iSID, $sPermission, $sCRUD, $iUID=null)
         //$sSQL = "SELECT {$sCRUD} FROM " . db_table_name('survey_permissions') . "
         //        WHERE sid={$iSID} AND uid = {$iUID}
         //        and permission=".db_quoteall($sPermission); //Getting rights for this survey
-        $bPermission = $query->attributes; //$connect->GetOne($sSQL);
+        $bPermission = is_null($query) ? array() : $query->attributes; //$connect->GetOne($sSQL);
         if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD]==0)
         {
             $bPermission=false;
@@ -831,13 +831,11 @@ function getQuestionSum($surveyid, $groupid)
 */
 function getMaxgrouporder($surveyid)
 {
-    $CI =& get_instance();
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups_model');
+
     //$max_sql = "SELECT max( group_order ) AS max FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}'" ;
-    $query = $CI->groups_model->getMaximumGroupOrder($surveyid,$s_lang);
-    $query = $query->row_array();
-    $current_max = $query['max'];
+    $query = Groups::model()->find(array('order' => 'group_order desc'));
+    $current_max = !is_null($query) ? $query->group_order : '';
 
     if($current_max!="")
     {
@@ -7755,16 +7753,14 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
 
 function getusergrouplist($ugid=NULL,$outputformat='optionlist')
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {$_SESSION['loginID']} ORDER BY name";
-    $squery = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM ".$CI->db->dbprefix."user_groups AS a LEFT JOIN ".$CI->db->dbprefix."user_in_groups AS b ON a.ugid = b.ugid WHERE uid = ".$CI->session->userdata('loginID')." ORDER BY name";
+    $squery = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE uid = ".Yii::app()->session['loginID']." ORDER BY name";
 
-    $sresult = db_execute_assoc($squery); //Checked
+    $sresult = Yii::app()->db->createCommand($squery)->query(); //Checked
     if (!$sresult) {return "Database Error";}
     $selecter = "";
-    foreach ($sresult->result_array() as $row)
+    foreach ($sresult->readAll() as $row)
     {
         $groupnames[] = $row;
     }
@@ -7777,11 +7773,11 @@ function getusergrouplist($ugid=NULL,$outputformat='optionlist')
         foreach($groupnames as $gn)
         {
             $selecter .= "<option ";
-            if($CI->session->userdata('loginID') == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
+            if(Yii::app()->session['loginID'] == $gn['owner_id']) {$selecter .= " style=\"font-weight: bold;\"";}
             //if (isset($_GET['ugid']) && $gn['ugid'] == $_GET['ugid']) {$selecter .= " selected='selected'"; $svexist = 1;}
 
             if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}
-            $link = site_url("admin/usergroups/view/".$gn['ugid']);
+            $link = Yii::app()->createUrl("admin/usergroups/view/".$gn['ugid']);
             $selecter .=" value='{$link}'>{$gn['name']}</option>\n";
             $simplegidarray[] = $gn['ugid'];
         }
@@ -8342,8 +8338,16 @@ function getsurveyusergrouplist($outputformat='htmloptions',$surveyid)
     $clang = Yii::app()->lang;
     $surveyid=sanitize_int($surveyid);
 
-	$surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da FROM {{user_groups}} AS a LEFT JOIN (SELECT b.ugid FROM {{user_in_groups}} AS b LEFT JOIN (SELECT * FROM {{survey_permissions}} WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
+	$surveyidquery = "SELECT a.ugid, a.name, MAX(d.ugid) AS da
+						FROM {{user_groups}} AS a
+						LEFT JOIN (
+							SELECT b.ugid
+							FROM {{user_in_groups}} AS b
+								LEFT JOIN (SELECT * FROM {{survey_permissions}}
+							WHERE sid = {$surveyid}) AS c ON b.uid = c.uid WHERE c.uid IS NULL
+						) AS d ON a.ugid = d.ugid GROUP BY a.ugid, a.name HAVING MAX(d.ugid) IS NOT NULL";
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->query();  //Checked
+
     //if ($surveyidresult->num_rows() == 0) {return "Database Error";}
     $surveyselecter = "";
     //$surveynames = $surveyidresult->GetRows();
