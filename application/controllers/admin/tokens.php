@@ -35,7 +35,7 @@ class tokens extends Survey_Common_Controller {
 	/**
 	 * Show token index page, handle token database
 	 */
-	function index($surveyid)
+	function index($surveyid,$limit=15,$start=0,$order=false,$searchstring=false)
 	{
 		$surveyid = sanitize_int($surveyid);
 
@@ -47,6 +47,7 @@ class tokens extends Survey_Common_Controller {
 
 		self::_js_admin_includes(base_url()."scripts/admin/tokens.js");
 
+		$this->load->model("tokens_dynamic_model"); 
 		$this->load->helper("surveytranslator");
 
 		$dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
@@ -58,6 +59,8 @@ class tokens extends Survey_Common_Controller {
 		}
 
         $data['surveyprivate'] = $thissurvey['anonymized'];
+        
+       
 		// CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
 		$tokenexists=tableExists('tokens_'.$surveyid);
 		if (!$tokenexists) //If no tokens table exists
@@ -70,13 +73,17 @@ class tokens extends Survey_Common_Controller {
 			$data['thissurvey']=$thissurvey;
 			$data['imageurl'] = $this->config->item('imageurl');
 			$data['surveyid']=$surveyid;
-
-			$this->load->model("tokens_dynamic_model");
 			$data['queries']=$this->tokens_dynamic_model->tokensSummary($surveyid);
+			$data['currentpath'] = 'index';
+
+			// set $data so the browse view can use it
+			self::_configureBrowsingData($surveyid,$limit,$start,$order,$searchstring, $data);
 
 			self::_getAdminHeader();
 			$this->load->view("admin/token/tokenbar",$data);
 			$this->load->view("admin/token/tokensummary",$data);
+			$this->load->view("admin/token/browse",$data);
+			$this->load->view("admin/token/tokendatabaseoptions",$data);
 			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 		}
 	}
@@ -252,80 +259,24 @@ class tokens extends Survey_Common_Controller {
 	function browse($surveyid,$limit=50,$start=0,$order=false,$searchstring=false)
 	{
 		$surveyid = sanitize_int($surveyid);
-		$limit = (int) $limit;
-		$start = (int) $start;
 
 		$clang=$this->limesurvey_lang;
 		$this->load->model("tokens_dynamic_model");
-		$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
-
 		self::_js_admin_includes(base_url()."scripts/admin/tokens.js");
 
-		//if (!isset($limit)) {$limit=(int)returnglobal('limit');}
-		//if ($limit==0) $limit=50;
-		//if (!isset($start)) {$start=(int)returnglobal('start');}
-		//if (!isset($limit)) {$limit = 100;}
-    	//if (!isset($start)) {$start = 0;}	    if ($limit > $tkcount) {$limit=$tkcount;}
-	    $next=$start+$limit;
-	    $last=$start-$limit;
-	    $end=$tkcount-$limit;
-	    if ($end < 0) {$end=0;}
-	    if ($last <0) {$last=0;}
-	    if ($next >= $tkcount) {$next=$tkcount-$limit;}
-	    if ($end < 0) {$end=0;}
+		
 	    $baselanguage = GetBaseLanguageFromSurveyID($surveyid);
-		$data['next']=$next;
-	    $data['last']=$last;
-	    $data['end']=$end;
-		if(!$order) $order=$this->input->post("order");
-		$order=preg_replace('/[^_ a-z0-9-]/i', '',$order);
-		if ($order=="") {$order = "tid";}
-		if($this->input->post("limit")) $limit = $this->input->post("limit");
-		if($this->input->post("start")) $start = $this->input->post("start");
-		//if (!isset($order)) {$order=preg_replace('/[^_ a-z0-9-]/i', '', returnglobal('order'));}
-		//if (!isset($limit)) {$limit=(int)returnglobal('limit');}
 
-    	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN		$thissurvey=getSurveyInfo($surveyid);
-
-		if(!$searchstring) $searchstring=$this->input->post("searchstring");
-		/*$bquery = "SELECT * FROM ".db_table_name("tokens_$surveyid");
-		if ($searchstring)
-		{
-	        $sSearch=db_quote($searchstring);
-		    $bquery .= " WHERE firstname LIKE '%{$sSearch}%' "
-		    . "OR lastname LIKE '%{$sSearch}%' "
-		    . "OR email LIKE '%{$sSearch}%' "
-		    . "OR emailstatus LIKE '%{$sSearch}%' "
-		    . "OR token LIKE '%{$sSearch}%'";
-		}
-		if (!isset($order) || !$order) {$bquery .= " ORDER BY tid";}
-		else {$bquery .= " ORDER BY $order"; }
-
-		$bresult = db_select_limit_assoc($bquery, $limit, $start) or safe_die ($clang->gT("Error").": $bquery<br />".$connect->ErrorMsg());*/
-		if($searchstring)
-		{
-			$idata = array("firstname"=>$searchstring,
-							"lastname"=>$searchstring,
-							"email"=>$searchstring,
-							"emailstatus"=>$searchstring,
-							"token"=>$searchstring);
-		}
-		else
-		{
-			$idata = false;
-		}
-
-		$data['bresult'] = $this->tokens_dynamic_model->getAllRecords($surveyid,false,$limit,$start,$order,$idata);
 		$data['clang']=$clang;
 		$data['thissurvey']=getSurveyInfo($surveyid);
-		$data['searchstring']=$searchstring;
 		$data['imageurl'] = $this->config->item('imageurl');
 		$data['surveyid']=$surveyid;
-		$data['bgc']="";
-		$data['limit']=$limit;
-		$data['start']=$start;
-		$data['order']=$order;
 		$data['surveyprivate'] = $data['thissurvey']['anonymized'];
+		$data['currentpath'] = 'browse';
+
+		
+		// set $data so the browse view can use it
+		self::_configureBrowsingData($surveyid,$limit,$start,$order,$searchstring, $data);
 
 		self::_getAdminHeader();
 		$this->load->view("admin/token/tokenbar",$data);
@@ -406,7 +357,7 @@ class tokens extends Survey_Common_Controller {
 	        	$data['success']=false;
 			}
 
-			$data['clang']=$clang;
+			/*$data['clang']=$clang;
 			$thissurvey=getSurveyInfo($surveyid);
 			$data['thissurvey']=$thissurvey;
 			$data['imageurl'] = $this->config->item('imageurl');
@@ -415,8 +366,21 @@ class tokens extends Survey_Common_Controller {
 
 			self::_getAdminHeader();
 			$this->load->view("admin/token/tokenbar",$data);
-			$this->load->view("admin/token/addtokenpost",$data);
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+			//$this->load->view("admin/token/addtokenpost",$data);
+			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));*/
+			
+			// instead of going to success page, go back to new token page and have popup instead
+			if ($data['success']==true) {
+				$sTokenName = $data['firstname'] . " " . $data['lastname'];
+				if (($sTokenName == " ")||($sTokenName == "")) {
+					$sTokenName = $clang->gT("-------");
+		}
+				$sFlashMessage = "<strong>" . $clang->gT("Success") . "</strong><br />" . $clang->gT("New token was added.") . "<br />[" . $clang->gT("Name") . ": " . $sTokenName . "]";
+			} else {
+				$sFlashMessage = $clang->gT("Failed") . $clang->gT("There is already an entry with that exact token in the table. The same token cannot be used in multiple entries.");
+			}
+			$this->session->set_userdata('flashmessage', $sFlashMessage);
+			self::_handletokenform($surveyid,"addnew");
 		}
 		else
 		{
@@ -1735,5 +1699,65 @@ class tokens extends Survey_Common_Controller {
 
 	        return;
 	    }
+	}
+	
+	/**
+	 * Configure data for browsing 
+	 * to avoid repetitive code, Used in index() and browse()
+	 */
+	function _configureBrowsingData($surveyid,$limit,$start,$order,$searchstring, &$data)
+	{
+		$limit = (int) $limit; // for browsing
+		$start = (int) $start; // for browsing
+		
+		 /* Browsing data*/
+		$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid); 
+		
+		//if (!isset($limit)) {$limit=(int)returnglobal('limit');}
+		//if ($limit==0) $limit=50;
+		//if (!isset($start)) {$start=(int)returnglobal('start');}
+		//if (!isset($limit)) {$limit = 100;}
+    	//if (!isset($start)) {$start = 0;}	    if ($limit > $tkcount) {$limit=$tkcount;}
+    	$next=$start+$limit;
+	    $last=$start-$limit;
+	    $end=$tkcount-$limit;
+	    if ($end < 0) {$end=0;}
+	    if ($last <0) {$last=0;}
+	    if ($next >= $tkcount) {$next=$tkcount-$limit;}
+	    if ($end < 0) {$end=0;}
+	    
+		$data['next']=$next;
+	    $data['last']=$last;
+	    $data['end']=$end;
+	    
+		if(!$order) $order=$this->input->post("order");
+		$order=preg_replace('/[^_ a-z0-9-]/i', '',$order);
+		if ($order=="") {$order = "tid";}
+		
+		if($this->input->post("limit")) $limit = $this->input->post("limit");
+		if($this->input->post("start")) $start = $this->input->post("start");
+
+    	//ALLOW SELECTION OF NUMBER OF RECORDS SHOWN		
+		if(!$searchstring) $searchstring=$this->input->post("searchstring");
+		if($searchstring)
+		{
+			$idata = array("firstname"=>$searchstring,
+							"lastname"=>$searchstring,
+							"email"=>$searchstring,
+							"emailstatus"=>$searchstring,
+							"token"=>$searchstring);
+}
+		else
+		{
+			$idata = false;
+		}
+		
+		/*browsing*/
+		$data['bresult'] = $this->tokens_dynamic_model->getAllRecords($surveyid,false,$limit,$start,$order,$idata);
+		$data['searchstring']=$searchstring;
+		$data['bgc']="";
+		$data['limit']=$limit;
+		$data['start']=$start;
+		$data['order']=$order;
 	}
 }

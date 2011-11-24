@@ -1,3 +1,4 @@
+
 	<script language='javascript' type='text/javascript'> surveyid = '<?php echo $surveyid; ?>'; </script>
     <script language='javascript' type='text/javascript'> var imgurl = '<?php echo $this->config->item('imageurl'); ?>';
     var controllerurl = '<?php echo site_url("admin/tokens/bounceprocessing/$surveyid"); ?>'; </script>
@@ -17,29 +18,31 @@
             <img src='<?php echo $imageurl;?>/bounce.png' id='bounceprocessing' alt='<?php $clang->eT("Bounce processing");?>' align='left' />
       <?php  } ?>
         <img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' hspace='0' align='left' />
-   <?php  } ?>
-    <a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/0/$order/".urlencode($searchstring));?>'
+   <?php  } 
+   $sCurrentPath = "admin/tokens/" . $currentpath;
+   ?>
+    <a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/0/$order/".urlencode($searchstring));?>'
     title='<?php $clang->eTview("Show start...");?>'>
     <img name='DBeginButton' align='left' src='<?php echo $imageurl;?>/databegin.png' alt='<?php $clang->eT("Show start...");?>' /></a>
-    <a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$last/$order/".urlencode($searchstring));?>'
+    <a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$last/$order/".urlencode($searchstring));?>'
 	title='<?php $clang->eTview("Show previous...");?>'>
 	<img name='DBackButton' align='left' src='<?php echo $imageurl;?>/databack.png' alt='<?php $clang->eT("Show previous...");?>' /></a>
 	<img src='<?php echo $imageurl;?>/blank.gif' alt='' width='13' height='20' border='0' hspace='0' align='left' />
-	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$next/$order/".urlencode($searchstring));?>'
+	<a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$next/$order/".urlencode($searchstring));?>'
 	title='<?php $clang->eTview("Show next...");?>'>
 	<img name='DForwardButton' align='left' src='<?php echo $imageurl;?>/dataforward.png' alt='<?php $clang->eT("Show next...");?>' /></a>
-	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$end/$order/".urlencode($searchstring));?>'
+	<a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$end/$order/".urlencode($searchstring));?>'
 	title='<?php $clang->eTview("Show last...");?>'>
 	<img name='DEndButton' align='left'  src='<?php echo $imageurl;?>/dataend.png' alt='<?php $clang->eT("Show last...");?>' /></a>
 	<img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' hspace='0' align='left' />
-    <form id='tokensearch' method='post' action='<?php echo site_url("admin/tokens/browse/$surveyid");?>'>
+    <form id='tokensearch' method='post' action='<?php echo site_url($sCurrentPath . "/$surveyid");?>'>
 	<input type='text' name='searchstring' value='<?php echo htmlspecialchars($searchstring,ENT_QUOTES,'utf-8');?>' />
 	<input type='submit' value='<?php $clang->eT("Search");?>' />
 	<input type='hidden' name='order' value='<?php echo $order;?>' />
 	<input type='hidden' name='subaction' value='search' />
 	<input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
 	</form>
-	<form id='tokenrange' method='post' action='<?php echo site_url("admin/tokens/browse/$surveyid");?>'>
+	<form id='tokenrange' method='post' action='<?php echo site_url($sCurrentPath . "/$surveyid");?>'>
 	<img src='<?php echo $imageurl;?>/seperator.gif' alt='' border='0' />
 	<font size='1' face='verdana'>
 	&nbsp;<label for='limit'><?php $clang->eT("Records displayed:");?></label> <input type='text' size='4' value='<?php echo $limit;?>' id='limit' name='limit' />
@@ -58,66 +61,66 @@
 	<tr>
 	<th><input type='checkbox' id='tokencheckboxtoggle' /></th>
 	<th align='left' >
-	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/tid/".urlencode($searchstring));?>'>
+	<a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/tid/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ");?>ID' alt='<?php $clang->eT("Sort by: ");?>ID' border='0' align='left' hspace='0' /></a>ID</th>
 
 	<th align='left'  ><?php $clang->eT("Actions");?></th>
 	<th align='left'  >
-	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/firstname/".urlencode($searchstring));?>'>
+	<a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/firstname/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("First name");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("First name");?>' border='0' align='left' /></a>
 	<?php $clang->eT("First name");?></th>
 
-	<th align='left'><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/lastname/".urlencode($searchstring));?>'>
+	<th align='left'><a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/lastname/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Last name");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Last name");?>' border='0' align='left' /></a>
 	<?php $clang->eT("Last name");?></th>
 
-	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/email/".urlencode($searchstring));?>'>
+	<th align='left'  ><a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/email/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Email address");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Email address");?>' border='0' align='left' /></a>
 	<?php $clang->eT("Email address");?></th>
 
 	<th align='left'  >
-	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/emailstatus/".urlencode($searchstring));?>'>
+	<a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/emailstatus/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Email status");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Email status");?>' border='0' align='left' /></a>
 	<?php $clang->eT("Email status");?></th>
 
-	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/token/".urlencode($searchstring));?>'>
+	<th align='left'  ><a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/token/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Token");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Token");?>' border='0' align='left' /></a>
 	<?php $clang->eT("Token");?></th>
 
 	<th align='left'  >
-	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/language/".urlencode($searchstring));?>'>
+	<a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/language/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Language");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Language");?>' border='0' align='left' /></a>
 	<?php $clang->eT("Language");?></th>
 
-	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/sent%20desc/".urlencode($searchstring));?>'>
+	<th align='left'  ><a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/sent%20desc/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Invitation sent?");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Invitation sent?");?>' border='0' align='left' /></a>
 	<?php $clang->eT("Invitation sent?");?></th>
 
 
 	<th align='left'  >
-	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/remindersent%20desc/".urlencode($searchstring));?>'>
+	<a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/remindersent%20desc/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Reminder sent?");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Reminder sent?");?>' border='0' align='left' /></a>
 	<span><?php $clang->eT("Reminder sent?");?></span></th>
 
 	<th align='left'>
-	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/remindercount%20desc/".urlencode($searchstring));?>'>
+	<a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/remindercount%20desc/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Reminder count");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Reminder count");?>' border='0' align='left' /></a>
 	<span><?php $clang->eT("Reminder count");?></span></th>
 
-	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/completed%20desc/".urlencode($searchstring));?>'>
+	<th align='left'  ><a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/completed%20desc/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Completed?");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Completed?");?>' border='0' align='left' /></a>
 	<?php $clang->eT("Completed?");?></th>
 
 	<th align='left'  >
-	<a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/usesleft%20desc/".urlencode($searchstring));?>'>
+	<a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/usesleft%20desc/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Uses left");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Uses left");?>' border='0' align='left' /></a>
 	<span><?php $clang->eT("Uses left");?></span></th>
 
-	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/validfrom%20desc/".urlencode($searchstring));?>'>
+	<th align='left'  ><a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/validfrom%20desc/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Valid from");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Valid from");?>' border='0' align='left' /></a>
 	<?php $clang->eT("Valid from");?></th>
 
-	<th align='left'  ><a href='<?php echo site_url("admin/tokens/browse/$surveyid/$limit/$start/validuntil%20desc/".urlencode($searchstring));?>'>
+	<th align='left'  ><a href='<?php echo site_url($sCurrentPath . "/$surveyid/$limit/$start/validuntil%20desc/".urlencode($searchstring));?>'>
 	<img src='<?php echo $imageurl;?>/downarrow.png' title='<?php $clang->eT("Sort by: ").$clang->gT("Valid until");?>' alt='<?php $clang->eT("Sort by: ").$clang->gT("Valid until");?>' border='0' align='left' /></a>
 	<?php $clang->eT("Valid until");?></th>
 
@@ -125,7 +128,7 @@
 	foreach ($attrfieldnames as $attr_name=>$attr_translation)
 	{
 	    echo "<th align='left' >"
-	    ."<a href='".site_url("admin/tokens/browse/$surveyid/$limit/$start/".$attr_name."/".urlencode($searchstring))."'>"
+	    ."<a href='".site_url($sCurrentPath . "/$surveyid/$limit/$start/".$attr_name."/".urlencode($searchstring))."'>"
 	    ."<img src='$imageurl/downarrow.png' alt='' title='"
 	    .$clang->gT("Sort by: ").htmlspecialchars($attr_translation,ENT_QUOTES,'utf-8')."' border='0' align='left' /></a>".htmlspecialchars($attr_translation,ENT_QUOTES,'utf-8')."</th>\n";
 	} ?>
@@ -365,3 +368,4 @@ myform.submit();
 
 </div>
 </div>
+    	<br />
