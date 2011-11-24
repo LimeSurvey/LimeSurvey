@@ -155,21 +155,9 @@ class LSCI_Controller extends CI_Controller {
 if (!function_exists('limesurvey_config_autoloader'))
 {
     function limesurvey_config_autoloader($class) {
-        static $classmap = array(
-            'Date_Time_Converter' => 'libraries/Date_Time_Converter.php',
-        );
-        
-        if (isset($classmap[$class]))
-        {
-            $file = APPPATH.$classmap[$class];
-            require $file;
-            return;
-        }
-        
         if (0 === strpos($class, 'CI_'))
-        {
             return;
-        }
+            
         // validate classname
         if (!preg_match('~[a-z_]~i', $class))
         {
