@@ -9,8 +9,8 @@
                 <th><?php $clang->eT("gseq"); ?></th>
                 <th><?php $clang->eT("qseq"); ?></th>
                 <th><?php $clang->eT("Type"); ?></th>
-                <th><?php $clang->eT("Source Expression"); ?></th>
-                <th><?php $clang->eT("Syntax Highlighted"); ?></th>
+                <th><?php $clang->eT("Source expression"); ?></th>
+                <th><?php $clang->eT("Syntax highlighted"); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@
                             </a>
                         </td>
                         <td><a href="<?php echo site_url('admin/survey/view/'.$error['sid'].'/'.$error['gid']);?>">
-                            <?php echo $error['gid'];?>                                
+                            <?php echo $error['gid'];?>
                             </a>
                         </td>
                         <td><a href="<?php echo site_url('admin/question/editquestion/'.$error['sid'].'/'.$error['gid'].'/'.$error['qid']);?>">
