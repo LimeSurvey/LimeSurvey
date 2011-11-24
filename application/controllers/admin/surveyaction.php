@@ -49,6 +49,8 @@ class SurveyAction extends Survey_Common_Action {
 				$this->route('ajaxgetusers', array());
    			elseif ($sa == 'ajaxowneredit')
    				$this->route('ajaxowneredit', array('newowner', 'surveyid'));
+   			elseif ($sa == 'deactivate')
+   				$this->route('deactivate', array('surveyid'));
    			return;
    		}
 
@@ -562,19 +564,19 @@ class SurveyAction extends Survey_Common_Action {
     * @param mixed $surveyid
     * @return
     */
-    function deactivate($surveyid)
+    function deactivate($surveyid = null)
     {
         $surveyid = sanitize_int($surveyid);
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($surveyid);
 
         //$postsid=returnglobal('sid');
-        if ($this->input->post('sid'))
+        if (!empty($_POST['sid']))
         {
-            $postsid = $this->input->post('sid');
+            $postsid = $_POST['sid'];
         }
         else
         {
@@ -582,54 +584,51 @@ class SurveyAction extends Survey_Common_Action {
         }
         $clang = $this->getController()->lang;
         $date = date('YmdHis'); //'Hi' adds 24hours+minutes to name to allow multiple deactiviations in a day
-        $_POST = $this->input->post();
+
         if (!isset($_POST['ok']) || !$_POST['ok'])
         {
             $data['clang'] = $clang;
             $data['surveyid'] = $surveyid;
             $data['date'] = $date;
-            $data['dbprefix'] = $this->db->dbprefix;
+            $data['dbprefix'] = Yii::app()->db->tablePrefix;
             $data['step1'] = true;
-            self::_surveybar($surveyid);
-            $this->load->view('admin/survey/deactivateSurvey_view',$data);
+            $this->_surveybar($surveyid);
+            $this->getController()->render('/admin/survey/deactivateSurvey_view',$data);
         }
 
         else
         {
-            $this->load->helper('database');
             //See if there is a tokens table for this survey
-            if (tableExists("tokens_{$postsid}"))
+            if (Yii::app()->db->schema->getTable("{{tokens_{$postsid}}}"))
             {
-                $toldtable=$this->db->dbprefix."tokens_{$postsid}";
-                $tnewtable=$this->db->dbprefix."old_tokens_{$postsid}_{$date}";
-                $tdeactivateresult = db_rename_table($toldtable ,$tnewtable) or die ("Couldn't deactivate tokens table because:<br /><br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
-
-                if ($this->db->dbdriver=='postgre')
+                if (Yii::app()->db->getDriverName() == 'postgre')
                 {
-                    $deactivateresult = db_rename_table($toldtable.'_tid_seq',$tnewtable.'_tid_seq') or die ("Could not rename the old sequence for this token table.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
-                    $setsequence="ALTER TABLE ".$this->db->dbprefix.$tnewtable." ALTER COLUMN tid SET DEFAULT nextval('".$this->db->dbprefix.$tnewtable."_tid_seq'::regclass);";
-                    $deactivateresult = db_execute_assosc($setsequence) or die ("Could not alter the field 'tid' to point to the new sequence name for this token table. <br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
-                    $setidx="ALTER INDEX ".$this->db->dbprefix.$toldtable."_idx RENAME TO ".$this->db->dbprefix.$tnewtable."_idx;";
-                    $deactivateresult = db_execute_assosc($setidx) or die ("Could not alter the index for this token table. <br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
-
-                }
+	                $deactivateresult = Yii::app()->db->createCommand()->renameTable($toldtable.'_tid_seq',$tnewtable.'_tid_seq');
+	                $setsequence="ALTER TABLE {{{$tnewtable}}} ALTER COLUMN tid SET DEFAULT nextval('{{{$tnewtable}}}_tid_seq'::regclass);";
+	                $deactivateresult = Yii::app()->db->createCommand($setsequence)->query();
+	                $setidx="ALTER INDEX {{{$toldtable}}}_idx RENAME TO {{{$tnewtable}}}_idx;";
+	                $deactivateresult = Yii::app()->db->createCommand($setidx)->query();
+	            }
+                $toldtable="{{tokens_{$postsid}}}";
+                $tnewtable="{{old_tokens_{$postsid}_{$date}}}";
+                $tdeactivateresult = Yii::app()->db->createCommand()->renameTable($toldtable, $tnewtable);
                 $data['tnewtable'] = $tnewtable;
                 $data['toldtable'] = $toldtable;
             }
 
             // IF there are any records in the saved_control table related to this survey, they have to be deleted
-            $query = "DELETE FROM ".$this->db->dbprefix."saved_control WHERE sid={$postsid}";
-            $result = db_execute_assoc($query);
-            $oldtable=$this->db->dbprefix."survey_{$postsid}";
-            $newtable=$this->db->dbprefix."old_survey_{$postsid}_{$date}";
+            $query = "DELETE FROM {{saved_control}} WHERE sid={$postsid}";
+            $result = Yii::app()->db->createCommand($query)->query();
+            $oldtable="{{survey_{$postsid}}}";
+            $newtable="{{old_survey_{$postsid}_{$date}}}";
 
             //Update the auto_increment value from the table before renaming
             $new_autonumber_start=0;
-            $query = "SELECT id FROM $oldtable ORDER BY id desc";
-            $result = db_select_limit_assoc($query, 1,0, false, false);
-            if ($result)
+            $query = "SELECT id FROM $oldtable ORDER BY id desc LIMIT 1";
+            $result = Yii::app()->db->createCommand($query)->query();
+            if ($result->getRowCount() > 0)
             {
-                foreach ($result->result_array() as $row)
+                foreach ($result->readAll() as $row)
                 {
                     if (strlen($row['id']) > 12) //Handle very large autonumbers (like those using IP prefixes)
                     {
@@ -647,45 +646,47 @@ class SurveyAction extends Survey_Common_Action {
 
             $condn = array('sid' => $surveyid);
             $insertdata = array('autonumber_start' => $new_autonumber_start);
-            $this->load->model('surveys_model');
-            $this->surveys_model->updateSurvey($insertdata,$condn);
 
-            $deactivateresult = db_rename_table($oldtable,$newtable) or die ("Couldn't make backup of the survey table. Please try again. <br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
-
-            if ($this->db->dbdriver=='postgre')
+        	$survey = Survey::model()->findByAttributes($condn);
+        	$survey->autonumber_start = $new_autonumber_start;
+        	$survey->save();
+            if (Yii::app()->db->getDrivername()=='postgre')
             {
-                $deactivateresult = db_rename_table($oldtable.'_id_seq',$newtable.'_id_seq') or die ("Couldn't make backup of the survey table. Please try again. <br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
-                $setsequence="ALTER TABLE $newtable ALTER COLUMN id SET DEFAULT nextval('{$newtable}_id_seq'::regclass);";
-                $deactivateresult = db_execute_assosc($setsequence) or die ("Couldn't make backup of the survey table. Please try again. <br /><br />Survey was not deactivated either.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
-            }
+	            $deactivateresult = Yii::app()->db->createCommand()->renameTable($oldtable.'_id_seq',$newtable.'_id_seq');
+	            $setsequence= "ALTER TABLE $newtable ALTER COLUMN id SET DEFAULT nextval('{$newtable}_id_seq'::regclass);";
+	            $deactivateresult = Yii::app()->db->createCommand($setsequence)->execute();
+	        }
+
+            $deactivateresult = Yii::app()->db->createCommand()->renameTable($oldtable, $newtable);
 
             $insertdata = array('active' => 'N');
-            $deactivateresult = $this->surveys_model->updateSurvey($insertdata,$condn) or die ("Couldn't deactivate because updating of surveys table failed!<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>Admin</a>");
+        	$survey->active = 'N';
+        	$survey->save();
 
-            $pquery = "SELECT savetimings FROM ".$this->db->dbprefix."surveys WHERE sid={$postsid}";
-            $presult=db_execute_assoc($pquery);
-            $prow=$presult->row_array(); //fetch savetimings value
+            $pquery = "SELECT savetimings FROM {{surveys}} WHERE sid={$postsid}";
+            $presult=Yii::app()->db->createCommand($pquery)->query();
+            $prow=$presult->read(); //fetch savetimings value
             if ($prow['savetimings'] == "Y")
             {
-                $oldtable=$this->db->dbprefix."survey_{$postsid}_timings";
-                $newtable=$this->db->dbprefix."old_survey_{$postsid}_timings_{$date}";
+                $oldtable="{{survey_{$postsid}_timings}}";
+                $newtable="{{old_survey_{$postsid}_timings_{$date}}}";
 
-                $deactivateresult2 = db_rename_table($oldtable,$newtable) or die ("Couldn't make backup of the survey timings table. Please try again.<br /><br />Survey was deactivated.<br /><br /><a href='".site_url('admin/survey/view/'.$postsid)."'>".$clang->gT("Main Admin Screen")."</a>");
+                $deactivateresult2 = Yii::app()->db->createCommand()->renameTable($oldtable, $newtable);
                 $deactivateresult=($deactivateresult && $deactivateresult2);
             }
 
             $data['clang'] = $clang;
             $data['surveyid'] = $surveyid;
             $data['newtable'] = $newtable;
-            self::_surveybar($surveyid);
-            $this->load->view('admin/survey/deactivateSurvey_view',$data);
+            $this->_surveybar($surveyid);
+            $this->getController()->render('/admin/survey/deactivateSurvey_view',$data);
 
         }
 
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -810,7 +811,7 @@ class SurveyAction extends Survey_Common_Action {
 
         $query = "SELECT b.users_name FROM {{surveys}} as a"
         ." INNER JOIN  {{users}} as b ON a.owner_id = b.uid   WHERE sid=$intSurveyId AND owner_id=$intNewOwner;";
-        $result = Yii::app()->db->createCommand($queyr)->query();
+        $result = Yii::app()->db->createCommand($query)->query();
         $intRecordCount = $result->readAll();
 
         $aUsers = array(
