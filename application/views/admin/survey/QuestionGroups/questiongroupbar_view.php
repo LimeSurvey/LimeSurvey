@@ -119,8 +119,8 @@
         <img src='<?php echo $this->config->item('imageurl'); ?>/seperator.gif' alt=''  />
 
         <img src='<?php echo $this->config->item('imageurl'); ?>/blank.gif' width='18' alt='' />
-        <input id='MinimizeGroupWindow' type='image' src='<?php echo $this->config->item('imageurl'); ?>/minus.gif' title='<?php echo $clang->gT("Hide Details of this Group"); ?>' alt='<?php echo $clang->gT("Hide details of thisgroup"); ?>' name='MinimizeGroupWindow' />
-        <input type='image' id='MaximizeGroupWindow' src='<?php echo $this->config->item('imageurl'); ?>/plus.gif' title='<?php echo $clang->gT("Show Details of this Group"); ?>' alt='<?php echo $clang->gT("Show details of this group"); ?>' name='MaximizeGroupWindow' />
+        <input id='MinimizeGroupWindow' type='image' src='<?php echo $this->config->item('imageurl'); ?>/minus.gif' title='<?php echo $clang->gT("Hide details of this group"); ?>' alt='<?php echo $clang->gT("Hide details of this group"); ?>' name='MinimizeGroupWindow' />
+        <input type='image' id='MaximizeGroupWindow' src='<?php echo $this->config->item('imageurl'); ?>/plus.gif' title='<?php echo $clang->gT("Show details of this group"); ?>' alt='<?php echo $clang->gT("Show details of this group"); ?>' name='MaximizeGroupWindow' />
         <?php if (!$qid)
             { ?>
             <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' title='<?php echo $clang->gT("Close this Group"); ?>' alt='<?php echo $clang->gT("Close this Group"); ?>'  name='CloseSurveyWindow'
