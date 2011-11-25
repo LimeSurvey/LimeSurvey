@@ -1649,6 +1649,8 @@
                     }
                     else
                     {
+                        unset($oMail);
+                        $oMail = new PHPMailer;
                         $tokenoutput .= '<li>'.ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray).'</li>';
                         if ($debug>0)
                         {
@@ -1988,6 +1990,8 @@
                     }
                     else
                     {
+                        unset($oMail);
+                        $oMail = new PHPMailer;
                         $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error Message:")." ".$maildebug."<br />", $fieldsarray);
                         if ($debug>0)
                         {
