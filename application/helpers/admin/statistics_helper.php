@@ -62,6 +62,247 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 
 
 /**
+*
+*  Generate a chart for a question
+*  @param mixed $qid      ID of the question
+*  @param mixed $sid      ID of the survey
+*  @param mixed $type     Type of the chart to be created
+*  @param mixed $cache
+*  @param mixed $lbl
+*  @param mixed $gdata
+*  @param mixed $grawdata
+*  @param mixed $cache
+*  @return                Name 
+*/
+function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
+{       
+    $CI = &get_instance();
+    $rootdir = $CI->config->item("rootdir");
+    $homedir = $CI->config->item("homedir");
+    $homeurl = $CI->config->item("homeurl");
+    $admintheme = $CI->config->item("admintheme");
+    $scriptname = $CI->config->item("scriptname");
+    $chartfontfile = $CI->config->item("chartfontfile");
+    $chartfontsize = $CI->config->item("chartfontsize");
+    $language = GetBaseLanguageFromSurveyID($sid);
+	
+    if ($chartfontfile=='auto')
+    {
+        $chartfontfile='vera.ttf';
+        if ( $language=='ar')
+        {
+            $chartfontfile='KacstOffice.ttf';
+        }
+        elseif  ($language=='fa' )
+        {
+            $chartfontfile='KacstFarsi.ttf';
+        }
+        elseif  ($language=='el' )
+        {
+            $chartfontfile='DejaVuLGCSans.ttf';
+        }
+        elseif  ($language=='zh-Hant-HK' || $language=='zh-Hant-TW' || $language=='zh-Hans')
+        {
+            $chartfontfile='fireflysung.ttf';
+        }
+    }
+
+    $cachefilename = "";
+    
+    if (array_sum($gdata ) > 0)
+    {                   
+        $graph = "";
+        $p1 = "";
+
+        $i = 0;
+        foreach ($gdata as $data)
+        {
+            if ($data != 0)
+            {
+                $i++;
+            }
+        }
+        
+        $totallines=$i;
+        
+        if ($totallines>15)
+        {
+            $gheight=320+(6.7*($totallines-15));
+            $fontsize=7;
+            $legendtop=0.01;
+            $setcentrey=0.5/(($gheight/320));
+        }
+        else
+        {
+            $gheight=320;
+            $fontsize=8;
+            $legendtop=0.07;
+            $setcentrey=0.5;
+        }
+
+        if (!$type) // Bar chart
+        {
+            $DataSet = new pData;
+            $counter=0;
+            $maxyvalue=0;
+            foreach ($grawdata as $datapoint)
+            {
+                $DataSet->AddPoint(array($datapoint),"Serie$counter");
+                $DataSet->AddSerie("Serie$counter");
+
+                $counter++;
+                if ($datapoint>$maxyvalue) $maxyvalue=$datapoint;
+            }
+
+            if ($maxyvalue<10) {++$maxyvalue;}
+            $counter=0;
+            foreach ($lbl as $label)
+            {
+                $DataSet->SetSerieName($label, "Serie$counter");
+                $counter++;
+            }
+
+            if ($cache->IsInCache("graph".$sid,$DataSet->GetData()))
+            {
+                $cachefilename=basename($cache->GetFileFromCache("graph".$sid,$DataSet->GetData()));
+            }
+            else
+            {
+                $graph = new pChart(1,1);
+
+                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
+                $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
+
+                if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
+                $graph = new pChart(690+$legendsize[0],$gheight);
+                $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
+                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
+                $graph->setGraphArea(50,30,500,$gheight-60);
+                $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
+                $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);
+                $graph->drawGraphArea(255,255,255,TRUE);
+                $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);
+                $graph->drawGrid(4,TRUE,230,230,230,50);
+                // Draw the 0 line
+                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
+                $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
+
+                // Draw the bar graph
+                $graph->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
+                //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
+                // Finish the graph
+                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
+                $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
+
+                $cache->WriteToCache("graph".$sid,$DataSet->GetData(),$graph);
+                $cachefilename=basename($cache->GetFileFromCache("graph".$sid,$DataSet->GetData()));
+                unset($graph);
+            }
+        }	//end if (bar chart)
+
+        //Pie Chart
+        else
+        {
+            // this block is to remove the items with value == 0
+            $i = 0;
+            while (isset ($gdata[$i]))
+            {
+                if ($gdata[$i] == 0)
+                {
+                    array_splice ($gdata, $i, 1);
+                    array_splice ($lbl, $i, 1);
+                }
+                else
+                {$i++;}
+            }
+
+            $lblout=array();
+            if ($language=='ar')
+            {
+                $lblout=$lbl; //reset text order to original
+                $CI->load->library("admin/Arabic");
+                $Arabic = new Arabic('ArGlyphs');
+                foreach($lblout as $kkey => $kval){
+                    if (preg_match("^[A-Za-z]^", $kval)) { //auto detect if english
+                        //eng
+                        //no reversing
+                    }
+                    else{
+                        $kval = $Arabic->utf8Glyphs($kval,50,false);
+                        $lblout[$kkey] = $kval;
+                    }
+                }
+            }
+            elseif (getLanguageRTL($language))
+            {
+                $lblout=$lblrtl;
+            }
+            else
+            {
+                $lblout=$lbl;
+            }
+
+
+            //create new 3D pie chart
+            $DataSet = new pData;
+            $DataSet->AddPoint($gdata,"Serie1");
+            $DataSet->AddPoint($lblout,"Serie2");
+            $DataSet->AddAllSeries();
+            $DataSet->SetAbsciseLabelSerie("Serie2");
+
+            if ($cache->IsInCache("graph".$sid, $DataSet->GetData()))
+            {
+                $cachefilename=basename($cache->GetFileFromCache("graph".$sid,$DataSet->GetData()));
+            }
+            else
+            {
+
+                $gheight=ceil($gheight);
+                $graph = new pChart(690,$gheight);
+                $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
+                $graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,254,255,254);
+                $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);
+
+                // Draw the pie chart
+                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
+                $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);
+                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
+                $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
+                $cache->WriteToCache("graph".$sid,$DataSet->GetData(),$graph);
+                $cachefilename=basename($cache->GetFileFromCache("graph".$sid,$DataSet->GetData()));
+                unset($graph);
+            }
+        }	//end else -> pie charts
+    }
+    
+    return $cachefilename;
+}
+
+/**
+* Return data to populate a Google Map
+* @param string$sField    Field name
+* @param $qsid             Survey id
+* @return array
+*/
+function getQuestionMapData($sField, $qsid)
+{
+    $CI = &get_instance();
+    $aresult = $CI->Surveys_dynamic_model->getSomeRecords(array($sField), $qsid)->result();
+
+    $d = array ();
+
+    //loop through question data
+    foreach ($aresult as $arow)
+    {
+        $alocation = explode(";", $arow->$sField);
+        if (count($alocation) >= 2) {
+            $d[] = "{$alocation[0]} {$alocation[1]}";
+        }
+    }            
+    return $d;    
+}
+
+/**
 * Generates statistics
 *
 * @param int $surveyid The survey id
@@ -77,20 +318,25 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true)
 {
     //$allfields ="";
-    global $rooturl, $rootdir, $homedir, $homeurl, $scriptname,
-    $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize;
-	 $CI =& get_instance();
+    global $rooturl, $rootdir, $homedir, $homeurl, $scriptname, $admintheme, $pdfdefaultfont, $pdffontsize;
+    
+	
+		
+	 $CI = &get_instance();
 	 $imagedir = $CI->config->item("imagedir");
 	 $tempdir = $CI->config->item("tempdir");
 	 $tempurl = $CI->config->item("tempurl");
+	 
 	 $clang = $CI->limesurvey_lang;
 	 $dbprefix = $CI->db->dbprefix;
      $fieldmap=createFieldMap($surveyid, "full");
 
+     $astatdata = array();
+
      // Used for getting coordinates for google maps
      $agmapdata = array();
-     $CI->load->model('Surveys_dynamic_model');
-
+     
+ 	 //pick the best font file if font setting is 'auto'
     if (is_null($statlangcode))
     {
         $statlang=$clang;
@@ -131,21 +377,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         require_once(APPPATH.'/third_party/pchart/pchart/pData.class');
         require_once(APPPATH.'/third_party/pchart/pchart/pCache.class');
         $MyCache = new pCache($tempdir.'/');
-
-        //pick the best font file if font setting is 'auto'
-        if ($chartfontfile=='auto')
-        {
-            $chartfontfile='vera.ttf';
-            if ( $language=='ar')
-            {
-                $chartfontfile='KacstOffice.ttf';
-            }
-            elseif  ($language=='fa' )
-            {
-                $chartfontfile='KacstFarsi.ttf';
-            }
-
-        }
     }
 
     if($q2show=='all' )
@@ -669,11 +900,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             //this creates an array of question id's'
             $legitqids[] = $lw['qid'];
         }
+        
 
         //loop through all selected questions
         foreach ($runthrough as $rt)
         {
-
             $firstletter = substr($rt, 0, 1);
             // 1. Get answers for question ##############################################################
 
@@ -1883,8 +2114,6 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
             //foreach ($alist as $al) {$statisticsoutput .= "$al[0] - $al[1]<br />";} //debugging line
             //foreach ($fvalues as $fv) {$statisticsoutput .= "$fv | ";} //debugging line
-
-
 
 
 
@@ -3116,255 +3345,112 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //					$pdf->tablehead($footA);
                     //				}
                 }
-
-
-
-
-                //-------------------------- PCHART OUTPUT ----------------------------
-
-                //PCHART has to be enabled and we need some data
-                if ($usegraph==1 && array_sum($gdata)>0)
-                {
-                    $graph = "";
-                    $p1 = "";
-                    //                  $statisticsoutput .= "<pre>";
-                    //                  $statisticsoutput .= "GDATA:\n";
-                    //                  print_r($gdata);
-                    //                  $statisticsoutput .= "GRAWDATA\n";
-                    //                  print_r($grawdata);
-                    //                  $statisticsoutput .= "LABEL\n";
-                    //                  print_r($label);
-                    //                  $statisticsoutput .= "JUSTCODE\n";
-                    //                  print_r($justcode);
-                    //                  $statisticsoutput .= "LBL\n";
-                    //                  print_r($lbl);
-                    //                  $statisticsoutput .= "</pre>";
-                    //First, lets delete any earlier graphs from the tmp directory
-                    //$gdata and $lbl are arrays built at the end of the last section
-                    //that contain the values, and labels for the data we are about
-                    //to send to pchart.
-
-                    $i = 0;
-                    foreach ($gdata as $data)
-                    {
-                        if ($data != 0){$i++;}
-                    }
-                    $totallines=$i;
-                    if ($totallines>15)
-                    {
-                        $gheight=320+(6.7*($totallines-15));
-                        $fontsize=7;
-                        $legendtop=0.01;
-                        $setcentrey=0.5/(($gheight/320));
-                    }
-                    else
-                    {
-                        $gheight=320;
-                        $fontsize=8;
-                        $legendtop=0.07;
-                        $setcentrey=0.5;
-                    }
-
-                    // Create bar chart for Multiple choice
-                    if ($qtype == "M" || $qtype == "P")
-                    {
-                        //new bar chart using data from array $grawdata which contains percentage
-
-                        $DataSet = new pData;
-                        $counter=0;
-                        $maxyvalue=0;
-                        foreach ($grawdata as $datapoint)
-                        {
-                            $DataSet->AddPoint(array($datapoint),"Serie$counter");
-                            $DataSet->AddSerie("Serie$counter");
-
-                            $counter++;
-                            if ($datapoint>$maxyvalue) $maxyvalue=$datapoint;
-                        }
-
-                        if ($maxyvalue<10) {++$maxyvalue;}
-                        $counter=0;
-                        foreach ($lbl as $label)
-                        {
-                            $DataSet->SetSerieName($label,"Serie$counter");
-                            $counter++;
-                        }
-
-                        if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
-                        {
-                            $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
-                        }
-                        else
-                        {
-                            $graph = new pChart(1,1);
-
-                            $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
-                            $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
-
-                            if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
-                            $graph = new pChart(690+$legendsize[0],$gheight);
-                            $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
-                            $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
-                            $graph->setGraphArea(50,30,500,$gheight-60);
-                            $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
-                            $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);
-                            $graph->drawGraphArea(255,255,255,TRUE);
-                            $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);
-                            $graph->drawGrid(4,TRUE,230,230,230,50);
-                            // Draw the 0 line
-                            $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
-                            $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
-
-                            // Draw the bar graph
-                            $graph->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
-                            //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
-                            // Finish the graph
-                            $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
-                            $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
-
-                            $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
-                            $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
-                            unset($graph);
-                        }
-                    }	//end if (bar chart)
-
-                    //Pie Chart
-                    else
-                    {
-                        // this block is to remove the items with value == 0
-                        $i = 0;
-                        while (isset ($gdata[$i]))
-                        {
-                            if ($gdata[$i] == 0)
-                            {
-                                array_splice ($gdata, $i, 1);
-                                array_splice ($lbl, $i, 1);
-                            }
-                            else
-                            {$i++;}
-                        }
-
-                        $lblout=array();
-                        if ($language=='ar')
-                        {
-                            $lblout=$lbl; //reset text order to original
-                            $CI->load->library("admin/Arabic");
-                            $Arabic = new Arabic('ArGlyphs');
-                            foreach($lblout as $kkey => $kval){
-                                if (preg_match("^[A-Za-z]^", $kval)) { //auto detect if english
-                                    //eng
-                                    //no reversing
-                                }
-                                else{
-                                    $kval = $Arabic->utf8Glyphs($kval,50,false);
-                                    $lblout[$kkey] = $kval;
-                                }
-                            }
-                        }
-                        elseif (getLanguageRTL($language))
-                        {
-                            $lblout=$lblrtl;
-                        }
-                        else
-                        {
-                            $lblout=$lbl;
-                        }
-
-
-                        //create new 3D pie chart
-                        if ($usegraph==1)
-                        {
-                            $DataSet = new pData;
-                            $DataSet->AddPoint($gdata,"Serie1");
-                            $DataSet->AddPoint($lblout,"Serie2");
-                            $DataSet->AddAllSeries();
-                            $DataSet->SetAbsciseLabelSerie("Serie2");
-
-                            if ($MyCache->IsInCache("graph".$surveyid,$DataSet->GetData()))
-                            {
-                                $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
-                            }
-                            else
-                            {
-
-                                $gheight=ceil($gheight);
-                                $graph = new pChart(690,$gheight);
-                                $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
-                                $graph->drawFilledRoundedRectangle(7,7,687,$gheight-3,5,254,255,254);
-                                $graph->drawRoundedRectangle(5,5,689,$gheight-1,5,230,230,230);
-
-                                // Draw the pie chart
-                                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
-                                $graph->drawPieGraph($DataSet->GetData(),$DataSet->GetDataDescription(),225,round($gheight/2),170,PIE_PERCENTAGE,TRUE,50,20,5);
-                                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
-                                $graph->drawPieLegend(430,12,$DataSet->GetData(),$DataSet->GetDataDescription(),250,250,250);
-                                $MyCache->WriteToCache("graph".$surveyid,$DataSet->GetData(),$graph);
-                                $cachefilename=basename($MyCache->GetFileFromCache("graph".$surveyid,$DataSet->GetData()));
-                                unset($graph);
-                            }
-                            //print_r($DataSet->GetData()); echo "<br/><br/>";
-                        }
-
-                    }	//end else -> pie charts
-
-                    //introduce new counter
-                    if (!isset($ci)) {$ci=0;}
-
-                    //increase counter, start value -> 1
-                    $ci++;
-                    switch($outputType)
-                    {
-                        case 'xls':
-
-                            /**
-                             * No Image for Excel...
-                             */
-
-                            break;
-                        case 'pdf':
-
-                            $pdf->AddPage('P','A4');
-
-                            $pdf->titleintopdf($pdfTitle,$titleDesc);
-                            $pdf->Image($tempdir."/".$cachefilename, 0, 70, 180, 0, '', $homeurl."/admin.php?sid=$surveyid", 'B', true, 150,'C',false,false,0,true);
-
-                            break;
-                        case 'html':
-
-                            $statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\"><img src=\"$tempurl/".$cachefilename."\" border='1' /></td></tr>";
-
-                            $aattr = getQuestionAttributeValues($qqid, $firstletter);
-                            if (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1") {
-                                $statisticsoutput .= "<tr><td colspan='4'><div style=\"margin:auto;width:{$aattr['location_mapwidth']}px;height:{$aattr['location_mapheight']}px;\" id=\"statisticsmap_$fld\" class=\"statisticsmap\"></div></td></tr>";
-
-                                $aresult = $CI->Surveys_dynamic_model->getSomeRecords(array($fld), $surveyid)->result();
-
-                                $agmapdata[$fld] = array (
-                                    "zoom" => $aattr['location_mapzoom'],
-                                    "coord" => array()
-                                );
-
-                                //loop through question data
-                                foreach ($aresult as $arow)
-                                {
-                                    $alocation = explode(";", $arow->$fld);
-                                    $agmapdata[$fld]["coord"][] = "{$alocation[0]} {$alocation[1]}";
-                                }
-                            }
-                            break;
-                        default:
-
-
-                            break;
-                    }
-
+                
+                if ($outputType=='html') {
+                    $statisticsoutput .= "<tr><td colspan='4' style=\"text-align:center\" id='statzone_$rt'>";
                 }
 
+
+
+                //-------------------------- PCHART OUTPUT ----------------------------   
+                
+                list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+                $aattr = getQuestionAttributeValues($qqid, substr($rt, 0, 1));
+                                                               
+                //PCHART has to be enabled and we need some data
+                if ($usegraph == 1) {
+                    $bShowGraph = $aattr["statistics_showgraph"] == "1";
+                    $bAllowPieChart = ($qtype != "M" && $qtype != "P");
+                    $bAllowMap = (isset($aattr["location_mapservice"]) && $aattr["location_mapservice"] == "1");
+                    $bShowMap = ($bAllowMap && $aattr["statistics_showmap"] == "1");
+                    $bShowPieChart = ($bAllowPieChart && $aattr["statistics_graphtype"] == "1");
+                    
+                    $astatdata[$rt] = array(
+                        'id' => $rt,
+                        'sg' => $bShowGraph,
+                        'ap' => $bAllowPieChart,
+                        'am' => $bAllowMap,
+                        'sm' => $bShowMap,
+                        'sp' => $bShowPieChart
+                    );
+                    
+                    $_SESSION['stats'][$rt] = array(
+                        'lbl' => $lbl,
+                        'gdata' => $gdata,
+                        'grawdata' => $grawdata
+                    );  
+                                        
+                    if (array_sum($gdata)>0 && $bShowGraph == true)
+                    {   
+                        $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache);
+                        //introduce new counter
+                        if (!isset($ci)) {$ci=0;}
+
+                        //increase counter, start value -> 1
+                        $ci++;
+                        switch($outputType)
+                        {
+                            case 'xls':
+
+                                /**
+                                 * No Image for Excel...
+                                 */
+
+                                break;
+                            case 'pdf':
+
+                                $pdf->AddPage('P','A4');
+
+                                $pdf->titleintopdf($pdfTitle,$titleDesc);
+                                $pdf->Image($tempdir."/".$cachefilename, 0, 70, 180, 0, '', $homeurl."/admin.php?sid=$surveyid", 'B', true, 150,'C',false,false,0,true);
+
+                                break;
+                            case 'html':
+
+                                $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
+
+                                $aattr = getQuestionAttributeValues($qqid, $firstletter);
+                                if ($bShowMap) {
+                                    $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
+
+                                    $agmapdata[$rt] = array (
+                                        "coord" => getQuestionMapData(substr($rt, 1), $qsid),
+                                        "zoom" => $aattr['location_mapzoom'],
+                                        "width" => $aattr['location_mapwidth'],
+                                        "height" => $aattr['location_mapheight']
+                                    );
+                                }
+                                break;
+                            default:
+
+
+                                break;
+                        }
+
+                    }
+                }
+                
                 //close table/output
-                if($outputType=='html')
-                $statisticsoutput .= "</table><br /> \n";
+                if($outputType=='html') {
+                    if ($usegraph) {
+                        $sImgUrl = $CI->config->item('imageurl');
+                        
+                        $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
+                                            ."<img class='stats-showgraph' src='$sImgUrl/chart_disabled.png'/>"
+                                            ."<img class='stats-hidegraph' src='$sImgUrl/chart.png'/>"
+                                            ."<img class='stats-showbar' src='$sImgUrl/chart_bar.png'/>"
+                                            ."<img class='stats-showpie' src='$sImgUrl/chart_pie.png'/>"
+                                            ."<img class='stats-showmap' src='$sImgUrl/map_disabled.png'/>"
+                                            ."<img class='stats-hidemap' src='$sImgUrl/map.png'/>"
+                                            ."</div></td></tr>";
+                                            
+                    }
+                    $statisticsoutput .= "</table><br /> \n";
+                }
 
             }	//end if -> collect and display results
+
+
 
             //delete data
             unset($gdata);
@@ -3413,7 +3499,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             break;
         case 'html':
 			$statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>"
-								."<script type=\"text/javascript\">var aGMapData=".json_encode($agmapdata)	.";</script>";
+								."<script type=\"text/javascript\">var site_url='".site_url()."';var temppath='$tempurl';var imgpath='".$CI->config->item('imageurl')."';var aGMapData=".json_encode($agmapdata)	.";var aStatData=".json_encode($astatdata)."</script>";
             return $statisticsoutput;
 
             break;

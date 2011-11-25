@@ -38,6 +38,22 @@ class Question_attributes_model extends CI_Model {
         return $this->db->insert('question_attributes',$data);
     }
     
+    function setAttribute($qid, $attribute, $value)
+    {
+        $data = array (
+            'qid' => $qid,
+            'attribute' => $attribute
+        );
+        
+        $query = $this->db->get_where($this->db->dbprefix('question_attributes'), $data);
+        if ($query->num_rows() == 0) {
+            $data['value'] = $value;
+            return $this->db->insert($this->db->dbprefix('question_attributes'), $data);
+        } else {
+            return $this->db->update($this->db->dbprefix('question_attributes'), array('value'=>$value), array('qid' => $qid, 'attribute' => $attribute)); 
+        }
+    }
+    
     function getEMRelatedRecordsForSurvey($surveyid=NULL,$qid=NULL)
     {
         if (!is_null($qid)) {

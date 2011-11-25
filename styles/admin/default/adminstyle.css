@@ -1455,3 +1455,14 @@ ol.organizer {
 	height: 200px;
 	overflow: auto;
 }
+
+.graphdisplay img {
+    margin: 5px;
+    cursor: pointer;
+}
+
+.statisticsmap {
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
