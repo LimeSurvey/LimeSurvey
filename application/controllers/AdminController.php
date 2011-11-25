@@ -119,6 +119,7 @@ class AdminController extends LSYii_Controller
 			'tokens' => 'application.controllers.admin.tokens',
 			'surveypermission' => 'application.controllers.admin.surveypermission',
 			'questiongroup' => 'application.controllers.admin.questiongroup',
+			'dumpdb' => 'application.controllers.admin.dumpdb',
 		);
 	}
 

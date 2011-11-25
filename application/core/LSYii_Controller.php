@@ -86,9 +86,9 @@ abstract class LSYii_Controller extends CController
 		$maildebug='';
 
 		// The following function (when called) includes FireBug Lite if true
-		define('FIREBUG' , Yii::app()->getConfig('use_firebug_lite'));
+		defined('FIREBUG') or define('FIREBUG' , Yii::app()->getConfig('use_firebug_lite'));
 
-		define("_PHPVERSION", phpversion()); // This is the same as the server defined 'PHP_VERSION'
+		defined('_PHPVERSION') or define("_PHPVERSION", phpversion()); // This is the same as the server defined 'PHP_VERSION'
 
 		// Deal with server systems having not set a default time zone
 		if(function_exists("date_default_timezone_set") and function_exists("date_default_timezone_get"))
@@ -142,7 +142,7 @@ abstract class LSYii_Controller extends CController
 
 
 		//SET LOCAL TIME
-		$timeadjust = Yii::app()->setConfig("timeadjust", null);
+		$timeadjust = Yii::app()->getConfig("timeadjust");
 		if (substr($timeadjust,0,1)!='-' && substr($timeadjust,0,1)!='+') {$timeadjust='+'.$timeadjust;}
 		if (strpos($timeadjust,'hours')===false && strpos($timeadjust,'minutes')===false && strpos($timeadjust,'days')===false)
 		{

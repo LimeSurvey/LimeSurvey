@@ -21,206 +21,144 @@
  * @version $Id: dumpdb.php 11155 2011-10-13 12:59:49Z c_schmitz $
  * @access public
  */
-class Dumpdb extends Admin_Controller {
+class Dumpdb extends AdminController {
 
-    function __construct()
+	var $iMaxRecords;
+
+	/**
+	 * Base function
+	 *
+	 * This functions receives the request to generate a dump file for the
+	 * database and does so! Only LimeSurvey tables are dumped.
+	 * Only superadmins are allowed to do this!
+	 *
+	 * @access public
+	*/
+	public function runWithParams()
 	{
-		parent::__construct();
+		if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1) {
+			die();
+		}
+
+		$connection = Yii::app()->db;
+		$this->iMaxRecords = Yii::app()->getConfig('maxdumpdbrecords');
+
+		if (!in_array($connection->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demoMode') == true) {
+			die("This feature is only available for MySQL databases.");
+		}
+
+		// Yii doesn't give us a good way to get the database name
+		$dbname = preg_match("/dbname=([^;]*)/", $connection->getSchema()->getDbConnection()->connectionString, $matches);
+		$dbname = $matches[1];
+
+		$file_name = "LimeSurvey_".$dbname."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", Yii::app()->getConfig('timeadjust')).".sql";
+
+		Header("Content-type: application/octet-stream");
+		Header("Content-Disposition: attachment; filename=$file_name");
+		Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+
+		echo "-- "."\n";
+		echo "-- LimeSurvey Database Dump of `$dbname`"."\n";
+		self::_completedump();
+
+		exit; // needs to be inside the condition so the updater still can include this file
 	}
 
-    /**
-     * Dumpdb::index()
-     * Dump database. Only LimeSurvey tables are dumped.
-     * @return void
-     */
-    function index()
-    {
-        $this->load->dbutil();
-        $this->load->helper("string");
+	/**
+	 * Outputs a full dump of the current LimeSurvey database
+	 */
+	function _completedump()
+	{
+		$allowexportalldb = (bool) Yii::app()->getConfig('allowexportalldb');
 
-        if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoMode') != true) {
+		$connection = Yii::app()->db;
+		$tables = $connection->getSchema()->getTables();
+		if ($allowexportalldb==0) {
+			echo "-- Only prefixed tables with: ".$connection->tablePrefix."\n";
+		}
+		echo "-- Date of Dump: ".date_shift(date("d-M-Y"), "d-M-Y", Yii::app()->getConfig('timeadjust'))."\n";
+		echo "-- "."\n";
 
-            $tables = $this->db->list_tables();
+		foreach($tables as $tablename => $tabledata) {
+			if ($allowexportalldb == 0 && $connection->tablePrefix != substr($tablename, 0, strlen($connection->tablePrefix)))
+				continue;
+			self::_defdump($tablename);
+			self::_datadump($tablename, $tabledata);
+		}
+	}
 
-            foreach ($tables as $table)
-            {
-               if ($this->db->dbprefix==substr($table, 0, strlen($this->db->dbprefix)))
-               {
-                    $lstables[] = $table;
-               }
-            }
+	/**
+	 * Outputs the table structure in sql format
+	 */
+	function _defdump($tablename)
+	{
 
+		$connection  = Yii::app()->db;
 
-            $sfilename = "backup_db_".random_string('unique')."_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql";
-            $dfilename = "LimeSurvey_".$this->db->database."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql.gz";
-            $prefs = array(
-                'format'      => 'zip',             // gzip, zip, txt
-                   // File name - NEEDED ONLY WITH ZIP FILES
-                'filename'    => $sfilename,
-                'tables'      => $lstables,
-                'add_drop'    => TRUE,              // Whether to add DROP TABLE statements to backup file
-                'add_insert'  => TRUE,              // Whether to add INSERT data to backup file
-                'newline'     => "\n"               // Newline character used in backup file
-              );
+		$def  ="\n"."-- --------------------------------------------------------"."\n\n";
+		$def .="--\n";
+		$def .="-- Table structure for table `{$tablename}`"."\n";
+		$def .="--\n\n";
+		$def .= "DROP TABLE IF EXISTS `{$tablename}`;"."\n";
 
-            $this->dbutil->backup($prefs);
-            $backup =& $this->dbutil->backup();
+		$sSql = "SHOW CREATE TABLE `{$tablename}`";
+		$aCreateTable = $connection->createCommand($sSql)->queryRow();
+		$def .= $aCreateTable['Create Table'].";\n\n";
+		echo $def;
+	}
 
-            $this->load->helper('file');
-            write_file('tmp/'.$sfilename.".gz", $backup);
+	/**
+	 * Outputs the table data in sql format
+	 */
+	function _datadump($tablename, $tabledata)
+	{
+		$connection  = Yii::app()->db;
+		$result  = "--\n";
+		$result .="-- Dumping data for table `$tablename`"."\n";
+		$result .="--\n\n";
+		echo $result;
 
-            $this->load->helper('download');
-            force_download($dfilename, $backup);
+		$sSql = "SELECT COUNT(*) FROM `$tablename`";
+		$aNumRows = $connection->createCommand($sSql)->queryRow();
+		$iNumRows = $aNumRows['COUNT(*)'];
+		if ($iNumRows < 1)
+			return;
 
+		for($i=0; $i < ceil($iNumRows/$this->iMaxRecords); $i++) {
+			$aResults = $connection->createCommand()
+				->select()
+				->from($tablename)
+				->limit($this->iMaxRecords, ($i != 0 ? ($i*$this->iMaxRecords) + 1 : null))
+				->query()->readAll();
 
+			$aFieldNames = array_keys($tabledata->columns);
+			$iNumFields  = count($aFieldNames);
+			$result = "";
 
+			foreach($aResults as $row){
+				$result .= "INSERT INTO `{$tablename}` VALUES(";
 
-        }
-        else
-        {
-            show_error("This feature is only available for MySQL databases.");
-        }
+				foreach($aFieldNames as $sFieldName) {
+					if (isset($row[$sFieldName]) && !is_null($row[$sFieldName]))
+					{
+						$row[$sFieldName] = addslashes($row[$sFieldName]);
+						$row[$sFieldName] = preg_replace("#\n#","\\n",$row[$sFieldName]);
+						$result .= "\"{$row[$sFieldName]}\"";
+					}
+					else
+					{
+						$result .= "NULL";
+					}
 
-    }
+					if (end($aFieldNames) != $sFieldName)
+						$result .= ", ";
+				}
 
-    /**
-    function index2()
-    {
+				$result .= ");\n";
+			}
 
-        $this->load->dbutil();
-
-        if ($this->dbutil->database_exists($this->db->database) && ($this->db->dbdriver=='mysql' || $this->db->dbdriver=='mysqli') && $this->config->item('demoMode') != true && $action=='dumpdb') {
-
-            $export=self::_completedump();
-
-            $file_name = "LimeSurvey_".$this->db->database."_dump_".date_shift(date("Y-m-d H:i:s"), "Y-m-d", $this->config->item('timeadjust')).".sql";
-            Header("Content-type: application/octet-stream");
-            Header("Content-Disposition: attachment; filename=$file_name");
-            Header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            echo $export;
-            exit; // needs to be inside the condition so the updater still can include this file
-        }
-
-    }
-
-    function _defdump($tablename)
-    {
-        //global $connect;
-        $this->load->helper("database");
-        $def = "";
-        $def .="#\n";
-        $def .="# Table definition for {$tablename}"."\n";
-        $def .="#\n";
-        $def .= "DROP TABLE IF EXISTS {$tablename};"."\n"."\n";
-        $def .= "CREATE TABLE {$tablename} ("."\n";
-        $result = db_execute_assoc("SHOW COLUMNS FROM {$tablename}") or die("Table $tablename not existing in database");
-        foreach($result->result_array() as $row)
-        {
-            $def .= "    `$row[Field]` $row[Type]";
-            if (!is_null($row["Default"])) $def .= " DEFAULT '$row[Default]'";
-            if ($row["Null"] != "YES") $def .= " NOT NULL";
-            if ($row["Extra"] != "") $def .= " $row[Extra]";
-            $def .= ",\n";
-        }
-        $def = preg_replace("#,\n$#","", $def);
-
-        $result = db_execute_assoc("SHOW KEYS FROM $tablename");
-        foreach($result->result_array() as $row)
-        {
-            $kname=$row["Key_name"];
-            if(($kname != "PRIMARY") && ($row["Non_unique"] == 0)) $kname="UNIQUE|$kname";
-            if(!isset($index[$kname])) $index[$kname] = array();
-            if ($row["Sub_part"]!='')  $row["Column_name"].=" ({$row["Sub_part"]})";
-            $index[$kname][] = $row["Column_name"];
-        }
-
-        while(list($x, $columns) = @each($index))
-        {
-            $def .= ",\n";
-            if($x == "PRIMARY") $def .= "   PRIMARY KEY (" . implode($columns, ", ") . ")";
-            else if (substr($x,0,6) == "UNIQUE") $def .= "   UNIQUE ".substr($x,7)." (" . implode($columns, ", ") . ")";
-            else $def .= "   KEY $x (" . implode($columns, ", ") . ")";
-        }
-        $def .= "\n);\n\n\n";
-        return (stripslashes($def));
-    }
-
-    function _datadump ($table) {
-
-        //global $connect;
-        $this->load->helper("database");
-
-        $result = "#\n";
-        $result .="# Table data for $table"."\n";
-        $result .="#\n";
-
-        $query = db_execute_num("select * from $table");
-        $num_fields = $query->FieldCount();
-        $aFieldNames= $connect->MetaColumnNames($table, true);
-        $sFieldNames= implode('`,`',$aFieldNames);
-        $numrow = $query->RecordCount();
-
-        if ($numrow>0)
-        {
-            $result .= "INSERT INTO `{$table}` (`{$sFieldNames}`) VALUES";
-        while($row=$query->FetchRow()){
-            @set_time_limit(5);
-                $result .= "(";
-            for($j=0; $j<$num_fields; $j++) {
-                if (isset($row[$j]) && !is_null($row[$j]))
-                {
-                    $row[$j] = addslashes($row[$j]);
-                    $row[$j] = preg_replace("#\n#","\\n",$row[$j]);
-                    $result .= "\"$row[$j]\"";
-                }
-                else
-                {
-                    $result .= "NULL";
-                }
-
-                if ($j<($num_fields-1)) $result .= ",";
-            }
-                $result .= "),\n";
-        } // while
-            $result=substr($result,0,-2);
-    }
-        return $result . ";\n\n";
-    }
-    */
-    /**
-     * Creates a full dump of the current LimeSurvey database
-     *
-     * @returns string Contains the dumped data
-     */
-     /**
-    function _completedump()
-    {
-        global $connect, $databasename, $dbprefix, $allowexportalldb;
-        $tables = $connect->MetaTables();
-        $export ="#------------------------------------------"."\n";
-        $export .="# LimeSurvey Database Dump of `$databasename`"."\n";
-        if ($allowexportalldb==0) {
-            $export .="# Only prefixed tables with: ". $dbprefix ."\n";
-        }
-        $export .="# Date of Dump: ". date("d-M-Y") ."\n";
-        $export .="#------------------------------------------"."\n\n\n";
-
-        foreach($tables as $table) {
-            if ($allowexportalldb==0) {
-                if ($dbprefix==substr($table, 0, strlen($dbprefix))) {
-                    $export .= self::_defdump($table);
-                    $export .= self::_datadump($table);
-                }
-            }
-            else {
-                $export .= self::_defdump($table);
-                $export .= self::_datadump($table);
-            }
-        }
-        return $export;
-    }
-    */
-
-
+			echo $result . "\n";
+		}
+	}
 
 }
