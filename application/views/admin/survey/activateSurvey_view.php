@@ -12,14 +12,14 @@
                 {
                     foreach ($failedcheck as $fc)
                     { ?>
-                    <li> Question qid-<?php echo $fc[0]; ?> ("<a href='<?php echo site_url('admin/survey/view/'.$surveyid.'/'.$fc[3].'/'.$fc[0]); ?>'><?php echo $fc[1]; ?></a>")<?php echo $fc[2]; ?></li>
+                    <li> Question qid-<?php echo $fc[0]; ?> ("<a href='<?php echo Yii::app()->createUrl('admin/survey/view/'.$surveyid.'/'.$fc[3].'/'.$fc[0]); ?>'><?php echo $fc[1]; ?></a>")<?php echo $fc[2]; ?></li>
                     <?php }
                 }
                 if (isset($failedgroupcheck) && $failedgroupcheck)
                 {
                     foreach ($failedgroupcheck as $fg)
                     { ?>
-                    <li> Group gid-<?php echo $fg[0]; ?> ("<a href='<?php echo site_url('admin/survey/view/'.$surveyid.'/'.$fg[0]); ?>'><?php echo $fg[1]; ?></a>")<?php echo $fg[2]; ?></li>
+                    <li> Group gid-<?php echo $fg[0]; ?> ("<a href='<?php echo Yii::app()->createUrl('admin/survey/view/'.$surveyid.'/'.$fg[0]); ?>'><?php echo $fg[1]; ?></a>")<?php echo $fg[2]; ?></li>
                     <?php }
             } ?>
         </ul>
@@ -43,7 +43,7 @@
             <?php $clang->eT("The following settings cannot be changed when the survey is active.");?>
         </div>
         <?php $clang->eT("Please check these settings now, then click the button below.");?>
-        <form class='form44' action='<?php echo site_url("admin/survey/activate/".$surveyid); ?>' method='post'>
+        <form class='form44' action='<?php echo Yii::app()->createUrl("admin/survey/sa/activate/surveyid/".$surveyid); ?>' method='post'>
             <ul>
                 <li><label for='anonymized'><?php echo $clang->gT("Anonymized responses?"); ?>
 

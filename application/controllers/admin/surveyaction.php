@@ -35,7 +35,7 @@ class SurveyAction extends Survey_Common_Action {
     * @return void
     */
    public function run($sa = '', $action = '', $sid = 0)
-   {
+   {        
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
         {
             die();
@@ -45,6 +45,8 @@ class SurveyAction extends Survey_Common_Action {
    		{
    			if ($sa == 'listsurveys')
    				$this->route('listsurveys', array());
+            elseif ($sa == 'activate')
+                $this->route('activate', array('surveyid'));
 			elseif ($sa == 'ajaxgetusers')
 				$this->route('ajaxgetusers', array());
    			elseif ($sa == 'ajaxowneredit')
@@ -94,7 +96,7 @@ class SurveyAction extends Survey_Common_Action {
 			}
 		}
         Yii::app()->session['flashmessage'] = sprintf($message, $actioncount);
-        $this->getController()->render('admin/survey/listsurveys');
+        //$this->getController()->render('/admin/survey/listsurveys');
     }
 
     /**
@@ -608,7 +610,7 @@ class SurveyAction extends Survey_Common_Action {
 	                $deactivateresult = Yii::app()->db->createCommand($setsequence)->query();
 	                $setidx="ALTER INDEX {{{$toldtable}}}_idx RENAME TO {{{$tnewtable}}}_idx;";
 	                $deactivateresult = Yii::app()->db->createCommand($setidx)->query();
-	            }
+                }
                 $toldtable="{{tokens_{$postsid}}}";
                 $tnewtable="{{old_tokens_{$postsid}_{$date}}}";
                 $tdeactivateresult = Yii::app()->db->createCommand()->renameTable($toldtable, $tnewtable);
@@ -653,9 +655,9 @@ class SurveyAction extends Survey_Common_Action {
             if (Yii::app()->db->getDrivername()=='postgre')
             {
 	            $deactivateresult = Yii::app()->db->createCommand()->renameTable($oldtable.'_id_seq',$newtable.'_id_seq');
-	            $setsequence= "ALTER TABLE $newtable ALTER COLUMN id SET DEFAULT nextval('{$newtable}_id_seq'::regclass);";
+                $setsequence="ALTER TABLE $newtable ALTER COLUMN id SET DEFAULT nextval('{$newtable}_id_seq'::regclass);";
 	            $deactivateresult = Yii::app()->db->createCommand($setsequence)->execute();
-	        }
+            }
 
             $deactivateresult = Yii::app()->db->createCommand()->renameTable($oldtable, $newtable);
 
@@ -699,20 +701,20 @@ class SurveyAction extends Survey_Common_Action {
     {
         $iSurveyID=(int) $iSurveyID;
 
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->getConfig("css_admin_includes", $css_admin_includes);
         $data['aSurveysettings'] = getSurveyInfo($iSurveyID);
         if (!isset($data['aSurveysettings']['active']) || $data['aSurveysettings']['active']=='Y') die(); // Die if this is not possible
 
-        self::_getAdminHeader();
-        self::_showadminmenu($iSurveyID);
-        self::_surveybar($iSurveyID);
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($iSurveyID);
+        //$this->getController()->_surveybar($iSurveyID);
 
 
 
         $qtypes=getqtypelist('','array');
-        $this->load->helper("admin/activate");
-        $_POST = $this->input->post();
+        Yii::app()->loadHelper("admin/activate");
+        //$_POST = $this->input->post();
 
 
         if (!isset($_POST['ok']) || !$_POST['ok'])
@@ -732,29 +734,33 @@ class SurveyAction extends Survey_Common_Action {
             $data['failedgroupcheck'] = $failedgroupcheck;
             $data['aSurveysettings'] = getSurveyInfo($iSurveyID);
 
-            $this->load->view("admin/survey/activateSurvey_view",$data);
+            $this->getController()->render("/admin/survey/activateSurvey_view",$data);
             //IF ANY OF THE CHECKS FAILED, PRESENT THIS SCREEN
 
 
         }
         else
         {
-            $this->load->model("surveys_model");
-            $this->surveys_model->updateSurvey(array('anonymized'=>$this->input->post('anonymized'),
-            'datestamp'=>$this->input->post('datestamp'),
-            'ipaddr'=>$this->input->post('ipaddr'),
-            'refurl'=>$this->input->post('refurl'),
-            'savetimings'=>$this->input->post('savetimings')),
-            array('sid'=>$iSurveyID));
+            $survey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
+            if(!is_null($survey))
+            {
+                $survey->anonymized = $_POST['anonymized'];
+                $survey->datestamp = $_POST['datestamp'];
+                $survey->ipaddr = $_POST['ipaddr'];
+                $survey->refurl = $_POST['refurl'];
+                $survey->savetimings = $_POST['savetimings'];
+                $survey->save();
+            }
+                                 
             $activateoutput = activateSurvey($iSurveyID);
             $displaydata['display'] = $activateoutput;
-            $this->load->view('survey_view',$displaydata);
+            $this->getController()->render('/survey_view',$displaydata);
         }
 
-        self::_loadEndScripts();
+         $this->getController()->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+         $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
     }
 

@@ -2787,7 +2787,8 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                         {
                             $conditiontoselect = "sqid = '{$abrow['qid']}' AND qid={$arow['qid']} AND scale_id=0 AND language='{$clang->langcode}'";
                             $data = Defaultvalues::model()->find($conditiontoselect);
-                            $data  = $data->attributes;
+                            if(isset($data))
+                                $data  = $data->attributes;
                             if(isset($data['defaultvalue']))
                                 $fieldmap[$fieldname]['defaultvalue']=$data['defaultvalue'];
 
@@ -2889,8 +2890,8 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     global $globalfieldmap, $aDuplicateQIDs;
     static $timingsFieldMap;
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
+    
+    $clang = Yii::app()->lang;
 
     $surveyid=sanitize_int($surveyid);
     //checks to see if fieldmap has already been built for this page.
@@ -3113,7 +3114,7 @@ function buildLabelSetCheckSumArray()
         $thisset="";
         $query2 = "SELECT code, title, sortorder, language, assessment_value
         	FROM {{labels}}
-        	WHERE lid={$row['lid']}
+        WHERE lid={$row['lid']}
        	 ORDER BY language, sortorder, code";
 		$result2 = Yii::app()->db->createCommand($query2)->query();
         foreach ($result2->readAll() as $row2)
@@ -3209,7 +3210,7 @@ function getQuestionAttributeValues($qid, $type='')
  *  Return a sql statement for finding LIKE named tables
  *  Be aware that you have to escape underscor chars by using a backslash
  * otherwise you might get table names returned you don't want
- *
+*
  * @param mixed $table
  */
 function db_select_tables_like($table)
@@ -5161,8 +5162,8 @@ function convertCsvreturn2return($string)
 */
 function tableExists($tablename)
 {
-    $CI =& get_instance();
-    return $CI->db->table_exists($tablename);
+    
+    return Yii::app()->db->schema->getTable($tablename);
 }
 
 // Returns false if the survey is anonymous,
@@ -7258,12 +7259,12 @@ function FixLanguageConsistency($sid, $availlangs='')
                 if ($gresult->getRowCount() < 1)
                 {
                     $data = array(
-	                    'gid' => $group['gid'],
-	                    'sid' => $group['sid'],
-	                    'group_name' => $group['group_name'],
-	                    'group_order' => $group['group_order'],
-	                    'description' => $group['description'],
-	                    'language' => $lang
+                    'gid' => $group['gid'],
+                    'sid' => $group['sid'],
+                    'group_name' => $group['group_name'],
+                    'group_order' => $group['group_order'],
+                    'description' => $group['description'],
+                    'language' => $lang
 
                     );
                     Yii::app()->db->createCommand()->insert('{{groups}}', $data);
@@ -7291,19 +7292,19 @@ function FixLanguageConsistency($sid, $availlangs='')
                 {
                     db_switchIDInsert('questions',true);
                     $data = array(
-                   		 'qid' => $question['qid'],
-	                    'sid' => $question['sid'],
-	                    'gid' => $question['gid'],
-	                    'type' => $question['type'],
-	                    'question' => $question['question'],
-	                    'preg' => $question['preg'],
-	                    'help' => $question['help'],
-	                    'other' => $question['other'],
-	                    'mandatory' => $question['mandatory'],
-	                    'question_order' => $question['question_order'],
-	                    'language' => $lang,
-	                    'scale_id' => $question['scale_id'],
-	                    'parent_qid' => $question['parent_qid']
+                    'qid' => $question['qid'],
+                    'sid' => $question['sid'],
+                    'gid' => $question['gid'],
+                    'type' => $question['type'],
+                    'question' => $question['question'],
+                    'preg' => $question['preg'],
+                    'help' => $question['help'],
+                    'other' => $question['other'],
+                    'mandatory' => $question['mandatory'],
+                    'question_order' => $question['question_order'],
+                    'language' => $lang,
+                    'scale_id' => $question['scale_id'],
+                    'parent_qid' => $question['parent_qid']
                     );
                 	Yii::app()->db->createCommand()->insert('{{questions}}', $data);
                     //$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,question_order,language, scale_id,parent_qid) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['question_order']}','{$lang}',{$question['scale_id']},{$question['parent_qid']})";
@@ -7331,13 +7332,13 @@ function FixLanguageConsistency($sid, $availlangs='')
                     if ($gresult->getRowCount() < 1)
                     {
                         $data = array(
-	                        'qid' => $answer['qid'],
-	                        'code' => $answer['code'],
-	                        'answer' => $answer['answer'],
-	                        'scale_id' => $answer['scale_id'],
-	                        'sortorder' => $answer['sortorder'],
-	                        'language' => $lang,
-	                        'assessment_value' =>  $answer['assessment_value']
+                        'qid' => $answer['qid'],
+                        'code' => $answer['code'],
+                        'answer' => $answer['answer'],
+                        'scale_id' => $answer['scale_id'],
+                        'sortorder' => $answer['sortorder'],
+                        'language' => $lang,
+                        'assessment_value' =>  $answer['assessment_value']
                         );
                         Yii::app()->db->createCommand()->insert('{{answers}}', $data);
                     }
@@ -7361,15 +7362,15 @@ function FixLanguageConsistency($sid, $availlangs='')
                 if ($gresult->getRowCount() < 1)
                 {
                     $data = array(
-	                    'id' => $assessment['id'],
-	                    'sid' => $assessment['sid'],
-	                    'scope' => $assessment['scope'],
-	                    'gid' => $assessment['gid'],
-	                    'name' => $assessment['name'],
-	                    'minimum' => $assessment['minimum'],
-	                    'maximum' => $assessment['maximum'],
-	                    'message' => $assessment['message'],
-	                    'language' => $lang
+                    'id' => $assessment['id'],
+                    'sid' => $assessment['sid'],
+                    'scope' => $assessment['scope'],
+                    'gid' => $assessment['gid'],
+                    'name' => $assessment['name'],
+                    'minimum' => $assessment['minimum'],
+                    'maximum' => $assessment['maximum'],
+                    'message' => $assessment['message'],
+                    'language' => $lang
                     );
                     Yii::app()->db->createCommand()->insert('{{assessments}}', $data);
                 }
