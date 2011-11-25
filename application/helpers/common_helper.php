@@ -1231,28 +1231,25 @@ function getNotificationlist($notificationcode)
 */
 function getgrouplist($gid,$surveyid)
 {
-    $CI =& get_instance();
-    $clang = $CI->limesurvey_lang;
-    $surveyid = $CI->config->item('sid');
+    $clang = Yii::app()->lang;
     $groupselecter="";
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
     if (!$surveyid) {$surveyid=returnglobal('sid');}
-
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups_model');
-    //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND  language='{$s_lang}'  ORDER BY group_order";
-    $gidresult = $CI->groups_model->getGroupAndID($surveyid,$s_lang) or safe_die("Couldn't get group list in common_helper.php<br />"); //Checked
-    foreach ($gidresult->result_array() as $gv)
+
+    $gidquery = "SELECT gid, group_name FROM {{groups}} WHERE sid='{$surveyid}' AND  language='{$s_lang}' ORDER BY group_order";
+    $gidresult = Yii::app()->db->createCommand($gidquery)->query(); //Checked
+    foreach ($gidresult->readAll() as $gv)
     {
         $groupselecter .= "<option";
         if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-        $groupselecter .= " value='".$CI->config->item('scriptname')."?sid=$surveyid&amp;gid=".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
+        $groupselecter .= " value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid=".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
     }
     if ($groupselecter)
     {
         if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
-        else {$groupselecter .= "<option value='".$CI->config->item('scriptname')."?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
+        else {$groupselecter .= "<option value='".Yii::app()->getConfig('scriptname')."?sid=$surveyid&amp;gid='>".$clang->gT("None")."</option>\n";}
     }
     return $groupselecter;
 }
@@ -1643,13 +1640,19 @@ function fixsortorderAnswers($qid,$surveyid=null) //Function rewrites the sortor
 */
 function fixsortorderQuestions($groupid, $surveyid) //Function rewrites the sortorder for questions
 {
-    $CI =& get_instance();
     $gid = sanitize_int($groupid);
     $surveyid = sanitize_int($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
 
-    $CI->load->model('questions_model');
-    $CI->questions_model->updateQuestionOrder($gid,$baselang);
+    $questions = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $baselang));
+	$p = 0;
+	foreach ($questions as $question)
+	{
+		$question->question_order = $p;
+		$question->save();
+		$p++;
+	}
+
     //$cdresult = db_execute_assoc("SELECT qid FROM ".db_table_name('questions')." WHERE gid='{$gid}' and language='{$baselang}' ORDER BY question_order, title ASC");      //Checked
     //$position=0;
     //while ($cdrow=$cdresult->FetchRow())
@@ -1685,10 +1688,15 @@ function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortor
 
 function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
 {
-    $CI = &get_instance();
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('groups_model');
-    $CI->groups_model->updateGroupOrder($surveyid,$baselang);
+	$groups = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $baselang));
+	$p = 0;
+	foreach ($groups as $group)
+	{
+		$group->group_order = $p;
+		$group->save();
+		$p++;
+	}
     //$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND language='{$baselang}' ORDER BY group_order, group_name");
     //$position=0;
     //while ($cdrow=$cdresult->FetchRow())
@@ -3093,27 +3101,22 @@ function SetSurveyLanguage($surveyid, $language)
 
 function buildLabelSetCheckSumArray()
 {
-    $CI = &get_instance();
     // BUILD CHECKSUMS FOR ALL EXISTING LABEL SETS
-    $CI->load->model('labelsets_model');
 
     /**$query = "SELECT lid
     FROM ".db_table_name('labelsets')."
     ORDER BY lid"; */
-    $result = $CI->labelsets_model->getLID();//($query) or safe_die("safe_died collecting labelset ids<br />$query<br />");  //Checked)
+    $result = Yii::app()->db->createCommand('SELECT lid FROM {{labelsets}} ORDER BY lid')->query();//($query) or safe_die("safe_died collecting labelset ids<br />$query<br />");  //Checked)
     $csarray=array();
-    $CI->load->model('labels_model');
-    foreach($result->result_array() as $row)
+    foreach($result->readAll() as $row)
     {
         $thisset="";
-
-
-        /**$query2 = "SELECT code, title, sortorder, language, assessment_value
-        FROM ".db_table_name('labels')."
-        WHERE lid={$row['lid']}
-        ORDER BY language, sortorder, code"; */
-        $result2 = $CI->labels_model->getLabelCodeInfo($row['lid']) or show_error("safe_died querying labelset ".$row['lid']."<br />"); //Checked
-        foreach ($result2->result_array() as $row2)
+        $query2 = "SELECT code, title, sortorder, language, assessment_value
+        	FROM {{labels}}
+        	WHERE lid={$row['lid']}
+       	 ORDER BY language, sortorder, code";
+		$result2 = Yii::app()->db->createCommand($query2)->query();
+        foreach ($result2->readAll() as $row2)
         {
             $thisset .= implode('.', $row2);
         } // while
@@ -5294,18 +5297,16 @@ function getNextCode($sourcecode)
 */
 function translink($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
-    $CI = &get_instance();
-
     if ($sType == 'survey')
     {
         $sPattern = "([^'\"]*)/upload/surveys/{$iOldSurveyID}/";
-        $sReplace = $CI->config->item("relativeurl")."/upload/surveys/{$iNewSurveyID}/";
+        $sReplace = Yii::app()->getConfig("relativeurl")."/upload/surveys/{$iNewSurveyID}/";
         return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
     }
     elseif ($sType == 'label')
     {
         $pattern = "([^'\"]*)/upload/labels/{$iOldSurveyID}/";
-        $replace = $CI->config->item("relativeurl")."/upload/labels/{$iNewSurveyID}/";
+        $replace = Yii::app()->getConfig("relativeurl")."/upload/labels/{$iNewSurveyID}/";
         return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
     }
     else // unkown type
@@ -7231,9 +7232,7 @@ function CleanLanguagesFromSurvey($sid, $availlangs)
 */
 function FixLanguageConsistency($sid, $availlangs='')
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     if (trim($availlangs)!='')
     {
         $availlangs=sanitize_languagecodeS($availlangs);
@@ -7245,34 +7244,31 @@ function FixLanguageConsistency($sid, $availlangs='')
 
     $baselang = GetBaseLanguageFromSurveyID($sid);
     $sid=sanitize_int($sid);
-    $query = "SELECT * FROM ".$CI->db->dbprefix."groups WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
-    $result = db_execute_assoc($query); //or safe_die($connect->ErrorMsg());  //Checked
-    if ($result->num_rows() > 0)
+    $query = "SELECT * FROM {{groups}} WHERE sid='{$sid}' AND language='{$baselang}'  ORDER BY group_order";
+    $result = Yii::app()->db->createCommand($query)->query(); //or safe_die($connect->ErrorMsg());  //Checked
+    if ($result->getRowCount() > 0)
     {
-        $CI->load->model('groups_model');
-        foreach($result->result_array() as $group)
+        foreach($result->readAll() as $group)
         {
             foreach ($langs as $lang)
             {
 
-                $query = "SELECT gid FROM ".$CI->db->dbprefix."groups WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
-                $gresult = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
-                if ($gresult->num_rows() < 1)
+                $query = "SELECT gid FROM {{groups}} WHERE sid='{$sid}' AND gid='{$group['gid']}' AND language='{$lang}'";
+                $gresult = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg()); //Checked
+                if ($gresult->getRowCount() < 1)
                 {
-                    db_switchIDInsert('groups',true);
                     $data = array(
-                    'gid' => $group['gid'],
-                    'sid' => $group['sid'],
-                    'group_name' => $group['group_name'],
-                    'group_order' => $group['group_order'],
-                    'description' => $group['description'],
-                    'language' => $lang
+	                    'gid' => $group['gid'],
+	                    'sid' => $group['sid'],
+	                    'group_name' => $group['group_name'],
+	                    'group_order' => $group['group_order'],
+	                    'description' => $group['description'],
+	                    'language' => $lang
 
                     );
-                    $CI->groups_model->insertRecords($data);
+                    Yii::app()->db->createCommand()->insert('{{groups}}', $data);
                     //$query = "INSERT INTO ".$CI->db->dbprefix."groups (gid,sid,group_name,group_order,description,language) VALUES('{$group['gid']}','{$group['sid']}',".db_quoteall($group['group_name']).",'{$group['group_order']}',".db_quoteall($group['description']).",'{$lang}')";
                     //db_execute_assoc($query); //$connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
-                    db_switchIDInsert('groups',false);
                 }
             }
             reset($langs);
@@ -7280,40 +7276,37 @@ function FixLanguageConsistency($sid, $availlangs='')
     }
 
     $quests = array();
-    $query = "SELECT * FROM ".$CI->db->dbprefix."questions WHERE sid='{$sid}' AND language='{$baselang}' ORDER BY question_order";
-    $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());  //Checked
-    if ($result->num_rows() > 0)
+    $query = "SELECT * FROM {{questions}} WHERE sid='{$sid}' AND language='{$baselang}' ORDER BY question_order";
+    $result = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg());  //Checked
+    if ($result->getRowCount() > 0)
     {
-        $CI->load->model('questions_model');
-        foreach($result->result_array() as $question)
+        foreach($result->readAll() as $question)
         {
             array_push($quests,$question['qid']);
             foreach ($langs as $lang)
             {
-                $query = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}'";
-                $gresult = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());   //Checked
-                if ($gresult->num_rows() < 1)
+                $query = "SELECT qid FROM {{questions}} WHERE sid='{$sid}' AND qid='{$question['qid']}' AND language='{$lang}'";
+                $gresult = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg());   //Checked
+                if ($gresult->getRowCount() < 1)
                 {
                     db_switchIDInsert('questions',true);
                     $data = array(
-                    'qid' => $question['qid'],
-                    'sid' => $question['sid'],
-                    'gid' => $question['gid'],
-                    'type' => $question['type'],
-                    'question' => $question['question'],
-                    'preg' => $question['preg'],
-                    'help' => $question['help'],
-                    'other' => $question['other'],
-                    'mandatory' => $question['mandatory'],
-                    'question_order' => $question['question_order'],
-                    'language' => $lang,
-                    'scale_id' => $question['scale_id'],
-                    'parent_qid' => $question['parent_qid']
-
+                   		 'qid' => $question['qid'],
+	                    'sid' => $question['sid'],
+	                    'gid' => $question['gid'],
+	                    'type' => $question['type'],
+	                    'question' => $question['question'],
+	                    'preg' => $question['preg'],
+	                    'help' => $question['help'],
+	                    'other' => $question['other'],
+	                    'mandatory' => $question['mandatory'],
+	                    'question_order' => $question['question_order'],
+	                    'language' => $lang,
+	                    'scale_id' => $question['scale_id'],
+	                    'parent_qid' => $question['parent_qid']
                     );
+                	Yii::app()->db->createCommand()->insert('{{questions}}', $data);
                     //$query = "INSERT INTO ".db_table_name('questions')." (qid,sid,gid,type,title,question,preg,help,other,mandatory,question_order,language, scale_id,parent_qid) VALUES('{$question['qid']}','{$question['sid']}','{$question['gid']}','{$question['type']}',".db_quoteall($question['title']).",".db_quoteall($question['question']).",".db_quoteall($question['preg']).",".db_quoteall($question['help']).",'{$question['other']}','{$question['mandatory']}','{$question['question_order']}','{$lang}',{$question['scale_id']},{$question['parent_qid']})";
-                    $CI->questions_model->insertRecords($data); //$connect->Execute($query) or safe_die($query."<br />".$connect->ErrorMsg());   //Checked)
-                    db_switchIDInsert('questions',false);
                 }
             }
             reset($langs);
@@ -7325,34 +7318,28 @@ function FixLanguageConsistency($sid, $availlangs='')
             $sqlans .= " OR qid = '".$quest."' ";
         }
 
-        $query = "SELECT * FROM ".$CI->db->dbprefix."answers WHERE language='{$baselang}' and (".trim($sqlans,' OR').") ORDER BY qid, code";
-        $result = db_execute_assoc($query) ;//or safe_die($connect->ErrorMsg()); //Checked
-        if ($result->num_rows() > 0)
+        $query = "SELECT * FROM {{answers}} WHERE language='{$baselang}' and (".trim($sqlans,' OR').") ORDER BY qid, code";
+        $result = Yii::app()->db->createCommand($query)->query() ;//or safe_die($connect->ErrorMsg()); //Checked
+        if ($result->getRowCount() > 0)
         {
-            $CI->load->model('answers_model');
-            foreach($result->result_array() as $answer)
+            foreach($result->readAll() as $answer)
             {
                 foreach ($langs as $lang)
                 {
-                    $query = "SELECT qid FROM ".$CI->db->dbprefix."answers WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}'";
-                    $gresult = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());  //Checked
-                    if ($gresult->num_rows() < 1)
+                    $query = "SELECT qid FROM {{answers}} WHERE code='{$answer['code']}' AND qid='{$answer['qid']}' AND language='{$lang}'";
+                    $gresult = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg());  //Checked
+                    if ($gresult->getRowCount() < 1)
                     {
-                        db_switchIDInsert('answers',true);
                         $data = array(
-                        'qid' => $answer['qid'],
-                        'code' => $answer['code'],
-                        'answer' => $answer['answer'],
-                        'scale_id' => $answer['scale_id'],
-                        'sortorder' => $answer['sortorder'],
-                        'language' => $lang,
-                        'assessment_value' =>  $answer['assessment_value']
-
-
+	                        'qid' => $answer['qid'],
+	                        'code' => $answer['code'],
+	                        'answer' => $answer['answer'],
+	                        'scale_id' => $answer['scale_id'],
+	                        'sortorder' => $answer['sortorder'],
+	                        'language' => $lang,
+	                        'assessment_value' =>  $answer['assessment_value']
                         );
-                        //$query = "INSERT INTO ".db_table_name('answers')." (qid,code,answer,scale_id,sortorder,language,assessment_value) VALUES('{$answer['qid']}',".db_quoteall($answer['code']).",".db_quoteall($answer['answer']).",{$answer['scale_id']},'{$answer['sortorder']}','{$lang}',{$answer['assessment_value']})";
-                        $CI->answers_model->insertRecords($data);//$connect->Execute($query) or safe_die($connect->ErrorMsg()); //Checked
-                        db_switchIDInsert('answers',false);
+                        Yii::app()->db->createCommand()->insert('{{answers}}', $data);
                     }
                 }
                 reset($langs);
@@ -7361,35 +7348,30 @@ function FixLanguageConsistency($sid, $availlangs='')
     }
 
 
-    $query = "SELECT * FROM ".$CI->db->dbprefix."assessments WHERE sid='{$sid}' AND language='{$baselang}'";
-    $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());  //Checked
-    if ($result->num_rows() > 0)
+    $query = "SELECT * FROM {{assessments}} WHERE sid='{$sid}' AND language='{$baselang}'";
+    $result = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg());  //Checked
+    if ($result->getRowCount() > 0)
     {
-        $CI->load->model('assessments_model');
-        foreach($result->result_array() as $assessment)
+        foreach($result->readAll() as $assessment)
         {
             foreach ($langs as $lang)
             {
-                $query = "SELECT id FROM ".$CI->db->dbprefix."assessments WHERE sid='{$sid}' AND id='{$assessment['id']}' AND language='{$lang}'";
-                $gresult = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
-                if ($gresult->RecordCount() < 1)
+                $query = "SELECT id FROM {{assessments}} WHERE sid='{$sid}' AND id='{$assessment['id']}' AND language='{$lang}'";
+                $gresult = Yii::app()->db->createCommand($query)->query(); // or safe_die($connect->ErrorMsg()); //Checked
+                if ($gresult->getRowCount() < 1)
                 {
-                    db_switchIDInsert('assessments',true);
                     $data = array(
-                    'id' => $assessment['id'],
-                    'sid' => $assessment['sid'],
-                    'scope' => $assessment['scope'],
-                    'gid' => $assessment['gid'],
-                    'name' => $assessment['name'],
-                    'minimum' => $assessment['minimum'],
-                    'maximum' => $assessment['maximum'],
-                    'message' => $assessment['message'],
-                    'language' => $lang
+	                    'id' => $assessment['id'],
+	                    'sid' => $assessment['sid'],
+	                    'scope' => $assessment['scope'],
+	                    'gid' => $assessment['gid'],
+	                    'name' => $assessment['name'],
+	                    'minimum' => $assessment['minimum'],
+	                    'maximum' => $assessment['maximum'],
+	                    'message' => $assessment['message'],
+	                    'language' => $lang
                     );
-                    //$query = "INSERT INTO ".db_table_name('assessments')." (id,sid,scope,gid,name,minimum,maximum,message,language) "
-                    //."VALUES('{$assessment['id']}','{$assessment['sid']}',".db_quoteall($assessment['scope']).",".db_quoteall($assessment['gid']).",".db_quoteall($assessment['name']).",".db_quoteall($assessment['minimum']).",".db_quoteall($assessment['maximum']).",".db_quoteall($assessment['message']).",'{$lang}')";
-                    $CI->assessments_model->insertRecords($data); //$connect->Execute($query) or safe_die($connect->ErrorMsg());  //Checked
-                    db_switchIDInsert('assessments',false);
+                    Yii::app()->db->createCommand()->insert('{{assessments}}', $data);
                 }
             }
             reset($langs);
@@ -8150,7 +8132,6 @@ function get_dbtableusage($surveyid){
 */
 function  bDoesImportarraySupportsLanguage($csvarray,$idkeysarray,$langfieldnum,$langcode, $hasheader = false)
 {
-    $CI =& get_instance();
     // An array with one row per object id and langsupport status as value
     $objlangsupportarray=Array();
     if ($hasheader === true)
@@ -8166,7 +8147,7 @@ function  bDoesImportarraySupportsLanguage($csvarray,$idkeysarray,$langfieldnum,
         {
             $rowid .= $rowcontents[$idfieldnum]."-";
         }
-        $rowlangarray = explode (" ", $rowcontents[$langfieldnum]);
+        $rowlangarray = explode (" ", @$rowcontents[$langfieldnum]);
         if (!isset($objlangsupportarray[$rowid]))
         {
             if (array_search($langcode,$rowlangarray)!== false)

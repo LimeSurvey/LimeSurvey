@@ -1,7 +1,7 @@
-<?php echo PrepareEditorScript();?>
+<?php echo PrepareEditorScript(false, $this);?>
 
 <div class='header ui-widget-header'><?php $clang->eT("Edit Group"); ?></div>
-<form name='frmeditgroup' id='frmeditgroup' action='<?php echo site_url("admin/questiongroup/update/".$gid); ?>' class='form30' method='post'>
+<form name='frmeditgroup' id='frmeditgroup' action='<?php echo $this->createUrl("admin/questiongroup/sa/update/gid/".$gid); ?>' class='form30' method='post'>
     <div id='tabs'>
         <ul>
             <?php foreach ($tabtitles as $i=>$eachtitle){?>

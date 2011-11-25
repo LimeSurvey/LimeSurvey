@@ -1,4 +1,4 @@
-<?php echo PrepareEditorScript();?>
+<?php echo PrepareEditorScript(false, $this);?>
 <div class='header ui-widget-header'><?php echo $clang->gT("Add question group"); ?></div>
 <div id='tabs'><ul>
     <?php foreach ($grplangs as $grouplang)
@@ -16,7 +16,7 @@
 
 
 
-    <form action='<?php echo site_url("admin/questiongroup/insert/".$surveyid); ?>' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=" if (1==0
+    <form action='<?php echo $this->createUrl("admin/questiongroup/sa/insert/surveyid/".$surveyid); ?>' class='form30' id='newquestiongroup' name='newquestiongroup' method='post' onsubmit=" if (1==0
 
     <?php foreach ($grplangs as $grouplang)
     { ?>
@@ -51,7 +51,7 @@
     <?php if (bHasSurveyPermission($surveyid,'surveycontent','import'))
     { ?>
         <div id="import">
-        <form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='<?php echo site_url('admin/questiongroup/import'); ?>' method='post' onsubmit='return validatefilename(this,"<?php echo $clang->gT('Please select a file to import!','js'); ?>");'>
+        <form enctype='multipart/form-data' class='form30' id='importgroup' name='importgroup' action='<?php echo $this->createUrl('admin/questiongroup/sa/import'); ?>' method='post' onsubmit='return validatefilename(this,"<?php echo $clang->gT('Please select a file to import!','js'); ?>");'>
         <ul>
         <li>
         <label for='the_file'><?php echo $clang->gT("Select question group file (*.lsg/*.csv):"); ?></label>

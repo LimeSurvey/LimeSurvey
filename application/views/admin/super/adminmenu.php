@@ -85,7 +85,7 @@
 	    <?php } ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
         <?php
-        if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANE'] == 1)
+        if(Yii::app()->session['USER_RIGHT_PARTICIPANT_PANEL'] == 1)
 		{ 	 ?>
             <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/participants");?>', '_top')" title="<?php echo $clang->gTview("Participant panel");?>" >
 	        <img src='<?php echo Yii::app()->getConfig('imageurl');?>/tokens.png' name='participantpanel' alt='<?php echo $clang->gT("Participant panel");?>' width='40' height='40'/></a>

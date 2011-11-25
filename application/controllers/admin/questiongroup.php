@@ -22,17 +22,28 @@
 * @version $Id: questiongroup.php 11328 2011-11-04 20:46:49Z tmswhite $
 * @access public
 */
-class questiongroup extends Survey_Common_Controller {
+class questiongroup extends Survey_Common_Action {
 
     /**
-    * questiongroup::__construct()
-    * Constructor
-    * @return
-    */
-    function __construct()
-    {
-        parent::__construct();
-    }
+     * Eoutes to the current sub-question
+     *
+     * @access public
+     * @param string $sa
+     * @return void
+     */
+	public function run($sa)
+	{
+		if ($sa == 'add')
+			$this->route('add', array('surveyid'));
+		elseif ($sa == 'insert')
+			$this->route('insert', array('surveyid'));
+		elseif ($sa == 'edit')
+			$this->route('edit', array('surveyid', 'gid'));
+		elseif ($sa == 'update')
+			$this->route('update', array('gid'));
+		elseif ($sa == 'import')
+			$this->route('import', array());
+	}
 
     /**
     * questiongroup::import()
@@ -41,21 +52,22 @@ class questiongroup extends Survey_Common_Controller {
     */
     function import()
     {
-        $action = $this->input->post('action');
-        $surveyid = $this->input->post('sid');
-        $clang = $this->limesurvey_lang;
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-        self::_getAdminHeader();
-        self::_showadminmenu();
-        self::_surveybar($surveyid,NULL);
-        self::_surveysummary($surveyid,"importgroup");
+        $action = $_POST['action'];
+        $surveyid = $_POST['sid'];
+        $clang = $this->controller->lang;
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+        $this->controller->_getAdminHeader();
+        $this->controller->_showadminmenu();
+        $this->_surveybar($surveyid,NULL);
+        $this->_surveysummary($surveyid,"importgroup");
+
         if ($action == 'importgroup')
         {
             $importgroup = "<div class='header ui-widget-header'>".$clang->gT("Import question group")."</div>\n";
             $importgroup .= "<div class='messagebox ui-corner-all'>\n";
 
-            $sFullFilepath = $this->config->item('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
+            $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
             $aPathInfo = pathinfo($sFullFilepath);
             $sExtension = $aPathInfo['extension'];
 
@@ -78,13 +90,15 @@ class questiongroup extends Survey_Common_Controller {
             {
                 $importgroup .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
                 $importgroup .= $fatalerror."<br /><br />\n";
-                $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" /><br /><br />\n";
+                $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('" . Yii::app()->baseUrl . "', '_top')\" /><br /><br />\n";
                 $importgroup .= "</div>\n";
                 @unlink($sFullFilepath);
                 show_error($importgroup);
                 return;
             }
-            $this->load->helper('admin/import');
+
+            Yii::app()->loadHelper('admin/import');
+
             // IF WE GOT THIS FAR, THEN THE FILE HAS BEEN UPLOADED SUCCESFULLY
             $importgroup .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n"
             .$clang->gT("File upload succeeded.")."<br /><br />\n"
@@ -104,10 +118,10 @@ class questiongroup extends Survey_Common_Controller {
             {
                 $importgroup .= "<div class='warningheader'>".$clang->gT("Error")."</div><br />\n";
                 $importgroup .= $aImportResults['fatalerror']."<br /><br />\n";
-                $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('$scriptname', '_top')\" />\n";
+                $importgroup .= "<input type='submit' value='".$clang->gT("Main Admin Screen")."' onclick=\"window.open('" . Yii::app()->baseUrl . "', '_top')\" />\n";
                 $importgroup .=  "</div>\n";
                 unlink($sFullFilepath);
-                show_error($importgroup);
+                $this->controller->_showMessageBox('fatal error', $importgroup);
                 return;
             }
 
@@ -126,21 +140,21 @@ class questiongroup extends Survey_Common_Controller {
             ."</ul>\n";
 
             $importgroup .= "<strong>".$clang->gT("Question group import is complete.")."</strong><br />&nbsp;\n";
-            $importgroup .= "<input type='submit' value='".$clang->gT("Go to question group")."' onclick=\"window.open('".site_url('admin/survey/view/'.$surveyid.'/'.$aImportResults['newgid'])."', '_top')\" />\n";
+            $importgroup .= "<input type='submit' value='".$clang->gT("Go to question group")."' onclick=\"window.open('".$this->controller->createUrl('admin/survey/view/'.$surveyid.'/'.$aImportResults['newgid'])."', '_top')\" />\n";
             $importgroup .= "</div><br />\n";
 
             unlink($sFullFilepath);
 
             $data['display'] = $importgroup;
-            $this->load->view('survey_view',$data);
+            $this->getController()->render('/survey_view',$data);
             // TMSW Conditions->Relevance:  call LEM->ConvertConditionsToRelevance() after import
 
 
 
         }
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
 
 
@@ -153,21 +167,21 @@ class questiongroup extends Survey_Common_Controller {
     {
         $surveyid = sanitize_int($surveyid);
 
-        if(bHasSurveyPermission($surveyid,'surveycontent','read'))
+        if (bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
             $action = "addgroup";//$this->input->post('action');
-            $clang = $this->limesurvey_lang;
+            $clang = $this->controller->lang;
 
-            $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-            $this->config->set_item("css_admin_includes", $css_admin_includes);
-            self::_getAdminHeader();
-            self::_showadminmenu();
-            self::_surveybar($surveyid);
-            self::_surveysummary($surveyid,"addgroup");
+            $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+            Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+            $this->getController()->_getAdminHeader();
+            $this->getController()->_showadminmenu();
+            $this->_surveybar($surveyid);
+            $this->_surveysummary($surveyid, "addgroup");
             if ($action == "addgroup")
             {
-                $this->load->helper('admin/htmleditor');
-                $this->load->helper('surveytranslator');
+                Yii::app()->loadHelper('admin/htmleditor');
+                Yii::app()->loadHelper('surveytranslator');
                 $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
                 $grplangs[] = $baselang;
@@ -177,15 +191,14 @@ class questiongroup extends Survey_Common_Controller {
                 $data['surveyid'] = $surveyid;
                 $data['action'] = $action;
                 $data['grplangs'] = $grplangs;
-                $this->load->view('admin/survey/QuestionGroups/addGroup_view',$data);
+            	$data['baselang'] = $baselang;
+                $this->getController()->render('/admin/survey/QuestionGroups/addGroup_view',$data);
             }
 
-            self::_loadEndScripts();
+            $this->getController()->_loadEndScripts();
 
-            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
         }
-
-
     }
 
 
@@ -198,16 +211,15 @@ class questiongroup extends Survey_Common_Controller {
     {
         if (bHasSurveyPermission($surveyid, 'surveycontent','create'))
         {
+            Yii::app()->loadHelper('surveytranslator');
 
-            $this->load->helper('surveytranslator');
-            $this->load->helper('database');
             $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             $grplangs[] = $baselang;
             $errorstring = '';
             foreach ($grplangs as $grouplang)
             {
-                if (!$this->input->post('group_name_'.$grouplang)) { $errorstring.= GetLanguageNameFromCode($grouplang,false)."\\n";}
+                if (empty($_POST['group_name_'.$grouplang])) { $errorstring.= GetLanguageNameFromCode($grouplang,false)."\\n";}
             }
             if ($errorstring!='')
             {
@@ -220,19 +232,11 @@ class questiongroup extends Survey_Common_Controller {
                 foreach ($grplangs as $grouplang)
                 {
                     //Clean XSS
-                    $group_name = $this->input->post('group_name_'.$grouplang);
-                    $group_description = $this->input->post('description_'.$grouplang);
-                    if ($this->config->item('filterxsshtml'))
-                    {
-                        $group_name=$this->security->xss_clean($group_name);
-                        $group_description=$this->security->xss_clean($group_description);
-                    }
-                    else
-                    {
-                        $group_name = html_entity_decode($group_name, ENT_QUOTES, "UTF-8");
-                        $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
-                    }
+                    $group_name = $_POST['group_name_'.$grouplang];
+                    $group_description = $_POST['description_'.$grouplang];
 
+                    $group_name = html_entity_decode($group_name, ENT_QUOTES, "UTF-8");
+                    $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
 
                     // Fix bug with FCKEditor saving strange BR types
                     $group_name=fix_FCKeditor_text($group_name);
@@ -242,37 +246,44 @@ class questiongroup extends Survey_Common_Controller {
                     if ($first)
                     {
                         $data = array (
-                        'sid' => $surveyid,
-                        'group_name' => $group_name,
-                        'description' => $group_description,
-                        'group_order' => getMaxgrouporder($surveyid),
-                        'language' => $grouplang,
-                        'randomization_group' =>$this->input->post('randomization_group')
+	                        'sid' => $surveyid,
+	                        'group_name' => $group_name,
+	                        'description' => $group_description,
+	                        'group_order' => getMaxgrouporder($surveyid),
+	                        'language' => $grouplang,
+	                        'randomization_group' => $_POST['randomization_group'],
                         );
-                        $this->load->model('groups_model');
 
-                        $result = $this->groups_model->insertRecords($data);
-                        $groupid=$this->db->insert_id();
+                    	$group = new Groups;
+                    	foreach ($data as $k => $v)
+                    		$group->$k = $v;
+                    	$result = $group->save();
+                        $groupid = Yii::app()->db->getLastInsertID();
                         $first=false;
 
                     }
                     else{
-                        db_switchIDInsert('groups',true);
+                        //db_switchIDInsert('groups',true);
                         $data = array (
-                        'gid' => $groupid,
-                        'sid' => $surveyid,
-                        'group_name' => $group_name,
-                        'description' => $group_description,
-                        'group_order' => getMaxgrouporder($surveyid),
-                        'language' => $grouplang,
-                        'randomization_group' =>$this->input->post('randomization_group')
+	                        'gid' => $groupid,
+	                        'sid' => $surveyid,
+	                        'group_name' => $group_name,
+	                        'description' => $group_description,
+	                        'group_order' => getMaxgrouporder($surveyid),
+	                        'language' => $grouplang,
+	                        'randomization_group' =>$this->input->post('randomization_group')
                         );
-                        $result = $this->groups_model->insertRecords($data);
-                        db_switchIDInsert('groups',false);
+
+						$group = new Groups;
+                    	foreach ($data as $k => $v)
+                    		$group->$k = $v;
+                    	$group->save();
+
+                        //db_switchIDInsert('groups',false);
                     }
                     if (!$result)
                     {
-                        $databaseoutput .= $clang->gT("Error: The database reported an error while executing INSERT query in addgroup action in database.php:")."<br />\n";
+                        $databaseoutput .= $this->controller->lang->gT("Error: The database reported an error while executing INSERT query in addgroup action in database.php:")."<br />\n";
 
                         $databaseoutput .= "</body>\n</html>";
                         //exit;
@@ -280,10 +291,10 @@ class questiongroup extends Survey_Common_Controller {
                 }
                 // This line sets the newly inserted group as the new group
                 if (isset($groupid)){$gid=$groupid;}
-                $this->session->set_userdata('flashmessage', $this->limesurvey_lang->gT("New question group was saved."));
+                Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("New question group was saved.");
 
             }
-            redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid));
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid));
         }
     }
 
@@ -340,47 +351,43 @@ class questiongroup extends Survey_Common_Controller {
     * Load editing of a question group screen.
     * @return
     */
-    function edit($surveyid,$gid)
+    function edit($surveyid, $gid)
     {
-
-        $this->load->model('groups_model');
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
 
-        if(bHasSurveyPermission($surveyid,'surveycontent','read'))
+        if (bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
 
             $action = "editgroup";//$this->input->post('action');
-            $clang = $this->limesurvey_lang;
+            $clang = $this->controller->lang;
 
-            $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-            $this->config->set_item("css_admin_includes", $css_admin_includes);
-            self::_getAdminHeader();
-            self::_showadminmenu();
-            self::_surveybar($surveyid,$gid);
+            $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+            Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+            $this->controller->_getAdminHeader();
+            $this->controller->_showadminmenu();
+            $this->_surveybar($surveyid,$gid);
 
             if ($action == "editgroup")
             {
-
-                $this->load->helper('admin/htmleditor');
-                $this->load->helper('surveytranslator');
-                $this->load->helper('database');
+                Yii::app()->loadHelper('admin/htmleditor');
+                Yii::app()->loadHelper('surveytranslator');
 
                 $aAdditionalLanguages = GetAdditionalLanguagesFromSurveyID($surveyid);
                 $aBaseLanguage = GetBaseLanguageFromSurveyID($surveyid);
 
-                $aLanguages=array_merge(array($aBaseLanguage),$aAdditionalLanguages);
+                $aLanguages = array_merge(array($aBaseLanguage),$aAdditionalLanguages);
 
-                $grplangs=array_flip($aLanguages);
+                $grplangs = array_flip($aLanguages);
                 // Check out the intgrity of the language versions of this group
-                $egquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND gid=$gid";
-                $egresult = db_execute_assoc($egquery);
-                foreach ($egresult->result_array() as $esrow)
+                $egquery = "SELECT * FROM {{groups}} WHERE sid=$surveyid AND gid=$gid";
+                $egresult = Yii::app()->db->createCommand($egquery)->query();
+                foreach ($egresult->readAll() as $esrow)
                 {
                     if(!in_array($esrow['language'], $aLanguages)) // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
                     {
-                        $egquery = "DELETE FROM ".$this->db->dbprefix."groups WHERE sid='{$surveyid}' AND gid='{$gid}' AND language='".$esrow['language']."'";
-                        $egresultD = db_execute_assoc($egquery);
+                        $egquery = "DELETE FROM {{groups}} WHERE sid='{$surveyid}' AND gid='{$gid}' AND language='".$esrow['language']."'";
+                        $egresultD = Yii::app()->db->createCommand($egquery)->execute();
                     } else {
                         $grplangs[$esrow['language']] = 'exists';
                     }
@@ -393,14 +400,17 @@ class questiongroup extends Survey_Common_Controller {
                     if ($value != 'exists')
                     {
                         $basesettings['language']=$key;
-                        $this->groups_model->insertRecords($basesettings);
+                    	$group = new Groups;
+                    	foreach ($basesettings as $k => $v)
+                    		$group->$k = $v;
+                    	$group->save();
                     }
                 }
                 $first=true;
                 foreach ($aLanguages as $sLanguage)
                 {
-                    $oResult=$this->groups_model->getAllRecords(array('sid'=>$surveyid,'gid'=>$gid,'language'=>$sLanguage));
-                    $data['aGroupData'][$sLanguage]=$oResult->row_array();
+                    $oResult=Groups::model()->findByAttributes(array('sid'=>$surveyid,'gid'=>$gid,'language'=>$sLanguage));
+                    $data['aGroupData'][$sLanguage]=$oResult->attributes;
                     $aTabTitles[$sLanguage] = getLanguageNameFromCode($sLanguage,false);
                     if($first){
                         $aTabTitles[$sLanguage].= ' ('.$clang->gT("Base language").')';
@@ -416,61 +426,58 @@ class questiongroup extends Survey_Common_Controller {
                 $data['aBaseLanguage']=$aBaseLanguage;
 
 
-                $this->load->view('admin/survey/QuestionGroups/editGroup_view',$data);
+                $this->getController()->render('/admin/survey/QuestionGroups/editGroup_view',$data);
             }
         }
-        self::_loadEndScripts();
+        $this->controller->_loadEndScripts();
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
     }
 
     function update($gid)
     {
-        $gid= (int)$gid;
-        $this->load->model('groups_model');
+        $gid = (int) $gid;
 
-        $surveyid= $this->groups_model->getSurveyIDFromGroup($gid);
+    	$group = Groups::model()->findByAttributes(array('gid' => $gid));
+    	$surveyid = $group->sid;
+
         if (bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
-            $this->load->helper('surveytranslator');
-            $this->load->helper('database');
+            Yii::app()->loadHelper('surveytranslator');
 
             $grplangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
-            array_push($grplangs,$baselang);
+
+            array_push($grplangs, $baselang);
+
             foreach ($grplangs as $grplang)
             {
                 if (isset($grplang) && $grplang != "")
                 {
-                    $group_name = $this->input->post('group_name_'.$grplang);
-                    $group_description = $this->input->post('description_'.$grplang);
-                    if ($this->config->item('filterxsshtml'))
-                    {
-                        $group_name=$this->security->xss_clean($group_name);
-                        $group_description=$this->security->xss_clean($group_description);
-                    }
-                    else
-                    {
-                        $group_name = html_entity_decode($group_name, ENT_QUOTES, "UTF-8");
-                        $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
-                    }
+                    $group_name = $_POST['group_name_'.$grplang];
+                    $group_description = $_POST['description_' . $grplang];
+
+                    $group_name = html_entity_decode($group_name, ENT_QUOTES, "UTF-8");
+                    $group_description = html_entity_decode($group_description, ENT_QUOTES, "UTF-8");
 
                     // Fix bug with FCKEditor saving strange BR types
                     $group_name=fix_FCKeditor_text($group_name);
                     $group_description=fix_FCKeditor_text($group_description);
 
-                    $data = array (
-                    'group_name' => $group_name,
-                    'description' => $group_description,
-                    'randomization_group' => $this->input->post('randomization_group')
+                    $data = array(
+	                    'group_name' => $group_name,
+	                    'description' => $group_description,
+	                    'randomization_group' => $_POST['randomization_group'],
                     );
                     $condition = array (
-                    'gid' => $gid,
-                    'sid' => $surveyid,
-                    'language' => $grplang
+	                    'gid' => $gid,
+	                    'sid' => $surveyid,
+	                    'language' => $grplang
                     );
-                    $this->load->model('groups_model');
-                    $ugresult = $this->groups_model->update($data,$condition); //$connect->Execute($ugquery);  // Checked
+                    $group = Groups::model()->findByAttributes($condition);
+                	foreach ($data as $k => $v)
+                		$group->$k = $v;
+                	$ugresult = $group->save();
                     if ($ugresult)
                     {
                         $groupsummary = getgrouplist($gid,$surveyid);
@@ -482,8 +489,8 @@ class questiongroup extends Survey_Common_Controller {
                     }
                 }
             }
-            $this->session->set_userdata('flashmessage', $this->limesurvey_lang->gT("Question group successfully saved."));
-            redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid));
+            Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("Question group successfully saved.");
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid));
         }
     }
 
