@@ -48,6 +48,8 @@ class export extends Survey_Common_Action {
 			$this->route('showquexmlsurvey', array('surveyid', 'lang'));
 		elseif ($sa == 'exportspss')
 			$this->route('exportspss', array('sid', 'lang'));
+		elseif ($sa == 'exportr')
+			$this->route('exportr', array('sid', 'subaction'));
 	}
 
     function survey($action,$surveyid)
@@ -714,12 +716,12 @@ class export extends Survey_Common_Action {
     *
     * Optimization opportunities remain in the VALUE LABELS section, which runs a query / column
     */
-    function exportr($surveyi, $subaction = null)
+    function exportr($sid, $subaction = null)
     {
-        $surveyid = (int) $surveyi;
-        $dbprefix = $this->db->dbprefix;
-        $clang = $this->limesurvey_lang;
-        $_POST = $this->input->post();
+    	global $surveyid;
+        $surveyid = (int) $sid;
+        $clang = $this->controller->lang;
+
         $length_vallabel = '120'; // Set the max text length of Value Labels
         $length_data = '25500'; // Set the max text length of Text Data
         $length_varlabel = '25500'; // Set the max text length of Variable Labels
@@ -728,36 +730,36 @@ class export extends Survey_Common_Action {
 
         //for scale 1=nominal, 2=ordinal, 3=scale
         $typeMap = array(
-        '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
-        'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
-        'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
-        'F'=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'F'),
-        '1'=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'F'),
-        'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
-        'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
-        'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
-        'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
-        'D'=>Array('name'=>'Date','size'=>10,'SPSStype'=>'SDATE'),
-        'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
-        'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
-        'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
-        '!'=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'F'),
-        'W'=>Array('name'=>'List (Flexible Labels) (Dropdown)','size'=>1,'SPSStype'=>'F'),
-        'Z'=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'F'),
-        'L'=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'F'),
-        'O'=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'F'),
-        'T'=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
-        'K'=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'F'),
-        'M'=>Array('name'=>'Multiple choice','size'=>1,'SPSStype'=>'F'),
-        'P'=>Array('name'=>'Multiple choice with comments','size'=>1,'SPSStype'=>'F'),
-        'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
-        'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
-        'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
-        'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
-        'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
-        ':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
-        ';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
-        '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
+	        '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
+	        'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
+	        'A'=>Array('name'=>'Array (5 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
+	        'F'=>Array('name'=>'Array (Flexible Labels)','size'=>1,'SPSStype'=>'F'),
+	        '1'=>Array('name'=>'Array (Flexible Labels) Dual Scale','size'=>1,'SPSStype'=>'F'),
+	        'H'=>Array('name'=>'Array (Flexible Labels) by Column','size'=>1,'SPSStype'=>'F'),
+	        'E'=>Array('name'=>'Array (Increase, Same, Decrease)','size'=>1,'SPSStype'=>'F','Scale'=>2),
+	        'C'=>Array('name'=>'Array (Yes/No/Uncertain)','size'=>1,'SPSStype'=>'F'),
+	        'X'=>Array('name'=>'Boilerplate Question','size'=>1,'SPSStype'=>'A','hide'=>1),
+	        'D'=>Array('name'=>'Date','size'=>10,'SPSStype'=>'SDATE'),
+	        'G'=>Array('name'=>'Gender','size'=>1,'SPSStype'=>'F'),
+	        'U'=>Array('name'=>'Huge Free Text','size'=>1,'SPSStype'=>'A'),
+	        'I'=>Array('name'=>'Language Switch','size'=>1,'SPSStype'=>'A'),
+	        '!'=>Array('name'=>'List (Dropdown)','size'=>1,'SPSStype'=>'F'),
+	        'W'=>Array('name'=>'List (Flexible Labels) (Dropdown)','size'=>1,'SPSStype'=>'F'),
+	        'Z'=>Array('name'=>'List (Flexible Labels) (Radio)','size'=>1,'SPSStype'=>'F'),
+	        'L'=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'F'),
+	        'O'=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'F'),
+	        'T'=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
+	        'K'=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'F'),
+	        'M'=>Array('name'=>'Multiple choice','size'=>1,'SPSStype'=>'F'),
+	        'P'=>Array('name'=>'Multiple choice with comments','size'=>1,'SPSStype'=>'F'),
+	        'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
+	        'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
+	        'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
+	        'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
+	        'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
+	        ':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
+	        ';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
+	        '*'=>Array('name'=>'Equation','size'=>1,'SPSStype'=>'A'),
         );
 
         if (!isset($surveyid)) {$surveyid=returnglobal('sid');}
@@ -770,8 +772,8 @@ class export extends Survey_Common_Action {
 
         if  (!isset($subaction))
         {
-            self::_getAdminHeader();
-            self::_browsemenubar($surveyid, $clang->gT('Export results'));
+            $this->controller->_getAdminHeader();
+            $this->_browsemenubar($surveyid, $clang->gT('Export results'));
 
             $selecthide="";
             $selectshow="";
@@ -792,15 +794,16 @@ class export extends Survey_Common_Action {
             $data['selecthide'] = $selecthide;
             $data['selectshow'] = $selectshow;
             $data['filename'] = "survey_".$surveyid."_R_syntax_file.R";
-            $this->load->view("admin/export/r_view",$data);
-            self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        	$data['surveyid'] = $surveyid;
+            $this->controller->render("/admin/export/r_view",$data);
+            $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
         }
         else
         {
             // Get Base language:
             $language = GetBaseLanguageFromSurveyID($surveyid);
             $clang = new limesurvey_lang(array($language));
-            $this->load->helper("admin/exportresults");
+            Yii::app()->loadHelper("admin/exportresults");
         }
 
 
@@ -837,11 +840,12 @@ class export extends Survey_Common_Action {
             //Now get the query string with all fields to export
             $query = spss_getquery();
 
-            $result=db_execute_assoc($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg()); //Checked
-            $num_fields = count($result->row_array());
+            $result=Yii::app()->db->createCommand($query)->query(); //Checked
+        	$result = $result->readAll();
+            $num_fields = isset($result[0]) ? count($result[0]) : array();
 
             //Now we check if we need to adjust the size of the field or the type of the field
-            foreach ($result->result_array() as $row) {
+            foreach ($result as $row) {
                 $row = array_values($row);
                 $fieldno = 0;
                 while ($fieldno < $num_fields)

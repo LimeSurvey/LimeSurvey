@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php echo $clang->gT("Export result data to R");?></div>
-<form action='<?php echo site_url("admin/export/exportr/$surveyid");?>' id='exportspss' method='post'><ul>
+<form action='<?php echo $this->createUrl("admin/export/sa/exportr/sid/$surveyid");?>' id='exportspss' method='post'><ul>
 <li><label for='filterinc'><?php echo $clang->gT("Data selection:");?></label><select id='filterinc' name='filterinc' onchange='this.form.submit();'>
 <option value='filter' <?php echo$selecthide;?>><?php echo $clang->gT("Completed responses only");?></option>
 <option value='show' <?php echo$selectshow;?>><?php echo $clang->gT("All responses");?></option>
