@@ -64,11 +64,17 @@ class surveypermission extends Survey_Common_Controller {
             self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
             self::_js_admin_includes(base_url().'scripts/admin/surveysecurity.js');
 
-            $query2 = "SELECT p.sid, p.uid, u.users_name, u.full_name FROM ".$this->db->dbprefix."survey_permissions AS p INNER JOIN ".$this->db->dbprefix."users  AS u ON p.uid = u.uid
-            WHERE p.sid = {$surveyid} AND u.uid != ".$this->session->userdata('loginID') ."
-            GROUP BY p.sid, p.uid, u.users_name, u.full_name
-            ORDER BY u.users_name";
-            $result2 = db_execute_assoc($query2); //Checked
+			
+			$where = array(
+				'p.sid' => $surveyid, 
+				'u.uid' => $this->session->userdata('loginID')
+			);
+			$join = array(
+				'table'	=> 'users AS u', 
+				'type'	=> 'inner', 
+				'on'	=> 'p.uid = u.uid'
+			);
+            $result2 = $this->survey_permissions_model->joinQuery('p.sid, p.uid, u.users_name, u.full_name', 'survey_permissions AS p', $where, $join, 'u.users_name', 'p.sid, p.uid, u.users_name, u.full_name');
 
             $surveysecurity ="<div class='header ui-widget-header'>".$clang->gT("Survey permissions")."</div>\n"
             . "<table class='surveysecurity'><thead>"
@@ -99,9 +105,7 @@ class surveypermission extends Survey_Common_Controller {
 
                 foreach ($result2->result_array() as $PermissionRow)
                 {
-
-                    $query3 = "SELECT a.ugid FROM ".$this->db->dbprefix."user_in_groups AS a RIGHT OUTER JOIN ".$this->db->dbprefix."users AS b ON a.uid = b.uid WHERE b.uid = ".$PermissionRow['uid'];
-                    $result3 = db_execute_assoc($query3); //Checked
+					$result3 = $this->survey_permissions_model->joinQuery('a.ugid', 'user_in_groups AS a', array('b.uid' => $PermissionRow['uid']), array('table' => 'users AS b', 'type' => 'right outer', 'on' => 'a.uid = b.uid'));
                     foreach ($result3->result_array() as $resul3row)
                     {
                         if ($this->config->item('usercontrolSameGroupPolicy') == false ||
@@ -116,8 +120,8 @@ class surveypermission extends Survey_Common_Controller {
                         $group_ids_query = implode(" OR ugid=", $group_ids);
                         unset($group_ids);
 
-                        $query4 = "SELECT name FROM ".$this->db->dbprefix."user_groups WHERE ugid = ".$group_ids_query;
-                        $result4 = db_execute_assoc($query4); //Checked
+						$this->load->model('user_groups_model');
+                        $result4 = $this->user_groups_model->getSomeRecords(array('name'), array('ugid' => $group_ids_query));
 
                         foreach ($result4->result_array() as $resul4row)
                         {
@@ -258,21 +262,29 @@ class surveypermission extends Survey_Common_Controller {
         {
             $addsummary = "<div class=\"header\">".$clang->gT("Add user group")."</div>\n";
             $addsummary .= "<div class=\"messagebox ui-corner-all\" >\n";
-
-            $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID');
-            $result = db_execute_assoc($query); //Checked
+			
+			$this->load->model('surveys_model');
+			
+            $result = $this->surveys_model->getSomeRecords(array('sid', 'owner_id'), array('sid' => $surveyid, 'owner_id' => $this->session->userdata('loginID')));
             if( ($result->num_rows() > 0 && in_array($postusergroupid,getsurveyusergrouplist('simpleugidarray'))) || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
             {
                 if($postusergroupid > 0){
-                    $query2 = "SELECT b.uid FROM (SELECT uid FROM ".$this->db->dbprefix."survey_permissions WHERE sid = {$surveyid}) AS c RIGHT JOIN ".$this->db->dbprefix."user_in_groups AS b ON b.uid = c.uid WHERE c.uid IS NULL AND b.ugid = {$postusergroupid}";
-                    $result2 = db_execute_assoc($query2); //Checked
+					
+					$this->load->model('survey_permissions_model');
+					$result2 = $this->survey_permissions_model->specificQuery($surveyid, $postusergroupid);
                     if($result2->num_rows() > 0)
                     {
                         while ($row2 = $result2->FetchRow())
                         {
                             $uid_arr[] = $row2['uid'];
-                            $isrquery = "INSERT INTO {$dbprefix}survey_permissions (sid,uid,permission,read_p) VALUES ({$surveyid}, {$row2['uid']},'survey',1) ";
-                            $isrresult = db_execute_assoc($isrquery); //Checked
+							
+							$insert = array(
+								'sid'			=> $surveyid,
+								'uid'			=> $row2['uid'],
+								'permission'	=> 'survey',
+								'read_p' 		=> 1
+							);
+							$isrresult = $this->survey_permissions_model->insertSomeRecords($insert);
                             if (!$isrresult) break;
                         }
 
@@ -354,16 +366,15 @@ class surveypermission extends Survey_Common_Controller {
             $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Add User")."</div>\n";
             $addsummary .= "<div class=\"messagebox ui-corner-all\">\n";
 
-            $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID')." AND owner_id != ".$postuserid;
-            $result = db_execute_assoc($query); //Checked
+			$this->load->model('surveys_model');
+			$this->load->model('survey_permission_model');
+			$result = $this->surveys_model->getSomeRecords(array('sid', 'owner_id'), array('sid' => $surveyid, 'owner_id' => $this->session->userdata('loginID'), 'owner_id !' => $postuserid));
             if( ($result->num_rows() > 0 && in_array($postuserid,getuserlist('onlyuidarray'))) ||
             $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
             {
 
                 if($postuserid > 0){
-
-                    $isrquery = "INSERT INTO {$dbprefix}survey_permissions (sid,uid,permission,read_p) VALUES ( {$surveyid}, {$postuserid}, 'survey', 1)";
-                    $isrresult = db_execute_assoc($isrquery); //Checked
+					$isrresult = $this->survey_permission_model->insertSomeRecords(array('sid' => $surveyid, 'uid' => $postuserid, 'permission' => 'survey', 'read_p' => 1));
 
                     if($isrresult)
                     {
@@ -435,12 +446,18 @@ class surveypermission extends Survey_Common_Controller {
 
         if($action == "setsurveysecurity" || $action == "setusergroupsurveysecurity")
         {
-            $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID');
+			$this->load->model('surveys_model');
+
             if ($action == "setsurveysecurity")
             {
-                $query.=  " AND owner_id != ".$postuserid;
+				$where = array('sid' => $surveyid, 'owner_id' => $this->session->userdata('loginID'), 'owner_id !' => $postuserid);
             }
-            $result = db_execute_assoc($query); //Checked
+			else 
+			{
+				$where = array('sid' => $surveyid, 'owner_id' => $this->session->userdata('loginID'));
+			}
+			$result = $this->surveys_model->getSomeRecords(array('sid', 'owner_id'), $where);
+
             if($result->num_rows() > 0 || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
             {
                 //$js_admin_includes[]='../scripts/jquery/jquery.tablesorter.min.js';
@@ -449,16 +466,16 @@ class surveypermission extends Survey_Common_Controller {
                 self::_js_admin_includes(base_url().'scripts/admin/surveysecurity.js');
                 if ($action == "setsurveysecurity")
                 {
-                    $query = "select users_name from ".$this->db->dbprefix."users where uid={$postuserid}";
-                    $res = db_execute_assoc($query);
+					$this->load->model('users_model');
+					$res = $this->users_model->getSomeRecords(array('users_name'), array('uid' => $postuserid));
                     $resrow = $res->row_array();
                     $sUsername=$resrow['users_name']; //$connect->GetOne("select users_name from ".$this->db->dbprefix."users where uid={$postuserid}");
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for user %s"),"<span style='font-style:italic'>".$sUsername."</span>")."</div>";
                 }
                 else
                 {
-                    $query = "select name from ".$this->db->dbprefix."user_groups where ugid={$postusergroupid}";
-                    $res = db_execute_assoc($query);
+					$this->load->model('user_groups_model');
+					$res =  $this->user_groups_model->getSomeRecords(array('name'), array('ugid' => $postusergroupid));
                     $resrow = $res->row_array();
                     $sUsergroupName=$resrow['name']; //$connect->GetOne("select name from ".$this->db->dbprefix."user_groups where ugid={$postusergroupid}");
                     $usersummary = "<div class='header ui-widget-header'>".sprintf($clang->gT("Edit survey permissions for group %s"),"<span style='font-style:italic'>".$sUsergroupName."</span>")."</div>";
@@ -574,14 +591,14 @@ class surveypermission extends Survey_Common_Controller {
             $addsummary = "<div class=\"header\">".$clang->gT("Deleting User")."</div>\n";
             $addsummary .= "<div class=\"messagebox\">\n";
 
-            $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid} AND owner_id = ".$this->session->userdata('loginID')." AND owner_id != ".$postuserid;
-            $result = db_execute_assoc($query); //Checked
+			$this->load->model('surveys_model');
+			$result = $this->surveys_model->getSomeRecords(array('sid', 'owner_id'), array('sid' => $surveyid, 'owner_id' => $this->session->userdata('loginID'), 'owner_id !' => $postuserid));
             if($result->num_rows() > 0 || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
             {
                 if (isset($postuserid))
                 {
-                    $dquery="DELETE FROM ".$this->db->dbprefix."survey_permissions WHERE uid={$postuserid} AND sid={$surveyid}";	//	added by Dennis
-                    $dresult=db_execute_assoc($dquery); //Checked
+					$this->load->model('survey_permissions_model');
+					$dresult=$this->survey_permissions_model->deleteSomeRecords(array('uid' => $postuserid, 'sid' => $surveyid));
 
                     $addsummary .= "<br />".$clang->gT("Username").": ".sanitize_xss_string($_POST['user'])."<br /><br />\n";
                     $addsummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
@@ -636,25 +653,34 @@ class surveypermission extends Survey_Common_Controller {
         $postusergroupid = $this->input->post('gid');
         $_POST = $this->input->post();
 
+		$this->load->model('surveys_model');
+		
         if ($action == "surveyrights")
         {
             $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Edit survey permissions")."</div>\n";
             $addsummary .= "<div class='messagebox ui-corner-all'>\n";
 
             if(isset($postuserid)){
-                $query = "SELECT sid, owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid}";
+
                 if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
                 {
-                    $query.=" AND owner_id != {$postuserid} AND owner_id = ".$this->session->userdata('loginID');
+					$where = array('sid' => $surveyid, 'owner_id !' => $postuserid, 'owner_id' => $this->session->userdata('loginID'));
                 }
+				else
+				{
+					$where = array('sid' => $surveyid);
+				}
+				
+				$query = $this->surveys_model->getSomeRecords(array('sid', 'owner_id'), $where);
             }
             else{
-                $sQuery = "SELECT owner_id FROM ".$this->db->dbprefix."surveys WHERE sid = {$surveyid}";
-                if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
-                {
-                    $query.=" AND owner_id = ".$this->session->userdata('loginID');
-                }
-                $res= db_execute_assoc($sQuery);
+				// This code doesn't do anything, the variable $query isn't set anywhere before this and after
+                // if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
+                // {
+                    // $query.=" AND owner_id = ".$this->session->userdata('loginID');
+                // }
+				
+                $res= $this->surveys_model->getSomeRecords(array('owner_id'), array('sid' => $surveyid));
                 $resrow=$res->row_array();
                 $iOwnerID=$resrow['owner_id']; //$connect->GetOne($sQuery);
             }
@@ -682,8 +708,8 @@ class surveypermission extends Survey_Common_Controller {
             }
             if (isset($postusergroupid) && $postusergroupid>0)
             {
-                $sQuery = "SELECT uid from ".$this->db->dbprefix."user_in_groups where ugid = {$postusergroupid} and uid<>{$_SESSION['loginID']} AND uid<>{$iOwnerID}";
-                $oResult = db_execute_assoc($sQuery); //Checked
+				$this->load->model('users_in_groups_model');
+                $oResult = $this->users_in_groups_model->getSomeRecords(array('uid'), array('ugid' => $postusergroupid, 'uid !' => $_SESSION['loginID'], 'uid !' => $iOwnerID));
                 if($oResult->num_rows() > 0)
                 {
                     foreach ($oResult->result_array() as $aRow)
