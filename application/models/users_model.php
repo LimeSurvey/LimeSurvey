@@ -27,7 +27,17 @@ class Users_model extends CI_Model {
 
         $data = $this->db->get('users');
         return $data;
-    }
+    }   
+
+	function parentAndUser()
+	{
+		$this->db->select('a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent');
+		$this->db->select('users AS a');
+		$this->db->join('users AS b', 'a.parent_id = b.uid', 'left');
+		$this->db->where('a.uid', $postuserid);
+		$this->db->limit(1);
+		return $this->db->get();
+	}
 
     function getOTPwd($user)
     {
@@ -46,6 +56,12 @@ class Users_model extends CI_Model {
         $this->db->where('users_name',$user);
         $this->db->update('users',$data);
     }
+	
+    function delete($where)
+    {
+        $this->db->where($where);
+        return (bool) $this->db->delete('users');
+    }
 
     function insert($new_user, $new_pass,$new_full_name,$parent_user,$new_email)
     {
@@ -59,6 +75,12 @@ class Users_model extends CI_Model {
     function update($uid,$data)
     {
         $this->db->where(array("uid"=>$uid));
+        return $this->db->update('users',$data);
+    }    
+	
+	function parent_update($where,$data)
+    {
+        $this->db->where($where);
         return $this->db->update('users',$data);
     }
 

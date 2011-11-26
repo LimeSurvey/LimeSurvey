@@ -13,6 +13,15 @@ class Templates_model extends CI_Model {
 		
 		return $data;
 	}
+	
+	function get_like_records($like)
+	{
+		$this->db->like($like);
+		
+		$data = $this->db->get('templates');
+		
+		return $data;
+	}
 
 	function getSomeRecords($fields,$condition=FALSE)
 	{

@@ -29,5 +29,16 @@ class Templates_rights_model extends CI_Model {
 		
 		return $data;
 	}
+	
+	function insert($values)
+	{
+		return (bool) $this->db->insert('templates_rights', $values);
+	}
+	
+	function update($what, $where)
+	{
+		$this->db->where($where);
+		return (bool) $this->db->insert('templates_rights', $what);
+	}
 
 }

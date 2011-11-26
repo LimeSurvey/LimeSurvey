@@ -122,15 +122,14 @@ class user extends Survey_Common_Controller {
             if($uresult)
             {
                 $newqid = $this->db->insert_id();
-                $this->load->helper("database");
+				$this->load->model("template_model");
                 // add default template to template rights for user
-                $template_query = "INSERT INTO ".$this->db->dbprefix("templates_rights")." VALUES('$newqid','default','1')";
-                db_execute_assoc($template_query); //Checked
+				$this->template_model->insert(array('uid' => $newqid, 'folder' => 'default', 'use' => '1'));
 
                 // add new user to userlist
-                $squery = "SELECT uid, users_name, password, parent_id, email, create_survey, configurator, create_user, delete_user, participant_panel,superadmin, manage_template, manage_label FROM ".$this->db->dbprefix('users')." WHERE uid='{$newqid}'";			//added by Dennis
-                $sresult = db_execute_assoc($squery);//Checked
-                $srow = $sresult->row_array();
+				$sresult = $this->users_model->getAllRecords(array('uid' => $newqid));
+				$srow= $sresult->row_array();
+				
                 $userlist = getuserlist();
                 array_push($userlist, array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'],
                 "password"=>$srow["password"], "parent_id"=>$srow['parent_id'], // "level"=>$level,
@@ -206,12 +205,10 @@ class user extends Survey_Common_Controller {
         self::_showadminmenu();
         $_POST = $this->input->post();
         $action=$this->input->post("action");
-        $this->load->helper("database");
-
+		$this->load->model("users_model");
         // CAN'T DELETE ORIGINAL SUPERADMIN
         // Initial SuperAdmin has parent_id == 0
-        $adminquery = "SELECT uid FROM ".$this->db->dbprefix('users')." WHERE parent_id=0";
-        $adminresult = db_select_limit_assoc($adminquery, 1);//Checked
+		$adminresult = $this->users_model->getSomeRecords(array('uid'), array('parent_id' => 0));
         $row=$adminresult->row_array();
 
         $postuserid = $this->input->post("uid");
@@ -227,16 +224,14 @@ class user extends Survey_Common_Controller {
                 $sresultcount = 0;// 1 if I am parent of $postuserid
                 if ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1)
                 {
-                    $squery = "SELECT uid FROM ".$this->db->dbprefix('users')." WHERE uid=$postuserid AND parent_id=".$this->session->userdata('loginID');
-                    $sresult = $connect->Execute($squery); //Checked
-                    $sresultcount = $sresult->RecordCount();
+					$sresult = $this->users_model->getSomeRecords(array('uid'), array('parent_id' => $postuserid, 'parent_id' => $this->session->userdata('loginID')));
+					$sresultcount = $sresult->num_rows();
                 }
 
                 if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $sresultcount > 0 || $postuserid == $this->session->userdata('loginID'))
                 {
                     $transfer_surveys_to = 0;
-                    $query = "SELECT users_name, uid FROM ".$this->db->dbprefix('users').";";
-                    $result = db_execute_assoc($query);
+					$result = $this->users_model->getSomeRecords(array('users_name','uid'));
 
                     $current_user = $this->session->userdata('loginID');
                     if($result->num_rows() == 2) {
@@ -253,8 +248,8 @@ class user extends Survey_Common_Controller {
                         }
                     }
 
-                    $query = "SELECT sid FROM ".$this->db->dbprefix('surveys')." WHERE owner_id = $current_user ;";
-                    $result = db_execute_assoc($query);
+					$this->load->model("surveys_model");
+					$result = $this->surveys_model->getSomeRecords(array('sid'), array('owner_id' => $current_user));
                     if($result->num_rows() == 0) {
                         $action = "finaldeluser";
                     }
@@ -263,26 +258,22 @@ class user extends Survey_Common_Controller {
                     {
                         if (isset($_POST['transfer_surveys_to'])) {$transfer_surveys_to=sanitize_int($_POST['transfer_surveys_to']);}
                         if ($transfer_surveys_to > 0){
-                            $query = "UPDATE ".$this->db->dbprefix('surveys')." SET owner_id = $transfer_surveys_to WHERE owner_id=$postuserid";
-                            $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
+							$result = $this->surveys_model->updateSurvey(array('owner_id'=>$postuserid), array('owner_id'=>$transfer_surveys_to));
                         }
-                        $squery = "SELECT parent_id FROM ".$this->db->dbprefix('users')." WHERE uid=".$postuserid;
-                        $sresult = db_execute_assoc($squery); //Checked
+						$sresult = $this->users_model->getSomeRecords(array('parent_id'), array('uid'=>$postuserid));
                         $fields = $sresult->row_array();
 
                         if (isset($fields[0]))
                         {
-                            $uquery = "UPDATE ".$this->db->dbprefix('users')." SET parent_id={$fields[0]} WHERE parent_id=".$postuserid;	//		added by Dennis
-                            $uresult = db_execute_assoc($uquery); //Checked
+							$uresult = $this->users_model->parent_update(array('parent_id='=>$postuserid), array('parent_id='=>$fields[0]));
                         }
 
                         //DELETE USER FROM TABLE
-                        $dquery="DELETE FROM ".$this->db->dbprefix('users')." WHERE uid=".$postuserid;	//	added by Dennis
-                        $dresult=db_execute_assoc($dquery);  //Checked
+						$dresult=$this->users_model->delete(array('uid'=>$postuserid));
 
                         // Delete user rights
-                        $dquery="DELETE FROM ".$this->db->dbprefix('survey_permissions')." WHERE uid=".$postuserid;
-                        $dresult=db_execute_assoc($dquery); //Checked
+						$this->load->model("survey_permissions_model");
+						$dresult=$this->survey_permissions_model->deleteSomeRecords(array('uid'=>$postuserid));
 
                         if($postuserid == $this->session->userdata('loginID')) killSession();	// user deleted himself
 
@@ -300,8 +291,7 @@ class user extends Survey_Common_Controller {
                         $current_user = $this->session->userdata('loginID');
                         $addsummary = "<br />".$clang->gT("Transfer the user's surveys to: ")."\n";
                         $addsummary .= "<form method='post' name='deluserform' action='".site_url("admin/user/deluser")."'><select name='transfer_surveys_to'>\n";
-                        $query = "SELECT users_name, uid FROM ".$this->db->dbprefix('users').";";
-                        $result = db_execute_assoc($query);
+						$result = $this->users_model->getSomeRecords(array('users_name','uid'));
                         if($result->num_rows() > 0) {
                             foreach($result->result_array() as $rows){
                                 $intUid = $rows['uid'];
@@ -343,18 +333,18 @@ class user extends Survey_Common_Controller {
     */
     function modifyuser()
     {
-        $this->load->helper("database");
+		$this->load->model("users_model");
+		
         $postuserid=$this->input->post("uid");
         if (isset($postuserid) && $postuserid)
         {
-            $squery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE uid=$postuserid AND parent_id=".$this->session->userdata('loginID');	//		added by Dennis
-            $sresult = db_select_limit_assoc($squery);//Checked
+			$sresult = $this->users_model->getSomeRecords(array('uid'),array('uid'=>$postuserid, 'parent_id'=>$this->session->userdata('loginID')));
             $sresultcount = $sresult->num_rows();
         }
         else
         {
-            include("access_denied.php");
-            die();
+           // include("access_denied.php");
+           // die();
         }
 
         // RELIABLY CHECK MY RIGHTS
@@ -363,8 +353,11 @@ class user extends Survey_Common_Controller {
         $sresultcount > 0
         ) )
         {
-            $muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".$this->db->dbprefix('users')." AS a LEFT JOIN ".$this->db->dbprefix('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$postuserid}'";	//	added by Dennis
-            $data['mur'] = db_select_limit_assoc($muq, 1);
+			$sresult = $this->users_model->parentAndUser();
+			$data['mur'] = $sresult;
+			
+           // $muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".$this->db->dbprefix('users')." AS a LEFT JOIN ".$this->db->dbprefix('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$postuserid}'";	//	added by Dennis
+           // $data['mur'] = db_select_limit_assoc($muq, 1);
 
             $data['clang']=$this->limesurvey_lang;
             self::_getAdminHeader();
@@ -383,7 +376,6 @@ class user extends Survey_Common_Controller {
     */
     function moduser()
     {
-        $this->load->helper("database");
         $clang=$this->limesurvey_lang;
         $_POST = $this->input->post();
         $postuser = $this->input->post("user");
@@ -392,8 +384,9 @@ class user extends Survey_Common_Controller {
         $postfull_name = $this->input->post("full_name");
         $display_user_password_in_html=$this->config->item("display_user_password_in_html");
         $addsummary='';
-        $squery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE uid=$postuserid AND parent_id=".$this->session->userdata('loginID');
-        $sresult = db_select_limit_assoc($squery); //Checked
+		
+		$this->load->model("users_model");
+		$sresult = $this->users_model->getSomeRecords(array('uid'),array('uid'=>$postuserid, 'parent_id'=>$this->session->userdata('loginID')));
         $sresultcount = $sresult->num_rows();
 
         if(($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $postuserid == $this->session->userdata('loginID') ||
@@ -419,13 +412,11 @@ class user extends Survey_Common_Controller {
                 $failed = false;
                 if(empty($sPassword))
                 {
-                    $uquery = "UPDATE ".$this->db->dbprefix('users')." SET email=".$this->db->escape($email).", full_name=".$this->db->escape($full_name)." WHERE uid=".$postuserid;
+					$uresult = $this->users_model->update($postuserid, array('email'=>$this->db->escape($email), 'full_name'=>$this->db->escape($full_name)));
                 } else {
                     $this->load->library("admin/sha256");
-                    $uquery = "UPDATE ".$this->db->dbprefix('users')." SET email=".$this->db->escape($email).", full_name=".$this->db->escape($full_name).", password='".$this->sha256->hashing($sPassword)."' WHERE uid=".$postuserid;
+					$uresult = $this->users_model->update($postuserid, array('email'=>$this->db->escape($email), 'full_name'=>$this->db->escape($full_name), 'password' => $this->sha256->hashing($sPassword)));
                 }
-
-                $uresult = db_select_limit_assoc($uquery);//Checked
 
                 if($uresult && empty($sPassword))
                 {
@@ -482,7 +473,7 @@ class user extends Survey_Common_Controller {
     */
     function setuserrights()
     {
-        $this->load->helper("database");
+		$this->load->model("users_model");
         $data['clang']=$this->limesurvey_lang;
         $_POST = $this->input->post();
         self::_js_admin_includes(base_url().'scripts/admin/users.js');
@@ -492,8 +483,7 @@ class user extends Survey_Common_Controller {
         $postfull_name = $this->input->post("full_name");
         if (isset($postuserid) && $postuserid)
         {
-            $squery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE uid=$postuserid AND parent_id=".$this->session->userdata('loginID');	//		added by Dennis
-            $sresult = db_execute_assoc($squery);//Checked
+			$sresult = $this->users_model->getSomeRecords(array('uid'),array('uid'=>$postuserid, 'parent_id'=>$this->session->userdata('loginID')));
             $sresultcount = $sresult->num_rows();
 
 
@@ -530,7 +520,7 @@ class user extends Survey_Common_Controller {
     */
     function userrights()
     {
-        $this->load->helper("database");
+		$this->load->model("users_model");
         $postuserid=$this->input->post("uid");
         $clang=$this->limesurvey_lang;
         $addsummary = "<div class='header ui-widget-header'>".$clang->gT("Set user permissions")."</div>\n";
@@ -541,8 +531,7 @@ class user extends Survey_Common_Controller {
         // A user can't modify his own rights ;-)
         if($postuserid != $this->session->userdata('loginID'))
         {
-            $squery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE uid={$postuserid} AND parent_id=".$this->session->userdata('loginID');
-            $sresult = db_execute_assoc($squery); // Checked
+			$sresult = $this->users_model->getSomeRecords(array('uid'),array('uid'=>$postuserid, 'parent_id'=>$this->session->userdata('loginID')));
             $sresultcount = $sresult->num_rows();
 
             if($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1 && $sresultcount > 0)
@@ -573,9 +562,8 @@ class user extends Survey_Common_Controller {
                 {
                     // Am I original Superadmin ?
                     // Initial SuperAdmin has parent_id == 0
-                    $adminquery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE parent_id=0";
-                    $adminresult = db_select_limit_assoc($adminquery, 1);
-                    $row=$adminresult->row_array();
+					$adminresult = $this->users_model->getSomeRecords(array('uid'),array('parent_id'=>0));
+                    $row=$adminresult->row();
 
                     if($row['uid'] == $this->session->userdata('loginID'))	// it's the original superadmin !!!
                     {
@@ -623,7 +611,6 @@ class user extends Survey_Common_Controller {
 
     function setusertemplates()
     {
-        $this->load->helper("database");
         $data['clang']=$this->limesurvey_lang;
         $_POST = $this->input->post();
         $postuser = $this->input->post("user");
@@ -644,7 +631,6 @@ class user extends Survey_Common_Controller {
 
     function usertemplates()
     {
-        $this->load->helper("database");
         $postuserid=$this->input->post("uid");
         $clang=$this->limesurvey_lang;
 
@@ -656,8 +642,8 @@ class user extends Survey_Common_Controller {
         if( $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') == 1)
         {
             $templaterights = array();
-            $tquery = "SELECT * FROM ".$this->db->dbprefix("templates");
-            $tresult = db_execute_assoc($tquery);
+			$this->load->model("templates_model");
+			$tresult = $this->templates_model->getAllRecords();
             foreach ($tresult->result_array() as $trow) {
                 if (isset($_POST[$trow["folder"]."_use"]))
                     $templaterights[$trow["folder"]] = 1;
@@ -665,12 +651,10 @@ class user extends Survey_Common_Controller {
                     $templaterights[$trow["folder"]] = 0;
             }
             foreach ($templaterights as $key => $value) {
-                $uquery = "INSERT INTO ".$this->db->dbprefix("templates_rights")." (uid,`folder`,`use`)  VALUES ({$postuserid},'".$key."',$value)";
-                $uresult = db_execute_assoc($uquery);
+				$uresult = $this->template_rights_model->insert(array('uid' => $postuserid, 'folder' => $key, 'use' => $value));
                 if (!$uresult)
                 {
-                    $uquery = "UPDATE ".$this->db->dbprefix("templates_rights")."  SET  ".$this->db->escape('use')."=$value where ".$this->db->escape('folder')."='$key' AND uid=".$postuserid;
-                    $uresult = db_execute_assoc($uquery);
+					$uresult = $this->template_rights_model->update(array('use' => $value), array('folder' => $key, 'uid' => $postuserid));
                 }
             }
             if ($uresult)
@@ -730,10 +714,8 @@ class user extends Survey_Common_Controller {
 
     function _getUserNameFromUid($uid){
         $uid = sanitize_int($uid);
-        $query = "SELECT users_name, uid FROM ".$this->db->dbprefix('users')." WHERE uid = $uid;";
-
-        $result = db_execute_assoc($query) or safe_die($connect->ErrorMsg());
-
+		$this->load->model("users_model");
+		$result = $this->users_model->getSomeRecords(array('users_name', 'uid'), array('uid' => $uid));
 
         if($result->num_rows() > 0) {
             foreach($result->row_array() as $rows){
@@ -744,15 +726,14 @@ class user extends Survey_Common_Controller {
 
     function _refreshtemplates() {
         $template_a = gettemplatelist();
+		$this->load->model("templates_model");
         foreach ($template_a as $tp=>$fullpath) {
             // check for each folder if there is already an entry in the database
             // if not create it with current user as creator (user with rights "create user" can assign template rights)
-            $query = "SELECT * FROM ".$this->db->dbprefix('templates')." WHERE folder LIKE '".$tp."'";
-            $result = db_execute_assoc($query); //Checked
-
+			$result = $this->templates_model->getSomeRecords(array('folder' => $tp));
+			
             if ($result->num_rows() == 0) {
-                $query2 = "INSERT INTO ".$this->db->dbprefix('templates')." (".$this->db->escape('folder').",".$this->db->escape('creator').") VALUES ('".$tp."', ".$this->session->userdata('loginID').')' ;
-                db_execute_assoc($query2); //Checked
+				$this->templates_model->insertRecords(array('folder' => $tp, 'creator' => $this->session->userdata('loginID')));
             }
         }
         return true;
