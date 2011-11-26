@@ -35,7 +35,14 @@ class statistics extends Survey_Common_Controller {
 	public function _remap($method, $params = array())
 	{
 		array_unshift($params, $method);
+	    if ($method == "graph") 
+	    {
+	        return call_user_func_array(array($this, "graph"), $params);
+	    }
+	    else
+	    {
 	    return call_user_func_array(array($this, "action"), $params);
+	}
 	}
 	
 	function action($surveyid, $subaction = null)
@@ -46,6 +53,7 @@ class statistics extends Survey_Common_Controller {
 		$this->load->helper("database");
 		$this->load->helper("surveytranslator");
 		$this->load->helper("admin/statistics");
+        $this->load->model('Surveys_dynamic_model');
 		$dbprefix = $this->db->dbprefix;
 		$_POST = $this->input->post();
 		$imageurl = $this->config->item("umageurl");
@@ -132,29 +140,7 @@ class statistics extends Survey_Common_Controller {
 		// Set language for questions and answers to base language of this survey
 		$language = GetBaseLanguageFromSurveyID($surveyid);
 		
-		$chartfontfile = $this->config->item("chartfontfile");
-		//pick the best font file if font setting is 'auto'
-		if ($chartfontfile=='auto')
-		{
-		    $chartfontfile='vera.ttf';
-		    if ( $language=='ar')
-		    {
-		        $chartfontfile='KacstOffice.ttf';
-		    }
-		    elseif  ($language=='fa' )
-		    {
-		        $chartfontfile='KacstFarsi.ttf';
-		    }
-		    elseif  ($language=='el' )
-		    {
-		        $chartfontfile='DejaVuLGCSans.ttf';
-		    }
-		    elseif  ($language=='zh-Hant-HK' || $language=='zh-Hant-TW' || $language=='zh-Hans')
-		    {
-		        $chartfontfile='fireflysung.ttf';
-		    }
-		
-		}
+        
 		//$statisticsoutput .= "
 		//<script type='text/javascript'' >
 		//<!--
@@ -1728,6 +1714,110 @@ class statistics extends Survey_Common_Controller {
 	    return $reshtml;
 	}
 	
+	
+	function graph()
+	{
+        $this->load->model('Surveys_dynamic_model');
+        $this->load->model('Question_attributes_model');
+        $this->load->helper('admin/statistics_helper');        
+		$this->load->helper("surveytranslator");
+        
+        // Initialise PCHART
+        require_once(APPPATH.'/third_party/pchart/pchart/pChart.class');
+        require_once(APPPATH.'/third_party/pchart/pchart/pData.class');
+        require_once(APPPATH.'/third_party/pchart/pchart/pCache.class');
+        $tempdir = $this->config->item("tempdir");
+        $tempurl = $this->config->item("tempurl");
+        $MyCache = new pCache($tempdir.'/');
+
+	    $data['success'] = 1;
+	    
+	    if (isset($_POST['cmd']) || !isset($_POST['id'])) {
+	        list($qsid, $qgid, $qqid) = explode("X", substr($_POST['id'], 1), 3);
+	        $qtype = substr($_POST['id'], 0, 1);
+            $aattr = getQuestionAttributeValues($qqid, substr($_POST['id'], 0, 1));
+            $field = substr($_POST['id'], 1);
+                    
+	        switch ($_POST['cmd']) {
+	            case 'showmap':
+	                if (isset($aattr['location_mapservice'])) { 
+                        
+                        $data['mapdata'] = array (
+                            "coord" => getQuestionMapData($field, $qsid),
+                            "zoom" => $aattr['location_mapzoom'],
+                            "width" => $aattr['location_mapwidth'],
+                            "height" => $aattr['location_mapheight']
+                        );
+	                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_showmap', 1);
+                    } else {                    
+	                    $data['success'] = 0;
+                    }
+	                break;
+	            case 'hidemap':
+	                if (isset($aattr['location_mapservice'])) {
+                        $data['success'] = 1;
+	                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_showmap', 0);
+                    } else {                    
+	                    $data['success'] = 0;
+                    }
+	                break;
+	            case 'showgraph':
+	                if (isset($aattr['location_mapservice'])) { 
+                        $data['mapdata'] = array (
+                            "coord" => getQuestionMapData($field, $qsid),
+                            "zoom" => $aattr['location_mapzoom'],
+                            "width" => $aattr['location_mapwidth'],
+                            "height" => $aattr['location_mapheight']
+                        );
+	                }
+	                
+                    $bChartType = $qtype != "M" && $qtype != "P" && $aattr["statistics_graphtype"] == "1";
+                    
+                    $adata = $_SESSION['stats'][$_POST['id']];
+	                $data['chartdata'] = createChart($qqid, $qsid, $bChartType, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
+	                
+	                
+                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_showgraph', 1);
+	                break;
+	            case 'hidegraph':
+                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_showgraph', 0);
+	                break;
+	            case 'showbar':
+	                if ($qtype == "M" || $qtype == "P") {
+	                    $data['success'] = 0;
+	                    break;
+	                }	            
+	                
+                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_graphtype', 0);
+                    
+                    $adata = $_SESSION['stats'][$_POST['id']];
+	                $data['chartdata'] =  createChart($qqid, $qsid, 0, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
+	                
+	                break;
+	            case 'showpie':
+	            
+	                if ($qtype == "M" || $qtype == "P") {
+	                    $data['success'] = 0;
+	                    break;
+	                }	            
+	                
+                    $this->Question_attributes_model->setAttribute($qqid, 'statistics_graphtype', 1);
+                    
+                    $adata = $_SESSION['stats'][$_POST['id']];
+	                $data['chartdata'] =  createChart($qqid, $qsid, 1, $adata['lbl'], $adata['gdata'], $adata['grawdata'], $MyCache);
+	                
+	                
+	                break;
+	            default:
+	                $data['success'] = 0;
+	                break;	            
+	        }
+	    } else {    
+	        $data['success'] = 0;
+	    }
+	    $this->load->view("admin/export/statistics_graph_view", $data);
+	}
+
 	////simple function to square a value
 	//function square($number)
 	//{

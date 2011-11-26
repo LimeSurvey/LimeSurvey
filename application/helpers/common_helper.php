@@ -3484,6 +3484,39 @@ function questionAttributes($returnByName=false)
     "help"=>$clang->gT("Store the country?"),
     "caption"=>$clang->gT("Save country"));
 
+    $qattributes["statistics_showmap"]=array(
+    "types"=>"S",
+    'category'=>$clang->gT('Statistics'),
+    'inputtype'=>'singleselect',
+    'sortorder'=>100,
+    'options'=>array(1=>$clang->gT('Yes'), 0=>$clang->gT('No')),
+    'help'=>$clang->gT("Show a map in the statistics?"),
+    'caption'=>$clang->gT("Display map"),
+    'default'=>1
+    );
+    
+    $qattributes["statistics_showgraph"]=array(
+    'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
+    'category'=>$clang->gT('Statistics'),
+    'inputtype'=>'singleselect',
+    'sortorder'=>101,
+    'options'=>array(1=>$clang->gT('Yes'), 0=>$clang->gT('No')),
+    'help'=>$clang->gT("Display a chart in the statistics?"),
+    'caption'=>$clang->gT("Display chart"),
+    'default'=>1
+    );
+    
+    $qattributes["statistics_graphtype"]=array(
+    "types"=>'15ABCDEFGHIKLNOQRSTUWXYZ!:;|*',
+    'category'=>$clang->gT('Statistics'),
+    'inputtype'=>'singleselect',
+    'sortorder'=>102,
+    'options'=>array(0=>$clang->gT('Bar chart'), 1=>$clang->gT('Pie chart')),
+    'help'=>$clang->gT("Select the type of chart to be displayed"),
+    'caption'=>$clang->gT("Chart type"),
+    'default'=>0
+    );
+
     $qattributes["location_mapservice"]=array(
     "types"=>"S",
     'category'=>$clang->gT('Location'),
