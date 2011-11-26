@@ -474,7 +474,7 @@ class Usergroups extends Admin_Controller {
 
                     $eguquery = "SELECT * FROM ".$this->db->dbprefix."user_in_groups AS a INNER JOIN ".$this->db->dbprefix."users AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
                     $eguresult = db_execute_assoc($eguquery); //Checked
-                    $usergroupsummary .= "<table class='users'>\n"
+                    $usergroupsummary = (isset($usergroupsummary) ? $usergroupsummary : '') . "<table class='users'>\n"
                     . "<thead><tr>\n"
                     . "<th>".$clang->gT("Action")."</th>\n"
                     . "<th>".$clang->gT("Username")."</th>\n"

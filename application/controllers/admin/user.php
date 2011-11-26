@@ -102,16 +102,23 @@ class user extends Survey_Common_Controller {
         $new_email = FlattenText($this->input->post('new_email'),false,true);
         $new_full_name = FlattenText($this->input->post('new_full_name'),false,true);
 
-        self::_getAdminHeader();
-        self::_showadminmenu();
+
+
         $valid_email = true;
+
         if(!validate_email($new_email))
         {
+            self::_getAdminHeader();
+            self::_showadminmenu();
+
             $valid_email = false;
             self::_showMessageBox($clang->gT("Failed to add user"),"<br />\n" . " " . $clang->gT("The email address is not valid.")."<br />\n",$class='warningheader');
         }
         if(empty($new_user))
         {
+	         self::_getAdminHeader();
+            self::_showadminmenu();
+
             self::_showMessageBox($clang->gT("Failed to add user"),"<br />\n" . " " . $clang->gT("A username was not supplied or the username is invalid.")."<br />\n",$class='warningheader');
         }
         elseif($valid_email)
@@ -122,20 +129,24 @@ class user extends Survey_Common_Controller {
             if($uresult)
             {
                 $newqid = $this->db->insert_id();
-				$this->load->model("template_model");
+				$this->load->model("templates_model");
                 // add default template to template rights for user
-				$this->template_model->insert(array('uid' => $newqid, 'folder' => 'default', 'use' => '1'));
+				$this->templates_model->insertRecords(array('uid' => $newqid, 'folder' => 'default', 'use' => '1'));
 
                 // add new user to userlist
 				$sresult = $this->users_model->getAllRecords(array('uid' => $newqid));
 				$srow= $sresult->row_array();
-				
+
                 $userlist = getuserlist();
                 array_push($userlist, array("user"=>$srow['users_name'], "uid"=>$srow['uid'], "email"=>$srow['email'],
                 "password"=>$srow["password"], "parent_id"=>$srow['parent_id'], // "level"=>$level,
                 "create_survey"=>$srow['create_survey'],"participant_panel"=>$srow['participant_panel'], "configurator"=>$srow['configurator'], "create_user"=>$srow['create_user'],
                 "delete_user"=>$srow['delete_user'], "superadmin"=>$srow['superadmin'], "manage_template"=>$srow['manage_template'],
                 "manage_label"=>$srow['manage_label']));
+
+                $this->session->set_userdata('flashmessage', $clang->gT("User created successfully! ") . $clang->gT("Username: ") . $new_user . $clang->gT(", Email: ") . $new_email);
+                self::_getAdminHeader();
+                self::_showadminmenu();
 
                 // send Mail
                 $body = sprintf($clang->gT("Hello %s,"), $new_full_name)."<br /><br />\n";
@@ -174,17 +185,15 @@ class user extends Survey_Common_Controller {
                     $addsummary .= "<br />".str_replace("{EMAIL}", $new_email, $tmp) . "<br />";
                 }
 
-                $addsummary .= "<br />\t\t\t<form method='post' action='".site_url("admin/user/setuserrights")."'>"
-                ."<input type='submit' value='".$clang->gT("Set user permissions")."'>"
-                ."<input type='hidden' name='action' value='setuserrights'>"
-                ."<input type='hidden' name='user' value='{$new_user}'>"
-                ."<input type='hidden' name='uid' value='{$newqid}'>"
-                ."</form>";
-                self::_showMessageBox($clang->gT("Add user"),$addsummary);
+                $data['user'] = $new_user;
+                $data['postuserid']=$newqid;
+                $this->load->view("admin/user/setuserrights",$data);
 
             }
             else{
-                $addsummary .= "<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
+	             self::_getAdminHeader();
+                self::_showadminmenu();
+                $addsummary = "<div class='messagebox ui-corner-all'><div class='warningheader'>".$clang->gT("Failed to add user")."</div><br />\n" . " " . $clang->gT("The user name already exists.")."<br />\n";
             }
         }
         self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
@@ -334,7 +343,7 @@ class user extends Survey_Common_Controller {
     function modifyuser()
     {
 		$this->load->model("users_model");
-		
+
         $postuserid=$this->input->post("uid");
         if (isset($postuserid) && $postuserid)
         {
@@ -355,7 +364,7 @@ class user extends Survey_Common_Controller {
         {
 			$sresult = $this->users_model->parentAndUser();
 			$data['mur'] = $sresult;
-			
+
            // $muq = "SELECT a.users_name, a.full_name, a.email, a.uid, b.users_name AS parent FROM ".$this->db->dbprefix('users')." AS a LEFT JOIN ".$this->db->dbprefix('users')." AS b ON a.parent_id = b.uid WHERE a.uid='{$postuserid}'";	//	added by Dennis
            // $data['mur'] = db_select_limit_assoc($muq, 1);
 
@@ -384,7 +393,7 @@ class user extends Survey_Common_Controller {
         $postfull_name = $this->input->post("full_name");
         $display_user_password_in_html=$this->config->item("display_user_password_in_html");
         $addsummary='';
-		
+
 		$this->load->model("users_model");
 		$sresult = $this->users_model->getSomeRecords(array('uid'),array('uid'=>$postuserid, 'parent_id'=>$this->session->userdata('loginID')));
         $sresultcount = $sresult->num_rows();
@@ -508,7 +517,7 @@ class user extends Survey_Common_Controller {
             $this->load->view("admin/user/setuserrights",$data);
             self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
-        }	// if
+        }
         else
         {
             include("access_denied.php");
@@ -548,11 +557,7 @@ class user extends Survey_Common_Controller {
                 $rights['superadmin']=0; // ONLY Initial Superadmin can give this right
                 if(isset($_POST['manage_template']) && $this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE'))$rights['manage_template']=1;	else $rights['manage_template']=0;
                 if(isset($_POST['manage_label']) && $this->session->userdata('USER_RIGHT_MANAGE_LABEL'))$rights['manage_label']=1;			else $rights['manage_label']=0;
-
-                if ($postuserid<>1) setuserrights($postuserid, $rights);
-                $addsummary .= "<div class=\"successheader\">".$clang->gT("User permissions were updated successfully.")."</div>\n";
-                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
-            }
+}
             elseif ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
             {
                 $rights = array();
@@ -588,8 +593,7 @@ class user extends Survey_Common_Controller {
                 if(isset($_POST['manage_label']) || $rights['superadmin'])$rights['manage_label']=1;			else $rights['manage_label']=0;
 
                 setuserrights($postuserid, $rights);
-                $addsummary .= "<div class=\"successheader\">".$clang->gT("User permissions were updated successfully.")."</div>\n";
-                $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
+
             }
             else
             {
@@ -602,12 +606,37 @@ class user extends Survey_Common_Controller {
             $addsummary .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/user/editusers')."', '_top')\" value=\"".$clang->gT("Continue")."\"/>\n";
         }
         $addsummary .= "</div>\n";
-        self::_getAdminHeader();
-        self::_showadminmenu();
-        self::_showMessageBox("",$addsummary);
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
-    }
+        $drights = ' Status Updated!  User permissions:';
+        if($rights['superadmin']){
+	     $drights .= ' Superadmin,';
+            }
+        if($rights['participant_panel']){
+            $drights .= ' Participant Panel,';
+            }
+        if($rights['create_survey']){
+            $drights .= ' Create Survey,';
+            }
+        if($rights['configurator']){
+            $drights .= ' Configurator,';
+            }
+        if($rights['create_user']){
+            $drights .= ' Create User,';
+            }
+	     if($rights['delete_user']){
+	         $drights .= ' Delete User,';
+	         }
+	     if($rights['manage_template']){
+	         $drights .= ' Use all/manage templates,';
+	         }
+	     if($rights['manage_label']){
+	         $drights .= ' Manage Labels,';
+	         }
+	     $drights = substr($drights,0,strlen($drights)-1);
+	     $this->session->set_userdata('flashmessage', $clang->gT($drights));
+
+	     redirect('/admin/user/editusers', 'refresh');
+}
 
     function setusertemplates()
     {
@@ -731,7 +760,7 @@ class user extends Survey_Common_Controller {
             // check for each folder if there is already an entry in the database
             // if not create it with current user as creator (user with rights "create user" can assign template rights)
 			$result = $this->templates_model->getSomeRecords(array('folder' => $tp));
-			
+
             if ($result->num_rows() == 0) {
 				$this->templates_model->insertRecords(array('folder' => $tp, 'creator' => $this->session->userdata('loginID')));
             }

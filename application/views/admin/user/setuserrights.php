@@ -3,7 +3,7 @@
 <table width='100%' border='0'>
 <tr>
 <td colspan='8' class='header ui-widget-header' align='center'>
-<?php echo $clang->gT("Set User Rights");?>: <?php echo htmlspecialchars(sanitize_user($_POST['user']));?>
+<?php echo $clang->gT("Set User Rights");?>: <?php echo htmlspecialchars(sanitize_user($user));?>
 </td>
 </tr>
 

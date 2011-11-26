@@ -107,7 +107,7 @@
     $userlist = array();
     $srow = $uresult->row_array();
 
-    $usr['parent'] = $srow['users_name']; ?>
+    $usr['parent'] = isset($srow['users_name']) ? $srow['users_name'] : null; ?>
 
     <?php if (isset($usr['parent_id'])) { ?>
         <td align='center'><?php echo $usr['parent'];?></td>
