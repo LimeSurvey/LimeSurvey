@@ -22,18 +22,12 @@
 * @version $Id: database.php 11349 2011-11-09 21:49:00Z tpartner $
 * @access public
 */
-class Database extends Admin_Controller {
-
-
-    /**
-    * Database::__construct()
-    * Constructor
-    * @return
-    */
-    function __construct()
-    {
-        parent::__construct();
-    }
+class database extends Survey_Common_Action
+{
+	public function run($sa = null)
+	{
+		$this->route('index', array('sa'));
+	}
 
     /**
     * Database::index()
@@ -43,20 +37,19 @@ class Database extends Admin_Controller {
     */
     function index($action=null)
     {
-
-        $clang = $this->limesurvey_lang;
+        $clang = $this->controller->lang;
         $postsid=returnglobal('sid');
         $postgid=returnglobal('gid');
         $postqid=returnglobal('qid');
         $postqaid=returnglobal('qaid');
         $databaseoutput = '';
-        $surveyid = $this->input->post("sid");
-        $gid = $this->input->post("gid");
-        $qid = $this->input->post("qid");
+        $surveyid = returnglobal('sid');
+        $gid = returnglobal('gid');
+        $qid = returnglobal('qid');
         // if $action is not passed, check post data.
         if (!$action)
         {
-            $action = $this->input->post("action");
+            $action = $_POST['action'];
         }
 
         if ($action == "updatedefaultvalues" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
@@ -381,7 +374,6 @@ class Database extends Admin_Controller {
 
         if ($action == "insertquestion" && bHasSurveyPermission($surveyid, 'surveycontent','create'))
         {
-            $_POST = $this->input->post();
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             if (strlen($_POST['title']) < 1)
             {
@@ -391,8 +383,6 @@ class Database extends Admin_Controller {
             }
             else
             {
-                $this->load->helper('database');
-
                 if (!isset($_POST['lid']) || $_POST['lid'] == '') {$_POST['lid']="0";}
                 if (!isset($_POST['lid1']) || $_POST['lid1'] == '') {$_POST['lid1']="0";}
                 if(!empty($_POST['questionposition']) || $_POST['questionposition'] == '0')
@@ -400,53 +390,54 @@ class Database extends Admin_Controller {
                     //Bug Fix: remove +1 ->  $question_order=(sanitize_int($_POST['questionposition'])+1);
                     $question_order=(sanitize_int($_POST['questionposition']));
                     //Need to renumber all questions on or after this
-                    $cdquery = "UPDATE ".$this->db->dbprefix."questions SET question_order=question_order+1 WHERE gid=".$gid." AND question_order >= ".$question_order;
-                    $cdresult=db_execute_assoc($cdquery); // or safe_die($connect->ErrorMsg());  // Checked)
+                    $cdquery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=".$gid." AND question_order >= ".$question_order;
+                    $cdresult=Yii::app()->db->createCommand($cdquery)->execute(); // or safe_die($connect->ErrorMsg());  // Checked)
                 } else {
                     $question_order=(getMaxquestionorder($gid,$surveyid));
                     $question_order++;
                 }
 
-                if ($this->config->item('filterxsshtml'))
-                {
-                    $_POST['title']=$this->security->xss_clean($_POST['title']);
-                    $_POST['question_'.$baselang]=$this->security->xss_clean($_POST['question_'.$baselang]);
-                    $_POST['help_'.$baselang]=$this->security->xss_clean($_POST['help_'.$baselang]);
-                }
-                else
-                {
-                    $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
-                    $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
-                    $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
-                }
+                $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+                $_POST['question_'.$baselang] = html_entity_decode($_POST['question_'.$baselang], ENT_QUOTES, "UTF-8");
+                $_POST['help_'.$baselang] = html_entity_decode($_POST['help_'.$baselang], ENT_QUOTES, "UTF-8");
+
+            	$purifier = new CHtmlPurifier();
 
                 // Fix bug with FCKEditor saving strange BR types
-                $_POST['title']=fix_FCKeditor_text($_POST['title']);
-                $_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
-                $_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
-
+            	if (Yii::app()->getConfig('filterxsshtml'))
+            	{
+            		$_POST['title']=$purifier->purify($_POST['title']);
+            		$_POST['question_'.$baselang]=$purifier->purify($_POST['question_'.$baselang]);
+            		$_POST['help_'.$baselang]=$purifier->purify($_POST['help_'.$baselang]);
+            	}
+        		else
+        		{
+        			$_POST['title']=fix_FCKeditor_text($_POST['title']);
+        			$_POST['question_'.$baselang]=fix_FCKeditor_text($_POST['question_'.$baselang]);
+        			$_POST['help_'.$baselang]=fix_FCKeditor_text($_POST['help_'.$baselang]);
+        		}
                 //$_POST  = array_map('db_quote', $_POST);
 
                 $data = array();
                 $data = array(
-                'sid' => $surveyid,
-                'gid' => $gid,
-                'type' => $_POST['type'],
-                'title' => $_POST['title'],
-                'question' => $_POST['question_'.$baselang],
-                'preg' => $_POST['preg'],
-                'help' => $_POST['help_'.$baselang],
-                'other' => $_POST['other'],
-                'mandatory' => $_POST['mandatory'],
-                'question_order' => $question_order,
-                'language' => $baselang
-
-
-
+	                'sid' => $surveyid,
+	                'gid' => $gid,
+	                'type' => $_POST['type'],
+	                'title' => $_POST['title'],
+	                'question' => $_POST['question_'.$baselang],
+	                'preg' => $_POST['preg'],
+	                'help' => $_POST['help_'.$baselang],
+	                'other' => $_POST['other'],
+	                'mandatory' => $_POST['mandatory'],
+	                'question_order' => $question_order,
+	                'language' => $baselang
                 );
 
-                $this->load->model("questions_model");
-                $result = $this->questions_model->insertRecords($data);
+                $question = new Questions;
+            	foreach ($data as $k => $v)
+            		$question->$k = $v;
+            	$result = $question->save();
+
                 /**
                 $query = "INSERT INTO ".db_table_name('questions')." (sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
                 ." VALUES ('{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
@@ -454,7 +445,7 @@ class Database extends Admin_Controller {
                 */
                 //$result = $connect->Execute($query);  // Checked
                 // Get the last inserted questionid for other languages
-                $qid=$this->db->insert_id(); //$connect->Insert_ID(db_table_name_nq('questions'),"qid");
+                $qid=Yii::app()->db->getLastInsertID(); //$connect->Insert_ID(db_table_name_nq('questions'),"qid");
 
                 // Add other languages
                 if ($result)
@@ -464,28 +455,25 @@ class Database extends Admin_Controller {
                     {
                         if ($alang != "")
                         {
-                            db_switchIDInsert('questions',true);
-
                             $data = array(
-                            'qid' => $qid,
-                            'sid' => $surveyid,
-                            'gid' => $gid,
-                            'type' => $_POST['type'],
-                            'title' => $_POST['title'],
-                            'question' => $_POST['question_'.$alang],
-                            'preg' => $_POST['preg'],
-                            'help' => $_POST['help_'.$alang],
-                            'other' => $_POST['other'],
-                            'mandatory' => $_POST['mandatory'],
-                            'question_order' => $question_order,
-                            'language' => $alang
-
-
-
+	                            'qid' => $qid,
+	                            'sid' => $surveyid,
+	                            'gid' => $gid,
+	                            'type' => $_POST['type'],
+	                            'title' => $_POST['title'],
+	                            'question' => $_POST['question_'.$alang],
+	                            'preg' => $_POST['preg'],
+	                            'help' => $_POST['help_'.$alang],
+	                            'other' => $_POST['other'],
+	                            'mandatory' => $_POST['mandatory'],
+	                            'question_order' => $question_order,
+	                            'language' => $alang
                             );
+                            $ques = new Questions;
+                        	foreach ($data as $k => $v)
+                        		$ques->$k = $v;
+                        	$result2 = $ques->save();
 
-                            $this->load->model("questions_model");
-                            $result2 = $this->questions_model->insertRecords($data);
                             /**
                             $query = "INSERT INTO ".db_table_name('questions')." (qid, sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
                             ." VALUES ('$qid','{$postsid}', '{$postgid}', '{$_POST['type']}', '{$_POST['title']}',"
@@ -496,7 +484,6 @@ class Database extends Admin_Controller {
                                 $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".sprintf($clang->gT("Question in language %s could not be created.","js"),$alang)."\\n\")\n //-->\n</script>\n";
 
                             }
-                            db_switchIDInsert('questions',false);
                         }
                     }
                 }
@@ -516,15 +503,15 @@ class Database extends Admin_Controller {
                     {
                         $data = array();
                         $data = array(
-                        'qid' => $qid,
-                        'value' => $_POST[$validAttribute['name']],
-                        'attribute' => $validAttribute['name']
-
+	                        'qid' => $qid,
+	                        'value' => $_POST[$validAttribute['name']],
+	                        'attribute' => $validAttribute['name']
                         );
 
-
-                        $this->load->model("question_attributes_model");
-                        $result = $this->question_attributes_model->insertRecords($data);
+						$attr = new Question_attributes;
+                    	foreach ($data as $k => $v)
+                    		$attr->$k = $v;
+                        $result = $attr->save();
                         /**$query = "INSERT into ".db_table_name('question_attributes')."
                         (qid, value, attribute) values ($qid,'".db_quote($_POST[$validAttribute['name']])."','{$validAttribute['name']}')";
                         $result = $connect->Execute($query) or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg()); // Checked */
@@ -533,7 +520,7 @@ class Database extends Admin_Controller {
                 }
 
                 fixsortorderQuestions($gid, $surveyid);
-                $this->session->set_userdata('flashmessage', $clang->gT("Question was successfully added."));
+                Yii::app()->session['flashmessage'] =  $clang->gT("Question was successfully added.");
 
                 //include("surveytable_functions.php");
                 //surveyFixColumns($surveyid);
@@ -545,25 +532,22 @@ class Database extends Admin_Controller {
             }
             else
             {
-                redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid));
+                $this->controller->redirect($this->controller->createUrl('admin/survey/sa/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
         }
 
         if ($action == "updatequestion" && bHasSurveyPermission($surveyid, 'surveycontent','update'))
         {
-            $_POST = $this->input->post();
-            $this->load->helper('database');
-
-
-            $cqquery = "SELECT type, gid FROM ".$this->db->dbprefix."questions WHERE qid={$qid}";
-            $cqresult=db_execute_assoc($cqquery); // or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg()); // Checked
-            $cqr=$cqresult->row_array();
+        	Yii::app()->loadHelper('expressions/em_manager');
+            $cqquery = "SELECT type, gid FROM {{questions}} WHERE qid={$qid}";
+            $cqresult=Yii::app()->db->createCommand($cqquery)->query(); // or safe_die ("Couldn't get question type to check for change<br />".$cqquery."<br />".$connect->ErrorMsg()); // Checked
+            $cqr=$cqresult->read();
             $oldtype=$cqr['type'];
             $oldgid=$cqr['gid'];
 
             // Remove invalid question attributes on saving
             $qattributes=questionAttributes();
-            $attsql="delete from ".$this->db->dbprefix."question_attributes where qid='{$qid}' and ";
+            $attsql="delete from {{question_attributes}} where qid='{$qid}' and ";
             if (isset($qattributes[$_POST['type']])){
                 $validAttributes=$qattributes[$_POST['type']];
                 foreach ($validAttributes as  $validAttribute)
@@ -573,7 +557,7 @@ class Database extends Admin_Controller {
                 }
             }
             $attsql.='1=1';
-            db_execute_assoc($attsql); // or safe_die ("Couldn't delete obsolete question attributes<br />".$attsql."<br />".$connect->ErrorMsg()); // Checked
+            Yii::app()->db->createCommand($attsql)->execute(); // or safe_die ("Couldn't delete obsolete question attributes<br />".$attsql."<br />".$connect->ErrorMsg()); // Checked
             $aLanguages=array_merge(array(GetBaseLanguageFromSurveyID($surveyid)),GetAdditionalLanguagesFromSurveyID($surveyid));
 
 
@@ -593,21 +577,21 @@ class Database extends Admin_Controller {
                     {
                         if (isset($_POST[$validAttribute['name'].'_'.$sLanguage]))
                         {
-                            $value=$this->db->escape($_POST[$validAttribute['name'].'_'.$sLanguage]);
-                            $query = "select qaid from ".$this->db->dbprefix."question_attributes
+                            $value=sanatize_paranoid_string($_POST[$validAttribute['name'].'_'.$sLanguage]);
+                            $query = "select qaid from {{question_attributes}}
                             WHERE attribute='".$validAttribute['name']."' AND qid={$qid} AND language='{$sLanguage}'";
-                            $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
-                            if ($result->num_rows()>0)
+                            $result = Yii::app()->db->createCommand($query)->query(); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                            if ($result->getRowCount()>0)
                             {
-                                $query = "UPDATE ".$this->db->dbprefix."question_attributes
+                                $query = "UPDATE {{question_attributes}}
                                 SET value=".$value." WHERE attribute='".$validAttribute['name']."' AND qid={$qid} AND language='{$sLanguage}'";
-                                $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                                $result = Yii::app()->db->createCommand($query)->execute() ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                             }
                             else
                             {
-                                $query = "INSERT into ".$this->db->dbprefix."question_attributes
+                                $query = "INSERT into {{question_attributes}}
                                 (qid, value, attribute, language) values ({$qid},{$value},'{$validAttribute['name']}','{$sLanguage}')";
-                                $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                                $result = Yii::app()->db->createCommand($query)->execute(); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                             }
                         }
                     }
@@ -616,21 +600,21 @@ class Database extends Admin_Controller {
                 {
                     if (isset($_POST[$validAttribute['name']]))
                     {
-                        $query = "select qaid from ".$this->db->dbprefix."question_attributes
+                        $query = "select qaid from {{question_attributes}}
                         WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
-                        $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
-                        $value = $this->db->escape($_POST[$validAttribute['name']]);
-                        if ($result->num_rows()>0)
+                        $result = Yii::app()->db->createCommand($query)->query(); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                        $value = sanitize_string_paranoid($_POST[$validAttribute['name']]);
+                        if ($result->getRowCount()>0)
                         {
-                            $query = "UPDATE ".$this->db->dbprefix."question_attributes
+                            $query = "UPDATE {{question_attributes}}
                             SET value=".$value.",language=NULL WHERE attribute='".$validAttribute['name']."' AND qid=".$qid;
-                            $result = db_execute_assoc($query) ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                            $result = Yii::app()->db->createCommand($query)->execute() ; // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                         }
                         else
                         {
-                            $query = "INSERT into ".$this->db->dbprefix."question_attributes
+                            $query = "INSERT into {{question_attributes}}
                             (qid, value, attribute) values ($qid,$value,'{$validAttribute['name']}')";
-                            $result = db_execute_assoc($query); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
+                            $result = Yii::app()->db->createCommand($query)->execute(); // or safe_die("Error updating attribute value<br />".$query."<br />".$connect->ErrorMsg());  // Checked
                         }
                     }
                 }
@@ -694,29 +678,26 @@ class Database extends Admin_Controller {
                         $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
                         $baselang = GetBaseLanguageFromSurveyID($surveyid);
                         array_push($questlangs,$baselang);
-                        if ($this->config->item('filterxsshtml'))
-                        {
-                            $_POST['title']=$this->security->xss_clean($_POST['title']);
-                        }
-                        else
-                        {
-                            $_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
-                        }
+                    	$p = new CHtmlPurifier();
+                    	if (Yii::app()->getConfig('filterxsshtml'))
+	                    	$_POST['title'] = $p->purify($_POST['title']);
+                    	else
+							$_POST['title'] = html_entity_decode($_POST['title'], ENT_QUOTES, "UTF-8");
+
                         // Fix bug with FCKEditor saving strange BR types
                         $_POST['title']=fix_FCKeditor_text($_POST['title']);
-                        $this->load->model('questions_model');
                         foreach ($questlangs as $qlang)
                         {
-                            if ($this->config->item('filterxsshtml'))
-                            {
-                                $_POST['question_'.$qlang]=$this->security->xss_clean($_POST['question_'.$qlang]);
-                                $_POST['help_'.$qlang]=$this->security->xss_clean($_POST['help_'.$qlang]);
-                            }
-                            else
-                            {
-                                $_POST['question_'.$qlang] = html_entity_decode($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8");
-                                $_POST['help_'.$qlang] = html_entity_decode($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8");
-                            }
+                        	if (Yii::app()->getConfig('filterxsshtml'))
+                        	{
+                        		$_POST['question_'.$qlang] = $p->purify($_POST['question_'.$qlang]);
+                        		$_POST['help_'.$qlang] = $p->purify($_POST['help_'.$qlang]);
+                        	}
+                        	else
+                        	{
+                            	$_POST['question_'.$qlang] = html_entity_decode($_POST['question_'.$qlang], ENT_QUOTES, "UTF-8");
+                            	$_POST['help_'.$qlang] = html_entity_decode($_POST['help_'.$qlang], ENT_QUOTES, "UTF-8");
+                        	}
 
                             // Fix bug with FCKEditor saving strange BR types
                             $_POST['question_'.$qlang]=fix_FCKeditor_text($_POST['question_'.$qlang]);
@@ -726,15 +707,15 @@ class Database extends Admin_Controller {
                             { // ToDo: Sanitize the POST variables !
 
                                 $udata = array(
-                                'type' => $_POST['type'],
-                                'title' => $_POST['title'],
-                                'question' => $_POST['question_'.$qlang],
-                                'preg' => $_POST['preg'],
-                                'help' => $_POST['help_'.$qlang],
-                                'gid' => $gid,
-                                'other' => $_POST['other'],
-                                'mandatory' => $_POST['mandatory'],
-                                'relevance' => $_POST['relevance'],
+	                                'type' => $_POST['type'],
+	                                'title' => $_POST['title'],
+	                                'question' => $_POST['question_'.$qlang],
+	                                'preg' => $_POST['preg'],
+	                                'help' => $_POST['help_'.$qlang],
+	                                'gid' => $gid,
+	                                'other' => $_POST['other'],
+	                                'mandatory' => $_POST['mandatory'],
+	                                'relevance' => $_POST['relevance'],
                                 );
 
                                 if ($oldgid!=$gid)
@@ -759,7 +740,11 @@ class Database extends Admin_Controller {
                                     }
                                 }
                                 $condn = array('sid' => $surveyid, 'qid' => $qid, 'language' => $qlang);
-                                $uqresult = $this->questions_model->update($udata,$condn); //($uqquery); // or safe_die ("Error Update Question: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked)
+                            	$question = Questions::model()->findByAttributes($condn);
+                            	foreach ($udata as $k => $v)
+                            		$question->$k = $v;
+
+                                $uqresult = $question->save();//($uqquery); // or safe_die ("Error Update Question: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked)
                                 if (!$uqresult)
                                 {
                                     $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Question could not be updated","js")."\n\")\n //-->\n</script>\n";
@@ -771,8 +756,8 @@ class Database extends Admin_Controller {
                         // Update the group ID on subquestions, too
                         if ($oldgid!=$gid)
                         {
-                            $sQuery="UPDATE ".$this->db->dbprefix."questions set gid={$gid} where gid={$oldgid} and parent_qid>0";
-                            $oResult = db_execute_assoc($sQuery); // or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
+                            $sQuery="UPDATE {{questions}} set gid={$gid} where gid={$oldgid} and parent_qid>0";
+                            $oResult = Yii::app()->db->createCommand($sQuery)->execute(); // or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
                             // if the group has changed then fix the sortorder of old and new group
                             fixsortorderQuestions($oldgid, $surveyid);
                             fixsortorderQuestions($gid, $surveyid);
@@ -782,18 +767,16 @@ class Database extends Admin_Controller {
                         }
                         if ($oldtype != $_POST['type'])
                         {
-                            $sQuery="UPDATE ".$this->db->dbprefix."questions set type=".$this->db->escape($_POST['type'])." where parent_qid={$qid}";
-                            $oResult = db_execute_assoc($sQuery); // or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
+                            $sQuery="UPDATE {{questions}} set type=".sanitize_paranoid_string($_POST['type'])." where parent_qid={$qid}";
+                            $oResult = Yii::app()->db->createCommand($sQuery)->execute(); // or safe_die ("Error updating question group ID: ".$uqquery."<br />".$connect->ErrorMsg());  // Checked
 
                         }
-                        $query = "DELETE FROM ".$this->db->dbprefix."answers WHERE qid= {$qid} and scale_id>={$iAnswerScales}";
-                        $result = db_execute_assoc($query); // or safe_die("Error: ".$connect->ErrorMsg()); // Checked
+                        $query = "DELETE FROM {{answers}} WHERE qid= {$qid} and scale_id>={$iAnswerScales}";
+                        $result = Yii::app()->db->createCommand($query)->execute(); // or safe_die("Error: ".$connect->ErrorMsg()); // Checked
 
                         // Remove old subquestion scales
-                        $query = "DELETE FROM ".$this->db->dbprefix."questions WHERE parent_qid={$qid} and scale_id>={$iSubquestionScales}";
-                        $result = db_execute_assoc($query) ; //or safe_die("Error: ".$connect->ErrorMsg()); // Checked
-                        $this->session->set_userdata('flashmessage',$clang->gT("Question was successfully saved."));
-
+                        $query = "DELETE FROM {{questions}} WHERE parent_qid={$qid} and scale_id>={$iSubquestionScales}";
+                        $result = Yii::app()->db->createCommand($query)->execute() ; //or safe_die("Error: ".$connect->ErrorMsg()); // Checked
 
                     }
                     else
@@ -842,7 +825,7 @@ class Database extends Admin_Controller {
             }
             else
             {
-                redirect(site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$qid));
+                $this->controller->redirect($this->controller->createUrl('admin/survey/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid));
             }
         }
 

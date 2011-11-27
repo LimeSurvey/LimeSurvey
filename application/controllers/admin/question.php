@@ -22,17 +22,22 @@
   * @version $Id: question.php 11260 2011-10-25 18:34:55Z tmswhite $
   * @access public
   */
- class question extends Survey_Common_Controller {
+ class question extends Survey_Common_Action
+ {
 
     /**
-     * question::__construct()
-     * Constructor
-     * @return
+     * Routes to the correct sub-action
+     *
+     * @access public
+     * @return void
      */
-    function __construct()
-	{
-		parent::__construct();
-	}
+ 	public function run($sa)
+ 	{
+ 		if ($sa == 'addquestion' || $sa == 'index' || $sa == 'editquestion')
+ 			$this->route('index', array('sa', 'surveyid', 'gid', 'qid'));
+ 		elseif ($sa == 'import')
+ 			$this->route('import', array());
+ 	}
 
     /**
      * question::import()
@@ -41,20 +46,20 @@
      */
     function import()
     {
-        $action = $this->input->post('action');
-        $surveyid = $this->input->post('sid');
-        $gid = $this->input->post('gid');
-        $clang = $this->limesurvey_lang;
+        $action = returnglobal('action');
+        $surveyid = returnglobal('sid');
+        $gid = returnglobal('gid');
+        $clang = $this->controller->lang;
 
 
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-	    $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."/admin/default/superfish.css";
+	    Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);
-        self::_surveybar($surveyid,$gid);
-        self::_surveysummary($surveyid,"viewquestion");
-        self::_questiongroupbar($surveyid,$gid,NULL,"viewgroup");
+        $this->controller->_getAdminHeader();
+        $this->controller->_showadminmenu($surveyid);
+        $this->_surveybar($surveyid,$gid);
+        $this->_surveysummary($surveyid,"viewquestion");
+        $this->_questiongroupbar($surveyid,$gid,NULL,"viewgroup");
 
         if ($action == 'importquestion')
         {
@@ -62,7 +67,7 @@
             $importquestion = "<div class='header ui-widget-header'>".$clang->gT("Import Question")."</div>\n";
             $importquestion .= "<div class='messagebox ui-corner-all'>\n";
 
-            $sFullFilepath = $this->config->item('tempdir'). DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
+            $sFullFilepath = Yii::app()->getConfig('tempdir'). DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
             $aPathInfo = pathinfo($sFullFilepath);
             $sExtension = $aPathInfo['extension'];
 
@@ -106,7 +111,7 @@
             $importquestion .= "<div class='successheader'>".$clang->gT("Success")."</div>&nbsp;<br />\n"
             .$clang->gT("File upload succeeded.")."<br /><br />\n"
             .$clang->gT("Reading file..")."<br /><br />\n";
-            $this->load->helper('admin/import');
+            Yii::app()->loadHelper('admin/import');
             if (strtolower($sExtension)=='csv')
             {
                 $aImportResults=CSVImportQuestion($sFullFilepath, $surveyid, $gid);
@@ -142,19 +147,19 @@
             ."</ul>\n";
 
             $importquestion .= "<strong>".$clang->gT("Question import is complete.")."</strong><br />&nbsp;\n";
-            $importquestion .= "<input type='submit' value='".$clang->gT("Go to question")."' onclick=\"window.open('".site_url('admin/survey/view/'.$surveyid.'/'.$gid.'/'.$aImportResults['newqid'])."', '_top')\" />\n";
+            $importquestion .= "<input type='submit' value='".$clang->gT("Go to question")."' onclick=\"window.open('".$this->controller->createUrl('admin/survey/view/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$aImportResults['newqid'])."', '_top')\" />\n";
             $importquestion .= "</div><br />\n";
 
             unlink($sFullFilepath);
 
             $data['display'] = $importquestion;
-            $this->load->view('survey_view',$data);
+            $this->controller->render('/survey_view',$data);
         }
 
-        self::_loadEndScripts();
+        $this->controller->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -663,40 +668,39 @@
      */
     function index($action,$surveyid,$gid,$qid=null)
     {
-
     	$surveyid = sanitize_int($surveyid);
 		if(isset($qid)) $qid = sanitize_int($qid);
 		$gid = sanitize_int($gid);
 
-        self::_js_admin_includes(base_url().'scripts/jquery/jquery.dd.js');
-        $css_admin_includes[] = base_url().'scripts/jquery/dd.css';
+        $this->getController()->_js_admin_includes(Yii::app()->baseUrl.'scripts/jquery/jquery.dd.js');
+        $css_admin_includes[] = Yii::app()->baseUrl.'scripts/jquery/dd.css';
 
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);;
-        self::_surveybar($surveyid,$gid);
-        self::_surveysummary($surveyid,"viewgroup");
-        self::_questiongroupbar($surveyid,$gid,$qid,"addquestion");
+        $this->controller->_getAdminHeader();
+        $this->controller->_showadminmenu($surveyid);;
+        $this->_surveybar($surveyid,$gid);
+        $this->_surveysummary($surveyid,"viewgroup");
+        $this->_questiongroupbar($surveyid,$gid,$qid,"addquestion");
         if ($action != "addquestion")
         {
-            self::_questionbar($surveyid,$gid,$qid,"editquestion");
+            $this->_questionbar($surveyid,$gid,$qid,"editquestion");
         }
 
 
-        if(bHasSurveyPermission($surveyid,'surveycontent','read'))
+        if (bHasSurveyPermission($surveyid,'surveycontent','read'))
         {
-            $this->session->set_userdata('FileManagerContext',"edit:question:".$surveyid);
-            $_POST = $this->input->post();
-            $clang = $this->limesurvey_lang;
-            $this->load->helper('admin/htmleditor');
-            $this->load->helper('surveytranslator');
-            $this->load->helper('database');
+            Yii::app()->session['FileManagerContext'] = "edit:question:".$surveyid;
+
+            $clang = $this->controller->lang;
+            Yii::app()->loadHelper('admin/htmleditor');
+            Yii::app()->loadHelper('surveytranslator');
+
 
             if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
 
-            $data['adding'] = $adding =($action=="addquestion");
+            $data['adding'] = $adding = $action == "addquestion";
             $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $baselang = GetBaseLanguageFromSurveyID($surveyid);
             $questlangs[] = $baselang;
@@ -705,14 +709,14 @@
 
             if (!$adding)
             {
-                $egquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
-                $egresult = db_execute_assoc($egquery);
-                foreach ($egresult->result_array() as $esrow)
+                $egquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid=$gid AND qid=$qid";
+                $egresult = Yii::app()->db->createCommand($egquery)->query();
+                foreach ($egresult->readAll() as $esrow)
                 {
                     if(!array_key_exists($esrow['language'], $questlangs)) // Language Exists, BUT ITS NOT ON THE SURVEY ANYMORE.
                     {
-                        $egquery = "DELETE FROM ".$this->db->dbprefix."questions WHERE sid='{$surveyid}' AND gid='{$gid}' AND qid='{$qid}' AND language='".$esrow['language']."'";
-                        $egresultD = db_execute_assoc($egquery);
+                        $egquery = "DELETE FROM {{questions}} WHERE sid='{$surveyid}' AND gid='{$gid}' AND qid='{$qid}' AND language='".$esrow['language']."'";
+                        $egresultD = Yii::app()->db->createCommand($egquery)->query();
                     } else {
                         $questlangs[$esrow['language']] = 99;
                     }
@@ -728,7 +732,7 @@
                                                'help' => $esrow['help']);
                     }
                 }
-                if ($egresult==false or $egresult->num_rows()==0)
+                if ($egresult==false or $egresult->getRowCount()==0)
                 {
                     safe_die('Invalid question id');
                 }
@@ -738,18 +742,16 @@
                 {
                     if ($value != 99)
                     {
-                        db_switchIDInsert('questions',true);
-                        $egquery = "INSERT INTO ".$this->db->dbprefix."questions (qid, sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
+                        $egquery = "INSERT INTO {{questions}} (qid, sid, gid, type, title, question, preg, help, other, mandatory, question_order, language)"
                         ." VALUES ('{$qid}','{$surveyid}', '{$gid}', '{$basesettings['type']}', '{$basesettings['title']}',"
                         ." '{$basesettings['question']}', '{$basesettings['preg']}', '{$basesettings['help']}', '{$basesettings['other']}', '{$basesettings['mandatory']}', '{$basesettings['question_order']}','{$key}')";
-                        $egresult = db_execute_assoc($egquery);
-                        db_switchIDInsert('questions',false);
+                        $egresult = Yii::app()->createCommand($egquery)->execute();
                     }
                 }
 
-                $eqquery = "SELECT ".$this->db->dbprefix."questions.*, group_name FROM ".$this->db->dbprefix."questions
-                            join ".$this->db->dbprefix."groups on ".$this->db->dbprefix."groups.gid=".$this->db->dbprefix."questions.gid WHERE ".$this->db->dbprefix."questions.sid=$surveyid AND ".$this->db->dbprefix."questions.gid=$gid AND qid=$qid AND ".$this->db->dbprefix."questions.language='{$baselang}'";
-                $eqresult = db_execute_assoc($eqquery);
+                $eqquery = "SELECT {{questions}}.*, group_name FROM {{questions}}
+                            join {{groups}} on {{groups}}.gid={{questions}}.gid WHERE {{questions}}.sid=$surveyid AND {{questions}}.gid=$gid AND qid=$qid AND {{questions}}.language='{$baselang}'";
+                $eqresult = Yii::app()->db->createCommand($eqquery)->query();
             }
 
             $qtypelist=getqtypelist('','array');
@@ -764,7 +766,7 @@
 
             if (!$adding)
             {
-                $eqrow = $eqresult->row_array();  // there should be only one datarow, therefore we don't need a 'while' construct here.
+                $eqrow = $eqresult->read();  // there should be only one datarow, therefore we don't need a 'while' construct here.
                 // Todo: handler in case that record is not found
             }
             else
@@ -781,6 +783,7 @@
                 $eqrow['mandatory']='N';
                 $eqrow['preg']='';
                 $eqrow['relevance']=1;
+            	$eqrow['group_name'] = '';
             }
             $data['eqrow'] = $eqrow;
             $data['surveyid'] = $surveyid;
@@ -789,17 +792,17 @@
 
             if (!$adding)
             {
-                $aqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language != '{$baselang}'";
-                $aqresult = db_execute_assoc($aqquery);
+                $aqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid=$gid AND qid=$qid AND language != '{$baselang}'";
+                $aqresult = Yii::app()->db->createCommand($aqquery)->query();
                 $data['aqresult'] = $aqresult;
             }
             $data['clang'] = $clang;
             $data['action'] = $action;
 
-            $this->load->model('surveys_model');
-            $sumresult1 = $this->surveys_model->getDataOnSurvey($surveyid); //$sumquery1, 1) ; //Checked
-            if ($sumresult1->num_rows()==0){die('Invalid survey id');} //  if surveyid is invalid then die to prevent errors at a later time
-            $surveyinfo = $sumresult1->row_array();
+            $sumresult1 = Survey::model()->findByPk($surveyid); //$sumquery1, 1) ; //Checked
+            if (is_null($sumresult1))
+            	die('Invalid survey id'); //  if surveyid is invalid then die to prevent errors at a later time
+            $surveyinfo = $sumresult1->attributes;
             $surveyinfo = array_map('FlattenText', $surveyinfo);
             $data['activated'] = $activated = $surveyinfo['active'];
 
@@ -808,7 +811,7 @@
             {
             	// Prepare selector Class for javascript function : TODO with or without picture
             	$selectormodeclass='full'; // default
-            	if ($this->session->userdata('questionselectormode')=='none'){$selectormodeclass='none';}
+            	if (Yii::app()->session['questionselectormode']=='none'){$selectormodeclass='none';}
                 $data['selectormodeclass'] = $selectormodeclass;
             }
 
@@ -820,18 +823,17 @@
 
             if ($adding)
             {
-
                 //Get the questions for this group
                 $baselang = GetBaseLanguageFromSurveyID($surveyid);
-                $oqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
-                $oqresult = db_execute_assoc($oqquery);
+                $oqquery = "SELECT * FROM {{questions}} WHERE sid=$surveyid AND gid=$gid AND language='".$baselang."' order by question_order" ;
+                $oqresult = Yii::app()->db->createCommand($oqquery)->query();
                 $data['oqresult'] = $oqresult;
             }
 
             $data['qid'] = $qid;
 
-            $this->load->view("admin/survey/Question/editQuestion_view",$data);
-            self::_questionJavascript($eqrow['type']);
+            $this->controller->render("/admin/survey/Question/editQuestion_view",$data);
+            $this->_questionJavascript($eqrow['type']);
 
 
         }
@@ -840,10 +842,10 @@
             include('access_denied.php');
         }
 
-        self::_loadEndScripts();
+        $this->controller->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 
 
     }
@@ -856,7 +858,7 @@
      */
     function _questionjavascript($type)
     {
-        $this->load->view('admin/survey/Question/questionJavascript_view',array('type' => $type));
+        $this->controller->render('/admin/survey/Question/questionJavascript_view',array('type' => $type));
     }
 
     /**

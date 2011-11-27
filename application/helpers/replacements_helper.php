@@ -15,8 +15,6 @@
 */
 function templatereplace($line, $replacements=array(),&$redata=array(), $debugSrc='Unspecified', $anonymized=false, $questionNum=NULL, $registerdata=array())
 {
-    $CI =& get_instance();
-
     /*
     global $clienttoken,$token,$sitename,$move,$showXquestions,$showqnumcode,$questioncode,$register_errormsg;
     global $s_lang,$errormsg,$saved_id, $totalBoilerplatequestions, $relativeurl, $languagechanger,$captchapath,$loadname;
@@ -62,7 +60,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     'totalBoilerplatequestions',
     'totalquestions',
     );
-    
+
     $varsPassed = array();
 
     foreach($allowedvars as $var)
@@ -81,12 +79,12 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     //    extract($redata);   // creates variables for each of the keys in the array
 
     // Local over-rides in case not set above
-    if (!isset($showgroupinfo)) { $showgroupinfo = $CI->config->config['showgroupinfo']; }
-    if (!isset($showqnumcode)) { $showqnumcode = $CI->config->config['showqnumcode']; }
+    if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
+    if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
     $_surveyid = (isset($surveyid) ? $surveyid : 0);
     if (!isset($totalBoilerplatequestions)) { $totalBoilerplatequestions = 0; }
-    if (!isset($showXquestions)) { $showXquestions = $CI->config->config['showXquestions']; }
-    if (!isset($relativeurl)) { $relativeurl = $CI->config->item("relativeurl"); }
+    if (!isset($showXquestions)) { $showXquestions = Yii::app()->getConfig('showXquestions'); }
+    if (!isset($relativeurl)) { $relativeurl = Yii::app()->getConfig("relativeurl"); }
     if (!isset($s_lang)) { $s_lang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'); }
     if (!isset($captchapath)) { $captchapath = ''; }
 
@@ -94,11 +92,11 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     {
         $line = file_get_contents($line);
     }
-    
 
-    $clang = ($CI->limesurvey_lang) ? $CI->limesurvey_lang : $registerdata['clang'];
-    
-    $CI->load->helper('surveytranslator');
+
+    $clang = Yii::app()->lang;
+
+    Yii::app()->loadHelper('surveytranslator');
     $questiondetails = array('sid' => 0, 'gid' => 0, 'qid' => 0, 'aid' =>0);
     if(isset($question) && isset($question['sgq'])) $questiondetails=getsidgidqidaidtype($question['sgq']); //Gets an array containing SID, GID, QID, AID and Question Type)
 
@@ -113,7 +111,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     }
     else
     {
-        $templatename=$CI->config->item('defaulttemplate');
+        $templatename=Yii::app()->getConfig('defaulttemplate');
     }
     $templatename=validate_templatedir($templatename);
     if(!isset($templatedir)) $templatedir = sGetTemplatePath($templatename);
@@ -122,7 +120,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     if (stripos ($line,"</head>"))
     {
         $line=str_ireplace("</head>",
-        "<script type=\"text/javascript\" src=\"".$CI->config->item('generalscripts')."survey_runtime.js\"></script>\n"
+        "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."survey_runtime.js\"></script>\n"
         .use_firebug()
         ."\t</head>", $line);
     }
@@ -140,7 +138,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     {
         $surveyformat .= " page-odd";
     }
-    
+
     if (isset($thissurvey['allowjumps']) && $thissurvey['allowjumps']=="Y" && $surveyformat!="allinone" && (isset($_SESSION['step']) && $_SESSION['step']>0)){
         $surveyformat .= " withindex";
     }
@@ -301,8 +299,8 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     {
         $dateformatdetails=getDateFormatData($thissurvey['surveyls_dateformat']);
         $items = array($thissurvey['expiry'],"Y-m-d");
-        $CI->load->library('Date_Time_Converter',$items);
-        $datetimeobj = $CI->date_time_converter ;
+        Yii::import('application.libraries.Date_Time_Converter', true);
+        $datetimeobj = new Date_Time_Converter($items) ;
         $_dateoutput=$datetimeobj->convert($dateformatdetails['phpdate']);
     }
     else
@@ -412,7 +410,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
             }
             else
             {
-                $helpicon=$CI->config->item('imageurl')."/help.gif";
+                $helpicon=Yii::app()->getConfig('imageurl')."/help.gif";
             }
         }
         $_questionhelp =  "<img src='{$helpicon}' alt='Help' align='left' />".$help;
@@ -433,7 +431,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
 
     if (isset($thissurvey['active']) and $thissurvey['active'] == "N")
     {
-        $_restart= "<a href='".site_url("survey/sid/$surveyid/newtest/Y");
+        $_restart= "<a href='" . Yii::app()->createUrl("survey/sid/$surveyid/newtest/Y");
         if (isset($s_lang) && $s_lang!='') $_restart.="/lang/".$s_lang;
         $_restart.="'>".$clang->gT("Restart this Survey")."</a>";
     }
@@ -444,7 +442,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
             if (!empty($restart_token)) $restart_extra .= "/token/".urlencode($restart_token);
             else $restart_extra = "/newtest/Y";
             if (!empty($_GET['lang'])) $restart_extra .= "/lang/".returnglobal('lang');
-            $_restart = "<a href='".site_url("survey/sid/$surveyid$restart_extra")."'>".$clang->gT("Restart this Survey")."</a>";
+            $_restart = "<a href='".Yii::app()->createUrl("survey/sid/$surveyid$restart_extra")."'>".$clang->gT("Restart this Survey")."</a>";
     }
     else
     {
@@ -501,7 +499,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     $_saveform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_saveform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".site_url('/verification/image')."' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
+        $_saveform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->createUrl('/verification/sa/image')."' alt='' /></td><td valign='middle' style='text-align:left'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
     }
     $_saveform .= "<tr><td align='right'></td><td></td></tr>\n"
     . "<tr><td></td><td><input type='submit'  id='savebutton' name='savesubmit' value='" . $clang->gT("Save Now") . "' /></td></tr>\n"
@@ -522,7 +520,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
     $_loadform .= "' /></td></tr>\n";
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && captcha_enabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_loadform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".site_url('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
+        $_loadform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".Yii::app()->createUrl('/verification/sa/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' alt=''/></td></tr></table></td></tr>\n";
     }
     $_loadform .="<tr><td align='right'></td><td></td></tr>\n"
     . "<tr><td></td><td><input type='submit' id='loadbutton' value='" . $clang->gT("Load Now") . "' /></td></tr></table>\n";
@@ -534,7 +532,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
             $tokensid = $surveyid;
         else
             $tokensid = $registerdata['sid'];
-        
+
         $_registerform = "<form method='post' action='".site_url('register/index')."'>\n";
         if (!isset($_REQUEST['lang']))
         {
@@ -544,7 +542,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
         {
             $_reglang = returnglobal('lang');
         }
-        
+
         $_registerform .= "<input type='hidden' name='lang' value='" . $_reglang . "' />\n";
         $_registerform .= "<input type='hidden' name='sid' value='$tokensid' id='sid' />\n";
 
@@ -571,7 +569,7 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
             $_registerform .= " value='" . htmlentities(returnglobal('register_email'), ENT_QUOTES, 'UTF-8') . "'";
         }
         $_registerform .= " /></td></tr>\n";
-        
+
         if ((count($registerdata) > 1 || isset($thissurvey['usecaptcha'])) && function_exists("ImageCreate") && captcha_enabled('registrationscreen', $thissurvey['usecaptcha']))
         {
             $_registerform .="<tr><td align='right'>" . $clang->gT("Security Question") . ":</td><td><table><tr><td valign='middle'><img src='".site_url('/verification/image')."' alt='' /></td><td valign='middle'><input type='text' size='5' maxlength='3' name='loadsecurity' value='' /></td></tr></table></td></tr>\n";
@@ -579,14 +577,14 @@ function templatereplace($line, $replacements=array(),&$redata=array(), $debugSr
         $_registerform .= "<tr><td></td><td><input id='registercontinue' class='submit' type='submit' value='" . $clang->gT("Continue") . "' />"
         . "</td></tr>\n"
         . "</table>\n";
-        
+
         if (count($registerdata) > 1 && $registerdata['sid'] != NULL && $debugSrc == 'register.php')
         {
             $_registerform .= "<input name='startdate' type ='hidden' value='".$registerdata['startdate']."' />";
             $_registerform .= "<input name='enddate' type ='hidden' value='".$registerdata['enddate']."' />";
-        }  
-        
-        
+        }
+
+
         $_registerform .= "</form>\n";
     }
     else

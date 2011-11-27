@@ -31,9 +31,21 @@ class tokens extends Survey_Common_Action
 		elseif ($sa == 'addnew')
 			$this->route('addnew', array('surveyid'));
 		elseif ($sa == 'browse')
-		{
 			$this->route('browse', array('surveyid', 'limit', 'start', 'order', 'searchstring'));
-		}
+		elseif ($sa == 'remind')
+			$this->route('remind', array('surveyid'));
+		elseif ($sa == 'email')
+			$this->route('email', array('surveyid'));
+		elseif ($sa == 'bounceprocessing')
+			$this->route('bounceprocessing', array('surveyid'));
+		elseif ($sa == 'bouncesettings')
+			$this->route('bouncesettings', array('surveyid'));
+		elseif ($sa == 'exportdialog')
+			$this->route('exportdialog', array('surveyid'));
+		elseif ($sa == 'import')
+			$this->route('import', array('surveyid'));
+		elseif ($sa == 'importldap')
+			$this->route('importldap', array('surveyid'));
 	}
 
 	/**
@@ -94,8 +106,9 @@ class tokens extends Survey_Common_Action
     {
     	$surveyid = sanitize_int($surveyid);
 
-        $clang = $this->limesurvey_lang;
-        $this->load->helper('globalsettings');
+        $clang = $this->controller->lang;
+
+    	Tokens_dynamic::sid($surveyid);
 
         $thissurvey=getSurveyInfo($surveyid);
         if ($thissurvey['bounceprocessing']!='N' && !($thissurvey['bounceprocessing']=='G' && getGlobalSetting('bounceaccounttype')=='off') && bHasSurveyPermission($surveyid, 'tokens','update'))
@@ -195,16 +208,17 @@ class tokens extends Survey_Common_Action
     						$tokenBounce=explode(": ",$item);
     						if($surveyid == $surveyidBounce[1])
     						{
-    							$bouncequery = "UPDATE ".db_table_name("tokens_$surveyid")." SET emailstatus='bounced' WHERE token='$tokenBounce[1]';";
+    							$bouncequery = "UPDATE {{tokens_$surveyid}} SET emailstatus='bounced' WHERE token='$tokenBounce[1]';";
     							$data = array(
                                         'emailstatus'=> 'bounced'
 
                                 );
                                 $condn = array('token' => $tokenBounce[1]);
-                                $this->load->model('tokens_dynamic_model');
 
-
-                                $anish= $this->tokens_dynamic_model->updateRecords($surveyid,$data,$condn); //$connect->Execute($bouncequery);)
+    							$record = Tokens_dynamic::model()->findByAttributes($condn);
+								foreach ($data as $k => $v)
+									$record->$k = $v;
+    							$record->save();
 
     							$readbounce=imap_body($mbox,$count); // Put read
     							if (isset($thissurvey['bounceremove']) && $thissurvey['bounceremove']) // TODO Y or just true, and a imap_delete
@@ -222,12 +236,13 @@ class tokens extends Survey_Common_Action
     				$checktotal++;
     			    @imap_close($mbox);
                 }
-    			$entertimestamp = "update ".db_table_name("surveys")." set bouncetime='$datelastbounce' where sid='$surveyid'";
+    			$entertimestamp = "update {{surveys}} set bouncetime='$datelastbounce' where sid='$surveyid'";
                 $data = array('bouncetime' => $datelastbounce);
                 $condn = array('sid' => $surveyid);
-                $this->load->model('surveys_model');
+                $survey = Survey::model()->findByAttributes($condn);
+    			$survey->bouncetime = $datelistbounce;
+    			$executetimestamp = $survey->save();
 
-    			$executetimestamp = $this->surveys_model->updateSurvey($data,$condn); //'$connect->Execute($entertimestamp);)
     			if($bouncetotal>0)
     			{
     				echo sprintf($clang->gT("%s messages were scanned out of which %s were marked as bounce by the system."), $checktotal,$bouncetotal);
@@ -846,14 +861,14 @@ class tokens extends Survey_Common_Action
 	function email($surveyid,$tokenids=null)
 	{
 		$surveyid = sanitize_int($surveyid);
-		$clang=$this->limesurvey_lang;
+		$clang=$this->controller->lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
 			show_error("no permissions"); // TODO Replace
 		}
 
 		if(isset($tokenids) && $tokenids=="tids") {
-			$tokenids=$this->input->post("tokenids");
+			$tokenids=$_POST['tokenids'];
 		    $tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
 		    unset($tokenids);
 		    foreach($tokenidsarray as $tokenitem) {
@@ -861,13 +876,12 @@ class tokens extends Survey_Common_Action
 		    }
 		}
 
-		$this->load->model("tokens_dynamic_model");
-		$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
-		$this->load->helper("surveytranslator");
+		Tokens_dynamic::sid($surveyid);
+		$tkcount=count(Tokens_dynamic::model()->findAll());
+		Yii::app()->loadHelper("surveytranslator");
 
-		$this->load->model("surveys_model");
-		$query = $this->tokens_dynamic_model->getAllRecords($surveyid,FALSE,1);
-		$examplerow = $query->row_array();
+		$query = Tokens_dynamic::model()->find($surveyid);
+		$examplerow = !is_null($query) ? $query->attributes : array();
 
 		$tokenfields=GetTokenFieldsAndNames($surveyid,true);
     	$nrofattributes=0;
@@ -875,14 +889,14 @@ class tokens extends Survey_Common_Action
 		$data['clang']=$clang;
 		$thissurvey=getSurveyInfo($surveyid);
 		$data['thissurvey']=$thissurvey;
-		$data['imageurl'] = $this->config->item('imageurl');
+		$data['imageurl'] = Yii::app()->getConfig('imageurl');
 		$data['surveyid']=$surveyid;
 		$data['tokenfields']=$tokenfields;
 		$data['nrofattributes']=$nrofattributes;
 		$data['examplerow']=$examplerow;
 
-		$this->load->helper("admin/htmleditor_helper");
-
+		Yii::app()->loadHelper("admin/htmleditor");
+		Yii::app()->loadHelper('replacements');
 		if (getEmailFormat($surveyid) == 'html')
 	    {
 	        $ishtml=true;
@@ -893,19 +907,18 @@ class tokens extends Survey_Common_Action
 	    }
 		$data['ishtml']=$ishtml;
 
-	    if (!$this->input->post('ok'))
+	    if (empty($_POST['ok']))
 	    {
-			self::_getAdminHeader();
-			$this->load->view("admin/token/tokenbar",$data);
-			$this->load->view("admin/token/email",$data);
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+			$this->controller->_getAdminHeader();
+			$this->controller->render("/admin/token/tokenbar",$data);
+			$this->controller->render("/admin/token/email",$data);
+			$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 	    }
     	else
     	{
-    		$_POST=$this->input->post();
-			$tokenid=$this->input->post("tokenid");
-			$tokenids=$this->input->post("tokenids");
-			$maxemails=$this->config->item("maxemails");
+			$tokenid=returnglobal('tokenid');
+			$tokenids=returnglobal('tokenids');
+			$maxemails=Yii::app()->getConfig("maxemails");
 
 			$data['tokenid']=$tokenid;
 			$data['tokenids']=$tokenids;
@@ -920,22 +933,32 @@ class tokens extends Survey_Common_Action
 	        }
 
 	        //$ctfieldcount = $ctresult->FieldCount();
-			$ctresult=$this->tokens_dynamic_model->ctquery($surveyid,$SQLemailstatuscondition,$tokenid,$tokenids);
-			$ctcount = $ctresult->num_rows();
+    		$ctquery = "SELECT * FROM {{tokens_$surveyid}} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
 
-	        $emresult = $this->tokens_dynamic_model->emquery($surveyid,$SQLemailstatuscondition,$maxemails,$tokenid,$tokenids);
-	        $emcount = $emresult->num_rows();
+    		if ($tokenid) {$ctquery .= " AND tid='{$tokenid}'";}
+    		if ($tokenids) {$ctquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
+
+			$ctresult = Yii::app()->db->createCommand($ctquery)->query();
+			$ctcount = $ctresult->getRowCount();
+
+    		$emquery = "SELECT * FROM {{tokens_$surveyid}} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+
+    		if ($tokenid) {$emquery .= " and tid='{$tokenid}'";}
+    		if ($tokenids) {$emquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
+
+	        $emresult = Yii::app()->db->createCommand($emquery)->limit($maxemails)->query();
+	        $emcount = $emresult->getRowCount();
 
 	        $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	        $baselanguage = GetBaseLanguageFromSurveyID($surveyid);
 	        array_unshift($surveylangs,$baselanguage);
 
-			$this->load->config("email");
+			Yii::app()->loadConfig('email');
 	        foreach ($surveylangs as $language)
 	        {
 	            $_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
 	            $_POST['subject_'.$language]=auto_unescape($_POST['subject_'.$language]);
-	            if ($ishtml) $_POST['message_'.$language] = html_entity_decode($_POST['message_'.$language], ENT_QUOTES, $this->config->item("emailcharset"));
+	            if ($ishtml) $_POST['message_'.$language] = html_entity_decode($_POST['message_'.$language], ENT_QUOTES, Yii::app()->getConfig("emailcharset"));
 	        }
 
 	        $attributes=GetTokenFieldsAndNames($surveyid);
@@ -943,7 +966,7 @@ class tokens extends Survey_Common_Action
 
 	        if ($emcount > 0)
 	        {
-	            foreach ($emresult->result_array() as $emrow)
+	            foreach ($emresult->readAll() as $emrow)
 	            {
 	                unset($fieldsarray);
                     $to=array();
@@ -970,8 +993,8 @@ class tokens extends Survey_Common_Action
 
 	                $from = $_POST['from_'.$emrow['language']];
 
-					$publicurl=site_url();
-					$modrewrite=$this->config->item("modrewrite");
+					$publicurl=Yii::app()->baseUrl;
+					$modrewrite=Yii::app()->getConfig("modrewrite");
 	                if ($ishtml === false)
 	                {
 	                    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}";
@@ -1016,16 +1039,16 @@ class tokens extends Survey_Common_Action
 	                {
 	                    $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.")."<br />", $fieldsarray);
 	                }
-	                elseif (SendEmailMessage($modmessage, $modsubject, $to , $from, $this->config->item("sitename"), $ishtml, getBounceEmail($surveyid),null,$customheaders))
+	                elseif (SendEmailMessage($modmessage, $modsubject, $to , $from, Yii::app()->getConfig("sitename"), $ishtml, getBounceEmail($surveyid),null,$customheaders))
 	                {
 	                    // Put date into sent
-	                    $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $this->config->item("timeadjust"));
-	                    $udequery = "UPDATE ".$this->db->dbprefix("tokens_{$surveyid}")."\n"
+	                    $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+	                    $udequery = "UPDATE {{tokens_$surveyid}}\n"
 	                    ."SET sent='$today' WHERE tid={$emrow['tid']}";
 	                    //
-	                    $uderesult = db_execute_assoc($udequery);
+	                    $uderesult = Yii::app()->db->createCommand($udequery)->query();
 	                    $tokenoutput .= $clang->gT("Invitation sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)<br />\n";
-	                    if ($this->config->item("emailsmtpdebug")==2)
+	                    if (Yii::app()->getConfig("emailsmtpdebug")==2)
 	                    {
 	                        $tokenoutput .=$maildebug;
 	                    }
@@ -1075,31 +1098,31 @@ class tokens extends Survey_Common_Action
 	                }
 	                $tokenoutput .="</form>\n";
 	            }
-				$data['clang']=$this->limesurvey_lang;
+				$data['clang']=$this->controller->lang;
 				$data['thissurvey']=getSurveyInfo($surveyid);
-				$data['imageurl'] = $this->config->item('imageurl');
+				$data['imageurl'] = Yii::app()->getConfig('imageurl');
 				$data['surveyid']=$surveyid;
 				$data['tokenoutput']=$tokenoutput;
-				self::_getAdminHeader();
-				$this->load->view("admin/token/tokenbar",$data);
-				$this->load->view("admin/token/emailpost",$data);
-				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+				$this->controller->_getAdminHeader();
+				$this->controller->render("/admin/token/tokenbar",$data);
+				$this->controller->render("/admin/token/emailpost",$data);
+				$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 	        }
 	        else
 	        {
-				$data['clang']=$this->limesurvey_lang;
+				$data['clang']=$this->controller->lang;
 				$data['thissurvey']=getSurveyInfo($surveyid);
-				$data['imageurl'] = $this->config->item('imageurl');
+				$data['imageurl'] = Yii::app()->getConfig('imageurl');
 				$data['surveyid']=$surveyid;
-				self::_getAdminHeader();
-				$this->load->view("admin/token/tokenbar",$data);
-				self::_showMessageBox($clang->gT("Warning"),
+				$this->controller->_getAdminHeader();
+				$this->controller->render("/admin/token/tokenbar",$data);
+				$this->controller->_showMessageBox($clang->gT("Warning"),
 						$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
 	            ."<br/>&nbsp;<ul><li>".$clang->gT("having a valid email address")."</li>"
 	            ."<li>".$clang->gT("not having been sent an invitation already")."</li>"
 	            ."<li>".$clang->gT("having already completed the survey")."</li>"
 	            ."<li>".$clang->gT("having a token")."</li></ul>");
-				self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+				$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 	        }
 	    }
 	}
@@ -1110,19 +1133,20 @@ class tokens extends Survey_Common_Action
 	function remind($surveyid)
 	{
 		$surveyid = sanitize_int($surveyid);
-		$clang=$this->limesurvey_lang;
+		$clang=$this->controller->lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
 			show_error("no permissions"); // TODO Replace
 		}
 
-		$this->load->model("tokens_dynamic_model");
-		$tkcount=$this->tokens_dynamic_model->totalRecords($surveyid);
-		$this->load->helper("surveytranslator");
+		Tokens_dynamic::sid($surveyid);
 
-		$this->load->model("surveys_model");
-		$query = $this->tokens_dynamic_model->getAllRecords($surveyid,FALSE,1);
-		$examplerow = $query->row_array();
+		$tkcount=count(Tokens_dynamic::model()->findAll());
+
+		Yii::app()->loadHelper("surveytranslator");
+
+		$query = Tokens_dynamic::model()->find();
+		$examplerow = is_null($query) ? array() : $query->attributes;
 
 		$tokenfields=GetTokenFieldsAndNames($surveyid,true);
     	$nrofattributes=0;
@@ -1131,13 +1155,14 @@ class tokens extends Survey_Common_Action
 		$data['clang']=$clang;
 		$thissurvey=getSurveyInfo($surveyid);
 		$data['thissurvey']=$thissurvey;
-		$data['imageurl'] = $this->config->item('imageurl');
+		$data['imageurl'] = Yii::app()->getConfig('imageurl');
 		$data['surveyid']=$surveyid;
 		$data['tokenfields']=$tokenfields;
 		$data['nrofattributes']=$nrofattributes;
 		$data['examplerow']=$examplerow;
-
-		$this->load->helper("admin/htmleditor_helper");
+		$data['surveyid'] = $surveyid;
+		Yii::app()->loadHelper("admin/htmleditor");
+		Yii::app()->loadHelper('replacements');
 
 		if (getEmailFormat($surveyid) == 'html')
 	    {
@@ -1149,20 +1174,18 @@ class tokens extends Survey_Common_Action
 	    }
 		$data['ishtml']=$ishtml;
 
-	    if (!$this->input->post('ok'))
+	    if (empty($_POST['ok']))
 	    {
-		    self::_getAdminHeader();
-			$this->load->view("admin/token/tokenbar",$data);
-			$this->load->view("admin/token/remind",$data);
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		    $this->controller->_getAdminHeader();
+			$this->controller->render("/admin/token/tokenbar",$data);
+			$this->controller->render("/admin/token/remind",$data);
+		 	$this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 
 	    }
 	    else
 	    {
 	    	//Views don't work properly when sending emails: The user will only receive feedback after the script is executed.
 	    	$tokenoutput="";
-			$_POST=$this->input->post();
-			$this->load->helper("database");
 	        //$tokenoutput .= $clang->gT("Sending Reminders")
 
 	        $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -1219,24 +1242,23 @@ class tokens extends Survey_Common_Action
 	            $SQLreminderdelaycondition = "";
 	        }
 
-	        $ctquery = "SELECT * FROM ".$this->db->dbprefix("tokens_{$surveyid}")." WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
+	        $ctquery = "SELECT * FROM {{tokens_$surveyid}} WHERE (completed ='N' or completed ='') AND sent<>'' AND sent<>'N' AND token <>'' AND email <> '' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
 
 	        if (isset($starttokenid)) {$ctquery .= " AND tid > '{$starttokenid}'";}
 	        if (isset($tokenid) && $tokenid) {$ctquery .= " AND tid = '{$tokenid}'";}
 	        if (isset($tokenids)) {$ctquery .= " AND tid IN (".implode(", ", $tokenids).")";}
 	        $tokenoutput .= "<!-- ctquery: $ctquery -->\n";
-	        $ctresult = db_execute_assoc($ctquery) or safe_die ("Database error!<br />\n" . $connect->ErrorMsg());
-	        $ctcount = $ctresult->num_rows();
+	        $ctresult = Yii::app()->db->createCommand($ctquery)->query();
+	        $ctcount = $ctresult->getRowCount();
 	        //$ctfieldcount = $ctresult->FieldCount();
-	        $emquery = "SELECT * FROM ".$this->db->dbprefix("tokens_{$surveyid}")." WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
+	        $emquery = "SELECT * FROM {{tokens_$surveyid}} WHERE (completed = 'N' or completed = '') AND sent <> 'N' and sent <>'' AND token <>'' AND EMAIL <>'' $SQLemailstatuscondition $SQLremindercountcondition $SQLreminderdelaycondition";
 
 	        if (isset($starttokenid)) {$emquery .= " AND tid > '{$starttokenid}'";}
 	        if (isset($tokenid) && $tokenid) {$emquery .= " AND tid = '{$tokenid}'";}
 	        if (isset($tokenids)) {$emquery .= " AND tid IN (".implode(", ", $tokenids).")";}
 	        $emquery .= " ORDER BY tid ";
-	        $emresult = db_select_limit_assoc($emquery, $this->config->item("maxemails")) or safe_die ("Couldn't do query.<br />$emquery<br />".$connect->ErrorMsg());
-	        $emcount = $emresult->num_rows();
-
+	        $emresult = Yii::app()->db->createCommand($emquery)->limit(Yii::app()->getConfig("maxemails"))->query();
+	        $emcount = $emresult->getRowCount();
 
 	        $attributes=GetTokenFieldsAndNames($surveyid);
 	        if ($emcount > 0)
@@ -1244,7 +1266,7 @@ class tokens extends Survey_Common_Action
 	            $tokenoutput .= "<table width='450' align='center' >\n"
 	            ."\t<tr>\n"
 	            ."<td><font size='1'>\n";
-	            while ($emrow = $emresult->FetchRow())
+	            while ($emrow = $emresult-read())
 	            {
 	                unset($fieldsarray);
                     $to=array();
@@ -1323,15 +1345,15 @@ class tokens extends Survey_Common_Action
 	                {
 	                    $tokenoutput .= $emrow['tid'] ." ".ReplaceFields($clang->gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.")."<br />", $fieldsarray);
 	                }
-	                elseif (SendEmailMessage($sendmessage, $msgsubject, $to, $from, $sitename,$ishtml,getBounceEmail($surveyid),null,$customheaders))
+	                elseif (SendEmailMessage($sendmessage, $msgsubject, $to, $from, Yii::app()->getConfig('sitename'),$ishtml,getBounceEmail($surveyid),null,$customheaders))
 	                {
 
 	                    // Put date into remindersent
 	                    $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", $timeadjust);
-	                    $udequery = "UPDATE ".db_table_name("tokens_{$surveyid}")."\n"
+	                    $udequery = "UPDATE {{tokens_$surveyid}}\n"
 	                    ."SET remindersent='$today',remindercount = remindercount+1  WHERE tid={$emrow['tid']}";
 	                    //
-	                    $uderesult = $connect->Execute($udequery) or safe_die ("Could not update tokens<br />$udequery<br />".$connect->ErrorMsg());
+	                    $uderesult = Yii::app()->db->createCommand($udequery)->execute();
 	                    //orig: $tokenoutput .= "({$emrow['tid']})[".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']}]<br />\n";
 	                    $tokenoutput .= "({$emrow['tid']}) [".$clang->gT("Reminder sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)]<br />\n";
 	                }
@@ -1402,8 +1424,11 @@ class tokens extends Survey_Common_Action
 	            ."</ul><br />\n";
 	        }
 	        //$tokenoutput .= "</div>\n";
-		echo $tokenoutput;
-		}
+	    	$this->controller->_getAdminHeader();
+	    	$this->controller->render('/admin/token/tokenbar', $data);
+			echo $tokenoutput;
+	    	$this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
+	    }
 	}
 
 	/**
@@ -1411,33 +1436,704 @@ class tokens extends Survey_Common_Action
 	 */
 	function exportdialog($surveyid)
 	{
+		$clang = $this->controller->lang;
 		$surveyid = sanitize_int($surveyid);
 		if (bHasSurveyPermission($surveyid, 'tokens','export') )//EXPORT FEATURE SUBMITTED BY PIETERJAN HEYSE
 		{
-			$this->load->helper("database");
-			if ($this->input->post('submit'))
+			if (!empty($_POST['submit']))
 		    {
-		    	$this->load->helper("export");
+		    	Yii::app()->loadHelper("export");
 				tokens_export($surveyid);
 			}
-		    $langquery = "SELECT language FROM ".$this->db->dbprefix("tokens_$surveyid")." group by language";
-		    $langresult = db_execute_assoc($langquery);
-			$data['resultr'] = $langresult->row_array();
+		    $langquery = "SELECT language FROM {{tokens_$surveyid}} group by language";
+		    $langresult = Yii::app()->db->createCommand($langquery)->query();
+			$data['resultr'] = $langresult->read();
 
-			$data['clang']=$this->limesurvey_lang;
+			$data['clang']=$this->controller->lang;
 			$thissurvey=getSurveyInfo($surveyid);
 			$data['thissurvey']=$thissurvey;
-			$data['imageurl'] = $this->config->item('imageurl');
+			$data['imageurl'] = Yii::app()->getConfig('imageurl');
 			$data['surveyid']=$surveyid;
 
 
-			self::_getAdminHeader();
-			$this->load->view("admin/token/tokenbar",$data);
-			$this->load->view("admin/token/exportdialog",$data);
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+			$this->controller->_getAdminHeader();
+			$this->controller->render("/admin/token/tokenbar",$data);
+			$this->controller->render("/admin/token/exportdialog",$data);
+			$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 		}
 	}
 
+	/**
+	 * Performs a ldap import
+	 *
+	 * @access public
+	 * @param int $surveyid
+	 * @return void
+	 */
+	public function importldap($surveyid)
+	{
+		$surveyid = (int) $surveyid;
+		$clang = $this->controller->lang;
+
+		Yii::app()->loadConfig('ldap');
+		Yii::app()->loadHelper('ldap');
+
+		$tokenoutput = '';
+		if (!bHasSurveyPermission($surveyid, 'tokens', 'create'))
+			show_error('access denied');
+
+		if (empty($_POST['submit']))
+		{
+			$tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Upload LDAP entries")."</div>\n";
+			$tokenoutput .= self::formldap(null, $surveyid);
+			$tokenoutput .= "<div class='messagebox ui-corner-all'>\n"
+				."\t<div class='header ui-widget-header'>".$clang->gT("Note:")."</div><br />\n"
+				.$clang->gT("LDAP queries are defined by the administrator in the config-ldap.php file")."\n"
+				."</div>\n";
+		}
+		else
+		{
+			$ldap_queries = Yii::app()->getConfig('ldap_queries');
+			$ldap_server = Yii::app()->getConfig('ldap_server');
+
+			$duplicatelist=array();
+			$invalidemaillist=array();
+			$tokenoutput .= "\t<tr><td colspan='2' height='4'><strong>"
+				.$clang->gT("Uploading LDAP Query")."</strong></td></tr>\n"
+				."\t<tr><td align='center'>\n";
+			$ldapq=$_POST['ldapQueries']; // the ldap query id
+
+			$ldap_server_id=$ldap_queries[$ldapq]['ldapServerId'];
+			$ldapserver=$ldap_server[$ldap_server_id]['server'];
+			$ldapport=$ldap_server[$ldap_server_id]['port'];
+			if (isset($ldap_server[$ldap_server_id]['encoding']) &&
+				$ldap_server[$ldap_server_id]['encoding'] != 'utf-8' &&
+				$ldap_server[$ldap_server_id]['encoding'] != 'UTF-8')
+			{
+				$ldapencoding=$ldap_server[$ldap_server_id]['encoding'];
+			}
+			else
+			{
+				$ldapencoding='';
+			}
+
+			// define $attrlist: list of attributes to read from users' entries
+			$attrparams = array('firstname_attr','lastname_attr',
+			'email_attr','token_attr', 'language');
+
+			$aTokenAttr=GetAttributeFieldNames($surveyid);
+			foreach ($aTokenAttr as $thisattrfieldname)
+			{
+				$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+				$attrparams[] = "attr".$attridx;
+			}
+
+			foreach ($attrparams as $id => $attr) {
+				if (array_key_exists($attr,$ldap_queries[$ldapq]) &&
+				$ldap_queries[$ldapq][$attr] != '') {
+					$attrlist[]=$ldap_queries[$ldapq][$attr];
+				}
+			}
+
+			// Open connection to server
+			$ds = ldap_getCnx($ldap_server_id);
+
+			if ($ds) {
+				// bind to server
+				$resbind=ldap_bindCnx($ds, $ldap_server_id);
+
+				if ($resbind) {
+					$ResArray=array();
+					$resultnum=ldap_doTokenSearch($ds, $ldapq, $ResArray, $surveyid);
+					$xz = 0; // imported token count
+					$xv = 0; // meet minim requirement count
+					$xy = 0; // check for duplicates
+					$duplicatecount = 0; // duplicate tokens skipped count
+					$invalidemailcount = 0;
+
+					if ($resultnum >= 1) {
+						foreach ($ResArray as $responseGroupId => $responseGroup) {
+							for($j = 0;$j < $responseGroup['count']; $j++) {
+								// first let's initialize everything to ''
+								$myfirstname='';
+								$mylastname='';
+								$myemail='';
+								$mylanguage='';
+								$mytoken='';
+								$myattrArray=array();
+
+								// The first 3 attrs MUST exist in the ldap answer
+								// ==> send PHP notice msg to apache logs otherwise
+								$meetminirequirements=true;
+								if (isset($responseGroup[$j][$ldap_queries[$ldapq]['firstname_attr']]) &&
+									isset($responseGroup[$j][$ldap_queries[$ldapq]['lastname_attr']])
+									)
+								{
+									// minimum requirement for ldap
+									// * at least a firstanme
+									// * at least a lastname
+									// * if filterblankemail is set (default): at least an email address
+									$myfirstname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['firstname_attr']]);
+									$mylastname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['lastname_attr']]);
+									if (isset($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]))
+									{
+										$myemail = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]);
+										$myemail= sanitize_email($myemail);
+										++$xv;
+									}
+									elseif ($filterblankemail !==true)
+									{
+										$myemail = '';
+										++$xv;
+									}
+									else
+									{
+										$meetminirequirements=false;
+									}
+								}
+								else
+								{
+									$meetminirequirements=false;
+								}
+
+								// The following attrs are optionnal
+								if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]) ) $mytoken = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['token_attr']]);
+
+								foreach ($aTokenAttr as $thisattrfieldname)
+								{
+									$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+									if ( isset($ldap_queries[$ldapq]['attr'.$attridx]) &&
+										isset($responseGroup[$j][$ldap_queries[$ldapq]['attr'.$attridx]]) ) $myattrArray[$attridx] = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['attr'.$attridx]]);
+								}
+
+								if ( isset($responseGroup[$j][$ldap_queries[$ldapq]['language']]) ) $mylanguage = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['language']]);
+
+								// In case Ldap Server encoding isn't UTF-8, let's translate
+								// the strings to UTF-8
+								if ($ldapencoding != '')
+								{
+									$myfirstname = @mb_convert_encoding($myfirstname,"UTF-8",$ldapencoding);
+									$mylastname = @mb_convert_encoding($mylastname,"UTF-8",$ldapencoding);
+									foreach ($aTokenAttr as $thisattrfieldname)
+									{
+										$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+										@mb_convert_encoding($myattrArray[$attridx],"UTF-8",$ldapencoding);
+									}
+
+								}
+
+								// Now check for duplicates or bad formatted email addresses
+								$dupfound=false;
+								$invalidemail=false;
+								if ($filterduplicatetoken)
+								{
+									$dupquery = "SELECT firstname, lastname from {{tokens_$surveyid}} where email=".db_quoteall($myemail)." and firstname=".db_quoteall($myfirstname)." and lastname=".db_quoteall($mylastname);
+									$dupresult = Yii::app()->db->createCommand($dupquery)->query();
+									if ( $dupresult->getRowCount() > 0)
+									{
+										$dupfound = true;
+										$duplicatelist[]=$myfirstname." ".$mylastname." (".$myemail.")";
+										$xy++;
+
+									}
+								}
+								if ($filterblankemail && $myemail=='')
+								{
+									$invalidemail=true;
+									$invalidemaillist[]=$myfirstname." ".$mylastname." ( )";
+								}
+								elseif ($myemail!='' && !validate_email($myemail))
+								{
+									$invalidemail=true;
+									$invalidemaillist[]=$myfirstname." ".$mylastname." (".$myemail.")";
+								}
+
+								if ($invalidemail)
+								{
+									++$invalidemailcount;
+								}
+								elseif ($dupfound)
+								{
+									++$duplicatecount;
+								}
+								elseif ($meetminirequirements===true)
+								{
+									// No issue, let's import
+									$iq = "INSERT INTO {{tokens_$surveyid}} \n"
+									. "(firstname, lastname, email, emailstatus, token, language";
+
+									foreach ($aTokenAttr as $thisattrfieldname)
+									{
+										$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+										if (!empty($myattrArray[$attridx])) {$iq .= ", $thisattrfieldname";}
+									}
+									$iq .=") \n"
+									. "VALUES (".db_quoteall($myfirstname).", ".db_quoteall($mylastname).", ".db_quoteall($myemail).", 'OK', ".db_quoteall($mytoken).", ".db_quoteall($mylanguage)."";
+
+									foreach ($aTokenAttr as $thisattrfieldname)
+									{
+										$attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+										if (!empty($myattrArray[$attridx])) {$iq .= ", ".db_quoteall($myattrArray[$attridx]).""; }// dbquote_all encloses str with quotes
+									}
+									$iq .= ")";
+									$ir = Yii::app()->db->createCommand($iq)->execute();
+									if (!$ir) $duplicatecount++;
+									$xz++;
+									// or safe_die ("Couldn't insert line<br />\n$buffer<br />\n".htmlspecialchars($connect->ErrorMsg())."<pre style='text-align: left'>$iq</pre>\n");
+								}
+							} // End for each entry
+						} // End foreach responseGroup
+					} // End of if resnum >= 1
+
+					if ($xz != 0)
+					{
+						$tokenoutput .= "<span class='successtitle'>".$clang->gT("Success")."</span><br /><br />\n";
+					}
+					else
+					{
+						$tokenoutput .= "<font color='red'>".$clang->gT("Failed")."</font><br /><br />\n";
+					}
+					$message = "$resultnum ".$clang->gT("Results from LDAP Query").".<br />\n";
+					$message .= "$xv ".$clang->gT("Records met minumum requirements").".<br />\n";
+					$message .= "$xz ".$clang->gT("Records imported").".<br />\n";
+					$message .= "$xy ".$clang->gT("Duplicate records removed");
+					$message .= " [<a href='#' onclick='$(\"#duplicateslist\").toggle();'>".$clang->gT("List")."</a>]";
+					$message .= "<div class='badtokenlist' id='duplicateslist' style='display: none;'>";
+					foreach($duplicatelist as $data) {
+						$message .= "<li>$data</li>\n";
+					}
+					$message .= "</div>";
+					$message .= "<br />\n";
+					$message .= sprintf($clang->gT("%s records with invalid email address removed"),$invalidemailcount);
+					$message .= " [<a href='#' onclick='$(\"#invalidemaillist\").toggle();'>".$clang->gT("List")."</a>]";
+					$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'>";
+					foreach($invalidemaillist as $data) {
+						$message .= "<li>$data</li>\n";
+					}
+					$message .= "</div>";
+					$message .= "<br />\n";
+					$tokenoutput .= "<i>$message</i><br />\n";
+				}
+				else {
+					$errormessage="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("Can't bind to the LDAP directory")."</strong>\n";
+					$tokenoutput .= self::formldap($errormessage, $surveyid);
+				}
+				@ldap_close($ds);
+			}
+			else {
+				$errormessage="<strong><font color='red'>".$clang->gT("Error").":</font> ".$clang->gT("Can't connect to the LDAP directory")."</strong>\n";
+				$tokenoutput .= self::formldap($errormessage, $surveyid);
+			}
+		}
+
+		$this->controller->_getAdminHeader();
+		$this->controller->render('/admin/token/tokenbar', array('thissurvey' => getSurveyInfo($surveyid), 'imageurl' => Yii::app()->getConfig('imageurl'), 'clang' => $clang, 'surveyid' => $surveyid));
+		echo $tokenoutput;
+		$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+	}
+
+	/**
+	 * Ldap submission form
+	 */
+	function formldap($error=null, $surveyid)
+	{
+		$ldap_queries = Yii::app()->getConfig('ldap_queries');
+		$clang = $this->controller->lang;
+
+		$tokenoutput = '';
+		if ($error) {$tokenoutput .= $error . "<br /><br />\n";}
+
+		if (!function_exists('ldap_connect'))
+		{
+			$tokenoutput .= '<p>';
+			$tokenoutput .= $clang->gT('Sorry, but the LDAP module is missing in your PHP configuration.');
+			$tokenoutput .= '<br />';
+		}
+
+		elseif (! isset($ldap_queries) || ! is_array($ldap_queries) || count($ldap_queries) == 0) {
+			$tokenoutput .= '<br />';
+			$tokenoutput .= $clang->gT('LDAP is disabled or no LDAP query defined.');
+			$tokenoutput .= '<br /><br /><br />';
+		}
+		else {
+			$tokenoutput .= "<form method='post' action='" . $this->controller->createUrl("admin/tokens/sa/importldap/surveyid/$surveyid") . "' method='post'>";
+			$tokenoutput .= '<p>';
+			$tokenoutput .= $clang->gT("Select the LDAP query you want to run:")."<br />";
+			$tokenoutput .= "<select name='ldapQueries' style='length=35'><br />";
+			foreach ($ldap_queries as $q_number => $q) {
+				$tokenoutput .= " <option value=".$q_number.">".$q['name']."</option>";
+			}
+			$tokenoutput .= "</select><br />";
+			$tokenoutput .= '</p>';
+			$tokenoutput .= "<p><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' name='filterblankemail' checked='checked' /></p>\n"
+			. "<p><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' name='filterduplicatetoken' checked='checked' /></p>\n";
+			$tokenoutput .= "<input type='hidden' name='sid' value='$surveyid' />";
+			$tokenoutput .= "<input type='hidden' name='subaction' value='uploadldap' />";
+			$tokenoutput .= "<p><input type='submit' name='submit' /></p>";
+			$tokenoutput .= '</form></font>';
+		}
+
+		return $tokenoutput;
+	}
+
+	/**
+	 * import from csv
+	 */
+	function import($surveyid)
+	{
+		$surveyid = (int) $surveyid;
+
+		if (!bHasSurveyPermission($surveyid, 'tokens', 'create'))
+			show_error('access denied');
+
+		$this->controller->_js_admin_includes('scripts/tokens.js');
+
+		$clang = $this->controller->lang;
+
+		$encodingsarray = array(
+			"armscii8"=>$clang->gT("ARMSCII-8 Armenian")
+			,"ascii"=>$clang->gT("US ASCII")
+			,"auto"=>$clang->gT("Automatic")
+			,"big5"=>$clang->gT("Big5 Traditional Chinese")
+			,"binary"=>$clang->gT("Binary pseudo charset")
+			,"cp1250"=>$clang->gT("Windows Central European")
+			,"cp1251"=>$clang->gT("Windows Cyrillic")
+			,"cp1256"=>$clang->gT("Windows Arabic")
+			,"cp1257"=>$clang->gT("Windows Baltic")
+			,"cp850"=>$clang->gT("DOS West European")
+			,"cp852"=>$clang->gT("DOS Central European")
+			,"cp866"=>$clang->gT("DOS Russian")
+			,"cp932"=>$clang->gT("SJIS for Windows Japanese")
+			,"dec8"=>$clang->gT("DEC West European")
+			,"eucjpms"=>$clang->gT("UJIS for Windows Japanese")
+			,"euckr"=>$clang->gT("EUC-KR Korean")
+			,"gb2312"=>$clang->gT("GB2312 Simplified Chinese")
+			,"gbk"=>$clang->gT("GBK Simplified Chinese")
+			,"geostd8"=>$clang->gT("GEOSTD8 Georgian")
+			,"greek"=>$clang->gT("ISO 8859-7 Greek")
+			,"hebrew"=>$clang->gT("ISO 8859-8 Hebrew")
+			,"hp8"=>$clang->gT("HP West European")
+			,"keybcs2"=>$clang->gT("DOS Kamenicky Czech-Slovak")
+			,"koi8r"=>$clang->gT("KOI8-R Relcom Russian")
+			,"koi8u"=>$clang->gT("KOI8-U Ukrainian")
+			,"latin1"=>$clang->gT("cp1252 West European")
+			,"latin2"=>$clang->gT("ISO 8859-2 Central European")
+			,"latin5"=>$clang->gT("ISO 8859-9 Turkish")
+			,"latin7"=>$clang->gT("ISO 8859-13 Baltic")
+			,"macce"=>$clang->gT("Mac Central European")
+			,"macroman"=>$clang->gT("Mac West European")
+			,"sjis"=>$clang->gT("Shift-JIS Japanese")
+			,"swe7"=>$clang->gT("7bit Swedish")
+			,"tis620"=>$clang->gT("TIS620 Thai")
+			,"ucs2"=>$clang->gT("UCS-2 Unicode")
+			,"ujis"=>$clang->gT("EUC-JP Japanese")
+			,"utf8"=>$clang->gT("UTF-8 Unicode"));
+
+		$tokenoutput = '';
+
+		if (!empty($_POST['submit']))
+		{
+			if (isset($_POST['csvcharset']) && $_POST['csvcharset'])  //sanitize charset - if encoding is not found sanitize to 'auto'
+			{
+				$uploadcharset=$_POST['csvcharset'];
+				if (!array_key_exists($uploadcharset,$encodingsarray)) {$uploadcharset='auto';}
+				$filterduplicatetoken=(isset($_POST['filterduplicatetoken']) && $_POST['filterduplicatetoken']=='on');
+				$filterblankemail=(isset($_POST['filterblankemail']) && $_POST['filterblankemail']=='on');
+			}
+			$attrfieldnames=GetAttributeFieldnames($surveyid);
+			$duplicatelist=array();
+			$invalidemaillist=array();
+			$invalidformatlist=array();
+			$tokenoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Token file upload")."</div>\n"
+			 ."\t<div class='messagebox ui-corner-all'>\n";
+
+			$the_path = Yii::app()->getConfig('tempdir');
+
+			$the_file_name = $_FILES['the_file']['name'];
+			$the_file = $_FILES['the_file']['tmp_name'];
+			$the_full_file_path = $the_path."/".$the_file_name;
+
+			if (!@move_uploaded_file($the_file, $the_full_file_path))
+			{
+				$errormessage="<div class='warningheader'>".$clang->gT("Error")."</div><p>".$clang->gT("Upload file not found. Check your permissions and path ({$the_full_file_path}) for the upload directory")."</p>\n";
+				$tokenoutput .= self::form_upload_csv(null, $encodingsarray, $clang, $surveyid);
+			}
+			else
+			{
+				$tokenoutput .= "<div class='successheader'>".$clang->gT("Uploaded CSV file successfully")."</div><br />\n";
+				$xz = 0; $recordcount = 0; $xv = 0;
+				// This allows to read file with MAC line endings too
+				@ini_set('auto_detect_line_endings', true);
+				// open it and trim the ednings
+				$tokenlistarray = file($the_full_file_path);
+				$baselanguage=GetBaseLanguageFromSurveyID($surveyid);
+				if (!isset($tokenlistarray))
+				{
+					$tokenoutput .= "<div class='warningheader'>".$clang->gT("Failed to open the uploaded file!")."</div><br />\n";
+				}
+				if (!isset($_POST['filterduplicatefields']) || (isset($_POST['filterduplicatefields']) && count($_POST['filterduplicatefields'])==0))
+				{
+					$filterduplicatefields=array('firstname','lastname','email');
+				} else {
+					$filterduplicatefields=$_POST['filterduplicatefields'];
+				}
+				$separator = returnglobal('separator');
+				foreach ($tokenlistarray as $buffer)
+				{
+					$buffer=@mb_convert_encoding($buffer,"UTF-8",$uploadcharset);
+					$firstname = ""; $lastname = ""; $email = ""; $emailstatus="OK"; $token = ""; $language=""; $attribute1=""; $attribute2=""; //Clear out values from the last path, in case the next line is missing a value
+					if ($recordcount==0)
+					{
+						// Pick apart the first line
+						$buffer=removeBOM($buffer);
+						$allowedfieldnames=array('firstname','lastname','email','emailstatus','token','language', 'validfrom', 'validuntil', 'usesleft');
+						$allowedfieldnames=array_merge($attrfieldnames,$allowedfieldnames);
+
+						switch ($separator) {
+							case 'comma':
+								$separator = ',';
+								break;
+							case 'semicolon':
+								$separator = ';';
+								break;
+							default:
+								$comma = substr_count($buffer,',');
+								$semicolon = substr_count($buffer,';');
+								if ($semicolon>$comma) $separator = ';'; else $separator = ',';
+						}
+						$firstline = convertCSVRowToArray($buffer,$separator,'"');
+						$firstline=array_map('trim',$firstline);
+						$ignoredcolumns=array();
+						//now check the first line for invalid fields
+						foreach ($firstline as $index=>$fieldname)
+						{
+							$firstline[$index] = preg_replace("/(.*) <[^,]*>$/","$1",$fieldname);
+							$fieldname = $firstline[$index];
+							if (!in_array($fieldname,$allowedfieldnames))
+							{
+								$ignoredcolumns[]=$fieldname;
+							}
+						}
+						if (!in_array('firstname',$firstline) || !in_array('lastname',$firstline) || !in_array('email',$firstline))
+						{
+							$tokenoutput .= "<div class='warningheader'>".$clang->gT("Error: Your uploaded file is missing one or more of the mandatory columns: 'firstname', 'lastname' or 'email'")."</div><br />";
+							$recordcount=count($tokenlistarray);
+							break;
+						}
+
+					}
+					else
+					{
+
+						$line = convertCSVRowToArray($buffer,$separator,'"');
+
+						if (count($firstline)!=count($line))
+						{
+							$invalidformatlist[]=$recordcount;
+							$recordcount++;
+							continue;
+						}
+						$writearray=array_combine($firstline,$line);
+
+						//kick out ignored columns
+						foreach ($ignoredcolumns  as $column)
+						{
+							unset($writearray[$column]);
+						}
+						$dupfound=false;
+						$invalidemail=false;
+
+						if ($filterduplicatetoken!=false)
+						{
+							$dupquery = "SELECT tid from {{tokens_$surveyid}} where 1=1";
+							foreach($filterduplicatefields as $field)
+							{
+								if (isset($writearray[$field])) {
+									$dupquery.=' and '.db_quote_id($field).' = '.db_quoteall($writearray[$field]);
+								}
+							}
+							$dupresult = Yii::app()->db->createCommand($dupquery)->query();
+							if ( $dupresult->getRowCount() > 0)
+							{
+								$dupfound = true;
+								$duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
+							}
+						}
+
+
+						$writearray['email'] = trim($writearray['email']);
+
+						//treat blank emails
+						if ($filterblankemail && $writearray['email']=='')
+						{
+							$invalidemail=true;
+							$invalidemaillist[]=$line[0]." ".$line[1]." ( )";
+						}
+						if  ($writearray['email']!='')
+						{
+							$aEmailAddresses=explode(';',$writearray['email']);
+							foreach ($aEmailAddresses as $sEmailaddress)
+							{
+								if (!validate_email($sEmailaddress))
+								{
+									$invalidemail=true;
+									$invalidemaillist[]=$line[0]." ".$line[1]." (".$line[2].")";
+								}
+							}
+						}
+
+						if (!isset($writearray['token'])) {
+							$writearray['token'] = '';
+						} else {
+							$writearray['token'] = sanitize_token($writearray['token']);
+						}
+
+						if (!$dupfound && !$invalidemail)
+						{
+							if (!isset($writearray['emailstatus']) || $writearray['emailstatus']=='') $writearray['emailstatus'] = "OK";
+							if (!isset($writearray['language']) || $writearray['language'] == "") $writearray['language'] = $baselanguage;
+							if (isset($writearray['validfrom']) && trim($writearray['validfrom']=='')){ unset($writearray['validfrom']);}
+							if (isset($writearray['validuntil']) && trim($writearray['validuntil']=='')){ unset($writearray['validuntil']);}
+
+							// sanitize it before writing into table
+							$sanitizedArray = array_map('db_quoteall',array_values($writearray));
+
+							$iq = "INSERT INTO {{tokens_$surveyid}} \n"
+							. "(".implode(',',array_keys($writearray)).") \n"
+							. "VALUES (".implode(",",$sanitizedArray).")";
+							$ir = Yii::app()->db->createCommand($iq)->execute();
+
+							if (!$ir)
+							{
+								$duplicatelist[]=$writearray['firstname']." ".$writearray['lastname']." (".$writearray['email'].")";
+							} else {
+								$xz++;
+							}
+						}
+						$xv++;
+					}
+					$recordcount++;
+				}
+				$recordcount = $recordcount-1;
+				if ($xz != 0)
+				{
+					$tokenoutput .= "<div class='successheader'>".$clang->gT("Successfully created token entries")."</div><br />\n";
+				} else {
+					$tokenoutput .= "<div class='warningheader'>".$clang->gT("Failed to create token entries")."</div>\n";
+				}
+				$message = '<ul><li>'.sprintf($clang->gT("%s records in CSV"),$recordcount)."</li>\n";
+				$message .= '<li>'.sprintf($clang->gT("%s records met minumum requirements"),$xv)."</li>\n";
+				$message .= '<li>'.sprintf($clang->gT("%s records imported"),$xz)."</li></ul>\n";
+
+
+				if (count($duplicatelist)>0 || count($invalidformatlist)>0 || count($invalidemaillist)>0)
+				{
+
+					$message .="<div class='warningheader'>".$clang->gT('Warnings')."</div><ul>";
+					if (count($duplicatelist)>0)
+					{
+						$message .= '<li>'.sprintf($clang->gT("%s duplicate records removed"),count($duplicatelist));
+						$message .= " [<a href='#' onclick='$(\"#duplicateslist\").toggle();'>".$clang->gT("List")."</a>]";
+						$message .= "<div class='badtokenlist' id='duplicateslist' style='display: none;'><ul>";
+						foreach($duplicatelist as $data) {
+							$message .= "<li>$data</li>\n";
+						}
+						$message .= "</ul></div>";
+						$message .= "</li>\n";
+					}
+
+					if (count($invalidformatlist)>0)
+					{
+						$message .= '<li>'.sprintf($clang->gT("%s lines had a mismatching number of fields."),count($invalidformatlist));
+						$message .= " [<a href='#' onclick='$(\"#invalidformatlist\").toggle();'>".$clang->gT("List")."</a>]";
+						$message .= "<div class='badtokenlist' id='invalidformatlist' style='display: none;'><ul>";
+						foreach($invalidformatlist as $data) {
+							$message .= "<li>Line $data</li>\n";
+						}
+					}
+
+					if (count($invalidemaillist)>0)
+					{
+						$message .= '<li>'.sprintf($clang->gT("%s records with invalid email address removed"),count($invalidemaillist));
+						$message .= " [<a href='#' onclick='$(\"#invalidemaillist\").toggle();'>".$clang->gT("List")."</a>]";
+						$message .= "<div class='badtokenlist' id='invalidemaillist' style='display: none;'><ul>";
+						foreach($invalidemaillist as $data) {
+							$message .= "<li>$data</li>\n";
+						}
+					}
+					$message .= "</ul>";
+				}
+				$message .= "</div>";
+
+				$tokenoutput .= "$message<br />\n";
+				unlink($the_full_file_path);
+			}
+			$tokenoutput .= "</div>\n";
+		}
+		else
+		{
+			$tokenoutput = self::form_upload_csv(null, $encodingsarray, $clang, $surveyid);
+			$tokenoutput .= "<div class='messagebox ui-corner-all'>\n"
+			."<div class='header ui-widget-header'>".$clang->gT("CSV input format")."</div>\n"
+			."<p>".$clang->gT("File should be a standard CSV (comma delimited) file with optional double quotes around values (default for OpenOffice and Excel). The first line must contain the field names. The fields can be in any order.").'</p><span style="font-weight:bold;">'.$clang->gT("Mandatory fields:")."</span> firstname,lastname,email<br />"
+			.'<span style="font-weight:bold;">'.$clang->gT('Optional fields:')."</span> emailstatus, token, language, validfrom, validuntil, attribute_1, attribute_2, attribute_3, usesleft, ... ."
+			."</div>\n";
+		}
+
+		$this->controller->_getAdminHeader();
+		$this->controller->render('/admin/token/tokenbar', array('thissurvey' => getSurveyInfo($surveyid), 'imageurl' => Yii::app()->getConfig('imageurl'), 'clang' => $clang, 'surveyid' => $surveyid));
+		echo $tokenoutput;
+		$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+	}
+
+	function form_upload_csv($error = null, $encodingsarray = array(), $clang = null, $surveyid)
+	{
+		$tokenoutput = '';
+		if ($error) {$tokenoutput .= $error . "<br /><br />\n";}
+		asort($encodingsarray);
+		$charsetsout='';
+		foreach  ($encodingsarray as $charset=>$title)
+		{
+			$charsetsout.="<option value='$charset' ";
+			if ($charset=='auto') {$charsetsout.=" selected ='selected'";}
+			$charsetsout.=">$title ($charset)</option>";
+		}
+		$separator = returnglobal('separator');
+		if (empty($separator) || $separator == 'auto') $selected = " selected = 'selected'"; else $selected = '';
+		$separatorout = "<option value='auto'$selected>".$clang->gT("Auto detect")."</option>";
+		if ($separator == 'comma') $selected = " selected = 'selected'"; else $selected = '';
+		$separatorout .= "<option value='comma'$selected>".$clang->gT("Comma")."</option>";
+		if ($separator == 'semicolon') $selected = " selected = 'selected'"; else $selected = '';
+		$separatorout .= "<option value='semicolon'$selected>".$clang->gT("Semicolon")."</option>";
+		$tokenoutput .= "<form id='tokenimport' enctype='multipart/form-data' action='" . $this->controller->createUrl("admin/tokens/sa/import/surveyid/$surveyid") . "' method='post'><ul>\n"
+			. "<li><label for='the_file'>".$clang->gT("Choose the CSV file to upload:")."</label><input type='file' id='the_file' name='the_file' size='35' /></li>\n"
+			. "<li><label for='csvcharset'>".$clang->gT("Character set of the file:")."</label><select id='csvcharset' name='csvcharset' size='1'>$charsetsout</select></li>\n"
+			. "<li><label for='separator'>".$clang->gT("Separator used:")."</label><select id='separator' name='separator' size='1'>"
+			. $separatorout
+			. "</select></li>\n"
+			. "<li><label for='filterblankemail'>".$clang->gT("Filter blank email addresses:")."</label><input type='checkbox' id='filterblankemail' name='filterblankemail' checked='checked' /></li>\n"
+			. "<li><label for='filterduplicatetoken'>".$clang->gT("Filter duplicate records:")."</label><input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' /></li>"
+			. "<li id='lifilterduplicatefields'><label for='filterduplicatefields[]'>".$clang->gT("Duplicates are determined by:")."</label>"
+			. "<select id='filterduplicatefields[]' name='filterduplicatefields[]' multiple='multiple' size='5'>"
+			. "<option selected='selected'>firstname</option>"
+			. "<option selected='selected'>lastname</option>"
+			. "<option selected='selected'>email</option>"
+			. "<option>token</option>"
+			. "<option>language</option>";
+		$aTokenAttr=GetAttributeFieldNames($surveyid);
+		foreach ($aTokenAttr as $thisattrfieldname)
+		{
+			$tokenoutput.="<option>$thisattrfieldname</option>";
+		}
+
+		$tokenoutput .= "</select> "
+			. "</li></ul>\n"
+			. "<p><input class='submit' type='submit' name='submit' value='".$clang->gT("Upload")."' />\n"
+			. "<input type='hidden' name='subaction' value='upload' />\n"
+			. "<input type='hidden' name='sid' value='$surveyid' />\n"
+			. "</p></form>\n\n";
+		return $tokenoutput;
+	}
 	/**
 	 * Generate tokens
 	 */
@@ -1549,15 +2245,14 @@ class tokens extends Survey_Common_Action
 	function bouncesettings($surveyid)
 	{
 		$surveyid = sanitize_int($surveyid);
-		$clang = $this->limesurvey_lang;
-		$data['clang']=$this->limesurvey_lang;
+		$clang = $this->controller->lang;
+		$data['clang']=$clang;
 		$data['thissurvey'] = $data['settings']=getSurveyInfo($surveyid);
-		$data['imageurl'] = $this->config->item('imageurl');
+		$data['imageurl'] = Yii::app()->getConfig('imageurl');
 		$data['surveyid']=$surveyid;
 
-		if($this->input->post())
+		if(!empty($_POST))
 		{
-			$_POST = $this->input->post();
 			@$fieldvalue = array("bounceprocessing"=>$_POST['bounceprocessing'],
 			"bounce_email"=>$_POST['bounce_email'],
 			);
@@ -1571,21 +2266,23 @@ class tokens extends Survey_Common_Action
 				$fieldvalue['bounceaccounthost']=$_POST['bounceaccounthost'];
 			}
 
-			$where = "sid = $surveyid";
-			$this->load->helper("database");
-			db_execute_assoc($this->db->update_string('surveys', $fieldvalue, $where));
+			$survey = Survey::model()->findByAttributes(array('sid' => $surveyid));
+			foreach ($fieldvalue as $k => $v)
+				$survey->$k = $v;
+			$survey->save();
+
 			//$connect->AutoExecute("{$dbprefix}surveys", $fieldvalue, 2,"sid=$surveyid",get_magic_quotes_gpc());
-			self::_getAdminHeader();
-			$this->load->view("admin/token/tokenbar",$data);
-		    self::_showMessageBox($clang->gT("Bounce settings"),$clang->gT("Bounce settings have been saved."),"successheader");
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+			$this->controller->_getAdminHeader();
+			$this->controller->render("/admin/token/tokenbar",$data);
+		    $this->controller->_showMessageBox($clang->gT("Bounce settings"),$clang->gT("Bounce settings have been saved."),"successheader");
+			$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 		}
 		else
 		{
-			self::_getAdminHeader();
-			$this->load->view("admin/token/tokenbar",$data);
-			$this->load->view("admin/token/bounce",$data);
-			self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+			$this->controller->_getAdminHeader();
+			$this->controller->render("/admin/token/tokenbar",$data);
+			$this->controller->render("/admin/token/bounce",$data);
+			$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 		}
 	}
 

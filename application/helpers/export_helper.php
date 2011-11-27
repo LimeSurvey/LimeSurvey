@@ -1830,11 +1830,8 @@ function tokens_export($surveyid)
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: cache");
 
-    $CI =& get_instance();
-	$dbprefix = $CI->db->dbprefix;
-	$_POST = $CI->input->post();
-
-    $bquery = "SELECT * FROM ".$CI->db->dbprefix("tokens_$surveyid").' where 1=1';
+    $bquery = "SELECT * FROM {{tokens_$surveyid}} where 1=1";
+    $databasetype = Yii::app()->db->getDriverName();
     if (trim($_POST['filteremail'])!='')
     {
         if ($databasetype=='odbc_mssql' || $databasetype=='odbtp' || $databasetype=='mssql_n' || $connect->databaseType == 'mssqlnative')
@@ -1855,12 +1852,12 @@ function tokens_export($surveyid)
         $bquery .= " and completed='N'";
         if ($thissurvey['anonymized']=='N')
         {
-            $bquery .=" and token not in (select token from ".db_table_name("survey_$surveyid")." group by token)";
+            $bquery .=" and token not in (select token from {{survey_$surveyid}} group by token)";
         }
     }
     if ($_POST['tokenstatus']==3 && $thissurvey['anonymized']=='N')
     {
-        $bquery .= " and completed='N' and token in (select token from ".db_table_name("survey_$surveyid")." group by token)";
+        $bquery .= " and completed='N' and token in (select token from {{survey_$surveyid}} group by token)";
     }
 
     if ($_POST['invitationstatus']==1)
@@ -1887,8 +1884,8 @@ function tokens_export($surveyid)
     }
     $bquery .= " ORDER BY tid";
 
-    $bresult = db_execute_assoc($bquery) or die ("$bquery<br />".htmlspecialchars($connect->ErrorMsg()));
-    $bfieldcount=$bresult->num_rows();
+    $bresult = Yii::app()->db->createCommand($bquery)->query();
+    $bfieldcount=$bresult->getRowCount();
     // Export UTF8 WITH BOM
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
     $tokenoutput .= "tid,firstname,lastname,email,emailstatus,token,language,validfrom,validuntil,invited,reminded,remindercount,completed,usesleft";
@@ -1901,7 +1898,10 @@ function tokens_export($surveyid)
         $tokenoutput .=" <".str_replace(","," ",$attrfielddescr[$attr_name]).">";
     }
     $tokenoutput .="\n";
-    foreach($bresult->result_array() as $brow)
+
+	Yii::import('application.libraries.Date_Time_Converter', true);
+
+    foreach($bresult->readAll() as $brow)
     {
 
         if (trim($brow['validfrom']!=''))

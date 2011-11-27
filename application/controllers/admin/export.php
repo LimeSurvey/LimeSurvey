@@ -48,6 +48,8 @@ class export extends Survey_Common_Action {
 			$this->route('showquexmlsurvey', array('surveyid', 'lang'));
 		elseif ($sa == 'exportspss')
 			$this->route('exportspss', array('sid', 'lang'));
+		elseif ($sa == 'dumplabel')
+			$this->route('dumplabel', array('lid'));
 		elseif ($sa == 'exportr')
 			$this->route('exportr', array('sid', 'subaction'));
 	}
@@ -1264,13 +1266,12 @@ class export extends Survey_Common_Action {
         $xml->startDocument('1.0', 'UTF-8');
         $xml->startElement('document');
         $xml->writeElement('LimeSurveyDocType','Label set');
-        $xml->writeElement('DBVersion',$this->config->item("dbversionnumber"));
+        $xml->writeElement('DBVersion',getGlobalSetting("DBVersion"));
         // Label sets table
-        $dbprefix = $this->db->dbprefix;
-        $lsquery = "SELECT * FROM {$dbprefix}labelsets WHERE lid=".implode(' or lid=',$lids);
+        $lsquery = "SELECT * FROM {{labelsets}} WHERE lid=".implode(' or lid=',$lids);
         BuildXMLFromQuery($xml,$lsquery,'labelsets');
         // Labels
-        $lquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {$dbprefix}labels WHERE lid=".implode(' or lid=',$lids);
+        $lquery = "SELECT lid, code, title, sortorder, language, assessment_value FROM {{labels}} WHERE lid=".implode(' or lid=',$lids);
         BuildXMLFromQuery($xml,$lquery,'labels');
         $xml->endElement(); // close columns
         $xml->endDocument();

@@ -1,13 +1,13 @@
 <script type='text/javascript'>
         if (navigator.userAgent.indexOf("Gecko") != -1)
         window.addEventListener("load", init_gecko_select_hack, false);
-        
+
          var qtypes = new Array();
          var qnames = new Array();
          var qhelp = new Array();
          var qcaption = new Array();
-    
-        
+
+
         function OtherSelection(QuestionType)
         {
         if (QuestionType == '') { QuestionType=document.getElementById('question_type').value;}

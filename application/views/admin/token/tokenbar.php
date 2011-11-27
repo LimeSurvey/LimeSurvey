@@ -39,11 +39,11 @@
 		    if (bHasSurveyPermission($surveyid, 'tokens','import'))
 		    { ?>
 		        <img src='<?php echo $imageurl;?>/seperator.gif' alt='' />
-		        <a href="#" onclick="window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=import', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/import/surveyid/$surveyid") ?>', '_top')"
 		        	title='<?php echo $clang->gTview("Import tokens from CSV file");?>'>
 		        	<img name='ImportButton' src='<?php echo $imageurl;?>/importcsv.png' title='' alt='<?php echo $clang->gT("Import tokens from CSV file");?>' />
 		        </a>
-		        <a href="#" onclick="window.open('$scriptname?action=tokens&amp;sid=$surveyid&amp;subaction=importldap', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/importldap/surveyid/$surveyid") ?>', '_top')"
 		        	title='<?php echo $clang->gTview("Import tokens from LDAP query");?>'>
 		        	<img name='ImportLdapButton' src='<?php echo $imageurl;?>/importldap.png' alt='<?php echo $clang->gT("Import tokens from LDAP query");?>' />
 		        	</a>
@@ -61,11 +61,11 @@
 		        <a href='<?php echo $this->createUrl("admin/emailtemplates/edit/$surveyid");?>' title='<?php echo $clang->gTview("Edit email templates");?>'>
 		        	<img name='EmailTemplatesButton' src='<?php echo $imageurl;?>/emailtemplates.png' alt='<?php echo $clang->gT("Edit email templates");?>' />
 		        </a>
-		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/email/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/email/surveyid/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Send email invitation");?>'>
 		        	<img name='InviteButton' src='<?php echo $imageurl;?>/invite.png' alt='<?php echo $clang->gT("Send email invitation");?>' />
 		        </a>
-		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/remind/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/remind/surveyid/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Send email reminder");?>'>
 		        	<img name='RemindButton' src='<?php echo $imageurl;?>/remind.png' alt='<?php echo $clang->gT("Send email reminder");?>' />
 		        </a>
@@ -86,7 +86,7 @@
 		    <?php }
 		    if (bHasSurveyPermission($surveyid, 'tokens','update'))
 		    { ?>
-		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/bouncesettings/$surveyid");?>', '_top')"
+		        <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/bouncesettings/surveyid/$surveyid");?>', '_top')"
 		        	title='<?php echo $clang->gTview("Bounce processing settings");?>' >
 		        	<img name='BounceSettings' src='<?php echo $imageurl;?>/bounce_settings.png' alt='<?php echo $clang->gT("Bounce settings");?>' />
 		        </a>

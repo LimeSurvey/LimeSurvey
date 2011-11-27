@@ -1,8 +1,8 @@
 <script type='text/javascript'>
-    var attr_url = "<?php echo site_url('admin/question/ajaxquestionattributes'); ?>";
-    var imgurl = '<?php echo $this->config->item('imageurl'); ?>';
+    var attr_url = "<?php echo $this->createUrl('/admin/question/sa/ajaxquestionattributes'); ?>";
+    var imgurl = '<?php echo Yii::app()->getConfig('imageurl'); ?>';
 </script>
-<?php PrepareEditorScript(true); ?>
+<?php PrepareEditorScript(true, $this); ?>
 
 <script type='text/javascript'><?php echo $qTypeOutput; ?></script>
 
@@ -31,7 +31,7 @@
             <?php }
         ?>
     </ul>
-    <form name='frmeditquestion' id='frmeditquestion' class='form30' action='<?php echo site_url("admin/database/index"); ?>' method='post' onsubmit="return isEmpty(document.getElementById('title'), '<?php $clang->eT("Error: You have to enter a question code.",'js'); ?>');">
+    <form name='frmeditquestion' id='frmeditquestion' class='form30' action='<?php echo $this->createUrl("admin/database/index"); ?>' method='post' onsubmit="return isEmpty(document.getElementById('title'), '<?php $clang->eT("Error: You have to enter a question code.",'js'); ?>');">
         <div id="<?php echo $eqrow['language']; ?>">
             <?php $eqrow  = array_map('htmlspecialchars', $eqrow); ?>
             <ul><li>
@@ -52,7 +52,7 @@
         <?php if (!$adding)
             {
 
-                foreach ($aqresult->result_array() as $aqrow)
+                foreach ($aqresult->readAll() as $aqrow)
                 { ?>
 
                 <div id="<?php echo $aqrow['language']; ?>">
@@ -180,7 +180,7 @@
                 <?php if ($adding)
                     {
 
-                        if ($oqresult->num_rows())
+                        if ($oqresult->getRowCount())
                         { ?>
 
                         <li>
@@ -188,7 +188,7 @@
                             <select name='questionposition' id='questionposition'>
                                 <option value=''><?php $clang->eT("At end"); ?></option>
                                 <option value='0'><?php $clang->eT("At beginning"); ?></option>
-                                <?php foreach ($oqresult->result_array() as $oq)
+                                <?php foreach ($oqresult->readAll() as $oq)
                                     { ?>
                                     <?php $question_order_plus_one = $oq['question_order']+1; ?>
                                     <option value='<?php echo $question_order_plus_one; ?>'><?php $clang->eT("After"); ?>: <?php echo $oq['title']; ?></option>
@@ -232,7 +232,7 @@
         if (bHasSurveyPermission($surveyid,'surveycontent','import'))
         { ?>
         <br /><div class='header ui-widget-header'><?php $clang->eT("...or import a question"); ?></div>
-        <form enctype='multipart/form-data' id='importquestion' name='importquestion' action='<?php echo site_url('admin/question/import'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!','js'); ?>");'>
+        <form enctype='multipart/form-data' id='importquestion' name='importquestion' action='<?php echo $this->createUrl('admin/question/sa/import'); ?>' method='post' onsubmit='return validatefilename(this,"<?php $clang->eT('Please select a file to import!','js'); ?>");'>
             <ul>
                 <li>
                     <label for='the_file'><?php $clang->eT("Select LimeSurvey question file (*.lsq/*.csv)"); ?>:</label>

@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php echo $clang->gT("Token export options");?></div>
-<form id='exportdialog' name='exportdialog' action='<?php echo site_url("admin/tokens/exportdialog/$surveyid");?>' method='post'>
+<form id='exportdialog' name='exportdialog' action='<?php echo $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$surveyid");?>' method='post'>
 <ul><li><label for='tokenstatus'><?php echo $clang->gT('Token status:');?></label><select id='tokenstatus' name='tokenstatus' >
 <option selected='selected' value='0'><?php echo $clang->gT('All tokens');?></option>
 <option value='1'><?php echo $clang->gT('Completed');?></option>

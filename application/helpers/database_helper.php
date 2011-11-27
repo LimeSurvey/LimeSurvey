@@ -117,32 +117,6 @@ function &db_select_column($sql)
  * @param mixed $id Fieldname to be quoted
  */
 
-function db_quote_id($id)
-{
-    // WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
-    //  $quote = $connect->nameQuote;
-    //  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
-
-    switch (get_instance()->db->platform())
-    {
-        case "mysqli" :
-        case "mysql" :
-            return "`".$id."`";
-            break;
-        case "mssql_n" :
-        case "mssql" :
-		case "mssqlnative" :
-        case "odbc_mssql" :
-            return "[".$id."]";
-            break;
-        case "postgre":
-            return "\"".$id."\"";
-            break;
-        default:
-            return "`".$id."`";
-    }
-}
-
 function db_random()
 {
 	$CI = &get_instance();

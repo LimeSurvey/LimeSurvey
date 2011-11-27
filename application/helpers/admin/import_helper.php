@@ -307,7 +307,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
             $lsiresult=Yii::app()->db->createCommand($lsainsert)->query();
             $results['labelsets']++;
             // Get the new insert id for the labels inside this labelset
-            $newlid=Yii::app()->db->getgetLastInsertID(); //$connect->Insert_ID("{$dbprefix}labelsets",'lid');
+            $newlid=Yii::app()->db->getgetLastInsertID(); //$connect->Insert_ID("{{labelsets}}",'lid');
 
             if ($labelsarray) {
                 $count=0;
@@ -444,7 +444,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
             //GET NEW GID  .... if is not done before and we count a group if a new gid is required
             if ($newgid == 0)
             {
-                $newgid = Yii::apps()->db->getgetLastInsertID(); //$connect->Insert_ID("{$dbprefix}groups",'gid');
+                $newgid = Yii::apps()->db->getgetLastInsertID(); //$connect->Insert_ID("{{groups}}",'gid');
                 $countgroups++;
             }
         }
@@ -535,7 +535,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                 }
                 else
                 {
-                    $aQIDReplacements[$oldqid]=Yii::app()->db->getLastInsertID(); //$connect->Insert_ID("{$dbprefix}questions",'qid');
+                    $aQIDReplacements[$oldqid]=Yii::app()->db->getLastInsertID(); //$connect->Insert_ID("{{questions}}",'qid');
                     $saveqid=$aQIDReplacements[$oldqid];
                 }
                 $qtypes = getqtypelist("" ,"array");
@@ -574,7 +574,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                                 $qres = Yii::app()->db->createCommand($qinsert)->query() or safe_die ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                                 if ($fieldname=='')
                                 {
-                                    $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}questions","qid");
+                                    $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=$CI->db->insert_id(); //$connect->Insert_ID("{{questions}}","qid");
                                 }
                             }
                         }
@@ -661,7 +661,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
                     $qres = Yii::app()->db->createCommand()->insert('{{questions}}', $questionrowdata);
                     if (!isset($questionrowdata['qid']))
                     {
-                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->getLastInsertID(); //$connect->Insert_ID("{$dbprefix}questions","qid");
+                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=Yii::app()->db->getLastInsertID(); //$connect->Insert_ID("{{questions}}","qid");
                     }
 
                     $results['subquestions']++;
@@ -723,7 +723,7 @@ function CSVImportGroup($sFullFilepath, $newsid)
 
             unset($qarowdata["qaid"]);
 
-            //$tablename="{$dbprefix}question_attributes";
+            //$tablename="{{question_attributes}}";
             //$qainsert=$connect->GetInsertSQL($tablename,$qarowdata);
         	$result = Yii::app()->db->createCommand()->insert('{{question_attributes}}', $qarowdata);
             if ($result!==false) $results['question_attributes']++;
@@ -1123,10 +1123,8 @@ function XMLImportGroup($sFullFilepath, $newsid)
 */
 function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
+    $clang = Yii::app()->lang;
+
     $aLIDReplacements=array();
     $aQIDReplacements=array(); // this array will have the "new qid" for the questions, the key will be the "old qid"
     $aSQIDReplacements=array();
@@ -1347,11 +1345,11 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
             unset($labelsetrowdata['lid']);
             $newvalues=array_values($labelsetrowdata);
             //$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-            $lsainsert = "INSERT INTO {$dbprefix}labelsets (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+            $lsainsert = "INSERT INTO {{labelsets}} (".implode(',',array_keys($labelsetrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
             $lsiresult=Yii::app()->db->createCommand($lsainsert)->query();
 
             // Get the new insert id for the labels inside this labelset
-            $newlid=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}labelsets",'lid');
+            $newlid=Yii::app()->db->getLastInsertID(); //$connect->Insert_ID("{{labelsets}}",'lid');
 
             if ($labelsarray) {
                 $count=0;
@@ -1376,7 +1374,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 
                         $newvalues=array_values($labelrowdata);
                         //$newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-                        $lainsert = "INSERT INTO {$dbprefix}labels (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
+                        $lainsert = "INSERT INTO {{labels}} (".implode(',',array_keys($labelrowdata)).") VALUES (".implode(',',$newvalues).")"; //handle db prefix
                         $liresult=Yii::app()->db->createCommand($lainsert)->query();
                         $results['labels']++;
                     }
@@ -1386,7 +1384,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
             //CHECK FOR DUPLICATE LABELSETS
             $thisset="";
             $query2 = "SELECT code, title, sortorder, language, assessment_value
-            FROM {$dbprefix}labels
+            FROM {{labels}}
             WHERE lid=".$newlid."
             ORDER BY language, sortorder, code";
             $result2 = Yii::app()->db->createCommand($query2)->query() or safe_die("Died querying labelset $lid<br />$query2<br />");
@@ -1412,9 +1410,9 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
             {
                 //There is a matching labelset. So, we will delete this one and refer
                 //to the matched one.
-                $query = "DELETE FROM {$dbprefix}labels WHERE lid=$newlid";
+                $query = "DELETE FROM {{labels}} WHERE lid=$newlid";
                 $result=Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't delete labels<br />$query<br />");
-                $query = "DELETE FROM {$dbprefix}labelsets WHERE lid=$newlid";
+                $query = "DELETE FROM {{labelsets}} WHERE lid=$newlid";
                 $result=Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't delete labelset<br />$query<br />");
                 $newlid=$lsmatch;
             }
@@ -1471,7 +1469,6 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
             }
             else
             {
-                db_switchIDInsert('questions',true);
                 $questionrowdata['qid'] = $newqid;
             }
 
@@ -1511,19 +1508,14 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 
             $newvalues=array_values($questionrowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-            $qinsert = "INSERT INTO {$dbprefix}questions (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
+            $qinsert = "INSERT INTO {{questions}} (".implode(',',array_keys($questionrowdata)).") VALUES (".implode(',',$newvalues).")";
             $qres = Yii::app()->db->createCommand($qinsert)->query() or safe_die("Error: Failed to insert question<br />\n$qinsert<br />\n");
 
             // set the newqid only if is not set
             if (!isset($newqid))
             {
-                $newqid=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}questions","qid");
+                $newqid=Yii::app()->db->getLastInsertID(); //$connect->Insert_ID("{{questions}}","qid");
             }
-            else
-            {
-                db_switchIDInsert('questions',false);
-            }
-
         }
         $qtypes = getqtypelist("" ,"array");
         $results['answers']=0;
@@ -1551,7 +1543,6 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                         if (isset($aSQIDReplacements[$labelrow['code']])){
                             $fieldname='qid,';
                             $data=$aSQIDReplacements[$labelrow['code']].',';
-                            db_switchIDInsert('questions',true);
                         }
                         else{
                             $fieldname='' ;
@@ -1563,11 +1554,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                         $qres = Yii::app()->db->createCommand($qinsert)->query() or safe_die ("Error: Failed to insert subquestion <br />\n$qinsert<br />\n".$connect->ErrorMsg());
                         if ($fieldname=='')
                         {
-                            $aSQIDReplacements[$labelrow['code']]=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}questions","qid");
-                        }
-                        else
-                        {
-                            db_switchIDInsert('questions',false);
+                            $aSQIDReplacements[$labelrow['code']]=$CI->db->insert_id(); //$connect->Insert_ID("{{questions}}","qid");
                         }
 
                     }
@@ -1624,7 +1611,10 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 
 
                     //$query=$connect->GetInsertSQL($dbprefix.'defaultvalues',$insertdata);
-                    $qres = $CI->defaultvalues_model->insertRecords($insertdata) or safe_die("Error: Failed to insert defaultvalue <br />\n");
+    				$dvalue = new Defaultvalues;
+                	foreach ($insertdata as $k => $v)
+                		$dvalue->$k = $v;
+                	$qres = $dvalue->save();
 
                 }
                 // translate internal links
@@ -1637,7 +1627,6 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                     $questionrowdata=array();
                     if (isset($aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']])){
                         $questionrowdata['qid']=$aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']];
-                        db_switchIDInsert('questions',true);
                     }
                     $questionrowdata['parent_qid']=$answerrowdata['qid'];
                     $questionrowdata['sid']=$newsid;
@@ -1651,14 +1640,13 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                     //$tablename=$dbprefix.'questions';
 
                     //$query=$connect->GetInsertSQL($tablename,$questionrowdata);
-                    $qres = $CI->questions_model->insertRecords($questionrowdata) or safe_die("Error: Failed to insert question <br />\n");
+                	$question = new Questions;
+                	foreach ($questionrowdata as $k => $v)
+                		$question->$k = $v;
+                	$qres = $question->save();
                     if (!isset($questionrowdata['qid']))
                     {
-                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}questions","qid");
-                    }
-                    else
-                    {
-                        db_switchIDInsert('questions',false);
+                        $aSQIDReplacements[$answerrowdata['code'].$answerrowdata['qid']]=$CI->db->insert_id(); //$connect->Insert_ID("{{questions}}","qid");
                     }
                     $results['subquestions']++;
                     // also convert default values subquestions for multiple choice
@@ -1682,7 +1670,10 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                     //$tablename=$dbprefix.'answers';
 
                     //$query=$connect->GetInsertSQL($tablename,$answerrowdata);
-                    $ares = $CI->answers_model->insertRecords($answerrowdata) or safe_die("Error: Failed to insert answer<br />\n");
+                	$answer = new Answers;
+                	foreach ($answerrowdata as $k => $v)
+                		$answer->$k = $v;
+                	$ares = $answer->save();
                     $results['answers']++;
                 }
             }
@@ -1700,10 +1691,13 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
                 $qarowdata["qid"]=$newqid;
                 unset($qarowdata["qaid"]);
 
-                //$tablename="{$dbprefix}question_attributes";
+                //$tablename="{{question_attributes}}";
 
                 //$qainsert=$connect->GetInsertSQL($tablename,$qarowdata);
-                $result=$CI->question_attributes_model->insertRecords($qarowdata) or safe_die ("Couldn't insert question_attribute<br />");
+            	$attr = new Question_attributes;
+            	foreach ($qarowdata as $k => $v)
+            		$attr->$k = $v;
+				$result = $attr->save();
                 $results['question_attributes']++;
 
             }
@@ -1727,11 +1721,7 @@ function CSVImportQuestion($sFullFilepath, $newsid, $newgid)
 */
 function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
-    $dbprefix = $CI->db->dbprefix;
-
+    $clang = Yii::app()->lang;
     $aLanguagesSupported = array();  // this array will keep all the languages supported for the survey
 
     $sBaseLanguage = GetBaseLanguageFromSurveyID($newsid);
@@ -1809,18 +1799,17 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
         if (isset($aQIDReplacements[$oldqid]))
         {
             $insertdata['qid']=$aQIDReplacements[$oldqid];
-            db_switchIDInsert('questions',true);
         }
         //$query=$connect->GetInsertSQL($tablename,$insertdata);
-        $result = $CI->questions_model->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />\n");
+
+    	$ques = new Questions;
+    	foreach ($insertdata as $k => $v)
+    		$ques->$k = $v;
+    	$result = $ques->save();
         if (!isset($aQIDReplacements[$oldqid]))
         {
-            $newqid=$CI->db->insert_id(); //$connect->Insert_ID($tablename,"qid"); // save this for later
+            $newqid=Yii::app()->db->getLastInsertID(); //$connect->Insert_ID($tablename,"qid"); // save this for later
             $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
-        }
-        else
-        {
-            db_switchIDInsert('questions',false);
         }
     }
 
@@ -1848,19 +1837,17 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
             }
             if (isset($aQIDReplacements[$oldsqid])){
                 $insertdata['qid']=$aQIDReplacements[$oldsqid];
-                db_switchIDInsert('questions',true);
             }
 
             //$query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result = $CI->questions_model->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />\n");
-            $newsqid=$CI->db->insert_id(); //$connect->Insert_ID($tablename,"qid"); // save this for later
+        	$ques = new Questions;
+        	foreach ($insertdata as $k => $v)
+        		$ques->$k = $v;
+        	$result = $ques->save();
+            $newsqid=Yii::app()->db->getLastInsertID(); //$connect->Insert_ID($tablename,"qid"); // save this for later
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
-            }
-            else
-            {
-                db_switchIDInsert('questions',false);
             }
             $results['subquestions']++;
         }
@@ -1882,7 +1869,10 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
 
             // now translate any links
             //$query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$CI->answers_model->insertRecords($insertdata) or safe_die ($clang->gT("Error").": Failed to insert data<br />\n");
+        	$answers = new Answers;
+        	foreach ($insertdata as $k => $v)
+        		$answers->$k = $v;
+        	$result = $answers->save();
             $results['answers']++;
         }
     }
@@ -1909,12 +1899,18 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
                 foreach ($importlanguages as $sLanguage)
                 {
                     $insertdata['language']=$sLanguage;
-                    $result=$CI->question_attributes_model->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert question_attributes<br />");
+                	$attributes = new Question_attributes;
+                	foreach ($insertdata as $k => $v)
+                		$attributes->$k = $v;
+                	$result = $attributes->save();
                 }
             }
             else
             {
-                $result=$CI->question_attributes_model->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert question_attributes<br />\n");
+            	$attributes = new Question_attributes;
+            	foreach ($insertdata as $k => $v)
+            		$attributes->$k = $v;
+            	$result = $attributes->save();
             }
             $results['question_attributes']++;
         }
@@ -1939,7 +1935,10 @@ function XMLImportQuestion($sFullFilepath, $newsid, $newgid)
 
             // now translate any links
             //$query=$connect->GetInsertSQL($tablename,$insertdata);
-            $result=$CI->defaultvalues_model->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />\n");
+        	$default = new Defaultvalues;
+        	foreach ($insertdata as $k => $v)
+        		$default->$k = $v;
+        	$result = $default->save();
             $results['defaultvalues']++;
         }
     }
@@ -2053,7 +2052,7 @@ function CSVImportLabelset($sFullFilepath, $options)
             $results['labelsets']++;
 
             // Get the new insert id for the labels inside this labelset
-            $newlid=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}labelsets",'lid');
+            $newlid=$CI->db->insert_id(); //$connect->Insert_ID("{{labelsets}}",'lid');
 
             if ($labelsarray) {
                 $count=0;
@@ -2145,9 +2144,7 @@ function CSVImportLabelset($sFullFilepath, $options)
 */
 function XMLImportLabelsets($sFullFilepath, $options)
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     $xml = simplexml_load_file($sFullFilepath);
     if ($xml->LimeSurveyDocType!='Label set') safe_die('This is not a valid LimeSurvey label set structure XML file.');
     $iDBVersion = (int) $xml->DBVersion;
@@ -2156,7 +2153,6 @@ function XMLImportLabelsets($sFullFilepath, $options)
     $results['labelsets']=0;
     $results['labels']=0;
     $results['warnings']=array();
-    $dbprefix = $CI->db->dbprefix;
 
     // Import labels table ===================================================================================
 
@@ -2176,10 +2172,10 @@ function XMLImportLabelsets($sFullFilepath, $options)
 
         // Insert the new question
         //$query=$connect->GetInsertSQL($tablename,$insertdata);
-        $result = $CI->labelsets_model->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
+    	$result = Yii::app()->db->createCommand()->insert('{{labelsets}}', $insertdata);
         $results['labelsets']++;
 
-        $newlsid=$CI->db->insert_id(); //$connect->Insert_ID($tablename,"lid"); // save this for later
+        $newlsid=Yii::app()->db->getLastInsertID(); //$connect->Insert_ID($tablename,"lid"); // save this for later
         $aLSIDReplacements[$oldlsid]=$newlsid; // add old and new lsid to the mapping array
     }
 
@@ -2198,7 +2194,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
 
 
         //$query=$connect->GetInsertSQL($tablename,$insertdata);
-        $result = $CI->labels_model->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
+    	$result = Yii::app()->db->createCommand()->insert('{{labels}}', $insertdata);
         $results['labels']++;
     }
 
@@ -2213,7 +2209,7 @@ function XMLImportLabelsets($sFullFilepath, $options)
             FROM {{labels}}
             WHERE lid=".$newlid."
             ORDER BY language, sortorder, code";
-            $result2 = Yii::app()->db->createCommand($query2)->query() or safe_die("Died querying labelset $lid<br />");
+            $result2 = Yii::app()->db->createCommand($query2)->query();
             foreach($result2->readAll() as $row2)
             {
                 $row2 = array_values($row2);
@@ -2237,10 +2233,11 @@ function XMLImportLabelsets($sFullFilepath, $options)
                 //There is a matching labelset. So, we will delete this one and refer
                 //to the matched one.
                 $query = "DELETE FROM {{labels}} WHERE lid=$newlid";
-                $result=Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't delete labels<br />$query<br />");
-                $results['labels']=$results['labels']-$CI->db->affected_rows();
+                $result=Yii::app()->db->createCommand($query)->execute();
+                $results['labels']=$results['labels']-$result;
                 $query = "DELETE FROM {{labelsets}} WHERE lid=$newlid";
-                $result=Yii::app()->db->createCommand($query)->query() or safe_die("Couldn't delete labelset<br />$query<br />");
+                $result=Yii::app()->db->createCommand($query)->query();
+
                 $results['labelsets']--;
                 $newlid=$lsmatch;
                 $results['warnings'][]=$clang->gT("Label set was not imported because the same label set already exists.")." ".sprintf($clang->gT("Existing LID: %s"),$newlid);
@@ -2794,7 +2791,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             WHERE lid=".$newlid."
             ORDER BY language, sortorder, code";
             $result2 = Yii::app()->db->createCommand($query2)->query() or safe_die("Died querying labelset $lid<br />$query2<br />".$connect->ErrorMsg());
-			
+
             foreach($result2->readAll() as $row2)
             {
                 $row2 = array_values($row2);
@@ -2879,12 +2876,11 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             $gres = Groups::model()->insertRecords($grouprowdata) or safe_die($clang->gT('Error').": Failed to insert group<br />\<br />\n");
 
             if (isset($grouprowdata['gid'])) db_switchIDInsert('groups',false);
-            //GET NEW GID
             if (!isset($grouprowdata['gid']))
 			{
 				$aGIDReplacements[$oldgid]=Yii::app()->db->createCommand('Select LAST_INSERT_ID()')->query()->read(); //$connect->Insert_ID("{$dbprefix}groups",'gid');
 				$aGIDReplacements[$oldgid]=$aGIDReplacements[$oldgid]['LAST_INSERT_ID()'];
-        }
+        	}
         }
         // Fix sortorder of the groups  - if users removed groups manually from the csv file there would be gaps
         fixSortOrderGroups($newsid);
@@ -2973,7 +2969,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             // Now we will fix up old label sets where they are used as answers
             if (((isset($oldlid1) && isset($aLIDReplacements[$oldlid1])) || (isset($oldlid2) && isset($aLIDReplacements[$oldlid2]))) && ($qtypes[$questionrowdata['type']]['answerscales']>0 || $qtypes[$questionrowdata['type']]['subquestions']>1))
             {
-			
+
                 $query="select * from {{labels}} where lid={$aLIDReplacements[$oldlid1]} and language='{$questionrowdata['language']}'";
                 $oldlabelsresult=Yii::app()->db->createCommand($query)->query();
                 foreach($oldlabelsresult->readAll() as $labelrow)
@@ -3003,7 +2999,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
                             $qres = Yii::app()->db->createCommand($qinsert)->query() or safe_die ($clang->gT("Error").": Failed to insert question <br />\n$qinsert<br />\n");
                             if ($fieldname=='')
                             {
-                                $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=$CI->db->insert_id(); //$connect->Insert_ID("{$dbprefix}questions","qid");
+                                $aSQIDReplacements[$labelrow['code'].'_'.$saveqid]=$CI->db->insert_id(); //$connect->Insert_ID("{{questions}}","qid");
                             }
                         }
                     }
@@ -3061,10 +3057,10 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
             }
             // Convert default values for single select questions
             $query1 = 'select type,gid from {{questions}} where qid='.$answerrowdata["qid"];
-			
+
             $resultquery1 = Yii::app()->db->createCommand($query1)->query();
             $questiontemp=$resultquery1->read(); //$connect->GetRow('select type,gid from '.$CI->db->dbprefix.'questions where qid='.$answerrowdata["qid"]);)
-			
+
             $oldquestion['newtype']=$questiontemp['type'];
             $oldquestion['gid']=$questiontemp['gid'];
             if ($answerrowdata['default_value']=='Y' && ($oldquestion['newtype']=='L' || $oldquestion['newtype']=='O' || $oldquestion['newtype']=='!'))
@@ -3159,7 +3155,7 @@ function CSVImportSurvey($sFullFilepath,$iDesiredSurveyId=NULL,$bTranslateLinks=
 
             $newvalues=array_values($qarowdata);
             $newvalues=array_map(array(&$connect, "qstr"),$newvalues); // quote everything accordingly
-			
+
             $qainsert = "INSERT INTO {{question_attributes}} (".implode(',',array_keys($qarowdata)).") VALUES (".implode(',',$newvalues).")";
             $result=Yii::app()->db->createCommand($qainsert)->execute(); // no safe_die since some LimeSurvey version export duplicate question attributes - these are just ignored
             if ($result>0) {$importresults['question_attributes']++;}
@@ -3563,7 +3559,7 @@ function XMLImportSurvey($sFullFilepath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 db_switchIDInsert('questions',true);
 
             }
-			
+
             $result = Questions::model()->insertRecords($insertdata) or safe_die($clang->gT("Error").": Failed to insert data<br />");
             if (!isset($aQIDReplacements[$oldqid]))
             {
@@ -3913,7 +3909,7 @@ function GetNewSurveyID($oldsid)
     $query = "SELECT sid FROM {{surveys}} WHERE sid=$oldsid";
 
     $res = Yii::app()->db->createCommand($query)->query();
-    $isresult = $res->read(); //$connect->GetOne("SELECT sid FROM {$dbprefix}surveys WHERE sid=$oldsid");)
+    $isresult = $res->read(); //$connect->GetOne("SELECT sid FROM {{surveys}} WHERE sid=$oldsid");)
 
     //if (!is_null($isresult))
     if($res->count() > 0)

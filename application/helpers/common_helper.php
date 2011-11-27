@@ -2992,7 +2992,10 @@ function GetBaseLanguageFromSurveyID($surveyid)
     if (!isset($cache[$surveyid])) {
 
         $condition = array('sid' => $surveyid);//"sid=$surveyid";
+
         $surveylanguage = Survey::model()->findByPk($surveyid);//("SELECT language FROM ".db_table_name('surveys')." WHERE sid=$surveyid";)
+		if (is_null($surveylanguage))
+			die(var_dump(debug_backtrace()));
         $surveylanguage = $surveylanguage->attributes; //Checked)
 
         if (!isset($surveylanguage['language']) || is_null($surveylanguage))
@@ -5853,8 +5856,6 @@ function getTokenData($surveyid, $token)
 */
 function sGetTemplatePath($sTemplateName)
 {
-    $CI = &get_instance();
-
     if (isStandardTemplate($sTemplateName))
     {
         return Yii::app()->getConfig("standardtemplaterootdir").'/'.$sTemplateName;
@@ -7918,14 +7919,12 @@ function getlabelsets($languages=null)
 // Returns a list with label sets
 // if the $languages paramter is provided then only labelset containing all of the languages in the paramter are provided
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     if ($languages){
         $languages=sanitize_languagecodeS($languages);
         $languagesarray=explode(' ',trim($languages));
     }
-    $query = "SELECT ".$CI->db->dbprefix."labelsets.lid as lid, label_name FROM ".$CI->db->dbprefix."labelsets";
+    $query = "SELECT {{labelsets}}.lid as lid, label_name FROM {{labelsets}}";
     if ($languages){
         $query .=" where ";
         foreach  ($languagesarray as $item)
@@ -7935,9 +7934,9 @@ function getlabelsets($languages=null)
         $query .=" 1=1 ";
     }
     $query .=" order by label_name";
-    $result = db_execute_assoc($query) or safe_die ("Couldn't get list of label sets<br />$query<br />"); //Checked
+    $result = Yii::app()->db->createCommand($query)->query(); //Checked
     $labelsets=array();
-    foreach ($result->result_array() as $row)
+    foreach ($result->readAll() as $row)
     {
         $labelsets[] = array($row['lid'], $row['label_name']);
     }
@@ -7948,14 +7947,13 @@ function getHeader($meta = false)
 {
     global $embedded;
 
-    $CI =& get_instance();
     $surveyid = Yii::app()->getConfig('sid');
-    $CI->load->helper('surveytranslator');
+    Yii::app()->loadHelper('surveytranslator');
     $clang = $CI->limesurvey_lang;
 
-    if ($CI->session->userdata('s_lang'))
+    if (!empty(Yii::app()->session['s_lang']))
     {
-        $surveylanguage= $CI->session->userdata('s_lang');
+        $surveylanguage= Yii::app()->session['s_lang'];
     }
     elseif (isset($surveyid) && $surveyid)
     {
@@ -7974,14 +7972,14 @@ function getHeader($meta = false)
             if (substr($jsinclude,0,4) == 'http')
                 $js_header .= "<script type=\"text/javascript\" src=\"$jsinclude\"></script>\n";
             else
-                $js_header .= "<script type=\"text/javascript\" src=\"".base_url()."$jsinclude\"></script>\n";
+                $js_header .= "<script type=\"text/javascript\" src=\"".Yii::app()->baseUrl."$jsinclude\"></script>\n";
         }
     }
     if(Yii::app()->getConfig("css_admin_includes"))
     {
         foreach (Yii::app()->getConfig("css_admin_includes") as $cssinclude)
         {
-            $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".base_url().$cssinclude."\" />\n";
+            $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".Yii::app()->baseUrl.$cssinclude."\" />\n";
         }
     }
 
@@ -8531,4 +8529,29 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
     }
 }
 
+function db_quote_id($id)
+{
+	// WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
+	//  $quote = $connect->nameQuote;
+	//  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
+
+	switch (Yii::app()->db->createCommand($id))
+	{
+		case "mysqli" :
+		case "mysql" :
+			return "`".$id."`";
+			break;
+		case "mssql_n" :
+		case "mssql" :
+		case "mssqlnative" :
+		case "odbc_mssql" :
+			return "[".$id."]";
+			break;
+		case "postgre":
+			return "\"".$id."\"";
+			break;
+		default:
+			return "`".$id."`";
+	}
+}
 // Closing PHP tag intentionally omitted - yes, it is okay
