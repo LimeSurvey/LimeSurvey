@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-24 17:10+0100\n"
-"PO-Revision-Date: 2011-11-24 17:12+0100\n"
+"PO-Revision-Date: 2011-11-27 10:19+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey <carsten.schmitz@limesurvey.org>\n"
 "MIME-Version: 1.0\n"
@@ -106,7 +106,7 @@ msgstr "Datenbank-Einstellungen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:995
 msgid "Database was populated but there were errors:"
-msgstr ""
+msgstr "Datenbank wurde gefüllt, aber es gab Fehler:"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:559
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:784
@@ -188,7 +188,7 @@ msgstr "Vorname"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:265
 msgid "Following survey(s) are not yet active but you can register for them."
-msgstr ""
+msgstr "Folgende Umfragen sind noch nicht aktiv, aber Sie können sich für diese anmelden."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:540
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:571
@@ -198,7 +198,7 @@ msgstr "Bitte kontaktieren Sie %s für weitere Informationen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:265
 msgid "GNU General Public License:"
-msgstr ""
+msgstr "GNU General Public License:"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/statistics_user.php:436
 msgid "Generating summaries ..."
@@ -310,7 +310,7 @@ msgstr "Email-Einstellungen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:570
 msgid "Optional settings to give you a head start"
-msgstr ""
+msgstr "Optionale Einstellungen für einen optimalen Start"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/printanswers.php:202
 msgid "PDF Export"
@@ -378,7 +378,7 @@ msgstr "Datenintegrität überprüfen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:285
 msgid "Pre-installation check for LimeSurvey "
-msgstr ""
+msgstr "Vorab-Installation-Check für LimeSurvey"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/survey.php:77
 msgid "Previous session is set to be finished."
@@ -397,9 +397,8 @@ msgstr "Fragegruppe"
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:856
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:943
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:979
-#, fuzzy
 msgid "Reason"
-msgstr "Grund:"
+msgstr "Grund"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/browse.php:859
 msgid "Records displayed:"
@@ -668,9 +667,8 @@ msgid "We are sorry but your session has expired."
 msgstr "Es tut uns leid, aber Ihre Sitzung ist abgelaufen."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:241
-#, fuzzy
 msgid "Welcome"
-msgstr "Willkommen %s!"
+msgstr "Willkommen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/authentication.php:72
 #, php-format
@@ -775,9 +773,8 @@ msgid "Your user data for accessing %s"
 msgstr "Ihre Benutzerdaten für den Zugriff auf %s"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/installer.php:1193
-#, fuzzy
 msgid "here"
-msgstr "Sonstiges"
+msgstr "hier"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/dataentry.php:573
 #, php-format
@@ -1216,9 +1213,8 @@ msgid "Deleting orphaned language settings."
 msgstr "Lösche verwaiste Spracheinstellungen."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:135
-#, fuzzy
 msgid "Deleting orphaned quota members."
-msgstr "Lösche verwaiste Vorgabewerte."
+msgstr "Lösche verwaiste Quota-Bedingung"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/checkintegrity.php:121
 msgid "Deleting orphaned quotas."
@@ -4196,9 +4192,8 @@ msgid "You can use now the following credentials to log into the site:"
 msgstr "Benutzen Sie bitte die folgenden Daten um sich auf der Seite anzumelden:"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/survey.php:984
-#, fuzzy
 msgid "You did not choose any surveys."
-msgstr "Sie haben keine Umfrage ausgewählt."
+msgstr "Sie haben keine Umfragen ausgewählt."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/controllers/admin/statistics.php:267
 msgid "You do not have the Freetype Library installed. Showing charts requires the Freetype library to function properly."
@@ -4707,9 +4702,8 @@ msgid "Danish"
 msgstr "Dänisch"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/activate_helper.php:447
-#, fuzzy
 msgid "Database error!!"
-msgstr "Datenbankfehler:"
+msgstr "Datenbankfehler!!"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:2391
 msgid "Date last action"
@@ -4729,14 +4723,12 @@ msgid "Date submitted"
 msgstr "Datum Abgeschickt"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:106
-#, fuzzy
 msgid "Date/Time"
-msgstr "End-Datum/Zeit:"
+msgstr "Datum/Zeit"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:4152
-#, fuzzy
 msgid "Date/Time format"
-msgstr "End-Datum/Zeit:"
+msgstr "Datum/Zeit-Format"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/qanda_helper.php:1883
 msgid "Day"
@@ -5151,9 +5143,8 @@ msgid "French"
 msgstr "Französisch"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:4168
-#, fuzzy
 msgid "Full names"
-msgstr "Vollständige Antworten"
+msgstr "Volle Namen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/surveytranslator_helper.php:224
 msgid "Galician"
@@ -5828,14 +5819,12 @@ msgid "Nov"
 msgstr "Nov"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/qanda_helper.php:1917
-#, fuzzy
 msgid "November"
-msgstr "Niemals"
+msgstr "November"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:4169
-#, fuzzy
 msgid "Numbers"
-msgstr "Nur Zahlen"
+msgstr "Zahlen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:3728
 msgid "Numbers only"
@@ -5854,9 +5843,8 @@ msgid "Oct"
 msgstr "Okt"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/qanda_helper.php:1916
-#, fuzzy
 msgid "October"
-msgstr "Sonstiges"
+msgstr "Oktober"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:3505
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:3737
@@ -6222,9 +6210,8 @@ msgid "Short Free Text"
 msgstr "Kurzer freier Text"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:4167
-#, fuzzy
 msgid "Short names"
-msgstr "Mehrfache kurze Texte"
+msgstr "Kurznamen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/common_helper.php:4194
 msgid "Show comment"
@@ -6924,25 +6911,24 @@ msgid "A group in the CSV/SQL file is not part of the same survey. The import of
 msgstr "Eine Gruppe in der CSV/SQL-Datei stammt nicht aus der gleichen Umfrage. Der Import der Umfrage wurde gestoppt."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:129
-#, fuzzy
 msgid "Absolute value"
-msgstr "Bewertungswert"
+msgstr "Absoluter Wert"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:130
 msgid "Arc cosine"
-msgstr ""
+msgstr "Arkuskosinus"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:132
 msgid "Arc sine"
-msgstr ""
+msgstr "Arkussinus"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:133
 msgid "Arc tangent"
-msgstr ""
+msgstr "Arkustangens"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:134
 msgid "Arc tangent of two variables"
-msgstr ""
+msgstr "Arkustangens zweier Variablen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3066
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3070
@@ -7182,14 +7168,12 @@ msgid "Find first occurrence of a string"
 msgstr ""
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:162
-#, fuzzy
 msgid "Find highest value"
-msgstr "Gleich Summenwert"
+msgstr "Finde höchsten Wert"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:163
-#, fuzzy
 msgid "Find lowest value"
-msgstr "Gleich Summenwert"
+msgstr "Finde niedrigsten Wert"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:186
 msgid "Find position of first occurrence of a case-insensitive string"
@@ -7330,7 +7314,7 @@ msgstr "Verschiebe die Benutzertemplates in neues Verzeichnis (%s)..."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:160
 msgid "Natural logarithm"
-msgstr ""
+msgstr "Natürlicher Logarithmus"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2450
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:2482
@@ -7422,9 +7406,8 @@ msgid "Quote meta characters"
 msgstr "Maximal erlaubte Zeichen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:181
-#, fuzzy
 msgid "Repeat a string"
-msgstr "Passwort wiederholen"
+msgstr "Eine Zeichenfolge wiederholen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:182
 msgid "Replace all occurrences of the search string with the replacement string"
@@ -7462,7 +7445,7 @@ msgstr ""
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:198
 msgid "Return current UNIX timestamp"
-msgstr ""
+msgstr "Gebe aktuellen Unix-Zeitstempel zurück"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:195
 #, fuzzy
@@ -7483,14 +7466,12 @@ msgid "Root URL"
 msgstr "Haupt-URL"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:141
-#, fuzzy
 msgid "Round fractions down"
-msgstr "Antwortoption nach unten verschieben"
+msgstr "Abrunden"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:135
-#, fuzzy
 msgid "Round fractions up"
-msgstr "16 oder höher"
+msgstr "Aufrunden"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:174
 msgid "Rounds a number to an optional precision"
@@ -7513,9 +7494,8 @@ msgid "Sorry your responses have exceeded a quota on this survey."
 msgstr "Leider haben Ihre Antworten eine Quote dieser Umfrage überschritten."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:178
-#, fuzzy
 msgid "Square root"
-msgstr "Haupt-URL"
+msgstr "Quadratwurzel"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:1206
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/statistics_helper.php:3067
@@ -7570,9 +7550,8 @@ msgid "Table prefix"
 msgstr "Tabellen-Präfix"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/expressions/em_core_helper.php:197
-#, fuzzy
 msgid "Tangent"
-msgstr "Bereich:"
+msgstr "Tangens"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/helpers/admin/import_helper.php:2697
 #, php-format
@@ -9000,7 +8979,7 @@ msgstr "Spalten Kontrolle"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:102
 msgid "Blacklisted"
-msgstr ""
+msgstr "Auf die schwarze Liste gesetzt"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/summary_view.php:40
 #, fuzzy
@@ -9031,7 +9010,6 @@ msgid "Central participants database summary"
 msgstr "Sie sind kein Teilnehmer in dieser Umfrage."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:17
-#, fuzzy
 msgid "Character set of file:"
 msgstr "Zeichenkodierung der Datei:"
 
@@ -9091,9 +9069,8 @@ msgid "Dropdown"
 msgstr "Dropdown"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:102
-#, fuzzy
 msgid "E-mail"
-msgstr "Markiert"
+msgstr "E-Mail"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:63
 msgid "Either you don't own a survey or it doesn't have token table"
@@ -9104,9 +9081,8 @@ msgid "Error: You have to enter a name for this label set."
 msgstr "Fehler: Sie müssen einen Titel für dieses Beschriftungs-Set angeben."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:67
-#, fuzzy
 msgid "Export CSV"
-msgstr "Exportiere .csv Datendatei"
+msgstr "Exportiere CSV"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/exportmulti_view.php:7
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/labelsetsbar_view.php:14
@@ -9134,9 +9110,8 @@ msgid "Filter blank email addresses:"
 msgstr "Filtere leere E-Mail-Adressen:"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/importCSV_view.php:2
-#, fuzzy
 msgid "Import CSV"
-msgstr "CSV Kopfzeilen"
+msgstr "Importiere CSV"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/editlabel_view.php:13
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/labels/editlabel_view.php:65
@@ -9242,9 +9217,8 @@ msgid "Redirect to token table after copy "
 msgstr ""
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:69
-#, fuzzy
 msgid "Remove condition"
-msgstr "Bedingung hinzufügen"
+msgstr "Entferne Bedingung"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/displayParticipants_view.php:80
 msgid "Search"
@@ -9317,9 +9291,8 @@ msgid "Survey is no longer active"
 msgstr "Diese Umfrage ist beendet und steht nicht mehr zur Verfügung."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/attributeControl_view.php:49
-#, fuzzy
 msgid "Text box"
-msgstr "Breite des Texteingabefeldes"
+msgstr "Texteingabefeld"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/blacklist_view.php:69
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/blacklist_view.php:100
@@ -9478,19 +9451,16 @@ msgid "Attribute name:"
 msgstr "Attributname:"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/viewAttribute_view.php:10
-#, fuzzy
 msgid "Attribute settings"
-msgstr "Email-Einstellungen"
+msgstr "Attribut-Einstellungen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/viewAttribute_view.php:78
-#, fuzzy
 msgid "Attribute type:"
-msgstr "Fragen Typ:"
+msgstr "Attribut-Typ:"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/viewAttribute_view.php:90
-#, fuzzy
 msgid "Attribute visible:"
-msgstr "Attributfeld"
+msgstr "Attribut sichtbar:"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/editquota_view.php:33
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/newquota_view.php:20
@@ -9506,9 +9476,8 @@ msgid "Check Data Integrity"
 msgstr "Datenintegrität überprüfen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/viewAttribute_view.php:72
-#, fuzzy
 msgid "Common settings"
-msgstr "Email-Einstellungen"
+msgstr "Allgemeine Einstellungen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/adminmenu.php:108
 msgid "Create, import, or copy a survey"
@@ -9627,9 +9596,8 @@ msgid "Select Question"
 msgstr "Frage wählen"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/participants/viewAttribute_view.php:25
-#, fuzzy
 msgid "Select one..."
-msgstr "Antwort wählen"
+msgstr "Auswählen..."
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/newanswererror_view.php:3
 msgid "Sorry there are no supported question types in this survey."
@@ -9649,9 +9617,8 @@ msgid "Survey quotas"
 msgstr "Umfrage Quoten"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/super/adminmenu.php:95
-#, fuzzy
 msgid "Surveys:"
-msgstr "Umfragen"
+msgstr "Umfragen:"
 
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/editquota_view.php:27
 #: d:\web\xampp\htdocs\limesurvey_ci/application/views/admin/quotas/newquota_view.php:15
