@@ -63,11 +63,12 @@
 
         if ($installer)
         {
-            $CI = &get_instance();
-            $lang = array('en');
-            //$lang = array($this->config->item('defaultlang'));
-            $CI->load->library('Limesurvey_lang',$lang);
-            $clang = $CI->limesurvey_lang;
+            $lang = Yii::app()->getConfig("installerLang");
+			if (!$lang)
+			{
+				$lang = "en";
+        }
+			$clang = new Limesurvey_lang(array('langcode' => $lang));
         }
         else
         {
@@ -519,8 +520,7 @@
 
     function getRadixPointData($format=-1)
     {
-        $CI =& get_instance();
-        $clang = $CI->limesurvey_lang;
+        $clang = Yii::app()->lang;
         $aRadixFormats = array (
         0=>array('seperator'=> '.', 'desc'=> $clang->gT('Dot (.)')),
         1=>array('seperator'=> ',', 'desc'=> $clang->gT('Comma (,)'))

@@ -1,25 +1,27 @@
-<?php PrepareEditorScript(); ?>
+<?php
+	extract($data);
+	Yii::app()->loadHelper('admin/htmleditor');
+	PrepareEditorScript(false, $this);
+?>
 <script type="text/javascript">
-    standardtemplaterooturl='<?php echo $this->config->item('standardtemplaterooturl');?>';
-    templaterooturl='<?php echo $this->config->item('usertemplaterooturl');?>';
+    standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
+    templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
 </script>
 <div class='header ui-widget-header'><?php $clang->eT("Create, import, or copy survey"); ?></div>
 <?php
-    $data['clang'] = $clang;
-    $data['action'] = $action;
-    $this->load->view('admin/survey/subview/tab_view',$data);
-    $this->load->view('admin/survey/subview/tabGeneralNewSurvey_view',$data);
-    $this->load->view('admin/survey/subview/tabPresentation_view',$data);
-    $this->load->view('admin/survey/subview/tabPublication_view',$data);
-    $this->load->view('admin/survey/subview/tabNotification_view',$data);
-    $this->load->view('admin/survey/subview/tabTokens_view',$data);
+    $this->render('/admin/survey/subview/tab_view',$data);
+    $this->render('/admin/survey/subview/tabGeneralNewSurvey_view',$data);
+    $this->render('/admin/survey/subview/tabPresentation_view',$data);
+    $this->render('/admin/survey/subview/tabPublication_view',$data);
+    $this->render('/admin/survey/subview/tabNotification_view',$data);
+    $this->render('/admin/survey/subview/tabTokens_view',$data);
 ?>
 
 <input type='hidden' id='surveysettingsaction' name='action' value='insertsurvey' />
 </form>
 <?php
-    $this->load->view('admin/survey/subview/tabImport_view',$data);
-    $this->load->view('admin/survey/subview/tabCopy_view',$data);
+    $this->render('/admin/survey/subview/tabImport_view',$data);
+    $this->render('/admin/survey/subview/tabCopy_view',$data);
 ?>
 </div>
 

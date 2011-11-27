@@ -49,5 +49,13 @@ class Quota_members extends CActiveRecord
 	{
 		return 'id';
 	}
+	
+	function insertRecords($data)
+    {
+        $members = new self;
+		foreach ($data as $k => $v)
+			$members->$k = $v;
+		$members->save();
+}
 }
 ?>

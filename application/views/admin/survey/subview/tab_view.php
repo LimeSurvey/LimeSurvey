@@ -14,4 +14,4 @@
         <li><a href='#resources'><?php echo $clang->gT("Resources"); ?></a></li>
         <?php } ?>
     </ul>
-    <form class='form30' name='addnewsurvey' id='addnewsurvey' action='<?php if ($action == "newsurvey") echo site_url("admin/survey/insert"); if ($action == "editsurveysettings") echo site_url("admin/database/index/updatesurveysettings"); ?>' method='post' >
+    <form class='form30' name='addnewsurvey' id='addnewsurvey' action='<?php if ($action == "newsurvey") echo $this->createUrl("admin/survey/insert"); if ($action == "editsurveysettings") echo $this->createUrl("admin/database/index/updatesurveysettings"); ?>' method='post' >

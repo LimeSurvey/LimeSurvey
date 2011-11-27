@@ -35,18 +35,26 @@ class SurveyAction extends Survey_Common_Action {
     * @return void
     */
    public function run($sa = '', $action = '', $sid = 0)
-   {        
+   {
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
         {
             die();
         }
 
-   		if (!empty($sa))
-   		{
-   			if ($sa == 'listsurveys')
-   				$this->route('listsurveys', array());
+   		if (empty($sa)) $sa = null;
+
+		if ($sa == 'newsurvey' || isset($_GET['newsurvey']))
+			$this->route('newsurvey', array());
+		elseif ($sa == 'insert' || isset($_GET['insert']))
+			$this->route('insert', array());
+		elseif ($sa == 'importsurveyresources')
+			$this->route('importsurveyresources', array());
+		elseif ($sa == 'copy' || isset($_GET['copy']))
+			$this->route('copy', array());
             elseif ($sa == 'activate')
                 $this->route('activate', array('surveyid'));
+		elseif ($sa == 'listsurveys')
+			$this->route('listsurveys', array());
 			elseif ($sa == 'ajaxgetusers')
 				$this->route('ajaxgetusers', array());
    			elseif ($sa == 'ajaxowneredit')
@@ -54,7 +62,6 @@ class SurveyAction extends Survey_Common_Action {
    			elseif ($sa == 'deactivate')
    				$this->route('deactivate', array('surveyid'));
    			return;
-   		}
 
 		if (empty($action) && !empty($_POST['action']))
 		{
@@ -96,7 +103,7 @@ class SurveyAction extends Survey_Common_Action {
 			}
 		}
         Yii::app()->session['flashmessage'] = sprintf($message, $actioncount);
-        //$this->getController()->render('/admin/survey/listsurveys');
+        $this->getController()->render('/admin/survey/listSurveys_view', array('clang' => $clang));
     }
 
     /**
@@ -109,30 +116,30 @@ class SurveyAction extends Survey_Common_Action {
         {
             die();
         }
+        Yii::app()->clientScript->registerScriptFile('/scripts/admin/surveysettings.js');
+        Yii::app()->clientScript->registerScriptFile('/scripts/jquery/jqGrid/js/i18n/grid.locale-en.js');
+        Yii::app()->clientScript->registerScriptFile('/scripts/jquery/jqGrid/js/jquery.jqGrid.min.js');
+        Yii::app()->clientScript->registerCSSFile('/styles/admin/default/superfish.css');
+        Yii::app()->clientScript->registerScriptFile('/scripts/jquery/jqGrid/css/ui.jqgrid.css');
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu();;
+        Yii::app()->loadHelper('surveytranslator');
+        $clang = Yii::app()->lang;
 
-        self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
-        self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
-        self::_getAdminHeader();
-        self::_showadminmenu();;
-        $this->load->helper('surveytranslator');
-        $clang = $this->getController()->lang;
+        $esrow = $this->_fetchSurveyInfo('newsurvey');
+        $dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
+        Yii::app()->loadHelper('admin/htmleditor');
 
-        $esrow = self::_fetchSurveyInfo('newsurvey');
-        $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
-        $this->load->helper('admin/htmleditor');
-
-        $data = self::_generalTabNewSurvey();
+        $data = $this->_generalTabNewSurvey();
         $data['esrow']=$esrow;
-        $data = array_merge($data,self::_tabPresentationNavigation($esrow));
-        $data = array_merge($data,self::_tabPublicationAccess($esrow));
-        $data = array_merge($data,self::_tabNotificationDataManagement($esrow));
-        $data = array_merge($data,self::_tabTokens($esrow));
-        $this->load->view('admin/survey/newSurvey_view',$data);
-        self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+        $data = array_merge($data,$this->_tabPresentationNavigation($esrow));
+        $data = array_merge($data,$this->_tabPublicationAccess($esrow));
+        $data = array_merge($data,$this->_tabNotificationDataManagement($esrow));
+        $data = array_merge($data,$this->_tabTokens($esrow));
+		$arrayed_data['data']=$data;
+        $this->getController()->render('/admin/survey/newSurvey_view',$arrayed_data);
+        $this->getController()->_loadEndScripts();
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -153,18 +160,18 @@ class SurveyAction extends Survey_Common_Action {
             die();
         }
 
-        self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jquery.json.min.js');
-        self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
-        self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.json.min.js');
+        self::_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
+        self::_css_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);;
         self::_surveybar($surveyid);
 
-        $this->load->helper('text');
-        $this->load->helper('surveytranslator');
+        Yii::app()->loadHelper('text');
+        Yii::app()->loadHelper('surveytranslator');
         $clang = $this->getController()->lang;
 
         $esrow = array();
@@ -194,29 +201,29 @@ class SurveyAction extends Survey_Common_Action {
 
     /**
     * survey::importsurveyresources()
-    * Function responsible to import survey reasources.
+    * Function responsible to import survey resources.
     * @return
     */
     function importsurveyresources()
     {
         $clang = $this->getController()->lang;
-        $action = $this->input->post('action');
-        $surveyid = $this->input->post('sid');
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);
-        self::_surveybar($surveyid,NULL);
-        self::_surveysummary($surveyid,$action);
+        $action = $_POST['action'];
+        $surveyid = $_POST['sid'];
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($surveyid);
+        $this->getController()->_surveybar($surveyid,NULL);
+        $this->getController()->_surveysummary($surveyid,$action);
 
         if ($action == "importsurveyresources" && $surveyid)
         {
             $importsurveyresourcesoutput = "<div class='header ui-widget-header'>".$clang->gT("Import survey resources")."</div>\n";
             $importsurveyresourcesoutput .= "<div class='messagebox ui-corner-all'>";
 
-            if ($this->config->item('demoMode'))
+            if (Yii::app()->getConfig('demoMode'))
             {
                 $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                 $importsurveyresourcesoutput .= $clang->gT("Demo Mode Only: Uploading file is disabled in this system.")."<br /><br />\n";
-                $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+                $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                 $importsurveyresourcesoutput .= "</div>\n";
                 show_error($importsurveyresourcesoutput);
                 return;
@@ -230,15 +237,15 @@ class SurveyAction extends Survey_Common_Action {
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
-            $extractdir=self::_tempdir($this->config->item('tempdir'));
-            $basedestdir = $this->config->item('publicdir')."/upload/surveys";
+            $extractdir=$this->getController()->_tempdir(Yii::app()->getConfig('tempdir'));
+            $basedestdir = Yii::app()->getConfig('publicdir')."/upload/surveys";
             $destdir=$basedestdir."/$surveyid/";
 
             if (!is_writeable($basedestdir))
             {
                 $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                 $importsurveyresourcesoutput .= sprintf ($clang->gT("Incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
-                $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+                $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                 $importsurveyresourcesoutput .= "</div>\n";
                 show_error($importsurveyresourcesoutput);
                 return;
@@ -263,7 +270,7 @@ class SurveyAction extends Survey_Common_Action {
                 {
                     $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                     $importsurveyresourcesoutput .= $clang->gT("This file is not a valid ZIP file $CI. Import failed.")."<br /><br />\n";
-                    $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+                    $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                     $importsurveyresourcesoutput .= "</div>\n";
                     show_error($importsurveyresourcesoutput);
                     return;
@@ -334,7 +341,7 @@ class SurveyAction extends Survey_Common_Action {
                     $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                     $importsurveyresourcesoutput .= $clang->gT("This ZIP $CI contains no valid Resources files. Import failed.")."<br /><br />\n";
                     $importsurveyresourcesoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP $CIs.")."<br /><br />\n";
-                    $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+                    $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                     $importsurveyresourcesoutput .= "</div>\n";
                     show_error($importsurveyresourcesoutput);
                     return;
@@ -385,22 +392,22 @@ class SurveyAction extends Survey_Common_Action {
             {
                 $importsurveyresourcesoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                 $importsurveyresourcesoutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$basedestdir)."<br /><br />\n";
-                $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+                $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
                 $importsurveyresourcesoutput .= "</div>\n";
                 show_error($importsurveyresourcesoutput);
                 return;
             }
-            $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".site_url('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
+            $importsurveyresourcesoutput .= "<input type='submit' value='".$clang->gT("Back")."' onclick=\"window.open('".$this->getController()->createUrl('admin/survey/editsurveysettings/'.$surveyid)."', '_top')\" />\n";
             $importsurveyresourcesoutput .= "</div>\n";
 
             $data['display'] = $importlabeloutput;
-            $this->load->view('survey_view',$data);
+            $this->getController()->render('survey_view',$data);
         }
 
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -431,21 +438,21 @@ class SurveyAction extends Survey_Common_Action {
             die();
         }
 
-        self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jquery.json.min.js');
-        self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
-        self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);;
-        self::_surveybar($surveyid);
+        Yii::app()->clientscript->registerScriptFile(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
+        Yii::app()->clientscript->registerScriptFile(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        Yii::app()->clientscript->registerScriptFile(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        Yii::app()->clientscript->registerScriptFile(Yii::app()->getConfig('generalscripts').'jquery/jquery.json.min.js');
+        Yii::app()->clientscript->registerScriptFile(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
+        Yii::app()->clientscript->registerScriptFile(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($surveyid);;
+        $this->getController()->_surveybar($surveyid);
 
         $data['errors'] = LimeExpressionManager::GetSyntaxErrors();
 
-        $this->load->view('admin/survey/showSyntaxErrors_view',$data);
-        self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+        Yii::app()->render('admin/survey/showSyntaxErrors_view',$data);
+        $this->getController()->_loadEndScripts();
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     function resetsyntaxerrorlog($surveyid)
@@ -461,12 +468,12 @@ class SurveyAction extends Survey_Common_Action {
             die();
         }
 
-        self::_js_admin_includes($this->config->item('generalscripts').'admin/surveysettings.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
-        self::_js_admin_includes($this->config->item('generalscripts').'jquery/jquery.json.min.js');
-        self::_css_admin_includes($this->config->item('styleurl')."admin/default/superfish.css");
-        self::_css_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/surveysettings.js');
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/i18n/grid.locale-en.js');
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jqGrid/js/jquery.jqGrid.min.js');
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.json.min.js');
+        self::_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
+        self::_css_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
         self::_getAdminHeader();
         self::_showadminmenu($surveyid);;
         self::_surveybar($surveyid);
@@ -495,7 +502,7 @@ class SurveyAction extends Survey_Common_Action {
         // show till question menubar.
         if (!is_null($qid))
         {
-            $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+            $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
             $this->config->set_item("css_admin_includes", $css_admin_includes);
 
             self::_getAdminHeader();
@@ -516,7 +523,7 @@ class SurveyAction extends Survey_Common_Action {
             //show till questiongroup menu bar.
             if (!is_null($gid))
             {
-                $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+                $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
                 $this->config->set_item("css_admin_includes", $css_admin_includes);
 
                 self::_getAdminHeader();
@@ -536,7 +543,7 @@ class SurveyAction extends Survey_Common_Action {
                 //show till survey menu bar.
                 if(bHasSurveyPermission($surveyid,'survey','read'))
                 {
-                    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+                    $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
                     $this->config->set_item("css_admin_includes", $css_admin_includes);
 
                     self::_getAdminHeader();
@@ -751,7 +758,7 @@ class SurveyAction extends Survey_Common_Action {
                 $survey->savetimings = $_POST['savetimings'];
                 $survey->save();
             }
-                                 
+
             $activateoutput = activateSurvey($iSurveyID);
             $displaydata['display'] = $activateoutput;
             $this->getController()->render('/survey_view',$displaydata);
@@ -1009,6 +1016,7 @@ class SurveyAction extends Survey_Common_Action {
 		else
 		{
 			$data['sSurveyEntries']=array();
+			$data['clang'] = $clang;
 			$listsurveys ="<p><strong> ".$clang->gT("No Surveys available - please create one.")." </strong><br /><br />" ;
 		}
 
@@ -1073,7 +1081,7 @@ class SurveyAction extends Survey_Common_Action {
 
         $clang = $this->getController()->lang;
 
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
         self::_js_admin_includes(base_url().'scripts/admin/surveysettings.js');
         self::_getAdminHeader();
@@ -1090,15 +1098,15 @@ class SurveyAction extends Survey_Common_Action {
 
 
             $editsurvey .="<div class='header ui-widget-header'>".$clang->gT("Edit survey text elements")."</div>\n";
-            $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='".site_url("admin/database/index/updatesurveylocalesettings")."' method='post'>\n"
+            $editsurvey .= "<form id='addnewsurvey' class='form30' name='addnewsurvey' action='".$this->getController()->createUrl("admin/database/index/updatesurveylocalesettings")."' method='post'>\n"
             . '<div id="tabs">';
             $i = 0;
             foreach ($grplangs as $grouplang)
             {
                 // this one is created to get the right default texts fo each language
                 $this->load->library('lang',array($grouplang));
-                $this->load->helper('database');
-                $this->load->helper('surveytranslator');
+                Yii::app()->loadHelper('database');
+                Yii::app()->loadHelper('surveytranslator');
                 $bplang = $this->getController()->lang;//new lang($grouplang);
                 $esquery = "SELECT * FROM ".$this->db->dbprefix."surveys_languagesettings WHERE surveyls_survey_id=$surveyid and surveyls_language='$grouplang'";
                 $esresult = db_execute_assoc($esquery); //Checked
@@ -1173,12 +1181,12 @@ class SurveyAction extends Survey_Common_Action {
     function copy()
     {
         $importsurvey = "";
-        $action = $this->input->post('action');
-        $surveyid = $this->input->post('sid');
+        $action = $_POST['action'];
+        @$surveyid = $_POST['sid'];
 
         if ($action == "importsurvey" || $action == "copysurvey")
         {
-            if ( $this->input->post('copysurveytranslinksfields') == "on"  || $this->input->post('translinksfields') == "on")
+            if ( @$_POST['copysurveytranslinksfields'] == "on"  || @$_POST['translinksfields'] == "on")
             {
                 $sTransLinks = true;
             }
@@ -1202,10 +1210,10 @@ class SurveyAction extends Survey_Common_Action {
             if ($action == 'importsurvey')
             {
 
-                $the_full_file_path = $this->config->item('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
+                $the_full_file_path = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
                 if (!@move_uploaded_file($_FILES['the_file']['tmp_name'], $the_full_file_path))
                 {
-                    $aData['sErrorMessage'] = sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$this->config->item('tempdir'));
+                    $aData['sErrorMessage'] = sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),Yii::app()->getConfig('tempdir'));
                     $aData['bFailed']=true;
                 }
                 else
@@ -1230,23 +1238,23 @@ class SurveyAction extends Survey_Common_Action {
             }
             elseif ($action == 'copysurvey')
             {
-                $surveyid = sanitize_int($this->input->post('copysurveylist'));
+                $surveyid = sanitize_int($_POST['copysurveylist']);
                 $exclude = array();
 
-                if (get_magic_quotes_gpc()) {$sNewSurveyName = stripslashes($this->input->post('copysurveyname'));}
+                if (get_magic_quotes_gpc()) {$sNewSurveyName = stripslashes($_POST['copysurveyname']);}
                 else{
-                    $sNewSurveyName=$this->input->post('copysurveyname');
+                    $sNewSurveyName=$_POST['copysurveyname'];
                 }
 
-                if ($this->input->post('copysurveyexcludequotas') == "on")
+                if (@$_POST['copysurveyexcludequotas'] == "on")
                 {
                     $exclude['quotas'] = true;
                 }
-                if ($this->input->post('copysurveyexcludeanswers') == "on")
+                if (@$_POST['copysurveyexcludeanswers'] == "on")
                 {
                     $exclude['answers'] = true;
                 }
-                if ($this->input->post('copysurveyresetconditions') == "on")
+                if (@$_POST['copysurveyresetconditions'] == "on")
                 {
                     $exclude['conditions'] = true;
                 }
@@ -1257,14 +1265,13 @@ class SurveyAction extends Survey_Common_Action {
                     $aData['bFailed']=true;
                 }
 
-                $this->load->helper('export_helper');
+                Yii::app()->loadHelper('export');
                 $copysurveydata = survey_getXMLData($surveyid,$exclude);
             }
 
             // Now, we have the survey : start importing
             //require_once('import_functions.php');
-            $this->load->helper('admin/import');
-            $_POST = $this->input->post();
+            Yii::app()->loadHelper('admin/import');
             if ($action == 'importsurvey' && !$aData['bFailed'])
             {
 
@@ -1280,7 +1287,7 @@ class SurveyAction extends Survey_Common_Action {
                 {
                     $this->load->library("admin/pclzip/pclzip",array('p_zipname' => $sFullFilepath));
                     $aFiles=$this->pclzip->listContent();
-                    if ($this->pclzip->extract(PCLZIP_OPT_PATH, $this->config->item('tempdir').DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/')== 0) {
+                    if ($this->pclzip->extract(PCLZIP_OPT_PATH, Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR, PCLZIP_OPT_BY_EREG, '/(lss|lsr|lsi|lst)$/')== 0) {
                         unset($this->pclzip);
                     }
                     // Step 1 - import the LSS file and activate the survey
@@ -1289,11 +1296,11 @@ class SurveyAction extends Survey_Common_Action {
                         if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lss')
                         {
                             //Import the LSS file
-                            $aImportResults=XMLImportSurvey($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],null, null, null,true);
+                            $aImportResults=XMLImportSurvey(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],null, null, null,true);
                             // Activate the survey
-                            $this->load->helper("admin/activate");
+                            Yii::app()->loadHelper("admin/activate");
                             $activateoutput = activateSurvey($aImportResults['newsid']);
-                            unlink($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
+                            unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                             break;
                         }
                     }
@@ -1303,9 +1310,9 @@ class SurveyAction extends Survey_Common_Action {
                         if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lsr')
                         {
                             //Import the LSS file
-                            $aResponseImportResults=XMLImportResponses($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aImportResults['newsid'],$aImportResults['FieldReMap']);
+                            $aResponseImportResults=XMLImportResponses(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aImportResults['newsid'],$aImportResults['FieldReMap']);
                             $aImportResults=array_merge($aResponseImportResults,$aImportResults);
-                            unlink($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
+                            unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                             break;
                         }
                     }
@@ -1314,12 +1321,12 @@ class SurveyAction extends Survey_Common_Action {
                     {
                         if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lst')
                         {
-                            $this->load->helper("admin/token");
+                            Yii::app()->loadHelper("admin/token");
                             if (createTokenTable($aImportResults['newsid'])) $aTokenCreateResults = array('tokentablecreated'=>true);
                             $aImportResults=array_merge($aTokenCreateResults,$aImportResults);
-                            $aTokenImportResults = XMLImportTokens($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aImportResults['newsid']);
+                            $aTokenImportResults = XMLImportTokens(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aImportResults['newsid']);
                             $aImportResults=array_merge($aTokenImportResults,$aImportResults);
-                            unlink($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
+                            unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                             break;
                         }
                     }
@@ -1328,9 +1335,9 @@ class SurveyAction extends Survey_Common_Action {
                     {
                         if (pathinfo($aFile['filename'], PATHINFO_EXTENSION)=='lsi' && tableExists("survey_{$aImportResults['newsid']}_timings"))
                         {
-                            $aTimingsImportResults = XMLImportTimings($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aImportResults['newsid'],$aImportResults['FieldReMap']);
+                            $aTimingsImportResults = XMLImportTimings(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename'],$aImportResults['newsid'],$aImportResults['FieldReMap']);
                             $aImportResults=array_merge($aTimingsImportResults,$aImportResults);
-                            unlink($this->config->item('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
+                            unlink(Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.$aFile['filename']);
                             break;
                         }
                     }
@@ -1340,7 +1347,7 @@ class SurveyAction extends Survey_Common_Action {
                     $importerror = true;
                 }
             }
-            elseif ($action == 'copysurvey' && !$importerror)
+            elseif ($action == 'copysurvey' && empty($importerror) || !$importerror)
             {
                 $aImportResults=XMLImportSurvey('',$copysurveydata,$sNewSurveyName);
             }
@@ -1354,14 +1361,15 @@ class SurveyAction extends Survey_Common_Action {
             }
 
             $aData['action']= $action;
-            $aData['sLink']= site_url('admin/survey/view/'.$aImportResults['newsid']);
+            $aData['sLink']= $this->getController()->createUrl('admin/survey/view/'.$aImportResults['newsid']);
             $aData['aImportResults']=$aImportResults;
+			$aData['clang']=$this->getController()->lang;
         }
 
-        self::_getAdminHeader();
-        self::_showadminmenu();;
-        $this->load->view('admin/survey/importSurvey_view',$aData);
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu();;
+        $this->getController()->render('/admin/survey/importSurvey_view',$aData);
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -1381,7 +1389,7 @@ class SurveyAction extends Survey_Common_Action {
             $esrow['active']                   = 'N';
             $esrow['allowjumps']               = 'N';
             $esrow['format']                   = 'G'; //Group-by-group mode
-            $esrow['template']                 = $this->config->item('defaulttemplate');
+            $esrow['template']                 = Yii::app()->getConfig('defaulttemplate');
             $esrow['allowsave']                = 'Y';
             $esrow['allowprev']                = 'N';
             $esrow['nokeyboard']               = 'N';
@@ -1416,9 +1424,9 @@ class SurveyAction extends Survey_Common_Action {
             $condition = array('sid' => $surveyid);
             $this->load->model('surveys_model');
             //$esquery = "SELECT * FROM {$dbprefix}surveys WHERE sid=$surveyid";
-            $esresult = $this->surveys_model->getAllRecords($condition); //($esquery); //Checked)
-            if ($esrow = $esresult->row_array()) {
-                $esrow = array_map('htmlspecialchars', $esrow);
+            $esresult = Survey::model()->getAllRecords($condition); //($esquery); //Checked)
+            if ($esresult) {
+                $esrow = array_map('htmlspecialchars', $esresult);
             }
 
         }
@@ -1436,19 +1444,17 @@ class SurveyAction extends Survey_Common_Action {
         global $siteadminname,$siteadminemail;
         $clang = $this->getController()->lang;
 
-        $condition = array('users_name' => $this->session->userdata('user'));
+        $condition = array('users_name' => Yii::app()->session['user']);
         $fieldstoselect = array('full_name', 'email');
-        $this->load->model('users_model');
         //Use the current user details for the default administrator name and email for this survey
-        $result = $this->users_model->getSomeRecords($fieldstoselect,$condition); //($query) or safe_die($connect->ErrorMsg());)
-        $owner = $result->row_array();
+        $owner = User::model()->getSomeRecords($fieldstoselect,$condition); //($query) or safe_die($connect->ErrorMsg());)
         //Degrade gracefully to $siteadmin details if anything is missing.
         if (empty($owner['full_name']))
             $owner['full_name'] = $siteadminname;
         if (empty($owner['email']))
             $owner['email'] = $siteadminemail;
         //Bounce setting by default to global if it set globally
-        $this->load->helper('globalsettings');
+        Yii::app()->loadHelper('globalsettings');
         if (getGlobalSetting('bounceaccounttype')!='off'){
             $owner['bounce_email']         = getGlobalSetting('siteadminbounce');
         } else {
@@ -1490,7 +1496,7 @@ class SurveyAction extends Survey_Common_Action {
         $clang = $this->getController()->lang;
         global $showXquestions,$showgroupinfo,$showqnumcode;
 
-        $this->load->helper('globalsettings');
+        Yii::app()->loadHelper('globalsettings');
 
         $shownoanswer = getGlobalSetting('shownoanswer')?getGlobalSetting('shownoanswer'):'Y';
 
@@ -1513,7 +1519,7 @@ class SurveyAction extends Survey_Common_Action {
     function _tabPublicationAccess($esrow)
     {
         $clang = $this->getController()->lang;
-        $dateformatdetails=getDateFormatData($this->session->userdata('dateformat'));
+        $dateformatdetails=getDateFormatData(Yii::app()->session['dateformat']);
         $startdate='';
         if (trim($esrow['startdate']) != '') {
             $items = array($esrow['startdate'] , "Y-m-d H:i:s");
@@ -1640,7 +1646,7 @@ class SurveyAction extends Survey_Common_Action {
         $this->session->set_userdata('flashmessage',$clang->gT("The survey was successfully expired by setting an expiration date in the survey settings."));
         _expireSurvey($iSurveyID);
         $this->load->model('surveys_model');
-        $dExpirationdate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->config->item('timeadjust'));
+        $dExpirationdate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dExpirationdate=date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
         $this->surveys_model->updateSurvey(array('expires'=>$dExpirationdate),
         array('sid'=>$iSurveyID));
@@ -1657,7 +1663,7 @@ class SurveyAction extends Survey_Common_Action {
     function _expireSurvey($iSurveyID)
     {
         $this->load->model('surveys_model');
-        $dExpirationdate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->config->item('timeadjust'));
+        $dExpirationdate=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig('timeadjust'));
         $dExpirationdate=date_shift($dExpirationdate, "Y-m-d H:i:s", '-1 day');
         return $this->surveys_model->updateSurvey(array('expires'=>$dExpirationdate), array('sid'=>$iSurveyID));
     }
@@ -1668,7 +1674,7 @@ class SurveyAction extends Survey_Common_Action {
     {
         $iSurveyID = (int)$iSurveyID;
         $this->load->model('survey_url_parameters_model');
-        $this->load->helper('text');
+        Yii::app()->loadHelper('text');
         $oResult=$this->survey_url_parameters_model->getParametersForSurvey($iSurveyID);
         $i=0;
         foreach ($oResult->result_array() as $oRow)
@@ -1713,29 +1719,29 @@ class SurveyAction extends Survey_Common_Action {
     */
     function insert($iSurveyID=null)
     {
-        if ($this->session->userdata('USER_RIGHT_CREATE_SURVEY'))
+        if (Yii::app()->session['USER_RIGHT_CREATE_SURVEY'])
         {
             // Check if survey title was set
-            if (!$this->input->post('surveyls_title'))
+            if (!$_POST['surveyls_title'])
             {
-                $this->session->set_userdata('flashmessage',$clang->gT("Survey could not be created because it did not have a title"));
-                redirect(site_url('admin'));
+                Yii::app()->session['flashmessage']=$clang->gT("Survey could not be created because it did not have a title");
+                redirect($this->getController()->createUrl('admin'));
                 return;
             }
 
             // Check if template may be used
-            $sTemplate = $this->input->post('template');
-            if(!$sTemplate || ($this->session->userdata('USER_RIGHT_SUPERADMIN') != 1 && $this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') != 1 && !hasTemplateManageRights($this->session->userdata('loginID'), $this->input->post('template'))))
+            $sTemplate = $_POST['template'];
+            if(!$sTemplate || (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1 && Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] != 1 && !hasTemplateManageRights(Yii::app()->session['loginID'], $_POST['template'])))
             {
                 $sTemplate = "default";
             }
 
-            $this->load->helper("surveytranslator");
+            Yii::app()->loadHelper("surveytranslator");
 
 
             // If start date supplied convert it to the right format
             $aDateFormatData=getDateFormatData($_SESSION['dateformat']);
-            $sStartDate = $this->input->post('startdate');
+            $sStartDate = $_POST['startdate'];
             if (trim($sStartDate)!='')
             {
                 $this->load->library('Date_Time_Converter',array($sStartDate , $aDateFormatData['phpdate'].' H:i:s'));
@@ -1743,7 +1749,7 @@ class SurveyAction extends Survey_Common_Action {
             }
 
             // If expiry date supplied convert it to the right format
-            $sExpiryDate = $this->input->post('expires');
+            $sExpiryDate = $_POST['expires'];
             if (trim($sExpiryDate)!='')
             {
                 $this->load->library('Date_Time_Converter',array($sExpiryDate , $aDateFormatData['phpdate'].' H:i:s'));
@@ -1755,67 +1761,68 @@ class SurveyAction extends Survey_Common_Action {
             'expires'=>$sExpiryDate,
             'startdate'=>$sStartDate,
             'template'=>$sTemplate,
-            'owner_id'=>$this->session->userdata('loginID'),
-            'admin'=>$this->input->post('admin'),
+            'owner_id'=>Yii::app()->session['loginID'],
+            'admin'=>$_POST['admin'],
             'active'=>'N',
-            'adminemail'=>$this->input->post('adminemail'),
-            'bounce_email'=>$this->input->post('bounce_email'),
-            'anonymized'=>$this->input->post('anonymized'),
-            'faxto'=>$this->input->post('faxto'),
-            'format'=>$this->input->post('format'),
-            'savetimings'=>$this->input->post('savetimings'),
-            'language'=>$this->input->post('language'),
-            'datestamp'=>$this->input->post('datestamp'),
-            'ipaddr'=>$this->input->post('ipaddr'),
-            'refurl'=>$this->input->post('refurl'),
-            'usecookie'=>$this->input->post('usecookie'),
-            'emailnotificationto'=>$this->input->post('emailnotificationto'),
-            'allowregister'=>$this->input->post('allowregister'),
-            'allowsave'=>$this->input->post('allowsave'),
-            'navigationdelay'=>$this->input->post('navigationdelay'),
-            'autoredirect'=>$this->input->post('autoredirect'),
-            'showXquestions'=>$this->input->post('showXquestions'),
-            'showgroupinfo'=>$this->input->post('showgroupinfo'),
-            'showqnumcode'=>$this->input->post('showqnumcode'),
-            'shownoanswer'=>$this->input->post('shownoanswer'),
-            'showwelcome'=>$this->input->post('showwelcome'),
-            'allowprev'=>$this->input->post('allowprev'),
-            'allowjumps'=>$this->input->post('allowjumps'),
-            'nokeyboard'=>$this->input->post('nokeyboard'),
-            'showprogress'=>$this->input->post('showprogress'),
-            'printanswers'=>$this->input->post('printanswers'),
-            'listpublic'=>$this->input->post('public'),
-            'htmlemail'=>$this->input->post('htmlemail'),
-            'sendconfirmation'=>$this->input->post('sendconfirmation'),
-            'tokenanswerspersistence'=>$this->input->post('tokenanswerspersistence'),
-            'alloweditaftercompletion'=>$this->input->post('alloweditaftercompletion'),
-            'usecaptcha'=>$this->input->post('usecaptcha'),
-            'publicstatistics'=>$this->input->post('publicstatistics'),
-            'publicgraphs'=>$this->input->post('publicgraphs'),
-            'assessments'=>$this->input->post('assessments'),
-            'emailresponseto'=>$this->input->post('emailresponseto'),
-            'tokenlength'=>$this->input->post('tokenlength')
+            'adminemail'=>$_POST['adminemail'],
+            'bounce_email'=>$_POST['bounce_email'],
+            'anonymized'=>$_POST['anonymized'],
+            'faxto'=>$_POST['faxto'],
+            'format'=>$_POST['format'],
+            'savetimings'=>$_POST['savetimings'],
+            'language'=>$_POST['language'],
+            'datestamp'=>$_POST['datestamp'],
+            'ipaddr'=>$_POST['ipaddr'],
+            'refurl'=>$_POST['refurl'],
+            'usecookie'=>$_POST['usecookie'],
+            'emailnotificationto'=>$_POST['emailnotificationto'],
+            'allowregister'=>$_POST['allowregister'],
+            'allowsave'=>$_POST['allowsave'],
+            'navigationdelay'=>$_POST['navigationdelay'],
+            'autoredirect'=>$_POST['autoredirect'],
+            'showXquestions'=>$_POST['showXquestions'],
+            'showgroupinfo'=>$_POST['showgroupinfo'],
+            'showqnumcode'=>$_POST['showqnumcode'],
+            'shownoanswer'=>$_POST['shownoanswer'],
+            'showwelcome'=>$_POST['showwelcome'],
+            'allowprev'=>$_POST['allowprev'],
+            'allowjumps'=>$_POST['allowjumps'],
+            'nokeyboard'=>$_POST['nokeyboard'],
+            'showprogress'=>$_POST['showprogress'],
+            'printanswers'=>$_POST['printanswers'],
+            'listpublic'=>$_POST['public'],
+            'htmlemail'=>$_POST['htmlemail'],
+            'sendconfirmation'=>$_POST['sendconfirmation'],
+            'tokenanswerspersistence'=>$_POST['tokenanswerspersistence'],
+            'alloweditaftercompletion'=>$_POST['alloweditaftercompletion'],
+            'usecaptcha'=>$_POST['usecaptcha'],
+            'publicstatistics'=>$_POST['publicstatistics'],
+            'publicgraphs'=>$_POST['publicgraphs'],
+            'assessments'=>$_POST['assessments'],
+            'emailresponseto'=>$_POST['emailresponseto'],
+            'tokenlength'=>$_POST['tokenlength']
             );
             if (!is_null($iSurveyID))
             {
                 $aInsertData['wishSID']=$iSurveyID;
             }
 
-            $this->load->model('surveys_model');
-            $iNewSurveyid=$this->surveys_model->insertNewSurvey($aInsertData);
+            $iNewSurveyid=Survey::model()->insertNewSurvey($aInsertData);
             if (!$iNewSurveyid) die('Survey could not be created.');
 
             // Prepare locale data for surveys_language_settings table
-            $sTitle = $this->input->post('surveyls_title');
-            $sDescription = $this->input->post('description');
-            $sWelcome = $this->input->post('welcome');
-            $sURLDescription = $this->input->post('urldescrip');
-            if ($this->config->item('filterxsshtml'))
+            $sTitle = $_POST['surveyls_title'];
+            $sDescription = $_POST['description'];
+            $sWelcome = $_POST['welcome'];
+            $sURLDescription = $_POST['urldescrip'];
+            if (Yii::app()->getConfig('filterxsshtml'))
             {
-                $sTitle=$this->security->xss_clean($sTitle);
-                $sDescription=$this->security->xss_clean($sDescription);
-                $sWelcome=$this->security->xss_clean($sWelcome);
-                $sURLDescription=$this->security->xss_clean($sURLDescription);
+				//$p = new CHtmlPurifier();
+				//$p->options = array('URI.AllowedSchemes'=>array('http' => true,  'https' => true));
+                //$sTitle=$p->purify($sTitle);
+                //$sDescription=$p->purify($sDescription);
+                //$sWelcome=$p->purify($sWelcome);
+                //$sURLDescription=$p->purify($sURLDescription);
             }
             $sTitle = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
             $sDescription = html_entity_decode($sDescription, ENT_QUOTES, "UTF-8");
@@ -1828,11 +1835,11 @@ class SurveyAction extends Survey_Common_Action {
             $sWelcome=fix_FCKeditor_text($sWelcome);
 
             // Load default email templates for the chosen language
-            $oLanguage = new lang(array($this->input->post('language')));
+            $oLanguage = new Limesurvey_lang(array($_POST['language']));
             $aDefaultTexts=aTemplateDefaultTexts($oLanguage,'unescaped');
             unset($oLanguage);
 
-            if ($this->input->post('htmlemail') && $this->input->post('htmlemail') == "Y")
+            if ($_POST['htmlemail'] && $_POST['htmlemail'] == "Y")
             {
                 $bIsHTMLEmail = true;
                 $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditional_nl2br($aDefaultTexts['admin_detailed_notification'],$bIsHTMLEmail,'unescaped');
@@ -1848,10 +1855,10 @@ class SurveyAction extends Survey_Common_Action {
             'surveyls_title'=>$sTitle,
             'surveyls_description'=>$sDescription,
             'surveyls_welcometext'=>$sWelcome,
-            'surveyls_language'=>$this->input->post('language'),
-            'surveyls_urldescription'=>$this->input->post('urldescrip'),
-            'surveyls_endtext'=>$this->input->post('endtext'),
-            'surveyls_url'=>$this->input->post('url'),
+            'surveyls_language'=>$_POST['language'],
+            'surveyls_urldescription'=>$_POST['urldescrip'],
+            'surveyls_endtext'=>$_POST['endtext'],
+            'surveyls_url'=>$_POST['url'],
             'surveyls_email_invite_subj'=>$aDefaultTexts['invitation_subject'],
             'surveyls_email_invite'=>conditional_nl2br($aDefaultTexts['invitation'],$bIsHTMLEmail,'unescaped'),
             'surveyls_email_remind_subj'=>$aDefaultTexts['reminder_subject'],
@@ -1864,18 +1871,16 @@ class SurveyAction extends Survey_Common_Action {
             'email_admin_notification'=>conditional_nl2br($aDefaultTexts['admin_notification'],$bIsHTMLEmail,'unescaped'),
             'email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
             'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
-            'surveyls_dateformat'=>(int) $this->input->post('dateformat'),
-            'surveyls_numberformat'=>(int) $this->input->post('numberformat')
+            'surveyls_dateformat'=>(int) $_POST['dateformat'],
+            'surveyls_numberformat'=>(int) $_POST['numberformat']
             );
-
-            $this->load->model('surveys_languagesettings_model');
-            $this->surveys_languagesettings_model->insertNewSurvey($aInsertData);
-            $this->session->set_userdata('flashmessage',$this->getController()->lang->gT("Survey was successfully added."));
+			$langsettings = new Surveys_languagesettings;
+            $langsettings->insertNewSurvey($aInsertData);
+            Yii::app()->session['flashmessage']=$this->getController()->lang->gT("Survey was successfully added.");
 
             // Update survey permissions
-            $this->load->model('survey_permissions_model');
-            $this->survey_permissions_model->giveAllSurveyPermissions($this->session->userdata('loginID'),$iNewSurveyid);
-            redirect(site_url('admin/survey/view/'.$iNewSurveyid));
+            Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$iNewSurveyid);
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/'.$iNewSurveyid));
         }
 
     }

@@ -5,7 +5,7 @@
 <div class="grid_6">
     <center>
         <br />
-        <img src="<?php echo base_url(); ?>installer/images/poweredby.png" alt="Powered by LimeSurvey" />
+        <img src="<?php echo $this->createUrl(('/'); ?>installer/images/poweredby.png" alt="Powered by LimeSurvey" />
     </center>
 </div>
 

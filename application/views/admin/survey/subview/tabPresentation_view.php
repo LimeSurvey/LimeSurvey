@@ -29,7 +29,7 @@
             <select id='template' name='template'>
             <?php foreach (array_keys(gettemplatelist()) as $tname) {
 
-                if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_TEMPLATE') == 1 || hasTemplateManageRights($this->session->userdata("loginID"), $tname) == 1) { ?>
+                if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1 || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1) { ?>
                     <option value='<?php echo $tname; ?>'
             <?php if ($esrow['template'] && htmlspecialchars($tname) == $esrow['template']) { ?>
                      selected='selected'

@@ -5,7 +5,7 @@
         <select id='language' name='language'>
                 <?php foreach (getLanguageDataRestricted () as $langkey2 => $langname) { ?>
                     <option value='<?php echo $langkey2; ?>'
-                    <?php if ($this->config->item('defaultlang') == $langkey2) { ?>
+                    <?php if (Yii::app()->getConfig('defaultlang') == $langkey2) { ?>
                          selected='selected'
                     <?php } ?>
                     ><?php echo $langname['description']; ?> </option>

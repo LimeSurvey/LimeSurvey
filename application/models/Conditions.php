@@ -49,5 +49,13 @@ class Conditions extends CActiveRecord
 	{
 		return 'cid';
 	}
+	
+	function insertRecords($data)
+    {
+        $conditions = new self;
+		foreach ($data as $k => $v)
+			$conditions->$k = $v;
+		return $conditions->save();
+}
 }
 ?>

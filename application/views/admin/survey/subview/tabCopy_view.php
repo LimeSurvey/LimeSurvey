@@ -1,5 +1,5 @@
 <div id='copy'>
-    <form class='form30' action='<?php echo site_url('admin/survey/copy'); ?>' id='copysurveyform' method='post'>
+    <form class='form30' action='<?php echo $this->createUrl('admin/survey/copy'); ?>' id='copysurveyform' method='post'>
         <ul>
             <li><label for='copysurveylist'><span class='annotationasterisk'>*</span><?php echo $clang->gT("Select survey to copy:"); ?> </label>
                 <select id='copysurveylist' name='copysurveylist'>
@@ -17,7 +17,7 @@
                 <input id='copysurveyresetconditions' name="copysurveyresetconditions" type="checkbox" /></li>
         </ul>
         <p><input type='submit' value='<?php echo $clang->gT("Copy survey"); ?>' />
-            <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
+			<?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="'.$surveyid.'" />'; ?>
             <input type='hidden' name='action' value='copysurvey' /></p>
     </form>
 </div>

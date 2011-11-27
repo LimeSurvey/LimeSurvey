@@ -105,5 +105,13 @@ class Questions extends CActiveRecord
 		}
 		return $aAttributeNames;
 	}
+	
+	function insertRecords($data)
+    {
+        $questions = new self;
+		foreach ($data as $k => $v)
+			$questions->$k = $v;
+		return $questions->save();
+}
 }
 ?>

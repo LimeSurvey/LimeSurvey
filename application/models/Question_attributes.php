@@ -49,5 +49,13 @@ class Question_attributes extends CActiveRecord
 	{
 		return 'qaid';
 	}
+		
+	public function insertRecords($data)
+    {
+        $attrib = new self;
+		foreach ($data as $k => $v)
+			$attrib->$k = $v;
+		return $attrib->save();
+}
 }
 ?>

@@ -21,6 +21,27 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
     return $dataset;
 }
 
+function &db_execute($sql,$inputarr=false,$silent=false)
+{
+    //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
+	try {
+    if($inputarr)
+    {
+			$affected=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->execute();	//Checked
+    }
+    else
+    {
+			$affected=Yii::app()->db->createCommand($sql)->execute();
+
+    }
+	} catch(CDbException $e) {
+		$affected=false;
+	}
+
+    if (!$silent && !$affected)  {safe_die('Error executing query in db_execute_assoc:'.$sql);}
+    return $affected;
+}
+
 function &db_query_or_false($sql)
 {
 	try {

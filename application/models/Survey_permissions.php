@@ -121,4 +121,92 @@ class Survey_permissions extends CActiveRecord
 
 		return true;
 	}
+	
+	function giveAllSurveyPermissions($iUserID, $iSurveyID)
+    {
+        $aPermissions=$this->getBasePermissions();
+
+        $aPermissionsToSet=array();
+        foreach ($aPermissions as $sPermissionName=>$aPermissionDetails)
+        {
+            foreach ($aPermissionDetails as $sPermissionDetailKey=>$sPermissionDetailValue)
+            {
+                if (in_array($sPermissionDetailKey,array('create','read','update','delete','import','export')) && $sPermissionDetailValue==true)
+                {
+                    $aPermissionsToSet[$sPermissionName][$sPermissionDetailKey]=1;
+                }
+
+            }
+        }
+
+        $this->setSurveyPermissions($iUserID, $iSurveyID, $aPermissionsToSet);
+    }
+	
+	/** setSurveyPermissions
+    * Set the survey permissions for a user. Beware that all survey permissions for the particual survey are removed before the new ones are written.
+    *
+    * @param int $iUserID The User ID
+    * @param int $iSurveyID The Survey ID
+    * @param array $aPermissions  Array with permissions in format <permissionname>=>array('create'=>0/1,'read'=>0/1,'update'=>0/1,'delete'=>0/1)
+    */
+    function setSurveyPermissions($iUserID, $iSurveyID, $aPermissions)
+    {
+        $iUserID=sanitize_int($iUserID);
+        $condition = array('sid' => $iSurveyID, 'uid' => $iUserID);
+        $this->deleteSomeRecords($condition);
+        $bResult=true;
+
+        foreach($aPermissions as $sPermissionname=>$aPermissions)
+        {
+            if (!isset($aPermissions['create'])) {$aPermissions['create']=0;}
+            if (!isset($aPermissions['read'])) {$aPermissions['read']=0;}
+            if (!isset($aPermissions['update'])) {$aPermissions['update']=0;}
+            if (!isset($aPermissions['delete'])) {$aPermissions['delete']=0;}
+            if (!isset($aPermissions['import'])) {$aPermissions['import']=0;}
+            if (!isset($aPermissions['export'])) {$aPermissions['export']=0;}
+            if ($aPermissions['create']==1 || $aPermissions['read']==1 ||$aPermissions['update']==1 || $aPermissions['delete']==1  || $aPermissions['import']==1  || $aPermissions['export']==1)
+            {
+
+                $data = array();
+                $data = array(
+                'sid' => $iSurveyID,
+                'uid' => $iUserID,
+                'permission' => $sPermissionname,
+                'create_p' => $aPermissions['create'],
+                'read_p' => $aPermissions['read'],
+                'update_p' => $aPermissions['update'],
+                'delete_p' => $aPermissions['delete'],
+                'import_p' => $aPermissions['import'],
+                'export_p' => $aPermissions['export']
+                );
+                $this->insertSomeRecords($data);
+            }
+        }
+    }
+	
+	function deleteSomeRecords($condition)
+    {
+        $criteria = new CDbCriteria;
+
+		foreach ($condition as $item => $value)
+		{
+			$criteria->addCondition($item.'="'.$value.'"');
+		}
+		
+		$this->deleteAll($criteria);
+    }
+
+	function insertRecords($data)
+	{
+		foreach ($item as $data)
+			$this->insertSomeRecords($item);
+	}
+	
+    function insertSomeRecords($data)
+    {
+        $permission = new self;
+		foreach ($data as $k => $v)
+			$permission->$k = $v;
+		$permission->save();
+    }
 }

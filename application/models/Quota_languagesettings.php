@@ -63,5 +63,13 @@ class Quota_languagesettings extends CActiveRecord
 				'on' => 'quota.id = t.quotals_quota_id'),
 		);
 	}
+	
+		function insertRecords($data)
+    {
+        $settings = new self;
+		foreach ($data as $k => $v)
+			$settings->$k = $v;
+		$settingss->save();
+}
 }
 ?>

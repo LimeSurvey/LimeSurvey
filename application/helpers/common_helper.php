@@ -1684,14 +1684,7 @@ function shiftorderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortor
 function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for groups
 {
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
-	$groups = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $baselang));
-	$p = 0;
-	foreach ($groups as $group)
-	{
-		$group->group_order = $p;
-		$group->save();
-		$p++;
-	}
+    Groups::model()->updateGroupOrder($surveyid,$baselang);
     //$cdresult = db_execute_assoc("SELECT gid FROM ".db_table_name('groups')." WHERE sid='{$surveyid}' AND language='{$baselang}' ORDER BY group_order, group_name");
     //$position=0;
     //while ($cdrow=$cdresult->FetchRow())
@@ -2238,7 +2231,6 @@ function strip_comments($comment, $email, $replace=''){
 
 function validate_templatedir($templatename)
 {
-    $CI = &get_instance();
     $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
     $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     $defaulttemplate = Yii::app()->getConfig('defaulttemplate');
@@ -2885,7 +2877,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     global $globalfieldmap, $aDuplicateQIDs;
     static $timingsFieldMap;
-
+    
     $clang = Yii::app()->lang;
 
     $surveyid=sanitize_int($surveyid);
@@ -3102,9 +3094,9 @@ function buildLabelSetCheckSumArray()
     /**$query = "SELECT lid
     FROM ".db_table_name('labelsets')."
     ORDER BY lid"; */
-    $result = Yii::app()->db->createCommand('SELECT lid FROM {{labelsets}} ORDER BY lid')->query();//($query) or safe_die("safe_died collecting labelset ids<br />$query<br />");  //Checked)
+    $result = Labelsets::getLID();//($query) or safe_die("safe_died collecting labelset ids<br />$query<br />");  //Checked)
     $csarray=array();
-    foreach($result->readAll() as $row)
+    foreach($result as $row)
     {
         $thisset="";
         $query2 = "SELECT code, title, sortorder, language, assessment_value
@@ -3201,28 +3193,7 @@ function getQuestionAttributeValues($qid, $type='')
     $cache[$qid]=$qid_attributes;
     return $qid_attributes;
 }
-/**
- *  Return a sql statement for finding LIKE named tables
- *  Be aware that you have to escape underscor chars by using a backslash
- * otherwise you might get table names returned you don't want
-*
- * @param mixed $table
- */
-function db_select_tables_like($table)
-{
-	switch (Yii::app()->db->getDriverName()) {
-		case 'mysqli':
-		case 'mysql' :
-			return "SHOW TABLES LIKE '$table'";
-		case 'mssql' :
-		case 'odbc' :
-			return "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where TABLE_TYPE='BASE TABLE' and TABLE_NAME LIKE '$table'";
-		case 'postgre' :
-			$table=str_replace('\\','\\\\',$table);
-			return "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' and table_name like '$table'";
-		default: safe_die ("Couldn't create 'select tables like' query for connection type 'databaseType'");
-	}
-}
+
 /**
 *
 * Returns the questionAttribtue value set or '' if not set
@@ -3489,7 +3460,7 @@ function questionAttributes($returnByName=false)
     'caption'=>$clang->gT("Display map"),
     'default'=>1
     );
-
+    
     $qattributes["statistics_showgraph"]=array(
     'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Statistics'),
@@ -3500,7 +3471,7 @@ function questionAttributes($returnByName=false)
     'caption'=>$clang->gT("Display chart"),
     'default'=>1
     );
-
+    
     $qattributes["statistics_graphtype"]=array(
     "types"=>'15ABCDEFGHIKLNOQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Statistics'),
@@ -5226,7 +5197,7 @@ function convertCsvreturn2return($string)
 */
 function tableExists($tablename)
 {
-
+    
     return Yii::app()->db->schema->getTable($tablename);
 }
 
@@ -5371,7 +5342,7 @@ function translink($sType, $iOldSurveyID, $iNewSurveyID, $sString)
     {
         $pattern = "([^'\"]*)/upload/labels/{$iOldSurveyID}/";
         $replace = Yii::app()->getConfig("relativeurl")."/upload/labels/{$iNewSurveyID}/";
-        return preg_replace('#'.$sPattern.'#', $sReplace, $sString);
+        return preg_replace('#'.$pattern.'#', $replace, $sString);
     }
     else // unkown type
     {
@@ -5577,7 +5548,7 @@ function GetAttributeFieldNames($surveyid)
         return Array();
 
     return array_filter(array_keys($table->columns), 'filterforattributes');
-}
+    }
 
 /**
 * Retrieves the token field names usable for conditions from the related token table
@@ -5917,7 +5888,6 @@ function sGetTemplatePath($sTemplateName)
 */
 function sGetTemplateURL($sTemplateName)
 {
-    $CI = &get_instance();
     if (isStandardTemplate($sTemplateName))
     {
         return Yii::app()->getConfig("standardtemplaterooturl").'/'.$sTemplateName;
@@ -6875,20 +6845,17 @@ function sStripDBPrefix($sTableName)
 */
 function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
 {
-    $CI = &get_instance();
-    $CI->load->helper('database');
+    Yii::app()->loadHelper('database');
     $newsid=sanitize_int($newsid);
     $oldsid=sanitize_int($oldsid);
 
-    $CI->load->model('surveys_languagesettings_model');
-
     # translate 'surveyls_urldescription' and 'surveyls_url' INSERTANS tags in surveyls
-    $sql = "SELECT surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url from ".$CI->db->dbprefix."surveys_languagesettings WHERE surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{INSERTANS:".$oldsid."X%' OR surveyls_url LIKE '%{INSERTANS:".$oldsid."X%')";
+    $sql = "SELECT surveyls_survey_id, surveyls_language, surveyls_urldescription, surveyls_url from {{surveys_languagesettings}} WHERE surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{INSERTANS:".$oldsid."X%' OR surveyls_url LIKE '%{INSERTANS:".$oldsid."X%')";
     $result = db_execute_assoc($sql) or show_error("Can't read groups table in transInsertAns ");     // Checked
     //$result=$CI->surveys_languagesettings_model->getSomeRecords(array("surveyls_survey_id", "surveyls_language", "surveyls_urldescription", "surveyls_url"),"surveyls_survey_id=".$newsid." AND (surveyls_urldescription LIKE '%{INSERTANS:".$oldsid."X%' OR surveyls_url LIKE '%{INSERTANS:".$oldsid."X%')");
 
     //while ($qentry = $res->FetchRow())
-    foreach ($result->result_array() as $qentry)
+    foreach ($result->readAll() as $qentry)
     {
         $urldescription = $qentry['surveyls_urldescription'];
         $endurl  = $qentry['surveyls_url'];
@@ -6920,16 +6887,16 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
             'surveyls_language' => $language
             );
 
-            $CI->surveys_languagesettings_model->update($data,$where);
+            Surveys_languagesettings::update($data,$where);
 
         } // Enf if modified
     } // end while qentry
 
     # translate 'quotals_urldescrip' and 'quotals_url' INSERTANS tags in quota_languagesettings
-    $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from ".$CI->db->dbprefix."quota_languagesettings qls,".$CI->db->dbprefix."quota q WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{INSERTANS:".$oldsid."X%' OR quotals_url LIKE '%{INSERTANS:".$oldsid."X%')";
-    $res = db_execute_assoc($sql) or safe_die("Can't read quota table in transInsertAns ".$connect->ErrorMsg());     // Checked
+    $sql = "SELECT quotals_id, quotals_urldescrip, quotals_url from {{quota_languagesettings}} qls, {{quota}} q WHERE sid=".$newsid." AND q.id=qls.quotals_quota_id AND (quotals_urldescrip LIKE '%{INSERTANS:".$oldsid."X%' OR quotals_url LIKE '%{INSERTANS:".$oldsid."X%')";
+    $res = db_execute_assoc($sql) or safe_die("Can't read quota table in transInsertAns");     // Checked
 
-    foreach ($result->result_array() as $qentry)
+    foreach ($result->readAll() as $qentry)
     {
         $urldescription = $qentry['quotals_urldescrip'];
         $endurl  = $qentry['quotals_url'];
@@ -6945,21 +6912,18 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
         if (strcmp($urldescription,$qentry['quotals_urldescrip']) !=0  || (strcmp($endurl,$qentry['quotals_url']) !=0))
         {
             // Update Field
-            $sqlupdate = "UPDATE {$CI->db->dbprefix}quota_languagesettings SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE quotals_id={$qentry['quotals_id']}";
-            $updateres=db_execute_assoc($sqlupdate) or safe_die ("Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />".$connect->ErrorMsg());    //Checked
+            $sqlupdate = "UPDATE {{quota_languagesettings}} SET quotals_urldescrip='".db_quote($urldescription)."', quotals_url='".db_quote($endurl)."' WHERE quotals_id={$qentry['quotals_id']}";
+            $updateres=db_execute_assoc($sqlupdate) or safe_die ("Couldn't update INSERTANS in quota_languagesettings<br />$sqlupdate<br />");    //Checked
         } // Enf if modified
     } // end while qentry
 
-
-    $CI->load->model('groups_model');
-
     # translate 'description' INSERTANS tags in groups
-    $sql = "SELECT gid, language, group_name, description from ".$CI->db->dbprefix."groups WHERE sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'";
-    $res = db_execute_assoc($sql) or show_error("Can't read groups table in transInsertAns ".$connect->ErrorMsg());     // Checked
+    $sql = "SELECT gid, language, group_name, description from {{groups}} WHERE sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'";
+    $res = db_execute_assoc($sql) or show_error("Can't read groups table in transInsertAns");     // Checked
     //$result=$CI->groups_model->getSomeRecords("gid, language, group_name, description","sid=".$newsid." AND description LIKE '%{INSERTANS:".$oldsid."X%' OR group_name LIKE '%{INSERTANS:".$oldsid."X%'");
 
     //while ($qentry = $res->FetchRow())
-    foreach ($res->result_array() as $qentry)
+    foreach ($res->readAll() as $qentry)
     {
         $gpname = $qentry['group_name'];
         $description = $qentry['description'];
@@ -6991,20 +6955,18 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
             'language' => $language
             );
 
-            $CI->groups_model->update($data,$where);
+            Groups::model()->update($data,$where);
 
         } // Enf if modified
     } // end while qentry
 
-
-    $CI->load->model('questions_model');
     # translate 'question' and 'help' INSERTANS tags in questions
-    $sql = "SELECT qid, language, question, help from ".$CI->db->dbprefix."questions WHERE sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')";
+    $sql = "SELECT qid, language, question, help from {{questions}} WHERE sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')";
     $res = db_execute_assoc($sql) or show_error("Can't read question table in transInsertAns ");     // Checked
     //$result=$CI->questions_model->getSomeRecords("qid, language, question, help","sid=".$newsid." AND (question LIKE '%{INSERTANS:".$oldsid."X%' OR help LIKE '%{INSERTANS:".$oldsid."X%')");
 
     //while ($qentry = $res->FetchRow())
-    foreach ($result->result_array() as $qentry)
+    foreach ($result->readAll() as $qentry)
     {
         $question = $qentry['question'];
         $help = $qentry['help'];
@@ -7036,20 +6998,18 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
             'language' => $language
             );
 
-            $CI->questions_model->update($data,$where);
+            Questions::model()->update($data,$where);
 
         } // Enf if modified
     } // end while qentry
 
-
-    $CI->load->model('answers_model');
     # translate 'answer' INSERTANS tags in answers
     //$sql = "SELECT a.qid, a.language, a.code, a.answer from {$dbprefix}answers as a INNER JOIN {$dbprefix}questions as b ON a.qid=b.qid WHERE b.sid=".$newsid." AND a.answer LIKE '%{INSERTANS:".$oldsid."X%'";
     //$res = db_execute_assoc($sql) or safe_die("Can't read answers table in transInsertAns ".$connect->ErrorMsg());     // Checked
-    $result=$CI->answers_model->oldNewInsertansTags($newsid,$oldsid);
+    $result=Answers::model()->oldNewInsertansTags($newsid,$oldsid);
 
     //while ($qentry = $res->FetchRow())
-    foreach ($result->result_array() as $qentry)
+    foreach ($result->readAll() as $qentry)
     {
         $answer = $qentry['answer'];
         $code = $qentry['code'];
@@ -7079,7 +7039,7 @@ function TranslateInsertansTags($newsid,$oldsid,$fieldnames)
             'language' => $language
             );
 
-            $CI->answers_model->update($data,$where);
+            Answers::model()->update($data,$where);
 
         } // Enf if modified
     } // end while qentry
@@ -7453,19 +7413,18 @@ function FixLanguageConsistency($sid, $availlangs='')
 */
 function db_switchIDInsert($table,$state)
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    if ($CI->db->dbdriver =='odbc_mssql' || $CI->db->dbdriver =='odbtp' || $CI->db->dbdriver =='mssql_n' || $CI->db->dbdriver =='mssqlnative')
+    Yii::app()->loadHelper('database');
+    if (Yii::app()->db->getDriverName() =='odbc_mssql' || Yii::app()->db->getDriverName() =='odbtp' || Yii::app()->db->getDriverName() =='mssql_n' || Yii::app()->db->getDriverName() =='mssqlnative')
     {
         if ($state==true)
         {
             //$connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' ON');
-            db_execute_assoc('SET IDENTITY_INSERT '.$CI->db->dbprefix.$table.' ON');
+            db_execute_assoc('SET IDENTITY_INSERT {{'.$table.'}} ON');
         }
         else
         {
             //$connect->Execute('SET IDENTITY_INSERT '.db_table_name($table).' OFF');
-            db_execute_assoc('SET IDENTITY_INSERT '.$CI->db->dbprefix.$table.' OFF');
+            db_execute_assoc('SET IDENTITY_INSERT {{'.$table.'}} OFF');
         }
     }
 }

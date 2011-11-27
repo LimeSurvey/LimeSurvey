@@ -49,5 +49,13 @@ class Assessment extends CActiveRecord
 	{
 		return array('id', 'language');
 	}
+	
+	function insertRecords($data)
+    {
+        $assessments = new self;
+		foreach ($data as $k => $v)
+			$assessments->$k = $v;
+		$assessments->save();
+}
 }
 ?>

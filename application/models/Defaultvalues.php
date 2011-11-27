@@ -64,5 +64,13 @@ class Defaultvalues extends CActiveRecord
 			),
 		);
 	}
+	
+	function insertRecords($data)
+    {
+        $values = new self;
+		foreach ($data as $k => $v)
+			$values->$k = $v;
+		$values->save();
+}
 }
 ?>

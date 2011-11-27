@@ -1,13 +1,13 @@
 <?php
-$clang = &get_instance()->limesurvey_lang;
-$this->load->view("installer/header_view",array('progressValue' => $progressValue));
+$clang = Yii::app()->lang;
+$this->getController()->render("installer/header_view",array('progressValue' => $progressValue));
 ?>
 
-<form action="<?php echo $this->config->site_url('installer/install/welcome'); ?>" method="post">
+<form action="<?php echo $this->createUrl('installer/install/welcome'); ?>" method="post">
 
 <div class="container_6">
 
-<?php $this->load->view('installer/sidebar_view', array(
+<?php $this->getController()->render('installer/sidebar_view', array(
        'progressValue' => $progressValue,
        'classesForStep' => $classesForStep
     ));
@@ -32,7 +32,7 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 </td>
 <td align="right">
 <select id='installerLang' name='installerLang' style='width:190px;'>
-<?php $this->load->view('installer/language_options_view'); ?>
+<?php $this->getController()->render('installer/language_options_view'); ?>
 </select>
 </td>
 </tr>
@@ -62,4 +62,4 @@ $this->load->view("installer/header_view",array('progressValue' => $progressValu
 
 
 </form>
-<?php $this->load->view("installer/footer_view"); ?>
+<?php $this->getController()->render("installer/footer_view"); ?>

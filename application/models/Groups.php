@@ -49,5 +49,31 @@ class Groups extends CActiveRecord
 	{
 		return 'gid';
 	}
+	
+	function updateGroupOrder($sid,$lang,$position=0)
+    {
+		$data=Yii::app()->db->createCommand()->select('gid')->where(array('and','sid='.$sid,'language="'.$lang.'"'))->order('group_order, group_name ASC')->from('{{groups}}')->query();
+
+        foreach($data->readAll() as $row)
+        {
+            Yii::app()->db->createCommand()->update($this->tableName(),array('group_order' => $position),'gid='.$row['gid']);
+            $position++;
+}
+    }
+	
+	function update($data, $condition=FALSE)
+    {
+
+        return Yii::app()->db->createCommand()->update('{{groups}}', $data, $condition);
+
+    }
+	
+	public function insertRecords($data)
+    {
+        $group = new self;
+		foreach ($data as $k => $v)
+			$group->$k = $v;
+		return $group->save();
+    }
 }
 ?>

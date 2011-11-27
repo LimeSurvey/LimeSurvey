@@ -3,7 +3,7 @@
  * Web Installer Sidebar (Progressbar and Step-Listing) Viewscript
  */
 
-$clang = &get_instance()->limesurvey_lang;
+$clang = Yii::app()->lang;
 ?>
 <div class="grid_2 table">
 <p class="title"> &nbsp;Progress</p>
