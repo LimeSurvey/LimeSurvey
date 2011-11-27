@@ -72,14 +72,14 @@ class Survey_permissions_model extends CI_Model {
     {
         $this->db->insert('survey_permissions', $data);
     }
-	
+
 	function specificQuery($surveyid, $postusergroupid)
 	{
-		//Create sub-query 
+		//Create sub-query
 		$this->db->select('uid');
 		$this->db->from('survey_permissions');
-		$this->db->where('sid' => $surveyid);
-		
+		$this->db->where(array('sid' => $surveyid));
+
 		$subQuery = $this->db->get_compile_select();
 		$this->db->_reset_select();
 
@@ -87,20 +87,20 @@ class Survey_permissions_model extends CI_Model {
 		$this->db->select('b.id');
 		$thid->db->from('('.$subQuery.') AS c');
 		$this->db->join('user_in_groups AS b', 'b.uid = c.uid', 'right');
-		$this->db->where('c.uid' => NULL);
-		$this->db->where('b.ugid' => $postusergroupid);
+		$this->db->where(array('c.uid' => NULL));
+		$this->db->where(array('b.ugid' => $postusergroupid));
 		return $this->db->get();
 	}
-	
+
 	function joinQuery($what, $from, $where = array(), $join = array(), $order = NULL, $group = NULL)
 	{
 		$this->db->select($what);
 		$this->db->from($from);
 		$this->db->where($where);
-		
+
 		if (isset($join['table'], $join['on'], $join['type']))
 			$this->db->join($join['table'], $join['on'], $join['type']);
-		
+
 		if ( ! empty($order)) $this->db->order_by($order);
 		if ( ! empty($group)) $this->db->group_by($group);
 		return $this->db->get();
