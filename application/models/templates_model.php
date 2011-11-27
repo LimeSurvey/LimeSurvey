@@ -12,6 +12,18 @@ class Templates_model extends CI_Model {
 		$data = $this->db->get('templates');
 		
 		return $data;
+	}	
+	
+	function getAllRecords_like($condition=FALSE)
+	{
+		if ($condition != FALSE)
+		{
+			$this->db->like($condition);	
+		}
+		
+		$data = $this->db->get('templates');
+		
+		return $data;
 	}
 	
 	function get_like_records($like)

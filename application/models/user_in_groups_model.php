@@ -29,5 +29,38 @@ class User_in_groups_model extends CI_Model {
 		
 		return $data;
 	}
+	
+	function insert($data)
+	{
+		return (bool) $this->db->insert('user_in_groups', $data);
+	}
+	
+	function join($fields, $from, $condition=FALSE, $join=FALSE, $order=FALSE)
+	{
+		foreach ($fields as $field)
+		{
+			$this->db->select($field);
+		}
+		
+		$this->db->from($from);
+		
+		if ($condition != FALSE)
+		{
+			$this->db->where($condition);	
+		}
+
+		if ($order != FALSE)
+		{
+			$this->db->order_by($order);	
+		}
+		
+		if (isset($join['where'], $join['type'], $join['on']))
+		{
+			$this->db->join($condition);	
+		}
+		
+		$data = $this->db->get();
+		return $data;
+	}
 
 }
