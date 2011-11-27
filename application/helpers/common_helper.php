@@ -734,7 +734,7 @@ function get2post($url)
     $aqueryitems = explode('&',$query);
     $arrayParam = Array();
     $arrayVal = Array();
-
+	
     foreach ($aqueryitems as $queryitem)
     {
         $stack =  explode ('=', $queryitem);
@@ -4291,7 +4291,7 @@ function html_escape($str) {
     return str_replace(array("\x0A","\x0D"),array("&#10;","&#13;"),
     htmlspecialchars( $str, ENT_QUOTES ));
 }
-function db_quote_id($id)
+/*function db_quote_id($id)
 {
 	// WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
 	//  $quote = $connect->nameQuote;
@@ -4316,7 +4316,7 @@ function db_quote_id($id)
 		default:
 			return "`".$id."`";
 	}
-}
+}*/
 
 /**
  * Escapes a text value for db
@@ -5390,7 +5390,6 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
 */
 function hasResources($id,$type='survey')
 {
-    $CI = &get_instance();
     $dirname = Yii::app()->getConfig("uploaddir");
 
     if ($type == 'survey')
@@ -7919,12 +7918,14 @@ function getlabelsets($languages=null)
 // Returns a list with label sets
 // if the $languages paramter is provided then only labelset containing all of the languages in the paramter are provided
 {
-    $clang = Yii::app()->lang;
+    $yii =Yii::app();
+    $yii->loadHelper('database');
+    $clang = $yii->lang;
     if ($languages){
         $languages=sanitize_languagecodeS($languages);
         $languagesarray=explode(' ',trim($languages));
     }
-    $query = "SELECT {{labelsets}}.lid as lid, label_name FROM {{labelsets}}";
+    $query = "SELECT ".Labelset::model()->tableName().".lid as lid, label_name FROM ".Labelset::model()->tableName();
     if ($languages){
         $query .=" where ";
         foreach  ($languagesarray as $item)
@@ -7936,7 +7937,7 @@ function getlabelsets($languages=null)
     $query .=" order by label_name";
     $result = Yii::app()->db->createCommand($query)->query(); //Checked
     $labelsets=array();
-    foreach ($result->readAll() as $row)
+    foreach ($result as $row)
     {
         $labelsets[] = array($row['lid'], $row['label_name']);
     }

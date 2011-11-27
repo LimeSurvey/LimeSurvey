@@ -27,7 +27,6 @@ class AdminController extends LSYii_Controller
 	protected function _init()
 	{
 		parent::_init();
-
 		$updatelastcheck = '';
 
 		$this->_sessioncontrol();
@@ -114,6 +113,8 @@ class AdminController extends LSYii_Controller
 			'export' => 'application.controllers.admin.export',
 			'assessments' =>'application.controllers.admin.assessments',
 			'checkintegrity' => 'application.controllers.admin.checkintegrity',
+			'labels' => 'application.controllers.admin.labels',
+			'htmleditor_pop' => 'application.controllers.admin.htmleditor_pop',
 			'survey' => 'application.controllers.admin.surveyaction',
 			'printablesurvey' => 'application.controllers.admin.printablesurvey',
 			'tokens' => 'application.controllers.admin.tokens',

@@ -1,6 +1,6 @@
 <div class='header header_statistics'>
-        <input type='image' src='<?php echo $this->config->item('imageurl'); ?>/close.gif' align='right' 
-        onclick="window.open('<?php echo site_url("admin/labels/view/".$lid); ?>', '_top')" />
+        <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' align='right' 
+        onclick="window.open('<?php echo "admin/labels/view/".$lid; ?>', '_top')" />
         <?php if ($action == "newlabelset") { echo $clang->gT("Create or import new label set(s)");}
         else {echo $clang->gT("Edit Label Set"); } ?>
 </div>
@@ -14,10 +14,11 @@
         <?php } ?>
         </ul>
         <div id='neweditlblset0'>
-            <form method='post' class='form30' id='labelsetform' action='<?php echo site_url("admin/labels/process"); ?>' onsubmit="return isEmpty(document.getElementById('label_name'), '<?php echo $clang->gT("Error: You have to enter a name for this label set.","js"); ?>')">
+            <form method='post' class='form30' id='labelsetform' action='<?php echo $this->createUrl("admin/labels/process"); ?>' onsubmit="return isEmpty(document.getElementById('label_name'), '<?php echo $clang->gT("Error: You have to enter a name for this label set.","js"); ?>')">
 
         <ul>
-        <li><label for='languageids'><?php echo $clang->gT("Set name:"); ?></label>
+	        <li>
+	        	<label for='languageids'><?php echo $clang->gT("Set name:"); ?></label>
         <input type='hidden' name='languageids' id='languageids' value='<?php echo $langids; ?>' />
         <input type='text' id='label_name' name='label_name' maxlength='100' size='50' value='<?php if (isset($lbname)) { echo $lbname;} ?>' />
         </li>
@@ -26,8 +27,7 @@
         <table><tr><td align='left'><select multiple='multiple' style='min-width:220px;' size='5' id='additional_languages' name='additional_languages'>
         <?php foreach ($langidsarray as $langid)
         { ?>
-            <option id='<?php echo $langid; ?>' value='<?php echo $langid; ?>'
-            ><?php echo getLanguageNameFromCode($langid,false); ?></option>
+            <option id='<?php echo $langid; ?>' value='<?php echo $langid; ?>'><?php echo getLanguageNameFromCode($langid,false); ?></option>
         <?php } ?>
 
         
@@ -60,7 +60,7 @@
         </div> 
         <?php if ($action == "newlabelset"){ ?>
             <div id='neweditlblset1'>
-                <form enctype='multipart/form-data' id='importlabels' name='importlabels' action='<?php echo site_url('admin/labels/import'); ?>' method='post'>
+                <form enctype='multipart/form-data' id='importlabels' name='importlabels' action='<?php echo 'admin/labels/import'; ?>' method='post'>
                 <div class='header ui-widget-header'>
                 <?php echo $clang->gT("Import label set(s)"); ?>
                 </div><ul>

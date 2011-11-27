@@ -22,18 +22,38 @@
   * @version $Id: labels.php 11246 2011-10-23 20:46:05Z c_schmitz $
   * @access public
   */
- class labels extends Admin_Controller {
-
-    /**
-     * labels::__construct()
-     * Constructor
-     * @return
-     */
-    function __construct()
+ class Labels extends CAction {
+	
+	private $yii;
+	private $controller;
+	
+	public function run()
 	{
-		parent::__construct();
+		$this->yii = Yii::app();
+		$this->controller = $this->getController();
+		
+		if(isset($_GET['index']))
+		{
+			$this->index($_GET['index']);
 	}
-
+		else if(isset($_GET['view']))
+		{
+			$this->view($_GET['view']);
+		}
+		else if(isset($_GET['process']))
+		{
+			$this->process();
+		}
+		else if(isset($_GET['exportmulti']))
+		{
+			$this->exportmulti();
+		} 
+		else
+		{
+			$this->view();
+		}
+	}
+	
     /**
      * labels::importlabelresources()
      * Function responsible to import label resources from a '.zip' file.
@@ -62,7 +82,7 @@
             }
 
             //require("classes/phpzip/phpzip.inc.php");
-            $this->load->library('admin/Phpzip');
+            $yii->loadLibrary('admin/Phpzip');
             //$the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
             $zipfile=$_FILES['the_file']['tmp_name'];
             $z = $this->phpzip; // PHPZip();
@@ -265,16 +285,16 @@
     function import()
     {
         $clang = $this->limesurvey_lang;
-        $action = $this->input->post('action');
-        self::_getAdminHeader();
+        $action = $_POST('action');
+        $this->controller->_getAdminHeader();
         self::_labelsetbar();
+		
         if ($action == 'importlabels')
         {
-            $_POST = $this->input->post();
-            $this->load->helper('admin/import');
+            $this->yii->loadHelper('admin/import');
             $importlabeloutput = "<div class='header ui-widget-header'>".$clang->gT("Import Label Set")."</div>\n";
 
-            $sFullFilepath = $this->config->item('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
+            $sFullFilepath = $this->yii->getConfig('tempdir') . DIRECTORY_SEPARATOR . $_FILES['the_file']['name'];
             $aPathInfo = pathinfo($sFullFilepath);
             $sExtension = $aPathInfo['extension'];
 
@@ -348,10 +368,10 @@
             $this->load->view('survey_view',$data);
 
         }
-        self::_loadEndScripts();
+        $this->controller->_loadEndScripts();
 
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -361,24 +381,31 @@
      * @param integer $lid
      * @return
      */
-    function index($action,$lid=0)
+    function index($action=NULL, $lid=NULL)
     {
+    	$lid = (isset($_GET['lid'])) ? $_GET['lid'] : $lid=0;
+		$action = (isset($_GET['index'])) ? $_GET['index'] : $action;
+		
 		$lid = sanitize_int($lid);
-        $this->load->helper('database');
-        $this->load->helper('surveytranslator');
-        $clang = $this->limesurvey_lang;
+        $clang = $this->controller->lang;
+		
+		$this->yii->loadHelper('surveytranslator');
+		
+        $this->controller->_getAdminHeader();
+        $this->_labelsetbar($lid);
 
-
-        self::_getAdminHeader();
-        self::_labelsetbar($lid);
-
-        if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_LABEL') == 1)
+        if($this->yii->session['USER_RIGHT_SUPERADMIN'] == 1 || $this->yii->session['USER_RIGHT_MANAGE_LABEL'] == 1)
         {
             if ($action == "editlabelset")
             {
-                $query = "SELECT label_name, ".$this->db->dbprefix."labelsets.lid, languages FROM ".$this->db->dbprefix."labelsets WHERE lid=".$lid;
-                $result=db_execute_assoc($query);
-                foreach ($result->result_array() as $row) {$lbname=$row['label_name']; $lblid=$row['lid']; $langids=$row['languages'];}
+            	$connection = $this->yii->db;
+                $query = "SELECT label_name, ".Labelset::model()->tableName().".lid, languages FROM ".Labelset::model()->tableName()." WHERE lid=".$lid;
+                $command = $connection->createCommand($query);
+                $result=$command->queryAll();
+                foreach ($result as $row) {
+                	$lbname = $row['label_name']; 
+                	$lblid = $row['lid']; 
+                	$langids = $row['languages'];}
                 $data['lbname'] = $lbname;
                 $data['lblid'] = $lblid;
             }
@@ -388,26 +415,35 @@
             $data['lid'] = $lid;
 
 
-
-            if ($action == "newlabelset") {$langids=$this->session->userdata('adminlang'); $tabitem=$clang->gT("Create New Label Set");}
-            else { $tabitem=$clang->gT("Edit label set");}
+            if ($action == "newlabelset") 
+			{
+				$langids=$this->yii->session['adminlang']; 
+				$tabitem=$clang->gT("Create New Label Set");	
+			}
+            else
+			{ 
+				$tabitem=$clang->gT("Edit label set");
+			}
             $langidsarray=explode(" ",trim($langids)); //Make an array of it
 
-            if (isset($row['lid'])) { $panecookie=$row['lid'];} else  {$panecookie='new';}
+            if (isset($row['lid'])) {	
+				$panecookie=$row['lid'];
+			} else { 
+				$panecookie='new'; 
+			}
 
             $data['langids'] = $langids;
             $data['langidsarray'] = $langidsarray;
             $data['panecookie'] = $panecookie;
             $data['tabitem'] = $tabitem;
 
-            $this->load->view('admin/labels/editlabel_view',$data);
-
+            $this->controller->render('/admin/labels/editlabel_view', $data);
+			
         }
+        $this->controller->_loadEndScripts();
 
-        self::_loadEndScripts();
 
-
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 
     }
 
@@ -419,68 +455,79 @@
      */
     function view($lid=false)
     {
+    	// Escapes the id variable
     	if($lid!=false) $lid = sanitize_int($lid);
-        $clang = $this->limesurvey_lang;
+		// Gets the current language
+        $clang = $this->controller->lang;
         $action = 'labels';
-        self::_getAdminHeader();
-        self::_js_admin_includes(base_url().'scripts/admin/labels.js');
-        self::_js_admin_includes(base_url().'scripts/admin/updateset.js');
-
-        if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_LABEL') == 1)
+		
+		// Loads admin header
+        $this->controller->_getAdminHeader();
+		// Includes some javascript files
+		$this->controller->_js_admin_includes($this->yii->baseUrl.'/scripts/admin/labels.js');
+        $this->controller->_js_admin_includes($this->yii->baseUrl.'/scripts/admin/updateset.js');
+		
+		// Checks if user have the sufficient rights to manage the labels
+        if($this->yii->session['USER_RIGHT_SUPERADMIN'] == 1 || $this->yii->session['USER_RIGHT_MANAGE_LABEL'] == 1)
         {
-
+			// Sets the menubar
             self::_labelsetbar($lid);
-
-            $this->load->model('labelsets_model');
-            $condn = array('lid' => $lid);
-
-            $result = $this->labelsets_model->getAllRecords($condn); //($query);)
-
-            if ($lid && $result->num_rows()>0)
+			
+			// Inititalize labalset model
+            $labelset = new Labelset;
+            //Set condition and params for the query
+			$condn = 'lid=:lid';
+            $params = array(':lid' => $lid);
+			
+			// Get a result containing labelset with the specified id
+            $result = $labelset->find($condn, $params); //($query) ;)
+			
+			// If there is label id in the variable $lid and there are labelset records in the database
+			$labelset_exists = Labelset::model()->exists($condn, $params);
+            if ($lid && $labelset_exists)
             {
-                //NOW GET THE ANSWERS AND DISPLAY THEM
-
-
-                if ($result->num_rows()>0)
-                {
+                // Now recieve all labelset information and display it
 
                     $data['lid'] = $lid;
                     $data['clang'] = $clang;
-                    $data['row'] = $result->row_array();
-                    $this->load->view("admin/labels/labelbar_view",$data);
-                }
+                $data['row'] = $result;
+				
+				// Display a specific labelbar menu
+                $this->controller->render("/admin/labels/labelbar_view",$data);
+				
+                $rwlabelset = $result; //db_execute_assoc($qulabelset) or safe_die($connect->ErrorMsg());
+                // Make languages array from the current row
+                $lslanguages = explode(" ", trim( $result['languages']));
+                
+                $this->yii->loadHelper("admin/htmleditor");
 
-
-                $rslabelset = $this->labelsets_model->getAllRecords($condn); //db_execute_assoc($qulabelset) or safe_die($connect->ErrorMsg());
-                $rwlabelset=$rslabelset->row_array();
-                $lslanguages=explode(" ", trim($rwlabelset['languages']));
-
-                $this->load->helper("admin/htmleditor");
-
-                PrepareEditorScript(true);
-
-                $maxquery = "SELECT max(sortorder) as maxsortorder, sortorder FROM ".$this->db->dbprefix."labels WHERE lid=$lid and language='{$lslanguages[0]}'";
-                $maxresult = db_execute_assoc($maxquery); // or safe_die($connect->ErrorMsg());
-                $msorow=$maxresult->row_array();
+                PrepareEditorScript(true, $this->controller);
+                
+                $label = new Label;
+				$connection = $this->yii->db;
+                $maxquery = "SELECT max(sortorder) as maxsortorder, sortorder FROM ".$label->tableName()." WHERE lid=$lid and language='{$lslanguages[0]}'";
+				$command = $connection->createCommand($maxquery);
+				$maxresult = $command->queryAll();          
+                $msorow = $maxresult[0];
                 $maxsortorder=$msorow['maxsortorder']+1;
-                $labelsoutput = "\n<script type=\"text/javascript\">\n<!--\n var ci_path = '".$this->config->item('imageurl')."'; //-->\n</script>\n";
+                $labelsoutput = "\n<script type=\"text/javascript\">\n<!--\n var ci_path = '".$this->yii->getConfig('imageurl')."'; //-->\n</script>\n";
                 // labels table
                 $labelsoutput .= "\t<div class='header ui-widget-header'>".$clang->gT("Labels")."\t</div>\n";
-                $labelsoutput.= "<form method='post' id='mainform' action='".site_url('admin/labels/process')."' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
+                $labelsoutput.= "<form method='post' id='mainform' action='".$this->controller->createUrl('admin/labels/process')."' onsubmit=\"return codeCheck('code_',$maxsortorder,'".$clang->gT("Error: You are trying to use duplicate label codes.",'js')."','".$clang->gT("Error: 'other' is a reserved keyword.",'js')."');\">\n"
                 ."<input type='hidden' name='sortorder' value='{$msorow['sortorder']}' />\n"
                 ."<input type='hidden' name='lid' value='$lid' />\n"
-                ."<input type='hidden' name='action' value='modlabelsetanswers' />\n";
+                ."<input type='hidden' name= 'action' value='modlabelsetanswers' />\n";
                 $first=true;
                 $sortorderids=''; $codeids='';
                 $i = 0;
-                $this->load->helper("surveytranslator");
+                $this->yii->loadHelper("surveytranslator");
                 foreach ($lslanguages as $lslanguage)
                 {
-
                     $position=0;
-                    $query = "SELECT * FROM ".$this->db->dbprefix."labels WHERE lid=$lid and language='$lslanguage' ORDER BY sortorder, code";
-                    $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg());
-                    $labelcount = $result->num_rows();
+                    $query = "SELECT * FROM ".$label->tableName()." WHERE lid=$lid and language='$lslanguage' ORDER BY sortorder, code";
+					$query_count = "SELECT count(*) FROM ".$label->tableName()." WHERE lid=$lid and language='$lslanguage' ORDER BY sortorder, code";
+                    $result = $connection->createCommand($query); // or safe_die($connect->ErrorMsg());
+                    $labelcount = $connection->createCommand($query_count)->queryScalar();
                     $tab_title[$i] = getLanguageNameFromCode($lslanguage,false);
 
                     $tab_content[$i] = "
@@ -505,7 +552,7 @@
                     ";
 
                     $alternate=false;
-                    foreach ($result->result_array() as $row)
+                    foreach ($result->queryAll() as $row)
                     {
                         $sortorderids=$sortorderids.' '.$row['language'].'_'.$row['sortorder'];
                         if ($first) {$codeids=$codeids.' '.$row['sortorder'];}
@@ -522,7 +569,7 @@
                             $tab_content[$i].= "<td>{$row['code']}</td><td>{$row['assessment_value']}</td>";
                         else
                             $tab_content[$i].= "
-                                <td><img src='".$this->config->item('imageurl')."/handle.png' /></td>
+                                <td><img src='".$this->yii->getConfig('imageurl')."/handle.png' /></td>
                                 <td>
                                     <input type='hidden' class='hiddencode' value='{$row['code']}' />
                                     <input type='text'  class='codeval'id='code_{$row['sortorder']}' name='code_{$row['sortorder']}' maxlength='5'
@@ -543,7 +590,7 @@
                          if ($first)
                              $tab_content[$i] .= "
                              <td style='text-align:center;'>
-                             <img src='".$this->config->item('imageurl')."/addanswer.png' class='btnaddanswer' /><img src='".$this->config->item('imageurl')."/deleteanswer.png' class='btndelanswer' />
+                             <img src='".$this->yii->getConfig('imageurl')."/addanswer.png' class='btnaddanswer' /><img src='".$this->yii->getConfig('imageurl')."/deleteanswer.png' class='btndelanswer' />
                              </td>
                              </tr>";
 
@@ -588,12 +635,12 @@
                     $ZIPimportAction = " onclick='alert(\"".$clang->gT("zip library not supported by PHP, Import ZIP Disabled","js")."\");'";
                 }
 
-                $labelsoutput.="<div id='up_resmgmt'><div>\t<form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='".site_url('admin/labels/importlabelresources')."' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+                $labelsoutput.="<div id='up_resmgmt'><div>\t<form class='form30' enctype='multipart/form-data' id='importlabelresources' name='importlabelresources' action='".$this->controller->createUrl('admin/labels/importlabelresources')."' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
                 . "\t<input type='hidden' name='lid' value='$lid' />\n"
                 . "\t<input type='hidden' name='action' value='importlabelresources' />\n"
                 . "\t<ul style='list-style-type:none; text-align:center'>\n"
                 . "\t\t<li><label>&nbsp;</label>\n"
-                . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"".$this->config->item('sCKEditorURL')."/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\"  /></li>\n"
+                . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"".$this->yii->getConfig('sCKEditorURL')."/editor/filemanager/browser/default/browser.html?Connector=../../connectors/php/connector.php?\", \"_blank\")' value=\"".$clang->gT("Browse Uploaded Resources")."\"  /></li>\n"
                 . "\t\t<li><label>&nbsp;</label>\n"
                 . "\t\t<input type='button' $disabledIfNoResources onclick='window.open(\"scriptname?action=exportlabelresources&amp;lid={$lid}\", \"_blank\")' value=\"".$clang->gT("Export Resources As ZIP Archive")."\"  /></li>\n"
                 . "\t\t<li><label for='the_file'>".$clang->gT("Select ZIP File:")."</label>\n"
@@ -614,7 +661,7 @@
 
                 $displaydata['display'] = $labelsoutput;
                 //$data['display'] = $editsurvey;
-                $this->load->view('survey_view',$displaydata);
+                $this->controller->render('/survey_view', $displaydata);
 
 
             }
@@ -623,11 +670,9 @@
 
         }
 
+        $this->controller->_loadEndScripts();
 
-        self::_loadEndScripts();
-
-
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 
     }
 
@@ -638,33 +683,42 @@
      */
     function process()
     {
-        if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $this->session->userdata('USER_RIGHT_MANAGE_LABEL') == 1)
+        if($this->yii->session['USER_RIGHT_SUPERADMIN'] == 1 || $this->yii->session['USER_RIGHT_MANAGE_LABEL'] == 1)
         {
-            $_POST = $this->input->post();
-            if (isset($_POST['sortorder'])) {$postsortorder=sanitize_int($_POST['sortorder']);}
+            if (isset($_POST['sortorder'])) { $postsortorder=sanitize_int($_POST['sortorder']); }
 
             if (isset($_POST['method']) && get_magic_quotes_gpc())
             {
                 $_POST['method']  = stripslashes($_POST['method']);
             }
 
-            $action = $this->input->post('action');
-            $this->load->helper('admin/labels');
-            $lid = $this->input->post('lid');
+            $action = $_POST['action'];
+            $this->yii->loadHelper('admin/labels');
+            $lid = isset($_POST['lid']) ? $_POST['lid'] : 0;
 
             //DO DATABASE UPDATESTUFF
-            if ($action == "updateset") {updateset($lid);}
-            if ($action == "insertlabelset") {$lid=insertlabelset();}
-            if (($action == "modlabelsetanswers")||($action == "ajaxmodlabelsetanswers")) {modlabelsetanswers($lid);}
-            if ($action == "deletelabelset") {if (deletelabelset($lid)) {$lid=0;}}
+            if ($action == "updateset") { updateset($lid); }
+            if ($action == "insertlabelset") {
+            	$label = new Labelset;
+				$label->label_name = $_POST['label_name'];
+				$label->languages = $_POST['languageids'];
+            	$label->save();
+			}
+            if (($action == "modlabelsetanswers")||($action == "ajaxmodlabelsetanswers")) { modlabelsetanswers($lid); }
+            if ($action == "deletelabelset") {
+	        	if (deletelabelset($lid)) 
+	        	{
+	        		$lid=0;
+				} 
+			}
 
             if ($lid)
             {
-                redirect("admin/labels/view/".$lid);
+                $this->controller->redirect($this->controller->createUrl("admin/labels/view/".$lid));
             }
             else
             {
-                redirect("admin/labels/view");
+                $this->controller->redirect($this->controller->createUrl("admin/labels/view"));
             }
 
 
@@ -679,14 +733,16 @@
 	 */
 	function exportmulti()
 	{
-		self::_getAdminHeader();
+		$this->controller->_getAdminHeader();
 		self::_labelsetbar(0);
-        self::_js_admin_includes(base_url().'scripts/admin/labels.js');
-		$data['clang'] = $this->limesurvey_lang;
+        $this->controller->_js_admin_includes($this->yii->baseUrl.'scripts/admin/labels.js');
+		$data['clang'] = $this->yii->lang;
         $data['labelsets'] = getlabelsets();
-		$this->load->view('admin/labels/exportmulti_view', $data);
-		self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+		$this->controller->render('/admin/labels/exportmulti_view', $data);
+		$this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
 	}
+	
+	
 
     /**
      * labels::_labelsetbar()
@@ -697,11 +753,10 @@
     function _labelsetbar($lid=0)
     {
     	$lid = (int) $lid;
-        $data['clang'] = $this->limesurvey_lang;
+        $data['clang'] = $this->controller->lang;
         $data['lid'] = $lid;
-        $data['labelsets'] = getlabelsets();
-        $this->load->view("admin/labels/labelsetsbar_view",$data);
-
+        $data['labelsets'] = Labelset::model()->findAll('lid>:id', array(':id'=>0));
+		$this->controller->render('/admin/labels/labelsetsbar_view', $data);
     }
 
 

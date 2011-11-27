@@ -46,16 +46,23 @@ $route['(:num)'] = "survey/sid/$1";
 
 //Admin Routes
 $route['admin'] = "admin/index";
-
+$route['admin/labels/view'] = "admin/labels/view";
 
 //question
 $route['admin/question/newquestion/(:num)/(:num)'] = "admin/question/index/addquestion/$1/$2";
 $route['admin/question/editquestion/(:num)/(:num)/(:num)'] = "admin/question/index/editquestion/$1/$2/$3";
 $route['admin/question/deletequestion/(:num)/(:num)/(:num)'] = "admin/question/delete/delquestion/$1/$2/$3";
 
+$route['admin/labels/exportmulti'] = "admin/labels/exportmulti";
+$route['admin/labels/process'] = "admin/labels/process";
+$route['admin/labels/view/<lid:\d+>'] = "admin/labels/view/<lid>";
+$route['admin/labels/<action:\w+>'] = "admin/labels/index/<action>";
+$route['admin/labels/<action:\w+>/<lid:\d+>'] = "admin/labels/index/<action>/<id>";
 //labels
-$route['admin/labels/newlabel'] = "admin/labels/index/newlabelset";
-$route['admin/labels/editlabel/(:num)'] = "admin/labels/index/editlabelset/$1";
+//$route['admin/labels/newlabel'] = "admin/labels/index/newlabelset";
+//$route['admin/labels/editlabel/(:num)'] = "admin/labels/index/editlabelset/$1";
+
+$route['<controller:\w+>/<action:\w+>'] = '<controller>/<action>';
 
 //Expression Manager tests
 $route['admin/expressions'] = "admin/expressions/index";

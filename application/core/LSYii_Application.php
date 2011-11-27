@@ -57,6 +57,18 @@ class LSYii_Application extends CWebApplication
 	{
 		Yii::import('application.helpers.' . $helper . '_helper', true);
 	}
+	
+	/**
+	 * Loads a library
+	 * 
+	 * @access public 
+	 * @param string $helper
+	 * @return void
+	 */
+	public function loadLibrary($library)
+	{
+		Yii::import('application.libraries.'.$library.'', true);
+	}
 
 	/**
 	 * Sets a configuration variable into the registry

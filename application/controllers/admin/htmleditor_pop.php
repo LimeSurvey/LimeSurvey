@@ -17,35 +17,41 @@
 //include_once("login_check.php");
 
 
-class htmleditor_pop extends Admin_Controller {
+class htmleditor_pop extends CAction {
  
- 
-    function __construct()
+    function run()
 	{
-        parent::__construct();
+		$fieldname = $_GET['index'];
+		foreach($_GET[''] as $key=>$val)
+		{
+			$fieldtext = $key;
+			$fieldtype = $val;
 	}
     
-    
+        $this->index($fieldname, $fieldtext, $fieldtype);
+	}
     
     function index($fieldname=0,$fieldtext=0,$fieldtype=0,$action=0,$sid=0,$gid=0,$qid=0,$lang=0)
     {
+    	$yii = Yii::app();
     	$sid = (int) $sid;
 		$gid = (int) $gid;
 		$qid = (int) $qid;
+		
         //require_once(dirname(__FILE__).'/../config-defaults.php');
         //require_once(dirname(__FILE__).'/../common.php');
         
         if (!$lang)
         {
-            $this->load->library('Limesurvey_lang',array('en'));
+            $yii->loadLibrary('Limesurvey_lang',array('en'));
             
-            $clang = $this->limesurvey_lang; // limesurvey_lang("en");
+            $clang = $yii->lang; // limesurvey_lang("en");
             
         }
         else
         {
-            $this->load->library('Limesurvey_lang',array($lang));
-            $clang = $this->limesurvey_lang; // new limesurvey_lang($_GET['lang']);
+            $yii->loadLibrary('Limesurvey_lang',array($lang));
+            $clang = $yii->lang; // new limesurvey_lang($_GET['lang']);
         }
         
         if (!$fieldname || !$fieldtext)
@@ -71,7 +77,7 @@ class htmleditor_pop extends Admin_Controller {
         		</table>
         		<form  onsubmit="self.close()">
         			<input type="submit" value="'.$clang->gT("Close Editor").'" />
-        			<input type="hidden" name="checksessionbypost" value="'.$this->session->userdata('checksessionpost').'" />
+        			<input type="hidden" name="checksessionbypost" value="'.$yii->session['checksessionpost'].'" />
         		</form>
         	</body>
         	</html>';
@@ -107,8 +113,8 @@ class htmleditor_pop extends Admin_Controller {
         		<title>'.sprintf($clang->gT("Editing %s"), $fieldtext).'</title>
         		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         		<meta name="robots" content="noindex, nofollow" />
-                <script type="text/javascript" src="'.$this->config->item('generalscripts').'jquery/jquery.js"></script>
-        		<script type="text/javascript" src="'.$this->config->item('sCKEditorURL').'/ckeditor.js"></script>
+                <script type="text/javascript" src="'.$yii->getConfig('generalscripts').'jquery/jquery.js"></script>
+        		<script type="text/javascript" src="'.$yii->getConfig('sCKEditorURL').'/ckeditor.js"></script>
         	</head>';
         
         
@@ -116,7 +122,7 @@ class htmleditor_pop extends Admin_Controller {
         	<body>
         	<form method='post' onsubmit='saveChanges=true;'>
         
-        			<input type='hidden' name='checksessionbypost' value='".$this->session->userdata('checksessionpost')."' />
+        			<input type='hidden' name='checksessionbypost' value='".$yii->session['checksessionpost']."' />
         			<script type='text/javascript'>
         	<!--
         	function closeme()
@@ -136,7 +142,7 @@ class htmleditor_pop extends Admin_Controller {
                 CKEDITOR.on('instanceReady',CKeditor_OnComplete);
             	var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
             	                                            width	: '98%',
-            	                                            customConfig : \"".$this->config->item('sCKEditorURL')."/limesurvey-config.js\",
+            	                                            customConfig : \"".$yii->getConfig('sCKEditorURL')."/limesurvey-config.js\",
                                                             toolbarStartupExpanded : true,
                                                             ToolbarCanCollapse : false,
                                                             toolbar : '".$toolbarname."',
@@ -145,7 +151,7 @@ class htmleditor_pop extends Admin_Controller {
                                                             LimeReplacementFieldsQID : \"".$qid."\",
                                                             LimeReplacementFieldsType: \"".$fieldtype."\",
                                                             LimeReplacementFieldsAction: \"".$action."\",
-                                                            smiley_path: \"".$this->config->item('rooturl')."/upload/images/smiley/msn/\"
+                                                            smiley_path: \"".$yii->getConfig('rooturl')."/upload/images/smiley/msn/\"
                                                             {$htmlformatoption} });
             });
         

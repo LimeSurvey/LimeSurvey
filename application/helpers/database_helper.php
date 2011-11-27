@@ -11,13 +11,13 @@ function &db_execute_assoc($sql,$inputarr=false,$silent=false)
     else
     {
 			$dataset=Yii::app()->db->createCommand($sql)->query();
-
+	
     }
 	} catch(CDbException $e) {
 		$dataset=false;
 	}
 
-    if (!$silent && !$dataset)  {safe_die('Error executing query in db_execute_assoc:'.$sql);}
+    if (!$silent && !$dataset)  { safe_die('Error executing query in db_execute_assoc:'.$sql); }
     return $dataset;
 }
 
