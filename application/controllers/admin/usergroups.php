@@ -47,7 +47,7 @@ class Usergroups extends Admin_Controller {
 
 		$ugid = sanitize_int($ugid);
         $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
+
 
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -66,14 +66,15 @@ class Usergroups extends Admin_Controller {
 
             // user must be in user group
             // or superadmin
-            $query = "SELECT uid FROM ".$this->db->dbprefix."user_in_groups WHERE ugid = {$ugid} AND uid = ".$this->session->userdata('loginID');
-            $result = db_execute_assoc($query); //Checked
+			$this->load->model('user_in_groups');
+			$result = $this->user_in_groups_model->getSomeRecords(array('uid'), array('ugid' => $ugid, 'uid' => $this->session->userdata('loginID')));
 
             if($result->num_rows() > 0 || $this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
             {
+				$where	= array('ugid' => $ugid, 'b.uid !' => $this->session->userdata('loginID'));
+				$join	= array('where' => 'users', 'type' => 'inner', 'on' => 'a.uid = b.uid');
+				$eguresult = $this->user_in_groups_model->join(array('*'), 'user_in_groups AS a', $where, $join, 'b.users_name');
 
-                $eguquery = "SELECT * FROM ".$this->db->dbprefix."user_in_groups AS a INNER JOIN ".$this->db->dbprefix."users AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " AND b.uid != ".$this->session->userdata('loginID')." ORDER BY b.users_name";
-                $eguresult = db_execute_assoc($eguquery); //Checked
                 $addressee = '';
                 $to = '';
                 foreach ($eguresult->result_array() as $egurow)
@@ -84,8 +85,8 @@ class Usergroups extends Admin_Controller {
                 $to = substr("$to", 0, -2);
                 $addressee = substr("$addressee", 0, -2);
 
-                $from_user = "SELECT email, users_name, full_name FROM ".$this->db->dbprefix."users WHERE uid = " .$this->session->userdata('loginID');
-                $from_user_result = db_execute_assoc($from_user); //Checked
+				$this->load->model('users');
+				$from_user_result = $this->users_model->getSomeRecords(array('email', 'users_name', 'full_name'), array('uid' => $this->session->userdata('loginID'));
                 $from_user_row = $from_user_result->row_array();
                 if ($from_user_row['full_name'])
                 {
@@ -146,8 +147,11 @@ class Usergroups extends Admin_Controller {
         }
         else
         {
-            $query = "SELECT a.ugid, a.name, a.owner_id, b.uid FROM ".$this->db->dbprefix."user_groups AS a LEFT JOIN ".$this->db->dbprefix."user_in_groups AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = ".$this->session->userdata('loginID')." ORDER BY name";
-            $result = db_execute_assoc($query); //Checked
+			$this->load->model('user_groups');
+			$where	= array('a.ugid' => $ugid, 'uid' => $this->session->userdata('loginID'));
+			$join	= array('where' => 'user_in_groups AS b', 'type' => 'left', 'on' => 'a.ugid = b.ugid');
+			$result = $this->user_groups_model->join(array('a.ugid', 'a.name', 'a.owner_id', 'b.uid'), 'user_groups AS a', $where, $join, 'name');
+			
             $crow = $result->row_array();
 
             $data['clang'] = $clang;
@@ -169,7 +173,7 @@ class Usergroups extends Admin_Controller {
     {
 
         $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
+
 
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -191,14 +195,14 @@ class Usergroups extends Admin_Controller {
                 if(!empty($ugid) && ($ugid > -1))
                 {
 
-                    $query = "SELECT ugid, name, owner_id FROM ".$this->db->dbprefix."user_groups WHERE ugid = {$ugid} AND owner_id = ".$this->session->userdata('loginID');
-                    $result = db_select_limit_assoc($query, 1);
+					$this->load->model('user_groups');
+					$result = $this->user_groups_model->getSomeRecords(array('ugid', 'name', 'owner_id'), array('ugid' => $ugid, 'owner_id' => $this->session->userdata('loginID')));
                     if($result->num_rows() > 0)
                     {
                         $row = $result->row_array();
 
-                        $remquery = "DELETE FROM ".$this->db->dbprefix."user_groups WHERE ugid = {$ugid} AND owner_id = ".$this->session->userdata('loginID');
-                        if(db_execute_assoc($remquery)) //Checked)
+                        $remquery = $this->user_groups_model->delete(array('owner_id' => $this->session->userdata('loginID'), 'ugid' => $ugid));
+                        if($remquery) //Checked)
                         {
                             $usersummary .= "<br />".$clang->gT("Group Name").": {$row['name']}<br /><br />\n";
                             $usersummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
@@ -245,7 +249,7 @@ class Usergroups extends Admin_Controller {
     function add()
     {
         $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
+
 
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -348,7 +352,7 @@ class Usergroups extends Admin_Controller {
     {
     	$ugid = (int) $ugid;
         $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
+
 
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -408,9 +412,8 @@ class Usergroups extends Admin_Controller {
             }
             else
             {
-
-                $query = "SELECT * FROM ".$this->db->dbprefix."user_groups WHERE ugid = ".$ugid." AND owner_id = ".$this->session->userdata('loginID');
-                $result = db_select_limit_assoc($query, 1);
+				$this->load->model('user_groups');
+				$result = $this->user_groups_model->getAllRecords(array('ugid' => $ugid, 'owner_id' => $this->session->userdata('loginID')));
                 $esrow = $result->row_array();
                 $data['esrow'] = $esrow;
                 $data['ugid'] = $ugid;
@@ -437,7 +440,7 @@ class Usergroups extends Admin_Controller {
     {
     	if($ugid!=false) $ugid = (int) $ugid;
         $clang = $this->limesurvey_lang;
-        $this->load->helper('database');
+
 
         $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
         $this->config->set_item("css_admin_includes", $css_admin_includes);
@@ -455,8 +458,13 @@ class Usergroups extends Admin_Controller {
 
                 $ugid = sanitize_int($ugid);
 
-                $query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM ".$this->db->dbprefix."user_groups AS a LEFT JOIN ".$this->db->dbprefix."user_in_groups AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = ".$this->session->userdata('loginID')." ORDER BY name";
-                $result = db_execute_assoc($query); //Checked
+				$this->load->model('user_groups');
+				
+				$select	= array('a.ugid', 'a.name', 'a.owner_id', 'a.description', 'b.uid');
+				$join	= array('where' => 'user_in_groups AS b', 'type' => 'left', 'on' => 'a.ugid = b.ugid');
+				$where	= array('uid' => $this->session->userdata('loginID'), 'a.ugid' => $ugid);
+				
+				$result = $this->user_groups_model->join($select, 'user_groups AS a', $where, $join, 'name');
                 $crow = $result->row_array();
 
                 if($result->num_rows() > 0)
@@ -471,9 +479,11 @@ class Usergroups extends Admin_Controller {
                         . "</table>";
                     }
 
+					$this->load->model('user_in_groups');
 
-                    $eguquery = "SELECT * FROM ".$this->db->dbprefix."user_in_groups AS a INNER JOIN ".$this->db->dbprefix."users AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
-                    $eguresult = db_execute_assoc($eguquery); //Checked
+					$where	= array('ugid' => $ugid);
+					$join	= array('where' => 'users AS b', 'type' => 'inner', 'on' => 'a.uid = b.uid');
+					$eguresult = $this->user_in_groups_model->join(array('*'), 'user_in_groups AS a', $where, $join, 'b.users_name');
                     $usergroupsummary .= "<table class='users'>\n"
                     . "<thead><tr>\n"
                     . "<th>".$clang->gT("Action")."</th>\n"
@@ -481,8 +491,7 @@ class Usergroups extends Admin_Controller {
                     . "<th>".$clang->gT("Email")."</th>\n"
                     . "</tr></thead><tbody>\n";
 
-                    $query2 = "SELECT ugid FROM ".$this->db->dbprefix."user_groups WHERE ugid = ".$ugid." AND owner_id = ".$this->session->userdata('loginID');
-                    $result2 = db_select_limit_assoc($query2, 1);
+					$result2 = $this->user_groups_model->getSomeRecords(array('ugid'), array('ugid' => $ugid, 'owner_id' => $this->session->userdata('loginID')));
                     $row2 = $result2->row_array();
 
                     $row = 1;
@@ -577,12 +586,13 @@ class Usergroups extends Admin_Controller {
      */
     function _usergroupbar($ugid=false)
     {
-        $this->load->helper('database');
+        
         if($ugid)
         {
-            $grpquery = "SELECT gp.* FROM ".$this->db->dbprefix."user_groups AS gp, ".$this->db->dbprefix."user_in_groups AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=".$this->session->userdata('loginID');
-            $grpresult = db_execute_assoc($grpquery);//Checked
-            $grpresultcount = $grpresult->num_rows();
+			$this->load->model('user_groups');
+			
+			$where	= array('gp.ugid' => 'gu.ugid', 'gp.ugid' => $ugid, 'gu.uid' => $this->session->userdata('loginID'));
+			$grpresultcount =  $this->user_groups_model->multi_select(array('gp.*'), array('user_groups AS gp', 'user_in_groups AS gu'), $where);
             if ($grpresultcount>0)
             {
                 $grow = array_map('htmlspecialchars', $grpresult->row_array());
@@ -609,10 +619,10 @@ class Usergroups extends Admin_Controller {
      */
     function _updateusergroup($name, $description, $ugid)
     {
-        $this->load->helper('database');
-        $uquery = "UPDATE ".$this->db->dbprefix."user_groups SET name = '$name', description = '$description' WHERE ugid =$ugid";
+        $this->load->model('user_groups');
+		$uquery = $this->user_groups_model->update(array('name' => $name, 'description' => $description), array('ugid' => $ugid));
         // TODO
-        return db_execute_assoc($uquery);  //or safe_die($connect->ErrorMsg()) ; //Checked)
+        return $uquery;  //or safe_die($connect->ErrorMsg()) ; //Checked)
     }
 
     /**
@@ -621,13 +631,13 @@ class Usergroups extends Admin_Controller {
      * @return
      */
     function _refreshtemplates() {
-        $this->load->helper('database');
+        
         $template_a = gettemplatelist();
     	foreach ($template_a as $tp=>$fullpath) {
             // check for each folder if there is already an entry in the database
             // if not create it with current user as creator (user with rights "create user" can assign template rights)
-            $query = "SELECT * FROM ".$this->db->dbprefix."templates WHERE folder LIKE '".$tp."'";
-            $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
+			$this->load->model('templates');
+			$result = $this->templates_model->getAllRecords_like(array('folder' => $tp));
 
             if ($result->num_rows() == 0) {
                 //$query2 = "INSERT INTO ".$this->db->dbprefix."templates (".db_quote_id('folder').",".db_quote_id('creator').") VALUES ('".$tp."', ".$_SESSION['loginID'].')' ;
@@ -656,7 +666,7 @@ class Usergroups extends Admin_Controller {
      * @return
      */
     function _addUserGroupInDB($group_name, $group_description) {
-        $this->load->helper('database');
+        
         //$iquery = "INSERT INTO ".$this->db->dbprefix."user_groups (name, description, owner_id) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
         $data = array(
                 'name' => $group_name,
@@ -665,13 +675,13 @@ class Usergroups extends Admin_Controller {
 
         );
         $this->load->model('user_groups_model');
+        $this->load->model('user_in_groups_model');
 
 
         if($this->user_groups_model->insertRecords($data)) { //Checked
             $id = $this->db->insert_id(); //$connect->Insert_Id(db_table_name_nq('user_groups'),'ugid');
             if($id > 0) {
-                $iquery = "INSERT INTO ".$this->db->dbprefix."user_in_groups VALUES($id, '".$this->session->userdata('loginID')."')";
-                db_execute_assoc($iquery ); // or safe_die($connect->ErrorMsg()); //Checked
+				$this->user_in_groups_model->insert('ugid' => $id, 'uid' => $this->session->userdata('loginID'));
             }
             return $id;
         } else {
