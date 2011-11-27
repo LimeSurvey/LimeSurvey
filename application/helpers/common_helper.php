@@ -854,13 +854,12 @@ function getMaxgrouporder($surveyid)
 */
 function getGroupOrder($surveyid,$gid)
 {
-    $CI =& get_instance();
-    $CI->load->model('groups_model');
+
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
 
     //$grporder_sql = "SELECT group_order FROM ".db_table_name('groups')." WHERE sid =$surveyid AND language='{$s_lang}' AND gid=$gid" ;
-    $grporder_result =$CI->groups_model->getOrderOfGroup($surveyid,$gid,$s_lang); //Checked
-    $grporder_row = $grporder_result->row_array() ;
+    $grporder_result = Groups::model()->findByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang)); //Checked
+    $grporder_row = $grporder_result->attributes ;
     $group_order = $grporder_row['group_order'];
     if($group_order=="")
     {
@@ -875,14 +874,12 @@ function getGroupOrder($surveyid,$gid)
 */
 function getMaxquestionorder($gid,$surveyid)
 {
-    $CI =& get_instance();
     $gid=sanitize_int($gid);
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-    $CI->load->model('questions_model');
-    //$max_sql = "SELECT max( question_order ) AS max FROM ".db_table_name('questions')." WHERE gid='$gid' AND language='$s_lang'";
+    $max_sql = "SELECT max( question_order ) AS max FROM {{questions}} WHERE gid='$gid' AND language='$s_lang'";
 
-    $max_result =$CI->questions_model->getMaximumQuestionOrder($gid,$s_lang); ; //Checked
-    $maxrow = $max_result->row_array() ;
+    $max_result = Yii::app()->db->createCommand($max_sql)->query(); //Checked
+    $maxrow = $max_result->read() ;
     $current_max = $maxrow['max'];
     if($current_max=="")
     {
@@ -1283,7 +1280,6 @@ function getgrouplist2($gid,$surveyid)
 
 function getgrouplist3($gid,$surveyid)
 {
-    $CI =& get_instance();
     //$clang = $CI->limesurvey_lang;
     $gid=sanitize_int($gid);
     $surveyid=sanitize_int($surveyid);
@@ -1292,15 +1288,14 @@ function getgrouplist3($gid,$surveyid)
     $groupselecter = "";
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
 
-    $CI->load->model('groups_model');
 
     //$gidquery = "SELECT gid, group_name FROM ".db_table_name('groups')." WHERE sid=$surveyid AND language='{$s_lang}' ORDER BY group_order";
 
+	$gidresult = Groups::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang));
 
-    $gidresult = $CI->groups_model->getGroupAndID($surveyid,$s_lang); // or safe_die("Plain old did not work!");      //Checked
-
-    foreach ($gidresult->result_array() as $gv)
+    foreach ($gidresult as $gv)
     {
+    	$gv = $gv->attributes;
         $groupselecter .= "<option";
         if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; }
         $groupselecter .= " value='".$gv['gid']."'>".htmlspecialchars($gv['group_name'])."</option>\n";
@@ -1710,7 +1705,7 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
 function fixmovedquestionConditions($qid,$oldgid,$newgid) //Function rewrites the cfieldname for a question after group change
 {
     $CI = &get_instance();
-    $surveyid = $CI->config->item('sid');
+    $surveyid = Yii::app()->getConfig('sid');
     $qid=sanitize_int($qid);
     $oldgid=sanitize_int($oldgid);
     $newgid=sanitize_int($newgid);
@@ -2244,9 +2239,9 @@ function strip_comments($comment, $email, $replace=''){
 function validate_templatedir($templatename)
 {
     $CI = &get_instance();
-    $usertemplaterootdir = $CI->config->item('usertemplaterootdir');
-    $standardtemplaterootdir = $CI->config->item('standardtemplaterootdir');
-    $defaulttemplate = $CI->config->item('defaulttemplate');
+    $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
+    $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
+    $defaulttemplate = Yii::app()->getConfig('defaulttemplate');
     if (is_dir("$usertemplaterootdir/{$templatename}/"))
     {
         return $templatename;
@@ -2890,7 +2885,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     global $globalfieldmap, $aDuplicateQIDs;
     static $timingsFieldMap;
-    
+
     $clang = Yii::app()->lang;
 
     $surveyid=sanitize_int($surveyid);
@@ -3056,7 +3051,7 @@ function SetSurveyLanguage($surveyid, $language)
 {
     $CI = &get_instance();
     $surveyid=sanitize_int($surveyid);
-    $defaultlang = $CI->config->item('defaultlang');
+    $defaultlang = Yii::app()->getConfig('defaultlang');
 
     if (isset($surveyid) && $surveyid>0)
     {
@@ -3144,7 +3139,7 @@ function getQuestionAttributeValues($qid, $type='')
     if (isset($cache[$qid])) {
         return $cache[$qid];
     }
-    $result = Questions::model()->findByAttributes(array('qid' => $qid)) or safe_die("Error finding question attributes");  //Checked
+    $result = Questions::model()->findByAttributes(array('qid' => $qid));  //Checked
     $row=$result->attributes;
     if ($row===false) // Question was deleted while running the survey
     {
@@ -3494,7 +3489,7 @@ function questionAttributes($returnByName=false)
     'caption'=>$clang->gT("Display map"),
     'default'=>1
     );
-    
+
     $qattributes["statistics_showgraph"]=array(
     'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Statistics'),
@@ -3505,7 +3500,7 @@ function questionAttributes($returnByName=false)
     'caption'=>$clang->gT("Display chart"),
     'default'=>1
     );
-    
+
     $qattributes["statistics_graphtype"]=array(
     "types"=>'15ABCDEFGHIKLNOQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Statistics'),
@@ -4322,6 +4317,43 @@ function html_escape($str) {
     return str_replace(array("\x0A","\x0D"),array("&#10;","&#13;"),
     htmlspecialchars( $str, ENT_QUOTES ));
 }
+function db_quote_id($id)
+{
+	// WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
+	//  $quote = $connect->nameQuote;
+	//  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
+	$id = addslashes($id);
+
+	switch (Yii::app()->db->getDriverName())
+	{
+		case "mysqli" :
+		case "mysql" :
+			return "`".$id."`";
+			break;
+		case "mssql_n" :
+		case "mssql" :
+		case "mssqlnative" :
+		case "odbc_mssql" :
+			return "[".$id."]";
+			break;
+		case "postgre":
+			return "\"".$id."\"";
+			break;
+		default:
+			return "`".$id."`";
+	}
+}
+
+/**
+ * Escapes a text value for db
+ *
+ * @param string $value
+ * @return string
+ */
+function db_quoteall($value)
+{
+	return '\'' . addslashes($value) . '\'';
+}
 
 // make a string safe to include in a JavaScript String parameter.
 function javascript_escape($str, $strip_tags=false, $htmldecode=false) {
@@ -4358,17 +4390,16 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
 
     global $maildebug, $maildebugbody;
 
-    $CI =& get_instance();
-    $CI->config->load('email');
-    $clang = $CI->limesurvey_lang;
-    $emailmethod = $CI->config->item('emailmethod');
-    $emailsmtphost = $CI->config->item("emailsmtphost");
-    $emailsmtpuser = $CI->config->item("emailsmtpuser");
-    $emailsmtppassword = $CI->config->item("emailsmtppassword");
-    $emailsmtpdebug = $CI->config->item("emailsmtpdebug");
-    $emailsmtpssl = $CI->config->item("emailsmtpssl");
-    $defaultlang = $CI->config->item("defaultlang");
-    $emailcharset = $CI->config->item("charset");
+    Yii::app()->loadConfig('email');
+    $clang = Yii::app()->lang;
+    $emailmethod = Yii::app()->getConfig('emailmethod');
+    $emailsmtphost = Yii::app()->getConfig("emailsmtphost");
+    $emailsmtpuser = Yii::app()->getConfig("emailsmtpuser");
+    $emailsmtppassword = Yii::app()->getConfig("emailsmtppassword");
+    $emailsmtpdebug = Yii::app()->getConfig("emailsmtpdebug");
+    $emailsmtpssl = Yii::app()->getConfig("emailsmtpssl");
+    $defaultlang = Yii::app()->getConfig("defaultlang");
+    $emailcharset = Yii::app()->getConfig("charset");
 
     if (!is_array($to)){
         $to=array($to);
@@ -4380,7 +4411,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     {
         $customheaders=array();
     }
-    if ($CI->config->item('demoMode'))
+    if (Yii::app()->getConfig('demoMode'))
     {
         $maildebug=$clang->gT('Email was not sent because demo-mode is activated.');
         $maildebugbody='';
@@ -4839,7 +4870,7 @@ function getArrayFiltersOutGroup($qid)
     // TODO: Check list_filter values to make sure questions are previous?
     global $gid;
     $CI = &get_instance();
-    $surveyid = $CI->config->item('sid');
+    $surveyid = Yii::app()->getConfig('sid');
 
     $qid=sanitize_int($qid);
     $attributes = getQuestionAttributeValues($qid);
@@ -4867,7 +4898,7 @@ function getArrayFiltersExcludesOutGroup($qid)
     // TODO: Check list_filter values to make sure questions are previous?
     global $gid;
     $CI = &get_instance();
-    $surveyid = $CI->config->item('sid');
+    $surveyid = Yii::app()->getConfig('sid');
 
     $qid=sanitize_int($qid);
     $attributes = getQuestionAttributeValues($qid);
@@ -4898,7 +4929,7 @@ function getArrayFilterExcludesForQuestion($qid)
     $dbprefix = $CI->db->dbprefix;
 
     // TODO: Check list_filter values to make sure questions are previous?
-    //	$surveyid = $CI->config->item('sid');
+    //	$surveyid = Yii::app()->getConfig('sid');
     $surveyid=returnglobal('sid');
     $qid=sanitize_int($qid);
 
@@ -5004,7 +5035,7 @@ function createPassword()
 function languageDropdown($surveyid,$selected)
 {
     $CI = &get_instance();
-    $homeurl = $CI->config->item('homeurl');
+    $homeurl = Yii::app()->getConfig('homeurl');
     $slangs = GetAdditionalLanguagesFromSurveyID($surveyid);
     $baselang = GetBaseLanguageFromSurveyID($surveyid);
     array_unshift($slangs,$baselang);
@@ -5195,7 +5226,7 @@ function convertCsvreturn2return($string)
 */
 function tableExists($tablename)
 {
-    
+
     return Yii::app()->db->schema->getTable($tablename);
 }
 
@@ -5254,7 +5285,6 @@ function getBounceEmail($surveyid)
 // returns 'text' or 'html'
 function getEmailFormat($surveyid)
 {
-
     $surveyInfo=getSurveyInfo($surveyid);
     if ($surveyInfo['htmlemail'] == 'Y')
     {
@@ -5387,7 +5417,7 @@ function aReverseTranslateFieldnames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRe
 function hasResources($id,$type='survey')
 {
     $CI = &get_instance();
-    $dirname = $CI->config->item("uploaddir");
+    $dirname = Yii::app()->getConfig("uploaddir");
 
     if ($type == 'survey')
     {
@@ -5544,11 +5574,9 @@ function filterforattributes ($fieldname)
 function GetAttributeFieldNames($surveyid)
 {
     if (($table = Yii::app()->db->schema->getTable('{{tokens_'.$surveyid . '}}')) === false)
-    {
         return Array();
-    }
-    $tokenfieldnames = $table->getColumnNames();
-    return array_filter($tokenfieldnames,'filterforattributes');
+
+    return array_filter(array_keys($table->columns), 'filterforattributes');
 }
 
 /**
@@ -5755,7 +5783,7 @@ function GetUpdateInfo()
     /* Data transfer timeout */
     $CI->http->data_timeout=0;
     $CI->http->user_agent="Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-    $CI->http->GetRequestArguments("http://update.limesurvey.org?build=".$CI->config->item("buildnumber"),$arguments);
+    $CI->http->GetRequestArguments("http://update.limesurvey.org?build=".Yii::app()->getConfig("buildnumber"),$arguments);
 
     $updateinfo=false;
     $error=$CI->http->Open($arguments);
@@ -5795,7 +5823,7 @@ function updatecheck()
 {
     $CI =& get_instance();
     $updateinfo=GetUpdateInfo();
-    if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)$CI->config->item('buildnumber') && trim($CI->config->item('buildnumber'))!='')
+    if (isset($updateinfo['Targetversion']['build']) && (int)$updateinfo['Targetversion']['build']>(int)Yii::app()->getConfig('buildnumber') && trim(Yii::app()->getConfig('buildnumber'))!='')
     {
         setGlobalSetting('updateavailable',1);
         setGlobalSetting('updatebuild',$updateinfo['Targetversion']['build']);
@@ -5858,26 +5886,26 @@ function sGetTemplatePath($sTemplateName)
 
     if (isStandardTemplate($sTemplateName))
     {
-        return $CI->config->item("standardtemplaterootdir").'/'.$sTemplateName;
+        return Yii::app()->getConfig("standardtemplaterootdir").'/'.$sTemplateName;
     }
     else
     {
-        if (file_exists($CI->config->item("usertemplaterootdir").'/'.$sTemplateName))
+        if (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName))
         {
-            return $CI->config->item("usertemplaterootdir").'/'.$sTemplateName;
+            return Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName;
         }
-        elseif (file_exists($CI->config->item("usertemplaterootdir").'/'.$CI->config->item('defaulttemplate')))
+        elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
         {
-            return $CI->config->item("usertemplaterootdir").'/'.$CI->config->item('defaulttemplate');
+            return Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate');
         }
-        elseif (file_exists($CI->config->item("standardtemplaterootdir").'/'.$CI->config->item('defaulttemplate')))
+        elseif (file_exists(Yii::app()->getConfig("standardtemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
         {
-            return $CI->config->item("standardtemplaterootdir").'/'.$CI->config->item('defaulttemplate');
+            return Yii::app()->getConfig("standardtemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate');
         }
         else
         {
 
-            return $$CI->config->item("standardtemplaterootdir").'/default';
+            return $Yii::app()->getConfig("standardtemplaterootdir").'/default';
         }
     }
 }
@@ -5892,25 +5920,25 @@ function sGetTemplateURL($sTemplateName)
     $CI = &get_instance();
     if (isStandardTemplate($sTemplateName))
     {
-        return $CI->config->item("standardtemplaterooturl").'/'.$sTemplateName;
+        return Yii::app()->getConfig("standardtemplaterooturl").'/'.$sTemplateName;
     }
     else
     {
-        if (file_exists($CI->config->item("usertemplaterootdir").'/'.$sTemplateName))
+        if (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.$sTemplateName))
         {
-            return $CI->config->item("usertemplaterooturl").'/'.$sTemplateName;
+            return Yii::app()->getConfig("usertemplaterooturl").'/'.$sTemplateName;
         }
-        elseif (file_exists($CI->config->item("usertemplaterootdir").'/'.$CI->config->item('defaulttemplate')))
+        elseif (file_exists(Yii::app()->getConfig("usertemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
         {
-            return $CI->config->item("usertemplaterooturl").'/'.$CI->config->item('defaulttemplate');
+            return Yii::app()->getConfig("usertemplaterooturl").'/'.Yii::app()->getConfig('defaulttemplate');
         }
-        elseif (file_exists($CI->config->item("standardtemplaterootdir").'/'.$CI->config->item('defaulttemplate')))
+        elseif (file_exists(Yii::app()->getConfig("standardtemplaterootdir").'/'.Yii::app()->getConfig('defaulttemplate')))
         {
-            return $CI->config->item("standardtemplaterooturl").'/'.$CI->config->item('defaulttemplate');
+            return Yii::app()->getConfig("standardtemplaterooturl").'/'.Yii::app()->getConfig('defaulttemplate');
         }
         else
         {
-            return $CI->config->item("standardtemplaterooturl").'/default';
+            return Yii::app()->getConfig("standardtemplaterooturl").'/default';
         }
     }
 }
@@ -6466,7 +6494,7 @@ function checkquestionfordisplay($qid, $gid=null)
     // TMSW Conditions->Relevance:  not needed (only check relevance)
     global $thissurvey;
     $CI = &get_instance();
-    $surveyid = $CI->config->item('sid');
+    $surveyid = Yii::app()->getConfig('sid');
 
     if (!is_array($thissurvey))
     {
@@ -7069,9 +7097,9 @@ function access_denied($action,$sid='')
     $clang = Yii::app()->lang;
     if (Yii::app()->session['loginID'])
     {
-        $ugid = $CI->config->item('ugid');
+        $ugid = Yii::app()->getConfig('ugid');
         $accesssummary = "<p><strong>".$clang->gT("Access denied!")."</strong><br />\n";
-        $scriptname = $CI->config->item('scriptname');
+        $scriptname = Yii::app()->getConfig('scriptname');
         //$action=returnglobal('action');
         if  (  $action == "dumpdb"  )
         {
@@ -7663,9 +7691,7 @@ function GetQuestDepsForConditions($sid,$gid="all",$depqid="all",$targqid="all",
 */
 function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $clang = Yii::app()->lang;
     $resarray=Array();
     $resarray['notAbove']=null; // defaults to no constraint
     $resarray['notBelow']=null; // defaults to no constraint
@@ -7688,19 +7714,19 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
     $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
     . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
     . "tc.cid FROM "
-    . $CI->db->dbprefix."conditions AS tc, "
-    . $CI->db->dbprefix."questions AS tq, "
-    . $CI->db->dbprefix."questions AS tq2, "
-    . $CI->db->dbprefix."groups AS tg, "
-    . $CI->db->dbprefix."groups AS tg2 "
+    . "{{conditions}} AS tc, "
+    . "{{questions}} AS tq, "
+    . "{{questions}} AS tq2, "
+    . "{{groups}} AS tg, "
+    . "{{groups}} AS tg2 "
     . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq.qid=$qid ORDER BY tg2.group_order DESC";
 
-    $condresult=db_execute_assoc($condquery); // or safe_die($connect->ErrorMsg());    //Checked
+    $condresult=Yii::app()->db->createCommand($condquery)->query(); // or safe_die($connect->ErrorMsg());    //Checked
 
-    if ($condresult->num_rows() > 0) {
+    if ($condresult->getRowCount() > 0) {
 
-        foreach ($condresult->result_array() as $condrow )
+        foreach ($condresult->readAll() as $condrow )
         {
             // This Question can go up to the minimum GID on the 1st row
             $depqid=$condrow['depqid'];
@@ -7728,19 +7754,19 @@ function checkMovequestionConstraintsForConditions($sid,$qid,$newgid="all")
     // Secondly look for 'questions dependent on me': questions that have conditions on my answers
     $condquery = "SELECT tq.qid as depqid, tq.gid as depgid, tg.group_order as depgorder, "
     . "tq2.qid as targqid, tq2.gid as targgid, tg2.group_order as targgorder, "
-    . "tc.cid FROM ".$CI->db->dbprefix."conditions AS tc, "
-    . $CI->db->dbprefix."questions AS tq, "
-    . $CI->db->dbprefix."questions AS tq2, "
-    . $CI->db->dbprefix."groups AS tg, "
-    . $CI->db->dbprefix."groups AS tg2 "
+    . "tc.cid FROM {{conditions}} AS tc, "
+    . "{{questions}} AS tq, "
+    . "{{questions}} AS tq2, "
+    . "{{groups}} AS tg, "
+    . "{{groups}} AS tg2 "
     . "WHERE tq.language='{$baselang}' AND tq2.language='{$baselang}' AND tc.qid = tq.qid AND tq.sid=$sid "
     . "AND  tq2.qid=tc.cqid AND tg.gid=tq.gid AND tg2.gid=tq2.gid AND tq2.qid=$qid ORDER BY tg.group_order";
 
-    $condresult=db_execute_assoc($condquery); // or safe_die($connect->ErrorMsg());        //Checked
+    $condresult=Yii::app()->db->createCommand($condquery)->query(); // or safe_die($connect->ErrorMsg());        //Checked
 
-    if ($condresult->num_rows() > 0) {
+    if ($condresult->getRowCount() > 0) {
 
-        foreach ($condresult->result_array() as $condrow)
+        foreach ($condresult->readAll() as $condrow)
         {
             // This Question can go down to the maximum GID on the 1st row
             $depqid=$condrow['depqid'];
@@ -7899,11 +7925,11 @@ function modify_database($sqlfile='', $sqlstring='')
                 $line = substr($line, 0, $length-1);   // strip ;
                 $command .= $line;
                 $command = str_replace('prefix_', $CI->db->dbprefix, $command); // Table prefixes
-                $command = str_replace('$defaultuser', $CI->config->item('defaultuser'), $command);
-                $command = str_replace('$defaultpass', $CI->sha256->hashing($CI->config->item('defaultpass')), $command);
+                $command = str_replace('$defaultuser', Yii::app()->getConfig('defaultuser'), $command);
+                $command = str_replace('$defaultpass', $CI->sha256->hashing(Yii::app()->getConfig('defaultpass')), $command);
                 $command = str_replace('$siteadminname', $siteadminname, $command);
                 $command = str_replace('$siteadminemail', $siteadminemail, $command);
-                $command = str_replace('$defaultlang', $CI->config->item('defaultlang'), $command);
+                $command = str_replace('$defaultlang', Yii::app()->getConfig('defaultlang'), $command);
                 $command = str_replace('$sessionname', 'ls'.sRandomChars(20,'123456789'), $command);
                 $command = str_replace('$databasetabletype', $CI->db->dbdriver, $command);
 
@@ -7964,7 +7990,7 @@ function getHeader($meta = false)
     global $embedded;
 
     $CI =& get_instance();
-    $surveyid = $CI->config->item('sid');
+    $surveyid = Yii::app()->getConfig('sid');
     $CI->load->helper('surveytranslator');
     $clang = $CI->limesurvey_lang;
 
@@ -7978,13 +8004,13 @@ function getHeader($meta = false)
     }
     else
     {
-        $surveylanguage=$CI->config->item('defaultlang');
+        $surveylanguage=Yii::app()->getConfig('defaultlang');
     }
 
     $js_header = ''; $css_header='';
-    if($CI->config->item("js_admin_includes"))
+    if(Yii::app()->getConfig("js_admin_includes"))
     {
-        foreach ($CI->config->item("js_admin_includes") as $jsinclude)
+        foreach (Yii::app()->getConfig("js_admin_includes") as $jsinclude)
         {
             if (substr($jsinclude,0,4) == 'http')
                 $js_header .= "<script type=\"text/javascript\" src=\"$jsinclude\"></script>\n";
@@ -7992,9 +8018,9 @@ function getHeader($meta = false)
                 $js_header .= "<script type=\"text/javascript\" src=\"".base_url()."$jsinclude\"></script>\n";
         }
     }
-    if($CI->config->item("css_admin_includes"))
+    if(Yii::app()->getConfig("css_admin_includes"))
     {
-        foreach ($CI->config->item("css_admin_includes") as $cssinclude)
+        foreach (Yii::app()->getConfig("css_admin_includes") as $cssinclude)
         {
             $css_header .= "<link rel=\"stylesheet\" type=\"text/css\" media=\"all\" href=\"".base_url().$cssinclude."\" />\n";
         }
@@ -8010,10 +8036,10 @@ function getHeader($meta = false)
         }
         $header.= ">\n\t<head>\n"
         . $css_header
-        . "<script type=\"text/javascript\" src=\"".$CI->config->item('generalscripts')."jquery/jquery.js\"></script>\n"
-        . "<script type=\"text/javascript\" src=\"".$CI->config->item('generalscripts')."jquery/jquery-ui.js\"></script>\n"
-        . "<link href=\"".$CI->config->item('generalscripts')."jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
-        . "<link href=\"".$CI->config->item('generalscripts')."jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
+        . "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/jquery.js\"></script>\n"
+        . "<script type=\"text/javascript\" src=\"".Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js\"></script>\n"
+        . "<link href=\"".Yii::app()->getConfig('generalscripts')."jquery/css/start/jquery-ui.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
+        . "<link href=\"".Yii::app()->getConfig('generalscripts')."jquery/css/start/lime-progress.css\" media=\"all\" type=\"text/css\" rel=\"stylesheet\" />"
         . $js_header;
 
         if ($meta)

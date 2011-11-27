@@ -72,6 +72,20 @@ class LSYii_Application extends CWebApplication
 	}
 
 	/**
+	 * Loads a config from a file
+	 *
+	 * @access public
+	 * @param string $file
+	 * @return void
+	 */
+	public function loadConfig($file)
+	{
+		$config = require_once(APPPATH . '/config/' . $file . '.php');
+		foreach ($config as $k => $v)
+			$this->setConfig($k, $v);
+	}
+
+	/**
 	 * Returns a config variable from the registry
 	 *
 	 * @access public

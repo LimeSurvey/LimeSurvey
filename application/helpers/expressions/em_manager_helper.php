@@ -141,17 +141,36 @@ class LimeExpressionManager {
      */
     public static function ConvertConditionsToRelevance($surveyId=NULL, $qid=NULL)
     {
-        $CI =& get_instance();
-    	$CI->load->model('conditions_model');
-
-        $query = $CI->conditions_model->getAllRecordsForSurvey($surveyId,$qid);
+    	if (!is_null($qid)) {
+    		$where = " c.qid = ".$qid." and ";
+    	}
+    	else if (!is_null($surveyid)) {
+    		$where = " c.qid in (select qid from ".$this->db->dbprefix('questions')." where sid = ".$surveyid.") and ";
+    	}
+    	else {
+    		$where = "";
+    	}
+    	$query = "select distinct c.*"
+    	        .", q.sid, q.type"
+    	        ." from {{conditions}} as c"
+    	        .", {{questions}} as q"
+    	        ." where " . $where
+    	        ." c.cqid=q.qid"
+    	        ." union "
+    	        ." select c.*, q.sid, '' as type"
+    	        ." from {{conditions}} as c"
+    	        .", {{questions}} as q"
+    	        ." where ". $where
+    	        ." c.cqid = 0 and c.qid = q.qid"
+    	        ." order by sid, qid, scenario, cqid, cfieldname, value";
+    	$query = Yii::app()->db->createCommand($query)->query();
 
         $_qid = -1;
         $relevanceEqns = array();
         $scenarios = array();
         $relAndList = array();
         $relOrList = array();
-        foreach($query->result_array() as $row)
+        foreach($query->readAll() as $row)
         {
             if ($row['qid'] != $_qid)
             {

@@ -237,8 +237,8 @@
 		    }; ?>
 <li><label for="showXquestions"><?php echo $clang->gT('Show "There are X questions in this survey"'); ?></label>
 		    <select id="showXquestions" name="showXquestions">
-		    <option value="Y" <?php echo $sel_showxq['Y'].'>'.$clang->gT('Yes'); ?></option>
-		    <option value="N" <?php echo $sel_showxq['N'].'>'.$clang->gT('No'); ?></option>
+		    <option value="Y" <?php echo $sel_showxq['Y']; ?>><?php echo $clang->gT('Yes'); ?></option>
+		    <option value="N" <?php echo $sel_showxq['N']; ?>><?php echo $clang->gT('No'); ?></option>
 		    </select>
 </li>
 		    <?php unset($sel_showxq,$set_showxq);
@@ -272,8 +272,9 @@
             <?php echo $clang->gT('Hide both (Forced by the system administrator)'); ?>
 
             " size="70" /></li>
-		    break;
-	    <?php	case 'choose':
+
+	    <?php    break;
+	    case 'choose':
 		default:
 		    $sel_showgri = array( 'B' => '' , 'D' => '' , 'N' => '' , 'X' => '' );
                 if (isset($esrow['showgroupinfo'])) {
@@ -285,10 +286,10 @@
 		    }; ?>
 		   <li><label for="showgroupinfo"><?php echo $clang->gT('Show group name and/or group description'); ?></label>
 		    <select id="showgroupinfo" name="showgroupinfo">
-		    <option value="B"<?php echo $sel_showgri['B'].'>'.$clang->gT('Show both'); ?></option>
-		    <option value="N"<?php echo $sel_showgri['N'].'>'.$clang->gT('Show group name only'); ?></option>
-		    <option value="D"<?php echo $sel_showgri['D'].'>'.$clang->gT('Show group description only'); ?></option>
-		    <option value="X"<?php echo $sel_showgri['X'].'>'.$clang->gT('Hide both'); ?></option>
+		    <option value="B"<?php echo $sel_showgri['B']; ?>><?php echo $clang->gT('Show both'); ?></option>
+		    <option value="N"<?php echo $sel_showgri['N']; ?>><?php echo $clang->gT('Show group name only'); ?></option>
+		    <option value="D"<?php echo $sel_showgri['D']; ?>><?php echo $clang->gT('Show group description only'); ?></option>
+		    <option value="X"<?php echo $sel_showgri['X']; ?>><?php echo $clang->gT('Hide both'); ?></option>
 		    </select></li>
 		    <?php unset($sel_showgri,$set_showgri);
 		    break;
@@ -330,10 +331,10 @@
 		    }; ?>
 		    <li><label for="showqnumcode"><?php echo $clang->gT('Show question number and/or code'); ?></label>
 		    <select id="showqnumcode" name="showqnumcode">
-		    <option value="B"<?php echo $sel_showqnc['B'].'>'.$clang->gT('Show both'); ?></option>
-		    <option value="N"<?php echo $sel_showqnc['N'].'>'.$clang->gT('Show question number only'); ?></option>
-		    <option value="C"<?php echo $sel_showqnc['C'].'>'.$clang->gT('Show question code only'); ?></option>
-		    <option value="X"<?php echo $sel_showqnc['X'].'>'.$clang->gT('Hide both'); ?></option>
+		    <option value="B"<?php echo $sel_showqnc['B']; ?>><?php echo $clang->gT('Show both'); ?></option>
+		    <option value="N"<?php echo $sel_showqnc['N']; ?>><?php echo $clang->gT('Show question number only'); ?></option>
+		    <option value="C"<?php echo $sel_showqnc['C']; ?>><?php echo $clang->gT('Show question code only'); ?></option>
+		    <option value="X"<?php echo $sel_showqnc['X']; ?>><?php echo $clang->gT('Hide both'); ?></option>
 		    </select></li>
 		    <?php unset($sel_showqnc,$set_showqnc);
 		    break;
@@ -359,8 +360,8 @@
 		    }; ?>
 	    	   <li><label for="shownoanswer"><?php echo $clang->gT('Show "No answer"'); ?></label>
 		    <select id="shownoanswer" name="shownoanswer">
-		    <option value="Y"<?php echo $sel_showno['Y'].'>'.$clang->gT('Yes'); ?></option>
-		    <option value="N"<?php echo $sel_showno['N'].'>'.$clang->gT('No'); ?></option>
+		    <option value="Y"<?php echo $sel_showno['Y']; ?>><?php echo $clang->gT('Yes'); ?></option>
+		    <option value="N"<?php echo $sel_showno['N']; ?>><?php echo $clang->gT('No'); ?></option>
 		    </select></li>
 		  <?php  break;
 		default: ?>

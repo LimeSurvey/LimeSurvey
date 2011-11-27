@@ -72,20 +72,19 @@ if (isset($_REQUEST['homedir'])) {die('You cannot start this script directly');}
 *  @param mixed $gdata
 *  @param mixed $grawdata
 *  @param mixed $cache
-*  @return                Name 
+*  @return                Name
 */
 function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
-{       
-    $CI = &get_instance();
-    $rootdir = $CI->config->item("rootdir");
-    $homedir = $CI->config->item("homedir");
-    $homeurl = $CI->config->item("homeurl");
-    $admintheme = $CI->config->item("admintheme");
-    $scriptname = $CI->config->item("scriptname");
-    $chartfontfile = $CI->config->item("chartfontfile");
-    $chartfontsize = $CI->config->item("chartfontsize");
+{
+    $rootdir = Yii::app()->getConfig("rootdir");
+    $homedir = Yii::app()->getConfig("homedir");
+    $homeurl = Yii::app()->getConfig("homeurl");
+    $admintheme = Yii::app()->getConfig("admintheme");
+    $scriptname = Yii::app()->getConfig("scriptname");
+    $chartfontfile = Yii::app()->getConfig("chartfontfile");
+    $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $language = GetBaseLanguageFromSurveyID($sid);
-	
+
     if ($chartfontfile=='auto')
     {
         $chartfontfile='vera.ttf';
@@ -108,9 +107,9 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
     }
 
     $cachefilename = "";
-    
+
     if (array_sum($gdata ) > 0)
-    {                   
+    {
         $graph = "";
         $p1 = "";
 
@@ -122,9 +121,9 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
                 $i++;
             }
         }
-        
+
         $totallines=$i;
-        
+
         if ($totallines>15)
         {
             $gheight=320+(6.7*($totallines-15));
@@ -170,13 +169,13 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
             {
                 $graph = new pChart(1,1);
 
-                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
 
                 if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
                 $graph = new pChart(690+$legendsize[0],$gheight);
-                $graph->loadColorPalette($homedir.'/styles/'.$admintheme.'/limesurvey.pal');
-                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
+                $graph->loadColorPalette($rootdir.DIRECTORY_SEPARATOR.'styles'.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'limesurvey.pal');
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
                 $graph->setGraphArea(50,30,500,$gheight-60);
                 $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
                 $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);
@@ -184,14 +183,14 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
                 $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);
                 $graph->drawGrid(4,TRUE,230,230,230,50);
                 // Draw the 0 line
-                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile,$chartfontsize);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
                 $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
                 // Draw the bar graph
                 $graph->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
                 //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
                 // Finish the graph
-                $graph->setFontProperties($rootdir."/fonts/".$chartfontfile, $chartfontsize);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $graph->drawLegend(510,30,$DataSet->GetDataDescription(),255,255,255);
 
                 $cache->WriteToCache("graph".$sid,$DataSet->GetData(),$graph);
@@ -220,7 +219,7 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
             if ($language=='ar')
             {
                 $lblout=$lbl; //reset text order to original
-                $CI->load->library("admin/Arabic");
+                Yii::import('application.libraries.admin.Arabic', true);
                 $Arabic = new Arabic('ArGlyphs');
                 foreach($lblout as $kkey => $kval){
                     if (preg_match("^[A-Za-z]^", $kval)) { //auto detect if english
@@ -274,7 +273,7 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
             }
         }	//end else -> pie charts
     }
-    
+
     return $cachefilename;
 }
 
@@ -286,8 +285,8 @@ function createChart($qid, $sid, $type, $lbl, $gdata, $grawdata, $cache)
 */
 function getQuestionMapData($sField, $qsid)
 {
-    $CI = &get_instance();
-    $aresult = $CI->Surveys_dynamic_model->getSomeRecords(array($sField), $qsid)->result();
+	Survey_dynamic::sid($qsid);
+    $aresult = Survey_dynamic::model()->findAll();
 
     $d = array ();
 
@@ -298,8 +297,8 @@ function getQuestionMapData($sField, $qsid)
         if (count($alocation) >= 2) {
             $d[] = "{$alocation[0]} {$alocation[1]}";
         }
-    }            
-    return $d;    
+    }
+    return $d;
 }
 
 /**
@@ -318,24 +317,23 @@ function getQuestionMapData($sField, $qsid)
 function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$statlangcode=null, $browse = true)
 {
     //$allfields ="";
-    global $rooturl, $rootdir, $homedir, $homeurl, $scriptname, $admintheme, $pdfdefaultfont, $pdffontsize;
-    
-	
-		
-	 $CI = &get_instance();
-	$imagedir = $CI->config->item("imagedir");
-	$tempdir = $CI->config->item("tempdir");
-	$tempurl = $CI->config->item("tempurl");
-	 
-	$clang = $CI->limesurvey_lang;
-	$dbprefix = $CI->db->dbprefix;
+
+    global $rooturl, $rootdir, $homedir, $homeurl, $scriptname,
+    $chartfontfile, $chartfontsize, $admintheme, $pdfdefaultfont, $pdffontsize;
+
+
+	$imagedir = Yii::app()->getConfig("imagedir");
+	$tempdir = Yii::app()->getConfig("tempdir");
+	$tempurl = Yii::app()->getConfig("tempurl");
+	$clang = Yii::app()->lang;
+
     $fieldmap=createFieldMap($surveyid, "full");
 
      $astatdata = array();
 
      // Used for getting coordinates for google maps
      $agmapdata = array();
-     
+
  	 //pick the best font file if font setting is 'auto'
     if (is_null($statlangcode))
     {
@@ -382,10 +380,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     if($q2show=='all' )
     {
         $summarySql=" SELECT gid, parent_qid, qid, type "
-        ." FROM {$dbprefix}questions WHERE parent_qid=0"
+        ." FROM {{questions}} WHERE parent_qid=0"
         ." AND sid=$surveyid ";
 
-        $summaryRs = db_execute_assoc($summarySql);
+        $summaryRs = Yii::app()->db->createCommand($summarySql)->query()->readAll();
 
         foreach($summaryRs as $field)
         {
@@ -407,12 +405,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             if ($field['type'] == "F" || $field['type'] == "H")
             {
                 //Get answers. We always use the answer code because the label might be too long elsewise
-                $query = "SELECT code, answer FROM ".$CI->db->dbprefix("answers")." WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
-                $result = db_execute_assoc($query) or safe_die ("Couldn't get answers!<br />$query<br />".$connect->ErrorMsg());
+                $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+                $result = Yii::app()->db->createCommand($query)->query();
                 $counter2=0;
 
                 //check all the answers
-                foreach ($result->result_array() as $row)
+                foreach ($result->readAll() as $row)
                 {
                 	$row=array_values($row);
                     $myField = "$myField{$row[0]}";
@@ -469,9 +467,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         global $l;
         $l['w_page'] = $statlang->gT("Page",'unescaped');
         //require_once('classes/tcpdf/mypdf.php');
-		$CI->load->library('admin/pdf');
+		Yii::import('application.libraries.admin.pdf', true);
         // create new PDF document
-        $pdf = $CI->pdf;
+        $pdf = new Pdf();
         $pdf->SetFont($pdfdefaultfont,'',$pdffontsize);
 
         $surveyInfo = getSurveyInfo($surveyid,$language);
@@ -514,11 +512,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         /**
          * Initiate the Spreadsheet_Excel_Writer
          */
-        $CI->load->library('admin/pear/Spreadsheet/Excel/Xlswriter');
+        Yii::import('application.libraries.admin.pear.Spreadsheet.Excel.Xlswriter', true);
         if($pdfOutput=='F')
-        $workbook = new Spreadsheet_Excel_Writer($tempdir.'/statistic-survey'.$surveyid.'.xls');
+        $workbook = new Xlswriter($tempdir.'/statistic-survey'.$surveyid.'.xls');
         else
-        $workbook = new Spreadsheet_Excel_Writer();
+        $workbook = new Xlswriter();
 
         $workbook->setVersion(8);
         // Inform the module that our data will arrive as UTF-8.
@@ -527,7 +525,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
             $workbook->setTempDir($tempdir);
         }
         if ($pdfOutput!='F')
-        $workbook->send('statistic-survey'.$surveyid.'.xls');
+        	$workbook->send('statistic-survey'.$surveyid.'.xls');
 
         // Creating the first worksheet
         $sheet =& $workbook->addWorksheet(utf8_decode('results-survey'.$surveyid));
@@ -600,11 +598,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 //create a list out of the $pv array
                 list($lsid, $lgid, $lqid) = explode("X", $pv);
 
-                $aquery="SELECT title FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid=$lqid AND language='{$language}' and scale_id=0 ORDER BY question_order";
-                $aresult=db_execute_assoc($aquery) or safe_die ("Couldn't get subquestions<br />$aquery<br />".$connect->ErrorMsg());
+                $aquery="SELECT title FROM {{questions}} WHERE parent_qid=$lqid AND language='{$language}' and scale_id=0 ORDER BY question_order";
+                $aresult=Yii::app()->db->createCommand($aquery)->query();
 
                 // go through every possible answer
-                foreach ($aresult->result_array() as $arow)
+                foreach ($aresult->readAll() as $arow)
                 {
                 	$arow=array_values($arow);
                     // only add condition if answer has been chosen
@@ -745,15 +743,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     }	//end foreach -> loop through filter options to create SQL
 
     //count number of answers
-    $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid");
+    $query = "SELECT count(*) FROM {{survey_$surveyid}}";
 
     //if incompleted answers should be filtert submitdate has to be not null
     if (incompleteAnsFilterstate() == "inc") {$query .= " WHERE submitdate is null";}
     elseif (incompleteAnsFilterstate() == "filter") {$query .= " WHERE submitdate is not null";}
-    $result = db_execute_assoc($query) or safe_die ("Couldn't get total<br />$query<br />".$connect->ErrorMsg());
+    $result = Yii::app()->db->createCommand($query)->query();
 
     //$total = total number of answers
-    $row=$result->row_array(); $total=reset($row);
+    $row=$result->read(); $total=reset($row);
 
     //are there any filters that have to be taken care of?
     if (isset($selects) && $selects)
@@ -785,10 +783,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
     }
 
     //get me some data Scotty
-    $result=db_execute_assoc($query) or safe_die("Couldn't get results<br />$query<br />".$connect->ErrorMsg());
+    $result=Yii::app()->db->createCommand($query)->query();
 
     //put all results into $results
-    $row=$result->row_array(); $results=reset($row);
+    $row=$result->read(); $results=reset($row);
 
     if ($total)
     {
@@ -871,7 +869,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         if($outputType=='html' && $browse === true)
         {
             //add a buttons to browse results
-            $statisticsoutput .= "<form action='".site_url("admin/browse/$surveyid/all")."' method='post' target='_blank'>\n"
+            $statisticsoutput .= "<form action='".Yii::app()->createUrl("admin/browse/surveyid/$surveyid/type/all")."' method='post' target='_blank'>\n"
             ."\t\t<p>"
             ."\t\t\t<input type='submit' value='".$statlang->gT("Browse")."'  />\n"
             ."\t\t\t<input type='hidden' name='sid' value='$surveyid' />\n"
@@ -891,11 +889,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
         //START Chop up fieldname and find matching questions
 
         //GET LIST OF LEGIT QIDs FOR TESTING LATER
-        $lq = "SELECT DISTINCT qid FROM ".$CI->db->dbprefix("questions")." WHERE sid=$surveyid and parent_qid=0";
-        $lr = db_execute_assoc($lq);
+        $lq = "SELECT DISTINCT qid FROM {{questions}} WHERE sid=$surveyid and parent_qid=0";
+        $lr = Yii::app()->db->createCommand($lq)->query();
 
         //loop through the IDs
-        foreach ($lr->result_array() as $lw)
+        foreach ($lr->readAll() as $lw)
         {
             //this creates an array of question id's'
             $legitqids[] = $lw['qid'];
@@ -915,11 +913,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
                 //select details for this question
-                $nquery = "SELECT title, type, question, parent_qid, other FROM ".$CI->db->dbprefix("questions")." WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
-                $nresult = db_execute_assoc($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+                $nquery = "SELECT title, type, question, parent_qid, other FROM {{questions}} WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
+                $nresult = Yii::app()->db->createCommand($nquery)->query();
 
                 //loop through question data
-                foreach ($nresult->result_array() as $nrow)
+                foreach ($nresult->readAll() as $nrow)
                 {
                 	$nrow=array_values($nrow);
                     $qtitle=$nrow[0];
@@ -930,11 +928,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
 
                 //1. Get list of answers
-                $query="SELECT title, question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='$qqid' AND language='{$language}' and scale_id=0 ORDER BY question_order";
-                $result=db_execute_assoc($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
+                $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' and scale_id=0 ORDER BY question_order";
+                $result=Yii::app()->db->createCommand($query)->query();
 
                 //loop through multiple answers
-                foreach ($result->result_array() as $row)
+                foreach ($result->readAll() as $row)
                 {
                 	$row=array_values($row);
                     $mfield=substr($rt, 1, strlen($rt))."$row[0]";
@@ -975,11 +973,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
 
                 //get question data
-                $nquery = "SELECT title, type, question, other, parent_qid FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
-                $nresult = db_execute_assoc($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+                $nquery = "SELECT title, type, question, other, parent_qid FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+                $nresult = Yii::app()->db->createCommand($nquery)->query();
 
                 //loop through question data
-                foreach ($nresult->result_array() as $nrow)
+                foreach ($nresult->readAll() as $nrow)
                 {
                 	$nrow=array_values($nrow);
                     $qtitle=FlattenText($nrow[0]);
@@ -1018,14 +1016,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $qaid=substr($qqid, $qidlength, strlen($qqid)-$qidlength);
 
                 //get some question data
-                $nquery = "SELECT title, type, question, other FROM ".$CI->db->dbprefix("questions")." WHERE qid='".substr($qqid, 0, $qidlength)."' AND parent_qid=0 AND language='{$language}'";
-                $nresult = db_execute_assoc($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+                $nquery = "SELECT title, type, question, other FROM {{questions}} WHERE qid='".substr($qqid, 0, $qidlength)."' AND parent_qid=0 AND language='{$language}'";
+                $nresult = Yii::app()->db->createCommand($nquery)->query();
 
                 //more substrings
                 $count = substr($qqid, strlen($qqid)-1);
 
                 //loop through question data
-                foreach ($nresult->result_array() as $nrow)
+                foreach ($nresult->readAll() as $nrow)
                 {
                 	$nrow=array_values($nrow);
                     $qtitle=FlattenText($nrow[0]).'-'.$count;
@@ -1034,11 +1032,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
 
                 //get answers
-                $qquery = "SELECT title as code, question as answer FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='".substr($qqid, 0, $qidlength)."' AND title='$qaid' AND language='{$language}' ORDER BY question_order";
-                $qresult=db_execute_assoc($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
+                $qquery = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid='".substr($qqid, 0, $qidlength)."' AND title='$qaid' AND language='{$language}' ORDER BY question_order";
+                $qresult=Yii::app()->db->createCommand($qquery)->query();
 
                 //loop through answer data
-                foreach ($qresult->result_array() as $qrow)
+                foreach ($qresult->readAll() as $qrow)
                 {
                 	$qrow=array_values($qrow);
                     //store each answer here
@@ -1068,11 +1066,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strpos($rt, "-")-($lengthofnumeral+1)), 3);
 
                 //get question data
-                $nquery = "SELECT title, type, question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
-                $nresult = db_execute_assoc($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+                $nquery = "SELECT title, type, question FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+                $nresult = Yii::app()->db->createCommand($nquery)->query();
 
                 //loop through question data
-				foreach ($nresult->result_array() as $nrow)
+				foreach ($nresult->readAll() as $nrow)
                 {
                 	$nrow=array_values($nrow);
                     $qtitle=FlattenText($nrow[0]). " [".substr($rt, strpos($rt, "-")-($lengthofnumeral), $lengthofnumeral)."]";
@@ -1081,11 +1079,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }
 
                 //get answers
-                $query="SELECT code, answer FROM ".$CI->db->dbprefix("answers")." WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
-                $result=db_execute_assoc($query) or safe_die("Couldn't get list of answers for multitype<br />$query<br />".$connect->ErrorMsg());
+                $query="SELECT code, answer FROM {{answers}} WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+                $result=Yii::app()->db->createCommand($query)->query();
 
                 //loop through answers
-                foreach ($result->result_array() as $row)
+                foreach ($result->readAll() as $row)
                 {
                 	$row=array_values($row);
                     //create an array containing answer code, answer and fieldname(??)
@@ -1101,11 +1099,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
                 //select details for this question
-                $nquery = "SELECT title, type, question, parent_qid, other FROM ".$CI->db->dbprefix("questions")." WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
-                $nresult = db_execute_assoc($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+                $nquery = "SELECT title, type, question, parent_qid, other FROM {{questions}} WHERE language='{$language}' AND parent_qid=0 AND qid='$qqid'";
+                $nresult = Yii::app()->db->createCommand($nquery)->query();
 
                 //loop through question data
-                foreach ($nresult->result_array() as $nrow)
+                foreach ($nresult->readAll() as $nrow)
                 {
                 	$nrow=array_values($nrow);
                     $qtitle=$nrow[0];
@@ -1129,26 +1127,26 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 // 1) Total number of files uploaded
                 // 2)      Number of respondents who uploaded at least one file (with the inverse being the number of respondents who didn t upload any)
                 $fieldname=substr($rt, 1, strlen($rt));
-                $query = "SELECT SUM(".db_quote_id($fieldname.'_filecount').") as sum, AVG(".db_quote_id($fieldname.'_filecount').") as avg FROM ".$CI->db->dbprefix("survey_$surveyid");
-                $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
+                $query = "SELECT SUM(".db_quote_id($fieldname.'_filecount').") as sum, AVG(".db_quote_id($fieldname.'_filecount').") as avg FROM {{survey_$surveyid}}";
+                $result=Yii::app()->db->createCommand($query)->query();
 
                 $showem = array();
 
-                foreach ($result->result_array() as $row)
+                foreach ($result->readAll() as $row)
                 {
                     $showem[]=array($statlang->gT("Total number of files"), $row['sum']);
                     $showem[]=array($statlang->gT("Average no. of files per respondent"), $row['avg']);
                 }
 
 
-                $query = "SELECT ". $fieldname ." as json FROM ".$CI->db->dbprefix("survey_$surveyid");
-                $result=db_execute_assoc($query) or safe_die("Couldn't fetch the records<br />$query<br />".$connect->ErrorMsg());
+            	$query = "SELECT ". $fieldname ." as json FROM {{survey_$surveyid}}";
+                $result=Yii::app()->db->createCommand($query)->query();
 
                 $responsecount = 0;
                 $filecount = 0;
                 $size = 0;
 
-                foreach ($result->result_array() as $row)
+                foreach ($result->readAll() as $row)
                 {
 
                     $json = $row['json'];
@@ -1165,7 +1163,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $showem[] = array($statlang->gT("Average file size"), $size/$filecount . " KB");
                 $showem[] = array($statlang->gT("Average size per respondent"), $size/$responsecount . " KB");
 
-/*              $query="SELECT title, question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
+/*              $query="SELECT title, question FROM {{questions}} WHERE parent_qid='$qqid' AND language='{$language}' ORDER BY question_order";
                 $result=db_execute_num($query) or safe_die("Couldn't get list of subquestions for multitype<br />$query<br />".$connect->ErrorMsg());
 
                 //loop through multiple answers
@@ -1274,22 +1272,22 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         //get question details from DB
                         $nquery = "SELECT title, type, question, qid, parent_qid
-								   FROM ".$CI->db->dbprefix("questions")."
+								   FROM {{questions}}
 								   WHERE parent_qid=0 AND qid='".substr($qqid, 0, $qidlength)."'
 								   AND language='{$language}'";
-                        $nresult = db_execute_assoc($nquery) or safe_die("Couldn't get text question<br />$nquery<br />".$connect->ErrorMsg());
+                        $nresult = Yii::app()->db->createCommand($nquery)->query();
                     }
 
                     //probably question type "N" = numerical input
                     else
                     {
                         //we can use the qqid without any editing
-                        $nquery = "SELECT title, type, question, qid, parent_qid FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
-                        $nresult = db_execute_assoc($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+                        $nquery = "SELECT title, type, question, qid, parent_qid FROM {{questions}} WHERE parent_qid=0 AND qid='$qqid' AND language='{$language}'";
+                        $nresult = Yii::app()->db->createCommand($nquery)->query();
                     }
 
                     //loop through results
-                    foreach ($nresult->result_array() as $nrow)
+                    foreach ($nresult->readAll() as $nrow)
                     {
                     	$nrow=array_values($nrow);
                         $qtitle=FlattenText($nrow[0]); //clean up title
@@ -1303,7 +1301,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if(substr($rt, 0, 1) == "K")
                     {
                         //get answer data
-                        $atext=$connect->GetOne("SELECT question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='{$qiqid}' AND scale_id=0 AND title='{$qaid}' AND language='{$language}'");
+                        $atext=Yii::app()->db->createCommand("SELECT question FROM {{questions}} WHERE parent_qid='{$qiqid}' AND scale_id=0 AND title='{$qaid}' AND language='{$language}'")->queryScalar();
                         //put single items in brackets at output
                         $qtitle .= " [$atext]";
                     }
@@ -1368,7 +1366,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     $fieldname=substr($rt, 1, strlen($rt));
 
                     //special treatment for MS SQL databases
-                    $sDatabaseType = $CI->db->platform();
+                    $sDatabaseType = Yii::app()->db->getDriverName();
 					if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
                     {
                         //standard deviation
@@ -1399,7 +1397,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 					if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
                     {
                         //no NULL/empty values please
-                        $query .= " FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL";
+						$query .= " FROM {{survey_$surveyid}} WHERE ".db_quote_id($fieldname)." IS NOT NULL";
                         if(!$excludezeros)
                         {
                             //NO ZERO VALUES
@@ -1411,7 +1409,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     else
                     {
                         //no NULL/empty values please
-                        $query .= " FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT NULL";
+                        $query .= " FROM {{survey_$surveyid}} WHERE ".db_quote_id($fieldname)." IS NOT NULL";
                         if(!$excludezeros)
                         {
                             //NO ZERO VALUES
@@ -1427,10 +1425,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if ($sql != "NULL") {$query .= " AND $sql";}
 
                     //execute query
-                    $result=db_execute_assoc($query) or safe_die("Couldn't do maths testing<br />$query<br />".$connect->ErrorMsg());
+                    $result=Yii::app()->db->createCommand($query)->query();
 
                     //get calculated data
-                    foreach ($nresult->result_array() as $row)
+                    foreach ($nresult->readAll() as $row)
                     {
                         //put translation of mean and calculated data into $showem array
                         $showem[]=array($statlang->gT("Sum"), $row['sum']);
@@ -1448,7 +1446,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     //CALCULATE QUARTILES
 
                     //get data
-                    $query ="SELECT ".db_quote_id($fieldname)." FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null";
+                	$query ="SELECT ".db_quote_id($fieldname)." FROM {{survey_$surveyid}} WHERE ".db_quote_id($fieldname)." IS NOT null";
                     //NO ZEROES
                     if(!$excludezeros)
                     {
@@ -1463,9 +1461,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if ($sql != "NULL") {$query .= " AND $sql";}
 
                     //execute query
-                    $result=$connect->Execute($query) or safe_die("Disaster during median calculation<br />$query<br />".$connect->ErrorMsg());
-
-                    $querystarter="SELECT ".db_quote_id($fieldname)." FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ".db_quote_id($fieldname)." IS NOT null";
+					$result = Yii::app()->db->createCommand($quer)->query();
+                    $querystarter="SELECT ".db_quote_id($fieldname)." FROM {{survey_$surveyid}} WHERE ".db_quote_id($fieldname)." IS NOT null";
                     //No Zeroes
                     if(!$excludezeros)
                     {
@@ -1479,7 +1476,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if ($sql != "NULL") {$querystarter .= " AND $sql";}
 
                     //we just count the number of records returned
-                    $medcount=$result->RecordCount();
+                    $medcount=$result->getRowCount();
 
                     //put the total number of records at the beginning of this array
                     array_unshift($showem, array($statlang->gT("Count"), $medcount));
@@ -1504,9 +1501,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             //ODD NUMBER
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-                            $result=db_select_limit_assoc($query, 2, $q1c) or safe_die("1st Quartile query failed<br />".$connect->ErrorMsg());
+                            $result=Yii::app()->db->createCommand($query)->limit(2, $q1c)->query();
 
-                            foreach ($result->result_array() as $row)
+                            foreach ($result->readAll() as $row)
                             {
                                 if ($total == 0)    {$total=$total-$row[$fieldname];}
 
@@ -1525,9 +1522,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             //EVEN NUMBER
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-                            $result=db_select_limit_assoc($query,1, $q1c) or safe_die ("1st Quartile query failed<br />".$connect->ErrorMsg());
+                            $result=Yii::app()->db->createCommand($query)->limit(1, $q1c)->query();
 
-                            foreach ($result->result_array() as $row)
+                            foreach ($result->readAll() as $row)
                             {
                                 $showem[]=array($statlang->gT("1st quartile (Q1)"), $row[$fieldname]);
                             }
@@ -1546,9 +1543,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             //remainder
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-                            $result=db_select_limit_assoc($query,2, $medianc) or safe_die("What a complete mess with the remainder<br />$query<br />".$connect->ErrorMsg());
+                            $result=Yii::app()->db->createCommand($query)->limit(2, $medianc)->query();
 
-                            foreach ($result->result_array() as $row) {$total=$total+$row[$fieldname];}
+                            foreach ($result->readAll() as $row) {$total=$total+$row[$fieldname];}
 
                             $showem[]=array($statlang->gT("2nd quartile (Median)"), $total/2);
                         }
@@ -1557,9 +1554,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         {
                             //EVEN NUMBER
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-                            $result=db_select_limit_assoc($query,1, $medianc-1) or safe_die("What a complete mess<br />$query<br />".$connect->ErrorMsg());
+                            $result = Yii::app()->db->createCommand($query)->limit(1, $medianc-1)->query();
 
-                            foreach ($result->result_array() as $row)
+                            foreach ($result->readAll() as $row)
                             {
                                 $showem[]=array($statlang->gT("Median value"), $row[$fieldname]);
                             }
@@ -1577,9 +1574,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         if ($q3 != $q3b)
                         {
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1 ";
-                            $result = db_select_limit_assoc($query,2,$q3c) or safe_die("3rd Quartile query failed<br />".$connect->ErrorMsg());
+                            $result = Yii::app()->db->createCommand($query)->limit(2,$q3c)->query();
 
-                            foreach ($result->result_array() as $row)
+                            foreach ($result->readAll() as $row)
                             {
                                 if ($total == 0)    {$total=$total-$row[$fieldname];}
 
@@ -1597,9 +1594,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         else
                         {
                             $query = $querystarter . " ORDER BY ".db_quote_id($fieldname)."*1";
-                            $result = db_select_limit_assoc($query,1, $q3c) or safe_die("3rd Quartile even query failed<br />".$connect->ErrorMsg());
+                            $result = Yii::app()->db->createCommand($query)->limit(1, $q3c);
 
-                            foreach ($result->result_array() as $row)
+                            foreach ($result->readAll() as $row)
                             {
                                 $showem[]=array($statlang->gT("3rd quartile (Q3)"), $row[$fieldname]);
                             }
@@ -1776,11 +1773,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 $rqid=$qqid;
 
                 //get question data
-                $nquery = "SELECT title, type, question, qid, parent_qid, other FROM ".$CI->db->dbprefix("questions")." WHERE qid='{$rqid}' AND parent_qid=0 and language='{$language}'";
-                $nresult = db_execute_assoc($nquery) or safe_die ("Couldn't get question<br />$nquery<br />".$connect->ErrorMsg());
+                $nquery = "SELECT title, type, question, qid, parent_qid, other FROM {{questions}} WHERE qid='{$rqid}' AND parent_qid=0 and language='{$language}'";
+                $nresult = Yii::app()->db->createCommand($nquery)->query();
 
                 //loop though question data
-                foreach ($nresult->result_array() as $nrow)
+                foreach ($nresult->readAll() as $nrow)
                 {
                 	$nrow=array_values($nrow);
                     $qtitle=FlattenText($nrow[0]);
@@ -1798,11 +1795,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     case "A":
 
                         //get data
-                        $qquery = "SELECT title, question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                        $qresult=db_execute_assoc($qquery) or safe_die ("Couldn't get answer details (Array 5p Q)<br />$qquery<br />".$connect->ErrorMsg());
+                        $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
+                        $qresult=Yii::app()->db->createCommand($qquery)->query();
 
                         //loop through results
-                        foreach ($qresult->result_array() as $qrow)
+                        foreach ($qresult->readAll() as $qrow)
                         {
                         	$qrow=array_values($qrow);
                             //5-point array
@@ -1825,9 +1822,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         //Array of 10 point choices
                         //same as above just with 10 items
                     case "B":
-                        $qquery = "SELECT title, question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                        $qresult=db_execute_assoc($qquery) or safe_die ("Couldn't get answer details (Array 10p Q)<br />$qquery<br />".$connect->ErrorMsg());
-                        foreach ($qresult->result_array() as $qrow)
+                        $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
+                        $qresult=Yii::app()->db->createCommand($qquery)->query();
+                        foreach ($qresult->readAll() as $qrow)
                         {
                         	$qrow=array_values($qrow);
                             for ($i=1; $i<=10; $i++)
@@ -1845,11 +1842,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         //Array of Yes/No/$statlang->gT("Uncertain")
                     case "C":
-                        $qquery = "SELECT title, question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                        $qresult=db_execute_assoc($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
+                        $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
+                        $qresult=Yii::app()->db->createCommand($qquery)->query();
 
                         //loop thorugh results
-                        foreach ($qresult->result_array() as $qrow)
+                        foreach ($qresult->readAll() as $qrow)
                         {
                         	$qrow=array_values($qrow);
                             //add results
@@ -1868,9 +1865,9 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         //Array of Yes/No/$statlang->gT("Uncertain")
                         //same as above
                     case "E":
-                        $qquery = "SELECT title, question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                        $qresult=db_execute_assoc($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
-                        foreach ($qresult->result_array() as $qrow)
+                        $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
+                        $qresult=Yii::app()->db->createCommand($qquery)->query();
+                        foreach ($qresult->readAll() as $qrow)
                         {
                         	$qrow=array_values($qrow);
                             $alist[]=array("I", $statlang->gT("Increase"));
@@ -1886,15 +1883,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     case ";": //Array (Multi Flexi) (Text)
                         list($qacode, $licode)=explode("_", $qanswer);
 
-                        $qquery = "SELECT title, question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='$qiqid' AND title='$qacode' AND language='{$language}' ORDER BY question_order";
-                        $qresult=db_execute_assoc($qquery) or die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
+                        $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qacode' AND language='{$language}' ORDER BY question_order";
+                        $qresult=Yii::app()->db->createCommand($qquery)->query();
 
-                        foreach ($qresult->result_array() as $qrow)
+                        foreach ($qresult->readAll() as $qrow)
                         {
                         	$qrow=array_values($qrow);
-                            $fquery = "SELECT * FROM ".$CI->db->dbprefix("answers")." WHERE qid='{$qiqid}' AND scale_id=0 AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
+                            $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND code = '{$licode}' AND language='{$language}'ORDER BY sortorder, code";
                             $fresult = db_execute_assoc($fquery);
-                            foreach ($result->result_array() as $frow)
+                            foreach ($result->readAll() as $frow)
                             {
                                 $alist[]=array($frow['code'], $frow['answer']);
                                 $ltext=$frow['answer'];
@@ -1950,20 +1947,20 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                     case "F": //Array of Flexible
                     case "H": //Array of Flexible by Column
-                        $qquery = "SELECT title, question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
-                        $qresult=db_execute_assoc($qquery) or safe_die ("Couldn't get answer details<br />$qquery<br />".$connect->ErrorMsg());
+                        $qquery = "SELECT title, question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
+                        $qresult=Yii::app()->db->createCommand($qquery)->query();
 
                         //loop through answers
-                        foreach ($result->result_array() as $qrow)
+                        foreach ($result->readAll() as $qrow)
                         {
                         	$qrow=array_values($qrow);
 
                             //this question type uses its own labels
-                            $fquery = "SELECT * FROM ".$CI->db->dbprefix("answers")." WHERE qid='{$qiqid}' AND scale_id=0 AND language='{$language}'ORDER BY sortorder, code";
+                            $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qiqid}' AND scale_id=0 AND language='{$language}'ORDER BY sortorder, code";
                             $fresult = db_execute_assoc($fquery);
 
                             //add code and title to results for outputting them later
-                            foreach ($fresult->result_array() as $frow)
+                            foreach ($fresult->readAll() as $frow)
                             {
                                 $alist[]=array($frow['code'], FlattenText($frow['answer']));
                             }
@@ -2012,7 +2009,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                     case "1":	//array (dual scale)
 
-                        $sSubquestionQuery = "SELECT  question FROM ".$CI->db->dbprefix("questions")." WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
+                        $sSubquestionQuery = "SELECT  question FROM {{questions}} WHERE parent_qid='$qiqid' AND title='$qanswer' AND language='{$language}' ORDER BY question_order";
                         $sSubquestion=FlattenText($connect->GetOne($sSubquestionQuery));
 
                         //get question attributes
@@ -2022,7 +2019,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         if (substr($rt,-1,1) == 0)
                         {
                             //get label 1
-                            $fquery = "SELECT * FROM ".$CI->db->dbprefix("answers")." WHERE qid='{$qqid}' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, code";
+                            $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qqid}' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, code";
 
                             //header available?
                             if (trim($qidattributes['dualscale_headerA'])!='') {
@@ -2044,7 +2041,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         else
                         {
                             //get label 2
-                            $fquery = "SELECT * FROM ".$CI->db->dbprefix("answers")." WHERE qid='{$qqid}' AND scale_id=1 AND language='{$language}' ORDER BY sortorder, code";
+                            $fquery = "SELECT * FROM {{answers}} WHERE qid='{$qqid}' AND scale_id=1 AND language='{$language}' ORDER BY sortorder, code";
 
                             //header available?
                             if (trim($qidattributes['dualscale_headerB'])!='') {
@@ -2063,10 +2060,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         }
 
                         //get data
-                        $fresult = db_execute_assoc($fquery);
+                        $fresult = Yii::app()->db->createCommand($fquery)->query();
 
                         //put label code and label title into array
-                        foreach ($fresult->result_array() as $frow)
+                        foreach ($fresult->readAll() as $frow)
                         {
                             $alist[]=array($frow['code'], FlattenText($frow['answer']));
                         }
@@ -2082,11 +2079,11 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     default:	//default handling
 
                         //get answer code and title
-                        $qquery = "SELECT code, answer FROM ".$CI->db->dbprefix("answers")." WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
-                        $qresult = db_execute_assoc($qquery) or safe_die ("Couldn't get answers list<br />$qquery<br />".$connect->ErrorMsg());
+                        $qquery = "SELECT code, answer FROM {{answers}} WHERE qid='$qqid' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
+                        $qresult = Yii::app()->db->createCommand($qquery)->query();
 
                         //put answer code and title into array
-                        foreach ($qresult->result_array() as $qrow)
+                        foreach ($qresult->readAll() as $qrow)
                         {
                         	$qrow=array_values($qrow);
                             $alist[]=array("$qrow[0]", FlattenText($qrow[1]));
@@ -2190,12 +2187,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             {
                                 // It is better for single choice question types to filter on the number of '-oth-' entries, than to
                                 // just count the number of 'other' values - that way with failing Javascript the statistics don't get messed up
-                                $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ".db_quote_id(substr($al[2],0,strlen($al[2])-5))."='-oth-'";
+                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".db_quote_id(substr($al[2],0,strlen($al[2])-5))."='-oth-'";
                             }
                             else
                             {
                             //get data
-                            $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ";
+                            $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
                             $query .= ($sDatabaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
                         }
                         }
@@ -2211,28 +2208,30 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
                         elseif ($qtype == "U" || $qtype == "T" || $qtype == "S" || $qtype == "Q" || $qtype == ";")
                         {
+                           $sDatabaseType = Yii::app()->db->getDriverName();
+
                             //free text answers
                             if($al[0]=="Answers")
                             {
-                                $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ";
+                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ";
                                 $query .= ($sDatabaseType == "mysql")?  db_quote_id($al[2])." != ''" : "NOT (".db_quote_id($al[2])." LIKE '')";
                             }
                             //"no answer" handling
                             elseif($al[0]=="NoAnswer")
                             {
-                                $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ( ";
+                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
                                 $query .= ($sDatabaseType == "mysql")?  db_quote_id($al[2])." = '')" : " (".db_quote_id($al[2])." LIKE ''))";
                             }
                         }
                         elseif ($qtype == "O")
                         {
-                            $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ( ";
+                            $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( ";
                             $query .= ($sDatabaseType == "mysql")?  db_quote_id($al[2])." <> '')" : " (".db_quote_id($al[2])." NOT LIKE ''))";
                         // all other question types
                         }
                         else
                         {
-                            $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ".db_quote_id($al[2])." =";
+                            $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".db_quote_id($al[2])." =";
 
                             //ranking question?
                             if (substr($rt, 0, 1) == "R")
@@ -2252,14 +2251,14 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         if ($al[0] != "")
                         {
                             //get more data
-                            $sDatabaseType = $CI->db->platform();
+                            $sDatabaseType = Yii::app()->db->getDriverName();
 							if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
-                                $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'";
+                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE cast(".db_quote_id($rt)." as varchar)= '$al[0]'";
                             }
                             else
-                            $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ".db_quote_id($rt)." = '$al[0]'";
+                            $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ".db_quote_id($rt)." = '$al[0]'";
                         }
                         else
                         { // This is for the 'NoAnswer' case
@@ -2273,15 +2272,15 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             if ($sDatabaseType == 'odbc_mssql' || $sDatabaseType == 'odbtp' || $sDatabaseType == 'mssql_n' || $sDatabaseType == 'mssqlnative')
                             {
                                 // mssql cannot compare text blobs so we have to cast here
-                                //$query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE (".db_quote_id($rt)." IS NULL "
-                                $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ( "
+                                //$query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".db_quote_id($rt)." IS NULL "
+                                $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                                 //                                    . "OR cast(".db_quote_id($rt)." as varchar) = '' "
                                 . "cast(".db_quote_id($rt)." as varchar) = '' "
                                 . "OR cast(".db_quote_id($rt)." as varchar) = ' ' )";
                             }
                             else
-                            //			    $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE (".db_quote_id($rt)." IS NULL "
-                            $query = "SELECT count(*) FROM ".$CI->db->dbprefix("survey_$surveyid")." WHERE ( "
+                            //			    $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE (".db_quote_id($rt)." IS NULL "
+                            $query = "SELECT count(*) FROM {{survey_$surveyid}} WHERE ( "
                             //								    . "OR ".db_quote_id($rt)." = '' "
                             . " ".db_quote_id($rt)." = '' "
                             . "OR ".db_quote_id($rt)." = ' ') ";
@@ -2297,12 +2296,12 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     if ($sql != "NULL") {$query .= " AND $sql";}
 
                     //get data
-                    $result=db_execute_assoc($query) or safe_die ("Couldn't do count of values<br />$query<br />".$connect->ErrorMsg());
+                    $result=Yii::app()->db->createCommand($query)->query();
 
                     // $statisticsoutput .= "\n<!-- ($sql): $query -->\n\n";
 
                     // this just extracts the data, after we present
-                    foreach ($result->result_array() as $row)
+                    foreach ($result->readAll() as $row)
                     {
                     	$row=array_values($row);
                         //increase counter
@@ -2361,7 +2360,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
 
                         //check if aggregated results should be shown
-                        elseif ($CI->config->item('showaggregateddata') == 1)
+                        elseif (Yii::app()->getConfig('showaggregateddata') == 1)
                         {
                             if(!isset($showheadline) || $showheadline != false)
                             {
@@ -2452,7 +2451,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                             //text for answer column is always needed
                             $fname="$al[1] ($al[0])";
 
-                            //these question types get special treatment by $CI->config->item('showaggregateddata')
+                            //these question types get special treatment by Yii::app()->getConfig('showaggregateddata')
                             if($qtype == "5" || $qtype == "A")
                             {
                                 //put non-edited data in here because $row will be edited later
@@ -2596,7 +2595,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 if (($qtype != "M") and ($qtype != "P"))
                 {
                     //is the checkbox "Don't consider NON completed responses (only works when Filter incomplete answers is Disable)" checked?
-                    //if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset($CI->config->item('showaggregateddata')) && $CI->config->item('showaggregateddata') == 0))
+                    //if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") && (isset(Yii::app()->getConfig('showaggregateddata')) && Yii::app()->getConfig('showaggregateddata') == 0))
                     // TIBO: TODO WE MUST SKIP THE FOLLOWING SECTION FOR TYPE A and 5 when
                     // showaggreagated data is set and set to 1
                     if (isset($_POST["noncompleted"]) and ($_POST["noncompleted"] == "on") )
@@ -2738,8 +2737,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                 $statisticsoutput .= sprintf("%01.2f", $gdata[$i]) . "%";
                                 $gdata[$i] = 0;
 
-                                //check if we have to adjust ouput due to $CI->config->item('showaggregateddata') setting
-                                if($CI->config->item('showaggregateddata') == 1 && ($qtype == "5" || $qtype == "A"))
+                                //check if we have to adjust ouput due to Yii::app()->getConfig('showaggregateddata') setting
+                                if(Yii::app()->getConfig('showaggregateddata') == 1 && ($qtype == "5" || $qtype == "A"))
                                 {
                                     $statisticsoutput .= "\t\t</td>";
                                 }
@@ -2760,7 +2759,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                     else
                     {
                         //check if data should be aggregated
-                        if($CI->config->item('showaggregateddata') == 1 && ($qtype == "5" || $qtype == "A"))
+                        if(Yii::app()->getConfig('showaggregateddata') == 1 && ($qtype == "5" || $qtype == "A"))
                         {
                             //mark that we have done soemthing special here
                             $aggregated = true;
@@ -3165,7 +3164,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 }	//end while
 
                 //only show additional values when this setting is enabled
-                if($CI->config->item('showaggregateddata') == 1 )
+                if(Yii::app()->getConfig('showaggregateddata') == 1 )
                 {
                     //it's only useful to calculate standard deviation and arithmetic means for question types
                     //5 = 5 Point Scale
@@ -3305,10 +3304,10 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
 
                 //-------------------------- PCHART OUTPUT ----------------------------
-
-                list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
+                list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
+                $qsid = $surveyid;
                 $aattr = getQuestionAttributeValues($qqid, substr($rt, 0, 1));
-                                                               
+
                 //PCHART has to be enabled and we need some data
                 if ($usegraph == 1) {
                     $bShowGraph = $aattr["statistics_showgraph"] == "1";
@@ -3330,13 +3329,13 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                         'lbl' => $lbl,
                         'gdata' => $gdata,
                         'grawdata' => $grawdata
-                    );  
+                    );
 
                     if (array_sum($gdata)>0 && $bShowGraph == true)
-                        {
-                        $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache);
+                    {
+ 						$cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache);
                     //introduce new counter
-                    if (!isset($ci)) {$ci=0;}
+                    	if (!isset($ci)) {$ci=0;}
 
                     //increase counter, start value -> 1
                     $ci++;
@@ -3384,8 +3383,8 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                 //close table/output
                 if($outputType=='html') {
                     if ($usegraph) {
-                        $sImgUrl = $CI->config->item('imageurl');
-                        
+                        $sImgUrl = Yii::app()->getConfig('imageurl');
+
                         $statisticsoutput .= "</td></tr><tr><td colspan='4'><div id='stats_$rt' class='graphdisplay' style=\"text-align:center\">"
                                             ."<img class='stats-showgraph' src='$sImgUrl/chart_disabled.png'/>"
                                             ."<img class='stats-hidegraph' src='$sImgUrl/chart.png'/>"
@@ -3394,7 +3393,7 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
                                             ."<img class='stats-showmap' src='$sImgUrl/map_disabled.png'/>"
                                             ."<img class='stats-hidemap' src='$sImgUrl/map.png'/>"
                                             ."</div></td></tr>";
-                                            
+
                     }
                 $statisticsoutput .= "</table><br /> \n";
                 }
@@ -3439,18 +3438,19 @@ function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, 
 
         case 'pdf':
             $pdf->lastPage();
+
             if($pdfOutput=='F')
             { // This is only used by lsrc to send an E-Mail attachment, so it gives back the filename to send and delete afterwards
                 $pdf->Output($tempdir."/".$statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
                 return $tempdir."/".$statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf';
             }
             else
-            return $pdf->Output($statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
+            	return $pdf->Output($statlang->gT('Survey').'_'.$surveyid."_".$surveyInfo['surveyls_title'].'.pdf', $pdfOutput);
 
             break;
         case 'html':
 			$statisticsoutput .= "<script type=\"text/javascript\" src=\"http://maps.googleapis.com/maps/api/js?sensor=false\"></script>"
-								."<script type=\"text/javascript\">var site_url='".site_url()."';var temppath='$tempurl';var imgpath='".$CI->config->item('imageurl')."';var aGMapData=".json_encode($agmapdata)	.";var aStatData=".json_encode($astatdata)."</script>";
+								."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='$tempurl';var imgpath='".Yii::app()->getConfig('imageurl')."';var aGMapData=".json_encode($agmapdata)	.";var aStatData=".json_encode($astatdata)."</script>";
             return $statisticsoutput;
 
             break;
@@ -3478,3 +3478,4 @@ function square($number)
 
     return $squarenumber;
 }
+
