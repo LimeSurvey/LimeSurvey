@@ -2125,7 +2125,7 @@ class LimeExpressionManager {
                 // First validate the current group
                 $LEM->StartProcessingPage();
                 $LEM->ProcessCurrentResponses();
-                if (!$force)
+                if (!$force && $LEM->currentGroupSeq != -1)
                 {
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,$debug);
                     if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
@@ -2183,7 +2183,7 @@ class LimeExpressionManager {
                 break;
             case 'question':
                 $LEM->StartProcessingPage();
-                if (!$force)
+                if (!$force && $LEM->currentQuestionSeq != -1)
                 {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$debug);
                     if ($result['mandViolation'] || !$result['valid'])
@@ -2313,7 +2313,7 @@ class LimeExpressionManager {
             if ($qStatus['hidden']==false) {
                 $ghidden=false; // at least one question is visible
             }
-            if ($qStatus['qmandViolation']==true) {
+            if ($qStatus['mandViolation']==true) {
                 $gmandViolation=true;   // at least one relevant question fails mandatory test
             }
             if ($qStatus['valid']==false) {
@@ -2950,8 +2950,8 @@ class LimeExpressionManager {
             'relevantSQs' => implode('|',$relevantSQs),
             'irrelevantSQs' => implode('|',$irrelevantSQs),
             'subQrelEqn' => implode('<br/>',$prettyPrintSQRelEqns),
-            'qmandViolation' => $qmandViolation,
-            'qmandTip' => $mandatoryTip,
+            'mandViolation' => $qmandViolation,
+            'mandTip' => $mandatoryTip,
             'message' => $debug_qmessage,
             );
 

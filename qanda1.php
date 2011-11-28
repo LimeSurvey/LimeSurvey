@@ -887,8 +887,8 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
 function mandatory_message($ia)
 {
     $qinfo = LimeExpressionManager::GetQuestionStatus($ia[0]);
-    if ($qinfo['qmandViolation']) {
-        return $qinfo['qmandTip'];
+    if ($qinfo['mandViolation']) {
+        return $qinfo['mandTip'];
     }
     else {
         return "";

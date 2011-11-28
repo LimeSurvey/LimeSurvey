@@ -21,7 +21,7 @@ if (isset($_REQUEST['action']) && ($_REQUEST['action']=='previewgroup')){
 if (isset($_REQUEST['newtest']))
 	if ($_REQUEST['newtest']=="Y")
 		setcookie("limesurvey_timers", "0");
-$show_empty_group = false;
+//$show_empty_group = false;
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 if ($previewgrp)
@@ -94,15 +94,21 @@ else
     // TMSW Mandatory -> EM -- Pass the info into LEM::NavigatePrevious()
     //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
     //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
-    if ($allowmandbackwards==1 && (
-        (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION['prevstep'] == $_SESSION['maxstep']))) ||
-        (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far"))))
+    if (
+        (isset($move) && ($move == "moveprev" || (is_int($move) && $_SESSION['prevstep'] == $_SESSION['maxstep']) || $_SESSION['prevstep'] == $_SESSION['step'])) ||
+        (isset($_POST['saveall']) && $_POST['saveall'] == $clang->gT("Save your responses so far")))
     {
-        $backok="Y";
+        if ($allowmandbackwards==1) {
+            $backok="Y";
+        }
+        else
+        {
+            $backok="N";
+        }
     }
     else
     {
-        $backok="N";
+        $backok="N";    // NA, since not moving backwards
     }
 
     // TMSW Mandatory -> EM
@@ -110,19 +116,19 @@ else
     //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 //    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
     $unansweredSQList = $moveResult['unansweredSQs'];
-    if (strlen($unansweredSQList) > 0 ) {
+    if (strlen($unansweredSQList) > 0 && $backok != "N") {
         $notanswered = explode('|',$unansweredSQList);
     }
 
     //CHECK INPUT
 //    $notvalidated=checkpregs($move,$backok);
     $invalidSQList = $moveResult['invalidSQs'];
-    if (strlen($invalidSQList) > 0) {
+    if (strlen($invalidSQList) > 0 && $backok != "N") {
         $notvalidated = explode('|',$invalidSQList);
     }
 
     // CHECK UPLOADED FILES
-    // TMSW - Move this into LEM::NavigateForwards
+    // TMSW - Move this into LEM::NavigateForwards?
     $filenotvalidated = checkUploadedFileValidity($move, $backok);
 
     //SEE IF THIS GROUP SHOULD DISPLAY
@@ -398,7 +404,6 @@ else
 //Setup an inverted fieldnamesInfo for quick lookup of field answers.
 // TMSW - is this needed?
 //$aFieldnamesInfoInv = aArrayInvert($_SESSION['fieldnamesInfo']);
-// TMSW - should not happen
 if ($_SESSION['step'] > $_SESSION['maxstep'])
 {
     $_SESSION['maxstep'] = $_SESSION['step'];
@@ -457,6 +462,7 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
 
         //Get the answers/inputnames
         // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
+        // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
         list($plus_qanda, $plus_inputnames)=retrieveAnswers($ia);
         // TMSW - modify $qanda so not index-based?  If not, shortcut is to replicate it.
         if ($plus_qanda)
@@ -1289,19 +1295,19 @@ echo "\n";
 
 //Display the "mandatory" message on page if necessary
     // TMSW Mandatory -> EM
-if (isset($showpopups) && $showpopups == 0 && isset($notanswered) && $notanswered == true)
+if (isset($showpopups) && $showpopups == 1 && isset($notanswered) && is_array($notanswered) && count($notanswered) > 0)
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
 }
 
 //Display the "validation" message on page if necessary
-if (isset($showpopups) && $showpopups == 0 && isset($notvalidated) && $notvalidated == true)
+if (isset($showpopups) && $showpopups == 1 && isset($notvalidated) && is_array($notvalidated) && count($notvalidated) > 0)
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
 }
 
 //Display the "file validation" message on page if necessary
-if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true)
+if (isset($showpopups) && $showpopups == 1 && isset($filenotvalidated) && $filenotvalidated == true)
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 }
@@ -1322,7 +1328,7 @@ echo "\n\n<!-- PRESENT THE QUESTIONS -->\n";
             $man_class .= ' mandatory';
         }
 
-        if (strlen($qinfo['unansweredSQs']) > 0) { //  && $_SESSION['maxstep'] != $_SESSION['step']) {
+        if (strlen($qinfo['unansweredSQs']) > 0  && $_SESSION['maxstep'] != $_SESSION['step']) {
             $man_class .= ' missing';
         }
 
