@@ -817,6 +817,99 @@ table.rank td.helptext {
   padding: 5px;
 }
 
+
+/* ***********ranking questions (drag and drop) by N8B****************/
+
+.ranking .answers table {
+    width: 100%; /* fill it, to make it look less ugly and act right */
+}
+
+.dragDropTable {
+	border: 0 none;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.dragDropTable td {
+	vertical-align: top;
+	width: 50%;
+	padding: 20px;
+}
+
+.dragDropTable .dragDropHeader {
+	font-weight: bold;
+}
+
+.dragDropTable .dragDropChoices,
+.dragDropTable .dragDropRanks {
+	margin: 5px 0 0 0; 
+	background: transparent none;
+	border: 0 none;
+}
+
+/* this is the color of the backgrounds/drop areas of the columns */
+.dragDropTable .dragDropChoiceList,
+.dragDropTable .dragDropRankList {
+	width: 100%;
+	min-height: 2.4em;
+	_height: 2.4em; /* IE6 and below hack */
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+	background: white;
+	border: 1px solid gray;
+}
+
+/* the draggable itself */
+.dragDropTable .dragDropChoiceList li,
+.dragDropTable .dragDropRankList li {
+    margin: 3px;
+
+    padding: 10px;
+	min-height: 1.3em;
+	_height: 1.3em; /* IE6 and below hack */
+	font-weight: normal;
+	cursor: move;
+	display: block; /* Force the li to full width */
+	background: #EBEBEB;
+	border: 1px solid #9C9C9C;
+	text-align: left;
+}
+
+/* placeholder */
+.dragDropTable .dragDropRankList li.ui-sortable-placeholder,
+.dragDropTable .dragDropChoiceList li.ui-sortable-placeholder {
+	background: #F7F7F7;
+	border-color: #B5B5B5;
+	border-style: dotted;
+}
+
+/* background */
+.dragDropTable .dragDropRankList li.ui-sortable-placeholder.ui-sortable-background {
+	/* default has no border */
+	background: #FDFFC7;
+}
+
+
+/* the class applied to a maxed-out table */
+.dragDropTable .dragDropRankList.dragDropRankMaxedOut {
+	border: 1px solid red;
+}
+
+/* the prefix */
+.dragDropTable .dragDropRankList li span.DDRnumberprefix,
+.dragDropTable .dragDropChoiceList li span.DDRnumberprefix {
+	padding: 0px 6px;
+	background: #F7F7F7;
+	border: 1px solid #B5B5B5;
+	margin: 0px 10px 5px 0px;
+	float: left;
+	color: #B5B5B5;
+}
+
+
+
+
 /* DEFINED ABOVE UNDER "General list styles" - - - - -
 .multiple-opt
 */
