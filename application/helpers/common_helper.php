@@ -734,7 +734,7 @@ function get2post($url)
     $aqueryitems = explode('&',$query);
     $arrayParam = Array();
     $arrayVal = Array();
-	
+
     foreach ($aqueryitems as $queryitem)
     {
         $stack =  explode ('=', $queryitem);
@@ -2877,7 +2877,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     global $globalfieldmap, $aDuplicateQIDs;
     static $timingsFieldMap;
-    
+
     $clang = Yii::app()->lang;
 
     $surveyid=sanitize_int($surveyid);
@@ -3463,7 +3463,7 @@ function questionAttributes($returnByName=false)
     'caption'=>$clang->gT("Display map"),
     'default'=>1
     );
-    
+
     $qattributes["statistics_showgraph"]=array(
     'types'=>'15ABCDEFGHIKLMNOPQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Statistics'),
@@ -3474,7 +3474,7 @@ function questionAttributes($returnByName=false)
     'caption'=>$clang->gT("Display chart"),
     'default'=>1
     );
-    
+
     $qattributes["statistics_graphtype"]=array(
     "types"=>'15ABCDEFGHIKLNOQRSTUWXYZ!:;|*',
     'category'=>$clang->gT('Statistics'),
@@ -5200,7 +5200,7 @@ function convertCsvreturn2return($string)
 */
 function tableExists($tablename)
 {
-    
+
     return Yii::app()->db->schema->getTable($tablename);
 }
 
@@ -5876,7 +5876,7 @@ function sGetTemplatePath($sTemplateName)
         else
         {
 
-            return $Yii::app()->getConfig("standardtemplaterootdir").'/default';
+            return Yii::app()->getConfig("standardtemplaterootdir").'/default';
         }
     }
 }
