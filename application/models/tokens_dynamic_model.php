@@ -126,7 +126,7 @@ class Tokens_dynamic_model extends CI_Model {
 
         if ($tokenid) {$emquery .= " and tid='{$tokenid}'";}
         if ($tokenids) {$emquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
-        $this->load->helper("database");
+        Yii::app()->loadHelper("database");
         return db_select_limit_assoc($emquery,$maxemails);
     }
 

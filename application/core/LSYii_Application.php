@@ -93,8 +93,11 @@ class LSYii_Application extends CWebApplication
 	public function loadConfig($file)
 	{
 		$config = require_once(APPPATH . '/config/' . $file . '.php');
-		foreach ($config as $k => $v)
-			$this->setConfig($k, $v);
+		if(is_array($config))
+		{
+			foreach ($config as $k => $v)
+				$this->setConfig($k, $v);
+		}
 	}
 
 	/**

@@ -1,4 +1,4 @@
-    <?php echo PrepareEditorScript(); ?>
+    <?php echo PrepareEditorScript(true, $this); ?>
     <div class='header ui-widget-header'>
     <?php echo $clang->gT("Send email invitations");?></div>
     <div><br/>
@@ -26,7 +26,7 @@
 		}
 		?>
 		</ul>
-		<form id='sendinvitation' class='form30' method='post' action='<?php echo site_url("admin/tokens/email/$surveyid");?>'>
+		<form id='sendinvitation' class='form30' method='post' action='<?php echo $this->createUrl("admin/tokens/sa/email/$surveyid");?>'>
 
             <?php
         foreach ($surveylangs as $language)

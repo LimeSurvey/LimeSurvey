@@ -104,5 +104,33 @@ class Tokens_dynamic extends CActiveRecord
 
 		return $data;
 	}
+	
+	public function totalRecords($iSurveyID)
+    {
+        $tksq = "SELECT count(tid) FROM {{tokens_{$iSurveyID}}}";
+        $tksr = Yii::app()->db->createCommand($tksq)->query();
+        $tkr = $tksr->read();
+        return $tkr["count(tid)"];
+}
+	
+	public function ctquery($iSurveyID,$SQLemailstatuscondition,$tokenid=false,$tokenids=false)
+    {
+        $ctquery = "SELECT * FROM {{tokens_{$iSurveyID}}} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+
+        if ($tokenid) {$ctquery .= " AND tid='{$tokenid}'";}
+        if ($tokenids) {$ctquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
+
+        return Yii::app()->db->createCommand($ctquery)->query();
+    }
+
+    public function emquery($iSurveyID,$SQLemailstatuscondition,$maxemails,$tokenid=false,$tokenids=false)
+    {
+        $emquery = "SELECT * FROM {{tokens_{$iSurveyID}}} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+
+        if ($tokenid) {$emquery .= " and tid='{$tokenid}'";}
+        if ($tokenids) {$emquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
+        Yii::app()->loadHelper("database");
+        return db_select_limit_assoc($emquery,$maxemails);
+    }
 }
 ?>

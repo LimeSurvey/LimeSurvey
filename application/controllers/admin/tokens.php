@@ -858,30 +858,37 @@ class tokens extends Survey_Common_Action
 	/**
 	 * Handle email action
 	 */
-	function email($surveyid,$tokenids=null)
+	function email($surveyid=null,$tokenids=null)
 	{
+		if (!empty($_POST['sid']))
+        {
+            $surveyid = (int)$_POST['sid'];
+        }
+
 		$surveyid = sanitize_int($surveyid);
-		$clang=$this->controller->lang;
+
+		$clang = $this->getController()->lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
-			show_error("no permissions"); // TODO Replace
+			safe_die("no permissions"); // TODO Replace
 		}
 
 		if(isset($tokenids) && $tokenids=="tids") {
-			$tokenids=$_POST['tokenids'];
+			$_POST("tokenids");
 		    $tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
 		    unset($tokenids);
 		    foreach($tokenidsarray as $tokenitem) {
 		        if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
 		    }
 		}
-
 		Tokens_dynamic::sid($surveyid);
-		$tkcount=count(Tokens_dynamic::model()->findAll());
-		Yii::app()->loadHelper("surveytranslator");
+		$tkcount=Tokens_dynamic::model()->totalRecords($surveyid);
+		Yii::app()->loadHelper('surveytranslator');
 
-		$query = Tokens_dynamic::model()->find($surveyid);
-		$examplerow = !is_null($query) ? $query->attributes : array();
+		$examplerow = array();
+		$row = Tokens_dynamic::model()->find($surveyid);
+		if ($row)
+		$examplerow = $row->attributes;
 
 		$tokenfields=GetTokenFieldsAndNames($surveyid,true);
     	$nrofattributes=0;
@@ -894,9 +901,13 @@ class tokens extends Survey_Common_Action
 		$data['tokenfields']=$tokenfields;
 		$data['nrofattributes']=$nrofattributes;
 		$data['examplerow']=$examplerow;
+		$publicurl = Yii::app()->baseUrl;
+		$modrewrite = Yii::app()->getConfig("modrewrite");
+		$timeadjust = Yii::app()->getConfig("timeadjust");
 
-		Yii::app()->loadHelper("admin/htmleditor");
-		Yii::app()->loadHelper('replacements');
+		Yii::app()->loadHelper('/admin/htmleditor');
+		Yii::app()->loadHelper('/replacements');
+
 		if (getEmailFormat($surveyid) == 'html')
 	    {
 	        $ishtml=true;
@@ -907,18 +918,18 @@ class tokens extends Survey_Common_Action
 	    }
 		$data['ishtml']=$ishtml;
 
-	    if (empty($_POST['ok']))
+	    if (@!$_POST['ok'])
 	    {
-			$this->controller->_getAdminHeader();
-			$this->controller->render("/admin/token/tokenbar",$data);
-			$this->controller->render("/admin/token/email",$data);
-			$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+			$this->getController()->_getAdminHeader();
+			$this->getController()->render("/admin/token/tokenbar",$data);
+			$this->getController()->render("/admin/token/email",$data);
+			$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
 	    }
     	else
     	{
-			$tokenid=returnglobal('tokenid');
-			$tokenids=returnglobal('tokenids');
-			$maxemails=Yii::app()->getConfig("maxemails");
+			@$tokenid=$_POST["tokenid"];
+			@$tokenids=$_POST["tokenids"];
+			@$maxemails=$_POST["maxemails"];
 
 			$data['tokenid']=$tokenid;
 			$data['tokenids']=$tokenids;
@@ -933,27 +944,17 @@ class tokens extends Survey_Common_Action
 	        }
 
 	        //$ctfieldcount = $ctresult->FieldCount();
-    		$ctquery = "SELECT * FROM {{tokens_$surveyid}} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
+			$ctresult=Tokens_dynamic::model()->ctquery($surveyid,$SQLemailstatuscondition,$tokenid,$tokenids);
+			$ctcount = $ctresult->count();
 
-    		if ($tokenid) {$ctquery .= " AND tid='{$tokenid}'";}
-    		if ($tokenids) {$ctquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
-
-			$ctresult = Yii::app()->db->createCommand($ctquery)->query();
-			$ctcount = $ctresult->getRowCount();
-
-    		$emquery = "SELECT * FROM {{tokens_$surveyid}} WHERE ((completed ='N') or (completed='')) AND ((sent ='N') or (sent='')) AND token !='' AND email != '' $SQLemailstatuscondition";
-
-    		if ($tokenid) {$emquery .= " and tid='{$tokenid}'";}
-    		if ($tokenids) {$emquery .= " AND tid IN ('".implode("', '", $tokenids)."')";}
-
-	        $emresult = Yii::app()->db->createCommand($emquery)->limit($maxemails)->query();
-	        $emcount = $emresult->getRowCount();
+	        $emresult = Tokens_dynamic::model()->emquery($surveyid,$SQLemailstatuscondition,$maxemails,$tokenid,$tokenids);
+	        $emcount = $emresult->count();
 
 	        $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	        $baselanguage = GetBaseLanguageFromSurveyID($surveyid);
 	        array_unshift($surveylangs,$baselanguage);
 
-			Yii::app()->loadConfig('email');
+			Yii::app()->getConfig("email");
 	        foreach ($surveylangs as $language)
 	        {
 	            $_POST['message_'.$language]=auto_unescape($_POST['message_'.$language]);
@@ -973,7 +974,7 @@ class tokens extends Survey_Common_Action
                     $aEmailaddresses=explode(';',$emrow['email']);
                     foreach($aEmailaddresses as $sEmailaddress)
                     {
-                        $to[]=$emrow['firstname']." ".$emrow['lastname']." <{$sEmailaddress}>";
+                        $to[]=($emrow['firstname']." ".$emrow['lastname']." <{$sEmailaddress}>");
                     }
 	                $fieldsarray["{EMAIL}"]=$emrow['email'];
 	                $fieldsarray["{FIRSTNAME}"]=$emrow['firstname'];
@@ -993,8 +994,6 @@ class tokens extends Survey_Common_Action
 
 	                $from = $_POST['from_'.$emrow['language']];
 
-					$publicurl=Yii::app()->baseUrl;
-					$modrewrite=Yii::app()->getConfig("modrewrite");
 	                if ($ishtml === false)
 	                {
 	                    $fieldsarray["{OPTOUTURL}"]="$publicurl/optout/local/".trim($emrow['language'])."/$surveyid/{$emrow['token']}";
@@ -1027,7 +1026,7 @@ class tokens extends Survey_Common_Action
 	                }
 			$customheaders = array( '1' => "X-surveyid: ".$surveyid,
 						'2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
-
+			global $maildebug;
 	        $modsubject=Replacefields($_POST['subject_'.$emrow['language']], $fieldsarray);
 	                $modmessage=Replacefields($_POST['message_'.$emrow['language']], $fieldsarray);
 
@@ -1043,10 +1042,10 @@ class tokens extends Survey_Common_Action
 	                {
 	                    // Put date into sent
 	                    $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-	                    $udequery = "UPDATE {{tokens_$surveyid}}\n"
+	                    $udequery = "UPDATE {{tokens_{$surveyid}}}\n"
 	                    ."SET sent='$today' WHERE tid={$emrow['tid']}";
 	                    //
-	                    $uderesult = Yii::app()->db->createCommand($udequery)->query();
+	                    $uderesult = db_execute_assoc($udequery);
 	                    $tokenoutput .= $clang->gT("Invitation sent to:")." {$emrow['firstname']} {$emrow['lastname']} ($to)<br />\n";
 	                    if (Yii::app()->getConfig("emailsmtpdebug")==2)
 	                    {
@@ -1098,31 +1097,31 @@ class tokens extends Survey_Common_Action
 	                }
 	                $tokenoutput .="</form>\n";
 	            }
-				$data['clang']=$this->controller->lang;
+				$data['clang']=$this->getController()->lang;
 				$data['thissurvey']=getSurveyInfo($surveyid);
 				$data['imageurl'] = Yii::app()->getConfig('imageurl');
 				$data['surveyid']=$surveyid;
 				$data['tokenoutput']=$tokenoutput;
-				$this->controller->_getAdminHeader();
-				$this->controller->render("/admin/token/tokenbar",$data);
-				$this->controller->render("/admin/token/emailpost",$data);
-				$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+				$this->getController()->_getAdminHeader();
+				$this->getController()->render("/admin/token/tokenbar",$data);
+				$this->getController()->render("/admin/token/emailpost",$data);
+				$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 	        }
 	        else
 	        {
-				$data['clang']=$this->controller->lang;
+				$data['clang']=$this->getController()->lang;
 				$data['thissurvey']=getSurveyInfo($surveyid);
 				$data['imageurl'] = Yii::app()->getConfig('imageurl');
 				$data['surveyid']=$surveyid;
-				$this->controller->_getAdminHeader();
-				$this->controller->render("/admin/token/tokenbar",$data);
-				$this->controller->_showMessageBox($clang->gT("Warning"),
+				$this->getController()->_getAdminHeader();
+				$this->getController()->render("/admin/token/tokenbar",$data);
+				$this->getController()->_showMessageBox($clang->gT("Warning"),
 						$clang->gT("There were no eligible emails to send. This will be because none satisfied the criteria of:")
 	            ."<br/>&nbsp;<ul><li>".$clang->gT("having a valid email address")."</li>"
 	            ."<li>".$clang->gT("not having been sent an invitation already")."</li>"
 	            ."<li>".$clang->gT("having already completed the survey")."</li>"
 	            ."<li>".$clang->gT("having a token")."</li></ul>");
-				$this->controller->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
+				$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 	        }
 	    }
 	}
@@ -1132,11 +1131,30 @@ class tokens extends Survey_Common_Action
 	 */
 	function remind($surveyid)
 	{
+		if (!empty($_POST['sid']))
+        {
+            $surveyid = (int)$_POST['sid'];
+        }
+		
+		if(isset($tokenids) && $tokenids=="tids") {
+			$_POST("tokenids");
+		    $tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
+		    unset($tokenids);
+		    foreach($tokenidsarray as $tokenitem) {
+		        if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
+		    }
+		}
+		
 		$surveyid = sanitize_int($surveyid);
-		$clang=$this->controller->lang;
+		
+		@$tokenid=$_POST["tid"];
+		@$tokenids=$_POST["tokenids"];
+		@$maxemails=$_POST["maxemails"];
+
+		$clang = $this->getController()->lang;
 		if(!bHasSurveyPermission($surveyid, 'tokens', 'update'))
 		{
-			show_error("no permissions"); // TODO Replace
+			safe_die("no permissions");
 		}
 
 		Tokens_dynamic::sid($surveyid);
@@ -1163,6 +1181,12 @@ class tokens extends Survey_Common_Action
 		$data['surveyid'] = $surveyid;
 		Yii::app()->loadHelper("admin/htmleditor");
 		Yii::app()->loadHelper('replacements');
+		
+		$publicurl = Yii::app()->baseUrl;
+		$modrewrite = Yii::app()->getConfig("modrewrite");
+		$timeadjust = Yii::app()->getConfig("timeadjust");
+		$emailcharset = Yii::app()->getConfig("emailcharset");
+		
 
 		if (getEmailFormat($surveyid) == 'html')
 	    {
@@ -1176,10 +1200,10 @@ class tokens extends Survey_Common_Action
 
 	    if (empty($_POST['ok']))
 	    {
-		    $this->controller->_getAdminHeader();
-			$this->controller->render("/admin/token/tokenbar",$data);
-			$this->controller->render("/admin/token/remind",$data);
-		 	$this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
+		    $this->getController()->_getAdminHeader();
+			$this->getController()->render("/admin/token/tokenbar",$data);
+			$this->getController()->render("/admin/token/remind",$data);
+		 	$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 
 	    }
 	    else
@@ -1266,7 +1290,7 @@ class tokens extends Survey_Common_Action
 	            $tokenoutput .= "<table width='450' align='center' >\n"
 	            ."\t<tr>\n"
 	            ."<td><font size='1'>\n";
-	            while ($emrow = $emresult-read())
+	            while ($emrow = $emresult->read())
 	            {
 	                unset($fieldsarray);
                     $to=array();

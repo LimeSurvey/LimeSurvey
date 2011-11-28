@@ -54,29 +54,32 @@ function &db_query_or_false($sql)
 
 function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
 {
-	$CI = &get_instance();
     //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
+	$query = Yii::app()->db->createCommand($sql.= " ");
     if ($numrows)
     {
-    	$sql .= " ";
         if ($offset)
         {
-            $sql = $CI->db->_limit($sql, $numrows, $offset);
+            $query->limit($numrows, $offset);
         }
         else
         {
-            $sql = $CI->db->_limit($sql, $numrows, 0);
+            $query->limit($numrows, 0);
         }
     }
     if($inputarr)
     {
-        $dataset=$CI->db->query($sql,$inputarr);    //Checked
+        $query->bindValues($inputarr);    //Checked
     }
-    else
+	try
     {
-        $dataset=$CI->db->query($sql);
+		$dataset=$query->query();
     }
-    if (!$dataset && $dieonerror) {safe_die('Error executing query in db_select_limit_assoc:'.$sql);}
+	catch (CDbException $e)
+	{
+		$dataset=false;
+	}
+	if (!$dataset && $dieonerror) {safe_die('Error executing query in db_select_limit_assoc:'.$query->text);}
     return $dataset;
 }
 
@@ -116,6 +119,32 @@ function &db_select_column($sql)
  *
  * @param mixed $id Fieldname to be quoted
  */
+
+function db_quote_id($id)
+{
+    // WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
+    //  $quote = $connect->nameQuote;
+    //  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
+
+    switch (get_instance()->db->platform())
+    {
+        case "mysqli" :
+        case "mysql" :
+            return "`".$id."`";
+            break;
+        case "mssql_n" :
+        case "mssql" :
+		case "mssqlnative" :
+        case "odbc_mssql" :
+            return "[".$id."]";
+            break;
+        case "postgre":
+            return "\"".$id."\"";
+            break;
+        default:
+            return "`".$id."`";
+    }
+}
 
 function db_random()
 {

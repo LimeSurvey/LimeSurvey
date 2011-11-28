@@ -4291,32 +4291,6 @@ function html_escape($str) {
     return str_replace(array("\x0A","\x0D"),array("&#10;","&#13;"),
     htmlspecialchars( $str, ENT_QUOTES ));
 }
-/*function db_quote_id($id)
-{
-	// WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
-	//  $quote = $connect->nameQuote;
-	//  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
-	$id = addslashes($id);
-
-	switch (Yii::app()->db->getDriverName())
-	{
-		case "mysqli" :
-		case "mysql" :
-			return "`".$id."`";
-			break;
-		case "mssql_n" :
-		case "mssql" :
-		case "mssqlnative" :
-		case "odbc_mssql" :
-			return "[".$id."]";
-			break;
-		case "postgre":
-			return "\"".$id."\"";
-			break;
-		default:
-			return "`".$id."`";
-	}
-}*/
 
 /**
  * Escapes a text value for db
@@ -8530,29 +8504,4 @@ function checkgroupfordisplay($gid,$anonymized,$surveyid)
     }
 }
 
-function db_quote_id($id)
-{
-	// WE DONT HAVE nor USE other thing that alfanumeric characters in the field names
-	//  $quote = $connect->nameQuote;
-	//  return $quote.str_replace($quote,$quote.$quote,$id).$quote;
-
-	switch (Yii::app()->db->createCommand($id))
-	{
-		case "mysqli" :
-		case "mysql" :
-			return "`".$id."`";
-			break;
-		case "mssql_n" :
-		case "mssql" :
-		case "mssqlnative" :
-		case "odbc_mssql" :
-			return "[".$id."]";
-			break;
-		case "postgre":
-			return "\"".$id."\"";
-			break;
-		default:
-			return "`".$id."`";
-	}
-}
 // Closing PHP tag intentionally omitted - yes, it is okay

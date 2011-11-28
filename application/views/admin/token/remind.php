@@ -1,4 +1,4 @@
-	    <?php echo PrepareEditorScript(); ?>
+	    <?php echo PrepareEditorScript(true, $this); ?>
 	    <div class='header ui-widget-header'>
 	    <?php echo $clang->gT("Send email reminder");?></div><br />
 
@@ -7,7 +7,7 @@
 	            <div class='messagebox ui-corner-all'><div class='warningheader'><?php echo $clang->gT('Warning!');?></div><?php echo $clang->gT("This survey is not yet activated and so your participants won't be able to fill out the survey.");?></div>
 	        <?php } ?>
 
-	        <form method='post' class='form30' id='sendreminder' action='<?php echo site_url("admin/tokens/remind/$surveyid");?>'>
+	        <form method='post' class='form30' id='sendreminder' action='<?php echo $this->createURL("admin/tokens/sa/remind/surveyid/$surveyid");?>'>
 	        <?php $surveylangs = GetAdditionalLanguagesFromSurveyID($surveyid);
 	        $baselang = GetBaseLanguageFromSurveyID($surveyid);
 	        array_unshift($surveylangs,$baselang); ?>
@@ -94,7 +94,7 @@
 	        </ul><p>
 	        <input type='submit' value='<?php echo $clang->gT("Send Reminders");?>' />
 	        <input type='hidden' name='ok' value='absolutely' />
-	        <input type='hidden' name='sid' value='<?php echo $_GET['sid'];?>' />
+	        <input type='hidden' name='sid' value='<?php echo $surveyid;?>' />
 	        <input type='hidden' name='subaction' value='remind' />
 	        <?php if (isset($tokenid)) { ?> <input type='hidden' name='tid' value='<?php echo $tokenid;?>' /><?php } ?>
 	        <?php if (isset($tokenids)) { ?> <input type='hidden' name='tids' value='|<?php echo implode("|", $tokenids);?>' /> <?php } ?>
