@@ -952,3 +952,186 @@ function textLimit(field, maxlen) {
 		document.getElementById(field).value = document.getElementById(field).value.substring(0, maxlen);
 	}
 }
+
+/* DRAG N DROP RANKING QUESTIONS */
+// @param setItemssameSize, Boolean, whether to have items the same size or not
+function readyRankingQuestion(qID, maxAnswer, conditionFunction, setItemsSameSize) { 
+	// Set up the connected sortable (the drag and drop using jquery ui
+	var sortable1 = '#sortable1'+qID+'';
+	var sortable2 = '#sortable2'+qID+'';
+	var defaultPlaceholderHeight = 0;
+			
+	$(sortable1+', '+ sortable2).sortable({ 			
+		connectWith: '.connectedSortable'+qID+'',
+		placeholder: 'ui-sortable-placeholder',
+		helper: function( event, element ) { 
+			return element.clone().addClass("ui-sortable-helper");
+		} ,
+		items: '.state-sorted',
+		revert: 50,
+		stop: function(event, ui) {  			
+			refreshAndUpdateRankingQuestion(qID, conditionFunction);
+			refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
+		} ,
+		create: function(event, ui) { 
+			refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
+			if (setItemsSameSize) {defaultPlaceholderHeight = setSameHeightForRankingChoices(qID);}
+		} ,
+		start: function(event, ui) { 
+			//make sure the background is displayed correctly
+			ui.placeholder.height(ui.item.height());
+			refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
+		} ,	
+		change: function(event, ui) {
+			refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
+		} ,
+		forcePlaceholderSize: true,
+		scrollSensitivity: 40,
+		tolerance: 'pointer'
+	} ).disableSelection();
+	
+	
+	// enforce maximum answers intuitively
+	$(sortable1 + ' li').mousedown(function(){  
+        // Check number of elements already present in every possible destination (namely sortable2)
+	    $(sortable2).not($(this).parent()).each(function(){  // somtimes sortable1 li is already in sortable2 due to jQuery lack of updating DOM
+	    	$destination = $(this);
+	    	$destinationUI = $(this).prev('.DDRbackground');
+			// disable possible destinations if they're already maxed out
+	        if($destination.find('.ui-state-default').length >= maxAnswer){  
+	            $destination.sortable('disable');
+	            $destinationUI.addClass('dragDropRankMaxedOut');
+	        }  else { 
+	            $destination.sortable('enable');
+	            $destinationUI.removeClass('dragDropRankMaxedOut');
+	        } 
+	    } );
+	} );
+	
+	// Allow users to double click to move to selections from list to list
+	$(sortable1 +' li').live('dblclick', function() { 
+		if($(sortable2+' .ui-state-default').length == maxAnswer) { 
+			$(sortable2).prev('.DDRbackground').addClass('dragDropRankMaxedOut');
+			return false;
+		} 
+		else { 
+			$(this).appendTo(sortable2);
+			refreshAndUpdateRankingQuestion(qID, conditionFunction);
+			refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
+		} 
+	} );
+	$(sortable2 +' li').live('dblclick', function() { 
+		$(this).appendTo(sortable1);
+		refreshAndUpdateRankingQuestion(qID, conditionFunction);
+		refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight);
+	} );
+} 
+
+/* eliminate bias and make all options the same height */
+function setSameHeightForRankingChoices(qID) {
+	var biggestHeight = 0;
+	var sortable1 = '#sortable1'+qID+'';
+	var sortable2 = '#sortable2'+qID+'';
+	
+	$(sortable1 + '  li,' + sortable2 + '  li' ).each(function(index) { 
+		// could be more efficient, but JS is pretty fast now, todo
+		var sNumberPrefix = "<span class='DDRnumberprefix'>"+0+"</span>";
+		$(this).prepend(sNumberPrefix);
+		if ($(this).height()>biggestHeight) biggestHeight = $(this).height();
+		$(this).children('.DDRnumberprefix').remove();
+	});
+	$(sortable1 + '  li,' + sortable2 + '  li' ).height(biggestHeight);
+	return biggestHeight;
+}
+
+	
+/* update background of drag/drop to match */
+function refreshBackgroundOfRankingQuestion(qID, ui, defaultPlaceholderHeight) {  
+	var sortable1 = '#sortable1'+qID+'';
+	var sortable2 = '#sortable2'+qID+'';
+	// go through each background li and give each the same text as the item above it
+	$('#question' + qID + ' .DDRbackground li').each(function(index) { 
+		
+		//(object = any visible placeholder or original that's not a helper )
+		
+		var sNot = ".ui-sortable-helper";
+		var $object = $(sortable2+' li:visible').not(sNot).eq(index);
+		
+		if ($object.length!=0) {  // if there is an object
+			//$(this).text($object.text());
+			$(this).height($object.height());
+		}  else { 
+			//$(this).text(index+1+'.');
+			//$(this).text('');
+			if (defaultPlaceholderHeight==0) {	
+				//no default phheight
+				$(this).height('auto');
+			} else {
+				$(this).height(defaultPlaceholderHeight);
+			}
+		} 
+	} );
+	
+	
+	$(sortable2+', '+sortable1).children('li:visible').children('.DDRnumberprefix').remove();	
+		
+	$(sortable2+', '+sortable1).children('li:visible').not(sortable1+' li').not('.ui-sortable-helper').each(function(index) {
+		// the ones that should have an index
+		var sNumberPrefix = "<span class='DDRnumberprefix'>"+(index+1)+"</span>";
+		if ($(this).hasClass('ui-sortable-placeholder')) {
+			// placeholder shouldn't have prefix, and helper should
+			// $(this).siblings('.ui-sortable-helper').prepend(sNumberPrefix);
+			// helper = $(ui.helper)
+			$(ui.helper).prepend(sNumberPrefix);
+			if (defaultPlaceholderHeight==0) {	
+				$(ui.helper).height('auto');
+				$(this).height($(ui.helper).height());
+			}
+		} else {
+			$(this).prepend(sNumberPrefix);
+			if (defaultPlaceholderHeight==0) {	
+				$(this).height('auto');
+			}
+		}
+		
+	});
+	
+} 
+
+
+/* resets displays, refreshes sortables, and updates input data */
+function refreshAndUpdateRankingQuestion(qID, conditionFunction) { 
+	var sortable1 = '#sortable1'+qID+'';
+	var sortable2 = '#sortable2'+qID+'';
+	$(sortable1).sortable('refresh').sortable('enable');
+	$(sortable2).sortable('refresh').sortable('enable').prev('.DDRbackground').removeClass('dragDropRankMaxedOut');
+	updateDragDropRank(qID, conditionFunction);
+} 
+
+function updateDragDropRank(qID, conditionFunction)
+{ 
+	var sortable1 = '#sortable1'+qID+'';
+	var sortable2 = '#sortable2'+qID+'';
+	var rankedIDs = [];
+	$(sortable2+' li').each(function(index) { 
+		// Get id of ranked item
+		var liID = $(this).attr("id");
+		liIDArray = liID.split('_');	
+		// Save to an array (slot number => chosen value)
+		rankedIDs[rankedIDs.length] = liIDArray[1];
+	} );
+
+	$('#question'+qID+' .hiddenRankingInputs').children('input[id^="fvalue_"]').each(function(index) { 
+		// cycle through each hidden input field, each of which correspond with a possible ranking
+		if (rankedIDs.length > index) {  // if there is a ranking for this field
+			$(this).val(rankedIDs[index]);
+		}  else { 
+			$(this).val('');
+		} 
+		
+  	} );
+  	
+  	// check conditions, show other questions
+	conditionFunction();
+		
+} 

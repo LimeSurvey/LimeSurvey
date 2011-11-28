@@ -651,12 +651,12 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
             $values=do_ranking($ia);
             if (count($values[1]) > 1 && $aQuestionAttributes['hide_tip']==0)
             {
-                $question_text['help'] = $clang->gT("Click on an item in the list on the left, starting with your highest ranking item, moving through to your lowest ranking item.");
+                $question_text['help'] = $clang->gT("Drag items in the list on the left to the list on the right in the order that you would like to rank them.");
                 if (trim($aQuestionAttributes['min_answers'])!='')
                 {
                     $qtitle .= "<br />\n<span class=\"questionhelp\">"
-                    . sprintf($clang->ngT("Check at least %d item","Check at least %d items",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers'])."</span>";
-                    $question_text['help'] .=' '.sprintf($clang->ngT("Check at least %d item","Check at least %d items",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers']);
+                    . sprintf($clang->ngT("Rank at least %d item.","Rank at least %d items.",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers'])."</span>";
+                    $question_text['help'] .=' '.sprintf($clang->ngT("Rank at least %d item.","Rank at least %d items.",$aQuestionAttributes['min_answers']),$aQuestionAttributes['min_answers']);
                 }
             }
             break;
@@ -2914,12 +2914,260 @@ function do_listwithcomment($ia)
 }
 
 
+/*
+* do_ranking
+* A new version of ranking questions that implements drag and drop
+* based on functionality/code in the workaround at link:
+* [http://docs.limesurvey.org/Workarounds%3A+Manipulating+a+survey+at+runtime+using+Javascript&structure=English+Instructions+for+LimeSurvey#Drag_and_Drop_Rankings]
+*/
 
+function do_ranking($ia)
+{
+	// note to self: this function needs to define: 
+	// inputnames, answer, among others
+	global $thissurvey, $showpopups;
+
+	// the future string that goes into the answer segment of templates
+	$answer="";
+
+	/* grab our data */
+    $CI =& get_instance();
+    $dbprefix = $CI->db->dbprefix;
+    $clang = $CI->limesurvey_lang;
+    $imageurl = $CI->config->item("imageurl");
+
+    if ($ia[8] == 'Y')
+    {
+        $checkconditionFunction = "checkconditions";
+    }
+    else
+    {
+        $checkconditionFunction = "noop_checkconditions";
+    }
+
+    $aQuestionAttributes=getQuestionAttributeValues($ia[0],$ia[4]);
+    if ($aQuestionAttributes['random_order']==1) {
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY ".db_random();
+    } else {
+        $ansquery = "SELECT * FROM {$dbprefix}answers WHERE qid=$ia[0] AND language='".$_SESSION['s_lang']."' and scale_id=0 ORDER BY sortorder, answer";
+    }
+    $ansresult = db_execute_assoc($ansquery);   //Checked //information about survey
+    $anscount= $ansresult->num_rows(); // number of answer options?
+    // determine maximum number of answers to set
+    if (trim($aQuestionAttributes["max_answers"])!='') 
+    {
+        $max_answers=trim($aQuestionAttributes["max_answers"]);
+    } else {
+        $max_answers=$anscount;
+    }
+    
+    /* now calculate min_answers */
+    $min_answers = 0;
+    if (trim($aQuestionAttributes["min_answers"])!='') //if there is a min anwer
+    {
+    	$min_answers = trim($aQuestionAttributes["min_answers"]);
+    }
+    $sMinAnswerErrorMessage = 
+    	sprintf($clang->ngT("Please rank at least %d item for question \"%s\"","Please rank at least %d items for question \"%s\".",$min_answers),$min_answers, trim(str_replace(array("\n", "\r"), "", $ia[3])));
+    
+    
+    /* now, figure out what answers to display */
+    unset($answers); // array of all answers (ans[0]=id, ans[1]=name)
+    unset($chosen); // array of chosen answers
+    $answers=array();
+    $chosen = array();
+    
+    // create list of answers
+    foreach ($ansresult->result_array() as $ansrow)
+    {
+        $answers[] = array($ansrow['code'], $ansrow['answer']);
+    }
+    
+    /* final variable configuration */
+    $sChoicesLabel = $clang->gT("Your Choices"); //TODO: allow custom labels? (like the workaround)
+    $sRankingsLabel = $clang->gT("Your Ranking");
+    $sQuestionID = $ia[0];
+    $sMaxAnswers = $max_answers; // maximum number of answers, or the number of spaces in the rankings column
+    $sMinAnswers = $min_answers;
+    
+    /* NOW, we are finally set to display what we need to display */
+    // note, displayed stuff gets added to "$answer"
+    
+
+    // mandatory universal internal stylesheet (needed in all cases, let's not leave it up to template makers)
+	$sAnswerRankingCSS = <<<N8G
+	
+	<style type="text/css">
+	
+		.dragDropTable .dragDropRanks {
+			position: relative;
+		}
+		
+		.dragDropTable .dragDropRankList {
+			position: relative;
+		}
+		
+		.dragDropTable .dragDropRankList.DDRbackground {
+			/* create a background for the ul (establish a size) to better communicate the maximum number of rankings */
+		}
+		
+		.dragDropTable .dragDropRankList.DDRforeground {
+			/* let the background and styling show through, no need to style twice */
+			background: none;
+			position: absolute;
+			top: 0; left: 0;
+			border-color: transparent; /* if there is a border it won't show up, but it will maintain formatting - turns black in IE6 */
+			padding-bottom: 50px; /* this won't show up, but it naturalizes dragging behavior - you'll see */
+		}
+		
+		.dragDropTable .dragDropRankList li.ui-sortable-background {
+			border-color: transparent; /* if there is a border it won't show up, but it will maintain formatting - turns black in IE6 */
+		}
+		
+	</style>
+N8G;
+	
+    
+    $inputnames = array();
+    
+    /* html rankings for insertion later on - cycle through what's already set, and create html and the input fields at the same time*/
+    /* also create an array $chosen of items that have been "chosen" */
+    $sQuestionRankings = "";
+    $sQuestionRankingsPlaceholders = "";
+    /* html hidden input fields to store data to be submitted */
+    $sDataSubmission = "";
+    // cycle through each ranking spot
+    for ($i=1; $i<=$sMaxAnswers; $i++)
+    {
+    	$myfname = $ia[1].$i; // a hidden input field name
+    	$myfvalue = ""; // the selected choice of the field
+    	if (isset($_SESSION[$myfname]) && $_SESSION[$myfname]) // if there is something set here and chosen already
+        {
+            foreach ($answers as $ans)
+            {
+                if ($ans[0] == $_SESSION[$myfname]) // if ranking spot i has been set, and it is the answer we cycled through
+                {
+                    $chosen[]=array($ans[0], $ans[1]); //add selected values to array of chosen answers
+                    //choice has been chosen, so go in the ranked column
+    				$sQuestionRankings .= <<<N8C
+
+    						<li class="ui-state-default state-sorted" id="choice_{$ans[0]}">{$ans[1]}</li>
+N8C;
+    	            $myfvalue = $ans[0]; // and tell the field its value is set
+                }
+            }
+        }
+    	
+    	// build an input field for the ranking spot
+        $sDataSubmission .= <<<N8D
+        
+                            <input type="hidden" name="$myfname" id="fvalue_$sQuestionID$i" value="$myfvalue" />
+N8D;
+        // create a placeholder for the background (to give the ul a size) ($i.)
+        $sQuestionRankingsPlaceholders .= <<<N8H
+        
+                            <li class="ui-sortable-placeholder ui-sortable-background ui-state-default"></li> 
+N8H;
+        $inputnames[]=$myfname;
+    }
+    
+    /* html choices for insertion later on*/
+    $sQuestionChoices = "";
+    foreach ($answers as $ans)
+    {
+    	if (!in_array($ans, $chosen)) { // it has not been chosen/selected already, go into choice column
+    		$sQuestionChoices .= <<<N8E
+
+    						<li class="ui-state-default state-sorted" id="choice_{$ans[0]}">{$ans[1]}</li>
+N8E;
+    	}
+    }
+    
+        /* javascript also see scripts/survey_runtime.js*/
+    $iNumChosenAnswers = count($chosen);
+    $sAnswerRankingJs = <<<N8B
+    
+    <script type="text/javascript">
+      
+    \$(document).ready(function() { 
+    	readyRankingQuestion($sQuestionID, $max_answers, $checkconditionFunction, true);
+	} );
+	
+	
+	
+	oldonsubmit_$sQuestionID = document.limesurvey.onsubmit; //get any previous error messages since we still want to keep them
+	
+	function ensureMinAnsw_$sQuestionID() {  // make sure there's enoguh answers
+		var count = $('#sortable2$sQuestionID li').length;
+		if (count<$sMinAnswers && document.getElementById("display$sQuestionID").value == 'on') { 
+			//show error message
+			document.getElementById("rankingMinAnsWarning$sQuestionID").style.display = '';
+			return false;
+		}  else { 
+			if (oldonsubmit_$sQuestionID) { 
+				return oldonsubmit_$sQuestionID();
+			} 
+			return true;
+		} 
+	} 
+    
+    document.limesurvey.onsubmit = ensureMinAnsw_$sQuestionID; //check errors!
+    
+    </script>
+    
+N8B;
+
+       
+    /* html structure */
+    $sAnswerRankingHtml = <<<N8F
+    <table class="dragDropTable"> 		
+	    <tbody> 			
+		    <tr> 				
+			    <td>
+				    <span class="dragDropHeader choicesLabel">$sChoicesLabel</span><br/>
+				    <div class="ui-state-highlight dragDropChoices"> 						
+					    <ul id="sortable1$sQuestionID" class="connectedSortable$sQuestionID dragDropChoiceList ui-sortable">
+$sQuestionChoices
+						</ul>					
+					</div>
+			    </td>
+			    <td>
+				    <span class="dragDropHeader rankingLabel">$sRankingsLabel</span><br/>
+				    <div class="ui-state-highlight dragDropRanks">
+				        <ul class="dragDropRankList DDRbackground">
+$sQuestionRankingsPlaceholders
+						</ul>
+					    <ul id="sortable2$sQuestionID" class="connectedSortable$sQuestionID dragDropRankList DDRforeground">
+$sQuestionRankings
+					    </ul>
+					    <div class="hiddenRankingInputs">
+$sDataSubmission
+					    </div>
+					</div>
+			    </td>
+			</tr>
+        </tbody>
+    </table>
+    <div id="rankingMinAnsWarning$sQuestionID" style="display:none; color: red" class="errormandatory">
+$sMinAnswerErrorMessage
+	</div>
+    
+N8F;
+    
+    /* Styling in CSS:
+     see provided templates
+    
+    */
+    
+    /* and the result… */
+    $answer .= $sAnswerRankingCSS . $sAnswerRankingJs . $sAnswerRankingHtml;
+    return array($answer, $inputnames);
+}
 
 // ---------------------------------------------------------------
 // TMSW Conditions->Relevance:  don't need $checkconditionFunction
 
-function do_ranking($ia)
+function do_ranking_old($ia)
 {
     global $thissurvey, $showpopups;
 
@@ -2957,7 +3205,7 @@ function do_ranking($ia)
     . "\t<!--\n"
     . "function rankthis_{$ia[0]}(\$code, \$value)\n"
     . "\t{\n"
-    . "\t\$index=document.getElementById('CHOICES_{$ia[0]}').selectedIndex;\n"
+    . "\t\$index=document.getElementById('CHOICES_{$ia[0]}').selectedIndex;alert(\"HELLO BUDDY\");\n"
     . "\tfor (i=1; i<=$max_answers; i++)\n"
     . "{\n"
     . "\$b=i;\n"
@@ -3022,13 +3270,17 @@ function do_ranking($ia)
     //unset($inputnames);
     unset($chosen);
     $ranklist="";
+    $chosen = array();
+    
     foreach ($ansresult->result_array() as $ansrow)
     {
         $answers[] = array($ansrow['code'], $ansrow['answer']);
     }
+
     $existing=0;
     for ($i=1; $i<=$anscount; $i++)
     {
+    	var_dump($ia[1]); echo "<br/><br/>";
         $myfname=$ia[1].$i;
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
         {
@@ -3038,14 +3290,16 @@ function do_ranking($ia)
     for ($i=1; $i<=$max_answers; $i++)
     {
         $myfname = $ia[1].$i;
+        var_dump($myfname);
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname])
         {
+       
             foreach ($answers as $ans)
             {
                 if ($ans[0] == $_SESSION[$myfname])
                 {
-                    $thiscode=$ans[0];
-                    $thistext=$ans[1];
+                    $thiscode=$ans[0]; echo "THISCODE:" . $thiscode;
+                    $thistext=$ans[1]; echo "THIStxt:" . $thistext;
                 }
             }
         }
@@ -3059,12 +3313,12 @@ function do_ranking($ia)
         }
         $ranklist .= " onfocus=\"this.blur()\" />\n";
         $ranklist .= "<input type=\"hidden\" name=\"$myfname\" id=\"fvalue_{$ia[0]}$i\" value='";
-        $chosen[]=""; //create array
         if (isset($_SESSION[$myfname]) && $_SESSION[$myfname] && isset($thiscode) && isset($thistext))
         {
             $ranklist .= $thiscode;
             $chosen[]=array($thiscode, $thistext);
         }
+
         $ranklist .= "' />\n";
         $ranklist .= "<img src=\"$imageurl/cut.gif\" alt=\"".$clang->gT("Remove this item")."\" title=\"".$clang->gT("Remove this item")."\" ";
         if ($i != $existing)
@@ -3075,6 +3329,7 @@ function do_ranking($ia)
         $inputnames[]=$myfname;
         $ranklist .= "</td></tr>\n";
     }
+    var_dump($chosen);
 
     $maxselectlength=0;
     $choicelist = "<select size=\"$anscount\" name=\"CHOICES_{$ia[0]}\" ";
@@ -3084,6 +3339,7 @@ function do_ranking($ia)
 
     foreach ($answers as $ans)
     {
+
         if (!in_array($ans, $chosen))
         {
             $choicelist .= "\t\t\t\t\t\t\t<option value='{$ans[0]}'>{$ans[1]}</option>\n";
@@ -3119,7 +3375,9 @@ function do_ranking($ia)
     . "</tr>\n"
     . "\t</table>\n";
 
-    if (trim($aQuestionAttributes["min_answers"])!='')
+    var_dump($aQuestionAttributes);
+
+    if (trim($aQuestionAttributes["min_answers"])!='') //if there is a min anwer
     {
         $minansw=trim($aQuestionAttributes["min_answers"]);
         if(!isset($showpopups) || $showpopups == 0)
