@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: LimeSurvey Slovak Translation v0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-10-07 07:00+0200\n"
-"PO-Revision-Date: 2011-11-18 13:15+0100\n"
+"PO-Revision-Date: 2011-11-28 18:29+0100\n"
 "Last-Translator: Carsten Schmitz <info@limesurvey.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1836,7 +1836,7 @@ msgstr ""
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:661
 #: /var/lib/limesurvey-svn/subversion1x/qanda.php:662
 msgid "Check any that apply"
-msgstr "Môžete vybrať viacero možností. Vyberte všetky, ktoré odpovedajú skutočnosti."
+msgstr "Môžete vybrať viacero možností. Vyberte všetky, ktoré zodpovedajú skutočnosti."
 
 #: /var/lib/limesurvey-svn/subversion1x/admin/printablesurvey.php:1697
 msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
