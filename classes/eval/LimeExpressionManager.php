@@ -2565,23 +2565,26 @@ class LimeExpressionManager {
                     }
                 }
                 // Update these values in the database
-                if (count($updatedValues) > 0)
+                if (count($updatedValues) > 0 && isset($_SESSION['srid']))
                 {
-                    $query = 'UPDATE survey_' . $LEM->sid . " SET ";
+                    $query = 'UPDATE '.db_table_name('survey_' . $LEM->sid) . " SET ";
                     $setter = array();
                     foreach ($updatedValues as $key=>$value)
                     {
                         if (is_null($value))
                         {
-                            $setter[] = '`' . $key . "`=NULL";
+                            $setter[] = db_quote_id($key) . "=NULL";
                         }
                         else
                         {
-                            $setter[] = '`' . $key . "`='" . addslashes($value) . "'";     // TMSW - what is preferred way to escape entries for DB?
+                            $setter[] = db_quote_id($key) . "=" . db_quoteall($value);
                         }
                     }
                     $query .= implode(', ', $setter);
-                    $query .= " WHERE ID=?";
+                    $query .= " WHERE ID=".$_SESSION['srid'];
+
+//                    echo $query;
+                    db_execute_assoc($query);
 
                     if ($debug)
                     {
@@ -2605,24 +2608,27 @@ class LimeExpressionManager {
                 }
             }
             // Update these values in the database
-            if (count($updatedValues) > 0)
+            if (count($updatedValues) > 0 && isset($_SESSION['srid']))
             {
-                $query = 'UPDATE survey_' . $LEM->sid . " SET ";
+                $query = 'UPDATE '.db_table_name('survey_' . $LEM->sid) . " SET ";
                 $setter = array();
                 foreach ($updatedValues as $key=>$value)
                 {
                     if (is_null($value))
                     {
-                        $setter[] = '`' . $key ."`=NULL";
+                        $setter[] = db_quote_id($key) . "=NULL";
                     }
                     else
                     {
-                        $setter[] = '`' . $key . "`='" . addslashes($value) . "'";     // TMSW - what is preferred way to escape entries for DB?
+                        $setter[] = db_quote_id($key) . "=" . db_quoteall($value);
                     }
                 }
                 $query .= implode(', ', $setter);
-                $query .= " WHERE ID=?";
+                $query .= " WHERE ID=".$_SESSION['srid'];
 
+//                echo $query;
+                db_execute_assoc($query);
+                
                 if ($debug)
                 {
                     $debug_message .= '** Page is irrelevant, so NULL all questions in this group:<br/>' . $query . "<br/>\n";
