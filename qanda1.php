@@ -803,7 +803,12 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     //If this question is mandatory but wasn't answered in the last page
     //add a message HIGHLIGHTING the question
 // TMSW Mandatory -> EM
-    $mandatory_msg = mandatory_message($ia);;
+    if (($_SESSION['step'] != $_SESSION['maxstep']) || ($_SESSION['step'] == $_SESSION['prevstep'])) {
+        $mandatory_msg = mandatory_message($ia);
+    }
+    else {
+        $mandatory_msg = '';
+    }
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 

@@ -2492,6 +2492,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                             $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                             $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                             $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                            $fieldmap[$fieldname]['other']=$arow['other'];
                                 if ($arow['same_default'])
                                 {
                                 $fieldmap[$fieldname]['defaultvalue']=$connect->GetOne("SELECT defaultvalue FROM ".db_table_name('defaultvalues')." WHERE qid={$arow['qid']} AND scale_id=0 AND language='".GetBaseLanguageFromSurveyID($surveyid)."' and specialtype='other'");
@@ -2764,6 +2765,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                     $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                     $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                     $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                    $fieldmap[$fieldname]['other']=$arow['other'];
                 }
                 if ($arow['type']=="P")
                 {
@@ -2781,6 +2783,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
                         $fieldmap[$fieldname]['usedinconditions']=$usedinconditions;
                         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
                         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
+                        $fieldmap[$fieldname]['other']=$arow['other'];
                     }
                 }
             }
@@ -2789,6 +2792,7 @@ function createFieldMap($surveyid, $style='full', $force_refresh=false, $questio
         $fieldmap[$fieldname]['questionSeq']=$questionSeq;
         $fieldmap[$fieldname]['groupSeq']=$arow['group_order'];
         $fieldmap[$fieldname]['preg']=$arow['preg'];
+        $fieldmap[$fieldname]['other']=$arow['other'];
     }
     if (isset($fieldmap)) {
         $globalfieldmap[$surveyid][$style][$clang->langcode] = $fieldmap;

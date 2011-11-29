@@ -38,7 +38,7 @@ if ($previewgrp)
 else
 {
     //RUN THIS IF THIS IS THE FIRST TIME , OR THE FIRST PAGE ########################################
-    if (!isset($_SESSION['step']) || !$_SESSION['step'])
+    if (!isset($_SESSION['step']))  //  || !$_SESSION['step']) - don't do this for step0, else rebuild the session
     {
         $totalquestions = buildsurveysession();
         LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', ($thissurvey['anonymized']!="N"), true);
@@ -379,7 +379,7 @@ if ($previewgrp)
     if ($gseq == -1) {
         echo 'Invalid Group' . $_REQUEST['gid'];
     }
-    $moveResult = LimeExpressionManager::JumpTo($gseq+1,false,($LEMdebugLevel>=2));
+    $moveResult = LimeExpressionManager::JumpTo($gseq+1,false,($LEMdebugLevel>=2),true);
     if (isset($moveResult)) {
         $_SESSION['step']= $moveResult['gseq']+1;  // step is index base 1?
         if ($LEMdebugLevel>=2) {
@@ -501,19 +501,19 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
     // TMSW Mandatory -> EM
         // TMSW - get question-level error messages - don't call **_popup() directly
 //        if (isset($notanswered) && $notanswered && $_SESSION['maxstep'] != $_SESSION['step'])
-        if (isset($notanswered) && $notanswered && $_SESSION['prevstep'] == $_SESSION['step'])  // TODO - does not catch cases where mandatories are missing on first page
+        if (isset($notanswered) && $notanswered && $_SESSION['prevstep'] == $_SESSION['step'])  
         {
             list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
         }
 
         //Display the "validation" popup if necessary
-        if (isset($notvalidated) && $notvalidated && $_SESSION['maxstep'] != $_SESSION['step'])
+        if (isset($notvalidated) && $notvalidated && $_SESSION['prevstep'] == $_SESSION['step'])
         {
             list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
         }
 
         // Display the "file validation" popup if necessary
-        if (isset($filenotvalidated))
+        if (isset($filenotvalidated) && $_SESSION['prevstep'] == $_SESSION['step'])
         {
             list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
         }
@@ -1315,19 +1315,19 @@ echo "\n";
 
 //Display the "mandatory" message on page if necessary
     // TMSW Mandatory -> EM
-if (isset($showpopups) && $showpopups == 1 && isset($notanswered) && is_array($notanswered) && count($notanswered) > 0)
+if (isset($showpopups) && $showpopups == 1 && isset($notanswered) && is_array($notanswered) && count($notanswered) > 0 && $_SESSION['prevstep'] == $_SESSION['step'])
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
 }
 
 //Display the "validation" message on page if necessary
-if (isset($showpopups) && $showpopups == 1 && isset($notvalidated) && is_array($notvalidated) && count($notvalidated) > 0)
+if (isset($showpopups) && $showpopups == 1 && isset($notvalidated) && is_array($notvalidated) && count($notvalidated) > 0 && $_SESSION['prevstep'] == $_SESSION['step'])
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
 }
 
 //Display the "file validation" message on page if necessary
-if (isset($showpopups) && $showpopups == 1 && isset($filenotvalidated) && $filenotvalidated == true)
+if (isset($showpopups) && $showpopups == 1 && isset($filenotvalidated) && $filenotvalidated == true && $_SESSION['prevstep'] == $_SESSION['step'])
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 }

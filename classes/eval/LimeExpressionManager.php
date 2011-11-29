@@ -1060,6 +1060,7 @@ class LimeExpressionManager {
                 $preg = NULL;
             }
             $help = (isset($fielddata['help'])) ? $fielddata['help']: '';
+            $other = (isset($fielddata['other'])) ? $fielddata['other'] : '';
 
             if (isset($this->questionId2groupSeq[$questionNum])) {
                 $groupSeq = $this->questionId2groupSeq[$questionNum];
@@ -1116,6 +1117,16 @@ class LimeExpressionManager {
                 case 'F': //ARRAY (Flexible) - Row Format
                 case 'R': //RANKING STYLE
                     $ansArray = $qans[$questionNum];
+                    if ($other == 'Y' && ($type == 'L' || $type == '!')) {
+                        $_qattr = isset($qattr[$questionNum]) ? $qattr[$questionNum] : array();
+                        if (isset($_qattr['other_replace_text']) && trim($_qattr['other_replace_text']) != '') {
+                            $othertext = trim($_qattr['other_replace_text']);
+                        }
+                        else {
+                            $othertext = $this->gT('Other:');
+                        }
+                        $ansArray['0~-oth-'] = $othertext;
+                    }
                     break;
                 case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                 case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
@@ -1301,6 +1312,9 @@ class LimeExpressionManager {
                     foreach (array_keys($ansArray) as $key)
                     {
                         $parts = explode('~',$key);
+                        if ($parts[1] == '-oth-') {
+                            $parts[1] = 'other';
+                        }
                         $q2subqInfo[$questionNum]['subqs'][] = array(
                             'rowdivid' => $surveyid . 'X' . $groupNum . 'X' . $questionNum . $parts[1],
                             'varName' => $varName,
@@ -1375,6 +1389,7 @@ class LimeExpressionManager {
                 'help'=>$help,
                 'qtext'=>$question,
                 'code'=>$varName,
+                'other'=>$other,
                 );
 
             $this->knownVars[$varName] = $varInfo_Code;
@@ -1971,8 +1986,8 @@ class LimeExpressionManager {
                             'at_start'=>true,
                             'finished'=>false,
                             'message'=>$message,
-                            'unansweredSQs'=>$result['unansweredSQs'],
-                            'invalidSQs'=>$result['invalidSQs'],
+                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                         );
                     }
 
@@ -2227,7 +2242,15 @@ class LimeExpressionManager {
         }
     }
 
-    static function JumpTo($seq,$force=false,$debug=false) {
+    /**
+     * Jump to a specific question or group sequence.
+     * @param <type> $seq
+     * @param <type> $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
+     * @param <type> $debug - if true, generate detailed debug information
+     * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
+     * @return <type>
+     */
+    static function JumpTo($seq,$force=false,$debug=false,$preview=false) {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
@@ -2282,7 +2305,7 @@ class LimeExpressionManager {
 
                     $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,  $debug);
                     $message .= $result['message'];
-                    if (!$result['relevant'] || $result['hidden'])
+                    if (!$preview && (!$result['relevant'] || $result['hidden']))
                     {
                         // then skip this group - assume already saved?
                         continue;
@@ -2861,9 +2884,7 @@ class LimeExpressionManager {
                                 }
                                 break;
                             case 'L': //LIST drop-down/radio-button list
-                                // TODO - these filters are supposed to ensure that the value doesn't equal a filtered value
-                                // TODO - isn't catching 'other' filter
-                                if ($sgqa == $sq['sgqa'])
+                                if ($sgqa == $sq['sgqa'] || $sgqa == ($sq['sgqa'] . 'other'))
                                 {
                                     $foundSQrelevance=true;
                                     if (isset($LEM->RelevanceResultCache[$sq['eqn']]))
@@ -2941,6 +2962,7 @@ class LimeExpressionManager {
         $mandatoryTip = '';
         if ($qrel && !$qhidden && ($qInfo['mandatory'] == 'Y'))
         {
+            $mandatoryTip = "<strong><br /><span class='errormandatory'>".$LEM->gT('This question is mandatory').'.  ';
             switch ($qInfo['type'])
             {
                 case 'M':
@@ -2951,20 +2973,62 @@ class LimeExpressionManager {
                     if (count($relevantSQs) > 0 && (count($relevantSQs) == count($unansweredSQs)))
                     {
                         $qmandViolation = true;
-                        $mandatoryTip = $LEM->gT('Please check at least one item.');
+                    }
+                    $mandatoryTip .= $LEM->gT('Please check at least one item.');
+                    if ($qInfo['other']=='Y')
+                    {
+                        $qattr = isset($LEM->qattr[$qid]) ? $LEM->qattr[$qid] : array();
+                        if (isset($qattr['other_replace_text']) && trim($qattr['other_replace_text']) != '') {
+                            $othertext = trim($qattr['other_replace_text']);
+                        }
+                        else {
+                            $othertext = $LEM->gT('Other:');
+                        }
+                        $mandatoryTip .= "<br />\n".sprintf($LEM->gT("If you choose '%s' you must provide a description."), $othertext);
                     }
                     break;
                 case 'X':   // Boilerplate can never be mandatory
                     break;
-                default:
+                case 'A':
+                case 'B':
+                case 'C':
+                case 'Q':
+                case 'K':
+                case 'E':
+                case 'F':
+                case 'J':
+                case 'H':
+                case ':':
+                case ';':
                     // In general, if any relevant questions aren't answered, then it violates the mandatory rule
                     if (count($unansweredSQs) > 0)
                     {
                         $qmandViolation = true; // TODO - what about 'other'?
-                        $mandatoryTip = $LEM->gT('Please complete all parts');
+                    }
+                    $mandatoryTip .= $LEM->gT('Please complete all parts').'.';
+                    break;
+                case '1':
+                    if (count($unansweredSQs) > 0)
+                    {
+                        $qmandViolation = true; // TODO - what about 'other'?
+                    }
+                    $mandatoryTip .= $LEM->gT('Please check the items').'.';
+                    break;
+                case 'R':
+                    if (count($unansweredSQs) > 0)
+                    {
+                        $qmandViolation = true; // TODO - what about 'other'?
+                    }
+                    $mandatoryTip .= $LEM->gT('Please rank all items').'.';
+                    break;
+                default:
+                    if (count($unansweredSQs) > 0)
+                    {
+                        $qmandViolation = true; 
                     }
                     break;
             }
+            $mandatoryTip .= "</span></strong><br />\n";
         }
 
         // check validity of responses
@@ -4024,7 +4088,7 @@ EOT;
         $query = "select distinct a.qid, a.attribute, a.value"
                 ." from ".db_table_name('question_attributes')." as a, ".db_table_name('questions')." as b"
                 ." where " . $where
-                ." a.attribute in ('hidden', 'array_filter', 'array_filter_exclude', 'code_filter', 'equals_num_value', 'exclude_all_others', 'exclude_all_others_auto', 'max_answers', 'max_num_value', 'max_num_value_n', 'max_num_value_sgqa', 'min_answers', 'min_num_value', 'min_num_value_n', 'min_num_value_sgqa', 'multiflexible_max', 'multiflexible_min', 'num_value_equals_sgqa', 'show_totals')"
+                ." a.attribute in ('hidden', 'array_filter', 'array_filter_exclude', 'code_filter', 'equals_num_value', 'exclude_all_others', 'exclude_all_others_auto', 'max_answers', 'max_num_value', 'max_num_value_n', 'max_num_value_sgqa', 'min_answers', 'min_num_value', 'min_num_value_n', 'min_num_value_sgqa', 'multiflexible_max', 'multiflexible_min', 'num_value_equals_sgqa', 'other_replace_text', 'show_totals')"
                 ." order by a.qid, a.attribute";
 
         $data = db_execute_assoc($query);
