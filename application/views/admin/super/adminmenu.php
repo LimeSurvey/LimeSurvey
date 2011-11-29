@@ -74,13 +74,13 @@
 		{
 	    ?>
 
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/labels/view");?>', '_top')" title="<?php echo $clang->gTview("Edit label sets");?>" >
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/labels/sa/view");?>', '_top')" title="<?php echo $clang->gTview("Edit label sets");?>" >
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/labels.png' name='LabelsEditor' alt='<?php echo $clang->gT("Edit label sets");?>' width='40' height='40'/></a>
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />
 	    <?php }
 	    if(Yii::app()->session['USER_RIGHT_MANAGE_TEMPLATE'] == 1)
 		{ ?>
-	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/templates/view");?>', '_top')" title="<?php echo $clang->gTview("Template Editor");?>" >
+	    <a href="#" onclick="window.open('<?php echo $this->createUrl("admin/templates/sa/view");?>', '_top')" title="<?php echo $clang->gTview("Template Editor");?>" >
 	    <img src='<?php echo Yii::app()->getConfig('imageurl');?>/templates.png' name='EditTemplates' alt='<?php echo $clang->gT("Template Editor");?>' width='40' height='40'/></a>
 	    <?php } ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl');?>/seperator.gif' alt='' border='0' hspace='0' />

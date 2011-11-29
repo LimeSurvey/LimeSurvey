@@ -123,6 +123,8 @@ class AdminController extends LSYii_Controller
 			'question' => 'application.controllers.admin.question',
 			'database' => 'application.controllers.admin.database',
 			'statistics' => 'application.controllers.admin.statistics',
+			'labels' => 'application.controllers.admin.labels',
+			'templates' => 'application.controllers.admin.templates',
 		);
 	}
 
