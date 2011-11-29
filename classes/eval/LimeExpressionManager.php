@@ -55,6 +55,7 @@ class LimeExpressionManager {
     private $runtimeTimings=array();
     private $initialized=false;
     private $processedRelevance=false;
+    private $debugTimingMsg='';
 
     // A private constructor; prevents direct creation of object
     private function __construct()
@@ -999,6 +1000,7 @@ class LimeExpressionManager {
         $this->groupId2groupSeq = array();
         $this->qid2validationEqn = array();
         $this->groupSeqInfo = array();
+        $this->gid2relevanceStatus = array();
 
         // Since building array of allowable answers, need to know preset values for certain question types
         $presets = array();
@@ -1569,8 +1571,6 @@ class LimeExpressionManager {
         // TODO - in a running survey, only need to process the current Group.  For Admin mode, do we need to process all prior questions or not?
 //        $now = microtime(true);
 
-        $this->gid2relevanceStatus = array();
-        $_groupSeq = -1;
         foreach($this->questionSeq2relevance as $rel)
         {
             if (!is_null($onlyThisQseq) && $onlyThisQseq!=$rel['questionSeq']) {
@@ -1578,50 +1578,13 @@ class LimeExpressionManager {
             }
             $qid = $rel['qid'];
             $gid = $rel['gid'];
+            $groupSeq = $rel['groupSeq'];
             if ($this->allOnOnePage) {
                 ;   // process relevance for all questions
             }
-            else {
-                $groupSeq = $rel['groupSeq'];
-
-                if ($groupSeq > $this->maxGroupSeq) {
-                    break;   // break out of loop
-                }
-                if (!$this->navigationIndex) {
-                    if ($groupSeq > $this->currentGroupSeq) {
-                        break;
-                    }
-                    if ($groupSeq < $this->currentGroupSeq) {
-                        continue;
-                    }
-                }
-                else {
-                    if  ($groupSeq != $_groupSeq) {
-                        $_groupSeq = $groupSeq;   // if new group, then reset status flags
-                        $_groupSeqVisibility=false;
-                        $this->gid2relevanceStatus[$gid]=false;    // default until found to be true
-                    }
-
-                    // TODO - augment this to show color coding for whether there are unanswered questions?
-                    if ($groupSeq < $this->currentGroupSeq || $groupSeq > $this->currentGroupSeq) {
-                        // Must know relevance of all prior questions so know what to display in reports.
-                        // TODO - if sure relevance won't retroactively change, can reduce calls to this (e.g. if can't have equations depend on future variables and can't assign values)
-                        if ($_groupSeqVisibility == true) {
-                            continue;   // if at least one in the group is visible, then skip relevance check
-                        }
-                        else {
-                            $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES), $qid, $gid);
-                            $_SESSION['relevanceStatus'][$qid] = $result;   // is this needed?  YES, if trying to tailor using a question that was irrelevant on prior page
-                            $this->gid2relevanceStatus[$gid]=true;
-                            continue;
-                        }
-                    }
-                    else {
-                        ;   // current group, so process this one
-                    }
-                }
+            else if ($groupSeq != $this->currentGroupSeq) {
+                continue;
             }
-
             $result = $this->_ProcessRelevance(htmlspecialchars_decode($rel['relevance'],ENT_QUOTES),
                     $qid,
                     $gid,
@@ -1736,6 +1699,7 @@ class LimeExpressionManager {
     private function _ProcessRelevance($eqn,$questionNum=NULL,$groupNum=NULL,$jsResultVar=NULL,$type=NULL,$hidden=0)
     {
         // These will be called in the order that questions are supposed to be asked
+        // TODO - cache results and generated JavaScript equations?
         if (!isset($eqn) || trim($eqn=='') || trim($eqn)=='1')
         {
             $this->groupRelevanceInfo[] = array(
@@ -2658,6 +2622,8 @@ class LimeExpressionManager {
             'show' => (($grel && !$ghidden) ? true : false),
         );
 
+        $LEM->gid2relevanceStatus[$gid] = $grel;
+
         return $currentGroupInfo;
     }
 
@@ -3142,6 +3108,8 @@ class LimeExpressionManager {
             'show' => (($qrel && !$qInfo['hidden']) ? true : false),
         );
 
+        $_SESSION['relevanceStatus'][$qid] = $qrel;
+
         return $qStatus;
     }
 
@@ -3159,10 +3127,26 @@ class LimeExpressionManager {
      * Get array of info needed to display the Group Index
      * @return <type>
      */
-    static function GetGroupIndexInfo()
+    static function GetGroupIndexInfo($gseq=NULL)
     {
         $LEM =& LimeExpressionManager::singleton();
-        return $LEM->indexGseq;
+        if (is_null($gseq)) {
+            return $LEM->indexGseq;
+        }
+        else {
+            return $LEM->indexGseq[$gseq];
+        }
+    }
+
+    /**
+     * Translate GID to 0-index Group Sequence number
+     * @param <type> $gid
+     * @return <type>
+     */
+    static function GetGroupSeq($gid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return (isset($LEM->groupId2groupSeq[$gid]) ? $LEM->groupId2groupSeq[$gid] : -1);
     }
 
     /**
@@ -3230,30 +3214,41 @@ class LimeExpressionManager {
     }
 
     /**
+     * Return a formatted table showing how much time each part of EM consumed
+     * @return <type>
+     */
+    static function GetDebugTimingMessage()
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return $LEM->debugTimingMsg;
+    }
+
+    /**
      * Should be called at end of each page
      */
-    static function FinishProcessingPage()
+    static function FinishProcessingPage($debugLevel=0)
     {
         $LEM =& LimeExpressionManager::singleton();
         $_SESSION['EM_pageTailoringLog'] = $LEM->pageTailoringLog;
         $_SESSION['EM_surveyLogicFile'] = $LEM->surveyLogicFile;
 
         $totalTime = 0.;
-        if (count($LEM->runtimeTimings)>0) {
+        if ($debugLevel >= 1 && count($LEM->runtimeTimings)>0) {
+            $LEM->debugTimingMsg='';
             foreach($LEM->runtimeTimings as $unit) {
                 $totalTime += $unit[1];
             }
-            echo 'Total time attributable to EM = ' . $totalTime;
-            echo "<table border='1'>";
+            $LEM->debugTimingMsg .= "<table border='1'><tr><td colspan=2><b>Total time attributable to EM = " . $totalTime . "</b></td></tr>\n";
             foreach ($LEM->runtimeTimings as $t)
             {
-                echo "<tr><td>" . $t[0] . "</td><td>" . $t[1] . "</td></tr>\n";
+                $LEM->debugTimingMsg .= "<tr><td>" . $t[0] . "</td><td>" . $t[1] . "</td></tr>\n";
             }
-            echo "</table>\n";
-            $LEM->runtimeTimings = array();
+            $LEM->debugTimingMsg .= "</table>\n";
         }
 //        log_message('debug','Total time attributable to EM = ' . $totalTime);
 //        log_message('debug',print_r($LEM->runtimeTimings,true));
+
+        $LEM->runtimeTimings = array(); // reset them
 
         if (count($LEM->syntaxErrors) > 0)
         {

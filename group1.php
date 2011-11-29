@@ -13,6 +13,12 @@
  * $Id: group.php 11359 2011-11-12 06:12:48Z tmswhite $
  */
 
+// $LEMdebugLevel - customizable debugging for Lime Expression Manager
+// 0=none
+// 1=timings only
+// 2=timings + pretty-printed results of validating questions and groups
+$LEMdebugLevel=0;
+
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 $previewgrp = false;
 if (isset($_REQUEST['action']) && ($_REQUEST['action']=='previewgroup')){
@@ -21,7 +27,7 @@ if (isset($_REQUEST['action']) && ($_REQUEST['action']=='previewgroup')){
 if (isset($_REQUEST['newtest']))
 	if ($_REQUEST['newtest']=="Y")
 		setcookie("limesurvey_timers", "0");
-//$show_empty_group = false;
+$show_empty_group = false;
 if (!isset($homedir) || isset($_REQUEST['$homedir'])) {die("Cannot run this script directly");}
 
 if ($previewgrp)
@@ -52,7 +58,7 @@ else
     if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev']=='Y' || $thissurvey['allowjumps']=='Y'))
     {
 //        $_SESSION['step'] = $thisstep-1;
-        $moveResult = LimeExpressionManager::NavigateBackwards();
+        $moveResult = LimeExpressionManager::NavigateBackwards(($LEMdebugLevel>=2));
         if ($moveResult['at_start']) {
             $_SESSION['step']=0;
             unset($moveResult); // so display welcome page again
@@ -62,13 +68,13 @@ else
     {
 //        if ($_SESSION['step']==$thisstep)
 //            $_SESSION['step'] = $thisstep+1;
-        $moveResult = LimeExpressionManager::NavigateForwards(false,false);
+        $moveResult = LimeExpressionManager::NavigateForwards(false,($LEMdebugLevel>=2));
     }
     if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
     {
         $move = (int)$move;
         if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep']))) {
-            $moveResult = LimeExpressionManager::JumpTo($move,false,false);
+            $moveResult = LimeExpressionManager::JumpTo($move,false,($LEMdebugLevel>=2));
         }
     }
 
@@ -77,7 +83,9 @@ else
             $move = 'movesubmit';
         }
         $_SESSION['step']= $moveResult['gseq']+1;  // step is index base 1?
-        $LEMmsg = $moveResult['message'];
+        if ($LEMdebugLevel>=2) {
+            $LEMmsg = $moveResult['message'];
+        }
     }
 
     // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
@@ -91,7 +99,6 @@ else
     }
 
 
-    // TMSW Mandatory -> EM -- Pass the info into LEM::NavigatePrevious()
     //CHECK IF ALL MANDATORY QUESTIONS HAVE BEEN ANSWERED ############################################
     //First, see if we are moving backwards or doing a Save so far, and its OK not to check:
     if (
@@ -111,7 +118,6 @@ else
         $backok="N";    // NA, since not moving backwards
     }
 
-    // TMSW Mandatory -> EM
     //Now, we check mandatory questions if necessary
     //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
 //    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
@@ -365,24 +371,40 @@ if ($surveyexists <1)
 
 //GET GROUP DETAILS
 
-// TMSW - use LEM::JumpTo() for group preview?
-// TODO - is 'step' index base 0 or 1?
 if ($previewgrp)
 {
 	setcookie("limesurvey_timers", "0");
-    $_SESSION['step'] = $_REQUEST['gid']+1;
 
-    foreach($_SESSION['grouplist'] as $index=>$group)
-    {
-        if ($group[0]==$_REQUEST['gid']){
-            $grouparrayno = $index;
-            break;
+    $gseq = LimeExpressionManager::GetGroupSeq($_REQUEST['gid']);
+    if ($gseq == -1) {
+        echo 'Invalid Group' . $_REQUEST['gid'];
+    }
+    $moveResult = LimeExpressionManager::JumpTo($gseq+1,false,($LEMdebugLevel>=2));
+    if (isset($moveResult)) {
+        $_SESSION['step']= $moveResult['gseq']+1;  // step is index base 1?
+        if ($LEMdebugLevel>=2) {
+            $LEMmsg = $moveResult['message'];
         }
     }
 
-    $gid=$_SESSION['grouplist'][$grouparrayno][0];
-    $groupname=$_SESSION['grouplist'][$grouparrayno][1];
-    $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
+    $ginfo = LimeExpressionManager::GetGroupIndexInfo($moveResult['gseq']);
+    $gid = $ginfo['gid'];
+    $groupname = $ginfo['gname'];
+    $groupdescription = $ginfo['gtext'];
+
+//    $_SESSION['step'] = $_REQUEST['gid']+1;
+//
+//    foreach($_SESSION['grouplist'] as $index=>$group)
+//    {
+//        if ($group[0]==$_REQUEST['gid']){
+//            $grouparrayno = $index;
+//            break;
+//        }
+//    }
+//
+//    $gid=$_SESSION['grouplist'][$grouparrayno][0];
+//    $groupname=$_SESSION['grouplist'][$grouparrayno][1];
+//    $groupdescription=$_SESSION['grouplist'][$grouparrayno][2];
 }
 else
 {
@@ -402,7 +424,6 @@ else
 }
 
 //Setup an inverted fieldnamesInfo for quick lookup of field answers.
-// TMSW - is this needed?
 //$aFieldnamesInfoInv = aArrayInvert($_SESSION['fieldnamesInfo']);
 if ($_SESSION['step'] > $_SESSION['maxstep'])
 {
@@ -545,8 +566,6 @@ doHeader();
 if (isset($popup)) {echo $popup;}
 if (isset($vpopup)) {echo $vpopup;}
 if (isset($fpopup)) {echo $fpopup;}
-
- // echo $LEMmsg;
 
 //foreach(file("$thistpl/startpage.pstpl") as $op)
 //{
@@ -1388,7 +1407,7 @@ echo "\n";
 
 LimeExpressionManager::FinishProcessingGroup();
 echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
-LimeExpressionManager::FinishProcessingPage();
+LimeExpressionManager::FinishProcessingPage($LEMdebugLevel);
 
 if (!$previewgrp){
     $navigator = surveymover(); //This gets globalised in the templatereplace function
@@ -1513,6 +1532,13 @@ if (!$previewgrp){
     if (isset($token) && !empty($token)) {
         echo "\n<input type='hidden' name='token' value='$token' id='token' />\n";
     }
+}
+
+if ($LEMdebugLevel >= 1) {
+    echo LimeExpressionManager::GetDebugTimingMessage();
+}
+if ($LEMdebugLevel >= 2) {
+     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$LEMmsg."</td></tr></table>\n";
 }
 echo "</form>\n";
 
