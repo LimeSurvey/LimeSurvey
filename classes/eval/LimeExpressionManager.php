@@ -40,6 +40,9 @@ class LimeExpressionManager {
     private $currentGroupSeq;   // current Group sequence (0-based index)
     private $currentQuestionSeq;    // for Question-by-Question mode, the 0-based index
     private $currentQset=NULL;   // set of the current set of questions to be displayed - at least one must be relevant
+    private $indexQseq;         // array of information needed to generate navigation index in question-by-question mode
+    private $indexGseq;         // array of information needed to generate navigation index in group-by-group mode
+    private $gseq2info;         // array of group sequence number to static info
 
     private $maxGroupSeq;  // the maximum groupSeq reached -  this is needed for Index
     private $navigationIndex=false; // whether to build an index showing groups that have relevant questions // TODO - color code whether any visible questions are unanswered?
@@ -49,7 +52,7 @@ class LimeExpressionManager {
     private $syntaxErrors=array();
     private $subQrelInfo;   // list of needed sub-question relevance (e.g. array_filter)
 
-    private $runtimeTimings;
+    private $runtimeTimings=array();
     private $initialized=false;
     private $processedRelevance=false;
 
@@ -65,9 +68,12 @@ class LimeExpressionManager {
     {
         if (!is_null($ser))
         {
+            $now = microtime(true);
             self::$instance = unserialize($ser);
+            self::$instance->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
         }
         if (!isset(self::$instance)) {
+            $now = microtime(true);
             if (isset($_SESSION['LEMsingleton'])) {
                 self::$instance = unserialize($_SESSION['LEMsingleton']);
             }
@@ -75,6 +81,7 @@ class LimeExpressionManager {
                 $c = __CLASS__;
                 self::$instance = new $c;
             }
+            self::$instance->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
         }
         return self::$instance;
     }
@@ -306,7 +313,7 @@ class LimeExpressionManager {
      */
     public function _CreateSubQLevelRelevanceAndValidationEqns($onlyThisQseq=NULL)
     {
-        $now = microtime(true);
+//        $now = microtime(true);
 
         $subQrels = array();    // array of sub-question-level relevance equations
         $validationEqn = array();
@@ -944,7 +951,7 @@ class LimeExpressionManager {
             );
         }
 
-        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+//        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
     }
 
     /**
@@ -1013,6 +1020,8 @@ class LimeExpressionManager {
             'S' => $this->gT("Same"),
             'D' => $this->gT("Decrease"),
         );
+
+        $this->gseq2info = $this->getGroupInfoForEM($surveyid,$this->slang);
 
         $qattr = $this->getEMRelatedRecordsForSurvey($surveyid);   // what happens if $surveyid is null?
         $this->qattr = $qattr;
@@ -1362,6 +1371,8 @@ class LimeExpressionManager {
                 'mandatory'=>$mandatory,
                 'eqn'=>(($type == '*') ? $question : ''),
                 'help'=>$help,
+                'qtext'=>$question,
+                'code'=>$varName,
                 );
 
             $this->knownVars[$varName] = $varInfo_Code;
@@ -1556,7 +1567,7 @@ class LimeExpressionManager {
     function ProcessAllNeededRelevance($onlyThisQseq=NULL)
     {
         // TODO - in a running survey, only need to process the current Group.  For Admin mode, do we need to process all prior questions or not?
-        $now = microtime(true);
+//        $now = microtime(true);
 
         $this->gid2relevanceStatus = array();
         $_groupSeq = -1;
@@ -1620,7 +1631,7 @@ class LimeExpressionManager {
                     );
             $_SESSION['relevanceStatus'][$qid] = $result;
         }
-        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+//        $this->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
     }
 
     /**
@@ -1635,7 +1646,7 @@ class LimeExpressionManager {
      * @return <type> - the original $string with all replacements done.
      */
 
-    static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false)
+    static function ProcessString($string, $questionNum=NULL, $replacementFields=array(), $debug=false, $numRecursionLevels=1, $whichPrettyPrintIteration=1, $noReplacements=false, $timeit=true)
     {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
@@ -1682,7 +1693,9 @@ class LimeExpressionManager {
             $LEM->syntaxErrors[] = $error;
         }
 
-        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+        if ($timeit) {
+            $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+        }
 
         if ($LEM->debugLEM)
         {
@@ -1865,7 +1878,7 @@ class LimeExpressionManager {
      */
     static function StartProcessingPage($navigationIndex=false,$allOnOnePage=false,$debug=true)
     {
-        $now = microtime(true);
+//        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
         $LEM->pageRelevanceInfo=array();
         $LEM->pageTailorInfo=array();
@@ -1877,7 +1890,7 @@ class LimeExpressionManager {
         $LEM->subQrelInfo=array();
         $LEM->processedRelevance=false;
 
-        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+//        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
         if ($debug && $LEM->debugLEM)
         {
@@ -1922,6 +1935,8 @@ class LimeExpressionManager {
         }
         $LEM->currentGroupSeq=-1;
         $LEM->currentQuestionSeq=-1;    // for question-by-question mode
+        $LEM->indexGseq=array();
+        $LEM->indexQseq=array();
 
         return array(
             'hasNext'=>true,
@@ -1931,6 +1946,7 @@ class LimeExpressionManager {
 
      static function NavigateBackwards($debug=false)
     {
+        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
         $LEM->RelevanceResultCache=array();    // to avoid running same test more than once for a given group
@@ -1969,6 +1985,7 @@ class LimeExpressionManager {
                 else
                 {
                     // display the survey
+                    $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                     return array(
                         'finished'=>true,
                         'message'=>$result['message'],
@@ -1985,6 +2002,7 @@ class LimeExpressionManager {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (--$LEM->currentGroupSeq < 0)
                     {
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'at_start'=>true,
                             'finished'=>false,
@@ -2004,6 +2022,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new group
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'at_start'=>false,
                             'finished'=>false,
@@ -2033,6 +2052,7 @@ class LimeExpressionManager {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
                     {
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
                             'message'=>$message,
@@ -2061,6 +2081,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new question
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
                             'message'=>$message,
@@ -2077,6 +2098,7 @@ class LimeExpressionManager {
      * @param <type> $debug - if true, show more detailed debug messages
      */
     static function NavigateForwards($force=false,$debug=false) {
+        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
 
         $LEM->RelevanceResultCache=array();    // to avoid running same test more than once for a given group
@@ -2115,6 +2137,7 @@ class LimeExpressionManager {
                 else
                 {
                     // display the survey
+                    $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                     return array(
                         'finished'=>true,
                         'message'=>$result['message'],
@@ -2131,6 +2154,7 @@ class LimeExpressionManager {
                     if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current group
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
                             'message'=>$result['message'],
@@ -2148,6 +2172,7 @@ class LimeExpressionManager {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentGroupSeq >= $LEM->numGroups)
                     {
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
                             'message'=>$message,
@@ -2169,6 +2194,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new group
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
                             'message'=>$message,
@@ -2197,6 +2223,7 @@ class LimeExpressionManager {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
                     {
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
                             'message'=>$message,
@@ -2225,6 +2252,140 @@ class LimeExpressionManager {
                     else
                     {
                         // display new question
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                        return array(
+                            'finished'=>false,
+                            'message'=>$message,
+                        );
+                    }
+                }
+                break;
+        }
+    }
+
+    static function JumpTo($seq,$force=false,$debug=false) {
+        $now = microtime(true);
+        $LEM =& LimeExpressionManager::singleton();
+
+        $LEM->RelevanceResultCache=array();    // to avoid running same test more than once for a given group
+        --$seq; // convert to 0-based numbering
+
+        // $LEM->ProcessCurrentResponses();
+        switch ($LEM->surveyMode)
+        {
+            case 'survey':
+                break;
+            case 'group':
+                // First validate the current group
+                $LEM->StartProcessingPage();
+                $LEM->ProcessCurrentResponses();
+                if (!$force && $LEM->currentGroupSeq != -1 && $seq > $LEM->currentGroupSeq) // only re-validate if jumping forward
+                {
+                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,$debug);
+                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
+                    {
+                        // redisplay the current group
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                        return array(
+                            'finished'=>false,
+                            'message'=>$result['message'],
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'mandViolation'=>$result['mandViolation'],
+                            'valid'=>$result['valid'],
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
+                        );
+                    }
+                }
+                $message = '';
+                $LEM->currentGroupSeq = $seq-1; // Try to jump to the requested group, but navigate to next if needed
+                while (true)
+                {
+                    $LEM->currentQset = array();    // reset active list of questions
+                    if (++$LEM->currentGroupSeq >= $LEM->numGroups)
+                    {
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                        return array(
+                            'finished'=>true,
+                            'message'=>$message,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
+                            'valid'=>(isset($result['valid']) ? $result['valid'] : false),
+                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
+                        );
+                    }
+
+                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,  $debug);
+                    $message .= $result['message'];
+                    if (!$result['relevant'] || $result['hidden'])
+                    {
+                        // then skip this group - assume already saved?
+                        continue;
+                    }
+                    else
+                    {
+                        // display new group
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                        return array(
+                            'finished'=>false,
+                            'message'=>$message,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
+                        );
+                    }
+                }
+                break;
+            case 'question':
+                $LEM->StartProcessingPage();
+                if (!$force && $LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq)
+                {
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$debug);
+                    if ($result['mandViolation'] || !$result['valid'])
+                    {
+                        // redisplay the current question
+                    }
+                }
+                $message = '';
+                $LEM->currentQuestionSeq=$seq-1;    // try to jump to requeted question, but go on to next if needed
+                while (true)
+                {
+                    $LEM->currentQset = array();    // reset active list of questions
+                    if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
+                    {
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                        return array(
+                            'finished'=>true,
+                            'message'=>$message,
+                        );
+                    }
+
+                    // Set certain variables normally set by StartProcessingGroup()
+                    $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
+                    $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
+                    $LEM->currentGroupSeq=$qInfo['groupSeq'];
+                    $LEM->groupNum=$qInfo['gid'];
+                    if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
+                        $LEM->maxGroupSeq = $LEM->currentGroupSeq;
+                    }
+
+                    $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
+                    $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,  $debug);
+                    $message .= $result['message'];
+
+                    if (!$result['relevant'] || $result['hidden'])
+                    {
+                        // then skip this question - assume already saved?
+                        continue;
+                    }
+                    else
+                    {
+                        // display new question
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
                             'message'=>$message,
@@ -2381,7 +2542,7 @@ class LimeExpressionManager {
                     if (($qs['info']['type'] == '*') && $qs['relevant'] == true)
                     {
                         // Process this equation
-                        $result = $LEM->ProcessString($qs['info']['eqn'], $qs['info']['qid']);
+                        $result = $LEM->ProcessString($qs['info']['eqn'], $qs['info']['qid'],NULL,false,1,1,false,false);
                         $sgqa = $qs['sgqa'];   // there will be only one, since Equation
                         // Store the result of the Equation in the SESSION
                         $_SESSION[$sgqa] = $result;
@@ -2480,6 +2641,15 @@ class LimeExpressionManager {
             'qset' => $currentQset,
             'unansweredSQs' => $unansweredSQList,
             'invalidSQs' => $invalidSQList,
+        );
+
+        $LEM->indexGseq[$groupSeq] = array(
+            'gtext' => $LEM->gseq2info[$groupSeq]['description'],
+            'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
+            'gid' => $LEM->gseq2info[$groupSeq]['gid'],
+            'anyUnanswered' => ((strlen($unansweredSQList) > 0) ? true : false),
+            'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
+            'show' => (($grel && !$ghidden) ? true : false),
         );
 
         return $currentGroupInfo;
@@ -2848,7 +3018,7 @@ class LimeExpressionManager {
                     // Also preview the Validation Tip
                     $stringToParse = implode('<br/>',$LEM->qid2validationEqn[$qid]['tips']);
                     // pretty-print them
-                    $LEM->ProcessString($stringToParse, $qid);
+                    $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
                     $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();                                            }
             }
             else
@@ -2896,7 +3066,7 @@ class LimeExpressionManager {
             // what are the database question codes for this question?
             $subQList = '{' . implode('}, {', explode('|',$LEM->qid2code[$qid])) . '}';
             // pretty-print them
-            $LEM->ProcessString($subQList, $qid);
+            $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
             $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
             $debug_qmessage .= '----SubQs=> ' . $prettyPrintSubQList . "<br/>\n";
 
@@ -2909,7 +3079,7 @@ class LimeExpressionManager {
             {
                 $subQList = '{' . implode('}, {', $relevantSQs) . '}';
                 // pretty-print them
-                $LEM->ProcessString($subQList, $qid);
+                $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
                 $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
                 $debug_qmessage .= '----Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
             }
@@ -2918,7 +3088,7 @@ class LimeExpressionManager {
             {
                 $subQList = '{' . implode('}, {', $irrelevantSQs) . '}';
                 // pretty-print them
-                $LEM->ProcessString($subQList, $qid);
+                $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
                 $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
                 $debug_qmessage .= '----Irrelevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
             }
@@ -2928,7 +3098,7 @@ class LimeExpressionManager {
             {
                 $subQList = '{' . implode('}, {', $unansweredSQs) . '}';
                 // pretty-print them
-                $LEM->ProcessString($subQList, $qid);
+                $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
                 $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
                 $debug_qmessage .= '----Unanswered Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
             }
@@ -2957,6 +3127,15 @@ class LimeExpressionManager {
 
         $LEM->currentQset[$qid] = $qStatus;
 
+        $LEM->indexQseq[$questionSeq] = array(
+            'qtext' => $qInfo['qtext'],
+            'qcode' => $qInfo['code'],
+            'qhelp' => $qInfo['help'],
+            'anyUnanswered' => ((count($unansweredSQs) > 0) ? true : false),
+            'anyErrors' => (($qmandViolation || !$qvalid) ? true : false),
+            'show' => (($qrel && !$qInfo['hidden']) ? true : false),
+        );
+
         return $qStatus;
     }
 
@@ -2968,6 +3147,26 @@ class LimeExpressionManager {
             return $LEM->currentQset[$qid];
         }
         return NULL;
+    }
+
+    /**
+     * Get array of info needed to display the Group Index
+     * @return <type>
+     */
+    static function GetGroupIndexInfo()
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return $LEM->indexGseq;
+    }
+
+    /**
+     * Get array of info needed to display the Question Index
+     * @return <type>
+     */
+    static function GetQuestionIndexInfo()
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return $LEM->indexQseq;
     }
 
     /**
@@ -3016,11 +3215,11 @@ class LimeExpressionManager {
      */
     static function FinishProcessingGroup()
     {
-        $now = microtime(true);
+//        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
         $LEM->pageTailorInfo[] = $LEM->em->GetCurrentSubstitutionInfo();
         $LEM->pageRelevanceInfo[] = $LEM->groupRelevanceInfo;
-        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+//        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
     }
 
@@ -3034,12 +3233,18 @@ class LimeExpressionManager {
         $_SESSION['EM_surveyLogicFile'] = $LEM->surveyLogicFile;
 
         $totalTime = 0.;
-        if (isset($LEM->runtimeTimings)) {
+        if (count($LEM->runtimeTimings)>0) {
             foreach($LEM->runtimeTimings as $unit) {
                 $totalTime += $unit[1];
             }
-//            echo 'Total time attributable to EM = ' . $totalTime;
-            unset($LEM->runtimeTimings);
+            echo 'Total time attributable to EM = ' . $totalTime;
+            echo "<table border='1'>";
+            foreach ($LEM->runtimeTimings as $t)
+            {
+                echo "<tr><td>" . $t[0] . "</td><td>" . $t[1] . "</td></tr>\n";
+            }
+            echo "</table>\n";
+            $LEM->runtimeTimings = array();
         }
 //        log_message('debug','Total time attributable to EM = ' . $totalTime);
 //        log_message('debug',print_r($LEM->runtimeTimings,true));
@@ -3805,21 +4010,21 @@ EOT;
     private function getEMRelatedRecordsForSurvey($surveyid=NULL,$qid=NULL)
     {
         if (!is_null($qid)) {
-            $where = " qid = ".$qid." and ";
+            $where = " a.qid = ".$qid." and ";
         }
         else if (!is_null($surveyid)) {
-            $where = " qid in (select qid from ".db_table_name('questions')." where sid = ".$surveyid.") and ";
+            $where = " a.qid=b.qid and b.sid=".$surveyid." and ";
         }
         else {
             $where = "";
         }
 
         // TODO - does this need to be filtered by language?
-        $query = "select distinct qid, attribute, value"
-                ." from ".db_table_name('question_attributes')
+        $query = "select distinct a.qid, a.attribute, a.value"
+                ." from ".db_table_name('question_attributes')." as a, ".db_table_name('questions')." as b"
                 ." where " . $where
-                ." attribute in ('hidden', 'array_filter', 'array_filter_exclude', 'code_filter', 'equals_num_value', 'exclude_all_others', 'exclude_all_others_auto', 'max_answers', 'max_num_value', 'max_num_value_n', 'max_num_value_sgqa', 'min_answers', 'min_num_value', 'min_num_value_n', 'min_num_value_sgqa', 'multiflexible_max', 'multiflexible_min', 'num_value_equals_sgqa', 'show_totals')"
-                ." order by qid, attribute";
+                ." a.attribute in ('hidden', 'array_filter', 'array_filter_exclude', 'code_filter', 'equals_num_value', 'exclude_all_others', 'exclude_all_others_auto', 'max_answers', 'max_num_value', 'max_num_value_n', 'max_num_value_sgqa', 'min_answers', 'min_num_value', 'min_num_value_n', 'min_num_value_sgqa', 'multiflexible_max', 'multiflexible_min', 'num_value_equals_sgqa', 'show_totals')"
+                ." order by a.qid, a.attribute";
 
         $data = db_execute_assoc($query);
         $qattr = array();
@@ -3871,6 +4076,41 @@ EOT;
         }
 
         return $qans;
+    }
+
+    /**
+     * Returns group info needed for indexes
+     * @param <type> $surveyid
+     * @param string $lang
+     * @return <type>
+     */
+
+    function getGroupInfoForEM($surveyid,$lang=NULL)
+    {
+        if (!is_null($lang)) {
+            $lang = " and a.language='".$lang."'";
+        }
+
+        $query = "SELECT a.group_name, a.description, a.gid, a.group_order"
+            ." FROM ".db_table_name('groups')." AS a"
+            ." WHERE a.sid=".$surveyid
+            .$lang
+            ." ORDER BY group_order";
+
+        $data = db_execute_assoc($query);
+
+        $qinfo = array();
+        foreach ($data as $d)
+        {
+            $qinfo[$d['group_order']] = array(
+                'group_order' => $d['group_order'],
+                'gid' => $d['gid'],
+                'group_name' => $d['group_name'],
+                'description' =>  $d['description'],
+            );
+        }
+
+        return $qinfo;
     }
 
     /**

@@ -62,13 +62,13 @@ else
     {
 //        if ($_SESSION['step']==$thisstep)
 //            $_SESSION['step'] = $thisstep+1;
-        $moveResult = LimeExpressionManager::NavigateForwards(false,true);
+        $moveResult = LimeExpressionManager::NavigateForwards(false,false);
     }
     if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
     {
         $move = (int)$move;
         if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep']))) {
-            $moveResult = LimeExpressionManager::JumpTo($move);
+            $moveResult = LimeExpressionManager::JumpTo($move,false,false);
         }
     }
 
@@ -479,7 +479,8 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
         //Display the "mandatory" popup if necessary
     // TMSW Mandatory -> EM
         // TMSW - get question-level error messages - don't call **_popup() directly
-        if (isset($notanswered) && $notanswered && $_SESSION['maxstep'] != $_SESSION['step'])
+//        if (isset($notanswered) && $notanswered && $_SESSION['maxstep'] != $_SESSION['step'])
+        if (isset($notanswered) && $notanswered && $_SESSION['prevstep'] == $_SESSION['step'])  // TODO - does not catch cases where mandatories are missing on first page
         {
             list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
         }
@@ -545,7 +546,7 @@ if (isset($popup)) {echo $popup;}
 if (isset($vpopup)) {echo $vpopup;}
 if (isset($fpopup)) {echo $fpopup;}
 
- echo $LEMmsg;
+ // echo $LEMmsg;
 
 //foreach(file("$thistpl/startpage.pstpl") as $op)
 //{
@@ -1407,32 +1408,40 @@ if (!$previewgrp){
         echo "\n\n<!-- PRESENT THE INDEX -->\n";
 
         echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
+
+        $groupInfo = LimeExpressionManager::GetGroupIndexInfo();
         for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
         {
-            // TMSW - get all of this info from LEM - for each group, should have step#, class (current vs. answer vs. missing?)
-            // Get as arran from LEM so don't have to iterate - can then map to group title
-            $g = $_SESSION['grouplist'][$n];
-            if(!checkgroupfordisplay($g[0]))
+            $gInfo = $groupInfo[$n];
+
+            if (!$gInfo['show'])
                 continue;
 
-            $sText = FlattenText($g[1]);
+            $sText = FlattenText($gInfo['gname']);
+            $bGAnsw = !$gInfo['anyUnanswered'];
 
-            $bGAnsw = true;
-            foreach($_SESSION['fieldarray'] as $ia)
-            {
-                if($ia[5] != $g[0])
-                    continue;
-
-                $qidattributes=getQuestionAttributes($ia[0], $ia[4]);
-                if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
-                    continue;
-
-                if (!bCheckQuestionForAnswer($ia[1], $aFieldnamesInfoInv))
-                {
-                    $bGAnsw = false;
-                    break;
-                }
-            }
+//            $g = $_SESSION['grouplist'][$n];
+//            if(!checkgroupfordisplay($g[0]))
+//                continue;
+//
+//            $sText = FlattenText($g[1]);
+//
+//            $bGAnsw = true;
+//            foreach($_SESSION['fieldarray'] as $ia)
+//            {
+//                if($ia[5] != $g[0])
+//                    continue;
+//
+//                $qidattributes=getQuestionAttributes($ia[0], $ia[4]);
+//                if($qidattributes['hidden']==1 || !checkquestionfordisplay($ia[0]))
+//                    continue;
+//
+//                if (!bCheckQuestionForAnswer($ia[1], $aFieldnamesInfoInv))
+//                {
+//                    $bGAnsw = false;
+//                    break;
+//                }
+//            }
 
             ++$v;
 
