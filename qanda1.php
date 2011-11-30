@@ -812,11 +812,21 @@ function retrieveAnswers($ia, $notanswered=null, $notvalidated=null, $filenotval
     $qtitle .= $mandatory_msg;
     $question_text['man_message'] = $mandatory_msg;
 
-    $validation_msg = validation_message($ia);
+    if (($_SESSION['step'] != $_SESSION['maxstep']) || ($_SESSION['step'] == $_SESSION['prevstep'])) {
+        $validation_msg = validation_message($ia);
+    }
+    else {
+        $validation_msg = '';
+    }
     $qtitle .= $validation_msg;
     $question_text['valid_message'] = $validation_msg;
 
-    $file_validation_msg = file_validation_message($ia);
+    if (($_SESSION['step'] != $_SESSION['maxstep']) || ($_SESSION['step'] == $_SESSION['prevstep'])) {
+        $file_validation_msg = file_validation_message($ia);
+    }
+    else {
+        $file_validation_msg = '';
+    }
     $qtitle .= $ia[4] == "|" ? $file_validation_msg : "";
     $question_text['file_valid_message'] = $ia[4] == "|" ? $file_validation_msg : "";
 
@@ -964,10 +974,16 @@ function validation_message($ia)
     if (!$qinfo['valid']) {
         $help = $qinfo['info']['help'];
         if (strlen($help) > 0) {
-            $help .= '<br/>' . $qinfo['validTip'];
+            $help .= '<br/>';
+        }
+        $help .= $qinfo['validTip'];
+        if (strlen($help) == 0) {
+            $help = $clang->gT('This question must be answered correctly');
+        }
+        else {
             $help=' <span class="questionhelp">'.$help.'</span>';
         }
-        return '<br /><span class="errormandatory">'.$clang->gT('This question must be answered correctly').'.'.$help.'</span><br />';
+        return '<br /><span class="errormandatory">'.$help.'</span><br />';
     }
     else {
         return "";

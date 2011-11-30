@@ -86,6 +86,7 @@ else
         if ($LEMdebugLevel>=2) {
             $LEMmsg = $moveResult['message'];
         }
+        $ginfo = LimeExpressionManager::GetGroupIndexInfo($moveResult['gseq']);
     }
 
     // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
@@ -501,13 +502,13 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
     // TMSW Mandatory -> EM
         // TMSW - get question-level error messages - don't call **_popup() directly
 //        if (isset($notanswered) && $notanswered && $_SESSION['maxstep'] != $_SESSION['step'])
-        if (isset($notanswered) && $notanswered && $_SESSION['prevstep'] == $_SESSION['step'])  
+        if ($ginfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
         {
             list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
         }
 
         //Display the "validation" popup if necessary
-        if (isset($notvalidated) && $notvalidated && $_SESSION['prevstep'] == $_SESSION['step'])
+        if (!$ginfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
         {
             list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
         }
@@ -1315,13 +1316,13 @@ echo "\n";
 
 //Display the "mandatory" message on page if necessary
     // TMSW Mandatory -> EM
-if (isset($showpopups) && $showpopups == 1 && isset($notanswered) && is_array($notanswered) && count($notanswered) > 0 && $_SESSION['prevstep'] == $_SESSION['step'])
+if (isset($showpopups) && $showpopups == 1 && $ginfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
 }
 
 //Display the "validation" message on page if necessary
-if (isset($showpopups) && $showpopups == 1 && isset($notvalidated) && is_array($notvalidated) && count($notvalidated) > 0 && $_SESSION['prevstep'] == $_SESSION['step'])
+if (isset($showpopups) && $showpopups == 1 && !$ginfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
 }

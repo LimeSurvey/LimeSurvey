@@ -872,7 +872,8 @@ class LimeExpressionManager {
                             case 'S': //SHORT FREE TEXT
                             case 'T': //LONG FREE TEXT
                             case 'U': //HUGE FREE TEXT
-                                $sq_name = '(!regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK))';
+                                // TODO - should empty always be an option? or require that empty be an explicit option in the regex?
+                                $sq_name = '(if((strlen('.$sq['varName'].'.NAOK)==0),0,!regexMatch("' . $preg . '", ' . $sq['varName'] . '.NAOK)))';
                                 break;
                             default:
                                 break;
@@ -889,7 +890,7 @@ class LimeExpressionManager {
                         $validationEqn[$questionNum][] = array(
                             'qtype' => $type,
                             'type' => 'preg',
-                            'eqn' => '(count(' . implode(', ', $sq_names) . ') > 0)',
+                            'eqn' => '(sum(' . implode(', ', $sq_names) . ') == 0)',
                             'qid' => $questionNum,
                             'tip' => $this->gT('All entries must conform to this regular expression:') . " " . str_replace(array('{','}'),array('{ ',' }'), $preg),
                         );
@@ -2490,7 +2491,7 @@ class LimeExpressionManager {
                     . ($grel ? 'relevant ' : " <span style='color:red'>irrelevant</span> ")
                     . (($ghidden && $grel) ? " <span style='color:red'>always-hidden</span> " : ' ')
                     . ($gmandViolation ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' ')
-                    . ($gvalid ? '' : " <span style='color:red'>(missing a relevant mandatory)</span> ")
+                    . ($gvalid ? '' : " <span style='color:red'>(fails at least one validation rule)</span> ")
                     . "<br/>\n"
                     . implode('', $messages);
         }
@@ -2642,6 +2643,8 @@ class LimeExpressionManager {
             'gid' => $LEM->gseq2info[$groupSeq]['gid'],
             'anyUnanswered' => ((strlen($unansweredSQList) > 0) ? true : false),
             'anyErrors' => (($gmandViolation || !$gvalid) ? true : false),
+            'valid' => $gvalid,
+            'mandViolation' => $gmandViolation,
             'show' => (($grel && !$ghidden) ? true : false),
         );
 
@@ -3035,6 +3038,8 @@ class LimeExpressionManager {
         $qvalid=true;   // assume valid unless discover otherwise
         $hasValidationEqn=false;
         $prettyPrintValidEqn='';    //  assume no validation eqn by default
+        $validationJS='';       // assume can't generate JavaScript to validate equation
+        $validTip='';           // default is none
         // TODO - when there are multiple questions which each use the same validation, need to know which sub-questions are invalid
         if (isset($LEM->qid2validationEqn[$qid]))
         {
@@ -3047,15 +3052,21 @@ class LimeExpressionManager {
                 {
                     $qvalid=false;  // default to invalid so that can show the error
                 }
+                else
+                {
+                    $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
+                }
                 if ($debug)
                 {
                     $prettyPrintValidEqn = $LEM->em->GetPrettyPrintString();
+                }
 
-                    // Also preview the Validation Tip
-                    $stringToParse = implode('<br/>',$LEM->qid2validationEqn[$qid]['tips']);
-                    // pretty-print them
-                    $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
-                    $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();                                            }
+                $stringToParse = implode('<br/>',$LEM->qid2validationEqn[$qid]['tips']);
+                // pretty-print them
+                $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
+                if ($debug) {
+                    $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
+                }
             }
             else
             {
@@ -3079,7 +3090,7 @@ class LimeExpressionManager {
                 . ($qrel ? 'relevant' : " <span style='color:red'>irrelevant</span> ")
                 . ($qhidden ? " <span style='color:red'>always-hidden</span> " : ' ')
                 . (($qInfo['mandatory'] == 'Y')? ' mandatory' : ' ')
-                . (($hasValidationEqn) ? (!$qvalid ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' valid') : '')
+                . (($hasValidationEqn) ? (!$qvalid ? " <span style='color:red'>(fails validation rules)</span> " : ' valid') : '')
                 . ($qmandViolation ? " <span style='color:red'>(missing a relevant mandatory)</span> " : ' ')
                 . $prettyPrintRelEqn
                 . "<br/>\n";
@@ -3091,12 +3102,20 @@ class LimeExpressionManager {
 
             if ($prettyPrintValidTip != '')
             {
-                $debug_qmessage .= '----Validation Tip: ' . $prettyPrintValidTip . "<br/>\n";
+                $debug_qmessage .= '----Pretty Validation Tip: ' . $prettyPrintValidTip . "<br/>\n";
+            }
+            if ($validTip != '')
+            {
+                $debug_qmessage .= '----Validation Tip: ' . $validTip . "<br/>\n";
             }
 
             if ($prettyPrintValidEqn != '')
             {
                 $debug_qmessage .= '----Validation Eqn: ' . $prettyPrintValidEqn . "<br/>\n";
+            }
+            if ($validationJS != '')
+            {
+                $debug_qmessage .= '----Validation JavaScript: ' . $validationJS . "<br/>\n";
             }
 
             // what are the database question codes for this question?
@@ -3151,7 +3170,8 @@ class LimeExpressionManager {
             'unansweredSQs' => implode('|',$unansweredSQs),
             'valid' => $qvalid,
             'validEqn' => $prettyPrintValidEqn,
-            'validTip' => $prettyPrintValidTip,
+            'validTip' => $validTip,
+            'validJS' => $validationJS,
             'invalidSQs' => (isset($invalidSQs) ? $invalidSQs : ''),
             'relevantSQs' => implode('|',$relevantSQs),
             'irrelevantSQs' => implode('|',$irrelevantSQs),
