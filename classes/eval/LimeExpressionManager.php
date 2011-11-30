@@ -39,6 +39,7 @@ class LimeExpressionManager {
     private $questionSeq2relevance; // keeps relevance in proper sequence so can minimize relevance processing to see what should be see on page and in indexes
     private $currentGroupSeq;   // current Group sequence (0-based index)
     private $currentQuestionSeq;    // for Question-by-Question mode, the 0-based index
+    private $currentQID;        // used in Question-by-Question modecu
     private $currentQset=NULL;   // set of the current set of questions to be displayed - at least one must be relevant
     private $indexQseq;         // array of information needed to generate navigation index in question-by-question mode
     private $indexGseq;         // array of information needed to generate navigation index in group-by-group mode
@@ -315,7 +316,7 @@ class LimeExpressionManager {
     public function _CreateSubQLevelRelevanceAndValidationEqns($onlyThisQseq=NULL)
     {
 //        $now = microtime(true);
-
+        $this->subQrelInfo=array();  // reset it each time this is called
         $subQrels = array();    // array of sub-question-level relevance equations
         $validationEqn = array();
 
@@ -1867,7 +1868,6 @@ class LimeExpressionManager {
         $LEM->surveyLogicFile='';
         $LEM->navigationIndex=$navigationIndex;
         $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
-        $LEM->subQrelInfo=array();
         $LEM->processedRelevance=false;
 
 //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
@@ -2008,6 +2008,7 @@ class LimeExpressionManager {
                             'finished'=>false,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentGroupSeq,
                             'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
                             'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                             'unansweredSQs'=>$result['unansweredSQs'],
@@ -2018,30 +2019,27 @@ class LimeExpressionManager {
                 break;
             case 'question':
                 $LEM->StartProcessingPage();
-                if (!$force)
-                {
-                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$debug);
-                    if ($result['mandViolation'] || !$result['valid'])
-                    {
-                        // redisplay the current question
-                    }
-                }
+                $LEM->ProcessCurrentResponses();
                 $message = '';
                 while (true)
                 {
                     $LEM->currentQset = array();    // reset active list of questions
-                    if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
+                    if (--$LEM->currentQuestionSeq < 0)
                     {
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
-                            'finished'=>true,
+                            'at_start'=>true,
+                            'finished'=>false,
                             'message'=>$message,
+                            'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
+                            'invalidSQs'=>(isset($result['invalidSQs']) ? $result['invalidSQs'] : ''),
                         );
                     }
 
                     // Set certain variables normally set by StartProcessingGroup()
                     $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
                     $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
+                    $LEM->currentQID=$qInfo['qid'];
                     $LEM->currentGroupSeq=$qInfo['groupSeq'];
                     $LEM->groupNum=$qInfo['gid'];
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
@@ -2063,8 +2061,16 @@ class LimeExpressionManager {
                         // display new question
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
+                            'at_start'=>false,
                             'finished'=>false,
                             'message'=>$message,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentQuestionSeq,
+                            'qseq'=>$LEM->currentQuestionSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
                         );
                     }
                 }
@@ -2139,6 +2145,7 @@ class LimeExpressionManager {
                             'finished'=>false,
                             'message'=>$result['message'],
                             'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentGroupSeq,
                             'mandViolation'=>$result['mandViolation'],
                             'valid'=>$result['valid'],
                             'unansweredSQs'=>$result['unansweredSQs'],
@@ -2157,6 +2164,7 @@ class LimeExpressionManager {
                             'finished'=>true,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentGroupSeq,
                             'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
                             'valid'=>(isset($result['valid']) ? $result['valid'] : false),
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
@@ -2179,6 +2187,7 @@ class LimeExpressionManager {
                             'finished'=>false,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentGroupSeq,
                             'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
                             'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                             'unansweredSQs'=>$result['unansweredSQs'],
@@ -2189,12 +2198,25 @@ class LimeExpressionManager {
                 break;
             case 'question':
                 $LEM->StartProcessingPage();
+                $LEM->ProcessCurrentResponses();
                 if (!$force && $LEM->currentQuestionSeq != -1)
                 {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$debug);
-                    if ($result['mandViolation'] || !$result['valid'])
+                    if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current question
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                        return array(
+                            'finished'=>false,
+                            'message'=>$result['message'],
+                            'qseq'=>$LEM->currentQuestionSeq,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentQuestionSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
+                        );
                     }
                 }
                 $message = '';
@@ -2207,12 +2229,20 @@ class LimeExpressionManager {
                         return array(
                             'finished'=>true,
                             'message'=>$message,
+                            'qseq'=>$LEM->currentQuestionSeq,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentQuestionSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
                         );
                     }
 
                     // Set certain variables normally set by StartProcessingGroup()
                     $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
                     $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
+                    $LEM->currentQID=$qInfo['qid'];
                     $LEM->currentGroupSeq=$qInfo['groupSeq'];
                     $LEM->groupNum=$qInfo['gid'];
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
@@ -2236,6 +2266,13 @@ class LimeExpressionManager {
                         return array(
                             'finished'=>false,
                             'message'=>$message,
+                            'qseq'=>$LEM->currentQuestionSeq,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentQuestionSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
                         );
                     }
                 }
@@ -2278,6 +2315,7 @@ class LimeExpressionManager {
                             'finished'=>false,
                             'message'=>$result['message'],
                             'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentGroupSeq,
                             'mandViolation'=>$result['mandViolation'],
                             'valid'=>$result['valid'],
                             'unansweredSQs'=>$result['unansweredSQs'],
@@ -2297,6 +2335,7 @@ class LimeExpressionManager {
                             'finished'=>true,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentGroupSeq,
                             'mandViolation'=>(isset($result['mandViolation']) ? $result['mandViolation'] : false),
                             'valid'=>(isset($result['valid']) ? $result['valid'] : false),
                             'unansweredSQs'=>(isset($result['unansweredSQs']) ? $result['unansweredSQs'] : ''),
@@ -2319,6 +2358,7 @@ class LimeExpressionManager {
                             'finished'=>false,
                             'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentGroupSeq,
                             'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
                             'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
                             'unansweredSQs'=>$result['unansweredSQs'],
@@ -2329,12 +2369,25 @@ class LimeExpressionManager {
                 break;
             case 'question':
                 $LEM->StartProcessingPage();
+                $LEM->ProcessCurrentResponses();
                 if (!$force && $LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq)
                 {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$debug);
                     if ($result['mandViolation'] || !$result['valid'])
                     {
                         // redisplay the current question
+                        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
+                        return array(
+                            'finished'=>false,
+                            'message'=>$result['message'],
+                            'qseq'=>$LEM->currentQuestionSeq,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentQuestionSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
+                        );
                     }
                 }
                 $message = '';
@@ -2348,12 +2401,20 @@ class LimeExpressionManager {
                         return array(
                             'finished'=>true,
                             'message'=>$message,
+                            'qseq'=>$LEM->currentQuestionSeq,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentQuestionSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
                         );
                     }
 
                     // Set certain variables normally set by StartProcessingGroup()
                     $LEM->groupRelevanceInfo=array();   // TODO only important thing from StartProcessingGroup?
                     $qInfo = $LEM->questionSeq2relevance[$LEM->currentQuestionSeq];
+                    $LEM->currentQID=$qInfo['qid'];
                     $LEM->currentGroupSeq=$qInfo['groupSeq'];
                     $LEM->groupNum=$qInfo['gid'];
                     if ($LEM->currentGroupSeq > $LEM->maxGroupSeq) {
@@ -2365,7 +2426,7 @@ class LimeExpressionManager {
                     $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,  $debug);
                     $message .= $result['message'];
 
-                    if (!$result['relevant'] || $result['hidden'])
+                    if (!$preview && (!$result['relevant'] || $result['hidden']))
                     {
                         // then skip this question - assume already saved?
                         continue;
@@ -2377,6 +2438,13 @@ class LimeExpressionManager {
                         return array(
                             'finished'=>false,
                             'message'=>$message,
+                            'qseq'=>$LEM->currentQuestionSeq,
+                            'gseq'=>$LEM->currentGroupSeq,
+                            'seq'=>$LEM->currentQuestionSeq,
+                            'mandViolation'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['mandViolation'] : false),
+                            'valid'=> (($LEM->maxGroupSeq > $LEM->currentGroupSeq) ? $result['valid'] : false),
+                            'unansweredSQs'=>$result['unansweredSQs'],
+                            'invalidSQs'=>$result['invalidSQs'],
                         );
                     }
                 }
@@ -3183,13 +3251,21 @@ class LimeExpressionManager {
 
         $LEM->currentQset[$qid] = $qStatus;
 
+        $groupSeq = $qInfo['groupSeq'];
         $LEM->indexQseq[$questionSeq] = array(
+            'qid' => $qInfo['qid'],
             'qtext' => $qInfo['qtext'],
             'qcode' => $qInfo['code'],
             'qhelp' => $qInfo['help'],
             'anyUnanswered' => ((count($unansweredSQs) > 0) ? true : false),
             'anyErrors' => (($qmandViolation || !$qvalid) ? true : false),
             'show' => (($qrel && !$qInfo['hidden']) ? true : false),
+            'gseq' => $groupSeq,
+            'gtext' => $LEM->gseq2info[$groupSeq]['description'],
+            'gname' => $LEM->gseq2info[$groupSeq]['group_name'],
+            'gid' => $LEM->gseq2info[$groupSeq]['gid'],
+            'mandViolation' => $qmandViolation,
+            'valid' => $qvalid,
         );
 
         $_SESSION['relevanceStatus'][$qid] = $qrel;
@@ -3241,6 +3317,32 @@ class LimeExpressionManager {
     {
         $LEM =& LimeExpressionManager::singleton();
         return $LEM->indexQseq;
+    }
+
+    /**
+     * Return entries needed to build the navigation index
+     * @param <type> $step - if specified, return a single value, otherwise return entire array
+     * @return <type> - will be either question or group-level, depending upon $surveyMode
+     */
+    static function GetStepIndexInfo($step=NULL)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        switch ($LEM->surveyMode)
+        {
+            default:
+            case 'group':
+                if (is_null($step)) {
+                    return $LEM->indexGseq;
+                }
+                return $LEM->indexGseq[$step];
+                break;
+            case 'question':
+                if (is_null($step)) {
+                    return $LEM->indexQseq;
+                }
+                return $LEM->indexQseq[$step];
+                break;
+        }
     }
 
     /**
@@ -3685,18 +3787,21 @@ class LimeExpressionManager {
                 {
                     if ($jsVar == $knownVar['jsName'])
                     {
-                        if ($knownVar['gid']!=$LEM->groupNum)
-                        {
-                            $undeclaredJsVars[] = $jsVar;
-                            $code = $knownVar['sgqa'];
-                            $codeValue = (isset($_SESSION[$code])) ? $_SESSION[$code] : '';
-                            $undeclaredVal[$jsVar] = $codeValue;
-
-                            if (isset($LEM->jsVar2qid[$jsVar])) {
-                                $qidList[$LEM->jsVar2qid[$jsVar]] = $LEM->jsVar2qid[$jsVar];
-                            }
-                            break;
+                        if ($LEM->surveyMode=='group' && $knownVar['gid'] == $LEM->groupNum) {
+                            continue;
                         }
+                        if ($LEM->surveyMode=='question' && $knownVar['qid'] == $LEM->currentQID) {
+                            continue;
+                        }
+                        $undeclaredJsVars[] = $jsVar;
+                        $code = $knownVar['sgqa'];
+                        $codeValue = (isset($_SESSION[$code])) ? $_SESSION[$code] : '';
+                        $undeclaredVal[$jsVar] = $codeValue;
+
+                        if (isset($LEM->jsVar2qid[$jsVar])) {
+                            $qidList[$LEM->jsVar2qid[$jsVar]] = $LEM->jsVar2qid[$jsVar];
+                        }
+//                        break;    // why was this here?
                     }
                 }
             }

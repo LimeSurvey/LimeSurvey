@@ -18,10 +18,11 @@
 // 1=timings only
 // 2=timings + pretty-printed results of validating questions and groups
 $LEMdebugLevel=0;
+$surveyMode = (($thissurvey['format'] == 'G') ? 'group' : 'question');
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 $previewgrp = false;
-if (isset($_REQUEST['action']) && ($_REQUEST['action']=='previewgroup')){
+if (isset($_REQUEST['action']) && ($_REQUEST['action']=='previewgroup') && $thissurvey['format'] == 'G'){
     $previewgrp = true;
 }
 if (isset($_REQUEST['newtest']))
@@ -41,7 +42,7 @@ else
     if (!isset($_SESSION['step']))  //  || !$_SESSION['step']) - don't do this for step0, else rebuild the session
     {
         $totalquestions = buildsurveysession();
-        LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', ($thissurvey['anonymized']!="N"), true);
+        LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, ($thissurvey['anonymized']!="N"), true);
         $_SESSION['step'] = 0;
         if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
             //If explicitply set, hide the welcome screen
@@ -51,7 +52,6 @@ else
 
     if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
     if (!isset($_SESSION['maxstep'])) {$_SESSION['maxstep']=0;}
-    if (!isset($gl)) {$gl=array('null');}
     $_SESSION['prevstep']=$_SESSION['step'];
 
     //Move current step ###########################################################################
@@ -79,11 +79,11 @@ else
         if ($moveResult['finished']==true) {
             $move = 'movesubmit';
         }
-        $_SESSION['step']= $moveResult['gseq']+1;  // step is index base 1?
+        $_SESSION['step']= $moveResult['seq']+1;  // step is index base 1
         if ($LEMdebugLevel>=2) {
             $LEMmsg = $moveResult['message'];
         }
-        $ginfo = LimeExpressionManager::GetGroupIndexInfo($moveResult['gseq']);
+        $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
     }
 
     // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
@@ -344,16 +344,16 @@ if ($previewgrp)
     }
     $moveResult = LimeExpressionManager::JumpTo($gseq+1,false,($LEMdebugLevel>=2),true);
     if (isset($moveResult)) {
-        $_SESSION['step']= $moveResult['gseq']+1;  // step is index base 1?
+        $_SESSION['step']= $moveResult['seq']+1;  // step is index base 1?
         if ($LEMdebugLevel>=2) {
             $LEMmsg = $moveResult['message'];
         }
     }
 
-    $ginfo = LimeExpressionManager::GetGroupIndexInfo($moveResult['gseq']);
-    $gid = $ginfo['gid'];
-    $groupname = $ginfo['gname'];
-    $groupdescription = $ginfo['gtext'];
+    $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+    $gid = $stepInfo['gid'];
+    $groupname = $stepInfo['gname'];
+    $groupdescription = $stepInfo['gtext'];
 }
 else
 {
@@ -365,10 +365,10 @@ else
     }
     else
     {
-        $ginfo = LimeExpressionManager::GetGroupIndexInfo($moveResult['gseq']);
-        $gid = $ginfo['gid'];
-        $groupname = $ginfo['gname'];
-        $groupdescription = $ginfo['gtext'];
+        $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+        $gid = $stepInfo['gid'];
+        $groupname = $stepInfo['gname'];
+        $groupdescription = $stepInfo['gtext'];
     }
 }
 
@@ -398,10 +398,9 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
 
     if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid))
     {
-        if(IsSet($hideQuestion[$ia[0]]) && $hideQuestion[$ia[0]]==true){
-        	continue;
+        if ($surveyMode == 'question' && $ia[0] != $stepInfo['qid']) {
+            continue;
         }
-
         $qidattributes=getQuestionAttributes($ia[0],$ia[4]);
         if ($ia[4] != '*' && ($qidattributes===false || $qidattributes['hidden']==1)) {
             continue;
@@ -424,13 +423,13 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
 
         //Display the "mandatory" popup if necessary
         // TMSW - get question-level error messages - don't call **_popup() directly
-        if ($ginfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
+        if ($stepInfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
         {
             list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
         }
 
         //Display the "validation" popup if necessary
-        if (!$ginfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
+        if (!$stepInfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
         {
             list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
         }
@@ -550,19 +549,19 @@ if ($groupdescription)
 echo "\n";
 
 //Display the "mandatory" message on page if necessary
-if (isset($showpopups) && $showpopups == 1 && $ginfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
+if (isset($showpopups) && $showpopups == 0 && $stepInfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more mandatory questions have not been answered. You cannot proceed until these have been completed.") . "</span></p>";
 }
 
 //Display the "validation" message on page if necessary
-if (isset($showpopups) && $showpopups == 1 && !$ginfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
+if (isset($showpopups) && $showpopups == 0 && !$stepInfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid.") . "</span></p>";
 }
 
 //Display the "file validation" message on page if necessary
-if (isset($showpopups) && $showpopups == 1 && isset($filenotvalidated) && $filenotvalidated == true && $_SESSION['prevstep'] == $_SESSION['step'])
+if (isset($showpopups) && $showpopups == 0 && isset($filenotvalidated) && $filenotvalidated == true && $_SESSION['prevstep'] == $_SESSION['step'])
 {
     echo "<p><span class='errormandatory'>" . $clang->gT("One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid.") . "</span></p>";
 }
@@ -663,16 +662,23 @@ if (!$previewgrp){
 
         echo '<div id="index"><div class="container"><h2>' . $clang->gT("Question index") . '</h2>';
 
-        $groupInfo = LimeExpressionManager::GetGroupIndexInfo();
+        $stepIndex = LimeExpressionManager::GetStepIndexInfo();
+        $lastGseq=-1;
         for($v = 0, $n = 0; $n != $_SESSION['maxstep']; ++$n)
         {
-            $gInfo = $groupInfo[$n];
+            $stepInfo = $stepIndex[$n];
 
-            if (!$gInfo['show'])
+            if (!$stepInfo['show'])
                 continue;
 
-            $sText = FlattenText($gInfo['gname']);
-            $bGAnsw = !$gInfo['anyUnanswered'];
+            if ($surveyMode == 'question' && $lastGseq != $stepInfo['gseq']) {
+                // show the group label
+                echo '<h3>' . FlattenText($stepInfo['gname']) . "</h3>";
+                $lastGseq = $stepInfo['gseq'];
+            }
+
+            $sText = (($surveyMode == 'group') ? FlattenText($stepInfo['gname']) : FlattenText($stepInfo['qtext']));
+            $bGAnsw = !$stepInfo['anyUnanswered'];
 
             ++$v;
 

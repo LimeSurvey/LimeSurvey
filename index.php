@@ -898,7 +898,7 @@ switch ($thissurvey['format'])
         require_once("survey.php");
         break;
     case "S": //One at a time
-        require_once("question.php");
+        require_once("group1.php"); // question.php");
         break;
     case "G": //Group at a time
         require_once("group1.php");
