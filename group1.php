@@ -19,6 +19,13 @@
 // 2=timings + pretty-printed results of validating questions and groups
 $LEMdebugLevel=0;
 $surveyMode = (($thissurvey['format'] == 'G') ? 'group' : 'question');
+$surveyOptions = array(
+    'active'=>($thissurvey['active']=='Y'),
+    'allowsave'=>($thissurvey['allowsave']=='Y'),
+    'anonymized'=>($thissurvey['anonymized']!='N'),
+    'datestamp'=>($thissurvey['datestamp']=='Y'),
+    'ipaddr'=>($thissurvey['ipaddr']=='Y'),
+);
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
 $previewgrp = false;
@@ -42,7 +49,7 @@ else
     if (!isset($_SESSION['step']))  //  || !$_SESSION['step']) - don't do this for step0, else rebuild the session
     {
         $totalquestions = buildsurveysession();
-        LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, ($thissurvey['anonymized']!="N"), true,$LEMdebugLevel);
+        LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, $surveyOptions, true,$LEMdebugLevel);
         $_SESSION['step'] = 0;
         if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
             //If explicitply set, hide the welcome screen
@@ -335,7 +342,7 @@ if ($previewgrp)
 {
 	setcookie("limesurvey_timers", "0");
 
-    LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', ($thissurvey['anonymized']!="N"), false,$LEMdebugLevel);
+    LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', $surveyOptions, false,$LEMdebugLevel);
     $gseq = LimeExpressionManager::GetGroupSeq($_REQUEST['gid']);
     if ($gseq == -1) {
         echo 'Invalid Group' . $_REQUEST['gid'];

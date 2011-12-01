@@ -25,7 +25,7 @@ class LimeExpressionManager {
     private $pageTailorInfo;
     private $allOnOnePage=false;    // internally set to true for survey.php so get group-specific logging but keep javascript variable namings consistent on the page.
     private $surveyMode='group';  // survey mode
-    private $anonymized;
+    private $surveyOptions=array(); // a set of global survey options passed from LimeSurvey
     private $qid2code;  // array of mappings of Question # to list of SGQA codes used within it
     private $jsVar2qid; // reverse mapping of JavaScript Variable name to Question
     private $alias2varName; // JavaScript array of mappings of aliases to the JavaScript variable names
@@ -1891,11 +1891,20 @@ class LimeExpressionManager {
      * @param <type> $forceRefresh
      */
 
-    static function StartSurvey($surveyid,$surveyMode='group',$anonymized=false,$forceRefresh=false,$debugLevel=0)
+    static function StartSurvey($surveyid,$surveyMode='group',$options=NULL,$forceRefresh=false,$debugLevel=0)
     {
         $LEM =& LimeExpressionManager::singleton();
         $LEM->sid=$surveyid;   // TMSW - santize this?
-        $LEM->anonymized=$anonymized;
+
+        if (is_null($options)) {
+            $options = array();
+        }
+        $LEM->surveyOptions['active'] = (isset($options['active']) ? $options['active'] : false);
+        $LEM->surveyOptions['allowsave'] = (isset($options['allowsave']) ? $options['allowsave'] : false);
+        $LEM->surveyOptions['anonymized'] = (isset($options['anonymized']) ? $options['anonymized'] : false);
+        $LEM->surveyOptions['datestamp'] = (isset($options['datestamp']) ? $options['datestamp'] : false);
+        $LEM->surveyOptions['ipaddr'] = (isset($options['ipaddr']) ? $options['ipaddr'] : false);
+
         $LEM->debugLevel=$debugLevel;
         switch ($surveyMode) {
             case 'survey':
@@ -1913,7 +1922,7 @@ class LimeExpressionManager {
                 break;
         }
         
-        if ($LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$anonymized,$LEM->allOnOnePage))
+        if ($LEM->setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh,$LEM->surveyOptions['anonymized'],$LEM->allOnOnePage))
         {
             // means that some values changed, so need to update what was registered to ExpressionManager
             $LEM->em->RegisterVarnamesUsingMerge($LEM->knownVars);
@@ -2307,9 +2316,28 @@ class LimeExpressionManager {
     function UpdateValuesInDatabase($updatedValues)
     {
         // Update these values in the database
-        if (count($updatedValues) > 0)  //  && isset($_SESSION['srid']))
+        if (count($updatedValues) > 0)
         {
             $query = 'UPDATE '.db_table_name('survey_' . $this->sid) . " SET ";
+            switch ($this->surveyMode)
+            {
+                case 'question':
+                    $query .= "lastpage='" . ($this->currentQuestionSeq+1) . "', ";
+                    break;
+                case 'group':
+                    $query .= "lastpage='" . ($this->currentGroupSeq+1) . "', ";
+                    break;
+                case 'survey':
+                    $query .= "lastpage='1', ";
+                    break;
+            }
+            if ($this->surveyOptions['datestamp'] && isset($_SESSION['datestamp'])) {
+                $query .= " datestamp = '".$_SESSION['datestamp']."',";
+            }
+            if ($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) {
+                $query .= " ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
+            }
+
             $setter = array();
             foreach ($updatedValues as $key=>$value)
             {
@@ -2325,7 +2353,7 @@ class LimeExpressionManager {
             $query .= implode(', ', $setter);
             $query .= " WHERE ID=";
             
-            if (isset($_SESSION['srid']))
+            if (isset($_SESSION['srid']) && $this->surveyOptions['active'])
             {
                 $query .= $_SESSION['srid'];
                 db_execute_assoc($query);
@@ -2579,7 +2607,7 @@ class LimeExpressionManager {
         $groupSeqInfo = $LEM->groupSeqInfo[$groupSeq];
         $qInfo = $LEM->questionSeq2relevance[$groupSeqInfo['qstart']];
         $gid = $qInfo['gid'];
-        $LEM->StartProcessingGroup($gid, $LEM->anonymized, $LEM->sid); // analyze the data we have about this group
+        $LEM->StartProcessingGroup($gid, $LEM->surveyOptions['anonymized'], $LEM->sid); // analyze the data we have about this group
 
         $grel=false;  // assume irrelevant until find a relevant question
         $ghidden=true;   // assume hidden until find a non-hidden question.  If there are no relevant questions on this page, $ghidden will stay true
@@ -4355,7 +4383,22 @@ EOT;
             {
                 if ($relevant && isset($_POST[$sq]))
                 {
-                    $_SESSION[$sq] = $_POST[$sq];
+                    $value = $_POST[$sq];
+                    switch($qinfo['info']['type'])
+                    {
+                        case 'D': //DATE
+                            break;
+                        case 'N': //NUMERICAL QUESTION TYPE
+                        case 'K': //MULTIPLE NUMERICAL QUESTION
+                            if (trim($value)=="") {
+                                $value = "";
+                            }
+                            else {
+                                $value = sanitize_float($value);
+                            }
+                            break;
+                    }
+                    $_SESSION[$sq] = $value;
                 }
                 else {
                     $_SESSION[$sq] = "";
@@ -4364,7 +4407,7 @@ EOT;
         }
         if (isset($_POST['timerquestion']))
         {
-        $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
+            $_SESSION[$_POST['timerquestion']]=sanitize_float($_POST[$_POST['timerquestion']]);
         }
     }
 }

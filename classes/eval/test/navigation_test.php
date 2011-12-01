@@ -25,11 +25,19 @@
 
             $LEMdebugLevel = 3;
 
+            $surveyOptions = array(
+                'active'=>false,
+                'allowsave'=>true,
+                'anonymized'=>false,
+                'datestamp'=>true,
+                'ipaddr'=>true,
+            );
+
             foreach ($surveys as $surveyid)
             {
                 print '<h3>Starting survey ' . $surveyid . "</h3>";
                 $now = microtime(true);
-                LimeExpressionManager::StartSurvey($surveyid, 'group', false, true,$LEMdebugLevel);
+                LimeExpressionManager::StartSurvey($surveyid, 'group', $surveyOptions, true,$LEMdebugLevel);
                 print '<b>[StartSurvey() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
 
                 while(true) {

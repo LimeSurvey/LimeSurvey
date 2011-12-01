@@ -62,7 +62,7 @@ $ia = array(0 => $qid,
 7 => 'N',
 8 => 'N' ); // ia[8] is usedinconditions
 
-LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', ($thissurvey['anonymized']!="N"), false,$LEMdebugLevel);
+LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', NULL, false,$LEMdebugLevel);
 $qseq = LimeExpressionManager::GetQuestionSeq($qid);
 $moveResult = LimeExpressionManager::JumpTo($qseq+1,false,true);
 
