@@ -67,9 +67,8 @@ function filetext($templatename,$templatefile,$templates) {
 
 function makegraph($currentstep, $total)
 {
-    $CI = &get_instance();
-    $CI->load->helper('surveytranslator');
-	$clang = $CI->limesurvey_lang;
+    Yii::app()->loadHelper('surveytranslator');
+	$clang = Yii::app()->lang;
     $size = intval(($currentstep-1)/$total*100);
 
     $graph = '<script type="text/javascript">
@@ -196,9 +195,7 @@ function recursive_in_array($needle, $haystack) {
 */
 function is_template_editable($templatename)
 {
-    $CI = &get_instance();
-
-    if (isStandardTemplate($templatename) && $CI->config->item("standard_templates_readonly")==true)
+    if (isStandardTemplate($templatename) && Yii::app()->getConfig("standard_templates_readonly")==true)
    {
        return false;
    }

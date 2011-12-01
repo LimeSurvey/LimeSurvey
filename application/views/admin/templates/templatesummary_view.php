@@ -1,8 +1,8 @@
 <?php if (is_template_editable($templatename)==true)
     { ?>
-    <script type="text/javascript" src="<?php echo base_url(); ?>scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.js" ></script>
-    <script type="text/javascript" src="<?php echo base_url(); ?>scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
-    <script type="text/javascript" src="<?php echo base_url(); ?>scripts/admin/codemirror_ui/js/codemirror-ui.js" ></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.js" ></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.js" ></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/js/codemirror-ui.js" ></script>
     <table class='templatecontrol'>
         <tr>
             <th colspan='3'>
@@ -12,7 +12,7 @@
         <tr><th class='subheader' width='150'>
             <?php echo $clang->gT("Standard files:"); ?></th>
             <td align='center' valign='top' rowspan='3'>
-                <form name='editTemplate' method='post' action='<?php echo site_url("admin/templates/templatesavechanges"); ?>'>
+                <form name='editTemplate' method='post' action='<?php echo $this->createUrl("admin/templates/sa/templatesavechanges"); ?>'>
                     <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                     <input type='hidden' name='screenname' value='<?php echo html_escape($screenname); ?>' />
                     <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
@@ -24,7 +24,7 @@
                         } ?>
                     </textarea>
                     <script type="text/javascript">
-                        var codemirropath = '<?php echo base_url(); ?>scripts/admin/codemirror_ui/js/';
+                        var codemirropath = '<?php echo Yii::app()->baseUrl; ?>/scripts/admin/codemirror_ui/js/';
                     </script>
                     <?php if (is_writable($templates[$templatename])) { ?>
                         <input align='right' type='submit' value='<?php echo $clang->gT("Save changes"); ?>'
@@ -41,17 +41,17 @@
                 </form></td>
             <th class='subheader' colspan='2' align='right' width='200'><?php echo $clang->gT("Other files:"); ?></th></tr>
 
-        <tr><td valign='top' rowspan='2' class='subheader'><select size='6' name='editfile' onchange="javascript: window.open('<?php echo site_url("admin/templates/fileredirect/".$templatename."/".urlencode($screenname)); ?>/'+escape(this.value), '_top')">
+        <tr><td valign='top' rowspan='2' class='subheader'><select size='6' name='editfile' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                     <?php echo makeoptions($files, "name", "name", $editfile); ?>
                 </select><br /><br/>
                 <?php echo $clang->gT("CSS & Javascript files:"); ?>
-                <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo site_url("admin/templates/fileredirect/".$templatename."/".urlencode($screenname)); ?>/'+escape(this.value), '_top')">
+                <br/><select size='8' name='cssfiles' onchange="javascript: window.open('<?php echo $this->createUrl("admin/templates/sa/fileredirect/templatename/".$templatename."/screenname/".urlencode($screenname)); ?>/editfile/'+escape(this.value), '_top')">
                     <?php echo makeoptions($cssfiles, "name", "name", $editfile); ?>
                 </select>
 
             </td>
             <td valign='top' align='right' width='20%'>
-                <form action='<?php echo site_url("admin/templates/templatefiledelete"); ?>' method='post'>
+                <form action='<?php echo $this->createUrl("admin/templates/sa/templatefiledelete"); ?>' method='post'>
                     <table width='90' align='left' border='0' cellpadding='0' cellspacing='0'><tr><td></td></tr>
                         <tr><td><select size='11' style='min-width:130px;' name='otherfile' id='otherfile'>
                                     <?php echo makeoptions($otherfiles, "name", "name", ""); ?>
@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td valign='top'>
-                <form enctype='multipart/form-data' name='importtemplatefile' action='admin.php' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>
+                <form enctype='multipart/form-data' name='importtemplatefile' action='<?php echo $this->createUrl('admin/templates/sa/upload/') ?>' method='post' onsubmit='return checkuploadfiletype(this.the_file.value);'>
                     <table><tr> <th class='subheader' valign='top' style='border: solid 1 #000080'>
                             <?php echo $clang->gT("Upload a file:"); ?></th></tr><tr><td><input name="the_file" type="file" size="30" /><br />
                                 <input type='submit' value='<?php echo $clang->gT("Upload"); ?>'

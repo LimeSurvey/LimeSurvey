@@ -22,17 +22,67 @@
 * @version $Id: templates.php 11189 2011-10-17 21:18:55Z tpartner $
 * @access public
 */
-class templates extends Admin_Controller {
+class templates extends Survey_Common_Action {
 
     /**
-    * templates::__construct()
-    * Constructor
-    * @return
-    */
-    function __construct()
-    {
-        parent::__construct();
-    }
+     * Routes to correct sub-action
+     *
+     * @access public
+     * @param string $sa
+     */
+	public function run($sa)
+	{
+		Yii::app()->loadHelper('replacements');
+		Yii::app()->loadHelper('expressions.em_manager');
+		if ($sa == 'fileredirect')
+			$this->route('fileredirect', array('templatename', 'screenname', 'editfile'));
+		elseif ($sa == 'screenredirect')
+			$this->route('screenredirect', array('editfile', 'templatename', 'screenname'));
+		elseif ($sa == 'view')
+			$this->route('view', array('editfile', 'screenname', 'templatename'));
+		elseif ($sa == 'upload')
+			$this->route('upload', array());
+		elseif ($sa == 'delete')
+			$this->route('delete', array('templatename'));
+		elseif ($sa == 'templatezip')
+			$this->route('templatezip', array('templatename'));
+		else
+			$this->route($sa, array());
+
+	}
+
+	/**
+	 * Exports a template
+	 *
+	 * @access public
+	 * @param string $templatename
+	 * @return void
+	 */
+	public function templatezip($templatename)
+	{
+		Yii::import('application.libraries.admin.Phpzip', true);
+		$z = new PHPZip();
+		$templatedir = sGetTemplatePath($templatename).DIRECTORY_SEPARATOR;
+		$tempdir = Yii::app()->getConfig('tempdir');
+
+		$zipfile = "$tempdir/$templatename.zip";
+		$z->Zip($templatedir, $zipfile);
+		if (is_file($zipfile))
+		{
+			//Send the file for download!
+			header("Pragma: public");
+			header("Expires: 0");
+			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+
+			header("Content-Type: application/force-download");
+			header( "Content-Disposition: attachment; filename=$templatename.zip" );
+			header( "Content-Description: File Transfer");
+			@readfile($zipfile);
+
+			//Delete the temporary file
+			unlink($zipfile);
+		}
+	}
 
     /**
     * templates::upload()
@@ -41,43 +91,41 @@ class templates extends Admin_Controller {
     */
     function upload()
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->controller->lang;
 
-        self::_js_admin_includes(base_url().'scripts/admin/templates.js');
+    	$this->controller->_getAdminHeader();
+        $this->controller->_js_admin_includes(Yii::app()->baseUrl.'/scripts/admin/templates.js');
 
-        self::_getAdminHeader();
         self::_initialise('default','welcome', 'startpage.pstpl',FALSE);
-        $lid = $this->input->post('lid');
-        $action = $this->input->post('action');
-
-
+        $lid = returnglobal('lid');
+        $action = returnglobal('action');
 
         if ($action == 'templateupload')
         {
-            $basedestdir = $this->config->item('publicdir')."/upload/surveys";
+            $basedestdir = Yii::app()->getConfig('publicdir')."/upload/surveys";
             $importtemplateoutput = "<div class='header ui-widget-header'>".$clang->gT("Import template")."</div>\n";
             $importtemplateoutput .= "<div class='messagebox ui-corner-all'>";
 
-            if ($this->config->item('demoMode'))
+            if (Yii::app()->getConfig('demoMode'))
             {
                 $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                 $importtemplateoutput .= sprintf ($clang->gT("Demo mode: Uploading templates is disabled."),$basedestdir)."<br/><br/>\n";
-                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->controller->createUrl('admin/templates/sa/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
                 $importtemplateoutput .= "</div>\n";
                 show_error($importtemplateoutput);
                 return;
             }
 
             //require("classes/phpzip/phpzip.inc.php");
-            $this->load->library('admin/Phpzip');
+            Yii::import('application.libraries.admin.Phpzip', true);
             //$the_full_file_path = $tempdir . "/" . $_FILES['the_file']['name'];
             $zipfile=$_FILES['the_file']['tmp_name'];
-            $z = $this->phpzip; //new PHPZip();
+        	$z = new PHPZip(); //new PHPZip();
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
-            $extractdir=self::_tempdir($this->config->item('tempdir'));
-            $basedestdir = $this->config->item('usertemplaterootdir');
+            $extractdir=self::_tempdir(Yii::app()->getConfig('tempdir'));
+            $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
             $newdir=str_replace('.','',self::_strip_ext(sanitize_paranoid_string($_FILES['the_file']['name'])));
             $destdir=$basedestdir.'/'.$newdir.'/';
 
@@ -85,7 +133,7 @@ class templates extends Admin_Controller {
             {
                 $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                 $importtemplateoutput .= sprintf ($clang->gT("Incorrect permissions in your %s folder."),$basedestdir)."<br/><br/>\n";
-                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->controller->createUrl('admin/templates/sa/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
                 $importtemplateoutput .= "</div>\n";
                 show_error($importtemplateoutput);
                 return;
@@ -99,9 +147,9 @@ class templates extends Admin_Controller {
             {
                 $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                 $importtemplateoutput .= sprintf ($clang->gT("Template '%s' does already exist."),$newdir)."<br/><br/>\n";
-                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->controller->createUrl('admin/templates/sa/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
                 $importtemplateoutput .= "</div>\n";
-                show_error($importtemplateoutput);
+                die($importtemplateoutput);
                 return;
             }
 
@@ -119,7 +167,7 @@ class templates extends Admin_Controller {
                 {
                     $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                     $importtemplateoutput .= $clang->gT("This file is not a valid ZIP file archive. Import failed.")."<br/><br/>\n";
-                    $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                    $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->controller->createUrl('admin/templates/sa/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
                     $importtemplateoutput .= "</div>\n";
                     show_error($importtemplateoutput);
                     return;
@@ -137,7 +185,7 @@ class templates extends Admin_Controller {
                         if (is_file($extractdir."/".$direntry))
                         { // is  a file
                             $extfile = substr(strrchr($direntry, '.'),1);
-                            if  (!(stripos(','.$allowedresourcesuploads.',',','.$extfile.',') === false))
+                            if  (!(stripos(','.Yii::app()->getConfig('allowedresourcesuploads').',',','.$extfile.',') === false))
                             { //Extension allowed
                                 if (!copy($extractdir."/".$direntry, $destdir.$direntry))
                                 {
@@ -192,7 +240,7 @@ class templates extends Admin_Controller {
                     $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                     $importtemplateoutput .= $clang->gT("This ZIP archive contains no valid template files. Import failed.")."<br /><br />\n";
                     $importtemplateoutput .= $clang->gT("Remember that we do not support subdirectories in ZIP archives.")."<br/><br/>\n";
-                    $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                    $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->controller->createUrl('admin/templates/sa/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
                     $importtemplateoutput .= "</div>\n";
                     show_error($importtemplateoutput);
                     return;
@@ -243,16 +291,16 @@ class templates extends Admin_Controller {
             {
                 $importtemplateoutput .= "<div class=\"warningheader\">".$clang->gT("Error")."</div><br />\n";
                 $importtemplateoutput .= sprintf ($clang->gT("An error occurred uploading your file. This may be caused by incorrect permissions in your %s folder."),$basedestdir)."<br/><br/>\n";
-                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".site_url('admin/templates/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
+                $importtemplateoutput .= "<br/><input type=\"submit\" onclick=\"window.open('".$this->controller->createUrl('admin/templates/sa/view')."', '_top')\" value=\"".$clang->gT("Template Editor")."\"/>\n";
                 $importtemplateoutput .= "</div>\n";
-                show_error($importtemplateoutput);
+                die($importtemplateoutput);
                 return;
             }
-            $importtemplateoutput .= "<input type='submit' value='".$clang->gT("Open imported template")."' onclick=\"window.open('".site_url('admin/templates/view/startpage.pstpl/welcome/'.$newdir)."', '_top')\"/>\n";
+            $importtemplateoutput .= "<input type='submit' value='".$clang->gT("Open imported template")."' onclick=\"window.open('".$this->controller->createUrl('admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome/templatename/'.$newdir)."', '_top')\"/>\n";
             $importtemplateoutput .= "</div>\n";
 
             $idata['display'] = $importtemplateoutput;
-            $this->load->view('survey_view',$idata);
+            $this->controller->render('/survey_view',$idata);
 
         }
         else
@@ -266,7 +314,7 @@ class templates extends Admin_Controller {
             $templatesoutput= "<div class='header ui-widget-header'>".$clang->gT("Uploaded template file") ."</div>\n";
 
 
-            $templatesoutput.= "\t<form enctype='multipart/form-data' id='importtemplate' name='importtemplate' action='".site_url('admin/templates/upload')."' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
+            $templatesoutput.= "\t<form enctype='multipart/form-data' id='importtemplate' name='importtemplate' action='".$this->controller->createUrl('admin/templates/sa/upload')."' method='post' onsubmit='return validatefilename(this,\"".$clang->gT('Please select a file to import!','js')."\");'>\n"
             . "\t<input type='hidden' name='lid' value='$lid' />\n"
             . "\t<input type='hidden' name='action' value='templateupload' />\n"
             . "\t<ul>\n"
@@ -275,15 +323,14 @@ class templates extends Admin_Controller {
             . "<li><label>&nbsp;</label><input type='button' value='".$clang->gT("Import template ZIP archive")."' $ZIPimportAction /></li>\n"
             . "\t</ul></form>\n";
             $data['display'] = $templatesoutput;
-            $this->load->view('survey_view',$data);
+            $this->controller->render('/survey_view',$data);
         }
 
 
+        $this->controller->_loadEndScripts();
 
-        self::_loadEndScripts();
 
-
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 
 
     }
@@ -329,21 +376,19 @@ class templates extends Admin_Controller {
     */
     function view($editfile='startpage.pstpl', $screenname='welcome', $templatename='default')
     {
+        $this->controller->_js_admin_includes(Yii::app()->baseUrl.'/scripts/admin/templates.js');
+        $this->controller->_css_admin_includes(Yii::app()->baseUrl.'/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.css');
+        $this->controller->_css_admin_includes(Yii::app()->baseUrl.'/scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.css');
+        $this->controller->_css_admin_includes(Yii::app()->baseUrl.'/scripts/admin/codemirror_ui/css/codemirror-ui.css');
 
-        self::_js_admin_includes(base_url().'scripts/admin/templates.js');
-        self::_css_admin_includes(base_url().'scripts/admin/codemirror_ui/lib/CodeMirror-2.0/lib/codemirror.css');
-        self::_css_admin_includes(base_url().'scripts/admin/codemirror_ui/lib/CodeMirror-2.0/mode/javascript/javascript.css');
-        self::_css_admin_includes(base_url().'scripts/admin/codemirror_ui/css/codemirror-ui.css');
-
-        self::_getAdminHeader();
+        $this->controller->_getAdminHeader();
         self::_initialise($templatename, $screenname, $editfile);
 
-        self::_loadEndScripts();
+        $this->controller->_loadEndScripts();
 
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
-        if ($screenname != 'welcome') {$this->session->set_userdata('step',1);} else {$this->session->unset_userdata('step');} //This helps handle the load/save buttons)
+        if ($screenname != 'welcome') {Yii::app()->session['step'] = 1;} else {unset(Yii::app()->session['step']);} //This helps handle the load/save buttons)
 
 
     }
@@ -358,7 +403,7 @@ class templates extends Admin_Controller {
     */
     function screenredirect($editfile='startpage.pstpl', $templatename='default', $screenname='welcome')
     {
-        redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,'refresh');
+        $this->controller->redirect($this->controller->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname."/templatename/".$templatename));
     }
     //temporary solution to th bug that crashes LS!
     /**
@@ -371,7 +416,7 @@ class templates extends Admin_Controller {
     */
     function fileredirect($templatename='default', $screenname='welcome', $editfile='startpage.pstpl')
     {
-        redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,'refresh');
+        $this->controller->redirect($this->controller->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname."/templatename/".$templatename));
     }
 
     /**
@@ -381,10 +426,10 @@ class templates extends Admin_Controller {
     */
     function templatefiledelete()
     {
-        if ($this->input->post('action') == "templatefiledelete") {
-            $the_full_file_path = $this->config->item('usertemplaterootdir')."/".$this->input->post('templatename')."/".$this->input->post('otherfile'); //This is where the temp file is
+        if (returnglobal('action') == "templatefiledelete") {
+            $the_full_file_path = Yii::app()->getConfig('usertemplaterootdir')."/".$_POST['templatename']."/".returnglobal('otherfile'); //This is where the temp file is
             unlink($the_full_file_path);
-            redirect("admin/templates/view/".$this->input->post('editfile')."/".$this->input->post('screenname')."/".$this->input->post('templatename'));
+            $this->controller->redirect($this->controller->createUrl("admin/templates/sa/view/editfile/".returnglobal('editfile')."/screenname/".returnglobal('screenname')."/templatename/".returnglobal('templatename')));
         }
 
     }
@@ -397,30 +442,25 @@ class templates extends Admin_Controller {
     function templaterename()
     {
 
-        if ($this->input->post('action') == "templaterename" && $this->input->post('newname') && $this->input->post('copydir'))
+        if (returnglobal('action') == "templaterename" && returnglobal('newname') && returnglobal('copydir'))
         {
-            $newdirname=$this->config->item('usertemplaterootdir')."/".$this->input->post('newname');
-            $olddirname=$this->config->item('usertemplaterootdir')."/".$this->input->post('copydir');
-            if(isStandardTemplate($this->input->post('newname')))
+            $newdirname=Yii::app()->getConfig('usertemplaterootdir')."/".returnglobal('newname');
+            $olddirname=Yii::app()->getConfig('usertemplaterootdir')."/".returnglobal('copydir');
+            if(isStandardTemplate(returnglobal('newname')))
             {
-                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Template could not be renamed to `%s`.","js"), $this->input->post('newname'))." ".$clang->gT("This name is reserved for standard template.","js")."\");\n//-->\n</script>";
+                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Template could not be renamed to `%s`.","js"), returnglobal('newname'))." ".$clang->gT("This name is reserved for standard template.","js")."\");\n//-->\n</script>";
             }
             elseif (rename($olddirname, $newdirname)==false)
             {
-                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory could not be renamed to `%s`.","js"), $this->input->post('newname'))." ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
+                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory could not be renamed to `%s`.","js"), returnglobal('newname'))." ".$clang->gT("Maybe you don't have permission.","js")."\");\n//-->\n</script>";
             }
             else
             {
-                //$templates[$this->input->post('newname')]=$newdirname;
-                $templatename=$this->input->post('newname');
+                //$templates[returnglobal('newname')]=$newdirname;
+                $templatename=returnglobal('newname');
                 self::view("startpage.pstpl","welcome",$templatename);
             }
-
-
-
         }
-
-
     }
 
     /**
@@ -430,13 +470,13 @@ class templates extends Admin_Controller {
     */
     function templatecopy()
     {
-        $clang = $this->limesurvey_lang;
-        if ($this->input->post('action') == "templatecopy" && $this->input->post('newname') && $this->input->post('copydir')) {
+        $clang = $this->controller->lang;
+        if (returnglobal('action') == "templatecopy" && returnglobal('newname') && returnglobal('copydir')) {
             //Copies all the files from one template directory to a new one
             //This is a security issue because it is allowing copying from get variables...
-            $this->load->helper('admin/template');
-            $newdirname=$this->config->item('usertemplaterootdir')."/".$this->input->post('newname');
-            $copydirname=sGetTemplatePath($this->input->post('copydir'));
+            Yii::app()->loadHelper('admin/template');
+            $newdirname=Yii::app()->getConfig('usertemplaterootdir')."/".returnglobal('newname');
+            $copydirname=sGetTemplatePath(returnglobal('copydir'));
             $mkdirresult=mkdir_p($newdirname);
             if ($mkdirresult == 1) {
                 $copyfiles=getListOfFiles($copydirname);
@@ -448,12 +488,12 @@ class templates extends Admin_Controller {
                     }
                 }
                 //$templates[$newname]=$newdirname;
-                $templatename=$this->input->post('newname');
+                $templatename=returnglobal('newname');
                 self::view("startpage.pstpl","welcome",$templatename);
             } elseif($mkdirresult == 2) {
-                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory with the name `%s` already exists - choose another name","js"), $this->input->post('newname'))."\");\n//-->\n</script>";
+                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Directory with the name `%s` already exists - choose another name","js"), returnglobal('newname'))."\");\n//-->\n</script>";
             } else {
-                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Unable to create directory `%s`.","js"), $this->input->post('newname'))." ".$clang->gT("Please check the directory permissions.","js")."\");\n//-->\n</script>";
+                echo "<script type=\"text/javascript\">\n<!--\nalert(\"".sprintf($clang->gT("Unable to create directory `%s`.","js"), returnglobal('newname'))." ".$clang->gT("Please check the directory permissions.","js")."\");\n//-->\n</script>";
             }
         }
 
@@ -467,15 +507,19 @@ class templates extends Admin_Controller {
     */
     function delete($templatename)
     {
-        $this->load->helper("admin/template");
+        Yii::app()->loadHelper("admin/template");
         if (is_template_editable($templatename)==true)
         {
-            $clang = $this->limesurvey_lang;
-            if (rmdirr($this->config->item('usertemplaterootdir')."/".$templatename)==true)
+            $clang = $this->controller->lang;
+            if (rmdirr(Yii::app()->getConfig('usertemplaterootdir')."/".$templatename)==true)
             {
                 $condn = array('template' => $templatename);
-                $this->load->model('surveys_model');
-                $this->surveys_model->updateSurvey(array('template' => $this->config->item('defaulttemplate')),$condn);
+            	$survey = Survey::model()->findAllByAttributes($condn);
+            	foreach ($survey as $s)
+            	{
+            		$s->template = Yii::app()->getConfig('defaulttemplate');
+            		$s->save();
+            	}
 
                 /**
                 $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";
@@ -484,24 +528,23 @@ class templates extends Admin_Controller {
                 $templatequery = "UPDATE {$dbprefix}surveys set template='$defaulttemplate' where template='$templatename'\n";
                 $connect->Execute($templatequery) or safe_die ("Couldn't update surveys with default template!<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
                 */
-                $this->load->helper('database');
-                $templatequery = "delete from ".$this->db->dbprefix."templates_rights where folder='$templatename'\n";
-                db_execute_assoc($templatequery);//$connect->Execute($templatequery) or safe_die ("Couldn't update template_rights<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked)
+                $templatequery = "delete from {{templates_rights}} where folder='$templatename'\n";
+                Yii::app()->db->createCommand($templatequery)->execute();//$connect->Execute($templatequery) or safe_die ("Couldn't update template_rights<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked)
 
-                $templatequery = "delete from ".$this->db->dbprefix."templates where folder='$templatename'\n";
-                db_execute_assoc($templatequery);//$connect->Execute($templatequery) or safe_die ("Couldn't update templates<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
+                $templatequery = "delete from {{templates}} where folder='$templatename'\n";
+                Yii::app()->db->createCommand($templatequery)->execute();//$connect->Execute($templatequery) or safe_die ("Couldn't update templates<br />\n$utquery<br />\n".$connect->ErrorMsg());     //Checked
 
-                $this->session->set_userdata('flashmessage',sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename));
+                Yii::app()->session['flashmessage'] = sprintf($clang->gT("Template '%s' was successfully deleted."),$templatename);
                 //unset($templates[$templatename]);
-                //$templatename = $this->config->item('defaulttemplate');
+                //$templatename = Yii::app()->getConfig('defaulttemplate');
             }
             else
             {
-                $this->session->set_userdata('flashmessage',sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."),$templatename));
+                Yii::app()->session['flashmessage'] = sprintf($clang->gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."),$templatename);
             }
         }
         // redirect with default templatename, editfile and screenname
-        redirect("admin/templates/view","refresh");
+        $this->controller->redirect($this->controller->createUrl("admin/templates/sa/view"));
     }
 
     /**
@@ -512,8 +555,8 @@ class templates extends Admin_Controller {
     function templatesavechanges()
     {
 
-        if ($this->input->post('changes')) {
-            $changedtext=$this->input->post('changes');
+        if (returnglobal('changes')) {
+            $changedtext=returnglobal('changes');
             $changedtext=str_replace ('<?','',$changedtext);
             if(get_magic_quotes_gpc())
             {
@@ -521,8 +564,8 @@ class templates extends Admin_Controller {
             }
         }
 
-        if ($this->input->post('changes_cp')) {
-            $changedtext=$this->input->post('changes_cp');
+        if (returnglobal('changes_cp')) {
+            $changedtext=returnglobal('changes_cp');
             $changedtext=str_replace ('<?','',$changedtext);
             if(get_magic_quotes_gpc())
             {
@@ -530,22 +573,22 @@ class templates extends Admin_Controller {
             }
         }
 
-        $action = $this->input->post('action');
-        $editfile = $this->input->post('editfile');
-        $templatename = $this->input->post('templatename');
-        $screenname = $this->input->post('screenname');
+        $action = returnglobal('action');
+        $editfile = returnglobal('editfile');
+        $templatename = returnglobal('templatename');
+        $screenname = returnglobal('screenname');
         $files = self::_initfiles($templatename);
         $cssfiles = self::_initcssfiles();
 
         if ($action=="templatesavechanges" && $changedtext) {
 
-            $this->load->helper('admin/template');
+            Yii::app()->loadHelper('admin/template');
             $changedtext=str_replace("\r\n", "\n", $changedtext);
 
             if ($editfile) {
                 // Check if someone tries to submit a file other than one of the allowed filenames
                 if (multiarray_search($files,'name',$editfile)===false && multiarray_search($cssfiles,'name',$editfile)===false) {show_error('Invalid template filename');}  // Die you sneaky bastard!
-                $savefilename=$this->config->item('usertemplaterootdir')."/".$templatename."/".$editfile;
+                $savefilename=Yii::app()->getConfig('usertemplaterootdir')."/".$templatename."/".$editfile;
                 if (is_writable($savefilename)) {
                     if (!$handle = fopen($savefilename, 'w')) {
                         echo "Could not open file ($savefilename)";
@@ -563,7 +606,7 @@ class templates extends Admin_Controller {
             }
         }
 
-        redirect("admin/templates/view/".$editfile."/".$screenname."/".$templatename,"refresh");
+        $this->controller->redirect($this->controller->createUrl("admin/templates/sa/view/editfile/".$editfile."/screenname/".$screenname."/templatename/".$templatename));
     }
 
 
@@ -580,15 +623,15 @@ class templates extends Admin_Controller {
     */
     function _templatebar($screenname,$editfile,$screens,$tempdir,$templatename)
     {
-        $data['clang'] = $this->limesurvey_lang;
+        $data['clang'] = $this->controller->lang;
         $data['screenname'] = $screenname;
         $data['editfile'] = $editfile;
         $data['screens'] = $screens;
         $data['tempdir'] = $tempdir;
         $data['templatename'] = $templatename;
-        $data['usertemplaterootdir'] = $this->config->item('usertemplaterootdir');
+        $data['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
 
-        $this->load->view("admin/templates/templatebar_view",$data);
+        $this->controller->render("/admin/templates/templatebar_view",$data);
 
     }
 
@@ -608,15 +651,15 @@ class templates extends Admin_Controller {
     function _templatesummary($templatename,$screenname,$editfile,$templates,$files,$cssfiles,$otherfiles,$myoutput)
     {
 
-        $tempdir = $this->config->item("tempdir");
-        $tempurl = $this->config->item("tempurl");
+        $tempdir = Yii::app()->getConfig("tempdir");
+        $tempurl = Yii::app()->getConfig("tempurl");
 
-        $this->load->helper("admin/template");
+        Yii::app()->loadHelper("admin/template");
         $data = array();
         $time=date("ymdHis");
         // prepare textarea class for optional javascript
         $templateclasseditormode='full'; // default
-        if ($this->session->userdata('templateeditormode')=='none'){$templateclasseditormode='none';}
+        if (Yii::app()->session['templateeditormode']=='none'){$templateclasseditormode='none';}
         $data['templateclasseditormode'] = $templateclasseditormode;
 
         // The following lines are forcing the browser to refresh the templates on each save
@@ -642,7 +685,7 @@ class templates extends Admin_Controller {
         }
 
 
-        $data['clang'] = $this->limesurvey_lang;
+        $data['clang'] = $this->controller->lang;
         $data['screenname'] = $screenname;
         $data['editfile'] = $editfile;
 
@@ -655,7 +698,7 @@ class templates extends Admin_Controller {
         $data['tempurl'] = $tempurl;
         $data['time']= $time;
 
-        $this->load->view("admin/templates/templatesummary_view",$data);
+        $this->controller->render("/admin/templates/templatesummary_view",$data);
 
     }
 
@@ -689,7 +732,7 @@ class templates extends Admin_Controller {
         $files[]=array('name'=>'print_group.pstpl');
         $files[]=array('name'=>'print_question.pstpl');
 
-        if(is_file($this->config->item('usertemplaterootdir').'/'.$templatename.'/question_start.pstpl'))
+        if(is_file(Yii::app()->getConfig('usertemplaterootdir').'/'.$templatename.'/question_start.pstpl'))
         {
             $files[]=array('name'=>'question_start.pstpl');
         }
@@ -729,8 +772,8 @@ class templates extends Admin_Controller {
     function _initialise($templatename, $screenname, $editfile,$showsummary=TRUE)
     {
         global $siteadminname, $siteadminemail;
-        $clang = $this->limesurvey_lang;
-        $this->load->helper('admin/template');
+        $clang = $this->controller->lang;
+        Yii::app()->loadHelper('admin/template');
 
 
         //Standard Template Subfiles
@@ -850,8 +893,8 @@ class templates extends Admin_Controller {
 
 
 
-        $file_version="LimeSurvey template editor ".$this->config->item('versionnumber');
-        $this->session->set_userdata('s_lang', $this->session->userdata('adminlang'));
+        $file_version="LimeSurvey template editor ".Yii::app()->getConfig('versionnumber');
+        Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
         $templatename = sanitize_paranoid_string($templatename);
         //if (!isset($templatedir)) {$templatedir = sanitize_paranoid_string(returnglobal('templatedir'));}
@@ -868,7 +911,7 @@ class templates extends Admin_Controller {
         if (!isset($newname)) {$newname = sanitize_paranoid_string(returnglobal('newname'));}
         if (!isset($copydir)) {$copydir = sanitize_paranoid_string(returnglobal('copydir'));}
 
-        if(is_file($this->config->item('usertemplaterootdir').'/'.$templatename.'/question_start.pstpl'))
+        if(is_file(Yii::app()->getConfig('usertemplaterootdir').'/'.$templatename.'/question_start.pstpl'))
         {
             $files[]=array('name'=>'question_start.pstpl');
             $Question[]='question_start.pstpl';
@@ -877,7 +920,7 @@ class templates extends Admin_Controller {
         $availableeditorlanguages=array('bg','cs','de','dk','en','eo','es','fi','fr','hr','it','ja','mk','nl','pl','pt','ru','sk','zh');
         $extension = substr(strrchr($editfile, "."), 1);
         if ($extension=='css' || $extension=='js') {$highlighter=$extension;} else {$highlighter='html';};
-        if(in_array($this->session->userdata('adminlang'),$availableeditorlanguages)) {$codelanguage=$this->session->userdata('adminlang');}
+        if(in_array(Yii::app()->session['adminlang'],$availableeditorlanguages)) {$codelanguage=Yii::app()->session['adminlang'];}
         else  {$codelanguage='en';}
 
 
@@ -885,7 +928,7 @@ class templates extends Admin_Controller {
         $templates=gettemplatelist();
         if (!isset($templates[$templatename]))
         {
-            $templatename = $this->config->item('defaulttemplate');
+            $templatename = Yii::app()->getConfig('defaulttemplate');
         }
 
         $normalfiles=array("DUMMYENTRY", ".", "..", "preview.png");
@@ -1291,7 +1334,7 @@ class templates extends Admin_Controller {
                 $myoutput[]= "\n";
                 break;
         }
-        //$myoutput[] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"".$this->config->item('standardtemplaterooturl')."/default/template.css\" />";
+        //$myoutput[] = "<link rel=\"stylesheet\" type=\"text/css\" href=\"".Yii::app()->getConfig('standardtemplaterooturl')."/default/template.css\" />";
         $myoutput[]="</html>";
 
         if (is_array($files)) {
@@ -1329,19 +1372,19 @@ class templates extends Admin_Controller {
         }
 
 
-        $data['clang'] = $this->limesurvey_lang;
+        $data['clang'] = $this->controller->lang;
         $data['codelanguage'] = $codelanguage;
         $data['highlighter'] = $highlighter;
-        //$data['allowedtemplateuploads'] = $this->config->item('allowedtemplateuploads');
+        //$data['allowedtemplateuploads'] = Yii::app()->getConfig('allowedtemplateuploads');
         $data['screens'] = $screens;
         $data['templatename'] = $templatename;
         $data['templates'] = $templates;
         $data['editfile'] = $editfile;
         $data['screenname'] = $screenname;
-        $data['tempdir'] = $this->config->item('tempdir');
-        $data['usertemplaterootdir'] = $this->config->item('usertemplaterootdir');
+        $data['tempdir'] = Yii::app()->getConfig('tempdir');
+        $data['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
 
-        $this->load->view("admin/templates/templateeditorbar_view",$data);
+        $this->controller->render("/admin/templates/templateeditorbar_view",$data);
 
         if ($showsummary)
             self::_templatesummary($templatename,$screenname,$editfile,$templates,$files,$cssfiles,$otherfiles,$myoutput);
