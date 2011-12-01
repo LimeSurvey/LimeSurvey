@@ -338,6 +338,7 @@ if ($previewgrp)
 {
 	setcookie("limesurvey_timers", "0");
 
+    LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', ($thissurvey['anonymized']!="N"), false);
     $gseq = LimeExpressionManager::GetGroupSeq($_REQUEST['gid']);
     if ($gseq == -1) {
         echo 'Invalid Group' . $_REQUEST['gid'];

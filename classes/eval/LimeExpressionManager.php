@@ -3310,6 +3310,17 @@ class LimeExpressionManager {
     }
 
     /**
+     * Get question sequence number from QID
+     * @param <type> $qid
+     * @return <type>
+     */
+    static function GetQuestionSeq($qid)
+    {
+        $LEM =& LimeExpressionManager::singleton();
+        return (isset($LEM->questionId2questionSeq[$qid]) ? $LEM->questionId2questionSeq[$qid] : -1);
+    }
+
+    /**
      * Get array of info needed to display the Question Index
      * @return <type>
      */

@@ -15,6 +15,8 @@
 
 
 //Ensure script is not run directly, avoid path disclosure
+$LEMdebugLevel=0;
+
 include_once("login_check.php");
 require_once(dirname(__FILE__).'/sessioncontrol.php');
 require_once(dirname(__FILE__).'/../qanda.php');
@@ -60,9 +62,9 @@ $ia = array(0 => $qid,
 7 => 'N',
 8 => 'N' ); // ia[8] is usedinconditions
 
-// This is needed to properly detect and color code EM syntax errors
-LimeExpressionManager::StartProcessingPage();
-LimeExpressionManager::StartProcessingGroup($qrows['gid'],false,$surveyid,false);  // loads list of replacement values available for this group
+LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', ($thissurvey['anonymized']!="N"), false);
+$qseq = LimeExpressionManager::GetQuestionSeq($qid);
+$moveResult = LimeExpressionManager::JumpTo($qseq+1,false,($LEMdebugLevel>=2),true);
 
 $answers = retrieveAnswers($ia);
 
@@ -80,14 +82,14 @@ $dummy_js = '
 		<!-- JAVASCRIPT FOR CONDITIONAL QUESTIONS -->
 		<script type="text/javascript">
         /* <![CDATA[ */
-            function checkconditions(value, name, type)
-            {
-            }
+	function checkconditions(value, name, type)
+	{
+        }
 		function noop_checkconditions(value, name, type)
-		{
-		}
+        {
+            }
         /* ]]> */
-		</script>
+</script>
         ';
 
 
@@ -99,17 +101,6 @@ $question['code']=$answers[0][5];
 $question['class'] = question_class($qrows['type']);
 $question['essentials'] = 'id="question'.$qrows['qid'].'"';
 $question['sgq']=$ia[1];
-
-//Temporary fix for error condition arising from linked question via replacement fields
-//@todo: find a consistent way to check and handle this - I guess this is already handled but the wrong values are entered into the DB
-
-$search_for = '{INSERTANS';
-if(strpos($question['text'],$search_for)!==false){
-    $pattern_text = '/{([A-Z])*:([0-9])*X([0-9])*X([0-9])*}/';
-    $replacement_text = $clang->gT('[Dependency on another question (ID $4)]');
-    $text = preg_replace($pattern_text,$replacement_text,$question['text']);
-    $question['text']=$text;
-}
 
 if ($qrows['mandatory'] == 'Y')
 {
@@ -140,12 +131,16 @@ $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy
 $content .= '<p>&nbsp;</form>';
 $content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
-// if want to  include Javascript in question preview, uncomment these.  However, Group level preview is probably adequate
-LimeExpressionManager::FinishProcessingGroup();
-$content .= LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
-LimeExpressionManager::FinishProcessingPage();
+LimeExpressionManager::FinishProcessingPage($LEMdebugLevel);
 
 echo $content;
+
+if ($LEMdebugLevel >= 1) {
+    echo LimeExpressionManager::GetDebugTimingMessage();
+}
+if ($LEMdebugLevel >= 2) {
+     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
+}
 echo "</html>\n";
 
 
