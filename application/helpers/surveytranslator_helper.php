@@ -648,15 +648,13 @@
     */
     function aGetDateFormatForSid($surveyid, $languagecode='')
     {
-        $CI =& get_instance();
-        $CI->load->model('surveys_languagesettings_model');
         if (!isset($languagecode) || $languagecode=='')
         {
             $languagecode=GetBaseLanguageFromSurveyID($surveyid);;
         }
-        $data = $CI->surveys_languagesettings_model->getDateFormat($surveyid,$languagecode);
+        $data = Survey_languagesettings::model()->getDateFormat($surveyid,$languagecode);
         //$query = "SELECT surveyls_dateformat FROM ".db_table_name('surveys').",".db_table_name('surveys_languagesettings')." WHERE sid=$surveyid and surveyls_survey_id=$surveyid and surveyls_language='$languagecode'";
-        $dateformat = $data->row_array();
+        $dateformat = $data->readAll();
         //$dateformat = $connect->GetOne($query);
         if(is_null($dateformat))
         {

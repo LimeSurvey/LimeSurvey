@@ -1,4 +1,4 @@
-<form name='translatemenu' id='translatemenu' action='<?php echo site_url("admin/translate/$surveyid/$tolang");?>' method='get' >
+<form name='translatemenu' id='translatemenu' action='<?php echo $this->createUrl("admin/translate/surveyid/$surveyid/lang/$tolang");?>' method='get' >
 			  <?php echo translate::showTranslateAdminmenu($surveyid, $survey_title, $tolang); ?>
 </form>
 

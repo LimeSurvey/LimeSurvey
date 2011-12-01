@@ -22,7 +22,7 @@ class htmleditor_pop extends CAction {
     function run()
 	{
 		$fieldname = $_GET['index'];
-		foreach($_GET[''] as $key=>$val)
+		foreach($_GET as $key=>$val)
 		{
 			$fieldtext = $key;
 			$fieldtype = $val;

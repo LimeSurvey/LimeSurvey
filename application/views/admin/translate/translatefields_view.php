@@ -1,7 +1,5 @@
 <?php if (strlen(trim((string)$textfrom)) > 0)
 {
-  $all_fields_empty = FALSE;
-  $evenRow = !($evenRow);
   // Display translation fields
   echo translate::displayTranslateFields($surveyid, $gid, $qid, $type,
           $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow);

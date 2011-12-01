@@ -594,4 +594,11 @@
 
 	    $this->getController()->render("/admin/browse/browsemenubar_view", $data);
 	}
+	
+    function _js_admin_includes($include)
+    {
+        $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
+        $js_admin_includes[] = $include;
+        Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
+}
 }

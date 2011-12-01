@@ -22,36 +22,41 @@
 * @package		LimeSurvey
 * @subpackage	Backend
 */
-class translate extends Admin_Controller {
+class translate extends Survey_Common_Action {
 
     /**
     * Constructor
     */
-    function __construct()
+	public function run()
     {
-        parent::__construct();
+		$this->index();
     }
 
-    public function _remap($method, $params = array())
+    public function index()
     {
-        array_unshift($params, $method);
-        return call_user_func_array(array($this, "action"), $params);
-    }
+		$action = "";
+        $actionvalue = "";
+		@$surveyid = $_GET['surveyid'];
+		if (!empty($_POST['sid'])) $surveyid = (int)$_POST['sid'];
+		$surveyid = sanitize_int($surveyid);
 
-    function action($surveyid=null, $tolang="")
-    {
-        if(isset($surveyid)) $surveyid = sanitize_int($surveyid);
-        $action=returnglobal('action');
+		if(isset($_POST['actionvalue'])) $actionvalue = $_POST['actionvalue'];
+		
+		if(isset($_POST['action'])) $action = $_POST['action'];
+		
+		@$tolang = $_GET['lang'];
+		if(isset($_POST['tolang'])) $tolang = $_POST['tolang'];
+		
         if($action=="ajaxtranslategoogleapi")
         {
-            echo self::translate_google_api();
+            echo $this->translate_google_api();
             return;
         }
 
-        self::_js_admin_includes($this->config->item("adminscripts").'translation.js');
-        $clang =  $this->limesurvey_lang;
-        $_POST = $this->input->post();
-        $this->load->helper("database");
+        $this->_js_admin_includes(Yii::app()->getConfig("adminscripts").'translation.js');
+        $clang =  $this->getController()->lang;
+        Yii::app()->loadHelper("database");
+		Yii::app()->loadHelper("admin/htmleditor");
 
 
 
@@ -60,24 +65,16 @@ class translate extends Admin_Controller {
         // TODO need to do some validation here on surveyid
 
         $surveyinfo=getSurveyInfo($surveyid);
-        if (isset($_POST['tolang']))
-        {
-            $tolang = $_POST['tolang'];
-        }
+		
         if ($tolang=="" && count(GetAdditionalLanguagesFromSurveyID($surveyid)) == 1)
         {
             $tmp_langs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $tolang = $tmp_langs[0];
         }
 
-        $actionvalue = "";
-        if(isset($_POST['actionvalue'])) {$actionvalue = $_POST['actionvalue'];}
-        //  if(isset($_GET['actionvalue'])) {$actionvalue = $_GET['actionvalue'];}
-
-
         $survey_title = $surveyinfo['name'];
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
-        $this->load->helper("surveytranslator");
+        Yii::app()->loadHelper("surveytranslator");
         $supportedLanguages = getLanguageData(false);
 
 
@@ -88,9 +85,9 @@ class translate extends Admin_Controller {
             $tolangdesc = $supportedLanguages[$tolang]['description'];
         }
 
-        self::_getAdminHeader();
+        $this->getController()->_getAdminHeader();
         $data = array("surveyid" => $surveyid, "survey_title" => $survey_title, "tolang" => $tolang, "clang" => $clang);
-        $this->load->view("admin/translate/translateheader_view", $data);
+        $this->getController()->render("/admin/translate/translateheader_view", $data);
 
         //  $tab_names=array("title", "description", "welcome", "end", "group", "group_desc", "question", "question_help", "answer");
         //  $tab_names=array("title", "description", "invitation", "reminder");
@@ -103,7 +100,7 @@ class translate extends Admin_Controller {
             foreach($tab_names as $type)
             {
                 $tab_names_full[] = $type;
-                $amTypeOptions = self::setupTranslateFields($surveyid, $type, $tolang, $baselang);
+                $amTypeOptions = $this->setupTranslateFields($surveyid, $type, $tolang, $baselang);
                 $type2 = $amTypeOptions["associated"];
                 if ($type2 != "")
                 {
@@ -119,7 +116,7 @@ class translate extends Admin_Controller {
                 }
                 // start a loop in order to update each record
                 $i = 0;
-                while ($i < $size)
+                while ($i <= $size)
                 {
                     // define each variable
                     if (isset($_POST["{$type}_newvalue_{$i}"]))
@@ -131,7 +128,7 @@ class translate extends Admin_Controller {
                         {
                             $id1 = $_POST["{$type}_id1_{$i}"];
                             $id2 = $_POST["{$type}_id2_{$i}"];
-                            $amTypeOptions = self::setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1, $id2, $new);
+                            $amTypeOptions = $this->setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1, $id2, $new);
                             $query = $amTypeOptions["queryupdate"];
                             db_execute_assoc($query);
                         }
@@ -150,18 +147,19 @@ class translate extends Admin_Controller {
 
             $data['tab_names'] = $tab_names;
             $data['baselang'] = $baselang;
-            $this->load->view("admin/translate/translateformheader_view", $data);
+
+            $this->getController()->render("/admin/translate/translateformheader_view", $data);
 
             // Define content of each tab
             foreach($tab_names as $type)
             {
-                $amTypeOptions = self::setupTranslateFields($surveyid, $type, $tolang, $baselang);
+                $amTypeOptions = $this->setupTranslateFields($surveyid, $type, $tolang, $baselang);
 
                 $type2 = $amTypeOptions["associated"];
                 if ($type2 != "")
                 {
                     $associated = TRUE;
-                    $amTypeOptions2 = self::setupTranslateFields($surveyid, $type2, $tolang, $baselang);
+                    $amTypeOptions2 = $this->setupTranslateFields($surveyid, $type2, $tolang, $baselang);
                 }
                 else
                 {
@@ -193,14 +191,15 @@ class translate extends Admin_Controller {
                 $data['baselangdesc'] = $baselangdesc;
                 $data['tolangdesc'] = $tolangdesc;
                 $data['type'] = $type;
-                $this->load->view("admin/translate/translatetabs_view", $data);
-                foreach ($resultbase->result_array() as $rowfrom)
+                $this->getController()->render("/admin/translate/translatetabs_view", $data);
+
+                foreach ($resultbase->readAll() as $rowfrom)
                 {
                     $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
 
                     if ($associated)
                     {
-                        $rowfrom2 = $resultbase2->row_array();
+                        $rowfrom2 = $resultbase2->read();
                         $textfrom2 = htmlspecialchars_decode($rowfrom2[$amTypeOptions2["dbColumn"]]);
                     }
 
@@ -210,12 +209,12 @@ class translate extends Admin_Controller {
                     $qid = NULL;
                     if($amTypeOptions["qid"]==TRUE) $qid = $rowfrom['qid'];
 
-                    $rowto  = $resultto->row_array();
+                    $rowto  = $resultto->read();
                     $textto = $rowto[$amTypeOptions["dbColumn"]];
 
                     if ($associated)
                     {
-                        $rowto2  = $resultto2->row_array();
+                        $rowto2  = $resultto2->read();
                         $textto2 = $rowto2[$amTypeOptions2["dbColumn"]];
                     }
 
@@ -223,15 +222,21 @@ class translate extends Admin_Controller {
                     {
                         $all_fields_empty = FALSE;
                         $evenRow = !($evenRow);
+                        $data['evenRow'] = $evenRow;
                     }
 
+                    if (strlen(trim((string)$textfrom2)) > 0)
+                    {
+                        $all_fields_empty = FALSE;
+                        $evenRow = !($evenRow);
+                    }
+                    
                     $data['textfrom'] = $textfrom;
                     $data['textfrom2'] = $textfrom2;
                     $data['textto'] = $textto;
                     $data['textto2'] = $textto2;
                     $data['rowfrom'] = $rowfrom;
                     $data['rowfrom2'] = $rowfrom2;
-                    $data['evenRow'] = $evenRow;
                     $data['gid'] = $gid;
                     $data['qid'] = $qid;
                     $data['amTypeOptions'] = $amTypeOptions;
@@ -240,16 +245,16 @@ class translate extends Admin_Controller {
                     $data['type'] = $type;
                     $data['type2'] = $type2;
                     $data['associated'] = $associated;
-                    $this->load->view("admin/translate/translatefields_view", $data);
+                    $this->getController()->render("/admin/translate/translatefields_view", $data);
                     ++$i;
                 } // end while
                 $data['all_fields_empty'] = $all_fields_empty;
-                $this->load->view("admin/translate/translatefieldsfooter_view", $data);
+                $this->getController()->render("/admin/translate/translatefieldsfooter_view", $data);
             } // end foreach
             // Submit button
-            $this->load->view("admin/translate/translatefooter_view", $data);
+            $this->getController()->render("/admin/translate/translatefooter_view", $data);
         } // end if
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
     }
 
     /**
@@ -262,9 +267,9 @@ class translate extends Admin_Controller {
         $menu = ""
         ."<a href=\"#\" onclick=\"window.open('".$scriptname."', '_top')\""
         ."title='".$menuText."'>"
-        ."<img name='".$menuImageText."' src='".$this->config->item("imageurl")."/".$menuImageFile."' alt='"
+        ."<img name='".$menuImageText."' src='".Yii::app()->getConfig("imageurl")."/".$menuImageFile."' alt='"
         .$jsMenuText."' /></a>\n"
-        ."<img src='".$this->config->item("imageurl")."/blank.gif' alt='' width='11'  />\n";
+        ."<img src='".Yii::app()->getConfig("imageurl")."/blank.gif' alt='' width='11'  />\n";
         return $menu;
     }
 
@@ -274,7 +279,7 @@ class translate extends Admin_Controller {
     */
     function menuSeparator()
     {
-        return ("<img src='".$this->config->item("imageurl")."/seperator.gif' alt='' />\n");
+        return ("<img src='".Yii::app()->getConfig("imageurl")."/seperator.gif' alt='' />\n");
     }
 
     /**
@@ -288,9 +293,9 @@ class translate extends Admin_Controller {
     */
     function showTranslateAdminmenu($surveyid, $survey_title, $tolang)
     {
-        $imageurl = $this->config->item("imageurl");
-        $clang = $this->limesurvey_lang;
-        $publicurl = $this->config->item('publicurl');
+        $imageurl = Yii::app()->getConfig("imageurl");
+        $clang = Yii::app()->lang;
+        $publicurl = Yii::app()->baseUrl;
 
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         $supportedLanguages = getLanguageData(false);
@@ -308,20 +313,20 @@ class translate extends Admin_Controller {
         ."<div class='menubar-left'>\n";
 
         // Return to survey administration button
-        $adminmenu .= self::menuItem($clang->gT("Return to survey administration"),
+        $adminmenu .= translate::menuItem($clang->gT("Return to survey administration"),
         $clang->gTview("Return to survey administration"),
-        "Administration", "home.png", site_url("admin/survey/view/$surveyid/"));
+        "Administration", "home.png", "$publicurl/admin/survey/view/surveyid/$surveyid/");
 
         // Separator
-        $adminmenu .= self::menuSeparator();
+        $adminmenu .= translate::menuSeparator();
 
         // Test / execute survey button
 
         if ($tolang != "")
         {
-            $sumquery1 = "SELECT * FROM ".$this->db->dbprefix('surveys')." inner join ".$this->db->dbprefix('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
+            $sumquery1 = "SELECT * FROM {{surveys}} inner join {{surveys_languagesettings}} on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
             $sumresult1 = db_select_limit_assoc($sumquery1, 1) ; //Checked
-            $surveyinfo = $sumresult1->row_array();
+            $surveyinfo = $sumresult1->read();
 
             $surveyinfo = array_map('FlattenText', $surveyinfo);
             $activated = $surveyinfo['active'];
@@ -380,7 +385,7 @@ class translate extends Admin_Controller {
         ."<select id='translationlanguage' name='translationlanguage' onchange=\"window.open(this.options[this.selectedIndex].value,'_top')\">\n";
         if (count(GetAdditionalLanguagesFromSurveyID($surveyid)) > 1)
         {
-            $adminmenu .= "<option {$selected} value='".site_url("admin/translate/$surveyid/")."'>".$clang->gT("Please choose...")."</option>\n";
+            $adminmenu .= "<option {$selected} value='{$publicurl}/index.php/admin/translate/surveyid/$surveyid/'>".$clang->gT("Please choose...")."</option>\n";
         }
         foreach($langs as $lang)
         {
@@ -390,7 +395,7 @@ class translate extends Admin_Controller {
                 $selected = " selected='selected' ";
             }
             $tolangtext   = $supportedLanguages[$lang]['description'];
-            $adminmenu .= "<option {$selected} value='".site_url("admin/translate/$surveyid/$lang")."'> " . $tolangtext ." </option>\n";
+            $adminmenu .= "<option {$selected} value='{$publicurl}/index.php/admin/translate/surveyid/$surveyid/lang/$lang'> " . $tolangtext ." </option>\n";
         }
         $adminmenu .= ""
         ."</select>\n"
@@ -420,25 +425,24 @@ class translate extends Admin_Controller {
 
     function setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1="", $id2="", $new="")
     {
-        $clang=$this->limesurvey_lang;
-        $dbprefix = $this->db->dbprefix;
+        $clang = Yii::app()->lang;
 
         switch ( $type )
         {
             case 'title':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language=".$this->db->escape($baselang),
+                ."FROM {{surveys_languagesettings}}"
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
+                ." AND surveyls_language=".Yii::app()->db->quoteValue($baselang),
                 "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language=".$this->db->escape($tolang),
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('surveys_languagesettings')
-                ." SET surveyls_title = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language=".$this->db->escape($tolang),
+                ."FROM {{surveys_languagesettings}}"
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
+                ." AND surveyls_language=".Yii::app()->db->quoteValue($tolang),
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_title = ".Yii::app()->db->quoteValue($new)
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
+                ." AND surveyls_language=".Yii::app()->db->quoteValue($tolang),
                 "id1"  => "",
                 "id2"  => "",
                 "gid"  => FALSE,
@@ -454,16 +458,16 @@ class translate extends Admin_Controller {
             case 'description':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
+                ."FROM {{surveys_languagesettings}}"
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
                 ." AND surveyls_language='{$baselang}'  ",
                 "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
+                ."FROM {{surveys_languagesettings}}"
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
                 ." AND surveyls_language='{$tolang}'  ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('surveys_languagesettings')
-                ." SET surveyls_description = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_description = ".Yii::app()->db->quoteValue($new)
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
                 ." AND surveyls_language='{$tolang}'",
                 "id1"  => "",
                 "id2"  => "",
@@ -480,16 +484,16 @@ class translate extends Admin_Controller {
             case 'welcome':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
+                ."FROM {{surveys_languagesettings}}"
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
                 ." AND surveyls_language='{$baselang}'  ",
                 "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
+                ."FROM {{surveys_languagesettings}}"
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
                 ." AND surveyls_language='{$tolang}'  ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('surveys_languagesettings')
-                ." SET surveyls_welcometext = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_welcometext = ".Yii::app()->db->quoteValue($new)
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
                 ." AND surveyls_language='{$tolang}'",
                 "id1"  => "",
                 "id2"  => "",
@@ -506,16 +510,16 @@ class translate extends Admin_Controller {
             case 'end':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
+                ."FROM {{surveys_languagesettings}}"
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
                 ." AND surveyls_language='{$baselang}'  ",
                 "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
+                ."FROM {{surveys_languagesettings}}"
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
                 ." AND surveyls_language='{$tolang}'  ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('surveys_languagesettings')
-                ." SET surveyls_endtext = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_endtext = ".Yii::app()->db->quoteValue($new)
+                ." WHERE surveyls_survey_id=".Yii::app()->db->quoteValue($surveyid)
                 ." AND surveyls_language='{$tolang}'",
                 "id1"  => "",
                 "id2"  => "",
@@ -532,19 +536,19 @@ class translate extends Admin_Controller {
             case 'group':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('groups')
-                ." WHERE sid=".$this->db->escape($surveyid)
+                ."FROM {{groups}}"
+                ." WHERE sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND language='{$baselang}' "
                 ."ORDER BY gid ",
                 "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('groups')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language=".$this->db->escape($tolang)
+                ."FROM {{groups}}"
+                ." WHERE sid=".Yii::app()->db->quoteValue($surveyid)
+                ." AND language=".Yii::app()->db->quoteValue($tolang)
                 ."ORDER BY gid ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('groups')
-                ." SET group_name = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{groups}}"
+                ." SET group_name = ".Yii::app()->db->quoteValue($new)
                 ." WHERE gid = '{$id1}' "
-                ."AND sid=".$this->db->escape($surveyid)
+                ."AND sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND language='{$tolang}'",
                 "id1"  => "gid",
                 "id2"  => "",
@@ -561,19 +565,19 @@ class translate extends Admin_Controller {
             case 'group_desc':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('groups')
-                ." WHERE sid=".$this->db->escape($surveyid)
+                ."FROM {{groups}}"
+                ." WHERE sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND language='{$baselang}' "
                 ."ORDER BY gid ",
                 "queryto"   => "SELECT *"
-                ."FROM ".$this->db->dbprefix('groups')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language=".$this->db->escape($tolang)
+                ."FROM {{groups}}"
+                ." WHERE sid=".Yii::app()->db->quoteValue($surveyid)
+                ." AND language=".Yii::app()->db->quoteValue($tolang)
                 ."ORDER BY gid ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('groups')
-                ." SET description = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{groups}}"
+                ." SET description = ".Yii::app()->db->quoteValue($new)
                 ." WHERE gid = '{$id1}' "
-                ."AND sid=".$this->db->escape($surveyid)
+                ."AND sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND language='{$tolang}'",
                 "id1"  => "gid",
                 "id2"  => "",
@@ -590,15 +594,15 @@ class translate extends Admin_Controller {
                 //    case 'label':
                 //      $amTypeOptions = array(
                 //        "querybase" => "SELECT * "
-                //                                   ."FROM ".$this->db->dbprefix('labels')
+                //                                   ."FROM {{labels}}"
                 //                                   ." WHERE language='{$baselang}' "
                 //                                   .  "AND lid='$code' ",
                 //        "queryto"   => "SELECT * "
-                //                                    ."FROM ".$this->db->dbprefix('labels')
-                //                                    ." WHERE language=".$this->db->escape($tolang)
+                //                                    ."FROM {{labels}}"
+                //                                    ." WHERE language=".Yii::app()->db->quoteValue($tolang)
                 //                                    .  "AND lid='$code' ",
-                //        "queryupdate" => "UPDATE ".$this->db->dbprefix('labels')
-                //                   ." SET title = ".$this->db->escape($new)
+                //        "queryupdate" => "UPDATE {{labels}}"
+                //                   ." SET title = ".Yii::app()->db->quoteValue($new)
                 //                         ." WHERE lid = '{$id1}' "
                 //                           ."AND code='{$id2}' "
                 //                           ."AND language='{$tolang}' LIMIT 1",
@@ -612,21 +616,21 @@ class translate extends Admin_Controller {
             case 'question':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
+                ."FROM {{questions}}"
+                ." WHERE sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND language='{$baselang}' "
                 ."AND parent_qid=0 "
                 ."ORDER BY qid ",
                 "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
+                ."FROM {{questions}}"
+                ." WHERE sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND language='{$tolang}' "
                 ." AND parent_qid=0 "
                 ."ORDER BY qid ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('questions')
-                ." SET question = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{questions}}"
+                ." SET question = ".Yii::app()->db->quoteValue($new)
                 ." WHERE qid = '{$id1}' "
-                ."AND sid=".$this->db->escape($surveyid)
+                ."AND sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND parent_qid=0 "
                 ."AND language='{$tolang}'",
                 "dbColumn" => 'question',
@@ -644,21 +648,21 @@ class translate extends Admin_Controller {
             case 'question_help':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
+                ."FROM {{questions}}"
+                ." WHERE sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND language='{$baselang}' "
                 ."AND parent_qid=0 "
                 ."ORDER BY qid ",
                 "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
+                ."FROM {{questions}}"
+                ." WHERE sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND language='{$tolang}' "
                 ." AND parent_qid=0 "
                 ."ORDER BY qid ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('questions')
-                ." SET help = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{questions}}"
+                ." SET help = ".Yii::app()->db->quoteValue($new)
                 ." WHERE qid = '{$id1}' "
-                ." AND sid=".$this->db->escape($surveyid)
+                ." AND sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND parent_qid=0 "
                 ."AND language='{$tolang}'",
                 "dbColumn" => 'help',
@@ -676,19 +680,19 @@ class translate extends Admin_Controller {
             case 'subquestion':
                 $amTypeOptions = array(
                 "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
+                ."FROM {{questions}}"
+                ." WHERE sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND language='{$baselang}' AND parent_qid>0 "
                 ."ORDER BY parent_qid,qid ",
                 "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language=".$this->db->escape($tolang)
+                ."FROM {{questions}}"
+                ." WHERE sid=".Yii::app()->db->quoteValue($surveyid)
+                ." AND language=".Yii::app()->db->quoteValue($tolang)
                 ." AND parent_qid>0 ORDER BY parent_qid,qid ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('questions')
-                ." SET question = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{questions}}"
+                ." SET question = ".Yii::app()->db->quoteValue($new)
                 ." WHERE qid = '{$id1}' "
-                ." AND sid=".$this->db->escape($surveyid)
+                ." AND sid=".Yii::app()->db->quoteValue($surveyid)
                 ." AND language='{$tolang}'",
                 "dbColumn" => 'question',
                 "id1"  => 'qid',
@@ -704,22 +708,22 @@ class translate extends Admin_Controller {
 
             case 'answer':
                 $amTypeOptions = array(
-                "querybase" => "SELECT ".$this->db->dbprefix('answers').".*, ".$this->db->dbprefix('questions').".gid "
-                ." FROM ".$this->db->dbprefix('answers').", ".$this->db->dbprefix('questions')
-                ." WHERE ".$this->db->dbprefix('questions').".sid ='{$surveyid}' "
-                ." AND ".$this->db->dbprefix('questions').".qid = ".$this->db->dbprefix('answers').".qid "
-                ." AND ".$this->db->dbprefix('questions').".language = ".$this->db->dbprefix('answers').".language "
-                ." AND ".$this->db->dbprefix('questions').".language='{$baselang}' "
+                "querybase" => "SELECT {{answers}}.*, {{questions}}.gid "
+                ." FROM {{answers}}, {{questions}}"
+                ." WHERE {{questions}}.sid ='{$surveyid}' "
+                ." AND {{questions}}.qid = {{answers}}.qid "
+                ." AND {{questions}}.language = {{answers}}.language "
+                ." AND {{questions}}.language='{$baselang}' "
                 ." ORDER BY qid,code,sortorder" ,
-                "queryto" => "SELECT ".$this->db->dbprefix('answers').".*, ".$this->db->dbprefix('questions').".gid "
-                ." FROM ".$this->db->dbprefix('answers').", ".$this->db->dbprefix('questions')
-                ." WHERE ".$this->db->dbprefix('questions').".sid ='{$surveyid}' "
-                ." AND ".$this->db->dbprefix('questions').".qid = ".$this->db->dbprefix('answers').".qid "
-                ." AND ".$this->db->dbprefix('questions').".language = ".$this->db->dbprefix('answers').".language "
-                ." AND ".$this->db->dbprefix('questions').".language=".$this->db->escape($tolang)
+                "queryto" => "SELECT {{answers}}.*, {{questions}}.gid "
+                ." FROM {{answers}}, {{questions}}"
+                ." WHERE {{questions}}.sid ='{$surveyid}' "
+                ." AND {{questions}}.qid = {{answers}}.qid "
+                ." AND {{questions}}.language = {{answers}}.language "
+                ." AND {{questions}}.language=".Yii::app()->db->quoteValue($tolang)
                 ."ORDER BY qid,code,sortorder" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('answers')
-                ." SET answer = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{answers}}"
+                ." SET answer = ".Yii::app()->db->quoteValue($new)
                 ." WHERE qid = '{$id1}' "
                 ."AND code='{$id2}' "
                 ."AND language='{$tolang}'",
@@ -737,12 +741,12 @@ class translate extends Admin_Controller {
 
             case 'emailinvite':
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "querybase" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "queryto" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_invite_subj = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_email_invite_subj = ".Yii::app()->db->quoteValue($new)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_invite_subj',
@@ -759,12 +763,12 @@ class translate extends Admin_Controller {
 
             case 'emailinvitebody':
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "querybase" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "queryto" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_invite = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_email_invite = ".Yii::app()->db->quoteValue($new)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_invite',
@@ -781,12 +785,12 @@ class translate extends Admin_Controller {
 
             case 'emailreminder':
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "querybase" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "queryto" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_remind_subj = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_email_remind_subj = ".Yii::app()->db->quoteValue($new)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_remind_subj',
@@ -803,12 +807,12 @@ class translate extends Admin_Controller {
 
             case 'emailreminderbody':
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "querybase" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "queryto" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_remind = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_email_remind = ".Yii::app()->db->quoteValue($new)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_remind',
@@ -825,12 +829,12 @@ class translate extends Admin_Controller {
 
             case 'emailconfirmation':
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "querybase" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "queryto" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_confirm_subj = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_email_confirm_subj = ".Yii::app()->db->quoteValue($new)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_confirm_subj',
@@ -847,12 +851,12 @@ class translate extends Admin_Controller {
 
             case 'emailconfirmationbody':
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "querybase" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "queryto" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_confirm = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_email_confirm = ".Yii::app()->db->quoteValue($new)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_confirm',
@@ -869,12 +873,12 @@ class translate extends Admin_Controller {
 
             case 'emailregistration':
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "querybase" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "queryto" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_register_subj = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_email_register_subj = ".Yii::app()->db->quoteValue($new)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_register_subj',
@@ -891,12 +895,12 @@ class translate extends Admin_Controller {
 
             case 'emailregistrationbody':
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "querybase" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "queryto" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_register = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_email_register = ".Yii::app()->db->quoteValue($new)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_register',
@@ -913,12 +917,12 @@ class translate extends Admin_Controller {
 
             case 'email_confirm':
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "querybase" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "queryto" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_confirm_subj = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_email_confirm_subj = ".Yii::app()->db->quoteValue($new)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_confirm_subj',
@@ -935,12 +939,12 @@ class translate extends Admin_Controller {
 
             case 'email_confirmbody':
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "querybase" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
+                "queryto" => "SELECT * FROM {{surveys_languagesettings}}"
                 ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_confirm = ".$this->db->escape($new)
+                "queryupdate" => "UPDATE {{surveys_languagesettings}}"
+                ." SET surveyls_email_confirm = ".Yii::app()->db->quoteValue($new)
                 ." WHERE surveyls_survey_id=$surveyid "
                 ."AND surveyls_language='$tolang'",
                 "dbColumn" => 'surveyls_email_confirm',
@@ -1034,7 +1038,7 @@ class translate extends Admin_Controller {
         . "<td>\n";
         $translateoutput .= "<input type='hidden' name='{$type}_id1_{$i}' value='{$value1}' />\n";
         $translateoutput .= "<input type='hidden' name='{$type}_id2_{$i}' value='{$value2}' />\n";
-        $nrows = max(self::calc_nrows($textfrom), self::calc_nrows($textto));
+        $nrows = max(translate::calc_nrows($textfrom), translate::calc_nrows($textto));
         $translateoutput .= "<input type='hidden' "
         ."name='".$type."_oldvalue_".$i."' "
         ."value='".htmlspecialchars($textto, ENT_QUOTES)."' />\n";
@@ -1083,9 +1087,9 @@ class translate extends Admin_Controller {
     function translate_google_api()
     {
         header('Content-type: application/json');
-        $sBaselang   = $this->input->post('baselang');
-        $sTolang     = $this->input->post('tolang');
-        $sToconvert  = $this->input->post('text');
+        $sBaselang   = @$_POST['baselang'];
+        $sTolang     = @$_POST['tolang'];
+        $sToconvert  = @$_POST['text'];
 
         $aSearch     = array('zh-Hans','zh-Hant-HK','zh-Hant-TW',
         'nl-informal','de-informal','it-formal','pt-BR','es-MX','nb','nn');
@@ -1095,8 +1099,8 @@ class translate extends Admin_Controller {
 
         try {
 
-            $this->load->library('admin/gtranslate/GTranslate','gtranslate');
-            $objGt         = $this->gtranslate;
+            Yii::import('application.libraries.admin.gtranslate.GTranslate',true);
+            $objGt         = new GTranslate;
 
             // Gtranslate requires you to run function named XXLANG_to_XXLANG
             $sProcedure       = $sBaselang."_to_".$sTolang;
