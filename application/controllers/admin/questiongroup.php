@@ -43,6 +43,8 @@ class questiongroup extends Survey_Common_Action {
 			$this->route('update', array('gid'));
 		elseif ($sa == 'import')
 			$this->route('import', array());
+		elseif ($sa == 'organize')
+			$this->route('organize', array('surveyid'));
 	}
 
     /**
@@ -501,52 +503,56 @@ class questiongroup extends Survey_Common_Action {
     */
     function organize($iSurveyID)
     {
-        $iSurveyID= (int)$iSurveyID;
-        $this->load->model('groups_model');
-        $this->load->model('questions_model');
+        $iSurveyID = (int) $iSurveyID;
 
-        if ($this->input->post('orgdata') && bHasSurveyPermission($iSurveyID,'surveycontent','update'))
+        if (!empty($_POST['orgdata']) && bHasSurveyPermission($iSurveyID,'surveycontent','update'))
         {
-            $AOrgData=array();
-            parse_str($this->input->post('orgdata'),$AOrgData);
-            $grouporder=0;
+            $AOrgData = array();
+            parse_str($_POST['orgdata'], $AOrgData);
+            $grouporder = 0;
             foreach($AOrgData['list'] as $ID=>$parent)
             {
                 if ($parent=='root' && $ID[0]=='g'){
-                    $this->groups_model->update(array('group_order'=>$grouporder),array('gid'=>(int)substr($ID,1)));
+                    Groups::model()->update(array('group_order'=>$grouporder), 'gid='.(int)substr($ID,1));
                     $grouporder++;
                 }
                 elseif ($ID[0]=='q')
                 {
                     if (!isset($questionorder[(int)substr($parent,1)])) $questionorder[(int)substr($parent,1)]=0;
-                    $this->questions_model->update(array('question_order'=>$questionorder[(int)substr($parent,1)],'gid'=>(int)substr($parent,1)),array('qid'=>(int)substr($ID,1)));
-                    $this->questions_model->update(array('gid'=>(int)substr($parent,1)),array('parent_qid'=>(int)substr($ID,1)));
+                    Questions::model()->update(array('question_order'=>$questionorder[(int)substr($parent,1)],'gid'=>(int)substr($parent,1)), 'qid='.(int)substr($ID,1));
+                    Questions::model()->update(array('gid'=>(int)substr($parent,1)), 'parent_qid='.(int)substr($ID,1));
                     $questionorder[(int)substr($parent,1)]++;
                 }
             }
-            $this->session->set_userdata('flashmessage', $this->limesurvey_lang->gT("The new question group/question order was successfully saved."));
-            redirect('admin/survey/view/'.$iSurveyID);
+            Yii::app()->session['flashmessage'] = Yii::app()->lang->gT("The new question group/question order was successfully saved.");
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iSurveyID));
         }
 
         // Prepare data for the view
-        $sBaseLanguage=GetBaseLanguageFromSurveyID($iSurveyID);
-        self::_js_admin_includes(base_url().'scripts/jquery/jquery.ui.nestedSortable.js');
-        self::_js_admin_includes(base_url().'scripts/admin/organize.js');
+        $sBaseLanguage = GetBaseLanguageFromSurveyID($iSurveyID);
 
+
+        Yii::import('application.helpers.expressions.em_manager_helper', true);
+        Yii::import('application.helpers.replacements_helper', true);
         LimeExpressionManager::StartProcessingPage(false,true,false);
-        $aGrouplist=$this->groups_model->getGroups($iSurveyID);
-        $initializedReplacementFields=false;
-        foreach($aGrouplist as $iGID=>$aGroup)
+
+        $aGrouplist = Groups::model()->getGroups($iSurveyID);
+        $initializedReplacementFields = false;
+
+        foreach($aGrouplist as $iGID => $aGroup)
         {
             LimeExpressionManager::StartProcessingGroup($aGroup['gid'],false,$iSurveyID);
             if (!$initializedReplacementFields) {
                 templatereplace("{SITENAME}");  // Hack to ensure the EM sets values of LimeReplacementFields
                 $initializedReplacementFields = true;
             }
-            $oQuestionData=$this->questions_model->getQuestions($iSurveyID,$aGroup['gid'],$sBaseLanguage);
-            $qs = array();
+
+            $oQuestionData=Questions::model()->getQuestions($iSurveyID,$aGroup['gid'],$sBaseLanguage);
+
+			$qs = array();
             $junk=array();
-            foreach ($oQuestionData->result_array() as $q) {
+
+			foreach ($oQuestionData->readAll() as $q) {
                 $relevance = (trim($q['relevance'])=='') ? 1 : $q['relevance'];
                 $question = '[{' . $relevance . '}] ' . $q['question'];
                 LimeExpressionManager::ProcessString($question,$q['qid'],$junk,false,1,1);
@@ -557,17 +563,29 @@ class questiongroup extends Survey_Common_Action {
             $aGrouplist[$iGID]['questions']=$qs;
         }
         LimeExpressionManager::FinishProcessingPage();
-        $aViewData['aGroupsAndQuestions']=$aGrouplist;
-        $aViewData['clang']=$this->limesurvey_lang;
-        $aViewData['surveyid']=$iSurveyID;
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-        self::_getAdminHeader();
-        self::_showadminmenu();
-        self::_surveybar($iSurveyID);
-        $this->load->view('admin/survey/organizeGroupsAndQuestions_view',$aViewData);
-        self::_loadEndScripts();
-        self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+
+        $aViewData['aGroupsAndQuestions'] = $aGrouplist;
+        $aViewData['clang'] = Yii::app()->lang;
+        $aViewData['surveyid'] = $iSurveyID;
+
+		$js_admin_includes   = Yii::app()->getConfig("js_admin_includes");
+        $js_admin_includes[] = Yii::app()->getConfig('generalscripts').'jquery/jquery.ui.nestedSortable.js';
+        $js_admin_includes[] = Yii::app()->getConfig('generalscripts').'admin/organize.js';
+        Yii::app()->setConfig("js_admin_includes", $js_admin_includes);
+
+		$css_admin_includes   = Yii::app()->getConfig("css_admin_includes");
+		$css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+
+        $this->controller->_getAdminHeader();
+        $this->controller->_showadminmenu();
+        $this->_surveybar($iSurveyID);
+
+        $this->getController()->render('/admin/survey/organizeGroupsAndQuestions_view',$aViewData);
+
+		$this->controller->_loadEndScripts();
+        $this->controller->_getAdminFooter("http://docs.limesurvey.org", Yii::app()->lang->gT("LimeSurvey online manual"));
+
     }
 
 

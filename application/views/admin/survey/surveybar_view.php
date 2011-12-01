@@ -210,7 +210,7 @@
                     else
                     { ?><li>
 
-                        <a href="<?php echo $this->createUrl("admin/questiongroup/organize/$surveyid"); ?>">
+                        <a href="<?php echo $this->createUrl("admin/questiongroup/sa/organize/surveyid/$surveyid"); ?>">
                             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/organize.png' alt='<?php echo $clang->gT("Reorder question groups / questions"); ?>' name='Organize' width="40" height="40"/></a></li>
                     <?php }
             } ?>

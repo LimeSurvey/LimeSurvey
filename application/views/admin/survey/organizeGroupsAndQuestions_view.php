@@ -15,7 +15,7 @@
                         <?php
                             foreach($aGroupAndQuestions['questions'] as $aQuestion)
                             {?>
-                            <li id='list_q<?php echo $aQuestion['qid'];?>'><div><b><a href='<?php echo site_url('admin/question/editquestion/'.$surveyid.'/'.$aQuestion['gid'].'/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>: <?php echo FlattenText($aQuestion['question'],true);?></div></li>
+                            <li id='list_q<?php echo $aQuestion['qid'];?>'><div><b><a href='<?php echo Yii::app()->createUrl('admin/question/editquestion/'.$surveyid.'/'.$aQuestion['gid'].'/'.$aQuestion['qid']);?>'><?php echo $aQuestion['title'];?></a></b>: <?php echo FlattenText($aQuestion['question'],true);?></div></li>
 
                             <?php }?>
                     </ol>
@@ -25,7 +25,7 @@
         }?>
     </ol>
 </div>
-<form id='frmOrganize' action="<?php echo site_url('admin/questiongroup/organize/'.$surveyid);?>" method="post"><p>
+<form id='frmOrganize' action="<?php echo Yii::app()->createUrl('admin/questiongroup/sa/organize/surveyid/'.$surveyid);?>" method="post"><p>
         <input type='hidden' id='orgdata' name='orgdata' value='' />
         <button id='btnSave'><?php echo $clang->eT('Save'); ?></button></p>
 </form>

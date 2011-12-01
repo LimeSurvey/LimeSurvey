@@ -1876,7 +1876,7 @@ class LimeExpressionManager {
         foreach($LEM->runtimeTimings as $unit) {
             $totalTime += $unit[1];
         }
-        log_message('debug','Total time attributable to EM = ' . $totalTime);
+//        log_message('debug','Total time attributable to EM = ' . $totalTime);
 //        log_message('debug',print_r($LEM->runtimeTimings,true));
 //      LimeExpressionManager::ShowStackTrace();
 

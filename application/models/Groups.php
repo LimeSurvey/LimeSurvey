@@ -49,7 +49,7 @@ class Groups extends CActiveRecord
 	{
 		return 'gid';
 	}
-	
+
 	function updateGroupOrder($sid,$lang,$position=0)
     {
 		$data=Yii::app()->db->createCommand()->select('gid')->where(array('and','sid='.$sid,'language="'.$lang.'"'))->order('group_order, group_name ASC')->from('{{groups}}')->query();
@@ -58,22 +58,33 @@ class Groups extends CActiveRecord
         {
             Yii::app()->db->createCommand()->update($this->tableName(),array('group_order' => $position),'gid='.$row['gid']);
             $position++;
-}
+		}
     }
-	
+
 	function update($data, $condition=FALSE)
     {
 
         return Yii::app()->db->createCommand()->update('{{groups}}', $data, $condition);
 
     }
-	
+
 	public function insertRecords($data)
     {
         $group = new self;
 		foreach ($data as $k => $v)
 			$group->$k = $v;
 		return $group->save();
+    }
+
+    function getGroups($surveyid) {
+        $language = GetBaseLanguageFromSurveyID($surveyid);
+		return Yii::app()->db->createCommand()
+			->select(array('gid', 'group_name'))
+			->from($this->tableName())
+			->where(array('and', 'sid='.$surveyid, 'language=:language'))
+			->order('group_order asc')
+			->bindParam(":language", $language, PDO::PARAM_STR)
+			->query()->readAll();
     }
 }
 ?>
