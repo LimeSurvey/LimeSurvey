@@ -250,7 +250,7 @@ require_once("qanda.php");
 $inputnames=array();
 $groupUnconditionnalQuestionsCount=array();
 
-LimeExpressionManager::StartProcessingPage(false,true,true);  // means that all variables are on the same page
+LimeExpressionManager::StartProcessingPage(false,true);  // means that all variables are on the same page
 
 foreach ($_SESSION['grouplist'] as $gl)
 {

@@ -895,7 +895,7 @@ sendcacheheaders();
 switch ($thissurvey['format'])
 {
     case "A": //All in one
-        require_once("survey.php");
+        require_once("survey1.php");
         break;
     case "S": //One at a time
         require_once("group1.php"); // question.php");

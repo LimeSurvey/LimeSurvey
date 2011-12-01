@@ -62,9 +62,9 @@ $ia = array(0 => $qid,
 7 => 'N',
 8 => 'N' ); // ia[8] is usedinconditions
 
-LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', ($thissurvey['anonymized']!="N"), false);
+LimeExpressionManager::StartSurvey($thissurvey['sid'], 'question', ($thissurvey['anonymized']!="N"), false,$LEMdebugLevel);
 $qseq = LimeExpressionManager::GetQuestionSeq($qid);
-$moveResult = LimeExpressionManager::JumpTo($qseq+1,false,($LEMdebugLevel>=2),true);
+$moveResult = LimeExpressionManager::JumpTo($qseq+1,false,true);
 
 $answers = retrieveAnswers($ia);
 
@@ -129,9 +129,8 @@ else
 
 $content .= templatereplace(file_get_contents("$thistpl/endgroup.pstpl")).$dummy_js;
 $content .= '<p>&nbsp;</form>';
-$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
 
-LimeExpressionManager::FinishProcessingPage($LEMdebugLevel);
+LimeExpressionManager::FinishProcessingPage();
 
 echo $content;
 
@@ -141,6 +140,9 @@ if ($LEMdebugLevel >= 1) {
 if ($LEMdebugLevel >= 2) {
      echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
 }
+
+$content .= templatereplace(file_get_contents("$thistpl/endpage.pstpl"));
+
 echo "</html>\n";
 
 

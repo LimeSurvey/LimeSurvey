@@ -14,7 +14,12 @@ class LimeExpressionManager {
     private $groupRelevanceInfo;
     private $sid;
     private $groupNum;
-    private $debugLEM = false;   // set this to false to turn off debugging
+    private $debugLevel=0;
+        // 0=none
+        // 1=timings only
+        // 2=#1 + summary results of validating questions and groups
+        // 3=#1 + pretty-printed results of validating questions and groups
+        // 4=#3 + LimeExpressionManager internal debugging (fine grained)
     private $knownVars;
     private $pageRelevanceInfo;
     private $pageTailorInfo;
@@ -1419,7 +1424,7 @@ class LimeExpressionManager {
                 . "','relevance':'" . htmlspecialchars(preg_replace('/[[:space:]]/',' ',$relevance),ENT_QUOTES)
                 . "'".$ansList."}";
 
-            if ($this->debugLEM)
+            if ($this->debugLevel>=4)
             {
                 $this->debugLog[] = array(
                     'code' => $code,
@@ -1464,7 +1469,7 @@ class LimeExpressionManager {
                     'relevanceNum'=>'',
                     );
 
-                if ($this->debugLEM)
+                if ($this->debugLevel>=4)
                 {
                     $this->debugLog[] = array(
                         'code' => $key,
@@ -1501,7 +1506,7 @@ class LimeExpressionManager {
         }
 
         $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
-        if ($this->debugLEM)
+        if ($this->debugLevel>=4)
         {
             $debugLog_html = "<table border='1'>";
             $debugLog_html .= "<tr><th>Code</th><th>Type</th><th>VarName</th><th>CodeVal</th><th>DisplayVal</th><th>JSname</th><th>Writable?</th><th>Set On This Page?</th><th>Relevance</th><th>Hidden</th><th>Question</th></tr>";
@@ -1677,7 +1682,7 @@ class LimeExpressionManager {
             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
         }
 
-        if ($LEM->debugLEM)
+        if ($LEM->debugLevel>=4)
         {
             $varsUsed = $LEM->em->GetJSVarsUsed();
             if (is_array($varsUsed) and count($varsUsed) > 0) {
@@ -1855,9 +1860,8 @@ class LimeExpressionManager {
      * Should be first function called on each page - sets/clears internally needed variables
      * @param <type> $navigationIndex - true if should compute the navigation index (list of questions or groups to display)
      * @param <type> $allOnOnePage - true if StartProcessingGroup will be called multiple times on this page - does some optimizatinos
-     * @param <type> $debug - whether to generate debug logs
      */
-    static function StartProcessingPage($navigationIndex=false,$allOnOnePage=false,$debug=true)
+    static function StartProcessingPage($navigationIndex=false,$allOnOnePage=false)
     {
 //        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
@@ -1872,7 +1876,7 @@ class LimeExpressionManager {
 
 //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
-        if ($debug && $LEM->debugLEM)
+        if ($LEM->debugLevel>=4)
         {
             $LEM->pageTailoringLog .= '<tr><th>Source</th><th>Pretty Print</th><th>Result</th></tr>';
         }
@@ -1887,11 +1891,12 @@ class LimeExpressionManager {
      * @param <type> $forceRefresh
      */
 
-    static function StartSurvey($surveyid,$surveyMode='group',$anonymized=false,$forceRefresh=false)
+    static function StartSurvey($surveyid,$surveyMode='group',$anonymized=false,$forceRefresh=false,$debugLevel=0)
     {
         $LEM =& LimeExpressionManager::singleton();
         $LEM->sid=$surveyid;   // TMSW - santize this?
         $LEM->anonymized=$anonymized;
+        $LEM->debugLevel=$debugLevel;
         switch ($surveyMode) {
             case 'survey':
                 $LEM->allOnOnePage=true;
@@ -1924,10 +1929,11 @@ class LimeExpressionManager {
         );
     }
 
-     static function NavigateBackwards($debug=false)
+     static function NavigateBackwards()
     {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
+        $debug = ($LEM->debugLevel>=2);
 
         $LEM->RelevanceResultCache=array();    // to avoid running same test more than once for a given group
 
@@ -1957,7 +1963,7 @@ class LimeExpressionManager {
                  */
 
                 $LEM->currentQset = array();    // reset active list of questions
-                $result = $LEM->_ValidateSurvey($debug);
+                $result = $LEM->_ValidateSurvey();
                 if (!$result['relevant'] || $result['hidden'])
                 {
                     // then there are no relevant, visible questions in the survey
@@ -1992,7 +1998,7 @@ class LimeExpressionManager {
                         );
                     }
 
-                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,  $debug);
+                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
                     $message .= $result['message'];
                     if (!$result['relevant'] || $result['hidden'])
                     {
@@ -2048,7 +2054,7 @@ class LimeExpressionManager {
 
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
-                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,  $debug);
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
 
                     if (!$result['relevant'] || $result['hidden'])
@@ -2081,11 +2087,11 @@ class LimeExpressionManager {
     /**
      *
      * @param <type> $force - if true, continue to go forward even if there are violations to the mandatory and/or validity rules
-     * @param <type> $debug - if true, show more detailed debug messages
      */
-    static function NavigateForwards($force=false,$debug=false) {
+    static function NavigateForwards($force=false) {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
+        $debug = ($LEM->debugLevel>=2);
 
         $LEM->RelevanceResultCache=array();    // to avoid running same test more than once for a given group
 
@@ -2115,7 +2121,7 @@ class LimeExpressionManager {
                  */
 
                 $LEM->currentQset = array();    // reset active list of questions
-                $result = $LEM->_ValidateSurvey($debug);
+                $result = $LEM->_ValidateSurvey();
                 if (!$result['relevant'] || $result['hidden'])
                 {
                     // then there are no relevant, visible questions in the survey
@@ -2135,18 +2141,20 @@ class LimeExpressionManager {
                 $LEM->StartProcessingPage();
                 $LEM->ProcessCurrentResponses();
                 $updatedValues=array();
+                $message = '';
                 if (!$force && $LEM->currentGroupSeq != -1)
                 {
-                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,$debug);
+                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
+                    $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current group
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
-                            'message'=>$result['message'],
+                            'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentGroupSeq,
                             'mandViolation'=>$result['mandViolation'],
@@ -2156,13 +2164,12 @@ class LimeExpressionManager {
                         );
                     }
                 }
-                $message = '';
                 while (true)
                 {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentGroupSeq >= $LEM->numGroups)
                     {
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
@@ -2176,7 +2183,7 @@ class LimeExpressionManager {
                         );
                     }
 
-                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,  $debug);
+                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     if (!$result['relevant'] || $result['hidden'])
@@ -2187,7 +2194,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new group
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2206,18 +2213,20 @@ class LimeExpressionManager {
                 $LEM->StartProcessingPage();
                 $LEM->ProcessCurrentResponses();
                 $updatedValues=array();
+                $message = '';
                 if (!$force && $LEM->currentQuestionSeq != -1)
                 {
-                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$debug);
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
+                    $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current question
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
-                            'message'=>$result['message'],
+                            'message'=>$message,
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
@@ -2228,13 +2237,12 @@ class LimeExpressionManager {
                         );
                     }
                 }
-                $message = '';
                 while (true)
                 {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
                     {
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
@@ -2261,7 +2269,7 @@ class LimeExpressionManager {
 
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
-                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,  $debug);
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
 
@@ -2273,7 +2281,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new question
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2317,27 +2325,29 @@ class LimeExpressionManager {
             $query .= implode(', ', $setter);
             $query .= " WHERE ID=";
             
-//            echo $query;
-            
             if (isset($_SESSION['srid']))
             {
                 $query .= $_SESSION['srid'];
                 db_execute_assoc($query);
             }
+            if ($this->debugLevel >= 2) {
+                return $query;
+            }
         }
+        return '';
     }
 
     /**
      * Jump to a specific question or group sequence.
      * @param <type> $seq
      * @param <type> $force - if true, then skip validation of current group (e.g. will jump even if there are errors)
-     * @param <type> $debug - if true, generate detailed debug information
      * @param <type> $preview - if true, then treat this group/question as relevant, even if it is not, so that it can be displayed
      * @return <type>
      */
-    static function JumpTo($seq,$force=false,$debug=false,$preview=false) {
+    static function JumpTo($seq,$force=false,$preview=false) {
         $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
+        $debug = ($LEM->debugLevel>=2);
 
         $LEM->RelevanceResultCache=array();    // to avoid running same test more than once for a given group
         --$seq; // convert to 0-based numbering
@@ -2352,18 +2362,20 @@ class LimeExpressionManager {
                 $LEM->StartProcessingPage();
                 $LEM->ProcessCurrentResponses();
                 $updatedValues=array();
+                $message = '';
                 if (!$force && $LEM->currentGroupSeq != -1 && $seq > $LEM->currentGroupSeq) // only re-validate if jumping forward
                 {
-                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,$debug);
+                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
+                    $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current group
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
-                            'message'=>$result['message'],
+                            'message'=>$message,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentGroupSeq,
                             'mandViolation'=>$result['mandViolation'],
@@ -2373,14 +2385,13 @@ class LimeExpressionManager {
                         );
                     }
                 }
-                $message = '';
                 $LEM->currentGroupSeq = $seq-1; // Try to jump to the requested group, but navigate to next if needed
                 while (true)
                 {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentGroupSeq >= $LEM->numGroups)
                     {
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
@@ -2394,7 +2405,7 @@ class LimeExpressionManager {
                         );
                     }
 
-                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq,  $debug);
+                    $result = $LEM->_ValidateGroup($LEM->currentGroupSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     if (!$preview && (!$result['relevant'] || $result['hidden']))
@@ -2405,7 +2416,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new group
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2424,18 +2435,20 @@ class LimeExpressionManager {
                 $LEM->StartProcessingPage();
                 $LEM->ProcessCurrentResponses();
                 $updatedValues=array();
+                $message = '';
                 if (!$force && $LEM->currentQuestionSeq != -1 && $seq > $LEM->currentQuestionSeq)
                 {
-                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,$debug);
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
+                    $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
                     if ($result['mandViolation'] || !$result['valid'])
                     {
                         // redisplay the current question
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
-                            'message'=>$result['message'],
+                            'message'=>$message,
                             'qseq'=>$LEM->currentQuestionSeq,
                             'gseq'=>$LEM->currentGroupSeq,
                             'seq'=>$LEM->currentQuestionSeq,
@@ -2446,14 +2459,13 @@ class LimeExpressionManager {
                         );
                     }
                 }
-                $message = '';
                 $LEM->currentQuestionSeq=$seq-1;    // try to jump to requeted question, but go on to next if needed
                 while (true)
                 {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
                     {
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
@@ -2480,7 +2492,7 @@ class LimeExpressionManager {
 
                     $LEM->ProcessAllNeededRelevance($LEM->currentQuestionSeq);
                     $LEM->_CreateSubQLevelRelevanceAndValidationEqns($LEM->currentQuestionSeq);
-                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq,  $debug);
+                    $result = $LEM->_ValidateQuestion($LEM->currentQuestionSeq);
                     $message .= $result['message'];
                     $updatedValues = array_merge($updatedValues,$result['updatedValues']);
 
@@ -2492,7 +2504,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new question
-                        $LEM->UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->UpdateValuesInDatabase($updatedValues);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2511,7 +2523,7 @@ class LimeExpressionManager {
         }
     }
 
-    function _ValidateSurvey($debug=false)
+    function _ValidateSurvey()
     {
         $LEM =& $this;
 
@@ -2523,7 +2535,7 @@ class LimeExpressionManager {
 
         for ($i=0;$i<$LEM->numGroups;++$i) {
             $LEM->currentGroupSeq=$i;
-            $gStatus = $LEM->_ValidateGroup($i,$debug);
+            $gStatus = $LEM->_ValidateGroup($i);
             $message .= $gStatus['message'];
 
             if ($gStatus['relevant']) {
@@ -2554,12 +2566,12 @@ class LimeExpressionManager {
     /**
      *
      * @param <type> $groupSeq - the index-0 sequence number for this group
-     * @param <type> $debug - if true, generate detailed debug messages.
      * @return <array> - detailed information about this group
      */
-    function _ValidateGroup($groupSeq, $debug=false)
+    function _ValidateGroup($groupSeq)
     {
         $LEM =& $this;
+        $debug = ($LEM->debugLevel>=2);
 
         if ($groupSeq < 0 || $groupSeq >= $LEM->numGroups) {
             return NULL;    // TODO - what is desired behavior?
@@ -2582,7 +2594,7 @@ class LimeExpressionManager {
 
         for ($i=$groupSeqInfo['qstart'];$i<=$groupSeqInfo['qend']; ++$i)
         {
-            $qStatus = $LEM->_ValidateQuestion($i, $debug);
+            $qStatus = $LEM->_ValidateQuestion($i);
 
             $updatedValues = array_merge($updatedValues,$qStatus['updatedValues']);
 
@@ -2612,7 +2624,7 @@ class LimeExpressionManager {
 
         // Done processing all questions/sub-questions in the potentially relevant group
         // Now check whether the group as a whole is relevant, valid, and/or hidden
-        if ($debug)    // always want to see this
+        if ($LEM->debugLevel>=2)    // always want to see this
         {
             $debug_message .= '<br/>[G#' . $LEM->currentGroupSeq . ']'
                     . '[' . $groupSeqInfo['qstart'] . '-' . $groupSeqInfo['qend'] . ']'
@@ -2632,7 +2644,7 @@ class LimeExpressionManager {
             {
                 // At least one question is invalid, so re-show this group
                 // Validation logic needs to happen before trying to move to the next group
-                if ($debug)
+                if ($LEM->debugLevel>=2)
                 {
                     $debug_message .= "**At least one relevant question was invalid, so re-show this group<br/>\n";
                     $debug_message .= "**Validity Violators: " . implode(', ', explode('|',$invalidSQList)) . "<br/>\n";
@@ -2642,7 +2654,7 @@ class LimeExpressionManager {
             {
                 // At least one releavant question was mandatory but not answered
                 // Mandatory logic needs to happen before trying to move to the next group
-                if ($debug)
+                if ($LEM->debugLevel>=2)
                 {
                     $debug_message .= "**At least one relevant question was mandatory but unanswered, so re-show this group<br/>\n";
                     $debug_message .= '**Mandatory Violators: ' . implode(', ', explode('|',$unansweredSQList)). "<br/>\n";
@@ -2652,7 +2664,7 @@ class LimeExpressionManager {
             if ($ghidden == true)
             {
                 // This group has at least one relevant question, but they are all hidden.
-                if ($debug)
+                if ($LEM->debugLevel>=2)
                 {
                     $debug_message .= '** Page is relevant but hidden, so NULL irrelevant values and save relevant Equation results:</br>';
                 }
@@ -2661,7 +2673,7 @@ class LimeExpressionManager {
         else
         {
             // This group contains no relevant questions
-            if ($debug)
+            if ($LEM->debugLevel>=2)
             {
                 $debug_message .= '** Page is irrelevant, so NULL all questions in this group<br/>';
             }
@@ -2707,11 +2719,10 @@ class LimeExpressionManager {
      * (d) answered - if $_SESSION[sgqa]=='' or NULL, then it is not answered
      * (e) validity - whether relevant questions pass their validity tests
      * @param <type> $questionSeq - the 0-index sequence number for this question
-     * @param <type> $debug - if true, generate detailed debug messages
      * @return <array> of information about this question and its sub-questions
      */
 
-    function _ValidateQuestion($questionSeq, $debug=false)
+    function _ValidateQuestion($questionSeq)
     {
         $LEM =& $this;
         $qInfo = $LEM->questionSeq2relevance[$questionSeq];   // this array is by group and question sequence
@@ -2736,7 +2747,7 @@ class LimeExpressionManager {
         if (isset($LEM->RelevanceResultCache[$relevanceEqn]))
         {
             $qrel = $LEM->RelevanceResultCache[$relevanceEqn]['result'];
-            if ($debug)
+            if ($LEM->debugLevel>=3)
             {
                 $prettyPrintRelEqn = $LEM->RelevanceResultCache[$relevanceEqn]['prettyPrint'];
             }
@@ -2748,7 +2759,7 @@ class LimeExpressionManager {
             {
                 $qrel=false;  // default to invalid so that can show the error
             }
-            if ($debug)
+            if ($LEM->debugLevel>=3)
             {
                 $prettyPrintRelEqn = $LEM->em->GetPrettyPrintString();
             }
@@ -2810,7 +2821,7 @@ class LimeExpressionManager {
                                     if (isset($LEM->RelevanceResultCache[$sq['eqn']]))
                                     {
                                         $sqrel = $LEM->RelevanceResultCache[$sq['eqn']]['result'];
-                                        if ($debug)
+                                        if ($LEM->debugLevel>=3)
                                         {
                                             $prettyPrintSQRelEqns[] = $LEM->RelevanceResultCache[$sq['eqn']]['prettyPrint'];
                                         }
@@ -2823,7 +2834,7 @@ class LimeExpressionManager {
                                         {
                                             $sqrel=false;  // default to invalid so that can show the error
                                         }
-                                        if ($debug)
+                                        if ($LEM->debugLevel>=3)
                                         {
                                             $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
                                             $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
@@ -2851,7 +2862,7 @@ class LimeExpressionManager {
                                     if (isset($LEM->RelevanceResultCache[$sq['eqn']]))
                                     {
                                         $sqrel = $LEM->RelevanceResultCache[$sq['eqn']]['result'];
-                                        if ($debug)
+                                        if ($LEM->debugLevel>=3)
                                         {
                                             $prettyPrintSQRelEqns[] = $LEM->RelevanceResultCache[$sq['eqn']]['prettyPrint'];
                                         }
@@ -2864,7 +2875,7 @@ class LimeExpressionManager {
                                         {
                                             $sqrel=false;  // default to invalid so that can show the error
                                         }
-                                        if ($debug)
+                                        if ($LEM->debugLevel>=3)
                                         {
                                             $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
                                             $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
@@ -2897,7 +2908,7 @@ class LimeExpressionManager {
                                     if (isset($LEM->RelevanceResultCache[$sq['eqn']]))
                                     {
                                         $sqrel = $LEM->RelevanceResultCache[$sq['eqn']]['result'];
-                                        if ($debug)
+                                        if ($LEM->debugLevel>=3)
                                         {
                                             $prettyPrintSQRelEqns[] = $LEM->RelevanceResultCache[$sq['eqn']]['prettyPrint'];
                                         }
@@ -2910,7 +2921,7 @@ class LimeExpressionManager {
                                         {
                                             $sqrel=false;  // default to invalid so that can show the error
                                         }
-                                        if ($debug)
+                                        if ($LEM->debugLevel>=3)
                                         {
                                             $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
                                             $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
@@ -2931,13 +2942,13 @@ class LimeExpressionManager {
                                 }
                                 break;
                             case 'L': //LIST drop-down/radio-button list
-                                if ($sgqa == $sq['sgqa'] || $sgqa == ($sq['sgqa'] . 'other'))
+                                if ($sgqa == ($sq['sgqa'] . 'other') && $sgqa == $sq['rowdivid'])   // don't do sub-q level validition to main question, just to other option
                                 {
                                     $foundSQrelevance=true;
                                     if (isset($LEM->RelevanceResultCache[$sq['eqn']]))
                                     {
                                         $sqrel = $LEM->RelevanceResultCache[$sq['eqn']]['result'];
-                                        if ($debug)
+                                        if ($LEM->debugLevel>=3)
                                         {
                                             $prettyPrintSQRelEqns[] = $LEM->RelevanceResultCache[$sq['eqn']]['prettyPrint'];
                                         }
@@ -2950,7 +2961,7 @@ class LimeExpressionManager {
                                         {
                                             $sqrel=false;  // default to invalid so that can show the error
                                         }
-                                        if ($debug)
+                                        if ($LEM->debugLevel>=3)
                                         {
                                             $prettyPrintSQRelEqn = $LEM->em->GetPrettyPrintString();
                                             $prettyPrintSQRelEqns[] = $prettyPrintSQRelEqn;
@@ -2983,7 +2994,7 @@ class LimeExpressionManager {
             } // end foreach($sgqa) [assessing each sub-question]
         } // end of processing relevant question
 
-        if ($debug)
+        if ($LEM->debugLevel>=3)
         {
             $prettyPrintSQRelEqns = array_unique($prettyPrintSQRelEqns);
         }
@@ -3100,7 +3111,7 @@ class LimeExpressionManager {
                 {
                     $validationJS = $LEM->em->GetJavaScriptEquivalentOfExpression();
                 }
-                if ($debug)
+                if ($LEM->debugLevel>=3)
                 {
                     $prettyPrintValidEqn = $LEM->em->GetPrettyPrintString();
                 }
@@ -3108,13 +3119,13 @@ class LimeExpressionManager {
                 $stringToParse = implode('<br/>',$LEM->qid2validationEqn[$qid]['tips']);
                 // pretty-print them
                 $validTip = $LEM->ProcessString($stringToParse, $qid,NULL,false,1,1,false,false);
-                if ($debug) {
+                if ($LEM->debugLevel>=3) {
                     $prettyPrintValidTip = $LEM->GetLastPrettyPrintExpression();
                 }
             }
             else
             {
-                if ($debug)
+                if ($LEM->debugLevel>=3)
                 {
                     $prettyPrintValidEqn = 'Question is Irrelevant, so no need to further validate it';
                 }
@@ -3126,7 +3137,7 @@ class LimeExpressionManager {
             $invalidSQs = $LEM->qid2code[$qid]; // TODO - currently invalidates all - should only invalidate those that truly fail validation rules.
         }
 
-        if ($debug)
+        if ($LEM->debugLevel>=2)
         {
             $debug_qmessage .= '--[Q#' . $qInfo['questionSeq'] . ']'
                 . "[<a href='../../../admin/admin.php?sid={$LEM->sid}&gid=$gid&qid=$qid'>"
@@ -3139,67 +3150,70 @@ class LimeExpressionManager {
                 . $prettyPrintRelEqn
                 . "<br/>\n";
 
-            if ($mandatoryTip != '')
+            if ($LEM->debugLevel>=3)
             {
-                $debug_qmessage .= '----Mandatory Tip: ' . $mandatoryTip . "<br/>\n";
-            }
+                if ($mandatoryTip != '')
+                {
+                    $debug_qmessage .= '----Mandatory Tip: ' . $mandatoryTip . "<br/>\n";
+                }
 
-            if ($prettyPrintValidTip != '')
-            {
-                $debug_qmessage .= '----Pretty Validation Tip: ' . $prettyPrintValidTip . "<br/>\n";
-            }
-            if ($validTip != '')
-            {
-                $debug_qmessage .= '----Validation Tip: ' . $validTip . "<br/>\n";
-            }
+                if ($prettyPrintValidTip != '')
+                {
+                    $debug_qmessage .= '----Pretty Validation Tip: ' . $prettyPrintValidTip . "<br/>\n";
+                }
+                if ($validTip != '')
+                {
+                    $debug_qmessage .= '----Validation Tip: ' . $validTip . "<br/>\n";
+                }
 
-            if ($prettyPrintValidEqn != '')
-            {
-                $debug_qmessage .= '----Validation Eqn: ' . $prettyPrintValidEqn . "<br/>\n";
-            }
-            if ($validationJS != '')
-            {
-                $debug_qmessage .= '----Validation JavaScript: ' . $validationJS . "<br/>\n";
-            }
+                if ($prettyPrintValidEqn != '')
+                {
+                    $debug_qmessage .= '----Validation Eqn: ' . $prettyPrintValidEqn . "<br/>\n";
+                }
+                if ($validationJS != '')
+                {
+                    $debug_qmessage .= '----Validation JavaScript: ' . $validationJS . "<br/>\n";
+                }
 
-            // what are the database question codes for this question?
-            $subQList = '{' . implode('}, {', explode('|',$LEM->qid2code[$qid])) . '}';
-            // pretty-print them
-            $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
-            $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-            $debug_qmessage .= '----SubQs=> ' . $prettyPrintSubQList . "<br/>\n";
-
-            if (count($prettyPrintSQRelEqns) > 0)
-            {
-                $debug_qmessage .= "----Array Filters Applied:<br/>\n" . implode('<br/>',$prettyPrintSQRelEqns) . "<br/>\n";
-            }
-
-            if (count($relevantSQs) > 0)
-            {
-                $subQList = '{' . implode('}, {', $relevantSQs) . '}';
+                // what are the database question codes for this question?
+                $subQList = '{' . implode('}, {', explode('|',$LEM->qid2code[$qid])) . '}';
                 // pretty-print them
                 $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
                 $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                $debug_qmessage .= '----Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
-            }
+                $debug_qmessage .= '----SubQs=> ' . $prettyPrintSubQList . "<br/>\n";
 
-            if (count($irrelevantSQs) > 0)
-            {
-                $subQList = '{' . implode('}, {', $irrelevantSQs) . '}';
-                // pretty-print them
-                $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
-                $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                $debug_qmessage .= '----Irrelevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
-            }
+                if (count($prettyPrintSQRelEqns) > 0)
+                {
+                    $debug_qmessage .= "----Array Filters Applied:<br/>\n" . implode('<br/>',$prettyPrintSQRelEqns) . "<br/>\n";
+                }
 
-            // show which relevant subQs were not answered
-            if (count($unansweredSQs) > 0)
-            {
-                $subQList = '{' . implode('}, {', $unansweredSQs) . '}';
-                // pretty-print them
-                $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
-                $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
-                $debug_qmessage .= '----Unanswered Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+                if (count($relevantSQs) > 0)
+                {
+                    $subQList = '{' . implode('}, {', $relevantSQs) . '}';
+                    // pretty-print them
+                    $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
+                    $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+                    $debug_qmessage .= '----Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+                }
+
+                if (count($irrelevantSQs) > 0)
+                {
+                    $subQList = '{' . implode('}, {', $irrelevantSQs) . '}';
+                    // pretty-print them
+                    $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
+                    $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+                    $debug_qmessage .= '----Irrelevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+                }
+
+                // show which relevant subQs were not answered
+                if (count($unansweredSQs) > 0)
+                {
+                    $subQList = '{' . implode('}, {', $unansweredSQs) . '}';
+                    // pretty-print them
+                    $LEM->ProcessString($subQList, $qid,NULL,false,1,1,false,false);
+                    $prettyPrintSubQList = $LEM->GetLastPrettyPrintExpression();
+                    $debug_qmessage .= '----Unanswered Relevant SubQs: ' . $prettyPrintSubQList . "<br/>\n";
+                }
             }
         }
 
@@ -3222,7 +3236,7 @@ class LimeExpressionManager {
             // Store the result of the Equation in the SESSION
             $_SESSION[$sgqa] = $result;
             $updatedValues[$sgqa] = $result;
-            if ($debug)
+            if ($LEM->debugLevel>=3)
             {
                 $prettyPrintEqn = $LEM->em->GetPrettyPrintString();
                 $debug_qmessage .= '** Process Hidden but Relevant Equation [' . $sgqa . '](' . $prettyPrintEqn . ') => ' . $result . "<br/>\n";
@@ -3431,14 +3445,14 @@ class LimeExpressionManager {
     /**
      * Should be called at end of each page
      */
-    static function FinishProcessingPage($debugLevel=0)
+    static function FinishProcessingPage()
     {
         $LEM =& LimeExpressionManager::singleton();
         $_SESSION['EM_pageTailoringLog'] = $LEM->pageTailoringLog;
         $_SESSION['EM_surveyLogicFile'] = $LEM->surveyLogicFile;
 
         $totalTime = 0.;
-        if ($debugLevel >= 1 && count($LEM->runtimeTimings)>0) {
+        if ($LEM->debugLevel >= 1 && count($LEM->runtimeTimings)>0) {
             $LEM->debugTimingMsg='';
             foreach($LEM->runtimeTimings as $unit) {
                 $totalTime += $unit[1];
@@ -3482,7 +3496,7 @@ class LimeExpressionManager {
     }
 
     /**
-     * Show the HTML for the logic file if $debugLEM was true
+     * Show the HTML for the logic file if $debugLevel>=3
      * @return <type>
      */
     static function ShowLogicFile()
@@ -3494,7 +3508,7 @@ class LimeExpressionManager {
     }
 
     /**
-     * Show the HTML of the tailorings on this page if $debugLEM was true
+     * Show the HTML of the tailorings on this page if $debugLevel>=3
      * @return <type>
      */
     static function ShowPageTailorings()
@@ -4031,7 +4045,7 @@ EOT;
         $LEM =& LimeExpressionManager::singleton();
 
 
-        LimeExpressionManager::StartProcessingPage(false,true,true);
+        LimeExpressionManager::StartProcessingPage(false,true);
         LimeExpressionManager::StartProcessingGroup(1); // pretending this is group 1
 
         // collect variables

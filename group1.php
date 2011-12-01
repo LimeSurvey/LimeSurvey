@@ -42,7 +42,7 @@ else
     if (!isset($_SESSION['step']))  //  || !$_SESSION['step']) - don't do this for step0, else rebuild the session
     {
         $totalquestions = buildsurveysession();
-        LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, ($thissurvey['anonymized']!="N"), true);
+        LimeExpressionManager::StartSurvey($thissurvey['sid'], $surveyMode, ($thissurvey['anonymized']!="N"), true,$LEMdebugLevel);
         $_SESSION['step'] = 0;
         if(isset($thissurvey['showwelcome']) && $thissurvey['showwelcome'] == 'N') {
             //If explicitply set, hide the welcome screen
@@ -57,7 +57,7 @@ else
     //Move current step ###########################################################################
     if (isset($move) && $move == 'moveprev' && ($thissurvey['allowprev']=='Y' || $thissurvey['allowjumps']=='Y'))
     {
-        $moveResult = LimeExpressionManager::NavigateBackwards(($LEMdebugLevel>=2));
+        $moveResult = LimeExpressionManager::NavigateBackwards();
         if ($moveResult['at_start']) {
             $_SESSION['step']=0;
             unset($moveResult); // so display welcome page again
@@ -65,13 +65,13 @@ else
     }
     if (isset($move) && $move == "movenext")
     {
-        $moveResult = LimeExpressionManager::NavigateForwards(false,($LEMdebugLevel>=2));
+        $moveResult = LimeExpressionManager::NavigateForwards(false);
     }
     if (isset($move) && bIsNumericInt($move) && $thissurvey['allowjumps']=='Y')
     {
         $move = (int)$move;
         if ($move > 0 && (($move <= $_SESSION['step']) || (isset($_SESSION['maxstep']) && $move <= $_SESSION['maxstep']))) {
-            $moveResult = LimeExpressionManager::JumpTo($move,false,($LEMdebugLevel>=2));
+            $moveResult = LimeExpressionManager::JumpTo($move,false);
         }
     }
 
@@ -80,9 +80,6 @@ else
             $move = 'movesubmit';
         }
         $_SESSION['step']= $moveResult['seq']+1;  // step is index base 1
-        if ($LEMdebugLevel>=2) {
-            $LEMmsg = $moveResult['message'];
-        }
         $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
     }
 
@@ -338,17 +335,14 @@ if ($previewgrp)
 {
 	setcookie("limesurvey_timers", "0");
 
-    LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', ($thissurvey['anonymized']!="N"), false);
+    LimeExpressionManager::StartSurvey($thissurvey['sid'], 'group', ($thissurvey['anonymized']!="N"), false,$LEMdebugLevel);
     $gseq = LimeExpressionManager::GetGroupSeq($_REQUEST['gid']);
     if ($gseq == -1) {
         echo 'Invalid Group' . $_REQUEST['gid'];
     }
-    $moveResult = LimeExpressionManager::JumpTo($gseq+1,false,($LEMdebugLevel>=2),true);
+    $moveResult = LimeExpressionManager::JumpTo($gseq+1,false,true);
     if (isset($moveResult)) {
         $_SESSION['step']= $moveResult['seq']+1;  // step is index base 1?
-        if ($LEMdebugLevel>=2) {
-            $LEMmsg = $moveResult['message'];
-        }
     }
 
     $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
@@ -642,7 +636,7 @@ echo "\n";
 
 LimeExpressionManager::FinishProcessingGroup();
 echo LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
-LimeExpressionManager::FinishProcessingPage($LEMdebugLevel);
+LimeExpressionManager::FinishProcessingPage();
 
 if (!$previewgrp){
     $navigator = surveymover(); //This gets globalised in the templatereplace function
@@ -719,7 +713,7 @@ if ($LEMdebugLevel >= 1) {
     echo LimeExpressionManager::GetDebugTimingMessage();
 }
 if ($LEMdebugLevel >= 2) {
-     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$LEMmsg."</td></tr></table>\n";
+     echo "<table><tr><td align='left'><b>Group/Question Validation Results:</b>".$moveResult['message']."</td></tr></table>\n";
 }
 echo "</form>\n";
 

@@ -22,6 +22,8 @@ if (!isset($_SESSION['step'])) {$_SESSION['step'] = 0;}
 if (!isset($_SESSION['totalsteps'])) {$_SESSION['totalsteps']=0;}
 if (isset($move) && $move == "moveprev") {$_SESSION['step'] = $thisstep-1;}
 if (isset($move) && $move == "movenext") {$_SESSION['step'] = $thisstep+1;}
+$_SESSION['maxstep']=1;
+$_SESSION['prevstep']=$_SESSION['step'];
 
 // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
 // Previously we used to keep the session and redirect the user to the
@@ -240,7 +242,7 @@ $thissurvey['active'] == "Y")
 //******************************************************************************************************
 
 //GET GROUP DETAILS
-require_once("qanda.php");
+require_once("qanda1.php");
 // TMSW Mandatory -> EM
 //$mandatorys=array();
 //$mandatoryfns=array();
@@ -250,7 +252,7 @@ require_once("qanda.php");
 $inputnames=array();
 $groupUnconditionnalQuestionsCount=array();
 
-LimeExpressionManager::StartProcessingPage(false,true,true);  // means that all variables are on the same page
+LimeExpressionManager::StartProcessingPage(false,true);  // means that all variables are on the same page
 
 foreach ($_SESSION['grouplist'] as $gl)
 {
