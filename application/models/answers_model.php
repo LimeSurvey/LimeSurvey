@@ -14,7 +14,7 @@ class Answers_model extends CI_Model {
 		return $data;
 	}
 
-	function getSomeRecords($fields,$condition=FALSE)
+	function getSomeRecords($fields,$condition=FALSE,$order=FALSE)
 	{
 		foreach ($fields as $field)
 		{
@@ -23,6 +23,10 @@ class Answers_model extends CI_Model {
 		if ($condition != FALSE)
 		{
 			$this->db->where($condition);
+		}
+		if($order != FALSE)
+		{
+			$this->db->order_by($order);
 		}
 
 		$data = $this->db->get('answers');
@@ -143,4 +147,33 @@ class Answers_model extends CI_Model {
 
         return $this->db->delete('answers');
     }
+
+    function getAnswerQueryBase($surveyid, $baselang)
+    {
+        return $this->db->select($this->db->dbprefix('answers').".*, ".$this->db->dbprefix('questions').".gid")
+                 ->from($this->db->dbprefix('answers').", ".$this->db->dbprefix('questions'))
+                 ->where(array(
+                     $this->db->dbprefix('questions') . '.sid' => $surveyid,
+                     $this->db->dbprefix('questions') . '.qid' => $this->db->dbprefix('answers') . '.qid',
+                     $this->db->dbprefix('questions') . '.language' => $this->db->dbprefix('answers') . '.language',
+                     $this->db->dbprefix('questions') . '.language' => $baselang
+                 ))
+                 ->order_by('qid,code,sortorder')
+                 ->get();
+    }
+
+    function getAnswerQueryTo($surveyid, $tolang)
+    {
+        return $this->db->select($this->db->dbprefix('answers').".*, ".$this->db->dbprefix('questions').".gid")
+                 ->from($this->db->dbprefix('answers').", ".$this->db->dbprefix('questions'))
+                 ->where(array(
+                     $this->db->dbprefix('questions') . '.sid' => $surveyid,
+                     $this->db->dbprefix('questions') . '.qid' => $this->db->dbprefix('answers') . '.qid',
+                     $this->db->dbprefix('questions') . '.language' => $this->db->dbprefix('answers') . '.language',
+                     $this->db->dbprefix('questions') . '.language' => $tolang
+                 ))
+                 ->order_by('qid,code,sortorder')
+                 ->get();
+    }
+
 }

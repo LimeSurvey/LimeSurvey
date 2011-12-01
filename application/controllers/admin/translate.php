@@ -47,13 +47,9 @@ class translate extends Admin_Controller {
             echo self::translate_google_api();
             return;
         }
-
         self::_js_admin_includes($this->config->item("adminscripts").'translation.js');
         $clang =  $this->limesurvey_lang;
         $_POST = $this->input->post();
-        $this->load->helper("database");
-
-
 
         //  $js_admin_includes[]= $homeurl.'/scripts/translation.js';
 
@@ -69,7 +65,7 @@ class translate extends Admin_Controller {
             $tmp_langs = GetAdditionalLanguagesFromSurveyID($surveyid);
             $tolang = $tmp_langs[0];
         }
-
+		
         $actionvalue = "";
         if(isset($_POST['actionvalue'])) {$actionvalue = $_POST['actionvalue'];}
         //  if(isset($_GET['actionvalue'])) {$actionvalue = $_GET['actionvalue'];}
@@ -87,7 +83,7 @@ class translate extends Admin_Controller {
         {
             $tolangdesc = $supportedLanguages[$tolang]['description'];
         }
-
+		
         self::_getAdminHeader();
         $data = array("surveyid" => $surveyid, "survey_title" => $survey_title, "tolang" => $tolang, "clang" => $clang);
         $this->load->view("admin/translate/translateheader_view", $data);
@@ -124,7 +120,7 @@ class translate extends Admin_Controller {
                     // define each variable
                     if (isset($_POST["{$type}_newvalue_{$i}"]))
                     {
-                        $old = $_POST["{$type}_oldvalue_{$i}"];
+						$old = $_POST["{$type}_oldvalue_{$i}"];
                         $new = $_POST["{$type}_newvalue_{$i}"];
                         // check if the new value is different from old, and then update database
                         if ($new != $old)
@@ -132,8 +128,6 @@ class translate extends Admin_Controller {
                             $id1 = $_POST["{$type}_id1_{$i}"];
                             $id2 = $_POST["{$type}_id2_{$i}"];
                             $amTypeOptions = self::setupTranslateFields($surveyid, $type, $tolang, $baselang, $id1, $id2, $new);
-                            $query = $amTypeOptions["queryupdate"];
-                            db_execute_assoc($query);
                         }
                     }
                     ++$i;
@@ -147,11 +141,14 @@ class translate extends Admin_Controller {
         if ($tolang != "")
         // Display tabs with fields to translate, as well as input fields for translated values
         {
-
             $data['tab_names'] = $tab_names;
             $data['baselang'] = $baselang;
+            foreach($tab_names as $type)
+            {
+                $data['amTypeOptions'][] = $this->setupTranslateFields($surveyid, $type, $tolang, $baselang);
+            }
             $this->load->view("admin/translate/translateformheader_view", $data);
-
+			
             // Define content of each tab
             foreach($tab_names as $type)
             {
@@ -174,23 +171,20 @@ class translate extends Admin_Controller {
                 $evenRow = FALSE;
                 $all_fields_empty = TRUE;
 
-                $querybase = $amTypeOptions["querybase"];
-                $resultbase = db_execute_assoc($querybase);
+                $resultbase = $amTypeOptions["querybase"];
                 if ($associated)
                 {
-                    $querybase2 = $amTypeOptions2["querybase"];
-                    $resultbase2 = db_execute_assoc($querybase2);
+                    $resultbase2 = $amTypeOptions2["querybase"];
                 }
 
-                $queryto = $amTypeOptions["queryto"];
-                $resultto = db_execute_assoc($queryto);
+                $resultto = $amTypeOptions["queryto"];
+				
                 if ($associated)
                 {
-                    $queryto2 = $amTypeOptions2["queryto"];
-                    $resultto2 = db_execute_assoc($queryto2);
+                    $resultto2 = $amTypeOptions2["queryto"];
                 }
-
-                $data['baselangdesc'] = $baselangdesc;
+				
+				$data['baselangdesc'] = $baselangdesc;
                 $data['tolangdesc'] = $tolangdesc;
                 $data['type'] = $type;
                 $this->load->view("admin/translate/translatetabs_view", $data);
@@ -209,7 +203,7 @@ class translate extends Admin_Controller {
 
                     $qid = NULL;
                     if($amTypeOptions["qid"]==TRUE) $qid = $rowfrom['qid'];
-
+                    //echo '<pre>' . print_r($resultto) . '</pre>';
                     $rowto  = $resultto->row_array();
                     $textto = $rowto[$amTypeOptions["dbColumn"]];
 
@@ -316,12 +310,10 @@ class translate extends Admin_Controller {
         $adminmenu .= self::menuSeparator();
 
         // Test / execute survey button
-
         if ($tolang != "")
         {
-            $sumquery1 = "SELECT * FROM ".$this->db->dbprefix('surveys')." inner join ".$this->db->dbprefix('surveys_languagesettings')." on (surveyls_survey_id=sid and surveyls_language=language) WHERE sid=$surveyid"; //Getting data for this survey
-            $sumresult1 = db_select_limit_assoc($sumquery1, 1) ; //Checked
-            $surveyinfo = $sumresult1->row_array();
+            $this->load->model('surveys_model');
+            $surveyinfo = $this->surveys_model->getDataJoinLanguageSettings($surveyid);
 
             $surveyinfo = array_map('FlattenText', $surveyinfo);
             $activated = $surveyinfo['active'];
@@ -422,23 +414,25 @@ class translate extends Admin_Controller {
     {
         $clang=$this->limesurvey_lang;
         $dbprefix = $this->db->dbprefix;
-
         switch ( $type )
         {
             case 'title':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language=".$this->db->escape($baselang),
-                "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language=".$this->db->escape($tolang),
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('surveys_languagesettings')
-                ." SET surveyls_title = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language=".$this->db->escape($tolang),
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto"   => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_title' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "id1"  => "",
                 "id2"  => "",
                 "gid"  => FALSE,
@@ -452,19 +446,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'description':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language='{$baselang}'  ",
-                "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language='{$tolang}'  ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('surveys_languagesettings')
-                ." SET surveyls_description = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language='{$tolang}'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto"   => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_description' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "id1"  => "",
                 "id2"  => "",
                 "gid"  => FALSE,
@@ -478,19 +475,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'welcome':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language='{$baselang}'  ",
-                "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language='{$tolang}'  ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('surveys_languagesettings')
-                ." SET surveyls_welcometext = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language='{$tolang}'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto"   => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_welcometext' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "id1"  => "",
                 "id2"  => "",
                 "gid"  => FALSE,
@@ -504,19 +504,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'end':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language='{$baselang}'  ",
-                "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('surveys_languagesettings')
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language='{$tolang}'  ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('surveys_languagesettings')
-                ." SET surveyls_endtext = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=".$this->db->escape($surveyid)
-                ." AND surveyls_language='{$tolang}'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto"   => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_endtext' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "id1"  => "",
                 "id2"  => "",
                 "gid"  => FALSE,
@@ -530,22 +533,23 @@ class translate extends Admin_Controller {
                 break;
 
             case 'group':
+                $this->load->model('groups_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('groups')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language='{$baselang}' "
-                ."ORDER BY gid ",
-                "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('groups')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language=".$this->db->escape($tolang)
-                ."ORDER BY gid ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('groups')
-                ." SET group_name = ".$this->db->escape($new)
-                ." WHERE gid = '{$id1}' "
-                ."AND sid=".$this->db->escape($surveyid)
-                ." AND language='{$tolang}'",
+                "querybase" => $this->groups_model->getAllRecords(array(
+                        'sid' => $surveyid,
+                        'language' => $baselang
+                ), 'gid'),
+                "queryto" => $this->groups_model->getAllRecords(array(
+					'sid' => $surveyid,
+					'language' => $tolang
+				), 'gid'),
+                "queryupdate" => $this->groups_model->update(array(
+                    'group_name' => $new
+                ), array(
+                    'gid' => $id1,
+                    'sid' => $surveyid,
+                    'language' => $tolang
+                )),
                 "id1"  => "gid",
                 "id2"  => "",
                 "gid"  => TRUE,
@@ -557,24 +561,25 @@ class translate extends Admin_Controller {
                 "associated" => "group_desc"
                 );
                 break;
-
+			
             case 'group_desc':
+                $this->load->model('groups_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('groups')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language='{$baselang}' "
-                ."ORDER BY gid ",
-                "queryto"   => "SELECT *"
-                ."FROM ".$this->db->dbprefix('groups')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language=".$this->db->escape($tolang)
-                ."ORDER BY gid ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('groups')
-                ." SET description = ".$this->db->escape($new)
-                ." WHERE gid = '{$id1}' "
-                ."AND sid=".$this->db->escape($surveyid)
-                ." AND language='{$tolang}'",
+                "querybase" => $this->groups_model->getAllRecords(array(
+					'sid' => $surveyid,
+					'language' => $baselang
+				), 'gid'),
+                "queryto"   => $this->groups_model->getAllRecords(array(
+					'sid' => $surveyid,
+					'language' => $tolang
+				), 'gid'),
+                "queryupdate" => $this->groups_model->update(array(
+                    'description' => $new
+                ), array(
+                    'gid' => $id1,
+                    'sid' => $surveyid,
+                    'language' => $tolang
+                )),
                 "id1"  => "gid",
                 "id2"  => "",
                 "gid"  => TRUE,
@@ -610,25 +615,26 @@ class translate extends Admin_Controller {
                 //      break;
 
             case 'question':
+                $this->load->model('questions_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language='{$baselang}' "
-                ."AND parent_qid=0 "
-                ."ORDER BY qid ",
-                "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language='{$tolang}' "
-                ." AND parent_qid=0 "
-                ."ORDER BY qid ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('questions')
-                ." SET question = ".$this->db->escape($new)
-                ." WHERE qid = '{$id1}' "
-                ."AND sid=".$this->db->escape($surveyid)
-                ." AND parent_qid=0 "
-                ."AND language='{$tolang}'",
+                "querybase" => $this->questions_model->getSomeRecords('*', array(
+					'sid' => $surveyid,
+					'language' => $baselang,
+					'parent_qid' => 0
+				), 'qid'),
+                "queryto"   => $this->questions_model->getSomeRecords('*', array(
+					'sid' => $surveyid,
+					'language' => $tolang,
+					'parent_qid' => 0
+				), 'qid'),
+                "queryupdate" => $this->questions_model->update(array(
+                    'question' => $new
+                ), array(
+                    'gid' => $id1,
+                    'sid' => $surveyid,
+                    'parent_qid' => 0,
+                    'language' => $tolang
+                )),
                 "dbColumn" => 'question',
                 "id1"  => 'qid',
                 "id2"  => "",
@@ -640,27 +646,28 @@ class translate extends Admin_Controller {
                 "associated" => "question_help"
                 );
                 break;
-
+			
             case 'question_help':
+                $this->load->model('questions_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language='{$baselang}' "
-                ."AND parent_qid=0 "
-                ."ORDER BY qid ",
-                "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language='{$tolang}' "
-                ." AND parent_qid=0 "
-                ."ORDER BY qid ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('questions')
-                ." SET help = ".$this->db->escape($new)
-                ." WHERE qid = '{$id1}' "
-                ." AND sid=".$this->db->escape($surveyid)
-                ." AND parent_qid=0 "
-                ."AND language='{$tolang}'",
+                "querybase" => $this->questions_model->getSomeRecords('*', array(
+					'sid' => $surveyid,
+					'language' => $baselang,
+					'parent_qid' => 0
+				), 'qid'),
+                "queryto"   => $this->questions_model->getSomeRecords('*', array(
+					'sid' => $surveyid,
+					'language' => $tolang,
+					'parent_qid' => 0
+				), 'qid'),
+                "queryupdate" => $this->questions_model->update(array(
+                    'help' => $new
+                ), array(
+                    'gid' => $id1,
+                    'sid' => $surveyid,
+                    'parent_qid' => 0,
+                    'language' => $tolang
+                )),
                 "dbColumn" => 'help',
                 "id1"  => 'qid',
                 "id2"  => "",
@@ -674,22 +681,25 @@ class translate extends Admin_Controller {
                 break;
 
             case 'subquestion':
+                $this->load->model('questions_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language='{$baselang}' AND parent_qid>0 "
-                ."ORDER BY parent_qid,qid ",
-                "queryto"   => "SELECT * "
-                ."FROM ".$this->db->dbprefix('questions')
-                ." WHERE sid=".$this->db->escape($surveyid)
-                ." AND language=".$this->db->escape($tolang)
-                ." AND parent_qid>0 ORDER BY parent_qid,qid ",
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('questions')
-                ." SET question = ".$this->db->escape($new)
-                ." WHERE qid = '{$id1}' "
-                ." AND sid=".$this->db->escape($surveyid)
-                ." AND language='{$tolang}'",
+                "querybase" => $this->questions_model->getSomeRecords('*', array(
+					'sid' => $surveyid,
+					'language' => $baselang,
+					'parent_qid >' => 0
+				), 'parent_qid,qid'),
+                "queryto"   => $this->questions_model->getSomeRecords('*', array(
+					'sid' => $surveyid,
+					'language' => $tolang,
+					'parent_qid >' => 0
+				), 'parent_qid,qid'),
+                "queryupdate" => $this->questions_model->update(array(
+                    'question' => $new
+                ), array(
+                    'gid' => $id1,
+                    'sid' => $surveyid,
+                    'language' => $tolang
+                )),
                 "dbColumn" => 'question',
                 "id1"  => 'qid',
                 "id2"  => "",
@@ -701,28 +711,19 @@ class translate extends Admin_Controller {
                 "associated" => ""
                 );
                 break;
-
-            case 'answer':
+			
+            case 'answer': // TODO not touched
+                $this->load->model('answers_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT ".$this->db->dbprefix('answers').".*, ".$this->db->dbprefix('questions').".gid "
-                ." FROM ".$this->db->dbprefix('answers').", ".$this->db->dbprefix('questions')
-                ." WHERE ".$this->db->dbprefix('questions').".sid ='{$surveyid}' "
-                ." AND ".$this->db->dbprefix('questions').".qid = ".$this->db->dbprefix('answers').".qid "
-                ." AND ".$this->db->dbprefix('questions').".language = ".$this->db->dbprefix('answers').".language "
-                ." AND ".$this->db->dbprefix('questions').".language='{$baselang}' "
-                ." ORDER BY qid,code,sortorder" ,
-                "queryto" => "SELECT ".$this->db->dbprefix('answers').".*, ".$this->db->dbprefix('questions').".gid "
-                ." FROM ".$this->db->dbprefix('answers').", ".$this->db->dbprefix('questions')
-                ." WHERE ".$this->db->dbprefix('questions').".sid ='{$surveyid}' "
-                ." AND ".$this->db->dbprefix('questions').".qid = ".$this->db->dbprefix('answers').".qid "
-                ." AND ".$this->db->dbprefix('questions').".language = ".$this->db->dbprefix('answers').".language "
-                ." AND ".$this->db->dbprefix('questions').".language=".$this->db->escape($tolang)
-                ."ORDER BY qid,code,sortorder" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix('answers')
-                ." SET answer = ".$this->db->escape($new)
-                ." WHERE qid = '{$id1}' "
-                ."AND code='{$id2}' "
-                ."AND language='{$tolang}'",
+                "querybase" => $this->answers_model->getAnswerQueryBase($surveyid, $baselang),
+                "queryto" => $this->answers_model->getAnswerQueryTo($surveyid, $tolang),
+                "queryupdate" => $this->answers_model->update(array(
+                    'answer' => $new
+                ), array(
+                    'qid' => $id1,
+                    'code' => $id2,
+                    'language' => $tolang
+                )),
                 "dbColumn" => 'answer',
                 "id1"  => 'qid',
                 "id2"  => 'code',
@@ -736,15 +737,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'emailinvite':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_invite_subj = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_email_invite_subj' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "dbColumn" => 'surveyls_email_invite_subj',
                 "id1"  => '',
                 "id2"  => '',
@@ -758,15 +766,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'emailinvitebody':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_invite = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_email_invite' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "dbColumn" => 'surveyls_email_invite',
                 "id1"  => '',
                 "id2"  => '',
@@ -780,15 +795,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'emailreminder':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_remind_subj = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_email_remind_subj' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "dbColumn" => 'surveyls_email_remind_subj',
                 "id1"  => '',
                 "id2"  => '',
@@ -802,15 +824,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'emailreminderbody':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_remind = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_email_remind' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "dbColumn" => 'surveyls_email_remind',
                 "id1"  => '',
                 "id2"  => '',
@@ -824,15 +853,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'emailconfirmation':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_confirm_subj = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_email_confirm_subj' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "dbColumn" => 'surveyls_email_confirm_subj',
                 "id1"  => '',
                 "id2"  => '',
@@ -846,15 +882,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'emailconfirmationbody':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_confirm = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_email_confirm' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "dbColumn" => 'surveyls_email_confirm',
                 "id1"  => '',
                 "id2"  => '',
@@ -868,15 +911,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'emailregistration':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_register_subj = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_email_register_subj' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "dbColumn" => 'surveyls_email_register_subj',
                 "id1"  => '',
                 "id2"  => '',
@@ -890,15 +940,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'emailregistrationbody':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_register = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_email_register' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "dbColumn" => 'surveyls_email_register',
                 "id1"  => '',
                 "id2"  => '',
@@ -912,15 +969,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'email_confirm':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_confirm_subj = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_email_confirm_subj' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "dbColumn" => 'surveyls_email_confirm_subj',
                 "id1"  => '',
                 "id2"  => '',
@@ -934,15 +998,22 @@ class translate extends Admin_Controller {
                 break;
 
             case 'email_confirmbody':
+                $this->load->model('surveys_languagesettings_model');
                 $amTypeOptions = array(
-                "querybase" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$baselang'" ,
-                "queryto" => "SELECT * FROM ".$this->db->dbprefix("surveys_languagesettings")
-                ." WHERE surveyls_survey_id=$surveyid and surveyls_language='$tolang'" ,
-                "queryupdate" => "UPDATE ".$this->db->dbprefix("surveys_languagesettings")
-                ." SET surveyls_email_confirm = ".$this->db->escape($new)
-                ." WHERE surveyls_survey_id=$surveyid "
-                ."AND surveyls_language='$tolang'",
+                "querybase" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $baselang
+				)),
+                "queryto" => $this->surveys_languagesettings_model->getAllRecords(array(
+					'surveyls_survey_id' => $surveyid,
+					'surveyls_language'  => $tolang
+				)),
+                "queryupdate" => $this->surveys_languagesettings_model->update(array(
+                    'surveyls_email_confirm' => $new
+                ), array(
+                    'surveyls_survey_id' => $surveyid,
+                    'surveyls_language'  => $tolang
+                )),
                 "dbColumn" => 'surveyls_email_confirm',
                 "id1"  => '',
                 "id2"  => '',
