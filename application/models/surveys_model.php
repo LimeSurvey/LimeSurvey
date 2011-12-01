@@ -153,5 +153,15 @@ class Surveys_model extends CI_Model {
 
     }
 
+    function getDataJoinLanguageSettings($surveyid)
+    {
+        return $this->db->select()
+                        ->from($this->db->dbprefix('surveys'))
+                        ->join($this->db->dbprefix('surveys_languagesettings'), 'surveyls_survey_id=sid and surveyls_language=language', 'inner')
+                        ->where('sid', $surveyid)
+                        ->limit(1)
+                        ->get()
+                        ->row_array();
+    }
 
 }

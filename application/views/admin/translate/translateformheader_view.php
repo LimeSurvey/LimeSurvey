@@ -15,8 +15,12 @@
 
 <div id="translationtabs" style="display: none;" >
 <ul>
-<?php foreach($tab_names as $type) {
-	$amTypeOptions = translate::setupTranslateFields($surveyid, $type, $tolang, $baselang); ?>
-    <li><a href="#tab-<?php echo $type;?>"><span><?php echo $amTypeOptions["description"];?></span></a></li>
-<?php } ?>
+<?php
+for($i = 0, $len = count($tab_names); $i < $len; $i++) {
+    $amTypeOptionsTemp = $amTypeOptions[$i];
+    $type = $tab_names[$i];
+    ?> <li><a href="#tab-<?php echo $type;?>"><span><?php echo $amTypeOptionsTemp["description"];?></span></a></li> <?php
+}
+$i = 0;
+?>
 </ul>

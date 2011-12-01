@@ -2,18 +2,23 @@
 
 class Groups_model extends CI_Model {
 
-    function getAllRecords($condition=FALSE)
+    function getAllRecords($condition=FALSE, $order=FALSE)
     {
         if ($condition != FALSE)
         {
             $this->db->where($condition);
         }
+		
+		if($order != FALSE)
+		{
+			$this->db->order_by($order);
+		}
 
         $data = $this->db->get('groups');
 
         return $data;
     }
-
+	
     function getSomeRecords($fields,$condition=FALSE)
     {
         foreach ($fields as $field)
@@ -130,7 +135,8 @@ class Groups_model extends CI_Model {
         return $this->db->insert('groups',$data);
     }
 
-    function getGroups($surveyid) {
+    function getGroups($surveyid)
+	{
         $baselang = GetBaseLanguageFromSurveyID($surveyid);
         $query = "SELECT gid, group_name
         FROM ".$this->db->dbprefix('groups')."
