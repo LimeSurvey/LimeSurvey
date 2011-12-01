@@ -56,7 +56,7 @@ class LimeExpressionManager {
     private $q2subqInfo;    // mapping of questions to information about their subquestions.
     private $qattr; // array of attributes for each question
     private $syntaxErrors=array();
-    private $subQrelInfo;   // list of needed sub-question relevance (e.g. array_filter)
+    private $subQrelInfo=array();   // list of needed sub-question relevance (e.g. array_filter)
 
     private $runtimeTimings=array();
     private $initialized=false;
