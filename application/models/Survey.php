@@ -186,12 +186,7 @@ class Survey extends CActiveRecord
     
 	public function getAllSurveyNames()
     {
-        $this->db->select('surveyls_survey_id,surveyls_title');
-        $this->db->from('surveys_languagesettings');
-        $this->db->join('surveys','surveys_languagesettings.surveyls_survey_id = surveys.sid');
-        //$this->db->where('usetokens','Y'); // Will be done later
-        $query=$this->db->get();
-        return $query->result_array();
+        return Yii::app()->db->createCommand()->select('surveyls_survey_id,surveyls_title')->from('{{surveys_languagesettings}}')->join('{{surveys}}','{{surveys_languagesettings}}.surveyls_survey_id = {{surveys}}.sid')->queryAll();
     }
 
     public function deleteSurvey($iSurveyID, $recursive=true)

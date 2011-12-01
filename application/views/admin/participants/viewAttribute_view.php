@@ -1,17 +1,17 @@
 <script type="text/javascript">
-  var url = "<?php echo site_url("admin/participants/getAttributeBox");?>";
+  var url = "<?php echo Yii::app()->createUrl("admin/participants/sa/getAttributeBox");?>";
   var attname = "<?php echo $clang->gT("Attribute Name:"); ?>";
   removeitem = new Array(); // Array to hold values that are to be removed from langauges option
 </script>
-<script src="<?php echo $this->config->item('adminscripts')."admin_core.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('adminscripts')."viewAttribute.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('adminscripts')."admin_core.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('adminscripts')."viewAttribute.js" ?>" type="text/javascript"></script>
 <div class='header ui-widget-header'><strong><?php echo $clang->gT("Attribute Settings"); ?></strong></div><br/>
 <?php
   $hidden = array();
-  echo form_open('/admin/participants/saveAttribute/'.$this->uri->segment(4),"",$hidden);
-  $plus = array('src'    => base_url()."images/plus.png",
+  echo CHtml::beginForm(Yii::app()->createUrl('admin/participants/sa/saveAttribute/aid/'.CHttpRequest::getQuery('aid')).'/',"post",$hidden);
+  $plus = array('src'    => Yii::app()->baseUrl."/images/plus.png",
                 'alt'    => 'Add Language',
                 'title'  => 'Add Language',
                 'id'     => 'add',
@@ -27,8 +27,8 @@
   {
     $options[$langkey2] = $langname['description'];
   }
-   echo form_dropdown('langdata', $options, '','id="langdata"');
-   echo img($plus);
+   echo CHtml::dropDownList('langdata','id="langdata"',$options);
+   echo CHtml::image($plus['src'],$plus['alt'],array_slice($plus,2));
   ?>
  </div>
  <br/><br/>
@@ -59,7 +59,7 @@
         <label for='attname' id='attname'>
             <?php echo $clang->gT('Attribute Name:'); ?>
         </label>
-        <?php echo form_input($value['lang'],$value['attribute_name']); ?>
+        <?php echo CHtml::textField($value['lang'],$value['attribute_name']); ?>
    </p>
   </div>
   <?php
@@ -81,7 +81,7 @@
       $options = array('DD' => 'Drop Down',
                        'DP' => 'Date',
                        'TB' => 'Text Box');
-      echo form_dropdown('attribute_type', $options,$attributes->attribute_type,'id="attribute_type"');
+      echo CHtml::dropDownList('attribute_type','id="attribute_type"',$options);
     ?>
     <br/><br/>
  </div>
@@ -90,13 +90,13 @@
   <?php echo $clang->gT('Attribute Visible:') ?>
  </label>
   <?php
-    if($attributes->visible =="TRUE")
+    if($attributes['visible'] =="TRUE")
     {
-      echo form_checkbox('visible','TRUE',TRUE);
+      echo CHtml::checkbox('visible',TRUE,array('value'=>TRUE));
     }
     else
     {
-      echo form_checkbox('visible','TRUE',FALSE);
+      echo CHtml::checkbox('visible',TRUE,array('value'=>FALSE));
     }
     $hidden = array('visible' => 'FALSE');
   ?>
@@ -132,8 +132,8 @@
                       'name' => $value['value_id'],
                       'height' => '15',
                       'title' => 'Edit Atribute');
-        echo img($edit);
-        echo anchor('admin/participants/delAttributeValues/'.$attributes->attribute_id.'/'.$value['value_id'],img($del));
+        echo CHtml::image($edit['src'],$edit['alt'],array_slice($edit,2));
+        echo CHtml::link(img($del),'admin/participants/sa/delAttributeValues/'.$attributes['attribute_id'].'/'.$value['value_id']);
       ?>
       </td>
     </tr>
@@ -143,15 +143,15 @@
    </table>
    <div id="plus">
    <a href='#' class='add'>
-       <img src = "<?php echo base_url()?>images/plus.png" alt='Add Attribute' width='25' height='25' title='Add Attribute' id='addsign' name='addsign'>
+       <img src = "<?php echo Yii::app()->baseUrl; ?>/images/plus.png" alt='Add Attribute' width='25' height='25' title='Add Attribute' id='addsign' name='addsign'>
    </a>
    </div>
    </div>
  <br/>
  <p>
    <?php
-    echo form_submit('submit', 'Save');
-    echo form_close()
+    echo CHtml::submitButton('submit', array('value'=>'Save'));
+    echo CHtml::endForm();
    ?>
  </p>
  

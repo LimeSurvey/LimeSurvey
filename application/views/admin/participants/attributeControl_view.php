@@ -1,9 +1,9 @@
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
-<script src="<?php echo $this->config->item('adminscripts')."attributeControl.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('generalscripts')."jquery/jquery-ui.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('adminscripts')."attributeControl.js" ?>" type="text/javascript"></script>
 <script type="text/javascript">
   var saveVisibleMsg = "<?php echo $clang->gT("Attribute Visiblity Changed") ?>";    
-  var saveVisible = "<?php echo site_url("admin/participants/saveVisible");?>";
+  var saveVisible = "<?php echo Yii::app()->baseUrl."/index.php/admin/participants/sa/saveVisible";?>";
 </script>
 <div class='header ui-widget-header'>
   <strong>
@@ -12,7 +12,7 @@
 </div>
 <?php
   $attribute = array('class' => 'form44');
-  echo form_open('/admin/participants/storeAttributes',$attribute);
+  echo CHtml::beginForm('storeAttributes','post',$attribute);
 ?>
 <br></br>
 <ul>
@@ -61,28 +61,28 @@
       }
       else
       {
-        $data = array('name'    => 'visible.'.$value['attribute_id'],
+        $data = array('name'    => 'visible_'.$value['attribute_id'],
                       'id'      => 'visible_'.$value['attribute_id'],
                       'value'   => 'TRUE',
                       'checked' => FALSE);
       }
-        echo form_checkbox($data);
+        echo CHtml::checkbox($data['name'],$data['checked'],array('value' => $data['value']));
       ?>
       </td>
       <td>
       <?php
-        $edit = array('src'    => 'images/token_edit.png',
+        $edit = array('src'    => Yii::app()->baseUrl.'/images/token_edit.png',
                       'alt'    => 'Edit',
                       'width'  => '15',
                       'height' => '15',
                       'title'  => 'Edit Atribute');
-        echo anchor('admin/participants/viewAttribute/'.$value['attribute_id'],img($edit));
-        $del = array('src' => 'images/error_notice.png',
+        echo CHtml::link(CHtml::image($edit['src'],$edit['alt'],array_slice($edit,2)),'viewAttribute/aid/'.$value['attribute_id']);
+        $del = array('src' => Yii::app()->baseUrl.'/images/error_notice.png',
                      'alt' => 'Delete',
                      'width' => '15',
                      'height' => '15',
                      'title' => 'Delete Atribute');
-        echo anchor('admin/participants/delAttribute/'.$value['attribute_id'],img($del));
+        echo CHtml::link(CHtml::image($del['src'],$del['alt'],array_slice($del,2)),'delAttribute/aid/'.$value['attribute_id']);
       ?>
       </td>
     </tr>
@@ -92,9 +92,9 @@
     </table>
   </li>
   <li>
-    <a href="#" class="add"><img src = "<?php echo base_url().'images/plus.png' ?>" alt="Add Attribute" width="25" height="25" title="Add Attribute" id="add" name="add" /></a>
+    <a href="#" class="add"><img src = "<?php echo Yii::app()->baseUrl.'/images/plus.png' ?>" alt="Add Attribute" width="25" height="25" title="Add Attribute" id="add" name="add" /></a>
   </li>
 </ul>
 <br/>
 <p><input type="submit" name="Save" value="Save" /></p>
-<?php echo form_close(); ?>
+<?php echo CHtml::endForm(); ?>

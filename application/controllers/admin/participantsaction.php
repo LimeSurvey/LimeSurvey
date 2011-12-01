@@ -2,8 +2,31 @@
 /*
  * This is the main controller for Participants Panel
  */
-class participants extends Admin_Controller
+class participantsaction extends CAction
 {
+
+/**
+* Routes the action into correct subaction
+*
+* @access protected
+* @param string $sa
+* @param array $get_vars
+* @return void
+*/
+protected function route($sa)
+{
+    return call_user_func_array(array($this, $sa),array());
+}
+
+function run($sa = '') {
+    if(!empty($sa)) {
+        $this->route($sa);
+    }
+    else {
+        CController::redirect(Yii::app()->createUrl('admin/participants/sa/index'));
+    }
+}
+
 /**
  * This function is responsible for loading the view 'participantsPanel'
  * @param null
@@ -11,24 +34,24 @@ class participants extends Admin_Controller
 */
 function index()
 {
-    $this->load->model('participants_model');
-    $this->load->model('participant_attribute_model');
-    $iUserID = $this->session->userdata('loginID');
-    self::_getAdminHeader();
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) // if superadmin all the records in the cpdb will be displayed
+    //$this->load->model('participants_model');
+    //$this->load->model('participant_attribute_model');
+    $iUserID = Yii::app()->session['loginID'];
+    $this->getController()->_getAdminHeader();
+    if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) // if superadmin all the records in the cpdb will be displayed
     {
-        $iTotalRecords = $this->participants_model->getParticipantCount();
+        $iTotalRecords = Participants::model()->count();        
     }
     else                                                 // if not only the participants on which he has right on (shared and owned)
     {
-       $iTotalRecords=$this->participants_model->getParticipantsOwnerCount($iUserID);
+       $iTotalRecords=Participants::getParticipantsOwnerCount($iUserID);
     }
     // gets the count of participants, their attributes and other such details
-    $iShared = $this->participants_model->getParticipantsSharedCount($iUserID);
-    $iOwned = $this->participants_model->getParticipantOwnedCount($iUserID);
-    $iBlacklisted = $this->participants_model->getBlacklistedCount($iUserID);
-    $iAttributeCount = $this->participant_attribute_model->getAttributeCount();
-    $clang = $this->limesurvey_lang;
+    $iShared = Participants::getParticipantsSharedCount($iUserID);
+    $iOwned = Participants::model()->count('owner_uid = '.$iUserID);
+    $iBlacklisted = Participants::model()->count('owner_uid = '.$iUserID.' AND blacklisted = \'Y\'');
+    $iAttributeCount = ParticipantAttributeNames::model()->count();
+    $clang = $this->getController()->lang;
     $aData = array('clang'=> $clang,
                   'totalrecords' => $iTotalRecords,
                   'owned' => $iOwned,
@@ -37,9 +60,9 @@ function index()
                   'blacklisted' => $iBlacklisted
                   );
     // loads the participant panel and summary view
-    $this->load->view('admin/participants/participantsPanel_view',$aData);
-    $this->load->view('admin/participants/summary_view',$aData);
-    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    $this->getController()->render('/admin/participants/participantsPanel_view',$aData);
+    $this->getController()->render('/admin/participants/summary_view',$aData);
+    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 }
 /**
  * This function is responsible for loading the view 'importCSV'
@@ -62,32 +85,32 @@ function importCSV()
 */
 function displayParticipants()
 {
-    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
-    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js");
-    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/css/jquery.multiselect.css";
-    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/css/jquery.multiselect.filter.css";
-    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/displayParticipants.css";
-    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css";
-    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css";
-    $this->config->set_item("css_admin_includes", $css_admin_includes);
-    self::_getAdminHeader();
-    $clang = $this->limesurvey_lang;
-    $this->load->model('users_model');
-    $this->load->model('participant_attribute_model');
-    $this->load->model('surveys_model');
-    $this->load->model('participants_model');
-    $getNames=$this->users_model->getSomeRecords(array('uid','full_name'));
-    $attributes = $this->participant_attribute_model->getVisibleAttributes();
-    $allattributes = $this->participant_attribute_model->getAllAttributes();
-    $attributeValues =$this->participant_attribute_model->getAllAttributesValues();
+    $this->getController()->_js_admin_includes( Yii::app()->getConfig('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
+    $this->getController()->_js_admin_includes( Yii::app()->getConfig('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js");
+    $css_admin_includes[] = Yii::app()->getConfig('generalscripts')."jquery/css/jquery.multiselect.css";
+    $css_admin_includes[] = Yii::app()->getConfig('generalscripts')."jquery/css/jquery.multiselect.filter.css";
+    $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/displayParticipants.css";
+    $css_admin_includes[] = Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css";
+    $css_admin_includes[] = Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css";
+    Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+    $this->getController()->_getAdminHeader();
+    $clang = $this->getController()->lang;
+    //$this->load->model('users_model');
+    //$this->load->model('participant_attribute_model');
+    //$this->load->model('surveys_model');
+    //$this->load->model('participants_model');
+    $getNames= Yii::app()->db->createCommand()->select('uid,full_name')->from('{{users}}')->queryAll();
+    $attributes = ParticipantAttributeNames::getVisibleAttributes();
+    $allattributes = ParticipantAttributeNames::getAllAttributes();
+    $attributeValues =ParticipantAttributeNames::getAllAttributesValues();
     // loads the survey names to be shown in add to survey
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN'))  // if user is superadmin, all survey names
+    if(Yii::app()->session['USER_RIGHT_SUPERADMIN'])  // if user is superadmin, all survey names
     {
-     $surveynames = $this->surveys_model->getAllSurveyNames();
+     $surveynames = Survey::getAllSurveyNames();
     }
     else                                                   // otherwise owned by him
     {
-        $surveynames = $this->surveys_model->getSurveyNames();
+        $surveynames =  Survey::getSurveyNames();
     }
     // data to be passed to view
     $aData = array('names'=> $getNames,
@@ -97,9 +120,9 @@ function displayParticipants()
                   'surveynames' =>$surveynames,
                   'clang'=> $clang );
     // loads the participant panel view and display participant view
-    $this->load->view('admin/participants/participantsPanel_view',$aData);
-    $this->load->view('admin/participants/displayParticipants_view',$aData);
-    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    $this->getController()->render('/admin/participants/participantsPanel_view',$aData);
+    $this->getController()->render('/admin/participants/displayParticipants_view',$aData);
+    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 }
 /**
  * This function is responsible for loading the view 'blacklistControl'
@@ -108,11 +131,11 @@ function displayParticipants()
 */
 function blacklistControl()
 {
-    self::_getAdminHeader();
-    $clang = $this->limesurvey_lang;
+    $this->getController()->_getAdminHeader();
+    $clang = $this->getController()->lang;
     $aData = array('clang'=> $clang);
-    $this->load->view('admin/participants/participantsPanel_view',$aData);
-    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    $this->getController()->render('/admin/participants/participantsPanel_view',$aData);
+    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 }
 /**
  * This function is responsible for loading the view 'attributeControl'
@@ -122,15 +145,14 @@ function blacklistControl()
 function attributeControl()
 {
 
-    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/participants.css";
-    $this->config->set_item("css_admin_includes", $css_admin_includes);
-    self::_getAdminHeader();
-    $clang = $this->limesurvey_lang;
-    $this->load->model('participant_attribute_model');
-    $aData = array('clang'=> $clang,'result'=>$this->participant_attribute_model->getAttributes());
-    $this->load->view('admin/participants/participantsPanel_view',$aData);
-    $this->load->view('admin/participants/attributeControl_view',$aData);
-    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/participants.css";
+    Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+    $this->getController()->_getAdminHeader();
+    $clang = $this->getController()->lang;
+    $aData = array('clang'=> $clang,'result'=>ParticipantAttributeNames::getAttributes());
+    $this->getController()->render('/admin/participants/participantsPanel_view',$aData);
+    $this->getController()->render('/admin/participants/attributeControl_view',$aData);
+    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 }
 /**
  * This function is responsible for loading the view 'userControl'
@@ -139,13 +161,13 @@ function attributeControl()
 */
 function userControl()
 {
-    self::_getAdminHeader();
-    $clang = $this->limesurvey_lang;
+    $this->getController()->_getAdminHeader();
+    $clang = $this->getController()->lang;
     $aData = array('clang'=> $clang,
-                  'userideditable'=>$this->config->item("userideditable"));
-    $this->load->view('admin/participants/participantsPanel_view',$aData);
-    $this->load->view('admin/participants/userControl_view',$aData);
-    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+                  'userideditable'=>Yii::app()->getConfig("userideditable"));
+    $this->getController()->render('/admin/participants/participantsPanel_view',$aData);
+    $this->getController()->render('/admin/participants/userControl_view',$aData);
+    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 }
 /**
  * This function is responsible for loading the view 'sharePanel'
@@ -154,21 +176,21 @@ function userControl()
 */
 function sharePanel()
 {
-    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
-    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js");
-    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/plugins/jquery.searchFilter.js");
-    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/src/grid.celledit.js");
-    self::_js_admin_includes($this->config->item('adminscripts')."sharePanel.js");
-    self::_js_admin_includes($this->config->item('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
-    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css";
-    $css_admin_includes[] = $this->config->item('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css";
-    $this->config->set_item("css_admin_includes", $css_admin_includes);
-    self::_getAdminHeader();
-    $clang = $this->limesurvey_lang;
+    $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
+    $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/js/jquery.jqGrid.min.js");
+    $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/plugins/jquery.searchFilter.js");
+    $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/src/grid.celledit.js");
+    $this->getController()->_js_admin_includes(Yii::app()->getConfig('adminscripts')."sharePanel.js");
+    $this->getController()->_js_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/js/i18n/grid.locale-en.js");
+    $css_admin_includes[] = Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css";
+    $css_admin_includes[] = Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/jquery.ui.datepicker.css";
+    Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+    $this->getController()->_getAdminHeader();
+    $clang = $this->getController()->lang;
     $aData = array('clang'=> $clang);
-    $this->load->view('admin/participants/participantsPanel_view',$aData);
-    $this->load->view('admin/participants/sharePanel_view',$aData);
-    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    $this->getController()->render('/admin/participants/participantsPanel_view',$aData);
+    $this->getController()->render('/admin/participants/sharePanel_view',$aData);
+    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 }
 /**
  * This function sends the shared participant info to the share panel using JSON encoding
@@ -245,23 +267,22 @@ function editShareInfo()
  */
 function delParticipant()
 {
-    $this->load->model('participants_model');
-    $selectoption = $this->input->post('selectedoption');
-    $participant_id = $this->input->post('participant_id');
+    $selectoption = CHttpRequest::getPost('selectedoption');
+    $participant_id = CHttpRequest::getPost('participant_id');
     // Deletes from participants only
     if($selectoption=="po")
     {
-      $this->participants_model->deleteParticipant($participant_id);
+      Participants::deleteParticipant($participant_id);
     }
     // Deletes from central and token table
     elseif($selectoption=="ptt")
     {
-       $this->participants_model->deleteParticipantToken($participant_id);
+       Participants::deleteParticipantToken($participant_id);
     }
     // Deletes from central , token and assosiated responses as well
     else
     {
-       $this->participants_model->deleteParticipantTokenAnswer($participant_id);
+       Participants::deleteParticipantTokenAnswer($participant_id);
     }
 }
 /**
@@ -271,52 +292,50 @@ function delParticipant()
  */
 function editParticipant()
 {
-    $operation = $_POST['oper'];
-    $this->load->model('participants_model');
-    $this->load->model('users_model');
+    $operation = CHttpRequest::getPost('oper');
     //In case the uid is not editable, then user id is not posted and hence the current user is added in the uid
-    if($this->input->post('owner_uid')=='')
+    if(CHttpRequest::getPost('owner_uid')=='')
     {
-        $oid=$this->session->userdata('loginID');
+        $oid=Yii::app()->session['loginID'];
     }
     //otherwise the one which is posted is added
     else
     {
-        $oid = $_POST['owner_uid'];
+        $oid = CHttpRequest::getPost('owner_uid');
     }
-    if($this->input->post('language')=='')
+    if(CHttpRequest::getPost('language')=='')
     {
-        $lang=$this->session->userdata('adminlang');
+        $lang=Yii::app()->session['adminlang'];
     }
     else
     {
-        $lang = $_POST['language'];
+        $lang = CHttpRequest::getPost('language');
     }
     // if edit it will update the row
     if($operation == 'edit')
     {
         $aData = array(
-        'participant_id' => $_POST['id'],
-        'firstname' => $_POST['firstname'],
-        'lastname' => $_POST['lastname'],
-        'email' => $_POST['email'],
-        'language' => $_POST['language'],
-        'blacklisted' => $_POST['blacklisted'],
+        'participant_id' => CHttpRequest::getPost('id'),
+        'firstname' => CHttpRequest::getPost('firstname'),
+        'lastname' => CHttpRequest::getPost('lastname'),
+        'email' => CHttpRequest::getPost('email'),
+        'language' => CHttpRequest::getPost('language'),
+        'blacklisted' => CHttpRequest::getPost('blacklisted'),
         'owner_uid' => $oid);
-        $this->participants_model->updateRow($aData);
+        Participants::updateRow($aData);
     }
     // if add it will insert a new row
     elseif($operation == 'add')
     {
         $uuid = $this->gen_uuid();
         $aData = array('participant_id' => $uuid,
-                      'firstname' => $_POST['firstname'],
-                      'lastname' => $_POST['lastname'],
-                      'email' => $_POST['email'],
-                      'language' => $_POST['language'],
-                      'blacklisted' => $_POST['blacklisted'],
+                      'firstname' => CHttpRequest::getPost('firstname'),
+                      'lastname' => CHttpRequest::getPost('lastname'),
+                      'email' => CHttpRequest::getPost('email'),
+                      'language' => CHttpRequest::getPost('language'),
+                      'blacklisted' => CHttpRequest::getPost('blacklisted'),
                       'owner_uid' => $oid);
-        $this->participants_model->insertParticipant($aData);
+        Participants::insertParticipant($aData);
     }
 }
 /**
@@ -339,18 +358,18 @@ function storeUserControlValues()
  */
 function getSurveyInfo_json()
 {
-    $this->load->model('survey_links_model');
-    $this->load->model('surveys_languagesettings_model');
-    $participantid = $this->uri->segment(4);
-    $records = $this->survey_links_model->getLinkInfo($participantid);
+    //$this->load->model('survey_links_model');
+    //$this->load->model('surveys_languagesettings_model');
+    $participantid = CHttpRequest::getQuery('pid');
+    $records = Yii::app()->db->createCommand()->select('token_id,survey_id,date_created')->from('{{survey_links}}')->where('participant_id = "'.$participantid.'"')->queryAll();
     $aData->page = 1;
-    $aData->records = count ($this->survey_links_model->getLinkInfo($participantid)->result_array());
+    $aData->records = count ($records);
     $aData->total = ceil ($aData->records /10 );
     $i=0;
-    foreach($records->result() as $row)
+    foreach($records as $row)
     {
-        $surveyname = $this->surveys_languagesettings_model->getSurveyNames($row->survey_id);
-        $aData->rows[$i]['cell']=array($surveyname->row()->surveyls_title,"<a href=".site_url("admin/tokens/browse")."/".$row->survey_id.">".$row->survey_id,$row->token_id,$row->date_created);
+        $surveyname = Surveys_languagesettings::getSurveyNames($row['survey_id']);
+        $aData->rows[$i]['cell']=array($surveyname[0]['surveyls_title'],"<a href=".Yii::app()->baseUrl."admin/tokens/browse"."/".$row['survey_id'].">".$row['survey_id'],$row['token_id'],$row['date_created']);
         $i++;
     }
     echo ls_json_encode($aData);
@@ -699,47 +718,44 @@ function exporttocsv()
 }
 function getParticipantsResults_json()
 {
-    $page = $this->input->post('page');
-    $limit = $this->input->post('rows');
-    $this->load->model('participants_model');
-    $this->load->model('participant_attribute_model');
-    $this->load->model('users_model');
-    $attid = $this->participant_attribute_model->getAttributeVisibleID();
+    $page = CHttpRequest::getPost('page');
+    $limit = CHttpRequest::getPost('rows');    
+    $attid = ParticipantAttributeNames::getAttributeVisibleID();
     $participantfields = array('participant_id','can_edit','firstname','lastname','email','blacklisted','surveys','language','owner_uid');
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
     {
-        $searchcondition = $this->uri->segment(4);
+        $searchcondition = CHttpRequest::getQuery('search');
         $searchcondition = urldecode($searchcondition);
         $finalcondition = array();
         $condition = explode("||",$searchcondition);
         if(count($condition)==3)
         {
 
-            $records = $this-> participants_model->getParticipantsSearch($condition,$page,$limit);
+            $records = Participants::getParticipantsSearch($condition,$page,$limit);
             $aData->page = $page;
-            $aData->records = count ($this->participants_model->getParticipantsSearch($condition,0,0));
+            $aData->records = count (Participants::getParticipantsSearch($condition,0,0));
             $aData->total = ceil ($aData->records /$limit );
         }
         else
         {
-            $records = $this-> participants_model->getParticipantsSearchMultiple($condition,$page,$limit);
+            $records = Participants::getParticipantsSearchMultiple($condition,$page,$limit);
             $aData->page = $page;
-            $aData->records = count ($this->participants_model->getParticipantsSearchMultiple($condition,0,0));
+            $aData->records = count (Participants::getParticipantsSearchMultiple($condition,0,0));
             $aData->total = ceil ($aData->records /$limit );
         }
-        $i=0;
+        $i=0; 
         foreach($records as $row=>$value)
         {
-            $username = $this->users_model->getName($value['owner_uid']);//for conversion of uid to human readable names
-            $surveycount = $this->participants_model->getSurveyCount($value['participant_id']);
-            $sortablearray[$i]=array($value['participant_id'],"true",$value['firstname'],$value['lastname'],$value['email'],$value['blacklisted'],$surveycount,$value['language'],$username->full_name);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-            $attributes =  $this->participant_attribute_model->getParticipantVisibleAttribute($value['participant_id']);
+            $username = User::getName($value['owner_uid']);//for conversion of uid to human readable names
+            $surveycount = Participants::getSurveyCount($value['participant_id']);
+            $sortablearray[$i]=array($value['participant_id'],"true",$value['firstname'],$value['lastname'],$value['email'],$value['blacklisted'],$surveycount,$value['language'],$username[0]['full_name']);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is
+            $attributes =  ParticipantAttributeNames::getParticipantVisibleAttribute($value['participant_id']);
             foreach($attid as $attributeid)
             {
-                $answer=$this->participant_attribute_model->getAttributeValue($value['participant_id'],$attributeid['attribute_id']);
-                if(isset($answer->value))
+                $answer=ParticipantAttributeNames::getAttributeValue($value['participant_id'],$attributeid['attribute_id']);
+                if(isset($answer['value']))
                 {
-                    array_push($sortablearray[$i],$answer->value);
+                    array_push($sortablearray[$i],$answer['value']);
                 }
                 else
                 {
@@ -768,53 +784,56 @@ function getParticipantsResults_json()
             }
             return $c;
         }
-        $indexsort = array_search($this->input->post('sidx'), $participantfields);
-        $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord'));
-        $i=0;
-        $count = count($sortedarray[0]);
-        foreach($sortedarray as $key=>$value)
+        if(!empty($sortablearray))
         {
-            $aData->rows[$i]['id']=$value[0];
-            $aData->rows[$i]['cell'] = array();
-            for($j=0 ; $j < $count ; $j++)
+            $indexsort = array_search(CHttpRequest::getPost('sidx'), $participantfields);
+            $sortedarray = subval_sort($sortablearray,$indexsort,CHttpRequest::getPost('sord'));
+            $i=0;
+            $count = count($sortedarray[0]);
+            foreach($sortedarray as $key=>$value)
             {
-                array_push($aData->rows[$i]['cell'],$value[$j]);
+                $aData->rows[$i]['id']=$value[0];   
+                $aData->rows[$i]['cell'] = array();
+                for($j=0 ; $j < $count ; $j++)
+                {
+                    array_push($aData->rows[$i]['cell'],$value[$j]);
+                }
+                $i++;
             }
-            $i++;
         }
         echo ls_json_encode($aData);
     }
     else // Only the owned and shared participants will be visible
     {
-        $searchcondition = $this->uri->segment(4);
+        $searchcondition = CHttpRequest::getQuery('search');
         $searchcondition = urldecode($searchcondition);
         $finalcondition = array();
         $condition = explode("||",$searchcondition);
         if(count($condition)==3)
         {
-            $records = $this-> participants_model->getParticipantsSearch($condition,$page,$limit);
+            $records = Participants::getParticipantsSearch($condition,$page,$limit);
             $aData->page = $page;
         }
         else
         {
-            $records = $this-> participants_model->getParticipantsSearchMultiple($condition,$page,$limit);
+            $records = Participants::getParticipantsSearchMultiple($condition,$page,$limit);
             $aData->page = $page;
         }
         $i=0;
         foreach($records as $row=>$value)
         {
-            if($this->participants_model->is_owner($value['participant_id']))
+            if(Participants::s_owner($value['participant_id']))
             {
-                $username = $this->users_model->getName($value['owner_uid']);//for conversion of uid to human readable names
-                $surveycount = $this->participants_model->getSurveyCount($value['participant_id']);
-                $sortablearray[$i]=array($value['participant_id'],"true",$value['firstname'],$value['lastname'],$value['email'],$value['blacklisted'],$surveycount,$value['language'],$username->full_name);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-                $attributes =  $this->participant_attribute_model->getParticipantVisibleAttribute($value['participant_id']);
+                $username = User::getName($value['owner_uid']);//for conversion of uid to human readable names
+                $surveycount = Participants::getSurveyCount($value['participant_id']);
+                $sortablearray[$i]=array($value['participant_id'],"true",$value['firstname'],$value['lastname'],$value['email'],$value['blacklisted'],$surveycount,$value['language'],$username[0]['full_name']);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is
+                $attributes =  ParticipantAttributeNames::getParticipantVisibleAttribute($value['participant_id']);
                 foreach($attid as $attributeid)
                 {
-                    $answer=$this->participant_attribute_model->getAttributeValue($value['participant_id'],$attributeid['attribute_id']);
-                    if(isset($answer->value))
+                    $answer=ParticipantAttributeNames::getAttributeValue($value['participant_id'],$attributeid['attribute_id']);
+                    if(isset($answer['value']))
                     {
-                        array_push($sortablearray[$i],$answer->value);
+                        array_push($sortablearray[$i],$answer['value']);
                     }
                     else
                     {
@@ -848,8 +867,8 @@ function getParticipantsResults_json()
         {
             $aData->records = count($sortablearray);
             $aData->total = ceil (count($sortablearray) /$limit );
-            $indexsort = array_search($this->input->post('sidx'), $participantfields);
-            $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord'));
+            $indexsort = array_search(CHttpRequest::getPost('sidx'), $participantfields);
+            $sortedarray = subval_sort($sortablearray,$indexsort,CHttpRequest::getPost('sord'));
             $i=0;
             $count = count($sortedarray[0]);
             foreach($sortedarray as $key=>$value)
@@ -874,36 +893,36 @@ function getParticipantsResults_json()
  */
 function getParticipants_json()
 {
-    $page = $this->input->post('page');
-    $limit = $this->input->post('rows');
-    $this->load->model('participants_model');
-    $this->load->model('participant_attribute_model');
-    $this->load->model('users_model');
-    $attid = $this->participant_attribute_model->getAttributeVisibleID();
+    $page = CHttpRequest::getPost('page');
+    $limit = CHttpRequest::getPost('rows');
+    //$this->load->model('participants_model');
+    //$this->load->model('participant_attribute_model');
+    //$this->load->model('users_model');
+    $attid = ParticipantAttributeNames::getAttributeVisibleID();
     $participantfields = array('participant_id','can_edit','firstname','lastname','email','blacklisted','surveys','language','owner_uid');
     foreach($attid as $key=>$value)
     {
         array_push($participantfields,$value['attribute_name']);
     }
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
     {
-        $records = $this-> participants_model->getParticipants($page,$limit);
+        $records = Participants::getParticipants($page,$limit);
         $aData->page = $page;
-        $aData->records = $this->participants_model->getParticipantsCount();
+        $aData->records = Participants::model()->count();
         $aData->total = ceil ( $aData->records / $limit );
         $i=0;
-        foreach($records->result() as $row)
+        foreach($records as $key => $row)
         {
-            $username = $this->users_model->getName($row->owner_uid);//for conversion of uid to human readable names
-            $surveycount = $this->participants_model->getSurveyCount($row->participant_id);
-            $sortablearray[$i]=array($row->participant_id,"true",$row->firstname,$row->lastname,$row->email,$row->blacklisted,$surveycount,$row->language ,$username->full_name);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is
-            $attributes =  $this->participant_attribute_model->getParticipantVisibleAttribute($row->participant_id);
+            $username = User::getName($row['owner_uid']);//for conversion of uid to human readable names            
+            $surveycount = Participants::getSurveyCount($row['participant_id']);
+            $sortablearray[$i]=array($row['participant_id'],"true",$row['firstname'],$row['lastname'],$row['email'],$row['blacklisted'],$surveycount,$row['language'] ,$username[0]['full_name']);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is
+            $attributes =  ParticipantAttributeNames::getParticipantVisibleAttribute($row['participant_id']);
             foreach($attid as $attributeid)
             {
-                $answer=$this->participant_attribute_model->getAttributeValue($row->participant_id,$attributeid['attribute_id']);
-                if(isset($answer->value))
+                $answer=ParticipantAttributeNames::getAttributeValue($row['participant_id'],$attributeid['attribute_id']);
+                if(isset($answer[0]['value']))
                 {
-                    array_push($sortablearray[$i],$answer->value);
+                    array_push($sortablearray[$i],$answer[0]['value']);
                 }
                 else
                 {
@@ -932,8 +951,8 @@ function getParticipants_json()
             }
             return $c;
         }
-        $indexsort = array_search($this->input->post('sidx'), $participantfields);
-        $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord'));
+        $indexsort = array_search(CHttpRequest::getPost('sidx'), $participantfields);
+        $sortedarray = subval_sort($sortablearray,$indexsort,CHttpRequest::getPost('sord'));
         $i=0;
         $count = count($sortedarray[0]);
         foreach($sortedarray as $key=>$value)
@@ -951,25 +970,25 @@ function getParticipants_json()
     else // Only the owned and shared participants will be visible
     {
 
-        $iUserID = $this->session->userdata('loginID');
-        $records = $this->participants_model->getParticipantsOwner($iUserID);
+        $iUserID = Yii::app()->session['loginID'];
+        $records = Participants::getParticipantsOwner($iUserID);
         $aData->page = $page;
-        $aData->records = count ($this->participants_model->getParticipantsOwner($iUserID)->result_array());
+        $aData->records = count($records);
         $aData->total = ceil($aData->records/$limit);
-        $attid = $this->participant_attribute_model->getAttributeVisibleID();
+        $attid = ParticipantAttributeNames::getAttributeVisibleID();
         $i=0;
-        foreach($records->result() as $row)
+        foreach($records as $row)
         {
-            $surveycount = $this->participants_model->getSurveyCount($row->participant_id);
-            $ownername = $this->users_model->getName($row->owner_uid); //for conversion of uid to human readable names
-            $sortablearray[$i]=array($row->participant_id,$row->can_edit,$row->firstname,$row->lastname,$row->email,$row->blacklisted,$surveycount,$row->language,$ownername->full_name);
-            $attributes =  $this->participant_attribute_model->getParticipantVisibleAttribute($row->participant_id);
+            $surveycount = Participants::getSurveyCount($row['participant_id']);
+            $ownername = Users::getName($row['owner_uid']); //for conversion of uid to human readable names
+            $sortablearray[$i]=array($row['participant_id'],$row['can_edit'],$row['firstname'],$row['lastname'],$row['email'],$row['blacklisted'],$surveycount,$row['language'],$ownername[0]['full_name']);
+            $attributes =  ParticipantAttributeNames::getParticipantVisibleAttribute($row['participant_id']);
             foreach($attid as $attributeid)
                 {
-                    $answer=$this->participant_attribute_model->getAttributeValue($row->participant_id,$attributeid['attribute_id']);
-                    if(isset($answer->value))
+                    $answer=ParticipantAttributeNames::getAttributeValue($row['participant_id'],$attributeid['attribute_id']);
+                    if(isset($answer[0]['value']))
                     {
-                        array_push($sortablearray[$i],$answer->value);
+                        array_push($sortablearray[$i],$answer[0]['value']);
                     }
                     else
                     {
@@ -998,8 +1017,8 @@ function getParticipants_json()
             }
             return $c;
         }
-        $indexsort = array_search($this->input->post('sidx'), $participantfields);
-        $sortedarray = subval_sort($sortablearray,$indexsort,$this->input->post('sord'));
+        $indexsort = array_search(CHttpRequest::getPost('sidx'), $participantfields);
+        $sortedarray = subval_sort($sortablearray,$indexsort,CHttpRequest::getPost('sord'));
         $i=0;
         $count = count($sortedarray[0]);
         foreach($sortedarray as $key=>$value)
@@ -1020,10 +1039,9 @@ function getParticipants_json()
  */
 function getAttribute_json()
 {
-    $this->load->model('participant_attribute_model');
-    $participant_id=$this->uri->segment(4);
-    $records = $this->participant_attribute_model->getParticipantVisibleAttribute($participant_id);
-    $getallattributes = $this->participant_attribute_model->getAttributes();
+    $participant_id=CHttpRequest::getQuery('pid');
+    $records = ParticipantAttributeNames::getParticipantVisibleAttribute($participant_id);
+    $getallattributes = ParticipantAttributeNames::getAttributes();
     $aData->page = 1;
     $aData->records = count ($records);
     $aData->total = ceil ($aData->records /10 );
@@ -1037,7 +1055,7 @@ function getAttribute_json()
         $aData->rows[$i]['cell']=array("",$row['participant_id'],$row['attribute_type'],$row['attribute_name'],$row['value']);
         if($row['attribute_type']=="DD")
         {
-            $attvalues = $this->participant_attribute_model->getAttributesValues($row['attribute_id']);
+            $attvalues = ParticipantAttributeNames::getAttributesValues($row['attribute_id']);
             if(!empty($attvalues))
             {
                 $attval="";
@@ -1063,22 +1081,22 @@ function getAttribute_json()
     }
     if(count($doneattributes)==0)
     {
-        $attributenotdone = $this->participant_attribute_model->getAttributes();
+        $attributenotdone = ParticipantAttributeNames::getAttributes();
     }
     else
     {
-        $attributenotdone = $this->participant_attribute_model->getnotaddedAttributes($doneattributes);
+        $attributenotdone = ParticipantAttributeNames::getnotaddedAttributes($doneattributes);
     }
     if($attributenotdone>0)
     {
         foreach($attributenotdone as $row)
         {
 
-            $aData->rows[$i]['id']=$this->uri->segment(4)."_".$row['attribute_id'];
-            $aData->rows[$i]['cell']=array("",$this->uri->segment(4),$row['attribute_type'],$row['attribute_name'],"");
+            $aData->rows[$i]['id']=$participant_id."_".$row['attribute_id'];
+            $aData->rows[$i]['cell']=array("",$participant_id,$row['attribute_type'],$row['attribute_name'],"");
             if($row['attribute_type']=="DD")
             {
-                $attvalues = $this->participant_attribute_model->getAttributesValues($row['attribute_id']);
+                $attvalues = ParticipantAttributeNames::getAttributesValues($row['attribute_id']);
                 if(!empty($attvalues))
                 {
                     $attval="";
@@ -1112,37 +1130,36 @@ function getAttribute_json()
 function storeParticipants()
 {
     $aData = array('participant_id' => uniqid(),
-    'firstname' => $this->input->post('firstname'),
-    'lastname' => $this->input->post('lastname'),
-    'email' => $this->input->post('email'),
-    'language' => $this->input->post('language'),
-    'blacklisted' => $this->input->post('blacklisted'),
-    'owner_uid' => $this->input->post('owner_uid'));
-    $this->load->model('participants_model');
-    $this->participants_model->insertParticipant($aData);
+    'firstname' => CHttpRequest::getPost('firstname'),
+    'lastname' => CHttpRequest::getPost('lastname'),
+    'email' => CHttpRequest::getPost('email'),
+    'language' => CHttpRequest::getPost('language'),
+    'blacklisted' => CHttpRequest::getPost('blacklisted'),
+    'owner_uid' => CHttpRequest::getPost('owner_uid'));
+    
+    Participants::insertParticipant($aData);
 }
 /*
  * This function is responsible for showing the additional attribute for central database
  */
 function viewAttribute()
 {
-    $this->load->model('participant_attribute_model');
-    $attribute_id = $this->uri->segment(4);
-    $attributes=$this->participant_attribute_model->getAttribute($attribute_id);
-    $attributenames = $this->participant_attribute_model->getAttributeNames($attribute_id);
-    $attributevalues=$this->participant_attribute_model->getAttributesValues($attribute_id);
-    $clang = $this->limesurvey_lang;
+    $attribute_id = CHttpRequest::getQuery('aid');
+    $attributes=ParticipantAttributeNames::getAttribute($attribute_id);
+    $attributenames = ParticipantAttributeNames::getAttributeNames($attribute_id);
+    $attributevalues=ParticipantAttributeNames::getAttributesValues($attribute_id);
+    $clang = $this->getController()->lang;
     $aData = array('attributes' => $attributes,
                   'attributevalues' => $attributevalues,
                   'attributenames' => $attributenames,
                   'clang'=> $clang);
-    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/participants.css";
-    $css_admin_includes[] = $this->config->item('styleurl')."admin/default/viewAttribute.css";
-    $this->config->set_item("css_admin_includes", $css_admin_includes);
-    self::_getAdminHeader();
-    $this->load->view('admin/participants/participantsPanel_view',$aData);
-    $this->load->view('admin/participants/viewAttribute_view',$aData);
-    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+    $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/participants.css";
+    $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/viewAttribute.css";
+    Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
+    $this->getController()->_getAdminHeader();
+    $this->getController()->render('/admin/participants/participantsPanel_view',$aData);
+    $this->getController()->render('/admin/participants/viewAttribute_view',$aData);
+    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 }
 /*
  * This function is responsible for saving the additional attribute. It iterates through all the new attributes added dynamically
@@ -1150,20 +1167,19 @@ function viewAttribute()
  */
 function saveAttribute()
     {
-        $this->load->model('participant_attribute_model');
-        $aData = array('attribute_id'    => $this->uri->segment(4),
-                      'attribute_type'  => $this->input->post('attribute_type'),
-                      'visible'  => $this->input->post('visible'));
-        $this->participant_attribute_model->saveAttribute($aData);
+        $aData = array('attribute_id'    => CHttpRequest::getQuery('aid'),
+                      'attribute_type'  => CHttpRequest::getPost('attribute_type'),
+                      'visible'  => CHttpRequest::getPost('visible'));
+        ParticipantAttributeNames::saveAttribute($aData);
         foreach($_POST as $key=>$value)
         {
             if(strlen($key) == 2) // check for language code in the post variables this is a hack as the only way to check for language data
             {
-                $langdata = array( 'attribute_id' => $this->uri->segment(4),
+                $langdata = array( 'attribute_id' => CHttpRequest::getQuery('aid'),
                                    'attribute_name' => $value,
                                    'lang' => $key     );
 
-                $this->participant_attribute_model->saveAttributeLanguages($langdata);
+                ParticipantAttributeNames::saveAttributeLanguages($langdata);
             }
         }
         if(isset($_POST['attribute_value_name_1']))
@@ -1174,12 +1190,12 @@ function saveAttribute()
                 $attvaluename = 'attribute_value_name_'.$i;
                 if(!empty($_POST[$attvaluename]))
                 {
-                    $aDatavalues[$i] = array('attribute_id' => $this->uri->segment(4),
-                                            'value' => $this->input->post($attvaluename));
+                    $aDatavalues[$i] = array('attribute_id' => CHttpRequest::getQuery('aid'),
+                                            'value' => CHttpRequest::getPost($attvaluename));
                 }
                 $i++;
             }while(isset($_POST[$attvaluename]));
-            $this->participant_attribute_model->storeAttributeValues($aDatavalues);
+            ParticipantAttributeNames::storeAttributeValues($aDatavalues);
         }
 
         if(isset($_POST['editbox']))
@@ -1187,19 +1203,18 @@ function saveAttribute()
             $editattvalue = array('value_id'=> $_POST['value_id'],
                                   'attribute_id'=> $this->uri->segment(4),
                                   'value' => $_POST['editbox']);
-            $this->participant_attribute_model->saveAttributeValue($editattvalue);
+            ParticipantAttributeNames::saveAttributeValue($editattvalue);
         }
-        redirect('admin/participants/attributeControl');
+        CController::redirect(Yii::app()->createUrl('admin/participants/sa/attributeControl'));
 }
 /*
  * This function is responsible for deleting the additional attribute.
  */
 function delAttribute()
 {
-    $attribute_id = $this->uri->segment(4);
-    $this->load->model('participant_attribute_model');
-    $this->participant_attribute_model->delAttribute($attribute_id);
-    redirect('admin/participants/attributeControl');
+    $attribute_id = CHttpRequest::getQuery('aid');
+    ParticipantAttributeNames::delAttribute($attribute_id);
+    CController::redirect(Yii::app()->createUrl('/admin/participants/sa/attributeControl'));
 }
 /*
  * This function is responsible for deleting the additional attribute values in case of drop down.
@@ -1209,15 +1224,14 @@ function delAttributeValues()
     $attribute_id = $this->uri->segment(4);
     $value_id = $this->uri->segment(5);
     $this->load->model('participant_attribute_model');
-    $this->participant_attribute_model->delAttributeValues($attribute_id,$value_id);
-    redirect('admin/participants/viewAttribute/'.$attribute_id);
+    ParticipantAttributeNames::delAttributeValues($attribute_id,$value_id);
+    redirect('admin/participants/sa/viewAttribute/'.$attribute_id);
 }
 /*
  * This function is responsible for deleting the storing the additional attributes
  */
 function storeAttributes()
 {
-    $this->load->model('participant_attribute_model');
     $i=1;
     do
     {
@@ -1226,27 +1240,26 @@ function storeAttributes()
         $visible = 'visible_'.$i;
         if(!empty($_POST[$attname]))
         {
-            $aData = array('attribute_name' => $this->input->post($attname),
-                          'attribute_type' => $this->input->post($atttype),
-                          'visible' => $this->input->post($visible));
-            $this->participant_attribute_model->storeAttribute($aData);
+            $aData = array('attribute_name' => CHttpRequest::getPost($attname),
+                          'attribute_type' => CHttpRequest::getPost($atttype),
+                          'visible' => CHttpRequest::getPost($visible));
+            ParticipantAttributeNames::storeAttribute($aData);
         }
         $i++;
     }while(isset($_POST[$attname]));
 
-    redirect('admin/participants/attributeControl');
+    CController::redirect('attributeControl');
 }
 /*
  * This function is responsible for editing the additional attributes values
  */
 function editAttributevalue()
 {
-    $this->load->model('participant_attribute_model');
-    if($this->input->post('oper')=="edit")
+    if(CHttpRequest::getPost('oper')=="edit")
     {
-            $attributeid = explode("_",$this->input->post('id'));
-            $aData = array('participant_id' => $this->input->post('participant_id'),'attribute_id' => $attributeid[1],'value' => $this->input->post('attvalue'));
-            $this->participant_attribute_model->editParticipantAttributeValue($aData);
+            $attributeid = explode("_",CHttpRequest::getPost('id'));
+            $aData = array('participant_id' => CHttpRequest::getPost('participant_id'),'attribute_id' => $attributeid[1],'value' => CHttpRequest::getPost('attvalue'));
+            ParticipantAttributeNames::editParticipantAttributeValue($aData);
     }
 }
 function attributeMapCSV()
@@ -1771,8 +1784,7 @@ function blacklistParticipant()
 }
 function saveVisible()
 {
-    $this->load->model('participant_attribute_model');
-    $this->participant_attribute_model->saveAttributeVisible($this->input->post('attid'),$this->input->post('visiblevalue'));
+    ParticipantAttributeNames::saveAttributeVisible(CHttpRequest::getPost('attid'),CHttpRequest::getPost('visiblevalue'));
 }
 }
 ?>

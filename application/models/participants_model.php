@@ -481,14 +481,14 @@ function getParticipantsSearchMultiple($condition,$page,$limit)
         else{$i=$i+4;}
     }
     if($page == 0 && $limit == 0)
-                  {
-    $data= $this->db->get();
-                  }
-                  else
-                  {
-                   $this->db->limit($limit,$start);
-                    $data = $this->db->get();
-                    }   
+    {
+        $data= $this->db->get();
+    }
+    else
+    {
+        $this->db->limit($limit,$start);
+        $data = $this->db->get();
+    }   
     
     $otherdata = $data->result_array();
     if(!empty($tobedonelater))

@@ -41,11 +41,15 @@ jQuery.download = function(url, data, method){
 var id=1;
 $("#addbutton").click(function(){
 id=2;
+if(typeof optionstring === "undefined")
+{
+  optionstring = "";
+}
 html = "<tr name='joincondition_"+id+"' id='joincondition_"+id+"'><td><select name='join_"+id+"' id='join_"+id+"'><option value='and'>AND</option><option value='or'>OR</option></td><td></td></tr><tr><td><select name='field_"+id+"' id='field_"+id+"'>\n\
 <option value='firstname'>First Name</option>\n\
 <option value='lastname'>Last Name</option>\n\
-<option value='email'>E-Main</option>\n\
-<option value='black'>Blacklisted</option>\n\
+<option value='email'>E-Mail</option>\n\
+<option value='blacklisted'>Blacklisted</option>\n\
 <option value='language'>Language</option>\n\
 <option value='owner_uid'>Owner ID</option>\n\
 <option value='owner_name'>Owner Name</option>"+optionstring+"\n\</select>\n\</td>\n\<td>\n\<select name='condition_"+id+"' id='condition_"+id+"'>\n\

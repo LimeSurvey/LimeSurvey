@@ -126,6 +126,7 @@ class AdminController extends LSYii_Controller
 			'statistics' => 'application.controllers.admin.statistics',
 			'labels' => 'application.controllers.admin.labels',
 			'templates' => 'application.controllers.admin.templates',
+			'participants' => 'application.controllers.admin.participantsaction',
 		);
 	}
 

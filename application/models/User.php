@@ -202,11 +202,7 @@ class User extends CActiveRecord
 	 */
     public function getName($userid)
     {
-        $this->db->select('full_name');
-        $this->db->from('users');
-        $this->db->where(array("uid"=>$userid));
-        $result = $this->db->get();
-        return $result->row();
+        return Yii::app()->db->createCommand()->select('full_name')->from('{{users}}')->where("uid = $userid")->queryAll();
     }
 		
 	/**

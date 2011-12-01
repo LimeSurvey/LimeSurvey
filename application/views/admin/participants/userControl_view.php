@@ -1,4 +1,4 @@
-<script src="<?php echo $this->config->item('adminscripts')."userControl.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('adminscripts')."userControl.js" ?>" type="text/javascript"></script>
  <div class='header ui-widget-header'>
    <strong>
      <?php
@@ -14,10 +14,10 @@
    </ul>
   <div id='usercontrol-1'>
    <?php
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN'))
+    if(Yii::app()->session['USER_RIGHT_SUPERADMIN'])
     {
        $attribute = array('class' => 'form44');
-       echo form_open('admin/participants/storeUserControlValues',$attribute);
+       echo CHtml::beginForm('admin/participants/storeUserControlValues','post',$attribute);
        $options = array('Y'=>'Yes','N'=> 'No');
    ?>
   <ul>
@@ -25,16 +25,16 @@
     <label for='userideditable' id='userideditable'>
      <?php echo $clang->gT('User ID editable : '); ?>
     </label>
-     <?php echo form_dropdown('userideditable', $options,$userideditable); ?>
+     <?php echo CHtml::dropDownList('userideditable',$userideditable, $options); ?>
    </li>
   </ul>
   <p>
      <?php 
-       echo form_submit('submit', 'Submit'); 
+       echo CHtml::submitButton('submit', array('value' => 'Submit')); 
      ?>
   </p>
    <?php
-      echo form_close();
+      echo CHtml::endForm();
      }
      else
      {  
