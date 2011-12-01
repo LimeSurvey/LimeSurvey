@@ -25,6 +25,7 @@ $surveyOptions = array(
     'anonymized'=>($thissurvey['anonymized']!='N'),
     'datestamp'=>($thissurvey['datestamp']=='Y'),
     'ipaddr'=>($thissurvey['ipaddr']=='Y'),
+    'timeadjust'=>(isset($timeadjust) ? $timeadjust : 0),
 );
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB

@@ -870,12 +870,12 @@ if ($thissurvey['tokenanswerspersistence'] == 'Y' && !isset($_SESSION['srid']) &
 // SAVE POSTED ANSWERS TO DATABASE IF MOVE (NEXT,PREV,LAST, or SUBMIT) or RETURNING FROM SAVE FORM
 if (isset($move) || isset($_POST['saveprompt']))
 {
-    if ($thissurvey['format'] == 'G') {
-        require_once("save.php");   // save1.php
-    }
-    else {
-        require_once("save.php");
-    }
+//    if ($thissurvey['format'] == 'G') {
+//        require_once("save.php");   // save1.php
+//    }
+//    else {
+//        require_once("save.php");
+//    }
 
     // RELOAD THE ANSWERS INCASE SOMEONE ELSE CHANGED THEM
     if ($thissurvey['active'] == "Y" &&
