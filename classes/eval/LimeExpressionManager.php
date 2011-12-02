@@ -51,7 +51,6 @@ class LimeExpressionManager {
     private $gseq2info;         // array of group sequence number to static info
 
     private $maxGroupSeq;  // the maximum groupSeq reached -  this is needed for Index
-    private $navigationIndex=false; // whether to build an index showing groups that have relevant questions // TODO - color code whether any visible questions are unanswered?
     private $slang='en';
     private $q2subqInfo;    // mapping of questions to information about their subquestions.
     private $qattr; // array of attributes for each question
@@ -70,7 +69,12 @@ class LimeExpressionManager {
         $this->em = new ExpressionManager();
     }
 
-    // The singleton method
+    /**
+     * Ensures there is only one instances of LEM.  Note, if switch between surveys, have to clear this cache
+     * Should this allow for multiple simultaneous surveys?
+     * @param <type> $ser - a serialized session to restore
+     * @return <type>
+     */
     public static function &singleton($ser=NULL)
     {
         if (!is_null($ser))
@@ -97,6 +101,21 @@ class LimeExpressionManager {
     public function __clone()
     {
         trigger_error('Clone is not allowed.', E_USER_ERROR);
+    }
+
+    /**
+     * Set the SurveyId - really checks whether the survey you're about to work with is new, and if so, clears the LEM cache
+     * @param <type> $sid
+     */
+    public static function SetSurveyId($sid=NULL)
+    {
+        if (!is_null($sid)) {
+            if (isset($_SESSION['LEMsingleton']) && isset($_SESSION['LEMsid']) && $sid != $_SESSION['LEMsid']) {
+                // then trying to use a new survey - so clear the LEM cache
+                unset($_SESSION['LEMsingleton']);
+            }
+            $_SESSION['LEMsid'] = $sid;
+        }
     }
 
     /**
@@ -1858,10 +1877,10 @@ class LimeExpressionManager {
 
     /**
      * Should be first function called on each page - sets/clears internally needed variables
-     * @param <type> $navigationIndex - true if should compute the navigation index (list of questions or groups to display)
      * @param <type> $allOnOnePage - true if StartProcessingGroup will be called multiple times on this page - does some optimizatinos
+     * @param <type> $rooturl - if set, this tells LEM to enable hyperlinking of syntax highlighting to ease editing of questions
      */
-    static function StartProcessingPage($navigationIndex=false,$allOnOnePage=false)
+    static function StartProcessingPage($allOnOnePage=false,$rooturl=NULL)
     {
 //        $now = microtime(true);
         $LEM =& LimeExpressionManager::singleton();
@@ -1870,9 +1889,12 @@ class LimeExpressionManager {
         $LEM->allOnOnePage=$allOnOnePage;
         $LEM->pageTailoringLog='';
         $LEM->surveyLogicFile='';
-        $LEM->navigationIndex=$navigationIndex;
         $LEM->slang = (isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en');
         $LEM->processedRelevance=false;
+        if (!is_null($rooturl)) {
+            $LEM->surveyOptions['rooturl'] = $rooturl;
+            $LEM->surveyOptions['hyperlinkSyntaxHighlighting']=true;    // this will be temporary - should be reset in running survey
+        }
 
 //        $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
@@ -1903,8 +1925,10 @@ class LimeExpressionManager {
         $LEM->surveyOptions['allowsave'] = (isset($options['allowsave']) ? $options['allowsave'] : false);
         $LEM->surveyOptions['anonymized'] = (isset($options['anonymized']) ? $options['anonymized'] : false);
         $LEM->surveyOptions['datestamp'] = (isset($options['datestamp']) ? $options['datestamp'] : false);
+        $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($options['hyperlinkSyntaxHighlighting']) ? $options['hyperlinkSyntaxHighlighting'] : false);
         $LEM->surveyOptions['ipaddr'] = (isset($options['ipaddr']) ? $options['ipaddr'] : false);
         $LEM->surveyOptions['refurl'] = (isset($options['refurl']) ? $options['refurl'] : NULL);
+        $LEM->surveyOptions['rooturl'] = (isset($options['rooturl']) ? $options['rooturl'] : '');
         $LEM->surveyOptions['startlanguage'] = (isset($options['startlanguage']) ? $options['startlanguage'] : 'en');
         $LEM->surveyOptions['surveyls_dateformat'] = (isset($options['surveyls_dateformat']) ? $options['surveyls_dateformat'] : 1);
         $LEM->surveyOptions['tablename'] = (isset($options['tablename']) ? $options['tablename'] : db_table_name('survey_' . $LEM->sid));
@@ -1957,7 +1981,7 @@ class LimeExpressionManager {
         switch ($LEM->surveyMode)
         {
             case 'survey':
-                $LEM->StartProcessingPage(false,true);
+                $LEM->StartProcessingPage(true);
                 /* What is right way to check validity after a submit?
                 if ($LEM->currentGroupSeq != -1) {
                     // then a repeated showing of survey
@@ -2118,7 +2142,7 @@ class LimeExpressionManager {
         switch ($LEM->surveyMode)
         {
             case 'survey':
-                $LEM->StartProcessingPage(false,true);
+                $LEM->StartProcessingPage(true);
                 /* What is right way to check validity after a submit?
                 if ($LEM->currentGroupSeq != -1) {
                     // then a repeated showing of survey
@@ -3489,7 +3513,11 @@ class LimeExpressionManager {
     static function StartProcessingGroup($groupNum=NULL,$anonymized=false,$surveyid=NULL,$forceRefresh=false)
     {
         $LEM =& LimeExpressionManager::singleton();
-        $LEM->em->StartProcessingGroup();
+        $LEM->em->StartProcessingGroup(
+                isset($surveyid) ? $surveyid : NULL,
+                isset($LEM->surveyOptions['rooturl']) ? $LEM->surveyOptions['rooturl'] : '',
+                isset($LEM->surveyOptions['hyperlinkSyntaxHighlighting']) ? $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] : false
+                );
         $LEM->groupRelevanceInfo = array();
         if (!is_null($groupNum))
         {
@@ -4146,7 +4174,7 @@ EOT;
         $LEM =& LimeExpressionManager::singleton();
 
 
-        LimeExpressionManager::StartProcessingPage(false,true);
+        LimeExpressionManager::StartProcessingPage(true);
         LimeExpressionManager::StartProcessingGroup(1); // pretending this is group 1
 
         // collect variables

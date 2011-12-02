@@ -45,6 +45,7 @@ if (!isset($action)) {$action=returnglobal('action');}          //Desired action
 if (!isset($subaction)) {$subaction=returnglobal('subaction');} //Desired subaction
 if (!isset($editedaction)) {$editedaction=returnglobal('editedaction');} // for html editor integration
 
+LimeExpressionManager::SetSurveyId($surveyid);  // must be called early - it clears internal cache if a new survey is being used
 
 if ($action != 'showprintablesurvey' && substr($action,0,4)!= 'ajax')
 {

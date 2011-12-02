@@ -675,6 +675,7 @@ $action!='vvimport' && $action!='vvexport' && $action!='exportresults')
         . "<tr><td align='right' valign='top'><strong>"
         . $clang->gT("Description:")."</strong></td>\n<td align='left'>";
 
+        LimeExpressionManager::StartProcessingPage(false,$rooturl);  // so can click on syntax highlighting to edit questions
         LimeExpressionManager::StartProcessingGroup($gid,false,$surveyid);  // loads list of replacement values available for this group
 
         if (trim($surveyinfo['surveyls_description'])!='') 

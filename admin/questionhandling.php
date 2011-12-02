@@ -235,6 +235,7 @@ if ($action == "editquestion" || $action=="addquestion")
     if ($adding)
     {
         // This is needed to properly color-code content if it contains replacements
+        LimeExpressionManager::StartProcessingPage(false,$rooturl);  // so can click on syntax highlighting to edit questions
         LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
     }
     $questlangs = GetAdditionalLanguagesFromSurveyID($surveyid);
@@ -676,8 +677,8 @@ if($action == "orderquestions")
 
     $orderquestions	.= "<form method='post' action=''><ul class='movableList'>";
 
-    LimeExpressionManager::StartProcessingPage(false, true);
-    LimeExpressionManager::StartProcessingGroup(1, false, $surveyid);   // will this work?
+    LimeExpressionManager::StartProcessingPage(false,$rooturl);  // so can click on syntax highlighting to edit questions
+    LimeExpressionManager::StartProcessingGroup($gid, false, $surveyid);   // will this work?
 
     for($i=0; $i < $questioncount ; $i++) //Assumes that all question orders start with 0
     {

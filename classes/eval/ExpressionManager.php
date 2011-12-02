@@ -47,6 +47,11 @@ class ExpressionManager {
     private $questionSeq;   // sequence order of question - so can detect if try to use variable before it is set
     private $groupSeq;  // sequence order of groups - so can detect if try to use variable before it is set
     private $allOnOnePage=false;
+    
+    // The following are only needed to enable click on variable names within pretty print and open new window to edit them
+    private $sid=NULL; // the survey ID
+    private $rooturl='';    // the root URL for LimeSurvey
+    private $hyperlinkSyntaxHighlighting=false;
 
     function __construct()
     {
@@ -1314,6 +1319,9 @@ class ExpressionManager {
                             $questionSeq = $this->GetVarAttribute($token[0],'questionSeq',-1);
                             $groupSeq = $this->GetVarAttribute($token[0],'groupSeq',-1);
                             $ansList = $this->GetVarAttribute($token[0],'ansList','');
+                            $gid = $this->GetVarAttribute($token[0],'gid',-1);
+                            $qid = $this->GetVarAttribute($token[0],'qid',-1);
+
                             if ($token[2] == 'SGQA' && $qcode != '') {
                                 $descriptor = '[' . $qcode . ']';
                             }
@@ -1365,7 +1373,13 @@ class ExpressionManager {
                             }
                         }
 
-                        $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'>";
+                        $stringParts[] = "<span title='"  . implode('; ',$messages) . "' style='color: ". $color . "; font-weight: bold'";
+                        if ($this->hyperlinkSyntaxHighlighting) {
+                            // Modify this link to utilize a different framework
+                            $editlink = $this->rooturl . '/admin/admin.php?sid=' . $this->sid . '&gid=' . $gid . '&qid=' . $qid;
+                            $stringParts[] = " onclick='window.open(\"" . $editlink . "\");'";
+                        }
+                        $stringParts[] = ">";
                         $stringParts[] = $token[0];
                         $stringParts[] = "</span>";
                     }
@@ -1439,6 +1453,7 @@ class ExpressionManager {
             case 'sgqa':
             case 'mandatory':
             case 'qid':
+            case 'gid':
             case 'question':
             case 'readWrite':
             case 'relevance':
@@ -1672,11 +1687,14 @@ class ExpressionManager {
      * Start processing a group of substitions - will be incrementally numbered
      */
 
-    public function StartProcessingGroup($allOnOnePage=false)
+    public function StartProcessingGroup($sid=NULL,$rooturl='',$hyperlinkSyntaxHighlighting=false,$allOnOnePage=false)
     {
         $this->substitutionNum=0;
         $this->substitutionInfo=array(); // array of JavaScripts for managing each substitution
         $this->allOnOnePage=$allOnOnePage;
+        $this->sid=$sid;
+        $this->rooturl=$rooturl;
+        $this->hyperlinkSyntaxHighlighting=$hyperlinkSyntaxHighlighting;
     }
 
     /**

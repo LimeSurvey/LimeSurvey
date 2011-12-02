@@ -30,7 +30,9 @@
                 'allowsave'=>true,
                 'anonymized'=>false,
                 'datestamp'=>true,
+                'hyperlinkSyntaxHighlighting'=>true,
                 'ipaddr'=>true,
+                'rooturl'=>'../../..',
             );
 
             foreach ($surveys as $surveyid)

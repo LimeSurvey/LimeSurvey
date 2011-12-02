@@ -174,7 +174,7 @@ if(isset($_POST['printableexport']))
 }
 $printoutput .= "\t<div class='printouttitle'><strong>".$clang->gT("Survey name (ID):")."</strong> $surveyname ($surveyid)</div><p>&nbsp;\n";
 
-LimeExpressionManager::StartProcessingPage(false,true);  // means that all variables are on the same page
+LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
 LimeExpressionManager::StartProcessingGroup(1,($thissurvey['anonymized']!="N"),$surveyid);
 
@@ -257,7 +257,7 @@ if(!isset($_POST['printableexport']))
     doHeader();
 
     echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/startpage.pstpl'));
-    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>templatereplace($printoutput)));
+    echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/printanswers.pstpl'),array('ANSWERTABLE'=>$printoutput));
     echo templatereplace(file_get_contents(sGetTemplatePath($thistpl).'/endpage.pstpl'));
     echo "</body></html>";
 }

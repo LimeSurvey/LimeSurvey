@@ -17,15 +17,18 @@
 // 0=none
 // 1=timings only
 // 2=timings + pretty-printed results of validating questions and groups
-$LEMdebugLevel=2;
+// 3=#1 + pretty-printed results of validating questions and groups
+$LEMdebugLevel=0;
 $surveyMode = (($thissurvey['format'] == 'G') ? 'group' : 'question');
 $surveyOptions = array(
     'active'=>($thissurvey['active']=='Y'),
     'allowsave'=>($thissurvey['allowsave']=='Y'),
     'anonymized'=>($thissurvey['anonymized']!='N'),
     'datestamp'=>($thissurvey['datestamp']=='Y'),
+    'hyperlinkSyntaxHighlighting'=>($LEMdebugLevel>=2),     // TODO set this to true if in admin mode but not if running a survey
     'ipaddr'=>($thissurvey['ipaddr']=='Y'),
     'refurl'=>(($thissurvey['refurl'] == "Y") ? $_SESSION['refurl'] : NULL),
+    'rooturl'=>(isset($rooturl) ? $rooturl : ''),
     'surveyls_dateformat'=>(isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
     'startlanguage'=>(isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'),
     'target'=>(isset($uploaddir) ?  "{$uploaddir}/surveys/{$thissurvey['sid']}/files/" : "/temp/{$thissurvey['sid']}/files"),
