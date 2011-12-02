@@ -110,6 +110,7 @@ class AdminController extends LSYii_Controller
 			'index' => 'application.controllers.admin.index',
 			'globalsettings' => 'application.controllers.admin.globalsettings',
 			'quotas' => 'application.controllers.admin.quotas',
+			'usergroups' => 'application.controllers.admin.usergroups',
 			'export' => 'application.controllers.admin.export',
 			'assessments' =>'application.controllers.admin.assessments',
 			'checkintegrity' => 'application.controllers.admin.checkintegrity',

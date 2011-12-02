@@ -3,21 +3,21 @@
 function &db_execute_assoc($sql,$inputarr=false,$silent=false)
 {
     //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
-	try {
-    if($inputarr)
-    {
-			$dataset=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query();	//Checked
-    }
-    else
-    {
-			$dataset=Yii::app()->db->createCommand($sql)->query();
+	/*try { */
+		if($inputarr)
+		{
+				$dataset=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->query();	//Checked
+		}
+		else
+		{
+				$dataset=Yii::app()->db->createCommand($sql)->query();
 	
-    }
-	} catch(CDbException $e) {
+		}
+	/*} catch(CDbException $e) {
 		$dataset=false;
-	}
+	}*/
 
-    if (!$silent && !$dataset)  { safe_die('Error executing query in db_execute_assoc:'.$sql); }
+    //if (!$silent && !$dataset)  { safe_die('Error executing query in db_execute_assoc:'.$sql); }
     return $dataset;
 }
 
@@ -25,15 +25,15 @@ function &db_execute($sql,$inputarr=false,$silent=false)
 {
     //$connect->SetFetchMode(ADODB_FETCH_ASSOC);
 	try {
-    if($inputarr)
-    {
-			$affected=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->execute();	//Checked
-    }
-    else
-    {
-			$affected=Yii::app()->db->createCommand($sql)->execute();
+		if($inputarr)
+		{
+				$affected=Yii::app()->db->createCommand($sql)->bindValues($inputarr)->execute();	//Checked
+		}
+		else
+		{
+				$affected=Yii::app()->db->createCommand($sql)->execute();
 
-    }
+		}
 	} catch(CDbException $e) {
 		$affected=false;
 	}
@@ -50,6 +50,29 @@ function &db_query_or_false($sql)
 		$dataset=false;
 	}
 	return $dataset;
+}
+
+/**
+  * Returns the number of records found in the database
+  *
+  * @param string $sql
+  * @return int
+*/
+function &db_records_count($sql)
+{
+	$yii = Yii::app();
+	$count = 0;
+	try
+	{
+		$result = $yii->db->createCommand($sql)->query();
+		$count = $result->count();
+	} 
+	catch(CDbException $e) 
+	{
+		$count = FALSE;
+	}
+	
+	return $count;
 }
 
 function &db_select_limit_assoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)

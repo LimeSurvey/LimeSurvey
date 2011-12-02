@@ -237,6 +237,7 @@ function getqtypelist($SelectedCode = "T", $ReturnType = "selector")
     'answerscales'=>0),
     );
     asort($qtypes);
+
     if ($ReturnType == "array") {return $qtypes;}
     if ($ReturnType == "group"){
         foreach($qtypes as $qkey=>$qtype){
@@ -7773,17 +7774,18 @@ function getusergrouplist($ugid=NULL,$outputformat='optionlist')
 
 function getgroupuserlist($ugid)
 {
-    $CI =& get_instance();
-    $CI->load->helper('database');
-    $clang = $CI->limesurvey_lang;
+    $yii = Yii::app();
+    
+    $yii->loadHelper('database');
+    $clang = $yii->lang;
 
     $ugid=sanitize_int($ugid);
-    $surveyidquery = "SELECT a.uid, a.users_name FROM ".$CI->db->dbprefix."users AS a LEFT JOIN (SELECT uid AS id FROM ".$CI->db->dbprefix."user_in_groups WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
+    $surveyidquery = "SELECT a.uid, a.users_name FROM ".$yii->db->tablePrefix."users AS a LEFT JOIN (SELECT uid AS id FROM ".$yii->db->tablePrefix."user_in_groups WHERE ugid = {$ugid}) AS b ON a.uid = b.id WHERE id IS NULL ORDER BY a.users_name";
 
     $surveyidresult = db_execute_assoc($surveyidquery);  //Checked
     if (!$surveyidresult) {return "Database Error";}
     $surveyselecter = "";
-    foreach ($surveyidresult->result_array() as $row)
+    foreach ($surveyidresult->readAll() as $row)
     {
         $surveynames[] = $row;
     }

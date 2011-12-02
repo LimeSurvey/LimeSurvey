@@ -23,18 +23,29 @@
  * @version $Id: usergroups.php 11128 2011-10-08 22:23:24Z dionet $
  * @access public
  */
-class Usergroups extends Admin_Controller {
 
-
-    /**
-     * Usergroups::__construct()
-     * Constructor
-     * @return
-     */
-    function __construct()
-	{
-		parent::__construct();
-	}
+class Usergroups extends CAction {
+	
+	private $yii;
+	private $controller;
+	
+    public function run()
+    {
+    	$actions = array_keys($_GET);
+    	$_GET['method'] = $action = (!empty($actions[0])) ? $actions[0] : '';
+    	
+    	$this->yii = Yii::app();
+    	$this->controller = $this->getController();
+    	
+    	if(!empty($action))
+    	{
+    		$this->$action($_GET[$action]);
+    	}
+    	else
+    	{
+    		$this->view();
+    	}
+    }
 
     /**
      * Usergroups::mail()
@@ -86,7 +97,7 @@ class Usergroups extends Admin_Controller {
                 $addressee = substr("$addressee", 0, -2);
 
 				$this->load->model('users');
-				$from_user_result = $this->users_model->getSomeRecords(array('email', 'users_name', 'full_name'), array('uid' => $this->session->userdata('loginID'));
+				$from_user_result = $this->users_model->getSomeRecords(array('email', 'users_name', 'full_name'), array('uid' => $this->session->userdata('loginID')));
                 $from_user_row = $from_user_result->row_array();
                 if ($from_user_row['full_name'])
                 {
@@ -155,6 +166,7 @@ class Usergroups extends Admin_Controller {
             $crow = $result->row_array();
 
             $data['clang'] = $clang;
+            
             $this->load->view("admin/usergroup/mailUserGroup_view",$data);
         }
 
@@ -169,19 +181,17 @@ class Usergroups extends Admin_Controller {
      * Function responsible to delete a user group.
      * @return
      */
-    function delete()
+    public function delete()
     {
+        $clang = $this->yii->lang;
 
-        $clang = $this->limesurvey_lang;
-
-
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-    	self::_js_admin_includes(base_url().'scripts/admin/users.js');
-        self::_getAdminHeader();
-        self::_showadminmenu(false);
-        $action = $this->input->post("action");
-        $ugid = $this->input->post("ugid");
+        $css_admin_includes[] = $this->yii->getConfig('styleurl')."admin/default/superfish.css";
+        $this->yii->setConfig("css_admin_includes", $css_admin_includes);
+    	$this->controller->_js_admin_includes($this->yii->baseUrl.'scripts/admin/users.js');
+        $this->controller->_getAdminHeader();
+        $this->controller->_showadminmenu(false);
+        $action = $_POST['action'];
+        $ugid = $_POST['ugid'];
         self::_usergroupbar($ugid);
 
         if ($action == "delusergroup")
@@ -189,29 +199,35 @@ class Usergroups extends Admin_Controller {
             $usersummary = "<div class=\"header\">".$clang->gT("Deleting User Group")."...</div>\n";
             $usersummary .= "<div class=\"messagebox\">\n";
 
-            if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+            if ($this->yii->session['USER_RIGHT_SUPERADMIN'] == 1)
             {
 
                 if(!empty($ugid) && ($ugid > -1))
                 {
-
-					$this->load->model('user_groups');
-					$result = $this->user_groups_model->getSomeRecords(array('ugid', 'name', 'owner_id'), array('ugid' => $ugid, 'owner_id' => $this->session->userdata('loginID')));
-                    if($result->num_rows() > 0)
+					$query = 'SELECT ugid, name, owner_id FROM '.$this->yii->db->tablePrefix.'user_groups WHERE ugid=\''.$ugid.'\' AND owner_id=\''.$this->yii->session['loginID'].'\'';
+					//$this->load->model('user_groups');
+					//$result = $this->user_groups_model->getSomeRecords(array('ugid', 'name', 'owner_id'), array('ugid' => $ugid, 'owner_id' => $this->session->userdata('loginID')));
+					$result = db_execute_assoc($query);
+                    if($result->count() > 0)
                     {
-                        $row = $result->row_array();
-
-                        $remquery = $this->user_groups_model->delete(array('owner_id' => $this->session->userdata('loginID'), 'ugid' => $ugid));
-                        if($remquery) //Checked)
+                        $row = $result->readAll();
+						
+						$del_query = 'DELETE FROM '.$this->yii->db->tablePrefix.'user_groups WHERE owner_id=\''.$this->yii->session['loginID'].'\' AND ugid='.$ugid;
+                        //$remquery = $this->user_groups_model->delete(array('owner_id' => $this->session->userdata('loginID'), 'ugid' => $ugid));
+                        $delquery_result = db_execute_assoc($del_query);
+                        
+                        $del_user_in_groups_query = "DELETE FROM ".$this->yii->db->tablePrefix."user_in_groups WHERE ugid=$ugid AND uid=".$this->yii->session['loginID'];
+                         
+                        if($delquery_result) //Checked)
                         {
-                            $usersummary .= "<br />".$clang->gT("Group Name").": {$row['name']}<br /><br />\n";
+                            $usersummary .= "<br />".$clang->gT("Group Name").": {$row[0]['name']}<br /><br />\n";
                             $usersummary .= "<div class=\"successheader\">".$clang->gT("Success!")."</div>\n";
                         }
                         else
                         {
                             $usersummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user group.")."</div>\n";
                         }
-                        $link = site_url("admin/usergroups/view");
+                        $link = $this->controller->createUrl("admin/usergroups/view");
                         $usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
                     }
                     else
@@ -221,7 +237,7 @@ class Usergroups extends Admin_Controller {
                 }
                 else
                 {
-                    $link = site_url("admin/usergroups/view");
+                    $link = $this->controller->createUrl("admin/usergroups/view");
                     $usersummary .= "<div class=\"warningheader\">".$clang->gT("Could not delete user group. No group selected.")."</div>\n";
                     $usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
                 }
@@ -230,13 +246,12 @@ class Usergroups extends Admin_Controller {
 
             $displaydata['display'] = $usersummary;
             //$data['display'] = $editsurvey;
-            $this->load->view('survey_view',$displaydata);
+            $this->controller->render('/survey_view', $displaydata);
         }
 
-        self::_loadEndScripts();
-
-
-	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+        $this->controller->_loadEndScripts();
+        
+	    $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -246,30 +261,30 @@ class Usergroups extends Admin_Controller {
      * Load add user group screen.
      * @return
      */
-    function add()
+    public function add()
     {
-        $clang = $this->limesurvey_lang;
+        $clang = $this->yii->lang;
 
-
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-    	self::_js_admin_includes(base_url().'scripts/admin/users.js');
-        self::_getAdminHeader();
-        self::_showadminmenu(false);
-        $action = $this->input->post("action");
-        if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+        $css_admin_includes[] = $this->yii->getConfig('styleurl')."admin/default/superfish.css";
+        $this->yii->setConfig("css_admin_includes", $css_admin_includes);
+    	$this->controller->_js_admin_includes($this->yii->baseUrl.'scripts/admin/users.js');
+        $this->controller->_getAdminHeader();
+        $this->controller->_showadminmenu(false);
+        $action = (isset($_POST['action'])) ? $_POST['action'] : '';
+        
+        if ($this->yii->session['USER_RIGHT_SUPERADMIN'] == 1)
         {
 
             self::_usergroupbar(false);
             $data['clang'] = $clang;
+            
             if ($action == "usergroupindb")
             {
                 $usersummary = "<div class=\"header\">".$clang->gT("Adding User Group")."...</div>\n";
                 $usersummary .= "<div class=\"messagebox\">\n";
 
-                if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+                if ($this->yii->session['USER_RIGHT_SUPERADMIN'] == 1)
                 {
-                    $_POST = $this->input->post();
                     $db_group_name = $_POST['group_name'];
                     $db_group_description = $_POST['group_description'];
                     $html_group_name = htmlspecialchars($_POST['group_name']);
@@ -279,7 +294,7 @@ class Usergroups extends Admin_Controller {
                     {
                         if (strlen($db_group_name) > 21)
                         {
-                            $link = site_url("admin/usergroups/add");
+                            $link = $this->controller->createUrl("admin/usergroups/add");
                             $usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add Group!")."</div>\n"
                             . "<br />" . $clang->gT("Group name length more than 20 characters!")."<br />\n"; //need to nupdate translations for this phrase.
                             $usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
@@ -296,13 +311,13 @@ class Usergroups extends Admin_Controller {
                                 {
                                     $usersummary .= $clang->gT("Description: ").$html_group_description."<br /><br />\n";
                                 }
-                                $link = site_url("admin/usergroups/view/$ugid");
+                                $link = $this->controller->createUrl("admin/usergroups/view/$ugid");
                                 $usersummary .= "<div class=\"successheader\">".$clang->gT("User group successfully added!")."</div>\n";
                                 $usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
                             }
                             else
                             {
-                                $link = site_url("admin/usergroups/add");
+                                $link = $this->controller->createUrl("admin/usergroups/add");
                                 $usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add Group!")."</div>\n"
                                 . "<br />" . $clang->gT("Group already exists!")."<br />\n";
                                 $usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
@@ -312,33 +327,31 @@ class Usergroups extends Admin_Controller {
                     }
                     else
                     {
-                        $link = site_url("admin/usergroups/add");
+                        $link = $this->controller->createUrl("admin/usergroups/add");
                         $usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to add Group!")."</div>\n"
                         . "<br />" . $clang->gT("Group name was not supplied!")."<br />\n";
                         $usersummary .= "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
                     }
                 }
                 else
-                {
-                    //include("access_denied.php");
-                }
+                {}
                 $usersummary .= "</div>\n";
                 $displaydata['display'] = $usersummary;
                 //$data['display'] = $editsurvey;
-                $this->load->view('survey_view',$displaydata);
+                $this->controller->render('/survey_view', $displaydata);
 
             }
             else
             {
-                $this->load->view("admin/usergroup/addUserGroup_view",$data);
+                $this->controller->render('/admin/usergroup/addUserGroup_view', $data);
             }
 
 
         }
-        self::_loadEndScripts();
+        
+        $this->controller->_loadEndScripts();
 
-
-	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+	 	$this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -351,25 +364,24 @@ class Usergroups extends Admin_Controller {
     function edit($ugid)
     {
     	$ugid = (int) $ugid;
-        $clang = $this->limesurvey_lang;
+        $clang = $this->yii->lang;
 
 
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-    	self::_js_admin_includes(base_url().'scripts/admin/users.js');
-        self::_getAdminHeader();
-        self::_showadminmenu(false);
-        $action = $this->input->post("action");
+        $css_admin_includes[] = $this->yii->getConfig('styleurl')."admin/default/superfish.css";
+        $this->yii->setConfig("css_admin_includes", $css_admin_includes);
+    	$this->controller->_js_admin_includes($this->yii->baseUrl.'scripts/admin/users.js');
+        $this->controller->_getAdminHeader();
+        $this->controller->_showadminmenu(false);
+        $action = (isset($_POST['action'])) ? $_POST['action'] : '';
 
-        if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+        if ($this->yii->session['USER_RIGHT_SUPERADMIN'] == 1)
         {
 
             self::_usergroupbar($ugid);
             $data['clang'] = $clang;
             if ($action == "editusergroupindb")
             {
-                $_POST = $this->input->post();
-                if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+                if ($this->yii->session['USER_RIGHT_SUPERADMIN'] == 1)
                 {
                     $ugid = $_POST['ugid'];
 
@@ -382,8 +394,9 @@ class Usergroups extends Admin_Controller {
 
                     if(self::_updateusergroup($db_name, $db_description, $ugid))
                     {
-                        $link = site_url("admin/usergroups/view/$ugid");
+                        $link = $this->controller->createUrl("admin/usergroups/view/$ugid");
             			$usersummary .= "<div class=\"successheader\">".$clang->gT("Edit User Group Successfully!")."</div>\n"
+
                         . "<br />".$clang->gT("Name").": {$html_name}<br />\n"
                         . $clang->gT("Description: ").$html_description."<br />\n"
                         . "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
@@ -391,7 +404,7 @@ class Usergroups extends Admin_Controller {
                     }
                     else
             		{
-            			$link = site_url("admin/usergroups/view");
+            			$link = $this->createUrl("admin/usergroups/view");
                         $usersummary .= "<div class=\"warningheader\">".$clang->gT("Failed to update!")."</div>\n"
                         . "<br/><input type=\"submit\" onclick=\"window.location='$link'\" value=\"".$clang->gT("Continue")."\"/>\n";
                         //. "<br /><a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
@@ -400,7 +413,7 @@ class Usergroups extends Admin_Controller {
 
                     $displaydata['display'] = $usersummary;
                     //$data['display'] = $editsurvey;
-                    $this->load->view('survey_view',$displaydata);
+                    $this->controller->render('/survey_view', $displaydata);
 
             	}
                 else
@@ -412,20 +425,22 @@ class Usergroups extends Admin_Controller {
             }
             else
             {
-				$this->load->model('user_groups');
-				$result = $this->user_groups_model->getAllRecords(array('ugid' => $ugid, 'owner_id' => $this->session->userdata('loginID')));
-                $esrow = $result->row_array();
-                $data['esrow'] = $esrow;
+            	$query = 'SELECT * FROM '.$this->yii->db->tablePrefix.'user_groups WHERE ugid='.$ugid.' AND owner_id='.$this->yii->session['loginID'];
+            	$result = db_execute_assoc($query);
+				/*$this->load->model('user_groups');
+				$result = $this->user_groups_model->getAllRecords(array('ugid' => $ugid, 'owner_id' => $this->session->userdata('loginID')));*/
+                $esrow = $result->readAll();
+                $data['esrow'] = $esrow[0];
                 $data['ugid'] = $ugid;
-                $this->load->view("admin/usergroup/editUserGroup_view",$data);
+                $this->controller->render("/admin/usergroup/editUserGroup_view", $data);
             }
 
 
         }
-        self::_loadEndScripts();
+        $this->controller->_loadEndScripts();
 
 
-	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+	   $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
     }
 
 
@@ -439,18 +454,17 @@ class Usergroups extends Admin_Controller {
     function view($ugid=false)
     {
     	if($ugid!=false) $ugid = (int) $ugid;
-        $clang = $this->limesurvey_lang;
+        $clang = $this->yii->lang;
 
-
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-    	self::_js_admin_includes(base_url().'scripts/admin/users.js');
-        self::_getAdminHeader();
-        self::_showadminmenu(false);
+        $css_admin_includes[] = $this->yii->getConfig('styleurl')."admin/default/superfish.css";
+        $this->yii->setConfig("css_admin_includes", $css_admin_includes);
+    	$this->controller->_js_admin_includes($this->yii->baseUrl.'scripts/admin/users.js');
+        $this->controller->_getAdminHeader();
+        $this->controller->_showadminmenu(false);
 
         self::_usergroupbar($ugid);
 
-        if ( $this->session->userdata('loginID'))
+        if ( $this->yii->session['loginID'])
         {
 
             if($ugid)
@@ -458,20 +472,23 @@ class Usergroups extends Admin_Controller {
 
                 $ugid = sanitize_int($ugid);
 
-				$this->load->model('user_groups');
-				
-				$select	= array('a.ugid', 'a.name', 'a.owner_id', 'a.description', 'b.uid');
-				$join	= array('where' => 'user_in_groups AS b', 'type' => 'left', 'on' => 'a.ugid = b.ugid');
-				$where	= array('uid' => $this->session->userdata('loginID'), 'a.ugid' => $ugid);
-				
-				$result = $this->user_groups_model->join($select, 'user_groups AS a', $where, $join, 'name');
-                $crow = $result->row_array();
+				//$this->user_groups_model = new User_groups;
 
-                if($result->num_rows() > 0)
+				$query = "SELECT a.ugid, a.name, a.owner_id, a.description, b.uid FROM ".$this->yii->db->tablePrefix."user_groups AS a LEFT JOIN ".$this->yii->db->tablePrefix."user_in_groups AS b ON a.ugid = b.ugid WHERE a.ugid = {$ugid} AND uid = ".$this->yii->session['loginID']." ORDER BY name";
+				//$select	= array('a.ugid', 'a.name', 'a.owner_id', 'a.description', 'b.uid');
+				//$join	= array('where' => 'user_in_groups AS b', 'type' => 'left', 'on' => 'a.ugid = b.ugid');
+				//$where	= array('uid' => $this->session->userdata('loginID'), 'a.ugid' => $ugid);
+				
+				$result = db_execute_assoc($query)->readAll();
+				
+				//$result = $this->user_groups_model->join($select, 'user_groups AS a', $where, $join, 'name');
+                $crow = $result[0];
+
+                if($result)
                 {
-
+                	$usergroupsummary = '';
                     if(!empty($crow['description']))
-                    {
+                   
                         $usergroupsummary = "<table width='100%' border='0'>\n"
                         . "<tr><td align='justify' colspan='2' height='4'>"
                         . "<font size='2' ><strong>".$clang->gT("Description: ")."</strong>"
@@ -479,11 +496,11 @@ class Usergroups extends Admin_Controller {
                         . "</table>";
                     }
 
-					$this->load->model('user_in_groups');
+					//$this->user_in_groups_model = new User_in_groups;
 
-					$where	= array('ugid' => $ugid);
-					$join	= array('where' => 'users AS b', 'type' => 'inner', 'on' => 'a.uid = b.uid');
-					$eguresult = $this->user_in_groups_model->join(array('*'), 'user_in_groups AS a', $where, $join, 'b.users_name');
+					 $eguquery = "SELECT * FROM ".$this->yii->db->tablePrefix."user_in_groups AS a INNER JOIN ".$this->yii->db->tablePrefix."users AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
+					$eguresult = db_execute_assoc($eguquery);
+					
                     $usergroupsummary .= "<table class='users'>\n"
                     . "<thead><tr>\n"
                     . "<th>".$clang->gT("Action")."</th>\n"
@@ -491,12 +508,13 @@ class Usergroups extends Admin_Controller {
                     . "<th>".$clang->gT("Email")."</th>\n"
                     . "</tr></thead><tbody>\n";
 
-					$result2 = $this->user_groups_model->getSomeRecords(array('ugid'), array('ugid' => $ugid, 'owner_id' => $this->session->userdata('loginID')));
-                    $row2 = $result2->row_array();
+					$query2 = "SELECT ugid FROM ".$this->yii->db->tablePrefix."user_groups WHERE ugid = ".$ugid." AND owner_id = ".$this->yii->session['loginID'];
+                    $result2 = db_select_limit_assoc($query2, 1);
+                    $row2 = $result2->readAll();
 
                     $row = 1;
                     $usergroupentries='';
-                    foreach ($eguresult->result_array() as $egurow)
+                    foreach ($eguresult->readAll() as $egurow)
                     {
                         if (!isset($bgcc)) {$bgcc="evenrow";}
                         else
@@ -520,26 +538,28 @@ class Usergroups extends Admin_Controller {
                         $usergroupentries .= "<tr class='$bgcc'>\n"
                         . "<td align='center'>\n";
 
-                        if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1)
+                        if($this->yii->session['USER_RIGHT_SUPERADMIN'] == 1)
                         {
                             $usergroupentries .= "<form method='post' action='scriptname?action=deleteuserfromgroup&amp;ugid=$ugid'>"
-                            ." <input type='image' src='".$this->config->item('imageurl')."/token_delete.png' alt='".$clang->gT("Delete this user from group")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
+                            ." <input type='image' src='".$this->yii->setConfig('imageurl')."/token_delete.png' alt='".$clang->gT("Delete this user from group")."' onclick='return confirm(\"".$clang->gT("Are you sure you want to delete this entry?","js")."\")' />"
                             ." <input type='hidden' name='user' value='{$egurow['users_name']}' />"
                             ." <input name='uid' type='hidden' value='{$egurow['uid']}' />"
+
                             ." <input name='ugid' type='hidden' value='{$ugid}' />";
                         }
                         $usergroupentries .= "</form>"
                         . "</td>\n";
                         $usergroupentries .= "<td align='center'>{$egurow['users_name']}</td>\n"
                         . "<td align='center'>{$egurow['email']}</td>\n"
+
                         . "</tr>\n";
                         $row++;
                     }
                     $usergroupsummary .= $usergroupowner;
                     if (isset($usergroupentries)) {$usergroupsummary .= $usergroupentries;};
                     $usergroupsummary .= '</tbody></table>';
-
-                    if(isset($row2['ugid']))
+                    
+                    if(isset($row2[0]['ugid']))
                     {
                         $usergroupsummary .= "<form action='scriptname?ugid={$ugid}' method='post'>\n"
                         . "<table class='users'><tbody><tr><td>&nbsp;</td>\n"
@@ -555,25 +575,22 @@ class Usergroups extends Admin_Controller {
 
                     $displaydata['display'] = $usergroupsummary;
                     //$data['display'] = $editsurvey;
-                    $this->load->view('survey_view',$displaydata);
+                    $this->controller->render('/survey_view',$displaydata);
                 }
                 else
                 {
                     //include("access_denied.php");
                 }
-            }
-        }
+         }
         else
         {
             //include("access_denied.php");
         }
 
-        self::_loadEndScripts();
+        $this->controller->_loadEndScripts();
 
 
-	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
-
+	   $this->controller->_getAdminFooter("http://docs.limesurvey.org", $this->yii->lang->gT("LimeSurvey online manual"));
     }
 
 
@@ -586,16 +603,17 @@ class Usergroups extends Admin_Controller {
      */
     function _usergroupbar($ugid=false)
     {
-        
+        $data['clang'] = $this->yii->lang;
+        $this->yii->loadHelper('database');
         if($ugid)
         {
-			$this->load->model('user_groups');
+			$grpquery = "SELECT gp.* FROM ".$this->yii->db->tablePrefix."user_groups AS gp, ".$this->yii->db->tablePrefix."user_in_groups AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = $ugid AND gu.uid=".$this->yii->session['loginID'];
+			$grpresult = db_execute_assoc($grpquery);
+			$grpresultcount =  db_records_count($grpquery);
 			
-			$where	= array('gp.ugid' => 'gu.ugid', 'gp.ugid' => $ugid, 'gu.uid' => $this->session->userdata('loginID'));
-			$grpresultcount =  $this->user_groups_model->multi_select(array('gp.*'), array('user_groups AS gp', 'user_in_groups AS gu'), $where);
             if ($grpresultcount>0)
             {
-                $grow = array_map('htmlspecialchars', $grpresult->row_array());
+                $grow = array_map('htmlspecialchars', $grpresult->read());
             }
 
             $data['grow'] = $grow;
@@ -606,7 +624,7 @@ class Usergroups extends Admin_Controller {
         $data['ugid'] = $ugid;
 
 
-        $this->load->view('admin/usergroup/usergroupbar_view',$data);
+        $this->controller->render('/admin/usergroup/usergroupbar_view',$data);
     }
 
     /**
@@ -619,9 +637,10 @@ class Usergroups extends Admin_Controller {
      */
     function _updateusergroup($name, $description, $ugid)
     {
-        $this->load->model('user_groups');
-		$uquery = $this->user_groups_model->update(array('name' => $name, 'description' => $description), array('ugid' => $ugid));
-        // TODO
+    	$query = 'UPDATE '.$this->yii->db->tablePrefix.'user_groups SET name=\''.$name.'\', description=\''.$description.'\' WHERE ugid=\''.$ugid.'\'';
+        //$this->load->model('user_groups');
+		//$uquery = $this->user_groups_model->update(array('name' => $name, 'description' => $description), array('ugid' => $ugid));
+		$uquery = db_execute_assoc($query);
         return $uquery;  //or safe_die($connect->ErrorMsg()) ; //Checked)
     }
 
@@ -666,22 +685,30 @@ class Usergroups extends Admin_Controller {
      * @return
      */
     function _addUserGroupInDB($group_name, $group_description) {
-        
-        //$iquery = "INSERT INTO ".$this->db->dbprefix."user_groups (name, description, owner_id) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
-        $data = array(
+        $connect= $this->yii->db;
+        $iquery = "INSERT INTO ".$this->yii->db->tablePrefix."user_groups (`name`, `description`, `owner_id`) VALUES('{$group_name}', '{$group_description}', '{$_SESSION['loginID']}')";
+        $command = $connect->createCommand($iquery);
+        $result = $command->query();
+        /*$data = array(
                 'name' => $group_name,
                 'description' => $group_description,
                 'owner_id' => $this->session->userdata('loginID')
 
         );
         $this->load->model('user_groups_model');
-        $this->load->model('user_in_groups_model');
-
-
-        if($this->user_groups_model->insertRecords($data)) { //Checked
-            $id = $this->db->insert_id(); //$connect->Insert_Id(db_table_name_nq('user_groups'),'ugid');
+        $this->load->model('user_in_groups_model');*/
+		
+        if($result) { //Checked
+            $id = $connect->getLastInsertID(); //$connect->Insert_Id(db_table_name_nq('user_groups'),'ugid');
+            
             if($id > 0) {
-				$this->user_in_groups_model->insert('ugid' => $id, 'uid' => $this->session->userdata('loginID'));
+            	$user_in_groups_query = 'INSERT INTO '.$this->yii->db->tablePrefix.'user_in_groups (ugid, uid) VALUES ('.$id.','.$this->yii->session['loginID'].')';
+            	db_execute_assoc($user_in_groups_query);
+            	/*$this->user_in_groups_model = new User_in_groups;
+            	$this->user_in_groups_model->ugid = $id;
+            	$this->user_in_groups_model->uid = $this->yii->session['loginID'];
+            	$this->user_in_groups_model->save();*/
+				//$this->user_in_groups_model->insert(array('ugid' => $id, 'uid' => $this->session->userdata('loginID')));
             }
             return $id;
         } else {

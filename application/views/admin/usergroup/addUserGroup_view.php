@@ -1,5 +1,5 @@
 <div class='header ui-widget-header'><?php echo $clang->gT("Add User Group"); ?></div>
-    <form action='<?php echo site_url("admin/usergroups/add"); ?>' id='usergroupform' class='form30' method='post'>
+    <form action='<?php echo $this->createUrl("admin/usergroups/add"); ?>' id='usergroupform' class='form30' method='post'>
     <ul>
         <li><label for='group_name'><?php echo $clang->gT("Name:"); ?></label>
         <input type='text' size='50' id='group_name' name='group_name' />
