@@ -17,7 +17,7 @@
 // 0=none
 // 1=timings only
 // 2=timings + pretty-printed results of validating questions and groups
-$LEMdebugLevel=0;
+$LEMdebugLevel=2;
 $surveyMode = (($thissurvey['format'] == 'G') ? 'group' : 'question');
 $surveyOptions = array(
     'active'=>($thissurvey['active']=='Y'),
@@ -25,7 +25,13 @@ $surveyOptions = array(
     'anonymized'=>($thissurvey['anonymized']!='N'),
     'datestamp'=>($thissurvey['datestamp']=='Y'),
     'ipaddr'=>($thissurvey['ipaddr']=='Y'),
+    'refurl'=>(($thissurvey['refurl'] == "Y") ? $_SESSION['refurl'] : NULL),
+    'surveyls_dateformat'=>(isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
+    'startlanguage'=>(isset($_SESSION['s_lang']) ? $_SESSION['s_lang'] : 'en'),
+    'target'=>(isset($uploaddir) ?  "{$uploaddir}/surveys/{$thissurvey['sid']}/files/" : "/temp/{$thissurvey['sid']}/files"),
+    'tempdir'=>(isset($tempdir) ? $tempdir : '/temp/'),
     'timeadjust'=>(isset($timeadjust) ? $timeadjust : 0),
+    'token'=>(isset($clienttoken) ? $clienttoken : NULL),
 );
 
 //Security Checked: POST, GET, SESSION, REQUEST, returnglobal, DB
@@ -71,7 +77,7 @@ else
             unset($moveResult); // so display welcome page again
         }
     }
-    if (isset($move) && $move == "movenext")
+    if (isset($move) && ($move == "movenext" || $move == "movesubmit"))
     {
         $moveResult = LimeExpressionManager::NavigateForwards(false);
     }
@@ -87,8 +93,11 @@ else
         if ($moveResult['finished']==true) {
             $move = 'movesubmit';
         }
-        $_SESSION['step']= $moveResult['seq']+1;  // step is index base 1
-        $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+        else
+        {
+            $_SESSION['step']= $moveResult['seq']+1;  // step is index base 1
+            $stepInfo = LimeExpressionManager::GetStepIndexInfo($moveResult['seq']);
+        }
     }
 
     // We do not keep the participant session anymore when the same browser is used to answer a second time a survey (let's think of a library PC for instance).
@@ -120,17 +129,25 @@ else
         $backok="N";    // NA, since not moving backwards
     }
 
-    //Now, we check mandatory questions if necessary
-    //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
-    $unansweredSQList = $moveResult['unansweredSQs'];
-    if (strlen($unansweredSQList) > 0 && $backok != "N") {
-        $notanswered = explode('|',$unansweredSQList);
+    if (isset($move) || isset($_POST['saveprompt']))
+    {
+        require_once("save1.php");
     }
 
-    //CHECK INPUT
-    $invalidSQList = $moveResult['invalidSQs'];
-    if (strlen($invalidSQList) > 0 && $backok != "N") {
-        $notvalidated = explode('|',$invalidSQList);
+    //Now, we check mandatory questions if necessary
+    //CHECK IF ALL CONDITIONAL MANDATORY QUESTIONS THAT APPLY HAVE BEEN ANSWERED
+    if (isset($moveResult) && !$moveResult['finished'])
+    {
+        $unansweredSQList = $moveResult['unansweredSQs'];
+        if (strlen($unansweredSQList) > 0 && $backok != "N") {
+            $notanswered = explode('|',$unansweredSQList);
+        }
+
+        //CHECK INPUT
+        $invalidSQList = $moveResult['invalidSQs'];
+        if (strlen($invalidSQList) > 0 && $backok != "N") {
+            $notvalidated = explode('|',$invalidSQList);
+        }
     }
 
     // CHECK UPLOADED FILES
@@ -426,19 +443,19 @@ foreach ($_SESSION['fieldarray'] as $key=>$ia)
 
         //Display the "mandatory" popup if necessary
         // TMSW - get question-level error messages - don't call **_popup() directly
-        if ($stepInfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
+        if (!$previewgrp && $stepInfo['mandViolation'] && $_SESSION['prevstep'] == $_SESSION['step'])
         {
             list($mandatorypopup, $popup)=mandatory_popup($ia, $notanswered);
         }
 
         //Display the "validation" popup if necessary
-        if (!$stepInfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
+        if (!$previewgrp && !$stepInfo['valid'] && $_SESSION['prevstep'] == $_SESSION['step'])
         {
             list($validationpopup, $vpopup)=validation_popup($ia, $notvalidated);
         }
 
         // Display the "file validation" popup if necessary
-        if (isset($filenotvalidated) && $_SESSION['prevstep'] == $_SESSION['step'])
+        if (!$previewgrp && isset($filenotvalidated) && $_SESSION['prevstep'] == $_SESSION['step'])
         {
             list($filevalidationpopup, $fpopup) = file_validation_popup($ia, $filenotvalidated);
         }

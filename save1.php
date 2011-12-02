@@ -111,155 +111,154 @@
 //    $_SESSION['relevanceStatus'][$key] = $value;
 //}
 
-    LimeExpressionManager::ProcessCurrentResponses();
-
-    //Check to see if we should set a submitdate or not
-    // this depends on the move, and on quesitons checks
-    if (isset($move) && $move == "movesubmit")
-    {
-    $backok=null;
-// TMSW Mandatory -> EM
-// TODO - double check these and workflow - need to validate before save?
-//    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
-//    $notvalidated=checkpregs($move,$backok);
+//    //Check to see if we should set a submitdate or not
+//    // this depends on the move, and on quesitons checks
+//    if (isset($move) && $move == "movesubmit")
+//    {
+//    $backok=null;
+//// TMSW Mandatory -> EM
+//// TODO - double check these and workflow - need to validate before save?
+////    $notanswered=addtoarray_single(checkmandatorys($move,$backok),checkconditionalmandatorys($move,$backok));
+////    $notvalidated=checkpregs($move,$backok);
+////    $filenotvalidated = checkUploadedFileValidity($move, $backok);
+//
+//    $moveResult = LimeExpressionManager::NavigateForwards(false,true);  // TODO -needed?  Does validation
+//    $notanswered = explode('|',$moveResult['unansweredSQs']);
+//    $notvalidated = explode('|',$moveResult['invalidSQs']);
 //    $filenotvalidated = checkUploadedFileValidity($move, $backok);
-
-    $moveResult = LimeExpressionManager::NavigateForwards(false,true);  // TODO -needed?  Does validation
-    $notanswered = explode('|',$moveResult['unansweredSQs']);
-    $notvalidated = explode('|',$moveResult['invalidSQs']);
-    $filenotvalidated = checkUploadedFileValidity($move, $backok);
-
-    if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) && (!is_array($filenotvalidated) || count($filenotvalidated) == 0))
-    {
-        $bFinalizeThisAnswer = true;
-    }
-    else
-    {
-        $bFinalizeThisAnswer = false;
-    }
-    }
-    else
-    {
-    $bFinalizeThisAnswer = false;
-    }
+//
+//    if ( (!is_array($notanswered) || count($notanswered)==0) && (!is_array($notvalidated) || count($notvalidated)==0) && (!is_array($filenotvalidated) || count($filenotvalidated) == 0))
+//    {
+//        $bFinalizeThisAnswer = true;
+//    }
+//    else
+//    {
+//        $bFinalizeThisAnswer = false;
+//    }
+//    }
+//    else
+//    {
+//    $bFinalizeThisAnswer = false;
+//    }
 
     // SAVE if on page with questions or on submit page
-    if (isset($postedfieldnames) || (isset($move) && $move == "movesubmit") )
+    if ((isset($move) && $move == "movesubmit"))
     {
-    if ($thissurvey['active'] == "Y")
-    {
-        $bQuotaMatched=false;
-        // TMSW - check quotas via EM too?
-        $aQuotas=check_quota('return',$surveyid);
-        if ($aQuotas !== false)
+        if ($thissurvey['active'] == "Y")
         {
-        if ($aQuotas!=false)
-        {
-            foreach ($aQuotas as $aQuota)
+            $bQuotaMatched = false;
+            $aQuotas = check_quota('return', $surveyid);
+            if ($aQuotas !== false)
             {
-                if (isset($aQuota['status']) && $aQuota['status']=='matched') $bQuotaMatched=true;
-            }
-        }
-        }
-            if ($bQuotaMatched) $bFinalizeThisAnswer=false;
-        }
-
-    if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
-    {
-        // SAVE DATA TO SURVEY_X RECORD
-        $subquery = createinsertquery();
-        if ($subquery)
-        {
-            if ($result=$connect->Execute($subquery))  // Checked
-            {
-                if (substr($subquery,0,6)=='INSERT')
+                if ($aQuotas != false)
                 {
-                    $tempID=$connect->Insert_ID($thissurvey['tablename'],"id"); // Find out id immediately if inserted
-                    $_SESSION['srid'] = $tempID;
-                    $saved_id = $tempID;
-                }
-                if ($bFinalizeThisAnswer === true)
-                {
-                    $connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid'].' and sid='.$surveyid);   // Checked
+                    foreach ($aQuotas as $aQuota)
+                    {
+                        if (isset($aQuota['status']) && $aQuota['status'] == 'matched')
+                            $bQuotaMatched = true;
+                    }
                 }
             }
-            else
-            {
-                echo submitfailed($connect->ErrorMsg());
-            }
-        }
-        if ($bQuotaMatched)
-        {
-            check_quota('enforce',$surveyid);
-    }
-    }
-    elseif (isset($move))
-    {
-        // This else block is only there to take care of date conversion if the survey is not active - otherwise this is done in creatInsertQuery
-        // TMSW LEM will have list of available values to insert - use that instead
-        $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
-        $inserts=array_unique($_SESSION['insertarray']);
-        foreach ($inserts as $value)
-        {
-            //Work out if the field actually exists in this survey
-            unset($fieldexists);
-            if (isset($fieldmap[$value])) $fieldexists = $fieldmap[$value];
-            //Iterate through possible responses
-            if (isset($_SESSION[$value]) && isset($fieldexists) && $_SESSION[$value]!='')
-            {
-
-                if ($fieldexists['type']=='D' && isset($_POST[$value]))  // convert the date to the right DB Format
-                {
-                    $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                    $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
-                    $_SESSION[$value]=$datetimeobj->convert("Y-m-d");
-                    $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
-                }
-            }
+            if ($bQuotaMatched)
+                $bFinalizeThisAnswer = false;
         }
 
+        if ($thissurvey['active'] == "Y" && !isset($_SESSION['finished'])) 	// Only save if active and the survey wasn't already submitted
+        {
+    //        // SAVE DATA TO SURVEY_X RECORD
+    //        $subquery = createinsertquery();
+    //        if ($subquery)
+    //        {
+    //            if ($result=$connect->Execute($subquery))  // Checked
+    //            {
+    //                if (substr($subquery,0,6)=='INSERT')
+    //                {
+    //                    $tempID=$connect->Insert_ID($thissurvey['tablename'],"id"); // Find out id immediately if inserted
+    //                    $_SESSION['srid'] = $tempID;
+    //                    $saved_id = $tempID;
+    //                }
+    //                if ($bFinalizeThisAnswer === true)
+    //                {
+    //                    $connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid'].' and sid='.$surveyid);   // Checked
+    //                }
+    //            }
+    //            else
+    //            {
+    //                echo submitfailed($connect->ErrorMsg());
+    //            }
+    //        }
+            if ($bQuotaMatched)
+            {
+                check_quota('enforce',$surveyid);
+            }
+        }
+    //    elseif (isset($move))
+    //    {
+    //        // This else block is only there to take care of date conversion if the survey is not active - otherwise this is done in creatInsertQuery
+    //        // TMSW LEM will have list of available values to insert - use that instead
+    //        $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
+    //        $inserts=array_unique($_SESSION['insertarray']);
+    //        foreach ($inserts as $value)
+    //        {
+    //            //Work out if the field actually exists in this survey
+    //            unset($fieldexists);
+    //            if (isset($fieldmap[$value])) $fieldexists = $fieldmap[$value];
+    //            //Iterate through possible responses
+    //            if (isset($_SESSION[$value]) && isset($fieldexists) && $_SESSION[$value]!='')
+    //            {
+    //
+    //                if ($fieldexists['type']=='D' && isset($_POST[$value]))  // convert the date to the right DB Format
+    //                {
+    //                    $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+    //                    $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
+    //                    $_SESSION[$value]=$datetimeobj->convert("Y-m-d");
+    //                    $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
+    //                }
+    //            }
+    //        }
+    //
+    //
+    //    }
+        if ($thissurvey['savetimings'] == "Y" && $thissurvey['active'] == "Y")
+        {
+            set_answer_time();
+        }
+    }
 
-    }
-    if ($thissurvey['savetimings']=="Y" && $thissurvey['active'] == "Y")
-    {
-		set_answer_time();
-    }
-    }
-
-    // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
+        // CREATE SAVED CONTROL RECORD USING SAVE FORM INFORMATION
     if (isset($_POST['saveprompt']))  //Value submitted when clicking on 'Save Now' button on SAVE FORM
     {
-    if ($thissurvey['active'] == "Y") 	// Only save if active
-    {
-        $flashmessage=savedcontrol();
-        if (isset($errormsg) && $errormsg != "")
+        if ($thissurvey['active'] == "Y")  // Only save if active
         {
-            showsaveform();
+            $flashmessage = savedcontrol();
+            if (isset($errormsg) && $errormsg != "")
+            {
+                showsaveform();
+            }
         }
-    }
-    else
-    {
-        $_SESSION['scid'] = 0;		// If not active set to a dummy value to save form does not continue to show.
-    }
+        else
+        {
+            $_SESSION['scid'] = 0;  // If not active set to a dummy value to save form does not continue to show.
+        }
     }
 
     // DISPLAY SAVE FORM
     // Displays even if not active just to show how it would look when active (for testing purposes)
     // Show 'SAVE FORM' only when click the 'Save so far' button the first time
-    if ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && !isset($_SESSION['scid']))
+    if ($thissurvey['allowsave'] == "Y" && isset($_POST['saveall']) && !isset($_SESSION['scid']))
     {
-    if($thissurvey['tokenanswerspersistence'] != 'Y')
-    {
-        showsaveform();
+        if ($thissurvey['tokenanswerspersistence'] != 'Y')
+        {
+            showsaveform();
+        }
+        else
+        {
+            $flashmessage = savedsilent();
+        };
     }
-    else
+    elseif ($thissurvey['allowsave'] == "Y" && isset($_POST['saveall']) && isset($_SESSION['scid']))   //update the saved step only
     {
-    	$flashmessage = savedsilent();
-    };
-    }
-    elseif ($thissurvey['allowsave'] == "Y"  && isset($_POST['saveall']) && isset($_SESSION['scid']) )   //update the saved step only
-    {
-    $connect->Execute("update ".db_table_name("saved_control")." set saved_thisstep=".db_quoteall($thisstep)." where scid=".$_SESSION['scid']);  // Checked
+        $connect->Execute("update " . db_table_name("saved_control") . " set saved_thisstep=" . db_quoteall($thisstep) . " where scid=" . $_SESSION['scid']);  // Checked
     }
 
 
@@ -478,310 +477,310 @@
     return  $clang->gT('Your survey was successfully saved.');
     };
 
-
-    //FUNCTIONS USED WHEN SUBMITTING RESULTS:
-    function createinsertquery()
-    {
-
-    global $thissurvey, $timeadjust, $move, $thisstep;
-    global $deletenonvalues, $thistpl, $tempdir, $uploaddir;
-    global $surveyid, $connect, $clang, $postedfieldnames,$bFinalizeThisAnswer;
-
-    require_once("classes/inputfilter/class.inputfilter_clean.php");
-    $myFilter = new InputFilter('','',1,1,1);
-
-    // TMSW - LEM should have this - current question set
-    $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
-
-    if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
-    {
-        $inserts=array_unique($_SESSION['insertarray']);
-
-        $colnames_hidden=Array();
-        // Add irrelevant columns to list of hidden fields
-        if (isset($_SESSION['irrelevantCodes'])) {
-            $colnames_hidden = array_merge($colnames_hidden,$_SESSION['irrelevantCodes']);
-        }
-        foreach ($inserts as $value)
-        {
-            //Work out if the field actually exists in this survey
-            $fieldexists = '';
-            if (isset($fieldmap[$value])) $fieldexists = $fieldmap[$value];
-            //Iterate through possible responses
-            if (isset($_SESSION[$value]) && !empty($fieldexists))
-            {
-                //Only create column name and data entry if there is actually data!
-                $colnames[]=$value;
-                //If deletenonvalues is ON, delete any values that shouldn't exist
-                // we only do this at stubmit time so that we don't delete default values
-                // morover, doing this only once reduces the perfomance impact
-                // Never blank out result for Equation question type, even though it is hidden
-
-                if ($move == "movesubmit" && $deletenonvalues==1 && $fieldexists['type']!='*' && !checkconfield($value))
-                {
-                    $values[]='NULL';
-                    $colnames_hidden[]=$value;
-                }
-                elseif (($_SESSION[$value]=='' && $fieldexists['type']=='D')||($_SESSION[$value]=='' && $fieldexists['type']=='K')||($_SESSION[$value]=='' && $fieldexists['type']=='N'))
-                {
-                    // most databases do not allow to insert an empty value into a datefield,
-                    // therefore if no date was chosen in a date question the insert value has to be NULL
-                    $values[]='NULL';
-                }
-
-                else if ($fieldexists['type']=='|' && strpos($fieldexists['fieldname'], "_filecount") === false)
-                {
-                    $fieldname = $fieldexists['fieldname'];
-                    $target = "{$uploaddir}/surveys/{$thissurvey['sid']}/files/";
-
-                    $json = $_SESSION[$value];
-                    $phparray = json_decode(stripslashes($json));
-
-                    // if the files have not been saved already,
-                    // move the files from tmp to the files folder
-
-                    $tmp = $tempdir.'/upload/';
-                            if (!is_null($phparray) && count($phparray) > 0)
-                    {
-                                // Move the (unmoved, temp) files from temp to files directory.
-                                // Check all possible file uploads 
-                        for ($i = 0; $i < count($phparray); $i++)
-                        {
-                                    if (file_exists($tmp.$phparray[$i]->filename))
-                                    {
-                            $sDestinationFileName='fu_'.sRandomChars(15);
-                            if (!rename($tmp . $phparray[$i]->filename, $target . $sDestinationFileName))
-                                echo "Error moving file to its destination";
-                            $phparray[$i]->filename=$sDestinationFileName;
-                        }
-                            }
-                        $_SESSION[$value] = json_encode($phparray);
-                    }
-                        $values[] = $connect->qstr($_SESSION[$value]);
-                    // filename is changed from undefined to a random value
-                    // update uses $_POST for saving responses
-                    $_POST[$value] = $_SESSION[$value];
-                }
-
-                else
-                {
-                    // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
-                    if ($fieldexists['type']=='!' && $fieldmap[$value]['aid']=='other' && isset($_POST[substr($value,0,strlen($value)-5)]) && $_POST[substr($value,0,strlen($value)-5)]!='-oth-')
-                    {
-                         $_SESSION[$value]='';
-                    }
-
-                    elseif ($fieldexists['type']=='N' || $fieldexists['type']=='K') //sanitize numerical fields
-                    {
-                        $_SESSION[$value]=sanitize_float($_SESSION[$value]);
-
-                    }
-                    elseif ($fieldexists['type']=='D' && is_array($postedfieldnames) && in_array($value,$postedfieldnames))
-                    {
-                        // convert the date to the right DB Format but only if it was posted
-                        $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                        $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
-                        $_SESSION[$value]=$datetimeobj->convert("Y-m-d");
-                        $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
-                    }
-                    $values[]=$connect->qstr($_SESSION[$value],get_magic_quotes_gpc());
-                }
-            }
-        }
-
-        if ($thissurvey['datestamp'] == "Y")
-        {
-            $_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
-
-        }
-
-
-        // First compute the submitdate
-        if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
-        {
-            // In case of anonymized responses survey with no datestamp
-            // then the the answer submutdate gets a conventional timestamp
-            // 1st Jan 1980
-            $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
-        }
-        else
-        {
-            $mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
-        }
-
-        // CHECK TO SEE IF ROW ALREADY EXISTS
-        // srid (=Survey Record ID ) is set when the there were already answers saved for that survey
-        if (!isset($_SESSION['srid']))
-        {
-            //Prepare row insertion
-
-
-            if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
-            {
-                echo submitfailed();
-                exit;
-            }
-
-            // INSERT NEW ROW
-            $query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
-            ."(".implode(', ', array_map('db_quote_id',$colnames));
-            $query .= ",".db_quote_id('lastpage');
-            if ($thissurvey['datestamp'] == "Y")
-            {
-                $query .= ",".db_quote_id('datestamp');
-                $query .= ",".db_quote_id('startdate');
-            }
-            if ($thissurvey['ipaddr'] == "Y")
-            {
-                $query .= ",".db_quote_id('ipaddr');
-            }
-            $query .= ",".db_quote_id('startlanguage');
-            if ($thissurvey['refurl'] == "Y")
-            {
-                $query .= ",".db_quote_id('refurl');
-            }
-            if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
-            {
-                $query .= ",".db_quote_id('submitdate');
-            }
-            $query .=") ";
-            $query .="VALUES (".implode(", ", $values);
-            $query .= ",".($thisstep+1);
-            if ($thissurvey['datestamp'] == "Y")
-            {
-                $query .= ", '".$_SESSION['datestamp']."'";
-                $query .= ", '".$_SESSION['datestamp']."'";
-            }
-            if ($thissurvey['ipaddr'] == "Y")
-            {
-                $query .= ", '".$_SERVER['REMOTE_ADDR']."'";
-            }
-            $query .= ", '".$_SESSION['s_lang']."'";
-            if ($thissurvey['refurl'] == "Y")
-            {
-                    $query .= ", '".db_quote($_SESSION['refurl'])."'";
-            }
-            if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
-            {
-                // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
-                $query .= ", ".$connect->DBDate($mysubmitdate);
-            }
-            $query .=")";
-        }
-        else
-        {  // UPDATE EXISTING ROW
-            // Updates only the MODIFIED fields posted on current page.
-            if (isset($postedfieldnames) && $postedfieldnames)
-            {
-                $query = "UPDATE {$thissurvey['tablename']} SET ";
-                $query .= " lastpage = '".$thisstep."',";
-                if ($thissurvey['datestamp'] == "Y")
-                {
-                    $query .= " datestamp = '".$_SESSION['datestamp']."',";
-                }
-                if ($thissurvey['ipaddr'] == "Y")
-                {
-                    $query .= " ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
-                }
-                // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
-                if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
-                {
-                    $query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
-                }
-                // Resets fields hidden due to conditions
-                if ($deletenonvalues == 1)
-                {
-                    $hiddenfields=array_unique(array_values($colnames_hidden));
-                    foreach ($hiddenfields as $hiddenfield)
-                    {
-                        //$fieldinfo = arraySearchByKey($hiddenfield, $fieldmap, "fieldname", 1);
-                        //if ($fieldinfo['type']=='D' || $fieldinfo['type']=='N' || $fieldinfo['type']=='K')
-                        //{
-                        $query .= db_quote_id($hiddenfield)." = NULL,";
-                        //}
-                        //else
-                        //{
-                        //	$query .= db_quote_id($hiddenfield)." = '',";
-                        //}
-                    }
-                }
-                else
-                {
-                    $hiddenfields=Array();
-                }
-
-                $fields=$postedfieldnames;
-                $fields=array_unique($fields);
-                $fields=array_diff($fields,$hiddenfields); // Do not take fields that are hidden
-                foreach ($fields as $field)
-                {
-                    if(!empty($field))
-                    {
-                        $fieldinfo = $fieldmap[$field];
-                        if (!isset($_POST[$field])) {$_POST[$field]='';}
-                        //fixed numerical question fields. They have to be NULL instead of '' to avoid database errors
-                        if (($_POST[$field]=='' && $fieldinfo['type']=='D') || ($_POST[$field]=='' && $fieldinfo['type']=='N') || ($_POST[$field]=='' && $fieldinfo['type']=='K'))
-                        {
-                            $query .= db_quote_id($field)." = NULL,";
-                        }
-                        else
-                        {
-                            // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
-                            if ($fieldinfo['type']=='!' && $fieldmap[$field]['aid']=='other' && $_POST[substr($field,0,strlen($field)-5)]!='-oth-') //sanitize Other fields
-                            {
-                                $qfield="''";
-                            }
-                            elseif ($fieldinfo['type']=='N' || $fieldinfo['type']=='K') //sanitize numerical fields
-                            {
-                                $qfield=db_quoteall(sanitize_float($_POST[$field]));
-                            }
-                            elseif ($fieldinfo['type']=='D')  // convert the date to the right DB Format
-                            {
-                                $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                                $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
-                                $qfield=db_quoteall($connect->BindDate($datetimeobj->convert("Y-m-d")));
-                            }
-                            else
-                            {
-                                $qfield = db_quoteall($_POST[$field],true);
-                        }
-                            $query .= db_quote_id($field)." = ".$qfield.",";
-                    }
-                }
-                }
-
-
-                $query .= "WHERE id=" . $_SESSION['srid'];
-                $query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause
-            }
-            else
-            {
-                $query = "";
-                if ($bFinalizeThisAnswer === true)
-                {
-                    $query = "UPDATE {$thissurvey['tablename']} SET ";
-                    $query .= " submitdate = ".$connect->DBDate($mysubmitdate);
-                    $query .= " WHERE id=" . $_SESSION['srid'];
-                }
-            }
-        }
-        return $query;
-    }
-    else
-    {
-        sendcacheheaders();
-        doHeader();
-        foreach(file("$thistpl/startpage.pstpl") as $op)
-        {
-            echo templatereplace($op);
-        }
-        echo "<br /><center><font face='verdana' size='2'><font color='red'><strong>".$clang->gT("Error")."</strong></font><br /><br />\n";
-        echo $clang->gT("Cannot submit results - there are none to submit.")."<br /><br />\n";
-        echo "<font size='1'>".$clang->gT("This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.")."<br /><br />".$clang->gT("If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem.")."<br />\n";
-        echo "</font></center><br /><br />";
-        exit;
-    }
-    }
+//
+//    //FUNCTIONS USED WHEN SUBMITTING RESULTS:
+//    function createinsertquery()
+//    {
+//
+//    global $thissurvey, $timeadjust, $move, $thisstep;
+//    global $deletenonvalues, $thistpl, $tempdir, $uploaddir;
+//    global $surveyid, $connect, $clang, $postedfieldnames,$bFinalizeThisAnswer;
+//
+//    require_once("classes/inputfilter/class.inputfilter_clean.php");
+//    $myFilter = new InputFilter('','',1,1,1);
+//
+//    // TMSW - LEM should have this - current question set
+//    $fieldmap=createFieldMap($surveyid); //Creates a list of the legitimate questions for this survey
+//
+//    if (isset($_SESSION['insertarray']) && is_array($_SESSION['insertarray']))
+//    {
+//        $inserts=array_unique($_SESSION['insertarray']);
+//
+//        $colnames_hidden=Array();
+//        // Add irrelevant columns to list of hidden fields
+//        if (isset($_SESSION['irrelevantCodes'])) {
+//            $colnames_hidden = array_merge($colnames_hidden,$_SESSION['irrelevantCodes']);
+//        }
+//        foreach ($inserts as $value)
+//        {
+//            //Work out if the field actually exists in this survey
+//            $fieldexists = '';
+//            if (isset($fieldmap[$value])) $fieldexists = $fieldmap[$value];
+//            //Iterate through possible responses
+//            if (isset($_SESSION[$value]) && !empty($fieldexists))
+//            {
+//                //Only create column name and data entry if there is actually data!
+//                $colnames[]=$value;
+//                //If deletenonvalues is ON, delete any values that shouldn't exist
+//                // we only do this at stubmit time so that we don't delete default values
+//                // morover, doing this only once reduces the perfomance impact
+//                // Never blank out result for Equation question type, even though it is hidden
+//
+//                if ($move == "movesubmit" && $deletenonvalues==1 && $fieldexists['type']!='*' && !checkconfield($value))
+//                {
+//                    $values[]='NULL';
+//                    $colnames_hidden[]=$value;
+//                }
+//                elseif (($_SESSION[$value]=='' && $fieldexists['type']=='D')||($_SESSION[$value]=='' && $fieldexists['type']=='K')||($_SESSION[$value]=='' && $fieldexists['type']=='N'))
+//                {
+//                    // most databases do not allow to insert an empty value into a datefield,
+//                    // therefore if no date was chosen in a date question the insert value has to be NULL
+//                    $values[]='NULL';
+//                }
+//
+//                else if ($fieldexists['type']=='|' && strpos($fieldexists['fieldname'], "_filecount") === false)
+//                {
+//                    $fieldname = $fieldexists['fieldname'];
+//                    $target = "{$uploaddir}/surveys/{$thissurvey['sid']}/files/";
+//
+//                    $json = $_SESSION[$value];
+//                    $phparray = json_decode(stripslashes($json));
+//
+//                    // if the files have not been saved already,
+//                    // move the files from tmp to the files folder
+//
+//                    $tmp = $tempdir.'/upload/';
+//                            if (!is_null($phparray) && count($phparray) > 0)
+//                    {
+//                                // Move the (unmoved, temp) files from temp to files directory.
+//                                // Check all possible file uploads
+//                        for ($i = 0; $i < count($phparray); $i++)
+//                        {
+//                                    if (file_exists($tmp.$phparray[$i]->filename))
+//                                    {
+//                            $sDestinationFileName='fu_'.sRandomChars(15);
+//                            if (!rename($tmp . $phparray[$i]->filename, $target . $sDestinationFileName))
+//                                echo "Error moving file to its destination";
+//                            $phparray[$i]->filename=$sDestinationFileName;
+//                        }
+//                            }
+//                        $_SESSION[$value] = json_encode($phparray);
+//                    }
+//                        $values[] = $connect->qstr($_SESSION[$value]);
+//                    // filename is changed from undefined to a random value
+//                    // update uses $_POST for saving responses
+//                    $_POST[$value] = $_SESSION[$value];
+//                }
+//
+//                else
+//                {
+//                    // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
+//                    if ($fieldexists['type']=='!' && $fieldmap[$value]['aid']=='other' && isset($_POST[substr($value,0,strlen($value)-5)]) && $_POST[substr($value,0,strlen($value)-5)]!='-oth-')
+//                    {
+//                         $_SESSION[$value]='';
+//                    }
+//
+//                    elseif ($fieldexists['type']=='N' || $fieldexists['type']=='K') //sanitize numerical fields
+//                    {
+//                        $_SESSION[$value]=sanitize_float($_SESSION[$value]);
+//
+//                    }
+//                    elseif ($fieldexists['type']=='D' && is_array($postedfieldnames) && in_array($value,$postedfieldnames))
+//                    {
+//                        // convert the date to the right DB Format but only if it was posted
+//                        $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+//                        $datetimeobj = new Date_Time_Converter($_SESSION[$value], $dateformatdatat['phpdate']);
+//                        $_SESSION[$value]=$datetimeobj->convert("Y-m-d");
+//                        $_SESSION[$value]=$connect->BindDate($_SESSION[$value]);
+//                    }
+//                    $values[]=$connect->qstr($_SESSION[$value],get_magic_quotes_gpc());
+//                }
+//            }
+//        }
+//
+//        if ($thissurvey['datestamp'] == "Y")
+//        {
+//            $_SESSION['datestamp']=date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
+//
+//        }
+//
+//
+//        // First compute the submitdate
+//        if ($thissurvey['anonymized'] =="Y" && $thissurvey['datestamp'] =="N")
+//        {
+//            // In case of anonymized responses survey with no datestamp
+//            // then the the answer submutdate gets a conventional timestamp
+//            // 1st Jan 1980
+//            $mysubmitdate = date("Y-m-d H:i:s",mktime(0,0,0,1,1,1980));
+//        }
+//        else
+//        {
+//            $mysubmitdate = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $timeadjust);
+//        }
+//
+//        // CHECK TO SEE IF ROW ALREADY EXISTS
+//        // srid (=Survey Record ID ) is set when the there were already answers saved for that survey
+//        if (!isset($_SESSION['srid']))
+//        {
+//            //Prepare row insertion
+//
+//
+//            if (!isset($colnames) || !is_array($colnames)) //If something went horribly wrong - ie: none of the insertarray fields exist for this survey, crash out
+//            {
+//                echo submitfailed();
+//                exit;
+//            }
+//
+//            // INSERT NEW ROW
+//            $query = "INSERT INTO ".db_quote_id($thissurvey['tablename'])."\n"
+//            ."(".implode(', ', array_map('db_quote_id',$colnames));
+//            $query .= ",".db_quote_id('lastpage');
+//            if ($thissurvey['datestamp'] == "Y")
+//            {
+//                $query .= ",".db_quote_id('datestamp');
+//                $query .= ",".db_quote_id('startdate');
+//            }
+//            if ($thissurvey['ipaddr'] == "Y")
+//            {
+//                $query .= ",".db_quote_id('ipaddr');
+//            }
+//            $query .= ",".db_quote_id('startlanguage');
+//            if ($thissurvey['refurl'] == "Y")
+//            {
+//                $query .= ",".db_quote_id('refurl');
+//            }
+//            if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
+//            {
+//                $query .= ",".db_quote_id('submitdate');
+//            }
+//            $query .=") ";
+//            $query .="VALUES (".implode(", ", $values);
+//            $query .= ",".($thisstep+1);
+//            if ($thissurvey['datestamp'] == "Y")
+//            {
+//                $query .= ", '".$_SESSION['datestamp']."'";
+//                $query .= ", '".$_SESSION['datestamp']."'";
+//            }
+//            if ($thissurvey['ipaddr'] == "Y")
+//            {
+//                $query .= ", '".$_SERVER['REMOTE_ADDR']."'";
+//            }
+//            $query .= ", '".$_SESSION['s_lang']."'";
+//            if ($thissurvey['refurl'] == "Y")
+//            {
+//                    $query .= ", '".db_quote($_SESSION['refurl'])."'";
+//            }
+//            if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
+//            {
+//                // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
+//                $query .= ", ".$connect->DBDate($mysubmitdate);
+//            }
+//            $query .=")";
+//        }
+//        else
+//        {  // UPDATE EXISTING ROW
+//            // Updates only the MODIFIED fields posted on current page.
+//            if (isset($postedfieldnames) && $postedfieldnames)
+//            {
+//                $query = "UPDATE {$thissurvey['tablename']} SET ";
+//                $query .= " lastpage = '".$thisstep."',";
+//                if ($thissurvey['datestamp'] == "Y")
+//                {
+//                    $query .= " datestamp = '".$_SESSION['datestamp']."',";
+//                }
+//                if ($thissurvey['ipaddr'] == "Y")
+//                {
+//                    $query .= " ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
+//                }
+//                // is if a ALL-IN-ONE survey, we don't set the submit date before the data is validated
+//                if ($bFinalizeThisAnswer === true && ($thissurvey['format'] != "A"))
+//                {
+//                    $query .= " submitdate = ".$connect->DBDate($mysubmitdate).", ";
+//                }
+//                // Resets fields hidden due to conditions
+//                if ($deletenonvalues == 1)
+//                {
+//                    $hiddenfields=array_unique(array_values($colnames_hidden));
+//                    foreach ($hiddenfields as $hiddenfield)
+//                    {
+//                        //$fieldinfo = arraySearchByKey($hiddenfield, $fieldmap, "fieldname", 1);
+//                        //if ($fieldinfo['type']=='D' || $fieldinfo['type']=='N' || $fieldinfo['type']=='K')
+//                        //{
+//                        $query .= db_quote_id($hiddenfield)." = NULL,";
+//                        //}
+//                        //else
+//                        //{
+//                        //	$query .= db_quote_id($hiddenfield)." = '',";
+//                        //}
+//                    }
+//                }
+//                else
+//                {
+//                    $hiddenfields=Array();
+//                }
+//
+//                $fields=$postedfieldnames;
+//                $fields=array_unique($fields);
+//                $fields=array_diff($fields,$hiddenfields); // Do not take fields that are hidden
+//                foreach ($fields as $field)
+//                {
+//                    if(!empty($field))
+//                    {
+//                        $fieldinfo = $fieldmap[$field];
+//                        if (!isset($_POST[$field])) {$_POST[$field]='';}
+//                        //fixed numerical question fields. They have to be NULL instead of '' to avoid database errors
+//                        if (($_POST[$field]=='' && $fieldinfo['type']=='D') || ($_POST[$field]=='' && $fieldinfo['type']=='N') || ($_POST[$field]=='' && $fieldinfo['type']=='K'))
+//                        {
+//                            $query .= db_quote_id($field)." = NULL,";
+//                        }
+//                        else
+//                        {
+//                            // Empty the 'Other' field if a value other than '-oth-' was set for the main field (prevent invalid other values being saved - for example if Javascript fails to hide the 'Other' input field)
+//                            if ($fieldinfo['type']=='!' && $fieldmap[$field]['aid']=='other' && $_POST[substr($field,0,strlen($field)-5)]!='-oth-') //sanitize Other fields
+//                            {
+//                                $qfield="''";
+//                            }
+//                            elseif ($fieldinfo['type']=='N' || $fieldinfo['type']=='K') //sanitize numerical fields
+//                            {
+//                                $qfield=db_quoteall(sanitize_float($_POST[$field]));
+//                            }
+//                            elseif ($fieldinfo['type']=='D')  // convert the date to the right DB Format
+//                            {
+//                                $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
+//                                $datetimeobj = new Date_Time_Converter($_POST[$field], $dateformatdatat['phpdate']);
+//                                $qfield=db_quoteall($connect->BindDate($datetimeobj->convert("Y-m-d")));
+//                            }
+//                            else
+//                            {
+//                                $qfield = db_quoteall($_POST[$field],true);
+//                        }
+//                            $query .= db_quote_id($field)." = ".$qfield.",";
+//                    }
+//                }
+//                }
+//
+//
+//                $query .= "WHERE id=" . $_SESSION['srid'];
+//                $query = str_replace(",WHERE", " WHERE", $query);   // remove comma before WHERE clause
+//            }
+//            else
+//            {
+//                $query = "";
+//                if ($bFinalizeThisAnswer === true)
+//                {
+//                    $query = "UPDATE {$thissurvey['tablename']} SET ";
+//                    $query .= " submitdate = ".$connect->DBDate($mysubmitdate);
+//                    $query .= " WHERE id=" . $_SESSION['srid'];
+//                }
+//            }
+//        }
+//        return $query;
+//    }
+//    else
+//    {
+//        sendcacheheaders();
+//        doHeader();
+//        foreach(file("$thistpl/startpage.pstpl") as $op)
+//        {
+//            echo templatereplace($op);
+//        }
+//        echo "<br /><center><font face='verdana' size='2'><font color='red'><strong>".$clang->gT("Error")."</strong></font><br /><br />\n";
+//        echo $clang->gT("Cannot submit results - there are none to submit.")."<br /><br />\n";
+//        echo "<font size='1'>".$clang->gT("This error can occur if you have already submitted your responses and pressed 'refresh' on your browser. In this case, your responses have already been saved.")."<br /><br />".$clang->gT("If you receive this message in the middle of completing a survey, you should choose '<- BACK' on your browser and then refresh/reload the previous page. While you will lose answers from the last page all your others will still exist. This problem can occur if the webserver is suffering from overload or excessive use. We apologise for this problem.")."<br />\n";
+//        echo "</font></center><br /><br />";
+//        exit;
+//    }
+//    }
 
     // submitanswer sets the submitdate
     // Only used by question.php and group.php if next pages

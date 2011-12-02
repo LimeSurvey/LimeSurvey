@@ -1904,8 +1904,14 @@ class LimeExpressionManager {
         $LEM->surveyOptions['anonymized'] = (isset($options['anonymized']) ? $options['anonymized'] : false);
         $LEM->surveyOptions['datestamp'] = (isset($options['datestamp']) ? $options['datestamp'] : false);
         $LEM->surveyOptions['ipaddr'] = (isset($options['ipaddr']) ? $options['ipaddr'] : false);
+        $LEM->surveyOptions['refurl'] = (isset($options['refurl']) ? $options['refurl'] : NULL);
+        $LEM->surveyOptions['startlanguage'] = (isset($options['startlanguage']) ? $options['startlanguage'] : 'en');
+        $LEM->surveyOptions['surveyls_dateformat'] = (isset($options['surveyls_dateformat']) ? $options['surveyls_dateformat'] : 1);
         $LEM->surveyOptions['tablename'] = (isset($options['tablename']) ? $options['tablename'] : db_table_name('survey_' . $LEM->sid));
+        $LEM->surveyOptions['target'] = (isset($options['target']) ? $options['target'] : '/temp/files/');
         $LEM->surveyOptions['timeadjust'] = (isset($options['timeadjust']) ? $options['timeadjust'] : 0);
+        $LEM->surveyOptions['tempdir'] = (isset($options['tempdir']) ? $options['tempdir'] : '/temp/');
+        $LEM->surveyOptions['token'] = (isset($options['token']) ? $options['token'] : NULL);
 
         $LEM->debugLevel=$debugLevel;
         switch ($surveyMode) {
@@ -1998,7 +2004,7 @@ class LimeExpressionManager {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (--$LEM->currentGroupSeq < 0)
                     {
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'at_start'=>true,
@@ -2019,7 +2025,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new group
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'at_start'=>false,
@@ -2044,7 +2050,7 @@ class LimeExpressionManager {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (--$LEM->currentQuestionSeq < 0)
                     {
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'at_start'=>true,
@@ -2078,7 +2084,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new question
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'at_start'=>false,
@@ -2162,7 +2168,7 @@ class LimeExpressionManager {
                     if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current group
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2181,7 +2187,7 @@ class LimeExpressionManager {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentGroupSeq >= $LEM->numGroups)
                     {
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
@@ -2206,7 +2212,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new group
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2233,7 +2239,7 @@ class LimeExpressionManager {
                     if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current question
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2253,7 +2259,7 @@ class LimeExpressionManager {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
                     {
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
@@ -2292,7 +2298,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new question
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2315,7 +2321,7 @@ class LimeExpressionManager {
      * Write values to database.
      * @param <type> $updatedValues
      */
-    private function _UpdateValuesInDatabase($updatedValues)
+    private function _UpdateValuesInDatabase($updatedValues, $finished=false)
     {
         // Update these values in the database
         global $connect;
@@ -2326,14 +2332,13 @@ class LimeExpressionManager {
         {
             // Create initial insert row for this record
             $today = date_shift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", $this->surveyOptions['timeadjust']);
-            // TODO - anonymize as needed
             $sdata = array(
                 "datestamp"=>$today,
-                "ipaddr"=>$_SERVER['REMOTE_ADDR'],
-                "startlanguage"=>$_SESSION['s_lang'],
-                "refurl"=>getenv("HTTP_REFERER"),
-                "datestamp"=>$_SESSION['datestamp'],
-                "startdate"=>$_SESSION['datestamp'],
+                "ipaddr"=>(($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) ? $_SERVER['REMOTE_ADDR'] : ''),
+                "startlanguage"=>$this->surveyOptions['startlanguage'],
+                "token"=>($this->surveyOptions['token']),
+                "datestamp"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : NULL),
+                "startdate"=>($this->surveyOptions['datestamp'] ? $_SESSION['datestamp'] : date("Y-m-d H:i:s",0)),
                 );
             //One of the strengths of ADOdb's AutoExecute() is that only valid field names for $table are updated
             if ($connect->AutoExecute($this->surveyOptions['tablename'], $sdata,'INSERT'))    // Checked
@@ -2350,40 +2355,60 @@ class LimeExpressionManager {
         if (count($updatedValues) > 0)
         {
             $query = 'UPDATE '.$this->surveyOptions['tablename'] . " SET ";
+            $setter = array();
             switch ($this->surveyMode)
             {
                 case 'question':
-                    $query .= "lastpage='" . ($this->currentQuestionSeq+1) . "', ";
+                    $setter[] = db_quote_id('lastpage') . "=" . db_quoteall($this->currentQuestionSeq);
                     break;
                 case 'group':
-                    $query .= "lastpage='" . ($this->currentGroupSeq+1) . "', ";
+                    $setter[] = db_quote_id('lastpage') . "=" . db_quoteall($this->currentGroupSeq);
                     break;
                 case 'survey':
-                    $query .= "lastpage='1', ";
+                    $setter[] = db_quote_id('lastpage') . "=" . db_quoteall(1);
                     break;
             }
             if ($this->surveyOptions['datestamp'] && isset($_SESSION['datestamp'])) {
-                $query .= " datestamp = '".$_SESSION['datestamp']."',";
+                $setter[] = db_quote_id('datestamp') . "=" . db_quoteall($_SESSION['datestamp']);
             }
             if ($this->surveyOptions['ipaddr'] && isset($_SERVER['REMOTE_ADDR'])) {
-                $query .= " ipaddr = '".$_SERVER['REMOTE_ADDR']."',";
+                $setter[] = db_quote_id('ipaddr') . "=" . db_quoteall($_SERVER['REMOTE_ADDR']);
+            }
+            if ($finished) {
+                $setter[] = db_quote_id('submitdate') . "=" . db_quoteall($_SESSION['datestamp']);
             }
 
-            $setter = array();
             foreach ($updatedValues as $key=>$value)
             {
-                if (is_null($value))
+                $val = (is_null($value) ? NULL : $value['value']);
+                $type = (is_null($value) ? NULL : $value['type']);
+
+                // Clean up the values to cope with database storage requirements
+                switch($type)
+                {
+                    case 'D': //DATE
+                        if (trim($val)=='') {
+                            $val=NULL;  // since some databases can't store blanks in date fields
+                        }
+                        // otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses()
+                        break;
+                    case 'N': //NUMERICAL QUESTION TYPE
+                    case 'K': //MULTIPLE NUMERICAL QUESTION
+                        if (trim($val)=='') {
+                            $val=NULL;  // since some databases can't store blanks in numerical inputs
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                if (is_null($val))
                 {
                     $setter[] = db_quote_id($key) . "=NULL";
                 }
                 else
                 {
-                    switch($value['type'])
-                    {
-                        default:
-                            $setter[] = db_quote_id($key) . "=" . db_quoteall($value['value']);
-                            break;
-                    }
+                    $setter[] = db_quote_id($key) . "=" . db_quoteall($val);
                 }
             }
             $query .= implode(', ', $setter);
@@ -2393,8 +2418,16 @@ class LimeExpressionManager {
             {
                 $query .= $_SESSION['srid'];
 
-                if (!db_execute_assoc($query) && ($this->debugLevel >= 2)) {
+                if (!db_execute_assoc($query) && ($this->debugLevel >= 2))
+                {
                     $message .= 'Error in SQL update: '. $connect->ErrorMsg() . '<br/>';
+                    $message .= submitfailed($connect->ErrorMsg()); // originally just echos this
+
+                    if ($finished)
+                    {
+                        // Delete the save control record if successfully finalize the submission
+                        $connect->Execute("DELETE FROM ".db_table_name("saved_control")." where srid=".$_SESSION['srid'].' and sid='.$this->sid);   // Checked
+                    }
                 }
             }
             if ($this->debugLevel >= 2) {
@@ -2437,7 +2470,7 @@ class LimeExpressionManager {
                     if (!is_null($result) && ($result['mandViolation'] || !$result['valid']))
                     {
                         // redisplay the current group
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2457,7 +2490,7 @@ class LimeExpressionManager {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentGroupSeq >= $LEM->numGroups)
                     {
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
@@ -2482,7 +2515,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new group
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2509,7 +2542,7 @@ class LimeExpressionManager {
                     if ($result['mandViolation'] || !$result['valid'])
                     {
                         // redisplay the current question
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -2530,7 +2563,7 @@ class LimeExpressionManager {
                     $LEM->currentQset = array();    // reset active list of questions
                     if (++$LEM->currentQuestionSeq >= $LEM->numQuestions)
                     {
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,true);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>true,
@@ -2569,7 +2602,7 @@ class LimeExpressionManager {
                     else
                     {
                         // display new question
-                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues);
+                        $message .= $LEM->_UpdateValuesInDatabase($updatedValues,false);
                         $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
                         return array(
                             'finished'=>false,
@@ -3296,7 +3329,7 @@ class LimeExpressionManager {
         else if ($qInfo['hidden'] && $qInfo['type'] == '*')
         {
             // Process this equation
-            $result = $LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false);
+            $result = FlattenText($LEM->ProcessString($qInfo['eqn'], $qInfo['qid'],NULL,false,1,1,false,false));
             $sgqa = $LEM->qid2code[$qid];   // there will be only one, since Equation
             // Store the result of the Equation in the SESSION
             $_SESSION[$sgqa] = $result;
@@ -4405,7 +4438,7 @@ EOT;
     }
 
     /**
-     * Validate and/or save
+     * Cleanse the $_POSTed data and update $_SESSION variables accordingly
      */
     static function ProcessCurrentResponses()
     {
@@ -4429,6 +4462,9 @@ EOT;
                     switch($type)
                     {
                         case 'D': //DATE
+                            $dateformatdatat=getDateFormatData($LEM->surveyOptions['surveyls_dateformat']);
+                            $datetimeobj = new Date_Time_Converter($value, $dateformatdatat['phpdate']);
+                            $value=$datetimeobj->convert("Y-m-d");
                             break;
                         case 'N': //NUMERICAL QUESTION TYPE
                         case 'K': //MULTIPLE NUMERICAL QUESTION
@@ -4437,6 +4473,36 @@ EOT;
                             }
                             else {
                                 $value = sanitize_float($value);
+                            }
+                            break;
+                        case '|': //File Upload
+                            if (!preg_match('/_filecount$/', $sq))
+                            {
+                                $json = $value;
+                                $phparray = json_decode(stripslashes($json));
+
+                                // if the files have not been saved already,
+                                // move the files from tmp to the files folder
+
+                                $tmp = $LEM->surveyOptions['tempdir'] . '/upload/';
+                                if (!is_null($phparray) && count($phparray) > 0)
+                                {
+                                    // Move the (unmoved, temp) files from temp to files directory.
+                                    // Check all possible file uploads
+                                    for ($i = 0; $i < count($phparray); $i++)
+                                    {
+                                        if (file_exists($tmp . $phparray[$i]->filename))
+                                        {
+                                            $sDestinationFileName = 'fu_' . sRandomChars(15);
+                                            if (!rename($tmp . $phparray[$i]->filename, $LEM->surveyOptions['target'] . $sDestinationFileName))
+                                            {
+                                                echo "Error moving file to target destination";
+                                            }
+                                            $phparray[$i]->filename = $sDestinationFileName;
+                                        }
+                                    }
+                                    $value = str_replace('{','{ ',json_encode($phparray));  // so that EM doesn't try to parse it.
+                                }
                             }
                             break;
                     }
