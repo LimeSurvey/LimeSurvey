@@ -22,17 +22,7 @@
   * @version $Id: saved.php 11128 2011-10-08 22:23:24Z dionet $
   * @access public
   */
- class saved extends Survey_Common_Controller {
-
-    /**
-     * saved::__construct()
-     * Constructor
-     * @return
-     */
-    function __construct()
-	{
-		parent::__construct();
-	}
+ class saved extends Survey_Common_Action {
 
     /**
      * saved::view()
@@ -40,16 +30,26 @@
      * @param mixed $surveyid
      * @return
      */
-    function view($surveyid)
+	
+	public function run($sa)
     {
-    	$surveyid = sanitize_int($surveyid);
-        self::_js_admin_includes(base_url().'scripts/jquery/jquery.tablesorter.min.js');
-        self::_js_admin_includes(base_url().'scripts/admin/saved.js');
-        self::_getAdminHeader();
+		if ($sa == 'delete')
+			$this->route('delete', array());
+		$this->route('view', array());
+    }
+
+    public function view()
+    {
+    	@$surveyid = $_REQUEST['surveyid'];
+		if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
+		$surveyid = sanitize_int($surveyid);
+		$this->_js_admin_includes(Yii::app()->baseUrl.'scripts/jquery/jquery.tablesorter.min.js');
+		$this->_js_admin_includes(Yii::app()->baseUrl.'scripts/admin/saved.js');
+        $this->getController()->_getAdminHeader();
 
         if(bHasSurveyPermission($surveyid,'responses','read'))
         {
-            $clang = $this->limesurvey_lang;
+            $clang = $this->getController()->lang;
             $thissurvey=getSurveyInfo($surveyid);
 
             $savedsurveyoutput = "<div class='menubar'>\n"
@@ -58,21 +58,21 @@
             . "<div class='menubar-main'>\n"
             . "<div class='menubar-left'>\n";
 
-            $savedsurveyoutput .= self::_savedmenubar($surveyid);
+            $savedsurveyoutput .= $this->_savedmenubar($surveyid);
 
             $savedsurveyoutput .= "</div></div></div>\n";
 
             $savedsurveyoutput .= "<div class='header ui-widget-header'>".$clang->gT("Saved Responses:") . " ". getSavedCount($surveyid)."</div><p>";
 
             $data['display'] = $savedsurveyoutput;
-            $this->load->view('survey_view',$data);
-            self::_showSavedList($surveyid);
+            $this->getController()->render('/survey_view',$data);
+            $this->_showSavedList($surveyid);
         }
 
-        self::_loadEndScripts();
+        $this->getController()->_loadEndScripts();
 
 
-	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+	   $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
 
     }
@@ -82,35 +82,35 @@
      * Function responsible to delete saved responses.
      * @return
      */
-    function delete()
+    public function delete()
     {
-        $surveyid=$this->input->post('sid');
-        $srid=$this->input->post('srid');
-        $scid=$this->input->post('scid');
-        $subaction=$this->input->post('subaction');
-        $surveytable = $this->db->dbprefix."survey_".$surveyid;
+        @$surveyid=$_REQUEST['sid'];
+        @$srid=$_REQUEST['srid'];
+        @$scid=$_REQUEST['scid'];
+        @$subaction=$_REQUEST['subaction'];
+        $surveytable = "{{survey_".$surveyid."}}";
 
         if ($subaction == "delete" && $surveyid && $scid)
         {
-            $query = "DELETE FROM ".$this->db->dbprefix."saved_control
+            $query = "DELETE FROM {{saved_control}}
         			  WHERE scid=$scid
         			  AND sid=$surveyid
         			  ";
-            $this->load->helper('database');
-            if ($result = db_execute_assosc($query))
+            Yii::app()->loadHelper('database');
+            if ($result = db_execute_assoc($query))
             {
                 //If we were succesful deleting the saved_control entry,
                 //then delete the rest
                 $query = "DELETE FROM {$surveytable} WHERE id={$srid}";
-                $result = db_execute_assosc($query) or die("Couldn't delete");
+                $result = db_execute_assoc($query) or die("Couldn't delete");
 
             }
             else
             {
-                show_error("Couldn't delete<br />$query<br />");
+                safe_error("Couldn't delete<br />$query<br />");
             }
         }
-        redirect("admin/saved/view/".$surveyid,'refresh');
+        $this->getController()->redirect("admin/saved/view/surveyid/".$surveyid,'refresh');
     }
 
     /**
@@ -119,23 +119,23 @@
      * @param mixed $surveyid
      * @return
      */
-    function _showSavedList($surveyid)
+    private function _showSavedList($surveyid)
     {
-        $this->load->helper('database');
+        Yii::app()->loadHelper('database');
 
         $query = "SELECT scid, srid, identifier, ip, saved_date, email, access_code\n"
-        ."FROM ".$this->db->dbprefix."saved_control\n"
+        ."FROM {{saved_control}}\n"
         ."WHERE sid=$surveyid\n"
         ."ORDER BY saved_date desc";
         $result = db_execute_assoc($query) or safe_die ("Couldn't summarise saved entries<br />$query<br />");
-        if ($result->num_rows() > 0)
+        if ($result->count() > 0)
         {
 
             $data['result'] = $result;
-            $data['clang'] = $clang;
+            $data['clang'] = $this->getController()->lang;
             $data['surveyid'] = $surveyid;
 
-            $this->load->view('admin/saved/savedlist_view',$data);
+            $this->getController()->render('/admin/saved/savedlist_view',$data);
         }
     }
 
@@ -146,13 +146,13 @@
      * @param mixed $surveyid
      * @return
      */
-    function _savedmenubar($surveyid)
+    private function _savedmenubar($surveyid)
     {
         //BROWSE MENU BAR
-        $clang = $this->limesurvey_lang;
+        $clang = $this->getController()->lang;
         if (!isset($surveyoptions)) {$surveyoptions="";}
-        $surveyoptions .= "<a href='".site_url('admin/survey/view/'.$surveyid)."' title='".$clang->gTview("Return to survey administration")."' >" .
-    			"<img name='Administration' src='".$this->config->item('imageurl')."/home.png' alt='".$clang->gT("Return to survey administration")."' align='left'></a>\n";
+        $surveyoptions .= "<a href='".Yii::app()->baseUrl.'admin/survey/view/surveyid/'.$surveyid."' title='".$clang->gTview("Return to survey administration")."' >" .
+    			"<img name='Administration' src='".Yii::app()->getConfig('imageurl')."/home.png' alt='".$clang->gT("Return to survey administration")."' align='left'></a>\n";
 
         return $surveyoptions;
     }

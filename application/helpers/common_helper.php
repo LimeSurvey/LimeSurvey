@@ -2968,15 +2968,10 @@ function setuserrights($uid, $rights)
 */
 function getSavedCount($surveyid)
 {
-
-    $CI = &get_instance();
     $surveyid=(int)$surveyid;
-
-    $CI->load->model('saved_control_model');
-
-
+	
     //$query = "SELECT COUNT(*) FROM ".db_table_name('saved_control')." WHERE sid=$surveyid";
-    $count=$CI->saved_control_model->getCountOfAll($surveyid);
+    $count=Saved_control::getCountOfAll($surveyid);
     return $count;
 }
 
