@@ -7,20 +7,20 @@
 <th width='20%'><?php echo $clang->gT("Username");?></th>
 <th width='20%'><?php echo $clang->gT("Email");?></th>
 <th width='20%'><?php echo $clang->gT("Full name");?></th>
-<?php if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1) { ?>
+<?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) { ?>
     <th width='5%'><?php echo $clang->gT("No of surveys");?></th>
 <?php } ?>
 <th width='15%'><?php echo $clang->gT("Created by");?></th>
 </tr></thead><tbody>
 <tr >
 <td align='center' style='padding:3px;'>
-<form method='post' action='<?php echo site_url("admin/user/modifyuser");?>'>
+<form method='post' action='<?php echo $this->createUrl("admin/user/modifyuser");?>'>
 <input type='image' src='<?php echo $imageurl;?>/token_edit.png' value='<?php echo $clang->gT("Edit user");?>' />
 <input type='hidden' name='action' value='modifyuser' />
 <input type='hidden' name='uid' value='<?php echo $usrhimself['uid'];?>' />
 </form>
 
-<?php if ($usrhimself['parent_id'] != 0 && $this->session->userdata('USER_RIGHT_DELETE_USER') == 1 ) { ?>
+<?php if ($usrhimself['parent_id'] != 0 && Yii::app()->session['USER_RIGHT_DELETE_USER'] == 1 ) { ?>
     <form method='post' action='$scriptname?action=deluser'>
     <input type='submit' value='<?php echo $clang->gT("Delete");?>' onclick='return confirm("<?php echo $clang->gT("Are you sure you want to delete this entry?","js");?>")' />
     <input type='hidden' name='action' value='deluser' />
@@ -35,7 +35,7 @@
 <td align='center'><strong><?php echo $usrhimself['email'];?></strong></td>
 <td align='center'><strong><?php echo $usrhimself['full_name'];?></strong></td>
 
-<?php if($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1) { ?>
+<?php if(Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1) { ?>
     <td align='center'><strong><?php echo $noofsurveys;?></strong></td>
 <?php } ?>
 
@@ -51,7 +51,7 @@
     <tr>
 
     <td align='center' style='padding:3px;'>
-    <?php if ($this->session->userdata('USER_RIGHT_SUPERADMIN') == 1 || $usr['uid'] == $_SESSION['loginID'] || ($this->session->userdata('USER_RIGHT_CREATE_USER') == 1 && $usr['parent_id'] == $this->session->userdata('loginID'))) { ?>
+    <?php if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] == 1 || $usr['uid'] == $_SESSION['loginID'] || (Yii::app()->session['USER_RIGHT_CREATE_USER'] == 1 && $usr['parent_id'] == $this->session->userdata('loginID'))) { ?>
         <form method='post' action='<?php echo site_url("admin/user/modifyuser");?>'>
         <input type='image' src='<?php echo $imageurl;?>/token_edit.png' alt='<?php echo $clang->gT("Edit this user");?>' />
         <input type='hidden' name='action' value='modifyuser' />

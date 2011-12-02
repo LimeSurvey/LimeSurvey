@@ -1,9 +1,9 @@
-<form method='post' action='<?php echo site_url("admin/user/userrights");?>'>
+<form method='post' action='<?php echo $this->createUrl("admin/user/userrights");?>'>
 
 <table width='100%' border='0'>
 <tr>
 <td colspan='8' class='header ui-widget-header' align='center'>
-<?php echo $clang->gT("Set User Rights");?>: <?php echo htmlspecialchars(sanitize_user($_POST['user']));?>
+<?php echo $clang->gT("Set User Rights");?>:<?php $r = 'joel';echo htmlspecialchars(sanitize_user($r/*$_POST['user']*/));?>
 </td>
 </tr>
 
@@ -12,20 +12,20 @@
 $userlist = getuserlist();
 foreach ($userlist as $usr) {
     if ($usr['uid'] == $postuserid) {
-        $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, participant_panel,manage_template, manage_label FROM ".$this->db->dbprefix("users")." WHERE uid=".$this->session->userdata('loginID');	//		added by Dennis
+        $squery = "SELECT create_survey, configurator, create_user, delete_user, superadmin, participant_panel,manage_template, manage_label FROM {{users}} WHERE uid=".Yii::app()->session['loginID'];	//		added by Dennis
         $sresult = db_select_limit_assoc($squery); //Checked
-        $parent = $sresult->row_array();
+        $parent = $sresult->read();
 
         // Initial SuperAdmin has parent_id == 0
-        $adminquery = "SELECT uid FROM ".$this->db->dbprefix("users")." WHERE parent_id=0";
+        $adminquery = "SELECT uid FROM {{users}} WHERE parent_id=0";
         $adminresult = db_select_limit_assoc($adminquery, 1);
-        $row=$adminresult->row_array();
+        $row=$adminresult->read();
 		?>
 
         <tr>
 
         <?php // Only Initial SuperAdmin can give SuperAdmin rights
-        if($row['uid'] == $this->session->userdata('loginID'))
+        if($row['uid'] == Yii::app()->session['loginID'])
         { // RENAMED AS SUPERADMIN
             echo "<th align='center' class='admincell'>".$clang->gT("SuperAdministrator")."</th>\n";
             echo "<th align='center' >".$clang->gT("Participant Panel")."</th>\n";
@@ -55,7 +55,7 @@ foreach ($userlist as $usr) {
 
         <?php
         //// Only Initial SuperAdmmin can give SuperAdmin right
-        if($row['uid'] ==  $this->session->userdata('loginID')) {
+        if($row['uid'] ==  Yii::app()->session['loginID']) {
             echo "<td align='center'><input type=\"checkbox\"  class=\"checkboxbtn\" name=\"superadmin\" id=\"superadmin\" value=\"superadmin\"";
             if($usr['superadmin']) {
                 echo " checked='checked' ";
