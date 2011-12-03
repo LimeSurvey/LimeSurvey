@@ -202,35 +202,35 @@ function sharePanel()
 function getShareInfo_json()
 {
     if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) // If super administrator all the share info in the links table will be shown
-    {
-        $records = Participants::model()->getParticipantSharedAll();
+    {        
+        $records = Participants::getParticipantSharedAll();
         $aData->page = 1;
-        $aData->records =count(Participants::model()->getParticipantSharedAll());
+        $aData->records =count($records);
         $aData->total =ceil($aData->records /10 );
         $i=0;
         foreach($records as $row)
         {
-            $oShared = User::model()->getName($row['share_uid']); //for conversion of uid to human readable names
-            $owner = User::model()->getName($row['owner_uid']);
+            $oShared = User::getName($row['share_uid']); //for conversion of uid to human readable names
+            $owner = User::getName($row['owner_uid']);
             $aData->rows[$i]['id']=$row['participant_id'];
-            $aData->rows[$i]['cell']=array($row['firstname'],$row['lastname'],$row['email'],$oShared['full_name'],$row['share_uid'],$owner['full_name'],$row['date_added'],$row['can_edit']);
+            $aData->rows[$i]['cell']=array($row['firstname'],$row['lastname'],$row['email'],$oShared[0]['full_name'],$row['share_uid'],$owner[0]['full_name'],$row['date_added'],$row['can_edit']);
             $i++;
         }
         echo ls_json_encode($aData);
     }
     else            // otherwise only the shared participants by that user
     {
-        $records = Participants::model()->getParticipantShared(Yii::app()->session['loginID']);
+        $records = User::getParticipantShared(Yii::app()->session['loginID']);
         $aData->page = 1;
-        $aData->records =Participants::model()->getParticipantShared(Yii::app()->session['loginID'])->count();
+        $aData->records =count($records);
         $aData->total =ceil($aData->records /10 );
         $i=0;
-        foreach($records->readAll() as $row)
+        foreach($records as $row)
         {
-                $sharename = Users::model()->getName($row->share_uid); //for conversion of uid to human readable names
-                $aData->rows[$i]['id']=$row->participant_id;
-                $aData->rows[$i]['cell']=array($row['firstname'],$row['lastname'],$row['email'],$sharename['full_name'],$row['share_uid'],$row['date_added'],$row['can_edit']);
-                $i++;
+            $sharename = User::getName($row['share_uid']); //for conversion of uid to human readable names
+            $aData->rows[$i]['id']=$row['participant_id'];
+            $aData['rows'][$i]['cell']=array($row['firstname'],$row['lastname'],$row['email'],$sharename['full_name'],$row['share_uid'],$row['date_added'],$row['can_edit']);
+            $i++;
         }
         echo ls_json_encode($aData);
     }
@@ -243,15 +243,18 @@ function getShareInfo_json()
  */
 function editShareInfo()
 {
-    @$operation = $_POST['oper'];
+    $operation = CHttpRequest::getPost('oper');
     if($operation == 'del') // If operation is delete , it will delete, otherwise edit it
     {
-        Participant_shares::model()->deleteRow($_POST);
+        ParticipantShares::deleteRow($_POST);
     }
-    $aData = array( 'participant_id' => @$_POST['participant_id'],
-                   'can_edit' => @$_POST['can_edit'],
-                   'share_uid' => @$_POST['shared_uid']);
-    Participant_shares::model()->updateShare($aData);
+    else
+    {
+        $aData = array( 'participant_id' => CHttpRequest::getPost('participant_id'),
+                       'can_edit' => CHttpRequest::getPost('can_edit'),
+                       'share_uid' => CHttpRequest::getPost('shared_uid'));
+        ParticipantShares::updateShare($aData);
+    }
 }
 /**
  * This funtion takes the delete call from the display participants and take appropriate action depending on the condition
@@ -889,12 +892,11 @@ function getParticipants_json()
         $aData->records = Participants::model()->count();
         $aData->total = ceil ( $aData->records / $limit );
         $i=0;
-        $sortablearray=array();
         foreach($records as $key => $row)
         {
-            $username = User::getName(@$row['owner_uid']);//for conversion of uid to human readable names            
+            $username = User::getName($row['owner_uid']);//for conversion of uid to human readable names            
             $surveycount = Participants::getSurveyCount($row['participant_id']);
-            $sortablearray[$i]=array(@$row['participant_id'],"true",@$row['firstname'],@$row['lastname'],@$row['email'],@$row['blacklisted'],$surveycount,@$row['language'] ,$username['full_name']);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is
+            $sortablearray[$i]=array($row['participant_id'],"true",$row['firstname'],$row['lastname'],$row['email'],$row['blacklisted'],$surveycount,$row['language'] ,$username[0]['full_name']);// since it's the admin he has access to all editing on the participants inspite of what can_edit option is
             $attributes =  ParticipantAttributeNames::getParticipantVisibleAttribute($row['participant_id']);
             foreach($attid as $attributeid)
             {
@@ -1550,23 +1552,20 @@ function gen_uuid()
  */
 function shareParticipants()
 {
-    //var_dump($_REQUEST);die();
     $clang = $this->getController()->lang;
-    @$participant_id = $_REQUEST['participantid'];
-    @$shareuserid = $_REQUEST['shareuser'];
-    @$can_edit = $_REQUEST['can_edit'];
-    @$ownerid = $_REQUEST['owner_uid'];
-    Yii::app()->loadHelper('date');
-    $format = 'DATE_W3C';
+    $participant_id = CHttpRequest::getPost('participantid');
+    $shareuserid = CHttpRequest::getPost('shareuser');
+    $can_edit = CHttpRequest::getPost('can_edit');
+    $ownerid = CHttpRequest::getPost('owner_uid');
     $i=0;
     foreach($participant_id as $id )
     {
         $time = time();
         $aData = array('participant_id' =>$id,
                       'share_uid' => $shareuserid,
-                      'date_added' => standard_date($format, $time),
+                      'date_added' => date(DATE_W3C, $time),
                       'can_edit' => $can_edit);
-        Participant_shares::model()->storeParticipantShare($aData);
+        ParticipantShares::storeParticipantShare($aData);
         $i++;
     }
     echo sprintf($clang->gT("%s participants have been shared "),$i);

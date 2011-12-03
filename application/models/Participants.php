@@ -123,7 +123,7 @@ class Participants extends CActiveRecord
 	 */
 	function insertParticipant($data)
 	{
-		Yii::app()->db->createCommand()->insert('{{participants}}',$data);
+		Yii::app()->db->createCommand()->insert('{{participants}}',$data)->query();
 	}
 
 	/*
