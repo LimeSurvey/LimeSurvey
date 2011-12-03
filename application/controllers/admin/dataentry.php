@@ -594,10 +594,14 @@
      * @param mixed $language
      * @return
      */
-    function editdata($subaction,$id,$surveyid,$language)
+    function editdata($subaction,$id,$surveyid,$language='')
     {
-    	$surveyid = sanitize_int($surveyid);
-		$id = sanitize_int($id);
+    	  if ($language == '') {
+				$language = GetBaseLanguageFromSurveyID($surveyid);   	  	
+		  }
+		  
+    	  $surveyid = sanitize_int($surveyid);
+		  $id = sanitize_int($id);
         if (!isset($sDataEntryLanguage))
         {
             $sDataEntryLanguage = GetBaseLanguageFromSurveyID($surveyid);
@@ -1199,8 +1203,7 @@
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
                                 $qAttributes = getQuestionAttributeValues($fname['qid']);
-
-                                for ($i = 0; $i < $qAttributes['max_files'], isset($metadata[$i]); $i++)
+                                for ($i = 0; $i < $qAttributes['max_num_of_files'], isset($metadata[$i]); $i++)
                                 {
                                     if ($qAttributes['show_title'])
                                         $dataentryoutput .= '<tr><td width="25%">Title    </td><td><input type="text" class="'.$fname['fieldname'].'" id="'.$fname['fieldname'].'_title_'.$i   .'" name="title"    size=50 value="'.htmlspecialchars($metadata[$i]["title"])   .'" /></td></tr>';
@@ -1952,7 +1955,7 @@
                                     {
                                         if ($_FILES[$fieldname."_file_".$i]['error'] != 4)
                                         {
-                                            $target = $CI->config->item('uploaddir')."/surveys/". $thissurvey['sid'] ."/files/".sRandomChars(20);
+                                            $target = $this->config->item('uploaddir')."/surveys/". $thissurvey['sid'] ."/files/".sRandomChars(20);
                                             $size = 0.001 * $_FILES[$fieldname."_file_".$i]['size'];
                                             $name = rawurlencode($_FILES[$fieldname."_file_".$i]['name']);
 
@@ -2166,11 +2169,11 @@
      */
     function view($surveyid,$lang=NULL)
     {
-    	$surveyid = sanitize_int($surveyid);
-		if(isset($lang)) $lang=sanitize_languagecode($urlParam);
+		  $surveyid = sanitize_int($surveyid);
+		  if(isset($lang)) $lang=sanitize_languagecode($urlParam);
         self::_getAdminHeader();
 
-        if (bHasSurveyPermission($surveyid, 'responses','read'))
+        if (bHasSurveyPermission($surveyid, 'responses', 'read'))
         {
             $clang = $this->limesurvey_lang;
 
@@ -2196,6 +2199,7 @@
 
             $langlistbox = languageDropdown($surveyid,$sDataEntryLanguage);
             $thissurvey=getSurveyInfo($surveyid);
+            
             //This is the default, presenting a blank dataentry form
             $fieldmap=createFieldMap($surveyid);
             // PRESENT SURVEY DATAENTRY SCREEN
@@ -2293,11 +2297,13 @@
             $this->load->view("admin/dataentry/caption_view",$data);
 
             $this->load->helper('database');
+            $this->load->helper('database');
 
 
             // SURVEY NAME AND DESCRIPTION TO GO HERE
             $degquery = "SELECT * FROM ".$this->db->dbprefix."groups WHERE sid=$surveyid AND language='{$sDataEntryLanguage}' ORDER BY ".$this->db->dbprefix."groups.group_order";
             $degresult = db_execute_assoc($degquery);
+            
             // GROUP NAME
             $dataentryoutput = '';
             foreach ($degresult->result_array() as $degrow)
@@ -2306,6 +2312,7 @@
 
                 $deqquery = "SELECT * FROM ".$this->db->dbprefix."questions WHERE sid=$surveyid AND parent_qid=0 AND gid={$degrow['gid']} AND language='{$sDataEntryLanguage}'";
                 $deqresult = db_execute_assoc($deqquery);
+                
                 $dataentryoutput .= "\t<tr>\n"
                 ."<td colspan='3' align='center'><strong>".FlattenText($degrow['group_name'],true)."</strong></td>\n"
                 ."\t</tr>\n";
@@ -3577,7 +3584,7 @@
         self::_loadEndScripts();
 
 
-	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+	    self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
 
 
     }

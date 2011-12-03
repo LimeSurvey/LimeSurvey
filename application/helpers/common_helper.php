@@ -3180,6 +3180,7 @@ function getQuestionAttributeValues($qid, $type='')
     $CI->load->model('questions_model');
     $result = $CI->questions_model->getSomeRecords(array('type','sid'),array('qid'=>$qid)) or safe_die("Error finding question attributes");  //Checked
     $row=$result->row_array();
+    
     if ($row===false) // Question was deleted while running the survey
     {
         $cache[$qid]=false;
