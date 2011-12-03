@@ -201,41 +201,36 @@ function sharePanel()
  */
 function getShareInfo_json()
 {
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) // If super administrator all the share info in the links table will be shown
-    {
-        $this->load->model('participants_model');
-        $this->load->model('users_model');
-        $records = $this->participants_model->getParticipantSharedAll();
+    if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) // If super administrator all the share info in the links table will be shown
+    {        
+        $records = Participants::getParticipantSharedAll();
         $aData->page = 1;
-        $aData->records =count($this->participants_model->getParticipantSharedAll());
+        $aData->records =count($records);
         $aData->total =ceil($aData->records /10 );
         $i=0;
-        foreach($records->result() as $row)
+        foreach($records as $row)
         {
-            $oShared = $this->users_model->getName($row->share_uid); //for conversion of uid to human readable names
-            $owner = $this->users_model->getName($row->owner_uid);
-            $aData->rows[$i]['id']=$row->participant_id;
-            $aData->rows[$i]['cell']=array($row->firstname,$row->lastname,$row->email,$oShared->full_name,$row->share_uid,$owner->full_name,$row->date_added,$row->can_edit);
+            $oShared = User::getName($row['share_uid']); //for conversion of uid to human readable names
+            $owner = User::getName($row['owner_uid']);
+            $aData->rows[$i]['id']=$row['participant_id'];
+            $aData->rows[$i]['cell']=array($row['firstname'],$row['lastname'],$row['email'],$oShared[0]['full_name'],$row['share_uid'],$owner[0]['full_name'],$row['date_added'],$row['can_edit']);
             $i++;
         }
         echo ls_json_encode($aData);
     }
     else            // otherwise only the shared participants by that user
     {
-        $this->load->model('participants_model');
-        $this->load->model('users_model');
-
-        $records = $this->participants_model->getParticipantShared($this->session->userdata('loginID'));
+        $records = User::getParticipantShared(Yii::app()->session['loginID']);
         $aData->page = 1;
-        $aData->records =count($this->participants_model->getParticipantShared($this->session->userdata('loginID')));
+        $aData->records =count($records);
         $aData->total =ceil($aData->records /10 );
         $i=0;
-        foreach($records->result() as $row)
+        foreach($records as $row)
         {
-                $sharename = $this->users_model->getName($row->share_uid); //for conversion of uid to human readable names
-                $aData->rows[$i]['id']=$row->participant_id;
-                $aData->rows[$i]['cell']=array($row->firstname,$row->lastname,$row->email,$sharename->full_name,$row->share_uid,$row->date_added,$row->can_edit);
-                $i++;
+            $sharename = User::getName($row['share_uid']); //for conversion of uid to human readable names
+            $aData->rows[$i]['id']=$row['participant_id'];
+            $aData['rows'][$i]['cell']=array($row['firstname'],$row['lastname'],$row['email'],$sharename['full_name'],$row['share_uid'],$row['date_added'],$row['can_edit']);
+            $i++;
         }
         echo ls_json_encode($aData);
     }
@@ -248,17 +243,18 @@ function getShareInfo_json()
  */
 function editShareInfo()
 {
-    $operation = $_POST['oper'];
-    $this->load->model('participant_shares_model');
-    $this->load->model('users_model');
+    $operation = CHttpRequest::getPost('oper');
     if($operation == 'del') // If operation is delete , it will delete, otherwise edit it
     {
-        $this->participant_shares_model->deleteRow($_POST);
+        ParticipantShares::deleteRow($_POST);
     }
-    $aData = array( 'participant_id' => $this->input->post('participant_id'),
-                   'can_edit' => $this->input->post('can_edit'),
-                   'share_uid' => $this->input->post('shared_uid'));
-    $this->participant_shares_model->updateShare($aData);
+    else
+    {
+        $aData = array( 'participant_id' => CHttpRequest::getPost('participant_id'),
+                       'can_edit' => CHttpRequest::getPost('can_edit'),
+                       'share_uid' => CHttpRequest::getPost('shared_uid'));
+        ParticipantShares::updateShare($aData);
+    }
 }
 /**
  * This funtion takes the delete call from the display participants and take appropriate action depending on the condition
@@ -382,36 +378,33 @@ function getSurveyInfo_json()
  */
 function exporttocsvcount()
 {
-    $this->load->model('participants_model');
-    $searchconditionurl = $_POST['searchcondition'];
+    $searchconditionurl = CHttpRequest::getPost('searchcondition');
     $searchcondition = basename($searchconditionurl);
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants in the cpdb are counted
+    if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants in the cpdb are counted
     {
         if($searchcondition != 'getParticipants_json') // if there is a search condition then only the participants that match the search criteria are counted
         {
             $condition = explode("||",$searchcondition);
             if(count($condition)==3)
             {
-                $query = $this->participants_model->getParticipantsSearch($condition,0,0);
+                $query = Participants::getParticipantsSearch($condition,0,0);
             }
             else
             {
-                $query = $this->participants_model->getParticipantsSearchMultiple($condition,0,0);
+                $query = Participants::getParticipantsSearchMultiple($condition,0,0);
             }
         }
         else // if no search criteria all the participants will be counted
         {
-            $table_name = 'participants';
-            $getquery = $this->db->get($table_name);
-            $query = $getquery->result_array();
+            $query = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
         }
     }
     else // If no search criteria it will simply return the number of participants
     {
-        $iUserID = $this->session->userdata('loginID');
-        $query = $this->participants_model->getParticipantsOwner($iUserID);
+        $iUserID = Yii::app()->session['loginID'];
+        $query = Particiapnts::getParticipantsOwner($iUserID);
     }
-    $clang = $this->limesurvey_lang;
+    $clang = $this->getController()->lang;
     echo sprintf($clang->gT("Export %s participant(s) to CSV  "),count($query));
 }
 /**
@@ -421,19 +414,16 @@ function exporttocsvcount()
  */
 function exporttocsvcountAll()
 {
-    $this->load->model('participants_model');
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants in the central table will be counted
+    if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants in the central table will be counted
     {
-        $table_name = 'participants';
-        $getquery = $this->db->get($table_name);
-        $query = $getquery->result_array();
+        $query = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
     }
     else // otherwise only the participants on which the logged in user has the rights
     {
-        $iUserID = $this->session->userdata('loginID');
-        $query = $this->participants_model->getParticipantsOwner($iUserID);
+        $iUserID = Yii::app()->session['loginID'];
+        $query = Participants::getParticipantsOwner($iUserID);
     }
-    $clang = $this->limesurvey_lang;
+    $clang = $this->getController()->lang;
     if(count($query) > 0 ) // If count is greater than 0 it will show the message
     {
         echo sprintf($clang->gT("Export %s participant(s) to CSV  "),count($query));
@@ -450,19 +440,15 @@ function exporttocsvcountAll()
  */
 function exporttocsvAll()
 {
-    $this->load->helper("export");  // loads the export helper
-    $this->load->model('participant_attribute_model');
-    $this->load->model('participants_model');
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be exported
+    Yii::app()->loadHelper("export");  // loads the export helper    
+    if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be exported
     {
-        $table_name = 'participants';
-        $getquery = $this->db->get($table_name);
-        $query = $getquery->result_array();
+        $query = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
     }
     else // otherwise only the ones over which the user has rights on
     {
-        $iUserID = $this->session->userdata('loginID');
-        $query = $this->participants_model->getParticipantsOwner($iUserID);
+        $iUserID = Yii::app()->session['loginID'];
+        $query = Participants::getParticipantsOwner($iUserID);
     }
     if(!$query)
        return false;
@@ -475,7 +461,7 @@ function exporttocsvAll()
         $outputarray[0][$i]=$field; // The fields are being added to the index 0 of the array to be written to the header of the csv file
         $i++;
     }
-    $attributenames = $this->participant_attribute_model->getAttributes();
+    $attributenames = ParticipantAttributeNames::getAttributes();
     // Attribute names are being added to the index 0 of the array
     foreach($attributenames as $key=>$value)
     {
@@ -495,14 +481,15 @@ function exporttocsvAll()
             //increment the column
             $j++;
         }
+
         // it will iterate through the additional attributes that the user has choosen to export and will fetch the values
         // that are to be exported to the CSV file
         foreach($attributenames as $key=>$value)
         {
-            $answer=$this->participant_attribute_model->getAttributeValue($aData['participant_id'],$value['attribute_id']);
-            if(isset($answer->value))
+            $answer=ParticipantAttributeNames::getAttributeValue($aData['participant_id'],$value['attribute_id']);
+            if(isset($answer['value']))
             { // if the attribute value is there for that attribute and the user then it will written to the array
-                $outputarray[$i][$j]=$answer->value;
+                $outputarray[$i][$j]=$answer['value'];
                 //increment the column
                 $j++;
             }
@@ -517,8 +504,8 @@ function exporttocsvAll()
         $i++;
     }
     // Load the helper and pass the array to be written to a CSV file
-    $this->load->helper('date');
-    cpdb_export($outputarray,"central_".now());
+    
+    cpdb_export($outputarray,"central_".time());
 }
 /**
  * This function is similar to export to all message where it counts the number to participants to be copied
@@ -618,37 +605,33 @@ function getSearchIDs()
  */
 function exporttocsv()
 {
-    $this->load->helper('export');
-    $this->load->model('participant_attribute_model');
-    $this->load->model('participants_model');
-    $searchconditionurl = $_POST['searchcondition'];
+    Yii::app()->loadHelper('export');
+    $searchconditionurl = CHttpRequest::getPost('searchcondition');
     $searchcondition = basename($searchconditionurl);
-    if($this->session->userdata('USER_RIGHT_SUPERADMIN')) //If super admin all the participants will be visible
+    if(Yii::app()->session['USER_RIGHT_SUPERADMIN']) //If super admin all the participants will be visible
     {
         if($searchcondition != 'getParticipants_json') // If there is a search condition then only does participants are exported
         {
             $condition = explode("||",$searchcondition);
             if(count($condition)==3) // Single search
             {
-                $query = $this-> participants_model->getParticipantsSearch($condition,0,0);
+                $query = Participants::getParticipantsSearch($condition,0,0);
             }
             else //combined search
             {
-                $query = $this-> participants_model->getParticipantsSearchMultiple($condition,0,0);
+                $query = Participants::getParticipantsSearchMultiple($condition,0,0);
             }
         } // else all the participants in the central table will be exported since it's superadmin
         else
         {
-            $table_name = 'participants';
-            $getquery = $this->db->get($table_name);
-            $query = $getquery->result_array();
+            $query = Yii::app()->db->createCommand()->select('*')->from('{{participants}}')->queryAll();
         }
 
     }
     else
     {
-        $iUserID = $this->session->userdata('loginID'); // else only the
-        $query = $this->participants_model->getParticipantsOwner($iUserID);
+        $iUserID = Yii::app()->session['loginID']; // else only the
+        $query = Participants::getParticipantsOwner($iUserID);
     }
     if(!$query)
     return false;
@@ -661,7 +644,7 @@ function exporttocsv()
         $outputarray[0][$i]=$field;//fields written to output array
         $i++;
     }
-    if($this->uri->segment(4) == "null")
+    if(CHttpRequest::getQuery('id') == "null")
     {
         $i = 1;
         $j = 0;
@@ -674,16 +657,15 @@ function exporttocsv()
             }
             $i++;
          }
-         $this->load->helper('date');
-         cpdb_export($outputarray,"central_".now());
+         cpdb_export($outputarray,"central_".time());
     }
     else
     {
-        $attribute_id=explode(",",$this->uri->segment(4));
+        $attribute_id=explode(",",CHttpRequest::getQuery('id'));
         foreach($attribute_id as $key=>$value)
         {
-            $attributename = $this->participant_attribute_model->getAttributeName($value);
-            $outputarray[0][$i]=$attributename->attribute_name;
+            $attributename = ParticipantAttributeNames::getAttributeNames($value);
+            $outputarray[0][$i]=$attributename[0]['attribute_name'];
             $i++;
         }
         $i = 1;
@@ -698,10 +680,10 @@ function exporttocsv()
             }
             foreach($attribute_id as $key=>$value)
             {
-                $answer=$this->participant_attribute_model->getAttributeValue($aData['participant_id'],$value['attribute_id']);
-                if(isset($answer->value))
+                $answer=ParticipantAttributeNames::getAttributeValue($aData['participant_id'],$value);
+                if(isset($answer['value']))
                 {
-                    $outputarray[$i][$j]=$answer->value;
+                    $outputarray[$i][$j]=$answer['value'];
                     $j++;
                 }
                 else
@@ -712,8 +694,7 @@ function exporttocsv()
             }
             $i++;
         }
-        $this->load->helper('date');
-        cpdb_export($outputarray,"central_".now());
+        cpdb_export($outputarray,"central_".time());
     }
 }
 function getParticipantsResults_json()
@@ -822,7 +803,7 @@ function getParticipantsResults_json()
         $i=0;
         foreach($records as $row=>$value)
         {
-            if(Participants::s_owner($value['participant_id']))
+            if(Participants::is_owner($value['participant_id']))
             {
                 $username = User::getName($value['owner_uid']);//for conversion of uid to human readable names
                 $surveycount = Participants::getSurveyCount($value['participant_id']);
@@ -920,9 +901,9 @@ function getParticipants_json()
             foreach($attid as $attributeid)
             {
                 $answer=ParticipantAttributeNames::getAttributeValue($row['participant_id'],$attributeid['attribute_id']);
-                if(isset($answer[0]['value']))
+                if(isset($answer['value']))
                 {
-                    array_push($sortablearray[$i],$answer[0]['value']);
+                    array_push($sortablearray[$i],$answer['value']);
                 }
                 else
                 {
@@ -980,15 +961,15 @@ function getParticipants_json()
         foreach($records as $row)
         {
             $surveycount = Participants::getSurveyCount($row['participant_id']);
-            $ownername = Users::getName($row['owner_uid']); //for conversion of uid to human readable names
+            $ownername = User::getName($row['owner_uid']); //for conversion of uid to human readable names
             $sortablearray[$i]=array($row['participant_id'],$row['can_edit'],$row['firstname'],$row['lastname'],$row['email'],$row['blacklisted'],$surveycount,$row['language'],$ownername[0]['full_name']);
             $attributes =  ParticipantAttributeNames::getParticipantVisibleAttribute($row['participant_id']);
             foreach($attid as $attributeid)
                 {
                     $answer=ParticipantAttributeNames::getAttributeValue($row['participant_id'],$attributeid['attribute_id']);
-                    if(isset($answer[0]['value']))
+                    if(isset($answer['value']))
                     {
-                        array_push($sortablearray[$i],$answer[0]['value']);
+                        array_push($sortablearray[$i],$answer['value']);
                     }
                     else
                     {
@@ -1221,11 +1202,10 @@ function delAttribute()
  */
 function delAttributeValues()
 {
-    $attribute_id = $this->uri->segment(4);
-    $value_id = $this->uri->segment(5);
-    $this->load->model('participant_attribute_model');
+    $attribute_id = CHttpRequest::getQuery('aid');
+    $value_id = CHttpRequest::getQuery('vid');
     ParticipantAttributeNames::delAttributeValues($attribute_id,$value_id);
-    redirect('admin/participants/sa/viewAttribute/'.$attribute_id);
+    CController::redirect(Yii::app()->createUrl('/admin/participants/sa/viewAttribute/'.$attribute_id));
 }
 /*
  * This function is responsible for deleting the storing the additional attributes
@@ -1572,24 +1552,20 @@ function gen_uuid()
  */
 function shareParticipants()
 {
-    $this->load->model('participant_shares_model');
-    $this->load->model('users_model');
-    $clang = $this->limesurvey_lang;
-    $participant_id = $this->input->post('participantid');
-    $shareuserid = $this->input->post('shareuser');
-    $can_edit = $this->input->post('can_edit');
-    $ownerid = $this->input->post('owner_uid');
-    $this->load->helper('date');
-    $format = 'DATE_W3C';
+    $clang = $this->getController()->lang;
+    $participant_id = CHttpRequest::getPost('participantid');
+    $shareuserid = CHttpRequest::getPost('shareuser');
+    $can_edit = CHttpRequest::getPost('can_edit');
+    $ownerid = CHttpRequest::getPost('owner_uid');
     $i=0;
     foreach($participant_id as $id )
     {
         $time = time();
         $aData = array('participant_id' =>$id,
                       'share_uid' => $shareuserid,
-                      'date_added' => standard_date($format, $time),
+                      'date_added' => date(DATE_W3C, $time),
                       'can_edit' => $can_edit);
-        $this->participant_shares_model->storeParticipantShare($aData);
+        ParticipantShares::storeParticipantShare($aData);
         $i++;
     }
     echo sprintf($clang->gT("%s participants have been shared "),$i);

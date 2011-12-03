@@ -84,7 +84,7 @@
         echo CHtml::link(CHtml::image($display['src'],$display['alt']),'displayParticipants');
         echo CHtml::image($seperator['src'],$seperator['alt']);
         echo CHtml::link(CHtml::image($import['src'],$import['alt']),'importCSV');
-        echo CHtml::image($export['src'],$export['alt']);
+        echo CHtml::link(CHtml::image($export['src'],$export['alt']),'exporttocsvAll');
         echo CHtml::image($seperator['src'],$seperator['alt']);
         echo CHtml::link(CHtml::image($blacklist['src'],$blacklist['alt']),'blacklistControl');
         if(Yii::app()->session['USER_RIGHT_SUPERADMIN'])

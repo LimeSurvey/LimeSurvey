@@ -176,7 +176,7 @@ class Participants extends CActiveRecord
 
 	function getParticipantsOwnerCount($userid)
 	{
-	    return Yii::app()->db->createCommand()->select('participants.*,participant_shares.can_edit')->from('{{participants}}')->leftJoin('{{participant_shares}}',' participants.participant_id=participant_shares.participant_id')->where('owner_uid = '.$userid.' OR share_uid = '.$userid)->group('participants.participant_id')->queryAll();
+	    return count(Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.can_edit')->from('{{participants}}')->leftJoin('{{participant_shares}}',' {{participants}}.participant_id={{participant_shares}}.participant_id')->where('owner_uid = '.$userid.' OR share_uid = '.$userid)->group('{{participants}}.participant_id')->queryAll());
 	}
 
 	/*
@@ -1051,5 +1051,38 @@ class Participants extends CActiveRecord
 	     return $otherdata;   
 	    }
 	    
+	}
+
+	function is_owner($participant_id)
+	{  
+	    $userid=Yii::app()->session['loginID'];
+	    $is_owner = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = "'.$participant_id.'" AND owner_uid = '.$userid)->from('{{participants}}')->queryAll();
+	    //$is_owner->num_rows();
+	    $is_shared = Yii::app()->db->createCommand()->select('participant_id')->where('participant_id = "'.$participant_id.'" AND share_uid = '.$userid)->from('{{participant_shares}}')->queryAll();
+	    if(count($is_shared) || count($is_owner))
+	    {
+	        return true;
+	    }
+	    else
+	    {
+	        return false;
+	    }
+	    
+	}
+
+	/*
+	 * This funciton is responsible for showing all the participant's shared by a particular user based on the user id 
+	 */
+	function getParticipantShared($userid)
+	{
+		return Yii::app()->db->createCommand()->select('{{participants}}.*, {{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}','{{participant_shares}}.participant_id = {{participants}}.participant_id')->where('owner_uid = '.$userid)->queryAll();
+	}
+
+	/*
+	 * This funciton is responsible for showing all the participant's shared to the superadmin 
+	 */
+	function getParticipantSharedAll()
+	{	
+		return Yii::app()->db->createCommand()->select('{{participants}}.*,{{participant_shares}}.*')->from('{{participants}}')->join('{{participant_shares}}','{{participant_shares}}.participant_id = {{participants}}.participant_id')->queryAll();
 	}
 }

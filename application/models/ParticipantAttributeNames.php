@@ -104,17 +104,17 @@ class ParticipantAttributeNames extends CActiveRecord
     
     function getAttributeVisibleID()
     {
-        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->where('{{participant_attribute_names}}.visible = "TRUE"')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names_lang}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'"')->queryAll();
+        return Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute_names}}')->order('{{participant_attribute_names}}.attribute_id', 'desc')->join('{{participant_attribute_names_lang}}', '{{participant_attribute_names_lang}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'" AND {{participant_attribute_names}}.visible = "TRUE"')->queryAll();
     }
 
     function getParticipantVisibleAttribute($participant_id)
     {
-        return Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute}}')->order('{{participant_attribute}}.attribute_id','desc')->where('participant_id = '.$participant_id)->join('{{participant_attribute_names_lang}}','{{participant_attribute}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->join('{{participant_attribute_names}}', '{{participant_attribute}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'"')->where('lang = "'.Yii::app()->session['adminlang'].'"')->queryAll();
+        return Yii::app()->db->createCommand()->select('{{participant_attribute}}.*,{{participant_attribute_names}}.*,{{participant_attribute_names_lang}}.*')->from('{{participant_attribute}}')->order('{{participant_attribute}}.attribute_id','desc')->join('{{participant_attribute_names_lang}}','{{participant_attribute}}.attribute_id = {{participant_attribute_names_lang}}.attribute_id')->join('{{participant_attribute_names}}', '{{participant_attribute}}.attribute_id = {{participant_attribute_names}}.attribute_id')->where('{{participant_attribute_names_lang}}.lang = "'.Yii::app()->session['adminlang'].'" AND lang = "'.Yii::app()->session['adminlang'].'" AND participant_id = "'.$participant_id.'"')->queryAll();
     }
 
     function getAttributeValue($participantid,$attributeid)
     {
-        $data = Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute}}')->where('participant_id = "'.$participantid.'" AND attribute_id = '.$attributeid)->queryAll();
+        $data = Yii::app()->db->createCommand()->select('*')->from('{{participant_attribute}}')->where('participant_id = "'.$participantid.'" AND attribute_id = '.$attributeid)->queryRow();
         return $data;
     }
 

@@ -1948,7 +1948,6 @@ function cpdb_export($data,$filename)
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
     header("Pragma: cache");
     $tokenoutput = chr(hexdec('EF')).chr(hexdec('BB')).chr(hexdec('BF'));
-    $CI =& get_instance();
 
     foreach($data as $key=>$value)
     {
