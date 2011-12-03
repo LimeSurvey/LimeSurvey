@@ -186,7 +186,8 @@ class tokens extends Survey_Common_Action
     			$flags.="/tls/novalidate-cert";
     			break;
     		}
-    		if($mbox=imap_open('{'.$hostname.$flags.'}INBOX',$username,$pass))
+
+    		if($mbox=@imap_open('{'.$hostname.$flags.'}INBOX',$username,$pass))
     		{
                 imap_errors();
     			$count=imap_num_msg($mbox);
