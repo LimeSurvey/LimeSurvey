@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-29 23:16+0100\n"
-"PO-Revision-Date: 2011-12-01 23:15+0100\n"
+"POT-Creation-Date: 2011-12-01 23:51+0100\n"
+"PO-Revision-Date: 2011-12-03 13:00+0100\n"
 "Last-Translator: LimeSurvey team <info@limesurvey.org>\n"
 "Language-Team: LimeSurvey Team <c_schmitz@users.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -111,7 +111,7 @@ msgstr "Шаблон:"
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:8
 #: /tmp/translationstatus_v2/application/helpers/admin/html_helper.php:36
 #: /tmp/translationstatus_v2/application/controllers/admin/saved.php:157
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:311
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:305
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:174
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2135
 msgid "Return to survey administration"
@@ -720,7 +720,7 @@ msgstr "Није активан"
 #: /tmp/translationstatus_v2/application/views/admin/export/exportresults_view.php:21
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:118
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:135
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:637
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:643
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1829
 msgid "Questions"
 msgstr "Питања"
@@ -1102,7 +1102,7 @@ msgid "Loading..."
 msgstr "Учитавање..."
 
 #: /tmp/translationstatus_v2/application/views/admin/translate/translateheader_view.php:7
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:302
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:296
 msgid "Translate survey"
 msgstr "Преведи анкету"
 
@@ -1169,13 +1169,12 @@ msgid "Delete all conditions"
 msgstr "Обришите све услове"
 
 #: /tmp/translationstatus_v2/application/views/admin/conditions/conditionslist_view.php:28
-#, fuzzy
 msgid "Are you sure you want to renumber the scenarios with incremented numbers beginning from 1?"
 msgstr "Да ли сте сигурни да желите да обришете све јединствене бројеве токена?"
 
 #: /tmp/translationstatus_v2/application/views/admin/conditions/conditionslist_view.php:29
 msgid "Renumber scenario automatically"
-msgstr ""
+msgstr "Додели нове бројеве сценрију аутоматски"
 
 #: /tmp/translationstatus_v2/application/views/admin/conditions/conditionshead_view.php:4
 msgid "Conditions designer"
@@ -1313,7 +1312,7 @@ msgstr "Копирај услове/правила"
 #: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:428
 #: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:574
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:216
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:252
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:246
 #: /tmp/translationstatus_v2/application/controllers/admin/index.php:30
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:2041
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:408
@@ -1350,7 +1349,7 @@ msgstr "Заставица/Маркирање"
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:23
 #: /tmp/translationstatus_v2/application/views/admin/usergroup/addUserGroup_view.php:7
 #: /tmp/translationstatus_v2/application/views/admin/usergroup/editUserGroup_view.php:6
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:473
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:470
 msgid "Description:"
 msgstr "Опис:"
 
@@ -1686,7 +1685,6 @@ msgid "Enter your subquestions:"
 msgstr "Укуцај твоја дподпитања"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/subQuestion_view.php:160
-#, fuzzy
 msgid "Enter one subquestion per line. You can provide a code by separating code and subquestion text with a semicolon or tab. For multilingual surveys you add the translation(s) on the same line separated with a semicolon or space."
 msgstr "Унесите једно подпитање по линији. Можете пружити код одвајањем кода и текста подпитања са полуколоном или табом. За вишејезичке анкете додајте превод(е) на истој линији одвојене са полуколоном или размаком."
 
@@ -2101,7 +2099,7 @@ msgstr "Увези питање"
 #: /tmp/translationstatus_v2/application/views/admin/survey/Question/questionbar_view.php:2
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:22
 #: /tmp/translationstatus_v2/application/helpers/admin/html_helper.php:62
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:356
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:348
 msgid "Please select a language:"
 msgstr "Молимо изаберите језик:"
 
@@ -2422,7 +2420,7 @@ msgstr "Језици"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/importSurvey_view.php:26
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:22
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:554
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:558
 msgid "Question groups"
 msgstr "Групе питања"
 
@@ -2435,7 +2433,7 @@ msgstr "Атрибути питања"
 #: /tmp/translationstatus_v2/application/views/admin/survey/copySurvey_view.php:27
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:119
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:136
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:698
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:708
 msgid "Subquestions"
 msgstr "Подпитања"
 
@@ -2554,7 +2552,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:14
 msgid "An expired survey is not accessible to participants (they only see a message that the survey has expired)."
-msgstr ""
+msgstr "Истекла анкета није доступна учесницима."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:15
 msgid "It's still possible to perform statistics on responses using LimeSurvey."
@@ -2562,7 +2560,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:20
 msgid "All responses are not accessible anymore with LimeSurvey)."
-msgstr ""
+msgstr "Сви одговори више нису доступни ."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/deactivateSurvey_view.php:20
 msgid "Your response table will be renamed to:"
@@ -2794,7 +2792,7 @@ msgstr "Порука добродошлице:"
 #: /tmp/translationstatus_v2/application/views/admin/survey/editLocalSettings_view.php:15
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:29
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabGeneralNewSurvey_view.php:31
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:525
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:528
 msgid "End message:"
 msgstr "Завршна порука:"
 
@@ -3005,7 +3003,7 @@ msgstr "Затвори ову анкету"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/resetSyntaxErrorLog_view.php:2
 msgid "Cleared log of syntax errors"
-msgstr ""
+msgstr "У логу обрисане све синтаксе грешке"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:5
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:35
@@ -3061,7 +3059,6 @@ msgstr "Анонимни одговори?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:55
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabTokens_view.php:15
-#, fuzzy
 msgid "If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants."
 msgstr "Ако укључите опцију анонимне анкете и креирате табелу токена, LimeSurvey ће означити ваше комплетиране токене са 'Y' уместо датум/време да би осигурали анонимост учесника анкете."
 
@@ -3084,7 +3081,6 @@ msgid "Save timings?"
 msgstr "Сними времена?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/activateSurvey_view.php:134
-#, fuzzy
 msgid "Please note that once responses have collected with this survey and you want to add or remove groups/questions or change one of the settings above, you will need to deactivate this survey, which will move all data that has already been entered into a separate archived table."
 msgstr "Једном када се одговори унесу у овој анкети, у случају да желите да додате или обришете групу питања или питање, потребно је да деактивирате ову анкету, како би померили све податке који су до сада унети у жасебну архивску табелу."
 
@@ -3169,12 +3165,10 @@ msgid "Import Resources ZIP Archive"
 msgstr "Увези ресурсе као ZIP архиву"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:5
-#, fuzzy
 msgid "Send basic admin notification email to:"
 msgstr "Основно обавештавање е-мејлом"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:10
-#, fuzzy
 msgid "Send detailed admin notification email to:"
 msgstr "Детаљно обавештавање путем е-мејла са кодовима резултата"
 
@@ -3220,18 +3214,16 @@ msgid "Responses will have their referring URL logged."
 msgstr "Одговори ће имати повезани URL снимљен."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:103
-#, fuzzy
 msgid "Timings will not be saved."
-msgstr "Одговори неће имати датум отиска."
+msgstr "Времена неће бити сачувана."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:104
 msgid "Timings will be saved."
 msgstr "Одговор ће имати датум отиска."
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:123
-#, fuzzy
 msgid "Enable assessment mode?"
-msgstr "Подеси правила анкете"
+msgstr "Уклјучи приступни мод?"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabNotification_view.php:138
 msgid "Participant may save and resume later?"
@@ -3498,9 +3490,8 @@ msgstr "Промени назив анкете или опис"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:254
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:318
-#, fuzzy
 msgid "Show both (Forced by the system administrator)"
-msgstr "Молим да контактирате вашег систем администратора"
+msgstr "Прикажи оба (Форсирано од стране администратора)"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:260
 msgid "Show group name only (Forced by the system administrator)"
@@ -3512,9 +3503,8 @@ msgstr "Прикажи само опис групе (Форсирано од с�
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:272
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:303
-#, fuzzy
 msgid "Hide both (Forced by the system administrator)"
-msgstr "Молим да контактирате вашег систем администратора"
+msgstr "Сакриј оба (Форсирано од стране администратора)"
 
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:288
 #: /tmp/translationstatus_v2/application/views/admin/survey/subview/tabPresentation_view.php:333
@@ -3791,9 +3781,8 @@ msgstr "Извези ВВ анкетну датотеку"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browsemenubar_view.php:75
 #: /tmp/translationstatus_v2/application/helpers/admin/html_helper.php:152
-#, fuzzy
 msgid "Iterate survey"
-msgstr "Креирајте анкету"
+msgstr "Итерирај анкету"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallheader_view.php:2
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:725
@@ -3946,7 +3935,7 @@ msgstr "Мењај ове одговоре"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallrow_view.php:9
 msgid "Download all files in this response as a zip file"
-msgstr ""
+msgstr "Преузми све датотеке у овом одговору као zip архиву"
 
 #: /tmp/translationstatus_v2/application/views/admin/browse/browseallrow_view.php:12
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:888
@@ -4121,7 +4110,7 @@ msgstr "Пријављен као"
 
 #: /tmp/translationstatus_v2/application/views/admin/super/adminmenu.php:11
 msgid "Edit your personal preferences"
-msgstr ""
+msgstr "Мењај персонална подешавања"
 
 #: /tmp/translationstatus_v2/application/views/admin/super/adminmenu.php:18
 #, php-format
@@ -4317,7 +4306,7 @@ msgstr "Лабеле %s"
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:2320
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:8153
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:8207
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:383
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:375
 msgid "Please choose..."
 msgstr "Молимо вас изаберите..."
 
@@ -4555,7 +4544,7 @@ msgstr "LimeSurvey датотека групе (*.csv)"
 #: /tmp/translationstatus_v2/application/views/admin/export/question_view.php:10
 #: /tmp/translationstatus_v2/application/views/admin/export/group_view.php:10
 msgid "Save for Lsrc (*.csv)"
-msgstr ""
+msgstr "Сними за Lsrc (*.csv)"
 
 #: /tmp/translationstatus_v2/application/views/admin/export/question_view.php:14
 #: /tmp/translationstatus_v2/application/views/admin/export/group_view.php:14
@@ -4928,15 +4917,15 @@ msgstr "Нисте изабрали ред  "
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:76
 msgid "Delete participant(s) from central participants panel only"
-msgstr ""
+msgstr "Обриши учеснике из централних учесничког панела"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:77
 msgid "Delete participant(s) from central panel and tokens tables"
-msgstr ""
+msgstr "Обриши учеснике из централних учесничког панела и табела токена"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:78
 msgid "Delete participant(s) from central panel, tokens tables and all associated responses"
-msgstr ""
+msgstr "Обриши учеснике из централних учесничког панела, табела токена и свих повезаних одговора"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:80
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:40
@@ -4986,7 +4975,7 @@ msgstr "---Изабери један одговор---"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:198
 msgid "Allow this user to edit these participants"
-msgstr ""
+msgstr "Дозволи овом кориснику да уређује ове учеснике"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:215
 msgid "Please select the survey to which participants are to be added"
@@ -4994,7 +4983,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:230
 msgid "Redirect to token table after copy "
-msgstr ""
+msgstr "Преусмери табелу токена после копирања"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/displayParticipants_view.php:241
 msgid "all participants in current search"
@@ -5030,7 +5019,7 @@ msgstr "Глобална подешавања учесника"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/userControl_view.php:26
 msgid "User ID editable : "
-msgstr ""
+msgstr "Кориснички ID може бити уређен : "
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/userControl_view.php:41
 msgid "You don't have sufficient permissions"
@@ -5038,7 +5027,7 @@ msgstr "Немате привилегије за то."
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:13
 msgid "CPDB CSV summary"
-msgstr ""
+msgstr "CPDB CSV сажет утисал"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:16
 msgid "Uploaded CSV file successfully"
@@ -5046,7 +5035,7 @@ msgstr "Успешно сте се послали CSV датотеку ."
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:18
 msgid "Successfully created CPDB entries"
-msgstr ""
+msgstr "Успешно направљени CPDB уноси"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/uploadSummary_view.php:20
 msgid "Failed to create token entries"
@@ -5334,7 +5323,7 @@ msgstr "Панел дељења"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:2
 msgid "Central participants database summary"
-msgstr ""
+msgstr "Централних учесника сажетак базе података"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/summary_view.php:8
 msgid "Total participants in central table"
@@ -5415,7 +5404,6 @@ msgid "Visible in participant panel"
 msgstr "Видљивост у панелу учесника"
 
 #: /tmp/translationstatus_v2/application/views/admin/participants/attributeControl_view.php:41
-#, fuzzy
 msgid "Dropdown"
 msgstr "Листа (падајућа листа)"
 
@@ -5534,7 +5522,6 @@ msgstr "Да ли желите да креирате табелу токена �
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenwarning.php:20
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:523
-#, fuzzy
 msgid "Initialise tokens"
 msgstr "Иницијализуј токене"
 
@@ -5622,7 +5609,6 @@ msgid "Total invitations sent"
 msgstr "Укупно полато позивница"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokensummary.php:32
-#, fuzzy
 msgid "Total opted out"
 msgstr "Укупно увезено датотека"
 
@@ -5642,7 +5628,7 @@ msgstr "Додај знак-лутку"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:36
 msgid "Manage additional attribute fields"
-msgstr ""
+msgstr "Мењај додатне атрибуте поља"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:44
 msgid "Import tokens from CSV file"
@@ -5682,9 +5668,8 @@ msgstr "Уколи табелу токена"
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:1
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:10
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1516
-#, fuzzy
 msgid "Bounce settings"
-msgstr "Сними подешавања"
+msgstr "Мејла одбијања подешавања"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenbar.php:104
 msgid "Show help"
@@ -5736,9 +5721,8 @@ msgstr "Подсетник послат?"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:107
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:108
-#, fuzzy
 msgid "Reminder count"
-msgstr "Подсетник послат ка:"
+msgstr "Броја подсетника"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:111
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:112
@@ -5822,7 +5806,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:293
 msgid "Add participants to central database"
-msgstr ""
+msgstr "Додај учеснике у централну базу података"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:300
 msgid "Add to CPDB"
@@ -5833,18 +5817,16 @@ msgid "Add participant to CPDB"
 msgstr "Додати учесника у CPDB"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:344
-#, fuzzy
 msgid "Please select at least one participant to be added"
-msgstr "Молимо изаберите макар једну опцију"
+msgstr "Молимо изаберите макар једног учесника да се дода"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/browse.php:353
 msgid "Please select the attributes that are to be added to the central database"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:1
-#, fuzzy
 msgid "Manage token attribute fields"
-msgstr "Имена атрибута токена:"
+msgstr "Мењај поља атрибута токена"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:4
 msgid "Attribute field"
@@ -5869,11 +5851,11 @@ msgstr "Додај атрибуте токена"
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:35
 #, php-format
 msgid "There are %s user attribute fields in this token table"
-msgstr ""
+msgstr "Овде постоји %s корисничких поља атрибута у овој табели токена"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:38
 msgid "Number of attribute fields to add:"
-msgstr ""
+msgstr "Број поља атрибута које треба додати:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/managetokenattributes.php:42
 msgid "Add fields"
@@ -5933,9 +5915,8 @@ msgid "Are you sure you want to delete all unique token strings?"
 msgstr "Да ли сте сигурни да желите да обришете све јединствене бројеве токена?"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokendatabaseoptions.php:12
-#, fuzzy
 msgid "Delete all unique token strings"
-msgstr "Обриши све јединствене бројеве токена"
+msgstr "Обриши све јединствене  стрингове токена"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokendatabaseoptions.php:15
 msgid "Are you really sure you want to delete ALL token entries?"
@@ -6020,9 +6001,8 @@ msgid "Sending to Token ID"
 msgstr "Шаљем ка Токен ID-у"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/emailpost.php:7
-#, fuzzy
 msgid "Sending to Token IDs"
-msgstr "Шаљем ка Токен ID-"
+msgstr "Шаљем ка Токен ID-у"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:32
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1588
@@ -6083,9 +6063,8 @@ msgstr "Е-мејл за потсетник:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:65
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:78
-#, fuzzy
 msgid "Send reminder to token ID(s):"
-msgstr "Шаљем ка Токен ID-у"
+msgstr "Шаљи подсетник ка Токен ID-у"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:69
 msgid "Sending to:"
@@ -6102,7 +6081,7 @@ msgstr "Почни од токена број (ID):"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:88
 msgid "Min days between reminders"
-msgstr ""
+msgstr "Миннимални број између напомена"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/remind.php:92
 msgid "Max reminders"
@@ -6113,7 +6092,6 @@ msgid "Send Reminders"
 msgstr "Пошаљи подсетнике"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/dummytokenform.php:2
-#, fuzzy
 msgid "Create dummy tokens"
 msgstr "Креирај токене"
 
@@ -6165,12 +6143,10 @@ msgid "Reminder count:"
 msgstr "Број подсетника:"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/tokenform.php:105
-#, fuzzy
 msgid "Update token entry"
-msgstr "Додај нови токен запис"
+msgstr "Надогради токен запис"
 
 #: /tmp/translationstatus_v2/application/views/admin/token/bounce.php:4
-#, fuzzy
 msgid "Survey bounce email:"
 msgstr "Одбијајући Е-мејл:"
 
@@ -6391,29 +6367,27 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:126
 msgid "IP Info DB API Key:"
-msgstr ""
+msgstr "IP Info DB API кључ:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:128
 msgid "Google Maps API key:"
-msgstr ""
+msgstr "Google Maps API кључ:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:134
 msgid "Default site admin email:"
-msgstr ""
+msgstr "Подразумевани е-мејл администратора сајта:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:137
 msgid "Administrator name:"
 msgstr "Администратор:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:139
-#, fuzzy
 msgid "Email method:"
-msgstr "minitab методу"
+msgstr "Е-мејл метода:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:143
-#, fuzzy
 msgid "PHP (default)"
-msgstr "користи основни"
+msgstr "PHP (подразумевано)"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:146
 msgid "SMTP"
@@ -6445,11 +6419,11 @@ msgstr "Лозинка:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:160
 msgid "SMTP SSL/TLS:"
-msgstr ""
+msgstr "SMTP SSL/TLS:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:172
 msgid "SMTP debug mode:"
-msgstr ""
+msgstr "SMTP мод дебагера:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:179
 msgid "On errors"
@@ -6466,7 +6440,7 @@ msgstr "Порука није послата!"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:191
 msgid "Default site bounce email:"
-msgstr ""
+msgstr "Подразумевани сај одбијајућег е-мејла:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:230
 msgid "Survey preview only for administration users"
@@ -6490,7 +6464,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:267
 msgid "check if this link works."
-msgstr ""
+msgstr "проверите да ли овај линк ради."
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:268
 msgid "If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it."
@@ -6498,11 +6472,11 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:282
 msgid "Force HTTPS:"
-msgstr ""
+msgstr "Форсирај HTTPS:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:286
 msgid "Don't force on or off"
-msgstr ""
+msgstr "Не форсирај укључено или не"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:296
 msgid "Show 'no answer' option for non-mandatory questions:"
@@ -6537,7 +6511,7 @@ msgstr "Доступни језици:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:411
 msgid "XML-RPC interface enabled:"
-msgstr ""
+msgstr "XML-RPC интерфејс укључен:"
 
 #: /tmp/translationstatus_v2/application/views/admin/globalSettings_view.php:431
 msgid "Note: Demo mode is activated. Marked (*) settings can't be changed."
@@ -6548,9 +6522,8 @@ msgid "Start installation"
 msgstr "Започни инсталацију"
 
 #: /tmp/translationstatus_v2/application/views/installer/dbsettings_view.php:21
-#, fuzzy
 msgid "LimeSurvey setup"
-msgstr "Подешавање LimeSurvey-a"
+msgstr "LimeSurvey намештање"
 
 #: /tmp/translationstatus_v2/application/views/installer/success_view.php:25
 msgid "LimeSurvey tried to delete the following file but couldn't succeed. You will have to remove the file or else you will not be able to log in."
@@ -6565,9 +6538,8 @@ msgid "Administrator credentials"
 msgstr "Администрација"
 
 #: /tmp/translationstatus_v2/application/views/installer/header_view.php:43
-#, fuzzy
 msgid "LimeSurvey installer"
-msgstr "LimeSurvey упутство"
+msgstr "LimeSurvey инсталирање "
 
 #: /tmp/translationstatus_v2/application/views/installer/dbconfig_view.php:24
 msgid "Note: All fields marked with (*) are required."
@@ -6681,7 +6653,7 @@ msgstr "Истекло"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:70
 msgid "PHP5 mbstring library"
-msgstr ""
+msgstr "PHP5 mbstring библиотека"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:75
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:80
@@ -6694,7 +6666,7 @@ msgstr "фајл"
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:91
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:96
 msgid "Found & writable"
-msgstr ""
+msgstr "Пронађен и може да се мења"
 
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:85
 #: /tmp/translationstatus_v2/application/views/installer/precheck_view.php:90
@@ -6863,7 +6835,7 @@ msgstr "Холандски"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:189
 msgid "Dutch Informal"
-msgstr ""
+msgstr "Холандски неформални:"
 
 #: /tmp/translationstatus_v2/application/helpers/surveytranslator_helper.php:196
 msgid "English"
@@ -7102,7 +7074,7 @@ msgstr "Започни поново"
 
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:456
 msgid "To remain anonymous please use a pseudonym as your username, also an email address is not required."
-msgstr ""
+msgstr "Да останете анонимни молимо вас да користите псеудоним, као ваше корисничко име, такође адреса е-поште није обавезна."
 
 #: /tmp/translationstatus_v2/application/helpers/replacements_helper.php:470
 msgid "Return To Survey"
@@ -7282,7 +7254,6 @@ msgid "Date/Time"
 msgstr "Датум/Време"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:112
-#, fuzzy
 msgid "Array (Increase/Same/Decrease)"
 msgstr "Низ (Повећај, Исто, Смањи)"
 
@@ -7449,7 +7420,6 @@ msgid ""
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:1583
-#, fuzzy
 msgid "Confirmation of your participation in our survey"
 msgstr "Позивница учесницима анкете"
 
@@ -7655,11 +7625,11 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3293
 msgid "Sort answers alphabetically"
-msgstr ""
+msgstr "Сортирај одговопе абецедним редом"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3302
 msgid "Set the percentage width of the answer column (1-100)"
-msgstr ""
+msgstr "Поставите процент ширине цолоне одговора (1-100)"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3303
 msgid "Answer width"
@@ -7684,7 +7654,7 @@ msgstr "Логика"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3310
 msgid "Enter the code of a Multiple choice question to only show the matching answer options in this question."
-msgstr ""
+msgstr "Унесите код вишеструки избора питање да само показују опције које се подударају одговори у ово питање."
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3311
 msgid "Array filter"
@@ -7736,7 +7706,6 @@ msgid "Use accessible dropdown boxes instead of calendar popup"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3374
-#, fuzzy
 msgid "Display dropdown boxes"
 msgstr "Прикажи одговоре"
 
@@ -7758,11 +7727,11 @@ msgstr "Максимална година"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3398
 msgid "Prefix|Suffix for dropdown lists"
-msgstr ""
+msgstr "Префикс|Суфикс за падајуће листе"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3399
 msgid "Dropdown prefix/suffix"
-msgstr ""
+msgstr "Падајући префикс/суфикс"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3406
 msgid "Post-Answer-Separator|Inter-Dropdownlist-Separator for dropdown lists"
@@ -7770,7 +7739,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3407
 msgid "Dropdown separator"
-msgstr ""
+msgstr "Пдајући сепаратор"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3415
 msgid "Enter a header text for the first scale"
@@ -7806,7 +7775,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3433
 msgid "Equals sum value"
-msgstr ""
+msgstr "Једнако збир вредности"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3440
 msgid "Excludes all other options if a certain answer is selected - just enter the answer code(s) seperated with a semicolon."
@@ -7814,7 +7783,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3441
 msgid "Exclusive option"
-msgstr ""
+msgstr "Ексклузивна опција"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3451
 msgid "If the participant marks all options, uncheck all and check the option set in the \"Exclusive option\" setting"
@@ -7877,7 +7846,6 @@ msgid "Statistics"
 msgstr "Статустуја"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3506
-#, fuzzy
 msgid "Show a map in the statistics?"
 msgstr "Приказати график у јавним статистикама?"
 
@@ -7894,13 +7862,12 @@ msgid "Display chart"
 msgstr "Прикажи графикон"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3527
-#, fuzzy
 msgid "Bar chart"
-msgstr "Бинарни псеудо карактери"
+msgstr "Графикон"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3527
 msgid "Pie chart"
-msgstr ""
+msgstr "Графикон"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3528
 msgid "Select the type of chart to be displayed"
@@ -7920,11 +7887,11 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3541
 msgid "Use mapping service"
-msgstr ""
+msgstr "Коришћење услуге мапирања"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3549
 msgid "Width of the map in pixel"
-msgstr ""
+msgstr "Ширина мапе у пикселима"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3550
 msgid "Map width"
@@ -7943,9 +7910,8 @@ msgid "Get the default location using the user's IP address?"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3569
-#, fuzzy
 msgid "IP as default location"
-msgstr "Основно обавештавање е-мејлом"
+msgstr "IP подразумевана локација"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3576
 msgid "Default coordinates of the map when the page first loads. Format: latitude [space] longtitude"
@@ -7957,15 +7923,15 @@ msgstr "Основна позиција"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3585
 msgid "Map zoom level"
-msgstr ""
+msgstr "Ниво зумирања мапе"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3586
 msgid "Zoom level"
-msgstr ""
+msgstr "Ниво зуминга"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3598
 msgid "Hide the tip that is normally shown with a question"
-msgstr ""
+msgstr "Сакриј савет који се обично приказује са питањем"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3599
 msgid "Hide tip"
@@ -7993,7 +7959,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3626
 msgid "Maximum sum value"
-msgstr ""
+msgstr "Макимум збир вредности"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3633
 msgid "Maximum value of the numeric input"
@@ -8010,11 +7976,11 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3642
 msgid "Max value from SGQA"
-msgstr ""
+msgstr "Максимална бредност из SGQA"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3649
 msgid "Maximum characters allowed"
-msgstr ""
+msgstr "Максимални дозвољени број карактера"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3650
 msgid "Maximum characters"
@@ -8034,11 +8000,11 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3666
 msgid "Minimum sum value"
-msgstr ""
+msgstr "Минимиум сбир вредности"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3673
 msgid "Minimum value of the numeric input"
-msgstr ""
+msgstr "Минимална вредност нумеричког уноса"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3674
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3698
@@ -8064,14 +8030,13 @@ msgstr ""
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3705
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3706
 msgid "Step value"
-msgstr ""
+msgstr "Следећа вредноцт"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3716
 msgid "Use checkbox layout"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3717
-#, fuzzy
 msgid "Checkbox layout"
 msgstr "Провери податке"
 
@@ -8100,9 +8065,8 @@ msgid "Integer only"
 msgstr "Само бројчана вредност"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3760
-#, fuzzy
 msgid "Allow only numerical input"
-msgstr "Вишекратни нумерички унос"
+msgstr "Одобри нумерички унос"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3761
 msgid "Numbers only"
@@ -8134,7 +8098,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3791
 msgid "Show grand total"
-msgstr ""
+msgstr "Прикажи укупно"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3802
 msgid "Present as text input boxes instead of dropdown lists"
@@ -8178,7 +8142,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3853
 msgid "Add a prefix to the answer field"
-msgstr ""
+msgstr "Додај префикс на поље за одговор"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3854
 msgid "Answer prefix"
@@ -8231,9 +8195,8 @@ msgstr "Клизач"
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3910
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3966
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3967
-#, fuzzy
 msgid "Use slider layout"
-msgstr "користи основни"
+msgstr "Користи изглед слајдера "
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3917
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:3918
@@ -8312,9 +8275,8 @@ msgid "Use dropdown presentation"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4023
-#, fuzzy
 msgid "Nominal"
-msgstr "Numerički"
+msgstr "Именски"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4024
 msgid "Ordinal"
@@ -8505,9 +8467,8 @@ msgid "Specify a custom date/time format (the <i>d/dd m/mm yy/yyyy H/HH M/MM</i>
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4185
-#, fuzzy
 msgid "Date/Time format"
-msgstr "Формат датума"
+msgstr "Формат датума и времена"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4192
 msgid "Minute step interval when using select boxes"
@@ -8539,9 +8500,8 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4209
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4220
-#, fuzzy
 msgid "File metadata"
-msgstr "Грешка при мењању!"
+msgstr "Метаподаци датотеке"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4215
 msgid "Is the participant required to give a title to the uploaded file?"
@@ -8585,7 +8545,7 @@ msgstr "Минимални број фајлова"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4263
 msgid "Allowed file types in comma separated format. e.g. pdf,doc,odt"
-msgstr ""
+msgstr "Дозвољени типови одвојени зарезима"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4264
 msgid "Allowed file types"
@@ -8597,7 +8557,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4272
 msgid "Randomization group name"
-msgstr ""
+msgstr "Насумично бирање имена"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4398
 msgid "Email was not sent because demo-mode is activated."
@@ -8605,7 +8565,7 @@ msgstr "Порука (Е-мејл) није послата јер је демо 
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:4519
 msgid "SMTP debug output:"
-msgstr ""
+msgstr "SMTP дебаговани исход:"
 
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:5605
 msgid "Token code"
@@ -8730,7 +8690,7 @@ msgstr "Нисте овлашћени да извршите ову операц�
 #: /tmp/translationstatus_v2/application/helpers/common_helper.php:7961
 #, php-format
 msgid "SQL command failed: %s"
-msgstr ""
+msgstr "SQL  команда погрешна: %s"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/htmleditor_helper.php:124
 msgid "Start HTML Editor in a Popup Window"
@@ -8769,22 +8729,19 @@ msgstr "Ова датотека није LimeSurvey датотека са пит
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:1191
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:2341
 msgid "This file is too old. Only files from LimeSurvey version 1.50 (DBVersion 112) and newer are supported."
-msgstr ""
+msgstr "Ова датотека је превише стара. Само датотеке из LimeSurvey верзије 1.50 (DBVersion 112) и новији су подржани."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:234
-#, fuzzy
 msgid "You can't import a group which doesn't support at least the survey base language."
 msgstr "Не можете увести групу која нема подршку за тренутни језик анкете."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:246
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:1325
-#, fuzzy
 msgid "You can't import a question which doesn't support at least the survey base language."
 msgstr "Не можете увести питање која нема подршку за тренутни језик анкете."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:260
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:1339
-#, fuzzy
 msgid "You can't import answers which doesn't support at least the survey base language."
 msgstr "Не можете увести групу која нема подршку за тренутни језик анкете."
 
@@ -8814,13 +8771,13 @@ msgstr "Ова датотека није LimeSurvey скуп лабела дат
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:2157
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:2276
 msgid "Label set was not imported because the same label set already exists."
-msgstr ""
+msgstr "Сет лабела није увежен јер већ такав постоји."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:2157
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:2276
 #, php-format
 msgid "Existing LID: %s"
-msgstr ""
+msgstr "Постојећи LID: %s"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:2335
 msgid "This file is not a LimeSurvey survey file. Import failed."
@@ -8848,7 +8805,6 @@ msgid "A group in the CSV/SQL file is not part of the same survey. The import of
 msgstr "Група у CSV/SQL датотеци није део исте анкете. Увоз анкете је стопиран."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/import_helper.php:3383
-#, fuzzy
 msgid "This is not a valid LimeSurvey survey structure XML file."
 msgstr "Ова датотека није у LimeSurvey формату. Увоз података је неуспешан."
 
@@ -8869,7 +8825,6 @@ msgid "This group does not contain any question(s)."
 msgstr "Ова група не цадржи никаква питања."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:131
-#, fuzzy
 msgid "This question is a subquestion type question but has no configured subquestions."
 msgstr "Ово питање има више могућих одговора али нема ни једног одговора."
 
@@ -8882,12 +8837,10 @@ msgid "This question does not have a question 'type' set."
 msgstr "Ово питање није дефинисано као скуп 'тип' питања."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:163
-#, fuzzy
 msgid "This question requires answers, but none are set."
 msgstr "Ово питање захтева скуп лабела, али ни један скуп није изабран."
 
 #: /tmp/translationstatus_v2/application/helpers/admin/activate_helper.php:171
-#, fuzzy
 msgid "This question requires a second answer set but none is set."
 msgstr "Ово питање захтева скуп лабела, али ни један скуп није изабран."
 
@@ -9014,7 +8967,7 @@ msgstr "Укупна величина датотека"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1165
 msgid "Average file size"
-msgstr ""
+msgstr "Просечна величина датотеке"
 
 #: /tmp/translationstatus_v2/application/helpers/admin/statistics_helper.php:1166
 msgid "Average size per respondent"
@@ -9210,7 +9163,7 @@ msgstr "Аркус косинус"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:131
 msgid "addslashes"
-msgstr ""
+msgstr "додај размаке"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:132
 msgid "Arc sine"
@@ -9237,7 +9190,6 @@ msgid "Cosine"
 msgstr "Косинус"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:138
-#, fuzzy
 msgid "Count the number of answered questions in the list"
 msgstr "Завршили сте давањем одговора на питања у овој анкети."
 
@@ -9275,12 +9227,11 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:147
 msgid "Format a local time/date as integer"
-msgstr ""
+msgstr "Форматирај локално време/датум као цели број "
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:148
-#, fuzzy
 msgid "Conditional processing"
-msgstr "Дизајнер услова/правила"
+msgstr "Обрада услова"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:149
 msgid "Join array elements with a string"
@@ -9288,11 +9239,11 @@ msgstr "Споји елементе низа са текстом"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:150
 msgid "Get the integer value of a variable"
-msgstr ""
+msgstr "Добиј вредност целог броја промењљиве"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:151
 msgid "Finds out whether a variable is a boolean"
-msgstr ""
+msgstr "Пронађи која промењљива је типа да/не"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:152
 msgid "Determine whether a variable is considered to be empty"
@@ -9312,7 +9263,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:156
 msgid "Finds whether a variable is NULL"
-msgstr ""
+msgstr "Проналази где је промењљива NULL"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:157
 msgid "Finds whether a variable is a number or a numeric string"
@@ -9352,16 +9303,15 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:166
 msgid "Format a number with grouped thousands"
-msgstr ""
+msgstr "Форматирај број са груписани мхилјадама"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:167
 msgid "Get value of pi"
 msgstr "Узми вредност од пи"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:168
-#, fuzzy
 msgid "Exponential expression"
-msgstr "Регуларни изрази"
+msgstr "Експонентни изрази"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:169
 msgid "Convert a quoted-printable string to an 8 bit string"
@@ -9373,11 +9323,11 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:171
 msgid "Quote meta characters"
-msgstr ""
+msgstr "Квоте мета карактера"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:172
 msgid "Generate a random integer"
-msgstr ""
+msgstr "Генериши насумичан цели број"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:173
 #, fuzzy
@@ -9398,7 +9348,7 @@ msgstr "Синус"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:177
 msgid "Return a formatted string"
-msgstr ""
+msgstr "Врати форматиран стринг"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:178
 msgid "Square root"
@@ -9413,9 +9363,8 @@ msgid "Pad a string to a certain length with another string"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:181
-#, fuzzy
 msgid "Repeat a string"
-msgstr "Поново унеси лозинку"
+msgstr "ПОнови стринг"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:182
 msgid "Replace all occurrences of the search string with the replacement string"
@@ -9447,7 +9396,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:189
 msgid "Get string length"
-msgstr ""
+msgstr "Добиј дужину стринга"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:190
 msgid "Find position of first occurrence of a string"
@@ -9455,7 +9404,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:191
 msgid "Reverse a string"
-msgstr ""
+msgstr "Окрени стринг"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:192
 msgid "Find first occurrence of a string"
@@ -9470,9 +9419,8 @@ msgid "Make a string uppercase"
 msgstr "Капитализуј реченицу"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:195
-#, fuzzy
 msgid "Return part of a string"
-msgstr "Повратак у администрацију лабела"
+msgstr "Врати дио стринга"
 
 #: /tmp/translationstatus_v2/application/helpers/expressions/em_core_helper.php:196
 msgid "Calculate the sum of values in an array"
@@ -9511,7 +9459,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:873
 msgid "The minimum number of files has not been uploaded."
-msgstr ""
+msgstr "Минималан број датотека није послат."
 
 #: /tmp/translationstatus_v2/application/helpers/frontend_helper.php:1367
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:208
@@ -9557,7 +9505,6 @@ msgstr "Пробајте да проследите поново"
 #: /tmp/translationstatus_v2/application/controllers/register.php:121
 #: /tmp/translationstatus_v2/application/controllers/survey.php:478
 #: /tmp/translationstatus_v2/application/libraries/Save.php:334
-#, fuzzy
 msgid "The answer to the security question is incorrect."
 msgstr "Одговор на сигурносно питање није тачно"
 
@@ -9634,7 +9581,7 @@ msgstr ""
 #: /tmp/translationstatus_v2/application/helpers/update/upgrade-mysql_helper.php:662
 #, php-format
 msgid "Database update finished (%s)"
-msgstr ""
+msgstr "Надограђивање базе података завршено (%s)"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:46
 #, php-format
@@ -9647,15 +9594,15 @@ msgstr "Надоградња базе података"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:62
 msgid "Please verify the following information before continuing with the database upgrade:"
-msgstr ""
+msgstr "Молимо вас проверите ову онформацију прије настављања надограђивања базе података:"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:65
 msgid "Table prefix"
-msgstr ""
+msgstr "Префикс табеле"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:67
 msgid "Root URL"
-msgstr ""
+msgstr "Главни URL"
 
 #: /tmp/translationstatus_v2/application/helpers/update/update_helper.php:70
 msgid "Click here to continue"
@@ -9671,7 +9618,6 @@ msgid "Choose one of the following answers"
 msgstr "Одаберите један од следећих одговора"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:654
-#, fuzzy
 msgid "Drag items in the list on the left to the list on the right in the order that you would like to rank them."
 msgstr "највише рангираним избором, померајући се ка најмање рангираном."
 
@@ -9710,11 +9656,11 @@ msgstr "Проверите највише %d одговора"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:690
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:691
-#, fuzzy, php-format
+#, php-format
 msgid "Check at least %d answer"
 msgid_plural "Check at least %d answers"
-msgstr[0] "Проверите највише %d одговора"
-msgstr[1] "Проверите највише %d одговора"
+msgstr[0] "Проверите бар %d одговор"
+msgstr[1] "Проверите бар %d одговора"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:702
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:703
@@ -9723,9 +9669,9 @@ msgstr "Изаберите свој језик"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:733
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:734
-#, fuzzy, php-format
+#, php-format
 msgid "Check at least %d answers"
-msgstr "Проверите највише %d одговора"
+msgstr "Проверите бар %d одговора"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:746
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:747
@@ -9759,7 +9705,6 @@ msgid "Please rank all items"
 msgstr "Молимо рангирајте све опције"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:940
-#, fuzzy
 msgid "Please check at least one item."
 msgstr "Молимо изаберите макар једну опцију"
 
@@ -9789,17 +9734,15 @@ msgstr "Не можете наставити док не унесете неки
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:1265
 #: /tmp/translationstatus_v2/application/libraries/Question_format.php:556
 #: /tmp/translationstatus_v2/application/libraries/Survey_format.php:963
-#, fuzzy
 msgid "One or more mandatory questions have not been answered. You cannot proceed until these have been completed."
-msgstr "На једно или више обавезних питања нисте одговорили. Не можете наставити док неодговорите."
+msgstr "На једно или више обавезних питања нисте одговорили. Не можете наставити док не одговорите."
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1069
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:1271
 #: /tmp/translationstatus_v2/application/libraries/Question_format.php:562
 #: /tmp/translationstatus_v2/application/libraries/Survey_format.php:969
-#, fuzzy
 msgid "One or more questions have not been answered in a valid manner. You cannot proceed until these answers are valid."
-msgstr "На једно или више питања нисте одговорили на прави начин. Не можете наставити док не одговорите на прави начин."
+msgstr "На једно или више питања нисте одговорили на прави начин. Не можете наставити док не одговорите на прави начин. "
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1095
 #, fuzzy
@@ -9807,9 +9750,8 @@ msgid "One or more file have either exceeded the filesize/are not in the right f
 msgstr "На једно или више обавезних питања нисте одговорили. Не можете наставити док неодговорите."
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1143
-#, fuzzy
 msgid "Your time to answer this question has expired"
-msgstr "Морате додати одговоре на тренутно питање"
+msgstr "Ваше време да одговорите на питање је истекло"
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1146
 msgid "Time remaining"
@@ -9818,7 +9760,7 @@ msgstr "Преостало времена"
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1147
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1150
 msgid "Your time to answer this question has nearly expired. You have {TIME} remaining."
-msgstr ""
+msgstr "Ваше време да одговорите на питање је готово истекло. Преостало вам је {TIME} времена."
 
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1305
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:1323
@@ -10095,7 +10037,6 @@ msgstr ""
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7448
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:7608
 #: /tmp/translationstatus_v2/application/helpers/qanda_helper.php:8253
-#, fuzzy
 msgid "Error: There are no answer options for this question and/or they don't exist in this language."
 msgstr "Грешка: скуп лабела који се користи за ово питање није доступан за овај језик."
 
@@ -10108,12 +10049,12 @@ msgid "Error: There are no answers defined for this question."
 msgstr "Грешка: Морати додати одговоре на тренутно питање"
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:286
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:331
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:323
 msgid "Test This Survey"
 msgstr "Тестирај анкету"
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:290
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:335
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:327
 msgid "Execute This Survey"
 msgstr "Стартуј анкету"
 
@@ -10142,7 +10083,6 @@ msgid "IP Addresses will be logged"
 msgstr "IP адресе ће бити праћене"
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:426
-#, fuzzy
 msgid "Referrer URL will be saved."
 msgstr "URL са кога је приступљено биће снимљен"
 
@@ -10159,12 +10099,10 @@ msgid "Participants can save partially finished surveys"
 msgstr "Учесници могу снимити парцијално завршене анкете"
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:432
-#, fuzzy
 msgid "Basic email notification is sent to:"
-msgstr "Основно обавештавање е-мејлом"
+msgstr "Основно обавештавање е-мејлом је послано на:"
 
 #: /tmp/translationstatus_v2/application/core/Survey_Common_Controller.php:436
-#, fuzzy
 msgid "Detailed email notification with response data is sent to:"
 msgstr "Детаљно обавештавање путем е-мејла са кодовима резултата"
 
@@ -10252,11 +10190,11 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:265
 msgid "GNU General Public License:"
-msgstr ""
+msgstr "GNU Генерална јавна лиценца:"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:285
 msgid "Pre-installation check for LimeSurvey "
-msgstr ""
+msgstr "Пре-инсталацијска провера за LimeSurvey "
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:315
 #: /tmp/translationstatus_v2/application/controllers/installer.php:686
@@ -10324,7 +10262,7 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:570
 msgid "Optional settings to give you a head start"
-msgstr ""
+msgstr "Опционална подешавања да бисмо вам дали главни почетак"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:684
 #: /tmp/translationstatus_v2/application/controllers/installer.php:856
@@ -10368,13 +10306,12 @@ msgid "Database was populated but there were errors:"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:1192
-#, fuzzy
 msgid "Directory is not writable"
-msgstr "Direktorijum sa imenom"
+msgstr "Није дозвољено мењање података у овом директоријуму"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:1193
 msgid "You will be redirected in about 5 secs. If not, click "
-msgstr ""
+msgstr "Бићете преусмерени у року од 5 секунди. Ако не, онда кликните"
 
 #: /tmp/translationstatus_v2/application/controllers/installer.php:1193
 msgid "here"
@@ -10416,13 +10353,13 @@ msgstr "Ваш одговор"
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:141
 #, php-format
 msgid "Sorry, this file extension (%s) is not allowed!"
-msgstr ""
+msgstr "Жао нам је, екстензија(%s) ове датотеке није дозвољена!"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:155
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:231
 #, php-format
 msgid "Sorry, this file is too large. Only files upto %s KB are allowed."
-msgstr ""
+msgstr "Жао нам је, ова датотека је превелика. Само датотеке величине до %s су дозвољене."
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:170
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:208
@@ -10432,7 +10369,7 @@ msgstr "Датотека је успешно надограђена."
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:186
 #, php-format
 msgid "Sorry, this file is too large. Only files up to %s KB are allowed."
-msgstr ""
+msgstr "Жао нам је, ова датотека је превелика. Само датотеке величине до %s су дозвољене."
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:194
 msgid "We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator."
@@ -10444,16 +10381,16 @@ msgstr "Жао нам је, дошло је до грешке у преносу 
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:240
 msgid "Unknown error"
-msgstr "Непозната штета"
+msgstr "Непозната грешка"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:272
 msgid "Sorry, no more files can be uploaded!"
-msgstr "Извини, нема више фајлова за уплоад!"
+msgstr "Извини, нема више фајлова за слање!"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:273
-#, fuzzy, php-format
+#, php-format
 msgid "Sorry, only %s files can be uploaded for this question!"
-msgstr "Морате одабрати скуп лабела за ово питање!"
+msgstr "Жао нам је, %s само датотека може бити послано на ово питање!"
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:274
 msgid "Uploading"
@@ -10477,7 +10414,7 @@ msgstr ""
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:278
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:279
 msgid "The maximum number of files has been uploaded. You may return back to survey."
-msgstr ""
+msgstr "Максималан број датотека је послано. Можете се вратити анкети."
 
 #: /tmp/translationstatus_v2/application/controllers/uploader.php:280
 #, php-format
@@ -10500,31 +10437,30 @@ msgid "Deleting survey table:"
 msgstr "Брисање табеле анкете:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:99
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting conditions: %u conditions deleted"
-msgstr "Следећи услови/правила је потрбно обрисати"
+msgstr "Брисање услова: %u услова обрисано"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:107
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting question attributes: %u attributes deleted"
-msgstr "Следеће атрибуте питања је потребно обрисати"
+msgstr "Брисање атрибута питања: %u атрибута обрсано"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:114
 msgid "Deleting orphaned default values."
-msgstr ""
+msgstr "Брисање орфанских подразумеваних вредности."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:121
-#, fuzzy
 msgid "Deleting orphaned quotas."
-msgstr "Брисање услова"
+msgstr "Брисање орфанисаних квота."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:126
 msgid "Deleting orphaned language settings."
-msgstr ""
+msgstr "Брисање подешавања језика"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:135
 msgid "Deleting orphaned quota members."
-msgstr ""
+msgstr "Брисање квота корисника."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:143
 #, fuzzy, php-format
@@ -10532,14 +10468,14 @@ msgid "Deleting assessments: %u assessment entries deleted"
 msgstr "Следеће анкете би требале бити обрисане"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:151
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting answers: %u answers deleted"
-msgstr "Следећи одговори би требало бити обрисани"
+msgstr "Брисање одговора: %u одговора обрисано"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:159
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting surveys: %u surveys deleted"
-msgstr "Следеће анкете би требало бити обрисани"
+msgstr "Брисање анкета: %u анкета обрисано"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:167
 #, php-format
@@ -10552,33 +10488,29 @@ msgid "Deleting questions: %u questions deleted"
 msgstr "Брисање питања: %u питања обрисано"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:184
-#, fuzzy, php-format
+#, php-format
 msgid "Deleting groups: %u groups deleted"
-msgstr "Следеће групе питања би требале бити обрисане"
+msgstr "Брисање група: %u група обрисано"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:192
-#, fuzzy
 msgid "Deleting orphan survey table:"
-msgstr "Брисање анкете ID"
+msgstr "Брисање орфан анкете табеле:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:201
-#, fuzzy
 msgid "Deleting orphan token table:"
-msgstr "Уколи табелу токена"
+msgstr "Уколањање табеле токена:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:321
 msgid "No matching CQID"
 msgstr "Нема одговорајућег CQID"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:331
-#, fuzzy
 msgid "No matching CFIELDNAME group!"
 msgstr "Нема одговарајуће CFIELDNAME групе!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:336
-#, fuzzy
 msgid "No CFIELDNAME field set!"
-msgstr "Није постављен \"CFIELDNAME\" поља!"
+msgstr "Није постављен CFIELDNAME поља!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/checkintegrity.php:396
 msgid "No matching survey"
@@ -10631,7 +10563,6 @@ msgid "Import Label Set"
 msgstr "Увези скуп лабела"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:57
-#, fuzzy
 msgid "Demo mode only: Uploading files is disabled in this system."
 msgstr "Ово је демо мод: убацивање датоека је онемогућено у овом систему."
 
@@ -10674,7 +10605,6 @@ msgstr "Ова ZIP датотека не садржи валидне ресур�
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:175
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:194
-#, fuzzy
 msgid "Remember that we do not support subdirectories in ZIP archives."
 msgstr "Упамтите да не подржавамо под директоријуме у ZIP архивама."
 
@@ -10745,9 +10675,8 @@ msgstr "Повратак назад"
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:310
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:330
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:340
-#, fuzzy
 msgid "Label set import summary"
-msgstr "Извештај о увозу скупа лабела."
+msgstr "Извештај о увозу сету лабела."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:311
 msgid "Uploaded label set file needs to have an .lsl extension."
@@ -10756,7 +10685,6 @@ msgstr ""
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:312
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:334
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:344
-#, fuzzy
 msgid "Return to label set administration"
 msgstr "Повратак у Администрацију анкете"
 
@@ -10768,7 +10696,6 @@ msgstr "Лабеле"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:333
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:343
-#, fuzzy
 msgid "Import of label set(s) is completed."
 msgstr "Увоз скупа лабела је успешан."
 
@@ -10777,7 +10704,6 @@ msgid "Create New Label Set"
 msgstr "Креирај нови скуп лабела"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:473
-#, fuzzy
 msgid "Error: You are trying to use duplicate label codes."
 msgstr "Грешка: Покушавате да користите дупликат кодова одговора."
 
@@ -10801,7 +10727,7 @@ msgstr "PHP не подржава zip библиотеку, увоз ZIP-ова 
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:612
 msgid "Enter your labels:"
-msgstr ""
+msgstr "Унесите ваше лабеле:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/labels.php:613
 #, fuzzy
@@ -10827,9 +10753,8 @@ msgid "Question could not be updated"
 msgstr "Није могуће променити питање"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:136
-#, fuzzy
 msgid "Default value settings were successfully saved."
-msgstr "База података `%s` је успешно попуњена."
+msgstr "Подразумеване вредности подешавања су успешно сачувана."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:220
 msgid "Failed to update answers"
@@ -10844,18 +10769,16 @@ msgid "Duplicate codes found, these entries won't be updated"
 msgstr "Пронађени су дупликати кодова, ови записи неће бити промењени"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:236
-#, fuzzy
 msgid "Answer options were successfully saved."
-msgstr "Група корисника успешно додата!"
+msgstr "Опције одговора успешно сачувани"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:278
 msgid "Failed to delete answer"
 msgstr "Неуспешно брисање одговора"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:368
-#, fuzzy
 msgid "Subquestions were successfully saved."
-msgstr "Постављање више веза успешно."
+msgstr "Подпитања успешно сачувана."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:389
 #, fuzzy
@@ -10872,9 +10795,8 @@ msgid "Question could not be created."
 msgstr "Није могуће креирати питање."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:536
-#, fuzzy
 msgid "Question was successfully added."
-msgstr "Група корисника успешно додата!"
+msgstr "Питања успешно додана."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/database.php:679
 msgid "Question could not be updated. There are conditions for other questions that rely on the answers to this question and changing the type will cause problems. You must delete these conditions before you can change the type of this question."
@@ -10920,9 +10842,8 @@ msgid "No SID (Survey) has been provided. Cannot import question."
 msgstr "SID (анкете) није достављен. Немогуће увоз питања."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:115
-#, fuzzy
 msgid "Question group import summary"
-msgstr "Извештај о увозу питања"
+msgstr "Сажетак увоза групе питања"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:117
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:211
@@ -10957,14 +10878,12 @@ msgid "Error: The database reported an error while executing INSERT query in add
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:283
-#, fuzzy
 msgid "New question group was saved."
-msgstr "Број питања/група"
+msgstr "Нова група питања је сачувана."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:341
-#, fuzzy
 msgid "The question group was deleted."
-msgstr "Следећа питања би требало бити обрисана"
+msgstr "Група питања обрисана."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/questiongroup.php:345
 msgid "Group could not be deleted"
@@ -11027,9 +10946,8 @@ msgid "Answer was"
 msgstr "Одговор је"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:334
-#, fuzzy
 msgid "Answer was NOT"
-msgstr "Одговори"
+msgstr "Одговор је био НЕ"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:338
 msgid "Answer was less than"
@@ -11094,9 +11012,8 @@ msgid "Only answer this question if the following conditions are met:"
 msgstr "Одговори само ако су следећи услови/правила испуњени:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:642
-#, fuzzy
 msgid "ID:"
-msgstr "ID"
+msgstr "ID:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:643
 msgid "Question code:"
@@ -11206,9 +11123,9 @@ msgid "There are {NUMBEROFQUESTIONS} questions in this survey"
 msgstr "Постоји {NUMBEROFQUESTIONS} питања у овој анкети."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1795
-#, fuzzy, php-format
+#, php-format
 msgid "Please fax your completed survey to: %s"
-msgstr "Молимо пошаљите факсом испињену анкету на:"
+msgstr "Молимо пошаљите факсом испињену анкету на: %s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/printablesurvey.php:1969
 #, php-format
@@ -11246,9 +11163,8 @@ msgstr "ID токена"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:176
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:338
-#, fuzzy
 msgid "Submission date"
-msgstr "Локално достављање"
+msgstr "Датум постављања"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:324
 msgid "Showing Filtered Results"
@@ -11260,19 +11176,16 @@ msgstr "Затвори"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:559
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:784
-#, fuzzy
 msgid "Delete marked responses"
-msgstr "Обриши одговоре"
+msgstr "Обриши одабране одговоре"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:563
-#, fuzzy
 msgid "Download marked files"
-msgstr "Укупно увезено датотека"
+msgstr "Преузми обилежене датотеке"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:721
-#, fuzzy
 msgid "Time statistics"
-msgstr "Брза статистика"
+msgstr "Време статистика"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:915
 msgid "Interview time"
@@ -11283,13 +11196,12 @@ msgid "Average interview time: "
 msgstr "Просечно време разговора:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:957
-#, fuzzy
 msgid "Median: "
-msgstr "Македонски"
+msgstr "Медијан:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/browse.php:964
 msgid "Timings"
-msgstr ""
+msgstr "Времена"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:47
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:104
@@ -11317,40 +11229,36 @@ msgstr "Електронска порука од токена"
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:111
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:128
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:163
-#, fuzzy, php-format
+#, php-format
 msgid "Token attribute: %s"
-msgstr "Имена атрибута токена:"
+msgstr "Атрибути токена: %s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:55
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:116
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:133
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:165
-#, fuzzy
 msgid "Survey expiration date"
-msgstr "Потврда о регистрацији за анкету"
+msgstr "Датум истека анкете"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:59
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:77
 msgid "Reload URL"
-msgstr ""
+msgstr "Освежи URL"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:60
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:78
-#, fuzzy
 msgid "View response URL"
-msgstr "Погледај одговор"
+msgstr "Погледај URL одговор"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:61
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:79
-#, fuzzy
 msgid "Edit response URL"
-msgstr "Промена одговора"
+msgstr "Мењај URL одговора"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:62
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:80
-#, fuzzy
 msgid "Statistics URL"
-msgstr "Брза статистика"
+msgstr "URL статистике"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:63
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:82
@@ -11361,15 +11269,13 @@ msgstr "Код токена за овог учесника"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:64
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:83
-#, fuzzy
 msgid "First name from token"
-msgstr "Прво име из токена"
+msgstr "Име из токена"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:65
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:84
-#, fuzzy
 msgid "Last name from token"
-msgstr "Задње име из токена"
+msgstr "Презиме из токена"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:66
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:85
@@ -11400,9 +11306,8 @@ msgid "Email address of the survey administrator"
 msgstr "Е-мејл адреса администратора анкете"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:81
-#, fuzzy
 msgid "Answers from this response"
-msgstr "Мењај/додај одговоре на тренутно питање"
+msgstr "Одговори из овог јављања"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:101
 #, fuzzy
@@ -11420,18 +11325,16 @@ msgid "URL of the survey"
 msgstr "URL анкете"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:156
-#, fuzzy
 msgid "This question's survey ID number"
-msgstr "Постоји 1 питање у овој анкети"
+msgstr "Овај број ID питања анкете"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:157
 msgid "This question's group ID number"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:158
-#, fuzzy
 msgid "This question's question ID number"
-msgstr "Ово питање није дефинисано као скуп 'тип' питања."
+msgstr "Овај број ID питање питања"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/fck_LimeReplacementFields.php:159
 #, fuzzy
@@ -11451,7 +11354,7 @@ msgstr "Анкете"
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:420
 #, php-format
 msgid "Export %s participant(s) to CSV  "
-msgstr ""
+msgstr "Извези %s  учеснике у CSV  "
 
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:527
 #: /tmp/translationstatus_v2/application/controllers/admin/participants.php:541
@@ -11482,9 +11385,8 @@ msgid "%s messages were scanned, none were marked as bounce by the system."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:245
-#, fuzzy
 msgid "Please check your settings"
-msgstr "Молим да проверите поља"
+msgstr "Молимо вас проверите ваше одговоре"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:250
 #: /tmp/translationstatus_v2/application/controllers/survey.php:89
@@ -11494,7 +11396,7 @@ msgstr "Жао нам је, али немате привилегија да то
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:376
 msgid "-------"
-msgstr ""
+msgstr "-------"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:471
 msgid "The token entry was successfully updated."
@@ -11505,13 +11407,12 @@ msgid "Show this token entry"
 msgstr "Прикажи токен овог уноса"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:523
-#, fuzzy
 msgid "Marked tokens have been deleted."
-msgstr "Сви токени су обрисани"
+msgstr "Изабрани токени су обрисани."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:525
 msgid "No tokens were selected for deletion"
-msgstr ""
+msgstr "Нема селектованих токена за брисање "
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:530
 msgid "Token has been deleted."
@@ -11541,15 +11442,13 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:949
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1256
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid."
-msgstr "Е-мејл за  {FIRSTNAME} {LASTNAME} ({EMAIL}) није послат. Порука грешке:"
+msgstr "Е-мејл за  {FIRSTNAME} {LASTNAME} ({EMAIL}) није послат. Токен још није важећи:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:953
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1260
-#, fuzzy
 msgid "Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore."
-msgstr "Е-мејл за  {FIRSTNAME} {LASTNAME} ({EMAIL}) није послат. Порука грешке:"
+msgstr "Е-мејл за  {FIRSTNAME} {LASTNAME} ({EMAIL}) пропуштен. Токен није више валидан:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:963
 msgid "Invitation sent to:"
@@ -11578,9 +11477,8 @@ msgstr "Не постоје Е-мејлови који задовољавају 
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1034
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1335
-#, fuzzy
 msgid "having a valid email address"
-msgstr "Записи са лошим Е-мејл адресама су обрисани"
+msgstr "Имајући валидну е-мејл адресу"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1035
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1336
@@ -11588,7 +11486,6 @@ msgid "not having been sent an invitation already"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1036
-#, fuzzy
 msgid "having already completed the survey"
 msgstr "Већ сте комплетирали ову анкету."
 
@@ -11656,7 +11553,6 @@ msgid "A backup of this table has been made and can be accessed by your system a
 msgstr "Сигурносна копија ове табеле је креирана и администратор система јој може приступити."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/tokens.php:1516
-#, fuzzy
 msgid "Bounce settings have been saved."
 msgstr "Сва подешавања токена Е-мејла су снимљена."
 
@@ -11736,22 +11632,20 @@ msgid "Earlier than:"
 msgstr "Раније од:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:356
-#, fuzzy
 msgid "Output options"
-msgstr "Више опција"
+msgstr "Опције излазне датотеке"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:358
 msgid "Show graphs"
 msgstr "Прикажи графиконе"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:369
-#, fuzzy
 msgid "Show text responses inline"
-msgstr "Комплетирани  одговори"
+msgstr "Прикажи текстуалне одговоре у линији"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:376
 msgid "Select output format"
-msgstr ""
+msgstr "Изаберите излазни формат"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:381
 #: /tmp/translationstatus_v2/application/controllers/admin/statistics.php:1639
@@ -11826,9 +11720,8 @@ msgid "Please select a user first"
 msgstr "Молимо изаберите корисника!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:214
-#, fuzzy
 msgid "Please select a user group first"
-msgstr "Молимо изаберите датотеку за слање!"
+msgstr "Молимо изаберите корисничку групу прво!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:263
 msgid "Add user group"
@@ -11914,14 +11807,12 @@ msgid "Survey permissions were successfully updated."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/surveypermission.php:732
-#, fuzzy
 msgid "Failed to update survey permissions!"
 msgstr "Неуспешно додавање привилегија анкете."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:115
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:122
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:196
-#, fuzzy
 msgid "Failed to add user"
 msgstr "Неуспешно додавање корисника."
 
@@ -11930,14 +11821,12 @@ msgid "The email address is not valid."
 msgstr "Е-мејл адреса није важећа."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:122
-#, fuzzy
 msgid "A username was not supplied or the username is invalid."
 msgstr "Корисничко име није унето."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:147
-#, fuzzy
 msgid "User created successfully! "
-msgstr "Група корисника успешно додата!"
+msgstr "Корисника успешно додат!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:147
 msgid "Username: "
@@ -11962,7 +11851,6 @@ msgid "You can use now the following credentials to log into the site:"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:165
-#, fuzzy
 msgid "Please ask your password to your LimeSurvey administrator"
 msgstr "Молим да контактирате вашег систем администратора"
 
@@ -12000,7 +11888,7 @@ msgstr "Иницијални Superadmin не може бити обрисан!"
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:293
 #, php-format
 msgid "All of the user's surveys were transferred to %s."
-msgstr ""
+msgstr "Све анкете корисника пребачени на  %s."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:301
 msgid "Transfer the user's surveys to: "
@@ -12012,7 +11900,6 @@ msgstr "Обриши корисника"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:416
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:453
-#, fuzzy
 msgid "Could not modify user data."
 msgstr "Не могу променити податке о кориснику."
 
@@ -12033,17 +11920,14 @@ msgid "Set user permissions"
 msgstr "Стави дозволу корисника"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:605
-#, fuzzy
 msgid "You are not allowed to change your own permissions!"
 msgstr "Немате привилегије да промените сопствене привилегије!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:667
-#, fuzzy
 msgid "Set template permissions"
 msgstr "Постави права шаблона"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:691
-#, fuzzy
 msgid "Template permissions were updated successfully."
 msgstr "Освежење корисничких шаблона је било успешно."
 
@@ -12053,10 +11937,9 @@ msgstr "Грешка приликом освежавања кориснички�
 
 #: /tmp/translationstatus_v2/application/controllers/admin/user.php:731
 msgid "Your personal settings were successfully saved."
-msgstr ""
+msgstr "Ваша лична подешавања су успешно сачувана."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:64
-#, fuzzy
 msgid "Demo mode: Uploading templates is disabled."
 msgstr "Ово је демо мод: убацивање датоека је онемогућено у овом систему."
 
@@ -12066,43 +11949,37 @@ msgid "Template '%s' does already exist."
 msgstr "Шаблон  '%s'  већ постоји."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:193
-#, fuzzy
 msgid "This ZIP archive contains no valid template files. Import failed."
 msgstr "Ова ZIP датотека не садржи валидне ресурсне датотеке.Увоз података је неуспешан."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:218
-#, fuzzy
 msgid "Imported template files for"
 msgstr "Увезени ресурси за"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:251
-#, fuzzy
 msgid "Open imported template"
-msgstr "Извези шаблон"
+msgstr "Отвори узвезен шаблон"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:266
-#, fuzzy
 msgid "Uploaded template file"
-msgstr "Пошаљи датотеку"
+msgstr "Послана датотека шаблона"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:273
-#, fuzzy
 msgid "Select template ZIP file:"
-msgstr "Одабери ZIP датотеку:"
+msgstr "Одабери ZIP датотеку шаблона:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:275
-#, fuzzy
 msgid "Import template ZIP archive"
-msgstr "Увези ресурсе као ZIP архиву"
+msgstr "Увези шаблон као ZIP архиву"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:406
-#, fuzzy, php-format
+#, php-format
 msgid "Template could not be renamed to `%s`."
-msgstr "Директоријум не може бити преименован у `%s`."
+msgstr "Шаблон не може бити преименован у `%s`."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:406
 msgid "This name is reserved for standard template."
-msgstr ""
+msgstr "Овај назив је резервисан за стандардни шаблон."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:410
 #, php-format
@@ -12175,12 +12052,10 @@ msgid "Save Page"
 msgstr "Страница за снимање"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:794
-#, fuzzy
 msgid "Print answers page"
 msgstr "Одштампај страницу са одговорима"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:795
-#, fuzzy
 msgid "Printable survey page"
 msgstr "Верзија анкете за штампање"
 
@@ -12190,7 +12065,7 @@ msgstr "Пример шаблона"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:905
 msgid "This is a sample survey description. It could be quite long."
-msgstr ""
+msgstr "Ово је пример описа анкете. Може бити прилично дугачка."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:905
 msgid "But this one isn't."
@@ -12202,16 +12077,15 @@ msgstr "Добро дошли у пример анкете"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:906
 msgid "You should have a great time doing this"
-msgstr ""
+msgstr "Требало би да добро проводиш време радећи ово"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:913
 msgid "Some URL description"
 msgstr "Опис URL-a"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:916
-#, fuzzy
 msgid "Group 1: The first lot of questions"
-msgstr "Морате додати питања"
+msgstr "Група 1: Много првих питања"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:917
 msgid "This group description is fairly vacuous, but quite important."
@@ -12255,21 +12129,19 @@ msgstr "Следеће анкете су доступне:"
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:1052
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:1053
 msgid "Please explain something in detail:"
-msgstr ""
+msgstr "Молимо вас објацните нешто у детаљима"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:1246
 msgid "Submit your survey."
 msgstr "Проследите своју анкету."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/templates.php:1250
-#, fuzzy
 msgid "This is the survey end message."
-msgstr "Анкета је обрисана."
+msgstr "Ово је завршна порука анкете."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:169
-#, fuzzy
 msgid "Global settings were saved."
-msgstr "Сва подешавања токена Е-мејла су снимљена."
+msgstr "Сва подешавања су снимљена."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:230
 msgid "System overview"
@@ -12280,7 +12152,6 @@ msgid "Users"
 msgstr "Корисници"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/globalsettings.php:243
-#, fuzzy
 msgid "Active surveys"
 msgstr "Активне анкете"
 
@@ -12330,7 +12201,7 @@ msgstr "Ваше име и/или Е-мејл нису нађени!"
 #: /tmp/translationstatus_v2/application/controllers/admin/authentication.php:160
 #, php-format
 msgid "Your user data for accessing %s"
-msgstr ""
+msgstr "Ваши кориснички подаци за приступ %s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/authentication.php:162
 msgid "New password"
@@ -12404,7 +12275,6 @@ msgid "Survey structure import summary"
 msgstr "Сажет приказ увоза анкете"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1182
-#, fuzzy
 msgid "Survey copy summary"
 msgstr "Сажет приказ увоза анкете"
 
@@ -12413,36 +12283,32 @@ msgid "Import failed. You specified an invalid file type."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1241
-#, fuzzy
 msgid "No survey ID has been provided. Cannot copy survey"
-msgstr "SID није обезбеђен. Немогуће уклањање анкете"
+msgstr "ID није обезбеђен. Немогуће копирање анкете"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1625
 msgid "The survey was successfully expired by setting an expiration date in the survey settings."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1707
-#, fuzzy
 msgid "Survey could not be created because it did not have a title"
-msgstr "Анкету није могуће креирати због недостатка кратког описа"
+msgstr "Анкету није могуће креирати због недостатка наслова"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/survey.php:1859
-#, fuzzy
 msgid "Survey was successfully added."
-msgstr "Група корисника успешно додата!"
+msgstr "Анкета је успешно додата."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:66
 msgid "Welcome to the ComfortUpdate"
-msgstr ""
+msgstr "Добродошли у ComfortUpdate"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:67
 msgid "The LimeSurvey ComfortUpdate is an easy procedure to quickly update to the latest version of LimeSurvey."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:68
-#, fuzzy
 msgid "The following steps will be done by this update:"
-msgstr "Следећи одговори би требало бити обрисани"
+msgstr "Следећи кораци би требали бити урађени после овог освежавања:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:69
 msgid "Your LimeSurvey installation is checked if the update can be run successfully."
@@ -12458,35 +12324,33 @@ msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:72
 msgid "If necessary the database will be updated."
-msgstr ""
+msgstr "Ако је потребно база података ће бити освежена"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:73
 msgid "Checking basic requirements..."
-msgstr ""
+msgstr "Проверавање основних захтева..."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:75
 msgid "You need an update key to run the comfort update. During the beta test of this update feature the key \"LIMESURVEYUPDATE\" can be used."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:76
-#, fuzzy
 msgid "Please enter a valid update-key:"
-msgstr "Молимо унесите датум:"
+msgstr "Молимо унесите бажећи кључ:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:77
 msgid "Save update key"
 msgstr "Сачувати кључ ажурирања"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:81
-#, fuzzy
 msgid "Update key: Valid"
-msgstr "Промени токен"
+msgstr "Освежавање кључа: Важеће"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:85
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:637
 #, php-format
 msgid "Tempdir %s is not writable"
-msgstr ""
+msgstr "Tempdir %s се не може сачувати"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:90
 #, php-format
@@ -12494,9 +12358,8 @@ msgid "Version file is not writable (%s). Please set according file permissions.
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:93
-#, fuzzy
 msgid "Change log"
-msgstr "Прекини"
+msgstr "Лог промена"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:127
 msgid "When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed."
@@ -12518,7 +12381,7 @@ msgstr "Поступити до корака %s"
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:465
 #, php-format
 msgid "ComfortUpdate step %s"
-msgstr ""
+msgstr "ComfortUpdate корак %s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:200
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:208
@@ -12591,23 +12454,20 @@ msgid "Creating DB & file backup"
 msgstr "Прављење Базе Података и резерви фајлова"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:389
-#, fuzzy
 msgid "Creating file backup... "
-msgstr "Читање датотеке..."
+msgstr "Прављење резервне копије..."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:396
 msgid "File backup created:"
 msgstr "Резерва фајлова направљена:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:403
-#, fuzzy
 msgid "Creating database backup... "
-msgstr "Креирај базу података"
+msgstr "Креирање базе података..."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:432
-#, fuzzy
 msgid "DB backup created:"
-msgstr "Сигурносна копија базе података"
+msgstr "Прављење резервне копије баз података направљено:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:436
 msgid "No DB backup created:"
@@ -12622,9 +12482,9 @@ msgid "Please check any problems above and then proceed to the final step."
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:532
-#, fuzzy, php-format
+#, php-format
 msgid "File deleted: %s"
-msgstr "Неуспешно брисање одговора"
+msgstr "Датотека обрисано:%s"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/update.php:545
 msgid "New files were successfully installed."
@@ -12674,7 +12534,6 @@ msgid "No GID (Group) has been provided. Cannot import question"
 msgstr "GID (група питања) није достављен. Немогућ увоз питања"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:133
-#, fuzzy
 msgid "Question import summary"
 msgstr "Извештај о увозу питања"
 
@@ -12688,7 +12547,7 @@ msgstr "Иди на питање"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:197
 msgid "Edit default answer values"
-msgstr ""
+msgstr "Мењај подразумеване вредности одговора"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:219
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:268
@@ -12726,12 +12585,10 @@ msgid "Question could not be deleted. There are conditions for other questions t
 msgstr "Питање не може бити обрисано. Постоје услови/правила за друга питања која се ослањају на ово питање. Не можете обрисати ово питање док не уклоните услове/правила."
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:911
-#, fuzzy
 msgid "Question was successfully deleted."
 msgstr "Питање није могуће обрисати"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/question.php:922
-#, fuzzy
 msgid "You are not authorized to delete questions."
 msgstr "Нисте овлашћени да обришете ову групу!"
 
@@ -12748,9 +12605,9 @@ msgid "To:"
 msgstr "За:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:129
-#, fuzzy, php-format
+#, php-format
 msgid "Email to %s failed. Error Message:"
-msgstr "Е-мејл за  {FIRSTNAME} {LASTNAME} ({EMAIL}) није послат. Порука грешке:"
+msgstr "Е-мајл ка  %s није стигао. Грешка:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:189
 msgid "Deleting User Group"
@@ -12810,9 +12667,8 @@ msgid "Failed to update!"
 msgstr "Грешка при мењању!"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/usergroups.php:526
-#, fuzzy
 msgid "Delete this user from group"
-msgstr "Обриши тренутну групу корисника"
+msgstr "Обришите овог корисника из групе"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:73
 msgid "This will replace the existing text. Continue?"
@@ -12831,19 +12687,16 @@ msgid "Confirmation"
 msgstr "Потврда"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:107
-#, fuzzy
 msgid "Basic admin notification"
 msgstr "Основно обавештавање е-мејлом"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:108
-#, fuzzy
 msgid "Detailed admin notification"
 msgstr "Без обавештења на е-мејл"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:112
-#, fuzzy
 msgid "Admin confirmation email subject:"
-msgstr "Потврда субјекта Е-мејла"
+msgstr "Администраторова потврда субјекта Е-мејла"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:115
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:121
@@ -12861,27 +12714,22 @@ msgid "Use default"
 msgstr "користи основни"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:117
-#, fuzzy
 msgid "Admin confirmation email body:"
-msgstr "Е-мејл потврде"
+msgstr "Е-мејл потврде:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:119
-#, fuzzy
 msgid "Admin notification email:"
 msgstr "Обавештавње администратора:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:126
-#, fuzzy
 msgid "Detailed admin notification subject:"
 msgstr "Детаљно обавештавање путем е-мејла са кодовима резултата"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:131
-#, fuzzy
 msgid "Detailed admin notification email:"
 msgstr "Детаљно обавештавање путем е-мејла са кодовима резултата"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:140
-#, fuzzy
 msgid "Invitation email subject:"
 msgstr "Тема Е-мејла за приступ:"
 
@@ -12899,7 +12747,6 @@ msgid "No confirmation emails will be sent. To send emails see Survey properties
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:173
-#, fuzzy
 msgid "Confirmation email subject:"
 msgstr "Потврда субјекта Е-мејла"
 
@@ -12908,58 +12755,53 @@ msgid "Confirmation email:"
 msgstr "Е-мејл потврде"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:180
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:841
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:929
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:877
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:993
 msgid "Confirmation email"
 msgstr "Е-мејл потврде"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:187
-#, fuzzy
 msgid "Public registration email subject:"
 msgstr "Тема Е-мејла за јавну регистрацију"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:192
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:194
-#, fuzzy
 msgid "Public registration email:"
-msgstr "Е-мејл јавне регистрације"
+msgstr "Е-мејл јавне регистрације:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/emailtemplates.php:265
-#, fuzzy
 msgid "Email templates successfully saved."
-msgstr "Освежење корисничких шаблона је било успешно."
+msgstr "Е-мејл шаблони су успешно сачувани."
 
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:379
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:371
 msgid "Translate to"
 msgstr "Преведи у"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:447
-#, fuzzy
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:441
 msgid "Survey title and description"
-msgstr "Промени назив анкете или опис"
+msgstr "Назив анкете и опис"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/translate.php:499
-#, fuzzy
 msgid "Welcome and end text"
 msgstr "Поздравна страница"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:583
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:588
 msgid "Group description"
 msgstr "Опис групе:"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:731
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:732
 msgid "Answer options"
 msgstr "Опције одговора"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:753
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:761
 msgid "Invitation email"
 msgstr "Позивни е-мејл:"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:797
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:819
 msgid "Reminder email"
 msgstr "Е-мејл за потсетник:"
 
-#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:885
+#: /tmp/translationstatus_v2/application/controllers/admin/translate.php:935
 msgid "Registration email"
 msgstr "Регистрацијски е-мејл:"
 
@@ -13029,7 +12871,6 @@ msgid "Main admin screen"
 msgstr "Главни администраторски екран"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:152
-#, fuzzy
 msgid "You have not selected a question"
 msgstr "Нисте изабрали питање."
 
@@ -13055,7 +12896,6 @@ msgid "Group of checkboxes"
 msgstr ""
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:895
-#, fuzzy
 msgid "Single checkbox"
 msgstr "Један одговор"
 
@@ -13088,9 +12928,8 @@ msgid "New scenario number"
 msgstr "Нови број сценарија"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1185
-#, fuzzy
 msgid "Update scenario"
-msgstr "Подеси групу корисника"
+msgstr "Освежи сценарио"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1196
 #, fuzzy
@@ -13112,9 +12951,8 @@ msgstr "Из табеле токена"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1331
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1404
-#, fuzzy
 msgid "Inexistant token table"
-msgstr "Уколи табелу токена"
+msgstr "Непостојећу табелу токена"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/conditions.php:1446
 msgid "Are you sure you want to delete this condition?"
@@ -13371,7 +13209,6 @@ msgid "Follow the following link to update it"
 msgstr "Изаберите следећи линк како би сте мењали податке:"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:1849
-#, fuzzy
 msgid "This surveys uses anonymized responses, so you can't update your response."
 msgstr "Ова анкета има анонимне одговоре, што значи да не можете мењати одговоре."
 
@@ -13442,7 +13279,6 @@ msgstr "И"
 
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2470
 #: /tmp/translationstatus_v2/application/controllers/admin/dataentry.php:2475
-#, fuzzy
 msgid "to question {QUESTION}, answer {ANSWER}"
 msgstr "на питање {QUESTION}, одговорили сте {ANSWER}"
 
@@ -13477,7 +13313,6 @@ msgid "Token mismatch"
 msgstr "Неусклађеност знакова"
 
 #: /tmp/translationstatus_v2/application/controllers/survey.php:68
-#, fuzzy
 msgid "The token you provided doesn't match the one in your session."
 msgstr "Токен који сте обезбедили или није валидан или је већ искоришћен."
 
@@ -13709,12 +13544,10 @@ msgid "Submit your answers"
 msgstr "Предај своје одговоре"
 
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:383
-#, fuzzy
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
-msgstr "Жао ми је, у овој анкети нема подржаних типова питања"
+msgstr "Нема више питања. Молимо вас притисните Change log дугме да бисте завшили ову анкету."
 
 #: /tmp/translationstatus_v2/application/libraries/Group_format.php:1277
-#, fuzzy
 msgid "One or more uploaded files are not in proper format/size. You cannot proceed until these files are valid."
 msgstr "На једно или више питања нисте одговорили на прави начин. Не можете наставити док не одговорите на прави начин."
 
@@ -13733,7 +13566,6 @@ msgid "One or more uploaded files do not satisfy the criteria"
 msgstr "Један или више критеријума нису задовољили критеријум"
 
 #: /tmp/translationstatus_v2/application/libraries/Survey_format.php:975
-#, fuzzy
 msgid "One or more files are either not in the proper format or exceed the maximum file size limitation. You cannot proceed until these answers are valid."
 msgstr "На једно или више питања нисте одговорили на прави начин. Не можете наставити док не одговорите на прави начин."
 
