@@ -16,7 +16,7 @@
         <a href='<?php echo $this->createUrl("admin/browse/$surveyid/all");?>' title="<?php echo $clang->gTview("Display Responses");?>">
         <img name='ViewAll' src='<?php echo $imageurl;?>/document.png' title='' alt='<?php echo $clang->gT("Display Responses");?>' /></a>
     <?php } else { ?>
-        <a href="#" accesskey='b' id='browseresponses' title="<?php echo $clang->gTview("Display Responses");?>" >
+        <a href="<?php echo site_url("admin/browse/$surveyid/all");?>" accesskey='b' id='browseresponses' title="<?php echo $clang->gTview("Display Responses");?>" >
         <img src='<?php echo $imageurl;?>/document.png' alt='<?php echo $clang->gT("Display Responses");?>' name='ViewAll' /></a>
 
         <div class="langpopup" id="browselangpopup"><?php echo $clang->gT("Please select a language:");?><ul>

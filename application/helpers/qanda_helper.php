@@ -5306,7 +5306,6 @@ function do_shortfreetext($ia)
         $answer .= "</textarea>\n";
     }
     elseif((int)($aQuestionAttributes['location_mapservice'])!=0){
-
         $mapservice = $aQuestionAttributes['location_mapservice'];
         $currentLocation = $_SESSION[$ia[1]];
         $currentLatLong = null;

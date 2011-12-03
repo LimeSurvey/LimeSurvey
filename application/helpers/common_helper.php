@@ -3132,6 +3132,7 @@ function getQuestionAttributeValues($qid, $type='')
     }
     $result = Questions::model()->findByAttributes(array('qid' => $qid));  //Checked
     $row=$result->attributes;
+    
     if ($row===false) // Question was deleted while running the survey
     {
         $cache[$qid]=false;
