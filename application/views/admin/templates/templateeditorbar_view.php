@@ -44,7 +44,7 @@
     </div>
     <div class='menubar-main'>
         <div class='menubar-left'>
-            <a href='<?php echo $this->createUrl("admin"); ?>'>
+            <a href='<?php echo $this->createUrl("/admin"); ?>'>
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/home.png' name='HomeButton' alt='<?php echo $clang->gT("Return to survey administration"); ?>' /></a>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/blank.gif' alt='' width='60' height='10'  />
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />

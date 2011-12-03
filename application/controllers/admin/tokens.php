@@ -1135,7 +1135,7 @@ class tokens extends Survey_Common_Action
         {
             $surveyid = (int)$_POST['sid'];
         }
-		
+
 		if(isset($tokenids) && $tokenids=="tids") {
 			$_POST("tokenids");
 		    $tokenidsarray=explode("|", substr($tokenids, 1)); //Make the tokenids string into an array, and exclude the first character
@@ -1144,9 +1144,9 @@ class tokens extends Survey_Common_Action
 		        if($tokenitem != "") $tokenids[]=sanitize_int($tokenitem);
 		    }
 		}
-		
+
 		$surveyid = sanitize_int($surveyid);
-		
+
 		@$tokenid=$_POST["tid"];
 		@$tokenids=$_POST["tokenids"];
 		@$maxemails=$_POST["maxemails"];
@@ -1181,12 +1181,12 @@ class tokens extends Survey_Common_Action
 		$data['surveyid'] = $surveyid;
 		Yii::app()->loadHelper("admin/htmleditor");
 		Yii::app()->loadHelper('replacements');
-		
+
 		$publicurl = Yii::app()->baseUrl;
 		$modrewrite = Yii::app()->getConfig("modrewrite");
 		$timeadjust = Yii::app()->getConfig("timeadjust");
 		$emailcharset = Yii::app()->getConfig("emailcharset");
-		
+
 
 		if (getEmailFormat($surveyid) == 'html')
 	    {
@@ -2454,6 +2454,7 @@ class tokens extends Survey_Common_Action
 	    }
 	    else
 	    {
+			Yii::import('application.helpers.database_helper', true);
 			$result = Yii::app()->db->createCommand(db_select_tables_like('{{old_tokens_' . $surveyid . '_%}}'))->query();
 	        $tcount=$result->getRowCount();
 	        if ($tcount > 0)

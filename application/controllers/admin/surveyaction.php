@@ -34,7 +34,7 @@ class SurveyAction extends Survey_Common_Action {
     * @access public
     * @return void
     */
-   public function run($sa = '', $action = '', $sid = 0)
+   public function run($sa = '', $surveyid = 0)
    {
         if (Yii::app()->session['USER_RIGHT_SUPERADMIN'] != 1)
         {
@@ -43,7 +43,9 @@ class SurveyAction extends Survey_Common_Action {
 
    		if (empty($sa)) $sa = null;
 
-		if ($sa == 'newsurvey' || isset($_GET['newsurvey']))
+		if ($sa == 'view')
+			$this->route('view', array('surveyid', 'gid', 'qid'));
+		elseif ($sa == 'newsurvey' || isset($_GET['newsurvey']))
 			$this->route('newsurvey', array());
 		elseif ($sa == 'insert' || isset($_GET['insert']))
 			$this->route('insert', array());
@@ -51,8 +53,8 @@ class SurveyAction extends Survey_Common_Action {
 			$this->route('importsurveyresources', array());
 		elseif ($sa == 'copy' || isset($_GET['copy']))
 			$this->route('copy', array());
-            elseif ($sa == 'activate')
-                $this->route('activate', array('surveyid'));
+        elseif ($sa == 'activate')
+            $this->route('activate', array('surveyid'));
 		elseif ($sa == 'listsurveys')
 			$this->route('listsurveys', array());
 			elseif ($sa == 'ajaxgetusers')
@@ -61,48 +63,27 @@ class SurveyAction extends Survey_Common_Action {
    				$this->route('ajaxowneredit', array('newowner', 'surveyid'));
    			elseif ($sa == 'deactivate')
    				$this->route('deactivate', array('surveyid'));
-   			return;
+		elseif ($sa == 'confirmdelete' || $sa == 'delete')
+			$this->route('delete', array('surveyid', 'sa'));
+   		return;
 
-		if (empty($action) && !empty($_POST['action']))
-		{
-			$sSurveysAction = $_POST['action'];
-		} else {
-			$sSurveysAction = $action;
-		}
-		if (empty($sid) && !empty($_POST['sid']))
-		{
-			$iSurveyIDs = (array) $_POST['sid'];
-		} else {
-			$iSurveyIDs = (array) $sid;
-		}
-		$iSurveyIDs = array_map('intval', $iSurveyIDs);
-		$iSurveyIDs = array_filter($iSurveyIDs);
+		/* @todo Implement this */
 		$clang = $this->getController()->lang;
 		$actioncount = 0;
+		$iSurveyId = 0;
 		$message = $clang->gT('You did not choose any surveys.');
-		foreach ($iSurveyIDs as $iSurveyID) {
-			if (Survey::model()->findByPk($iSurveyID) === null)
-				continue;
-			switch ($sSurveysAction){
-				case 'confirmdelete':
-					$this->getController()->_getAdminHeader();
-					$this->getController()->_showadminmenu();
-					$this->getController()->render("/admin/survey/deleteSurvey_view", array('clang' => $clang, 'surveyid' => $sid));
-					$this->getController()->_getAdminFooter("http://docs.limesurvey.org", $clang->gT("LimeSurvey online manual"));
-					return;
-				case 'delete': $this->_deleteSurvey($iSurveyID);
-					$message=$clang->gT('%s survey(s) were successfully deleted.');
-					$actioncount++;
-					break;
-				case 'expire': if ($this->_expireSurvey($iSurveyID)) $actioncount++;;
-					$message=$clang->gT('%s survey(s) were successfully expired.');
-					break;
-				case 'archive': Yii::app()->session['sids'] = $aSurveyID;
-					redirect('admin/export/surveyarchives');
-					break;
-			}
+		if (Survey::model()->findByPk($iSurveyID) === null)
+			continue;
+		switch ($sa){
+			case 'expire':
+				if ($this->_expireSurvey($iSurveyID)) $actioncount++;;
+				$message=$clang->gT('%s survey(s) were successfully expired.');
+				break;
+			case 'archive':
+				Yii::app()->session['surveyid'] = $iSurveyID;
+				redirect('admin/export/sa/surveyarchives/surveyid/'.$iSurveyId);
+				break;
 		}
-        Yii::app()->session['flashmessage'] = sprintf($message, $actioncount);
         $this->getController()->render('/admin/survey/listSurveys_view', array('clang' => $clang));
     }
 
@@ -475,7 +456,7 @@ class SurveyAction extends Survey_Common_Action {
         self::_css_admin_includes(Yii::app()->getConfig('styleurl')."admin/default/superfish.css");
         self::_css_admin_includes(Yii::app()->getConfig('generalscripts')."jquery/jqGrid/css/ui.jqgrid.css");
         self::_getAdminHeader();
-        self::_showadminmenu($surveyid);;
+        self::_showadminmenu($surveyid);
         self::_surveybar($surveyid);
 
         LimeExpressionManager::ResetSyntaxErrorLog();
@@ -486,7 +467,7 @@ class SurveyAction extends Survey_Common_Action {
     }
 
     /**
-    * survey::view()
+    * surveyaction::view()
     * Load complete view of survey properties and actions specified by $surveyid
     * @param mixed $surveyid
     * @param mixed $gid
@@ -499,23 +480,25 @@ class SurveyAction extends Survey_Common_Action {
         if(isset($gid)) $gid = sanitize_int($gid);
         if(isset($qid)) $qid = sanitize_int($qid);
 
+        LimeExpressionManager::StartProcessingPage(false,true,false);
+
         // show till question menubar.
         if (!is_null($qid))
         {
             $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-            $this->config->set_item("css_admin_includes", $css_admin_includes);
+            Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
-            self::_getAdminHeader();
-            self::_showadminmenu($surveyid);
+            $this->getController()->_getAdminHeader();
+            $this->getController()->_showadminmenu($surveyid);
             self::_surveybar($surveyid,$gid);
             self::_surveysummary($surveyid,"viewquestion");
             self::_questiongroupbar($surveyid,$gid,$qid,"viewquestion");
 
             self::_questionbar($surveyid,$gid,$qid,"viewquestion");
-            self::_loadEndScripts();
+            $this->getController()->_loadEndScripts();
 
 
-            self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+            $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
         }
         else
@@ -524,18 +507,16 @@ class SurveyAction extends Survey_Common_Action {
             if (!is_null($gid))
             {
                 $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-                $this->config->set_item("css_admin_includes", $css_admin_includes);
+                Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
-                self::_getAdminHeader();
-                self::_showadminmenu($surveyid);
+                $this->getController()->_getAdminHeader();
+                $this->getController()->_showadminmenu($surveyid);
                 self::_surveybar($surveyid,$gid);
                 self::_surveysummary($surveyid,"viewgroup");
-                self::_questiongroupbar($surveyid,$gid,$qid,"viewgroup");
+                self::_questiongroupbar($surveyid,$gid,null,"viewgroup");
 
-                self::_loadEndScripts();
-
-
-                self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+                $this->getController()->_loadEndScripts();
+                $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
             }
             else
@@ -544,26 +525,20 @@ class SurveyAction extends Survey_Common_Action {
                 if(bHasSurveyPermission($surveyid,'survey','read'))
                 {
                     $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
-                    $this->config->set_item("css_admin_includes", $css_admin_includes);
+                    Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
-                    self::_getAdminHeader();
-                    self::_showadminmenu($surveyid);
+                    $this->getController()->_getAdminHeader();
+                    $this->getController()->_showadminmenu($surveyid);
                     self::_surveybar($surveyid);
                     self::_surveysummary($surveyid);
-                    self::_loadEndScripts();
-
-
-                    self::_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
+                    $this->getController()->_loadEndScripts();
+                    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->getController()->lang->gT("LimeSurvey online manual"));
 
                 }
 
             }
 
-
         }
-
-
-
 
     }
 
@@ -1033,39 +1008,38 @@ class SurveyAction extends Survey_Common_Action {
     * Function responsible to delete a survey.
     * @return
     */
-    function delete()
+    function delete($surveyid, $sa = 'confirmdelete')
     {
         $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
         Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
         $this->getController()->_getAdminHeader();
-        $data['surveyid'] = $surveyid = (int) $this->input->post('sid');
-        if (!$_POST['deleteok'])
+        $data['surveyid'] = $iSurveyId = $surveyid;
+        if ($sa == 'confirmdelete')
         {
-            $this->getController()->_showadminmenu($surveyid);
-            $this->getController()->_surveybar($surveyid);
+            $this->getController()->_showadminmenu($iSurveyId);
+            self::_surveybar($iSurveyId);
         }
 
-        if(bHasSurveyPermission($surveyid,'survey','delete'))
+        if(bHasSurveyPermission($iSurveyId,'survey','delete'))
         {
-            $data['deleteok'] = $deleteok = $_POST['deleteok'];
             $data['clang'] = $this->getController()->lang;
-            $data['link'] = Yii::app()->createUrl("admin/survey/delete");
 
-
-            if (!(!isset($deleteok) || !$deleteok))
+            if ($sa == 'delete')
             {
-                $this->getController()->_deleteSurvey($surveyid);
+				$data['issuperadmin'] = Yii::app()->session['USER_RIGHT_SUPERADMIN'] == true;
+                self::_deleteSurvey($iSurveyId);
                 $this->getController()->_showadminmenu(false);
-            }
-            $this->getController()->render('/admin/survey/deleteSurvey_view',$data);
+            } elseif ($sa == 'confirmdelete') {
+				$this->getController()->render('/admin/survey/deleteSurvey_view',$data);
+			}
         }
         else {
             //include('access_denied.php');
-            $finaldata['display'] = access_denied("editsurvey",$surveyid);
+            $finaldata['display'] = access_denied("editsurvey",$iSurveyId);
             $this->getController()->render('survey_view',$finaldata);
         }
-        $this->getController()->_loadEndScripts();
 
+        $this->getController()->_loadEndScripts();
         $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $data['clang']->gT("LimeSurvey online manual"));
     }
 
@@ -1880,7 +1854,7 @@ class SurveyAction extends Survey_Common_Action {
 
             // Update survey permissions
             Survey_permissions::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$iNewSurveyid);
-            $this->getController()->redirect($this->getController()->createUrl('admin/survey/view/'.$iNewSurveyid));
+            $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$iNewSurveyid));
         }
 
     }

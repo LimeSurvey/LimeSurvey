@@ -43,7 +43,8 @@ class LSYii_Application extends CWebApplication
 
 		$this->loadHelper('globalsettings');
 		$this->loadHelper('common');
-
+		$this->loadHelper('expressions.em_manager');
+		$this->loadHelper('replacements');
 	}
 
 	/**
@@ -57,11 +58,11 @@ class LSYii_Application extends CWebApplication
 	{
 		Yii::import('application.helpers.' . $helper . '_helper', true);
 	}
-	
+
 	/**
 	 * Loads a library
-	 * 
-	 * @access public 
+	 *
+	 * @access public
 	 * @param string $helper
 	 * @return void
 	 */

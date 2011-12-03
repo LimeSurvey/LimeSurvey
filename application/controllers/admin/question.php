@@ -35,6 +35,8 @@
  	{
  		if ($sa == 'addquestion' || $sa == 'index' || $sa == 'editquestion')
  			$this->route('index', array('sa', 'surveyid', 'gid', 'qid'));
+		elseif ($sa == 'subquestions')
+			$this->route('subquestions', array('surveyid', 'gid', 'qid'));
  		elseif ($sa == 'import')
  			$this->route('import', array());
  	}
@@ -362,7 +364,7 @@
         self::_loadEndScripts();
 
 
-	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
+	   self::_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
 
     }
 
@@ -476,10 +478,6 @@
         $data['assessmentvisible'] = $assessmentvisible;
         $this->load->view('admin/survey/Question/answerOptions_view',$data);
 
-
-
-
-
     }
 
     /**
@@ -496,34 +494,29 @@
 		$qid = sanitize_int($qid);
 		$gid = sanitize_int($gid);
 
-        self::_js_admin_includes(base_url().'scripts/jquery/jquery.dd.js');
-        self::_js_admin_includes(base_url().'scripts/admin/subquestions.js');
-        self::_js_admin_includes(base_url().'scripts/jquery/jquery.blockUI.js');
-        self::_js_admin_includes(base_url().'scripts/jquery/jquery.selectboxes.min.js');
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.dd.js');
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'admin/subquestions.js');
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery/jquery.blockUI.js');
+        self::_js_admin_includes(Yii::app()->getConfig('generalscripts').'jquery.selectboxes.min.js');
 
+        $css_admin_includes[] = Yii::app()->getConfig('generalscripts').'jquery/dd.css';
+        $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
+        Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
-        $css_admin_includes[] = base_url().'scripts/jquery/dd.css';
-
-        $css_admin_includes[] = $this->config->item('styleurl')."admin/default/superfish.css";
-        $this->config->set_item("css_admin_includes", $css_admin_includes);
-
-        self::_getAdminHeader();
-        self::_showadminmenu($surveyid);;
-        self::_surveybar($surveyid,$gid);
-        self::_surveysummary($surveyid,"viewgroup");
+        $this->getController()->_getAdminHeader();
+        $this->getController()->_showadminmenu($surveyid);
+        self::_surveybar($surveyid, $gid);
+        self::_surveysummary($surveyid, "viewgroup");
         self::_questiongroupbar($surveyid,$gid,$qid,"addquestion");
         self::_questionbar($surveyid,$gid,$qid,"editsubquestions");
+		$this->getController()->_loadEndScripts();
 
-        $this->session->set_userdata('FileManagerContext',"edit:answer:{$surveyid}");
+        Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
 
-        self::_editsubquestion($surveyid,$gid,$qid);
-        self::_loadEndScripts();
-
-
-	   self::_getAdminFooter("http://docs.limesurvey.org", $this->limesurvey_lang->gT("LimeSurvey online manual"));
-
-
-
+		/* @todo Make this work */
+        //self::_editsubquestion($surveyid,$gid,$qid);
+        $this->getController()->_loadEndScripts();
+	    $this->getController()->_getAdminFooter("http://docs.limesurvey.org", $this->controller->lang->gT("LimeSurvey online manual"));
     }
 
     /**

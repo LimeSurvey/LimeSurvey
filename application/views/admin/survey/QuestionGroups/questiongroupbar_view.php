@@ -9,7 +9,7 @@
         <?php if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl("survey/action/previewgroup/sid/$surveyid/gid/$gid/");?>','_blank')"
+            <a href="#" onclick="window.open('<?php echo $this->createUrl("survey/sa/previewgroup/surveyid/$surveyid/gid/$gid/");?>','_blank')"
                 title="<?php echo $clang->gTview("Preview current question group"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/preview.png' alt='<?php echo $clang->gT("Preview current question group"); ?>' name='PreviewGroup' width="40" height="40"/></a>
             <?php }
@@ -20,7 +20,7 @@
         <?php if(bHasSurveyPermission($surveyid,'surveycontent','update'))
             { ?>
             <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/seperator.gif' alt=''  />
-            <a href="#" onclick="window.open('<?php echo $this->createUrl('admin/questiongroup/edit/'.$surveyid.'/'.$gid); ?>','_top')"
+            <a href="#" onclick="window.open('<?php echo $this->createUrl('admin/questiongroup/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>','_top')"
                 title="<?php echo $clang->gTview("Edit current question group"); ?>">
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/edit.png' alt='<?php echo $clang->gT("Edit current question group"); ?>' name='EditGroup' width="40" height="40"/></a>
             <?php } ?>
@@ -34,7 +34,7 @@
                     if (is_null($condarray))
                     { ?>
 
-                    <a href='#' onclick="if (confirm('<?php echo $clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { <?php echo $this->createUrl('admin/questiongroup/delete')."?action=delgroup&amp;sid=$surveyid&amp;gid=$gid"; ?>}"
+                    <a href='#' onclick="if (confirm('<?php echo $clang->gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { <?php echo $this->createUrl("admin/questiongroup/sa/delete/surveyid/$surveyid/gid/$gid"); ?>}"
                         title="<?php echo $clang->gTview("Delete current question group"); ?>">
                         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete.png' alt='<?php echo $clang->gT("Delete current question group"); ?>' name='DeleteWholeGroup' title='' width="40" height="40"/></a>
 
@@ -43,7 +43,7 @@
                     // TMSW Conditions->Relevance:  Should be allowed to delete group even if there are conditions/relevance, since separate view will show exceptions
 
                     { ?>
-                    <a href='$scriptname?sid=$surveyid&amp;gid=$gid' onclick="alert('<?php echo $clang->gT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>')"
+                    <a href='<?php echo $this->createUrl("admin/questiongroup/sa/view/surveyid/$surveyid/gid/$gid"); ?>' onclick="alert('<?php echo $clang->gT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>')"
                         title="<?php echo $clang->gTview("Delete current question group"); ?>">
                         <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/delete_disabled.png' alt='<?php echo $clang->gT("Delete current question group"); ?>' name='DeleteWholeGroup' width="40" height="40"/></a>
                     <?php }
@@ -56,7 +56,7 @@
             if(bHasSurveyPermission($surveyid,'surveycontent','export'))
             { ?>
 
-            <a href='<?php echo $this->createUrl("admin/export/group/$surveyid/$gid");?>' title="<?php echo $clang->gTview("Export this question group"); ?>" >
+            <a href='<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>' title="<?php echo $clang->gTview("Export this question group"); ?>" >
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/dumpgroup.png' title='' alt='<?php echo $clang->gT("Export this question group"); ?>' name='ExportGroup' width="40" height="40"/></a>
             <?php } ?>
     </div>
@@ -74,7 +74,7 @@
             <?php if ($QidPrev != "")
                 { ?>
 
-                <a href='<?php echo $this->createUrl("admin/survey/view/".$surveyid."/".$gid."/".$QidPrev); ?>'>
+                <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidPrev); ?>'>
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/previous_20.png' title='' alt='<?php echo $clang->gT("Previous question"); ?>'
                         name='questionprevious' width="20" height="20"/></a>
                 <?php }
@@ -90,7 +90,7 @@
             <?php if ($QidNext != "")
                 { ?>
 
-                <a href='<?php echo $this->createUrl("admin/survey/view/".$surveyid."/".$gid."/".$QidNext); ?>'>
+                <a href='<?php echo $this->createUrl("admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$QidNext); ?>'>
                     <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/next_20.png' title='' alt='<?php echo $clang->gT("Next question"); ?>'
                     name='questionnext' width="20" height="20"/> </a>
                 <?php }
@@ -110,7 +110,7 @@
             <?php }
             elseif(bHasSurveyPermission($surveyid,'surveycontent','create'))
             { ?>
-            <a href='<?php echo $this->createUrl("admin/question/newquestion/".$surveyid."/".$gid); ?>'
+            <a href='<?php echo $this->createUrl("admin/question/sa/addquestion/surveyid/".$surveyid."/gid/".$gid); ?>'
                 title="<?php echo $clang->gTview("Add new question to group"); ?>" >
                 <img src='<?php echo Yii::app()->getConfig('imageurl'); ?>/add.png' title='' alt='<?php echo $clang->gT("Add New Question to Group"); ?>'
                     name='AddNewQuestion' onclick="window.open('', '_top')" width="40" height="40"/></a>
@@ -124,7 +124,7 @@
         <?php if (!$qid)
             { ?>
             <input type='image' src='<?php echo Yii::app()->getConfig('imageurl'); ?>/close.gif' title='<?php echo $clang->gT("Close this Group"); ?>' alt='<?php echo $clang->gT("Close this Group"); ?>'  name='CloseSurveyWindow'
-                onclick="window.open('<?php echo $this->createUrl("admin/survey/view/".$surveyid); ?>', '_top')" />
+                onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/".$surveyid); ?>', '_top')" />
             <?php }
             else
             { ?>
@@ -147,7 +147,7 @@
     </td>
     <td align='left'>
         <?php if (trim($grow['description'])!='') {
-                echo $grow['description'];
+                templatereplace($grow['description']);
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
         } ?>
     </td>
@@ -172,7 +172,7 @@
                     {
 
                         $listcid=implode("-",$depcid);?>
-                    <a href='#' onclick="window.open('admin.php?sid=<?php echo $surveyid; ?>&amp;gid=<?php echo $depgid; ?>&amp;qid=<?php echo $depqid; ?>&amp;action=conditions&amp;markcid=<?php echo implode("-",$depcid); ?>','_top')">[QID: <?php echo $depqid; ?>]</a>
+                    <a href='#' onclick="window.open('<?php echo $this->createUrl("admin/conditions/markcid/" . implode("-",$depcid) . "/surveyid/$surveyid/gid/$depgid/qid/$depqid"); ?>','_top')">[QID: <?php echo $depqid; ?>]</a>
                     <?php }
             } ?>
         </td></tr>

@@ -8,13 +8,13 @@
     var quickaddtitle='<?php echo $clang->gT('Quick-add subquestions','js'); ?>';
     var duplicateanswercode='<?php echo $clang->gT('Error: You are trying to use duplicate subquestion codes.','js'); ?>';
     var langs='<?php echo implode(';',$anslangs); ?>';
-    var ci_path='<?php echo $this->config->item('imageurl'); ?>';
+    var ci_path='<?php echo Yii::app()->getConfig('imageurl'); ?>';
 </script>
 <?php echo PrepareEditorScript(); ?>
 <div class='header ui-widget-header'>
         <?php echo $clang->gT("Edit subquestions"); ?>
 </div>
-<form id='editsubquestionsform' name='editsubquestionsform' method='post' action='<?php echo site_url('admin/database'); ?>' onsubmit="return codeCheck('code_',<?php echo $maxsortorder; ?>,'<?php echo $clang->gT("Error: You are trying to use duplicate answer codes.",'js'); ?>','<?php echo $clang->gT("Error: 'other' is a reserved keyword.",'js'); ?>');">
+<form id='editsubquestionsform' name='editsubquestionsform' method='post' action='<?php echo $this->createUrl("admin/database"); ?>' onsubmit="return codeCheck('code_',<?php echo $maxsortorder; ?>,'<?php echo $clang->gT("Error: You are trying to use duplicate answer codes.",'js'); ?>','<?php echo $clang->gT("Error: 'other' is a reserved keyword.",'js'); ?>');">
 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
 <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
 <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
@@ -55,10 +55,9 @@ $codeids='';
                         <?php echo $clang->gT("X-Scale"); ?></div>
                     <?php }
                 }
-                $query = "SELECT * FROM ".$this->db->dbprefix."questions WHERE parent_qid='{$qid}' AND language='{$anslang}' AND scale_id={$scale_id} ORDER BY question_order, title";
-                $result = db_execute_assoc($query); // or safe_die($connect->ErrorMsg()); //Checked
-                $anscount = $result->num_rows();
-                ?>
+                $result = Questions::model()->select()->where(array('and', 'parent_qid='.$qid, 'language=:language', 'scale_id='.$scale_id))->order('question_order, title asc')->bindParam(":language", $anslang);
+                $anscount = $result->getRowCount();
+				?>
                 <table class='answertable' id='answertable_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' align='center'>
                 <thead>
                 <tr><th>&nbsp;</th>
@@ -71,7 +70,7 @@ $codeids='';
                 </tr></thead>
                 <tbody align='center'>
                 <?php $alternate=false;
-                foreach ($result->result_array() as $row)
+                foreach ($result->readAll() as $row)
                 {
                     $row['title'] = htmlspecialchars($row['title']);
                     $row['question']=htmlspecialchars($row['question']);
@@ -98,7 +97,7 @@ $codeids='';
                     <?php }
                     elseif ($activated != 'Y' && $first) // If survey is decactivated
                     { ?>
-                        <img class='handle' src='<?php echo $this->config->item('imageurl')?>/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' name='oldcode_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['title']; ?>" /><input type='text' id='code_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' class='code' name='code_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['title']; ?>" maxlength='5' size='5'
+                        <img class='handle' src='<?php echo Yii::app()->getConfig('imageurl')?>/handle.png' /></td><td><input type='hidden' class='oldcode' id='oldcode_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' name='oldcode_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['title']; ?>" /><input type='text' id='code_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' class='code' name='code_<?php echo $row['qid']; ?>_<?php echo $row['scale_id']; ?>' value="<?php echo $row['title']; ?>" maxlength='5' size='5'
                          onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('saveallbtn_<?php echo $anslang; ?>').click(); return false;} return goodchars(event,'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_')"
                          />
 
@@ -118,8 +117,8 @@ $codeids='';
 
                     <?php if ($activated != 'Y' && $first)
                     { ?>
-                        <img src='<?php echo $this->config->item('imageurl')?>/addanswer.png' class='btnaddanswer' />
-                        <img src='<?php echo $this->config->item('imageurl')?>/deleteanswer.png' class='btndelanswer' />
+                        <img src='<?php echo Yii::app()->getConfig('imageurl')?>/addanswer.png' class='btnaddanswer' />
+                        <img src='<?php echo Yii::app()->getConfig('imageurl')?>/deleteanswer.png' class='btndelanswer' />
                     <?php } ?>
 
                     </td></tr>

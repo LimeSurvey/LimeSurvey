@@ -352,7 +352,7 @@ function getsurveylist($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 }
                 if ($returnwithouturl===false)
                 {
-                    $inactivesurveys .=" value='".Yii::app()->createUrl("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
+                    $inactivesurveys .=" value='".Yii::app()->createUrl("admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $inactivesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -370,7 +370,7 @@ function getsurveylist($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 }
                 if ($returnwithouturl===false)
                 {
-                    $expiredsurveys .=" value='".Yii::app()->createUrl("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
+                    $expiredsurveys .=" value='".Yii::app()->createUrl("admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $expiredsurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -388,7 +388,7 @@ function getsurveylist($returnarray=false, $returnwithouturl=false, $surveyid=fa
                 }
                 if ($returnwithouturl===false)
                 {
-                    $activesurveys .=" value='".Yii::app()->createUrl("admin/survey/view/".$sv['sid'])."'>{$surveylstitle}</option>\n";
+                    $activesurveys .=" value='".Yii::app()->createUrl("admin/survey/sa/view/surveyid/".$sv['sid'])."'>{$surveylstitle}</option>\n";
                 } else
                 {
                     $activesurveys .=" value='{$sv['sid']}'>{$surveylstitle}</option>\n";
@@ -548,14 +548,14 @@ function getQuestions($surveyid,$gid,$selectedqid)
 {
 	$clang = Yii::app()->lang;
     $s_lang = GetBaseLanguageFromSurveyID($surveyid);
-	$qrows = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang));
+	$qrows = Questions::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0));
 
     if (!isset($questionselecter)) {$questionselecter="";}
     foreach ($qrows as $qrow)
     {
     	$qrow = $qrow->attributes;
         $qrow['title'] = strip_tags($qrow['title']);
-        $link = Yii::app()->createUrl("/admin/survey/sa/view/surveyid".$surveyid."/gid".$gid."/qid".$qrow['qid']);
+        $link = Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$qrow['qid']);
         $questionselecter .= "<option value='{$link}'";
         if ($selectedqid == $qrow['qid']) {$questionselecter .= " selected='selected'"; $qexists="Y";}
         $questionselecter .=">{$qrow['title']}:";
@@ -708,7 +708,7 @@ function getQidNext($surveyid, $gid, $qid)
     //$CI->load->model('questions_model');
     //$qquery = "SELECT qid FROM ".$CI->db->dbprefix."questions WHERE sid=$surveyid AND gid=$gid AND language='{$s_lang}' and parent_qid=0 order by question_order";
     //$qresult = db_execute_assoc($qquery) ;
-	$qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang));
+	$qrows = Questions::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0));
 
 
     $i = 0;
@@ -1327,7 +1327,7 @@ function getgrouplistlang($gid, $language,$surveyid)
     	$gv = $gv->attributes;
         $groupselecter .= "<option";
         if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
-        $link = Yii::app()->createUrl("admin/survey/view/".$surveyid."/".$gv['gid']);
+        $link = Yii::app()->createUrl("admin/survey/sa/view/surveyid/".$surveyid."/gid/".$gv['gid']);
         $groupselecter .= " value='{$link}'>";
         if (strip_tags($gv['group_name']))
         {
@@ -1339,7 +1339,7 @@ function getgrouplistlang($gid, $language,$surveyid)
     }
     if ($groupselecter)
     {
-        $link = Yii::app()->createUrl("admin/survey/view/".$surveyid);
+        $link = Yii::app()->createUrl("admin/survey/sa/view/surveyid/".$surveyid);
         if (!isset($gvexist)) {$groupselecter = "<option selected='selected'>".$clang->gT("Please choose...")."</option>\n".$groupselecter;}
         else {$groupselecter .= "<option value='{$link}'>".$clang->gT("None")."</option>\n";}
     }
@@ -2969,7 +2969,7 @@ function setuserrights($uid, $rights)
 function getSavedCount($surveyid)
 {
     $surveyid=(int)$surveyid;
-	
+
     //$query = "SELECT COUNT(*) FROM ".db_table_name('saved_control')." WHERE sid=$surveyid";
     $count=Saved_control::getCountOfAll($surveyid);
     return $count;
@@ -3132,7 +3132,7 @@ function getQuestionAttributeValues($qid, $type='')
     }
     $result = Questions::model()->findByAttributes(array('qid' => $qid));  //Checked
     $row=$result->attributes;
-    
+
     if ($row===false) // Question was deleted while running the survey
     {
         $cache[$qid]=false;
@@ -7079,13 +7079,13 @@ function access_denied($action,$sid='')
         }
         elseif($action == "ordergroups")
         {
-            $link = site_url("admin/survey/view/$sid");
+            $link = site_url("admin/survey/sa/view/surveyid/$sid");
             $accesssummary .= "<p>".$clang->gT("You are not allowed to order groups in this survey!")."<br />";
             $accesssummary .= "<a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
         }
         elseif($action == "editsurvey")
         {
-            $link = site_url("admin/survey/view/$sid");
+            $link = site_url("admin/survey/sa/view/surveyid/$sid");
             $accesssummary .= "<p>".$clang->gT("You are not allowed to edit this survey!")."</p>";
             $accesssummary .= "<a href='$link'>".$clang->gT("Continue")."</a><br />&nbsp;\n";
         }
@@ -7771,7 +7771,7 @@ function getusergrouplist($ugid=NULL,$outputformat='optionlist')
 function getgroupuserlist($ugid)
 {
     $yii = Yii::app();
-    
+
     $yii->loadHelper('database');
     $clang = $yii->lang;
 

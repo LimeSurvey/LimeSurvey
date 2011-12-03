@@ -12,11 +12,11 @@
 			<strong><?php echo $clang->gT("Survey URL") ." (".getLanguageNameFromCode($surveyinfo['language'],false)."):";?></strong>
 		</td>
 		<td align='left'>
-		<?php $tmp_url = $this->createUrl($surveyinfo['sid']);
-        echo "<a href='{$tmp_url}/lang-".$surveyinfo['language']."' target='_blank'>{$tmp_url}/lang-".$surveyinfo['language']."</a>";
+		<?php $tmp_url = $this->createAbsoluteUrl("/admin/survey/sa/view/surveyid/{$surveyinfo['sid']}");
+        echo "<a href='{$tmp_url}/lang/{$surveyinfo['language']}' target='_blank'>{$tmp_url}/lang/{$surveyinfo['language']}</a>";
         foreach ($aAdditionalLanguages as $langname)
         {
-            echo "&nbsp;<a href='{$tmp_url}/lang-{$langname}' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)
+            echo "&nbsp;<a href='{$tmp_url}/lang/$langname' target='_blank'><img title='".$clang->gT("Survey URL for language:")." ".getLanguageNameFromCode($langname,false)
             ."' alt='".getLanguageNameFromCode($langname,false)." ".$clang->gT("Flag")."' src='".Yii::app()->getConfig("imageurl")."/flags/{$langname}.png' /></a>";
         } ?>
 		</td>
@@ -28,9 +28,9 @@
     	<td align='left'>
         	<?php
                 if (trim($surveyinfo['surveyls_description'])!='') {
-                    $surveyinfo['surveyls_description'];
+                    templatereplace($surveyinfo['surveyls_description']);
                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
-                    } ;
+                    }
                     ?>
         </td>
 	</tr>
@@ -40,7 +40,7 @@
 		</td>
         <td align='left'>
         	<?php
-                $surveyinfo['surveyls_welcometext'];
+                templatereplace($surveyinfo['surveyls_welcometext']);
                 echo LimeExpressionManager::GetLastPrettyPrintExpression();
             ?>
         </td>

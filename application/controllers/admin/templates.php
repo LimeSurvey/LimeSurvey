@@ -32,8 +32,6 @@ class templates extends Survey_Common_Action {
      */
 	public function run($sa)
 	{
-		Yii::app()->loadHelper('replacements');
-		Yii::app()->loadHelper('expressions.em_manager');
 		if ($sa == 'fileredirect')
 			$this->route('fileredirect', array('templatename', 'screenname', 'editfile'));
 		elseif ($sa == 'screenredirect')

@@ -1,11 +1,11 @@
 <div class='header ui-widget-header'><?php echo $clang->gT("Bounce settings");?></div>
 <div id='bouncesettings'>
-<form id='bouncesettings' name='bouncesettings' action='<?php echo site_url("admin/tokens/bouncesettings/$surveyid");?>' method='post'>
+<form id='bouncesettings' name='bouncesettings' action='<?php echo $this->createUrl("admin/tokens/sa/bouncesettings/surveyid/$surveyid");?>' method='post'>
 <br><li><label for='bounce_email'><?php echo $clang->gT('Survey bounce email:');?></label>
 <input type='text' size='50' id='bounce_email' name='bounce_email' value="<?php echo $settings['bounce_email'];?>" ></li>
 <li><label for='bounceprocessing'><?php echo $clang->gT("Bounce settings to be used");?></label>
 <select id='bounceprocessing' name='bounceprocessing'>
-<option value='N'<?php 
+<option value='N'<?php
 if ($settings['bounceprocessing']=='N') {echo " selected='selected'";}
 ?>><?php echo $clang->gT("None");?></option>
 <option value='L'<?php
@@ -17,7 +17,7 @@ if ($settings['bounceprocessing']=='G') {echo " selected='selected'";}
 </select></li>
 <li><label for='bounceaccounttype'><?php echo $clang->gT("Server type:");?></label>
 <select id='bounceaccounttype' name='bounceaccounttype'>
-<option value='IMAP'<?php 
+<option value='IMAP'<?php
 if ($settings['bounceaccounttype']=='IMAP') {echo " selected='selected'";}
 ?>><?php echo $clang->gT("IMAP");?></option>
 <option value='POP'<?php

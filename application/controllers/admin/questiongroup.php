@@ -60,7 +60,7 @@ class questiongroup extends Survey_Common_Action {
         $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
         Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
         $this->controller->_getAdminHeader();
-        $this->controller->_showadminmenu();
+        $this->controller->_showadminmenu($surveyid);
         $this->_surveybar($surveyid,NULL);
         $this->_surveysummary($surveyid,"importgroup");
 
@@ -177,7 +177,7 @@ class questiongroup extends Survey_Common_Action {
             $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
             Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
             $this->getController()->_getAdminHeader();
-            $this->getController()->_showadminmenu();
+            $this->getController()->_showadminmenu($surveyid);
             $this->_surveybar($surveyid);
             $this->_surveysummary($surveyid, "addgroup");
             if ($action == "addgroup")
@@ -225,7 +225,8 @@ class questiongroup extends Survey_Common_Action {
             }
             if ($errorstring!='')
             {
-                $databaseoutput .= "<script type=\"text/javascript\">\n<!--\n alert(\"".$clang->gT("Group could not be added.\\n\\nIt is missing the group name for the following languages","js").":\\n".$errorstring."\")\n //-->\n</script>\n";
+                $databaseoutput = "<script type=\"text/javascript\">\n<!--\n alert(\"".$this->controller->lang->gT("Group could not be added.\\n\\nIt is missing the group name for the following languages","js").":\\n".$errorstring."\")\n //-->\n</script>\n";
+            	$this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid));
             }
 
             else
@@ -273,7 +274,7 @@ class questiongroup extends Survey_Common_Action {
 	                        'description' => $group_description,
 	                        'group_order' => getMaxgrouporder($surveyid),
 	                        'language' => $grouplang,
-	                        'randomization_group' =>$this->input->post('randomization_group')
+	                        'randomization_group' => $_POST['randomization_group']
                         );
 
 						$group = new Groups;
@@ -366,8 +367,8 @@ class questiongroup extends Survey_Common_Action {
 
             $css_admin_includes[] = Yii::app()->getConfig('styleurl')."admin/default/superfish.css";
             Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
-            $this->controller->_getAdminHeader();
-            $this->controller->_showadminmenu();
+            $this->controller->_getAdminHeader($surveyid);
+            $this->controller->_showadminmenu($surveyid, $gid);
             $this->_surveybar($surveyid,$gid);
 
             if ($action == "editgroup")
@@ -531,9 +532,6 @@ class questiongroup extends Survey_Common_Action {
         // Prepare data for the view
         $sBaseLanguage = GetBaseLanguageFromSurveyID($iSurveyID);
 
-
-        Yii::import('application.helpers.expressions.em_manager_helper', true);
-        Yii::import('application.helpers.replacements_helper', true);
         LimeExpressionManager::StartProcessingPage(false,true,false);
 
         $aGrouplist = Groups::model()->getGroups($iSurveyID);
@@ -578,7 +576,7 @@ class questiongroup extends Survey_Common_Action {
         Yii::app()->setConfig("css_admin_includes", $css_admin_includes);
 
         $this->controller->_getAdminHeader();
-        $this->controller->_showadminmenu();
+        $this->controller->_showadminmenu($iSurveyID);
         $this->_surveybar($iSurveyID);
 
         $this->getController()->render('/admin/survey/organizeGroupsAndQuestions_view',$aViewData);

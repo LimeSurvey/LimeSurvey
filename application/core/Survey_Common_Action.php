@@ -219,12 +219,11 @@
             $data['condarray'] = $condarray;
             $data['sumcount4'] = $sumcount4;
 
-            if (!($action == 'addquestion'))
-            {
-            	Yii::import('application.helpers.expressions.em_manager_helper', true);
-                // This is needed to properly color-code content if it contains replacements
-                LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
-            }
+            //if (!($action == 'addquestion'))
+            //{
+                  // This is needed to properly color-code content if it contains replacements
+            //    LimeExpressionManager::StartProcessingGroup($gid,($surveyinfo['anonymized']!="N"),$surveyinfo['sid']);  // loads list of replacement values available for this group
+            //}
 
             $groupsummary .= $this->getController()->render('/admin/survey/QuestionGroups/questiongroupbar_view',$data,true);
         }
@@ -527,7 +526,7 @@
 		$data['activated']=$activated;
         if ($activated == "Y")
         {
-			$data['surveydb']="{{survey_".$surveyid."}}";
+			$data['surveydb']= Yii::app()->db->tablePrefix."survey_".$surveyid;
         }
  		$data['warnings']="";
         if ($activated == "N" && $sumcount3 == 0)
@@ -569,7 +568,6 @@
         $data['aAdditionalLanguages'] = $aAdditionalLanguages;
     	$data['clang'] = $clang;
     	$data['surveyinfo'] = $surveyinfo;
-    	Yii::import('application.helpers.expressions.em_manager_helper', true);
 		$this->getController()->render("/admin/survey/surveySummary_view",$data);
 
     }
@@ -594,7 +592,7 @@
 
 	    $this->getController()->render("/admin/browse/browsemenubar_view", $data);
 	}
-	
+
     function _js_admin_includes($include)
     {
         $js_admin_includes = Yii::app()->getConfig("js_admin_includes");
